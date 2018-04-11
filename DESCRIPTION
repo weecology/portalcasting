@@ -1,0 +1,15 @@
+Package: portalPredictionsModels
+Title: Models used in predicting portal rodent dynamics
+Version: 0.0.0.9000
+Authors@R: c(
+	person("Juniper", "Simonis", , "simonis@dapperstats.com", c("aut", "cre")),
+    person("Morgan", "Ernest", , "morgan@weecology.org", "aut"))
+Description: This package includes functions used in the modeling and 
+  forecasting of Portal data.
+Depends: R (>= 3.4.3)
+License: MIT + file LICENSE
+LazyData: true
+Imports:
+    dplyr
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr
