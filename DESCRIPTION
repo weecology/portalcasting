@@ -1,15 +1,19 @@
-Package: portalPredictionsModels
-Title: Models used in predicting portal rodent dynamics
-Version: 0.0.0.9000
+Package: portalcasting
+Title: Functions used in predicting portal rodent dynamics
+Version: 0.0.0.9
 Authors@R: c(
-	person("Juniper", "Simonis", , "simonis@dapperstats.com", c("aut", "cre")),
-    person("Morgan", "Ernest", , "morgan@weecology.org", "aut"))
+	person("Juniper", "Simonis", role = c("aut", "cre"), email = "simonis@dapperstats.com"),
+	person("Shawn", "Taylor", role = "aut", email = "shawntaylor@weecology.org"),
+	person("Glenda", "Yenni", role = "aut", email = "glenda@weecology.org"),
+	person("Ethan", "White", role = "aut", email = "ethan@weecology.org"),
+    person("Morgan", "Ernest", role = "aut", email = "morgan@weecology.org"))
 Description: This package includes functions used in the modeling and 
   forecasting of Portal data.
 Depends: R (>= 3.4.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
-    dplyr
+    dplyr,
+	testthat
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
