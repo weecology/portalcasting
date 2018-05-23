@@ -22,6 +22,7 @@ Imports:
   RCurl,
   rlang,
   testthat,
+  tscount,
   yaml
 Remotes: github::weecology/portalr
 Suggests:
