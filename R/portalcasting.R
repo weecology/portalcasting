@@ -1,3 +1,4 @@
+#' @importFrom digest digest
 #' @importFrom dplyr bind_rows filter full_join group_by inner_join left_join 
 #'   right_join mutate rename select ungroup summarise summarize
 #' @importFrom forecast auto.arima ets forecast na.interp
