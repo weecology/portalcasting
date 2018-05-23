@@ -26,6 +26,12 @@ full_path <- function(reference, base = getwd()){
 #' @export
 #' 
 get_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
+
+  newmoonnumber <- NULL
+  newmoondate <- NULL
+  period <- NULL
+  censusdate <- NULL
+
   path <- full_path("PortalData/Rodents/moon_dates.csv", "~")
   moons <- read.csv(path, header = TRUE)
   
@@ -99,6 +105,12 @@ get_covariate_data <- function(){
 #' @export
 #'
 get_rodent_data <- function(moons, forecast_date){
+
+  newmoonnumber <- NULL
+  newmoondate <- NULL
+  censusdate <- NULL
+  period <- NULL
+  treatment <- NULL
 
   # Corresponding to Jan 1995
   historic_start_period <- 203

@@ -7,7 +7,8 @@
 #' @importFrom purrr map
 #' @importFrom RCurl getURL
 #' @importFrom rlang !! !!! .data quo quos
-#' @importFrom utils read.csv read.table tail
+#' @importFrom stats qnorm
+#' @importFrom utils read.csv read.table tail write.table
 #' @importFrom yaml as.yaml
 #'
 

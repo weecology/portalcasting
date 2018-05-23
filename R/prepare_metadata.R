@@ -2,14 +2,18 @@
 #' @description Set up the model metadata, primarily the forecast timeperiods
 #'
 #' @param rodents rodent data table
-#' @param moons newmoon data table (with future moons)
 #' @param covariates covariate data table
+#' @param forecast_date date of the forecast (i.e., today)
+#' @param filename_suffix "forecasts" or "hindcasts" 
 #' @return model metadata as a list
 #' @export
 #'
-prep_metadata <- function(rodents, moons, covariates){
+prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(), 
+                          filename_suffix = "forecasts"){
  
   # prev = previous (i.e. the most recent)
+
+  moons <- get_moon_data(future = TRUE)
 
   which_prev_newmoon <- max(which(moons$newmoondate < forecast_date))
   prev_newmoon <- moons$newmoonnumber[which_prev_newmoon]

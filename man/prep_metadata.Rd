@@ -4,14 +4,17 @@
 \alias{prep_metadata}
 \title{Prepare Model Metadata}
 \usage{
-prep_metadata(rodents, moons, covariates)
+prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
+  filename_suffix = "forecasts")
 }
 \arguments{
 \item{rodents}{rodent data table}
 
-\item{moons}{newmoon data table (with future moons)}
-
 \item{covariates}{covariate data table}
+
+\item{forecast_date}{date of the forecast (i.e., today)}
+
+\item{filename_suffix}{"forecasts" or "hindcasts"}
 }
 \value{
 model metadata as a list

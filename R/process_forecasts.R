@@ -70,6 +70,17 @@ add_ensemble <- function(model_metadata){
 #' @export
 #'
 compile_aic_weights <- function(forecast_folder = "./predictions"){
+
+  date <- NULL
+  currency <- NULL
+  level <- NULL
+  species <- NULL
+  fit_start_newmoon <- NULL
+  fit_end_newmoon <- NULL
+  initial_newmoon <- NULL
+  aic <- NULL
+  delta_aic <- NULL
+
   aic_files <- list.files(forecast_folder, full.names = TRUE, 
                           recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]
@@ -111,6 +122,26 @@ compile_aic_weights <- function(forecast_folder = "./predictions"){
 #' @export
 #'
 make_ensemble <- function(all_forecasts, models_to_use = NA, CI_level = 0.9){
+
+  newmoonnumber <- NULL
+  forecastmonth <- NULL
+  forecastyear <- NULL
+  currency <- NULL
+  level <- NULL
+  species <- NULL
+  fit_start_newmoon <- NULL
+  fit_end_newmoon <- NULL
+  initial_newmoon <- NULL
+  UpperPI <- NULL
+  estimate <- NULL
+  weight <- NULL
+  model_var <- NULL
+  weighted_ss <- NULL
+  n <- NULL
+  ensemble_estimate <- NULL
+  ensemble_var <- NULL
+  LowerPI <- NULL
+  sum_weight <- NULL
 
   weights <- compile_aic_weights()
   weights$date <- as.Date(weights$date)
