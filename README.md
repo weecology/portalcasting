@@ -2,9 +2,14 @@
 [![Build Status](https://travis-ci.org/weecology/portalcasting.svg?branch=master)](https://travis-ci.org/weecology/portalcasting)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 
-This repository contains the novel functions used in [Portal Predictions](https://github.com/weecology/portalPredictions)
+## Overview
 
-The repo currently ***in development***
+The `portalcasting` package contains the functions used for Continuous
+Forecasting of Rodent Populations (Portal Predictions: 
+[code repo](https://github.com/weecology/portalPredictions);
+[website](http://portal.naturecast.org/).
+
+The repo currently ***in development*** as the functions are migrated over.
 
 ## Installation
 
@@ -15,8 +20,3 @@ install.packages("devtools")
 devtools::install_github("weecology/portal-predictions-models")
 ```
 
-[Portal Predictions main repository](https://github.com/weecology/portalPredictions)
-
-[Portal Forecasting website](http://portal.naturecast.org/)
-
-[Repository containing the current model descriptions](https://github.com/weecology/portal-forecasting-models)

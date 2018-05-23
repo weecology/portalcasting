@@ -6,7 +6,7 @@
 \alias{portalcasting-package}
 \title{Functions for Portal Forecasting}
 \description{
-This package is contains the functions use to forecast rodent
+This package contains the functions used to forecast rodent
   abundance at Portal.
 }
 \keyword{package}

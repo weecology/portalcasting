@@ -16,7 +16,7 @@
 
 #' @title Functions for Portal Forecasting
 #'
-#' @description This package is contains the functions use to forecast rodent
+#' @description This package contains the functions used to forecast rodent
 #'   abundance at Portal.
 #'
 #' @name portalcasting
