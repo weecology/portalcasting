@@ -18,6 +18,3 @@ a list of two dataframes, all plots and control plots
 Get rodent data, tailored for forecasting (all plots and 
   controls only)
 }
-\examples{
-get_rodent_data(moons, forecast_date)
-}

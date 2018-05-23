@@ -5,9 +5,6 @@
 #'   https://climate.northwestknowledge.net/RangelandForecast/download.php
 #'   and downscaled to Portal, AZ (31.9555, -109.0744)
 #' 
-#' @param climate_model Individual climate models available are 
-#'   c("CFSv2","CMC1","CMC2","GFDL-FLOR","GFDL","NASA","NCAR"),
-#'   "ENSMEAN" is the mean of all models.
 #' @param lead_time the newmoons into the future to obtain forecasts. Max of 7
 #' @param moons newmoon data table
 #' 

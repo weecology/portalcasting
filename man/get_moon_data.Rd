@@ -20,6 +20,3 @@ newmoons table
 Get dates and data for newmoonnumbers and related trapping 
   periods
 }
-\examples{
-get_moon_data()
-}

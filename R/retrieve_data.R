@@ -23,8 +23,6 @@ full_path <- function(reference, base = getwd()){
 #' @param forecast_date date from which forecasting is happening, typically
 #'   today's date. Required if \code{future = TRUE}
 #' @return newmoons table
-#' @examples
-#' get_moon_data()
 #' @export
 #' 
 get_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
@@ -98,8 +96,6 @@ get_covariate_data <- function(){
 #' @param forecast_date date the forecast is run
 #' 
 #' @return a list of two dataframes, all plots and control plots
-#' @examples
-#' get_rodent_data(moons, forecast_date)
 #' @export
 #'
 get_rodent_data <- function(moons, forecast_date){

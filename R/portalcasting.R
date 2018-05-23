@@ -6,6 +6,7 @@
 #'   get_future_moons ndvi weather
 #' @importFrom RCurl getURL
 #' @importFrom rlang !! !!!
+#' @importFrom utils read.csv read.table tail
 #' @importFrom yaml as.yaml
 #'
 

@@ -10,10 +10,6 @@ get_climate_forecasts(lead_time = 6, moons)
 \item{lead_time}{the newmoons into the future to obtain forecasts. Max of 7}
 
 \item{moons}{newmoon data table}
-
-\item{climate_model}{Individual climate models available are 
-c("CFSv2","CMC1","CMC2","GFDL-FLOR","GFDL","NASA","NCAR"),
-"ENSMEAN" is the mean of all models.}
 }
 \value{
 a data.frame with precipitation(mm), temperature(C), year, and

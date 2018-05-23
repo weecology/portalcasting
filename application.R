@@ -8,3 +8,5 @@ rodent_data <- get_rodent_data(moons, forecast_date)
 covariate_data <- get_covariate_data()
 model_metadata <- prep_metadata(rodent_data, total_moons, covariate_data)
 forecast_covariates <- fcast_covariates(model_metadata, moons, covariate_data)
+
+
