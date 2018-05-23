@@ -27,10 +27,10 @@ full_path <- function(reference, base = getwd()){
 #' 
 get_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
 
-  #newmoonnumber <- NULL
-  #newmoondate <- NULL
-  #period <- NULL
-  #censusdate <- NULL
+  newmoonnumber <- NULL
+  newmoondate <- NULL
+  period <- NULL
+  censusdate <- NULL
 
   path <- full_path("PortalData/Rodents/moon_dates.csv", "~")
   moons <- read.csv(path, header = TRUE)
@@ -44,7 +44,7 @@ get_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
       stop("forecast_date must be a date.")
     }
     curr_moons <- moons %>%
-                  select_(newmoonnumber, newmoondate, period, censusdate)
+                  select(newmoonnumber, newmoondate, period, censusdate)
     future_moons <- get_future_moons(moons)
     total_moons <- rbind(curr_moons, future_moons)
 
@@ -56,7 +56,7 @@ get_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
       add_nfm$month <- as.numeric(format(add_nfm$newmoondate, "%m"))
       moons <- rbind(moons, add_nfm)
       curr_moons <- moons %>% 
-                    select_(newmoonnumber, newmoondate, period, censusdate)
+                    select(newmoonnumber, newmoondate, period, censusdate)
       future_moons <- get_future_moons(moons)
       total_moons <- rbind(curr_moons, future_moons)
     }
