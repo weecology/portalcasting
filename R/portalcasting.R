@@ -1,5 +1,6 @@
 #' @importFrom dplyr bind_rows filter full_join group_by inner_join left_join 
 #'   right_join mutate rename select ungroup summarise summarize
+#' @importFrom forecast na.interp
 #' @importFrom lubridate as_date is.Date month year
 #' @importFrom magrittr %>%
 #' @importFrom portalr abundance download_observations fcast_ndvi 

@@ -14,6 +14,7 @@ License: MIT + file LICENSE
 LazyData: true
 Imports:
   dplyr,
+  forecast,
   lubridate,
   magrittr,
   portalr,

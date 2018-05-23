@@ -1,5 +1,5 @@
 
-
+fcast_date <- Sys.Date()
 portalr::download_observations()
 moons <- get_moon_data()
 rodents <- get_rodent_data(moons, Sys.Date())

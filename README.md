@@ -1,4 +1,4 @@
-# Portal Predictions Models
+# portalcasting: the support package for Portal Predictions
 [![Build Status](https://travis-ci.org/weecology/portalcasting.svg?branch=master)](https://travis-ci.org/weecology/portalcasting)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 
