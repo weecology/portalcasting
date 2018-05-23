@@ -10,3 +10,6 @@ model_metadata <- prep_metadata(rodent_data, total_moons, covariate_data)
 forecast_covariates <- fcast_covariates(model_metadata, moons, covariate_data)
 
 
+# note:
+# forecastall is now replaced with combine_forecasts and add_ensemble
+#

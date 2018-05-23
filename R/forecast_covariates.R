@@ -131,7 +131,7 @@ fcast_weather <- function(start = as.numeric(format(Sys.Date(), "%Y")), moons,
                           lag = 6, lead_time = 6){
   
   newweather <- weather("newmoon", fill = TRUE) %>%
-                select(-c(locally_measured, battery_low)) %>% 
+                select(-c(.data$locally_measured, .data$battery_low)) %>% 
                 mutate(year = as.numeric(format(date, "%Y"))) %>%
                 filter(year >= start - 5)
   incompletes <- which(is.na(newweather$newmoonnumber))

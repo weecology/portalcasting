@@ -17,6 +17,7 @@ Imports:
   lubridate,
   magrittr,
   portalr,
+  purrr,
   RCurl,
   rlang,
   testthat,
