@@ -15,6 +15,8 @@ devtools::install_github("weecology/portal-predictions-models")
 ```
 
 [Portal Predictions main repository](https://github.com/weecology/portalPredictions)
+
 [Portal Forecasting website](http://portal.naturecast.org/)
+
 [Repository containing the current model descriptions](https://github.com/weecology/portal-forecasting-models)
 
