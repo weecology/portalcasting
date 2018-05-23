@@ -13,7 +13,10 @@ Depends: R (>= 3.4.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
-    dplyr,
-    testthat
+  dplyr,
+  testthat
+Suggests:
+  knitr,
+  rmarkdown
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
