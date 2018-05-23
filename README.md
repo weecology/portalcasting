@@ -7,7 +7,7 @@
 The `portalcasting` package contains the functions used for Continuous
 Forecasting of Rodent Populations (Portal Predictions: 
 [code repo](https://github.com/weecology/portalPredictions);
-[website](http://portal.naturecast.org/).
+[website](http://portal.naturecast.org/)).
 
 The repo currently ***in development*** as the functions are migrated over.
 
