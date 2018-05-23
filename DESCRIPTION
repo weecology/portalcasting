@@ -16,9 +16,11 @@ Imports:
   dplyr,
   lubridate,
   magrittr,
+  portalr,
   RCurl,
   rlang,
-  testthat
+  testthat,
+  yaml
 Remotes: github::weecology/portalr
 Suggests:
   knitr,
