@@ -9,6 +9,7 @@
 #' @importFrom RCurl getURL
 #' @importFrom rlang !! !!! .data quo quos
 #' @importFrom stats AIC qnorm
+#' @importFrom tscount tsglm
 #' @importFrom utils read.csv read.table tail write.table
 #' @importFrom yaml as.yaml
 #'
