@@ -9,7 +9,7 @@ Authors@R: c(
   person("Morgan", "Ernest", role = "aut", email = "morgan@weecology.org"))
 Description: This package includes functions used in the modeling and 
   forecasting of Portal data.
-Depends: R (>= 3.4.3)
+Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
