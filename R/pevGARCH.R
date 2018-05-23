@@ -16,9 +16,9 @@
 #' @param num_forecast_newmoons number of new moons to forecast
 #' @param CI_level confidence interval level used for forecast envelope
 #' @param weather_data table of already lagged weather data
-#' @param weather_fcast table of forecasted weather
+#' @param weather_forecast table of forecasted weather
 #' @param ndvi_data table of already lagged NDVI data
-#' @param ndvi_fcast table of forecasted NDVI
+#' @param ndvi_forecast table of forecasted NDVI
 #' @return list of forecast and aic tables
 #'
 #' @export

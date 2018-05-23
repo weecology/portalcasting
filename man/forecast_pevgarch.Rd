@@ -28,11 +28,11 @@ forecast_pevgarch(abundances, forecast_date, forecast_months, forecast_years,
 
 \item{weather_data}{table of already lagged weather data}
 
-\item{weather_fcast}{table of forecasted weather}
-
 \item{ndvi_data}{table of already lagged NDVI data}
 
-\item{ndvi_fcast}{table of forecasted NDVI}
+\item{weather_forecast}{table of forecasted weather}
+
+\item{ndvi_forecast}{table of forecasted NDVI}
 }
 \value{
 list of forecast and aic tables
