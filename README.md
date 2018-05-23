@@ -1,5 +1,7 @@
 # Portal Predictions Models
-This repository contains functions for models used in Portal Predictions. 
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
+
+This repository contains the novel functions used in [Portal Predictions](https://github.com/weecology/portalPredictions)
 
 The repo currently ***in development***
 
@@ -9,10 +11,10 @@ You can install the package from github with:
 
 ```
 install.packages("devtools")
-devtools::install_github("weecology/portalPredictionsModels")
+devtools::install_github("weecology/portal-predictions-models")
 ```
 
-#### [Portal Predictions main repository](https://github.com/weecology/portalPredictions)
-#### [Portal Forecasting website](http://portal.naturecast.org/)
-#### [Repository containing the current model descriptions](https://github.com/weecology/portal-forecasting-models)
+[Portal Predictions main repository](https://github.com/weecology/portalPredictions)
+[Portal Forecasting website](http://portal.naturecast.org/)
+[Repository containing the current model descriptions](https://github.com/weecology/portal-forecasting-models)
 
