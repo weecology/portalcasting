@@ -1,67 +1,81 @@
 #' @title Exponential Smoothing State Space model for Portal Predictions
 #'
 #' @description Model "ESSS" is a flexible exponential smoothing state space 
-#'  model fit using the forecast and ets functions with the possibility of 
-#'  multiplicative trends. Unfortunately since the seasonality and 
-#'  sampling occurring with different frequencies, which the ets function 
-#'  cannot accommodate, seasonal models are not included.
+#'  model fit using \code{ets} in \code{forecast} package (Hyndman et al.
+#'  2018) with the possibility of multiplicative trends.  
+#'
+#'  Because the seasonality and sampling occurring with different frequencies,
+#'  which \code{ets} cannot accommodate, seasonal models are not included.
 #'
 #' @param abundances table of rodent abundances and time measures
-#' @param forecast_date the dates to be forecast from
-#' @param forecast_months the months of the dates to be forecast
-#' @param forecast_years the years of the dates to be forecast
-#' @param forecast_newmoons the numbers of the new moons to be forecast
+#'
+#' @param metadata model metadata list
+#'
 #' @param level name of the type of plots included ("All" or "Controls")
-#' @param num_forecast_newmoons number of new moons to forecast
-#' @param CI_level confidence interval level used for forecast envelope
+#'
+#' @param CL confidence interval level used for forecast envelope
+#'
 #' @return list of forecast and aic tables
+#'
+#' @references 
+#'  Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
+#'  F., Razbash S., Wang E., and Yasmeen F. 2018. forecast: Forecasting 
+#'  functions for time series and linear models. 
+#'  \href{http://pkg.robjhyndman.com/forecast}{R package version 8.3}. 
 #'
 #' @export
 #'
-forecast_esss <- function(abundances, forecast_date, forecast_months, 
-                          forecast_years, forecast_newmoons, level,
-                          num_forecast_newmoons, CI_level = 0.9){
+esss <- function(abundances, metadata, level, CL = 0.9){
 
-  cat("Fitting ESSS model for total \n")
-  interpolated_abundances <- interpolate_abundance(abundances)
+  nfcnm <- length(metadata$rodent_forecast_newmoons)
+  abundances <- interpolate_abundance(abundances)
+  species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
+  fcast <- data.frame()
+  aic <- data.frame()
 
-  ets_model <- ets(interpolated_abundances$total)
-  ets_forecast <- forecast(ets_model, h = num_forecast_newmoons,
-                           level = CI_level, 
-                           allow.multiplicative.trend = TRUE)
+  for (s in species){
 
-  fit_start_newmoon <- min(abundances$newmoonnumber)
-  fit_end_newmoon <- max(abundances$newmoonnumber)
-  initial_newmoon <- max(abundances$newmoonnumber)
-  CI_match <- which(ets_forecast$level == CI_level * 100)
-  estimate <- as.numeric(ets_forecast$mean)
-  LowerPI <- as.numeric(ets_forecast$lower[ , CI_match]) 
-  UpperPI <- as.numeric(ets_forecast$upper[ , CI_match])
+    ss <- gsub("NA.", "NA", s)
+    cat("Fitting ESSS model for", ss, "\n")
 
-  output_fcast <- data.frame(date = forecast_date, 
-                             forecastmonth = forecast_months,
-                             forecastyear = forecast_years, 
-                             newmoonnumber = forecast_newmoons,
-                             currency = "abundance",
-                             model = "ESSS", level = level, 
-                             species = "total", estimate = estimate,
-                             LowerPI = LowerPI, UpperPI = UpperPI,
-                             fit_start_newmoon = fit_start_newmoon,
-                             fit_end_newmoon = fit_end_newmoon,
-                             initial_newmoon = initial_newmoon,
-                             stringsAsFactors = FALSE)
+    sp_abundance <- extract2(abundances, s)
+  
+    if (sum(sp_abundance) == 0){
+      fcast_s <- fcast0(nfcnm)
+      aic_s <- 1e6
+    } else{
+      model <- ets(sp_abundance)
+      fcast_s <- forecast(model, h = nfcnm, level = CL, 
+                   allow.multiplicative.trend = TRUE)
+      aic_s <- model$aic
+    }    
 
-  output_aic <- data.frame(date = as.Date(forecast_date), 
-                           currency = "abundance", model = "ESSS", 
-                           level = level, species = "total", 
-                           aic = as.numeric(ets_model$aic), 
-                           fit_start_newmoon = fit_start_newmoon,
-                           fit_end_newmoon = fit_end_newmoon,
-                           initial_newmoon = initial_newmoon,
-                           stringsAsFactors = FALSE)
+    estimate <- as.numeric(fcast_s$mean)
+    CI_match <- which(fcast_s$level == CL * 100)
+    LowerPI <- as.numeric(fcast_s$lower[ , CI_match]) 
+    UpperPI <- as.numeric(fcast_s$upper[ , CI_match])
 
-  output <- list(output_fcast, output_aic)
-  names(output) <- c("forecast", "aic")
+    fcast_s <- data.frame(date = metadata$forecast_date, 
+                 forecastmonth = metadata$rodent_forecast_months,
+                 forecastyear = metadata$rodent_forecast_years, 
+                 newmoonnumber = metadata$rodent_forecast_newmoons,
+                 currency = "abundance", model = "ESSS", level = level, 
+                 species = ss, estimate = estimate, LowerPI = LowerPI, 
+                 UpperPI = UpperPI, fit_start_newmoon = min(abundances$moons),
+                 fit_end_newmoon = max(abundances$moons),
+                 initial_newmoon = max(abundances$moons),
+                 stringsAsFactors = FALSE)
 
+    aic_s <- data.frame(date = metadata$forecast_date, currency = "abundance", 
+               model = "ESSS", level = level, species = ss, aic = aic_s, 
+               fit_start_newmoon = min(abundances$moons),
+               fit_end_newmoon = max(abundances$moons),
+               initial_newmoon = max(abundances$moons),
+               stringsAsFactors = FALSE)
+
+    fcast <- rbind(fcast, fcast_s)
+    aic <- rbind(aic, aic_s)
+  }
+  output <- list("forecast" = fcast, "aic" = aic)
   return(output)
 }
