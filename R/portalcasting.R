@@ -11,7 +11,7 @@
 #' @importFrom rlang !! !!! .data quo quos
 #' @importFrom stats AIC qnorm predict
 #' @importFrom tscount tsglm
-#' @importFrom utils read.csv read.table tail write.table
+#' @importFrom utils read.csv read.table tail write.csv write.table
 #' @importFrom yaml as.yaml
 #'
 
