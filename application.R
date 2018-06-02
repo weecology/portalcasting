@@ -6,8 +6,11 @@ rodents <- get_rodent_data(moons, Sys.Date())
 covariates <- get_covariate_data()
 metadata <- prep_metadata(rodents, covariates, fcast_date, "forecasts")
 forecast_covariates <- fcast_covariates(metadata, moons, covariates)
-
+append_covariate_fcast(forecast_covariates, "historical_covariates.csv")
 
 # note:
 # forecastall is now replaced with combine_forecasts and add_ensemble
 #
+
+
+

@@ -17,6 +17,6 @@ You can install the package from github with:
 
 ```
 install.packages("devtools")
-devtools::install_github("weecology/portal-predictions-models")
+devtools::install_github("weecology/portalcasting")
 ```
 
