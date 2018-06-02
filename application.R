@@ -15,3 +15,7 @@ append_covariate_fcast(forecast_covariates, "historical_covariates.csv")
 
 
 
+aa_a <- autoarima(rodents$all, metadata)
+esss_a <- esss(rodents$all, metadata)
+nbg_a <- nbgarch(rodents$all, metadata)
+#pevg_a <- pevgarch(rodents$all, covariates, forecast_covariates, metadata)

@@ -4,7 +4,7 @@
 \alias{esss}
 \title{Exponential Smoothing State Space model for Portal Predictions}
 \usage{
-esss(abundances, metadata, level, CL = 0.9)
+esss(abundances, metadata, level = "All", CL = 0.9)
 }
 \arguments{
 \item{abundances}{table of rodent abundances and time measures}
@@ -20,8 +20,8 @@ list of forecast and aic tables
 }
 \description{
 Model "ESSS" is a flexible exponential smoothing state space 
- model fit using \code{ets} in \code{forecast} package (Hyndman et al.
- 2018) with the possibility of multiplicative trends.  
+ model fit using \code{ets} in the \code{forecast} package (Hyndman 
+ \emph{et al}. 2018) with the possibility of multiplicative trends.  
 
  Because the seasonality and sampling occurring with different frequencies,
  which \code{ets} cannot accommodate, seasonal models are not included.

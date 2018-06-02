@@ -5,7 +5,7 @@
 \title{Flexible Auto-Regressive Integrated Moving Average model for Portal 
  Predictions}
 \usage{
-autoarima(abundances, metadata, level, CL = 0.9)
+autoarima(abundances, metadata, level = "All", CL = 0.9)
 }
 \arguments{
 \item{abundances}{table of rodent abundances and time measures}
@@ -21,8 +21,8 @@ list of forecast and aic tables
 }
 \description{
 Model "AutoARIMA" is a flexible auto-regressive integrated 
- moving average model fit to the data using \code{auto.arima} in 
- \code{forecast} package (Hyndman et al. 2018).
+ moving average model fit to the data using \code{auto.arima} in the
+ \code{forecast} package (Hyndman \emph{et al}. 2018).
 
  Because the seasonality and sampling occurring with different frequencies,
  which \code{auto.arima } cannot accommodate, seasonal models are not 
