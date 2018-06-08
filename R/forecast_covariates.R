@@ -254,7 +254,7 @@ append_covariate_fcast_csv <- function(forecast_covariates,
 #' @export
 #'
 append_covariate_fcast <- function(covariates, metadata, 
-                                   moons = get_moon_data()){
+                                   moons = prep_moon_data()){
 
   covariates_fcast <- fcast_covariates(covariates, moons, metadata)
   covariates_fcast <- select(covariates_fcast, -"forecast_newmoon")

@@ -30,6 +30,6 @@ NULL
 
 # To quiet concerns of R CMD check re: variables used in non-standard eval
 if (getRversion() >= "2.15.1"){
-  utils::globalVariables(c("censusdate", "newmoondate", "newmoonnumber",
-    "period", "PI", "treatment"))
+  utils::globalVariables(c("censusdate", "forecast_newmoon", "newmoondate", 
+    "newmoonnumber", "period", "PI", "treatment"))
 }

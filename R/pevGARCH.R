@@ -12,9 +12,8 @@
 #'
 #' @param abundances table of rodent abundances and time measures
 #'
-#' @param covariates table of covariate data and time measures
-#'
-#' @param covariates_fcast table of forecast covariate data and time measures
+#' @param covariates table of historical and forecast covariate data and time 
+#'   measures
 #'
 #' @param metadata model metadata list
 #'
@@ -32,24 +31,20 @@
 #'
 #' @export
 #'
-pevgarch <- function(abundances, covariates, covariates_fcast, metadata,  
-                     level = "All", lag = 6){
+pevgarch <- function(abundances, covariates, metadata, level = "All", 
+                     lag = 6){
 
-  nfcnm <- length(metadata$rodent_forecast_newmoons)
+  fcnm <- metadata$rodent_forecast_newmoons
+  nfcnm <- length(fcnm)
   CL <- metadata$confidence_level
   abundances <- interpolate_abundance(abundances)
   species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
-
+  covar_lag <- lag_data(covariates, lag, tail = TRUE)
+  for_hist <- which(covar_lag$newmoonnumber %in% abundances$moons)
+  for_fcast <- which(covar_lag$newmoonnumber %in% fcnm) 
+  covar_hist <- covar_lag[for_hist, ]
+  covar_fcast <- covar_lag[for_fcast, ]
         
-#
-# i'm actively working here and need to make sure things flow with the 
-#  analysis. right now the historical covariate data need to be trimmed
-#  i think the "lag_covariates" function might need to be re-done 
-
-  covar_lag <- lag_covariates(covariates, covariates_fcast, metadata, lag)
-  covar_hist <- covar_lag$hist_lag
-  covar_fcast <- covar_lag$fcast_lag
-
   fcast <- data.frame()
   aic <- data.frame()
 
@@ -92,19 +87,18 @@ pevgarch <- function(abundances, covariates, covariates_fcast, metadata,
                               newxreg = fcast_predictors),
                             error = function(x) {NA})
 
-        if(prop_model_aic < best_model_aic){
-          best_mod <- proposed_model
-          best_model_aic <- proposed_aic
+        if(proposed_aic < best_aic){
+          best_model <- proposed_model
+          best_aic <- proposed_aic
 
-          forecast_s <- prop_forecast
-          spec_aic <- prop_model_aic
+          spec_forecast <- proposed_fcast
+          spec_aic <- proposed_aic
         }
 
         model_count <- model_count + 1
       }
 
-      fit_fails <- length(which(is.na(best_model) == T))
-        
+      fit_fails <- length(which(is.na(best_model) == TRUE))    
       if(fit_fails > 0){
         spec_forecast <- zero_abund_forecast
         spec_aic <- 1e6
@@ -115,34 +109,29 @@ pevgarch <- function(abundances, covariates, covariates_fcast, metadata,
     estimate <- as.numeric(spec_forecast$pred)
     LowerPI <- as.numeric(spec_forecast$interval[, 1]) 
     UpperPI <- as.numeric(spec_forecast$interval[, 2])
-    spec_output_fcast <- data.frame(date = forecast_date, 
-                                    forecastmonth = forecast_months, 
-                                    forecastyear = forecast_years,
-                                    newmoonnumber = forecast_newmoons, 
-                                    currency = "abundance", 
-                                    model = "pevGARCH", level = level, 
-                                    species = ss, estimate = estimate,
-                                    LowerPI = LowerPI, UpperPI = UpperPI,
-                                    fit_start_newmoon = fit_start_newmoon,
-                                    fit_end_newmoon = fit_end_newmoon,
-                                    initial_newmoon = initial_newmoon,
-                                    stringsAsFactors = FALSE)
-    output_fcast <- rbind(output_fcast, spec_output_fcast)
 
-    spec_output_aic <- data.frame(date = forecast_date, 
-                                  currency = "abundance", model = "pevGARCH", 
-                                  level = level, species = ss, 
-                                  aic = as.numeric(spec_aic), 
-                                  fit_start_newmoon = fit_start_newmoon,
-                                  fit_end_newmoon = fit_end_newmoon,
-                                  initial_newmoon = initial_newmoon,
-                                  stringsAsFactors = FALSE)
+    fcast_s <- data.frame(date = metadata$forecast_date, 
+                 forecastmonth = metadata$rodent_forecast_months,
+                 forecastyear = metadata$rodent_forecast_years, 
+                 newmoonnumber = metadata$rodent_forecast_newmoons,
+                 currency = "abundance", model = "pevGARCH", level = level, 
+                 species = ss, estimate = estimate, LowerPI = LowerPI, 
+                 UpperPI = UpperPI, fit_start_newmoon = min(abundances$moons),
+                 fit_end_newmoon = max(abundances$moons),
+                 initial_newmoon = max(abundances$moons),
+                 stringsAsFactors = FALSE)
 
-    output_aic <- rbind(output_aic, spec_output_aic)
+    aic_s <- data.frame(date = metadata$forecast_date, currency = "abundance", 
+               model = "pevGARCH", level = level, species = ss, 
+               aic = model_aic, fit_start_newmoon = min(abundances$moons),
+               fit_end_newmoon = max(abundances$moons),
+               initial_newmoon = max(abundances$moons),
+               stringsAsFactors = FALSE)
+
+    fcast <- rbind(fcast, fcast_s)
+    aic <- rbind(aic, aic_s)
 
   }
-  output <- list(output_fcast, output_aic)
-  names(output) <- c("forecast", "aic")
-
+  output <- list("forecast" = fcast, "aic" = aic)
   return(output) 
 }

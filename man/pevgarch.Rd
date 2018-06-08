@@ -5,15 +5,13 @@
 \title{poisson environmental variable Generalized Auto-Regressive 
   Conditional Heteroscedasticity model for Portal Predictions}
 \usage{
-pevgarch(abundances, covariates, covariates_fcast, metadata, level = "All",
-  lag = 6)
+pevgarch(abundances, covariates, metadata, level = "All", lag = 6)
 }
 \arguments{
 \item{abundances}{table of rodent abundances and time measures}
 
-\item{covariates}{table of covariate data and time measures}
-
-\item{covariates_fcast}{table of forecast covariate data and time measures}
+\item{covariates}{table of historical and forecast covariate data and time 
+measures}
 
 \item{metadata}{model metadata list}
 
