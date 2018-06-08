@@ -100,7 +100,7 @@ pevgarch <- function(abundances, covariates, metadata, level = "All",
 
       fit_fails <- length(which(is.na(best_model) == TRUE))    
       if(fit_fails > 0){
-        spec_forecast <- zero_abund_forecast
+        spec_forecast <- fcast0(nfcnm)
         spec_aic <- 1e6
       } 
 

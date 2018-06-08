@@ -11,7 +11,7 @@ append_covariate_fcast(covariates, metadata, moons = prep_moon_data())
 
 \item{metadata}{model metadata}
 
-\item{moons}{}
+\item{moons}{moon data table}
 }
 \value{
 no value

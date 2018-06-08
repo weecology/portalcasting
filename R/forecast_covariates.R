@@ -247,7 +247,7 @@ append_covariate_fcast_csv <- function(forecast_covariates,
 #'
 #' @param metadata model metadata
 #'
-#' @param moons 
+#' @param moons moon data table
 #' 
 #' @return no value
 #'
