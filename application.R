@@ -1,7 +1,7 @@
 
 # kinda start back over and figure out what's the tidiest way to work through
 
-download_observations()
+portalr::download_observations()
 rodents <- prep_rodent_data()
 covariates <- prep_covariate_data()
 metadata <- prep_metadata(rodents, covariates)
