@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{append_csv}
 \alias{append_csv}
-\title{Appending a csv without re-writing the header.}
+\title{Save data out to a csv, appending if existing}
 \usage{
 append_csv(df, filename)
 }
@@ -15,5 +15,6 @@ append_csv(df, filename)
 Nothing
 }
 \description{
-Appending a csv without re-writing the header.
+Appending a csv without re-writing the header. If file doesn't
+  exist, it will be created.
 }

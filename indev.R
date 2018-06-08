@@ -1,24 +1,7 @@
 
-# in progress on run back through data prep functions
-
-prep_hist_covariate_date produces the historical data
-
-need to now make prep_covariate_date with a forecasts boolean input
-it will also need the moons and the metadata, but later gives a circularity rn
-
-
-i think the issue is that we'll just need to tag the covariates as to whether
-they're a forecast or historical
 
 
 
-append_covariate_fcast <- function(covariates, moons, metadata){
-
-  forecast_covariates <- fcast_covariates(covariates, moons, metadata)
-  
-  return(out)
-}
-#append_covariate_fcast_csv(forecast_covariates, "covariate_forecasts.csv")
 
 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/forecast_covariates.R
 \name{fcast_weather}
 \alias{fcast_weather}
-\title{Build a Weather Forecast for Model Predictions}
+\title{Build a weather forecast for model predictions}
 \usage{
 fcast_weather(start = as.numeric(format(Sys.Date(), "\%Y")), moons, lag = 6,
   lead_time = 6)

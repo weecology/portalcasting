@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{fcast0}
 \alias{fcast0}
-\title{Create a 0-abundance forecast}
+\title{Zero-abundance forecast}
 \usage{
 fcast0(nfcnm)
 }
@@ -13,5 +13,5 @@ fcast0(nfcnm)
 list of mean and interval values for a 0-abundance filler forecast
 }
 \description{
-Create a 0-abundance forecast
+Create a 0-abundance forecast for fill-in usage
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/forecast_covariates.R
 \name{get_climate_forecasts}
 \alias{get_climate_forecasts}
-\title{Download Downscaled Weather Data}
+\title{Download downscaled weather data}
 \usage{
 get_climate_forecasts(lead_time = 6, moons)
 }

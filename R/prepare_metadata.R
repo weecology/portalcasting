@@ -1,21 +1,32 @@
-#' @title Prepare Model Metadata
+#' @title Prepare model metadata
+#'
 #' @description Set up the model metadata, primarily the forecast timeperiods
 #'
 #' @param rodents rodent data table
+#'
 #' @param covariates covariate data table
+#'
 #' @param forecast_date date of the forecast (i.e., today)
+#'
 #' @param filename_suffix "forecasts" or "hindcasts" 
+#'
 #' @param confidence_level confidence level used in summarizing model output
+#'
+#' @param lead_time number of newmoons forward to forecast abundances
+#'
 #' @return model metadata as a list
+#'
 #' @export
 #'
 prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(), 
                           filename_suffix = "forecasts",
-                          confidence_level = 0.9){
+                          confidence_level = 0.9, lead_time = 12){
  
   # prev = previous (i.e. the most recent)
+  
+  moons <- prep_moon_data(future = TRUE)
 
-  moons <- get_moon_data(future = TRUE)
+  covariates_fcasts <- which(covariates$source == "fcast")
 
   which_prev_newmoon <- max(which(moons$newmoondate < forecast_date))
   prev_newmoon <- moons$newmoonnumber[which_prev_newmoon]
@@ -29,7 +40,7 @@ prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(),
 
   first_fcast_covar_newmoon <- prev_covar_newmoon + 1
   first_fcast_rodent_newmoon <- prev_rodent_newmoon + 1
-  last_fcast_newmoon <- prev_newmoon + 12
+  last_fcast_newmoon <- prev_newmoon + lead_time
 
   rodent_fcast_newmoons <- first_fcast_rodent_newmoon:last_fcast_newmoon
   which_r_nms <- which(moons$newmoonnumber %in% rodent_fcast_newmoons)

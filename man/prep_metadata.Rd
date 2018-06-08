@@ -2,10 +2,10 @@
 % Please edit documentation in R/prepare_metadata.R
 \name{prep_metadata}
 \alias{prep_metadata}
-\title{Prepare Model Metadata}
+\title{Prepare model metadata}
 \usage{
 prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
-  filename_suffix = "forecasts", confidence_level = 0.9)
+  filename_suffix = "forecasts", confidence_level = 0.9, lead_time = 12)
 }
 \arguments{
 \item{rodents}{rodent data table}
@@ -17,6 +17,8 @@ prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
 \item{filename_suffix}{"forecasts" or "hindcasts"}
 
 \item{confidence_level}{confidence level used in summarizing model output}
+
+\item{lead_time}{number of newmoons forward to forecast abundances}
 }
 \value{
 model metadata as a list

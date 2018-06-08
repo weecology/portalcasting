@@ -1,20 +1,10 @@
 
 # kinda start back over and figure out what's the tidiest way to work through
 
-portalr::download_observations()
-
+download_observations()
 rodents <- prep_rodent_data()
-covariates <- prep_covariate_data(forecasts = TRUE)
+covariates <- prep_covariate_data()
 metadata <- prep_metadata(rodents, covariates)
-
-covariates <- append_covariate_fcast(covariates, moons, metadata)
-
-
-
-
-
-
-
 
 
 

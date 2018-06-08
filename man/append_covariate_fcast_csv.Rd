@@ -2,7 +2,7 @@
 % Please edit documentation in R/forecast_covariates.R
 \name{append_covariate_fcast_csv}
 \alias{append_covariate_fcast_csv}
-\title{Append a Covariate Forecast to Existing Covariate Forecasts}
+\title{Append a covariate forecast to existing covariate forecasts}
 \usage{
 append_covariate_fcast_csv(forecast_covariates, covariate_file = NULL,
   source_name = "current_archive")

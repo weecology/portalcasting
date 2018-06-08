@@ -1,11 +1,11 @@
-
-#' @title Download Downscaled Weather Data
+#' @title Download downscaled weather data
 #' 
 #' @description ENSMEAN (ensemble mean) obtained from 
 #'   https://climate.northwestknowledge.net/RangelandForecast/download.php
 #'   and downscaled to Portal, AZ (31.9555, -109.0744)
 #' 
 #' @param lead_time the newmoons into the future to obtain forecasts. Max of 7
+#'
 #' @param moons newmoon data table
 #' 
 #' @return a data.frame with precipitation(mm), temperature(C), year, and
@@ -119,13 +119,16 @@ get_climate_forecasts <- function(lead_time = 6, moons){
   return(out)
 }
 
-#' @title Build a Weather Forecast for Model Predictions 
+#' @title Build a weather forecast for model predictions 
 #' 
 #' @description created using downscaled climate forecasts
 #' 
 #' @param start end year of data and beginning of forecast
+#'
 #' @param moons moon data
+#'
 #' @param lag newmoons by which weather data is lagged
+#'
 #' @param lead_time the number of newmoons into the future to obtain forecasts
 #'   Max of 7. lag + lead_time should equal 12
 #' 
@@ -152,24 +155,31 @@ fcast_weather <- function(start = as.numeric(format(Sys.Date(), "%Y")), moons,
   return(weatherforecast)
 }
 
-
-#' @title Build a Covariate Forecast for Model Predictions 
+#' @title Build a covariate forecast for model predictions 
 #' 
 #' @description combining weather and ndvi forecasts
 #' 
 #' @param covariate_data historical covariate data table
+#'
 #' @param moons moon data
-#' @param model_metadata metadata list for the forecast models
+#'
+#' @param covariate_forecast_newmoons newmoon numbers for the covariate
+#'   forecast
+#'
+#' @param forecast_date date of the forecast (i.e., today)
+#'
+#' @param min_lag minimum (of non-0) lag times that need to be accommodate 
 #' 
 #' @return a data.frame with 12 new moons of weather values
 #'
 #' @export
 #'
-fcast_covariates <- function(covariate_data, moons, model_metadata){
+fcast_covariates <- function(covariate_data, moons, 
+                             covariate_forecast_newmoons,
+                             forecast_date = Sys.Date(), min_lag = 6){
 
-  forecast_date <- model_metadata$forecast_date
   yr <- as.numeric(format(as.Date(forecast_date), "%Y"))
-  covariate_fcast_nms <- model_metadata$covariate_forecast_newmoons
+  covariate_fcast_nms <- covariate_forecast_newmoons
   ncfnm <- length(covariate_fcast_nms)
 
   ndvi_data <- select(covariate_data, c("newmoonnumber", "ndvi"))
@@ -181,21 +191,23 @@ fcast_covariates <- function(covariate_data, moons, model_metadata){
     fc_nms <- fc_nms[-addl_need_to_fcast, ]
   }
 
-  weather_fcast <- fcast_weather(yr, fc_nms, lag = 0, lead_time = ncfnm - 6)
-  ndvi_fcast <- fcast_ndvi(ndvi_data, "newmoon", lead =  ncfnm - 6, moons)
-  fcast <- right_join(weather_fcast, ndvi_fcast, by = "newmoonnumber")
+  weather_f <- fcast_weather(yr, fc_nms, lag = 0, lead_time = ncfnm - min_lag)
+  ndvi_f <- fcast_ndvi(ndvi_data, "newmoon", lead = ncfnm - min_lag, moons)
+  fcast <- right_join(weather_f, ndvi_f, by = "newmoonnumber")
   forecast_newmoon <- max(fc_nms$newmoonnumber)
   out <- round(data.frame(forecast_newmoon, fcast), 3)
   return(out)
 }
 
-#' @title Append a Covariate Forecast to Existing Covariate Forecasts
+#' @title Append a covariate forecast to existing covariate forecasts
 #' 
 #' @description combining weather and ndvi forecasts to the existing forecasts
 #' 
 #' @param forecast_covariates forecasted covariates
+#'
 #' @param covariate_file file name for the existing historical covariate data
 #'   file
+#'
 #' @param source_name character value for the name to give the covariaate
 #'   forecast. Currently is "current_archive". Previous to "current_archive",
 #'   the data were retroactively filled in and are given the source name
@@ -226,14 +238,15 @@ append_covariate_fcast_csv <- function(forecast_covariates,
   write.csv(out, covariate_file, row.names = FALSE)
 }
 
-
-#' @title Append a Covariate Forecast to Historical Covariate Table
+#' @title Append a covariate forecast to historical covariate table
 #' 
 #' @description combining weather and ndvi forecasts to the existing 
 #'   covariates
 #' 
 #' @param covariates output from \code{get_covariate_data}
+#'
 #' @param metadata model metadata
+#'
 #' @param moons 
 #' 
 #' @return no value

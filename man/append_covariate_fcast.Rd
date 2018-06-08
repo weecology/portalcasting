@@ -2,7 +2,7 @@
 % Please edit documentation in R/forecast_covariates.R
 \name{append_covariate_fcast}
 \alias{append_covariate_fcast}
-\title{Append a Covariate Forecast to Historical Covariate Table}
+\title{Append a covariate forecast to historical covariate table}
 \usage{
 append_covariate_fcast(covariates, metadata, moons = get_moon_data())
 }

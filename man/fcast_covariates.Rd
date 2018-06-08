@@ -2,16 +2,22 @@
 % Please edit documentation in R/forecast_covariates.R
 \name{fcast_covariates}
 \alias{fcast_covariates}
-\title{Build a Covariate Forecast for Model Predictions}
+\title{Build a covariate forecast for model predictions}
 \usage{
-fcast_covariates(covariate_data, moons, model_metadata)
+fcast_covariates(covariate_data, moons, covariate_forecast_newmoons,
+  forecast_date = Sys.Date(), min_lag = 6)
 }
 \arguments{
 \item{covariate_data}{historical covariate data table}
 
 \item{moons}{moon data}
 
-\item{model_metadata}{metadata list for the forecast models}
+\item{covariate_forecast_newmoons}{newmoon numbers for the covariate
+forecast}
+
+\item{forecast_date}{date of the forecast (i.e., today)}
+
+\item{min_lag}{minimum (of non-0) lag times that need to be accommodate}
 }
 \value{
 a data.frame with 12 new moons of weather values
