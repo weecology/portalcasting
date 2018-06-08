@@ -5,11 +5,13 @@
 #' @param covariates covariate data table
 #' @param forecast_date date of the forecast (i.e., today)
 #' @param filename_suffix "forecasts" or "hindcasts" 
+#' @param confidence_level confidence level used in summarizing model output
 #' @return model metadata as a list
 #' @export
 #'
 prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(), 
-                          filename_suffix = "forecasts"){
+                          filename_suffix = "forecasts",
+                          confidence_level = 0.9){
  
   # prev = previous (i.e. the most recent)
 
@@ -48,6 +50,7 @@ prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(),
                covariate_forecast_years = covar_fcast_years,
                rodent_forecast_newmoons = rodent_fcast_newmoons, 
                rodent_forecast_months = rodent_fcast_months, 
-               rodent_forecast_years = rodent_fcast_years)
+               rodent_forecast_years = rodent_fcast_years,
+               confidence_level = confidence_level)
   return(out)
 }

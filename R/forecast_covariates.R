@@ -157,15 +157,15 @@ fcast_weather <- function(start = as.numeric(format(Sys.Date(), "%Y")), moons,
 #' 
 #' @description combining weather and ndvi forecasts
 #' 
-#' @param model_metadata metadata list for the forecast models
-#' @param moons moon data
 #' @param covariate_data historical covariate data table
+#' @param moons moon data
+#' @param model_metadata metadata list for the forecast models
 #' 
 #' @return a data.frame with 12 new moons of weather values
 #'
 #' @export
 #'
-fcast_covariates <- function(model_metadata, moons, covariate_data){
+fcast_covariates <- function(covariate_data, moons, model_metadata){
 
   forecast_date <- model_metadata$forecast_date
   yr <- as.numeric(format(as.Date(forecast_date), "%Y"))
@@ -189,14 +189,13 @@ fcast_covariates <- function(model_metadata, moons, covariate_data){
   return(out)
 }
 
-#' @title Append a Covariate Forecast to Existing Historical Covariate 
-#'   Forecasts
+#' @title Append a Covariate Forecast to Existing Covariate Forecasts
 #' 
 #' @description combining weather and ndvi forecasts to the existing forecasts
 #' 
 #' @param forecast_covariates forecasted covariates
-#' @param historical_covariate_file file name for the existing historical 
-#'   covariate data file
+#' @param covariate_file file name for the existing historical covariate data
+#'   file
 #' @param source_name character value for the name to give the covariaate
 #'   forecast. Currently is "current_archive". Previous to "current_archive",
 #'   the data were retroactively filled in and are given the source name
@@ -206,18 +205,46 @@ fcast_covariates <- function(model_metadata, moons, covariate_data){
 #'
 #' @export
 #'
-append_covariate_fcast <- function(forecast_covariates, 
-                                   historical_covariate_file, 
-                                   source_name = "current_archive"){
+append_covariate_fcast_csv <- function(forecast_covariates, 
+                                       covariate_file = NULL, 
+                                       source_name = "current_archive"){
 
-  covar_hist <- read.csv(historical_covariate_file, stringsAsFactors = FALSE)
   covar_new <- forecast_covariates
   covar_new$source <- source_name
   covar_new$date_made <- as.character(Sys.Date())
-  if (covar_new$forecast_newmoon[1] > max(covar_hist$forecast_newmoon)){
-    out <- rbind(covar_hist, covar_new)
+
+  if (file.exists(covariate_file)){
+    covar_hist <- read.csv(covariate_file, stringsAsFactors = FALSE)
+    if (covar_new$forecast_newmoon[1] > max(covar_hist$forecast_newmoon)){
+      out <- rbind(covar_hist, covar_new)
+    } else{
+      out <- covar_hist
+    }
   } else{
-    out <- covar_hist
+    out <- covar_new
   }
-  write.csv(out, historical_covariate_file, row.names = FALSE)
+  write.csv(out, covariate_file, row.names = FALSE)
+}
+
+
+#' @title Append a Covariate Forecast to Historical Covariate Table
+#' 
+#' @description combining weather and ndvi forecasts to the existing 
+#'   covariates
+#' 
+#' @param covariates output from \code{get_covariate_data}
+#' @param metadata model metadata
+#' @param moons 
+#' 
+#' @return no value
+#'
+#' @export
+#'
+append_covariate_fcast <- function(covariates, metadata, 
+                                   moons = get_moon_data()){
+
+  covariates_fcast <- fcast_covariates(covariates, moons, metadata)
+  covariates_fcast <- select(covariates_fcast, -"forecast_newmoon")
+  covariates_all <- bind_rows(covariates, covariates_fcast)
+  return(covariates_all)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/retrieve_data.R
 \name{full_path}
 \alias{full_path}
-\title{Normalize Path}
+\title{Normalize path}
 \usage{
 full_path(reference, base = getwd())
 }
@@ -19,6 +19,7 @@ Return normalized path for all operating systems
 }
 \examples{
 full_path("PortalData/Rodents/Portal_rodent.csv")
+
 full_path("PortalData/Rodents/Portal_rodent.csv", "~")
 
 }

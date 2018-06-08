@@ -2,26 +2,21 @@
 % Please edit documentation in R/forecast_covariates.R
 \name{append_covariate_fcast}
 \alias{append_covariate_fcast}
-\title{Append a Covariate Forecast to Existing Historical Covariate 
-  Forecasts}
+\title{Append a Covariate Forecast to Historical Covariate Table}
 \usage{
-append_covariate_fcast(forecast_covariates, historical_covariate_file,
-  source_name = "current_archive")
+append_covariate_fcast(covariates, metadata, moons = get_moon_data())
 }
 \arguments{
-\item{forecast_covariates}{forecasted covariates}
+\item{covariates}{output from \code{get_covariate_data}}
 
-\item{historical_covariate_file}{file name for the existing historical 
-covariate data file}
+\item{metadata}{model metadata}
 
-\item{source_name}{character value for the name to give the covariaate
-forecast. Currently is "current_archive". Previous to "current_archive",
-the data were retroactively filled in and are given the source name
-"retroactive"}
+\item{moons}{}
 }
 \value{
 no value
 }
 \description{
-combining weather and ndvi forecasts to the existing forecasts
+combining weather and ndvi forecasts to the existing 
+  covariates
 }

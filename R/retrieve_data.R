@@ -1,13 +1,61 @@
-#' @title Normalize Path
+#' @title Prepare historic rodent data
+#'
+#' @description Prepare the rodent dataset, tailored for forecasting. 
+#'   Specifically, return data for all plots and control plots only, for each 
+#'   species except PI and the total
+#'
+#' @param moons current newmoonnumber table
+#'
+#' @param start_newmoonnumber newmoon number of the first sample to be 
+#'   included. Default value is \code{217}, corresponding to 1995-01-01.
+#' 
+#' @return a list of two dataframes, all plots and control plots
+#'
+#' @export
+#'
+prep_rodent_data <- function(moons = prep_moon_data(), 
+                             start_newmoonnumber = 217){
+
+  controls <- abundance(clean = FALSE, level = "Treatment", type = "Rodents", 
+                        length = "Longterm", min_plots = 24) %>%
+              select(-PI)
+  controls <- controls %>%
+              mutate(total = rowSums(controls[ , -(1:2)])) %>%
+              filter(treatment == "control") %>%
+              select(-treatment) %>%
+              inner_join(moons, by = c("period" = "period")) %>%
+              subset(newmoonnumber >= start_newmoonnumber) %>%
+              select(-newmoondate, -censusdate)
+
+  all <- abundance(clean = FALSE, level = "Site", type = "Rodents", 
+                        length = "all", min_plots = 24) %>%
+         select(-PI)
+  all <- all %>%
+         mutate(total = rowSums(all[ , -1])) %>%
+         inner_join(moons, by = c("period" = "period")) %>%
+         subset(newmoonnumber >= start_newmoonnumber) %>%
+         select(-newmoondate, -censusdate)
+
+  out <- list("controls" = controls, "all" = all)
+  return(out)
+}
+
+#' @title Normalize path
+#'
 #' @description Return normalized path for all operating systems
+#'
 #' @param reference a path to join with current working directory
+#'
 #' @param base Current working directory else path given
 #'
 #' @return normalized path
-#' @export
+#'
 #' @examples
 #' full_path("PortalData/Rodents/Portal_rodent.csv")
+#'
 #' full_path("PortalData/Rodents/Portal_rodent.csv", "~")
+#'
+#' @export
 #'
 full_path <- function(reference, base = getwd()){
   base <- normalizePath(base)
@@ -15,22 +63,23 @@ full_path <- function(reference, base = getwd()){
   return(path)
 }
 
-#' @title Collect Moon Data
-#' @description Get dates and data for newmoonnumbers and related trapping 
-#'   periods
+#' @title Prepare temporal (lunar) data
+#'
+#' @description Get time information (calendar dates, census periods, 
+#'   newmoon numbers) associated with trapping events (achieved and missed)
+#'   based on a lunar survey schedule.
+#'
 #' @param future logical value indicating if future moons (for forecasts) are
 #'   to be added to the table or not
+#'
 #' @param forecast_date date from which forecasting is happening, typically
 #'   today's date. Required if \code{future = TRUE}
-#' @return newmoons table
+#'
+#' @return data table of time variables for all surveys
+#'
 #' @export
 #' 
-get_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
-
-  newmoonnumber <- NULL
-  newmoondate <- NULL
-  period <- NULL
-  censusdate <- NULL
+prep_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
 
   path <- full_path("PortalData/Rodents/moon_dates.csv", "~")
   moons <- read.csv(path, header = TRUE)
@@ -66,11 +115,15 @@ get_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
 }
 
 #' @title Collect Historic Weather Data
-#' @description Gather the downloaded historical weather data
+#'
+#' @description Gather the downloaded historical weather data, select the 
+#'   columns needed, and remove the incomplete data
+#'
 #' @return weather data table 
+#'
 #' @export
 #'
-get_weather_data <- function(){
+prep_weather_data <- function(){
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
   weather_data <- weather("newmoon", fill = TRUE) %>% 
@@ -84,68 +137,17 @@ get_weather_data <- function(){
 }
 
 #' @title Collect Historic Weather and NDVI Data
-#' @description Gather the downloaded historical weather and ndvi data
+#'
+#' @description Gather the downloaded historical weather and ndvi data and
+#'   join them into a single data table
+#;
 #' @return covariate data table 
+#'
 #' @export
 #'
-get_covariate_data <- function(){
-  weather_data <- get_weather_data()
+prep_hist_covariate_data <- function(){
+  weather_data <- prep_weather_data()
   ndvi_data <- ndvi("newmoon", fill = TRUE)
   out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
   return(out)
-}
-
-#' @title Collect Historic Rodent Data
-#' @description Get rodent data, tailored for forecasting (all plots and 
-#'   controls only)
-#' @param moons current newmoonnumber table
-#' @param forecast_date date the forecast is run
-#' 
-#' @return a list of two dataframes, all plots and control plots
-#' @export
-#'
-get_rodent_data <- function(moons, forecast_date){
-
-  newmoonnumber <- NULL
-  newmoondate <- NULL
-  censusdate <- NULL
-  period <- NULL
-  treatment <- NULL
-
-  # Corresponding to Jan 1995
-  historic_start_period <- 203
-  historic_start_newmoon <- 217
-  
-  # Control plot data
-  controls <- portalr::abundance(clean = FALSE, level = "Treatment",
-                                 type = "Rodents", length = "Longterm",
-                                 min_plots = 24)
-  # Drop PI
-  controls <- controls[ , -which(colnames(controls) == "PI")]
-  # The total rodent count in each treatment
-  controls$total = rowSums(controls[,-(1:2)])
-  # Drop non-control treatments and add in newmoonnumber
-  controls <- controls %>%
-              filter(treatment == 'control') %>%
-              select(-treatment) %>%
-              inner_join(moons, by = c("period" = "period")) %>%
-              subset(newmoonnumber >= historic_start_newmoon) %>%
-              select(-newmoondate, -censusdate)
-  
-  # All plot data
-  all <- abundance(clean = FALSE, level = "Site", type = "Rodents",
-                   length = "all", min_plots = 24)
-  # Drop PI
-  all <- all[ , -which(colnames(all) == "PI")]
-  # The total rodent count across the entire site
-  all$total <- rowSums(all[,-(1)])
-  all <- all %>% 
-         inner_join(moons, by = c("period" = "period")) %>%
-         subset(period >= historic_start_period) %>%
-         select(-newmoondate, -censusdate)
-    
-  rodent_data <- list()
-  rodent_data$controls <- controls
-  rodent_data$all <- all
-  return(rodent_data)
 }

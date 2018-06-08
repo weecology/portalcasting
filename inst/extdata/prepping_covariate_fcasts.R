@@ -44,8 +44,8 @@ fillin_one <- function(xx){
 }
 
 
-hist_tmean <- read.csv("historic_tmean_forecasts.csv")
-hist_precip <- read.csv("historic_precip_forecasts.csv")
+hist_tmean <- read.csv("tmean_forecasts.csv")
+hist_precip <- read.csv("precip_forecasts.csv")
 
 hist_tmean_filled <- fill_fcast(hist_tmean)
 hist_precip_filled <- fill_fcast(hist_precip) 
@@ -116,6 +116,6 @@ hist_tab$maxtemp <- maxtemps
 hist_tab$source <- "retroactive"
 hist_tab$date_made <- Sys.Date()
 
-write.csv(hist_tab, "historical_covariates.csv", row.names = FALSE)
+write.csv(hist_tab, "covariate_forecasts.csv", row.names = FALSE)
 
 

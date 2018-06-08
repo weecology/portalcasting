@@ -1,19 +1,30 @@
 
-fcast_date <- Sys.Date()
-portalr::download_observations()
-moons <- get_moon_data()
-rodents <- get_rodent_data(moons, Sys.Date())
-covariates <- get_covariate_data()
-metadata <- prep_metadata(rodents, covariates, fcast_date, "forecasts")
-forecast_covariates <- fcast_covariates(metadata, moons, covariates)
+# kinda start back over and figure out what's the tidiest way to work through
 
-append_covariate_fcast(forecast_covariates, "historical_covariates.csv")
+portalr::download_observations()
+
+rodents <- prep_rodent_data()
+covariates <- prep_covariate_data(forecasts = TRUE)
+metadata <- prep_metadata(rodents, covariates)
+
+covariates <- append_covariate_fcast(covariates, moons, metadata)
+
+
+
+
+
+
+
+
+
 
 # note:
 # forecastall is now replaced with combine_forecasts and add_ensemble
 #
 
-
+# need to make it so that append checks
+# stuff is very much still in progress, tidying all the code as it comes 
+#   together
 
 aa_a <- autoarima(rodents$all, metadata)
 esss_a <- esss(rodents$all, metadata)

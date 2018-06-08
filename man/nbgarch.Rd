@@ -5,7 +5,7 @@
 \title{negative binomial Generalized AutoRegressive Conditional
   Heteroscedasticity model for Portal Predictions}
 \usage{
-nbgarch(abundances, metadata, level = "All", CL = 0.9)
+nbgarch(abundances, metadata, level = "All")
 }
 \arguments{
 \item{abundances}{table of rodent abundances and time measures}
@@ -13,8 +13,6 @@ nbgarch(abundances, metadata, level = "All", CL = 0.9)
 \item{metadata}{model metadata list}
 
 \item{level}{name of the type of plots included ("All" or "Controls")}
-
-\item{CL}{confidence interval level used for forecast envelope}
 }
 \value{
 list of forecast and aic tables

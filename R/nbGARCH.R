@@ -12,8 +12,6 @@
 #'
 #' @param level name of the type of plots included ("All" or "Controls")
 #'
-#' @param CL confidence interval level used for forecast envelope
-#'
 #' @return list of forecast and aic tables
 #'
 #' @references
@@ -24,9 +22,10 @@
 #'
 #' @export
 #'
-nbgarch <- function(abundances, metadata, level = "All", CL = 0.9){
+nbgarch <- function(abundances, metadata, level = "All"){
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
+  CL <- metadata$confidence_level
   abundances <- interpolate_abundance(abundances)
   species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
   fcast <- data.frame()
@@ -35,21 +34,20 @@ nbgarch <- function(abundances, metadata, level = "All", CL = 0.9){
   for (s in species){
 
     ss <- gsub("NA.", "NA", s)
-    cat("Fitting nbGARCH model for", ss, "\n")
+    cat("Fitting negative binomial GARCH model for", ss, "\n")
 
-    sp_abund <- extract2(abundances, s)
-  
-    if (sum(sp_abund) == 0){
+    abund_s <- extract2(abundances, s)
+    past <- list(past_obs = 1, past_mean = 12)
+    if (sum(abund_s) == 0){
       model_fcast <- fcast0(nfcnm)
       model_aic <- 1e6
     } else{
       model <- tryCatch(
-                 tsglm(sp_abund, model = list(past_obs = 1, past_mean = 12),
-                   distr = "nbinom", link = "log"),
+                 tsglm(abund_s, model = past, distr = "nbinom", link = "log"),
                  warning = function(x){NULL}, error = function(x){NULL})
       if(is.null(model)){
-          model <- tsglm(sp_abund, 
-                     model = list(past_obs = 1, past_mean = 12),
+          model <- tsglm(abund_s, 
+                     model = ,
                      distr = "poisson", link = "log")
       }
       model_fcast <- predict(model, nfcnm, level = CL)

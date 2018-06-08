@@ -5,7 +5,7 @@
 \title{Prepare Model Metadata}
 \usage{
 prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
-  filename_suffix = "forecasts")
+  filename_suffix = "forecasts", confidence_level = 0.9)
 }
 \arguments{
 \item{rodents}{rodent data table}
@@ -15,6 +15,8 @@ prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
 \item{forecast_date}{date of the forecast (i.e., today)}
 
 \item{filename_suffix}{"forecasts" or "hindcasts"}
+
+\item{confidence_level}{confidence level used in summarizing model output}
 }
 \value{
 model metadata as a list

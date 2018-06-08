@@ -13,8 +13,6 @@
 #'
 #' @param level name of the type of plots included ("All" or "Controls")
 #'
-#' @param CL confidence interval level used for forecast envelope
-#'
 #' @return list of forecast and aic tables
 #'
 #' @references 
@@ -25,9 +23,10 @@
 #'
 #' @export
 #'
-esss <- function(abundances, metadata, level = "All", CL = 0.9){
+esss <- function(abundances, metadata, level = "All"){
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
+  CL <- metadata$confidence_level
   abundances <- interpolate_abundance(abundances)
   species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
   fcast <- data.frame()
@@ -38,13 +37,13 @@ esss <- function(abundances, metadata, level = "All", CL = 0.9){
     ss <- gsub("NA.", "NA", s)
     cat("Fitting ESSS model for", ss, "\n")
 
-    sp_abundance <- extract2(abundances, s)
+    abund_s <- extract2(abundances, s)
   
-    if (sum(sp_abundance) == 0){
+    if (sum(abund_s) == 0){
       model_fcast <- fcast0(nfcnm)
       model_aic <- 1e6
     } else{
-      model <- ets(sp_abundance)
+      model <- ets(abund_s)
       model_fcast <- forecast(model, h = nfcnm, level = CL, 
                        allow.multiplicative.trend = TRUE)
       model_aic <- model$aic

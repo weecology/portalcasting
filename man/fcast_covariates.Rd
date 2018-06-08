@@ -4,14 +4,14 @@
 \alias{fcast_covariates}
 \title{Build a Covariate Forecast for Model Predictions}
 \usage{
-fcast_covariates(model_metadata, moons, covariate_data)
+fcast_covariates(covariate_data, moons, model_metadata)
 }
 \arguments{
-\item{model_metadata}{metadata list for the forecast models}
+\item{covariate_data}{historical covariate data table}
 
 \item{moons}{moon data}
 
-\item{covariate_data}{historical covariate data table}
+\item{model_metadata}{metadata list for the forecast models}
 }
 \value{
 a data.frame with 12 new moons of weather values
