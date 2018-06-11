@@ -40,19 +40,23 @@ esss <- function(abundances, metadata, level = "All"){
     abund_s <- extract2(abundances, s)
   
     if (sum(abund_s) == 0){
-      model_fcast <- fcast0(nfcnm)
+      model_fcast <- fcast0(nfcnm, "mean")
       model_aic <- 1e6
+      estimate <- as.numeric(model_fcast$mean)
+      LowerPI <- rep(0, nfcnm)
+      UpperPI <- rep(0, nfcnm)
     } else{
       model <- ets(abund_s)
       model_fcast <- forecast(model, h = nfcnm, level = CL, 
                        allow.multiplicative.trend = TRUE)
       model_aic <- model$aic
+      estimate <- as.numeric(model_fcast$mean)
+      CI_match <- which(model_fcast$level == CL * 100)
+      LowerPI <- as.numeric(model_fcast$lower[ , CI_match]) 
+      UpperPI <- as.numeric(model_fcast$upper[ , CI_match])
     }    
 
-    estimate <- as.numeric(model_fcast$mean)
-    CI_match <- which(model_fcast$level == CL * 100)
-    LowerPI <- as.numeric(model_fcast$lower[ , CI_match]) 
-    UpperPI <- as.numeric(model_fcast$upper[ , CI_match])
+
 
     fcast_s <- data.frame(date = metadata$forecast_date, 
                  forecastmonth = metadata$rodent_forecast_months,

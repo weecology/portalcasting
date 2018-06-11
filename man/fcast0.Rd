@@ -4,10 +4,13 @@
 \alias{fcast0}
 \title{Zero-abundance forecast}
 \usage{
-fcast0(nfcnm)
+fcast0(nfcnm, pred_name = "pred")
 }
 \arguments{
 \item{nfcnm}{number of forecast newmoons}
+
+\item{pred_name}{name for the predictor column (to match variable model
+output names)}
 }
 \value{
 list of mean and interval values for a 0-abundance filler forecast

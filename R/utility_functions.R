@@ -22,14 +22,18 @@ append_csv <- function(df, filename){
 #'
 #' @param nfcnm number of forecast newmoons
 #'
+#' @param pred_name name for the predictor column (to match variable model
+#'   output names)
+#'
 #' @return list of mean and interval values for a 0-abundance filler forecast
 #'
 #' @export
 #'
-fcast0 <- function(nfcnm){
+fcast0 <- function(nfcnm, pred_name = "pred"){
   mean_0 <- rep(0, nfcnm)
   int_0 <- data.frame("lower" = rep(0, nfcnm), "upper" = rep(0, nfcnm))
-  out <- list("pred" = mean_0, "interval" = int_0)
+  out <- list(mean_0, "interval" = int_0)
+  names(out)[1] <- pred_name
   return(out)
 }
 

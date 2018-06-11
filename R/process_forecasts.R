@@ -1,3 +1,35 @@
+#' @title Save forecast output to files
+#'
+#' @description Save out the forecast and AIC values from a given set of 
+#'   forecasts on all and control-only rodent data
+#'
+#' @param all ouput from the forecasting function for all data
+#'
+#' @param controls ouput from the forecasting function for controls data
+#'
+#' @param name model name for saving in files
+#'
+#' @param metadata model metadata
+#'
+#' @return Nothing
+#'
+#' @export
+#'
+save_forecast_output <- function(all, controls, name, metadata){
+
+  forecasts <- rbind(all$forecast, controls$forecast)
+  aics <- rbind(all$aic, aa_c$aic)
+
+  fcast_fname <- paste0(name, metadata$filename_suffix, ".csv")
+  fcast_path <- file.path("tmp", fcast_fname)
+  write.csv(forecasts, fcast_path, row.names = FALSE)
+
+  aic_fname <- paste0(name, metadata$filename_suffix, "_model_aic.csv")
+  aic_path <- file.path("tmp", aic_fname)
+  write.csv(aics, aic_path, row.names = FALSE)
+
+}
+
 #' @title Combine Forecasts and Append to Existing Files
 #' 
 #' @description Combine all new forecasts (from the tmp directory), add 

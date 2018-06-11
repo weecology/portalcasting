@@ -1,4 +1,18 @@
-
+#' @title Forecast Portal rodents
+#'
+#' @description Main function for controlling the running of potentially 
+#'   multiple models for either a forecast or a hindcast
+#'
+#' @param type "forecast" or "hindcast"
+#'
+#' @param model_dir directory name where the model files reside
+#'
+#' @param models names of models to run
+#'
+#' @return Nothing
+#'
+#' @export
+#'
 portalcast <- function(type = "forecast", model_dir = "models", 
                        models = "autoarima"){
 
