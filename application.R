@@ -13,8 +13,14 @@ esss_a <- esss(rodents$all, metadata)
 nbg_a <- nbgarch(rodents$all, metadata)
 pevg_a <- pevgarch(rodents$all, covariates, metadata)
 
-
-# notes:
-# forecastall is now replaced with combine_forecasts and add_ensemble
+# replacing the forecastall function
 #
+# combine forecasts in tmp folder
+#
+#   combine_forecasts(metadata) 
+#
+# add ensemble forecast
+#
+#   add_ensemble(metadata)
+ 
 

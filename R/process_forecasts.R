@@ -4,7 +4,9 @@
 #'   append the results to the existing files
 #' 
 #' @param model_metadata model metadata list
+#'
 #' @return list of [1] the forecasts and [2] the model AIC values
+#'
 #' @export
 #'
 combine_forecasts <- function(model_metadata){
@@ -40,7 +42,9 @@ combine_forecasts <- function(model_metadata){
 #' @description Add ensembles to the forecast files
 #' 
 #' @param model_metadata model metadata list
+#' 
 #' @return list of [1] the forecasts and [2] the model AIC values
+#' 
 #' @export
 #'
 add_ensemble <- function(model_metadata){
@@ -64,22 +68,16 @@ add_ensemble <- function(model_metadata){
 }
 
 #' @title Calculate Model Weights
+#' 
 #' @description calculate akaike weights across the models
+#' 
 #' @param forecast_folder folder where the forecast files are
+#' 
 #' @return model weights
+#' 
 #' @export
 #'
 compile_aic_weights <- function(forecast_folder = "./predictions"){
-
-  date <- NULL
-  currency <- NULL
-  level <- NULL
-  species <- NULL
-  fit_start_newmoon <- NULL
-  fit_end_newmoon <- NULL
-  initial_newmoon <- NULL
-  aic <- NULL
-  delta_aic <- NULL
 
   aic_files <- list.files(forecast_folder, full.names = TRUE, 
                           recursive = TRUE)
@@ -101,8 +99,7 @@ compile_aic_weights <- function(forecast_folder = "./predictions"){
   return(wts)
 }
 
-
-#' Create the ensemble model from all other forecasts
+#' @title Create the ensemble model from all other forecasts
 #' 
 #' @description Uses the weighted mean and weighted sample variance
 #'   Mean is the weighted mean of all model means. Variance is the weighted 
@@ -115,33 +112,18 @@ compile_aic_weights <- function(forecast_folder = "./predictions"){
 #'   the above variance estimates assume. Rounded to account for precision
 #'   errors. Summed weights can also be NA if there are not weights availble
 #'   for that ensemble. 
+#' 
 #' @param all_forecasts alll forecasts
+#' 
 #' @param models_to_use models to use
+#' 
 #' @param CI_level confidence interval level
+#' 
 #' @return ensemble
+#' 
 #' @export
 #'
 make_ensemble <- function(all_forecasts, models_to_use = NA, CI_level = 0.9){
-
-  newmoonnumber <- NULL
-  forecastmonth <- NULL
-  forecastyear <- NULL
-  currency <- NULL
-  level <- NULL
-  species <- NULL
-  fit_start_newmoon <- NULL
-  fit_end_newmoon <- NULL
-  initial_newmoon <- NULL
-  UpperPI <- NULL
-  estimate <- NULL
-  weight <- NULL
-  model_var <- NULL
-  weighted_ss <- NULL
-  n <- NULL
-  ensemble_estimate <- NULL
-  ensemble_var <- NULL
-  LowerPI <- NULL
-  sum_weight <- NULL
 
   weights <- compile_aic_weights()
   weights$date <- as.Date(weights$date)

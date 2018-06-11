@@ -16,12 +16,6 @@
 #'
 get_climate_forecasts <- function(lead_time = 6, moons){
   
-  mintemp <- NULL
-  maxtemp <- NULL
-  meantemp <- NULL
-  precipitation <- NULL
-  newmoonnumber <- NULL
-
   if(!lead_time %in% 1:7){
     stop(paste0("Lead time must be an integer 1 - 7, got: ", lead_time))
   }

@@ -55,7 +55,7 @@ interpolate_abundance <- function(abundance){
 #' @export
 #'
 lag_data <- function(data, lag, tail = FALSE){
-  newmoonnumber <- NULL
+
   data$newmoonnumber_lag <- data$newmoonnumber + lag
   
   if(tail == FALSE){
