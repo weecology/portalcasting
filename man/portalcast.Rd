@@ -4,14 +4,17 @@
 \alias{portalcast}
 \title{Forecast Portal rodents}
 \usage{
-portalcast(type = "forecast", model_dir = "models", models = "autoarima")
+portalcast(type = "forecast", model_dir = "models",
+  models = c("autoarima", "esss", "nbgarch", "pevgarch"), ensemble = TRUE)
 }
 \arguments{
 \item{type}{"forecast" or "hindcast"}
 
 \item{model_dir}{directory name where the model files reside}
 
-\item{models}{names of models to run}
+\item{models}{names of models to run or "all" to run them all}
+
+\item{ensemble}{logical indicator of whether to create an ensemble model}
 }
 \value{
 Nothing

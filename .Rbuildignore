@@ -4,3 +4,4 @@
 ^application\.R$
 ^in_dev\.R$
 ^models$
+^tmp$
