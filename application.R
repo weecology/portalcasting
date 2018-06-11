@@ -22,5 +22,7 @@ pevg_a <- pevgarch(rodents$all, covariates, metadata)
 # add ensemble forecast
 #
 #   add_ensemble(metadata)
- 
+#
+
+# hindcasts 
 

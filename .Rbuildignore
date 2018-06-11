@@ -1,4 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-.travis.yml
-application.R
+^\.travis\.yml$
+^application\.R$
+^in_dev\.R$
+^models$
