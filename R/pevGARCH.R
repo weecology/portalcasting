@@ -58,8 +58,8 @@ pevgarch <- function(abundances, covariates, metadata, level = "All",
     abund_s <- extract2(abundances, s)
   
     if (sum(abund_s) == 0){
-      model_fcast <- fcast0(nfcnm)
-      model_aic <- 1e6
+      spec_fcast <- fcast0(nfcnm)
+      spec_aic <- 1e6
     } else{
 
       best_aic <- Inf
@@ -123,7 +123,7 @@ pevgarch <- function(abundances, covariates, metadata, level = "All",
 
     aic_s <- data.frame(date = metadata$forecast_date, currency = "abundance", 
                model = "pevGARCH", level = level, species = ss, 
-               aic = model_aic, fit_start_newmoon = min(abundances$moons),
+               aic = spec_aic, fit_start_newmoon = min(abundances$moons),
                fit_end_newmoon = max(abundances$moons),
                initial_newmoon = max(abundances$moons),
                stringsAsFactors = FALSE)

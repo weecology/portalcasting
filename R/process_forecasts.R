@@ -18,7 +18,7 @@
 save_forecast_output <- function(all, controls, name, metadata){
 
   forecasts <- rbind(all$forecast, controls$forecast)
-  aics <- rbind(all$aic, aa_c$aic)
+  aics <- rbind(all$aic, controls$aic)
 
   fcast_fname <- paste0(name, metadata$filename_suffix, ".csv")
   fcast_path <- file.path("tmp", fcast_fname)

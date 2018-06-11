@@ -35,7 +35,7 @@ portalcast <- function(type = "forecast", model_dir = "models",
   }
 
   available <- list.files("models")
-  if (models == "all"){
+  if (models[1] == "all"){
     runnames <- list.files("models", full.names = TRUE)
   } else{
     modelnames <- paste0(models, ".R")
