@@ -8,9 +8,10 @@ setup_portalcast_dir(main_path = pc_path("", "~"), models = c("autoarima",
   "esss", "nbgarch", "pevgarch"))
 }
 \arguments{
-\item{models}{names of model scripts to include}
+\item{main_path}{directory name for the location of the portalcasting 
+folder}
 
-\item{main_dir}{directory name for the location of the portalcasting folder}
+\item{models}{names of model scripts to include}
 }
 \value{
 Nothing

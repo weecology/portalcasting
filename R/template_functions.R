@@ -3,7 +3,8 @@
 #' @description Create and populate a full portalcasting directory or any 
 #'   missing components.
 #'
-#' @param main_dir directory name for the location of the portalcasting folder
+#' @param main_path directory name for the location of the portalcasting 
+#'   folder
 #'
 #' @param models names of model scripts to include
 #'

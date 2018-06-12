@@ -65,6 +65,10 @@ full_path <- function(reference, base = getwd()){
 #' @description Simplification wrapper to use \code{full_path} to the 
 #'   \code{portalcasting} folder within the base folder
 #'
+#' @param reference reference
+#'
+#' @param base base
+#'
 #' @return normalized path to portalcasting
 #'
 #' @export

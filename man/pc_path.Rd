@@ -6,6 +6,11 @@
 \usage{
 pc_path(reference, base = getwd())
 }
+\arguments{
+\item{reference}{reference}
+
+\item{base}{base}
+}
 \value{
 normalized path to portalcasting
 }

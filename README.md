@@ -36,7 +36,7 @@ models for either a forecast or a hindcast. It will prepare the data
 models are available to run, run the models, compile the output, and
 generate an ensemble (if desired).
 
-All required arguments to both `setup_portalcast_dir()`and `portalcast()` are
+All required arguments to both `setup_portalcast_dir()` and `portalcast()` are
 defined and the default values are appropriate for basic usage:
 
 ```
