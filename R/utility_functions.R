@@ -59,3 +59,18 @@ full_path <- function(reference, base = getwd()){
   path <- normalizePath(file.path(base, reference), mustWork = FALSE)
   return(path)
 }
+
+#' @title Portalcasting full path
+#'
+#' @description Simplification wrapper to use \code{full_path} to the 
+#'   \code{portalcasting} folder within the base folder
+#'
+#' @return normalized path to portalcasting
+#'
+#' @export
+#'
+pc_path <- function(reference, base = getwd()){
+
+  path <- full_path(paste0("portalcasting/", reference), base)
+  return(path)
+}

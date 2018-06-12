@@ -1,5 +1,6 @@
 
-portalr::download_observations()
+
+setup_portalcast_dir()
 
 portalcast()
 

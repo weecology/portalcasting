@@ -13,6 +13,8 @@
 #' @param confidence_level confidence level used in summarizing model output
 #'
 #' @param lead_time number of newmoons forward to forecast abundances
+#' 
+#' @param data_dir directory name where the data files will reside
 #'
 #' @return model metadata as a list
 #'
@@ -20,7 +22,8 @@
 #'
 prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(), 
                           filename_suffix = "forecasts",
-                          confidence_level = 0.9, lead_time = 12){
+                          confidence_level = 0.9, lead_time = 12,
+                          data_dir = pc_path("data", "~")){
  
   # prev = previous (i.e. the most recent)
   
@@ -63,5 +66,6 @@ prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(),
                rodent_forecast_months = rodent_fcast_months, 
                rodent_forecast_years = rodent_fcast_years,
                confidence_level = confidence_level)
+  writeLines(as.yaml(out), con = full_path("metadata.yaml", data_dir))
   return(out)
 }

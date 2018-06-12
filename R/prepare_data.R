@@ -9,12 +9,15 @@
 #' @param start_newmoonnumber newmoon number of the first sample to be 
 #'   included. Default value is \code{217}, corresponding to 1995-01-01.
 #' 
+#' @param data_dir directory name where the data files will reside
+#'
 #' @return a list of two dataframes, all plots and control plots
 #'
 #' @export
 #'
 prep_rodent_data <- function(moons = prep_moon_data(), 
-                             start_newmoonnumber = 217){
+                             start_newmoonnumber = 217,
+                             data_dir = pc_path("data", "~")){
 
   controls <- abundance(clean = FALSE, level = "Treatment", type = "Rodents", 
                         length = "Longterm", min_plots = 24) %>%
@@ -37,6 +40,9 @@ prep_rodent_data <- function(moons = prep_moon_data(),
          select(-newmoondate, -censusdate)
 
   out <- list("controls" = controls, "all" = all)
+
+  write.csv(all, full_path("all.csv", data_dir), row.names = FALSE)
+  write.csv(controls, full_path("controls.csv", data_dir), row.names = FALSE)
   return(out)
 }
 
@@ -52,11 +58,14 @@ prep_rodent_data <- function(moons = prep_moon_data(),
 #' @param forecast_date date from which forecasting is happening, typically
 #'   today's date. Required if \code{future = TRUE}
 #'
+#' @param data_dir directory name where the data files will reside
+#'
 #' @return data table of time variables for all surveys
 #'
 #' @export
 #' 
-prep_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
+prep_moon_data <- function(future = FALSE, forecast_date = Sys.Date(),
+                           data_dir = pc_path("data", "~")){
 
   path <- full_path("PortalData/Rodents/moon_dates.csv", "~")
   moons <- read.csv(path, header = TRUE)
@@ -88,6 +97,7 @@ prep_moon_data <- function(future = FALSE, forecast_date = Sys.Date()){
     }
     moons <- total_moons
   }
+  write.csv(moons, full_path("moons.csv", data_dir), row.names = FALSE)
   return(moons)
 }
 
@@ -160,6 +170,8 @@ prep_hist_covariate_data <- function(){
 #'   the data were retroactively filled in and are given the source name
 #'   "retroactive"
 #'
+#' @param data_dir directory name where the data files will reside
+#'
 #' @return covariate data table including both historical and covariate data
 #'   with an additional column (\code{source}) distinguishing the source of
 #'   the data. In addition, if \code{append_fcast_csv} is \code{TRUE}, the
@@ -174,7 +186,8 @@ prep_covariate_data <- function(moons = prep_moon_data(future = TRUE),
                                 lead_time = 12, min_lag = 6,
                                 append_fcast_csv = FALSE, 
                                 covariate_file = NULL,
-                                source_name = "current_archive"){
+                                source_name = "current_archive",
+                                data_dir = pc_path("data", "~")){
 
   hist_data <- prep_hist_covariate_data()
   hist_data$source <- "hist"
@@ -203,6 +216,7 @@ prep_covariate_data <- function(moons = prep_moon_data(future = TRUE),
   if (forecasts){
     out <- bind_rows(out, fcast_data)
   }
+  write.csv(out, full_path("covariates.csv", data_dir), row.names = FALSE)
   return(out)
 }
 

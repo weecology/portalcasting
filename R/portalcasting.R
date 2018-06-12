@@ -12,7 +12,7 @@
 #' @importFrom stats AIC qnorm predict
 #' @importFrom tscount tsglm
 #' @importFrom utils read.csv read.table tail write.csv write.table
-#' @importFrom yaml as.yaml
+#' @importFrom yaml as.yaml yaml.load_file
 #'
 
 #' @title Functions for Portal Forecasting

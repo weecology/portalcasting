@@ -11,21 +11,24 @@
 #'
 #' @param metadata model metadata
 #'
+#' @param temp_dir directory name for the temporary housing of predictions
+#'
 #' @return Nothing
 #'
 #' @export
 #'
-save_forecast_output <- function(all, controls, name, metadata){
-
+save_forecast_output <- function(all, controls, name, metadata,
+                                 temp_dir = pc_path("tmp", "~")){
+ 
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 
   fcast_fname <- paste0(name, metadata$filename_suffix, ".csv")
-  fcast_path <- file.path("tmp", fcast_fname)
+  fcast_path <- file.path(temp_dir, fcast_fname)
   write.csv(forecasts, fcast_path, row.names = FALSE)
 
   aic_fname <- paste0(name, metadata$filename_suffix, "_model_aic.csv")
-  aic_path <- file.path("tmp", aic_fname)
+  aic_path <- file.path(temp_dir, aic_fname)
   write.csv(aics, aic_path, row.names = FALSE)
 
 }
@@ -37,16 +40,21 @@ save_forecast_output <- function(all, controls, name, metadata){
 #' 
 #' @param model_metadata model metadata list
 #'
+#' @param temp_dir directory name for the temporary housing of predictions
+#'
+#' @param pred_dir directory name where the saved model predictions reside
+#'
 #' @return list of [1] the forecasts and [2] the model AIC values
 #'
 #' @export
 #'
-combine_forecasts <- function(model_metadata){
+combine_forecasts <- function(model_metadata, temp_dir = pc_path("tmp", "~"),
+                              pred_dir = pc_path("predictions", "~")){
   
   forecast_date <- model_metadata$forecast_date
   filename_suffix <- model_metadata$filename_suffix
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
-  files <- list.files("tmp", pattern = file_ptn, full.names = TRUE)
+  files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
   col_class <- c("Date", "integer", "integer", "integer", "character", 
                  "character", "character", "character", "numeric", "numeric",
                  "numeric", "integer", "integer", "integer")
@@ -54,15 +62,15 @@ combine_forecasts <- function(model_metadata){
             lapply(files, read.csv, na.strings = "", colClasses  = col_class))
 
   file_ptn <- paste(filename_suffix, "_model_aic.csv", sep = "")
-  files <- list.files("tmp", pattern = file_ptn, full.names = TRUE)
+  files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
 
   aics <- do.call(rbind, lapply(files, read.csv, na.strings = ""))
   
   fcast_date <- as.character(forecast_date)
   fcast_fname <- paste(fcast_date, filename_suffix, ".csv", sep = "")
-  forecast_filename <- file.path("predictions", fcast_fname)
+  forecast_filename <- file.path(pred_dir, fcast_fname)
   aic_fname <- paste(fcast_date, filename_suffix, "_model_aic.csv", sep = "")
-  model_aic_filename <- file.path("predictions", aic_fname)
+  model_aic_filename <- file.path(pred_dir, aic_fname)
   append_csv(fcasts, forecast_filename)
   append_csv(aics, model_aic_filename)
   
@@ -75,16 +83,21 @@ combine_forecasts <- function(model_metadata){
 #' 
 #' @param model_metadata model metadata list
 #' 
+#' @param temp_dir directory name for the temporary housing of predictions
+#'
+#' @param pred_dir directory name where the saved model predictions reside
+#'
 #' @return list of [1] the forecasts and [2] the model AIC values
 #' 
 #' @export
 #'
-add_ensemble <- function(model_metadata){
+add_ensemble <- function(model_metadata, temp_dir = pc_path("tmp", "~"),
+                         pred_dir = pc_path("predictions", "~")){
 
   forecast_date <- model_metadata$forecast_date
   filename_suffix <- model_metadata$filename_suffix
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
-  files <- list.files("tmp", pattern = file_ptn, full.names = TRUE)
+  files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
   col_class <- c("Date", "integer", "integer", "integer", "character", 
                  "character", "character", "character", "numeric", "numeric",
                  "numeric", "integer", "integer", "integer")
@@ -92,27 +105,27 @@ add_ensemble <- function(model_metadata){
             lapply(files, read.csv, na.strings = "", colClasses  = col_class))
   fcast_date <- as.character(forecast_date)
   fcast_fname <- paste(fcast_date, filename_suffix, ".csv", sep = "")
-  forecast_filename <- file.path("predictions", fcast_fname)
+  forecast_filename <- file.path(pred_dir, fcast_fname)
 
   ensemble <- make_ensemble(fcasts) %>% 
               subset(select = colnames(fcasts))
   append_csv(ensemble, forecast_filename)
+  return(ensemble)
 }
 
 #' @title Calculate Model Weights
 #' 
 #' @description calculate akaike weights across the models
 #' 
-#' @param forecast_folder folder where the forecast files are
-#' 
+#' @param pred_dir directory name where the saved model predictions reside
+#'
 #' @return model weights
 #' 
 #' @export
 #'
-compile_aic_weights <- function(forecast_folder = "./predictions"){
+compile_aic_weights <- function(pred_dir = pc_path("predictions", "~")){
 
-  aic_files <- list.files(forecast_folder, full.names = TRUE, 
-                          recursive = TRUE)
+  aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]
 
   aics <- map(aic_files, 

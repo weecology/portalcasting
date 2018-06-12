@@ -4,13 +4,18 @@
 \alias{portalcast}
 \title{Forecast Portal rodents}
 \usage{
-portalcast(type = "forecast", model_dir = "models",
+portalcast(type = "forecast", model_dir = pc_path("models", "~"),
+  temp_dir = pc_path("tmp", "~"), pred_dir = pc_path("predictions", "~"),
   models = c("autoarima", "esss", "nbgarch", "pevgarch"), ensemble = TRUE)
 }
 \arguments{
 \item{type}{"forecast" or "hindcast"}
 
 \item{model_dir}{directory name where the model files reside}
+
+\item{temp_dir}{directory name for the temporary housing of predictions}
+
+\item{pred_dir}{directory name where the saved model predictions reside}
 
 \item{models}{names of models to run or "all" to run them all}
 
