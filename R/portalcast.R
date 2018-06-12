@@ -11,6 +11,8 @@
 #'
 #' @param pred_dir directory name where the saved model predictions reside
 #'
+#' @param data_dir directory name where the in-use data reside
+#'
 #' @param models names of models to run or "all" to run them all
 #'
 #' @param ensemble logical indicator of whether to create an ensemble model

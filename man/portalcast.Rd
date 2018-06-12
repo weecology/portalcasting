@@ -18,6 +18,8 @@ portalcast(type = "forecast", model_dir = pc_path("models", "~"),
 
 \item{pred_dir}{directory name where the saved model predictions reside}
 
+\item{data_dir}{directory name where the in-use data reside}
+
 \item{models}{names of models to run or "all" to run them all}
 
 \item{ensemble}{logical indicator of whether to create an ensemble model}
