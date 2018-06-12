@@ -5,12 +5,14 @@
 \title{Populate a portalcasting models subdirectory}
 \usage{
 populate_models(model_dir = pc_path("models", "~"), models = c("autoarima",
-  "esss", "nbgarch", "pevgarch"))
+  "esss", "nbgarch", "pevgarch"), data_dir = pc_path("data", "~"))
 }
 \arguments{
 \item{model_dir}{directory name where the model files will reside}
 
 \item{models}{names of model scripts to include}
+
+\item{data_dir}{directory name where the data files will reside}
 }
 \value{
 Nothing

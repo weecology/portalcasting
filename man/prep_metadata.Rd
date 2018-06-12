@@ -5,7 +5,8 @@
 \title{Prepare model metadata}
 \usage{
 prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
-  filename_suffix = "forecasts", confidence_level = 0.9, lead_time = 12)
+  filename_suffix = "forecasts", confidence_level = 0.9, lead_time = 12,
+  data_dir = pc_path("data", "~"))
 }
 \arguments{
 \item{rodents}{rodent data table}
@@ -19,6 +20,8 @@ prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
 \item{confidence_level}{confidence level used in summarizing model output}
 
 \item{lead_time}{number of newmoons forward to forecast abundances}
+
+\item{data_dir}{directory name where the data files will reside}
 }
 \value{
 model metadata as a list

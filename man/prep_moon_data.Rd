@@ -4,7 +4,8 @@
 \alias{prep_moon_data}
 \title{Prepare temporal (lunar) data}
 \usage{
-prep_moon_data(future = FALSE, forecast_date = Sys.Date())
+prep_moon_data(future = FALSE, forecast_date = Sys.Date(),
+  data_dir = pc_path("data", "~"))
 }
 \arguments{
 \item{future}{logical value indicating if future moons (for forecasts) are
@@ -12,6 +13,8 @@ to be added to the table or not}
 
 \item{forecast_date}{date from which forecasting is happening, typically
 today's date. Required if \code{future = TRUE}}
+
+\item{data_dir}{directory name where the data files will reside}
 }
 \value{
 data table of time variables for all surveys

@@ -4,13 +4,16 @@
 \alias{prep_rodent_data}
 \title{Prepare historic rodent data}
 \usage{
-prep_rodent_data(moons = prep_moon_data(), start_newmoonnumber = 217)
+prep_rodent_data(moons = prep_moon_data(), start_newmoonnumber = 217,
+  data_dir = pc_path("data", "~"))
 }
 \arguments{
 \item{moons}{current newmoonnumber table}
 
 \item{start_newmoonnumber}{newmoon number of the first sample to be 
 included. Default value is \code{217}, corresponding to 1995-01-01.}
+
+\item{data_dir}{directory name where the data files will reside}
 }
 \value{
 a list of two dataframes, all plots and control plots

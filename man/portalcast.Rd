@@ -6,7 +6,8 @@
 \usage{
 portalcast(type = "forecast", model_dir = pc_path("models", "~"),
   temp_dir = pc_path("tmp", "~"), pred_dir = pc_path("predictions", "~"),
-  models = c("autoarima", "esss", "nbgarch", "pevgarch"), ensemble = TRUE)
+  data_dir = pc_path("data", "~"), models = c("autoarima", "esss",
+  "nbgarch", "pevgarch"), ensemble = TRUE)
 }
 \arguments{
 \item{type}{"forecast" or "hindcast"}

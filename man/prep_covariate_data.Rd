@@ -7,7 +7,8 @@
 prep_covariate_data(moons = prep_moon_data(future = TRUE),
   forecast_date = Sys.Date(), historical = TRUE, forecasts = TRUE,
   lead_time = 12, min_lag = 6, append_fcast_csv = FALSE,
-  covariate_file = NULL, source_name = "current_archive")
+  covariate_file = NULL, source_name = "current_archive",
+  data_dir = pc_path("data", "~"))
 }
 \arguments{
 \item{moons}{current newmoonnumber table}
@@ -35,6 +36,8 @@ file}
 forecast. Currently is "current_archive". Previous to "current_archive",
 the data were retroactively filled in and are given the source name
 "retroactive"}
+
+\item{data_dir}{directory name where the data files will reside}
 }
 \value{
 covariate data table including both historical and covariate data
