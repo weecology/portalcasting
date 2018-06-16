@@ -37,44 +37,15 @@ fcast0 <- function(nfcnm, pred_name = "pred"){
   return(out)
 }
 
-#' @title Normalize path
+#' @title Today's date
 #'
-#' @description Return normalized path for all operating systems
+#' @description name-shortening function
 #'
-#' @param reference a path to join with current working directory
-#'
-#' @param base Current working directory else path given
-#'
-#' @return normalized path
-#'
-#' @examples
-#' full_path("PortalData/Rodents/Portal_rodent.csv")
-#'
-#' full_path("PortalData/Rodents/Portal_rodent.csv", "~")
+#' @return today's date
 #'
 #' @export
 #'
-full_path <- function(reference, base = getwd()){
-  base <- normalizePath(base)
-  path <- normalizePath(file.path(base, reference), mustWork = FALSE)
-  return(path)
+today <- function(){
+  Sys.Date()
 }
 
-#' @title Portalcasting full path
-#'
-#' @description Simplification wrapper to use \code{full_path} to the 
-#'   \code{portalcasting} folder within the base folder
-#'
-#' @param reference reference
-#'
-#' @param base base
-#'
-#' @return normalized path to portalcasting
-#'
-#' @export
-#'
-pc_path <- function(reference, base = getwd()){
-
-  path <- full_path(paste0("portalcasting/", reference), base)
-  return(path)
-}

@@ -1,77 +1,55 @@
-#' @title Create a portalcasting directory
-#'
-#' @description Create and populate a full portalcasting directory or any 
-#'   missing components.
-#'
-#' @param main_path directory name for the location of the portalcasting 
-#'   folder
-#'
-#' @param models names of model scripts to include
-#'
-#' @return Nothing
-#'
-#' @export
-#'
-setup_portalcast_dir <- function(main_path = pc_path("", "~"), 
-                                 models = c("autoarima", "esss", "nbgarch", 
-                                            "pevgarch")
-                                 ){
-  
-  if (!dir.exists(main_path)){
-    dir.create(main_path)
-  }
 
-  cat("Downloading Portal Data. \n")
-  download_observations()
 
-  if (!dir.exists(full_path("predictions", main_path))){
-    dir.create(full_path("predictions", main_path))
-  }
+  covariates <- prep_covariates(data_dir = data_dir)
+  metadata <- prep_metadata(rodents, covariates, data_dir = data_dir)
 
-  if (!dir.exists(full_path("data", main_path))){
-    dir.create(full_path("data", main_path))
-  }
 
-  if (!dir.exists(full_path("models", main_path))){
-    dir.create(full_path("models", main_path))
-    cat(paste0("populating models directory with ", models, "\n"))
-    data_dir <- full_path("data", main_path)
-    populate_models(full_path("models", main_path), models, data_dir)
-  }
+
+
+
+
+
+  all <- abundance(clean = FALSE, level = "Site", type = "Rodents", 
+                        length = "all", min_plots = 24) %>%
+         select(-PI)
+  all <- all %>%
+         mutate(total = rowSums(all[ , -1])) %>%
+         inner_join(moons, by = c("period" = "period")) %>%
+         subset(newmoonnumber >= start_newmoonnumber) %>%
+         select(-newmoondate, -censusdate)
+
+  out <- list("controls" = controls, "all" = all)
+
+  write.csv(all, full_path("all.csv", data_dir), row.names = FALSE)
+  write.csv(controls, full_path("controls.csv", data_dir), row.names = FALSE)
+  return(out)
 }
 
-#' @title Populate a portalcasting models subdirectory
-#'
-#' @description Create and populate a portalcasting models subdirectory or add
-#'   models to an existing one
-#'
-#' @param model_dir directory name where the model files will reside
-#'
-#' @param models names of model scripts to include
-#' 
-#' @param data_dir directory name where the data files will reside
-#'
-#' @return Nothing
-#'
-#' @export
-#'
-populate_models <- function(model_dir = pc_path("models", "~"), 
-                            models = c("autoarima", "esss", "nbgarch", 
-                                       "pevgarch"),
-                             data_dir = pc_path("data", "~")){
-  if ("autoarima" %in% models){
-    write(model_template("autoarima"), full_path("autoarima.R", model_dir))
+
+
+
+  covdat <- full_path("portalcasting/data/covariate_forecasts.csv", base_path)
+  if (!file.exists(covdat)){
+    to <- covdat
+    fname <- "extdata/covariate_forecasts.csv"
+    from <- system.file(fname, package = "portalcasting")
+    if (!file.exists(from)){
+      stop("Covariate data not found.")
+    }
+    temp <- read.csv(from, stringsAsFactors = FALSE)    
+
   }
-  if ("esss" %in% models){
-    write(model_template("esss"), full_path("esss.R", model_dir))
-  }
-  if ("nbgarch" %in% models){
-    write(model_template("nbgarch"), full_path("nbgarch.R", model_dir))
-  }
-  if ("pevgarch" %in% models){
-    write(model_template("pevgarch"), full_path("pevgarch.R", model_dir))
-  }
-}
+
+
+
+# next step is to update model_template
+#
+# need to update the function flexibibility, to flexibly write model scripts
+# leverage the tree set up to basically just pass the tree to the
+# read and write functions (wrap them if needed)
+# it'll likely be easier if we just give all the model functions covariates
+#  but we could also make some indicator for them
+
 
 #' @title Create the text to be written out to a script for a model
 #'
@@ -185,3 +163,5 @@ pevg_c <- pevgarch(controls, covariates, metadata, level = "Controls");
 save_forecast_output(pevg_a, pevg_c, "pevGARCH", metadata)'
 
 }
+
+

@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^models$
+^package_outline.txt$

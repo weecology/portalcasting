@@ -1,0 +1,24 @@
+function outline:
+
+
+-setup_dir
+  -create_dir
+    -create_main_dir
+    -create_sub_dirs
+      -create_sub_dir
+  -fill_dir 
+    -fill_PortalData
+	  -download_observations
+    -fill_data
+	-fill_models
+	  -write_model
+
+
+
+
+
+directory tree:
+
+-base (existing folder where the project folder will be housed)
+-main (project folder encompassing all subfolders)
+-subs (specific sub-folders for the project)
