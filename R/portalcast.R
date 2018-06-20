@@ -32,9 +32,9 @@ portalcast <- function(type = "forecast", model_dir,
 
   cat("Preparing data", "\n")
   if (type == "forecast"){
-    rodents <- prep_rodents(data_dir = data_dir)
-    covariates <- prep_covariates(data_dir = data_dir)
-    metadata <- prep_metadata(rodents, covariates, data_dir = data_dir)
+    #rodents <- prep_rodents(data_dir = data_dir)
+    #covariates <- prep_covariates(data_dir = data_dir)
+    #metadata <- prep_metadata(rodents, covariates, data_dir = data_dir)
   }
 
   forecast_date <- as.Date(metadata$forecast_date)

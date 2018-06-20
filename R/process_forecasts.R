@@ -48,8 +48,8 @@ save_forecast_output <- function(all, controls, name, metadata,
 #'
 #' @export
 #'
-combine_forecasts <- function(model_metadata, temp_dir = pc_path("tmp", "~"),
-                              pred_dir = pc_path("predictions", "~")){
+combine_forecasts <- function(model_metadata, temp_dir,
+                              pred_dir){
   
   forecast_date <- model_metadata$forecast_date
   filename_suffix <- model_metadata$filename_suffix
@@ -91,8 +91,8 @@ combine_forecasts <- function(model_metadata, temp_dir = pc_path("tmp", "~"),
 #' 
 #' @export
 #'
-add_ensemble <- function(model_metadata, temp_dir = pc_path("tmp", "~"),
-                         pred_dir = pc_path("predictions", "~")){
+add_ensemble <- function(model_metadata, temp_dir,
+                         pred_dir){
 
   forecast_date <- model_metadata$forecast_date
   filename_suffix <- model_metadata$filename_suffix
@@ -123,7 +123,7 @@ add_ensemble <- function(model_metadata, temp_dir = pc_path("tmp", "~"),
 #' 
 #' @export
 #'
-compile_aic_weights <- function(pred_dir = pc_path("predictions", "~")){
+compile_aic_weights <- function(pred_dir){
 
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]

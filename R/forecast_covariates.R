@@ -46,8 +46,18 @@ forecast_ndvi <- function(covariate_data, moons, data_options){
   fcast_ndvi(ndvi_data, "newmoon", lead = ndvi_lead, moons)
 }
 
-
-
+#' @title Trim the moons table for covariate forecasting
+#' 
+#' @description creating forecasts
+#'
+#' @param moons moon data
+#'
+#' @param data_options covariate data options
+#'
+#' @return a trimmed moons data table
+#'
+#' @export
+#'
 trim_moons_fcast <- function(moons, data_options){
   moons <- moons[, c("newmoonnumber", "newmoondate", "period", "censusdate")]
   fc_nms <- moons
@@ -58,14 +68,27 @@ trim_moons_fcast <- function(moons, data_options){
   fc_nms
 }
 
-
+#' @title Build a weather forecast for model predictions 
+#' 
+#' @description creating forecasts
+#' 
+#' @param tree directory tree
+#'
+#' @param moons moon data
+#'
+#' @param data_options covariate data options
+#'
+#' @return a data.frame with needed foecasted weather values
+#'
+#' @export
+#'
 forecast_weather <- function(tree = dirtree(), moons, data_options){
   
   mpath <- main_path(tree = tree)
   newweather <- weather("newmoon", fill = TRUE, mpath) %>%
                 select(-c(.data$locally_measured, .data$battery_low)) %>% 
                 mutate(year = as.numeric(format(date, "%Y"))) %>%
-                filter(year >= start - 5)
+                filter(year >= data_options$start - 5)
   incompletes <- which(is.na(newweather$newmoonnumber))
   if(length(incompletes) > 0 ){
     newweather <- newweather[-incompletes, ]  

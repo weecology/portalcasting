@@ -4,8 +4,7 @@
 \alias{add_ensemble}
 \title{Add Ensemble Model to Forecasts}
 \usage{
-add_ensemble(model_metadata, temp_dir = pc_path("tmp", "~"),
-  pred_dir = pc_path("predictions", "~"))
+add_ensemble(model_metadata, temp_dir, pred_dir)
 }
 \arguments{
 \item{model_metadata}{model metadata list}

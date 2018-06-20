@@ -27,7 +27,7 @@ prep_metadata <- function(rodents, covariates, forecast_date = today(),
  
   # prev = previous (i.e. the most recent)
   
-  moons <- prep_moons(future = TRUE)
+  moons <- prep_moons()
 
   covariates_fcasts <- which(covariates$source == "fcast")
 

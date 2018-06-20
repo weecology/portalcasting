@@ -20,6 +20,9 @@ to be included}
 
 \item{yr}{year of today}
 
+\item{start}{newmoon number of the first sample to be included. Default 
+value is \code{217}, corresponding to 1995-01-01.}
+
 \item{lead_time}{number of moons into the future the rodents are forecast}
 
 \item{min_lag}{the minimum lag time used in any model}

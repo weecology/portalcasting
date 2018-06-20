@@ -120,6 +120,9 @@ prep_weather_data <- function(tree = dirtree()){
 #'
 #' @param yr year of today
 #'
+#' @param start newmoon number of the first sample to be included. Default 
+#'   value is \code{217}, corresponding to 1995-01-01.
+#'
 #' @param lead_time number of moons into the future the rodents are forecast
 #'
 #' @param min_lag the minimum lag time used in any model

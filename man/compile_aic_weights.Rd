@@ -4,7 +4,7 @@
 \alias{compile_aic_weights}
 \title{Calculate Model Weights}
 \usage{
-compile_aic_weights(pred_dir = pc_path("predictions", "~"))
+compile_aic_weights(pred_dir)
 }
 \arguments{
 \item{pred_dir}{directory name where the saved model predictions reside}

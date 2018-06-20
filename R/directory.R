@@ -180,7 +180,7 @@ fill_data <- function(tree = dirtree(), all_options = all_data_options(),
 #'
 #' @param tree the name tree of the portalcasting directory
 #'
-#' @param models names of model scripts to include
+#' @param model names of model scripts to include
 #'
 #' @param quiet logical indicator if progress messages should be quieted
 #'
