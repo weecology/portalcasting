@@ -12,8 +12,6 @@
 #' 
 #' @param quiet logical indicator of printing messages
 #'
-#' @param quiet logical indicator if progress messages should be quieted
-#'
 #' @return covariate data table
 #'
 #' @export
@@ -101,6 +99,8 @@ prep_hist_covariates <- function(tree = dirtree()){
 #' @param moons current newmoon table
 #'
 #' @param data_options control options list for covariates
+#'
+#' @param quiet logical indicator if progress messages should be quieted
 #'
 #' @return covariate data table
 #'

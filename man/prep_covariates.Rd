@@ -15,8 +15,6 @@ prep_covariates(tree = dirtree(), moons = prep_moons(),
 \item{data_options}{control options list for covariates}
 
 \item{quiet}{logical indicator of printing messages}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
 }
 \value{
 covariate data table

@@ -16,6 +16,8 @@ prep_fcast_covariates(hist_data = prep_hist_covariates(), tree = dirtree(),
 \item{moons}{current newmoon table}
 
 \item{data_options}{control options list for covariates}
+
+\item{quiet}{logical indicator if progress messages should be quieted}
 }
 \value{
 covariate data table
