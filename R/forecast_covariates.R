@@ -222,9 +222,6 @@ get_climate_forecasts <- function(tree = dirtree(), moons = prep_moons(),
   return(out)
 }
 
-
-
-
 #' @title Append a covariate forecast to existing covariate forecasts
 #' 
 #' @description combining weather and ndvi forecasts to the existing forecasts

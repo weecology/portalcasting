@@ -27,7 +27,8 @@ value is \code{217}, corresponding to 1995-01-01.}
 
 \item{min_lag}{the minimum lag time used in any model}
 
-\item{fcast_nms}{newmoon numbers to be forecast}
+\item{fcast_nms}{newmoon numbers to be forecast (for the rodents, i.e. 
+pre-lag)}
 
 \item{nfcnm}{number of forecast newmoons}
 

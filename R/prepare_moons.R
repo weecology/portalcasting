@@ -2,7 +2,8 @@
 #'
 #' @description Get time information (calendar dates, census periods, 
 #'   newmoon numbers) associated with trapping events (achieved and missed)
-#'   based on a lunar survey schedule.
+#'   based on a lunar survey schedule. If needed, additional moons will be
+#'   added to the data table, both the in-use and raw versions
 #'
 #' @param tree directory tree
 #'
@@ -19,10 +20,41 @@ prep_moons <- function(tree = dirtree(), data_options = moons_options()){
   file_path(tree = tree, "PortalData/Rodents/moon_dates.csv") %>%
   read.csv(stringsAsFactors = FALSE) %>% 
   add_future_moons(data_options = data_options) %>%
+  append_past_moons_to_raw(tree = tree, data_options = data_options) %>%
   format_moons() %>%
   dataout(tree, data_options)
 
 }
+
+
+
+#' @title Append missing past moons to the raw data
+#'
+#' @description Sometimes the raw moon data table is not up-to-date. Because
+#'   the portalr functions \code{weather} and \code{fcast_ndvi} point to the
+#'   raw moons data, that table needs to be updated to produce the correct
+#'   current data table
+#'
+#' @param data moons table with future moons added
+#'
+#' @param tree directory tree
+#'
+#' @param data_options moon data options
+#'
+#' @return data as came in
+#'
+#' @export
+#'
+append_past_moons_to_raw <- function(data, tree = dirtree(), data_options){
+  if (data_options$append_missing_to_raw){
+    path <- file_path(tree = tree, "PortalData/Rodents/moon_dates.csv")
+    included_moons <- data$newmoondate <= today()
+    newraw <- data[included_moons, ]
+    write.csv(newraw, path, row.names = FALSE)
+  }
+  data
+}
+
 
 #' @title Prepare the data options for moon data
 #'
@@ -33,6 +65,9 @@ prep_moons <- function(tree = dirtree(), data_options = moons_options()){
 #' @param fdate date from which future is defined, typically today's date.
 #'   Required if \code{n_future_moons > 0}
 #'
+#' @param append_missing_to_raw logical indicating if the raw data should be
+#'   updated by appending the missing moon dates
+#'
 #' @param save logical if the data should be saved out
 #'
 #' @param filename the name of the file for the saving.
@@ -41,9 +76,11 @@ prep_moons <- function(tree = dirtree(), data_options = moons_options()){
 #'
 #' @export
 #'
-moons_options <- function(n_future_moons = 0, fdate = today(), save = TRUE,
+moons_options <- function(n_future_moons = 12, fdate = today(), 
+                          append_missing_to_raw = TRUE, save = TRUE,
                           filename = "moons.csv"){
-  list("n_future_moons" = n_future_moons, "fdate" = fdate, "save" = save,
+  list("n_future_moons" = n_future_moons, "fdate" = fdate, 
+       "append_missing_to_raw" = append_missing_to_raw, "save" = save,
        "filename" = filename)
 }
 

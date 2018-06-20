@@ -4,17 +4,15 @@
 \alias{all_data_options}
 \title{Prepare all of the data options for}
 \usage{
-all_data_options(n_future_moons = 0, fdate = today(), m_save = TRUE,
-  m_filename = "moons.csv", type = NULL, start = 217, drop_spp = "PI",
-  min_plots = 24, level = "Site", treatment = NULL, length = "all",
+all_data_options(fdate = today(), m_save = TRUE, m_filename = "moons.csv",
+  type = NULL, start = 217, drop_spp = "PI", min_plots = 24,
+  level = "Site", treatment = NULL, length = "all",
   output = "abundance", r_save = TRUE, r_filename = "all.csv",
   historical = TRUE, forecasts = TRUE, yr = as.numeric(format(today(),
   "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
   c_save = TRUE, c_filename = "covariates.csv")
 }
 \arguments{
-\item{n_future_moons}{integer value for the number of future moons to add}
-
 \item{fdate}{date from which future is defined, typically today's date.}
 
 \item{m_save}{logical if the moons data should be saved out}
@@ -61,6 +59,10 @@ to be included}
 \item{c_save}{logical if the covariate data should be saved out}
 
 \item{c_filename}{the name of the covariate file for the saving}
+
+\item{append_missing_to_raw}{logical indicating if the missing moon dates 
+should be appended to the raw data file (should be TRUE to allow the
+imported portalr functions to work properly)}
 }
 \value{
 control options list for covariates

@@ -63,8 +63,6 @@ prep_covariates <- function(tree = dirtree(), moons = prep_moons(),
   dataout(out, tree, data_options)
 }
 
-
-
 #' @title Prepare historical covariates data
 #'
 #' @description Create a data table of historical weather and ndvi data
@@ -127,7 +125,8 @@ prep_weather_data <- function(tree = dirtree()){
 #'
 #' @param min_lag the minimum lag time used in any model
 #'
-#' @param fcast_nms newmoon numbers to be forecast
+#' @param fcast_nms newmoon numbers to be forecast (for the rodents, i.e. 
+#'   pre-lag)
 #'
 #' @param nfcnm number of forecast newmoons
 #'

@@ -4,14 +4,17 @@
 \alias{moons_options}
 \title{Prepare the data options for moon data}
 \usage{
-moons_options(n_future_moons = 0, fdate = today(), save = TRUE,
-  filename = "moons.csv")
+moons_options(n_future_moons = 12, fdate = today(),
+  append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv")
 }
 \arguments{
 \item{n_future_moons}{integer value for the number of future moons to add}
 
 \item{fdate}{date from which future is defined, typically today's date.
 Required if \code{n_future_moons > 0}}
+
+\item{append_missing_to_raw}{logical indicating if the raw data should be
+updated by appending the missing moon dates}
 
 \item{save}{logical if the data should be saved out}
 

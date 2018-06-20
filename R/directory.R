@@ -197,9 +197,11 @@ fill_models <- function(tree = dirtree(), model = models(), quiet = FALSE){
 #'
 #' @description Create a list of lists of control options for the data
 #'
-#' @param n_future_moons integer value for the number of future moons to add
-#'
 #' @param fdate date from which future is defined, typically today's date.
+#'
+#' @param append_missing_to_raw logical indicating if the missing moon dates 
+#'   should be appended to the raw data file (should be TRUE to allow the
+#'   imported portalr functions to work properly)
 #'
 #' @param m_save logical if the moons data should be saved out
 #'
@@ -255,7 +257,7 @@ fill_models <- function(tree = dirtree(), model = models(), quiet = FALSE){
 #'
 #' @export
 #'
-all_data_options <- function(n_future_moons = 0, fdate = today(), 
+all_data_options <- function(fdate = today(), 
                              m_save = TRUE, m_filename = "moons.csv",
                              type = NULL, start = 217, drop_spp = "PI", 
                              min_plots = 24, level = "Site", 
@@ -268,7 +270,8 @@ all_data_options <- function(n_future_moons = 0, fdate = today(),
                              fcast_nms = NULL, nfcnm = 0,
                              c_save = TRUE, c_filename = "covariates.csv"){
 
-  moons_opts <- moons_options(n_future_moons = n_future_moons, fdate = fdate,
+  moons_opts <- moons_options(n_future_moons = lead_time, fdate = fdate,
+                              append_missing_to_raw = append_missing_to_raw,
                               save = m_save, filename = m_filename)
   rodents_opts <- rodents_options(type = type, start = start, 
                                   drop_spp = drop_spp, min_plots = min_plots, 

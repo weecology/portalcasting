@@ -17,5 +17,6 @@ data table of time variables for all surveys
 \description{
 Get time information (calendar dates, census periods, 
   newmoon numbers) associated with trapping events (achieved and missed)
-  based on a lunar survey schedule.
+  based on a lunar survey schedule. If needed, additional moons will be
+  added to the data table, both the in-use and raw versions
 }
