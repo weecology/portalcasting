@@ -4,13 +4,13 @@
 \alias{fill_data}
 \title{Populate the for-use data of a portalcasting directory}
 \usage{
-fill_data(tree = dirtree(), start = 217, quiet = FALSE)
+fill_data(tree = dirtree(), all_options = all_data_options(),
+  quiet = FALSE)
 }
 \arguments{
 \item{tree}{the name tree of the portalcasting directory}
 
-\item{start}{newmoon number of the first sample to be included. Default 
-value is \code{217}, corresponding to 1995-01-01.}
+\item{all_options}{list of lists of data options}
 
 \item{quiet}{logical indicator if progress messages should be quieted}
 }

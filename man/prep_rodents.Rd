@@ -4,15 +4,16 @@
 \alias{prep_rodents}
 \title{Prepare historic rodent data}
 \usage{
-prep_rodents(tree = dirtree(), moons = prep_moons(), start = 217)
+prep_rodents(tree = dirtree(), moons = prep_moons(),
+  data_options = rodents_options())
 }
 \arguments{
 \item{tree}{the name tree of the portalcasting directory}
 
 \item{moons}{current newmoon table}
 
-\item{start}{newmoon number of the first sample to be included. Default 
-value is \code{217}, corresponding to 1995-01-01.}
+\item{data_options}{data options list for rodents, which is forced to 
+conform internally for the two data types (all and controls)}
 }
 \value{
 a list of two dataframes, all plots and control plots

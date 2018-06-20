@@ -2,14 +2,16 @@
 % Please edit documentation in R/prepare_covariates.R
 \name{prep_weather_data}
 \alias{prep_weather_data}
-\title{Collect Historic Weather Data}
+\title{Prepare historical weather data}
 \usage{
-prep_weather_data()
+prep_weather_data(tree = dirtree())
+}
+\arguments{
+\item{tree}{directory tree}
 }
 \value{
-weather data table
+historical weather table
 }
 \description{
-Gather the downloaded historical weather data, select the 
-  columns needed, and remove the incomplete data
+Create a data table of historical weather data
 }

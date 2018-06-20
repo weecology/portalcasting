@@ -4,16 +4,12 @@
 \alias{add_future_moons}
 \title{Add future moons to the moon table}
 \usage{
-add_future_moons(moons = prep_moons(), n_future_moons = 12,
-  fdate = today())
+add_future_moons(moons = prep_moons(), data_options = moons_options())
 }
 \arguments{
 \item{moons}{current newmoonnumber table}
 
-\item{n_future_moons}{integer value for the number of future moons to add}
-
-\item{fdate}{date from which future is defined, typically today's date.
-Required if \code{n_future_moons > 0}}
+\item{data_options}{control options list for moons}
 }
 \value{
 appended moon table

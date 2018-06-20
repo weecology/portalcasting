@@ -1,16 +1,102 @@
-#' @title Collect Historic Weather Data
+#' @title Prepare forecast covariate data table
 #'
-#' @description Gather the downloaded historical weather data, select the 
-#'   columns needed, and remove the incomplete data
+#' @description Prepare forecasts of covariate data as needed for rodent
+#'   forecasting, including appending the new forecasts of covariates to the
+#'   existing covariate forecast table
 #'
-#' @return weather data table 
+#' @param hist_data historical covariate data
+#'
+#' @param tree directory tree
+#'
+#' @param moons current newmoon table
+#'
+#' @param data_options control options list for covariates
+#'
+#' @return covariate data table
 #'
 #' @export
 #'
-prep_weather_data <- function(){
+prep_fcast_covariates <- function(hist_data = prep_hist_covariates(),
+                                  tree = dirtree(), moons = prep_moons(),
+                                  data_options = covariates_options()){
+
+  data_options <- update_covfcast_options(data_options, hist_data, moons)
+  fcast_data <- forecast_covariates(tree, hist_data, moons, data_options)
+
+# working here
+
+
+}
+
+#' @title Prepare covariate data table
+#'
+#' @description Prepare covariate data for forecasting, including saving out
+#'   the data and appending the new forecasts of covariates to the existing
+#'   covariate forecast table
+#'
+#' @param tree directory tree
+#'
+#' @param moons current newmoon table
+#'
+#' @param data_options control options list for covariates
+#'
+#' @return covariate data table
+#'
+#' @export
+#'
+prep_covariates <- function(tree = dirtree(), moons = prep_moons(),
+                            data_options = covariates_options()){
+
+  hist_data <- prep_hist_covariates(tree = tree)
+
+  if (data_options$forecasts){
+    fcast_data <- prep_fcast_covariates(hist_data, tree, moons, data_options)
+  }
+  
+  out <- hist_data[-(1:nrow(hist_data)), ]
+  if (data_options$historical){
+    out <- bind_rows(out, hist_data)
+  }
+  if (data_options$forecasts){
+    out <- bind_rows(out, fcast_data)
+  }
+  dataout(out, tree, data_options)
+}
+
+
+
+#' @title Prepare historical covariates data
+#'
+#' @description Create a data table of historical weather and ndvi data
+#'
+#' @param tree directory tree
+#'
+#' @return historical covariate table
+#'
+#' @export
+#'
+prep_hist_covariates <- function(tree = dirtree()){
+  weather_data <- prep_weather_data(tree = tree)
+  ndvi_data <- ndvi("newmoon", fill = TRUE, path = main_path(tree))
+  out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
+  out$source <- "hist"
+  return(out)
+}
+
+#' @title Prepare historical weather data
+#'
+#' @description Create a data table of historical weather data
+#'
+#' @param tree directory tree
+#'
+#' @return historical weather table
+#'
+#' @export
+#'
+prep_weather_data <- function(tree = dirtree()){
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
-  weather_data <- weather("newmoon", fill = TRUE) %>% 
+  weather_data <- weather("newmoon", fill = TRUE, path = main_path(tree)) %>% 
                   ungroup() %>%
                   select(cols)
   incompletes <- which(is.na(weather_data$newmoonnumber))
@@ -20,100 +106,73 @@ prep_weather_data <- function(){
   return(weather_data)
 }
 
-#' @title Collect Historic Weather and NDVI Data
+#' @title Prepare the data options for covariates data
 #'
-#' @description Gather the downloaded historical weather and ndvi data and
-#'   join them into a single data table
+#' @description Create a list of control options for the covariates data
 #'
-#' @return covariate data table 
+#' @param historical logical indicator whether or historical covariates are
+#'   to be included
 #'
-#' @export
+#' @param forecasts logical indicator whether or forecasted covariates are
+#'   to be included
 #'
-prep_hist_covariate_data <- function(){
-  weather_data <- prep_weather_data()
-  ndvi_data <- ndvi("newmoon", fill = TRUE)
-  out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
-  return(out)
-}
-
-#' @title Prepare covariate data table
+#' @param fdate date from which future is defined, typically today's date.
 #'
-#' @description Create a covariate (weather and NDVI) data table, including
-#'   potentially both historical and forecast data
+#' @param yr year of today
 #'
-#' @param moons current newmoonnumber table
+#' @param lead_time number of moons into the future the rodents are forecast
 #'
-#' @param forecast_date date from which forecasting is happening, typically
-#'   today's date. 
+#' @param min_lag the minimum lag time used in any model
 #'
-#' @param historical logical input dictating if historical covariates should
-#'   be included in the output
+#' @param fcast_nms newmoon numbers to be forecast
 #'
-#' @param forecasts logical input dictating if covariate forecasts should be
-#'   made and included in the output
+#' @param nfcnm number of forecast newmoons
 #'
-#' @param lead_time number of newmoons forward to forecast abundances
+#' @param save logical if the data should be saved out
 #'
-#' @param min_lag minimum (of non-0) lag times that need to be accommodate 
+#' @param filename the name of the file for the saving
 #'
-#' @param append_fcast_csv logical input dictating if covariate forecasts
-#'   should be added to the existing covariate forecast data file
-#'
-#' @param covariate_file file name for the existing historical covariate data
-#'   file
-#'
-#' @param source_name character value for the name to give the covariaate
-#'   forecast. Currently is "current_archive". Previous to "current_archive",
-#'   the data were retroactively filled in and are given the source name
-#'   "retroactive"
-#'
-#' @param data_dir directory name where the data files will reside
-#'
-#' @return covariate data table including both historical and covariate data
-#'   with an additional column (\code{source}) distinguishing the source of
-#'   the data. In addition, if \code{append_fcast_csv} is \code{TRUE}, the
-#'   forecasts will be appended to \code{covariate_file} tagged with  
-#'   \code{source_name} dictating the source name tag in the forecast file.
+#' @return control options list for covariates
 #'
 #' @export
 #'
-prep_covariate_data <- function(moons = prep_moon_data(future = TRUE), 
-                                forecast_date = Sys.Date(),
-                                historical = TRUE, forecasts = TRUE,
-                                lead_time = 12, min_lag = 6,
-                                append_fcast_csv = FALSE, 
-                                covariate_file = NULL,
-                                source_name = "current_archive",
-                                data_dir = pc_path("data", "~")){
-
-  hist_data <- prep_hist_covariate_data()
-  hist_data$source <- "hist"
-
-  if (forecasts){
-    which_prev_newmoon <- max(which(moons$newmoondate < forecast_date))
-    prev_newmoon <- moons$newmoonnumber[which_prev_newmoon]
-    prev_covar_newmoon <- tail(hist_data, 1)$newmoonnumber
-    first_fcast_covar_newmoon <- prev_covar_newmoon + 1
-    last_fcast_newmoon <- prev_newmoon + lead_time
-    fcast_nms <- first_fcast_covar_newmoon:last_fcast_newmoon
-    fcast_data <- fcast_covariates(hist_data, moons, fcast_nms, forecast_date,
-                                   min_lag)
-
-    if (append_fcast_csv){
-      append_covariate_fcast_csv(fcast_data, covariate_file, source_name)
-    }
-    fcast_data <- select(fcast_data, -forecast_newmoon)
-    fcast_data$source <- "fcast"
-  }
-  
-  out <- hist_data[-(1:nrow(hist_data)), ]
-  if (historical){
-    out <- bind_rows(out, hist_data)
-  }
-  if (forecasts){
-    out <- bind_rows(out, fcast_data)
-  }
-  write.csv(out, full_path("covariates.csv", data_dir), row.names = FALSE)
-  return(out)
+covariates_options <- function(historical = TRUE, forecasts = TRUE, 
+                               fdate = today(), 
+                               yr = as.numeric(format(today(), "%Y")),
+                               lead_time = 12,
+                               min_lag = 6, fcast_nms = NULL, nfcnm = 0,
+                               save = TRUE, filename = "covariates.csv"){
+  list("historical" = historical, "forecasts" = forecasts, "fdate" = fdate,
+       "yr" = yr, 
+       "lead_time" = lead_time, "min_lag" = min_lag, 
+       "fcast_nms" = fcast_nms, "nfcnm" = nfcnm, 
+       "save" = save, "filename" = filename)
 }
+
+#' @title Update the data options for covariate forecasts based on existing 
+#'   data
+#'
+#' @description Update the covariate data control options based on the 
+#'   historical covariate data and moon data
+#'
+#' @param hist_data historical covariate data
+#'
+#' @param moons current newmoon table
+#'
+#' @return control options list for covariates
+#'
+#' @export
+#'
+update_covfcast_options <- function(data_options, hist_data, moons){
+
+  which_prev_newmoon <- max(which(moons$newmoondate < data_options$fdate))
+  prev_newmoon <- moons$newmoonnumber[which_prev_newmoon]
+  prev_covar_newmoon <- tail(hist_data, 1)$newmoonnumber
+  first_fcast_covar_newmoon <- prev_covar_newmoon + 1
+  last_fcast_newmoon <- prev_newmoon + data_options$lead_time
+  data_options$fcast_nms <- first_fcast_covar_newmoon:last_fcast_newmoon
+  data_options$nfcnm <- length(data_options$fcast_nms)
+  data_options
+}
+
 

@@ -1,3 +1,82 @@
+#' @title Build a covariate forecast for model predictions 
+#' 
+#' @description combining weather and ndvi forecasts
+#' 
+#' @param covariate_data historical covariate data table
+#'
+#' @param moons moon data
+#'
+#' @param data_options covariate data options
+#'
+#' @return a data.frame with needed forecasted covariates
+#'
+#' @export
+#'
+forecast_covariates <- function(tree, covariate_data, moons, 
+                                data_options = covariates_options()){
+
+  moons <- trim_moons_fcast(moons, data_options)
+  weather_f <- forecast_weather(tree, moons, data_options)
+  ndvi_f <- forecast_ndvi(covariate_data, moons, data_options)
+  fcast <- right_join(weather_f, ndvi_f, by = "newmoonnumber")
+  forecast_newmoon <- max(moons$newmoonnumber)
+
+  round(data.frame(forecast_newmoon, fcast), 3)
+}
+
+#' @title Build an ndvi forecast for model predictions 
+#' 
+#' @description creating forecasts
+#' 
+#' @param covariate_data historical covariate data table
+#'
+#' @param moons moon data
+#'
+#' @param data_options covariate data options
+#'
+#' @return a data.frame with needed foecasted ndvi values
+#'
+#' @export
+#'
+forecast_ndvi <- function(covariate_data, moons, data_options){
+  ndvi_data <- select(covariate_data, c("newmoonnumber", "ndvi"))
+  ndvi_lead <- data_options$nfcnm - data_options$min_lag
+  fcast_ndvi(ndvi_data, "newmoon", lead = ndvi_lead, moons)
+}
+
+
+
+trim_moons_fcast <- function(moons, data_options){
+  moons <- moons[, c("newmoonnumber", "newmoondate", "period", "censusdate")]
+  fc_nms <- moons
+  addl_need_to_fcast <- which(moons$newmoonnumber %in% data_options$fcast_nms)
+  if (length(addl_need_to_fcast) > 0){
+    fc_nms <- fc_nms[-addl_need_to_fcast, ]
+  }
+  fc_nms
+}
+
+
+forecast_weather <- function(tree = dirtree(), moons, data_options){
+  
+  mpath <- main_path(tree = tree)
+  newweather <- weather("newmoon", fill = TRUE, mpath) %>%
+                select(-c(.data$locally_measured, .data$battery_low)) %>% 
+                mutate(year = as.numeric(format(date, "%Y"))) %>%
+                filter(year >= start - 5)
+  incompletes <- which(is.na(newweather$newmoonnumber))
+  if(length(incompletes) > 0 ){
+    newweather <- newweather[-incompletes, ]  
+  }
+  fcasts <- get_climate_forecasts(tree, moons, data_options)
+
+  tail(newweather, data_options$min_lag) %>% 
+  select(-year, -date) %>%
+  bind_rows(fcasts)
+}
+
+
+
 #' @title Download downscaled weather data
 #' 
 #' @description ENSMEAN (ensemble mean) obtained from 
@@ -14,8 +93,10 @@
 #'
 #' @export
 #'
-get_climate_forecasts <- function(lead_time = 6, moons){
+get_climate_forecasts <- function(tree = dirtree(), moons, data_options){
   
+  lead_time <- data_options$lead_time - data_options$min_lag
+
   if(!lead_time %in% 1:7){
     stop(paste0("Lead time must be an integer 1 - 7, got: ", lead_time))
   }
@@ -54,9 +135,9 @@ get_climate_forecasts <- function(lead_time = 6, moons){
   colnames(df4) <- c("date", "lat", "lon", "precipitation")
   df4$precipitation[which(df4$precipitation < 0)] <- 0
   df <- df1 %>% 
-        right_join(df2) %>% 
-        right_join(df3) %>% 
-        right_join(df4) %>% 
+        right_join(df2, by = c("date", "lat", "lon")) %>% 
+        right_join(df3, by = c("date", "lat", "lon")) %>% 
+        right_join(df4, by = c("date", "lat", "lon")) %>% 
         mutate(date = as_date(date)) %>% 
         select(-lat, -lon) %>%
         mutate(mintemp = (mintemp - 32) * 5 / 9) %>%
@@ -64,9 +145,9 @@ get_climate_forecasts <- function(lead_time = 6, moons){
         mutate(meantemp = (meantemp - 32) * 5 / 9) %>%
         mutate(precipitation = precipitation * 25.4)
 
-  daily_fcast <- full_join(daily_forecasts, df)
+  daily_fcast <- full_join(daily_forecasts, df, by = "date")
 
-  historic <- weather("daily", fill = TRUE)
+  historic <- weather("daily", fill = TRUE, path = main_path(tree))
   datechar <- paste(historic$year, historic$month, historic$day, sep = "-")
   historic$date <- as.Date(datechar)
 
@@ -113,85 +194,8 @@ get_climate_forecasts <- function(lead_time = 6, moons){
   return(out)
 }
 
-#' @title Build a weather forecast for model predictions 
-#' 
-#' @description created using downscaled climate forecasts
-#' 
-#' @param start end year of data and beginning of forecast
-#'
-#' @param moons moon data
-#'
-#' @param lag newmoons by which weather data is lagged
-#'
-#' @param lead_time the number of newmoons into the future to obtain forecasts
-#'   Max of 7. lag + lead_time should equal 12
-#' 
-#' @return a data.frame with 12 new moons of weather values
-#'
-#' @export
-#'
-fcast_weather <- function(start = as.numeric(format(Sys.Date(), "%Y")), moons,
-                          lag = 6, lead_time = 6){
-  
-  newweather <- weather("newmoon", fill = TRUE) %>%
-                select(-c(.data$locally_measured, .data$battery_low)) %>% 
-                mutate(year = as.numeric(format(date, "%Y"))) %>%
-                filter(year >= start - 5)
-  incompletes <- which(is.na(newweather$newmoonnumber))
-  if(length(incompletes) > 0 ){
-    newweather <- newweather[-incompletes, ]  
-  }
-  fcasts <- get_climate_forecasts(lead_time = lead_time, moons = moons)
-  weatherforecast <- tail(newweather, lag) %>% 
-                     select(-year, -date) %>%
-                     bind_rows(fcasts)
 
-  return(weatherforecast)
-}
 
-#' @title Build a covariate forecast for model predictions 
-#' 
-#' @description combining weather and ndvi forecasts
-#' 
-#' @param covariate_data historical covariate data table
-#'
-#' @param moons moon data
-#'
-#' @param covariate_forecast_newmoons newmoon numbers for the covariate
-#'   forecast
-#'
-#' @param forecast_date date of the forecast (i.e., today)
-#'
-#' @param min_lag minimum (of non-0) lag times that need to be accommodate 
-#' 
-#' @return a data.frame with 12 new moons of weather values
-#'
-#' @export
-#'
-fcast_covariates <- function(covariate_data, moons, 
-                             covariate_forecast_newmoons,
-                             forecast_date = Sys.Date(), min_lag = 6){
-
-  yr <- as.numeric(format(as.Date(forecast_date), "%Y"))
-  covariate_fcast_nms <- covariate_forecast_newmoons
-  ncfnm <- length(covariate_fcast_nms)
-
-  ndvi_data <- select(covariate_data, c("newmoonnumber", "ndvi"))
-
-  moons <- moons[, c("newmoonnumber", "newmoondate", "period", "censusdate")]
-  fc_nms <- moons
-  addl_need_to_fcast <- which(moons$newmoonnumber %in% covariate_fcast_nms)
-  if (length(addl_need_to_fcast) > 0){
-    fc_nms <- fc_nms[-addl_need_to_fcast, ]
-  }
-
-  weather_f <- fcast_weather(yr, fc_nms, lag = 0, lead_time = ncfnm - min_lag)
-  ndvi_f <- fcast_ndvi(ndvi_data, "newmoon", lead = ncfnm - min_lag, moons)
-  fcast <- right_join(weather_f, ndvi_f, by = "newmoonnumber")
-  forecast_newmoon <- max(fc_nms$newmoonnumber)
-  out <- round(data.frame(forecast_newmoon, fcast), 3)
-  return(out)
-}
 
 #' @title Append a covariate forecast to existing covariate forecasts
 #' 

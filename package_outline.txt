@@ -10,6 +10,8 @@ function outline:
     -fill_PortalData
 	  -download_observations
     -fill_data
+	  -prep_moons
+	  -prep_rodents
 	-fill_models
 	  -write_model
 

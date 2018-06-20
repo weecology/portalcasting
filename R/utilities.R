@@ -1,3 +1,31 @@
+#' @title Save data out to a file and return it
+#'
+#' @description Save data out to a data file if requested (request is handled
+#'   by the save element in the data_options list and the file name is handled
+#'   by the filename element) and return it to the console
+#'
+#' @param data data table to be written out
+#'
+#' @param tree directory tree
+#'
+#' @param data_options data_options list that includes a save element and 
+#'   a filename element
+#'
+#' @return data (as input)
+#'
+#' @export
+#'
+dataout <- function(data, tree = dirtree(), data_options = rodents_options()){
+
+  if (!is.null(data_options$save)){
+    if (data_options$save){
+      path <- file_path(tree = tree, paste0("data/", data_options$filename))
+      write.csv(data, path, row.names = FALSE)
+    }
+  }
+  return(data)
+}
+
 #' @title Save data out to a csv, appending if existing
 #'
 #' @description Appending a csv without re-writing the header. If file doesn't

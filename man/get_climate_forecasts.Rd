@@ -4,12 +4,12 @@
 \alias{get_climate_forecasts}
 \title{Download downscaled weather data}
 \usage{
-get_climate_forecasts(lead_time = 6, moons)
+get_climate_forecasts(tree = dirtree(), moons, data_options)
 }
 \arguments{
-\item{lead_time}{the newmoons into the future to obtain forecasts. Max of 7}
-
 \item{moons}{newmoon data table}
+
+\item{lead_time}{the newmoons into the future to obtain forecasts. Max of 7}
 }
 \value{
 a data.frame with precipitation(mm), temperature(C), year, and

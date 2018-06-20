@@ -4,15 +4,12 @@
 \alias{prep_moons}
 \title{Prepare temporal (lunar) data}
 \usage{
-prep_moons(tree = dirtree(), n_future_moons = 0, fdate = today())
+prep_moons(tree = dirtree(), data_options = moons_options())
 }
 \arguments{
-\item{fdate}{date from which future is defined, typically today's date.
-Required if \code{future > 0}}
+\item{tree}{directory tree}
 
-\item{future_moons}{integer value for the number of future moons to add}
-
-\item{data_dir}{directory name where the data files will reside}
+\item{data_options}{control options list for moons}
 }
 \value{
 data table of time variables for all surveys

@@ -4,30 +4,68 @@
 #'   newmoon numbers) associated with trapping events (achieved and missed)
 #'   based on a lunar survey schedule.
 #'
-#' @param future_moons integer value for the number of future moons to add
+#' @param tree directory tree
 #'
-#' @param fdate date from which future is defined, typically today's date.
-#'   Required if \code{future > 0}
-#'
-#' @param data_dir directory name where the data files will reside
+#' @param data_options control options list for moons
 #'
 #' @return data table of time variables for all surveys
 #'
 #' @export
 #' 
-prep_moons <- function(tree = dirtree(), n_future_moons = 0, fdate = today()){
+prep_moons <- function(tree = dirtree(), data_options = moons_options()){
 
-  path <- file_path(tree = tree, "PortalData/Rodents/moon_dates.csv") 
+  verify_PortalData(tree = tree, "moon_dates.csv")
+
+  file_path(tree = tree, "PortalData/Rodents/moon_dates.csv") %>%
+  read.csv(stringsAsFactors = FALSE) %>% 
+  add_future_moons(data_options = data_options) %>%
+  format_moons() %>%
+  dataout(tree, data_options)
+
+}
+
+#' @title Prepare the data options for moon data
+#'
+#' @description Create a list of control options for the moon data
+#'
+#' @param n_future_moons integer value for the number of future moons to add
+#'
+#' @param fdate date from which future is defined, typically today's date.
+#'   Required if \code{n_future_moons > 0}
+#'
+#' @param save logical if the data should be saved out
+#'
+#' @param filename the name of the file for the saving.
+#'
+#' @return control options list for moons
+#'
+#' @export
+#'
+moons_options <- function(n_future_moons = 0, fdate = today(), save = TRUE,
+                          filename = "moons.csv"){
+  list("n_future_moons" = n_future_moons, "fdate" = fdate, "save" = save,
+       "filename" = filename)
+}
+
+#' @title Verify that the PortalData sub is present and has required data
+#'
+#' @description Check that the PortalData subdirectory exists and has the
+#'   needed file. If the file is not present, the directory is filled.
+#'
+#' @param tree directory tree
+#'
+#' @param filename name of the file to specifically check
+#'
+#' @return nothing
+#'
+#' @export
+#' 
+verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv"){
+  path <- file_path(tree = tree, paste0("PortalData/Rodents/", filename)) 
   if (!file.exists(path)){
     create_dir(tree = tree)
     fill_PortalData(tree = tree)
   }
-  out <- read.csv(path, stringsAsFactors = FALSE) %>% 
-         add_future_moons(n_future_moons = n_future_moons, fdate = fdate) %>%
-         format_moons() 
-  path <- file_path(tree = tree, "data/moons.csv")
-  write.csv(out, path, row.names = FALSE)
-  return(out)
 }
 
 #' @title Add future moons to the moon table
@@ -38,18 +76,17 @@ prep_moons <- function(tree = dirtree(), n_future_moons = 0, fdate = today()){
 #'
 #' @param moons current newmoonnumber table
 #'
-#' @param n_future_moons integer value for the number of future moons to add
-#'
-#' @param fdate date from which future is defined, typically today's date.
-#'   Required if \code{n_future_moons > 0}
+#' @param data_options control options list for moons
 #'
 #' @return appended moon table
 #'
 #' @export
 #' 
-add_future_moons <- function(moons = prep_moons(), n_future_moons = 12, 
-                             fdate = today()){
+add_future_moons <- function(moons = prep_moons(), 
+                             data_options = moons_options()){
 
+  n_future_moons <- data_options$n_future_moons
+  fdate <- data_options$fdate
   if (!(n_future_moons %% 1 == 0 & n_future_moons >= 0)){
     stop("'n_future_moons' must be a non-negative integer")
   }

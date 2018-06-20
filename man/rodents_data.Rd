@@ -12,7 +12,7 @@ rodents_data(tree = dirtree(), moons = prep_moons(),
 
 \item{moons}{current newmoon table}
 
-\item{data_options}{}
+\item{data_options}{data options list for rodents}
 }
 \value{
 a list of two dataframes, all plots and control plots

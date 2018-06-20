@@ -1,32 +1,39 @@
+notes:
+
+working right now on the covariate forecasting
+
+the current situation with the gap might be a weird nuance of the frequency of
+data updates. should build checks in to handle it, but may not need to worry
+too much about it right now
 
 
-  covariates <- prep_covariates(data_dir = data_dir)
-  metadata <- prep_metadata(rodents, covariates, data_dir = data_dir)
+write a small wrapper for appending of the csv
+document all the dang functions wow
 
 
-
-
-
-
-
-  all <- abundance(clean = FALSE, level = "Site", type = "Rodents", 
-                        length = "all", min_plots = 24) %>%
-         select(-PI)
-  all <- all %>%
-         mutate(total = rowSums(all[ , -1])) %>%
-         inner_join(moons, by = c("period" = "period")) %>%
-         subset(newmoonnumber >= start_newmoonnumber) %>%
-         select(-newmoondate, -censusdate)
-
-  out <- list("controls" = controls, "all" = all)
-
-  write.csv(all, full_path("all.csv", data_dir), row.names = FALSE)
-  write.csv(controls, full_path("controls.csv", data_dir), row.names = FALSE)
-  return(out)
-}
+hmmm getting a note at the outset about the default data path
+likely coming from portalr
+should figure out what's causing it and quiet it
 
 
 
+
+specifically working within the prep_fcast_covariates function
+
+here's what was cut out and needs to be put back in
+might need its own functions
+definitely needs options added (carry them all the way back up!)
+
+  if (append_fcast_csv){
+    append_covariate_fcast_csv(fcast_data, covariate_file, source_name)
+  }
+
+
+  fcast_data <- select(fcast_data, -forecast_newmoon)
+  fcast_data$source <- "fcast"
+
+
+and then get to handling the existing historical covariate forecasts
 
   covdat <- full_path("portalcasting/data/covariate_forecasts.csv", base_path)
   if (!file.exists(covdat)){
