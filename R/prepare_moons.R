@@ -9,11 +9,18 @@
 #'
 #' @param data_options control options list for moons
 #'
+#' @param quiet logical indicator of printing messages
+#'
 #' @return data table of time variables for all surveys
 #'
 #' @export
 #' 
-prep_moons <- function(tree = dirtree(), data_options = moons_options()){
+prep_moons <- function(tree = dirtree(), data_options = moons_options(),
+                       quiet = FALSE){
+
+  if (!quiet){
+    cat("Loading the moons data file into the data subdirectory. \n")
+  }
 
   verify_PortalData(tree = tree, "moon_dates.csv")
 

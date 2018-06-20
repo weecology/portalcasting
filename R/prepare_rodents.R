@@ -11,12 +11,17 @@
 #' @param data_options data options list for rodents, which is forced to 
 #'   conform internally for the two data types (all and controls)
 #' 
+#' @param quiet logical indicator of printing messages
+#'
 #' @return a list of two dataframes, all plots and control plots
 #'
 #' @export
 #'
 prep_rodents <- function(tree = dirtree(), moons = prep_moons(), 
-                         data_options = rodents_options()){
+                         data_options = rodents_options(), quiet = FALSE){
+  if (!quiet){
+    cat("Loading the rodents data files into the data subdirectory. \n")
+  }
   verify_PortalData(tree = tree, "Portal_rodent.csv")
 
   all_options <- enforce_rodents_options(data_options, "all")

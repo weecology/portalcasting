@@ -4,22 +4,18 @@
 \alias{append_covariate_fcast_csv}
 \title{Append a covariate forecast to existing covariate forecasts}
 \usage{
-append_covariate_fcast_csv(forecast_covariates, covariate_file = NULL,
-  source_name = "current_archive")
+append_covariate_fcast_csv(new_forecast_covariates, tree = dirtree(),
+  data_options = covariates_options())
 }
 \arguments{
-\item{forecast_covariates}{forecasted covariates}
+\item{new_forecast_covariates}{forecasted covariates}
 
-\item{covariate_file}{file name for the existing historical covariate data
-file}
+\item{tree}{directory tree}
 
-\item{source_name}{character value for the name to give the covariaate
-forecast. Currently is "current_archive". Previous to "current_archive",
-the data were retroactively filled in and are given the source name
-"retroactive"}
+\item{data_options}{control options list for covariates}
 }
 \value{
-no value
+new_forecast_covariates as input
 }
 \description{
 combining weather and ndvi forecasts to the existing forecasts

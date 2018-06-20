@@ -166,11 +166,10 @@ fill_data <- function(tree = dirtree(), all_options = all_data_options(),
   if (!quiet){
     cat("Loading forecasting data files into data subdirectory. \n")
   }
-  moons <- prep_moons(tree, all_options$moons_options)
-  rodents <- prep_rodents(tree, moons, all_options$rodents_options)
+  moons <- prep_moons(tree, all_options$moons, quiet)
+  rodents <- prep_rodents(tree, moons, all_options$rodents, quiet)
+  covariates <- prep_covariates(tree, moons, all_options$covariates, quiet)
 
-# working on prep_covariates in that script
-  # covariates <- prep_covariates(tree, moons, all_options$covariates_options)
   # metadata <- prep_metadata
 }
 
@@ -246,6 +245,17 @@ fill_models <- function(tree = dirtree(), model = models(), quiet = FALSE){
 #'
 #' @param nfcnm number of forecast newmoons for covariates
 #'
+#' @param append_fcast_csv logical if the new forecast should be appended to
+#'   the historical forecasts for the purposes of hindcasting
+#'
+#' @param hist_fcast_file name of the file where the historical 
+#'   covariate forecasts are held
+#'
+#' @param source_name character value for the name to give the covariaate
+#'   forecast. Currently is "current_archive". Previous to "current_archive",
+#'   the data were retroactively filled in and are given the source name
+#'   "retroactive"
+#'
 #' @param c_save logical if the covariate data should be saved out
 #'
 #' @param c_filename the name of the covariate file for the saving
@@ -257,7 +267,7 @@ fill_models <- function(tree = dirtree(), model = models(), quiet = FALSE){
 #'
 #' @export
 #'
-all_data_options <- function(fdate = today(), 
+all_data_options <- function(fdate = today(), append_missing_to_raw = TRUE,
                              m_save = TRUE, m_filename = "moons.csv",
                              type = NULL, start = 217, drop_spp = "PI", 
                              min_plots = 24, level = "Site", 
@@ -268,24 +278,29 @@ all_data_options <- function(fdate = today(),
                              yr = as.numeric(format(today(), "%Y")),
                              lead_time = 12, min_lag = 6, 
                              fcast_nms = NULL, nfcnm = 0,
+                             append_fcast_csv = TRUE, 
+                             hist_fcast_file = "covariate_forecasts.csv",
+                             source_name = "current_archive",
                              c_save = TRUE, c_filename = "covariates.csv"){
 
-  moons_opts <- moons_options(n_future_moons = lead_time, fdate = fdate,
-                              append_missing_to_raw = append_missing_to_raw,
-                              save = m_save, filename = m_filename)
-  rodents_opts <- rodents_options(type = type, start = start, 
-                                  drop_spp = drop_spp, min_plots = min_plots, 
-                                  level = level, treatment = treatment, 
-                                  length = length, output = output,
-                                  save = r_save, filename = r_filename)
-  covs_opts <- covariates_options(historical = historical, 
-                                  forecasts = forecasts, fdate = fdate, 
-                                  yr = yr, start = start,
-                                  lead_time = lead_time, min_lag = min_lag, 
-                                  fcast_nms = fcast_nms, nfcnm = nfcnm,
-                                  save = c_save, filename = c_filename)
-
-  list("moons_options" = moons_opts, "rodents_options" = rodents_opts,
-       "covariates_options" = covs_opts)
+  list("moons" = moons_options(n_future_moons = lead_time, fdate = fdate,
+                               append_missing_to_raw = append_missing_to_raw,
+                               save = m_save, filename = m_filename),
+       "rodents" = rodents_options(type = type, start = start, 
+                                   drop_spp = drop_spp, min_plots = min_plots, 
+                                   level = level, treatment = treatment, 
+                                   length = length, output = output,
+                                   save = r_save, filename = r_filename),
+       "covariates" = covariates_options(historical = historical, 
+                                         forecasts = forecasts, fdate = fdate, 
+                                         yr = yr, start = start,
+                                         lead_time = lead_time, 
+                                         min_lag = min_lag, 
+                                         fcast_nms = fcast_nms, nfcnm = nfcnm,
+                                         append_fcast_csv = append_fcast_csv, 
+                                         hist_fcast_file = hist_fcast_file,
+                                         source_name = source_name,
+                                         save = c_save, filename = c_filename)
+      )
 
 }

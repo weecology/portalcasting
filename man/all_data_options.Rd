@@ -4,16 +4,23 @@
 \alias{all_data_options}
 \title{Prepare all of the data options for}
 \usage{
-all_data_options(fdate = today(), m_save = TRUE, m_filename = "moons.csv",
-  type = NULL, start = 217, drop_spp = "PI", min_plots = 24,
-  level = "Site", treatment = NULL, length = "all",
-  output = "abundance", r_save = TRUE, r_filename = "all.csv",
-  historical = TRUE, forecasts = TRUE, yr = as.numeric(format(today(),
-  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-  c_save = TRUE, c_filename = "covariates.csv")
+all_data_options(fdate = today(), append_missing_to_raw = TRUE,
+  m_save = TRUE, m_filename = "moons.csv", type = NULL, start = 217,
+  drop_spp = "PI", min_plots = 24, level = "Site", treatment = NULL,
+  length = "all", output = "abundance", r_save = TRUE,
+  r_filename = "all.csv", historical = TRUE, forecasts = TRUE,
+  yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
+  fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
+  hist_fcast_file = "covariate_forecasts.csv",
+  source_name = "current_archive", c_save = TRUE,
+  c_filename = "covariates.csv")
 }
 \arguments{
 \item{fdate}{date from which future is defined, typically today's date.}
+
+\item{append_missing_to_raw}{logical indicating if the missing moon dates 
+should be appended to the raw data file (should be TRUE to allow the
+imported portalr functions to work properly)}
 
 \item{m_save}{logical if the moons data should be saved out}
 
@@ -56,13 +63,20 @@ to be included}
 
 \item{nfcnm}{number of forecast newmoons for covariates}
 
+\item{append_fcast_csv}{logical if the new forecast should be appended to
+the historical forecasts for the purposes of hindcasting}
+
+\item{hist_fcast_file}{name of the file where the historical 
+covariate forecasts are held}
+
+\item{source_name}{character value for the name to give the covariaate
+forecast. Currently is "current_archive". Previous to "current_archive",
+the data were retroactively filled in and are given the source name
+"retroactive"}
+
 \item{c_save}{logical if the covariate data should be saved out}
 
 \item{c_filename}{the name of the covariate file for the saving}
-
-\item{append_missing_to_raw}{logical indicating if the missing moon dates 
-should be appended to the raw data file (should be TRUE to allow the
-imported portalr functions to work properly)}
 }
 \value{
 control options list for covariates

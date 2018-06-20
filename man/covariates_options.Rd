@@ -6,7 +6,9 @@
 \usage{
 covariates_options(historical = TRUE, forecasts = TRUE, fdate = today(),
   yr = as.numeric(format(today(), "\%Y")), start = 217, lead_time = 12,
-  min_lag = 6, fcast_nms = NULL, nfcnm = 0, save = TRUE,
+  min_lag = 6, fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
+  hist_fcast_file = "covariate_forecasts.csv",
+  source_name = "current_archive", save = TRUE,
   filename = "covariates.csv")
 }
 \arguments{
@@ -31,6 +33,17 @@ value is \code{217}, corresponding to 1995-01-01.}
 pre-lag)}
 
 \item{nfcnm}{number of forecast newmoons}
+
+\item{append_fcast_csv}{logical if the new forecast should be appended to
+the historical forecasts for the purposes of hindcasting}
+
+\item{hist_fcast_file}{name of the file where the historical 
+covariate forecasts are held}
+
+\item{source_name}{character value for the name to give the covariaate
+forecast. Currently is "current_archive". Previous to "current_archive",
+the data were retroactively filled in and are given the source name
+"retroactive"}
 
 \item{save}{logical if the data should be saved out}
 

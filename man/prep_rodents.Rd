@@ -5,7 +5,7 @@
 \title{Prepare historic rodent data}
 \usage{
 prep_rodents(tree = dirtree(), moons = prep_moons(),
-  data_options = rodents_options())
+  data_options = rodents_options(), quiet = FALSE)
 }
 \arguments{
 \item{tree}{the name tree of the portalcasting directory}
@@ -14,6 +14,8 @@ prep_rodents(tree = dirtree(), moons = prep_moons(),
 
 \item{data_options}{data options list for rodents, which is forced to 
 conform internally for the two data types (all and controls)}
+
+\item{quiet}{logical indicator of printing messages}
 }
 \value{
 a list of two dataframes, all plots and control plots

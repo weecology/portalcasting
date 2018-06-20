@@ -5,7 +5,7 @@
 \title{Prepare covariate data table}
 \usage{
 prep_covariates(tree = dirtree(), moons = prep_moons(),
-  data_options = covariates_options())
+  data_options = covariates_options(), quiet = FALSE)
 }
 \arguments{
 \item{tree}{directory tree}
@@ -13,6 +13,10 @@ prep_covariates(tree = dirtree(), moons = prep_moons(),
 \item{moons}{current newmoon table}
 
 \item{data_options}{control options list for covariates}
+
+\item{quiet}{logical indicator of printing messages}
+
+\item{quiet}{logical indicator if progress messages should be quieted}
 }
 \value{
 covariate data table

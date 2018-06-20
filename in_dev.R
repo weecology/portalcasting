@@ -1,23 +1,6 @@
 
 
 
-notes:
-
-working right now on the covariate forecasting
-
-the current situation with the gap might be a weird nuance of the frequency of
-data updates. should build checks in to handle it, but may not need to worry
-too much about it right now
-
-
-write a small wrapper for appending of the csv
-document all the dang functions wow
-
-
-hmmm getting a note at the outset about the default data path
-likely coming from portalr
-should figure out what's causing it and quiet it
-
 
 
 
@@ -27,9 +10,7 @@ here's what was cut out and needs to be put back in
 might need its own functions
 definitely needs options added (carry them all the way back up!)
 
-  if (append_fcast_csv){
-    append_covariate_fcast_csv(fcast_data, covariate_file, source_name)
-  }
+
 
 
   fcast_data <- select(fcast_data, -forecast_newmoon)
@@ -38,18 +19,32 @@ definitely needs options added (carry them all the way back up!)
 
 and then get to handling the existing historical covariate forecasts
 
-  covdat <- full_path("portalcasting/data/covariate_forecasts.csv", base_path)
-  if (!file.exists(covdat)){
-    to <- covdat
-    fname <- "extdata/covariate_forecasts.csv"
-    from <- system.file(fname, package = "portalcasting")
-    if (!file.exists(from)){
-      stop("Covariate data not found.")
-    }
-    temp <- read.csv(from, stringsAsFactors = FALSE)    
 
-  }
+# not sure if we still need this?
 
+#' @title Append a covariate forecast to historical covariate table
+#' 
+#' @description combining weather and ndvi forecasts to the existing 
+#'   covariates
+#' 
+#' @param covariates output from \code{get_covariate_data}
+#'
+#' @param metadata model metadata
+#'
+#' @param moons moon data table
+#' 
+#' @return no value
+#'
+#' @export
+#'
+append_covariate_fcast <- function(covariates, metadata, 
+                                   moons = prep_moons){
+
+  covariates_fcast <- forecast_covariates(covariates, moons, metadata)
+  covariates_fcast <- select(covariates_fcast, -"forecast_newmoon")
+  covariates_all <- bind_rows(covariates, covariates_fcast)
+  return(covariates_all)
+}
 
 
 # next step is to update model_template
