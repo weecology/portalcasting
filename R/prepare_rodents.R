@@ -157,7 +157,7 @@ enforce_rodents_options <- function(data_options, type = "all"){
 #'
 #' @export
 #'
-remove_spp <- function(data, drop_spp = rodent_options()$drop_spp){
+remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
   if (!is.null(drop_spp)){
     data <- select(data, -drop_spp)
   }

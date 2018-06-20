@@ -8,6 +8,8 @@
 update_covfcast_options(data_options, hist_data, moons)
 }
 \arguments{
+\item{data_options}{covariate data options}
+
 \item{hist_data}{historical covariate data}
 
 \item{moons}{current newmoon table}

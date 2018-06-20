@@ -3,3 +3,4 @@
 ^\.travis\.yml$
 ^models$
 ^package_outline.txt$
+^in_dev.R$

@@ -8,9 +8,9 @@
 #'
 #' @param main name of the portalcasting directory
 #'
-#' @param main name of the portalcasting directory
+#' @param subs names of the portalcasting subdirectories
 #'
-#' @param models names of model scripts to include
+#' @param model names of model scripts to include
 #'
 #' @param quiet logical indicator if progress messages should be quieted
 #'
@@ -114,6 +114,8 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
 #'
 #' @param tree the name tree of the portalcasting directory
 #'
+#' @param model names of model scripts to include
+#'
 #' @param quiet logical indicator if progress messages should be quieted
 #'
 #' @return Nothing
@@ -187,7 +189,7 @@ fill_data <- function(tree = dirtree(), all_options = all_data_options(),
 #' @export
 #'
 fill_models <- function(tree = dirtree(), model = models(), quiet = FALSE){
-  mods <- sapply(write_model, model, tree = tree, quiet = qiet)
+  mods <- sapply(write_model, model, tree = tree, quiet = quiet)
 }
 
 
@@ -273,14 +275,14 @@ all_data_options <- function(n_future_moons = 0, fdate = today(),
                                   level = level, treatment = treatment, 
                                   length = length, output = output,
                                   save = r_save, filename = r_filename)
-  covariates_opts <- covariates_options(historical = historical, 
-                                        forecasts = forecasts, fdate = fdate, 
-                                        yr = yr, lead_time = lead_time, 
-                                        min_lag = min_lag, 
-                                        fcast_nms = fcast_nms, nfcnm = nfcnm,
-                                        save = c_save, filename = c_filename)
+  covs_opts <- covariates_options(historical = historical, 
+                                  forecasts = forecasts, fdate = fdate, 
+                                  yr = yr, start = start,
+                                  lead_time = lead_time, min_lag = min_lag, 
+                                  fcast_nms = fcast_nms, nfcnm = nfcnm,
+                                  save = c_save, filename = c_filename)
 
   list("moons_options" = moons_opts, "rodents_options" = rodents_opts,
-       "covariates_options" = covariates_opts)
+       "covariates_options" = covs_opts)
 
 }

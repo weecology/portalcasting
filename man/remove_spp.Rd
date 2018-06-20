@@ -4,7 +4,7 @@
 \alias{remove_spp}
 \title{Remove species from the rodent data table}
 \usage{
-remove_spp(data, drop_spp = rodent_options()$drop_spp)
+remove_spp(data, drop_spp = rodents_options()$drop_spp)
 }
 \arguments{
 \item{data}{rodent data table}

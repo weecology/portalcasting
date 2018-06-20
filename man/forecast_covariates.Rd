@@ -8,6 +8,8 @@ forecast_covariates(tree, covariate_data, moons,
   data_options = covariates_options())
 }
 \arguments{
+\item{tree}{directory tree}
+
 \item{covariate_data}{historical covariate data table}
 
 \item{moons}{moon data}

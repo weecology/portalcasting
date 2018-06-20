@@ -4,10 +4,8 @@
 \alias{portalcast}
 \title{Forecast Portal rodents}
 \usage{
-portalcast(type = "forecast", model_dir = pc_path("models", "~"),
-  temp_dir = pc_path("tmp", "~"), pred_dir = pc_path("predictions", "~"),
-  data_dir = pc_path("data", "~"), models = c("autoarima", "esss",
-  "nbgarch", "pevgarch"), ensemble = TRUE)
+portalcast(type = "forecast", model_dir, temp_dir, pred_dir, data_dir,
+  models = c("autoarima", "esss", "nbgarch", "pevgarch"), ensemble = TRUE)
 }
 \arguments{
 \item{type}{"forecast" or "hindcast"}

@@ -122,7 +122,7 @@ add_addl_future_moons <- function(future_moons, fdate){
 
   n_addl_future_moons <- length(which(future_moons$newmoondate < fdate))
   if (n_addl_future_moons > 0){
-    addl_moons <- get_future_moons(future_moons, n_addl)
+    addl_moons <- get_future_moons(future_moons, n_addl_future_moons)
     future_moons <- bind_rows(future_moons, addl_moons)
   } 
   return(future_moons)

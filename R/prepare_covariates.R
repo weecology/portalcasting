@@ -139,11 +139,11 @@ prep_weather_data <- function(tree = dirtree()){
 covariates_options <- function(historical = TRUE, forecasts = TRUE, 
                                fdate = today(), 
                                yr = as.numeric(format(today(), "%Y")),
-                               lead_time = 12,
+                               start = 217, lead_time = 12,
                                min_lag = 6, fcast_nms = NULL, nfcnm = 0,
                                save = TRUE, filename = "covariates.csv"){
   list("historical" = historical, "forecasts" = forecasts, "fdate" = fdate,
-       "yr" = yr, 
+       "yr" = yr, "start" = start, 
        "lead_time" = lead_time, "min_lag" = min_lag, 
        "fcast_nms" = fcast_nms, "nfcnm" = nfcnm, 
        "save" = save, "filename" = filename)
@@ -154,6 +154,8 @@ covariates_options <- function(historical = TRUE, forecasts = TRUE,
 #'
 #' @description Update the covariate data control options based on the 
 #'   historical covariate data and moon data
+#'
+#' @param data_options covariate data options
 #'
 #' @param hist_data historical covariate data
 #'

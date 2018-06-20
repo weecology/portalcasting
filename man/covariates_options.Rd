@@ -5,8 +5,9 @@
 \title{Prepare the data options for covariates data}
 \usage{
 covariates_options(historical = TRUE, forecasts = TRUE, fdate = today(),
-  yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
-  fcast_nms = NULL, nfcnm = 0, save = TRUE, filename = "covariates.csv")
+  yr = as.numeric(format(today(), "\%Y")), start = 217, lead_time = 12,
+  min_lag = 6, fcast_nms = NULL, nfcnm = 0, save = TRUE,
+  filename = "covariates.csv")
 }
 \arguments{
 \item{historical}{logical indicator whether or historical covariates are

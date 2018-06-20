@@ -21,10 +21,10 @@
 #'
 #' @export
 #'
-portalcast <- function(type = "forecast", model_dir = pc_path("models", "~"),
-                       temp_dir = pc_path("tmp", "~"),
-                       pred_dir = pc_path("predictions", "~"),
-                       data_dir = pc_path("data", "~"),
+portalcast <- function(type = "forecast", model_dir,
+                       temp_dir,
+                       pred_dir,
+                       data_dir,
                        models = c("autoarima", "esss", "nbgarch", "pevgarch"),
                        ensemble = TRUE){
 
@@ -32,8 +32,8 @@ portalcast <- function(type = "forecast", model_dir = pc_path("models", "~"),
 
   cat("Preparing data", "\n")
   if (type == "forecast"){
-    rodents <- prep_rodent_data(data_dir = data_dir)
-    covariates <- prep_covariate_data(data_dir = data_dir)
+    rodents <- prep_rodents(data_dir = data_dir)
+    covariates <- prep_covariates(data_dir = data_dir)
     metadata <- prep_metadata(rodents, covariates, data_dir = data_dir)
   }
 

@@ -1,6 +1,8 @@
 #' @title Build a covariate forecast for model predictions 
 #' 
 #' @description combining weather and ndvi forecasts
+#'
+#' @param tree directory tree
 #' 
 #' @param covariate_data historical covariate data table
 #'
@@ -83,9 +85,11 @@ forecast_weather <- function(tree = dirtree(), moons, data_options){
 #'   https://climate.northwestknowledge.net/RangelandForecast/download.php
 #'   and downscaled to Portal, AZ (31.9555, -109.0744)
 #' 
-#' @param lead_time the newmoons into the future to obtain forecasts. Max of 7
+#' @param tree directory tree
 #'
 #' @param moons newmoon data table
+#'
+#' @param data_options covariate options control list
 #' 
 #' @return a data.frame with precipitation(mm), temperature(C), year, and
 #'   month. Temperature is the mean temperature for the month, while 
@@ -93,7 +97,8 @@ forecast_weather <- function(tree = dirtree(), moons, data_options){
 #'
 #' @export
 #'
-get_climate_forecasts <- function(tree = dirtree(), moons, data_options){
+get_climate_forecasts <- function(tree = dirtree(), moons = prep_moons(), 
+                                  data_options = covariates_options()){
   
   lead_time <- data_options$lead_time - data_options$min_lag
 
@@ -252,9 +257,9 @@ append_covariate_fcast_csv <- function(forecast_covariates,
 #' @export
 #'
 append_covariate_fcast <- function(covariates, metadata, 
-                                   moons = prep_moon_data()){
+                                   moons = prep_moons){
 
-  covariates_fcast <- fcast_covariates(covariates, moons, metadata)
+  covariates_fcast <- forecast_covariates(covariates, moons, metadata)
   covariates_fcast <- select(covariates_fcast, -"forecast_newmoon")
   covariates_all <- bind_rows(covariates, covariates_fcast)
   return(covariates_all)

@@ -20,14 +20,14 @@
 #'
 #' @export
 #'
-prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(), 
+prep_metadata <- function(rodents, covariates, forecast_date = today(), 
                           filename_suffix = "forecasts",
                           confidence_level = 0.9, lead_time = 12,
-                          data_dir = pc_path("data", "~")){
+                          data_dir){
  
   # prev = previous (i.e. the most recent)
   
-  moons <- prep_moon_data(future = TRUE)
+  moons <- prep_moons(future = TRUE)
 
   covariates_fcasts <- which(covariates$source == "fcast")
 
@@ -66,6 +66,6 @@ prep_metadata <- function(rodents, covariates, forecast_date = Sys.Date(),
                rodent_forecast_months = rodent_fcast_months, 
                rodent_forecast_years = rodent_fcast_years,
                confidence_level = confidence_level)
-  writeLines(as.yaml(out), con = full_path("metadata.yaml", data_dir))
+  #writeLines(as.yaml(out), con = full_path("metadata.yaml", data_dir))
   return(out)
 }

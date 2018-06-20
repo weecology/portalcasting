@@ -13,11 +13,11 @@ directory should exist (will be created if it doesn't)}
 
 \item{main}{name of the portalcasting directory}
 
+\item{subs}{names of the portalcasting subdirectories}
+
+\item{model}{names of model scripts to include}
+
 \item{quiet}{logical indicator if progress messages should be quieted}
-
-\item{main}{name of the portalcasting directory}
-
-\item{models}{names of model scripts to include}
 }
 \value{
 Nothing

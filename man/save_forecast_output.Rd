@@ -4,8 +4,7 @@
 \alias{save_forecast_output}
 \title{Save forecast output to files}
 \usage{
-save_forecast_output(all, controls, name, metadata, temp_dir = pc_path("tmp",
-  "~"))
+save_forecast_output(all, controls, name, metadata, temp_dir)
 }
 \arguments{
 \item{all}{ouput from the forecasting function for all data}

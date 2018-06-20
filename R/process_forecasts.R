@@ -18,7 +18,7 @@
 #' @export
 #'
 save_forecast_output <- function(all, controls, name, metadata,
-                                 temp_dir = pc_path("tmp", "~")){
+                                 temp_dir){
  
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)

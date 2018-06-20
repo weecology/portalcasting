@@ -4,9 +4,9 @@
 \alias{prep_metadata}
 \title{Prepare model metadata}
 \usage{
-prep_metadata(rodents, covariates, forecast_date = Sys.Date(),
+prep_metadata(rodents, covariates, forecast_date = today(),
   filename_suffix = "forecasts", confidence_level = 0.9, lead_time = 12,
-  data_dir = pc_path("data", "~"))
+  data_dir)
 }
 \arguments{
 \item{rodents}{rodent data table}

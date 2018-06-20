@@ -4,7 +4,7 @@
 \alias{append_covariate_fcast}
 \title{Append a covariate forecast to historical covariate table}
 \usage{
-append_covariate_fcast(covariates, metadata, moons = prep_moon_data())
+append_covariate_fcast(covariates, metadata, moons = prep_moons)
 }
 \arguments{
 \item{covariates}{output from \code{get_covariate_data}}

@@ -9,6 +9,8 @@ fill_dir(tree = dirtree(), model = models(), quiet = FALSE)
 \arguments{
 \item{tree}{the name tree of the portalcasting directory}
 
+\item{model}{names of model scripts to include}
+
 \item{quiet}{logical indicator if progress messages should be quieted}
 }
 \value{
