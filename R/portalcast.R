@@ -43,17 +43,17 @@ portalcast <- function(type = "forecast", model_dir,
   }
 
   cat("Checking model availability", "\n")
-  runnames <- select_models(model_dir, models)
+  #runnames <- select_models(model_dir, models)
 
   cat("Running models", "\n")
   sapply(runnames, source)
 
   cat("Compiling forecasts", "\n")
-  combined <- combine_forecasts(metadata)
+  #combined <- combine_forecasts(metadata)
 
   if (ensemble){
     cat("Creating ensemble model", "\n")
-    ensemble <- add_ensemble(metadata)
+    #ensemble <- add_ensemble(metadata)
   }
 
   unlink(temp_dir)
