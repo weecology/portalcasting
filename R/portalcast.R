@@ -37,16 +37,16 @@ portalcast <- function(type = "forecast", model_dir,
     #metadata <- prep_metadata(rodents, covariates, data_dir = data_dir)
   }
 
-  forecast_date <- as.Date(metadata$forecast_date)
-  if (!(forecast_date == Sys.Date())){
-    stop("Data not updated")
-  }
+  #forecast_date <- as.Date(metadata$forecast_date)
+  #if (!(forecast_date == Sys.Date())){
+ #   stop("Data not updated")
+ # }
 
   cat("Checking model availability", "\n")
   #runnames <- select_models(model_dir, models)
 
   cat("Running models", "\n")
-  sapply(runnames, source)
+  #sapply(runnames, source)
 
   cat("Compiling forecasts", "\n")
   #combined <- combine_forecasts(metadata)
