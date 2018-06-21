@@ -106,8 +106,8 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
 #'
 fill_dir <- function(options_all = all_options()){
   fill_PortalData(options_all$options_dir)
-  fill_data(options_all)
-  #fill_models(tree = tree, model = model, quiet = quiet)
+  fill_data(options_all$options_data)
+  #fill_models(options_all$options_models)
 }
 
 #' @title Populate the raw data of a portalcasting directory
@@ -131,39 +131,35 @@ fill_PortalData <- function(options_dir = dir_options()){
 #'
 #' @description Populate the for-use data folder
 #'
-#' @param options_all list containing all options available for controlling
-#'   the set up and population of the forecast directory  
+#' @param options_data list containing all options available for controlling
+#'   the set up and population of the forecast data subdirectory  
 #'
 #' @return Nothing
 #'
 #' @export
 #'
-fill_data <- function(options_all = all_options()){
-  if (!options_all$options_dir$quiet){
+fill_data <- function(options_data = data_options()){
+  if (!options_data$options_moons$quiet){
     cat("Loading forecasting data files into data subdirectory. \n")
   }
-  moons <- prep_moons(options_all$options_data$moons)
-  rodents <- prep_rodents(moons, options_all$options_data$rodents)
-  covariates <- prep_covariates(moons, options_all$options_data$covariates)
-  #meta <- prep_metadata(rodents, covariates, options_all$options_data$meta)
+  moons <- prep_moons(options_data$moons)
+  rodents <- prep_rodents(moons, options_data$rodents)
+  covariates <- prep_covariates(moons, options_data$covariates)
+  meta <- prep_metadata(moons, rodents, covariates, options_data$metadata)
 }
 
 #' @title Populate the model scripts of a portalcasting directory
 #'
 #' @description Populate the model folder with specified scripts to be run
 #'
-#' @param tree the name tree of the portalcasting directory
-#'
-#' @param model names of model scripts to include
-#'
-#' @param quiet logical indicator if progress messages should be quieted
+#' @param options_models model option list
 #'
 #' @return Nothing
 #'
 #' @export
 #'
-fill_models <- function(tree = dirtree(), model = models(), quiet = FALSE){
-  mods <- sapply(write_model, model, tree = tree, quiet = quiet)
+fill_models <- function(options_models = models_options()){
+  mods <- sapply(options_models$model, write_model, options_models)
 }
 
 

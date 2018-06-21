@@ -4,14 +4,12 @@
 \alias{write_model}
 \title{Write the template for a model into the model sub directory}
 \usage{
-write_model(model = NULL, tree = tree(), quiet = FALSE)
+write_model(model = NULL, options_models = model_options())
 }
 \arguments{
 \item{model}{the name of the specific model}
 
-\item{tree}{the name tree of the forecasting directory}
-
-\item{quiet}{logical print steps to console}
+\item{options_models}{model option list}
 }
 \value{
 Nothing

@@ -183,6 +183,40 @@ covariates_options <- function(historical = TRUE, forecasts = TRUE,
        tree = tree, quiet = quiet)
 }
 
+#' @title Prepare model metadata options
+#'
+#' @description Create a list of control options for the metadata
+#'
+#' @param fdate date of the forecast (i.e., today)
+#'
+#' @param filename_suffix "forecasts" or "hindcasts" 
+#'
+#' @param confidence_level confidence level used in summarizing model output
+#'
+#' @param lead_time number of newmoons forward to forecast abundances
+#'
+#' @param save logical if the data should be saved out
+#'
+#' @param filename the name of the file for the saving
+#'
+#' @param quiet logical indicator if progress messages should be quieted
+#'
+#' @param tree directory tree
+#'
+#' @return metadata options list
+#'
+#' @export
+#'
+metadata_options <- function(fdate = today(), filename_suffix = "forecasts",
+                             confidence_level = 0.9, lead_time = 12,
+                             save = TRUE, filename = "metadata.yaml", 
+                             quiet = FALSE, tree = dirtree()){
+
+  list(fdate = fdate, filename_suffx = filename_suffix, 
+       confidence_level = confidence_level,lead_time = lead_time, save = save,
+       filename = filename, quiet = quiet, tree = tree)
+}
+
 #' @title Prepare the data options for a portalcasting directory
 #'
 #' @description Create a list of lists of control options for filling the data
@@ -262,7 +296,14 @@ covariates_options <- function(historical = TRUE, forecasts = TRUE,
 #' @param c_filename the name of the covariate file for the saving
 #'
 #'
-#' @param models names of model scripts to include
+#' @param filename_suffix "forecasts" or "hindcasts" 
+#'
+#' @param confidence_level confidence level used in summarizing model output
+#'
+#' @param meta_save logical if the metadata should be saved out
+#'
+#' @param meta_filename the name of the metadata file for the saving
+#'
 #'
 #' @return list of control options lists
 #'
@@ -284,7 +325,9 @@ data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                          hist_fcast_file = "covariate_forecasts.csv",
                          source_name = "current_archive",
                          c_save = TRUE, c_filename = "covariates.csv",
-                         models = models()){
+                         filename_suffix = "forecasts",
+                         confidence_level = 0.9, 
+                         meta_save = TRUE, meta_filename = "metadata.yaml"){
 
   tree <- dirtree(base, main, subs)
   list(
@@ -308,11 +351,42 @@ data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                                     hist_fcast_file = hist_fcast_file,
                                     source_name = source_name,
                                     save = c_save, filename = c_filename,
-                                    quiet = quiet, tree = tree)
+                                    quiet = quiet, tree = tree),
+    metadata = metadata_options(fdate = fdate, 
+                                filename_suffix = filename_suffix,
+                                confidence_level = confidence_level,
+                                lead_time = lead_time, save = meta_save,
+                                filename = meta_filename, quiet = quiet, 
+                                tree = tree) 
       )
 }
 
+#' @title Prepare the model options for a portalcasting directory
+#'
+#' @description Create a list of control options for the model set-up
+#'
+#' @param base name of the base directory where the forecasting 
+#'   directory should exist (will be created if it doesn't)
+#'
+#' @param main name of the portalcasting directory
+#'
+#' @param subs names of the portalcasting subdirectories
+#'
+#' @param quiet logical indicator if progress messages should be quieted
+#'
+#' @param model names of model scripts to include
+#'
+#'
+#' @return list of model control options
+#'
+#' @export
+#'
+models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
+                          quiet = FALSE, model = models()){
 
+  tree <- dirtree(base, main, subs)
+  list(model = model, quiet = quiet, tree = tree)
+}
 
 #' @title Prepare all of the options for creating a portalcasting directory
 #'
@@ -392,8 +466,17 @@ data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 #'
 #' @param c_filename the name of the covariate file for the saving
 #'
+#' @param filename_suffix "forecasts" or "hindcasts" 
 #'
-#' @param models names of model scripts to include
+#' @param confidence_level confidence level used in summarizing model output
+#'
+#' @param meta_save logical if the metadata should be saved out
+#'
+#' @param meta_filename the name of the metadata file for the saving
+#'
+#'
+#' @param model names of model scripts to include
+#'
 #'
 #' @return list of control options lists
 #'
@@ -415,7 +498,10 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         hist_fcast_file = "covariate_forecasts.csv",
                         source_name = "current_archive",
                         c_save = TRUE, c_filename = "covariates.csv",
-                        models = models()){
+                        filename_suffix = "forecasts",
+                        confidence_level = 0.9, meta_save = TRUE, 
+                        meta_filename = "metadata.yaml", models = models(),
+                        model = models()){
 
   list(
     options_dir = dir_options(base = base, main = main, subs = subs,
@@ -436,7 +522,13 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                                 append_fcast_csv = append_fcast_csv, 
                                 hist_fcast_file = hist_fcast_file,
                                 source_name = source_name,
-                                c_save = c_save, c_filename = c_filename)
+                                c_save = c_save, c_filename = c_filename,
+                                filename_suffix = filename_suffix,
+                                confidence_level = confidence_level,  
+                                meta_save = meta_save, 
+                                meta_filename = meta_filename),
+    options_models = models_options(base = base, main = main, subs = subs,
+                                    quiet = quiet, model = model)
   )
 
 }

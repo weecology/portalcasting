@@ -4,11 +4,11 @@
 \alias{fill_data}
 \title{Populate the for-use data of a portalcasting directory}
 \usage{
-fill_data(options_all = all_options())
+fill_data(options_data = data_options())
 }
 \arguments{
-\item{options_all}{list containing all options available for controlling
-the set up and population of the forecast directory}
+\item{options_data}{list containing all options available for controlling
+the set up and population of the forecast data subdirectory}
 }
 \value{
 Nothing

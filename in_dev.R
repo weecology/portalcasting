@@ -1,9 +1,7 @@
-#
-# working currently within the fill_data function
-#
-# now on to prep_metadata
-#   need to include metadata into the options lists
-#
+right now: working to update the model generation.
+as of now, the .R files are generated, but they're not right (out of date)
+
+
 # consider (i.e. do) organizing the documentation for the options lists so 
 # they're all together
 
@@ -19,119 +17,6 @@
 # it'll likely be easier if we just give all the model functions covariates
 #  but we could also make some indicator for them
 
-
-#' @title Create the text to be written out to a script for a model
-#'
-#' @description Create the text for a model script to be housed in the model 
-#'   directory
-#'
-#' @param model names of model script text to write
-#'
-#' @return Nothing
-#'
-#' @export
-#'
-model_template <- function(model = "autoarima"){
-
-  if (length(model) != 1){
-    stop("1 and only 1 model at a time, please and thank you!")
-  }
-
-  if (model == "autoarima"){
-    out <- template_autoarima()
-  }
-  if (model == "esss"){
-    out <- template_esss()
-  }
-  if (model == "nbgarch"){
-    out <- template_nbgarch()
-  }
-  if (model == "pevgarch"){
-    out <- template_pevgarch()
-  }
-  return(out)
-}
-
-#' @title Create template autoarima text
-#'
-#' @description Creates the text for a template autoarima script
-#'
-#' @return text of the template autoarima script
-#'
-#' @export
-#'
-template_autoarima <- function(){
-
-'all <- read.csv(full_path("all.csv", pc_path("data", "~")));
-controls <- read.csv(full_path("controls.csv", pc_path("data", "~")));
-metadata <- yaml::yaml.load_file(
-              full_path("metadata.yaml", pc_path("data", "~")));
-aa_a <- autoarima(all, metadata);
-aa_c <- autoarima(controls, metadata, level = "Controls");
-save_forecast_output(aa_a, aa_c, "AutoArima", metadata)'
-
-}
-
-#' @title Create template esss text
-#'
-#' @description Creates the text for a template esss script
-#'
-#' @return text of the template esss script
-#'
-#' @export
-#'
-template_esss <- function(){
-
-'all <- read.csv(full_path("all.csv", pc_path("data", "~")));
-controls <- read.csv(full_path("controls.csv", pc_path("data", "~")));
-metadata <- yaml::yaml.load_file(
-              full_path("metadata.yaml", pc_path("data", "~")));
-esss_a <- esss(all, metadata);
-esss_c <- esss(controls, metadata, level = "Controls");
-save_forecast_output(esss_a, esss_c, "ESSS", metadata)'
-
-}
-
-#' @title Create template nbGARCH text
-#'
-#' @description Creates the text for a template nbGARCH script
-#'
-#' @return text of the template nbGARCH script
-#'
-#' @export
-#'
-template_nbgarch <- function(){
-
-'all <- read.csv(full_path("all.csv", pc_path("data", "~")));
-controls <- read.csv(full_path("controls.csv", pc_path("data", "~")));
-metadata <- yaml::yaml.load_file(
-              full_path("metadata.yaml", pc_path("data", "~")));
-nbgarch_a <- nbgarch(all, metadata);
-nbgarch_c <- nbgarch(controls, metadata, level = "Controls");
-save_forecast_output(nbgarch_a, nbgarch_c, "nbGARCH", metadata)'
-
-}
-
-#' @title Create template pevGARCH text
-#'
-#' @description Creates the text for a template pevGARCH script
-#'
-#' @return text of the template pevGARCH script
-#'
-#' @export
-#'
-template_pevgarch <- function(){
-
-'all <- read.csv(full_path("all.csv", pc_path("data", "~")));
-controls <- read.csv(full_path("controls.csv", pc_path("data", "~")));
-covariates <- read.csv(full_path("covariates.csv", pc_path("data", "~")));
-metadata <- yaml::yaml.load_file(
-              full_path("metadata.yaml", pc_path("data", "~")));
-pevg_a <- pevgarch(all, covariates, metadata);
-pevg_c <- pevgarch(controls, covariates, metadata, level = "Controls");
-save_forecast_output(pevg_a, pevg_c, "pevGARCH", metadata)'
-
-}
 
 
 

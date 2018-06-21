@@ -4,14 +4,10 @@
 \alias{fill_models}
 \title{Populate the model scripts of a portalcasting directory}
 \usage{
-fill_models(tree = dirtree(), model = models(), quiet = FALSE)
+fill_models(options_models = models_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
-\item{model}{names of model scripts to include}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{options_models}{model option list}
 }
 \value{
 Nothing

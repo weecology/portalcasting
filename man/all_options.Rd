@@ -14,7 +14,9 @@ all_options(base = "~", main = "forecasting", subs = subdirs(),
   fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
   hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
-  c_filename = "covariates.csv", models = models())
+  c_filename = "covariates.csv", filename_suffix = "forecasts",
+  confidence_level = 0.9, meta_save = TRUE,
+  meta_filename = "metadata.yaml", models = models(), model = models())
 }
 \arguments{
 \item{base}{name of the base directory where the forecasting 
@@ -88,7 +90,15 @@ the data were retroactively filled in and are given the source name
 
 \item{c_filename}{the name of the covariate file for the saving}
 
-\item{models}{names of model scripts to include}
+\item{filename_suffix}{"forecasts" or "hindcasts"}
+
+\item{confidence_level}{confidence level used in summarizing model output}
+
+\item{meta_save}{logical if the metadata should be saved out}
+
+\item{meta_filename}{the name of the metadata file for the saving}
+
+\item{model}{names of model scripts to include}
 }
 \value{
 list of control options lists
