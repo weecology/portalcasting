@@ -16,7 +16,7 @@ all_options(base = "~", main = "forecasting", subs = subdirs(),
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", filename_suffix = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
-  meta_filename = "metadata.yaml", models = models(), model = models())
+  meta_filename = "metadata.yaml", model = models())
 }
 \arguments{
 \item{base}{name of the base directory where the forecasting 

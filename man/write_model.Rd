@@ -4,7 +4,7 @@
 \alias{write_model}
 \title{Write the template for a model into the model sub directory}
 \usage{
-write_model(model = NULL, options_models = model_options())
+write_model(model = NULL, options_models = models_options())
 }
 \arguments{
 \item{model}{the name of the specific model}

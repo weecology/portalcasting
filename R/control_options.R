@@ -500,7 +500,7 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         c_save = TRUE, c_filename = "covariates.csv",
                         filename_suffix = "forecasts",
                         confidence_level = 0.9, meta_save = TRUE, 
-                        meta_filename = "metadata.yaml", models = models(),
+                        meta_filename = "metadata.yaml", 
                         model = models()){
 
   list(

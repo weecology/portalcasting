@@ -31,7 +31,7 @@ models <- function(type = "portalcasting"){
 #'
 #' @export
 #'
-write_model <- function(model = NULL, options_models = model_options()){
+write_model <- function(model = NULL, options_models = models_options()){
   if (is.null(model)){
     return()
   }
