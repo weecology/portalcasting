@@ -2,6 +2,7 @@
 #' @importFrom dplyr bind_rows filter full_join group_by inner_join left_join 
 #'   right_join mutate rename select ungroup summarise summarize
 #' @importFrom forecast auto.arima ets forecast na.interp
+#' @importFrom httr GET stop_for_status
 #' @importFrom lubridate as_date is.Date month year
 #' @importFrom magrittr %>% extract2
 #' @importFrom portalr download_observations fcast_ndvi get_future_moons

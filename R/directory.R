@@ -107,6 +107,7 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
 fill_dir <- function(options_all = all_options()){
   fill_PortalData(options_all$options_dir)
   fill_data(options_all$options_data)
+  fill_predictions(options_all$options_predictions)
   #fill_models(options_all$options_models)
 }
 
@@ -146,6 +147,26 @@ fill_data <- function(options_data = data_options()){
   rodents <- prep_rodents(moons, options_data$rodents)
   covariates <- prep_covariates(moons, options_data$covariates)
   meta <- prep_metadata(moons, rodents, covariates, options_data$metadata)
+}
+
+#' @title Populate the predictions subdirectory of a portalcasting directory
+#'
+#' @description Populate the predictions folder with existing predictions
+#'   housed on the main portalPredictions repo
+#'
+#' @param options_predictions predictions options list
+#'
+#' @return Nothing
+#'
+#' @export
+#'
+fill_predictions <- function(options_predictions = predictions_options()){
+  if (options_predictions$download_existing_predictions){
+    if (!options_predictions$quiet){
+      cat("Downloading predictions into predictions subdirectory. \n")
+    }
+    download_predictions(tree = options_predictions$tree)
+  }
 }
 
 #' @title Populate the model scripts of a portalcasting directory

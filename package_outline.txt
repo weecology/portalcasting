@@ -35,4 +35,5 @@ options list:
     -options_rodents
     -options_covariates
     -options_meta
+  -options_forecasts
   -options_models

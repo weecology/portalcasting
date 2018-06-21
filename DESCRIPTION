@@ -16,6 +16,7 @@ Imports:
   digest,
   dplyr,
   forecast,
+  httr,
   lubridate,
   magrittr,
   portalr,

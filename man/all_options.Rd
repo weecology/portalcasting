@@ -16,7 +16,8 @@ all_options(base = "~", main = "forecasting", subs = subdirs(),
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", filename_suffix = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
-  meta_filename = "metadata.yaml", model = models())
+  meta_filename = "metadata.yaml", download_existing_predictions = TRUE,
+  model = models())
 }
 \arguments{
 \item{base}{name of the base directory where the forecasting 
@@ -97,6 +98,9 @@ the data were retroactively filled in and are given the source name
 \item{meta_save}{logical if the metadata should be saved out}
 
 \item{meta_filename}{the name of the metadata file for the saving}
+
+\item{download_existing_predictions}{logical indicator is the existing
+predictions files should be retrieved from the portalPredictions repo}
 
 \item{model}{names of model scripts to include}
 }

@@ -361,6 +361,37 @@ data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
       )
 }
 
+#' @title Prepare the predictions options for a portalcasting directory
+#'
+#' @description Create a list of control options for populating the 
+#'   predictions subdirectory
+#'
+#' @param base name of the base directory where the forecasting 
+#'   directory should exist (will be created if it doesn't)
+#'
+#' @param main name of the portalcasting directory
+#'
+#' @param subs names of the portalcasting subdirectories
+#'
+#' @param download_existing_predictions logical indicator is the existing
+#'   predictions files should be retrieved from the portalPredictions repo
+#'
+#' @param quiet logical indicator if progress messages should be quieted
+#'
+#' @return list of settings controlling the directory structure creeatio
+#'
+#' @export
+#'
+predictions_options <- function(base = "~", main = "forecasting", 
+                                subs = subdirs(), 
+                                download_existing_predictions = TRUE,
+                                quiet = FALSE){
+  tree <- dirtree(base, main, subs)
+  list(tree = tree, 
+       download_existing_predictions = download_existing_predictions, 
+       quiet = quiet)
+}
+
 #' @title Prepare the model options for a portalcasting directory
 #'
 #' @description Create a list of control options for the model set-up
@@ -475,6 +506,10 @@ models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 #' @param meta_filename the name of the metadata file for the saving
 #'
 #'
+#' @param download_existing_predictions logical indicator is the existing
+#'   predictions files should be retrieved from the portalPredictions repo
+#'
+#'
 #' @param model names of model scripts to include
 #'
 #'
@@ -500,7 +535,8 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         c_save = TRUE, c_filename = "covariates.csv",
                         filename_suffix = "forecasts",
                         confidence_level = 0.9, meta_save = TRUE, 
-                        meta_filename = "metadata.yaml", 
+                        meta_filename = "metadata.yaml",
+                        download_existing_predictions = TRUE,
                         model = models()){
 
   list(
@@ -527,6 +563,11 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                                 confidence_level = confidence_level,  
                                 meta_save = meta_save, 
                                 meta_filename = meta_filename),
+    options_predictions = predictions_options(base = base, main = main, 
+                                              subs = subs,
+                                              download_existing_predictions = 
+                                                download_existing_predictions, 
+                                              quiet = quiet),
     options_models = models_options(base = base, main = main, subs = subs,
                                     quiet = quiet, model = model)
   )
