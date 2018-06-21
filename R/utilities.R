@@ -6,8 +6,6 @@
 #'
 #' @param data data table to be written out
 #'
-#' @param tree directory tree
-#'
 #' @param options_data an options list that includes a save element and 
 #'   a filename element
 #'

@@ -7,7 +7,7 @@
 fill_PortalData(options_dir = dir_options())
 }
 \arguments{
-\item{dir_options}{directory options}
+\item{options_dir}{directory options}
 }
 \value{
 Nothing

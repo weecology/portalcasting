@@ -114,7 +114,7 @@ fill_dir <- function(options_all = all_options()){
 #'
 #' @description Populate the raw data folder
 #'
-#' @param dir_options directory options
+#' @param options_dir directory options
 #'
 #' @return Nothing
 #'
@@ -145,7 +145,7 @@ fill_data <- function(options_all = all_options()){
   moons <- prep_moons(options_all$options_data$moons)
   rodents <- prep_rodents(moons, options_all$options_data$rodents)
   covariates <- prep_covariates(moons, options_all$options_data$covariates)
-  meta <- prep_metadata(rodents, covariates, options_all$options_data$meta)
+  #meta <- prep_metadata(rodents, covariates, options_all$options_data$meta)
 }
 
 #' @title Populate the model scripts of a portalcasting directory

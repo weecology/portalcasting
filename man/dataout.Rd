@@ -11,8 +11,6 @@ dataout(data, options_data = moons_options())
 
 \item{options_data}{an options list that includes a save element and 
 a filename element}
-
-\item{tree}{directory tree}
 }
 \value{
 data (as input)

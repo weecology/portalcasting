@@ -1,4 +1,11 @@
-
+#
+# working currently within the fill_data function
+#
+# now on to prep_metadata
+#   need to include metadata into the options lists
+#
+# consider (i.e. do) organizing the documentation for the options lists so 
+# they're all together
 
 
 
