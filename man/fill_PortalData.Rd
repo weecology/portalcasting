@@ -4,12 +4,10 @@
 \alias{fill_PortalData}
 \title{Populate the raw data of a portalcasting directory}
 \usage{
-fill_PortalData(tree = dirtree(), quiet = FALSE)
+fill_PortalData(options_dir = dir_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{dir_options}{directory options}
 }
 \value{
 Nothing

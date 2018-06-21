@@ -8,19 +8,19 @@
 #'
 #' @param tree directory tree
 #'
-#' @param data_options data_options list that includes a save element and 
+#' @param options_data an options list that includes a save element and 
 #'   a filename element
 #'
 #' @return data (as input)
 #'
 #' @export
 #'
-dataout <- function(data, tree = dirtree(), data_options = rodents_options()){
+dataout <- function(data, options_data = moons_options()){
 
-  if (!is.null(data_options$save)){
-    if (data_options$save){
-      path <- file_path(tree = tree, paste0("data/", data_options$filename))
-      write.csv(data, path, row.names = FALSE)
+  if (!is.null(options_data$save)){
+    if (options_data$save){
+      file_path(options_data$tree, paste0("data/", options_data$filename)) %>%
+      write.csv(data, ., row.names = FALSE)
     }
   }
   return(data)

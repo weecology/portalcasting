@@ -4,12 +4,12 @@
 \alias{trim_treatment}
 \title{Remove the treatment column from the rodent data table}
 \usage{
-trim_treatment(data, data_options = rodents_options())
+trim_treatment(data, options_rodents = rodents_options())
 }
 \arguments{
 \item{data}{rodent data table}
 
-\item{data_options}{rodent data options list}
+\item{options_rodents}{rodent data options list}
 }
 \value{
 trimmed data

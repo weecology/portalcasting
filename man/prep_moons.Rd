@@ -4,15 +4,10 @@
 \alias{prep_moons}
 \title{Prepare temporal (lunar) data}
 \usage{
-prep_moons(tree = dirtree(), data_options = moons_options(),
-  quiet = FALSE)
+prep_moons(options_moons = moons_options())
 }
 \arguments{
-\item{tree}{directory tree}
-
-\item{data_options}{control options list for moons}
-
-\item{quiet}{logical indicator of printing messages}
+\item{options_moons}{control options list for moons}
 }
 \value{
 data table of time variables for all surveys

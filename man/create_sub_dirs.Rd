@@ -4,12 +4,10 @@
 \alias{create_sub_dirs}
 \title{Create the sub directory folders of a portalcasting directory}
 \usage{
-create_sub_dirs(tree = dirtree(), quiet = FALSE)
+create_sub_dirs(options_dir = dir_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{options_dir}{directory options}
 }
 \value{
 Nothing

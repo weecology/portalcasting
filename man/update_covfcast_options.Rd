@@ -5,10 +5,10 @@
 \title{Update the data options for covariate forecasts based on existing 
   data}
 \usage{
-update_covfcast_options(data_options, hist_data, moons)
+update_covfcast_options(options_covariates, hist_data, moons)
 }
 \arguments{
-\item{data_options}{covariate data options}
+\item{options_covariates}{covariate data options}
 
 \item{hist_data}{historical covariate data}
 

@@ -4,14 +4,14 @@
 \alias{forecast_ndvi}
 \title{Build an ndvi forecast for model predictions}
 \usage{
-forecast_ndvi(covariate_data, moons, data_options)
+forecast_ndvi(covariate_data, moons, options_covariates)
 }
 \arguments{
 \item{covariate_data}{historical covariate data table}
 
 \item{moons}{moon data}
 
-\item{data_options}{covariate data options}
+\item{options_covariates}{covariate data options}
 }
 \value{
 a data.frame with needed foecasted ndvi values

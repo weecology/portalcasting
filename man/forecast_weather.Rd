@@ -4,14 +4,13 @@
 \alias{forecast_weather}
 \title{Build a weather forecast for model predictions}
 \usage{
-forecast_weather(tree = dirtree(), moons, data_options)
+forecast_weather(moons = prep_moons(),
+  options_covariates = covariates_options())
 }
 \arguments{
-\item{tree}{directory tree}
-
 \item{moons}{moon data}
 
-\item{data_options}{covariate data options}
+\item{options_covariates}{covariate data options}
 }
 \value{
 a data.frame with needed foecasted weather values

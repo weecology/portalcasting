@@ -4,15 +4,15 @@
 \alias{dataout}
 \title{Save data out to a file and return it}
 \usage{
-dataout(data, tree = dirtree(), data_options = rodents_options())
+dataout(data, options_data = moons_options())
 }
 \arguments{
 \item{data}{data table to be written out}
 
-\item{tree}{directory tree}
-
-\item{data_options}{data_options list that includes a save element and 
+\item{options_data}{an options list that includes a save element and 
 a filename element}
+
+\item{tree}{directory tree}
 }
 \value{
 data (as input)

@@ -4,15 +4,11 @@
 \alias{fill_data}
 \title{Populate the for-use data of a portalcasting directory}
 \usage{
-fill_data(tree = dirtree(), all_options = all_data_options(),
-  quiet = FALSE)
+fill_data(options_all = all_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
-\item{all_options}{list of lists of data options}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{options_all}{list containing all options available for controlling
+the set up and population of the forecast directory}
 }
 \value{
 Nothing

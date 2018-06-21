@@ -4,12 +4,10 @@
 \alias{create_dir}
 \title{Create the full structure of a portalcasting directory}
 \usage{
-create_dir(tree = dirtree(), quiet = FALSE)
+create_dir(options_dir = dir_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{options_dir}{directory options}
 }
 \value{
 Nothing

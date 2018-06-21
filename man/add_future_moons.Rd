@@ -4,12 +4,12 @@
 \alias{add_future_moons}
 \title{Add future moons to the moon table}
 \usage{
-add_future_moons(moons = prep_moons(), data_options = moons_options())
+add_future_moons(moons = prep_moons(), options_moons = moons_options())
 }
 \arguments{
 \item{moons}{current newmoonnumber table}
 
-\item{data_options}{control options list for moons}
+\item{options_moons}{control options list for moons}
 }
 \value{
 appended moon table

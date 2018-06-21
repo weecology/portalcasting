@@ -4,12 +4,10 @@
 \alias{create_main_dir}
 \title{Create the main directory folder of a portalcasting directory}
 \usage{
-create_main_dir(tree = dirtree(), quiet = FALSE)
+create_main_dir(options_dir = dir_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{options_dir}{directory options}
 }
 \value{
 Nothing

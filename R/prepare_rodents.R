@@ -4,30 +4,26 @@
 #'   Specifically, return data for all plots and control plots only, for each 
 #'   species except PI and the total
 #'
-#' @param tree the name tree of the portalcasting directory
-#'
 #' @param moons current newmoon table
 #'
-#' @param data_options data options list for rodents, which is forced to 
+#' @param options_rodents data options list for rodents, which is forced to 
 #'   conform internally for the two data types (all and controls)
 #' 
-#' @param quiet logical indicator of printing messages
-#'
 #' @return a list of two dataframes, all plots and control plots
 #'
 #' @export
 #'
-prep_rodents <- function(tree = dirtree(), moons = prep_moons(), 
-                         data_options = rodents_options(), quiet = FALSE){
-  if (!quiet){
+prep_rodents <- function(moons = prep_moons(), 
+                         options_rodents = rodents_options()){
+  if (!options_rodents$quiet){
     cat("Loading the rodents data files into the data subdirectory. \n")
   }
-  verify_PortalData(tree = tree, "Portal_rodent.csv")
+  verify_PortalData(options_rodents$tree, "Portal_rodent.csv")
 
-  all_options <- enforce_rodents_options(data_options, "all")
-  all <- rodents_data(tree = tree, moons = moons, data_options = all_options)
-  ctl_options <- enforce_rodents_options(data_options, "controls")
-  ctls <- rodents_data(tree = tree, moons = moons, data_options = ctl_options)
+  options_a <- enforce_rodents_options(options_rodents, "all")
+  all <- rodents_data(moons, options_a)
+  options_c <- enforce_rodents_options(options_rodents, "controls")
+  ctls <- rodents_data(moons, options_c)
 
   list("all" = all, "controls" = ctls)
 }
@@ -37,85 +33,29 @@ prep_rodents <- function(tree = dirtree(), moons = prep_moons(),
 #' @description Prepare a particular version of the rodent dataset, tailored 
 #'   for forecasting. 
 #'
-#' @param tree the name tree of the portalcasting directory
-#'
 #' @param moons current newmoon table
 #'
-#' @param data_options data options list for rodents
+#' @param options_rodents data options list for rodents
 #' 
 #' @return a list of two dataframes, all plots and control plots
 #'
 #' @export
 #'
-rodents_data <- function(tree = dirtree(), moons = prep_moons(), 
-                         data_options = rodents_options()){
-  get_rodent_data(path = main_path(tree), clean = FALSE, type = "Rodents", 
-                  level = data_options$level, 
-                  length = data_options$length, 
-                  min_plots = data_options$min_plots, 
-                  output = data_options$output) %>%
-  remove_spp(data_options$drop_spp) %>%
+rodents_data <- function(moons = prep_moons(), 
+                         options_rodents = rodents_options()){
+  get_rodent_data(path = main_path(options_rodents$tree), 
+                  clean = FALSE, type = "Rodents", 
+                  level = options_rodents$level, 
+                  length = options_rodents$length, 
+                  min_plots = options_rodents$min_plots, 
+                  output = options_rodents$output) %>%
+  remove_spp(options_rodents$drop_spp) %>%
   mutate(total = rowSums(.[ , is.spcol(.)])) %>%
-  trim_treatment(data_options = data_options) %>%
+  trim_treatment(options_rodents) %>%
   inner_join(moons, by = c("period" = "period")) %>%
-  subset(newmoonnumber >= data_options$start) %>%
+  subset(newmoonnumber >= options_rodents$start) %>%
   select(-newmoondate, -censusdate) %>%
-  dataout(tree = tree, data_options = data_options)
-}
-
-#' @title Prepare the data options for rodent data
-#'
-#' @description Create a list of control options for the rodent data
-#'
-#' @param type "all" or "controls"
-#'
-#' @param start newmoon number of the first sample to be included. Default 
-#'   value is \code{217}, corresponding to 1995-01-01.
-#'
-#' @param drop_spp species names to drop from the table
-#'
-#' @param min_plots minimum number of plots surveyed for a survey to be used
-#'
-#' @param level for get_rodent_data, automatically set by type
-#'
-#' @param treatment for get_rodent_data, automatically set by type
-#'
-#' @param length for get_rodent_data, automatically set by type
-#'
-#' @param output for get_rodent_data, automatically set by type
-#'
-#' @param save logical if the data should be saved out
-#'
-#' @param filename the name of the file for the saving, automatically set by
-#'   type
-#'
-#' @return control options list for rodents
-#'
-#' @export
-#'
-rodents_options <- function(type = NULL, start = 217, drop_spp = "PI", 
-                            min_plots = 24, level = "Site", 
-                            treatment = NULL, length = "all",
-                            output = "abundance", save = TRUE, 
-                            filename = "all.csv"){
-  if (!is.null(type)){
-    if (type == "all"){
-      level <- "Site"
-      length <- "all"
-      output <- "abundance"
-      filename <- "all.csv"
-    }
-    if (type == "controls"){
-      level <- "Treatment"
-      length <- "Longterm"
-      output <- "abundance"
-      treatment <- "control"
-      filename <- "controls.csv"
-    }  
-  }
-  list("start" = start, "drop_spp" = drop_spp, "min_plots" = min_plots, 
-       "level" = level, "length" = length, "output" = output, "save" = save,
-       "filename" = filename, "treatment" = treatment)
+  dataout(options_rodents)
 }
 
 #' @title Enforce the specific data options for the two rodent data types
@@ -206,16 +146,16 @@ is.spcol <- function(x, spp_names = rodent_spp()){
 #'
 #' @param data rodent data table
 #'
-#' @param data_options rodent data options list
+#' @param options_rodents rodent data options list
 #'
 #' @return trimmed data
 #'
 #' @export
 #'
-trim_treatment <- function(data, data_options = rodents_options()){
-  if (data_options$level == "Treatment"){
+trim_treatment <- function(data, options_rodents = rodents_options()){
+  if (options_rodents$level == "Treatment"){
     data <-  data %>%
-             filter(treatment == data_options$treatment) %>%
+             filter(treatment == options_rodents$treatment) %>%
              select(-treatment)
   }
   return(data)

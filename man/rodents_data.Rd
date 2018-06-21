@@ -4,15 +4,12 @@
 \alias{rodents_data}
 \title{Collect and process historic rodent data}
 \usage{
-rodents_data(tree = dirtree(), moons = prep_moons(),
-  data_options = rodents_options())
+rodents_data(moons = prep_moons(), options_rodents = rodents_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
 \item{moons}{current newmoon table}
 
-\item{data_options}{data options list for rodents}
+\item{options_rodents}{data options list for rodents}
 }
 \value{
 a list of two dataframes, all plots and control plots

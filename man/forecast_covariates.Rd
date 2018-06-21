@@ -4,17 +4,15 @@
 \alias{forecast_covariates}
 \title{Build a covariate forecast for model predictions}
 \usage{
-forecast_covariates(tree, covariate_data, moons,
-  data_options = covariates_options())
+forecast_covariates(covariate_data, moons,
+  options_covariates = covariates_options())
 }
 \arguments{
-\item{tree}{directory tree}
-
 \item{covariate_data}{historical covariate data table}
 
 \item{moons}{moon data}
 
-\item{data_options}{covariate data options}
+\item{options_covariates}{covariate data options}
 }
 \value{
 a data.frame with needed forecasted covariates

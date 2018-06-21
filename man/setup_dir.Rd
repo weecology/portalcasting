@@ -4,20 +4,12 @@
 \alias{setup_dir}
 \title{Set up a full forecasting directory}
 \usage{
-setup_dir(base = "~", main = "forecasting", subs = subdirs(),
-  model = models(), quiet = FALSE)
+setup_dir(options_all = all_options())
 }
 \arguments{
-\item{base}{name of the base directory where the forecasting 
-directory should exist (will be created if it doesn't)}
-
-\item{main}{name of the portalcasting directory}
-
-\item{subs}{names of the portalcasting subdirectories}
-
-\item{model}{names of model scripts to include}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{options_all}{list containing all options available for controlling
+the set up and population of the forecast directory (see 
+\code{\link{all_options}})}
 }
 \value{
 Nothing

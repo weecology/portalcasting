@@ -5,35 +5,28 @@
 #'   based on a lunar survey schedule. If needed, additional moons will be
 #'   added to the data table, both the in-use and raw versions
 #'
-#' @param tree directory tree
-#'
-#' @param data_options control options list for moons
-#'
-#' @param quiet logical indicator of printing messages
+#' @param options_moons control options list for moons
 #'
 #' @return data table of time variables for all surveys
 #'
 #' @export
 #' 
-prep_moons <- function(tree = dirtree(), data_options = moons_options(),
-                       quiet = FALSE){
+prep_moons <- function(options_moons = moons_options()){
 
-  if (!quiet){
+  if (!options_moons$quiet){
     cat("Loading the moons data file into the data subdirectory. \n")
   }
 
-  verify_PortalData(tree = tree, "moon_dates.csv")
+  verify_PortalData(options_moons$tree, "moon_dates.csv")
 
-  file_path(tree = tree, "PortalData/Rodents/moon_dates.csv") %>%
+  file_path(options_moons$tree, "PortalData/Rodents/moon_dates.csv") %>%
   read.csv(stringsAsFactors = FALSE) %>% 
-  add_future_moons(data_options = data_options) %>%
-  append_past_moons_to_raw(tree = tree, data_options = data_options) %>%
+  add_future_moons(options_moons) %>%
+  append_past_moons_to_raw(options_moons) %>%
   format_moons() %>%
-  dataout(tree, data_options)
+  dataout(options_moons)
 
 }
-
-
 
 #' @title Append missing past moons to the raw data
 #'
@@ -44,72 +37,20 @@ prep_moons <- function(tree = dirtree(), data_options = moons_options(),
 #'
 #' @param data moons table with future moons added
 #'
-#' @param tree directory tree
-#'
-#' @param data_options moon data options
+#' @param options_moons moon data options
 #'
 #' @return data as came in
 #'
 #' @export
 #'
-append_past_moons_to_raw <- function(data, tree = dirtree(), data_options){
-  if (data_options$append_missing_to_raw){
-    path <- file_path(tree = tree, "PortalData/Rodents/moon_dates.csv")
+append_past_moons_to_raw <- function(data, options_moons = moons_options()){
+  if (options_moons$append_missing_to_raw){
+    path <- file_path(options_moons$tree, "PortalData/Rodents/moon_dates.csv")
     included_moons <- data$newmoondate <= today()
     newraw <- data[included_moons, ]
     write.csv(newraw, path, row.names = FALSE)
   }
   data
-}
-
-
-#' @title Prepare the data options for moon data
-#'
-#' @description Create a list of control options for the moon data
-#'
-#' @param n_future_moons integer value for the number of future moons to add
-#'
-#' @param fdate date from which future is defined, typically today's date.
-#'   Required if \code{n_future_moons > 0}
-#'
-#' @param append_missing_to_raw logical indicating if the raw data should be
-#'   updated by appending the missing moon dates
-#'
-#' @param save logical if the data should be saved out
-#'
-#' @param filename the name of the file for the saving.
-#'
-#' @return control options list for moons
-#'
-#' @export
-#'
-moons_options <- function(n_future_moons = 12, fdate = today(), 
-                          append_missing_to_raw = TRUE, save = TRUE,
-                          filename = "moons.csv"){
-  list("n_future_moons" = n_future_moons, "fdate" = fdate, 
-       "append_missing_to_raw" = append_missing_to_raw, "save" = save,
-       "filename" = filename)
-}
-
-#' @title Verify that the PortalData sub is present and has required data
-#'
-#' @description Check that the PortalData subdirectory exists and has the
-#'   needed file. If the file is not present, the directory is filled.
-#'
-#' @param tree directory tree
-#'
-#' @param filename name of the file to specifically check
-#'
-#' @return nothing
-#'
-#' @export
-#' 
-verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv"){
-  path <- file_path(tree = tree, paste0("PortalData/Rodents/", filename)) 
-  if (!file.exists(path)){
-    create_dir(tree = tree)
-    fill_PortalData(tree = tree)
-  }
 }
 
 #' @title Add future moons to the moon table
@@ -120,17 +61,17 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv"){
 #'
 #' @param moons current newmoonnumber table
 #'
-#' @param data_options control options list for moons
+#' @param options_moons control options list for moons
 #'
 #' @return appended moon table
 #'
 #' @export
 #' 
 add_future_moons <- function(moons = prep_moons(), 
-                             data_options = moons_options()){
+                             options_moons = moons_options()){
 
-  n_future_moons <- data_options$n_future_moons
-  fdate <- data_options$fdate
+  n_future_moons <- options_moons$n_future_moons
+  fdate <- options_moons$fdate
   if (!(n_future_moons %% 1 == 0 & n_future_moons >= 0)){
     stop("'n_future_moons' must be a non-negative integer")
   }

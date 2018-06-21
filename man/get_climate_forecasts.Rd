@@ -4,15 +4,13 @@
 \alias{get_climate_forecasts}
 \title{Download downscaled weather data}
 \usage{
-get_climate_forecasts(tree = dirtree(), moons = prep_moons(),
-  data_options = covariates_options())
+get_climate_forecasts(moons = prep_moons(),
+  options_covariates = covariates_options())
 }
 \arguments{
-\item{tree}{directory tree}
-
 \item{moons}{newmoon data table}
 
-\item{data_options}{covariate options control list}
+\item{options_covariates}{covariate options control list}
 }
 \value{
 a data.frame with precipitation(mm), temperature(C), year, and

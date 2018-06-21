@@ -4,49 +4,6 @@
 
 
 
-specifically working within the prep_fcast_covariates function
-
-here's what was cut out and needs to be put back in
-might need its own functions
-definitely needs options added (carry them all the way back up!)
-
-
-
-
-  fcast_data <- select(fcast_data, -forecast_newmoon)
-  fcast_data$source <- "fcast"
-
-
-and then get to handling the existing historical covariate forecasts
-
-
-# not sure if we still need this?
-
-#' @title Append a covariate forecast to historical covariate table
-#' 
-#' @description combining weather and ndvi forecasts to the existing 
-#'   covariates
-#' 
-#' @param covariates output from \code{get_covariate_data}
-#'
-#' @param metadata model metadata
-#'
-#' @param moons moon data table
-#' 
-#' @return no value
-#'
-#' @export
-#'
-append_covariate_fcast <- function(covariates, metadata, 
-                                   moons = prep_moons){
-
-  covariates_fcast <- forecast_covariates(covariates, moons, metadata)
-  covariates_fcast <- select(covariates_fcast, -"forecast_newmoon")
-  covariates_all <- bind_rows(covariates, covariates_fcast)
-  return(covariates_all)
-}
-
-
 # next step is to update model_template
 #
 # need to update the function flexibibility, to flexibly write model scripts
@@ -167,6 +124,36 @@ pevg_a <- pevgarch(all, covariates, metadata);
 pevg_c <- pevgarch(controls, covariates, metadata, level = "Controls");
 save_forecast_output(pevg_a, pevg_c, "pevGARCH", metadata)'
 
+}
+
+
+
+
+
+# not sure if we still need this?
+
+#' @title Append a covariate forecast to historical covariate table
+#' 
+#' @description combining weather and ndvi forecasts to the existing 
+#'   covariates
+#' 
+#' @param covariates output from \code{get_covariate_data}
+#'
+#' @param metadata model metadata
+#'
+#' @param moons moon data table
+#' 
+#' @return no value
+#'
+#' @export
+#'
+append_covariate_fcast <- function(covariates, metadata, 
+                                   moons = prep_moons){
+
+  covariates_fcast <- forecast_covariates(covariates, moons, metadata)
+  covariates_fcast <- select(covariates_fcast, -"forecast_newmoon")
+  covariates_all <- bind_rows(covariates, covariates_fcast)
+  return(covariates_all)
 }
 
 

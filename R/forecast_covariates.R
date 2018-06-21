@@ -2,24 +2,22 @@
 #' 
 #' @description combining weather and ndvi forecasts
 #'
-#' @param tree directory tree
-#' 
 #' @param covariate_data historical covariate data table
 #'
 #' @param moons moon data
 #'
-#' @param data_options covariate data options
+#' @param options_covariates covariate data options
 #'
 #' @return a data.frame with needed forecasted covariates
 #'
 #' @export
 #'
-forecast_covariates <- function(tree, covariate_data, moons, 
-                                data_options = covariates_options()){
+forecast_covariates <- function(covariate_data, moons, 
+                                options_covariates = covariates_options()){
 
-  moons <- trim_moons_fcast(moons, data_options)
-  weather_f <- forecast_weather(tree, moons, data_options)
-  ndvi_f <- forecast_ndvi(covariate_data, moons, data_options)
+  moons <- trim_moons_fcast(moons, options_covariates)
+  weather_f <- forecast_weather(moons, options_covariates)
+  ndvi_f <- forecast_ndvi(covariate_data, moons, options_covariates)
   fcast <- right_join(weather_f, ndvi_f, by = "newmoonnumber")
   forecast_newmoon <- max(moons$newmoonnumber)
 
@@ -34,15 +32,15 @@ forecast_covariates <- function(tree, covariate_data, moons,
 #'
 #' @param moons moon data
 #'
-#' @param data_options covariate data options
+#' @param options_covariates covariate data options
 #'
 #' @return a data.frame with needed foecasted ndvi values
 #'
 #' @export
 #'
-forecast_ndvi <- function(covariate_data, moons, data_options){
+forecast_ndvi <- function(covariate_data, moons, options_covariates){
   ndvi_data <- select(covariate_data, c("newmoonnumber", "ndvi"))
-  ndvi_lead <- data_options$nfcnm - data_options$min_lag
+  ndvi_lead <- options_covariates$nfcnm - options_covariates$min_lag
   fcast_ndvi(ndvi_data, "newmoon", lead = ndvi_lead, moons)
 }
 
@@ -52,18 +50,18 @@ forecast_ndvi <- function(covariate_data, moons, data_options){
 #'
 #' @param moons moon data
 #'
-#' @param data_options covariate data options
+#' @param options_covariates covariate data options
 #'
 #' @return a trimmed moons data table
 #'
 #' @export
 #'
-trim_moons_fcast <- function(moons, data_options){
+trim_moons_fcast <- function(moons, options_covariates){
   moons <- moons[, c("newmoonnumber", "newmoondate", "period", "censusdate")]
   fc_nms <- moons
-  addl_need_to_fcast <- which(moons$newmoonnumber %in% data_options$fcast_nms)
-  if (length(addl_need_to_fcast) > 0){
-    fc_nms <- fc_nms[-addl_need_to_fcast, ]
+  addl_fcast <- which(moons$newmoonnumber %in% options_covariates$fcast_nms)
+  if (length(addl_fcast) > 0){
+    fc_nms <- fc_nms[-addl_fcast, ]
   }
   fc_nms
 }
@@ -72,35 +70,32 @@ trim_moons_fcast <- function(moons, data_options){
 #' 
 #' @description creating forecasts
 #' 
-#' @param tree directory tree
-#'
 #' @param moons moon data
 #'
-#' @param data_options covariate data options
+#' @param options_covariates covariate data options
 #'
 #' @return a data.frame with needed foecasted weather values
 #'
 #' @export
 #'
-forecast_weather <- function(tree = dirtree(), moons, data_options){
+forecast_weather <- function(moons = prep_moons(), 
+                             options_covariates = covariates_options()){
   
-  mpath <- main_path(tree = tree)
+  mpath <- main_path(options_covariates$tree)
   newweather <- weather("newmoon", fill = TRUE, mpath) %>%
                 select(-c(.data$locally_measured, .data$battery_low)) %>% 
                 mutate(year = as.numeric(format(date, "%Y"))) %>%
-                filter(year >= data_options$start - 5)
+                filter(year >= options_covariates$start - 5)
   incompletes <- which(is.na(newweather$newmoonnumber))
   if(length(incompletes) > 0 ){
     newweather <- newweather[-incompletes, ]  
   }
-  fcasts <- get_climate_forecasts(tree, moons, data_options)
+  fcasts <- get_climate_forecasts(moons, options_covariates)
 
-  tail(newweather, data_options$min_lag) %>% 
+  tail(newweather, options_covariates$min_lag) %>% 
   select(-year, -date) %>%
   bind_rows(fcasts)
 }
-
-
 
 #' @title Download downscaled weather data
 #' 
@@ -108,11 +103,9 @@ forecast_weather <- function(tree = dirtree(), moons, data_options){
 #'   https://climate.northwestknowledge.net/RangelandForecast/download.php
 #'   and downscaled to Portal, AZ (31.9555, -109.0744)
 #' 
-#' @param tree directory tree
-#'
 #' @param moons newmoon data table
 #'
-#' @param data_options covariate options control list
+#' @param options_covariates covariate options control list
 #' 
 #' @return a data.frame with precipitation(mm), temperature(C), year, and
 #'   month. Temperature is the mean temperature for the month, while 
@@ -120,10 +113,10 @@ forecast_weather <- function(tree = dirtree(), moons, data_options){
 #'
 #' @export
 #'
-get_climate_forecasts <- function(tree = dirtree(), moons = prep_moons(), 
-                                  data_options = covariates_options()){
+get_climate_forecasts <- function(moons = prep_moons(), 
+                                  options_covariates = covariates_options()){
   
-  lead_time <- data_options$lead_time - data_options$min_lag
+  lead_time <- options_covariates$lead_time - options_covariates$min_lag
 
   if(!lead_time %in% 1:7){
     stop(paste0("Lead time must be an integer 1 - 7, got: ", lead_time))
@@ -175,7 +168,8 @@ get_climate_forecasts <- function(tree = dirtree(), moons = prep_moons(),
 
   daily_fcast <- full_join(daily_forecasts, df, by = "date")
 
-  historic <- weather("daily", fill = TRUE, path = main_path(tree))
+  hist_path <- main_path(options_covariates$tree)
+  historic <- weather("daily", fill = TRUE, path = hist_path)
   datechar <- paste(historic$year, historic$month, historic$day, sep = "-")
   historic$date <- as.Date(datechar)
 
@@ -228,27 +222,25 @@ get_climate_forecasts <- function(tree = dirtree(), moons = prep_moons(),
 #' 
 #' @param new_forecast_covariates forecasted covariates
 #'
-#' @param tree directory tree
-#'
-#' @param data_options control options list for covariates
+#' @param options_covariates control options list for covariates
 #' 
 #' @return new_forecast_covariates as input
 #'
 #' @export
 #'
-append_covariate_fcast_csv <- function(new_forecast_covariates, 
-                                       tree = dirtree(),
-                                       data_options = covariates_options()){
+append_cov_fcast_csv <- function(new_forecast_covariates, 
+                                 options_covariates = covariates_options()){
 
-  if (!data_options$append_fcast_csv){
+  if (!options_covariates$append_fcast_csv){
     return(new_forecast_covariates)
   }
 
   covar_new <- new_forecast_covariates
-  covar_new$source <- data_options$source_name
+  covar_new$source <- options_covariates$source_name
   covar_new$date_made <- as.character(today())
 
-  hist_file <- file_path(tree, paste0("data/", data_options$hist_fcast_file))
+  fname <- paste0("data/", options_covariates$hist_fcast_file)
+  hist_file <- file_path(options_covariates$tree, fname)
 
   if (file.exists(hist_file)){
     covar_hist <- read.csv(hist_file, stringsAsFactors = FALSE)

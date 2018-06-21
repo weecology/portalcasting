@@ -24,3 +24,15 @@ directory tree:
 -base (existing folder where the project folder will be housed)
 -main (project folder encompassing all subfolders)
 -subs (specific sub-folders for the project)
+
+
+options list:
+
+-options_all
+  -options_dir
+  -options_data
+    -options_moons
+    -options_rodents
+    -options_covariates
+    -options_meta
+  -options_models

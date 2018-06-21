@@ -4,14 +4,12 @@
 \alias{append_past_moons_to_raw}
 \title{Append missing past moons to the raw data}
 \usage{
-append_past_moons_to_raw(data, tree = dirtree(), data_options)
+append_past_moons_to_raw(data, options_moons = moons_options())
 }
 \arguments{
 \item{data}{moons table with future moons added}
 
-\item{tree}{directory tree}
-
-\item{data_options}{moon data options}
+\item{options_moons}{moon data options}
 }
 \value{
 data as came in

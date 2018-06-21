@@ -4,12 +4,12 @@
 \alias{trim_moons_fcast}
 \title{Trim the moons table for covariate forecasting}
 \usage{
-trim_moons_fcast(moons, data_options)
+trim_moons_fcast(moons, options_covariates)
 }
 \arguments{
 \item{moons}{moon data}
 
-\item{data_options}{covariate data options}
+\item{options_covariates}{covariate data options}
 }
 \value{
 a trimmed moons data table

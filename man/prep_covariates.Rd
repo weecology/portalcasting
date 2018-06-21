@@ -4,17 +4,13 @@
 \alias{prep_covariates}
 \title{Prepare covariate data table}
 \usage{
-prep_covariates(tree = dirtree(), moons = prep_moons(),
-  data_options = covariates_options(), quiet = FALSE)
+prep_covariates(moons = prep_moons(),
+  options_covariates = covariates_options())
 }
 \arguments{
-\item{tree}{directory tree}
-
 \item{moons}{current newmoon table}
 
-\item{data_options}{control options list for covariates}
-
-\item{quiet}{logical indicator of printing messages}
+\item{options_covariates}{control options list for covariates}
 }
 \value{
 covariate data table

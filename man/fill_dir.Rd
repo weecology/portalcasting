@@ -4,14 +4,11 @@
 \alias{fill_dir}
 \title{Populate the base components of a portalcasting directory}
 \usage{
-fill_dir(tree = dirtree(), model = models(), quiet = FALSE)
+fill_dir(options_all = all_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
-\item{model}{names of model scripts to include}
-
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{options_all}{list containing all options available for controlling
+the set up and population of the forecast directory}
 }
 \value{
 Nothing

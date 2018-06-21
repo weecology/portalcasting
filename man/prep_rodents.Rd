@@ -4,18 +4,13 @@
 \alias{prep_rodents}
 \title{Prepare historic rodent data}
 \usage{
-prep_rodents(tree = dirtree(), moons = prep_moons(),
-  data_options = rodents_options(), quiet = FALSE)
+prep_rodents(moons = prep_moons(), options_rodents = rodents_options())
 }
 \arguments{
-\item{tree}{the name tree of the portalcasting directory}
-
 \item{moons}{current newmoon table}
 
-\item{data_options}{data options list for rodents, which is forced to 
+\item{options_rodents}{data options list for rodents, which is forced to 
 conform internally for the two data types (all and controls)}
-
-\item{quiet}{logical indicator of printing messages}
 }
 \value{
 a list of two dataframes, all plots and control plots
