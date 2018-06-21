@@ -140,7 +140,7 @@ fill_PortalData <- function(options_dir = dir_options()){
 #' @export
 #'
 fill_data <- function(options_data = data_options()){
-  if (!options_data$options_moons$quiet){
+  if (!options_data$moons$quiet){
     cat("Loading forecasting data files into data subdirectory. \n")
   }
   moons <- prep_moons(options_data$moons)
