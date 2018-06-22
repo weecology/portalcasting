@@ -10,7 +10,7 @@ prep_rodents(moons = prep_moons(), options_rodents = rodents_options())
 \item{moons}{current newmoon table}
 
 \item{options_rodents}{data options list for rodents, which is forced to 
-conform internally for the two data types (all and controls)}
+conform internally for the two treatment types (all and controls)}
 }
 \value{
 a list of two dataframes, all plots and control plots

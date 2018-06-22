@@ -1,19 +1,19 @@
 #' @title Provide the names of models
 #'
-#' @description Based on a \code{type}, returns a character vectory of model
+#' @description Based on a \code{set}, returns a character vectory of model
 #'   names to be included. Currently only support for 
-#'   \code{type = "portalcasting"}.
+#'   \code{set = "portalcasting"}.
 #'
-#' @param type type of model options (currently only support for 
+#' @param set type of model options (currently only support for 
 #'   "portalcasting")
 #'
 #' @return vector of model names
 #'
 #' @export
 #'
-models <- function(type = "portalcasting"){
+models <- function(set = "portalcasting"){
   out <- NULL
-  if (type == "portalcasting"){
+  if (set == "portalcasting"){
     out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
   }
   return(out)
@@ -60,8 +60,14 @@ model_template <- function(options_model = model_options()){
   subs <- paste0('c("', subnames, '")')
   name <- options_model$name
 
-  args_a <- paste('all', 'metadata', sep = ', ')
-  args_c <- paste('all', 'metadata', 'level = "Controls"', sep = ', ')
+  if (options_model$covariates){
+    lag_arg <- paste0(', lag = ', options_model$lag)
+    args_a <- paste0('all, covariates, metadata', lag_arg)
+    args_c <- paste0('all, covariates, metadata, level = "Controls"', lag_arg)
+  } else{
+    args_a <- "all, metadata"
+    args_c <- 'all, metadata, level = "Controls"'
+  }
 
   path_a <- 'file_path(tree, "data/all.csv")'
   path_c <- 'file_path(tree, "data/controls.csv")'

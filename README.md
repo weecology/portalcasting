@@ -9,7 +9,7 @@ Forecasting of Rodent Populations (Portal Predictions:
 [code repo](https://github.com/weecology/portalPredictions);
 [website](http://portal.naturecast.org/)).
 
-The repo currently ***in development*** as the functions are migrated over.
+The repo is currently ***in development*** as the functions are migrated over.
 
 ## Installation
 
@@ -22,13 +22,17 @@ devtools::install_github("weecology/portalcasting")
 
 ## Usage
 
-The `setup_portalcast_dir()` function will download the most up-to-date version
-of the [Portal Data Repository](https://github.com/weecology/PortalData)
-and create and populate a standard portalcasting directory that includes 
-`models`, `data`, and `predictions` subdirectories. By default, the
-`models` subdirectory will be populated with four **R** scripts corresponding
-to the existing base models (`autoarima.R`, `esss.R`, `nbgarch.R` and 
-`pevgarch.R`). 
+The `setup_dir()` function will create and populate a standard portalcasting
+directory that includes `data`, `models`, `PortalData`, `predictions` and
+`tmp` subdirectories. By default, `setup_dir()` downloads the most up-to-date
+version of the [Portal Data Repository](https://github.com/weecology/PortalData)
+into the `PortalData` subdirectory, prepares the moons, rodents, covariates,
+and metadata data files (and places them in the `data` subdirectory), copies the
+historic covariate forecast data file available in the package 
+(`/inst/extdata/covariate_forecasts.csv`) into the `data` subdirectory, 
+downloads the most recent set of model forecasts into the `predictions` 
+subdirectory and populates the `models` subdirectory with scripts for the four
+existing models ("AutoArima", "ESSS", "nbGARCH", and "pevGARCH").
 
 The `portalcast()` function controls the running of potentially multiple 
 models for either a forecast or a hindcast. It will prepare the data 
@@ -36,10 +40,10 @@ models for either a forecast or a hindcast. It will prepare the data
 models are available to run, run the models, compile the output, and
 generate an ensemble (if desired).
 
-All required arguments to both `setup_portalcast_dir()` and `portalcast()` are
-defined and the default values are appropriate for basic usage:
+All required arguments to both `setup_dir()` and `portalcast()` are defined 
+and the default values are appropriate for basic forecast usage:
 
 ```
-setup_portalcast_dir()
+setup_dir()
 portalcast()
 ```

@@ -4,15 +4,17 @@
 \alias{enforce_rodents_options}
 \title{Enforce the specific data options for the two rodent data types}
 \usage{
-enforce_rodents_options(data_options, type = "all")
+enforce_rodents_options(options_rodents = rodents_options(),
+  tmnt_type = NULL)
 }
 \arguments{
-\item{data_options}{existing control options list for rodents}
+\item{options_rodents}{existing control options list for rodents}
 
-\item{type}{"all" or "controls"}
+\item{tmnt_type}{treatment type ("all" or "controls") used to enfore the 
+options list}
 }
 \value{
-control options list for rodents
+updated control options list for rodents
 }
 \description{
 Force a list of control options for the rodent data based on

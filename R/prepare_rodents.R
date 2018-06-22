@@ -7,7 +7,7 @@
 #' @param moons current newmoon table
 #'
 #' @param options_rodents data options list for rodents, which is forced to 
-#'   conform internally for the two data types (all and controls)
+#'   conform internally for the two treatment types (all and controls)
 #' 
 #' @return a list of two dataframes, all plots and control plots
 #'
@@ -63,31 +63,35 @@ rodents_data <- function(moons = prep_moons(),
 #' @description Force a list of control options for the rodent data based on
 #'   the rodent data type
 #'
-#' @param data_options existing control options list for rodents
+#' @param options_rodents existing control options list for rodents
 #'
-#' @param type "all" or "controls"
+#' @param tmnt_type treatment type ("all" or "controls") used to enfore the 
+#'   options list
 #'
-#' @return control options list for rodents
+#' @return updated control options list for rodents
 #'
 #' @export
 #'
-enforce_rodents_options <- function(data_options, type = "all"){
-  if (!is.null(type)){
-    if (type == "all"){
-      data_options$level <- "Site"
-      data_options$length <- "all"
-      data_options$output <- "abundance"
-      data_options$filename <- "all.csv"
+enforce_rodents_options <- function(options_rodents = rodents_options(),
+                                    tmnt_type = NULL){
+  if (!is.null(tmnt_type)){
+    if (tmnt_type == "all"){
+      options_rodents$tmnt_type <- "all"
+      options_rodents$level <- "Site"
+      options_rodents$length <- "all"
+      options_rodents$output <- "abundance"
+      options_rodents$filename <- "all.csv"
     }
-    if (type == "controls"){
-      data_options$level <- "Treatment"
-      data_options$length <- "Longterm"
-      data_options$output <- "abundance"
-      data_options$treatment <- "control"
-      data_options$filename <- "controls.csv"
+    if (tmnt_type == "controls"){
+      options_rodents$tmnt_type <- "controls"
+      options_rodents$level <- "Treatment"
+      options_rodents$length <- "Longterm"
+      options_rodents$output <- "abundance"
+      options_rodents$treatment <- "control"
+      options_rodents$filename <- "controls.csv"
     }  
   }
-  return(data_options)
+  return(options_rodents)
 }
 
 #' @title Remove species from the rodent data table

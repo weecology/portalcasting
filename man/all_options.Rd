@@ -7,37 +7,41 @@
 \alias{moons_options}
 \alias{rodents_options}
 \alias{covariates_options}
+\alias{metadata_options}
+\alias{predictions_options}
+\alias{models_options}
+\alias{cast_options}
 \title{Prepare options for a portalcasting directory}
 \usage{
 all_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
-  m_save = TRUE, m_filename = "moons.csv", type = NULL, start = 217,
-  drop_spp = "PI", min_plots = 24, level = "Site", treatment = NULL,
-  length = "all", output = "abundance", r_save = TRUE,
+  m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
+  start = 217, drop_spp = "PI", min_plots = 24, level = "Site",
+  treatment = NULL, length = "all", output = "abundance", r_save = TRUE,
   r_filename = "all.csv", historical = TRUE, forecasts = TRUE,
   yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
   fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
   hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
-  c_filename = "covariates.csv", filename_suffix = "forecasts",
+  c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml", download_existing_predictions = TRUE,
-  model = models())
+  model = models(), ensemble = TRUE)
 
 dir_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE)
 
 data_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
-  m_save = TRUE, m_filename = "moons.csv", type = NULL, start = 217,
-  drop_spp = "PI", min_plots = 24, level = "Site", treatment = NULL,
-  length = "all", output = "abundance", r_save = TRUE,
+  m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
+  start = 217, drop_spp = "PI", min_plots = 24, level = "Site",
+  treatment = NULL, length = "all", output = "abundance", r_save = TRUE,
   r_filename = "all.csv", historical = TRUE, forecasts = TRUE,
   yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
   fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
   hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
-  c_filename = "covariates.csv", filename_suffix = "forecasts",
+  c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml")
 
@@ -45,7 +49,7 @@ moons_options(n_future_moons = 12, fdate = today(),
   append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv",
   tree = dirtree(), quiet = FALSE)
 
-rodents_options(type = NULL, start = 217, drop_spp = "PI",
+rodents_options(tmnt_type = NULL, start = 217, drop_spp = "PI",
   min_plots = 24, level = "Site", treatment = NULL, length = "all",
   output = "abundance", save = TRUE, filename = "all.csv",
   tree = dirtree(), quiet = FALSE)
@@ -56,6 +60,20 @@ covariates_options(historical = TRUE, forecasts = TRUE, fdate = today(),
   hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", save = TRUE,
   filename = "covariates.csv", tree = dirtree(), quiet = FALSE)
+
+metadata_options(fdate = today(), cast_type = "forecasts",
+  confidence_level = 0.9, lead_time = 12, save = TRUE,
+  filename = "metadata.yaml", quiet = FALSE, tree = dirtree())
+
+predictions_options(base = "~", main = "forecasting", subs = subdirs(),
+  download_existing_predictions = TRUE, quiet = FALSE)
+
+models_options(base = "~", main = "forecasting", subs = subdirs(),
+  quiet = FALSE, model = models())
+
+cast_options(base = "~", main = "forecasting", subs = subdirs(),
+  quiet = FALSE, model = models(), cast_type = "forecasts",
+  ensemble = TRUE)
 }
 \arguments{
 \item{base}{name of the base directory where the forecasting 
@@ -77,7 +95,7 @@ imported portalr functions to work properly)}
 
 \item{m_filename}{the name of the file for saving moons data}
 
-\item{type}{"all" or "controls"}
+\item{tmnt_type}{"all" or "controls"}
 
 \item{start}{newmoon number of the first sample to be included. Default 
 value is \code{217}, corresponding to 1995-01-01.}
@@ -86,13 +104,13 @@ value is \code{217}, corresponding to 1995-01-01.}
 
 \item{min_plots}{minimum number of plots surveyed for a survey to be used}
 
-\item{level}{for get_rodent_data, automatically set by type}
+\item{level}{for get_rodent_data, automatically set by tmnt_type}
 
-\item{treatment}{for get_rodent_data, automatically set by type}
+\item{treatment}{for get_rodent_data, automatically set by tmnt_type}
 
-\item{length}{for get_rodent_data, automatically set by type}
+\item{length}{for get_rodent_data, automatically set by tmnt_type}
 
-\item{output}{for get_rodent_data, automatically set by type}
+\item{output}{for get_rodent_data, automatically set by tmnt_type}
 
 \item{r_save}{logical if the data should be saved out}
 
@@ -129,7 +147,7 @@ the data were retroactively filled in and are given the source name
 
 \item{c_filename}{the name of the covariate file for the saving}
 
-\item{filename_suffix}{"forecasts" or "hindcasts"}
+\item{cast_type}{"forecasts" or "hindcasts"}
 
 \item{confidence_level}{confidence level used in summarizing model output}
 
@@ -141,6 +159,8 @@ the data were retroactively filled in and are given the source name
 predictions files should be retrieved from the portalPredictions repo}
 
 \item{model}{names of model scripts to include}
+
+\item{ensemble}{logical indicator of whether to create an ensemble model}
 
 \item{n_future_moons}{integer value for the number of future moons to add}
 
@@ -154,8 +174,9 @@ predictions files should be retrieved from the portalPredictions repo}
 \code{all_options}: list of control options lists ("options_dir"
   generated by \code{dir_options}, "options_data" generated by 
   \code{data_options}, "options_predictions" generated by
-  \code{predictions_options}, and "options_models" generated by
-  \code{models_options}.
+  \code{predictions_options}, "options_models" generated by
+  \code{models_options}, and "options_cast" generated by 
+  \code{cast_options}.
 
 \code{dir_options}: a list of settings controlling the directory
   structure creation
@@ -174,6 +195,18 @@ predictions files should be retrieved from the portalPredictions repo}
 
 \code{covariates_options}: a list of settings controlling the 
   covariates data creation
+
+\code{metadata_options}: a list of settings controlling the 
+  metadata creation
+
+\code{predictions_options}: a list of settings controlling the 
+  population of the predictions subdirectory
+
+\code{models_options}: a list of settings controlling the 
+  population of the models subdirectory
+
+\code{cast_options}: a list of settings controlling the running of
+  \code{link{portalcast}}
 }
 \description{
 Suite of functions used to generate options lists: \cr \cr
@@ -193,4 +226,16 @@ Suite of functions used to generate options lists: \cr \cr
 
 \code{covariates_options} creates a list of options for the 
   covariates data
+
+\code{metadata_options} creates a list of options for the 
+  metadata creation
+
+\code{predictions_options} creates a list of options for 
+  populating the predictions subdirectory
+
+\code{models_options} creates a list of options for 
+  populating the models subdirectory
+
+\code{cast_options} creates a list of control options for 
+  running \code{link{portalcast}}
 }

@@ -4,17 +4,17 @@
 \alias{models}
 \title{Provide the names of models}
 \usage{
-models(type = "portalcasting")
+models(set = "portalcasting")
 }
 \arguments{
-\item{type}{type of model options (currently only support for 
+\item{set}{type of model options (currently only support for 
 "portalcasting")}
 }
 \value{
 vector of model names
 }
 \description{
-Based on a \code{type}, returns a character vectory of model
+Based on a \code{set}, returns a character vectory of model
   names to be included. Currently only support for 
-  \code{type = "portalcasting"}.
+  \code{set = "portalcasting"}.
 }

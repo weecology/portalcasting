@@ -108,7 +108,7 @@ fill_dir <- function(options_all = all_options()){
   fill_PortalData(options_all$options_dir)
   fill_data(options_all$options_data)
   fill_predictions(options_all$options_predictions)
-  #fill_models(options_all$options_models)
+  fill_models(options_all$options_models)
 }
 
 #' @title Populate the raw data of a portalcasting directory
@@ -182,7 +182,11 @@ fill_predictions <- function(options_predictions = predictions_options()){
 fill_models <- function(options_models = models_options()){
   nmods <- length(options_models$model)
   for (i in 1:nmods){
-   mod <- write_model(options_models)
+    modname <- options_models$model[i]
+    funname <- paste0(modname, "_options")
+    modoptions <- do.call(funname, list("tree" = options_models$tree))
+
+    mod <- write_model(modname, modoptions)
   }
 }
 

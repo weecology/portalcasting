@@ -1,62 +1,47 @@
 #' @title Forecast Portal rodents
 #'
 #' @description Main function for controlling the running of potentially 
-#'   multiple models for either a forecast or a hindcast
+#'   multiple models for either a forecast or a hindcast. \cr \cr 
+#'   Note: currently \code{portalcast} can only run "forecasts".
 #'
-#' @param type "forecast" or "hindcast"
-#'
-#' @param model_dir directory name where the model files reside
-#'
-#' @param temp_dir directory name for the temporary housing of predictions
-#'
-#' @param pred_dir directory name where the saved model predictions reside
-#'
-#' @param data_dir directory name where the in-use data reside
-#'
-#' @param models names of models to run or "all" to run them all
-#'
-#' @param ensemble logical indicator of whether to create an ensemble model
+#' @param options_cast options controlling the (fore- or hind-)casting
 #'
 #' @return Nothing
 #'
 #' @export
 #'
-portalcast <- function(type = "forecast", model_dir,
-                       temp_dir,
-                       pred_dir,
-                       data_dir,
-                       models = c("autoarima", "esss", "nbgarch", "pevgarch"),
-                       ensemble = TRUE){
+portalcast <- function(options_cast = cast_options()){
 
-  dir.create(temp_dir)
+  
+ # dir.create(temp_dir)
 
-  cat("Preparing data", "\n")
-  if (type == "forecast"){
+#  cat("Preparing data", "\n")
+ # if (type == "forecasts"){
     #rodents <- prep_rodents(data_dir = data_dir)
     #covariates <- prep_covariates(data_dir = data_dir)
     #metadata <- prep_metadata(rodents, covariates, data_dir = data_dir)
-  }
+  #}
 
   #forecast_date <- as.Date(metadata$forecast_date)
   #if (!(forecast_date == Sys.Date())){
  #   stop("Data not updated")
  # }
 
-  cat("Checking model availability", "\n")
+  #cat("Checking model availability", "\n")
   #runnames <- select_models(model_dir, models)
 
-  cat("Running models", "\n")
+  #cat("Running models", "\n")
   #sapply(runnames, source)
 
-  cat("Compiling forecasts", "\n")
+  #cat("Compiling forecasts", "\n")
   #combined <- combine_forecasts(metadata)
 
-  if (ensemble){
-    cat("Creating ensemble model", "\n")
+  #if (ensemble){
+   # cat("Creating ensemble model", "\n")
     #ensemble <- add_ensemble(metadata)
-  }
+  #}
 
-  unlink(temp_dir)
+  #unlink(temp_dir)
 }
 
 #' @title Select models to forecast with

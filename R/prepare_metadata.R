@@ -51,7 +51,7 @@ prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(),
   covar_fcast_months <- as.numeric(format(covar_nm_dates, "%m"))
   covar_fcast_years <- as.numeric(format(covar_nm_dates, "%Y"))
 
-  out <-  list(filename_suffix = options_metadata$filename_suffix, 
+  out <-  list(filename_suffix = options_metadata$cast_type, 
                forecast_date = as.character(forecast_date), 
                covariate_forecast_newmoons = covar_fcast_newmoons, 
                covariate_forecast_months = covar_fcast_months, 
