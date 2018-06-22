@@ -64,9 +64,12 @@ model_template <- function(options_model = model_options()){
     lag_arg <- paste0(', lag = ', options_model$lag)
     args_a <- paste0('all, covariates, metadata', lag_arg)
     args_c <- paste0('all, covariates, metadata, level = "Controls"', lag_arg)
+    path_cov <- 'file_path(tree, "data/covariates.csv")'
+    covariate_text <- paste0('\ncovariates <- read.csv(', path_cov, '); \n')
   } else{
     args_a <- "all, metadata"
     args_c <- 'all, metadata, level = "Controls"'
+    covariate_text <- "\n"
   }
 
   path_a <- 'file_path(tree, "data/all.csv")'
@@ -76,11 +79,13 @@ model_template <- function(options_model = model_options()){
   paste0(
 'tree <- dirtree("', tree$base, '", "', tree$main, '", ', subs, ');
 all <- read.csv(', path_a, ');
-controls <- read.csv(', path_c, ');
-metadata <- yaml::yaml.load_file(', path_m, ');
+controls <- read.csv(', path_c, ');',
+covariate_text, 
+'metadata <- yaml::yaml.load_file(', path_m, ');
 f_a <- ', name ,'(', args_a, ');
 f_c <- ', name ,'(', args_c, ');
-save_forecast_output(f_a, f_c, "', options_model$name, '", metadata)'
+save_forecast_output(f_a, f_c, "', 
+options_model$name, '", metadata, sub_path(tree, "tmp"))'
 )
 
 }

@@ -107,7 +107,7 @@ add_ensemble <- function(model_metadata, temp_dir,
   fcast_fname <- paste(fcast_date, filename_suffix, ".csv", sep = "")
   forecast_filename <- file.path(pred_dir, fcast_fname)
 
-  ensemble <- make_ensemble(fcasts) %>% 
+  ensemble <- make_ensemble(fcasts, pred_dir) %>% 
               subset(select = colnames(fcasts))
   append_csv(ensemble, forecast_filename)
   return(ensemble)
@@ -160,6 +160,8 @@ compile_aic_weights <- function(pred_dir){
 #' 
 #' @param all_forecasts alll forecasts
 #' 
+#' @param pred_dir directory name where the saved model predictions reside
+#'
 #' @param models_to_use models to use
 #' 
 #' @param CI_level confidence interval level
@@ -168,9 +170,10 @@ compile_aic_weights <- function(pred_dir){
 #' 
 #' @export
 #'
-make_ensemble <- function(all_forecasts, models_to_use = NA, CI_level = 0.9){
+make_ensemble <- function(all_forecasts, pred_dir, models_to_use = NA,  
+                          CI_level = 0.9){
 
-  weights <- compile_aic_weights()
+  weights <- compile_aic_weights(pred_dir)
   weights$date <- as.Date(weights$date)
   CI_quantile <- qnorm((1 - CI_level) / 2, lower.tail = FALSE)
 

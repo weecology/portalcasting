@@ -1,6 +1,5 @@
 function outline:
 
-
 -setup_dir
   -create_dir
     -create_main_dir
@@ -12,6 +11,9 @@ function outline:
     -fill_data
 	  -prep_moons
 	  -prep_rodents
+	  -prep_covariates
+	  -prep_metadata
+	-fill predictions
 	-fill_models
 	  -write_model
 
@@ -31,9 +33,10 @@ options list:
 -options_all
   -options_dir
   -options_data
-    -options_moons
-    -options_rodents
-    -options_covariates
-    -options_meta
-  -options_forecasts
+    -moons
+    -rodents
+    -covariates
+    -metadata
+  -options_predictions
   -options_models
+  -options_casts

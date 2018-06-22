@@ -72,6 +72,25 @@ sub_paths <- function(tree = dirtree()){
   return(path)
 }
 
+#' @title Determine the path for a specific sub directory
+#'
+#' @description Return the paths for the sub directories
+#'
+#' @param tree the name tree of the forecasting directory
+#'
+#' @param specific_sub the name of the specific subdirectory of interest
+#'
+#' @return the paths of the sub folders in the directory tree
+#'
+#' @export
+#'
+sub_path <- function(tree = dirtree(), specific_sub){
+  base <- tree$base
+  main <- tree$main
+  path <- normalizePath(file.path(base, main, specific_sub), mustWork = FALSE)
+  return(path)
+}
+
 #' @title Determine the path for a model in the model sub directory
 #'
 #' @description Return the path for a specific model

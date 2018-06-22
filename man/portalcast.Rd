@@ -4,10 +4,12 @@
 \alias{portalcast}
 \title{Forecast Portal rodents}
 \usage{
-portalcast(options_cast = cast_options())
+portalcast(options_all = all_options())
 }
 \arguments{
-\item{options_cast}{options controlling the (fore- or hind-)casting}
+\item{options_all}{top-level list of options controlling the portalcasting 
+directory. Of particular importance is the \code{options_cast} list,
+which contains the options controlling the (fore- or hind-)casting}
 }
 \value{
 Nothing

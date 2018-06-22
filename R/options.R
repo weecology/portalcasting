@@ -346,7 +346,7 @@ metadata_options <- function(fdate = today(), cast_type = "forecasts",
                              save = TRUE, filename = "metadata.yaml", 
                              quiet = FALSE, tree = dirtree()){
 
-  list(fdate = fdate, filename_suffx = cast_type, 
+  list(fdate = fdate, filename_suffix = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
        filename = filename, quiet = quiet, tree = tree)
 }
