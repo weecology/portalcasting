@@ -180,9 +180,11 @@ fill_predictions <- function(options_predictions = predictions_options()){
 #' @export
 #'
 fill_models <- function(options_models = models_options()){
-  mods <- sapply(options_models$model, write_model, options_models)
+  nmods <- length(options_models$model)
+  for (i in 1:nmods){
+   mod <- write_model(options_models)
+  }
 }
-
 
 #' @title Verify that the PortalData sub is present and has required data
 #'

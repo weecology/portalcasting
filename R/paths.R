@@ -108,8 +108,8 @@ model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
 #' @export
 #'
 file_path <- function(tree = dirtree(), local_path = NULL){
-  if (is.null(sub) | is.null(file)){
-    stop("'local_path' needs to be specified")
+  if (is.null(local_path)){
+    stop('"local_path" needs to be specified')
   }
   base <- tree$base
   main <- tree$main

@@ -413,10 +413,18 @@ predictions_options <- function(base = "~", main = "forecasting",
 #' @export
 #'
 models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
-                          quiet = FALSE, model = models()){
+                           quiet = FALSE, model = models()){
 
   tree <- dirtree(base, main, subs)
   list(model = model, quiet = quiet, tree = tree)
+}
+
+model_options <- function(base = "~", main = "forecasting", subs = subdirs(),
+                          name = "AutoArima", covariates = FALSE, lag = 0,
+                          quiet = FALSE){
+  tree <- dirtree(base, main, subs)
+  list(name = name, covariates = covariates, lag = lag, quiet = quiet, 
+       tree = tree)
 }
 
 #' @title Prepare all of the options for creating a portalcasting directory

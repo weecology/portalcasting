@@ -23,7 +23,7 @@
 #'
 #' @export
 #'
-esss <- function(abundances, metadata, level = "All"){
+ESSS <- function(abundances, metadata, level = "All"){
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level
