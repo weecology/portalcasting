@@ -59,25 +59,25 @@ function that generates the hierarchical options list.
 The options list is a hierarchical list containing a suite of inter-linked
 options controlling the structure, content, and usage of the directory.
 
--`options_all`: created by `all_options` 
-  -`options_dir`: created by `dir_options`
-  -`options_data`: created by `data_options`
-    -`moons`: created by `moons_options`
-    -`rodents`: created by `rodents_options`
-    -`covariates`: created by `covariates_options`
-    -`metadata`: created by `metadata_options`
-  -`options_predictions`: created by `predictions_options`
-  -`options_models`: created by `models_options`
-  -`options_casts`: created by `casts_options` 
+- `options_all`: created by `all_options` 
+  - `options_dir`: created by `dir_options`
+  - `options_data`: created by `data_options`
+    - `moons`: created by `moons_options`
+    - `rodents`: created by `rodents_options`
+    - `covariates`: created by `covariates_options`
+    - `metadata`: created by `metadata_options`
+  - `options_predictions`: created by `predictions_options`
+  - `options_models`: created by `models_options`
+  - `options_casts`: created by `casts_options` 
 
 ## Directory Tree
 
 The package uses a simple directory tree to organize the project. There are 
 three levels to the hierarchy:
 
- `base`: existing folder where the project folder will be housed
- `main`: project folder encompassing all subfolders
- `subs`: specific sub-folders for the project
+- `base`: existing folder where the project folder will be housed
+  - `main`: project folder encompassing all subfolders
+    - `subs`: specific sub-folders for the project
  
 The tree is housed in a simple list, created by the `dirtree` function, which 
 allows for the renaming of all levels, although it is only advisable to alter 
