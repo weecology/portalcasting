@@ -29,7 +29,7 @@
 #'
 #' @export
 #'
-autoarima <- function(abundances, metadata, level = "All"){
+AutoArima <- function(abundances, metadata, level = "All"){
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level

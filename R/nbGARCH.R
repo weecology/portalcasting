@@ -22,7 +22,7 @@
 #'
 #' @export
 #'
-nbgarch <- function(abundances, metadata, level = "All"){
+nbGARCH <- function(abundances, metadata, level = "All"){
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level

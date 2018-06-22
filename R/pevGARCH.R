@@ -31,7 +31,7 @@
 #'
 #' @export
 #'
-pevgarch <- function(abundances, covariates, metadata, level = "All", 
+pevGARCH <- function(abundances, covariates, metadata, level = "All", 
                      lag = 6){
 
   fcnm <- metadata$rodent_forecast_newmoons

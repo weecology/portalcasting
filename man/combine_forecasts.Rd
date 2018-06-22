@@ -4,8 +4,7 @@
 \alias{combine_forecasts}
 \title{Combine Forecasts and Append to Existing Files}
 \usage{
-combine_forecasts(model_metadata, temp_dir = pc_path("tmp", "~"),
-  pred_dir = pc_path("predictions", "~"))
+combine_forecasts(model_metadata, temp_dir, pred_dir)
 }
 \arguments{
 \item{model_metadata}{model metadata list}

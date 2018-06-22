@@ -4,30 +4,18 @@
 \alias{portalcast}
 \title{Forecast Portal rodents}
 \usage{
-portalcast(type = "forecast", model_dir = pc_path("models", "~"),
-  temp_dir = pc_path("tmp", "~"), pred_dir = pc_path("predictions", "~"),
-  data_dir = pc_path("data", "~"), models = c("autoarima", "esss",
-  "nbgarch", "pevgarch"), ensemble = TRUE)
+portalcast(options_all = all_options())
 }
 \arguments{
-\item{type}{"forecast" or "hindcast"}
-
-\item{model_dir}{directory name where the model files reside}
-
-\item{temp_dir}{directory name for the temporary housing of predictions}
-
-\item{pred_dir}{directory name where the saved model predictions reside}
-
-\item{data_dir}{directory name where the in-use data reside}
-
-\item{models}{names of models to run or "all" to run them all}
-
-\item{ensemble}{logical indicator of whether to create an ensemble model}
+\item{options_all}{top-level list of options controlling the portalcasting 
+directory. Of particular importance is the \code{options_cast} list,
+which contains the options controlling the (fore- or hind-)casting}
 }
 \value{
 Nothing
 }
 \description{
 Main function for controlling the running of potentially 
-  multiple models for either a forecast or a hindcast
+  multiple models for either a forecast or a hindcast. \cr \cr 
+  Note: currently \code{portalcast} can only run "forecasts".
 }

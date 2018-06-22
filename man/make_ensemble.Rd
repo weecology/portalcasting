@@ -4,10 +4,12 @@
 \alias{make_ensemble}
 \title{Create the ensemble model from all other forecasts}
 \usage{
-make_ensemble(all_forecasts, models_to_use = NA, CI_level = 0.9)
+make_ensemble(all_forecasts, pred_dir, models_to_use = NA, CI_level = 0.9)
 }
 \arguments{
 \item{all_forecasts}{alll forecasts}
+
+\item{pred_dir}{directory name where the saved model predictions reside}
 
 \item{models_to_use}{models to use}
 
