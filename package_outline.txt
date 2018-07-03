@@ -40,3 +40,21 @@ options list:
   -options_predictions
   -options_models
   -options_casts
+  
+  
+portalcast:
+
+the main function that triggers the forecast or hindcast process as outlined
+by the options. set up to work with forecasting only as of yet
+
+
+TO DO:
+currently setting up and structuring out the hindcasting code
+
+bring over the trapping table data in the data filling
+
+additional options to add:
+"end" or "initial_time_fullmoon"... basically the moon number(s) indicating
+a cast should start (end + 1 or initial_time_fullmoon). for a forecast
+there's just one (current), but for a hindcast there could be many  
+

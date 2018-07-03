@@ -46,7 +46,7 @@
 #' @param historical logical indicator whether or historical covariates are
 #'   to be included
 #'
-#' @param forecasts logical indicator whether or forecasted covariates are
+#' @param forecasts logical indicator whether or not forecasted covariates are
 #'   to be included
 #'
 #' @param yr year of today
@@ -391,10 +391,10 @@ models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 #' @rdname all_options
 #'
 #' @description \code{cast_options} creates a list of control options for 
-#'   running \code{link{portalcast}}
+#'   running \code{\link{portalcast}}
 #'
 #' @return \code{cast_options}: a list of settings controlling the running of
-#'   \code{link{portalcast}}
+#'   \code{\link{portalcast}}
 #'
 #' @export
 #'

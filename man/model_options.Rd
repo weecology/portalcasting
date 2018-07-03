@@ -26,7 +26,7 @@ pevGARCH_options(tree = dirtree(), name = "pevGARCH", covariates = TRUE,
 \arguments{
 \item{tree}{directory tree}
 
-\item{name}{character name of the model (matches function name)}
+\item{name}{character name of the model (MUST match the function name)}
 
 \item{covariates}{does the model require covariates}
 
@@ -52,7 +52,9 @@ pevGARCH_options(tree = dirtree(), name = "pevGARCH", covariates = TRUE,
 }
 \description{
 Suite of functions used to generate model-writing options 
-  lists: \cr \cr \code{model_options} is a basic template
+  lists: \cr \cr \code{model_options} is a basic template. Not to be 
+  confused with \code{\link{models_options}}, which creates the options 
+  list for the \code{models} subdirectory
 
 \code{AutoArima_options} creates a list of control options for
   the AutoArima model

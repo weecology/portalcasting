@@ -2,11 +2,13 @@
 #' @title Prepare options for a portalcasting model
 #'
 #' @description Suite of functions used to generate model-writing options 
-#'   lists: \cr \cr \code{model_options} is a basic template
+#'   lists: \cr \cr \code{model_options} is a basic template. Not to be 
+#'   confused with \code{\link{models_options}}, which creates the options 
+#'   list for the \code{models} subdirectory
 #'
 #' @param tree directory tree
 #'
-#' @param name character name of the model (matches function name)
+#' @param name character name of the model (MUST match the function name)
 #'
 #' @param covariates does the model require covariates
 #'

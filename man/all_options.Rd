@@ -119,7 +119,7 @@ value is \code{217}, corresponding to 1995-01-01.}
 \item{historical}{logical indicator whether or historical covariates are
 to be included}
 
-\item{forecasts}{logical indicator whether or forecasted covariates are
+\item{forecasts}{logical indicator whether or not forecasted covariates are
 to be included}
 
 \item{yr}{year of today}
@@ -206,7 +206,7 @@ predictions files should be retrieved from the portalPredictions repo}
   population of the models subdirectory
 
 \code{cast_options}: a list of settings controlling the running of
-  \code{link{portalcast}}
+  \code{\link{portalcast}}
 }
 \description{
 Suite of functions used to generate options lists: \cr \cr
@@ -237,5 +237,5 @@ Suite of functions used to generate options lists: \cr \cr
   populating the models subdirectory
 
 \code{cast_options} creates a list of control options for 
-  running \code{link{portalcast}}
+  running \code{\link{portalcast}}
 }
