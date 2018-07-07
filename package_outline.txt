@@ -45,7 +45,7 @@ options list:
 portalcast:
 
 the main function that triggers the forecast or hindcast process as outlined
-by the options. set up to work with forecasting only as of yet
+by the options. 
 
 
 TO DO:

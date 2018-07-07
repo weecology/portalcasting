@@ -2,7 +2,7 @@
 % Please edit documentation in R/portalcast.R
 \name{portalcast}
 \alias{portalcast}
-\title{Forecast Portal rodents}
+\title{Forecast or Hindcast Portal rodents}
 \usage{
 portalcast(options_all = all_options())
 }

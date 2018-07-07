@@ -2,7 +2,7 @@
 % Please edit documentation in R/portalcast.R
 \name{select_models}
 \alias{select_models}
-\title{Select models to forecast with}
+\title{Select Models to Forecast or Hindcast With}
 \usage{
 select_models(model_dir, models)
 }

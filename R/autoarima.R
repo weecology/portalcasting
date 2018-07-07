@@ -6,7 +6,7 @@
 #'  \code{forecast} package (Hyndman \emph{et al}. 2018).
 #'
 #'  Because the seasonality and sampling occurring with different frequencies,
-#'  which \code{auto.arima } cannot accommodate, seasonal models are not 
+#'  which \code{auto.arima} cannot accommodate, seasonal models are not 
 #'  included.
 #'
 #'  Although the auto.arima model can handle missing data, the other models

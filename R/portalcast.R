@@ -1,4 +1,4 @@
-#' @title Forecast Portal rodents
+#' @title Forecast or Hindcast Portal rodents
 #'
 #' @description Main function for controlling the running of potentially 
 #'   multiple models for either a forecast or a hindcast. \cr \cr 
@@ -61,7 +61,7 @@ portalcast <- function(options_all = all_options()){
   file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
 }
 
-#' @title Select models to forecast with
+#' @title Select Models to Forecast or Hindcast With
 #'
 #' @description Verify that models requested are available and select them
 #'
@@ -81,7 +81,8 @@ select_models <- function(model_dir, models){
     modelnames <- paste0(models, ".R")
     torun <- (modelnames %in% available)  
     if (any(torun == FALSE)){
-      stop(paste0("Requested model ", models[-torun], " not in directory"))
+      missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
+      stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
     }
     runnames <- list.files(model_dir, full.names = TRUE)[torun]
   }
