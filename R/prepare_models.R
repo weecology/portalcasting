@@ -19,7 +19,7 @@ models <- function(set = "portalcasting"){
   return(out)
 }
 
-#' @title Write the template for a model into the model sub directory
+#' @title Write the template for a model into model subdirectory
 #'
 #' @description Create template script for a given model
 #'
@@ -36,7 +36,7 @@ write_model <- function(model = NULL, options_model = model_options()){
     return()
   }
   if (!options_model$quiet){
-    cat("", paste0("adding ", model, " model to models sub-directory \n"))
+    cat("", paste0("adding ", model, " model to models subdirectory \n"))
   }
   mod_path <- model_path(options_model$tree, model = options_model$name)
   mod_template <- model_template(options_model)

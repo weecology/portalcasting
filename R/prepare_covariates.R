@@ -16,20 +16,19 @@ prep_covariates <- function(moons = prep_moons(),
                             options_covariates = covariates_options()){
 
   if (!options_covariates$quiet){
-    cat("Loading the covariates data files into the data subdirectory. \n")
+    message("Loading the covariates data files into data subdirectory")
   }
-  transfer_historical_covariate_forecasts(options_covariates$tree)
   hist_data <- prep_hist_covariates(options_covariates$tree)
 
-  if (options_covariates$forecasts){
+  if (options_covariates$cov_fcast){
     fcast_data <- prep_fcast_covariates(hist_data, moons, options_covariates)
   }
   
   out <- hist_data[-(1:nrow(hist_data)), ]
-  if (options_covariates$historical){
+  if (options_covariates$cov_hist){
     out <- bind_rows(out, hist_data)
   }
-  if (options_covariates$forecasts){
+  if (options_covariates$cov_fcast){
     out <- bind_rows(out, fcast_data)
   }
 
@@ -44,15 +43,18 @@ prep_covariates <- function(moons = prep_moons(),
 #'   consider housing the data differently (they'll be continuously updated
 #'   with the forecasts), and thus we'll want to un-hard-wire that.
 #'
-#' @param tree directory tree
+#' @param options_data data options
 #'
 #' @return nothing
 #'
 #' @export
 #'
-transfer_historical_covariate_forecasts <- function(tree = dirtree()){
-  path_to <- file_path(tree, "data/covariate_forecasts.csv")
+transfer_hist_covariate_forecasts <- function(options_data = data_options()){
+  path_to <- file_path(options_data$tree, "data/covariate_forecasts.csv")
   if (!file.exists(path_to)){
+    if (!options_data$quiet){
+      message("Loading historical covariate forecasts into data subdirectory")
+    }
     fname <- "extdata/covariate_forecasts.csv"
     path_from <- system.file(fname, package = "portalcasting")
     if (!file.exists(path_from)){

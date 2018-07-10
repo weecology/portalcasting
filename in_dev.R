@@ -1,17 +1,16 @@
-transfer_historical_covariate_forecasts should get moved from prep_covariates to fill_data
-
 prep_covariates should have different methods for hindcast and forecast, 
 so covariate options and thus data options should have a cast toggle
-if that gets toggled on, then the "forecasts" option. (which duh needs to be renamed) 
-should get toggled off
+if that gets toggled on, 
 
-for hindcast, the fill data set up will fill it for the most recent need (use last option that is to be added)
+for hindcast, the fill data set up will fill it for the most recent need
 and then well need to basically loop over the casting, each time trimming the rodent and covariate data,
 adding the correct historical covariate forecasts, and updating the metadata 
 and update
 
 
+we want an update_dir() set of functions, yeah?
 
+we need to connect the historical covariate forecasts back around
 
 
 

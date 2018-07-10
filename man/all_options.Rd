@@ -16,12 +16,12 @@
 all_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
   m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, drop_spp = "PI", min_plots = 24, level = "Site",
-  treatment = NULL, length = "all", output = "abundance", r_save = TRUE,
-  r_filename = "all.csv", historical = TRUE, forecasts = TRUE,
-  yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
-  fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
-  hist_fcast_file = "covariate_forecasts.csv",
+  start = 217, end = NULL, drop_spp = "PI", min_plots = 24,
+  level = "Site", treatment = NULL, plots = "all", output = "abundance",
+  r_save = TRUE, r_filename = "all.csv", cov_hist = TRUE,
+  cov_fcast = TRUE, yr = as.numeric(format(today(), "\%Y")),
+  lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
+  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
@@ -34,12 +34,12 @@ dir_options(base = "~", main = "forecasting", subs = subdirs(),
 data_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
   m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, drop_spp = "PI", min_plots = 24, level = "Site",
-  treatment = NULL, length = "all", output = "abundance", r_save = TRUE,
-  r_filename = "all.csv", historical = TRUE, forecasts = TRUE,
-  yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
-  fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
-  hist_fcast_file = "covariate_forecasts.csv",
+  start = 217, end = NULL, drop_spp = "PI", min_plots = 24,
+  level = "Site", treatment = NULL, plots = "all", output = "abundance",
+  r_save = TRUE, r_filename = "all.csv", cov_hist = TRUE,
+  cov_fcast = TRUE, yr = as.numeric(format(today(), "\%Y")),
+  lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
+  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
@@ -49,14 +49,15 @@ moons_options(n_future_moons = 12, fdate = today(),
   append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv",
   tree = dirtree(), quiet = FALSE)
 
-rodents_options(tmnt_type = NULL, start = 217, drop_spp = "PI",
-  min_plots = 24, level = "Site", treatment = NULL, length = "all",
-  output = "abundance", save = TRUE, filename = "all.csv",
-  tree = dirtree(), quiet = FALSE)
+rodents_options(tmnt_type = NULL, start = 217, end = NULL,
+  drop_spp = "PI", min_plots = 24, level = "Site", treatment = NULL,
+  plots = "all", output = "abundance", save = TRUE,
+  filename = "all.csv", tree = dirtree(), quiet = FALSE)
 
-covariates_options(historical = TRUE, forecasts = TRUE, fdate = today(),
-  yr = as.numeric(format(today(), "\%Y")), start = 217, lead_time = 12,
-  min_lag = 6, fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
+covariates_options(cast_type = "forecasts", cov_hist = TRUE,
+  cov_fcast = TRUE, fdate = today(), yr = as.numeric(format(today(),
+  "\%Y")), start = 217, end = NULL, lead_time = 12, min_lag = 6,
+  fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
   hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", save = TRUE,
   filename = "covariates.csv", tree = dirtree(), quiet = FALSE)
@@ -100,6 +101,10 @@ imported portalr functions to work properly)}
 \item{start}{newmoon number of the first sample to be included. Default 
 value is \code{217}, corresponding to 1995-01-01.}
 
+\item{end}{newmoon number of the last sample to be included. Default
+value is \code{NULL}, which equates to the most recently included
+sample.}
+
 \item{drop_spp}{species names to drop from the table}
 
 \item{min_plots}{minimum number of plots surveyed for a survey to be used}
@@ -108,7 +113,7 @@ value is \code{217}, corresponding to 1995-01-01.}
 
 \item{treatment}{for get_rodent_data, automatically set by tmnt_type}
 
-\item{length}{for get_rodent_data, automatically set by tmnt_type}
+\item{plots}{for get_rodent_data, automatically set by tmnt_type}
 
 \item{output}{for get_rodent_data, automatically set by tmnt_type}
 
@@ -116,10 +121,10 @@ value is \code{217}, corresponding to 1995-01-01.}
 
 \item{r_filename}{the name of the file to save the rodent data in}
 
-\item{historical}{logical indicator whether or historical covariates are
+\item{cov_hist}{logical indicator whether or historical covariates are
 to be included}
 
-\item{forecasts}{logical indicator whether or not forecasted covariates are
+\item{cov_fcast}{logical indicator whether or not forecasted covariates are
 to be included}
 
 \item{yr}{year of today}
@@ -185,7 +190,8 @@ predictions files should be retrieved from the portalPredictions repo}
   generated by \code{moons_options}, "rodents" generated by 
   \code{rodents_options}, "covariates" generated by
   \code{covariates_options}, and "metadata" generated by
-  \code{metadata_options}.
+  \code{metadata_options}, as well as items "cast_type", "tree",  and
+  "quiet" for simple use with all or ancillary data.
 
 \code{moons_options}: a list of settings controlling the moon data
   creation

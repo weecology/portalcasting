@@ -14,31 +14,14 @@
 #'
 portalcast <- function(options_all = all_options()){
   tree <- options_all$options_cast$tree
-  temp_dir <- sub_path(tree, "tmp")
-  if (!dir.exists(temp_dir)){
-    dir.create(temp_dir)
-  }
+ 
+  create_tmp(tree)
 
-  if (!options_all$options_cast$quiet){
-    cat("Preparing data", "\n")
-  }
-  if (options_all$options_cast$cast_type == "forecasts"){
-    metadata_path <- file_path(tree, "data/metadata.yaml")
-    if (!file.exists(metadata_path)){
-      fill_data(options_all$options_data)
-    }
-    metadata <- yaml.load_file(metadata_path)    
-    if (metadata$forecast_date != today()){
-      fill_data(options_all$options_data)
-      metadata <- yaml.load_file(metadata_path)
-    }
-  }
+  prep_data(options_all$options_data)
+  metadata <- yaml.load_file(file_path(tree, "data/metadata.yaml"))
 
-  if (!options_all$options_cast$quiet){
-    cat("Checking model availability", "\n")
-  }
-  model_dir <- sub_path(tree, "models")
-  runnames <- select_models(model_dir, options_all$options_cast$model)
+
+  runnames <- prep_models(options_all$options_models)
 
   if (!options_all$options_cast$quiet){
     cat("Running models", "\n")
@@ -58,27 +41,31 @@ portalcast <- function(options_all = all_options()){
     ensemble <- add_ensemble(metadata, temp_dir, predictions_dir)
   }
 
-  file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
+  clear_tmp(tree)
 }
 
 #' @title Select Models to Forecast or Hindcast With
 #'
 #' @description Verify that models requested are available and select them
 #'
-#' @param model_dir directory name where the model files reside
-#'
-#' @param models names of models to run or "all" to run them all
+#' @param options_models models options
 #'
 #' @return names of files to be run
 #'
 #' @export
 #'
-select_models <- function(model_dir, models){
+prep_models <- function(options_models = models_options()){
+
+  if (!options_models$quiet){
+    cat("Checking model availability", "\n")
+  }
+  model_dir <- sub_path(options_models$tree, "models")
+
   available <- list.files(model_dir)
-  if (models[1] == "all"){
+  if (options_models$model[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
   } else{
-    modelnames <- paste0(models, ".R")
+    modelnames <- paste0(options_models$model, ".R")
     torun <- (modelnames %in% available)  
     if (any(torun == FALSE)){
       missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
@@ -87,4 +74,34 @@ select_models <- function(model_dir, models){
     runnames <- list.files(model_dir, full.names = TRUE)[torun]
   }
   return(runnames)
+}
+
+#' @title Create tmp
+#'
+#' @description Create the tmp subdirectory specifically
+#'
+#' @param tree directory tree
+#'
+#' @return nothing
+#'
+#' @export
+#'
+create_tmp <- function(tree = dirtree()){
+  opts <- dir_options(base = tree$base, main = tree$main, subs = "tmp")
+  create_sub_dirs(opts)
+}
+
+#' @title Clear tmp
+#'
+#' @description Remove all of the files from the tmp subdirectory specifically
+#'
+#' @param tree directory tree
+#'
+#' @return nothing
+#'
+#' @export
+#'
+clear_tmp <- function(tree = dirtree()){
+  temp_dir <- sub_path(tree, "tmp")
+  file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
 }

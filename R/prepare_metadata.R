@@ -19,7 +19,7 @@ prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(),
                           options_metadata = metadata_options()){
  
   if (!options_metadata$quiet){
-    cat("Loading the metadata file into the data subdirectory. \n")
+    message("Loading the metadata file into data subdirectory")
   }
 
   forecast_date <- options_metadata$fdate
