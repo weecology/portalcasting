@@ -7,7 +7,7 @@
 verify_models(options_cast = cast_options())
 }
 \arguments{
-\item{options_models}{models options}
+\item{options_cast}{casting options}
 }
 \value{
 nothing

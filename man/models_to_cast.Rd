@@ -7,7 +7,7 @@
 models_to_cast(options_cast = cast_options())
 }
 \arguments{
-\item{options_models}{models options}
+\item{options_cast}{casting options}
 }
 \value{
 names of files to be run

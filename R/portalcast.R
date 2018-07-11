@@ -26,7 +26,7 @@ portalcast <- function(options_all = all_options()){
 #'
 #' @description Verify that models requested are available
 #'
-#' @param options_models models options
+#' @param options_cast casting options
 #'
 #' @return nothing
 #'
@@ -56,7 +56,7 @@ verify_models <- function(options_cast = cast_options()){
 #'
 #' @description Verify that models requested are available and select them
 #'
-#' @param options_models models options
+#' @param options_cast casting options
 #'
 #' @return names of files to be run
 #'

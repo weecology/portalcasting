@@ -33,7 +33,7 @@ NULL
 # To quiet concerns of R CMD check re: variables used in non-standard eval
 if (getRversion() >= "2.15.1"){
   utils::globalVariables(
-    c(".", "aic", "censusdate", "currency", "date", "delta_aic", 
+    c(".", "aic", "censusdate", "currency", "date", "date_made", "delta_aic", 
       "ensemble_estimate", "ensemble_var", 
       "estimate", "fit_end_newmoon", "fit_start_newmoon", 
       "forecast_newmoon", "forecastmonth", "forecastyear", "initial_newmoon",

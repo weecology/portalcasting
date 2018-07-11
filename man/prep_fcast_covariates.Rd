@@ -8,11 +8,11 @@ prep_fcast_covariates(hist_cov = prep_hist_covariates(),
   moons = prep_moons(), options_covariates = covariates_options())
 }
 \arguments{
+\item{hist_cov}{historical covariate data}
+
 \item{moons}{current newmoon table}
 
 \item{options_covariates}{control options list for covariates}
-
-\item{hist_data}{historical covariate data}
 }
 \value{
 covariate data table

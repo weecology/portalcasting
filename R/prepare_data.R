@@ -20,7 +20,7 @@ prep_data <- function(options_data = data_options()){
     }
     metadata <- yaml.load_file(metadata_path)    
     if (metadata$forecast_date != today()){
-      fill_data(options_all$options_data)
+      fill_data(options_data)
     }
   }
 }

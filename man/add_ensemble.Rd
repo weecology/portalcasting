@@ -4,7 +4,7 @@
 \alias{add_ensemble}
 \title{Add Ensemble Model to Forecasts}
 \usage{
-add_ensemble(model_metadata, temp_dir, pred_dir)
+add_ensemble(options_cast = cast_options())
 }
 \arguments{
 \item{options_cast}{casting options}

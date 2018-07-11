@@ -84,8 +84,7 @@ combine_forecasts <- function(options_cast = cast_options()){
 #' 
 #' @export
 #'
-add_ensemble <- function(model_metadata, temp_dir,
-                         pred_dir){
+add_ensemble <- function(options_cast = cast_options()){
 
   temp_dir <- sub_path(options_cast$tree, "tmp")
   pred_dir <- sub_path(options_cast$tree, "predictions")

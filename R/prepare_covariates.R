@@ -94,7 +94,7 @@ prep_hist_covariates <- function(options_covariates = covariates_options()){
 #'   forecasting, including appending the new forecasts of covariates to the
 #'   existing covariate forecast table
 #'
-#' @param hist_data historical covariate data
+#' @param hist_cov historical covariate data
 #'
 #' @param moons current newmoon table
 #'

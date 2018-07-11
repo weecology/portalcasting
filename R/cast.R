@@ -17,14 +17,14 @@ cast <- function(options_cast = cast_options()){
   }
   sapply(models_to_cast(options_cast), source)
 
-  if (!options_all$options_cast$quiet){
+  if (!options_cast$quiet){
     cat("Compiling forecasts", "\n")
   }
-  predictions_dir <- sub_path(tree, "predictions")
+  predictions_dir <- sub_path(options_cast$tree, "predictions")
   combined <- combine_forecasts(options_cast)
 
-  if (options_all$options_cast$ensemble){
-    if (!options_all$options_cast$quiet){
+  if (options_cast$ensemble){
+    if (!options_cast$quiet){
       cat("Creating ensemble model", "\n")
     }
     ensemble <- add_ensemble(options_cast)
