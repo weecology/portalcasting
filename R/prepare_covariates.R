@@ -16,7 +16,7 @@ prep_covariates <- function(moons = prep_moons(),
                             options_covariates = covariates_options()){
 
   if (!options_covariates$quiet){
-    message("Loading the covariates data files into data subdirectory")
+    message("Loading covariate data files into data subdirectory")
   }
   hist_cov <- prep_hist_covariates(options_covariates)
 

@@ -16,7 +16,7 @@
 prep_rodents <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
   if (!options_rodents$quiet){
-    message("Loading the rodents data files into data subdirectory")
+    message("Loading rodents data files into data subdirectory")
   }
   verify_PortalData(options_rodents$tree, "Portal_rodent.csv")
 
