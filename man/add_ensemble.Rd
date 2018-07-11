@@ -7,11 +7,7 @@
 add_ensemble(model_metadata, temp_dir, pred_dir)
 }
 \arguments{
-\item{model_metadata}{model metadata list}
-
-\item{temp_dir}{directory name for the temporary housing of predictions}
-
-\item{pred_dir}{directory name where the saved model predictions reside}
+\item{options_cast}{casting options}
 }
 \value{
 list of [1] the forecasts and [2] the model AIC values

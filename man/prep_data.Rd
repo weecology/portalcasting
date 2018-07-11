@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_data.R
 \name{prep_data}
 \alias{prep_data}
-\title{Prepare data Subdirectory for a Forecast Run or Hindcast Runs}
+\title{Prepare data subdirectory for a forecast run or hindcast runs}
 \usage{
 prep_data(options_data = data_options())
 }

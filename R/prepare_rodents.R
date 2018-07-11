@@ -43,6 +43,8 @@ prep_rodents <- function(moons = prep_moons(),
 #'
 rodents_data <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
+  end_step <- options_rodents$end[options_rodents$hind_step]
+
   get_rodent_data(path = main_path(options_rodents$tree), 
                   clean = FALSE, type = "Rodents", 
                   level = options_rodents$level, 
@@ -54,7 +56,7 @@ rodents_data <- function(moons = prep_moons(),
   trim_treatment(options_rodents) %>%
   inner_join(moons, by = c("period" = "period")) %>%
   subset(newmoonnumber >= options_rodents$start) %>%
-  subset(newmoonnumber <= min(c(options_rodents$end, max(newmoonnumber)))) %>%
+  subset(newmoonnumber <= min(c(end_step, max(newmoonnumber)))) %>%
   select(-newmoondate, -censusdate) %>%
   dataout(options_rodents)
 }

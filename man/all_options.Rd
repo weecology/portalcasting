@@ -16,11 +16,11 @@
 all_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
   m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, end = NULL, drop_spp = "PI", min_plots = 24,
-  level = "Site", treatment = NULL, plots = "all", output = "abundance",
-  r_save = TRUE, r_filename = "all.csv", cov_hist = TRUE,
-  cov_fcast = TRUE, yr = as.numeric(format(today(), "\%Y")),
-  lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
+  start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
+  min_plots = 24, level = "Site", treatment = NULL, plots = "all",
+  output = "abundance", r_save = TRUE, r_filename = "all.csv",
+  cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
+  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
   append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
@@ -34,11 +34,11 @@ dir_options(base = "~", main = "forecasting", subs = subdirs(),
 data_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
   m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, end = NULL, drop_spp = "PI", min_plots = 24,
-  level = "Site", treatment = NULL, plots = "all", output = "abundance",
-  r_save = TRUE, r_filename = "all.csv", cov_hist = TRUE,
-  cov_fcast = TRUE, yr = as.numeric(format(today(), "\%Y")),
-  lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
+  start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
+  min_plots = 24, level = "Site", treatment = NULL, plots = "all",
+  output = "abundance", r_save = TRUE, r_filename = "all.csv",
+  cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
+  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
   append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
@@ -49,15 +49,15 @@ moons_options(n_future_moons = 12, fdate = today(),
   append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv",
   tree = dirtree(), quiet = FALSE)
 
-rodents_options(tmnt_type = NULL, start = 217, end = NULL,
-  drop_spp = "PI", min_plots = 24, level = "Site", treatment = NULL,
-  plots = "all", output = "abundance", save = TRUE,
-  filename = "all.csv", tree = dirtree(), quiet = FALSE)
+rodents_options(cast_type = "forecasts", tmnt_type = NULL, start = 217,
+  end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
+  level = "Site", treatment = NULL, plots = "all", output = "abundance",
+  save = TRUE, filename = "all.csv", tree = dirtree(), quiet = FALSE)
 
 covariates_options(cast_type = "forecasts", cov_hist = TRUE,
   cov_fcast = TRUE, fdate = today(), yr = as.numeric(format(today(),
-  "\%Y")), start = 217, end = NULL, lead_time = 12, min_lag = 6,
-  fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
+  "\%Y")), start = 217, end = NULL, hind_step = 1, lead_time = 12,
+  min_lag = 6, fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
   hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", save = TRUE,
   filename = "covariates.csv", tree = dirtree(), quiet = FALSE)
@@ -74,7 +74,7 @@ models_options(base = "~", main = "forecasting", subs = subdirs(),
 
 cast_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, model = models(), cast_type = "forecasts",
-  ensemble = TRUE)
+  fdate = today(), ensemble = TRUE)
 }
 \arguments{
 \item{base}{name of the base directory where the forecasting 
@@ -99,11 +99,16 @@ imported portalr functions to work properly)}
 \item{tmnt_type}{"all" or "controls"}
 
 \item{start}{newmoon number of the first sample to be included. Default 
-value is \code{217}, corresponding to 1995-01-01.}
+value is \code{217}, corresponding to 1995-01-01}
 
 \item{end}{newmoon number of the last sample to be included. Default
 value is \code{NULL}, which equates to the most recently included
-sample.}
+sample. If \code{cast_type} is "hindcasts" and \code{end} is \code{NULL},
+default becomes \code{490:403}, corresponding to 2017-01-01 back to
+2010-01-01}
+
+\item{hind_step}{an iteration parameter to work across the input values 
+for \code{end}. Default is 1, which is likely all it should be run using}
 
 \item{drop_spp}{species names to drop from the table}
 

@@ -1,4 +1,4 @@
-#' @title Forecast or Hindcast Portal rodents
+#' @title Forecast or hindcast Portal rodents
 #'
 #' @description Main function for controlling the running of potentially 
 #'   multiple models for either a forecast or a hindcast. \cr \cr 
@@ -13,38 +13,46 @@
 #' @export
 #'
 portalcast <- function(options_all = all_options()){
-  tree <- options_all$options_cast$tree
- 
-  create_tmp(tree)
-
+  clear_tmp(options_all$options_dir$tree)
+  verify_models(options_all$options_cast)
+#this will be getting looped or whatever
   prep_data(options_all$options_data)
-  metadata <- yaml.load_file(file_path(tree, "data/metadata.yaml"))
-
-
-  runnames <- prep_models(options_all$options_models)
-
-  if (!options_all$options_cast$quiet){
-    cat("Running models", "\n")
-  }
-  sapply(runnames, source)
-
-  if (!options_all$options_cast$quiet){
-    cat("Compiling forecasts", "\n")
-  }
-  predictions_dir <- sub_path(tree, "predictions")
-  combined <- combine_forecasts(metadata, temp_dir, predictions_dir)
-
-  if (options_all$options_cast$ensemble){
-    if (!options_all$options_cast$quiet){
-      cat("Creating ensemble model", "\n")
-    }
-    ensemble <- add_ensemble(metadata, temp_dir, predictions_dir)
-  }
-
-  clear_tmp(tree)
+  cast(options_all$options_cast)
+  clear_tmp(options_all$options_dir$tree)
+#
 }
 
-#' @title Select Models to Forecast or Hindcast With
+#' @title Verify that models to forecast or hindcast with exist
+#'
+#' @description Verify that models requested are available
+#'
+#' @param options_models models options
+#'
+#' @return nothing
+#'
+#' @export
+#'
+verify_models <- function(options_cast = cast_options()){
+
+  if (!options_cast$quiet){
+    cat("Checking model availability", "\n")
+  }
+  model_dir <- sub_path(options_cast$tree, "models")
+  if (!dir.exists(model_dir)){
+    stop("Models subidrectory does not exist")
+  }
+  available <- list.files(model_dir)
+  if (options_cast$model[1] != "all"){
+    modelnames <- paste0(options_cast$model, ".R")
+    torun <- (modelnames %in% available)  
+    if (any(torun == FALSE)){
+      missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
+      stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
+    }
+  }
+}
+
+#' @title Select models to forecast or hindcast with
 #'
 #' @description Verify that models requested are available and select them
 #'
@@ -54,24 +62,14 @@ portalcast <- function(options_all = all_options()){
 #'
 #' @export
 #'
-prep_models <- function(options_models = models_options()){
-
-  if (!options_models$quiet){
-    cat("Checking model availability", "\n")
-  }
-  model_dir <- sub_path(options_models$tree, "models")
-
-  available <- list.files(model_dir)
-  if (options_models$model[1] == "all"){
+models_to_cast <- function(options_cast = cast_options()){
+  model_dir <- sub_path(options_cast$tree, "models")
+  if (options_cast$model[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
   } else{
-    modelnames <- paste0(options_models$model, ".R")
-    torun <- (modelnames %in% available)  
-    if (any(torun == FALSE)){
-      missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
-      stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
-    }
-    runnames <- list.files(model_dir, full.names = TRUE)[torun]
+    modelnames <- paste0(options_cast$model, ".R")
+    torun <- (modelnames %in% list.files(model_dir))
+    runnames <- list.files(model_dir, full.names = TRUE)[torun] 
   }
   return(runnames)
 }
@@ -103,5 +101,8 @@ create_tmp <- function(tree = dirtree()){
 #'
 clear_tmp <- function(tree = dirtree()){
   temp_dir <- sub_path(tree, "tmp")
+  if (!dir.exists(temp_dir)){
+    create_tmp(tree)
+  }
   file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
 }

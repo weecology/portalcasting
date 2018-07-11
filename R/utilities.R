@@ -4,24 +4,24 @@
 #'   by the save element in the data_options list and the file name is handled
 #'   by the filename element) and return it to the console
 #'
-#' @param data data table to be written out
+#' @param out data table to be written out
 #'
-#' @param options_data an options list that includes a save element and 
+#' @param options_out an options list that includes a save element and 
 #'   a filename element
 #'
 #' @return data (as input)
 #'
 #' @export
 #'
-dataout <- function(data, options_data = moons_options()){
+dataout <- function(out, options_out = moons_options()){
 
-  if (!is.null(options_data$save)){
-    if (options_data$save){
-      file_path(options_data$tree, paste0("data/", options_data$filename)) %>%
-      write.csv(data, ., row.names = FALSE)
+  if (!is.null(options_out$save)){
+    if (options_out$save){
+      file_path(options_out$tree, paste0("data/", options_out$filename)) %>%
+      write.csv(out, ., row.names = FALSE)
     }
   }
-  return(data)
+  return(out)
 }
 
 #' @title Save data out to a csv, appending if existing

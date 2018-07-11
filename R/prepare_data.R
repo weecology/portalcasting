@@ -1,4 +1,4 @@
-#' @title Prepare data Subdirectory for a Forecast Run or Hindcast Runs
+#' @title Prepare data subdirectory for a forecast run or hindcast runs
 #'
 #' @description Prepare the data directory for a forecasting run or a set
 #'   of hindcasting runs

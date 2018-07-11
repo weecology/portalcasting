@@ -12,7 +12,7 @@ we want an update_dir() set of functions, yeah?
 
 we need to connect the historical covariate forecasts back around
 
-
+duh obvs this will need to happen with the rodent data same as with the covs
 
 
 

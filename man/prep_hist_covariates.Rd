@@ -4,10 +4,10 @@
 \alias{prep_hist_covariates}
 \title{Prepare historical covariates data}
 \usage{
-prep_hist_covariates(tree = dirtree())
+prep_hist_covariates(options_covariates = covariates_options())
 }
 \arguments{
-\item{tree}{directory tree}
+\item{options_covariates}{covariates options list}
 }
 \value{
 historical covariate table

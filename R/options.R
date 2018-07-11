@@ -25,11 +25,16 @@
 #' @param tmnt_type "all" or "controls"
 #'
 #' @param start newmoon number of the first sample to be included. Default 
-#'   value is \code{217}, corresponding to 1995-01-01.
+#'   value is \code{217}, corresponding to 1995-01-01
 #'
 #' @param end newmoon number of the last sample to be included. Default
 #'   value is \code{NULL}, which equates to the most recently included
-#'   sample.
+#'   sample. If \code{cast_type} is "hindcasts" and \code{end} is \code{NULL},
+#'   default becomes \code{490:403}, corresponding to 2017-01-01 back to
+#'   2010-01-01
+#'
+#' @param hind_step an iteration parameter to work across the input values 
+#'   for \code{end}. Default is 1, which is likely all it should be run using
 #'
 #' @param drop_spp species names to drop from the table
 #'
@@ -106,8 +111,8 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         quiet = FALSE, fdate = today(), 
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
-                        start = 217, end = NULL, drop_spp = "PI", 
-                        min_plots = 24, 
+                        start = 217, end = NULL, hind_step = 1, 
+                        drop_spp = "PI", min_plots = 24, 
                         level = "Site", treatment = NULL, plots = "all",
                         output = "abundance", r_save = TRUE, 
                         r_filename = "all.csv",
@@ -125,6 +130,9 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         download_existing_predictions = TRUE,
                         model = models(), ensemble = TRUE){
 
+  if (is.null(end) & cast_type == "hindcasts"){
+    end <- 490:403
+  }
   list(
     options_dir = dir_options(base = base, main = main, subs = subs,
                               quiet = quiet),
@@ -133,7 +141,7 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                                 append_missing_to_raw = append_missing_to_raw,
                                 m_save = m_save, m_filename = m_filename,
                                 tmnt_type = tmnt_type, start = start, 
-                                end = end, 
+                                end = end, hind_step = hind_step,
                                 drop_spp = drop_spp, min_plots = min_plots, 
                                 level = level, treatment = treatment, 
                                 plots = plots, output = output,
@@ -159,7 +167,8 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                                     quiet = quiet, model = model),
     options_cast = cast_options(base = base, main = main, subs = subs, 
                                 quiet = quiet, model = model, 
-                                cast_type = cast_type, ensemble = ensemble)
+                                cast_type = cast_type, 
+                                fdate = fdate, ensemble = ensemble)
   )
 
 }
@@ -198,8 +207,8 @@ data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                          quiet = FALSE, fdate = today(), 
                          append_missing_to_raw = TRUE, m_save = TRUE, 
                          m_filename = "moons.csv", tmnt_type = NULL, 
-                         start = 217, end = NULL, drop_spp = "PI", 
-                         min_plots = 24, 
+                         start = 217, end = NULL, hind_step = 1, 
+                         drop_spp = "PI", min_plots = 24, 
                          level = "Site", treatment = NULL, plots = "all",
                          output = "abundance", r_save = TRUE, 
                          r_filename = "all.csv",
@@ -215,13 +224,18 @@ data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                          confidence_level = 0.9, 
                          meta_save = TRUE, meta_filename = "metadata.yaml"){
 
+  if (is.null(end) & cast_type == "hindcasts"){
+    end <- 490:403
+  }
   tree <- dirtree(base, main, subs)
   list(
     moons = moons_options(n_future_moons = lead_time, fdate = fdate,
                           append_missing_to_raw = append_missing_to_raw,
                           save = m_save, filename = m_filename,
                           quiet = quiet, tree = tree),
-    rodents = rodents_options(tmnt_type = tmnt_type, start = start, end = end,
+    rodents = rodents_options(cast_type = cast_type,
+                              tmnt_type = tmnt_type, start = start, end = end,
+                              hind_step = hind_step, 
                               drop_spp = drop_spp, min_plots = min_plots, 
                               level = level, treatment = treatment, 
                               plots = plots, output = output,
@@ -231,8 +245,8 @@ data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                                     cov_hist = cov_hist, 
                                     cov_fcast = cov_fcast, fdate = fdate, 
                                     yr = yr, start = start, end = end, 
-                                    lead_time = lead_time, 
-                                    min_lag = min_lag, 
+                                    hind_step = hind_step, 
+                                    lead_time = lead_time, min_lag = min_lag, 
                                     fcast_nms = fcast_nms, nfcnm = nfcnm,
                                     append_fcast_csv = append_fcast_csv, 
                                     hist_fcast_file = hist_fcast_file,
@@ -286,7 +300,8 @@ moons_options <- function(n_future_moons = 12, fdate = today(),
 #'
 #' @export
 #'
-rodents_options <- function(tmnt_type = NULL, start = 217, end = NULL, 
+rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL, 
+                            start = 217, end = NULL, hind_step = 1, 
                             drop_spp = "PI", min_plots = 24, level = "Site", 
                             treatment = NULL, plots = "all",
                             output = "abundance", save = TRUE, 
@@ -307,7 +322,8 @@ rodents_options <- function(tmnt_type = NULL, start = 217, end = NULL,
       filename <- "controls.csv"
     }  
   }
-  list(start = start, end = end, drop_spp = drop_spp, min_plots = min_plots, 
+  list(cast_type = cast_type, start = start, end = end, hind_step = hind_step,
+       drop_spp = drop_spp, min_plots = min_plots, 
        tmnt_type = tmnt_type, level = level, plots = plots, output = output,
        save = save, filename = filename, treatment = treatment, tree = tree,
        quiet = quiet)
@@ -326,19 +342,23 @@ rodents_options <- function(tmnt_type = NULL, start = 217, end = NULL,
 covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE, 
                                cov_fcast = TRUE, fdate = today(), 
                                yr = as.numeric(format(today(), "%Y")),
-                               start = 217, end = NULL, lead_time = 12,
-                               min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-                               append_fcast_csv = TRUE, 
+                               start = 217, end = NULL, hind_step = 1, 
+                               lead_time = 12, min_lag = 6, fcast_nms = NULL,
+                               nfcnm = 0, append_fcast_csv = TRUE, 
                                hist_fcast_file = "covariate_forecasts.csv",
                                source_name = "current_archive",
                                save = TRUE, filename = "covariates.csv", 
                                tree = dirtree(), quiet = FALSE){
+  if (is.null(end) & cast_type == "hindcasts"){
+    end <- 490:403
+  }
   list(cast_type = cast_type, cov_hist = cov_hist, cov_fcast = cov_fcast, 
        fdate = fdate, yr = yr, start = start, end = end, 
-       lead_time = lead_time, min_lag = min_lag, fcast_nms = fcast_nms, 
-       nfcnm = nfcnm, append_fcast_csv = append_fcast_csv, 
-       hist_fcast_file = hist_fcast_file, source_name = source_name, 
-       save = save, filename = filename, tree = tree, quiet = quiet)
+       hind_step = hind_step, lead_time = lead_time, min_lag = min_lag, 
+       fcast_nms = fcast_nms, nfcnm = nfcnm, 
+       append_fcast_csv = append_fcast_csv, hist_fcast_file = hist_fcast_file,
+       source_name = source_name, save = save, filename = filename, 
+       tree = tree, quiet = quiet)
 }
 
 #' @rdname all_options
@@ -410,8 +430,9 @@ models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 #'
 cast_options <- function(base = "~", main = "forecasting", subs = subdirs(), 
                          quiet = FALSE, model = models(), 
-                         cast_type = "forecasts", ensemble = TRUE){
+                         cast_type = "forecasts", fdate = today(), 
+                         ensemble = TRUE){
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, model = model, cast_type = cast_type,
-       ensemble = ensemble)
+       fdate = fdate, ensemble = ensemble)
 }
