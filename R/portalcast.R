@@ -156,6 +156,7 @@ cast <- function(options_cast = cast_options()){
     }
     if (options_cast$cast_type == "hindcasts"){ 
       end_step <- options_cast$end[options_cast$hind_step]
+      message("#####################################################")
       message(paste0("Running models for initial newmoon ", end_step))
     }
   }
@@ -295,6 +296,7 @@ step_hind_forward <- function(options_all = all_options()){
   new_step <- options_all$options_data$covariates$hind_step + 1
   options_all$options_data$rodents$hind_step <- new_step
   options_all$options_data$covariates$hind_step <- new_step
+  options_all$options_cast$hind_step <- new_step
   return(options_all)
 }
 
