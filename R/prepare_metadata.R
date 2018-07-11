@@ -25,9 +25,13 @@ prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(),
   forecast_date <- options_metadata$fdate
   
   covariates_fcasts <- which(covariates$source == "fcast")
-  which_last_newmoon <- max(which(moons$newmoondate < forecast_date))
-  last_newmoon <- moons$newmoonnumber[which_last_newmoon]
-
+  if (options_metadata$filename_suffix == "forecasts"){
+    which_last_newmoon <- max(which(moons$newmoondate < forecast_date))
+    last_newmoon <- moons$newmoonnumber[which_last_newmoon]
+  }
+  if (options_metadata$filename_suffix == "hindcasts"){
+    last_newmoon <- max(covariates$newmoonnumber[covariates$source == "hist"]) 
+  }
   last_rodent_pd_all <- tail(rodents$all, 1)$period
   last_rodent_pd_control <- tail(rodents$control, 1)$period
   last_rodent_pd <- max(last_rodent_pd_all, last_rodent_pd_control)

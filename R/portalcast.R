@@ -43,13 +43,15 @@ verify_models <- function(options_cast = cast_options()){
   }
   available <- list.files(model_dir)
   if (options_cast$model[1] != "all"){
-    modelnames <- paste0(options_cast$model, ".R")
+    models <- options_cast$model
+    modelnames <- paste0(models, ".R")
     torun <- (modelnames %in% available)  
     if (any(torun == FALSE)){
       missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
       stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
     }
   }
+  message("All requested models available")
 }
 
 #' @title Select models to forecast or hindcast with
@@ -104,5 +106,7 @@ clear_tmp <- function(tree = dirtree()){
   if (!dir.exists(temp_dir)){
     create_tmp(tree)
   }
-  file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
+  if (length(list.files(temp_dir)) > 0){
+    file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
+  }
 }

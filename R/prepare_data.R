@@ -13,15 +13,13 @@ prep_data <- function(options_data = data_options()){
   if (!options_data$quiet){
     cat("Preparing data", "\n")
   }
-  if (options_data$cast_type == "forecasts"){
-    metadata_path <- file_path(options_data$tree, "data/metadata.yaml")
-    if (!file.exists(metadata_path)){
-      fill_data(options_data)
-    }
-    metadata <- yaml.load_file(metadata_path)    
-    if (metadata$forecast_date != today()){
-      fill_data(options_data)
-    }
+  metadata_path <- file_path(options_data$tree, "data/metadata.yaml")
+  if (!file.exists(metadata_path)){
+    fill_data(options_data)
+  }
+  metadata <- yaml.load_file(metadata_path)    
+  if (metadata$forecast_date != today()){
+    fill_data(options_data)
   }
 }
 
