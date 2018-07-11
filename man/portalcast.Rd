@@ -9,13 +9,14 @@ portalcast(options_all = all_options())
 \arguments{
 \item{options_all}{top-level list of options controlling the portalcasting 
 directory. Of particular importance is the \code{options_cast} list,
-which contains the options controlling the (fore- or hind-)casting}
+which contains the options controlling the (fore- or hind-)casting 
+\cr \cr To run a default hindcast, use 
+\code{options_all = all_options(cast_type = "hindcasts")}}
 }
 \value{
 Nothing
 }
 \description{
 Main function for controlling the running of potentially 
-  multiple models for either a forecast or a hindcast. \cr \cr 
-  Note: currently \code{portalcast} can only run "forecasts".
+  multiple models for either a forecast or a hindcast.
 }

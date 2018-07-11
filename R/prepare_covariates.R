@@ -51,17 +51,27 @@ prep_covariates <- function(moons = prep_moons(),
 #'
 transfer_hist_covariate_forecasts <- function(options_data = data_options()){
   path_to <- file_path(options_data$tree, "data/covariate_forecasts.csv")
+
+  fname <- "extdata/covariate_forecasts.csv"
+  path_from <- system.file(fname, package = "portalcasting")
+  if (!file.exists(path_from)){
+    stop("Historical covariate forecast data not found.")
+  }
+  temp <- read.csv(path_from, stringsAsFactors = FALSE)
+
   if (!file.exists(path_to)){
     if (!options_data$quiet){
       message("Loading historical covariate forecasts into data subdirectory")
     }
-    fname <- "extdata/covariate_forecasts.csv"
-    path_from <- system.file(fname, package = "portalcasting")
-    if (!file.exists(path_from)){
-      stop("Historical covariate forecast data not found.")
-    }
-    temp <- read.csv(path_from, stringsAsFactors = FALSE)
     write.csv(temp, path_to, row.names = FALSE)    
+  } else{
+    exists <- read.csv(path_to, stringsAsFactors = FALSE) 
+    if (max(temp$date_made) > max(exists$date_made)){
+      if (!options_data$quiet){
+        message("Updating historical covariate forecasts")
+      }
+      write.csv(temp, path_to, row.names = FALSE)
+    }
   }
 }
 

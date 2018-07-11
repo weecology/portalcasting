@@ -9,6 +9,8 @@ function outline:
     -fill_PortalData
 	  -download_observations
     -fill_data
+      -transfer_hist_covariate_forecasts
+      -transfer_trapping_table
 	  -prep_moons
 	  -prep_rodents
 	  -prep_covariates
@@ -17,8 +19,31 @@ function outline:
 	-fill_models
 	  -write_model
 
-
-
+-portalcast
+  -clear_tmp
+  -verify_models
+  -prep_data
+    -if missing or out-of-date, run fill_data
+  -casts
+    -cast
+      -check_to_skip
+      -cast_models
+      -combine_forecasts	  
+      -add_ensemble
+      -clear_tmp
+	  -step_casts
+        -step_hind_forward
+        -update_data
+          -prep_moons
+          -update_rodents
+          -update_covariates
+          -prep_metadata
+        -cast	
+          -check_to_skip
+          -cast_models
+          -combine_forecasts	  
+          -add_ensemble
+          -clear_tmp
 
 
 directory tree:
@@ -40,16 +65,6 @@ options list:
   -options_predictions
   -options_models
   -options_casts
-  
-  
-portalcast:
 
-the main function that triggers the forecast or hindcast process as outlined
-by the options. 
-
-
-TO DO:
-
-connect the historical covariate forecasts back around
-make fill_predictions only download what is new (like everything else needs to do)
-
+also note that options_data has cast_type, quiet, and tree at its 
+top level

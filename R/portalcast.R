@@ -1,12 +1,13 @@
 #' @title Forecast or hindcast Portal rodents
 #'
 #' @description Main function for controlling the running of potentially 
-#'   multiple models for either a forecast or a hindcast. \cr \cr 
-#'   Note: currently \code{portalcast} can only run "forecasts".
+#'   multiple models for either a forecast or a hindcast.
 #'
 #' @param options_all top-level list of options controlling the portalcasting 
 #'   directory. Of particular importance is the \code{options_cast} list,
-#'   which contains the options controlling the (fore- or hind-)casting
+#'   which contains the options controlling the (fore- or hind-)casting 
+#'   \cr \cr To run a default hindcast, use 
+#'   \code{options_all = all_options(cast_type = "hindcasts")}
 #'
 #' @return Nothing
 #'
@@ -49,6 +50,30 @@ verify_models <- function(options_cast = cast_options()){
     }
   }
   message("All requested models available")
+}
+
+#' @title Source the selected models to forecast or hindcast with
+#'
+#' @description Source the code of the selected model scripts
+#'
+#' @param options_cast casting options
+#'
+#' @return nothing
+#'
+#' @export
+#'
+cast_models <- function(options_cast = cast_options()){
+  if (!options_cast$quiet){
+    if (options_cast$cast_type == "forecasts"){
+      message("Running models")
+    }
+    if (options_cast$cast_type == "hindcasts"){ 
+      end_step <- options_cast$end[options_cast$hind_step]
+      message("#####################################################")
+      message(paste0("Running models for initial newmoon ", end_step))
+    }
+  }
+  sapply(models_to_cast(options_cast), source)
 }
 
 #' @title Select models to forecast or hindcast with
@@ -108,6 +133,31 @@ clear_tmp <- function(tree = dirtree()){
   }
 }
 
+#' @title Prepare data subdirectory for a forecast run or hindcast runs
+#'
+#' @description Prepare the data directory for a forecasting run or a set
+#'   of hindcasting runs
+#'
+#' @param options_data the data options list
+#'
+#' @return nothing
+#'
+#' @export
+#'
+prep_data <- function(options_data = data_options()){
+  if (!options_data$quiet){
+    cat("Preparing data", "\n")
+  }
+  metadata_path <- file_path(options_data$tree, "data/metadata.yaml")
+  if (!file.exists(metadata_path)){
+    fill_data(options_data)
+  }
+  metadata <- yaml.load_file(metadata_path)    
+  if (metadata$forecast_date != today()){
+    fill_data(options_data)
+  }
+}
+
 #' @title Multiple forecast or hindcast
 #' 
 #' @description Given the data and models are prepared accordingly, run the
@@ -122,14 +172,7 @@ clear_tmp <- function(tree = dirtree()){
 #'
 casts <- function(options_all = all_options()){
   cast(options_all$options_cast)
-  n_steps <- length(options_all$options_data$covariates$end)
-  if (n_steps > 1){
-    for (i in 2:n_steps){
-      options_all <- step_hind_forward(options_all)
-      update_data(options_all$options_data)
-      cast(options_all$options_cast)
-    }  
-  }
+  step_casts(options_all)
 }
 
 #' @title Actually forecast or hindcast
@@ -149,34 +192,39 @@ cast <- function(options_cast = cast_options()){
   if (check_to_skip(options_cast)){
     return()
   }
-
-  if (!options_cast$quiet){
-    if (options_cast$cast_type == "forecasts"){
-      message("Running models")
-    }
-    if (options_cast$cast_type == "hindcasts"){ 
-      end_step <- options_cast$end[options_cast$hind_step]
-      message("#####################################################")
-      message(paste0("Running models for initial newmoon ", end_step))
-    }
-  }
-  sapply(models_to_cast(options_cast), source)
-
-  if (!options_cast$quiet){
-    message(paste0("Compiling ", options_cast$cast_type))
-  }
-  predictions_dir <- sub_path(options_cast$tree, "predictions")
+  cast_models(options_cast)
   combined <- combine_forecasts(options_cast)
+  ensemble <- add_ensemble(options_cast)
 
-  if (options_cast$ensemble){
-    if (!options_cast$quiet){
-      cat("Creating ensemble model", "\n")
-    }
-    ensemble <- add_ensemble(options_cast)
-  }
-
+  message("#####################################################")
   clear_tmp(options_cast$tree)
 }
+
+#' @title Step through the subsequent casts
+#' 
+#' @description If there are multiple steps in the hindcast, update the data
+#'   and continue casting
+#'
+#' @param options_all full options list
+#'
+#' @return nothing
+#'
+#' @export
+#'
+step_casts <- function(options_all = all_options()){
+  n_steps <- length(options_all$options_data$covariates$end)
+  if (n_steps > 1){
+    for (i in 2:n_steps){
+      options_all <- step_hind_forward(options_all)
+      update_data(options_all$options_data)
+      cast(options_all$options_cast)
+    }  
+  }
+}
+
+
+
+
 
 
 #' @title Check if the newmoon should be skipped
@@ -205,6 +253,13 @@ check_to_skip <- function(options_cast){
       out <- TRUE
     } else if (end_step_p %in% incs$period){
       out <- TRUE
+    }
+  }
+  if (out){
+    if (!options_cast$quiet){
+      end_step <- options_cast$end[options_cast$hind_step]
+      message(paste0("Initial newmoon ", end_step, " not fully sampled"))
+      message("#####################################################")
     }
   }
   out
