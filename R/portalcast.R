@@ -15,11 +15,8 @@
 portalcast <- function(options_all = all_options()){
   clear_tmp(options_all$options_dir$tree)
   verify_models(options_all$options_cast)
-#this will be getting looped or whatever
   prep_data(options_all$options_data)
-  cast(options_all$options_cast)
-  clear_tmp(options_all$options_dir$tree)
-#
+  casts(options_all)
 }
 
 #' @title Verify that models to forecast or hindcast with exist

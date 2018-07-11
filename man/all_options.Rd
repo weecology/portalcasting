@@ -17,11 +17,12 @@ all_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
   m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
   start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
-  min_plots = 24, level = "Site", treatment = NULL, plots = "all",
-  output = "abundance", r_save = TRUE, r_filename = "all.csv",
-  cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
-  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
+  min_plots = 24, min_traps = 49, level = "Site", treatment = NULL,
+  plots = "all", output = "abundance", r_save = TRUE,
+  r_filename = "all.csv", cov_hist = TRUE, cov_fcast = TRUE,
+  yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
+  fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
+  hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
@@ -74,7 +75,8 @@ models_options(base = "~", main = "forecasting", subs = subdirs(),
 
 cast_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, model = models(), cast_type = "forecasts",
-  fdate = today(), ensemble = TRUE)
+  fdate = today(), ensemble = TRUE, start = 217, end = NULL,
+  hind_step = 1, min_plots = 24, min_traps = 49)
 }
 \arguments{
 \item{base}{name of the base directory where the forecasting 
@@ -113,6 +115,8 @@ for \code{end}. Default is 1, which is likely all it should be run using}
 \item{drop_spp}{species names to drop from the table}
 
 \item{min_plots}{minimum number of plots surveyed for a survey to be used}
+
+\item{min_traps}{minimum number of traps trapped for a plot to be used}
 
 \item{level}{for get_rodent_data, automatically set by tmnt_type}
 

@@ -40,6 +40,8 @@
 #'
 #' @param min_plots minimum number of plots surveyed for a survey to be used
 #'
+#' @param min_traps minimum number of traps trapped for a plot to be used
+#'
 #' @param level for get_rodent_data, automatically set by tmnt_type
 #'
 #' @param treatment for get_rodent_data, automatically set by tmnt_type
@@ -112,7 +114,7 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
                         start = 217, end = NULL, hind_step = 1, 
-                        drop_spp = "PI", min_plots = 24, 
+                        drop_spp = "PI", min_plots = 24, min_traps = 49,
                         level = "Site", treatment = NULL, plots = "all",
                         output = "abundance", r_save = TRUE, 
                         r_filename = "all.csv",
@@ -168,7 +170,10 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
     options_cast = cast_options(base = base, main = main, subs = subs, 
                                 quiet = quiet, model = model, 
                                 cast_type = cast_type, 
-                                fdate = fdate, ensemble = ensemble)
+                                fdate = fdate, ensemble = ensemble,
+                                start = start, end = end, 
+                                hind_step = hind_step, 
+                                min_plots = min_plots, min_traps = min_traps)
   )
 
 }
@@ -376,7 +381,7 @@ metadata_options <- function(fdate = today(), cast_type = "forecasts",
                              save = TRUE, filename = "metadata.yaml", 
                              quiet = FALSE, tree = dirtree()){
 
-  list(fdate = fdate, filename_suffix = cast_type, 
+  list(fdate = fdate, cast_type = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
        filename = filename, quiet = quiet, tree = tree)
 }
@@ -431,8 +436,10 @@ models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 cast_options <- function(base = "~", main = "forecasting", subs = subdirs(), 
                          quiet = FALSE, model = models(), 
                          cast_type = "forecasts", fdate = today(), 
-                         ensemble = TRUE){
+                         ensemble = TRUE, start = 217, end = NULL, 
+                         hind_step = 1, min_plots = 24, min_traps = 49){
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, model = model, cast_type = cast_type,
-       fdate = fdate, ensemble = ensemble)
+       fdate = fdate, ensemble = ensemble, start = start, end = end, 
+       hind_step = hind_step, min_plots = min_plots, min_traps = min_traps)
 }

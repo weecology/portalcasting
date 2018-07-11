@@ -5,8 +5,8 @@
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate as_date is.Date month year
 #' @importFrom magrittr %>% extract2
-#' @importFrom portalr download_observations fcast_ndvi get_future_moons
-#'   get_rodent_data ndvi weather
+#' @importFrom portalr download_observations fcast_ndvi 
+#'   find_incomplete_censuses get_future_moons get_rodent_data ndvi weather
 #' @importFrom purrr map
 #' @importFrom RCurl getURL
 #' @importFrom rlang !! !!! .data quo quos

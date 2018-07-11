@@ -50,13 +50,6 @@ by the options.
 
 TO DO:
 
+connect the historical covariate forecasts back around
 make fill_predictions only download what is new (like everything else needs to do)
-
-currently setting up and structuring out the hindcasting code
-
-
-additional options to add:
-"end" or "initial_time_fullmoon"... basically the moon number(s) indicating
-a cast should start (end + 1 or initial_time_fullmoon). for a forecast
-there's just one (current), but for a hindcast there could be many  
 
