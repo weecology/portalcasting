@@ -17,7 +17,7 @@ all_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
   m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
   start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
-  min_plots = 24, min_traps = 49, level = "Site", treatment = NULL,
+  min_plots = 24, min_traps = 1, level = "Site", treatment = NULL,
   plots = "all", output = "abundance", r_save = TRUE,
   r_filename = "all.csv", cov_hist = TRUE, cov_fcast = TRUE,
   yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
@@ -76,7 +76,7 @@ models_options(base = "~", main = "forecasting", subs = subdirs(),
 cast_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, model = models(), cast_type = "forecasts",
   fdate = today(), ensemble = TRUE, start = 217, end = NULL,
-  hind_step = 1, min_plots = 24, min_traps = 49)
+  hind_step = 1, min_plots = 24, min_traps = 1)
 }
 \arguments{
 \item{base}{name of the base directory where the forecasting 
@@ -130,7 +130,7 @@ for \code{end}. Default is 1, which is likely all it should be run using}
 
 \item{r_filename}{the name of the file to save the rodent data in}
 
-\item{cov_hist}{logical indicator whether or historical covariates are
+\item{cov_hist}{logical indicator whether or not historical covariates are
 to be included}
 
 \item{cov_fcast}{logical indicator whether or not forecasted covariates are

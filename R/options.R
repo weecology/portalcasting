@@ -54,7 +54,7 @@
 #'
 #' @param r_filename the name of the file to save the rodent data in
 #'
-#' @param cov_hist logical indicator whether or historical covariates are
+#' @param cov_hist logical indicator whether or not historical covariates are
 #'   to be included
 #'
 #' @param cov_fcast logical indicator whether or not forecasted covariates are
@@ -114,7 +114,7 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
                         start = 217, end = NULL, hind_step = 1, 
-                        drop_spp = "PI", min_plots = 24, min_traps = 49,
+                        drop_spp = "PI", min_plots = 24, min_traps = 1,
                         level = "Site", treatment = NULL, plots = "all",
                         output = "abundance", r_save = TRUE, 
                         r_filename = "all.csv",
@@ -437,7 +437,7 @@ cast_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                          quiet = FALSE, model = models(), 
                          cast_type = "forecasts", fdate = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
-                         hind_step = 1, min_plots = 24, min_traps = 49){
+                         hind_step = 1, min_plots = 24, min_traps = 1){
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, model = model, cast_type = cast_type,
        fdate = fdate, ensemble = ensemble, start = start, end = end, 

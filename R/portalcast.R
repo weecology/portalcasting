@@ -65,11 +65,12 @@ verify_models <- function(options_cast = cast_options()){
 cast_models <- function(options_cast = cast_options()){
   if (!options_cast$quiet){
     if (options_cast$cast_type == "forecasts"){
+      message("##########################################################")
       message("Running models")
     }
     if (options_cast$cast_type == "hindcasts"){ 
       end_step <- options_cast$end[options_cast$hind_step]
-      message("#####################################################")
+      message("##########################################################")
       message(paste0("Running models for initial newmoon ", end_step))
     }
   }
@@ -196,7 +197,7 @@ cast <- function(options_cast = cast_options()){
   combined <- combine_forecasts(options_cast)
   ensemble <- add_ensemble(options_cast)
 
-  message("#####################################################")
+  message("##########################################################")
   clear_tmp(options_cast$tree)
 }
 
@@ -259,7 +260,7 @@ check_to_skip <- function(options_cast){
     if (!options_cast$quiet){
       end_step <- options_cast$end[options_cast$hind_step]
       message(paste0("Initial newmoon ", end_step, " not fully sampled"))
-      message("#####################################################")
+      message("##########################################################")
     }
   }
   out
