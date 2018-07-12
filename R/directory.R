@@ -46,7 +46,7 @@ create_main_dir <- function(options_dir = dir_options()){
   main <- main_path(tree = options_dir$tree)
   if (!dir.exists(main)){
     if (!options_dir$quiet){
-      cat(paste0("Creating main directory at ", main, ". \n"))
+      message(paste0("Creating main directory at ", main))
     }
     dir.create(main)
   }
@@ -86,7 +86,7 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
   }
   if (!dir.exists(path)){
     if (!quiet){
-      cat(paste0("Creating ", basename(path), " sub-directory. \n"))
+      message(paste0("Creating ", basename(path), " subdirectory"))
     }
     dir.create(path)
   }
@@ -123,9 +123,9 @@ fill_dir <- function(options_all = all_options()){
 #'
 fill_PortalData <- function(options_dir = dir_options()){
   if (!options_dir$quiet){
-    cat("Downloading raw data into PortalData subdirectory. \n")
+    message("Downloading raw data into PortalData subdirectory")
   }
-  PD <- download_observations(main_path(options_dir$tree))
+  PD <- suppressMessages(download_observations(main_path(options_dir$tree)))
 }
 
 #' @title Populate the for-use data of a portalcasting directory
@@ -141,8 +141,10 @@ fill_PortalData <- function(options_dir = dir_options()){
 #'
 fill_data <- function(options_data = data_options()){
   if (!options_data$moons$quiet){
-    cat("Loading forecasting data files into data subdirectory. \n")
+    message("Loading forecasting data files into data subdirectory")
   }
+  transfer_hist_covariate_forecasts(options_data)
+  transfer_trapping_table(options_data)
   moons <- prep_moons(options_data$moons)
   rodents <- prep_rodents(moons, options_data$rodents)
   covariates <- prep_covariates(moons, options_data$covariates)
@@ -163,7 +165,7 @@ fill_data <- function(options_data = data_options()){
 fill_predictions <- function(options_predictions = predictions_options()){
   if (options_predictions$download_existing_predictions){
     if (!options_predictions$quiet){
-      cat("Downloading predictions into predictions subdirectory. \n")
+      message("Downloading predictions into predictions subdirectory")
     }
     download_predictions(tree = options_predictions$tree)
   }
@@ -180,6 +182,9 @@ fill_predictions <- function(options_predictions = predictions_options()){
 #' @export
 #'
 fill_models <- function(options_models = models_options()){
+  if (!options_models$quiet){
+    message("Adding prefab models to models subdirectory:")
+  }
   nmods <- length(options_models$model)
   for (i in 1:nmods){
     modname <- options_models$model[i]

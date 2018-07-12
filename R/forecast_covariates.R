@@ -14,14 +14,22 @@
 #'
 forecast_covariates <- function(covariate_data, moons, 
                                 options_covariates = covariates_options()){
-
-  moons <- trim_moons_fcast(moons, options_covariates)
-  weather_f <- forecast_weather(moons, options_covariates)
-  ndvi_f <- forecast_ndvi(covariate_data, moons, options_covariates)
-  fcast <- right_join(weather_f, ndvi_f, by = "newmoonnumber")
-  forecast_newmoon <- max(moons$newmoonnumber)
-
-  round(data.frame(forecast_newmoon, fcast), 3)
+  if (options_covariates$cast_type == "forecasts"){
+    moons <- trim_moons_fcast(moons, options_covariates)
+    weather_f <- forecast_weather(moons, options_covariates)
+    ndvi_f <- forecast_ndvi(covariate_data, moons, options_covariates)
+    fcast <- right_join(weather_f, ndvi_f, by = "newmoonnumber")
+    forecast_newmoon <- max(moons$newmoonnumber)
+    return(round(data.frame(forecast_newmoon, fcast), 3))
+  }
+  if (options_covariates$cast_type == "hindcasts"){
+    end_step <- options_covariates$end[options_covariates$hind_step]
+    path <- file_path(options_covariates$tree, "data/covariate_forecasts.csv")
+    hist_fcast <- read.csv(path, stringsAsFactors = FALSE)
+    nmin <- hist_fcast$newmoonnumber %in% options_covariates$fcast_nms
+    esin <- hist_fcast$forecast_newmoon %in% end_step
+    return(select(hist_fcast[which(nmin & esin), ], -date_made))
+  }
 }
 
 #' @title Build an ndvi forecast for model predictions 
@@ -232,6 +240,9 @@ append_cov_fcast_csv <- function(new_forecast_covariates,
                                  options_covariates = covariates_options()){
 
   if (!options_covariates$append_fcast_csv){
+    return(new_forecast_covariates)
+  }
+  if (options_covariates$cast_type == "hindcast"){
     return(new_forecast_covariates)
   }
 

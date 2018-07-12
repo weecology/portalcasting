@@ -16,7 +16,7 @@ prep_covariates(moons = prep_moons(),
 covariate data table
 }
 \description{
-Prepare covariate data for forecasting, including saving out
-  the data and appending the new forecasts of covariates to the existing
-  covariate forecast table
+Prepare covariate data for forecasting or hindcasting, 
+  including saving out the data and appending the new forecasts of 
+  covariates to the existing covariate forecast table
 }

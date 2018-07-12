@@ -19,15 +19,19 @@ prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(),
                           options_metadata = metadata_options()){
  
   if (!options_metadata$quiet){
-    cat("Loading the metadata file into the data subdirectory. \n")
+    message("Loading metadata file into data subdirectory")
   }
 
   forecast_date <- options_metadata$fdate
   
   covariates_fcasts <- which(covariates$source == "fcast")
-  which_last_newmoon <- max(which(moons$newmoondate < forecast_date))
-  last_newmoon <- moons$newmoonnumber[which_last_newmoon]
-
+  if (options_metadata$cast_type == "forecasts"){
+    which_last_newmoon <- max(which(moons$newmoondate < forecast_date))
+    last_newmoon <- moons$newmoonnumber[which_last_newmoon]
+  }
+  if (options_metadata$cast_type == "hindcasts"){
+    last_newmoon <- max(covariates$newmoonnumber[covariates$source == "hist"]) 
+  }
   last_rodent_pd_all <- tail(rodents$all, 1)$period
   last_rodent_pd_control <- tail(rodents$control, 1)$period
   last_rodent_pd <- max(last_rodent_pd_all, last_rodent_pd_control)
@@ -51,7 +55,7 @@ prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(),
   covar_fcast_months <- as.numeric(format(covar_nm_dates, "%m"))
   covar_fcast_years <- as.numeric(format(covar_nm_dates, "%Y"))
 
-  out <-  list(filename_suffix = options_metadata$filename_suffix, 
+  out <-  list(filename_suffix = options_metadata$cast_type, 
                forecast_date = as.character(forecast_date), 
                covariate_forecast_newmoons = covar_fcast_newmoons, 
                covariate_forecast_months = covar_fcast_months, 

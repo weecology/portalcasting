@@ -14,7 +14,7 @@
 prep_moons <- function(options_moons = moons_options()){
 
   if (!options_moons$quiet){
-    cat("Loading the moons data file into the data subdirectory. \n")
+    message("Loading moons data file into the data subdirectory")
   }
 
   verify_PortalData(options_moons$tree, "moon_dates.csv")

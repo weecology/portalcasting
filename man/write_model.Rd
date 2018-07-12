@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_models.R
 \name{write_model}
 \alias{write_model}
-\title{Write the template for a model into the model sub directory}
+\title{Write the template for a model into model subdirectory}
 \usage{
 write_model(model = NULL, options_model = model_options())
 }

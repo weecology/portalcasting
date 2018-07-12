@@ -16,7 +16,7 @@
 prep_rodents <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
   if (!options_rodents$quiet){
-    cat("Loading the rodents data files into the data subdirectory. \n")
+    message("Loading rodents data files into data subdirectory")
   }
   verify_PortalData(options_rodents$tree, "Portal_rodent.csv")
 
@@ -43,10 +43,12 @@ prep_rodents <- function(moons = prep_moons(),
 #'
 rodents_data <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
+  end_step <- options_rodents$end[options_rodents$hind_step]
+
   get_rodent_data(path = main_path(options_rodents$tree), 
                   clean = FALSE, type = "Rodents", 
                   level = options_rodents$level, 
-                  length = options_rodents$length, 
+                  plots = options_rodents$plots, 
                   min_plots = options_rodents$min_plots, 
                   output = options_rodents$output) %>%
   remove_spp(options_rodents$drop_spp) %>%
@@ -54,6 +56,7 @@ rodents_data <- function(moons = prep_moons(),
   trim_treatment(options_rodents) %>%
   inner_join(moons, by = c("period" = "period")) %>%
   subset(newmoonnumber >= options_rodents$start) %>%
+  subset(newmoonnumber <= min(c(end_step, max(newmoonnumber)))) %>%
   select(-newmoondate, -censusdate) %>%
   dataout(options_rodents)
 }
@@ -165,4 +168,26 @@ trim_treatment <- function(data, options_rodents = rodents_options()){
   return(data)
 }
 
-
+#' @title Transfer the trapping table to the data folder
+#'
+#' @description Move the trapping table from the raw sub directory to the
+#'   for-use sub directory
+#'
+#' @param options_data data options
+#'
+#' @return nothing
+#'
+#' @export
+#'
+transfer_trapping_table <- function(options_data = data_options()){
+  tree <- options_data$tree
+  from <- file_path(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
+  to <- file_path(tree, "data/trapping.csv")
+  if (file.exists(from)){
+    if (!options_data$quiet){
+      message("Loading rodent trapping table into data subdirectory")
+    }
+    ttable <- read.csv(from, stringsAsFactors = FALSE)
+    write.csv(ttable, to, row.names = FALSE)
+  }
+}

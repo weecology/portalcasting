@@ -4,11 +4,11 @@
 \alias{prep_fcast_covariates}
 \title{Prepare forecast covariate data table}
 \usage{
-prep_fcast_covariates(hist_data = prep_hist_covariates(),
+prep_fcast_covariates(hist_cov = prep_hist_covariates(),
   moons = prep_moons(), options_covariates = covariates_options())
 }
 \arguments{
-\item{hist_data}{historical covariate data}
+\item{hist_cov}{historical covariate data}
 
 \item{moons}{current newmoon table}
 

@@ -38,21 +38,21 @@ save_forecast_output <- function(all, controls, name, metadata,
 #' @description Combine all new forecasts (from the tmp directory), add 
 #'   append the results to the existing files
 #' 
-#' @param model_metadata model metadata list
-#'
-#' @param temp_dir directory name for the temporary housing of predictions
-#'
-#' @param pred_dir directory name where the saved model predictions reside
+#' @param options_cast casting options
 #'
 #' @return list of [1] the forecasts and [2] the model AIC values
 #'
 #' @export
 #'
-combine_forecasts <- function(model_metadata, temp_dir,
-                              pred_dir){
-  
-  forecast_date <- model_metadata$forecast_date
-  filename_suffix <- model_metadata$filename_suffix
+combine_forecasts <- function(options_cast = cast_options()){
+
+  if (!options_cast$quiet){
+    message(paste0("Compiling ", options_cast$cast_type))
+  }
+  temp_dir <- sub_path(options_cast$tree, "tmp")
+  pred_dir <- sub_path(options_cast$tree, "predictions")
+  forecast_date <- options_cast$fdate
+  filename_suffix <- options_cast$cast_type
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
   files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
   col_class <- c("Date", "integer", "integer", "integer", "character", 
@@ -81,36 +81,38 @@ combine_forecasts <- function(model_metadata, temp_dir,
 #' 
 #' @description Add ensembles to the forecast files
 #' 
-#' @param model_metadata model metadata list
-#' 
-#' @param temp_dir directory name for the temporary housing of predictions
-#'
-#' @param pred_dir directory name where the saved model predictions reside
+#' @param options_cast casting options
 #'
 #' @return list of [1] the forecasts and [2] the model AIC values
 #' 
 #' @export
 #'
-add_ensemble <- function(model_metadata, temp_dir,
-                         pred_dir){
+add_ensemble <- function(options_cast = cast_options()){
 
-  forecast_date <- model_metadata$forecast_date
-  filename_suffix <- model_metadata$filename_suffix
-  file_ptn <- paste(filename_suffix, ".csv", sep = "")
-  files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
-  col_class <- c("Date", "integer", "integer", "integer", "character", 
-                 "character", "character", "character", "numeric", "numeric",
-                 "numeric", "integer", "integer", "integer")
-  fcasts <- do.call(rbind, 
-            lapply(files, read.csv, na.strings = "", colClasses  = col_class))
-  fcast_date <- as.character(forecast_date)
-  fcast_fname <- paste(fcast_date, filename_suffix, ".csv", sep = "")
-  forecast_filename <- file.path(pred_dir, fcast_fname)
+  if (options_cast$ensemble){
+    if (!options_cast$quiet){
+      cat("Creating ensemble model", "\n")
+    }
+    temp_dir <- sub_path(options_cast$tree, "tmp")
+    pred_dir <- sub_path(options_cast$tree, "predictions")
+    forecast_date <- options_cast$fdate
+    filename_suffix <- options_cast$cast_type
+    file_ptn <- paste(filename_suffix, ".csv", sep = "")
+    files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
+    cclass <- c("Date", "integer", "integer", "integer", "character", 
+                "character", "character", "character", "numeric",
+                "numeric", "numeric", "integer", "integer", "integer")
+    fcasts <- do.call(rbind, 
+              lapply(files, read.csv, na.strings = "", colClasses  = cclass))
+    fcast_date <- as.character(forecast_date)
+    fcast_fname <- paste(fcast_date, filename_suffix, ".csv", sep = "")
+    forecast_filename <- file.path(pred_dir, fcast_fname)
 
-  ensemble <- make_ensemble(fcasts, pred_dir) %>% 
-              subset(select = colnames(fcasts))
-  append_csv(ensemble, forecast_filename)
-  return(ensemble)
+    ensemble <- make_ensemble(fcasts, pred_dir) %>% 
+                subset(select = colnames(fcasts))
+    append_csv(ensemble, forecast_filename)
+    return(ensemble)
+  }
 }
 
 #' @title Calculate Model Weights

@@ -66,6 +66,7 @@ options controlling the structure, content, and usage of the directory.
     - `rodents`: created by `rodents_options`
     - `covariates`: created by `covariates_options`
     - `metadata`: created by `metadata_options`
+    - additionally includes `cast_type`, `quiet`, and `tree` options
   - `options_predictions`: created by `predictions_options`
   - `options_models`: created by `models_options`
   - `options_casts`: created by `casts_options` 
@@ -83,3 +84,51 @@ The tree is housed in a simple list, created by the `dirtree` function, which
 allows for the renaming of all levels, although it is only advisable to alter 
 the `base` or `main` levels, as many functions require specifically-named
 subdirectories.
+
+## Function Tree
+
+The package organizes the main actions into hierarchical functions
+
+- `setup_dir`
+  - `create_dir`
+    - `create_main_dir`
+    - `create_sub_dirs`
+      - `create_sub_dir`
+  - `fill_dir`
+    - `fill_PortalData`
+	  - `download_observations`
+    - `fill_data`
+      - `transfer_hist_covariate_forecasts`
+      - `transfer_trapping_table`
+	  - `prep_moons`
+	  - `prep_rodents`
+	  - `prep_covariates`
+	  - `prep_metadata`
+	- `fill predictions`
+	- `fill_models`
+	  - `write_model`
+
+- `portalcast`
+  - `clear_tmp`
+  - `verify_models`
+  - `prep_data`
+  - `casts`
+    - `cast`
+      - `check_to_skip`
+      - `cast_models`
+      - `combine_forecasts`	  
+      - `add_ensemble`
+      - `clear_tmp`
+	  - `step_casts`
+        - `step_hind_forward`
+        - `update_data`
+          - `prep_moons`
+          - `update_rodents`
+          - `update_covariates`
+          - `prep_metadata`
+        - `cast`	
+          - `check_to_skip`
+          - `cast_models`
+          - `combine_forecasts`	  
+          - `add_ensemble`
+          - `clear_tmp`

@@ -4,12 +4,12 @@
 \alias{dataout}
 \title{Save data out to a file and return it}
 \usage{
-dataout(data, options_data = moons_options())
+dataout(out, options_out = moons_options())
 }
 \arguments{
-\item{data}{data table to be written out}
+\item{out}{data table to be written out}
 
-\item{options_data}{an options list that includes a save element and 
+\item{options_out}{an options list that includes a save element and 
 a filename element}
 }
 \value{
