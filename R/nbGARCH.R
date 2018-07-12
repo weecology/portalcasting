@@ -45,9 +45,9 @@ nbGARCH <- function(abundances, metadata, level = "All"){
       model <- tryCatch(
                  tsglm(abund_s, model = past, distr = "nbinom", link = "log"),
                  warning = function(x){NULL}, error = function(x){NULL})
-      if(is.null(model)){
+      if(is.null(model) || AIC(model) == Inf){
           model <- tsglm(abund_s, 
-                     model = ,
+                     model = past,
                      distr = "poisson", link = "log")
       }
       model_fcast <- predict(model, nfcnm, level = CL)
