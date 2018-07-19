@@ -157,6 +157,9 @@ prep_data <- function(options_data = data_options()){
   if (metadata$forecast_date != today()){
     fill_data(options_data)
   }
+  if (options_data$cast_type == "hindcasts"){
+    fill_data(options_data)
+  }
 }
 
 #' @title Multiple forecast or hindcast
