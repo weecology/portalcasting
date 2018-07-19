@@ -82,6 +82,7 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
       options_rodents$tmnt_type <- "all"
       options_rodents$level <- "Site"
       options_rodents$length <- "all"
+      options_rodents$plots <- "all"
       options_rodents$output <- "abundance"
       options_rodents$filename <- "all.csv"
     }
@@ -89,6 +90,7 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
       options_rodents$tmnt_type <- "controls"
       options_rodents$level <- "Treatment"
       options_rodents$length <- "Longterm"
+      options_rodents$plots <- "Longterm"
       options_rodents$output <- "abundance"
       options_rodents$treatment <- "control"
       options_rodents$filename <- "controls.csv"
