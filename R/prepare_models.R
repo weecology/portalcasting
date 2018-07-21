@@ -63,12 +63,13 @@ model_template <- function(options_model = model_options()){
   if (options_model$covariates){
     lag_arg <- paste0(', lag = ', options_model$lag)
     args_a <- paste0('all, covariates, metadata', lag_arg)
-    args_c <- paste0('all, covariates, metadata, level = "Controls"', lag_arg)
+    c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
+    args_c <- paste0(c_arg, lag_arg)
     path_cov <- 'file_path(tree, "data/covariates.csv")'
     covariate_text <- paste0('\ncovariates <- read.csv(', path_cov, '); \n')
   } else{
     args_a <- "all, metadata"
-    args_c <- 'all, metadata, level = "Controls"'
+    args_c <- 'controls, metadata, level = "Controls"'
     covariate_text <- "\n"
   }
 
