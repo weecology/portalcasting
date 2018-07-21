@@ -75,3 +75,20 @@ today <- function(){
   Sys.Date()
 }
 
+
+#' @title Flip a vector
+#'
+#' @description vector flipper
+#'
+#' @param x vector to be flipped
+#'
+#' @return flipped vector
+#'
+#' @export
+#'
+flip <- function(x){
+  if (!is.vector(x)){
+    stop("x must be a vector")
+  }
+  x[length(x):1] 
+}
