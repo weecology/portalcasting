@@ -45,6 +45,8 @@ rodents_data <- function(moons = prep_moons(),
                          options_rodents = rodents_options()){
   end_step <- options_rodents$end[options_rodents$hind_step]
 
+  message("---TEST---")
+  
   get_rodent_data(path = main_path(options_rodents$tree), 
                   clean = FALSE, type = "Rodents", 
                   level = options_rodents$level, 
@@ -112,7 +114,6 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
 #' @export
 #'
 remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
-message(drop_spp)
   if (!is.null(drop_spp)){
     data <- select(data, -drop_spp)
   }
