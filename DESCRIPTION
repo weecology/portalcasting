@@ -24,11 +24,13 @@ Imports:
   RCurl,
   rlang,
   testthat,
+  tidyselect,
   tscount,
   yaml
 Remotes: github::weecology/portalr
 Suggests:
   knitr,
   rmarkdown
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Encoding: UTF-8

@@ -20,14 +20,15 @@ all_options(base = "~", main = "forecasting", subs = subdirs(),
   min_plots = 24, min_traps = 1, level = "Site", treatment = NULL,
   plots = "all", output = "abundance", r_save = TRUE,
   r_filename = "all.csv", cov_hist = TRUE, cov_fcast = TRUE,
-  yr = as.numeric(format(today(), "\%Y")), lead_time = 12, min_lag = 6,
-  fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
-  hist_fcast_file = "covariate_forecasts.csv",
+  yr = as.numeric(format(today(), "\%Y")), lead_time = 12,
+  min_lag = 6, fcast_nms = NULL, nfcnm = 0,
+  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
-  meta_filename = "metadata.yaml", download_existing_predictions = TRUE,
-  model = models(), ensemble = TRUE)
+  meta_filename = "metadata.yaml",
+  download_existing_predictions = TRUE, model = models(),
+  ensemble = TRUE)
 
 dir_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE)
@@ -39,8 +40,9 @@ data_options(base = "~", main = "forecasting", subs = subdirs(),
   min_plots = 24, level = "Site", treatment = NULL, plots = "all",
   output = "abundance", r_save = TRUE, r_filename = "all.csv",
   cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
-  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
+  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL,
+  nfcnm = 0, append_fcast_csv = TRUE,
+  hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
@@ -50,16 +52,17 @@ moons_options(n_future_moons = 12, fdate = today(),
   append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv",
   tree = dirtree(), quiet = FALSE)
 
-rodents_options(cast_type = "forecasts", tmnt_type = NULL, start = 217,
-  end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
-  level = "Site", treatment = NULL, plots = "all", output = "abundance",
-  save = TRUE, filename = "all.csv", tree = dirtree(), quiet = FALSE)
+rodents_options(cast_type = "forecasts", tmnt_type = NULL,
+  start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
+  min_plots = 24, level = "Site", treatment = NULL, plots = "all",
+  output = "abundance", save = TRUE, filename = "all.csv",
+  tree = dirtree(), quiet = FALSE)
 
 covariates_options(cast_type = "forecasts", cov_hist = TRUE,
   cov_fcast = TRUE, fdate = today(), yr = as.numeric(format(today(),
   "\%Y")), start = 217, end = NULL, hind_step = 1, lead_time = 12,
-  min_lag = 6, fcast_nms = NULL, nfcnm = 0, append_fcast_csv = TRUE,
-  hist_fcast_file = "covariate_forecasts.csv",
+  min_lag = 6, fcast_nms = NULL, nfcnm = 0,
+  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", save = TRUE,
   filename = "covariates.csv", tree = dirtree(), quiet = FALSE)
 
@@ -67,8 +70,9 @@ metadata_options(fdate = today(), cast_type = "forecasts",
   confidence_level = 0.9, lead_time = 12, save = TRUE,
   filename = "metadata.yaml", quiet = FALSE, tree = dirtree())
 
-predictions_options(base = "~", main = "forecasting", subs = subdirs(),
-  download_existing_predictions = TRUE, quiet = FALSE)
+predictions_options(base = "~", main = "forecasting",
+  subs = subdirs(), download_existing_predictions = TRUE,
+  quiet = FALSE)
 
 models_options(base = "~", main = "forecasting", subs = subdirs(),
   quiet = FALSE, model = models())

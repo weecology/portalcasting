@@ -11,6 +11,7 @@
 #' @importFrom RCurl getURL
 #' @importFrom rlang !! !!! .data quo quos
 #' @importFrom stats AIC qnorm predict
+#' @importFrom tidyselect one_of
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file read.csv read.table tail write.csv 
 #'   write.table
