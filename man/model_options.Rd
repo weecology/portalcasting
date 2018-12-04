@@ -8,8 +8,8 @@
 \alias{pevGARCH_options}
 \title{Prepare options for a portalcasting model}
 \usage{
-model_options(tree = dirtree(), name = "AutoArima", covariates = FALSE,
-  lag = NULL, quiet = FALSE)
+model_options(tree = dirtree(), name = "AutoArima",
+  covariates = FALSE, lag = NULL, quiet = FALSE)
 
 AutoArima_options(tree = dirtree(), name = "AutoArima",
   covariates = FALSE, lag = NULL, quiet = FALSE)
@@ -17,11 +17,11 @@ AutoArima_options(tree = dirtree(), name = "AutoArima",
 ESSS_options(tree = dirtree(), name = "ESSS", covariates = FALSE,
   lag = NULL, quiet = FALSE)
 
-nbGARCH_options(tree = dirtree(), name = "nbGARCH", covariates = FALSE,
-  lag = NULL, quiet = FALSE)
+nbGARCH_options(tree = dirtree(), name = "nbGARCH",
+  covariates = FALSE, lag = NULL, quiet = FALSE)
 
-pevGARCH_options(tree = dirtree(), name = "pevGARCH", covariates = TRUE,
-  lag = 6, quiet = FALSE)
+pevGARCH_options(tree = dirtree(), name = "pevGARCH",
+  covariates = TRUE, lag = 6, quiet = FALSE)
 }
 \arguments{
 \item{tree}{directory tree}

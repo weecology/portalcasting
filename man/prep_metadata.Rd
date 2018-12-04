@@ -5,7 +5,8 @@
 \title{Prepare model metadata}
 \usage{
 prep_metadata(moons = prep_moons(), rodents = prep_rodents(),
-  covariates = prep_covariates(), options_metadata = metadata_options())
+  covariates = prep_covariates(),
+  options_metadata = metadata_options())
 }
 \arguments{
 \item{moons}{moons data table}
