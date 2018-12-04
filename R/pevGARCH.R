@@ -69,9 +69,12 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
       for(m in models){
         model_name <- paste(m, collapse = ", ")
         cat("Fitting Model ", model_count, ": ", model_name, "\n", sep = "")
-
-        predictors <- select(covar_hist, unlist(m))
-        fcast_predictors <- select(covar_fcast, unlist(m))
+        predictors <- NULL
+        fcast_predictors <- NULL
+        if (!(is.null(unlist(m)))){
+          predictors <- select(covar_hist, unlist(m))
+          fcast_predictors <- select(covar_fcast, unlist(m))
+        }
         setup <- list(past_obs = 1, past_mean = 12)
         proposed_model <- tryCatch(
                             tsglm(abund_s, model = setup, distr = "poisson",
