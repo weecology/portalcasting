@@ -31,19 +31,19 @@ function outline:
       -combine_forecasts	  
       -add_ensemble
       -clear_tmp
-	  -step_casts
-        -step_hind_forward
-        -update_data
-          -prep_moons
-          -update_rodents
-          -update_covariates
-          -prep_metadata
-        -cast	
-          -check_to_skip
-          -cast_models
-          -combine_forecasts	  
-          -add_ensemble
-          -clear_tmp
+	-step_casts
+      -step_hind_forward
+      -update_data
+        -prep_moons
+        -update_rodents
+        -update_covariates
+        -prep_metadata
+      -cast	
+        -check_to_skip
+        -cast_models
+        -combine_forecasts	  
+        -add_ensemble
+        -clear_tmp
 
 
 directory tree:

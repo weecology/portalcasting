@@ -13,27 +13,26 @@
 \alias{cast_options}
 \title{Prepare options for a portalcasting directory}
 \usage{
-all_options(base = "~", main = "forecasting", subs = subdirs(),
-  quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
-  m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
-  min_plots = 24, min_traps = 1, level = "Site", treatment = NULL,
-  plots = "all", output = "abundance", r_save = TRUE,
-  r_filename = "all.csv", cov_hist = TRUE, cov_fcast = TRUE,
-  yr = as.numeric(format(today(), "\%Y")), lead_time = 12,
-  min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
+all_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
+  fdate = today(), append_missing_to_raw = TRUE, m_save = TRUE,
+  m_filename = "moons.csv", tmnt_type = NULL, start = 217,
+  end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
+  min_traps = 1, level = "Site", treatment = NULL, plots = "all",
+  output = "abundance", r_save = TRUE, r_filename = "all.csv",
+  cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
+  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL,
+  nfcnm = 0, append_fcast_csv = TRUE,
+  hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = TRUE, model = models(),
+  download_existing_predictions = FALSE, model = models(),
   ensemble = TRUE)
 
-dir_options(base = "~", main = "forecasting", subs = subdirs(),
-  quiet = FALSE)
+dir_options(base = ".", main = "", subs = subdirs(), quiet = FALSE)
 
-data_options(base = "~", main = "forecasting", subs = subdirs(),
+data_options(base = ".", main = "", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
   m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
   start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
@@ -70,14 +69,13 @@ metadata_options(fdate = today(), cast_type = "forecasts",
   confidence_level = 0.9, lead_time = 12, save = TRUE,
   filename = "metadata.yaml", quiet = FALSE, tree = dirtree())
 
-predictions_options(base = "~", main = "forecasting",
-  subs = subdirs(), download_existing_predictions = TRUE,
-  quiet = FALSE)
+predictions_options(base = ".", main = "", subs = subdirs(),
+  download_existing_predictions = FALSE, quiet = FALSE)
 
-models_options(base = "~", main = "forecasting", subs = subdirs(),
+models_options(base = ".", main = "", subs = subdirs(),
   quiet = FALSE, model = models())
 
-cast_options(base = "~", main = "forecasting", subs = subdirs(),
+cast_options(base = ".", main = "", subs = subdirs(),
   quiet = FALSE, model = models(), cast_type = "forecasts",
   fdate = today(), ensemble = TRUE, start = 217, end = NULL,
   hind_step = 1, min_plots = 24, min_traps = 1)
