@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-dirtree <- function(base = "~", main = "forecasting", subs = subdirs()){
+dirtree <- function(base = ".", main = "", subs = subdirs()){
   tree <- list("base" = base, "main" = main, "subs" = subs)
   return(tree)
 }

@@ -4,7 +4,7 @@
 \alias{dirtree}
 \title{Define the names of the directory tree for a forecasting directory}
 \usage{
-dirtree(base = "~", main = "forecasting", subs = subdirs())
+dirtree(base = ".", main = "", subs = subdirs())
 }
 \arguments{
 \item{base}{name of the base directory where the directory should exist}

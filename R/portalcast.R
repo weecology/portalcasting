@@ -177,6 +177,11 @@ prep_data <- function(options_data = data_options()){
 casts <- function(options_all = all_options()){
   cast(options_all$options_cast)
   step_casts(options_all)
+  if (!options_all$options_cast$quiet){
+    cat("##########################################################", "\n")
+    cat("Models done", "\n")
+    cat("##########################################################", "\n")
+  }
 }
 
 #' @title Actually forecast or hindcast

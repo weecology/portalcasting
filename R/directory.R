@@ -217,3 +217,20 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv"){
     fill_PortalData(options_dir)
   }
 }
+
+#' @title Remove the temporary files in PortalData and tmp
+#'
+#' @description Remove the PortalData and tmp subdirectories.
+#'
+#' @param tree directory tree
+#'
+#' @return nothing
+#'
+#' @export
+#' 
+cleanup_dir <- function(tree = dirtree()){
+  PD_dir <- sub_path(tree, "PortalData")
+  temp_dir <- sub_path(tree, "tmp")
+  unlink(PD_dir, recursive = TRUE, force = TRUE)
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+}

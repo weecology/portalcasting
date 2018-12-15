@@ -109,7 +109,7 @@
 #'
 #' @export
 #'
-all_options <- function(base = "~", main = "forecasting", subs = subdirs(), 
+all_options <- function(base = ".", main = "", subs = subdirs(), 
                         quiet = FALSE, fdate = today(), 
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
@@ -129,7 +129,7 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
                         cast_type = "forecasts",
                         confidence_level = 0.9, meta_save = TRUE, 
                         meta_filename = "metadata.yaml",
-                        download_existing_predictions = TRUE,
+                        download_existing_predictions = FALSE,
                         model = models(), ensemble = TRUE){
 
   if (is.null(end) & cast_type == "hindcasts"){
@@ -188,7 +188,7 @@ all_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 #'
 #' @export
 #'
-dir_options <- function(base = "~", main = "forecasting", subs = subdirs(),
+dir_options <- function(base = ".", main = "", subs = subdirs(),
                         quiet = FALSE){
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet)
@@ -208,7 +208,7 @@ dir_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 #'
 #' @export
 #'
-data_options <- function(base = "~", main = "forecasting", subs = subdirs(),
+data_options <- function(base = ".", main = "", subs = subdirs(),
                          quiet = FALSE, fdate = today(), 
                          append_missing_to_raw = TRUE, m_save = TRUE, 
                          m_filename = "moons.csv", tmnt_type = NULL, 
@@ -396,9 +396,9 @@ metadata_options <- function(fdate = today(), cast_type = "forecasts",
 #'
 #' @export
 #'
-predictions_options <- function(base = "~", main = "forecasting", 
+predictions_options <- function(base = ".", main = "", 
                                 subs = subdirs(), 
-                                download_existing_predictions = TRUE,
+                                download_existing_predictions = FALSE,
                                 quiet = FALSE){
   tree <- dirtree(base, main, subs)
   list(tree = tree, 
@@ -416,7 +416,7 @@ predictions_options <- function(base = "~", main = "forecasting",
 #'
 #' @export
 #'
-models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
+models_options <- function(base = ".", main = "", subs = subdirs(),
                            quiet = FALSE, model = models()){
 
   tree <- dirtree(base, main, subs)
@@ -433,7 +433,7 @@ models_options <- function(base = "~", main = "forecasting", subs = subdirs(),
 #'
 #' @export
 #'
-cast_options <- function(base = "~", main = "forecasting", subs = subdirs(), 
+cast_options <- function(base = ".", main = "", subs = subdirs(), 
                          quiet = FALSE, model = models(), 
                          cast_type = "forecasts", fdate = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
