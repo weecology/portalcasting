@@ -90,19 +90,53 @@ forecast_weather <- function(moons = prep_moons(),
                              options_covariates = covariates_options()){
   
   mpath <- main_path(options_covariates$tree)
-  newweather <- weather("newmoon", fill = TRUE, mpath) %>%
-                select(-c(.data$locally_measured, .data$battery_low)) %>% 
-                mutate(year = as.numeric(format(date, "%Y"))) %>%
-                filter(year >= options_covariates$start - 5)
-  incompletes <- which(is.na(newweather$newmoonnumber))
-  if(length(incompletes) > 0 ){
-    newweather <- newweather[-incompletes, ]  
-  }
-  fcasts <- get_climate_forecasts(moons, options_covariates)
+  dayweather <- weather("daily", fill = TRUE, mpath)
+  yrs <- dayweather$year
+  mns <- dayweather$month
+  dys <- dayweather$day
+  dayweather$date <- as.Date(paste(yrs, mns, dys, sep = "-"))
 
-  tail(newweather, options_covariates$min_lag) %>% 
-  select(-year, -date) %>%
-  bind_rows(fcasts)
+  newmoon_number <- moons$newmoonnumber[-1]
+  newmoon_start <- as.Date(moons$newmoondate[-nrow(moons)])
+  newmoon_end <- as.Date(moons$newmoondate[-1])
+  newmoon_match_number <- NULL
+  newmoon_match_date <- NULL
+
+  for (i in seq(newmoon_number)) {
+    temp_dates <- seq.Date(newmoon_start[i] + 1, newmoon_end[i], 1)
+    temp_dates <- as.character(temp_dates)
+    temp_numbers <- rep(newmoon_number[i], length(temp_dates))
+    newmoon_match_date <- c(newmoon_match_date, temp_dates)
+    newmoon_match_number <- c(newmoon_match_number, temp_numbers)
+  }
+  newmoon_match_date <- as.Date(newmoon_match_date)
+  matches <- match(dayweather$date, newmoon_match_date)
+  dayweather$newmoonnumber <- newmoon_match_number[matches]
+  newweather <- dayweather %>% 
+                group_by(newmoonnumber) %>% 
+                summarize(date = max(date, na.rm = TRUE), 
+                          mintemp = min(mintemp, na.rm = TRUE), 
+                          maxtemp = max(maxtemp, na.rm = TRUE), 
+                          meantemp = mean(meantemp, na.rm = TRUE), 
+                          precipitation = sum(precipitation, na.rm = TRUE), 
+                          locally_measured = all(locally_measured), 
+                          battery_low = all(battery_low, na.rm = TRUE)) %>% 
+               arrange(newmoonnumber) %>% 
+               select(newmoonnumber, date, mintemp, maxtemp, meantemp, 
+                      precipitation, locally_measured, battery_low) %>% 
+               mutate(battery_low = ifelse(date < "2003-01-01", 
+                   NA, battery_low)) %>% 
+               select(-c(.data$locally_measured, .data$battery_low)) %>% 
+               mutate(year = as.numeric(format(date, "%Y"))) %>% 
+               filter(year >= options_covariates$start - 5)
+    incompletes <- which(is.na(newweather$newmoonnumber))
+    if (length(incompletes) > 0) {
+        newweather <- newweather[-incompletes, ]
+    }
+    fcasts <- get_climate_forecasts(moons, options_covariates)
+    tail(newweather, options_covariates$min_lag) %>% 
+    select(-year, -date) %>% 
+    bind_rows(fcasts)
 }
 
 #' @title Download downscaled weather data
