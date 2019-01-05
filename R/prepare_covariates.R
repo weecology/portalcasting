@@ -19,9 +19,9 @@ prep_covariates <- function(moons = prep_moons(),
     message("Loading covariate data files into data subdirectory")
   }
   hist_cov <- prep_hist_covariates(options_covariates)
-cat("#####/n")
-print(hist_cov)
-cat("#####/n")
+cat("#####\n")
+print(data.frame(hist_cov))
+cat("#####\n")
   if (options_covariates$cov_fcast){
     fcast_cov <- prep_fcast_covariates(hist_cov, moons, options_covariates)
   }
