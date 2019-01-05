@@ -40,7 +40,7 @@ if (getRversion() >= "2.15.1"){
       "forecast_newmoon", "forecastmonth", "forecastyear", "initial_newmoon",
       "level", "LowerPI", "maxtemp", "meantemp", "mintemp", "model_var", "n", 
       "newmoondate", "newmoonnumber", "period", "PI", "precipitation", 
-      "species", "sum_weight", "treatment",
+      "species", "sum_weight", "treatment", "locally_measured", "battery_low",
       "UpperPI", "weight", "weighted_ss")
   )
 }

@@ -1,6 +1,6 @@
 Package: portalcasting
 Title: Functions used in predicting portal rodent dynamics
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
   person("Juniper", "Simonis", role = c("aut", "cre"), email = "simonis@dapperstats.com"),
   person("Shawn", "Taylor", role = "aut", email = "shawntaylor@weecology.org"),

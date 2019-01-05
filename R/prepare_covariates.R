@@ -23,10 +23,6 @@ prep_covariates <- function(moons = prep_moons(),
   if (options_covariates$cov_fcast){
     fcast_cov <- prep_fcast_covariates(hist_cov, moons, options_covariates)
   }
-cat("#####\n")
-cat("fcast_cov \n")
-print(data.frame(fcast_cov))
-cat("#####\n")  
   out <- hist_cov[-(1:nrow(hist_cov)), ]
   if (options_covariates$cov_hist){
     out <- bind_rows(out, hist_cov)
