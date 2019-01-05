@@ -162,6 +162,9 @@ get_climate_forecasts <- function(moons = prep_moons(),
   colnames(df2) <- c("date", "lat", "lon", "meantemp")
   colnames(df3) <- c("date", "lat", "lon", "maxtemp")
   colnames(df4) <- c("date", "lat", "lon", "precipitation")
+  df1$mintemp[df1$mintemp == -9999] <- NA
+  df2$meantemp[df2$meantemp == -9999] <- NA
+  df3$maxtemp[df3$maxtemp == -9999] <- NA
   df4$precipitation[which(df4$precipitation < 0)] <- 0
   df <- df1 %>% 
         right_join(df2, by = c("date", "lat", "lon")) %>% 
