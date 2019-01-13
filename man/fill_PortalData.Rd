@@ -4,10 +4,10 @@
 \alias{fill_PortalData}
 \title{Populate the raw data of a portalcasting directory}
 \usage{
-fill_PortalData(options_dir = dir_options())
+fill_PortalData(options_PortalData = PortalData_options())
 }
 \arguments{
-\item{options_dir}{directory options}
+\item{options_PortalData}{PortalData subdirectory options}
 }
 \value{
 Nothing

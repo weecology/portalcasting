@@ -105,7 +105,7 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
 #' @export
 #'
 fill_dir <- function(options_all = all_options()){
-  fill_PortalData(options_all$options_dir)
+  fill_PortalData(options_all$options_PortalData)
   fill_data(options_all$options_data)
   fill_predictions(options_all$options_predictions)
   fill_models(options_all$options_models)
@@ -115,17 +115,20 @@ fill_dir <- function(options_all = all_options()){
 #'
 #' @description Populate the raw data folder
 #'
-#' @param options_dir directory options
+#' @param options_PortalData PortalData subdirectory options
 #'
 #' @return Nothing
 #'
 #' @export
 #'
-fill_PortalData <- function(options_dir = dir_options()){
-  if (!options_dir$quiet){
+fill_PortalData <- function(options_PortalData = PortalData_options()){
+  if (!options_PortalData$quiet){
     message("Downloading raw data into PortalData subdirectory")
   }
-  PD <- suppressMessages(download_observations(main_path(options_dir$tree)))
+  base_folder <- main_path(options_PortalData$tree)
+  version <- options_PortalData$version
+  from_zenodo <- options_PortalData$from_zenodo
+  PD <- download_observations(base_folder, version, from_zenodo)
 }
 
 #' @title Populate the for-use data of a portalcasting directory
