@@ -45,12 +45,12 @@ rodents_data <- function(moons = prep_moons(),
                          options_rodents = rodents_options()){
   end_step <- options_rodents$end[options_rodents$hind_step]
 
-  get_rodent_data(path = main_path(options_rodents$tree), 
-                  clean = FALSE, type = "Rodents", 
-                  level = options_rodents$level, 
-                  plots = options_rodents$plots, 
-                  min_plots = options_rodents$min_plots, 
-                  output = options_rodents$output) %>%
+  summarize_rodent_data(path = main_path(options_rodents$tree), 
+                        clean = FALSE, type = "Rodents", 
+                        level = options_rodents$level, 
+                        plots = options_rodents$plots, 
+                        min_plots = options_rodents$min_plots, 
+                        output = options_rodents$output) %>%
   remove_spp(options_rodents$drop_spp) %>%
   mutate(total = rowSums(.[ , is.spcol(.)])) %>%
   trim_treatment(options_rodents) %>%
