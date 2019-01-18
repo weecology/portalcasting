@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -45,6 +45,21 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/codebase.html">Supporting Portal Predictions</a>
+    </li>
+    <li>
+      <a href="articles/models.html">Current Models</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="news/index.html">Changelog</a>
@@ -61,16 +76,20 @@
       
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="portalcasting-the-support-package-for-portal-predictions" class="section level1">
+<div id="supporting-iterative-forecasting-of-portal-rodent-populations" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#portalcasting-the-support-package-for-portal-predictions" class="anchor"></a>portalcasting: the support package for <a href="https://github.com/weecology/portalPredictions">Portal Predictions</a>
-</h1></div>
+<a href="#supporting-iterative-forecasting-of-portal-rodent-populations" class="anchor"></a>Supporting iterative forecasting of Portal rodent populations</h1></div>
 
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <code>portalcasting</code> package contains the functions used for Continuous Forecasting of Rodent Populations (Portal Predictions: <a href="https://github.com/weecology/portalPredictions">code repo</a>; <a href="http://portal.naturecast.org/">website</a>).</p>
-<p>The repo is currently <strong><em>in development</em></strong> as the functions are migrated over.</p>
+<p>The <strong>portalcasting</strong> package contains the functions used for Continuous Forecasting of Rodent Populations (Portal Predictions: <a href="https://github.com/weecology/portalPredictions">code repo</a>; <a href="http://portal.naturecast.org/">website</a>).</p>
+</div>
+<div id="status-deployed-in-development" class="section level2">
+<h2 class="hasAnchor">
+<a href="#status-deployed-in-development" class="anchor"></a>Status: Deployed, In Development</h2>
+<p>This package is currently <strong><em>in development</em></strong> by the <a href="https://www.weecology.org">Weecology Team</a>. Most of the code underlying the forecasting functionality has been migrated over from the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>, although output (website) generation functionality is still housed there. Coincidingly, the package is deployed for use within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>.</p>
+<p>The API is moderately well defined at this point, but is still evolving and may change substantially.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -82,179 +101,25 @@ devtools::install_github("weecology/portalcasting")</a></code></pre>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>The <code><a href="reference/setup_dir.html">setup_dir()</a></code> function will create and populate a standard portalcasting directory that includes <code>data</code>, <code>models</code>, <code>PortalData</code>, <code>predictions</code> and <code>tmp</code> subdirectories. By default, <code><a href="reference/setup_dir.html">setup_dir()</a></code> downloads the most up-to-date version of the <a href="https://github.com/weecology/PortalData">Portal Data Repository</a> into the <code>PortalData</code> subdirectory, prepares the moons, rodents, covariates, and metadata data files (and places them in the <code>data</code> subdirectory), copies the historic covariate forecast data file available in the package (<code>/inst/extdata/covariate_forecasts.csv</code>) into the <code>data</code> subdirectory, downloads the most recent set of model forecasts into the <code>predictions</code> subdirectory and populates the <code>models</code> subdirectory with scripts for the four existing models (“AutoArima”, “ESSS”, “nbGARCH”, and “pevGARCH”).</p>
-<p>The <code><a href="reference/portalcast.html">portalcast()</a></code> function controls the running of potentially multiple models for either a forecast or a hindcast. It will prepare the data (rodents, covariates, model metadata) as needed, verify that the requested models are available to run, run the models, compile the output, and generate an ensemble (if desired).</p>
-<p>All required inputs to both <code><a href="reference/setup_dir.html">setup_dir()</a></code> and <code><a href="reference/portalcast.html">portalcast()</a></code> are encompassed within the singular argument <code>options_all</code>, which is a hierarchical list of options settings, defined through the options-settting function <code>all_options</code> and the default values are appropriate for basic forecast usage:</p>
+<p>The <code><a href="reference/setup_dir.html">setup_dir()</a></code> function creates and populates a standard portalcasting directory within the present location (by default) that includes <code>data</code>, <code>models</code>, <code>PortalData</code>, <code>predictions</code> and <code>tmp</code> subdirectories. By default, <code><a href="reference/setup_dir.html">setup_dir()</a></code> downloads the most up-to-date version of the <a href="https://zenodo.org/record/2541170">Portal Data from Zenodo</a> into the <code>PortalData</code> subdirectory, prepares the moons, rodents, covariates, and metadata data files (and places them in the <code>data</code> subdirectory), copies the historic covariate forecast data file available in the package (<code>/inst/extdata/covariate_forecasts.csv</code>) into the <code>data</code> subdirectory, downloads the most recent set of model forecasts into the <code>predictions</code> subdirectory and populates the <code>models</code> subdirectory with scripts for the four existing models (“AutoArima”, “ESSS”, “nbGARCH”, and “pevGARCH”).</p>
+<p>The <code><a href="reference/portalcast.html">portalcast()</a></code> function controls the running of potentially multiple models for either a forecast or a hindcast. It will prepare the data (rodents, covariates, model metadata) as needed, verify that the requested models are available to run, run the models, compile the output, and generate an ensemble (if desired). Presently, the preloaded model set includes <a href="https://weecology.github.io/portalcasting/articles/models.html">four models</a>: ESSS, AutoArima, nbGARCH, and pevGARCH.</p>
+<p>The <code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code> function simply removes the temporary files and folders from the directory.</p>
+<p>All required inputs to <code><a href="reference/setup_dir.html">setup_dir()</a></code>, <code><a href="reference/portalcast.html">portalcast()</a></code>, and <code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code> are encompassed within the singular argument <code>options_all</code>, which is a hierarchical list of options settings, defined through the options-settting function <code><a href="reference/all_options.html">all_options()</a></code> and the default values are appropriate for basic forecast usage:</p>
 <pre><code><a href="reference/setup_dir.html">setup_dir()
-portalcast()</a></code></pre>
+portalcast()
+cleanup_dir()</a></code></pre>
 <p>There are many options available for the user to control, and a full list can be found by running <code><a href="reference/all_options.html">?all_options</a></code>, to return the help file for the function that generates the hierarchical options list.</p>
+<p>For further information about the <strong>portalcasting</strong> codebase see the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">vignette</a>.</p>
 </div>
-<div id="options-list" class="section level2">
+<div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">
-<a href="#options-list" class="anchor"></a>Options List</h2>
-<p>The options list is a hierarchical list containing a suite of inter-linked options controlling the structure, content, and usage of the directory.</p>
-<ul>
-<li>
-<code>options_all</code>: created by <code>all_options</code>
-<ul>
-<li>
-<code>options_dir</code>: created by <code>dir_options</code>
-</li>
-<li>
-<code>options_data</code>: created by <code>data_options</code>
-<ul>
-<li>
-<code>moons</code>: created by <code>moons_options</code>
-</li>
-<li>
-<code>rodents</code>: created by <code>rodents_options</code>
-</li>
-<li>
-<code>covariates</code>: created by <code>covariates_options</code>
-</li>
-<li>
-<code>metadata</code>: created by <code>metadata_options</code>
-</li>
-<li>additionally includes <code>cast_type</code>, <code>quiet</code>, and <code>tree</code> options</li>
-</ul>
-</li>
-<li>
-<code>options_predictions</code>: created by <code>predictions_options</code>
-</li>
-<li>
-<code>options_models</code>: created by <code>models_options</code>
-</li>
-<li>
-<code>options_casts</code>: created by <code>casts_options</code>
-</li>
-</ul>
-</li>
-</ul>
+<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
+<p>The motivating study—the Portal Project—has been funded nearly continuously since 1977 by the <a href="http://nsf.gov/">National Science Foundation</a>, most recently by <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1622425">DEB-1622425</a> to S. K. M. Ernest. Much of the computational work was supported by the <a href="http://www.moore.org/programs/science/data-driven-discovery">Gordon and Betty Moore Foundation’s Data-Driven Discovery Initiative</a> through <a href="http://www.moore.org/grants/list/GBMF4563">Grant GBMF4563</a> to E. P. White. We thank Henry Senyondo for help with continuous integration, Hao Ye for feedback on documents and code, Heather Bradley for logistical support, John Abatzoglou for assistance with climate forecasts, and James Brown for establishing the Portal Project.</p>
 </div>
-<div id="directory-tree" class="section level2">
+<div id="author-contributions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#directory-tree" class="anchor"></a>Directory Tree</h2>
-<p>The package uses a simple directory tree to organize the project. There are three levels to the hierarchy:</p>
-<ul>
-<li>
-<code>base</code>: existing folder where the project folder will be housed
-<ul>
-<li>
-<code>main</code>: project folder encompassing all subfolders
-<ul>
-<li>
-<code>subs</code>: specific sub-folders for the project</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>The tree is housed in a simple list, created by the <code>dirtree</code> function, which allows for the renaming of all levels, although it is only advisable to alter the <code>base</code> or <code>main</code> levels, as many functions require specifically-named subdirectories.</p>
-</div>
-<div id="function-tree" class="section level2">
-<h2 class="hasAnchor">
-<a href="#function-tree" class="anchor"></a>Function Tree</h2>
-<p>The package organizes the main actions into hierarchical functions</p>
-<ul>
-<li>
-<code>setup_dir</code>
-<ul>
-<li>
-<code>create_dir</code>
-<ul>
-<li><code>create_main_dir</code></li>
-<li>
-<code>create_sub_dirs</code>
-<ul>
-<li><code>create_sub_dir</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<code>fill_dir</code>
-<ul>
-<li>
-<code>fill_PortalData</code>
-<ul>
-<li><code>download_observations</code></li>
-</ul>
-</li>
-<li>
-<code>fill_data</code>
-<ul>
-<li><code>transfer_hist_covariate_forecasts</code></li>
-<li><code>transfer_trapping_table</code></li>
-<li><code>prep_moons</code></li>
-<li><code>prep_rodents</code></li>
-<li><code>prep_covariates</code></li>
-<li><code>prep_metadata</code></li>
-</ul>
-</li>
-<li><code>fill predictions</code></li>
-<li>
-<code>fill_models</code>
-<ul>
-<li><code>write_model</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<code>portalcast</code>
-<ul>
-<li><code>clear_tmp</code></li>
-<li><code>verify_models</code></li>
-<li><code>prep_data</code></li>
-<li>
-<code>casts</code>
-<ul>
-<li>
-<code>cast</code>
-<ul>
-<li><code>check_to_skip</code></li>
-<li><code>cast_models</code></li>
-<li>
-<code>combine_forecasts</code><br>
-</li>
-<li><code>add_ensemble</code></li>
-<li><code>clear_tmp</code></li>
-<li>
-<code>step_casts</code>
-<ul>
-<li><code>step_hind_forward</code></li>
-<li>
-<code>update_data</code>
-<ul>
-<li><code>prep_moons</code></li>
-<li><code>update_rodents</code></li>
-<li><code>update_covariates</code></li>
-<li><code>prep_metadata</code></li>
-</ul>
-</li>
-<li>
-<code>cast</code>
-<ul>
-<li><code>check_to_skip</code></li>
-<li><code>cast_models</code></li>
-<li>
-<code>combine_forecasts</code><br>
-</li>
-<li><code>add_ensemble</code></li>
-<li><code>clear_tmp</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<a href="#author-contributions" class="anchor"></a>Author Contributions</h2>
+<p>All authors conceived the ideas, designed methodology, and developed the automated forecasting system. JLS is leading the transition of code from the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a> to <strong>portalcasting</strong>.</p>
 </div>
 </div>
   </div>
@@ -272,8 +137,10 @@ portalcast()</a></code></pre>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Juniper L. Simonis <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9798-0460" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
-<li>Shawn D. Taylor <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6178-6903" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 <li>Glenda M. Yenni <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6969-1848" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Ellen K. Bledsoe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-3629-7235" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Erica M. Christensen <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-5635-2502" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Shawn D. Taylor <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6178-6903" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 <li>Ethan P. Ethan <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6728-7745" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 <li>S.K. Morgan Ernest <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6026-8530" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 </ul>
@@ -284,13 +151,14 @@ portalcast()</a></code></pre>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/weecology/portalcasting"><img src="https://travis-ci.org/weecology/portalcasting.svg?branch=master" alt="Build Status"></a></li>
 <li><a href="https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle:maturing"></a></li>
 </ul>
 </div>
 </div>
 </div>
 
       <footer><div class="copyright">
-  <p>Developed by Juniper L. Simonis, Shawn D. Taylor, Glenda M. Yenni, Ethan P. Ethan, S.K. Morgan Ernest.</p>
+  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Shawn D. Taylor, Ethan P. Ethan, S.K. Morgan Ernest.</p>
 </div>
 
 <div class="pkgdown">
