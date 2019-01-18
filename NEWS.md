@@ -30,19 +30,19 @@ repo) was a mix of functions and loose code and hard-coded to the repo.
 * The package implementation generalizes the functionality and organizes
 the code into a set of hierarchical functions that drive creation and use
 of the code within the repo or elsewhere. 
-* See vignette for further details.
+* See the [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) for further details.
 
 ## Explicit directory tree
 * To facilitate portability of the package (a necessity for smooth sandboxing
 and the development of new models), we now include explicit, controllable
 definition of the forecasting directory tree.
-* See vignette for further details.
+* See the [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) for further details.
 
 ## Introduction of options lists
 * To facilitate simple control via defaults argument inputs and flexibility to 
 changes to inputs throughout the code hierarchy, we include a set of functions
 that default options for all aspects of the codebase.
-* See vignette for further details.
+* See the [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) for further details.
 
 # [portalPredictions](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 2018-11-06
 * This is the last iteration of the code that now exists in portalcasting in

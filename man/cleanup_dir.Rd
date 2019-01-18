@@ -4,10 +4,12 @@
 \alias{cleanup_dir}
 \title{Remove the temporary files in PortalData and tmp}
 \usage{
-cleanup_dir(tree = dirtree())
+cleanup_dir(options_all = all_options())
 }
 \arguments{
-\item{tree}{directory tree}
+\item{options_all}{list containing all options available for controlling
+the set up and population of the forecast directory (see 
+\code{\link{all_options}})}
 }
 \value{
 nothing

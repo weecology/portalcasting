@@ -1,15 +1,28 @@
-# portalcasting: the support package for [Portal Predictions](https://github.com/weecology/portalPredictions)
+# Supporting iterative forecasting of Portal rodent populations
 [![Build Status](https://travis-ci.org/weecology/portalcasting.svg?branch=master)](https://travis-ci.org/weecology/portalcasting)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
+[![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 ## Overview
 
-The `portalcasting` package contains the functions used for Continuous
+The **portalcasting** package contains the functions used for Continuous
 Forecasting of Rodent Populations (Portal Predictions: 
 [code repo](https://github.com/weecology/portalPredictions);
 [website](http://portal.naturecast.org/)).
 
-The repo is currently ***in development*** as the functions are migrated over.
+## Status: Deployed, In Development
+
+This package is currently ***in development*** by the 
+[Weecology Team](https://www.weecology.org). Most of the code underlying the 
+forecasting functionality has been migrated over from the 
+[Portal Predictions repo](https://github.com/weecology/portalPredictions),
+although output (website) generation functionality is still housed there.
+Coincidingly, the package is deployed for use within the 
+[Portal Predictions repo](https://github.com/weecology/portalPredictions).
+
+The API is moderately well defined at this point, but is still evolving 
+and may change substantially. 
+
 
 ## Installation
 
@@ -22,13 +35,14 @@ devtools::install_github("weecology/portalcasting")
 
 ## Usage
 
-The `setup_dir()` function will create and populate a standard portalcasting
-directory that includes `data`, `models`, `PortalData`, `predictions` and
-`tmp` subdirectories. By default, `setup_dir()` downloads the most up-to-date
-version of the [Portal Data Repository](https://github.com/weecology/PortalData)
+The `setup_dir()` function creates and populates a standard portalcasting
+directory within the present location (by default) that includes `data`,
+`models`, `PortalData`, `predictions` and `tmp` subdirectories. By default,
+`setup_dir()` downloads the most up-to-date version of the 
+[Portal Data from Zenodo](https://zenodo.org/record/2541170)
 into the `PortalData` subdirectory, prepares the moons, rodents, covariates,
-and metadata data files (and places them in the `data` subdirectory), copies the
-historic covariate forecast data file available in the package 
+and metadata data files (and places them in the `data` subdirectory), copies 
+the historic covariate forecast data file available in the package 
 (`/inst/extdata/covariate_forecasts.csv`) into the `data` subdirectory, 
 downloads the most recent set of model forecasts into the `predictions` 
 subdirectory and populates the `models` subdirectory with scripts for the four
@@ -38,97 +52,50 @@ The `portalcast()` function controls the running of potentially multiple
 models for either a forecast or a hindcast. It will prepare the data 
 (rodents, covariates, model metadata) as needed, verify that the requested
 models are available to run, run the models, compile the output, and
-generate an ensemble (if desired).
+generate an ensemble (if desired). Presently, the preloaded model set includes
+[four models](https://weecology.github.io/portalcasting/articles/models.html):
+ESSS, AutoArima, nbGARCH, and pevGARCH. 
 
-All required inputs to both `setup_dir()` and `portalcast()` are encompassed 
-within the singular argument `options_all`, which is a hierarchical list of
-options settings, defined through the options-settting function `all_options`
-and the default values are appropriate for basic forecast usage:
+The `cleanup_dir()` function simply removes the temporary files and folders
+from the directory.
+
+All required inputs to `setup_dir()`, `portalcast()`, and `cleanup_dir()` 
+are encompassed within the singular argument `options_all`, which is a 
+hierarchical list of options settings, defined through the options-settting 
+function `all_options()` and the default values are appropriate for basic 
+forecast usage:
 
 ```
 setup_dir()
 portalcast()
+cleanup_dir()
 ```
 
 There are many options available for the user to control, and a full list
 can be found by running `?all_options`, to return the help file for the 
 function that generates the hierarchical options list. 
 
-## Options List
+For further information about the **portalcasting** codebase see the 
+[vignette](https://weecology.github.io/portalcasting/articles/codebase.html).
 
-The options list is a hierarchical list containing a suite of inter-linked
-options controlling the structure, content, and usage of the directory.
 
-- `options_all`: created by `all_options` 
-  - `options_dir`: created by `dir_options`
-  - `options_data`: created by `data_options`
-    - `moons`: created by `moons_options`
-    - `rodents`: created by `rodents_options`
-    - `covariates`: created by `covariates_options`
-    - `metadata`: created by `metadata_options`
-    - additionally includes `cast_type`, `quiet`, and `tree` options
-  - `options_predictions`: created by `predictions_options`
-  - `options_models`: created by `models_options`
-  - `options_casts`: created by `casts_options` 
+## Acknowledgements 
 
-## Directory Tree
+The motivating study—the Portal Project—has been funded nearly continuously 
+since 1977 by the [National Science Foundation](http://nsf.gov/), most recently
+by [DEB-1622425](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1622425) 
+to S. K. M. Ernest. Much of the computational work was supported by the 
+[Gordon and Betty Moore Foundation’s Data-Driven Discovery 
+Initiative](http://www.moore.org/programs/science/data-driven-discovery) 
+through [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to E. P. 
+White. We thank Henry Senyondo for help with continuous integration, Hao
+Ye for feedback on documents and code, Heather Bradley for logistical 
+support, John Abatzoglou for assistance with climate forecasts, and James
+Brown for establishing the Portal Project.
 
-The package uses a simple directory tree to organize the project. There are 
-three levels to the hierarchy:
+## Author Contributions
 
-- `base`: existing folder where the project folder will be housed
-  - `main`: project folder encompassing all subfolders
-    - `subs`: specific sub-folders for the project
- 
-The tree is housed in a simple list, created by the `dirtree` function, which 
-allows for the renaming of all levels, although it is only advisable to alter 
-the `base` or `main` levels, as many functions require specifically-named
-subdirectories.
-
-## Function Tree
-
-The package organizes the main actions into hierarchical functions
-
-- `setup_dir`
-  - `create_dir`
-    - `create_main_dir`
-    - `create_sub_dirs`
-      - `create_sub_dir`
-  - `fill_dir`
-    - `fill_PortalData`
-	  - `download_observations`
-    - `fill_data`
-      - `transfer_hist_covariate_forecasts`
-      - `transfer_trapping_table`
-	  - `prep_moons`
-	  - `prep_rodents`
-	  - `prep_covariates`
-	  - `prep_metadata`
-	- `fill predictions`
-	- `fill_models`
-	  - `write_model`
-
-- `portalcast`
-  - `clear_tmp`
-  - `verify_models`
-  - `prep_data`
-  - `casts`
-    - `cast`
-      - `check_to_skip`
-      - `cast_models`
-      - `combine_forecasts`	  
-      - `add_ensemble`
-      - `clear_tmp`
-	  - `step_casts`
-        - `step_hind_forward`
-        - `update_data`
-          - `prep_moons`
-          - `update_rodents`
-          - `update_covariates`
-          - `prep_metadata`
-        - `cast`	
-          - `check_to_skip`
-          - `cast_models`
-          - `combine_forecasts`	  
-          - `add_ensemble`
-          - `clear_tmp`
+All authors conceived the ideas, designed methodology, and developed the 
+automated forecasting system. JLS is leading the transition of code from
+the [Portal Predictions repo](https://github.com/weecology/portalPredictions)
+to **portalcasting**. 

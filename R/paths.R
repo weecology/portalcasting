@@ -13,8 +13,7 @@
 #' @export
 #'
 dirtree <- function(base = ".", main = "", subs = subdirs()){
-  tree <- list("base" = base, "main" = main, "subs" = subs)
-  return(tree)
+  list("base" = base, "main" = main, "subs" = subs)
 }
 
 #' @title Define the names of the subdirectories in a forecasting directory
@@ -34,7 +33,7 @@ subdirs <- function(type = "portalcasting", subs = NULL){
   if (type == "portalcasting"){
     subs <- c(NULL, "predictions", "models", "PortalData", "data", "tmp")
   }
-  return(subs)
+  subs
 }
 
 #' @title Determine the path for the main directory
@@ -50,8 +49,7 @@ subdirs <- function(type = "portalcasting", subs = NULL){
 main_path <- function(tree = dirtree()){
   base <- tree$base
   main <- tree$main
-  path <- normalizePath(file.path(base, main), mustWork = FALSE)
-  return(path)
+  normalizePath(file.path(base, main), mustWork = FALSE)
 }
 
 #' @title Determine the paths for the sub directories
@@ -68,8 +66,7 @@ sub_paths <- function(tree = dirtree()){
   base <- tree$base
   main <- tree$main
   subs <- tree$subs
-  path <- normalizePath(file.path(base, main, subs), mustWork = FALSE)
-  return(path)
+  normalizePath(file.path(base, main, subs), mustWork = FALSE)
 }
 
 #' @title Determine the path for a specific sub directory
@@ -87,8 +84,7 @@ sub_paths <- function(tree = dirtree()){
 sub_path <- function(tree = dirtree(), specific_sub){
   base <- tree$base
   main <- tree$main
-  path <- normalizePath(file.path(base, main, specific_sub), mustWork = FALSE)
-  return(path)
+  normalizePath(file.path(base, main, specific_sub), mustWork = FALSE)
 }
 
 #' @title Determine the path for a model in the model sub directory
@@ -110,8 +106,7 @@ model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
   main <- tree$main
   sub <- "models"
   mod <- paste0(model, extension)
-  path <- normalizePath(file.path(base, main, sub, mod), mustWork = FALSE)
-  return(path)
+  normalizePath(file.path(base, main, sub, mod), mustWork = FALSE)
 }
 
 #' @title Determine the path for a file in the forecasting directory
@@ -132,6 +127,5 @@ file_path <- function(tree = dirtree(), local_path = NULL){
   }
   base <- tree$base
   main <- tree$main
-  path <- normalizePath(file.path(base, main, local_path), mustWork = FALSE)
-  return(path)
+  normalizePath(file.path(base, main, local_path), mustWork = FALSE)
 }

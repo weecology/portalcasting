@@ -1,0 +1,131 @@
+---
+title: "Supporting Portal Predictions"
+output: rmarkdown::html_vignette
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+vignette: >
+  %\VignetteIndexEntry{codebase}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include=FALSE}
+library(portalcasting)
+vers <- packageVersion("portalcasting")
+today <- Sys.Date()
+```
+
+This vignette outlines the codebase for the **portalcasting** package
+(v`r vers`), which underlies the automated iterative forecasting within the
+[Portal Predictions repo](https://github.com/weecology/portalPredictions).
+
+## Installation
+
+To obtain the most recent version of **portalcasting**, install the most recent 
+version from GitHub:
+
+```{r, eval=FALSE}
+install.packages("devtools")
+devtools::install_github("weecology/portalcasting")
+```
+
+
+## Function pipeline
+
+The package organizes the main actions into a set of hierarchical functions 
+`setup_dir()` (which creates and fills the directory), `portalcast()` (which
+conducts forecasting or hindcasting as requested), and `cleanup_dir()`
+(which removed temporary folders). The functions are designed to operate 
+out-of-the-box with no need to alter arguments for operation, in particular 
+within the context of the Portal Predictions repo. However, the functions
+are flexible, as detailed in [Options List](#options_list).
+
+* `setup_dir()`
+  * `create_dir()`
+    * `create_main_dir()`
+    * `create_sub_dirs()`
+      * `create_sub_dir()`
+  * `fill_dir()`
+    * `fill_PortalData()`
+	  * `download_observations()`
+    * `fill_data()`
+      * `transfer_hist_covariate_forecasts()`
+      * `transfer_trapping_table()`
+	  * `prep_moons()`
+	  * `prep_rodents()`
+	  * `prep_covariates()`
+	  * `prep_metadata()`
+	* `fill predictions()`
+	* `fill_models()`
+	  * `write_model()`
+
+* `portalcast()`
+  * `clear_tmp()`
+  * `verify_models()`
+  * `prep_data()`
+  * `casts()`
+    * `cast()`
+      * `check_to_skip()`
+      * `cast_models()`
+      * `combine_forecasts()`	  
+      * `add_ensemble()`
+      * `clear_tmp()`
+	  * `step_casts()`
+        * `step_hind_forward()`
+        * `update_data()`
+          * `prep_moons()`
+          * `update_rodents()`
+          * `update_covariates()`
+          * `prep_metadata()`
+        * `cast()`	
+          * `check_to_skip()`
+          * `cast_models()`
+          * `combine_forecasts()`	  
+          * `add_ensemble()`
+          * `clear_tmp()`
+
+* `cleanup_dir()`
+
+## Directory Tree
+
+The package uses a simple directory tree to organize the project. There are 
+three levels to the hierarchy:
+
+* `base`: existing folder where the project folder will be housed
+  * `main`: project folder encompassing all subfolders
+    * `subs`: specific sub-folders for the project
+ 
+The tree is housed in a simple list, created by the `dirtree()` function, which 
+allows for the renaming of the folders at all levels, although it is only 
+advisable to alter the `base` or `main` levels, as many functions require 
+specifically-named subdirectories. 
+
+The full-path components of the tree can be generated from the simple 
+list using `main_path()`, `sub_path()`, and `sub_paths()`. In addition,
+`model_path()` can be used to find a specific model's full path
+and `file_path()` can be used to find the full path of any file within
+the directory.
+
+## Options List <a name="options_list"></a>
+
+The options list is a hierarchical list containing a suite of inter-linked
+options controlling the structure, content, and usage of the directory.
+
+* `options_all`: created by `all_options()` 
+  * `options_dir`: created by `dir_options()`
+  * `options_PortalData`: created by `PortalData_options()`
+  * `options_data`: created by `data_options()`
+    * `moons`: created by `moons_options()`
+    * `rodents`: created by `rodents_options()`
+    * `covariates`: created by `covariates_options()`
+    * `metadata`: created by `metadata_options()`
+    * additionally includes `cast_type`, `quiet`, and `tree` options
+  * `options_predictions`: created by `predictions_options()`
+  * `options_models`: created by `models_options()`
+  * `options_casts`: created by `casts_options()` 
