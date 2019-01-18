@@ -225,13 +225,16 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv"){
 #'
 #' @description Remove the PortalData and tmp subdirectories.
 #'
-#' @param tree directory tree
+#' @param options_all list containing all options available for controlling
+#'   the set up and population of the forecast directory (see 
+#'   \code{\link{all_options}})
 #'
 #' @return nothing
 #'
 #' @export
 #' 
-cleanup_dir <- function(tree = dirtree()){
+cleanup_dir <- function(options_all = all_options()){
+  tree <- options_all$options_dir$tree
   PD_dir <- sub_path(tree, "PortalData")
   temp_dir <- sub_path(tree, "tmp")
   unlink(PD_dir, recursive = TRUE, force = TRUE)

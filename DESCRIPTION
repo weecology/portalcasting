@@ -3,8 +3,10 @@ Title: Functions used in predicting portal rodent dynamics
 Version: 0.1.1.1
 Authors@R: c(
   person(c("Juniper", "L."), "Simonis", email = "juniper.simonis@weecology.org", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9798-0460")),
-  person(c("Shawn", "D."), "Taylor", role = c("aut"), comment = c(ORCID = "0000-0002-6178-6903")),
   person(c("Glenda", "M."), "Yenni", role = c("aut"), comment = c(ORCID = "0000-0001-6969-1848")),
+  person(c("Ellen", "K."), "Bledsoe", role = c("aut"), comment = c(ORCID = "0000-0002-3629-7235")),
+  person(c("Erica", "M."), "Christensen", role = c("aut"), comment = c(ORCID = "0000-0002-5635-2502")),
+  person(c("Shawn", "D."), "Taylor", role = c("aut"), comment = c(ORCID = "0000-0002-6178-6903")),
   person(c("Ethan", "P."), "Ethan", role = c("aut"), comment = c(ORCID = "0000-0001-6728-7745")), 
   person(c("S.K.", "Morgan"), "Ernest", role = c("aut"), comment = c(ORCID = "0000-0002-6026-8530")))
 Description: This package includes functions used in the modeling and 
