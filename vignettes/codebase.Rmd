@@ -3,7 +3,7 @@ title: "Supporting Portal Predictions"
 output: rmarkdown::html_vignette
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 vignette: >
-  %\VignetteIndexEntry{portalcasting_codebase}
+  %\VignetteIndexEntry{codebase}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

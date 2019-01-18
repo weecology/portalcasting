@@ -5,7 +5,7 @@
 
 ## Overview
 
-The `portalcasting` package contains the functions used for Continuous
+The **portalcasting** package contains the functions used for Continuous
 Forecasting of Rodent Populations (Portal Predictions: 
 [code repo](https://github.com/weecology/portalPredictions);
 [website](http://portal.naturecast.org/)).
@@ -17,7 +17,7 @@ This package is currently ***in development*** by the
 forecasting functionality has been migrated over from the 
 [Portal Predictions repo](https://github.com/weecology/portalPredictions),
 although output (website) generation functionality is still housed there.
-Ccoincidingly, the package is deployed for use within the 
+Coincidingly, the package is deployed for use within the 
 [Portal Predictions repo](https://github.com/weecology/portalPredictions).
 
 The API is moderately well defined at this point, but is still evolving 
@@ -53,8 +53,8 @@ models for either a forecast or a hindcast. It will prepare the data
 (rodents, covariates, model metadata) as needed, verify that the requested
 models are available to run, run the models, compile the output, and
 generate an ensemble (if desired). Presently, the preloaded model set includes
-[four models](https://portal.naturecast.org/models.html): ESSS, AutoArima, 
-nbGARCH, and pevGARCH. 
+[four models](https://weecology.github.io/portalcasting/articles/models.html):
+ESSS, AutoArima, nbGARCH, and pevGARCH. 
 
 The `cleanup_dir()` function simply removes the temporary files and folders
 from the directory.
@@ -74,6 +74,9 @@ cleanup_dir()
 There are many options available for the user to control, and a full list
 can be found by running `?all_options`, to return the help file for the 
 function that generates the hierarchical options list. 
+
+For further information about the **portalcasting** codebase see the 
+[vignette](https://weecology.github.io/portalcasting/articles/codebase.html).
 
 
 ## Acknowledgements 
