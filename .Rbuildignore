@@ -6,3 +6,5 @@
 ^models$
 ^package_outline.txt$
 ^in_dev.R$
+^CONTRIBUTING\.md$
+^CODE_OF_CONDUCT\.md$
