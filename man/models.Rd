@@ -4,11 +4,12 @@
 \alias{models}
 \title{Provide the names of models}
 \usage{
-models(set = "portalcasting")
+models(set = "prefab", add = NULL)
 }
 \arguments{
-\item{set}{type of model options (currently only support for 
-"portalcasting")}
+\item{set}{type of model options (currently only support for "prefab")}
+
+\item{add}{character name of model to add to the list to run}
 }
 \value{
 vector of model names

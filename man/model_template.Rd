@@ -10,7 +10,7 @@ model_template(options_model = model_options())
 \item{options_model}{list of options for the specific model}
 }
 \value{
-Nothing
+Model script text
 }
 \description{
 Create the text for a model script to be housed in the model 

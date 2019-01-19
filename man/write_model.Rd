@@ -4,15 +4,10 @@
 \alias{write_model}
 \title{Write the template for a model into model subdirectory}
 \usage{
-write_model(model = NULL, options_model = model_options())
+write_model(options_model = model_options())
 }
 \arguments{
-\item{model}{the name of the specific model}
-
 \item{options_model}{model option list}
-}
-\value{
-Nothing
 }
 \description{
 Create template script for a given model
