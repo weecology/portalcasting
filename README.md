@@ -1,11 +1,11 @@
-# Supporting iterative forecasting of Portal rodent populations
+# Supporting [automated iterative forecasting of Portal rodent populations](https://github.com/weecology/portalPredictions)
 [![Build Status](https://travis-ci.org/weecology/portalcasting.svg?branch=master)](https://travis-ci.org/weecology/portalcasting)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 ## Overview
 
-The **portalcasting** package contains the functions used for Continuous
+The **`portalcasting`** package contains the functions used for Continuous
 Forecasting of Rodent Populations (Portal Predictions: 
 [code repo](https://github.com/weecology/portalPredictions);
 [website](http://portal.naturecast.org/)).
@@ -15,24 +15,57 @@ Forecasting of Rodent Populations (Portal Predictions:
 This package is currently ***in development*** by the 
 [Weecology Team](https://www.weecology.org). Most of the code underlying the 
 forecasting functionality has been migrated over from the 
-[Portal Predictions repo](https://github.com/weecology/portalPredictions),
+[repository](https://github.com/weecology/portalPredictions),
+that contains the code executed by the continuous integration,
 although output (website) generation functionality is still housed there.
 Coincidingly, the package is deployed for use within the 
-[Portal Predictions repo](https://github.com/weecology/portalPredictions).
+[repository](https://github.com/weecology/portalPredictions).
 
-The API is moderately well defined at this point, but is still evolving 
-and may change substantially. 
+Note that the current master branch code is not necessarily always being
+executed within the [predictions 
+repository](https://github.com/weecology/portalPredictions). This is a 
+desired result of our use of a [software
+container](https://en.wikipedia.org/wiki/Operating-system-level_virtualization),
+which enables reproducibility. 
+Presently, we use a [Docker](https://www.docker.com/) image of the 
+software environment ro create a container for the code and house it on
+[DockerHub](https://hub.docker.com/r/weecology/portal_predictions). The
+image update (*i.e.* the integration of the current master branch of 
+**`portalcasting`** into the [predictions 
+repository](https://github.com/weecology/portalPredictions)) necessarily
+lags behind updates to the master branch of **`portalcasting`**, although
+ideally not long behind.
+
+The API is moderately well defined at this point, but is evolving and
+may change substantially. Output functions have not been brought over from
+the [predictions repository](https://github.com/weecology/portalPredictions).
 
 
 ## Installation
 
-You can install the package from github with:
+You can install the R package from github with:
 
 ```
-install.packages("devtools")  
-
+install.packages("devtools")
+```
+```
 devtools::install_github("weecology/portalcasting")
 ```
+
+If you wish to spin up a local container from the Portal Predictions 
+image (to ensure a stable runtime environment for implementation
+of the **`portalcasting`** pipeline), you can run
+
+```
+sudo docker pull weecology/portal_predictions
+```
+from a shell on a computer with [Docker](https://www.docker.com/) installed
+(Windows users need not include `sudo`). A tutorial on using the image 
+to spin up a container is forthcoming. In the meantime, general usage
+should be consistent if the user installs the current version of the
+packages listed in the [`install-packages.R` file in the main 
+repository](https://github.com/weecology/portalPredictions/blob/master/install-packages.R).
+
 
 ## Usage
 
@@ -67,9 +100,13 @@ function `all_options()` and the default values are appropriate for basic
 forecast usage:
 
 ```
-setup_dir()  
-portalcast()  
-cleanup_dir()  
+setup_dir()
+```
+```
+portalcast()
+```
+```
+cleanup_dir()
 ```
 
 There are many options available for the user to control, and a full list
@@ -79,6 +116,10 @@ function that generates the hierarchical options list.
 For further information about the **portalcasting** codebase see the 
 [vignette](https://weecology.github.io/portalcasting/articles/codebase.html).
 
+If you are interested in adding a model to the preloaded [set of four
+models](https://weecology.github.io/portalcasting/articles/models.html),
+see the [Adding a Model
+vignette](https://weecology.github.io/portalcasting/articles/adding_a_model.html). 
 
 ## Acknowledgements 
 

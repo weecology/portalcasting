@@ -1,5 +1,29 @@
 # LDATS (development version)
 
+# [portalcasting 0.1.2](https://github.com/weecology/portalcasting)
+*Ongoing*
+
+## Vignettes
+* Three vignettes were added:
+  * [current models vignette](https://weecology.github.io/portalcasting/articles/models.html) was brought from the [forecasting website](https://portal.naturecast.org/models.html)
+  * [codebase vignette]() was created from the earlier `README.md` file
+  * [adding a model vignette](https://weecology.github.io/portalcasting/articles/adding_a_model.html) was constructed based on two pages from the 
+    [Portal Predictions repository](https://github.com/weecology/portalPredictions) wiki
+    ([1](https://github.com/weecology/portalPredictions/wiki/Adding-a-new-model) and 
+    [2](https://github.com/weecology/portalPredictions/wiki/Forecast-file-format)) and with substantial additional text added.
+
+
+## Website
+* Added a website driven by [pkgdown](https://pkgdown.r-lib.org/).
+
+## Changelog
+* Developed this changelog as part of the package.
+
+## Support documents
+* Added [code of conduct](https://github.com/weecology/portalcasting/blob/master/CODE_OF_CONDUCT.md) 
+and [contribution guidelines](https://github.com/weecology/portalcasting/blob/master/CONTRIBUTING.md)
+to the repository.
+
 # [portalcasting 0.1.1](https://github.com/weecology/portalcasting/commit/05ed76f76a82f32a5a3120eb7c9ef0dc95bd8ae4)
 *2019-01-13*
 

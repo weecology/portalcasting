@@ -154,7 +154,7 @@ package folder** (likely a local clone of the repository).
 For each model, `write_model()` makes a call to the `model_template()` 
 function, which creates the associated text of the associated R script 
 based on the input options. For "newmod" to integrate into the pipeline, you
-need to **write a function with the same name as your model (`newmod` here)**.
+need to **write a function with the same name as your model** (`newmod` here).
 Given current implementation, if the the model does not need covariates
 (weather and NDVI data), the function should have a first argument
 that can take the `data/all.csv` and `data/controls.csv` files, a second
