@@ -1,24 +1,25 @@
-# Supporting [automated iterative forecasting of Portal rodent populations](https://github.com/weecology/portalPredictions)
+# Supporting [automated iterative forecasting](https://github.com/weecology/portalPredictions) of [Portal rodent populations](https://portal.weecology.org/)
 [![Build Status](https://travis-ci.org/weecology/portalcasting.svg?branch=master)](https://travis-ci.org/weecology/portalcasting)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 ## Overview
 
-The **`portalcasting`** package contains the functions used for Continuous
-Forecasting of Rodent Populations (Portal Predictions: 
-[code repo](https://github.com/weecology/portalPredictions);
-[website](http://portal.naturecast.org/)).
+The `portalcasting` package contains the functions used for continuous
+analysis and forecasting of [Portal rodent populations](https://portal.weecology.org/) 
+([code repository](https://github.com/weecology/portalPredictions),
+[output website](http://portal.naturecast.org/),
+[Zenodo archive](https://zenodo.org/record/2543733)).
 
 ## Status: Deployed, In Development
 
 This package is currently ***in development*** by the 
 [Weecology Team](https://www.weecology.org). Most of the code underlying the 
-forecasting functionality has been migrated over from the 
-[repository](https://github.com/weecology/portalPredictions),
-that contains the code executed by the continuous integration,
-although output (website) generation functionality is still housed there.
-Coincidingly, the package is deployed for use within the 
+forecasting functionality has been migrated over from the [predictions
+repository](https://github.com/weecology/portalPredictions),
+which contains the code executed by the continuous integration.
+Output (website) generation functionality is still housed there, however.
+Coincidingly, the `portalcasting` package is deployed for use within the 
 [repository](https://github.com/weecology/portalPredictions).
 
 Note that the current master branch code is not necessarily always being
@@ -31,9 +32,9 @@ Presently, we use a [Docker](https://www.docker.com/) image of the
 software environment ro create a container for the code and house it on
 [DockerHub](https://hub.docker.com/r/weecology/portal_predictions). The
 image update (*i.e.* the integration of the current master branch of 
-**`portalcasting`** into the [predictions 
+`portalcasting` into the [predictions 
 repository](https://github.com/weecology/portalPredictions)) necessarily
-lags behind updates to the master branch of **`portalcasting`**, although
+lags behind updates to the master branch of `portalcasting`, although
 ideally not long behind.
 
 The API is moderately well defined at this point, but is evolving and
@@ -54,7 +55,7 @@ devtools::install_github("weecology/portalcasting")
 
 If you wish to spin up a local container from the Portal Predictions 
 image (to ensure a stable runtime environment for implementation
-of the **`portalcasting`** pipeline), you can run
+of the `portalcasting` pipeline), you can run
 
 ```
 sudo docker pull weecology/portal_predictions
@@ -113,7 +114,7 @@ There are many options available for the user to control, and a full list
 can be found by running `?all_options`, to return the help file for the 
 function that generates the hierarchical options list. 
 
-For further information about the **portalcasting** codebase see the 
+For further information about the `portalcasting` codebase see the 
 [vignette](https://weecology.github.io/portalcasting/articles/codebase.html).
 
 If you are interested in adding a model to the preloaded [set of four
@@ -140,4 +141,4 @@ Brown for establishing the Portal Project.
 All authors conceived the ideas, designed methodology, and developed the 
 automated forecasting system. JLS is leading the transition of code from
 the [Portal Predictions repo](https://github.com/weecology/portalPredictions)
-to **portalcasting**. 
+to `portalcasting`. 
