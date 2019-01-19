@@ -29,7 +29,8 @@ and may change substantially.
 You can install the package from github with:
 
 ```
-install.packages("devtools")
+install.packages("devtools")  
+
 devtools::install_github("weecology/portalcasting")
 ```
 
@@ -66,9 +67,9 @@ function `all_options()` and the default values are appropriate for basic
 forecast usage:
 
 ```
-setup_dir()
-portalcast()
-cleanup_dir()
+setup_dir()  
+portalcast()  
+cleanup_dir()  
 ```
 
 There are many options available for the user to control, and a full list

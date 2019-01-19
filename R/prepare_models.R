@@ -4,34 +4,35 @@
 #'   names to be included. Currently only support for 
 #'   \code{set = "portalcasting"}.
 #'
-#' @param set type of model options (currently only support for 
-#'   "portalcasting")
+#' @param set type of model options (currently only support for "prefab")
+#'
+#' @param add character name of model to add to the list to run
 #'
 #' @return vector of model names
 #'
 #' @export
 #'
-models <- function(set = "portalcasting"){
+models <- function(set = "prefab", add = NULL){
   out <- NULL
-  if (set == "portalcasting"){
+  if (set == "prefab"){
     out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
   }
-  return(out)
+  if (!is.null(add)){
+    out <- c(out, add)
+  }
+  out
 }
 
 #' @title Write the template for a model into model subdirectory
 #'
 #' @description Create template script for a given model
 #'
-#' @param model the name of the specific model
-#'
 #' @param options_model model option list
-#'
-#' @return Nothing
 #'
 #' @export
 #'
-write_model <- function(model = NULL, options_model = model_options()){
+write_model <- function(options_model = model_options()){
+  model <- options_model$name
   if (is.null(model)){
     return()
   }
@@ -50,7 +51,7 @@ write_model <- function(model = NULL, options_model = model_options()){
 #'
 #' @param options_model list of options for the specific model
 #'
-#' @return Nothing
+#' @return Model script text
 #'
 #' @export
 #'

@@ -129,3 +129,7 @@ options controlling the structure, content, and usage of the directory.
   * `options_predictions`: created by `predictions_options()`
   * `options_models`: created by `models_options()`
   * `options_casts`: created by `casts_options()` 
+
+In addition, model-specific scripts (housed within `models/`) are generated 
+using options lists, based on the `model_options()` template (not to be 
+confused with `models_options()`). 

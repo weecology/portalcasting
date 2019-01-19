@@ -192,9 +192,8 @@ fill_models <- function(options_models = models_options()){
   for (i in 1:nmods){
     modname <- options_models$model[i]
     funname <- paste0(modname, "_options")
-    modoptions <- do.call(funname, list("tree" = options_models$tree))
-
-    mod <- write_model(modname, modoptions)
+    options_model <- do.call(funname, list("tree" = options_models$tree))
+    mod <- write_model(options_model)
   }
 }
 
