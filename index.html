@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/adding_a_model.html">Adding a Model</a>
+    </li>
+    <li>
       <a href="articles/codebase.html">Supporting Portal Predictions</a>
     </li>
     <li>
@@ -95,7 +98,8 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the package from github with:</p>
-<pre><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("devtools")
+<pre><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("devtools")  
+
 devtools::install_github("weecology/portalcasting")</a></code></pre>
 </div>
 <div id="usage" class="section level2">
@@ -105,9 +109,9 @@ devtools::install_github("weecology/portalcasting")</a></code></pre>
 <p>The <code><a href="reference/portalcast.html">portalcast()</a></code> function controls the running of potentially multiple models for either a forecast or a hindcast. It will prepare the data (rodents, covariates, model metadata) as needed, verify that the requested models are available to run, run the models, compile the output, and generate an ensemble (if desired). Presently, the preloaded model set includes <a href="https://weecology.github.io/portalcasting/articles/models.html">four models</a>: ESSS, AutoArima, nbGARCH, and pevGARCH.</p>
 <p>The <code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code> function simply removes the temporary files and folders from the directory.</p>
 <p>All required inputs to <code><a href="reference/setup_dir.html">setup_dir()</a></code>, <code><a href="reference/portalcast.html">portalcast()</a></code>, and <code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code> are encompassed within the singular argument <code>options_all</code>, which is a hierarchical list of options settings, defined through the options-settting function <code><a href="reference/all_options.html">all_options()</a></code> and the default values are appropriate for basic forecast usage:</p>
-<pre><code><a href="reference/setup_dir.html">setup_dir()
-portalcast()
-cleanup_dir()</a></code></pre>
+<pre><code><a href="reference/setup_dir.html">setup_dir()  
+portalcast()  
+cleanup_dir()  </a></code></pre>
 <p>There are many options available for the user to control, and a full list can be found by running <code><a href="reference/all_options.html">?all_options</a></code>, to return the help file for the function that generates the hierarchical options list.</p>
 <p>For further information about the <strong>portalcasting</strong> codebase see the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">vignette</a>.</p>
 </div>
