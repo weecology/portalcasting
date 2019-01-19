@@ -191,7 +191,7 @@ dependencies, you should then **update the documentation using
 `devtools::document()` and re-load the package using `devtools::load_all()`**.
 Then, use the updated package to **verify that newmod is properly integrated 
 into the pipeline under default settings by running `setup_dir()` then 
-`portalcast()`, which should execute cleanly. You should **then run 
+`portalcast()`**, which should execute cleanly. You should **then run 
 `cleanup_dir()` to remove the temporary files and folders from the repository**.
 
 Once the code has run successfully (including the integration of the output
