@@ -88,19 +88,19 @@
   <div class="contents col-md-9">
 <div id="supporting-automated-iterative-forecasting-of-portal-rodent-populations" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#supporting-automated-iterative-forecasting-of-portal-rodent-populations" class="anchor"></a>Supporting <a href="https://github.com/weecology/portalPredictions">automated iterative forecasting of Portal rodent populations</a>
+<a href="#supporting-automated-iterative-forecasting-of-portal-rodent-populations" class="anchor"></a>Supporting <a href="https://github.com/weecology/portalPredictions">automated iterative forecasting</a> of <a href="https://portal.weecology.org/">Portal rodent populations</a>
 </h1></div>
 
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <strong><code>portalcasting</code></strong> package contains the functions used for Continuous Forecasting of Rodent Populations (Portal Predictions: <a href="https://github.com/weecology/portalPredictions">code repo</a>; <a href="http://portal.naturecast.org/">website</a>).</p>
+<p>The <code>portalcasting</code> package contains the functions used for continuous analysis and forecasting of <a href="https://portal.weecology.org/">Portal rodent populations</a> (<a href="https://github.com/weecology/portalPredictions">code repository</a>, <a href="http://portal.naturecast.org/">output website</a>, <a href="https://zenodo.org/record/2543733">Zenodo archive</a>).</p>
 </div>
 <div id="status-deployed-in-development" class="section level2">
 <h2 class="hasAnchor">
 <a href="#status-deployed-in-development" class="anchor"></a>Status: Deployed, In Development</h2>
-<p>This package is currently <strong><em>in development</em></strong> by the <a href="https://www.weecology.org">Weecology Team</a>. Most of the code underlying the forecasting functionality has been migrated over from the <a href="https://github.com/weecology/portalPredictions">repository</a>, that contains the code executed by the continuous integration, although output (website) generation functionality is still housed there. Coincidingly, the package is deployed for use within the <a href="https://github.com/weecology/portalPredictions">repository</a>.</p>
-<p>Note that the current master branch code is not necessarily always being executed within the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>. This is a desired result of our use of a <a href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">software container</a>, which enables reproducibility. Presently, we use a <a href="https://www.docker.com/">Docker</a> image of the software environment ro create a container for the code and house it on <a href="https://hub.docker.com/r/weecology/portal_predictions">DockerHub</a>. The image update (<em>i.e.</em> the integration of the current master branch of <strong><code>portalcasting</code></strong> into the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>) necessarily lags behind updates to the master branch of <strong><code>portalcasting</code></strong>, although ideally not long behind.</p>
+<p>This package is currently <strong><em>in development</em></strong> by the <a href="https://www.weecology.org">Weecology Team</a>. Most of the code underlying the forecasting functionality has been migrated over from the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>, which contains the code executed by the continuous integration. Output (website) generation functionality is still housed there, however. Coincidingly, the <code>portalcasting</code> package is deployed for use within the <a href="https://github.com/weecology/portalPredictions">repository</a>.</p>
+<p>Note that the current master branch code is not necessarily always being executed within the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>. This is a desired result of our use of a <a href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">software container</a>, which enables reproducibility. Presently, we use a <a href="https://www.docker.com/">Docker</a> image of the software environment ro create a container for the code and house it on <a href="https://hub.docker.com/r/weecology/portal_predictions">DockerHub</a>. The image update (<em>i.e.</em> the integration of the current master branch of <code>portalcasting</code> into the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>) necessarily lags behind updates to the master branch of <code>portalcasting</code>, although ideally not long behind.</p>
 <p>The API is moderately well defined at this point, but is evolving and may change substantially. Output functions have not been brought over from the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>.</p>
 </div>
 <div id="installation" class="section level2">
@@ -109,7 +109,7 @@
 <p>You can install the R package from github with:</p>
 <pre><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("devtools")</a></code></pre>
 <pre><code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_github("weecology/portalcasting")</a></code></pre>
-<p>If you wish to spin up a local container from the Portal Predictions image (to ensure a stable runtime environment for implementation of the <strong><code>portalcasting</code></strong> pipeline), you can run</p>
+<p>If you wish to spin up a local container from the Portal Predictions image (to ensure a stable runtime environment for implementation of the <code>portalcasting</code> pipeline), you can run</p>
 <pre><code>sudo docker pull weecology/portal_predictions</code></pre>
 <p>from a shell on a computer with <a href="https://www.docker.com/">Docker</a> installed (Windows users need not include <code>sudo</code>). A tutorial on using the image to spin up a container is forthcoming. In the meantime, general usage should be consistent if the user installs the current version of the packages listed in the <a href="https://github.com/weecology/portalPredictions/blob/master/install-packages.R"><code>install-packages.R</code> file in the main repository</a>.</p>
 </div>
@@ -124,7 +124,7 @@
 <pre><code><a href="reference/portalcast.html">portalcast()</a></code></pre>
 <pre><code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code></pre>
 <p>There are many options available for the user to control, and a full list can be found by running <code><a href="reference/all_options.html">?all_options</a></code>, to return the help file for the function that generates the hierarchical options list.</p>
-<p>For further information about the <strong>portalcasting</strong> codebase see the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">vignette</a>.</p>
+<p>For further information about the <code>portalcasting</code> codebase see the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">vignette</a>.</p>
 <p>If you are interested in adding a model to the preloaded <a href="https://weecology.github.io/portalcasting/articles/models.html">set of four models</a>, see the <a href="https://weecology.github.io/portalcasting/articles/adding_a_model.html">Adding a Model vignette</a>.</p>
 </div>
 <div id="acknowledgements" class="section level2">
@@ -135,7 +135,7 @@
 <div id="author-contributions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#author-contributions" class="anchor"></a>Author Contributions</h2>
-<p>All authors conceived the ideas, designed methodology, and developed the automated forecasting system. JLS is leading the transition of code from the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a> to <strong>portalcasting</strong>.</p>
+<p>All authors conceived the ideas, designed methodology, and developed the automated forecasting system. JLS is leading the transition of code from the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a> to <code>portalcasting</code>.</p>
 </div>
 </div>
   </div>

@@ -121,124 +121,12 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="portalcasting-0-1-2" class="section level1">
-<h1 class="page-header">
-<a href="#portalcasting-0-1-2" class="anchor"></a><a href="https://github.com/weecology/portalcasting">portalcasting 0.1.2</a>
-</h1>
-<p><em>Ongoing</em></p>
-<div id="vignettes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#vignettes" class="anchor"></a>Vignettes</h2>
-<ul>
-<li>Three vignettes were added:
-<ul>
-<li>
-<a href="https://weecology.github.io/portalcasting/articles/models.html">current models vignette</a> was brought from the <a href="https://portal.naturecast.org/models.html">forecasting website</a>
-</li>
-<li>
-<a href="">codebase vignette</a> was created from the earlier <code>README.md</code> file</li>
-<li>
-<a href="https://weecology.github.io/portalcasting/articles/adding_a_model.html">adding a model vignette</a> was constructed based on two pages from the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repository</a> wiki (<a href="https://github.com/weecology/portalPredictions/wiki/Adding-a-new-model">1</a> and <a href="https://github.com/weecology/portalPredictions/wiki/Forecast-file-format">2</a>) and with substantial additional text added.</li>
-</ul>
-</li>
-</ul>
-</div>
-<div id="website" class="section level2">
-<h2 class="hasAnchor">
-<a href="#website" class="anchor"></a>Website</h2>
-<ul>
-<li>Added a website driven by <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</li>
-</ul>
-</div>
-<div id="changelog" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changelog" class="anchor"></a>Changelog</h2>
-<ul>
-<li>Developed this changelog as part of the package.</li>
-</ul>
-</div>
-<div id="support-documents" class="section level2">
-<h2 class="hasAnchor">
-<a href="#support-documents" class="anchor"></a>Support documents</h2>
-<ul>
-<li>Added <a href="https://github.com/weecology/portalcasting/blob/master/CODE_OF_CONDUCT.md">code of conduct</a> and <a href="https://github.com/weecology/portalcasting/blob/master/CONTRIBUTING.md">contribution guidelines</a> to the repository.</li>
-</ul>
-</div>
-</div>
-    <div id="portalcasting-0-1-1" class="section level1">
-<h1 class="page-header">
-<a href="#portalcasting-0-1-1" class="anchor"></a><a href="https://github.com/weecology/portalcasting/commit/05ed76f76a82f32a5a3120eb7c9ef0dc95bd8ae4">portalcasting 0.1.1</a>
-</h1>
-<p><em>2019-01-13</em></p>
-<div id="addressing-portal-data-download" class="section level2">
-<h2 class="hasAnchor">
-<a href="#addressing-portal-data-download" class="anchor"></a>Addressing Portal Data download</h2>
-<ul>
-<li>Setting default back to the Zenodo link via updated portalr function.</li>
-<li>Updated <code><a href="../reference/fill_PortalData.html">fill_PortalData()</a></code> and new <code><a href="../reference/all_options.html">PortalData_options()</a></code> allow for control over download source.</li>
-</ul>
-</div>
-</div>
-    <div id="portalcasting-0-1-0" class="section level1">
-<h1 class="page-header">
-<a href="#portalcasting-0-1-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/tree/77fb0c8a32de5ff39715e652ce8e5b813ad02ff3">portalcasting 0.1.0</a>
-</h1>
-<p><em>true code edits 2018-12-14, version number updated 2019-01-02</em></p>
-<div id="migration-from-portal-predictions-repository" class="section level2">
-<h2 class="hasAnchor">
-<a href="#migration-from-portal-predictions-repository" class="anchor"></a>Migration from Portal Predictions repository</h2>
-<ul>
-<li>Code was brought over from the forecasting repository to be housed in its own pacakge.</li>
-<li>Multiple updates to the codebase were included, but intentionally just “under the hood”, meaning little or no change to the output and simplification of the input.</li>
-<li>A major motivation here was also to facilitate model development, which requires being able to set up a local version of the repository to play with in what we might consider a <a href="https://en.wikipedia.org/wiki/Sandbox_(software_development)">“sandbox”</a>. This will allow someone to develop and test new forecasting models in a space that isn’t the forecasting repo itself (or a clone or a fork), but a truly novel location. At this point, the sandbox setup isn’t fully robust from within this package, but rather requires some additional steps (to be documented).</li>
-</ul>
-</div>
-<div id="development-of-code-pipeline" class="section level2">
-<h2 class="hasAnchor">
-<a href="#development-of-code-pipeline" class="anchor"></a>Development of code pipeline</h2>
-<ul>
-<li>The previous implementation of the R codebase driving the forecasting (housed within the <a href="https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396">portalPredictions</a> repo) was a mix of functions and loose code and hard-coded to the repo.</li>
-<li>The package implementation generalizes the functionality and organizes the code into a set of hierarchical functions that drive creation and use of the code within the repo or elsewhere.</li>
-<li>See the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">codebase vignette</a> for further details.</li>
-</ul>
-</div>
-<div id="explicit-directory-tree" class="section level2">
-<h2 class="hasAnchor">
-<a href="#explicit-directory-tree" class="anchor"></a>Explicit directory tree</h2>
-<ul>
-<li>To facilitate portability of the package (a necessity for smooth sandboxing and the development of new models), we now include explicit, controllable definition of the forecasting directory tree.</li>
-<li>See the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">codebase vignette</a> for further details.</li>
-</ul>
-</div>
-<div id="introduction-of-options-lists" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction-of-options-lists" class="anchor"></a>Introduction of options lists</h2>
-<ul>
-<li>To facilitate simple control via defaults argument inputs and flexibility to changes to inputs throughout the code hierarchy, we include a set of functions that default options for all aspects of the codebase.</li>
-<li>See the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">codebase vignette</a> for further details.</li>
-</ul>
-</div>
-</div>
-    <div id="portalcasting-0-0-1" class="section level1">
-<h1 class="page-header">
-<a href="#portalcasting-0-0-1" class="anchor"></a><a href="https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396">portalcasting 0.0.1</a>
-</h1>
-<p><em>2018-11-06</em></p>
-<ul>
-<li>This is the last iteration of the code that now exists in portalcasting in its previous home within the portalPredictions repo.</li>
-<li>It was not referred to by the name portalcasting at the time.</li>
-</ul>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#portalcasting-0-1-2">0.1.2</a></li>
-        <li><a href="#portalcasting-0-1-1">0.1.1</a></li>
-        <li><a href="#portalcasting-0-1-0">0.1.0</a></li>
-        <li><a href="#portalcasting-0-0-1">0.0.1</a></li>
       </ul>
     </div>
   </div>
