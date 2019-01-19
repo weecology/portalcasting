@@ -1,13 +1,15 @@
 # LDATS (development version)
 
-# portalcasting 0.1.1
+# [portalcasting 0.1.1](https://github.com/weecology/portalcasting/commit/05ed76f76a82f32a5a3120eb7c9ef0dc95bd8ae4)
+*2019-01-13*
 
 ## Addressing Portal Data download
 * Setting default back to the Zenodo link via updated portalr function.
-* Updated fill_PortalData function and new PortalData_options function allow 
+* Updated `fill_PortalData()` and new `PortalData_options()` allow 
 for control over download source.
 
-# [portalcasting 0.1.0](https://github.com/weecology/portalcasting/tree/77fb0c8a32de5ff39715e652ce8e5b813ad02ff3) 2018-12-
+# [portalcasting 0.1.0](https://github.com/weecology/portalcasting/tree/77fb0c8a32de5ff39715e652ce8e5b813ad02ff3) 
+*true code edits 2018-12-14, version number updated 2019-01-02*
 
 ## Migration from Portal Predictions repository
 * Code was brought over from the forecasting repository to be housed in its 
@@ -44,6 +46,9 @@ changes to inputs throughout the code hierarchy, we include a set of functions
 that default options for all aspects of the codebase.
 * See the [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) for further details.
 
-# [portalPredictions](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 2018-11-06
+# [portalcasting 0.0.1](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 
+*2018-11-06*
+
 * This is the last iteration of the code that now exists in portalcasting in
 its previous home within the portalPredictions repo. 
+* It was not referred to by the name portalcasting at the time.

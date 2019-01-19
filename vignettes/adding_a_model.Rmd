@@ -1,0 +1,25 @@
+---
+title: "Adding a Model"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{adding_a_model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The portalcasting package provides the ability to add functions both to a
+local copy of the repository for testing as well as to contribute to the
+base set of models provided within the package (and thus executed in the
+main respository.
+
+## Adding models locally
+
+## Contributing models to the base set
