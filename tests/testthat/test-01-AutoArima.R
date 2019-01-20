@@ -1,0 +1,1 @@
+context("Test AutoArima functions")

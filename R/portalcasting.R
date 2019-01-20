@@ -1,17 +1,17 @@
 #' @importFrom digest digest
 #' @importFrom dplyr arrange bind_rows filter full_join group_by inner_join 
-#'   left_join right_join mutate rename select ungroup summarise summarize
+#'   left_join mutate rename right_join select summarise summarize ungroup 
 #' @importFrom forecast auto.arima ets forecast na.interp
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate as_date is.Date month year
 #' @importFrom magrittr %>% extract2
 #' @importFrom portalr download_observations fcast_ndvi 
-#'   find_incomplete_censuses get_future_moons summarize_rodent_data ndvi 
+#'   find_incomplete_censuses get_future_moons ndvi summarize_rodent_data 
 #'   weather
 #' @importFrom purrr map
 #' @importFrom RCurl getURL
 #' @importFrom rlang !! !!! .data quo quos
-#' @importFrom stats AIC qnorm predict
+#' @importFrom stats AIC predict qnorm 
 #' @importFrom tidyselect one_of
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file read.csv read.table tail write.csv 
