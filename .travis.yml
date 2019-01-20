@@ -5,6 +5,10 @@ warnings_are_errors: false
 r:
   - release
   - devel
+
+r_packages:
+- covr
+
 addons:
   apt:
     packages:
