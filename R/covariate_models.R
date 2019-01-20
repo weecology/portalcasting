@@ -26,5 +26,5 @@ covariate_models <- function(type = "pevgarch"){
                 c("ndvi"),
                 c(NULL))
   }
-  return(out)
+  out
 }
