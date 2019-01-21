@@ -7,14 +7,17 @@
 fcast0(nfcnm, pred_name = "pred")
 }
 \arguments{
-\item{nfcnm}{number of forecast newmoons}
+\item{nfcnm}{\code{integer} number of forecast newmoons.}
 
-\item{pred_name}{name for the predictor column (to match variable model
-output names)}
+\item{pred_name}{\code{character} name for the predictor column (to match
+variable model output names).}
 }
 \value{
-list of mean and interval values for a 0-abundance filler forecast
+Two-element \code{list} of means and interval values for a 
+  0-abundance forecast to be used as a filler when a model fails or there 
+  is no non-0 historical abundance.
 }
 \description{
-Create a 0-abundance forecast for fill-in usage
+Create a 0-abundance forecast for fill-in usage when a model 
+  fails or there is no non-0 historical abundance.
 }

@@ -7,8 +7,8 @@
 today()
 }
 \value{
-today's date
+Today's date, as a \code{Date}.
 }
 \description{
-name-shortening function
+Provide the current date of the system.
 }

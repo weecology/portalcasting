@@ -4,19 +4,20 @@
 \alias{dataout}
 \title{Save data out to a file and return it}
 \usage{
-dataout(out, options_out = moons_options())
+dataout(df, options_out = moons_options())
 }
 \arguments{
-\item{out}{data table to be written out}
+\item{df}{\code{data.frame} table to be written out.}
 
 \item{options_out}{an options list that includes a save element and 
 a filename element}
 }
 \value{
-data (as input)
+df (as input)
 }
 \description{
-Save data out to a data file if requested (request is handled
-  by the save element in the data_options list and the file name is handled
-  by the filename element) and return it to the console
+Save inputted data out to a data file if requested via an 
+  options list (request is handled by the \code{save} element and the file
+  name to use is handled by the \code{filename} element) and return it 
+  to the console.
 }

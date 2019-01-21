@@ -2,19 +2,17 @@
 % Please edit documentation in R/utilities.R
 \name{append_csv}
 \alias{append_csv}
-\title{Save data out to a csv, appending if existing}
+\title{Save data out to a csv, appending the file if it already exists}
 \usage{
 append_csv(df, filename)
 }
 \arguments{
-\item{df}{data table to be written out}
+\item{df}{\code{data.frame} table to be written out.}
 
-\item{filename}{filename of existing csv to be appended}
-}
-\value{
-Nothing
+\item{filename}{\code{character} filename of existing \code{.csv} to be 
+appended.}
 }
 \description{
-Appending a csv without re-writing the header. If file doesn't
-  exist, it will be created.
+Appending a \code{.csv} without re-writing the header of the
+  file. If the doesn't exist, it will be created.
 }
