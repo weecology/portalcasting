@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save data out to a csv, appending if existing — append_csv • portalcasting</title>
+<title>Save data out to a csv, appending the file if it already exists — append_csv • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Save data out to a csv, appending if existing — append_csv" />
+<meta property="og:title" content="Save data out to a csv, appending the file if it already exists — append_csv" />
 
-<meta property="og:description" content="Appending a csv without re-writing the header. If file doesn't
-  exist, it will be created." />
+<meta property="og:description" content="Appending a .csv without re-writing the header of the
+  file. If the doesn't exist, it will be created." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,15 +121,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save data out to a csv, appending if existing</h1>
+    <h1>Save data out to a csv, appending the file if it already exists</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
     <div class="hidden name"><code>append_csv.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Appending a csv without re-writing the header. If file doesn't
-  exist, it will be created.</p>
+    <p>Appending a <code>.csv</code> without re-writing the header of the
+  file. If the doesn't exist, it will be created.</p>
     
     </div>
 
@@ -140,17 +140,14 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>df</th>
-      <td><p>data table to be written out</p></td>
+      <td><p><code>data.frame</code> table to be written out.</p></td>
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>filename of existing csv to be appended</p></td>
+      <td><p><code>character</code> filename of existing <code>.csv</code> to be 
+appended.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Nothing</p>
     
 
   </div>
@@ -158,9 +155,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

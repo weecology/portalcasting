@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Zero-abundance forecast — fcast0" />
 
-<meta property="og:description" content="Create a 0-abundance forecast for fill-in usage" />
+<meta property="og:description" content="Create a 0-abundance forecast for fill-in usage when a model 
+  fails or there is no non-0 historical abundance." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,7 +128,8 @@
 
     <div class="ref-description">
     
-    <p>Create a 0-abundance forecast for fill-in usage</p>
+    <p>Create a 0-abundance forecast for fill-in usage when a model 
+  fails or there is no non-0 historical abundance.</p>
     
     </div>
 
@@ -138,18 +140,20 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>nfcnm</th>
-      <td><p>number of forecast newmoons</p></td>
+      <td><p><code>integer</code> number of forecast newmoons.</p></td>
     </tr>
     <tr>
       <th>pred_name</th>
-      <td><p>name for the predictor column (to match variable model
-output names)</p></td>
+      <td><p><code>character</code> name for the predictor column (to match
+variable model output names).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of mean and interval values for a 0-abundance filler forecast</p>
+    <p>Two-element <code>list</code> of means and interval values for a 
+  0-abundance forecast to be used as a filler when a model fails or there 
+  is no non-0 historical abundance.</p>
     
 
   </div>
