@@ -73,6 +73,7 @@ test_that("model_path", {
   expect_error(model_path(model = "AutoArima", extension = "ok"))
   expect_error(model_path(model = "AutoArima", extension = c("ok", "ok")))
   expect_error(model_path(model = "AutoArima", extension = ".R."))
+  expect_error(model_path(model = "AutoArima", extension = NULL))
 })
 
 
