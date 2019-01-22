@@ -7,15 +7,26 @@
 dirtree(base = ".", main = "", subs = subdirs())
 }
 \arguments{
-\item{base}{name of the base directory where the directory should exist}
+\item{base}{\code{character} name of the base folder where the directory 
+should or does exist. Default \code{"."} (working directory).}
 
-\item{main}{name of the forecasting directory}
+\item{main}{\code{character} name of the main folder within the base that
+contains the subdirectories. Default \code{""} (no main level included).}
 
-\item{subs}{names of the subdirectories}
+\item{subs}{\code{character} vector naming the specific subdirectories
+within the portalcasting directory tree. Default \code{subdirs()} sets
+the subdirectories as \code{"predictions"}, \code{"models"},
+\code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
+not advised to change the subdirectories.}
 }
 \value{
-named list of representing the directory tree
+Class-\code{dirtree} named list (elements: \code{base}, 
+  \code{main}, and \code{subs}) representing the directory tree.
 }
 \description{
-A tidy way to pass the full tree structure down.
+A cross-platform, tidy way to pass the full tree structure 
+  for a portalcasting directory through the codebase. Default setup (for
+  using in Portal Predictions) is with the tree based in the working 
+  directory and no additional "main" level (so the subdirectories are 
+  located within the working directory).
 }

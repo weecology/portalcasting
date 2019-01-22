@@ -1,4 +1,3 @@
-
 #' @title Prepare options for a portalcasting model
 #'
 #' @description Suite of functions used to generate model-writing options 

@@ -148,8 +148,11 @@ created by `model_options()`) required for the given model within the
 `write_model()` function. Thus, to ensure the model script can be written,
 you will need to **create a function called `newmod_options`**, which 
 functionally sets the inputs to  `model_options()` for the specific model, 
-and **include newmod_options` in the `R/` subdirectory of the portalcasting
-package folder** (likely a local clone of the repository). 
+and **include newmod_options` in the `model_options.R` script within the 
+`R/` subdirectory of the portalcasting package folder** (likely a local 
+clone of the repository). Following covention for existing models, **add 
+the documentation for `newmod_options` to the general `model_options()`
+documentation using the @rdname tag.**
 
 For each model, `write_model()` makes a call to the `model_template()` 
 function, which creates the associated text of the associated R script 
@@ -180,9 +183,12 @@ assumption of a two-element list (`"forecast"` and `"aic"`) from each run of
 the function. Thus, to work within the pipeline specifically, **your model 
 function needs to return a list with two elements corresponding to the output
 requirements outline above**. Once completed, **the `newmod` function needs to
-be included within the `R/` directory of the portalcasting repository**. If
-your model function requires any external code, **additional libraries need to
-be added to the DESCRIPTION file**. 
+be included within the `R/` directory of the portalcasting repository**. 
+Following convention, **put the code for `newmod()` in a new script named 
+newmod.R`**. **Document the function using roxygen headers**.
+
+If your model function requires any external code, **additional libraries need 
+to be added to the DESCRIPTION file**. 
 
 Having added the `newmod` and `newmod_options` functions to the package and 
 updated the existing functions (`models()` and, if necessary, 
