@@ -7,14 +7,22 @@
 subdirs(type = "portalcasting", subs = NULL)
 }
 \arguments{
-\item{type}{name for quick generation of subdirectory names}
+\item{type}{\code{charachter} name for quick generation of subdirectory
+vector. Presently only defined for the default input 
+\code{"portalcasting"}.}
 
-\item{subs}{names of additional subdirectories to add}
+\item{subs}{Either [1] names of additional subdirectories to add to the
+vector set up by \code{type} or [2] an optional way to input all 
+subdirectory names (requires setting \code{type = NULL}).}
 }
 \value{
-character vectory of subdirectory names
+Class-\code{subdirs} vector of character elements of 
+  subdirectory names.
 }
 \description{
-Convenience function for producing a vector of subdirectory
-  names
+Produces a vector of subdirectory names that is of class
+  \code{subdirs}, and which should generally contain the elements
+  \code{"predictions"}, \code{"models"}, \code{"PortalData"}, 
+  \code{"data"}, and \code{"tmp"}. It is generally not advised to change
+  the subdirectory structure at this time.
 }

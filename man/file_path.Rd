@@ -7,13 +7,16 @@
 file_path(tree = dirtree(), local_path = NULL)
 }
 \arguments{
-\item{tree}{the name tree of the forecasting directory}
+\item{tree}{\code{dirtree}-class list.}
 
-\item{local_path}{the file path within the forecasting directory}
+\item{local_path}{\code{character} file path within the \code{main} level 
+of the portalcasting directory.}
 }
 \value{
-the full path of the file
+The normalized path of the specified file (see 
+  \code{\link{normalizePath}}).
 }
 \description{
-Return the path for a specific file
+Return the normalized path for a specific file within the
+  directory.
 }

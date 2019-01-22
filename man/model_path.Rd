@@ -7,15 +7,16 @@
 model_path(tree = dirtree(), model = NULL, extension = ".R")
 }
 \arguments{
-\item{tree}{the name tree of the forecasting directory}
+\item{tree}{\code{dirtree}-class list.}
 
-\item{model}{the name of the specific model}
+\item{model}{\code{character} name of the specific model.}
 
-\item{extension}{file extension}
+\item{extension}{\code{character} file extension.}
 }
 \value{
-the path of specific model script
+The normalized path of the specified model script (see 
+  \code{\link{normalizePath}}).
 }
 \description{
-Return the path for a specific model
+Return the normalized path for a specific model.
 }
