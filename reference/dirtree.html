@@ -32,7 +32,11 @@
 
 <meta property="og:title" content="Define the names of the directory tree for a forecasting directory — dirtree" />
 
-<meta property="og:description" content="A tidy way to pass the full tree structure down." />
+<meta property="og:description" content="A cross-platform, tidy way to pass the full tree structure 
+  for a portalcasting directory through the codebase. Default setup (for
+  using in Portal Predictions) is with the tree based in the working 
+  directory and no additional &quot;main&quot; level (so the subdirectories are 
+  located within the working directory)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,7 +131,11 @@
 
     <div class="ref-description">
     
-    <p>A tidy way to pass the full tree structure down.</p>
+    <p>A cross-platform, tidy way to pass the full tree structure 
+  for a portalcasting directory through the codebase. Default setup (for
+  using in Portal Predictions) is with the tree based in the working 
+  directory and no additional "main" level (so the subdirectories are 
+  located within the working directory).</p>
     
     </div>
 
@@ -138,21 +146,28 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>base</th>
-      <td><p>name of the base directory where the directory should exist</p></td>
+      <td><p><code>character</code> name of the base folder where the directory 
+should or does exist. Default <code>"."</code> (working directory).</p></td>
     </tr>
     <tr>
       <th>main</th>
-      <td><p>name of the forecasting directory</p></td>
+      <td><p><code>character</code> name of the main folder within the base that
+contains the subdirectories. Default <code>""</code> (no main level included).</p></td>
     </tr>
     <tr>
       <th>subs</th>
-      <td><p>names of the subdirectories</p></td>
+      <td><p><code>character</code> vector naming the specific subdirectories
+within the portalcasting directory tree. Default <code><a href='subdirs.html'>subdirs()</a></code> sets
+the subdirectories as <code>"predictions"</code>, <code>"models"</code>,
+<code>"PortalData"</code>, <code>"data"</code>, and <code>"tmp"</code>. It is generally
+not advised to change the subdirectories.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>named list of representing the directory tree</p>
+    <p>Class-<code>dirtree</code> named list (elements: <code>base</code>, 
+  <code>main</code>, and <code>subs</code>) representing the directory tree.</p>
     
 
   </div>

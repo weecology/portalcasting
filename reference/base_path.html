@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine the paths for the sub directories — sub_paths • portalcasting</title>
+<title>Determine the path for a specific level of a portalcasting directory — base_path • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,16 @@
 
 
 
-<meta property="og:title" content="Determine the paths for the sub directories — sub_paths" />
+<meta property="og:title" content="Determine the path for a specific level of a portalcasting directory — base_path" />
 
-<meta property="og:description" content="Return the paths for the sub directories" />
+<meta property="og:description" content="base_path: Return the path for the base folder
+  in the directory.
+main_path: Return the path for the main folder
+  in the directory.
+sub_paths: Return the paths for the subs folders
+  in the directory.
+sub_path: Return the path for a specific subs 
+  folder in the directory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,31 +127,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Determine the paths for the sub directories</h1>
+    <h1>Determine the path for a specific level of a portalcasting directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/paths.R'><code>R/paths.R</code></a></small>
-    <div class="hidden name"><code>sub_paths.Rd</code></div>
+    <div class="hidden name"><code>base_path.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Return the paths for the sub directories</p>
+    <p><code>base_path</code>: Return the path for the <code>base</code> folder
+  in the directory.</p>
+<p><code>main_path</code>: Return the path for the <code>main</code> folder
+  in the directory.</p>
+<p><code>sub_paths</code>: Return the paths for the <code>subs</code> folders
+  in the directory.</p>
+<p><code>sub_path</code>: Return the path for a specific <code>subs</code> 
+  folder in the directory.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>sub_paths</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>base_path</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+
+<span class='fu'>main_path</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+
+<span class='fu'>sub_paths</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+
+<span class='fu'>sub_path</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='no'>specific_sub</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tree</th>
-      <td><p>the name tree of the forecasting directory</p></td>
+      <td><p><code>dirtree</code>-class list.</p></td>
+    </tr>
+    <tr>
+      <th>specific_sub</th>
+      <td><p><code>character</code>-value name of the specific 
+subdirectory of interest.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the paths of the sub folders in the directory tree</p>
+    <p><code>base_path</code>: The normalized path of the main folder in the 
+  directory tree as a character value (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
+<p><code>main_path</code>: The normalized path of the main folder in the 
+  directory tree as a character value (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
+<p><code>sub_paths</code>: The normalized paths of the sub folders in the 
+  directory tree as a character vector (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
+<p><code>sub_paths</code>: The normalized path of the <code>specific_sub</code>
+  folder in the directory tree as a character value (see 
+  <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
     
 
   </div>

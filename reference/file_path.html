@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Determine the path for a file in the forecasting directory — file_path" />
 
-<meta property="og:description" content="Return the path for a specific file" />
+<meta property="og:description" content="Return the normalized path for a specific file within the
+  directory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,7 +128,8 @@
 
     <div class="ref-description">
     
-    <p>Return the path for a specific file</p>
+    <p>Return the normalized path for a specific file within the
+  directory.</p>
     
     </div>
 
@@ -138,17 +140,19 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tree</th>
-      <td><p>the name tree of the forecasting directory</p></td>
+      <td><p><code>dirtree</code>-class list.</p></td>
     </tr>
     <tr>
       <th>local_path</th>
-      <td><p>the file path within the forecasting directory</p></td>
+      <td><p><code>character</code> file path within the <code>main</code> level 
+of the portalcasting directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the full path of the file</p>
+    <p>The normalized path of the specified file (see 
+  <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
     
 
   </div>

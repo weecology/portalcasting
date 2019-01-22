@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Determine the path for a model in the model sub directory — model_path" />
 
-<meta property="og:description" content="Return the path for a specific model" />
+<meta property="og:description" content="Return the normalized path for a specific model." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,7 +127,7 @@
 
     <div class="ref-description">
     
-    <p>Return the path for a specific model</p>
+    <p>Return the normalized path for a specific model.</p>
     
     </div>
 
@@ -138,21 +138,22 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tree</th>
-      <td><p>the name tree of the forecasting directory</p></td>
+      <td><p><code>dirtree</code>-class list.</p></td>
     </tr>
     <tr>
       <th>model</th>
-      <td><p>the name of the specific model</p></td>
+      <td><p><code>character</code> name of the specific model.</p></td>
     </tr>
     <tr>
       <th>extension</th>
-      <td><p>file extension</p></td>
+      <td><p><code>character</code> file extension.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the path of specific model script</p>
+    <p>The normalized path of the specified model script (see 
+  <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
     
 
   </div>
