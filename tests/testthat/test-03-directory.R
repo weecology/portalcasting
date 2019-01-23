@@ -1,5 +1,6 @@
 context("Test directory functions")
 
+
 test_that("setup_dir", {
   expect_error(setup_dir(1))
   expect_silent(setup_dir(all_options(main = "ok", quiet = TRUE)))
@@ -52,6 +53,10 @@ test_that("fill_data", {
 
 test_that("fill_predictions", {
   expect_error(fill_predictions(1))
+  opts <- all_options(main = "ok", download_existing_predictions = TRUE)
+  create_dir(opts$options_dir)
+  fill_predictions(opts$options_predictions)
+  unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 })
 
 test_that("fill_models", {
@@ -65,7 +70,6 @@ test_that("verify_PortalData", {
   unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
   unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 })
-
 
 test_that("cleanup_dir", {
   expect_error(cleanup_dir(1))
