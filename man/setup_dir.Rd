@@ -7,14 +7,13 @@
 setup_dir(options_all = all_options())
 }
 \arguments{
-\item{options_all}{list containing all options available for controlling
-the set up and population of the forecast directory (see 
-\code{\link{all_options}})}
-}
-\value{
-Nothing
+\item{options_all}{Class-\code{all-options} list containing all options 
+available for controlling the set up and population of the directory (see 
+\code{\link{all_options}}).}
 }
 \description{
-Create and populate a full forecasting directory or any 
-  missing components.
+Create (via \code{\link{create_dir}}) and populate (via 
+  \code{\link{fill_dir}}) a full portalcasting directory. Presently, this
+  function overwrites any existing components of the directory. Future
+  iterations will allow for updating, overwriting, or neither.
 }

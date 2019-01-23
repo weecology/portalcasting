@@ -143,7 +143,7 @@ all_options <- function(base = ".", main = "", subs = subdirs(),
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
-  list(
+  out <- list(
     options_dir = dir_options(base = base, main = main, subs = subs,
                               quiet = quiet),
     options_PortalData = PortalData_options(base = base, main = main, 
@@ -187,7 +187,8 @@ all_options <- function(base = ".", main = "", subs = subdirs(),
                                 hind_step = hind_step, 
                                 min_plots = min_plots, min_traps = min_traps)
   )
-
+  class(out) <- c("all_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -203,7 +204,9 @@ all_options <- function(base = ".", main = "", subs = subdirs(),
 dir_options <- function(base = ".", main = "", subs = subdirs(),
                         quiet = FALSE){
   tree <- dirtree(base, main, subs)
-  list(tree = tree, quiet = quiet)
+  out <- list(tree = tree, quiet = quiet)
+  class(out) <- c("dir_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -221,8 +224,10 @@ PortalData_options <- function(base = ".", main = "", subs = subdirs(),
                                version = "latest", from_zenodo = TRUE){
 
   tree <- dirtree(base, main, subs)
-  list(tree = tree, version = version, from_zenodo = from_zenodo, 
-       quiet = quiet)
+  out <- list(tree = tree, version = version, from_zenodo = from_zenodo, 
+              quiet = quiet)
+  class(out) <- c("PortalData_options", "list")
+  out
 }
 
 
@@ -265,7 +270,7 @@ data_options <- function(base = ".", main = "", subs = subdirs(),
     end <- 490:403
   }
   tree <- dirtree(base, main, subs)
-  list(
+  out <- list(
     moons = moons_options(n_future_moons = lead_time, fdate = fdate,
                           append_missing_to_raw = append_missing_to_raw,
                           save = m_save, filename = m_filename,
@@ -298,6 +303,8 @@ data_options <- function(base = ".", main = "", subs = subdirs(),
                                 tree = tree),
     cast_type = cast_type, quiet = quiet, tree = tree   
   )
+  class(out) <- c("data_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -322,9 +329,11 @@ moons_options <- function(n_future_moons = 12, fdate = today(),
                           append_missing_to_raw = TRUE, save = TRUE,
                           filename = "moons.csv", tree = dirtree(), 
                           quiet = FALSE){
-  list(n_future_moons = n_future_moons, fdate = fdate, 
+  out <-   list(n_future_moons = n_future_moons, fdate = fdate, 
        append_missing_to_raw = append_missing_to_raw, save = save,
        filename = filename, tree = tree, quiet = quiet)
+  class(out) <- c("moons_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -359,11 +368,13 @@ rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL,
       filename <- "controls.csv"
     }  
   }
-  list(cast_type = cast_type, start = start, end = end, hind_step = hind_step,
-       drop_spp = drop_spp, min_plots = min_plots, 
+  out <- list(cast_type = cast_type, start = start, end = end, 
+       hind_step = hind_step, drop_spp = drop_spp, min_plots = min_plots, 
        tmnt_type = tmnt_type, level = level, plots = plots, output = output,
        save = save, filename = filename, treatment = treatment, tree = tree,
        quiet = quiet)
+  class(out) <- c("rodents_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -389,13 +400,15 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
-  list(cast_type = cast_type, cov_hist = cov_hist, cov_fcast = cov_fcast, 
-       fdate = fdate, yr = yr, start = start, end = end, 
+  out <- list(cast_type = cast_type, cov_hist = cov_hist, 
+      cov_fcast = cov_fcast, fdate = fdate, yr = yr, start = start, end = end, 
        hind_step = hind_step, lead_time = lead_time, min_lag = min_lag, 
        fcast_nms = fcast_nms, nfcnm = nfcnm, 
        append_fcast_csv = append_fcast_csv, hist_fcast_file = hist_fcast_file,
        source_name = source_name, save = save, filename = filename, 
        tree = tree, quiet = quiet)
+  class(out) <- c("covariates_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -413,9 +426,11 @@ metadata_options <- function(fdate = today(), cast_type = "forecasts",
                              save = TRUE, filename = "metadata.yaml", 
                              quiet = FALSE, tree = dirtree()){
 
-  list(fdate = fdate, cast_type = cast_type, 
+  out <- list(fdate = fdate, cast_type = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
        filename = filename, quiet = quiet, tree = tree)
+  class(out) <- c("metadata_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -433,9 +448,11 @@ predictions_options <- function(base = ".", main = "",
                                 download_existing_predictions = FALSE,
                                 quiet = FALSE){
   tree <- dirtree(base, main, subs)
-  list(tree = tree, 
+  out <- list(tree = tree, 
        download_existing_predictions = download_existing_predictions, 
        quiet = quiet)
+  class(out) <- c("predictions_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -452,7 +469,9 @@ models_options <- function(base = ".", main = "", subs = subdirs(),
                            quiet = FALSE, model = models()){
 
   tree <- dirtree(base, main, subs)
-  list(model = model, quiet = quiet, tree = tree)
+  out <- list(model = model, quiet = quiet, tree = tree)
+  class(out) <- c("models_options", "list")
+  out
 }
 
 #' @rdname all_options
@@ -471,7 +490,10 @@ cast_options <- function(base = ".", main = "", subs = subdirs(),
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){
   tree <- dirtree(base, main, subs)
-  list(tree = tree, quiet = quiet, model = model, cast_type = cast_type,
+  out  <- list(tree = tree, quiet = quiet, model = model,
+ cast_type = cast_type,
        fdate = fdate, ensemble = ensemble, start = start, end = end, 
        hind_step = hind_step, min_plots = min_plots, min_traps = min_traps)
+  class(out) <- c("cast_options", "list")
+  out
 }

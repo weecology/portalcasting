@@ -1,17 +1,20 @@
 #' @title Set up a full forecasting directory
 #'
-#' @description Create and populate a full forecasting directory or any 
-#'   missing components.
+#' @description Create (via \code{\link{create_dir}}) and populate (via 
+#'   \code{\link{fill_dir}}) a full portalcasting directory. Presently, this
+#'   function overwrites any existing components of the directory. Future
+#'   iterations will allow for updating, overwriting, or neither.
 #'
-#' @param options_all list containing all options available for controlling
-#'   the set up and population of the forecast directory (see 
-#'   \code{\link{all_options}})
+#' @param options_all Class-\code{all-options} list containing all options 
+#'   available for controlling the set up and population of the directory (see 
+#'   \code{\link{all_options}}). 
 #' 
-#' @return Nothing
-#'
 #' @export
 #'
 setup_dir <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`options_all` is not an all_options list")
+  }
   create_dir(options_all$options_dir)
   fill_dir(options_all)
 }
@@ -128,7 +131,13 @@ fill_PortalData <- function(options_PortalData = PortalData_options()){
   base_folder <- main_path(options_PortalData$tree)
   version <- options_PortalData$version
   from_zenodo <- options_PortalData$from_zenodo
-  PD <- download_observations(base_folder, version, from_zenodo)
+  if (options_PortalData$quiet){
+    suppressMessages(
+      PD <- download_observations(base_folder, version, from_zenodo)
+    )
+  } else{
+    PD <- download_observations(base_folder, version, from_zenodo)
+  }
 }
 
 #' @title Populate the for-use data of a portalcasting directory
@@ -193,6 +202,7 @@ fill_models <- function(options_models = models_options()){
     modname <- options_models$model[i]
     funname <- paste0(modname, "_options")
     options_model <- do.call(funname, list("tree" = options_models$tree))
+    options_model$quiet <- options_models$quiet
     mod <- write_model(options_model)
   }
 }
