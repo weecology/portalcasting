@@ -5,6 +5,9 @@ test_that("setup_dir", {
   expect_silent(setup_dir(all_options(main = "ok", quiet = TRUE)))
   unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
   unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
+  expect_message(setup_dir(all_options(main = "ok")))
+  unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
+  unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 })
 
 test_that("create_dir", {
@@ -35,4 +38,35 @@ test_that("create_sub_dir", {
 })
 
 
+test_that("fill_dir", {
+  expect_error(fill_dir(1))
+})
 
+test_that("fill_PortalData", {
+  expect_error(fill_PortalData(1))
+})
+
+test_that("fill_data", {
+  expect_error(fill_data(1))
+})
+
+test_that("fill_predictions", {
+  expect_error(fill_predictions(1))
+})
+
+test_that("fill_models", {
+  expect_error(fill_models(1))
+})
+
+test_that("verify_PortalData", {
+  expect_error(verify_PortalData(1))
+  expect_error(verify_PortalData(filename = 1))
+  expect_message(verify_PortalData(dirtree(main = "ok")))
+  unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
+  unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
+})
+
+
+test_that("cleanup_dir", {
+  expect_error(cleanup_dir(1))
+})

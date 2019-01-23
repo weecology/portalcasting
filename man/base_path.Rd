@@ -16,7 +16,7 @@ sub_paths(tree = dirtree())
 sub_path(tree = dirtree(), specific_sub)
 }
 \arguments{
-\item{tree}{\code{dirtree}-class list.}
+\item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
 
 \item{specific_sub}{\code{character}-value name of the specific 
 subdirectory of interest.}

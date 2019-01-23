@@ -7,13 +7,11 @@
 cleanup_dir(options_all = all_options())
 }
 \arguments{
-\item{options_all}{list containing all options available for controlling
-the set up and population of the forecast directory (see 
-\code{\link{all_options}})}
-}
-\value{
-nothing
+\item{options_all}{Class-\code{all_options} list containing all options 
+available for controlling the set up and population of the directory (see 
+\code{\link{all_options}}).}
 }
 \description{
-Remove the PortalData and tmp subdirectories.
+Remove the PortalData and tmp subdirectories and the 
+  subdirectories themselves.
 }

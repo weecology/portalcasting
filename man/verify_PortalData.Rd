@@ -2,19 +2,23 @@
 % Please edit documentation in R/directory.R
 \name{verify_PortalData}
 \alias{verify_PortalData}
-\title{Verify that the PortalData sub is present and has required data}
+\title{Verify that the PortalData subdirectory is present and has required 
+  data}
 \usage{
-verify_PortalData(tree = dirtree(), filename = "moon_dates.csv")
+verify_PortalData(tree = dirtree(), filename = "moon_dates.csv",
+  quiet = FALSE)
 }
 \arguments{
-\item{tree}{directory tree}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 
-\item{filename}{name of the file to specifically check}
-}
-\value{
-nothing
+\item{filename}{\code{character}-valued vector of name(s) of the file(s) to
+specifically check.}
+
+\item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }
 \description{
 Check that the PortalData subdirectory exists and has the
-  needed file. If the file is not present, the directory is filled.
+  needed specified file(s) within the "Rodents" subdirectory. If any of
+   the file(s) is(/are) not present, the (entire) directory is filled.
 }

@@ -7,7 +7,7 @@
 subdirs(type = "portalcasting", subs = NULL)
 }
 \arguments{
-\item{type}{\code{charachter} name for quick generation of subdirectory
+\item{type}{\code{character} name for quick generation of subdirectory
 vector. Presently only defined for the default input 
 \code{"portalcasting"}.}
 
