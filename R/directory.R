@@ -5,7 +5,7 @@
 #'   function overwrites any existing components of the directory. Future
 #'   iterations will allow for updating, overwriting, or neither.
 #'
-#' @param options_all Class-\code{all-options} list containing all options 
+#' @param options_all Class-\code{all_options} list containing all options 
 #'   available for controlling the set up and population of the directory (see 
 #'   \code{\link{all_options}}). 
 #' 
@@ -19,33 +19,36 @@ setup_dir <- function(options_all = all_options()){
   fill_dir(options_all)
 }
 
-#' @title Create the full structure of a portalcasting directory
+#' @title Create the structure of a portalcasting directory
 #'
-#' @description Create a full portalcasting directory or any missing 
-#'   components.
+#' @description \code{create_dir}: Create a full portalcasting directory or 
+#'   any missing components.
 #'
-#' @param options_dir directory options
-#'
-#' @return Nothing
+#' @param options_dir Class-\code{dir_options} list containing all options 
+#'   available for controlling the set up of the directory (see 
+#'   \code{\link{dir_options}}). 
 #'
 #' @export
 #'
 create_dir <- function(options_dir = dir_options()){
+  if (!("dir_options" %in% class(options_dir))){
+    stop("`options_dir` is not a dir_options list")
+  }
   create_main_dir(options_dir)
   create_sub_dirs(options_dir)
 }
 
-#' @title Create the main directory folder of a portalcasting directory
+#' @rdname create_dir
 #'
-#' @description Create the top-level portalcasting directory folder
-#'
-#' @param options_dir directory options
-#'
-#' @return Nothing
+#' @description \code{create_main_dir}: Create the main level of the 
+#'   portalcasting directory.
 #'
 #' @export
 #'
 create_main_dir <- function(options_dir = dir_options()){
+  if (!("dir_options" %in% class(options_dir))){
+    stop("`options_dir` is not a dir_options list")
+  }
   main <- main_path(tree = options_dir$tree)
   if (!dir.exists(main)){
     if (!options_dir$quiet){
@@ -55,13 +58,10 @@ create_main_dir <- function(options_dir = dir_options()){
   }
 }
 
-#' @title Create the sub directory folders of a portalcasting directory
+#' @rdname create_dir
 #'
-#' @description Create a the portalcasting directory subfolders
-#'
-#' @param options_dir directory options
-#'
-#' @return Nothing
+#' @description \code{create_sub_dirs}: Create the sub level folders of the 
+#'   portalcasting directory.
 #'
 #' @export
 #'
@@ -70,16 +70,17 @@ create_sub_dirs <- function(options_dir = dir_options()){
   sub_dirs <- sapply(subs, create_sub_dir, quiet = options_dir$quiet)
 }
 
-#' @title Create a subdirectory folder 
+#' @rdname create_dir
 #'
-#' @description Create a specific subdirectory folder if it does not already
-#'   exist
+#' @description \code{create_sub_dir}: Create a specific subdirectory 
+#'   folder if it does not already exist.
 #'
-#' @param path path of the specific folder to be created
+#' @param path The normalized path of the specific subdirectory folder to be 
+#'   created in the directory tree as a character value (see 
+#'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
 #'
-#' @param quiet logical indicator if progress messages should be quieted
-#'
-#' @return Nothing
+#' @param quiet \code{logical} indicator if progress messages should be
+#'   quieted.
 #'
 #' @export
 #'

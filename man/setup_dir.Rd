@@ -7,7 +7,7 @@
 setup_dir(options_all = all_options())
 }
 \arguments{
-\item{options_all}{Class-\code{all-options} list containing all options 
+\item{options_all}{Class-\code{all_options} list containing all options 
 available for controlling the set up and population of the directory (see 
 \code{\link{all_options}}).}
 }
