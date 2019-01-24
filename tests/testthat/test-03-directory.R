@@ -1,5 +1,6 @@
 context("Test directory functions")
 
+test_location <- "travis"
 
 test_that("setup_dir", {
   expect_error(setup_dir(1))
@@ -53,10 +54,12 @@ test_that("fill_data", {
 
 test_that("fill_predictions", {
   expect_error(fill_predictions(1))
-  opts <- all_options(main = "ok", download_existing_predictions = TRUE)
-  create_dir(opts$options_dir)
-  fill_predictions(opts$options_predictions)
-  unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
+  if(test_location == "local"){
+    opts <- all_options(main = "ok", download_existing_predictions = TRUE)
+    create_dir(opts$options_dir)
+    fill_predictions(opts$options_predictions)
+    unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
+  }
 })
 
 test_that("fill_models", {
