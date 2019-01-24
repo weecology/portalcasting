@@ -2,17 +2,41 @@
 % Please edit documentation in R/directory.R
 \name{create_dir}
 \alias{create_dir}
-\title{Create the full structure of a portalcasting directory}
+\alias{create_main_dir}
+\alias{create_sub_dirs}
+\alias{create_sub_dir}
+\title{Create the structure of a portalcasting directory}
 \usage{
 create_dir(options_dir = dir_options())
+
+create_main_dir(options_dir = dir_options())
+
+create_sub_dirs(options_dir = dir_options())
+
+create_sub_dir(path = NULL, quiet = FALSE)
 }
 \arguments{
-\item{options_dir}{directory options}
-}
-\value{
-Nothing
+\item{options_dir}{Class-\code{dir_options} list containing all options 
+available for controlling the set up of the directory (see 
+\code{\link{dir_options}}).}
+
+\item{path}{The normalized path of the specific subdirectory folder to be 
+created in the directory tree as a character value (see 
+\code{\link{normalizePath}}, \code{\link{sub_path}}).}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 }
 \description{
-Create a full portalcasting directory or any missing 
-  components.
+\code{create_dir}: Create a full portalcasting directory or 
+  any missing components.
+
+\code{create_main_dir}: Create the main level of the 
+  portalcasting directory.
+
+\code{create_sub_dirs}: Create the sub level folders of the 
+  portalcasting directory.
+
+\code{create_sub_dir}: Create a specific subdirectory 
+  folder if it does not already exist.
 }

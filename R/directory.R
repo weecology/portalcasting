@@ -1,48 +1,54 @@
 #' @title Set up a full forecasting directory
 #'
-#' @description Create and populate a full forecasting directory or any 
-#'   missing components.
+#' @description Create (via \code{\link{create_dir}}) and populate (via 
+#'   \code{\link{fill_dir}}) a full portalcasting directory. Presently, this
+#'   function overwrites any existing components of the directory. Future
+#'   iterations will allow for updating, overwriting, or neither.
 #'
-#' @param options_all list containing all options available for controlling
-#'   the set up and population of the forecast directory (see 
-#'   \code{\link{all_options}})
+#' @param options_all Class-\code{all_options} list containing all options 
+#'   available for controlling the set up and population of the directory (see 
+#'   \code{\link{all_options}}). 
 #' 
-#' @return Nothing
-#'
 #' @export
 #'
 setup_dir <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`options_all` is not an all_options list")
+  }
   create_dir(options_all$options_dir)
   fill_dir(options_all)
 }
 
-#' @title Create the full structure of a portalcasting directory
+#' @title Create the structure of a portalcasting directory
 #'
-#' @description Create a full portalcasting directory or any missing 
-#'   components.
+#' @description \code{create_dir}: Create a full portalcasting directory or 
+#'   any missing components.
 #'
-#' @param options_dir directory options
-#'
-#' @return Nothing
+#' @param options_dir Class-\code{dir_options} list containing all options 
+#'   available for controlling the set up of the directory (see 
+#'   \code{\link{dir_options}}). 
 #'
 #' @export
 #'
 create_dir <- function(options_dir = dir_options()){
+  if (!("dir_options" %in% class(options_dir))){
+    stop("`options_dir` is not a dir_options list")
+  }
   create_main_dir(options_dir)
   create_sub_dirs(options_dir)
 }
 
-#' @title Create the main directory folder of a portalcasting directory
+#' @rdname create_dir
 #'
-#' @description Create the top-level portalcasting directory folder
-#'
-#' @param options_dir directory options
-#'
-#' @return Nothing
+#' @description \code{create_main_dir}: Create the main level of the 
+#'   portalcasting directory.
 #'
 #' @export
 #'
 create_main_dir <- function(options_dir = dir_options()){
+  if (!("dir_options" %in% class(options_dir))){
+    stop("`options_dir` is not a dir_options list")
+  }
   main <- main_path(tree = options_dir$tree)
   if (!dir.exists(main)){
     if (!options_dir$quiet){
@@ -52,31 +58,32 @@ create_main_dir <- function(options_dir = dir_options()){
   }
 }
 
-#' @title Create the sub directory folders of a portalcasting directory
+#' @rdname create_dir
 #'
-#' @description Create a the portalcasting directory subfolders
-#'
-#' @param options_dir directory options
-#'
-#' @return Nothing
+#' @description \code{create_sub_dirs}: Create the sub level folders of the 
+#'   portalcasting directory.
 #'
 #' @export
 #'
 create_sub_dirs <- function(options_dir = dir_options()){
+  if (!("dir_options" %in% class(options_dir))){
+    stop("`options_dir` is not a dir_options list")
+  }
   subs <- sub_paths(tree = options_dir$tree)
   sub_dirs <- sapply(subs, create_sub_dir, quiet = options_dir$quiet)
 }
 
-#' @title Create a subdirectory folder 
+#' @rdname create_dir
 #'
-#' @description Create a specific subdirectory folder if it does not already
-#'   exist
+#' @description \code{create_sub_dir}: Create a specific subdirectory 
+#'   folder if it does not already exist.
 #'
-#' @param path path of the specific folder to be created
+#' @param path The normalized path of the specific subdirectory folder to be 
+#'   created in the directory tree as a character value (see 
+#'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
 #'
-#' @param quiet logical indicator if progress messages should be quieted
-#'
-#' @return Nothing
+#' @param quiet \code{logical} indicator if progress messages should be
+#'   quieted.
 #'
 #' @export
 #'
@@ -92,57 +99,75 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
   }
 }
 
-#' @title Populate the base components of a portalcasting directory
+#' @title Populate the components of a portalcasting directory
 #'
-#' @description Populate an existing portalcasting directory structure in full
-#'    or any missing components.
+#' @description \code{fill_dir}: Populate the files of an existing 
+#'    portalcasting directory structure in full. (Future flexibility will 
+#'    allow for selective population of components.)
 #'
-#' @param options_all list containing all options available for controlling
-#'   the set up and population of the forecast directory 
-#'
-#' @return Nothing
-#'
+#' @param options_all Class-\code{all_options} list containing all options 
+#'   available for controlling the set up and population of the directory (see 
+#'   \code{\link{all_options}}). 
+#' 
 #' @export
 #'
 fill_dir <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`options_all` is not an all_options list")
+  }
   fill_PortalData(options_all$options_PortalData)
   fill_data(options_all$options_data)
   fill_predictions(options_all$options_predictions)
   fill_models(options_all$options_models)
 }
 
-#' @title Populate the raw data of a portalcasting directory
+#' @rdname fill_dir
 #'
-#' @description Populate the raw data folder
+#' @description \code{fill_portalData}: Populate the components of the 
+#'   PortalData folder.
 #'
-#' @param options_PortalData PortalData subdirectory options
-#'
-#' @return Nothing
+#' @param options_PortalData Class-\code{PortalData_options} list containing 
+#'   available for controlling the set up and population of the PortalData
+#'   folder in the portalcasting directory (see 
+#'   \code{\link{PortalData_options}}). 
 #'
 #' @export
 #'
 fill_PortalData <- function(options_PortalData = PortalData_options()){
+  if (!("PortalData_options" %in% class(options_PortalData))){
+    stop("`options_PortalData` is not a PortalData_options list")
+  }
   if (!options_PortalData$quiet){
     message("Downloading raw data into PortalData subdirectory")
   }
   base_folder <- main_path(options_PortalData$tree)
   version <- options_PortalData$version
   from_zenodo <- options_PortalData$from_zenodo
-  PD <- download_observations(base_folder, version, from_zenodo)
+  if (options_PortalData$quiet){
+    suppressMessages(
+      PD <- download_observations(base_folder, version, from_zenodo)
+    )
+  } else{
+    PD <- download_observations(base_folder, version, from_zenodo)
+  }
 }
 
-#' @title Populate the for-use data of a portalcasting directory
+#' @rdname fill_dir
 #'
-#' @description Populate the for-use data folder
+#' @description \code{fill_data}: Populate the for-use data folder in the 
+#'   portalcasting directory, including the historical covariates, trapping 
+#'   table, moons, rodents, covariates, and metadata files.
 #'
-#' @param options_data list containing all options available for controlling
-#'   the set up and population of the forecast data subdirectory  
-#'
-#' @return Nothing
+#' @param options_data Class-\code{data_options} list containing available
+#'   for controlling the set up and population of the data folder in the 
+#'   portalcasting directory (see \code{\link{data_options}}). 
 #'
 #' @export
 #'
 fill_data <- function(options_data = data_options()){
+  if (!("data_options" %in% class(options_data))){
+    stop("`options_data` is not a data_options list")
+  }
   if (!options_data$moons$quiet){
     message("Loading forecasting data files into data subdirectory")
   }
@@ -154,18 +179,22 @@ fill_data <- function(options_data = data_options()){
   meta <- prep_metadata(moons, rodents, covariates, options_data$metadata)
 }
 
-#' @title Populate the predictions subdirectory of a portalcasting directory
+#' @rdname fill_dir
 #'
-#' @description Populate the predictions folder with existing predictions
-#'   housed on the main portalPredictions repo
+#' @description \code{fill_predictions}: Populate the predictions folder with 
+#'   existing predictions housed on the main portalPredictions repo site.
 #'
-#' @param options_predictions predictions options list
-#'
-#' @return Nothing
+#' @param options_predictions Class-\code{predictions_options} list containing 
+#'   available for controlling the set up and population of the predictions
+#'   folder in the portalcasting directory (see 
+#'   \code{\link{predictions_options}}). 
 #'
 #' @export
 #'
 fill_predictions <- function(options_predictions = predictions_options()){
+  if (!("predictions_options" %in% class(options_predictions))){
+    stop("`options_predictions` is not a predictions_options list")
+  }
   if (options_predictions$download_existing_predictions){
     if (!options_predictions$quiet){
       message("Downloading predictions into predictions subdirectory")
@@ -174,17 +203,22 @@ fill_predictions <- function(options_predictions = predictions_options()){
   }
 }
 
-#' @title Populate the model scripts of a portalcasting directory
+#' @rdname fill_dir
 #'
-#' @description Populate the model folder with specified scripts to be run
+#' @description \code{fill_models}: Populate the model folder with specified 
+#'   model scripts to be run.
 #'
-#' @param options_models model option list
-#'
-#' @return Nothing
+#' @param options_models Class-\code{models_options} list containing 
+#'   available for controlling the set up and population of the models
+#'   folder in the portalcasting directory (see 
+#'   \code{\link{models_options}}). 
 #'
 #' @export
 #'
 fill_models <- function(options_models = models_options()){
+  if (!("models_options" %in% class(options_models))){
+    stop("`options_models` is not a models_options list")
+  }
   if (!options_models$quiet){
     message("Adding prefab models to models subdirectory:")
   }
@@ -193,46 +227,64 @@ fill_models <- function(options_models = models_options()){
     modname <- options_models$model[i]
     funname <- paste0(modname, "_options")
     options_model <- do.call(funname, list("tree" = options_models$tree))
+    options_model$quiet <- options_models$quiet
     mod <- write_model(options_model)
   }
 }
 
-#' @title Verify that the PortalData sub is present and has required data
+#' @title Verify that the PortalData subdirectory is present and has required 
+#'   data
 #'
 #' @description Check that the PortalData subdirectory exists and has the
-#'   needed file. If the file is not present, the directory is filled.
+#'   needed specified file(s) within the "Rodents" subdirectory. If any of
+#'    the file(s) is(/are) not present, the (entire) directory is filled.
 #'
-#' @param tree directory tree
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
-#' @param filename name of the file to specifically check
+#' @param filename \code{character}-valued vector of name(s) of the file(s) to
+#'   specifically check.
 #'
-#' @return nothing
+#' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
 #' @export
 #' 
-verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv"){
+verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
+                              quiet = FALSE){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(filename)){
+    stop("`filename` is not a character")
+  }
   path <- file_path(tree = tree, paste0("PortalData/Rodents/", filename)) 
-  if (!file.exists(path)){
+  if (!all(file.exists(path))){
     options_dir <- dir_options()
     options_dir$tree <- tree
+    options_dir$quiet <- quiet
     create_dir(options_dir)
-    fill_PortalData(options_dir)
+    options_PortalData <- PortalData_options()
+    options_PortalData$tree <- tree
+    options_PortalData$quiet <- quiet
+    fill_PortalData(options_PortalData)
   }
 }
 
 #' @title Remove the temporary files in PortalData and tmp
 #'
-#' @description Remove the PortalData and tmp subdirectories.
+#' @description Remove the PortalData and tmp subdirectories and the 
+#'   subdirectories themselves.
 #'
-#' @param options_all list containing all options available for controlling
-#'   the set up and population of the forecast directory (see 
-#'   \code{\link{all_options}})
-#'
-#' @return nothing
+#' @param options_all Class-\code{all_options} list containing all options 
+#'   available for controlling the set up and population of the directory (see 
+#'   \code{\link{all_options}}). 
 #'
 #' @export
 #' 
 cleanup_dir <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`options_all` is not an all_options list")
+  }
   tree <- options_all$options_dir$tree
   PD_dir <- sub_path(tree, "PortalData")
   temp_dir <- sub_path(tree, "tmp")

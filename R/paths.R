@@ -52,7 +52,7 @@ dirtree <- function(base = ".", main = "", subs = subdirs()){
 #'   \code{"data"}, and \code{"tmp"}. It is generally not advised to change
 #'   the subdirectory structure at this time.
 #'
-#' @param type \code{charachter} name for quick generation of subdirectory
+#' @param type \code{character} name for quick generation of subdirectory
 #'   vector. Presently only defined for the default input 
 #'   \code{"portalcasting"}.
 #'
@@ -88,7 +88,7 @@ subdirs <- function(type = "portalcasting", subs = NULL){
 #' @description \code{base_path}: Return the path for the \code{base} folder
 #'   in the directory. 
 #'
-#' @param tree \code{dirtree}-class list.
+#' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'
 #' @return \code{base_path}: The normalized path of the main folder in the 
 #'   directory tree as a character value (see \code{\link{normalizePath}}).
