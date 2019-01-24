@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create the full structure of a portalcasting directory — create_dir • portalcasting</title>
+<title>Create the structure of a portalcasting directory — create_dir • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,16 @@
 
 
 
-<meta property="og:title" content="Create the full structure of a portalcasting directory — create_dir" />
+<meta property="og:title" content="Create the structure of a portalcasting directory — create_dir" />
 
-<meta property="og:description" content="Create a full portalcasting directory or any missing 
-  components." />
+<meta property="og:description" content="create_dir: Create a full portalcasting directory or 
+  any missing components.
+create_main_dir: Create the main level of the 
+  portalcasting directory.
+create_sub_dirs: Create the sub level folders of the 
+  portalcasting directory.
+create_sub_dir: Create a specific subdirectory 
+  folder if it does not already exist." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,32 +127,53 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create the full structure of a portalcasting directory</h1>
+    <h1>Create the structure of a portalcasting directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/directory.R'><code>R/directory.R</code></a></small>
     <div class="hidden name"><code>create_dir.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Create a full portalcasting directory or any missing 
-  components.</p>
+    <p><code>create_dir</code>: Create a full portalcasting directory or 
+  any missing components.</p>
+<p><code>create_main_dir</code>: Create the main level of the 
+  portalcasting directory.</p>
+<p><code>create_sub_dirs</code>: Create the sub level folders of the 
+  portalcasting directory.</p>
+<p><code>create_sub_dir</code>: Create a specific subdirectory 
+  folder if it does not already exist.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>create_dir</span>(<span class='kw'>options_dir</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>dir_options</a></span>())</pre>
+    <pre class="usage"><span class='fu'>create_dir</span>(<span class='kw'>options_dir</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>dir_options</a></span>())
+
+<span class='fu'>create_main_dir</span>(<span class='kw'>options_dir</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>dir_options</a></span>())
+
+<span class='fu'>create_sub_dirs</span>(<span class='kw'>options_dir</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>dir_options</a></span>())
+
+<span class='fu'>create_sub_dir</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_dir</th>
-      <td><p>directory options</p></td>
+      <td><p>Class-<code>dir_options</code> list containing all options 
+available for controlling the set up of the directory (see 
+<code><a href='all_options.html'>dir_options</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>The normalized path of the specific subdirectory folder to be 
+created in the directory tree as a character value (see 
+<code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>, <code><a href='base_path.html'>sub_path</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p><code>logical</code> indicator if progress messages should be
+quieted.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Nothing</p>
     
 
   </div>
@@ -154,9 +181,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

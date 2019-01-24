@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Verify that the PortalData sub is present and has required data — verify_PortalData • portalcasting</title>
+<title>Verify that the PortalData subdirectory is present and has required 
+  data — verify_PortalData • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +31,12 @@
 
 
 
-<meta property="og:title" content="Verify that the PortalData sub is present and has required data — verify_PortalData" />
+<meta property="og:title" content="Verify that the PortalData subdirectory is present and has required 
+  data — verify_PortalData" />
 
 <meta property="og:description" content="Check that the PortalData subdirectory exists and has the
-  needed file. If the file is not present, the directory is filled." />
+  needed specified file(s) within the &quot;Rodents&quot; subdirectory. If any of
+   the file(s) is(/are) not present, the (entire) directory is filled." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,7 +124,8 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Verify that the PortalData sub is present and has required data</h1>
+    <h1>Verify that the PortalData subdirectory is present and has required 
+  data</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/directory.R'><code>R/directory.R</code></a></small>
     <div class="hidden name"><code>verify_PortalData.Rd</code></div>
     </div>
@@ -129,28 +133,32 @@
     <div class="ref-description">
     
     <p>Check that the PortalData subdirectory exists and has the
-  needed file. If the file is not present, the directory is filled.</p>
+  needed specified file(s) within the "Rodents" subdirectory. If any of
+   the file(s) is(/are) not present, the (entire) directory is filled.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>verify_PortalData</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"moon_dates.csv"</span>)</pre>
+    <pre class="usage"><span class='fu'>verify_PortalData</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"moon_dates.csv"</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tree</th>
-      <td><p>directory tree</p></td>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>name of the file to specifically check</p></td>
+      <td><p><code>character</code>-valued vector of name(s) of the file(s) to
+specifically check.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p><code>logical</code> indicator controlling if messages are printed.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>nothing</p>
     
 
   </div>
@@ -158,9 +166,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
