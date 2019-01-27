@@ -56,6 +56,10 @@ test_that("get_climate_forecasts", {
   expect_error(get_climate_forecasts(moons_t, 1))
   climate_fcast <- get_climate_forecasts(moons_t, up_cov_opts)
   expect_is(climate_fcast, "climate_forecast")
+
+  up_cov_optsX <- up_cov_opts
+  up_cov_optsX$lead_time <- 200
+  expect_error(get_climate_forecasts(moons_t, up_cov_optsX))
 })
 
 test_that("append_cov_fcast_csv",{
@@ -74,6 +78,15 @@ test_that("append_cov_fcast_csv",{
   fcast_covsX$forecast_newmoon[1:nrow(fcast_covsX)] <- 450 
   expect_silent(fcast_covs4 <- append_cov_fcast_csv(fcast_covsX, up_cov_opts))
   expect_equal(fcast_covs4[,-1], fcast_covs[,-1])
+
+  up_cov_opts5 <- up_cov_opts
+  up_cov_opts5$append_fcast_csv <- FALSE
+  expect_silent(fcast_covs5 <- append_cov_fcast_csv(fcast_covs, up_cov_opts5))
+  expect_equal(fcast_covs5, fcast_covs)
+  up_cov_opts6 <- up_cov_opts
+  up_cov_opts6$cast_type <- "hindcast"
+  expect_silent(fcast_covs6 <- append_cov_fcast_csv(fcast_covs, up_cov_opts6))
+  expect_equal(fcast_covs6, fcast_covs)
 })
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
