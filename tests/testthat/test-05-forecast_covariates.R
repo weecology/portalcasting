@@ -23,10 +23,10 @@ test_that("forecast_covariates", {
   expect_error(forecast_covariates(hist_cov, 1, up_cov_opts))
   expect_error(forecast_covariates(hist_cov, moons, 1))
   fcast_covs <- forecast_covariates(hist_cov, moons, up_cov_opts)
-  expect_is(fcast_covs, "data.frame")
+  expect_is(fcast_covs, c("covariates", "data.frame"))
   expect_equal(nrow(fcast_covs), nsteps)
   hcast_covs <- forecast_covariates(hist_cov2, moons, up_cov_opts2)
-  expect_is(hcast_covs, "data.frame")
+  expect_is(hcast_covs, c("covariates", "data.frame"))
   expect_equal(nrow(hcast_covs), nsteps)
 })
 
@@ -56,6 +56,24 @@ test_that("get_climate_forecasts", {
   expect_error(get_climate_forecasts(moons_t, 1))
   climate_fcast <- get_climate_forecasts(moons_t, up_cov_opts)
   expect_is(climate_fcast, "climate_forecast")
+})
+
+test_that("append_cov_fcast_csv",{
+  fcast_covs <- forecast_covariates(hist_cov, moons, up_cov_opts)
+  expect_error(append_cov_fcast_csv(1, up_cov_opts))
+  expect_error(append_cov_fcast_csv(fcast_covs, 1))
+  expect_silent(fcast_covs2 <- append_cov_fcast_csv(fcast_covs, up_cov_opts))
+  expect_equal(fcast_covs2, fcast_covs)
+
+  fname <- paste0("data/", up_cov_opts$hist_fcast_file)
+  hist_file <- file_path(up_cov_opts$tree, fname)
+  unlink(hist_file)
+  expect_silent(fcast_covs3 <- append_cov_fcast_csv(fcast_covs, up_cov_opts))
+  expect_equal(fcast_covs3, fcast_covs)
+  fcast_covsX <- fcast_covs
+  fcast_covsX$forecast_newmoon[1:nrow(fcast_covsX)] <- 450 
+  expect_silent(fcast_covs4 <- append_cov_fcast_csv(fcast_covsX, up_cov_opts))
+  expect_equal(fcast_covs4[,-1], fcast_covs[,-1])
 })
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
