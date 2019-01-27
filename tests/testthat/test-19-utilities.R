@@ -2,16 +2,18 @@ context("Test utilities functions")
 
 test_that("dataout", {
   df <- data.frame(x = 1:10, y = 11:20)
-  expect_error(dataout(1, moons_options()))
-  expect_equal(dataout(df, moons_options(save = FALSE)), df)
-
+  dfo <- dataout(df, moons_options(save = FALSE))
   fp <- file_path(dirtree(main = ""), "ok.csv")
   fp1 <- gsub("ok.csv", "", fp)
   fp2 <- paste0(fp1, "data")
   dir.create(fp2)
   options_list <- moons_options(tree = dirtree(main = ""), 
                                 filename = "ok.csv")
-  expect_equal(dataout(df, options_list), df)
+  dfo2 <- dataout(df, options_list)
+  df <- classy(df, c("moons", "data.frame"))
+  expect_error(dataout(1, moons_options()))
+  expect_equal(dfo, df)
+  expect_equal(dfo2, df)
   unlink(fp2, recursive = TRUE, force = TRUE)
 })
 
@@ -40,4 +42,12 @@ test_that("fcast0", {
 
 test_that("today", {
   expect_equal(today(), Sys.Date())
+})
+
+test_that("classy", {
+  expect_error(classy(1, 1))
+  expect_is(classy(1, "character"), "character")
+  expect_is(classy(1, c("ok", "character")), c("character"))
+  expect_is(classy(1, c("ok", "character")), c("ok"))
+
 })

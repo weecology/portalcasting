@@ -331,7 +331,7 @@ moons_options <- function(n_future_moons = 12, fdate = today(),
                           quiet = FALSE){
   out <-   list(n_future_moons = n_future_moons, fdate = fdate, 
        append_missing_to_raw = append_missing_to_raw, save = save,
-       filename = filename, tree = tree, quiet = quiet)
+       filename = filename, tree = tree, quiet = quiet, class = "moons")
   class(out) <- c("moons_options", "list")
   out
 }
@@ -406,7 +406,7 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
        fcast_nms = fcast_nms, nfcnm = nfcnm, 
        append_fcast_csv = append_fcast_csv, hist_fcast_file = hist_fcast_file,
        source_name = source_name, save = save, filename = filename, 
-       tree = tree, quiet = quiet)
+       tree = tree, quiet = quiet, class = "covariates")
   class(out) <- c("covariates_options", "list")
   out
 }

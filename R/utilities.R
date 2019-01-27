@@ -8,7 +8,7 @@
 #' @param df \code{data.frame} table to be written out.
 #'
 #' @param options_out an options list that includes a save element and 
-#'   a filename element
+#'   a filename element, and potentially a class element.
 #'
 #' @return df (as input)
 #'
@@ -23,6 +23,9 @@ dataout <- function(df, options_out = moons_options()){
       file_path(options_out$tree, paste0("data/", options_out$filename)) %>%
       write.csv(df, ., row.names = FALSE)
     }
+  }
+  if (!is.null(options_out$class)){
+    class(df) <- c(options_out$class, class(df))
   }
   df
 }
@@ -101,3 +104,23 @@ today <- function(){
   Sys.Date()
 }
 
+#' @title Set the class(es) of an object
+#'
+#' @description For inclusion in a simple pipeline, set the class of an object
+#'   and return it. 
+#'
+#' @param x The object to get the \code{class}(es).
+#'
+#' @param class The \code{class}(es) to apply to \code{x}.
+#'
+#' @return \code{x} with class(es) of \code{class}.
+#'
+#' @export
+#'
+classy <- function(x, class = NULL){
+  if (!is.character(class)){
+    stop("`class` must be a character vector")
+  }
+  class(x) <- class
+  x
+}

@@ -19,7 +19,9 @@ up_cov_opts2 <- update_covfcast_options(options_covariates2, hist_cov2, moons)
 nsteps <- up_cov_opts$lead_time - up_cov_opts$min_lag
 
 test_that("forecast_covariates", {
-  expect_error(forecast_covariates(covariates, moons, 1))
+  expect_error(forecast_covariates(1, moons, up_cov_opts))
+  expect_error(forecast_covariates(hist_cov, 1, up_cov_opts))
+  expect_error(forecast_covariates(hist_cov, moons, 1))
   fcast_covs <- forecast_covariates(hist_cov, moons, up_cov_opts)
   expect_is(fcast_covs, "data.frame")
   expect_equal(nrow(fcast_covs), nsteps)
@@ -29,11 +31,14 @@ test_that("forecast_covariates", {
 })
 
 test_that("forecast_ndvi", {
-  expect_error(forecast_ndvi(covariates, moons, 1))
+  expect_error(forecast_ndvi(1, moons, up_cov_opts))
+  expect_error(forecast_ndvi(hist_cov, moons, 1))
+  expect_error(forecast_ndvi(hist_cov, 1, up_cov_opts))
 })
 
 test_that("forecast_weather", {
   expect_error(forecast_weather(moons, 1))
+  expect_error(forecast_weather(1, up_cov_opts))
 })
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
