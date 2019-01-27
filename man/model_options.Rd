@@ -24,47 +24,57 @@ pevGARCH_options(tree = dirtree(), name = "pevGARCH",
   covariates = TRUE, lag = 6, quiet = FALSE)
 }
 \arguments{
-\item{tree}{directory tree}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 
-\item{name}{character name of the model (MUST match the function name)}
+\item{name}{\code{character}-valued name of the model (MUST match the 
+function name).}
 
-\item{covariates}{does the model require covariates}
+\item{covariates}{\code{logical} indicator for if the model requires 
+covariates.}
 
-\item{lag}{lag time used for the covariates (\code{NULL} if 
-\code{covariates} is false)}
+\item{lag}{\code{numeric} integer lag time used for the covariates 
+or \code{NULL} if \code{covariates} is \code{FALSE}.}
 
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }
 \value{
-\code{model_options}: a list of model options
+\code{model_options}: a class-\code{model_options} \code{list} of 
+  options used to set up a general model script.
 
-\code{AutoArima_options}: a list of settings controlling the 
-  AutoArima model creation
+\code{AutoArima_options}: a \code{model_options} \code{list} of 
+  settings controlling the \code{\link{AutoArima}} model creation.
 
-\code{ESSS_options}: a list of settings controlling the 
-  ESSS model creation
+\code{ESSS_options}: a \code{model_options} \code{list} of 
+  settings controlling the \code{\link{ESSS}} model creation.
 
-\code{nbGARCH_options}: a list of settings controlling the 
-  nbGARCH model creation
+\code{nbGARCH_options}: a \code{model_options} \code{list} of 
+  settings controlling the \code{\link{nbGARCH}} model creation.
 
-\code{pevGARCH_options}: a list of settings controlling the 
-  pevGARCH model creation
+\code{pevGARCH_options}: a \code{model_options} \code{list} of 
+  settings controlling the \code{\link{pevGARCH}} model creation.
 }
 \description{
 Suite of functions used to generate model-writing options 
-  lists: \cr \cr \code{model_options} is a basic template. Not to be 
-  confused with \code{\link{models_options}}, which creates the options 
-  list for the \code{models} subdirectory
+  lists: \cr \cr \code{model_options} is a basic template that provides
+  validation of all of the inputs (specific models' functions can thus just 
+  wrap around this generalized function). Not to be confused with 
+  \code{\link{models_options}}, which creates the options list for the 
+  \code{models} subdirectory.
 
-\code{AutoArima_options} creates a list of control options for
-  the AutoArima model
+\code{AutoArima_options} creates a \code{model_options} 
+  \code{list} of control options for the model script controlling the 
+  \code{\link{AutoArima}} model.
 
-\code{ESSS_options} creates a list of control options for
-  the ESSS model
+\code{ESSS_options} creates a \code{model_options} 
+  \code{list} of control options for the model script controlling the 
+  \code{\link{ESSS}} model.
 
-\code{nbGARCH_options} creates a list of control options for
-  the nbGARCH model
+\code{nbGARCH_options} creates a \code{model_options} 
+  \code{list} of control options for the model script controlling the 
+  \code{\link{nbGARCH}} model.
 
-\code{pevGARCH_options} creates a list of control options for
-  the pevGARCH model
+\code{pevGARCH_options} creates a \code{model_options} 
+  \code{list} of control options for the model script controlling the 
+  \code{\link{pevGARCH}} model.
 }
