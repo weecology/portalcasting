@@ -2,20 +2,22 @@
 % Please edit documentation in R/forecast_covariates.R
 \name{get_climate_forecasts}
 \alias{get_climate_forecasts}
-\title{Download downscaled weather data}
+\title{Download downscaled weather forecasts for Portal}
 \usage{
 get_climate_forecasts(moons = prep_moons(),
   options_covariates = covariates_options())
 }
 \arguments{
-\item{moons}{newmoon data table}
+\item{moons}{Class-\code{moons} type of a \code{data.frame} containing the
+moons and date data. See \code{\link{prep_moons}}.}
 
-\item{options_covariates}{covariate options control list}
+\item{options_covariates}{Class \code{covariates_options} options 
+\code{list}. See \code{\link{covariates_options}}.}
 }
 \value{
-a data.frame with precipitation(mm), temperature(C), year, and
-  month. Temperature is the mean temperature for the month, while 
-  precipitation is the total forecasted precip.
+Class-\code{climate_forecast} \code{data.frame} with columns 
+  of \code{newmoonnumber}, \code{mintemp}, \code{maxtemp}, \code{meantemp},
+  and \code{precipitation}. Temperatures are in C, precipitation is in mm.
 }
 \description{
 ENSMEAN (ensemble mean) obtained from 

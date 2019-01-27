@@ -50,5 +50,13 @@ test_that("trim_moons_fcast", {
   expect_error(trim_moons_fcast(moons, 1))
 })
 
+test_that("get_climate_forecasts", {
+  moons_t <- trim_moons_fcast(moons, options_covariates = up_cov_opts)
+  expect_error(get_climate_forecasts(1, up_cov_opts))
+  expect_error(get_climate_forecasts(moons_t, 1))
+  climate_fcast <- get_climate_forecasts(moons_t, up_cov_opts)
+  expect_is(climate_fcast, "climate_forecast")
+})
+
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

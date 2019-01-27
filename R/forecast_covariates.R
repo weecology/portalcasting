@@ -150,7 +150,6 @@ forecast_weather <- function(moons = prep_moons(),
 }
 
 
-
 #' @title Trim the moons table for covariate forecasting
 #' 
 #' @description Covariate forecasting requires a moons data table that is
@@ -182,19 +181,21 @@ trim_moons_fcast <- function(moons, options_covariates){
   fc_nms
 }
 
-#' @title Download downscaled weather data
+#' @title Download downscaled weather forecasts for Portal
 #' 
 #' @description ENSMEAN (ensemble mean) obtained from 
 #'   https://climate.northwestknowledge.net/RangelandForecast/download.php
 #'   and downscaled to Portal, AZ (31.9555, -109.0744)
 #' 
-#' @param moons newmoon data table
+#' @param moons Class-\code{moons} type of a \code{data.frame} containing the
+#'   moons and date data. See \code{\link{prep_moons}}.
 #'
-#' @param options_covariates covariate options control list
+#' @param options_covariates Class \code{covariates_options} options 
+#'   \code{list}. See \code{\link{covariates_options}}.
 #' 
-#' @return a data.frame with precipitation(mm), temperature(C), year, and
-#'   month. Temperature is the mean temperature for the month, while 
-#'   precipitation is the total forecasted precip.
+#' @return Class-\code{climate_forecast} \code{data.frame} with columns 
+#'   of \code{newmoonnumber}, \code{mintemp}, \code{maxtemp}, \code{meantemp},
+#'   and \code{precipitation}. Temperatures are in C, precipitation is in mm.
 #'
 #' @export
 #'
@@ -300,14 +301,14 @@ get_climate_forecasts <- function(moons = prep_moons(),
   which_match <- match(daily_forecasts$date, newmoon_match_date)
   daily_fcast$newmoonnumber <- newmoon_match_number[which_match]
 
-  out <- daily_fcast %>% 
-         group_by(newmoonnumber) %>%
-         summarize(mintemp = min(mintemp, na.rm = T), 
-                   maxtemp = max(maxtemp, na.rm = T), 
-                   meantemp = mean(meantemp, na.rm = T), 
-                   precipitation = sum(precipitation, na.rm = T))
+  daily_fcast %>% 
+  group_by(newmoonnumber) %>%
+  summarize(mintemp = min(mintemp, na.rm = T), 
+            maxtemp = max(maxtemp, na.rm = T), 
+            meantemp = mean(meantemp, na.rm = T), 
+            precipitation = sum(precipitation, na.rm = T)) %>%
+  classy(c("climate_forecast", "data.frame", "tbl_df", "tbl"))
 
-  return(out)
 }
 
 #' @title Append a covariate forecast to existing covariate forecasts
