@@ -57,8 +57,13 @@ write_model <- function(options_model = model_options()){
 #'
 model_template <- function(options_model = model_options()){
   tree <- options_model$tree
-  subnames <- paste(tree$subs, collapse = '", "')
-  subs <- paste0('c("', subnames, '")')
+  if (any(!(tree$subs %in% subdirs()))){
+    addl <- which(!(tree$treesubs %in% subdirs()))
+    subnames <- paste(tree$subs[addl], collapse = '", "')
+    subs <- paste0('subdirs(subs = c("', subnames, '"))')
+  } else{
+    subs <- "subdirs()"
+  }
   name <- options_model$name
 
   if (options_model$covariates){

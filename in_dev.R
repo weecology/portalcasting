@@ -4,8 +4,10 @@
 # working in the forecast_covariates tests
 # within forecast_covariates working on hindcasts
 
+devtools::load_all()
 options_all <- all_options(main = "ok")
 setup_dir(options_all)
+portalcast(options_all)
 moons <- prep_moons(ops_$options_data$moons)
 hist_cov <- prep_hist_covariates(options_all$options_data$covariates)
 options_covariates <- options_all$options_data$covariates
