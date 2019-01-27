@@ -11,7 +11,7 @@ get_climate_forecasts(moons = prep_moons(),
 \item{moons}{Class-\code{moons} type of a \code{data.frame} containing the
 moons and date data. See \code{\link{prep_moons}}.}
 
-\item{options_covariates}{Class \code{covariates_options} options 
+\item{options_covariates}{Class-\code{covariates_options} options 
 \code{list}. See \code{\link{covariates_options}}.}
 }
 \value{
@@ -20,7 +20,12 @@ Class-\code{climate_forecast} \code{data.frame} with columns
   and \code{precipitation}. Temperatures are in C, precipitation is in mm.
 }
 \description{
-ENSMEAN (ensemble mean) obtained from 
-  https://climate.northwestknowledge.net/RangelandForecast/download.php
-  and downscaled to Portal, AZ (31.9555, -109.0744)
+Lunar cycle-based climate forecasts obtained from 
+  \href{https://climate.northwestknowledge.net/RangelandForecast/download.php}{Northwest Knowledge
+  Network (NKN) at the University of Idaho}
+  and downscaled to Portal, AZ (31.9555, -109.0744). The downscaled 
+  forecasts are based on the 
+  \href{http://www.cpc.ncep.noaa.gov/products/NMME/}{North American 
+  Multi-Model Ensemble}, and specifically the ENSMEAN (ensemble mean) 
+  model.
 }
