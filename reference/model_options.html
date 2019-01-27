@@ -33,17 +33,23 @@
 <meta property="og:title" content="Prepare options for a portalcasting model — model_options" />
 
 <meta property="og:description" content="Suite of functions used to generate model-writing options 
-  lists:   model_options is a basic template. Not to be 
-  confused with models_options, which creates the options 
-  list for the models subdirectory
-AutoArima_options creates a list of control options for
-  the AutoArima model
-ESSS_options creates a list of control options for
-  the ESSS model
-nbGARCH_options creates a list of control options for
-  the nbGARCH model
-pevGARCH_options creates a list of control options for
-  the pevGARCH model" />
+  lists:   model_options is a basic template that provides
+  validation of all of the inputs (specific models' functions can thus just 
+  wrap around this generalized function). Not to be confused with 
+  models_options, which creates the options list for the 
+  models subdirectory.
+AutoArima_options creates a model_options 
+  list of control options for the model script controlling the 
+  AutoArima model.
+ESSS_options creates a model_options 
+  list of control options for the model script controlling the 
+  ESSS model.
+nbGARCH_options creates a model_options 
+  list of control options for the model script controlling the 
+  nbGARCH model.
+pevGARCH_options creates a model_options 
+  list of control options for the model script controlling the 
+  pevGARCH model." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -139,17 +145,23 @@ pevGARCH_options creates a list of control options for
     <div class="ref-description">
     
     <p>Suite of functions used to generate model-writing options 
-  lists: <br /> <br /> <code>model_options</code> is a basic template. Not to be 
-  confused with <code><a href='all_options.html'>models_options</a></code>, which creates the options 
-  list for the <code>models</code> subdirectory</p>
-<p><code>AutoArima_options</code> creates a list of control options for
-  the AutoArima model</p>
-<p><code>ESSS_options</code> creates a list of control options for
-  the ESSS model</p>
-<p><code>nbGARCH_options</code> creates a list of control options for
-  the nbGARCH model</p>
-<p><code>pevGARCH_options</code> creates a list of control options for
-  the pevGARCH model</p>
+  lists: <br /> <br /> <code>model_options</code> is a basic template that provides
+  validation of all of the inputs (specific models' functions can thus just 
+  wrap around this generalized function). Not to be confused with 
+  <code><a href='all_options.html'>models_options</a></code>, which creates the options list for the 
+  <code>models</code> subdirectory.</p>
+<p><code>AutoArima_options</code> creates a <code>model_options</code> 
+  <code>list</code> of control options for the model script controlling the 
+  <code><a href='autoarima.html'>AutoArima</a></code> model.</p>
+<p><code>ESSS_options</code> creates a <code>model_options</code> 
+  <code>list</code> of control options for the model script controlling the 
+  <code><a href='esss.html'>ESSS</a></code> model.</p>
+<p><code>nbGARCH_options</code> creates a <code>model_options</code> 
+  <code>list</code> of control options for the model script controlling the 
+  <code><a href='nbgarch.html'>nbGARCH</a></code> model.</p>
+<p><code>pevGARCH_options</code> creates a <code>model_options</code> 
+  <code>list</code> of control options for the model script controlling the 
+  <code><a href='pevgarch.html'>pevGARCH</a></code> model.</p>
     
     </div>
 
@@ -173,38 +185,42 @@ pevGARCH_options creates a list of control options for
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tree</th>
-      <td><p>directory tree</p></td>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>character name of the model (MUST match the function name)</p></td>
+      <td><p><code>character</code>-valued name of the model (MUST match the 
+function name).</p></td>
     </tr>
     <tr>
       <th>covariates</th>
-      <td><p>does the model require covariates</p></td>
+      <td><p><code>logical</code> indicator for if the model requires 
+covariates.</p></td>
     </tr>
     <tr>
       <th>lag</th>
-      <td><p>lag time used for the covariates (<code>NULL</code> if 
-<code>covariates</code> is false)</p></td>
+      <td><p><code>numeric</code> integer lag time used for the covariates 
+or <code>NULL</code> if <code>covariates</code> is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical indicator if progress messages should be quieted</p></td>
+      <td><p><code>logical</code> indicator controlling if messages are printed.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>model_options</code>: a list of model options</p>
-<p><code>AutoArima_options</code>: a list of settings controlling the 
-  AutoArima model creation</p>
-<p><code>ESSS_options</code>: a list of settings controlling the 
-  ESSS model creation</p>
-<p><code>nbGARCH_options</code>: a list of settings controlling the 
-  nbGARCH model creation</p>
-<p><code>pevGARCH_options</code>: a list of settings controlling the 
-  pevGARCH model creation</p>
+    <p><code>model_options</code>: a class-<code>model_options</code> <code>list</code> of 
+  options used to set up a general model script.</p>
+<p><code>AutoArima_options</code>: a <code>model_options</code> <code>list</code> of 
+  settings controlling the <code><a href='autoarima.html'>AutoArima</a></code> model creation.</p>
+<p><code>ESSS_options</code>: a <code>model_options</code> <code>list</code> of 
+  settings controlling the <code><a href='esss.html'>ESSS</a></code> model creation.</p>
+<p><code>nbGARCH_options</code>: a <code>model_options</code> <code>list</code> of 
+  settings controlling the <code><a href='nbgarch.html'>nbGARCH</a></code> model creation.</p>
+<p><code>pevGARCH_options</code>: a <code>model_options</code> <code>list</code> of 
+  settings controlling the <code><a href='pevgarch.html'>pevGARCH</a></code> model creation.</p>
     
 
   </div>
