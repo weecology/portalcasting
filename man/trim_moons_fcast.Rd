@@ -7,13 +7,16 @@
 trim_moons_fcast(moons, options_covariates)
 }
 \arguments{
-\item{moons}{moon data}
+\item{moons}{Class-\code{moons} type of a \code{data.frame} containing the
+moons and date data. See \code{\link{prep_moons}}.}
 
-\item{options_covariates}{covariate data options}
+\item{options_covariates}{Class-\code{covariates_options} options 
+\code{list}. See \code{\link{covariates_options}}.}
 }
 \value{
-a trimmed moons data table
+A trimmed \code{moons} \code{data.frame}.
 }
 \description{
-creating forecasts
+Covariate forecasting requires a moons data table that is
+  trimmed to the moons of interest only.
 }

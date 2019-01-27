@@ -30,7 +30,6 @@ prep_covariates <- function(moons = prep_moons(),
   if (options_covariates$cov_fcast){
     out <- bind_rows(out, fcast_cov)
   }
-
   dataout(out, options_covariates)
 }
 
@@ -94,7 +93,7 @@ prep_hist_covariates <- function(options_covariates = covariates_options()){
     end_step <- options_covariates$end[options_covariates$hind_step]
     out <- out[which(out$newmoonnumber <= end_step), ]
   }
-  return(out)
+  classy(out, c("covariates", "data.frame"))
 }
 
 #' @title Prepare forecast covariate data table
@@ -121,8 +120,8 @@ prep_fcast_covariates <- function(hist_cov = prep_hist_covariates(),
   forecast_covariates(hist_cov, moons, .) %>%
   append_cov_fcast_csv(options_covariates) %>%
   select(-forecast_newmoon) %>%
-  mutate("source" = "fcast")
-
+  mutate("source" = "fcast") %>%
+  classy(class = c("covariates", "data.frame"))
 }
 
 #' @title Prepare historical weather data
