@@ -41,5 +41,14 @@ test_that("forecast_weather", {
   expect_error(forecast_weather(1, up_cov_opts))
 })
 
+test_that("trim_moons_fcast", {
+  moons_t <- trim_moons_fcast(moons, options_covariates = up_cov_opts)
+  expect_is(moons_t, "moons")
+  nfcnms <- length(options_covariates$fcast_nms)
+  expect_equal(nrow(moons) - nrow(moons_t), nfcnms)
+  expect_error(trim_moons_fcast(1, up_cov_opts))
+  expect_error(trim_moons_fcast(moons, 1))
+})
+
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

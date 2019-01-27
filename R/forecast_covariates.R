@@ -200,6 +200,12 @@ trim_moons_fcast <- function(moons, options_covariates){
 #'
 get_climate_forecasts <- function(moons = prep_moons(), 
                                   options_covariates = covariates_options()){
+  if (!("moons" %in% class(moons))){
+    stop("`moons` is not of class moons")
+  }
+  if (!("covariates_options") %in% class(options_covariates)){
+    stop("options_covariates is not a covariates_options list")
+  } 
   
   lead_time <- options_covariates$lead_time - options_covariates$min_lag
 
