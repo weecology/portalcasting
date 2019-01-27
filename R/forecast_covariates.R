@@ -369,27 +369,3 @@ append_cov_fcast_csv <- function(new_forecast_covariates,
   write.csv(out, hist_file, row.names = FALSE)
   new_forecast_covariates
 }
-
-#' @title Append a covariate forecast to historical covariate table
-#' 
-#' @description combining weather and ndvi forecasts to the existing 
-#'   covariates
-#' 
-#' @param covariates output from \code{get_covariate_data}
-#'
-#' @param metadata model metadata
-#'
-#' @param moons moon data table
-#' 
-#' @return no value
-#'
-#' @export
-#'
-append_covariate_fcast <- function(covariates, metadata, 
-                                   moons = prep_moons()){
-
-  covariates_fcast <- forecast_covariates(covariates, moons, metadata)
-  covariates_fcast <- select(covariates_fcast, -"forecast_newmoon")
-  covariates_all <- bind_rows(covariates, covariates_fcast)
-  covariates_all
-}
