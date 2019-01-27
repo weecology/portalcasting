@@ -15,6 +15,8 @@ test_that("model_options", {
   expect_error(model_options(tree = dirtree(), name = "AutoArima", 
                              covariates = FALSE, lag = 2.2, quiet = FALSE))
   expect_error(model_options(tree = dirtree(), name = "AutoArima", 
+                             covariates = FALSE, lag = "a", quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), name = "AutoArima", 
                              covariates = FALSE, lag = 1:2, quiet = FALSE))
   expect_error(model_options(tree = dirtree(), name = "AutoArima", 
                              covariates = FALSE, lag = NULL, quiet = 1))
