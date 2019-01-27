@@ -11,7 +11,7 @@ trim_moons_fcast(moons, options_covariates)
 moons and date data. See \code{\link{prep_moons}}.}
 
 \item{options_covariates}{Class \code{covariates_options} options 
-\code{list}. See \code{\link{options_covariates}}.}
+\code{list}. See \code{\link{covariates_options}}.}
 }
 \value{
 A trimmed \code{moons} \code{data.frame}.

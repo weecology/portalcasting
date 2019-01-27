@@ -44,7 +44,7 @@ test_that("forecast_weather", {
 test_that("trim_moons_fcast", {
   moons_t <- trim_moons_fcast(moons, options_covariates = up_cov_opts)
   expect_is(moons_t, "moons")
-  nfcnms <- length(options_covariates$fcast_nms)
+  nfcnms <- length(up_cov_opts$fcast_nms)
   expect_equal(nrow(moons) - nrow(moons_t), nfcnms)
   expect_error(trim_moons_fcast(1, up_cov_opts))
   expect_error(trim_moons_fcast(moons, 1))

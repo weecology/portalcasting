@@ -160,7 +160,7 @@ forecast_weather <- function(moons = prep_moons(),
 #'   moons and date data. See \code{\link{prep_moons}}.
 #'
 #' @param options_covariates Class \code{covariates_options} options 
-#'   \code{list}. See \code{\link{options_covariates}}.
+#'   \code{list}. See \code{\link{covariates_options}}.
 #'
 #' @return A trimmed \code{moons} \code{data.frame}.
 #'
