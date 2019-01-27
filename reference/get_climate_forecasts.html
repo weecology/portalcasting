@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download downscaled weather data — get_climate_forecasts • portalcasting</title>
+<title>Download downscaled weather forecasts for Portal — get_climate_forecasts • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,16 @@
 
 
 
-<meta property="og:title" content="Download downscaled weather data — get_climate_forecasts" />
+<meta property="og:title" content="Download downscaled weather forecasts for Portal — get_climate_forecasts" />
 
-<meta property="og:description" content="ENSMEAN (ensemble mean) obtained from 
-  https://climate.northwestknowledge.net/RangelandForecast/download.php
-  and downscaled to Portal, AZ (31.9555, -109.0744)" />
+<meta property="og:description" content="Lunar cycle-based climate forecasts obtained from 
+  Northwest Knowledge
+  Network (NKN) at the University of Idaho
+  and downscaled to Portal, AZ (31.9555, -109.0744). The downscaled 
+  forecasts are based on the 
+  North American 
+  Multi-Model Ensemble, and specifically the ENSMEAN (ensemble mean) 
+  model." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,16 +127,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download downscaled weather data</h1>
+    <h1>Download downscaled weather forecasts for Portal</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/forecast_covariates.R'><code>R/forecast_covariates.R</code></a></small>
     <div class="hidden name"><code>get_climate_forecasts.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>ENSMEAN (ensemble mean) obtained from 
-  https://climate.northwestknowledge.net/RangelandForecast/download.php
-  and downscaled to Portal, AZ (31.9555, -109.0744)</p>
+    <p>Lunar cycle-based climate forecasts obtained from 
+  <a href='https://climate.northwestknowledge.net/RangelandForecast/download.php'>Northwest Knowledge
+  Network (NKN) at the University of Idaho</a>
+  and downscaled to Portal, AZ (31.9555, -109.0744). The downscaled 
+  forecasts are based on the 
+  <a href='http://www.cpc.ncep.noaa.gov/products/NMME/'>North American 
+  Multi-Model Ensemble</a>, and specifically the ENSMEAN (ensemble mean) 
+  model.</p>
     
     </div>
 
@@ -143,19 +153,21 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>moons</th>
-      <td><p>newmoon data table</p></td>
+      <td><p>Class-<code>moons</code> type of a <code>data.frame</code> containing the
+moons and date data. See <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
     </tr>
     <tr>
       <th>options_covariates</th>
-      <td><p>covariate options control list</p></td>
+      <td><p>Class-<code>covariates_options</code> options 
+<code>list</code>. See <code><a href='all_options.html'>covariates_options</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame with precipitation(mm), temperature(C), year, and
-  month. Temperature is the mean temperature for the month, while 
-  precipitation is the total forecasted precip.</p>
+    <p>Class-<code>climate_forecast</code> <code>data.frame</code> with columns 
+  of <code>newmoonnumber</code>, <code>mintemp</code>, <code>maxtemp</code>, <code>meantemp</code>,
+  and <code>precipitation</code>. Temperatures are in C, precipitation is in mm.</p>
     
 
   </div>

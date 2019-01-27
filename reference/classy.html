@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build an ndvi forecast for model predictions — forecast_ndvi • portalcasting</title>
+<title>Set the class(es) of an object — classy • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Build an ndvi forecast for model predictions — forecast_ndvi" />
+<meta property="og:title" content="Set the class(es) of an object — classy" />
 
-<meta property="og:description" content="creating forecasts" />
+<meta property="og:description" content="For inclusion in a simple pipeline, set the class of an object
+  and return it." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,39 +121,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build an ndvi forecast for model predictions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/forecast_covariates.R'><code>R/forecast_covariates.R</code></a></small>
-    <div class="hidden name"><code>forecast_ndvi.Rd</code></div>
+    <h1>Set the class(es) of an object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
+    <div class="hidden name"><code>classy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>creating forecasts</p>
+    <p>For inclusion in a simple pipeline, set the class of an object
+  and return it.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>forecast_ndvi</span>(<span class='no'>covariate_data</span>, <span class='no'>moons</span>, <span class='no'>options_covariates</span>)</pre>
+    <pre class="usage"><span class='fu'>classy</span>(<span class='no'>x</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>covariate_data</th>
-      <td><p>historical covariate data table</p></td>
+      <th>x</th>
+      <td><p>The object to get the <code>class</code>(es).</p></td>
     </tr>
     <tr>
-      <th>moons</th>
-      <td><p>moon data</p></td>
-    </tr>
-    <tr>
-      <th>options_covariates</th>
-      <td><p>covariate data options</p></td>
+      <th>class</th>
+      <td><p>The <code>class</code>(es) to apply to <code>x</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame with needed foecasted ndvi values</p>
+    <p><code>x</code> with class(es) of <code>class</code>.</p>
     
 
   </div>
