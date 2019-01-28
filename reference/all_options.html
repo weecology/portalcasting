@@ -59,7 +59,9 @@ predictions_options creates a
 models_options creates a models_options 
   list of options for populating the models subdirectory.
 cast_options creates a cast_options list 
-  of control options for running portalcast." />
+  of control options for running portalcast.
+check_options_args verifies the validity (class, size,
+  etc.) of the inputs to the options list functions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -182,6 +184,8 @@ cast_options creates a cast_options list
   <code>list</code> of options for populating the models subdirectory.</p>
 <p><code>cast_options</code> creates a <code>cast_options</code> <code>list</code> 
   of control options for running <code><a href='portalcast.html'>portalcast</a></code>.</p>
+<p><code>check_options_args</code> verifies the validity (class, size,
+  etc.) of the inputs to the options list functions.</p>
     
     </div>
 
@@ -253,7 +257,26 @@ cast_options creates a cast_options list
 <span class='fu'>cast_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
   <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(), <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
   <span class='kw'>fdate</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>min_traps</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>min_traps</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
+<span class='fu'>check_options_args</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>fdate</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>append_missing_to_raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>m_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>m_filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>, <span class='kw'>tmnt_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>drop_spp</span> <span class='kw'>=</span> <span class='st'>"PI"</span>,
+  <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>min_traps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Site"</span>, <span class='kw'>treatment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>plots</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"abundance"</span>, <span class='kw'>r_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>r_filename</span> <span class='kw'>=</span> <span class='st'>"all.csv"</span>, <span class='kw'>cov_hist</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cov_fcast</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>yr</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='fu'><a href='today.html'>today</a></span>(), <span class='st'>"%Y"</span>)), <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>min_lag</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>fcast_nms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nfcnm</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>append_fcast_csv</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>hist_fcast_file</span> <span class='kw'>=</span> <span class='st'>"covariate_forecasts.csv"</span>,
+  <span class='kw'>source_name</span> <span class='kw'>=</span> <span class='st'>"current_archive"</span>, <span class='kw'>c_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>c_filename</span> <span class='kw'>=</span> <span class='st'>"covariates.csv"</span>, <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
+  <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>meta_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>meta_filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>,
+  <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(),
+  <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>n_future_moons</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>,
+  <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
