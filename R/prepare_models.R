@@ -14,13 +14,15 @@
 #'
 models <- function(set = "prefab", add = NULL){
   out <- NULL
-  if (set == "prefab"){
-    out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
+  if (!is.null(set)){
+    if (set == "prefab"){
+      out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
+    }
   }
   if (!is.null(add)){
     out <- c(out, add)
   }
-  out
+  classy(out, c("character", "models"))
 }
 
 #' @title Write the template for a model into model subdirectory

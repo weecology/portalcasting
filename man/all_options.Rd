@@ -12,7 +12,7 @@
 \alias{predictions_options}
 \alias{models_options}
 \alias{cast_options}
-\title{Prepare options for a portalcasting directory}
+\title{Prepare options lists for a portalcasting directory}
 \usage{
 all_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
   fdate = today(), append_missing_to_raw = TRUE, m_save = TRUE,
@@ -85,191 +85,240 @@ cast_options(base = ".", main = "", subs = subdirs(),
   hind_step = 1, min_plots = 24, min_traps = 1)
 }
 \arguments{
-\item{base}{name of the base directory where the forecasting 
-directory should exist (will be created if it doesn't)}
+\item{base}{\code{character} name of the base folder where the directory 
+should or does exist. Default \code{"."} (working directory). Will be 
+created if it doesn't exist.}
 
-\item{main}{name of the portalcasting directory}
+\item{main}{\code{character} name of the main folder within the base that
+contains the subdirectories. Default \code{""} (no main level included).}
 
-\item{subs}{names of the portalcasting subdirectories}
+\item{subs}{\code{character} vector naming the specific subdirectories
+within the portalcasting directory tree. Default \code{subdirs()} sets
+the subdirectories as \code{"predictions"}, \code{"models"},
+\code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
+not advised to change the subdirectories.}
 
-\item{quiet}{logical indicator if progress messages should be quieted}
+\item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
-\item{fdate}{date from which future is defined, typically today's date.}
+\item{fdate}{\code{Date} from which future is defined, typically today's 
+date (using \code{\link{today}}).}
 
-\item{append_missing_to_raw}{logical indicating if the missing moon dates 
-should be appended to the raw data file (should be TRUE to allow the
-imported portalr functions to work properly)}
+\item{append_missing_to_raw}{\code{logical} indicator dictating if the 
+missing moon dates should be appended to the raw data file (should be 
+\code{TRUE} to allow the imported portalr functions to work properly).}
 
-\item{m_save}{logical if the moons data should be saved out}
+\item{m_save}{\code{logical} indicator controlling if the moons data should 
+be saved out.}
 
-\item{m_filename}{the name of the file for saving moons data}
+\item{m_filename}{\code{character} name of the file for saving moons data.}
 
-\item{tmnt_type}{"all" or "controls"}
+\item{tmnt_type}{Treatment type: \code{"all"} or \code{"controls"}.}
 
-\item{start}{newmoon number of the first sample to be included. Default 
-value is \code{217}, corresponding to 1995-01-01}
+\item{start}{\code{integer} (or integer \code{numeric}) newmoon number of 
+the first sample to be included. Default value is \code{217}, 
+corresponding to \code{1995-01-01}.}
 
-\item{end}{newmoon number of the last sample to be included. Default
-value is \code{NULL}, which equates to the most recently included
-sample. If \code{cast_type} is "hindcasts" and \code{end} is \code{NULL},
-default becomes \code{490:403}, corresponding to 2017-01-01 back to
-2010-01-01}
+\item{end}{\code{integer} (or integer \code{numeric}) newmoon number of the
+last sample to be included. Default value is \code{NULL}, which equates
+to the most recently included sample. If \code{cast_type} is 
+\code{"hindcasts"} and \code{end} is \code{NULL}, default becomes 
+\code{490:403}, corresponding to \code{2017-01-01} back to
+\code{2010-01-01}.}
 
-\item{hind_step}{an iteration parameter to work across the input values 
-for \code{end}. Default is 1, which is likely all it should be run using}
+\item{hind_step}{\code{integer} (or integer \code{numeric}) iteration 
+parameter used to work across the input values for \code{end}. Default is
+\code{1}, which is likely all it should be run using.}
 
-\item{drop_spp}{species names to drop from the table}
+\item{drop_spp}{\code{character}-valued vector of species names to drop 
+from the forecasting.}
 
-\item{min_plots}{minimum number of plots surveyed for a survey to be used}
+\item{min_plots}{\code{integer} (or integer \code{numeric}) of the minimum 
+number of plots surveyed for a survey to be used.}
 
-\item{min_traps}{minimum number of traps trapped for a plot to be used}
+\item{min_traps}{\code{integer} (or integer \code{numeric}) of the minimum 
+number of traps trapped for a plot to be used.}
 
-\item{level}{for get_rodent_data, automatically set by tmnt_type}
+\item{level}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
 
-\item{treatment}{for get_rodent_data, automatically set by tmnt_type}
+\item{treatment}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
 
-\item{plots}{for get_rodent_data, automatically set by tmnt_type}
+\item{plots}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
 
-\item{output}{for get_rodent_data, automatically set by tmnt_type}
+\item{output}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
 
-\item{r_save}{logical if the data should be saved out}
+\item{r_save}{\code{logical} value indicating if the rodent data should be 
+saved out.}
 
-\item{r_filename}{the name of the file to save the rodent data in}
+\item{r_filename}{\code{character} name of the file to save the rodent data
+in.}
 
-\item{cov_hist}{logical indicator whether or not historical covariates are
-to be included}
+\item{cov_hist}{\code{logical} indicator of whether or not historical 
+covariates are to be included.}
 
-\item{cov_fcast}{logical indicator whether or not forecasted covariates are
-to be included}
+\item{cov_fcast}{\code{logical} indicator whether or not forecasted 
+covariates are to be included.}
 
-\item{yr}{year of today}
+\item{yr}{\code{numeric} value of the year of today's date.}
 
-\item{lead_time}{number of moons into the future the rodents are forecast}
+\item{lead_time}{\code{integer} (or integer \code{numeric}) number of moons
+into the future the rodents are to be forecast.}
 
-\item{min_lag}{the minimum lag time used in any model}
+\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
+covariate lag time used in any model.}
 
-\item{fcast_nms}{newmoon numbers to be forecast for covariates}
+\item{fcast_nms}{\code{integer} (or integer \code{numeric}) vector of 
+newmoon numbers to be forecast for covariates.}
 
-\item{nfcnm}{number of forecast newmoons for covariates}
+\item{nfcnm}{\code{integer} (or integer \code{numeric}) number of forecast 
+newmoons for covariates.}
 
-\item{append_fcast_csv}{logical if the new forecast should be appended to
-the historical forecasts for the purposes of hindcasting}
+\item{append_fcast_csv}{\code{logical} indicator controlling if the new 
+forecast should be appended to the historical forecasts for the purposes 
+of hindcasting.}
 
-\item{hist_fcast_file}{name of the file where the historical 
-covariate forecasts are held}
+\item{hist_fcast_file}{\code{character} name of the file where the 
+historical covariate forecasts are held.}
 
-\item{source_name}{character value for the name to give the covariaate
-forecast. Currently is "current_archive". Previous to "current_archive",
-the data were retroactively filled in and are given the source name
-"retroactive"}
+\item{source_name}{\code{character} value for the name to give the 
+covariaate forecast. Currently is \code{"current_archive"}. Previous to
+\code{"current_archive"}, the data were retroactively filled in and are 
+given the source name \code{"retroactive"}.}
 
-\item{c_save}{logical if the covariate data should be saved out}
+\item{c_save}{\code{logical} indicator for if the covariate data should be 
+saved out.}
 
-\item{c_filename}{the name of the covariate file for the saving}
+\item{c_filename}{\code{character} value for the name of the covariate file 
+for the saving if \code{c_save} is \code{TRUE}.}
 
-\item{cast_type}{"forecasts" or "hindcasts"}
+\item{cast_type}{-cast type: \code{"forecasts"} or \code{"hindcasts"}.}
 
-\item{confidence_level}{confidence level used in summarizing model output}
+\item{confidence_level}{\code{numeric} confidence level used in 
+summarizing model output. Must be between \code{0} and \code{1}.}
 
-\item{meta_save}{logical if the metadata should be saved out}
+\item{meta_save}{\code{logical} indicator for if the metadata should be
+saved out}
 
-\item{meta_filename}{the name of the metadata file for the saving}
+\item{meta_filename}{\code{character} value for the name of the metadata 
+file for the saving if \code{c_save} is \code{TRUE}.}
 
-\item{download_existing_predictions}{logical indicator is the existing
-predictions files should be retrieved from the portalPredictions repo}
+\item{download_existing_predictions}{\code{logical} indicator for if the 
+existing predictions files should be retrieved from the 
+\href{https://github.com/weecology/portalPredictions}{portalPredictions 
+repo}.}
 
-\item{model}{names of model scripts to include}
+\item{model}{\code{character} vector of the names of model scripts to 
+include in a cast of the pipeline.}
 
-\item{ensemble}{logical indicator of whether to create an ensemble model}
+\item{ensemble}{\code{logical} indicator of whether to create an ensemble
+model.}
 
-\item{version}{version number or "latest" (default) for the Portal Data
-download}
+\item{version}{\code{character} values of the version number or 
+\code{"latest"} (default) for the Portal Data to be download.}
 
-\item{from_zenodo}{logical indicator of whether or not the Portal Data 
-should come from Zenodo (come from GitHub if not)}
+\item{from_zenodo}{\code{logical} indicator of whether or not the Portal 
+Data should come from Zenodo (come from GitHub if not).}
 
-\item{n_future_moons}{integer value for the number of future moons to add}
+\item{n_future_moons}{\code{integer} (or integer \code{numeric}) value for 
+the number of future moons to add.}
 
-\item{save}{logical if the specific data should be saved out}
+\item{save}{\code{logical} indicator if the specific data should be saved 
+out.}
 
-\item{filename}{the name of the file for the saving}
+\item{filename}{\code{character} name of the file for the saving.}
 
-\item{tree}{directory tree}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 }
 \value{
-\code{all_options}: list of control options lists ("options_dir"
-  generated by \code{dir_options}, "options_PortalData" generated by 
-  \code{PortalData_options}, "options_data" generated by 
-  \code{data_options}, "options_predictions" generated by
-  \code{predictions_options}, "options_models" generated by
-  \code{models_options}, and "options_cast" generated by 
+\code{all_options}: class-\code{all_options} \code{list} of control
+  options lists (\code{options_dir} generated by \code{dir_options}, 
+  \code{options_PortalData} generated by 
+  \code{PortalData_options}, \code{options_data} generated by 
+  \code{data_options}, \code{options_predictions} generated by
+  \code{predictions_options}, \code{options_models} generated by
+  \code{models_options}, and \code{options_cast} generated by 
   \code{cast_options}.
 
-\code{dir_options}: a list of settings controlling the directory
-  structure creation
+\code{dir_options}: a \code{dir_options} \code{list} of options for 
+  the directory structure creation.
 
-\code{PortalData_options}: a list of settings controlling the 
-  creation and population of the PortalData subdirectory
+\code{PortalData_options}: a \code{PortalData_options} \code{list} 
+  of settings controlling the population of the PortalData subdirectory.
 
-\code{data_options}: list of control options lists ("moons"
-  generated by \code{moons_options}, "rodents" generated by 
-  \code{rodents_options}, "covariates" generated by
-  \code{covariates_options}, and "metadata" generated by
-  \code{metadata_options}, as well as items "cast_type", "tree",  and
-  "quiet" for simple use with all or ancillary data.
+\code{data_options}: \code{data_options} \code{list} of control 
+  options \code{list}s (\code{moons} generated by \code{moons_options}, 
+  \code{rodents} generated by \code{rodents_options}, \code{covariates},
+  generated by \code{covariates_options}, and \code{metadata} generated by
+  \code{metadata_options}, as well as items \code{cast_type}, \code{tree},
+  and \code{quiet} for simple use with all or ancillary data..
 
-\code{moons_options}: a list of settings controlling the moon data
-  creation
+\code{moons_options}: a \code{moons_options} \code{list} of 
+  settings controlling the moon data creation.
 
-\code{rodents_options}: a list of settings controlling the rodents
-  data creation
+\code{rodents_options}: a \code{rodents_options} \code{list} of 
+  settings controlling the rodents data creation.
 
-\code{covariates_options}: a list of settings controlling the 
-  covariates data creation
+\code{covariates_options}: a \code{covariates_options} \code{list} 
+  of settings controlling the covariates data creation.
 
-\code{metadata_options}: a list of settings controlling the 
-  metadata creation
+\code{metadata_options}: a \code{metadata_options} \code{list}
+  of settings controlling the metadata creation.
 
-\code{predictions_options}: a list of settings controlling the 
-  population of the predictions subdirectory
+\code{predictions_options}: a \code{predictions_options} 
+  \code{list} of settings controlling the population of the predictions 
+  subdirectory.
 
-\code{models_options}: a list of settings controlling the 
-  population of the models subdirectory
+\code{models_options}: a \code{models_options} \code{list} of 
+  settings controlling the population of the models subdirectory.
 
-\code{cast_options}: a list of settings controlling the running of
-  \code{\link{portalcast}}
+\code{cast_options}: a \code{cast_options} \code{list} of settings 
+  controlling the running of \code{\link{portalcast}}.
 }
 \description{
-Suite of functions used to generate options lists: \cr \cr
- \code{all_options} creates the full hierarchy of lists
+Suite of functions used to generate options \code{list}s 
+ that control the setup and use of a portalcasting directory: \cr \cr
+ \code{all_options} creates an \code{all_options} \code{list} that is a
+ full hierarchy of portalcasting options \code{list}s:
+ \code{options_dir}, \code{options_PortalData}, \code{options_data}, 
+ \code{options_predictions}, \code{options_models}, and 
+ \code{options_cast}.
 
-\code{dir_options} creates a list of control options for the
-  directory set-up
+\code{dir_options} creates a \code{dir_options} \code{list} of
+  control options for the directory set-up.
 
-\code{PortalData_options} creates a list of options for
-  filling the PortalData subdirectory
+\code{PortalData_options} creates a \code{PortalData_options}
+  \code{list} of options for filling the PortalData subdirectory.
 
-\code{data_options} creates a list of lists of options for
-  filling the data subdirectory
+\code{data_options} creates a \code{data_options} \code{list} 
+  of \code{list}s of options for filling the data subdirectory.
 
-\code{moons_options} creates a list of options for the moons
-  data
+\code{moons_options} creates a \code{moons_options} 
+  \code{list}of options for the moons data.
 
-\code{rodents_options} creates a list of options for the 
-  rodents data
+\code{rodents_options} creates a \code{rodents_options} 
+  \code{list} of options for the rodents data.
 
-\code{covariates_options} creates a list of options for the 
-  covariates data
+\code{covariates_options} creates a \code{covariates_options}
+  \code{list}of options for the covariates data.
 
-\code{metadata_options} creates a list of options for the 
-  metadata creation
+\code{metadata_options} creates a \code{metadata_options} 
+  \code{list}of options for the metadata creation.
 
-\code{predictions_options} creates a list of options for 
-  populating the predictions subdirectory
+\code{predictions_options} creates a 
+  \code{predictions_options} \code{list} of options for populating the 
+  predictions subdirectory
 
-\code{models_options} creates a list of options for 
-  populating the models subdirectory
+\code{models_options} creates a \code{models_options} 
+  \code{list} of options for populating the models subdirectory.
 
-\code{cast_options} creates a list of control options for 
-  running \code{\link{portalcast}}
+\code{cast_options} creates a \code{cast_options} \code{list} 
+  of control options for running \code{\link{portalcast}}.
 }
