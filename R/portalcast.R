@@ -31,7 +31,7 @@ portalcast <- function(options_all = all_options()){
 #'   subdirectory. 
 #'
 #' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options()}}. 
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @export
 #'
@@ -65,7 +65,7 @@ verify_models <- function(options_cast = cast_options()){
 #'   \code{model} element in \code{options_cast}.
 #'
 #' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options()}}. 
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @export
 #'
@@ -95,7 +95,7 @@ cast_models <- function(options_cast = cast_options()){
 #'   scripts. 
 #'
 #' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options()}}. 
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @return \code{character} vector of the path(s) of the R script file(s) to 
 #'   be run.
@@ -158,18 +158,22 @@ clear_tmp <- function(tree = dirtree()){
   }
 }
 
-#' @title Prepare data subdirectory for a forecast run or hindcast runs
+#' @title Prepare data subdirectory for a forecast or hindcast run(s)
 #'
-#' @description Prepare the data directory for a forecasting run or a set
-#'   of hindcasting runs
+#' @description Make sure that the data subdirectory has the updated files
+#'   for a forecasting run or a set of hindcasting runs. Uses the 
+#'   \code{metadata.yaml} file to verify validity.
 #'
-#' @param options_data the data options list
-#'
-#' @return nothing
+#' @param options_data Class-\code{data_options} \code{list} containing the
+#'   options for filling the data subdirectory. See 
+#'   \code{\link{data_options()}}. 
 #'
 #' @export
 #'
 prep_data <- function(options_data = data_options()){
+  if (!("data_options" %in% class(options_data))){
+    stop("`options_data` not of class `data_options`")
+  }
   if (!options_data$quiet){
     cat("Preparing data", "\n")
   }

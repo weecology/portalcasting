@@ -8,7 +8,7 @@ cast_models(options_cast = cast_options())
 }
 \arguments{
 \item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options()}}.}
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \description{
 Source the R scripts of the selected model(s) indicated by the

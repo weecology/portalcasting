@@ -9,7 +9,7 @@ models_to_cast(options_cast = cast_options())
 }
 \arguments{
 \item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options()}}.}
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \value{
 \code{character} vector of the path(s) of the R script file(s) to 

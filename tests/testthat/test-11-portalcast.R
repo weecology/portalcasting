@@ -47,9 +47,25 @@ test_that("create_tmp", {
 test_that("clear_tmp", {
   expect_error(clear_tmp(1))
   expect_silent(clear_tmp(dirtree(main = "ok")))
-unlink(sub_path(dirtree(main = "ok"), "tmp"), recursive = TRUE, force = TRUE)
-unlink(sub_path(dirtree(main = "ok"), "tmp"), recursive = TRUE, force = TRUE)
+  unlink(sub_path(dirtree(main = "ok"), "tmp"), recursive = TRUE, 
+         force = TRUE)
+  unlink(sub_path(dirtree(main = "ok"), "tmp"), recursive = TRUE, 
+         force = TRUE)
   expect_message(clear_tmp(dirtree(main = "ok")))
+})
+
+test_that("prep_data", {
+  expect_error(prep_data(1))
+  expect_output(prep_data(options_all1$options_data))
+  unlink(file_path(dirtree(main = "ok"), "data/metadata.yaml"))
+  expect_output(prep_data(options_all1$options_data))
+
+  metadata_path <- file_path(dirtree(main = "ok"), "data/metadata.yaml")
+  metadata <- yaml.load_file(metadata_path)    
+  metadata$forecast_date <- "1970-01-01"
+  writeLines(as.yaml(metadata), con = metadata_path)
+  expect_output(prep_data(options_all1$options_data))
+  expect_output(prep_data(options_all6$options_data))
 })
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
