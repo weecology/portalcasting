@@ -5,6 +5,8 @@ options_all2 <- all_options(main = "ok", quiet = TRUE)
 options_all3 <- all_options(main = "ok", model = models(NULL, "AutoArima"))
 options_all4 <- all_options(main = "ok", model = models(NULL, "ok"))
 options_all5 <- all_options(main = "ok", model = models(NULL, "all"))
+options_all6 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
+                            cast_type = "hindcasts", end = 490)
 
 setup_dir(options_all1)
 
@@ -24,6 +26,7 @@ test_that("verify_models", {
 test_that("cast_models", {
   expect_error(cast_models(1))
   expect_message(cast_models(options_all3$options_cast))
+  expect_message(cast_models(options_all6$options_cast))
 })
 
 test_that("models_to_cast", {
