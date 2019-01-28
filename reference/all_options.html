@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prepare options for a portalcasting directory — all_options • portalcasting</title>
+<title>Prepare options lists for a portalcasting directory — all_options • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,30 +30,36 @@
 
 
 
-<meta property="og:title" content="Prepare options for a portalcasting directory — all_options" />
+<meta property="og:title" content="Prepare options lists for a portalcasting directory — all_options" />
 
-<meta property="og:description" content="Suite of functions used to generate options lists:  
- all_options creates the full hierarchy of lists
-dir_options creates a list of control options for the
-  directory set-up
-PortalData_options creates a list of options for
-  filling the PortalData subdirectory
-data_options creates a list of lists of options for
-  filling the data subdirectory
-moons_options creates a list of options for the moons
-  data
-rodents_options creates a list of options for the 
-  rodents data
-covariates_options creates a list of options for the 
-  covariates data
-metadata_options creates a list of options for the 
-  metadata creation
-predictions_options creates a list of options for 
-  populating the predictions subdirectory
-models_options creates a list of options for 
-  populating the models subdirectory
-cast_options creates a list of control options for 
-  running portalcast" />
+<meta property="og:description" content="Suite of functions used to generate options lists 
+ that control the setup and use of a portalcasting directory:  
+ all_options creates an all_options list that is a
+ full hierarchy of portalcasting options lists:
+ options_dir, options_PortalData, options_data, 
+ options_predictions, options_models, and 
+ options_cast.
+dir_options creates a dir_options list of
+  control options for the directory set-up.
+PortalData_options creates a PortalData_options
+  list of options for filling the PortalData subdirectory.
+data_options creates a data_options list 
+  of lists of options for filling the data subdirectory.
+moons_options creates a moons_options 
+  listof options for the moons data.
+rodents_options creates a rodents_options 
+  list of options for the rodents data.
+covariates_options creates a covariates_options
+  listof options for the covariates data.
+metadata_options creates a metadata_options 
+  listof options for the metadata creation.
+predictions_options creates a 
+  predictions_options list of options for populating the 
+  predictions subdirectory
+models_options creates a models_options 
+  list of options for populating the models subdirectory.
+cast_options creates a cast_options list 
+  of control options for running portalcast." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -141,35 +147,41 @@ cast_options creates a list of control options for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Prepare options for a portalcasting directory</h1>
+    <h1>Prepare options lists for a portalcasting directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/options.R'><code>R/options.R</code></a></small>
     <div class="hidden name"><code>all_options.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Suite of functions used to generate options lists: <br /> <br />
- <code>all_options</code> creates the full hierarchy of lists</p>
-<p><code>dir_options</code> creates a list of control options for the
-  directory set-up</p>
-<p><code>PortalData_options</code> creates a list of options for
-  filling the PortalData subdirectory</p>
-<p><code>data_options</code> creates a list of lists of options for
-  filling the data subdirectory</p>
-<p><code>moons_options</code> creates a list of options for the moons
-  data</p>
-<p><code>rodents_options</code> creates a list of options for the 
-  rodents data</p>
-<p><code>covariates_options</code> creates a list of options for the 
-  covariates data</p>
-<p><code>metadata_options</code> creates a list of options for the 
-  metadata creation</p>
-<p><code>predictions_options</code> creates a list of options for 
-  populating the predictions subdirectory</p>
-<p><code>models_options</code> creates a list of options for 
-  populating the models subdirectory</p>
-<p><code>cast_options</code> creates a list of control options for 
-  running <code><a href='portalcast.html'>portalcast</a></code></p>
+    <p>Suite of functions used to generate options <code>list</code>s 
+ that control the setup and use of a portalcasting directory: <br /> <br />
+ <code>all_options</code> creates an <code>all_options</code> <code>list</code> that is a
+ full hierarchy of portalcasting options <code>list</code>s:
+ <code>options_dir</code>, <code>options_PortalData</code>, <code>options_data</code>, 
+ <code>options_predictions</code>, <code>options_models</code>, and 
+ <code>options_cast</code>.</p>
+<p><code>dir_options</code> creates a <code>dir_options</code> <code>list</code> of
+  control options for the directory set-up.</p>
+<p><code>PortalData_options</code> creates a <code>PortalData_options</code>
+  <code>list</code> of options for filling the PortalData subdirectory.</p>
+<p><code>data_options</code> creates a <code>data_options</code> <code>list</code> 
+  of <code>list</code>s of options for filling the data subdirectory.</p>
+<p><code>moons_options</code> creates a <code>moons_options</code> 
+  <code>list</code>of options for the moons data.</p>
+<p><code>rodents_options</code> creates a <code>rodents_options</code> 
+  <code>list</code> of options for the rodents data.</p>
+<p><code>covariates_options</code> creates a <code>covariates_options</code>
+  <code>list</code>of options for the covariates data.</p>
+<p><code>metadata_options</code> creates a <code>metadata_options</code> 
+  <code>list</code>of options for the metadata creation.</p>
+<p><code>predictions_options</code> creates a 
+  <code>predictions_options</code> <code>list</code> of options for populating the 
+  predictions subdirectory</p>
+<p><code>models_options</code> creates a <code>models_options</code> 
+  <code>list</code> of options for populating the models subdirectory.</p>
+<p><code>cast_options</code> creates a <code>cast_options</code> <code>list</code> 
+  of control options for running <code><a href='portalcast.html'>portalcast</a></code>.</p>
     
     </div>
 
@@ -248,242 +260,285 @@ cast_options creates a list of control options for
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>base</th>
-      <td><p>name of the base directory where the forecasting 
-directory should exist (will be created if it doesn't)</p></td>
+      <td><p><code>character</code> name of the base folder where the directory 
+should or does exist. Default <code>"."</code> (working directory). Will be 
+created if it doesn't exist.</p></td>
     </tr>
     <tr>
       <th>main</th>
-      <td><p>name of the portalcasting directory</p></td>
+      <td><p><code>character</code> name of the main folder within the base that
+contains the subdirectories. Default <code>""</code> (no main level included).</p></td>
     </tr>
     <tr>
       <th>subs</th>
-      <td><p>names of the portalcasting subdirectories</p></td>
+      <td><p><code>character</code> vector naming the specific subdirectories
+within the portalcasting directory tree. Default <code><a href='subdirs.html'>subdirs()</a></code> sets
+the subdirectories as <code>"predictions"</code>, <code>"models"</code>,
+<code>"PortalData"</code>, <code>"data"</code>, and <code>"tmp"</code>. It is generally
+not advised to change the subdirectories.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical indicator if progress messages should be quieted</p></td>
+      <td><p><code>logical</code> indicator controlling if messages are printed.</p></td>
     </tr>
     <tr>
       <th>fdate</th>
-      <td><p>date from which future is defined, typically today's date.</p></td>
+      <td><p><code>Date</code> from which future is defined, typically today's 
+date (using <code><a href='today.html'>today</a></code>).</p></td>
     </tr>
     <tr>
       <th>append_missing_to_raw</th>
-      <td><p>logical indicating if the missing moon dates 
-should be appended to the raw data file (should be TRUE to allow the
-imported portalr functions to work properly)</p></td>
+      <td><p><code>logical</code> indicator dictating if the 
+missing moon dates should be appended to the raw data file (should be 
+<code>TRUE</code> to allow the imported portalr functions to work properly).</p></td>
     </tr>
     <tr>
       <th>m_save</th>
-      <td><p>logical if the moons data should be saved out</p></td>
+      <td><p><code>logical</code> indicator controlling if the moons data should 
+be saved out.</p></td>
     </tr>
     <tr>
       <th>m_filename</th>
-      <td><p>the name of the file for saving moons data</p></td>
+      <td><p><code>character</code> name of the file for saving moons data.</p></td>
     </tr>
     <tr>
       <th>tmnt_type</th>
-      <td><p>"all" or "controls"</p></td>
+      <td><p>Treatment type: <code>"all"</code> or <code>"controls"</code>.</p></td>
     </tr>
     <tr>
       <th>start</th>
-      <td><p>newmoon number of the first sample to be included. Default 
-value is <code>217</code>, corresponding to 1995-01-01</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) newmoon number of 
+the first sample to be included. Default value is <code>217</code>, 
+corresponding to <code>1995-01-01</code>.</p></td>
     </tr>
     <tr>
       <th>end</th>
-      <td><p>newmoon number of the last sample to be included. Default
-value is <code>NULL</code>, which equates to the most recently included
-sample. If <code>cast_type</code> is "hindcasts" and <code>end</code> is <code>NULL</code>,
-default becomes <code>490:403</code>, corresponding to 2017-01-01 back to
-2010-01-01</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) newmoon number of the
+last sample to be included. Default value is <code>NULL</code>, which equates
+to the most recently included sample. If <code>cast_type</code> is 
+<code>"hindcasts"</code> and <code>end</code> is <code>NULL</code>, default becomes 
+<code>490:403</code>, corresponding to <code>2017-01-01</code> back to
+<code>2010-01-01</code>.</p></td>
     </tr>
     <tr>
       <th>hind_step</th>
-      <td><p>an iteration parameter to work across the input values 
-for <code>end</code>. Default is 1, which is likely all it should be run using</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) iteration 
+parameter used to work across the input values for <code>end</code>. Default is
+<code>1</code>, which is likely all it should be run using.</p></td>
     </tr>
     <tr>
       <th>drop_spp</th>
-      <td><p>species names to drop from the table</p></td>
+      <td><p><code>character</code>-valued vector of species names to drop 
+from the forecasting.</p></td>
     </tr>
     <tr>
       <th>min_plots</th>
-      <td><p>minimum number of plots surveyed for a survey to be used</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) of the minimum 
+number of plots surveyed for a survey to be used.</p></td>
     </tr>
     <tr>
       <th>min_traps</th>
-      <td><p>minimum number of traps trapped for a plot to be used</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) of the minimum 
+number of traps trapped for a plot to be used.</p></td>
     </tr>
     <tr>
       <th>level</th>
-      <td><p>for get_rodent_data, automatically set by tmnt_type</p></td>
+      <td><p><code>character</code> input for 
+<code><a href='https://www.rdocumentation.org/packages/portalr/topics/summarize_rodent_data'>summarize_rodent_data</a></code>, automatically set by 
+<code>tmnt_type</code>.</p></td>
     </tr>
     <tr>
       <th>treatment</th>
-      <td><p>for get_rodent_data, automatically set by tmnt_type</p></td>
+      <td><p><code>character</code> input for 
+<code><a href='https://www.rdocumentation.org/packages/portalr/topics/summarize_rodent_data'>summarize_rodent_data</a></code>, automatically set by 
+<code>tmnt_type</code>.</p></td>
     </tr>
     <tr>
       <th>plots</th>
-      <td><p>for get_rodent_data, automatically set by tmnt_type</p></td>
+      <td><p><code>character</code> input for 
+<code><a href='https://www.rdocumentation.org/packages/portalr/topics/summarize_rodent_data'>summarize_rodent_data</a></code>, automatically set by 
+<code>tmnt_type</code>.</p></td>
     </tr>
     <tr>
       <th>output</th>
-      <td><p>for get_rodent_data, automatically set by tmnt_type</p></td>
+      <td><p><code>character</code> input for 
+<code><a href='https://www.rdocumentation.org/packages/portalr/topics/summarize_rodent_data'>summarize_rodent_data</a></code>, automatically set by 
+<code>tmnt_type</code>.</p></td>
     </tr>
     <tr>
       <th>r_save</th>
-      <td><p>logical if the data should be saved out</p></td>
+      <td><p><code>logical</code> value indicating if the rodent data should be 
+saved out.</p></td>
     </tr>
     <tr>
       <th>r_filename</th>
-      <td><p>the name of the file to save the rodent data in</p></td>
+      <td><p><code>character</code> name of the file to save the rodent data
+in.</p></td>
     </tr>
     <tr>
       <th>cov_hist</th>
-      <td><p>logical indicator whether or not historical covariates are
-to be included</p></td>
+      <td><p><code>logical</code> indicator of whether or not historical 
+covariates are to be included.</p></td>
     </tr>
     <tr>
       <th>cov_fcast</th>
-      <td><p>logical indicator whether or not forecasted covariates are
-to be included</p></td>
+      <td><p><code>logical</code> indicator whether or not forecasted 
+covariates are to be included.</p></td>
     </tr>
     <tr>
       <th>yr</th>
-      <td><p>year of today</p></td>
+      <td><p><code>numeric</code> value of the year of today's date.</p></td>
     </tr>
     <tr>
       <th>lead_time</th>
-      <td><p>number of moons into the future the rodents are forecast</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) number of moons
+into the future the rodents are to be forecast.</p></td>
     </tr>
     <tr>
       <th>min_lag</th>
-      <td><p>the minimum lag time used in any model</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) of the minimum 
+covariate lag time used in any model.</p></td>
     </tr>
     <tr>
       <th>fcast_nms</th>
-      <td><p>newmoon numbers to be forecast for covariates</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) vector of 
+newmoon numbers to be forecast for covariates.</p></td>
     </tr>
     <tr>
       <th>nfcnm</th>
-      <td><p>number of forecast newmoons for covariates</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) number of forecast 
+newmoons for covariates.</p></td>
     </tr>
     <tr>
       <th>append_fcast_csv</th>
-      <td><p>logical if the new forecast should be appended to
-the historical forecasts for the purposes of hindcasting</p></td>
+      <td><p><code>logical</code> indicator controlling if the new 
+forecast should be appended to the historical forecasts for the purposes 
+of hindcasting.</p></td>
     </tr>
     <tr>
       <th>hist_fcast_file</th>
-      <td><p>name of the file where the historical 
-covariate forecasts are held</p></td>
+      <td><p><code>character</code> name of the file where the 
+historical covariate forecasts are held.</p></td>
     </tr>
     <tr>
       <th>source_name</th>
-      <td><p>character value for the name to give the covariaate
-forecast. Currently is "current_archive". Previous to "current_archive",
-the data were retroactively filled in and are given the source name
-"retroactive"</p></td>
+      <td><p><code>character</code> value for the name to give the 
+covariaate forecast. Currently is <code>"current_archive"</code>. Previous to
+<code>"current_archive"</code>, the data were retroactively filled in and are 
+given the source name <code>"retroactive"</code>.</p></td>
     </tr>
     <tr>
       <th>c_save</th>
-      <td><p>logical if the covariate data should be saved out</p></td>
+      <td><p><code>logical</code> indicator for if the covariate data should be 
+saved out.</p></td>
     </tr>
     <tr>
       <th>c_filename</th>
-      <td><p>the name of the covariate file for the saving</p></td>
+      <td><p><code>character</code> value for the name of the covariate file 
+for the saving if <code>c_save</code> is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>cast_type</th>
-      <td><p>"forecasts" or "hindcasts"</p></td>
+      <td><p>-cast type: <code>"forecasts"</code> or <code>"hindcasts"</code>.</p></td>
     </tr>
     <tr>
       <th>confidence_level</th>
-      <td><p>confidence level used in summarizing model output</p></td>
+      <td><p><code>numeric</code> confidence level used in 
+summarizing model output. Must be between <code>0</code> and <code>1</code>.</p></td>
     </tr>
     <tr>
       <th>meta_save</th>
-      <td><p>logical if the metadata should be saved out</p></td>
+      <td><p><code>logical</code> indicator for if the metadata should be
+saved out</p></td>
     </tr>
     <tr>
       <th>meta_filename</th>
-      <td><p>the name of the metadata file for the saving</p></td>
+      <td><p><code>character</code> value for the name of the metadata 
+file for the saving if <code>c_save</code> is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>download_existing_predictions</th>
-      <td><p>logical indicator is the existing
-predictions files should be retrieved from the portalPredictions repo</p></td>
+      <td><p><code>logical</code> indicator for if the 
+existing predictions files should be retrieved from the 
+<a href='https://github.com/weecology/portalPredictions'>portalPredictions 
+repo</a>.</p></td>
     </tr>
     <tr>
       <th>model</th>
-      <td><p>names of model scripts to include</p></td>
+      <td><p><code>character</code> vector of the names of model scripts to 
+include in a cast of the pipeline.</p></td>
     </tr>
     <tr>
       <th>ensemble</th>
-      <td><p>logical indicator of whether to create an ensemble model</p></td>
+      <td><p><code>logical</code> indicator of whether to create an ensemble
+model.</p></td>
     </tr>
     <tr>
       <th>version</th>
-      <td><p>version number or "latest" (default) for the Portal Data
-download</p></td>
+      <td><p><code>character</code> values of the version number or 
+<code>"latest"</code> (default) for the Portal Data to be download.</p></td>
     </tr>
     <tr>
       <th>from_zenodo</th>
-      <td><p>logical indicator of whether or not the Portal Data 
-should come from Zenodo (come from GitHub if not)</p></td>
+      <td><p><code>logical</code> indicator of whether or not the Portal 
+Data should come from Zenodo (come from GitHub if not).</p></td>
     </tr>
     <tr>
       <th>n_future_moons</th>
-      <td><p>integer value for the number of future moons to add</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) value for 
+the number of future moons to add.</p></td>
     </tr>
     <tr>
       <th>save</th>
-      <td><p>logical if the specific data should be saved out</p></td>
+      <td><p><code>logical</code> indicator if the specific data should be saved 
+out.</p></td>
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>the name of the file for the saving</p></td>
+      <td><p><code>character</code> name of the file for the saving.</p></td>
     </tr>
     <tr>
       <th>tree</th>
-      <td><p>directory tree</p></td>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>all_options</code>: list of control options lists ("options_dir"
-  generated by <code>dir_options</code>, "options_PortalData" generated by 
-  <code>PortalData_options</code>, "options_data" generated by 
-  <code>data_options</code>, "options_predictions" generated by
-  <code>predictions_options</code>, "options_models" generated by
-  <code>models_options</code>, and "options_cast" generated by 
+    <p><code>all_options</code>: class-<code>all_options</code> <code>list</code> of control
+  options lists (<code>options_dir</code> generated by <code>dir_options</code>, 
+  <code>options_PortalData</code> generated by 
+  <code>PortalData_options</code>, <code>options_data</code> generated by 
+  <code>data_options</code>, <code>options_predictions</code> generated by
+  <code>predictions_options</code>, <code>options_models</code> generated by
+  <code>models_options</code>, and <code>options_cast</code> generated by 
   <code>cast_options</code>.</p>
-<p><code>dir_options</code>: a list of settings controlling the directory
-  structure creation</p>
-<p><code>PortalData_options</code>: a list of settings controlling the 
-  creation and population of the PortalData subdirectory</p>
-<p><code>data_options</code>: list of control options lists ("moons"
-  generated by <code>moons_options</code>, "rodents" generated by 
-  <code>rodents_options</code>, "covariates" generated by
-  <code>covariates_options</code>, and "metadata" generated by
-  <code>metadata_options</code>, as well as items "cast_type", "tree",  and
-  "quiet" for simple use with all or ancillary data.</p>
-<p><code>moons_options</code>: a list of settings controlling the moon data
-  creation</p>
-<p><code>rodents_options</code>: a list of settings controlling the rodents
-  data creation</p>
-<p><code>covariates_options</code>: a list of settings controlling the 
-  covariates data creation</p>
-<p><code>metadata_options</code>: a list of settings controlling the 
-  metadata creation</p>
-<p><code>predictions_options</code>: a list of settings controlling the 
-  population of the predictions subdirectory</p>
-<p><code>models_options</code>: a list of settings controlling the 
-  population of the models subdirectory</p>
-<p><code>cast_options</code>: a list of settings controlling the running of
-  <code><a href='portalcast.html'>portalcast</a></code></p>
+<p><code>dir_options</code>: a <code>dir_options</code> <code>list</code> of options for 
+  the directory structure creation.</p>
+<p><code>PortalData_options</code>: a <code>PortalData_options</code> <code>list</code> 
+  of settings controlling the population of the PortalData subdirectory.</p>
+<p><code>data_options</code>: <code>data_options</code> <code>list</code> of control 
+  options <code>list</code>s (<code>moons</code> generated by <code>moons_options</code>, 
+  <code>rodents</code> generated by <code>rodents_options</code>, <code>covariates</code>,
+  generated by <code>covariates_options</code>, and <code>metadata</code> generated by
+  <code>metadata_options</code>, as well as items <code>cast_type</code>, <code>tree</code>,
+  and <code>quiet</code> for simple use with all or ancillary data..</p>
+<p><code>moons_options</code>: a <code>moons_options</code> <code>list</code> of 
+  settings controlling the moon data creation.</p>
+<p><code>rodents_options</code>: a <code>rodents_options</code> <code>list</code> of 
+  settings controlling the rodents data creation.</p>
+<p><code>covariates_options</code>: a <code>covariates_options</code> <code>list</code> 
+  of settings controlling the covariates data creation.</p>
+<p><code>metadata_options</code>: a <code>metadata_options</code> <code>list</code>
+  of settings controlling the metadata creation.</p>
+<p><code>predictions_options</code>: a <code>predictions_options</code> 
+  <code>list</code> of settings controlling the population of the predictions 
+  subdirectory.</p>
+<p><code>models_options</code>: a <code>models_options</code> <code>list</code> of 
+  settings controlling the population of the models subdirectory.</p>
+<p><code>cast_options</code>: a <code>cast_options</code> <code>list</code> of settings 
+  controlling the running of <code><a href='portalcast.html'>portalcast</a></code>.</p>
     
 
   </div>
