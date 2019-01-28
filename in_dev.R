@@ -1,20 +1,15 @@
 # script for active development
 #  pushed to git but ignored in the R package build
 
-# working in the forecast_covariates tests
-# within forecast_covariates working on hindcasts
+# working through tests and documentation
+# scripts to do:
+#  AutoArima, ESSS, nbGARCH, pevGARCH
+#  options, portalcast, prepare_covariates, prepare_metadata, prepare_models,
+#  prepare_rodents, prepare_data, process_forecasts
+#
 
 devtools::load_all()
 options_all <- all_options(main = "ok")
 setup_dir(options_all)
 portalcast(options_all)
 
-
-moons <- prep_moons(ops_$options_data$moons)
-hist_cov <- prep_hist_covariates(options_all$options_data$covariates)
-options_covariates <- options_all$options_data$covariates
-up_cov_opts <- update_covfcast_options(options_covariates, hist_cov, moons)
-
-moons_t <- trim_moons_fcast(moons, options_covariates = up_cov_opts)
-
-add tests to make sure covariates are covariates

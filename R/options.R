@@ -1,117 +1,161 @@
-#' @title Prepare options for a portalcasting directory
+#' @title Prepare options lists for a portalcasting directory
 #'
-#' @description Suite of functions used to generate options lists: \cr \cr
-#'  \code{all_options} creates the full hierarchy of lists
+#' @description Suite of functions used to generate options \code{list}s 
+#'  that control the setup and use of a portalcasting directory: \cr \cr
+#'  \code{all_options} creates an \code{all_options} \code{list} that is a
+#'  full hierarchy of portalcasting options \code{list}s:
+#'  \code{options_dir}, \code{options_PortalData}, \code{options_data}, 
+#'  \code{options_predictions}, \code{options_models}, and 
+#'  \code{options_cast}.
 #'
-#' @param base name of the base directory where the forecasting 
-#'   directory should exist (will be created if it doesn't)
+#' @param base \code{character} name of the base folder where the directory 
+#'   should or does exist. Default \code{"."} (working directory). Will be 
+#'   created if it doesn't exist.
 #'
-#' @param main name of the portalcasting directory
+#' @param main \code{character} name of the main folder within the base that
+#'   contains the subdirectories. Default \code{""} (no main level included). 
 #'
-#' @param subs names of the portalcasting subdirectories
+#' @param subs \code{character} vector naming the specific subdirectories
+#'   within the portalcasting directory tree. Default \code{subdirs()} sets
+#'   the subdirectories as \code{"predictions"}, \code{"models"},
+#'   \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
+#'   not advised to change the subdirectories. 
 #'
-#' @param quiet logical indicator if progress messages should be quieted
+#' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
-#' @param fdate date from which future is defined, typically today's date.
+#' @param fdate \code{Date} from which future is defined, typically today's 
+#'   date (using \code{\link{today}}).
 #'
-#' @param append_missing_to_raw logical indicating if the missing moon dates 
-#'   should be appended to the raw data file (should be TRUE to allow the
-#'   imported portalr functions to work properly)
+#' @param append_missing_to_raw \code{logical} indicator dictating if the 
+#'   missing moon dates should be appended to the raw data file (should be 
+#'   \code{TRUE} to allow the imported portalr functions to work properly).
 #'
-#' @param m_save logical if the moons data should be saved out
+#' @param m_save \code{logical} indicator controlling if the moons data should 
+#'   be saved out.
 #'
-#' @param m_filename the name of the file for saving moons data
+#' @param m_filename \code{character} name of the file for saving moons data.
 #'
-#' @param tmnt_type "all" or "controls"
+#' @param tmnt_type Treatment type: \code{"all"} or \code{"controls"}.
 #'
-#' @param start newmoon number of the first sample to be included. Default 
-#'   value is \code{217}, corresponding to 1995-01-01
+#' @param start \code{integer} (or integer \code{numeric}) newmoon number of 
+#'   the first sample to be included. Default value is \code{217}, 
+#'   corresponding to \code{1995-01-01}.
 #'
-#' @param end newmoon number of the last sample to be included. Default
-#'   value is \code{NULL}, which equates to the most recently included
-#'   sample. If \code{cast_type} is "hindcasts" and \code{end} is \code{NULL},
-#'   default becomes \code{490:403}, corresponding to 2017-01-01 back to
-#'   2010-01-01
+#' @param end \code{integer} (or integer \code{numeric}) newmoon number of the
+#'   last sample to be included. Default value is \code{NULL}, which equates
+#'   to the most recently included sample. If \code{cast_type} is 
+#'   \code{"hindcasts"} and \code{end} is \code{NULL}, default becomes 
+#'   \code{490:403}, corresponding to \code{2017-01-01} back to
+#'   \code{2010-01-01}.
 #'
-#' @param hind_step an iteration parameter to work across the input values 
-#'   for \code{end}. Default is 1, which is likely all it should be run using
+#' @param hind_step \code{integer} (or integer \code{numeric}) iteration 
+#'   parameter used to work across the input values for \code{end}. Default is
+#'   \code{1}, which is likely all it should be run using.
 #'
-#' @param drop_spp species names to drop from the table
+#' @param drop_spp \code{character}-valued vector of species names to drop 
+#'   from the forecasting.
 #'
-#' @param min_plots minimum number of plots surveyed for a survey to be used
+#' @param min_plots \code{integer} (or integer \code{numeric}) of the minimum 
+#'   number of plots surveyed for a survey to be used.
 #'
-#' @param min_traps minimum number of traps trapped for a plot to be used
+#' @param min_traps \code{integer} (or integer \code{numeric}) of the minimum 
+#'   number of traps trapped for a plot to be used.
 #'
-#' @param level for get_rodent_data, automatically set by tmnt_type
+#' @param level \code{character} input for 
+#'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+#'   \code{tmnt_type}.
 #'
-#' @param treatment for get_rodent_data, automatically set by tmnt_type
+#' @param treatment \code{character} input for 
+#'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+#'   \code{tmnt_type}.
 #'
-#' @param plots for get_rodent_data, automatically set by tmnt_type
+#' @param plots \code{character} input for 
+#'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+#'   \code{tmnt_type}.
 #'
-#' @param output for get_rodent_data, automatically set by tmnt_type
+#' @param output \code{character} input for 
+#'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+#'   \code{tmnt_type}.
 #'
-#' @param r_save logical if the data should be saved out
+#' @param r_save \code{logical} value indicating if the rodent data should be 
+#'   saved out.
 #'
-#' @param r_filename the name of the file to save the rodent data in
+#' @param r_filename \code{character} name of the file to save the rodent data
+#'   in.
 #'
-#' @param cov_hist logical indicator whether or not historical covariates are
-#'   to be included
+#' @param cov_hist \code{logical} indicator of whether or not historical 
+#'   covariates are to be included.
 #'
-#' @param cov_fcast logical indicator whether or not forecasted covariates are
-#'   to be included
+#' @param cov_fcast \code{logical} indicator whether or not forecasted 
+#'   covariates are to be included.
 #'
-#' @param yr year of today
+#' @param yr \code{numeric} value of the year of today's date.
 #'
-#' @param lead_time number of moons into the future the rodents are forecast
+#' @param lead_time \code{integer} (or integer \code{numeric}) number of moons
+#'   into the future the rodents are to be forecast.
 #'
-#' @param min_lag the minimum lag time used in any model
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'   covariate lag time used in any model.
 #'
-#' @param fcast_nms newmoon numbers to be forecast for covariates
+#' @param fcast_nms \code{integer} (or integer \code{numeric}) vector of 
+#'   newmoon numbers to be forecast for covariates.
 #'
-#' @param nfcnm number of forecast newmoons for covariates
+#' @param nfcnm \code{integer} (or integer \code{numeric}) number of forecast 
+#'   newmoons for covariates.
 #'
-#' @param append_fcast_csv logical if the new forecast should be appended to
-#'   the historical forecasts for the purposes of hindcasting
+#' @param append_fcast_csv \code{logical} indicator controlling if the new 
+#'   forecast should be appended to the historical forecasts for the purposes 
+#'   of hindcasting.
 #'
-#' @param hist_fcast_file name of the file where the historical 
-#'   covariate forecasts are held
+#' @param hist_fcast_file \code{character} name of the file where the 
+#'   historical covariate forecasts are held.
 #'
-#' @param source_name character value for the name to give the covariaate
-#'   forecast. Currently is "current_archive". Previous to "current_archive",
-#'   the data were retroactively filled in and are given the source name
-#'   "retroactive"
+#' @param source_name \code{character} value for the name to give the 
+#'   covariaate forecast. Currently is \code{"current_archive"}. Previous to
+#'   \code{"current_archive"}, the data were retroactively filled in and are 
+#'   given the source name \code{"retroactive"}.
 #'
-#' @param c_save logical if the covariate data should be saved out
+#' @param c_save \code{logical} indicator for if the covariate data should be 
+#'   saved out.
 #'
-#' @param c_filename the name of the covariate file for the saving
+#' @param c_filename \code{character} value for the name of the covariate file 
+#'   for the saving if \code{c_save} is \code{TRUE}.
 #'
-#' @param cast_type "forecasts" or "hindcasts" 
+#' @param cast_type -cast type: \code{"forecasts"} or \code{"hindcasts"}.
 #'
-#' @param confidence_level confidence level used in summarizing model output
+#' @param confidence_level \code{numeric} confidence level used in 
+#'   summarizing model output. Must be between \code{0} and \code{1}.
 #'
-#' @param meta_save logical if the metadata should be saved out
+#' @param meta_save \code{logical} indicator for if the metadata should be
+#'   saved out
 #'
-#' @param meta_filename the name of the metadata file for the saving
+#' @param meta_filename \code{character} value for the name of the metadata 
+#'   file for the saving if \code{c_save} is \code{TRUE}.
 #'
-#' @param download_existing_predictions logical indicator is the existing
-#'   predictions files should be retrieved from the portalPredictions repo
+#' @param download_existing_predictions \code{logical} indicator for if the 
+#'   existing predictions files should be retrieved from the 
+#'   \href{https://github.com/weecology/portalPredictions}{portalPredictions 
+#'   repo}.
 #'
-#' @param model names of model scripts to include
+#' @param model \code{character} vector of the names of model scripts to 
+#'   include in a cast of the pipeline.
 #'
-#' @param ensemble logical indicator of whether to create an ensemble model
+#' @param ensemble \code{logical} indicator of whether to create an ensemble
+#'   model.
 #'
-#' @param version version number or "latest" (default) for the Portal Data
-#'   download
+#' @param version \code{character} values of the version number or 
+#'   \code{"latest"} (default) for the Portal Data to be download.
 #'
-#' @param from_zenodo logical indicator of whether or not the Portal Data 
-#'   should come from Zenodo (come from GitHub if not)
+#' @param from_zenodo \code{logical} indicator of whether or not the Portal 
+#'   Data should come from Zenodo (come from GitHub if not).
 #'
-#' @return \code{all_options}: list of control options lists ("options_dir"
-#'   generated by \code{dir_options}, "options_PortalData" generated by 
-#'   \code{PortalData_options}, "options_data" generated by 
-#'   \code{data_options}, "options_predictions" generated by
-#'   \code{predictions_options}, "options_models" generated by
-#'   \code{models_options}, and "options_cast" generated by 
+#' @return \code{all_options}: class-\code{all_options} \code{list} of control
+#'   options lists (\code{options_dir} generated by \code{dir_options}, 
+#'   \code{options_PortalData} generated by 
+#'   \code{PortalData_options}, \code{options_data} generated by 
+#'   \code{data_options}, \code{options_predictions} generated by
+#'   \code{predictions_options}, \code{options_models} generated by
+#'   \code{models_options}, and \code{options_cast} generated by 
 #'   \code{cast_options}.
 #'
 #' @export
@@ -140,10 +184,282 @@ all_options <- function(base = ".", main = "", subs = subdirs(),
                         model = models(), ensemble = TRUE,
                         version = "latest", from_zenodo = TRUE){
 
+  if (length(base) > 1){
+    stop("`base` can only be of length = 1")
+  }
+  if (length(main) > 1){
+    stop("`main` can only be of length = 1")
+  }
+  if (!is.character(base)){
+    stop("`base` is not a character")
+  }
+  if (!is.character(main)){
+    stop("`main` is not a character")
+  }
+  if (!("subdirs" %in% class(subs))){
+    stop("`subs` is not a subdirs list")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("Date" %in% class(fdate))){
+    stop("`fdate` is not of class Date")
+  }
+  if (length(fdate) > 1){
+    stop("`fdate` can only be of length = 1")
+  }
+  if (!("logical" %in% class(append_missing_to_raw))){
+    stop("`append_missing_to_raw` is not of class logical")
+  }
+  if (length(append_missing_to_raw) > 1){
+    stop("`append_missing_to_raw` can only be of length = 1")
+  }
+  if (!("logical" %in% class(m_save))){
+    stop("`m_save` is not of class logical")
+  }
+  if (length(m_save) > 1){
+    stop("`m_save` can only be of length = 1")
+  }
+  if (!is.null(tmnt_type)){
+    if(tmnt_type != "all" & tmnt_type != "controls"){
+      stop("`tmnt_type` must be `NULL`, 'all', or 'controls'")
+    }
+  }
+  if (length(start) > 1){
+    stop("`start` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(start)) & !("integer" %in% class(start))){
+    stop("`start` is not of class numeric or integer")
+  }
+  if(start < 0 | start %% 1 != 0){
+    stop("`start` is not a non-negative integer")
+  }
+  if (!is.null(end)){
+    if (!("numeric" %in% class(end)) & !("integer" %in% class(end))){
+      stop("`end` is not of class numeric or integer")
+    }
+    if(any(end < 0 | end %% 1 != 0)){
+      stop("`end` is not a non-negative integer")
+    }
+  }
+  if (length(hind_step) > 1){
+    stop("`hind_step` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(hind_step)) & 
+      !("integer" %in% class(hind_step))){
+    stop("`hind_step` is not of class numeric or integer")
+  }
+  if(hind_step < 0 | hind_step %% 1 != 0){
+    stop("`hind_step` is not a non-negative integer")
+  }
+  if (!is.character(drop_spp)){
+    stop("`drop_spp` is not a character")
+  }
+  if (length(min_plots) > 1){
+    stop("`min_plots` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_plots)) & 
+      !("integer" %in% class(min_plots))){
+    stop("`min_plots` is not of class numeric or integer")
+  }
+  if(min_plots < 0 | min_plots %% 1 != 0){
+    stop("`min_plots` is not a non-negative integer")
+  }
+  if (length(min_traps) > 1){
+    stop("`min_traps` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_traps)) &
+     !("integer" %in% class(min_traps))){
+    stop("`min_traps` is not of class numeric or integer")
+  }
+  if(min_traps < 0 | min_traps %% 1 != 0){
+    stop("`min_traps` is not a non-negative integer")
+  }
+  if (!(is.null(treatment)) && treatment != "control"){
+    stop("`treatment` must be `NULL` or 'control'")
+  }
+  if (level != "Site" & level != "Treatment"){
+    stop("`level` must be 'Site' or 'Treatment'")
+  }
+  if (output != "abundance"){
+    stop("`output` must be 'abundance'")
+  }
+  if (plots != "all" & plots != "longterm"){
+    stop("`plots` must be 'all' or 'longterm'")
+  }
+  if (!("logical" %in% class(r_save))){
+    stop("`r_save` is not of class logical")
+  }
+  if (length(r_save) > 1){
+    stop("`r_save` can only be of length = 1")
+  }
+  if (!is.character(r_filename)){
+    stop("`r_filename` is not a character")
+  }
+  if (length(r_filename) > 1){
+    stop("`r_filename` can only be of length = 1")
+  }
+  if (!("logical" %in% class(cov_hist))){
+    stop("`cov_hist` is not of class logical")
+  }
+  if (length(cov_hist) > 1){
+    stop("`cov_hist` can only be of length = 1")
+  }
+  if (!("logical" %in% class(cov_fcast))){
+    stop("`cov_fcast` is not of class logical")
+  }
+  if (length(cov_fcast) > 1){
+    stop("`cov_fcast` can only be of length = 1")
+  }
+  if (length(yr) > 1){
+    stop("`yr` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(yr)) & !("integer" %in% class(yr))){
+    stop("`yr` is not of class numeric or integer")
+  }
+  if(yr < 1970 | yr %% 1 != 0){
+    stop("`yr` is not an integer after 1970")
+  }
+  if (length(lead_time) > 1){
+    stop("`lead_time` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(lead_time)) & 
+      !("integer" %in% class(lead_time))){
+    stop("`lead_time` is not of class numeric or integer")
+  }
+  if(lead_time < 0 | lead_time %% 1 != 0){
+    stop("`lead_time` is not a non-negative integer")
+  }
+  if (length(min_lag) > 1){
+    stop("`min_lag` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_lag)) & !("integer" %in% class(min_lag))){
+    stop("`min_lag` is not of class numeric or integer")
+  }
+  if(min_lag < 0 | min_lag %% 1 != 0){
+    stop("`min_lag` is not a non-negative integer")
+  }
+  if (!is.null(fcast_nms)){
+    if (!("numeric" %in% class(fcast_nms)) & 
+        !("integer" %in% class(fcast_nms))){
+      stop("`fcast_nms` is not of class numeric or integer")
+    }
+    if(any(fcast_nms < 0 | fcast_nms %% 1 != 0)){
+      stop("`fcast_nms` is not a non-negative integer")
+    }
+  }
+  if (!is.null(nfcnm)){
+    if (length(nfcnm) > 1){
+      stop("`nfcnm` can only be of length = 1")
+    }
+    if (!("numeric" %in% class(nfcnm)) & !("integer" %in% class(nfcnm))){
+      stop("`nfcnm` is not of class numeric or integer")
+    }
+    if(any(nfcnm < 0 | nfcnm %% 1 != 0)){
+      stop("`nfcnm` is not a non-negative integer")
+    }
+  }
+  if (!("logical" %in% class(append_fcast_csv))){
+    stop("`append_fcast_csv` is not of class logical")
+  }
+  if (length(append_fcast_csv) > 1){
+    stop("`append_fcast_csv` can only be of length = 1")
+  }
+  if (!("logical" %in% class(c_save))){
+    stop("`c_save` is not of class logical")
+  }
+  if (length(c_save) > 1){
+    stop("`c_save` can only be of length = 1")
+  }
+  if (!("logical" %in% class(meta_save))){
+    stop("`meta_save` is not of class logical")
+  }
+  if (length(meta_save) > 1){
+    stop("`meta_save` can only be of length = 1")
+  }
+  if (!("logical" %in% class(download_existing_predictions))){
+    stop("`download_existing_predictions` is not of class logical")
+  }
+  if (length(download_existing_predictions) > 1){
+    stop("`download_existing_predictions` can only be of length = 1")
+  }
+  if (!("logical" %in% class(ensemble))){
+    stop("`ensemble` is not of class logical")
+  }
+  if (length(ensemble) > 1){
+    stop("`ensemble` can only be of length = 1")
+  }
+  if (!("logical" %in% class(from_zenodo))){
+    stop("`from_zenodo` is not of class logical")
+  }
+  if (length(from_zenodo) > 1){
+    stop("`from_zenodo` can only be of length = 1")
+  }
+  if (!is.character(hist_fcast_file)){
+    stop("`hist_fcast_file` is not a character")
+  }
+  if (length(hist_fcast_file) > 1){
+    stop("`hist_fcast_file` can only be of length = 1")
+  }
+  if (!is.character(c_filename)){
+    stop("`c_filename` is not a character")
+  }
+  if (length(c_filename) > 1){
+    stop("`c_filename` can only be of length = 1")
+  }
+  if (!is.character(meta_filename)){
+    stop("`meta_filename` is not a character")
+  }
+  if (length(meta_filename) > 1){
+    stop("`meta_filename` can only be of length = 1")
+  }
+  if (!is.character(m_filename)){
+    stop("`m_filename` is not a character")
+  }
+  if (length(m_filename) > 1){
+    stop("`m_filename` can only be of length = 1")
+  }
+  if (!is.character(source_name)){
+    stop("`source_name` is not a character")
+  }
+  if (length(source_name) > 1){
+    stop("`source_name` can only be of length = 1")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!is.character(version)){
+    stop("`version` is not a character")
+  }
+  if (length(version) > 1){
+    stop("`version` can only be of length = 1")
+  }
+  if (length(confidence_level) > 1){
+    stop("`confidence_level` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(confidence_level))){
+    stop("`confidence_level` is not of class numeric")
+  }
+  if (confidence_level < 0.001 | confidence_level > 0.999){
+    stop("`confidence_level` is not between 0.001 and 0.999")
+  }
+  if (!("models" %in% class(model))){
+    stop("`model` must be of class models")
+  }
+
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
-  out <- list(
+  list(
     options_dir = dir_options(base = base, main = main, subs = subs,
                               quiet = quiet),
     options_PortalData = PortalData_options(base = base, main = main, 
@@ -186,62 +502,112 @@ all_options <- function(base = ".", main = "", subs = subdirs(),
                                 start = start, end = end, 
                                 hind_step = hind_step, 
                                 min_plots = min_plots, min_traps = min_traps)
-  )
-  class(out) <- c("all_options", "list")
-  out
+  ) %>%
+  classy(c("all_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{dir_options} creates a list of control options for the
-#'   directory set-up
+#' @description \code{dir_options} creates a \code{dir_options} \code{list} of
+#'   control options for the directory set-up.
 #'
-#' @return \code{dir_options}: a list of settings controlling the directory
-#'   structure creation
+#' @return \code{dir_options}: a \code{dir_options} \code{list} of options for 
+#'   the directory structure creation.
 #'
 #' @export
 #'
 dir_options <- function(base = ".", main = "", subs = subdirs(),
                         quiet = FALSE){
+  if (length(base) > 1){
+    stop("`base` can only be of length = 1")
+  }
+  if (length(main) > 1){
+    stop("`main` can only be of length = 1")
+  }
+  if (!is.character(base)){
+    stop("`base` is not a character")
+  }
+  if (!is.character(main)){
+    stop("`main` is not a character")
+  }
+  if (!("subdirs" %in% class(subs))){
+    stop("`subs` is not a subdirs list")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
   tree <- dirtree(base, main, subs)
-  out <- list(tree = tree, quiet = quiet)
-  class(out) <- c("dir_options", "list")
-  out
+  list(tree = tree, quiet = quiet) %>%
+  classy(c("dir_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{PortalData_options} creates a list of options for
-#'   filling the PortalData subdirectory
+#' @description \code{PortalData_options} creates a \code{PortalData_options}
+#'   \code{list} of options for filling the PortalData subdirectory.
 #'
-#' @return \code{PortalData_options}: a list of settings controlling the 
-#'   creation and population of the PortalData subdirectory
+#' @return \code{PortalData_options}: a \code{PortalData_options} \code{list} 
+#'   of settings controlling the population of the PortalData subdirectory.
 #'
 #' @export
 #'
 PortalData_options <- function(base = ".", main = "", subs = subdirs(), 
                                quiet = FALSE,
                                version = "latest", from_zenodo = TRUE){
-
+  if (length(base) > 1){
+    stop("`base` can only be of length = 1")
+  }
+  if (length(main) > 1){
+    stop("`main` can only be of length = 1")
+  }
+  if (!is.character(base)){
+    stop("`base` is not a character")
+  }
+  if (!is.character(main)){
+    stop("`main` is not a character")
+  }
+  if (!("subdirs" %in% class(subs))){
+    stop("`subs` is not a subdirs list")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!is.character(version)){
+    stop("`version` is not a character")
+  }
+  if (length(version) > 1){
+    stop("`version` can only be of length = 1")
+  }
+  if (!("logical" %in% class(from_zenodo))){
+    stop("`from_zenodo` is not of class logical")
+  }
+  if (length(from_zenodo) > 1){
+    stop("`from_zenodo` can only be of length = 1")
+  }
   tree <- dirtree(base, main, subs)
-  out <- list(tree = tree, version = version, from_zenodo = from_zenodo, 
-              quiet = quiet)
-  class(out) <- c("PortalData_options", "list")
-  out
+  list(tree = tree, version = version, from_zenodo = from_zenodo, 
+              quiet = quiet) %>%
+  classy(c("PortalData_options", "list"))
 }
 
 
 #' @rdname all_options
 #'
-#' @description \code{data_options} creates a list of lists of options for
-#'   filling the data subdirectory
+#' @description \code{data_options} creates a \code{data_options} \code{list} 
+#'   of \code{list}s of options for filling the data subdirectory.
 #'
-#' @return \code{data_options}: list of control options lists ("moons"
-#'   generated by \code{moons_options}, "rodents" generated by 
-#'   \code{rodents_options}, "covariates" generated by
-#'   \code{covariates_options}, and "metadata" generated by
-#'   \code{metadata_options}, as well as items "cast_type", "tree",  and
-#'   "quiet" for simple use with all or ancillary data.
+#' @return \code{data_options}: \code{data_options} \code{list} of control 
+#'   options \code{list}s (\code{moons} generated by \code{moons_options}, 
+#'   \code{rodents} generated by \code{rodents_options}, \code{covariates},
+#'   generated by \code{covariates_options}, and \code{metadata} generated by
+#'   \code{metadata_options}, as well as items \code{cast_type}, \code{tree},
+#'   and \code{quiet} for simple use with all or ancillary data..
 #'
 #' @export
 #'
@@ -266,11 +632,246 @@ data_options <- function(base = ".", main = "", subs = subdirs(),
                          confidence_level = 0.9, 
                          meta_save = TRUE, meta_filename = "metadata.yaml"){
 
+  if (length(base) > 1){
+    stop("`base` can only be of length = 1")
+  }
+  if (length(main) > 1){
+    stop("`main` can only be of length = 1")
+  }
+  if (!is.character(base)){
+    stop("`base` is not a character")
+  }
+  if (!is.character(main)){
+    stop("`main` is not a character")
+  }
+  if (!("subdirs" %in% class(subs))){
+    stop("`subs` is not a subdirs list")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("Date" %in% class(fdate))){
+    stop("`fdate` is not of class Date")
+  }
+  if (length(fdate) > 1){
+    stop("`fdate` can only be of length = 1")
+  }
+  if (!("logical" %in% class(append_missing_to_raw))){
+    stop("`append_missing_to_raw` is not of class logical")
+  }
+  if (length(append_missing_to_raw) > 1){
+    stop("`append_missing_to_raw` can only be of length = 1")
+  }
+  if (!("logical" %in% class(m_save))){
+    stop("`m_save` is not of class logical")
+  }
+  if (length(m_save) > 1){
+    stop("`m_save` can only be of length = 1")
+  }
+  if (!is.character(m_filename)){
+    stop("`m_filename` is not a character")
+  }
+  if (length(m_filename) > 1){
+    stop("`m_filename` can only be of length = 1")
+  }
+  if (length(start) > 1){
+    stop("`start` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(start)) & !("integer" %in% class(start))){
+    stop("`start` is not of class numeric or integer")
+  }
+  if(start < 0 | start %% 1 != 0){
+    stop("`start` is not a non-negative integer")
+  }
+  if (!is.null(end)){
+    if (!("numeric" %in% class(end)) & !("integer" %in% class(end))){
+      stop("`end` is not of class numeric or integer")
+    }
+    if(any(end < 0 | end %% 1 != 0)){
+      stop("`end` is not a non-negative integer")
+    }
+  }
+  if (length(hind_step) > 1){
+    stop("`hind_step` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(hind_step)) & 
+      !("integer" %in% class(hind_step))){
+    stop("`hind_step` is not of class numeric or integer")
+  }
+  if(hind_step < 0 | hind_step %% 1 != 0){
+    stop("`hind_step` is not a non-negative integer")
+  }
+  if (!is.character(drop_spp)){
+    stop("`drop_spp` is not a character")
+  }
+  if (length(min_plots) > 1){
+    stop("`min_plots` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_plots)) & 
+      !("integer" %in% class(min_plots))){
+    stop("`min_plots` is not of class numeric or integer")
+  }
+  if(min_plots < 0 | min_plots %% 1 != 0){
+    stop("`min_plots` is not a non-negative integer")
+  }
+  if (!(is.null(treatment)) && treatment != "control"){
+    stop("`treatment` must be `NULL` or 'control'")
+  }
+  if (level != "Site" & level != "Treatment"){
+    stop("`level` must be 'Site' or 'Treatment'")
+  }
+  if (output != "abundance"){
+    stop("`output` must be 'abundance'")
+  }
+  if (plots != "all" & plots != "longterm"){
+    stop("`plots` must be 'all' or 'longterm'")
+  }
+  if (!("logical" %in% class(r_save))){
+    stop("`r_save` is not of class logical")
+  }
+  if (length(r_save) > 1){
+    stop("`r_save` can only be of length = 1")
+  }
+  if (!is.character(r_filename)){
+    stop("`r_filename` is not a character")
+  }
+  if (length(r_filename) > 1){
+    stop("`r_filename` can only be of length = 1")
+  }
+  if (!("logical" %in% class(cov_hist))){
+    stop("`cov_hist` is not of class logical")
+  }
+  if (length(cov_hist) > 1){
+    stop("`cov_hist` can only be of length = 1")
+  }
+  if (!("logical" %in% class(cov_fcast))){
+    stop("`cov_fcast` is not of class logical")
+  }
+  if (length(cov_fcast) > 1){
+    stop("`cov_fcast` can only be of length = 1")
+  }
+  if (length(yr) > 1){
+    stop("`yr` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(yr)) & !("integer" %in% class(yr))){
+    stop("`yr` is not of class numeric or integer")
+  }
+  if(yr < 1970 | yr %% 1 != 0){
+    stop("`yr` is not an integer after 1970")
+  }
+  if (length(lead_time) > 1){
+    stop("`lead_time` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(lead_time)) & 
+      !("integer" %in% class(lead_time))){
+    stop("`lead_time` is not of class numeric or integer")
+  }
+  if(lead_time < 0 | lead_time %% 1 != 0){
+    stop("`lead_time` is not a non-negative integer")
+  }
+  if (length(min_lag) > 1){
+    stop("`min_lag` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_lag)) & !("integer" %in% class(min_lag))){
+    stop("`min_lag` is not of class numeric or integer")
+  }
+  if(min_lag < 0 | min_lag %% 1 != 0){
+    stop("`min_lag` is not a non-negative integer")
+  }
+  if (!is.null(fcast_nms)){
+    if (!("numeric" %in% class(fcast_nms)) & 
+        !("integer" %in% class(fcast_nms))){
+      stop("`fcast_nms` is not of class numeric or integer")
+    }
+    if(any(fcast_nms < 0 | fcast_nms %% 1 != 0)){
+      stop("`fcast_nms` is not a non-negative integer")
+    }
+  }
+  if (!is.null(nfcnm)){
+    if (length(nfcnm) > 1){
+      stop("`nfcnm` can only be of length = 1")
+    }
+    if (!("numeric" %in% class(nfcnm)) & !("integer" %in% class(nfcnm))){
+      stop("`nfcnm` is not of class numeric or integer")
+    }
+    if(any(nfcnm < 0 | nfcnm %% 1 != 0)){
+      stop("`nfcnm` is not a non-negative integer")
+    }
+  }
+  if (!("logical" %in% class(append_fcast_csv))){
+    stop("`append_fcast_csv` is not of class logical")
+  }
+  if (length(append_fcast_csv) > 1){
+    stop("`append_fcast_csv` can only be of length = 1")
+  }
+  if (!("logical" %in% class(c_save))){
+    stop("`c_save` is not of class logical")
+  }
+  if (length(c_save) > 1){
+    stop("`c_save` can only be of length = 1")
+  }
+  if (!("logical" %in% class(meta_save))){
+    stop("`meta_save` is not of class logical")
+  }
+  if (length(meta_save) > 1){
+    stop("`meta_save` can only be of length = 1")
+  }
+  if (!is.character(c_filename)){
+    stop("`c_filename` is not a character")
+  }
+  if (length(c_filename) > 1){
+    stop("`c_filename` can only be of length = 1")
+  }
+  if (!is.character(meta_filename)){
+    stop("`meta_filename` is not a character")
+  }
+  if (length(meta_filename) > 1){
+    stop("`meta_filename` can only be of length = 1")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (length(confidence_level) > 1){
+    stop("`confidence_level` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(confidence_level))){
+    stop("`confidence_level` is not of class numeric")
+  }
+  if (confidence_level < 0.001 | confidence_level > 0.999){
+    stop("`confidence_level` is not between 0.001 and 0.999")
+  }
+  if (!is.null(tmnt_type)){
+    if(tmnt_type != "all" & tmnt_type != "controls"){
+      stop("`tmnt_type` must be `NULL`, 'all', or 'controls'")
+    }
+  }
+  if (!is.character(hist_fcast_file)){
+    stop("`hist_fcast_file` is not a character")
+  }
+  if (length(hist_fcast_file) > 1){
+    stop("`hist_fcast_file` can only be of length = 1")
+  }
+  if (!is.character(source_name)){
+    stop("`source_name` is not a character")
+  }
+  if (length(source_name) > 1){
+    stop("`source_name` can only be of length = 1")
+  }
+
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
   tree <- dirtree(base, main, subs)
-  out <- list(
+  list(
     moons = moons_options(n_future_moons = lead_time, fdate = fdate,
                           append_missing_to_raw = append_missing_to_raw,
                           save = m_save, filename = m_filename,
@@ -301,27 +902,28 @@ data_options <- function(base = ".", main = "", subs = subdirs(),
                                 lead_time = lead_time, save = meta_save,
                                 filename = meta_filename, quiet = quiet, 
                                 tree = tree),
-    cast_type = cast_type, quiet = quiet, tree = tree   
-  )
-  class(out) <- c("data_options", "list")
-  out
+    cast_type = cast_type, quiet = quiet, tree = tree) %>%
+  classy(c("data_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{moons_options} creates a list of options for the moons
-#'   data
+#' @description \code{moons_options} creates a \code{moons_options} 
+#'   \code{list}of options for the moons data.
 #'
-#' @param n_future_moons integer value for the number of future moons to add
+#' @param n_future_moons \code{integer} (or integer \code{numeric}) value for 
+#'   the number of future moons to add.
 #'
-#' @param save logical if the specific data should be saved out
+#' @param save \code{logical} indicator if the specific data should be saved 
+#'   out.
 #'
-#' @param filename the name of the file for the saving
+#' @param filename \code{character} name of the file for the saving.
 #'
-#' @param tree directory tree
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
-#' @return \code{moons_options}: a list of settings controlling the moon data
-#'   creation
+#' @return \code{moons_options}: a \code{moons_options} \code{list} of 
+#'   settings controlling the moon data creation.
 #'
 #' @export
 #'
@@ -329,20 +931,60 @@ moons_options <- function(n_future_moons = 12, fdate = today(),
                           append_missing_to_raw = TRUE, save = TRUE,
                           filename = "moons.csv", tree = dirtree(), 
                           quiet = FALSE){
-  out <-   list(n_future_moons = n_future_moons, fdate = fdate, 
+
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("logical" %in% class(append_missing_to_raw))){
+    stop("`append_missing_to_raw` is not of class logical")
+  }
+  if (length(append_missing_to_raw) > 1){
+    stop("`append_missing_to_raw` can only be of length = 1")
+  }
+  if (!("logical" %in% class(save))){
+    stop("`save` is not of class logical")
+  }
+  if (length(save) > 1){
+    stop("`save` can only be of length = 1")
+  }
+  if (!is.character(filename)){
+    stop("`filename` is not a character")
+  }
+  if (length(filename) > 1){
+    stop("`filename` can only be of length = 1")
+  }
+  if (!is.null(n_future_moons)){
+    if (length(n_future_moons) > 1){
+      stop("`n_future_moons` can only be of length = 1")
+    }
+    if (!("numeric" %in% class(n_future_moons)) &
+        !("integer" %in% class(n_future_moons))){
+      stop("`n_future_moons` is not of class numeric or integer")
+    }
+    if(any(n_future_moons < 0 | n_future_moons %% 1 != 0)){
+      stop("`n_future_moons` is not a non-negative integer")
+    }
+  }
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+
+  list(n_future_moons = n_future_moons, fdate = fdate, 
        append_missing_to_raw = append_missing_to_raw, save = save,
-       filename = filename, tree = tree, quiet = quiet, class = "moons")
-  class(out) <- c("moons_options", "list")
-  out
+       filename = filename, tree = tree, quiet = quiet, class = "moons") %>%
+  classy(c("moons_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{rodents_options} creates a list of options for the 
-#'   rodents data
+#' @description \code{rodents_options} creates a \code{rodents_options} 
+#'   \code{list} of options for the rodents data.
 #'
-#' @return \code{rodents_options}: a list of settings controlling the rodents
-#'   data creation
+#' @return \code{rodents_options}: a \code{rodents_options} \code{list} of 
+#'   settings controlling the rodents data creation.
 #'
 #' @export
 #'
@@ -353,6 +995,96 @@ rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL,
                             output = "abundance", save = TRUE, 
                             filename = "all.csv", tree = dirtree(), 
                             quiet = FALSE){
+
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!("logical" %in% class(save))){
+    stop("`save` is not of class logical")
+  }
+  if (length(save) > 1){
+    stop("`save` can only be of length = 1")
+  }
+  if (!is.character(filename)){
+    stop("`filename` is not a character")
+  }
+  if (length(filename) > 1){
+    stop("`filename` can only be of length = 1")
+  }
+
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!is.null(tmnt_type)){
+    if(tmnt_type != "all" & tmnt_type != "controls"){
+      stop("`tmnt_type` must be `NULL`, 'all', or 'controls'")
+    }
+  }
+  if (length(start) > 1){
+    stop("`start` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(start)) & !("integer" %in% class(start))){
+    stop("`start` is not of class numeric or integer")
+  }
+  if(start < 0 | start %% 1 != 0){
+    stop("`start` is not a non-negative integer")
+  }
+  if (!is.null(end)){
+    if (!("numeric" %in% class(end)) & !("integer" %in% class(end))){
+      stop("`end` is not of class numeric or integer")
+    }
+    if(any(end < 0 | end %% 1 != 0)){
+      stop("`end` is not a non-negative integer")
+    }
+  }
+  if (length(hind_step) > 1){
+    stop("`hind_step` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(hind_step)) & 
+      !("integer" %in% class(hind_step))){
+    stop("`hind_step` is not of class numeric or integer")
+  }
+  if(hind_step < 0 | hind_step %% 1 != 0){
+    stop("`hind_step` is not a non-negative integer")
+  }
+  if (!is.character(drop_spp)){
+    stop("`drop_spp` is not a character")
+  }
+  if (length(min_plots) > 1){
+    stop("`min_plots` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_plots)) & 
+      !("integer" %in% class(min_plots))){
+    stop("`min_plots` is not of class numeric or integer")
+  }
+  if(min_plots < 0 | min_plots %% 1 != 0){
+    stop("`min_plots` is not a non-negative integer")
+  }
+  if (!(is.null(treatment)) && treatment != "control"){
+    stop("`treatment` must be `NULL` or 'control'")
+  }
+  if (level != "Site" & level != "Treatment"){
+    stop("`level` must be 'Site' or 'Treatment'")
+  }
+  if (output != "abundance"){
+    stop("`output` must be 'abundance'")
+  }
+  if (plots != "all" & plots != "longterm"){
+    stop("`plots` must be 'all' or 'longterm'")
+  }
+
   if (!is.null(tmnt_type)){
     if (tmnt_type == "all"){
       level <- "Site"
@@ -368,22 +1100,21 @@ rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL,
       filename <- "controls.csv"
     }  
   }
-  out <- list(cast_type = cast_type, start = start, end = end, 
+  list(cast_type = cast_type, start = start, end = end, 
        hind_step = hind_step, drop_spp = drop_spp, min_plots = min_plots, 
        tmnt_type = tmnt_type, level = level, plots = plots, output = output,
        save = save, filename = filename, treatment = treatment, tree = tree,
-       quiet = quiet)
-  class(out) <- c("rodents_options", "list")
-  out
+       quiet = quiet) %>%
+  classy(c("rodents_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{covariates_options} creates a list of options for the 
-#'   covariates data
+#' @description \code{covariates_options} creates a \code{covariates_options}
+#'   \code{list}of options for the covariates data.
 #'
-#' @return \code{covariates_options}: a list of settings controlling the 
-#'   covariates data creation
+#' @return \code{covariates_options}: a \code{covariates_options} \code{list} 
+#'   of settings controlling the covariates data creation.
 #'
 #' @export
 #'
@@ -397,27 +1128,172 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
                                source_name = "current_archive",
                                save = TRUE, filename = "covariates.csv", 
                                tree = dirtree(), quiet = FALSE){
+
+
+  if (length(start) > 1){
+    stop("`start` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(start)) & !("integer" %in% class(start))){
+    stop("`start` is not of class numeric or integer")
+  }
+  if(start < 0 | start %% 1 != 0){
+    stop("`start` is not a non-negative integer")
+  }
+  if (!is.null(end)){
+    if (!("numeric" %in% class(end)) & !("integer" %in% class(end))){
+      stop("`end` is not of class numeric or integer")
+    }
+    if(any(end < 0 | end %% 1 != 0)){
+      stop("`end` is not a non-negative integer")
+    }
+  }
+  if (length(hind_step) > 1){
+    stop("`hind_step` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(hind_step)) & 
+      !("integer" %in% class(hind_step))){
+    stop("`hind_step` is not of class numeric or integer")
+  }
+  if(hind_step < 0 | hind_step %% 1 != 0){
+    stop("`hind_step` is not a non-negative integer")
+  }
+
+  if (!("logical" %in% class(cov_hist))){
+    stop("`cov_hist` is not of class logical")
+  }
+  if (length(cov_hist) > 1){
+    stop("`cov_hist` can only be of length = 1")
+  }
+  if (!("logical" %in% class(cov_fcast))){
+    stop("`cov_fcast` is not of class logical")
+  }
+  if (length(cov_fcast) > 1){
+    stop("`cov_fcast` can only be of length = 1")
+  }
+
+  if (length(yr) > 1){
+    stop("`yr` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(yr)) & !("integer" %in% class(yr))){
+    stop("`yr` is not of class numeric or integer")
+  }
+  if(yr < 1970 | yr %% 1 != 0){
+    stop("`yr` is not an integer after 1970")
+  }
+  if (length(lead_time) > 1){
+    stop("`lead_time` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(lead_time)) & 
+      !("integer" %in% class(lead_time))){
+    stop("`lead_time` is not of class numeric or integer")
+  }
+  if(lead_time < 0 | lead_time %% 1 != 0){
+    stop("`lead_time` is not a non-negative integer")
+  }
+  if (length(min_lag) > 1){
+    stop("`min_lag` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_lag)) & !("integer" %in% class(min_lag))){
+    stop("`min_lag` is not of class numeric or integer")
+  }
+  if(min_lag < 0 | min_lag %% 1 != 0){
+    stop("`min_lag` is not a non-negative integer")
+  }
+  if (!is.null(fcast_nms)){
+    if (!("numeric" %in% class(fcast_nms)) & 
+        !("integer" %in% class(fcast_nms))){
+      stop("`fcast_nms` is not of class numeric or integer")
+    }
+    if(any(fcast_nms < 0 | fcast_nms %% 1 != 0)){
+      stop("`fcast_nms` is not a non-negative integer")
+    }
+  }
+  if (!is.null(nfcnm)){
+    if (length(nfcnm) > 1){
+      stop("`nfcnm` can only be of length = 1")
+    }
+    if (!("numeric" %in% class(nfcnm)) & !("integer" %in% class(nfcnm))){
+      stop("`nfcnm` is not of class numeric or integer")
+    }
+    if(any(nfcnm < 0 | nfcnm %% 1 != 0)){
+      stop("`nfcnm` is not a non-negative integer")
+    }
+  }
+  if (!("logical" %in% class(append_fcast_csv))){
+    stop("`append_fcast_csv` is not of class logical")
+  }
+  if (length(append_fcast_csv) > 1){
+    stop("`append_fcast_csv` can only be of length = 1")
+  }
+
+  if (!is.character(hist_fcast_file)){
+    stop("`hist_fcast_file` is not a character")
+  }
+  if (length(hist_fcast_file) > 1){
+    stop("`hist_fcast_file` can only be of length = 1")
+  }
+  if (!is.character(source_name)){
+    stop("`source_name` is not a character")
+  }
+  if (length(source_name) > 1){
+    stop("`source_name` can only be of length = 1")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!("logical" %in% class(save))){
+    stop("`save` is not of class logical")
+  }
+  if (length(save) > 1){
+    stop("`save` can only be of length = 1")
+  }
+  if (!is.character(filename)){
+    stop("`filename` is not a character")
+  }
+  if (length(filename) > 1){
+    stop("`filename` can only be of length = 1")
+  }
+  if (!("Date" %in% class(fdate))){
+    stop("`fdate` is not of class Date")
+  }
+  if (length(fdate) > 1){
+    stop("`fdate` can only be of length = 1")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
-  out <- list(cast_type = cast_type, cov_hist = cov_hist, 
-      cov_fcast = cov_fcast, fdate = fdate, yr = yr, start = start, end = end, 
+  list(cast_type = cast_type, cov_hist = cov_hist, cov_fcast = cov_fcast, 
+       fdate = fdate, yr = yr, start = start, end = end, 
        hind_step = hind_step, lead_time = lead_time, min_lag = min_lag, 
        fcast_nms = fcast_nms, nfcnm = nfcnm, 
        append_fcast_csv = append_fcast_csv, hist_fcast_file = hist_fcast_file,
        source_name = source_name, save = save, filename = filename, 
-       tree = tree, quiet = quiet, class = "covariates")
-  class(out) <- c("covariates_options", "list")
-  out
+       tree = tree, quiet = quiet, class = "covariates") %>%
+  classy(c("covariates_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{metadata_options} creates a list of options for the 
-#'   metadata creation
+#' @description \code{metadata_options} creates a \code{metadata_options} 
+#'   \code{list}of options for the metadata creation.
 #'
-#' @return \code{metadata_options}: a list of settings controlling the 
-#'   metadata creation
+#' @return \code{metadata_options}: a \code{metadata_options} \code{list}
+#'   of settings controlling the metadata creation.
 #'
 #' @export
 #'
@@ -426,20 +1302,76 @@ metadata_options <- function(fdate = today(), cast_type = "forecasts",
                              save = TRUE, filename = "metadata.yaml", 
                              quiet = FALSE, tree = dirtree()){
 
-  out <- list(fdate = fdate, cast_type = cast_type, 
+  if (!("Date" %in% class(fdate))){
+    stop("`fdate` is not of class Date")
+  }
+  if (length(fdate) > 1){
+    stop("`fdate` can only be of length = 1")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!("logical" %in% class(save))){
+    stop("`save` is not of class logical")
+  }
+  if (length(save) > 1){
+    stop("`save` can only be of length = 1")
+  }
+  if (!is.character(filename)){
+    stop("`filename` is not a character")
+  }
+  if (length(filename) > 1){
+    stop("`filename` can only be of length = 1")
+  }
+  if (length(confidence_level) > 1){
+    stop("`confidence_level` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(confidence_level))){
+    stop("`confidence_level` is not of class numeric")
+  }
+  if (confidence_level < 0.001 | confidence_level > 0.999){
+    stop("`confidence_level` is not between 0.001 and 0.999")
+  }
+  if (length(lead_time) > 1){
+    stop("`lead_time` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(lead_time)) & 
+      !("integer" %in% class(lead_time))){
+    stop("`lead_time` is not of class numeric or integer")
+  }
+  if(lead_time < 0 | lead_time %% 1 != 0){
+    stop("`lead_time` is not a non-negative integer")
+  }
+  list(fdate = fdate, cast_type = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
-       filename = filename, quiet = quiet, tree = tree)
-  class(out) <- c("metadata_options", "list")
-  out
+       filename = filename, quiet = quiet, tree = tree) %>%
+  classy(c("metadata_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{predictions_options} creates a list of options for 
-#'   populating the predictions subdirectory
+#' @description \code{predictions_options} creates a 
+#'   \code{predictions_options} \code{list} of options for populating the 
+#'   predictions subdirectory
 #'
-#' @return \code{predictions_options}: a list of settings controlling the 
-#'   population of the predictions subdirectory
+#' @return \code{predictions_options}: a \code{predictions_options} 
+#'   \code{list} of settings controlling the population of the predictions 
+#'   subdirectory.
 #'
 #' @export
 #'
@@ -447,40 +1379,89 @@ predictions_options <- function(base = ".", main = "",
                                 subs = subdirs(), 
                                 download_existing_predictions = FALSE,
                                 quiet = FALSE){
+
+  if (length(base) > 1){
+    stop("`base` can only be of length = 1")
+  }
+  if (length(main) > 1){
+    stop("`main` can only be of length = 1")
+  }
+  if (!is.character(base)){
+    stop("`base` is not a character")
+  }
+  if (!is.character(main)){
+    stop("`main` is not a character")
+  }
+  if (!("subdirs" %in% class(subs))){
+    stop("`subs` is not a subdirs list")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("logical" %in% class(download_existing_predictions))){
+    stop("`download_existing_predictions` is not of class logical")
+  }
+  if (length(download_existing_predictions) > 1){
+    stop("`download_existing_predictions` can only be of length = 1")
+  }
   tree <- dirtree(base, main, subs)
-  out <- list(tree = tree, 
+  list(tree = tree, 
        download_existing_predictions = download_existing_predictions, 
-       quiet = quiet)
-  class(out) <- c("predictions_options", "list")
-  out
+       quiet = quiet) %>%
+  classy(c("predictions_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{models_options} creates a list of options for 
-#'   populating the models subdirectory
+#' @description \code{models_options} creates a \code{models_options} 
+#'   \code{list} of options for populating the models subdirectory.
 #'
-#' @return \code{models_options}: a list of settings controlling the 
-#'   population of the models subdirectory
+#' @return \code{models_options}: a \code{models_options} \code{list} of 
+#'   settings controlling the population of the models subdirectory.
 #'
 #' @export
 #'
 models_options <- function(base = ".", main = "", subs = subdirs(),
                            quiet = FALSE, model = models()){
-
+  if (length(base) > 1){
+    stop("`base` can only be of length = 1")
+  }
+  if (length(main) > 1){
+    stop("`main` can only be of length = 1")
+  }
+  if (!is.character(base)){
+    stop("`base` is not a character")
+  }
+  if (!is.character(main)){
+    stop("`main` is not a character")
+  }
+  if (!("subdirs" %in% class(subs))){
+    stop("`subs` is not a subdirs list")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("models" %in% class(model))){
+    stop("`model` must be of class models")
+  }
   tree <- dirtree(base, main, subs)
-  out <- list(model = model, quiet = quiet, tree = tree)
-  class(out) <- c("models_options", "list")
-  out
+  list(model = model, quiet = quiet, tree = tree) %>%
+  classy(c("models_options", "list"))
 }
 
 #' @rdname all_options
 #'
-#' @description \code{cast_options} creates a list of control options for 
-#'   running \code{\link{portalcast}}
+#' @description \code{cast_options} creates a \code{cast_options} \code{list} 
+#'   of control options for running \code{\link{portalcast}}.
 #'
-#' @return \code{cast_options}: a list of settings controlling the running of
-#'   \code{\link{portalcast}}
+#' @return \code{cast_options}: a \code{cast_options} \code{list} of settings 
+#'   controlling the running of \code{\link{portalcast}}.
 #'
 #' @export
 #'
@@ -489,11 +1470,107 @@ cast_options <- function(base = ".", main = "", subs = subdirs(),
                          cast_type = "forecasts", fdate = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){
+  if (length(base) > 1){
+    stop("`base` can only be of length = 1")
+  }
+  if (length(main) > 1){
+    stop("`main` can only be of length = 1")
+  }
+  if (!is.character(base)){
+    stop("`base` is not a character")
+  }
+  if (!is.character(main)){
+    stop("`main` is not a character")
+  }
+  if (!("subdirs" %in% class(subs))){
+    stop("`subs` is not a subdirs list")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(quiet) > 1){
+    stop("`quiet` can only be of length = 1")
+  }
+  if (!("models" %in% class(model))){
+    stop("`model` must be of class models")
+  }
+
+  if (!("Date" %in% class(fdate))){
+    stop("`fdate` is not of class Date")
+  }
+  if (length(fdate) > 1){
+    stop("`fdate` can only be of length = 1")
+  }
+
+
+  if (length(start) > 1){
+    stop("`start` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(start)) & !("integer" %in% class(start))){
+    stop("`start` is not of class numeric or integer")
+  }
+  if(start < 0 | start %% 1 != 0){
+    stop("`start` is not a non-negative integer")
+  }
+  if (!is.null(end)){
+    if (!("numeric" %in% class(end)) & !("integer" %in% class(end))){
+      stop("`end` is not of class numeric or integer")
+    }
+    if(any(end < 0 | end %% 1 != 0)){
+      stop("`end` is not a non-negative integer")
+    }
+  }
+  if (length(hind_step) > 1){
+    stop("`hind_step` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(hind_step)) & 
+      !("integer" %in% class(hind_step))){
+    stop("`hind_step` is not of class numeric or integer")
+  }
+  if(hind_step < 0 | hind_step %% 1 != 0){
+    stop("`hind_step` is not a non-negative integer")
+  }
+  if (length(min_plots) > 1){
+    stop("`min_plots` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_plots)) & 
+      !("integer" %in% class(min_plots))){
+    stop("`min_plots` is not of class numeric or integer")
+  }
+  if(min_plots < 0 | min_plots %% 1 != 0){
+    stop("`min_plots` is not a non-negative integer")
+  }
+
+  if (length(min_traps) > 1){
+    stop("`min_traps` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_traps)) &
+     !("integer" %in% class(min_traps))){
+    stop("`min_traps` is not of class numeric or integer")
+  }
+  if(min_traps < 0 | min_traps %% 1 != 0){
+    stop("`min_traps` is not a non-negative integer")
+  }
+  if (!("logical" %in% class(ensemble))){
+    stop("`ensemble` is not of class logical")
+  }
+  if (length(ensemble) > 1){
+    stop("`ensemble` can only be of length = 1")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+
   tree <- dirtree(base, main, subs)
-  out  <- list(tree = tree, quiet = quiet, model = model,
- cast_type = cast_type,
+  list(tree = tree, quiet = quiet, model = model, cast_type = cast_type,
        fdate = fdate, ensemble = ensemble, start = start, end = end, 
-       hind_step = hind_step, min_plots = min_plots, min_traps = min_traps)
-  class(out) <- c("cast_options", "list")
-  out
+       hind_step = hind_step, min_plots = min_plots, 
+       min_traps = min_traps) %>%
+  classy(c("cast_options", "list"))
 }

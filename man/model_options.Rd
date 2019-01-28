@@ -33,8 +33,8 @@ function name).}
 \item{covariates}{\code{logical} indicator for if the model requires 
 covariates.}
 
-\item{lag}{\code{numeric} integer lag time used for the covariates 
-or \code{NULL} if \code{covariates} is \code{FALSE}.}
+\item{lag}{\code{integer} (or integer \code{numeric}) lag time used for the
+covariates or \code{NULL} if \code{covariates} is \code{FALSE}.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }

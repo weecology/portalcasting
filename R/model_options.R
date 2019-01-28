@@ -16,8 +16,8 @@
 #' @param covariates \code{logical} indicator for if the model requires 
 #'   covariates.
 #'
-#' @param lag \code{numeric} integer lag time used for the covariates 
-#'   or \code{NULL} if \code{covariates} is \code{FALSE}.
+#' @param lag \code{integer} (or integer \code{numeric}) lag time used for the
+#'   covariates or \code{NULL} if \code{covariates} is \code{FALSE}.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
