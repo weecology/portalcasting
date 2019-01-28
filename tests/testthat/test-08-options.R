@@ -319,6 +319,7 @@ test_that("covariates_options", {
   expect_error(covariates_options(save = 1))
   expect_error(covariates_options(save = c(TRUE, FALSE)))
   expect_error(covariates_options(filename = 1))
+  expect_error(covariates_options(tree = 1))
   expect_error(covariates_options(filename = c("ok.csv", "ok.csv")))
 })
 
@@ -347,16 +348,16 @@ test_that("metadata_options", {
 })
 
 test_that("predictions_options", {
-  expect_is(metadata_options(), "metadata_options")
-  expect_error(metadata_options(base = c("ok", "ok")))
-  expect_error(metadata_options(main = c("ok", "ok")))
-  expect_error(metadata_options(base = 1))
-  expect_error(metadata_options(main = 1))
-  expect_error(metadata_options(subs = "ok"))
-  expect_error(metadata_options(quiet = 1))
-  expect_error(metadata_options(quiet = c(TRUE, FALSE)))
-  expect_error(metadata_options(download_existing_predictions = 1))
-  expect_error(metadata_options(download_existing_predictions = 
+  expect_is(predictions_options(), "predictions_options")
+  expect_error(predictions_options(base = c("ok", "ok")))
+  expect_error(predictions_options(main = c("ok", "ok")))
+  expect_error(predictions_options(base = 1))
+  expect_error(predictions_options(main = 1))
+  expect_error(predictions_options(subs = "ok"))
+  expect_error(predictions_options(quiet = 1))
+  expect_error(predictions_options(quiet = c(TRUE, FALSE)))
+  expect_error(predictions_options(download_existing_predictions = 1))
+  expect_error(predictions_options(download_existing_predictions = 
                                 c(TRUE, TRUE)))
 })
 

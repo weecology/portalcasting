@@ -4,7 +4,7 @@
 # working through tests and documentation
 # scripts to do:
 #  AutoArima, ESSS, nbGARCH, pevGARCH
-#  options, portalcast, prepare_covariates, prepare_metadata, prepare_models,
+#  portalcast, prepare_covariates, prepare_metadata, prepare_models,
 #  prepare_rodents, prepare_data, process_forecasts
 #
 
