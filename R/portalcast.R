@@ -1,11 +1,13 @@
-#' @title Forecast or hindcast Portal rodents
+#' @title Forecast or hindcast Portal rodents models
 #'
-#' @description Main function for controlling the running of potentially 
-#'   multiple models for either a forecast or a hindcast.
+#' @description Run potentially multiple models for either a forecast or a 
+#'   hindcast. 
 #'
-#' @param options_all top-level list of options controlling the portalcasting 
-#'   directory. Of particular importance is the \code{options_cast} list,
-#'   which contains the options controlling the (fore- or hind-)casting 
+#' @param options_all \code{all_options}-class \code{list} of options 
+#'   controlling the portalcasting directory. See \code{\link{all_options}}.
+#'   Of particular importance is the \code{options_cast} \code{list},
+#'   (see \code{\link{cast_options}}) which contains the options controlling 
+#'   the (fore- or hind-)casting.
 #'   \cr \cr To run a default hindcast, use 
 #'   \code{options_all = all_options(cast_type = "hindcasts")}
 #'
@@ -14,24 +16,29 @@
 #' @export
 #'
 portalcast <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
   clear_tmp(options_all$options_dir$tree)
   verify_models(options_all$options_cast)
   prep_data(options_all$options_data)
   casts(options_all)
 }
 
-#' @title Verify that models to forecast or hindcast with exist
+#' @title Verify that models requested to forecast or hindcast with exist
 #'
-#' @description Verify that models requested are available
+#' @description Verify that models requested have scripts in the models 
+#'   subdirectory. 
 #'
-#' @param options_cast casting options
-#'
-#' @return nothing
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options()}}. 
 #'
 #' @export
 #'
 verify_models <- function(options_cast = cast_options()){
-
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (!options_cast$quiet){
     cat("Checking model availability", "\n")
   }
@@ -52,17 +59,20 @@ verify_models <- function(options_cast = cast_options()){
   message("All requested models available")
 }
 
-#' @title Source the selected models to forecast or hindcast with
+#' @title Source the scripts to run the selected forecast or hindcast models
 #'
-#' @description Source the code of the selected model scripts
+#' @description Source the R scripts of the selected model(s) indicated by the
+#'   \code{model} element in \code{options_cast}.
 #'
-#' @param options_cast casting options
-#'
-#' @return nothing
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options()}}. 
 #'
 #' @export
 #'
 cast_models <- function(options_cast = cast_options()){
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (!options_cast$quiet){
     if (options_cast$cast_type == "forecasts"){
       message("##########################################################")
@@ -77,54 +87,68 @@ cast_models <- function(options_cast = cast_options()){
   sapply(models_to_cast(options_cast), source)
 }
 
-#' @title Select models to forecast or hindcast with
+#' @title Generate the file path(s) to the script(s) of the model(s) forecast
+#'   or hindcast with
 #'
-#' @description Verify that models requested are available and select them
+#' @description Translate a \code{models} vector of model name(s) into a 
+#'   \code{character} vector of file path(s) corresponding to the model 
+#'   scripts. 
 #'
-#' @param options_cast casting options
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options()}}. 
 #'
-#' @return names of files to be run
+#' @return \code{character} vector of the path(s) of the R script file(s) to 
+#'   be run.
 #'
 #' @export
 #'
 models_to_cast <- function(options_cast = cast_options()){
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   model_dir <- sub_path(options_cast$tree, "models")
   if (options_cast$model[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
   } else{
     modelnames <- paste0(options_cast$model, ".R")
-    torun <- (modelnames %in% list.files(model_dir))
+    torun <- (list.files(model_dir) %in% modelnames)
     runnames <- list.files(model_dir, full.names = TRUE)[torun] 
   }
-  return(runnames)
+  runnames
 }
 
-#' @title Create tmp
+#' @title Create tmp subdirectory
 #'
-#' @description Create the tmp subdirectory specifically
+#' @description Create the tmp subdirectory specifically.
 #'
-#' @param tree directory tree
-#'
-#' @return nothing
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @export
 #'
 create_tmp <- function(tree = dirtree()){
-  opts <- dir_options(base = tree$base, main = tree$main, subs = "tmp")
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  subs <- subdirs(NULL, "tmp")
+  opts <- dir_options(base = tree$base, main = tree$main, subs = subs)
   create_sub_dirs(opts)
 }
 
-#' @title Clear tmp
+#' @title Clear tmp subdirectory
 #'
-#' @description Remove all of the files from the tmp subdirectory specifically
+#' @description Remove all of the files from the tmp subdirectory 
+#'   specifically.
 #'
-#' @param tree directory tree
-#'
-#' @return nothing
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @export
 #'
 clear_tmp <- function(tree = dirtree()){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
   temp_dir <- sub_path(tree, "tmp")
   if (!dir.exists(temp_dir)){
     create_tmp(tree)

@@ -2,16 +2,21 @@
 % Please edit documentation in R/portalcast.R
 \name{models_to_cast}
 \alias{models_to_cast}
-\title{Select models to forecast or hindcast with}
+\title{Generate the file path(s) to the script(s) of the model(s) forecast
+  or hindcast with}
 \usage{
 models_to_cast(options_cast = cast_options())
 }
 \arguments{
-\item{options_cast}{casting options}
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options()}}.}
 }
 \value{
-names of files to be run
+\code{character} vector of the path(s) of the R script file(s) to 
+  be run.
 }
 \description{
-Verify that models requested are available and select them
+Translate a \code{models} vector of model name(s) into a 
+  \code{character} vector of file path(s) corresponding to the model 
+  scripts.
 }

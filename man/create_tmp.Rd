@@ -2,16 +2,14 @@
 % Please edit documentation in R/portalcast.R
 \name{create_tmp}
 \alias{create_tmp}
-\title{Create tmp}
+\title{Create tmp subdirectory}
 \usage{
 create_tmp(tree = dirtree())
 }
 \arguments{
-\item{tree}{directory tree}
-}
-\value{
-nothing
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 }
 \description{
-Create the tmp subdirectory specifically
+Create the tmp subdirectory specifically.
 }

@@ -2,16 +2,15 @@
 % Please edit documentation in R/portalcast.R
 \name{clear_tmp}
 \alias{clear_tmp}
-\title{Clear tmp}
+\title{Clear tmp subdirectory}
 \usage{
 clear_tmp(tree = dirtree())
 }
 \arguments{
-\item{tree}{directory tree}
-}
-\value{
-nothing
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 }
 \description{
-Remove all of the files from the tmp subdirectory specifically
+Remove all of the files from the tmp subdirectory 
+  specifically.
 }
