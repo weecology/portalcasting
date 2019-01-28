@@ -42,6 +42,7 @@ test_that("fcast0", {
 
 test_that("today", {
   expect_equal(today(), Sys.Date())
+  expect_equal(today(time = TRUE), Sys.time())
 })
 
 test_that("classy", {

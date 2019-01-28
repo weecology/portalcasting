@@ -92,16 +92,24 @@ fcast0 <- function(nfcnm, pred_name = "pred"){
   out
 }
 
-#' @title Today's date
+#' @title Today's date (potentially with time)
 #'
-#' @description Provide the current date of the system.
+#' @description Provide the current date (and optionally time) of the system.
 #'
-#' @return Today's date, as a \code{Date}.
+#' @param time \code{logical} indicator of whether the output should include
+#'   a timestamp as well as date.
+#'
+#' @return Today's date, as a \code{Date} or date and time as a 
+#'   \code{POSIXct}.
 #'
 #' @export
 #'
-today <- function(){
-  Sys.Date()
+today <- function(time = FALSE){
+  if (time){
+    Sys.time()
+  } else{
+    Sys.Date()
+  }
 }
 
 #' @title Set the class(es) of an object

@@ -2,13 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{today}
 \alias{today}
-\title{Today's date}
+\title{Today's date (potentially with time)}
 \usage{
-today()
+today(time = FALSE)
+}
+\arguments{
+\item{time}{\code{logical} indicator of whether the output should include
+a timestamp as well as date.}
 }
 \value{
-Today's date, as a \code{Date}.
+Today's date, as a \code{Date} or date and time as a 
+  \code{POSIXct}.
 }
 \description{
-Provide the current date of the system.
+Provide the current date (and optionally time) of the system.
 }

@@ -74,10 +74,6 @@ test_that("append_cov_fcast_csv",{
   unlink(hist_file)
   expect_silent(fcast_covs3 <- append_cov_fcast_csv(fcast_covs, up_cov_opts))
   expect_equal(fcast_covs3, fcast_covs)
-  fcast_covsX <- fcast_covs
-  fcast_covsX$forecast_newmoon[1:nrow(fcast_covsX)] <- 450 
-  expect_silent(fcast_covs4 <- append_cov_fcast_csv(fcast_covsX, up_cov_opts))
-  expect_equal(fcast_covs4[,-1], fcast_covs[,-1])
 
   up_cov_opts5 <- up_cov_opts
   up_cov_opts5$append_fcast_csv <- FALSE
