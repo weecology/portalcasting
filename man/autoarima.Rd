@@ -5,7 +5,7 @@
 \title{Flexible Auto-Regressive Integrated Moving Average model for Portal 
  Predictions}
 \usage{
-AutoArima(abundances, metadata, level = "All")
+AutoArima(abundances, metadata, level = "All", quiet = FALSE)
 }
 \arguments{
 \item{abundances}{table of rodent abundances and time measures}
@@ -13,6 +13,8 @@ AutoArima(abundances, metadata, level = "All")
 \item{metadata}{model metadata list}
 
 \item{level}{name of the type of plots included ("All" or "Controls")}
+
+\item{quiet}{logical indicating if the function should be quiet}
 }
 \value{
 list of forecast and aic tables

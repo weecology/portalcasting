@@ -7,8 +7,11 @@ options_all4 <- all_options(main = "ok", model = models(NULL, "ok"))
 options_all5 <- all_options(main = "ok", model = models(NULL, "all"))
 options_all6 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 490)
+options_all7 <- all_options(main = "ok2", model = models(NULL, "AutoArima"),
+                            quiet = TRUE)
 
 setup_dir(options_all1)
+setup_dir(options_all7)
 
 test_that("portalcast", {
   expect_error(portalcast(1))
@@ -68,5 +71,14 @@ test_that("prep_data", {
   expect_output(prep_data(options_all6$options_data))
 })
 
+test_that("casts", {
+  setup_dir(options_all1)
+  expect_error(casts(1))
+  expect_output(casts(options_all3))
+  expect_silent(casts(options_all7))
+})
+
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
+unlink(dirtree(main = "ok2"), recursive = TRUE, force = TRUE)
+unlink(dirtree(main = "ok2"), recursive = TRUE, force = TRUE)

@@ -19,6 +19,8 @@
 #'
 #' @param level name of the type of plots included ("All" or "Controls")
 #'
+#' @param quiet logical indicating if the function should be quiet
+#'
 #' @return list of forecast and aic tables
 #'
 #' @references 
@@ -29,7 +31,7 @@
 #'
 #' @export
 #'
-AutoArima <- function(abundances, metadata, level = "All"){
+AutoArima <- function(abundances, metadata, level = "All", quiet = FALSE){
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level
@@ -41,8 +43,9 @@ AutoArima <- function(abundances, metadata, level = "All"){
   for (s in species){
 
     ss <- gsub("NA.", "NA", s)
-    cat("Fitting AutoARIMA model for", ss, "\n")
-
+    if (!quiet){
+      cat("Fitting AutoArima model for", ss, "\n")
+    }
     abund_s <- extract2(abundances, s)
   
     if (sum(abund_s) == 0){

@@ -67,17 +67,18 @@ model_template <- function(options_model = model_options()){
     subs <- "subdirs()"
   }
   name <- options_model$name
+  quiet_arg <- paste0("quiet = ", options_model$quiet)
 
   if (options_model$covariates){
     lag_arg <- paste0(', lag = ', options_model$lag)
-    args_a <- paste0('all, covariates, metadata', lag_arg)
+    args_a <- paste0('all, covariates, metadata', lag_arg, quiet_arg)
     c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
-    args_c <- paste0(c_arg, lag_arg)
+    args_c <- paste0(c_arg, lag_arg, quiet_arg)
     path_cov <- 'file_path(tree, "data/covariates.csv")'
     covariate_text <- paste0('\ncovariates <- read.csv(', path_cov, '); \n')
   } else{
-    args_a <- "all, metadata"
-    args_c <- 'controls, metadata, level = "Controls"'
+    args_a <- paste0("all, metadata, ", quiet_arg)
+    args_c <- paste0('controls, metadata, level = "Controls", ', quiet_arg)
     covariate_text <- "\n"
   }
 

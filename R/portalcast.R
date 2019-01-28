@@ -190,19 +190,21 @@ prep_data <- function(options_data = data_options()){
   }
 }
 
-#' @title Multiple forecast or hindcast
+#' @title Run potentially multiple forecasts or hindcasts
 #' 
-#' @description Given the data and models are prepared accordingly, run the
-#'   forecast or hindcasts, (optionally) add an ensemble, combine the 
-#'   results into the predictions folder.
+#' @description Given that the data and models are prepared accordingly, run 
+#'   the forecast or hindcasts, (optionally) add an ensemble, combine the 
+#'   results, and add them to the predictions folder.
 #'
-#' @param options_all full options list
-#'
-#' @return nothing
+#' @param options_all \code{all_options}-class \code{list} of options 
+#'   controlling the portalcasting directory. See \code{\link{all_options}}.
 #'
 #' @export
 #'
 casts <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
   cast(options_all$options_cast)
   step_casts(options_all)
   if (!options_all$options_cast$quiet){
@@ -232,8 +234,9 @@ cast <- function(options_cast = cast_options()){
   cast_models(options_cast)
   combined <- combine_forecasts(options_cast)
   ensemble <- add_ensemble(options_cast)
-
-  message("##########################################################")
+  if (!options_cast$quiet){
+    message("##########################################################")
+  }
   clear_tmp(options_cast$tree)
 }
 
