@@ -57,5 +57,6 @@ test_that("remove_incompletes", {
   expect_error(remove_incompletes(1, "ok"))
   expect_error(remove_incompletes(df, 1))
   expect_error(remove_incompletes(df, "ok2"))
+  expect_error(remove_incompletes(df, c("ok", "ok")))
   expect_is(remove_incompletes(df, "ok"), "data.frame")
 })
