@@ -12,7 +12,7 @@ model_template(options_model = model_options())
 \arguments{
 \item{options_model}{A class-\code{model_options} \code{list} of
 options used to set up a general model script. See 
-\code{\link{options_model}}.}
+\code{\link{model_options}}.}
 }
 \value{
 \code{model_template}: model script text as a single 

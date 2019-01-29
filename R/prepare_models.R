@@ -45,7 +45,7 @@ models <- function(set = "prefab", add = NULL){
 #'
 #' @param options_model A class-\code{model_options} \code{list} of
 #'   options used to set up a general model script. See 
-#'   \code{\link{options_model}}.
+#'   \code{\link{model_options}}.
 #'
 #' @export
 #'
