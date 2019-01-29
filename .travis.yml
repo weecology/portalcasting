@@ -25,7 +25,7 @@ addons:
 after_success:
   - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()'
-  - Rscript -e 'library(covr); codecov()'
+  - travis_wait 20 Rscript -e 'library(covr); codecov()'
 
 deploy:
   provider: pages
