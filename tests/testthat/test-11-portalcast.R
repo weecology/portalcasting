@@ -83,6 +83,10 @@ test_that("prep_data", {
   metadata$forecast_date <- "1970-01-01"
   writeLines(as.yaml(metadata), con = metadata_path)
   expect_output(prep_data(options_all1$options_data))
+
+  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+         recursive = TRUE)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
   expect_output(prep_data(options_all6$options_data))
 })
 
