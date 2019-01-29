@@ -27,7 +27,6 @@ Imports:
   purrr,
   RCurl,
   rlang,
-  testthat,
   tidyselect,
   tscount,
   yaml
@@ -35,7 +34,8 @@ Remotes: github::weecology/portalr
 Suggests:
   knitr,
   pkgdown,
-  rmarkdown
+  rmarkdown,
+  testthat
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
