@@ -2,13 +2,27 @@
 % Please edit documentation in R/prepare_models.R
 \name{write_model}
 \alias{write_model}
+\alias{model_template}
 \title{Write the template for a model into model subdirectory}
 \usage{
 write_model(options_model = model_options())
+
+model_template(options_model = model_options())
 }
 \arguments{
-\item{options_model}{model option list}
+\item{options_model}{A class-\code{model_options} \code{list} of
+options used to set up a general model script. See 
+\code{\link{model_options}}.}
+}
+\value{
+\code{model_template}: model script text as a single 
+  \code{character} value.
 }
 \description{
-Create template script for a given model
+\code{write_model}: Create template script (as written by 
+  \code{model_template}) for a given model
+
+\code{model_template}: create the \code{character}-valued
+  text for a model script to be housed in the model directory, as written
+  out by \code{write_model}.
 }

@@ -31,8 +31,8 @@ model_options <- function(tree = dirtree(), name = "AutoArima",
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
-  if (!is.character(name )){
-    stop("`name` is not a character")
+  if (!is.null(name) & !is.character(name)){
+    stop("`name` is not NULL nor a character")
   }
   if (length(name) > 1){
     stop("`name` can only be of length = 1")
