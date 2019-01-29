@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prepare data subdirectory for a forecast run or hindcast runs — prep_data • portalcasting</title>
+<title>Prepare data subdirectory for a forecast or hindcast run(s) — prep_data • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Prepare data subdirectory for a forecast run or hindcast runs — prep_data" />
+<meta property="og:title" content="Prepare data subdirectory for a forecast or hindcast run(s) — prep_data" />
 
-<meta property="og:description" content="Prepare the data directory for a forecasting run or a set
-  of hindcasting runs" />
+<meta property="og:description" content="Make sure that the data subdirectory has the updated files
+  for a forecasting run or a set of hindcasting runs. Uses the 
+  metadata.yaml file to verify validity." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,15 +122,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Prepare data subdirectory for a forecast run or hindcast runs</h1>
+    <h1>Prepare data subdirectory for a forecast or hindcast run(s)</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
     <div class="hidden name"><code>prep_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Prepare the data directory for a forecasting run or a set
-  of hindcasting runs</p>
+    <p>Make sure that the data subdirectory has the updated files
+  for a forecasting run or a set of hindcasting runs. Uses the 
+  <code>metadata.yaml</code> file to verify validity.</p>
     
     </div>
 
@@ -140,13 +142,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_data</th>
-      <td><p>the data options list</p></td>
+      <td><p>Class-<code>data_options</code> <code>list</code> containing the
+options for filling the data subdirectory. See 
+<code><a href='all_options.html'>data_options</a></code>.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>nothing</p>
     
 
   </div>
@@ -154,9 +154,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

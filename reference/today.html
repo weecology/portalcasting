@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Today's date — today • portalcasting</title>
+<title>Today's date (potentially with time) — today • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Today's date — today" />
+<meta property="og:title" content="Today's date (potentially with time) — today" />
 
-<meta property="og:description" content="Provide the current date of the system." />
+<meta property="og:description" content="Provide the current date (and optionally time) of the system." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,28 +120,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Today's date</h1>
+    <h1>Today's date (potentially with time)</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
     <div class="hidden name"><code>today.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Provide the current date of the system.</p>
+    <p>Provide the current date (and optionally time) of the system.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>today</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>today</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>time</th>
+      <td><p><code>logical</code> indicator of whether the output should include
+a timestamp as well as date.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Today's date, as a <code>Date</code>.</p>
+    <p>Today's date, as a <code>Date</code> or date and time as a 
+  <code>POSIXct</code>.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
           </ul>

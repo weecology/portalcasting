@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forecast or hindcast Portal rodents — portalcast • portalcasting</title>
+<title>Forecast or hindcast Portal rodents models — portalcast • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Forecast or hindcast Portal rodents — portalcast" />
+<meta property="og:title" content="Forecast or hindcast Portal rodents models — portalcast" />
 
-<meta property="og:description" content="Main function for controlling the running of potentially 
-  multiple models for either a forecast or a hindcast." />
+<meta property="og:description" content="Run potentially multiple models for either a forecast or a 
+  hindcast." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,15 +121,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forecast or hindcast Portal rodents</h1>
+    <h1>Forecast or hindcast Portal rodents models</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
     <div class="hidden name"><code>portalcast.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Main function for controlling the running of potentially 
-  multiple models for either a forecast or a hindcast.</p>
+    <p>Run potentially multiple models for either a forecast or a 
+  hindcast.</p>
     
     </div>
 
@@ -140,9 +140,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_all</th>
-      <td><p>top-level list of options controlling the portalcasting 
-directory. Of particular importance is the <code>options_cast</code> list,
-which contains the options controlling the (fore- or hind-)casting 
+      <td><p><code>all_options</code>-class <code>list</code> of options 
+controlling the portalcasting directory. See <code><a href='all_options.html'>all_options</a></code>.
+Of particular importance is the <code>options_cast</code> <code>list</code>,
+(see <code><a href='all_options.html'>cast_options</a></code>) which contains the options controlling 
+the (fore- or hind-)casting.
 <br /> <br /> To run a default hindcast, use 
 <code>options_all = all_options(cast_type = "hindcasts")</code></p></td>
     </tr>

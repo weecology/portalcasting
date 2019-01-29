@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Update the rodent data for a step in a hindcast — update_rodents" />
 
-<meta property="og:description" content="Given an updated hind_step, update the rodent data objects" />
+<meta property="og:description" content="Given an updated options_rodents$hind_step, update
+  the rodent data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,7 +128,8 @@
 
     <div class="ref-description">
     
-    <p>Given an updated hind_step, update the rodent data objects</p>
+    <p>Given an updated <code>options_rodents$hind_step</code>, update
+  the rodent data.</p>
     
     </div>
 
@@ -138,13 +140,17 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_rodents</th>
-      <td><p>rodents options list</p></td>
+      <td><p>A class-<code>rodents_options</code> <code>list</code> of 
+settings controlling the rodents data creation.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of two dataframes, all plots and control plots, updated</p>
+    <p>A <code>rodents_list</code>-class <code>list</code> of two <code>rodents</code>-class
+  <code>data.frames</code>: <code>"all"</code> (containing counts across all plots)
+  <code>"controls"</code> (containing counts across just the control plots), 
+  updated for the particular step in the hindcast.</p>
     
 
   </div>

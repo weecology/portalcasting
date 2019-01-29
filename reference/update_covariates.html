@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Update the covariate data for a step in a hindcast — update_covariates" />
 
-<meta property="og:description" content="Given an updated hind_step, update the covariate data" />
+<meta property="og:description" content="Given an updated options_covariates$hind_step, update
+  the covariate data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,7 +128,8 @@
 
     <div class="ref-description">
     
-    <p>Given an updated hind_step, update the covariate data</p>
+    <p>Given an updated <code>options_covariates$hind_step</code>, update
+  the covariate data.</p>
     
     </div>
 
@@ -138,17 +140,21 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>moons</th>
-      <td><p>current newmoon table</p></td>
+      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
+and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
     </tr>
     <tr>
       <th>options_covariates</th>
-      <td><p>covariates options list</p></td>
+      <td><p>A class-<code>covariates_options</code> <code>list</code> of 
+settings controlling the covariates data creation.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>nothing</p>
+    <p>An updated <code>covariates</code>-class <code>data.frame</code> with needed 
+  forecasted covariates associated with the focal forecast or hindcast 
+  newmoon.</p>
     
 
   </div>

@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select models to forecast or hindcast with — models_to_cast • portalcasting</title>
+<title>Generate the file path(s) to the script(s) of the model(s) forecast
+  or hindcast with — models_to_cast • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +31,12 @@
 
 
 
-<meta property="og:title" content="Select models to forecast or hindcast with — models_to_cast" />
+<meta property="og:title" content="Generate the file path(s) to the script(s) of the model(s) forecast
+  or hindcast with — models_to_cast" />
 
-<meta property="og:description" content="Verify that models requested are available and select them" />
+<meta property="og:description" content="Translate a models vector of model name(s) into a 
+  character vector of file path(s) corresponding to the model 
+  scripts." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,14 +124,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select models to forecast or hindcast with</h1>
+    <h1>Generate the file path(s) to the script(s) of the model(s) forecast
+  or hindcast with</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
     <div class="hidden name"><code>models_to_cast.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Verify that models requested are available and select them</p>
+    <p>Translate a <code>models</code> vector of model name(s) into a 
+  <code>character</code> vector of file path(s) corresponding to the model 
+  scripts.</p>
     
     </div>
 
@@ -138,13 +145,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_cast</th>
-      <td><p>casting options</p></td>
+      <td><p>Class-<code>cast_options</code> <code>list</code> containing the
+hind- or forecasting options. See <code><a href='all_options.html'>cast_options</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>names of files to be run</p>
+    <p><code>character</code> vector of the path(s) of the R script file(s) to 
+  be run.</p>
     
 
   </div>

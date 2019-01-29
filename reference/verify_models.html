@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Verify that models to forecast or hindcast with exist — verify_models • portalcasting</title>
+<title>Verify that models requested to forecast or hindcast with exist — verify_models • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Verify that models to forecast or hindcast with exist — verify_models" />
+<meta property="og:title" content="Verify that models requested to forecast or hindcast with exist — verify_models" />
 
-<meta property="og:description" content="Verify that models requested are available" />
+<meta property="og:description" content="Verify that models requested have scripts in the models 
+  subdirectory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,14 +121,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Verify that models to forecast or hindcast with exist</h1>
+    <h1>Verify that models requested to forecast or hindcast with exist</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
     <div class="hidden name"><code>verify_models.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Verify that models requested are available</p>
+    <p>Verify that models requested have scripts in the models 
+  subdirectory.</p>
     
     </div>
 
@@ -138,13 +140,10 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_cast</th>
-      <td><p>casting options</p></td>
+      <td><p>Class-<code>cast_options</code> <code>list</code> containing the
+hind- or forecasting options. See <code><a href='all_options.html'>cast_options</a></code>.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>nothing</p>
     
 
   </div>
@@ -152,9 +151,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
