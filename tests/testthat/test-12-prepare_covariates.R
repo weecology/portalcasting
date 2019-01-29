@@ -1,7 +1,6 @@
 context("Test prepare_covariates functions")
 
-options_all <- all_options(main = "ok")
-setup_dir(options_all)
+options_all <- all_options(main = "testing_casting")
 
 test_that("prep_covariates", {
   moons <- prep_moons(options_all$options_data$moons)
@@ -58,7 +57,8 @@ test_that("prep_fcast_covariates", {
 
 test_that("prep_weather_data", {
   expect_error(prep_weather_data(1))
-  expect_is(prep_weather_data(dirtree(main = "ok")), "data.frame")
+  expect_is(prep_weather_data(dirtree(main = "testing_casting")), 
+            "data.frame")
 })
 
 test_that("update_covfcast_options", {
@@ -76,6 +76,3 @@ test_that("update_covfcast_options", {
   expect_is(update_covfcast_options(cov_opts2, hcov, moons), 
             "covariates_options")
 })
-
-unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
-unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

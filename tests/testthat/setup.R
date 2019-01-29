@@ -1,0 +1,1 @@
+#setup_dir(all_options(main = "testing_casting"))
