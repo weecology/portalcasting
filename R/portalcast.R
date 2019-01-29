@@ -361,8 +361,12 @@ update_data <- function(options_data){
 #' @param moons Class-\code{moons} \code{data.frame} containing the historic 
 #'   and future newmoons, as produced by \code{\link{prep_moons}}.
 #'
-#' @return \code{covariates_options}: a \code{covariates_options} \code{list} 
-#'   of settings controlling the covariates data creation.
+#' @param options_covariates A class-\code{covariates_options} \code{list} of 
+#'   settings controlling the covariates data creation.
+#'
+#' @return An updated \code{covariates}-class \code{data.frame} with needed 
+#'   forecasted covariates associated with the focal forecast or hindcast 
+#'   newmoon.
 #'
 #' @export
 #'
