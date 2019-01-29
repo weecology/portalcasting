@@ -33,8 +33,7 @@
 <meta property="og:title" content="Provide the names of models — models" />
 
 <meta property="og:description" content="Based on a set, returns a character vectory of model
-  names to be included. Currently only support for 
-  set = &quot;portalcasting&quot;." />
+  names to be included. Currently only support for set = &quot;prefab&quot;." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,8 +129,7 @@
     <div class="ref-description">
     
     <p>Based on a <code>set</code>, returns a character vectory of model
-  names to be included. Currently only support for 
-  <code>set = "portalcasting"</code>.</p>
+  names to be included. Currently only support for <code>set = "prefab"</code>.</p>
     
     </div>
 
@@ -142,17 +140,20 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>set</th>
-      <td><p>type of model options (currently only support for "prefab")</p></td>
+      <td><p><code>characher</code> value of the type of model (currently only 
+support for <code>"prefab"</code>). Use <code>NULL</code> to build a custom set
+from scratch via <code>add</code>.</p></td>
     </tr>
     <tr>
       <th>add</th>
-      <td><p>character name of model to add to the list to run</p></td>
+      <td><p><code>character</code> vector of name(s) of model(s) to add to the 
+setup by <code>set</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>vector of model names</p>
+    <p><code>models</code>-class <code>character</code> vector of model names.</p>
     
 
   </div>
