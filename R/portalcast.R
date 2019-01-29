@@ -261,22 +261,44 @@ step_casts <- function(options_all = all_options()){
   }
 }
 
-
-
-
-
-
-#' @title Check if the newmoon should be skipped
-#' 
-#' @description For hindcasts, skip casting newmoons with incomplete surveys
+#' @title Step the hind_step values forward
 #'
-#' @param options_cast casting options list
+#' @description Iterate the \code{hind_step} elements of options \code{list}s
+#'   through subsequent-to-the-first -cast(s) within \code{\link{casts}}.
+#'
+#' @param options_all \code{all_options}-class \code{list} of options 
+#'   controlling the portalcasting directory. See \code{\link{all_options}}.
+#'   
+#' @return Updated \code{options_all} \code{list} for the next -cast.
+#'
+#' @export
+#'
+step_hind_forward <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
+  new_step <- options_all$options_data$covariates$hind_step + 1
+  options_all$options_data$rodents$hind_step <- new_step
+  options_all$options_data$covariates$hind_step <- new_step
+  options_all$options_cast$hind_step <- new_step
+  options_all
+}
+
+#' @title Check if the newmoon should be skipped during a set of hindcasts
+#' 
+#' @description For hindcasts, skip newmoons with incomplete surveys.
+#'
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @return logical indicating if the cast should be skipped
 #'
 #' @export
 #'
 check_to_skip <- function(options_cast){
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   out <- FALSE
   if (options_cast$cast_type == "hindcasts"){ 
     end_step <- options_cast$end[options_cast$hind_step]
@@ -375,23 +397,3 @@ update_rodents <- function(options_rodents){
 
   list("all" = all, "controls" = ctls)
 }
-
-#' @title Step the hind_step values forward
-#'
-#' @description Step all of the hind_step values in a full options control 
-#'   list forward one
-#'
-#' @param options_all all options control list
-#'
-#' @return updated options_all
-#'
-#' @export
-#'
-step_hind_forward <- function(options_all = all_options()){
-  new_step <- options_all$options_data$covariates$hind_step + 1
-  options_all$options_data$rodents$hind_step <- new_step
-  options_all$options_data$covariates$hind_step <- new_step
-  options_all$options_cast$hind_step <- new_step
-  return(options_all)
-}
-

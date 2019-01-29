@@ -13,6 +13,8 @@ options_all8 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 496)
 options_all9 <- all_options(main = "ok3", model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 490:493)
+options_all10 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
+                             cast_type = "hindcasts", end = 476)
 
 setup_dir(options_all1)
 setup_dir(options_all7)
@@ -95,6 +97,18 @@ test_that("step_casts", {
   expect_error(step_casts(1))
   cast(options_all9$options_cast)
   expect_message(step_casts(options_all9))
+})
+
+test_that("step_hind_forward", {
+  expect_error(step_hind_forward(1))
+  expect_is(step_hind_forward(options_all6), "all_options")
+})
+
+test_that("check_to_skip", {
+  expect_error(check_to_skip(1))
+  expect_equal(check_to_skip(options_all8$options_cast), TRUE)
+  expect_equal(check_to_skip(options_all10$options_cast), TRUE)
+  expect_equal(check_to_skip(options_all6$options_cast), FALSE)
 })
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

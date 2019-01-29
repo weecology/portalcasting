@@ -2,16 +2,17 @@
 % Please edit documentation in R/portalcast.R
 \name{check_to_skip}
 \alias{check_to_skip}
-\title{Check if the newmoon should be skipped}
+\title{Check if the newmoon should be skipped during a set of hindcasts}
 \usage{
 check_to_skip(options_cast)
 }
 \arguments{
-\item{options_cast}{casting options list}
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \value{
 logical indicating if the cast should be skipped
 }
 \description{
-For hindcasts, skip casting newmoons with incomplete surveys
+For hindcasts, skip newmoons with incomplete surveys.
 }

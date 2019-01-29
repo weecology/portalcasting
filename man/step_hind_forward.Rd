@@ -7,12 +7,13 @@
 step_hind_forward(options_all = all_options())
 }
 \arguments{
-\item{options_all}{all options control list}
+\item{options_all}{\code{all_options}-class \code{list} of options 
+controlling the portalcasting directory. See \code{\link{all_options}}.}
 }
 \value{
-updated options_all
+Updated \code{options_all} \code{list} for the next -cast.
 }
 \description{
-Step all of the hind_step values in a full options control 
-  list forward one
+Iterate the \code{hind_step} elements of options \code{list}s
+  through subsequent-to-the-first -cast(s) within \code{\link{casts}}.
 }
