@@ -9,9 +9,14 @@ options_all6 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 490)
 options_all7 <- all_options(main = "ok2", model = models(NULL, "AutoArima"),
                             quiet = TRUE)
+options_all8 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
+                            cast_type = "hindcasts", end = 496)
+options_all9 <- all_options(main = "ok3", model = models(NULL, "AutoArima"),
+                            cast_type = "hindcasts", end = 490:493)
 
 setup_dir(options_all1)
 setup_dir(options_all7)
+setup_dir(options_all9)
 
 test_that("portalcast", {
   expect_error(portalcast(1))
@@ -78,7 +83,24 @@ test_that("casts", {
   expect_silent(casts(options_all7))
 })
 
+test_that("cast", {
+  expect_error(cast(1))
+  expect_output(cast(options_all3$options_cast))
+  expect_silent(cast(options_all7$options_cast))
+  expect_message(cast(options_all8$options_cast))
+  expect_equal(cast(options_all8$options_cast), NULL)
+})
+
+test_that("step_casts", {
+  expect_error(step_casts(1))
+  cast(options_all9$options_cast)
+  expect_messages(step_casts(options_all9))
+})
+
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
 unlink(dirtree(main = "ok2"), recursive = TRUE, force = TRUE)
 unlink(dirtree(main = "ok2"), recursive = TRUE, force = TRUE)
+unlink(dirtree(main = "ok3"), recursive = TRUE, force = TRUE)
+unlink(dirtree(main = "ok3"), recursive = TRUE, force = TRUE)
+

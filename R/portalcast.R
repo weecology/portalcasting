@@ -166,7 +166,7 @@ clear_tmp <- function(tree = dirtree()){
 #'
 #' @param options_data Class-\code{data_options} \code{list} containing the
 #'   options for filling the data subdirectory. See 
-#'   \code{\link{data_options()}}. 
+#'   \code{\link{data_options}}. 
 #'
 #' @export
 #'
@@ -190,11 +190,12 @@ prep_data <- function(options_data = data_options()){
   }
 }
 
-#' @title Run potentially multiple forecasts or hindcasts
+#' @title Run one or potentially multiple forecasts or hindcasts
 #' 
 #' @description Given that the data and models are prepared accordingly, run 
-#'   the forecast or hindcasts, (optionally) add an ensemble, combine the 
-#'   results, and add them to the predictions folder.
+#'   a set of one or more forecast or hindcasts, (optionally) add an ensemble,
+#'   combine the results, and add them to the predictions folder. \cr \cr
+#'   \code{casts}: run one or more -casts flexibly
 #'
 #' @param options_all \code{all_options}-class \code{list} of options 
 #'   controlling the portalcasting directory. See \code{\link{all_options}}.
@@ -214,20 +215,19 @@ casts <- function(options_all = all_options()){
   }
 }
 
-#' @title Actually forecast or hindcast
+#' @rdname casts
 #' 
-#' @description Given the data and models are prepared accordingly, run the
-#'   forecast or hindcast, (optionally) add an ensemble, combine the 
-#'   results into the predictions folder.
+#' @description \code{cast}: run a single -cast
 #'
-#' @param options_cast casting options list
-#'
-#' @return nothing
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @export
 #'
 cast <- function(options_cast = cast_options()){
-
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (check_to_skip(options_cast)){
     return()
   }
@@ -240,18 +240,17 @@ cast <- function(options_cast = cast_options()){
   clear_tmp(options_cast$tree)
 }
 
-#' @title Step through the subsequent casts
+#' @rdname casts
 #' 
-#' @description If there are multiple steps in the hindcast, update the data
-#'   and continue casting
-#'
-#' @param options_all full options list
-#'
-#' @return nothing
+#' @description \code{step_casts}: iterate through subsequent-to-the-first
+#'   -cast(s) within \code{casts}. 
 #'
 #' @export
 #'
 step_casts <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
   n_steps <- length(options_all$options_data$covariates$end)
   if (n_steps > 1){
     for (i in 2:n_steps){
@@ -344,7 +343,8 @@ update_data <- function(options_data){
 update_covariates <- function(moons, options_covariates){
   end_step <- options_covariates$end[options_covariates$hind_step]
   covs_path <- file_path(options_covariates$tree, "data/covariates.csv")
-  covs <- read.csv(covs_path, stringsAsFactors = FALSE)
+  covs <- read.csv(covs_path, stringsAsFactors = FALSE) 
+  covs <- classy(covs, c("data.frame", "covariates"))
   hist_cov <- covs[covs$newmoonnumber <= end_step, ]
   fcast_cov <- prep_fcast_covariates(hist_cov, moons, options_covariates)
   out <- bind_rows(hist_cov, fcast_cov)

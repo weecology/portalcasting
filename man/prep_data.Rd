@@ -9,7 +9,7 @@ prep_data(options_data = data_options())
 \arguments{
 \item{options_data}{Class-\code{data_options} \code{list} containing the
 options for filling the data subdirectory. See 
-\code{\link{data_options()}}.}
+\code{\link{data_options}}.}
 }
 \description{
 Make sure that the data subdirectory has the updated files
