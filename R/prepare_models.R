@@ -92,7 +92,7 @@ model_template <- function(options_model = model_options()){
   quiet_arg <- paste0("quiet = ", options_model$quiet)
 
   if (options_model$covariates){
-    lag_arg <- paste0(', lag = ', options_model$lag)
+    lag_arg <- paste0(', lag = ', options_model$lag, ', ')
     args_a <- paste0('all, covariates, metadata', lag_arg, quiet_arg)
     c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
     args_c <- paste0(c_arg, lag_arg, quiet_arg)
