@@ -9,6 +9,11 @@ r:
 r_packages:
 - covr
 
+script: 
+  - |
+    R CMD build .
+    travis_wait 20 R CMD check portalcasting*tar.gz
+
 addons:
   apt:
     packages:
