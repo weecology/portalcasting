@@ -27,7 +27,6 @@ Imports:
   purrr,
   RCurl,
   rlang,
-  testthat,
   tidyselect,
   tscount,
   yaml
