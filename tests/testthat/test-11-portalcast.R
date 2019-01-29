@@ -94,7 +94,7 @@ test_that("cast", {
 test_that("step_casts", {
   expect_error(step_casts(1))
   cast(options_all9$options_cast)
-  expect_messages(step_casts(options_all9))
+  expect_message(step_casts(options_all9))
 })
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
