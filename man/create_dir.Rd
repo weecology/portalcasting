@@ -21,7 +21,7 @@ available for controlling the set up of the directory (see
 \code{\link{dir_options}}).}
 
 \item{path}{The normalized path of the specific subdirectory folder to be 
-created in the directory tree as a character value (see 
+created in the directory tree as a \code{character} value (see 
 \code{\link{normalizePath}}, \code{\link{sub_path}}).}
 
 \item{quiet}{\code{logical} indicator if progress messages should be

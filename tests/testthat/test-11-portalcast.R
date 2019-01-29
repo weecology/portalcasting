@@ -1,30 +1,34 @@
 context("Test portalcast functions")
 
-options_all1 <- all_options(main = "ok")
-options_all2 <- all_options(main = "ok", quiet = TRUE)
-options_all3 <- all_options(main = "ok", model = models(NULL, "AutoArima"))
-options_all4 <- all_options(main = "ok", model = models(NULL, "ok"))
-options_all5 <- all_options(main = "ok", model = models(NULL, "all"))
-options_all6 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
+options_all1 <- all_options(main = "testing_casting")
+options_all2 <- all_options(main = "testing_casting", quiet = TRUE)
+options_all3 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "AutoArima"))
+options_all4 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "ok"))
+options_all5 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "all"))
+options_all6 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 490)
-options_all7 <- all_options(main = "ok2", model = models(NULL, "AutoArima"),
-                            quiet = TRUE)
-options_all8 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
+options_all7 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "AutoArima"), quiet = TRUE)
+options_all8 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 496)
-options_all9 <- all_options(main = "ok3", model = models(NULL, "AutoArima"),
+options_all9 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 490:493)
-options_all10 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
+options_all10 <- all_options(main = "testing_casting", 
+                             model = models(NULL, "AutoArima"),
                              cast_type = "hindcasts", end = 476)
-options_all11 <- all_options(main = "ok3", model = models(NULL, "AutoArima"),
+options_all11 <- all_options(main = "testing_casting", 
+                             model = models(NULL, "AutoArima"),
                              cast_type = "hindcasts", end = 490:493, 
                              quiet = TRUE)
 
-setup_dir(options_all1)
-setup_dir(options_all7)
-setup_dir(options_all9)
-
 test_that("portalcast", {
-  expect_error(portalcast(1))
+  expect_error(portalcast(1), "`all_options`")
   expect_message(portalcast(options_all3))
 })
 
@@ -54,47 +58,83 @@ test_that("models_to_cast", {
 
 test_that("create_tmp", {
   expect_error(create_tmp(1))
-  expect_silent(create_tmp(dirtree(main = "ok")))
+  expect_silent(create_tmp(dirtree(main = "testing_casting")))
 })
 
 test_that("clear_tmp", {
   expect_error(clear_tmp(1))
-  expect_silent(clear_tmp(dirtree(main = "ok")))
-  unlink(sub_path(dirtree(main = "ok"), "tmp"), recursive = TRUE, 
+  expect_silent(clear_tmp(dirtree(main = "testing_casting")))
+  unlink(sub_path(dirtree(main = "testing_casting"), "tmp"), recursive = TRUE, 
          force = TRUE)
-  unlink(sub_path(dirtree(main = "ok"), "tmp"), recursive = TRUE, 
+  unlink(sub_path(dirtree(main = "testing_casting"), "tmp"), recursive = TRUE, 
          force = TRUE)
-  expect_message(clear_tmp(dirtree(main = "ok")))
+  expect_message(clear_tmp(dirtree(main = "testing_casting")))
 })
 
 test_that("prep_data", {
   expect_error(prep_data(1))
   expect_output(prep_data(options_all1$options_data))
-  unlink(file_path(dirtree(main = "ok"), "data/metadata.yaml"))
+  unlink(file_path(dirtree(main = "testing_casting"), "data/metadata.yaml"))
   expect_output(prep_data(options_all1$options_data))
 
-  metadata_path <- file_path(dirtree(main = "ok"), "data/metadata.yaml")
+  metadata_path <- file_path(dirtree(main = "testing_casting"), 
+                             "data/metadata.yaml")
   metadata <- yaml.load_file(metadata_path)    
   metadata$forecast_date <- "1970-01-01"
   writeLines(as.yaml(metadata), con = metadata_path)
   expect_output(prep_data(options_all1$options_data))
+
+  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+         recursive = TRUE)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
   expect_output(prep_data(options_all6$options_data))
 })
 
 test_that("casts", {
-  setup_dir(options_all1)
   expect_error(casts(1))
+  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+         recursive = TRUE)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  prep_data(options_all3$options_data)
   expect_output(casts(options_all3))
+  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+         recursive = TRUE)
+  unlink(sub_path(dirtree(main = "testing_casting"), "models"), 
+         recursive = TRUE)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  prep_data(options_all7$options_data)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "models"))
+  fill_models(options_all7$options_models)
   expect_silent(casts(options_all7))
 })
 
+
 test_that("cast", {
   expect_error(cast(1))
+  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+         recursive = TRUE)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  prep_data(options_all3$options_data)
   expect_output(cast(options_all3$options_cast))
+
+  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+         recursive = TRUE)
+  unlink(sub_path(dirtree(main = "testing_casting"), "models"), 
+         recursive = TRUE)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  prep_data(options_all7$options_data)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "models"))
+  fill_models(options_all7$options_models)
   expect_silent(cast(options_all7$options_cast))
+
+  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+         recursive = TRUE)
+  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  prep_data(options_all8$options_data)
   expect_message(cast(options_all8$options_cast))
   expect_equal(cast(options_all8$options_cast), NULL)
 })
+
 
 test_that("step_casts", {
   expect_error(step_casts(1))
@@ -135,11 +175,3 @@ test_that("update_rodents", {
   expect_is(updrod[[1]], "rodents")
   expect_is(updrod[[2]], "rodents")
 })
-
-unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
-unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)
-unlink(dirtree(main = "ok2"), recursive = TRUE, force = TRUE)
-unlink(dirtree(main = "ok2"), recursive = TRUE, force = TRUE)
-unlink(dirtree(main = "ok3"), recursive = TRUE, force = TRUE)
-unlink(dirtree(main = "ok3"), recursive = TRUE, force = TRUE)
-

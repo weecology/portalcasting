@@ -1,7 +1,6 @@
 context("Test prepare_metadata functions")
 
-options_all <- all_options(main = "ok")
-setup_dir(options_all)
+options_all <- all_options(main = "testing_casting")
 
 moons <- prep_moons(options_all$options_data$moons)
 rodents <- prep_rodents(moons, options_all$options_data$rodents)

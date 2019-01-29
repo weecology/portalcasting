@@ -66,7 +66,7 @@ forecast_covariates <- function(covariate_data, moons,
 #'
 forecast_ndvi <- function(covariate_data, moons, options_covariates){
   if (!("covariates_options") %in% class(options_covariates)){
-    stop("options_covariates is not a covariates_options list")
+    stop("`options_covariates` is not a covariates_options list")
   }
   if (!("moons" %in% class(moons))){
     stop("`moons` is not of class moons")
@@ -95,7 +95,7 @@ forecast_ndvi <- function(covariate_data, moons, options_covariates){
 forecast_weather <- function(moons = prep_moons(), 
                              options_covariates = covariates_options()){
   if (!("covariates_options") %in% class(options_covariates)){
-    stop("options_covariates is not a covariates_options list")
+    stop("`options_covariates` is not a covariates_options list")
   }  
   if (!("moons" %in% class(moons))){
     stop("`moons` is not of class moons")
@@ -171,7 +171,7 @@ trim_moons_fcast <- function(moons, options_covariates){
     stop("`moons` is not of class moons")
   }
   if (!("covariates_options") %in% class(options_covariates)){
-    stop("options_covariates is not a covariates_options list")
+    stop("`options_covariates` is not a covariates_options list")
   } 
   moons <- moons[, c("newmoonnumber", "newmoondate", "period", "censusdate")]
   fc_nms <- moons
@@ -211,7 +211,7 @@ get_climate_forecasts <- function(moons = prep_moons(),
     stop("`moons` is not of class moons")
   }
   if (!("covariates_options") %in% class(options_covariates)){
-    stop("options_covariates is not a covariates_options list")
+    stop("`options_covariates` is not a covariates_options list")
   } 
   
   lead_time <- options_covariates$lead_time - options_covariates$min_lag
@@ -339,7 +339,7 @@ append_cov_fcast_csv <- function(new_forecast_covariates,
     stop("`new_forecast_covariates` is not of class covariates")
   }
   if (!("covariates_options") %in% class(options_covariates)){
-    stop("options_covariates is not a covariates_options list")
+    stop("`options_covariates` is not a covariates_options list")
   } 
   
   if (!options_covariates$append_fcast_csv){

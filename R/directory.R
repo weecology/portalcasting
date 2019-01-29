@@ -79,7 +79,7 @@ create_sub_dirs <- function(options_dir = dir_options()){
 #'   folder if it does not already exist.
 #'
 #' @param path The normalized path of the specific subdirectory folder to be 
-#'   created in the directory tree as a character value (see 
+#'   created in the directory tree as a \code{character} value (see 
 #'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
@@ -88,6 +88,9 @@ create_sub_dirs <- function(options_dir = dir_options()){
 #' @export
 #'
 create_sub_dir <- function(path = NULL, quiet = FALSE){
+  if (!is.null(path) & !("character" %in% class(path))){
+    stop("`path` is not NULL or a character")
+  }
   if (is.null(path)){
     return()
   }
