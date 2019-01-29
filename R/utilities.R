@@ -132,3 +132,35 @@ classy <- function(x, class = NULL){
   class(x) <- class
   x
 }
+
+#' @title Remove any specific incomplete entries as noted by an NA
+#'
+#' @description Remove any incomplete entries in a table, as determined by
+#'   the presence of an \code{NA} entry in a specific column 
+#'   (\code{col_to_check}).
+#'
+#' @param df \code{data.frame} table to be written out.
+#'
+#' @param col_to_check A single \code{character} value of the column to use
+#'   to remove incomplete entries. 
+#'
+#' @return df without any incomplete entries. 
+#'
+#' @export
+#'
+remove_incompletes <- function(df, col_to_check){
+  if (!("data.frame" %in% class(df))){
+    stop("`df` not a data.frame class object")
+  }
+  if (length(col_to_check) > 1){
+    stop("`col_to_check` currently only able to length 1")
+  }
+  if (!("character" %in% class(col_to_check))){
+    stop("`col_to_check` not of class character")
+  }
+  incompletes <- which(is.na(df[ , col_to_check]))
+  if (length(incompletes) > 0){
+    df <- df[-incompletes, ]
+  }
+  df
+}

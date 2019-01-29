@@ -7,15 +7,12 @@
 transfer_hist_covariate_forecasts(options_data = data_options())
 }
 \arguments{
-\item{options_data}{data options}
-}
-\value{
-nothing
+\item{options_data}{Class-\code{data_options} \code{list} of control 
+options \code{list}s for setting up the data structures.}
 }
 \description{
-Currently, the historical covariate data forecasts are being
-  held in the \code{extdata} folder in the package directory, and are the
-  transfer is hard-wired to come from there. In the future, we should 
-  consider housing the data differently (they'll be continuously updated
-  with the forecasts), and thus we'll want to un-hard-wire that.
+Currently, the historical covariate covariate forecasts are 
+  held in the \code{extdata} folder in the package directory, and the
+  transfer is hard-wired to come from there. This will be relaxed in the 
+  future.
 }

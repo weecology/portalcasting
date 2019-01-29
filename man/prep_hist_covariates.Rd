@@ -7,11 +7,13 @@
 prep_hist_covariates(options_covariates = covariates_options())
 }
 \arguments{
-\item{options_covariates}{covariates options list}
+\item{options_covariates}{A class-\code{covariates_options} \code{list} of 
+settings controlling the covariates data creation.}
 }
 \value{
-historical covariate table
+Historical covariate data table as a code{covariates}-class 
+  \code{data.frame}.
 }
 \description{
-Create a data table of historical weather and ndvi data
+Create a data table of historical weather and NDVI data.
 }
