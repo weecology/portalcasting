@@ -19,7 +19,7 @@ test_that("write_model", {
 })
 
 test_that("model_template", {
-  expect_error(write_model(1), "`options_model` is not")
+  expect_error(model_template(1), "`options_model` is not")
 
   temp1 <- model_template(
               AutoArima_options(dirtree(main = "testing_casting")))
