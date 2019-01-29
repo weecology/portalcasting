@@ -50,5 +50,12 @@ test_that("classy", {
   expect_is(classy(1, "character"), "character")
   expect_is(classy(1, c("ok", "character")), c("character"))
   expect_is(classy(1, c("ok", "character")), c("ok"))
+})
 
+test_that("remove_incompletes", {
+  df <- data.frame(ok = 1:10, not_ok = 11:20)
+  expect_error(remove_incompletes(1, "ok"))
+  expect_error(remove_incompletes(df, 1))
+  expect_error(remove_incompletes(df, "ok2"))
+  expect_is(remove_incompletes(df, "ok"), "data.frame")
 })

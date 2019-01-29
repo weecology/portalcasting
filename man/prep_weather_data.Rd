@@ -7,11 +7,13 @@
 prep_weather_data(tree = dirtree())
 }
 \arguments{
-\item{tree}{directory tree}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 }
 \value{
-historical weather table
+\code{data.frame} of historical weather data.
 }
 \description{
-Create a data table of historical weather data
+Create a data table of historical weather data using 
+  \code{\link[portalr]{weather}}.
 }

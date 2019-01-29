@@ -5,19 +5,23 @@
 \title{Update the data options for covariate forecasts based on existing 
   data}
 \usage{
-update_covfcast_options(options_covariates, hist_data, moons)
+update_covfcast_options(options_covariates, hist_cov, moons)
 }
 \arguments{
-\item{options_covariates}{covariate data options}
+\item{options_covariates}{A class-\code{covariates_options} \code{list} of 
+settings controlling the covariates data creation.}
 
-\item{hist_data}{historical covariate data}
+\item{hist_cov}{Historical covariate data table as a code{covariates}-class 
+\code{data.frame}, returned from \code{\link{prep_hist_covariates}}.}
 
-\item{moons}{current newmoon table}
+\item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
+and future newmoons, as produced by \code{\link{prep_moons}}.}
 }
 \value{
-control options list for covariates
+An updated \code{covariates_options} \code{list} of control options 
+  for covariates.
 }
 \description{
 Update the covariate data control options based on the 
-  historical covariate data and moon data
+  historical covariate data and moon data.
 }
