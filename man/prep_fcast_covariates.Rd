@@ -8,14 +8,18 @@ prep_fcast_covariates(hist_cov = prep_hist_covariates(),
   moons = prep_moons(), options_covariates = covariates_options())
 }
 \arguments{
-\item{hist_cov}{historical covariate data}
+\item{hist_cov}{Historical covariate data table as a code{covariates}-class 
+\code{data.frame}, returned from \code{\link{prep_hist_covariates}}.}
 
-\item{moons}{current newmoon table}
+\item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
+and future newmoons, as produced by \code{\link{prep_moons}}.}
 
-\item{options_covariates}{control options list for covariates}
+\item{options_covariates}{A class-\code{covariates_options} \code{list} of 
+settings controlling the covariates data creation.}
 }
 \value{
-covariate data table
+Covariate data table as a code{covariates}-class \code{data.frame}
+  ready for casting.
 }
 \description{
 Prepare forecasts of covariate data as needed for rodent

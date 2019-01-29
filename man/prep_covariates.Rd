@@ -8,15 +8,17 @@ prep_covariates(moons = prep_moons(),
   options_covariates = covariates_options())
 }
 \arguments{
-\item{moons}{current newmoon table}
+\item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
+and future newmoons, as produced by \code{\link{prep_moons}}.}
 
-\item{options_covariates}{control options list for covariates}
+\item{options_covariates}{A class-\code{covariates_options} \code{list} of 
+settings controlling the covariates data creation.}
 }
 \value{
-covariate data table
+Covariate data table as a code{covariates}-class \code{data.frame}.
 }
 \description{
 Prepare covariate data for forecasting or hindcasting, 
   including saving out the data and appending the new forecasts of 
-  covariates to the existing covariate forecast table
+  covariates to the existing covariate forecast table.
 }
