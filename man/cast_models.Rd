@@ -2,16 +2,15 @@
 % Please edit documentation in R/portalcast.R
 \name{cast_models}
 \alias{cast_models}
-\title{Source the selected models to forecast or hindcast with}
+\title{Source the scripts to run the selected forecast or hindcast models}
 \usage{
 cast_models(options_cast = cast_options())
 }
 \arguments{
-\item{options_cast}{casting options}
-}
-\value{
-nothing
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \description{
-Source the code of the selected model scripts
+Source the R scripts of the selected model(s) indicated by the
+  \code{model} element in \code{options_cast}.
 }

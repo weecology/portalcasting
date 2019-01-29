@@ -5,7 +5,8 @@
 \title{poisson environmental variable Generalized Auto-Regressive 
   Conditional Heteroscedasticity model for Portal Predictions}
 \usage{
-pevGARCH(abundances, covariates, metadata, level = "All", lag = 6)
+pevGARCH(abundances, covariates, metadata, level = "All", lag = 6,
+  quiet = FALSE)
 }
 \arguments{
 \item{abundances}{table of rodent abundances and time measures}
@@ -18,6 +19,8 @@ measures}
 \item{level}{name of the type of plots included ("All" or "Controls")}
 
 \item{lag}{the lag used for the covariate data}
+
+\item{quiet}{logical indicating if the function should be quiet}
 }
 \value{
 list of forecast and aic tables

@@ -2,16 +2,15 @@
 % Please edit documentation in R/portalcast.R
 \name{verify_models}
 \alias{verify_models}
-\title{Verify that models to forecast or hindcast with exist}
+\title{Verify that models requested to forecast or hindcast with exist}
 \usage{
 verify_models(options_cast = cast_options())
 }
 \arguments{
-\item{options_cast}{casting options}
-}
-\value{
-nothing
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \description{
-Verify that models requested are available
+Verify that models requested have scripts in the models 
+  subdirectory.
 }

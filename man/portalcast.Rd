@@ -2,14 +2,16 @@
 % Please edit documentation in R/portalcast.R
 \name{portalcast}
 \alias{portalcast}
-\title{Forecast or hindcast Portal rodents}
+\title{Forecast or hindcast Portal rodents models}
 \usage{
 portalcast(options_all = all_options())
 }
 \arguments{
-\item{options_all}{top-level list of options controlling the portalcasting 
-directory. Of particular importance is the \code{options_cast} list,
-which contains the options controlling the (fore- or hind-)casting 
+\item{options_all}{\code{all_options}-class \code{list} of options 
+controlling the portalcasting directory. See \code{\link{all_options}}.
+Of particular importance is the \code{options_cast} \code{list},
+(see \code{\link{cast_options}}) which contains the options controlling 
+the (fore- or hind-)casting.
 \cr \cr To run a default hindcast, use 
 \code{options_all = all_options(cast_type = "hindcasts")}}
 }
@@ -17,6 +19,6 @@ which contains the options controlling the (fore- or hind-)casting
 Nothing
 }
 \description{
-Main function for controlling the running of potentially 
-  multiple models for either a forecast or a hindcast.
+Run potentially multiple models for either a forecast or a 
+  hindcast.
 }

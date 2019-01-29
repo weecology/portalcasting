@@ -21,6 +21,8 @@
 #'
 #' @param lag the lag used for the covariate data
 #'
+#' @param quiet logical indicating if the function should be quiet
+#'
 #' @return list of forecast and aic tables
 #'
 #' @references
@@ -32,7 +34,7 @@
 #' @export
 #'
 pevGARCH <- function(abundances, covariates, metadata, level = "All", 
-                     lag = 6){
+                     lag = 6, quiet = FALSE){
 
   fcnm <- metadata$rodent_forecast_newmoons
   nfcnm <- length(fcnm)
@@ -53,7 +55,9 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
   for(s in species){
 
     ss <- gsub("NA.", "NA", s)
-    cat("Fitting Poisson environmental GARCH models for", ss, "\n")
+    if (!quiet){
+      cat("Fitting pevGARCH models for", ss, "\n")
+    }
 
     abund_s <- extract2(abundances, s)
   

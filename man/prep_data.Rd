@@ -2,17 +2,17 @@
 % Please edit documentation in R/portalcast.R
 \name{prep_data}
 \alias{prep_data}
-\title{Prepare data subdirectory for a forecast run or hindcast runs}
+\title{Prepare data subdirectory for a forecast or hindcast run(s)}
 \usage{
 prep_data(options_data = data_options())
 }
 \arguments{
-\item{options_data}{the data options list}
-}
-\value{
-nothing
+\item{options_data}{Class-\code{data_options} \code{list} containing the
+options for filling the data subdirectory. See 
+\code{\link{data_options}}.}
 }
 \description{
-Prepare the data directory for a forecasting run or a set
-  of hindcasting runs
+Make sure that the data subdirectory has the updated files
+  for a forecasting run or a set of hindcasting runs. Uses the 
+  \code{metadata.yaml} file to verify validity.
 }

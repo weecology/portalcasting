@@ -2,18 +2,31 @@
 % Please edit documentation in R/portalcast.R
 \name{casts}
 \alias{casts}
-\title{Multiple forecast or hindcast}
+\alias{cast}
+\alias{step_casts}
+\title{Run one or potentially multiple forecasts or hindcasts}
 \usage{
 casts(options_all = all_options())
+
+cast(options_cast = cast_options())
+
+step_casts(options_all = all_options())
 }
 \arguments{
-\item{options_all}{full options list}
-}
-\value{
-nothing
+\item{options_all}{\code{all_options}-class \code{list} of options 
+controlling the portalcasting directory. See \code{\link{all_options}}.}
+
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \description{
-Given the data and models are prepared accordingly, run the
-  forecast or hindcasts, (optionally) add an ensemble, combine the 
-  results into the predictions folder.
+Given that the data and models are prepared accordingly, run 
+  a set of one or more forecast or hindcasts, (optionally) add an ensemble,
+  combine the results, and add them to the predictions folder. \cr \cr
+  \code{casts}: run one or more -casts flexibly
+
+\code{cast}: run a single -cast
+
+\code{step_casts}: iterate through subsequent-to-the-first
+  -cast(s) within \code{casts}.
 }

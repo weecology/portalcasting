@@ -7,13 +7,18 @@
 update_covariates(moons, options_covariates)
 }
 \arguments{
-\item{moons}{current newmoon table}
+\item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
+and future newmoons, as produced by \code{\link{prep_moons}}.}
 
-\item{options_covariates}{covariates options list}
+\item{options_covariates}{A class-\code{covariates_options} \code{list} of 
+settings controlling the covariates data creation.}
 }
 \value{
-nothing
+An updated \code{covariates}-class \code{data.frame} with needed 
+  forecasted covariates associated with the focal forecast or hindcast 
+  newmoon.
 }
 \description{
-Given an updated hind_step, update the covariate data
+Given an updated \code{options_covariates$hind_step}, update
+  the covariate data.
 }

@@ -7,13 +7,12 @@
 update_data(options_data)
 }
 \arguments{
-\item{options_data}{data options list}
-}
-\value{
-nothing
+\item{options_data}{Class-\code{data_options} \code{list} containing the
+options for filling the data subdirectory. See 
+\code{\link{data_options}}.}
 }
 \description{
 Rather than re-create the full rodent and covariate files
   again, simply step back in time through the hindcast's end vector 
-  and trim the last "historical" sample off
+  and trim the last "historical" sample off.
 }

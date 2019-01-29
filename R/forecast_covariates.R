@@ -24,7 +24,7 @@
 forecast_covariates <- function(covariate_data, moons, 
                                 options_covariates = covariates_options()){
   if (!("covariates_options") %in% class(options_covariates)){
-    stop("options_covariates is not a covariates_options list")
+    stop("`options_covariates` is not a covariates_options list")
   }
   if (!("moons" %in% class(moons))){
     stop("`moons` is not of class moons")
@@ -351,18 +351,14 @@ append_cov_fcast_csv <- function(new_forecast_covariates,
 
   covar_new <- new_forecast_covariates
   covar_new$source <- options_covariates$source_name
-  covar_new$date_made <- as.character(today())
+  covar_new$date_made <- today(time = TRUE)
 
   fname <- paste0("data/", options_covariates$hist_fcast_file)
   hist_file <- file_path(options_covariates$tree, fname)
 
   if (file.exists(hist_file)){
     covar_hist <- read.csv(hist_file, stringsAsFactors = FALSE)
-    if (covar_new$forecast_newmoon[1] > max(covar_hist$forecast_newmoon)){
-      out <- rbind(covar_hist, covar_new)
-    } else{
-      out <- covar_hist
-    }
+    out <- rbind(covar_hist, covar_new)
   } else{
     out <- covar_new
   }

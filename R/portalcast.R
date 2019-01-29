@@ -1,11 +1,13 @@
-#' @title Forecast or hindcast Portal rodents
+#' @title Forecast or hindcast Portal rodents models
 #'
-#' @description Main function for controlling the running of potentially 
-#'   multiple models for either a forecast or a hindcast.
+#' @description Run potentially multiple models for either a forecast or a 
+#'   hindcast. 
 #'
-#' @param options_all top-level list of options controlling the portalcasting 
-#'   directory. Of particular importance is the \code{options_cast} list,
-#'   which contains the options controlling the (fore- or hind-)casting 
+#' @param options_all \code{all_options}-class \code{list} of options 
+#'   controlling the portalcasting directory. See \code{\link{all_options}}.
+#'   Of particular importance is the \code{options_cast} \code{list},
+#'   (see \code{\link{cast_options}}) which contains the options controlling 
+#'   the (fore- or hind-)casting.
 #'   \cr \cr To run a default hindcast, use 
 #'   \code{options_all = all_options(cast_type = "hindcasts")}
 #'
@@ -14,24 +16,29 @@
 #' @export
 #'
 portalcast <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
   clear_tmp(options_all$options_dir$tree)
   verify_models(options_all$options_cast)
   prep_data(options_all$options_data)
   casts(options_all)
 }
 
-#' @title Verify that models to forecast or hindcast with exist
+#' @title Verify that models requested to forecast or hindcast with exist
 #'
-#' @description Verify that models requested are available
+#' @description Verify that models requested have scripts in the models 
+#'   subdirectory. 
 #'
-#' @param options_cast casting options
-#'
-#' @return nothing
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @export
 #'
 verify_models <- function(options_cast = cast_options()){
-
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (!options_cast$quiet){
     cat("Checking model availability", "\n")
   }
@@ -52,17 +59,20 @@ verify_models <- function(options_cast = cast_options()){
   message("All requested models available")
 }
 
-#' @title Source the selected models to forecast or hindcast with
+#' @title Source the scripts to run the selected forecast or hindcast models
 #'
-#' @description Source the code of the selected model scripts
+#' @description Source the R scripts of the selected model(s) indicated by the
+#'   \code{model} element in \code{options_cast}.
 #'
-#' @param options_cast casting options
-#'
-#' @return nothing
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @export
 #'
 cast_models <- function(options_cast = cast_options()){
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (!options_cast$quiet){
     if (options_cast$cast_type == "forecasts"){
       message("##########################################################")
@@ -77,54 +87,68 @@ cast_models <- function(options_cast = cast_options()){
   sapply(models_to_cast(options_cast), source)
 }
 
-#' @title Select models to forecast or hindcast with
+#' @title Generate the file path(s) to the script(s) of the model(s) forecast
+#'   or hindcast with
 #'
-#' @description Verify that models requested are available and select them
+#' @description Translate a \code{models} vector of model name(s) into a 
+#'   \code{character} vector of file path(s) corresponding to the model 
+#'   scripts. 
 #'
-#' @param options_cast casting options
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
-#' @return names of files to be run
+#' @return \code{character} vector of the path(s) of the R script file(s) to 
+#'   be run.
 #'
 #' @export
 #'
 models_to_cast <- function(options_cast = cast_options()){
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   model_dir <- sub_path(options_cast$tree, "models")
   if (options_cast$model[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
   } else{
     modelnames <- paste0(options_cast$model, ".R")
-    torun <- (modelnames %in% list.files(model_dir))
+    torun <- (list.files(model_dir) %in% modelnames)
     runnames <- list.files(model_dir, full.names = TRUE)[torun] 
   }
-  return(runnames)
+  runnames
 }
 
-#' @title Create tmp
+#' @title Create tmp subdirectory
 #'
-#' @description Create the tmp subdirectory specifically
+#' @description Create the tmp subdirectory specifically.
 #'
-#' @param tree directory tree
-#'
-#' @return nothing
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @export
 #'
 create_tmp <- function(tree = dirtree()){
-  opts <- dir_options(base = tree$base, main = tree$main, subs = "tmp")
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  subs <- subdirs(NULL, "tmp")
+  opts <- dir_options(base = tree$base, main = tree$main, subs = subs)
   create_sub_dirs(opts)
 }
 
-#' @title Clear tmp
+#' @title Clear tmp subdirectory
 #'
-#' @description Remove all of the files from the tmp subdirectory specifically
+#' @description Remove all of the files from the tmp subdirectory 
+#'   specifically.
 #'
-#' @param tree directory tree
-#'
-#' @return nothing
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @export
 #'
 clear_tmp <- function(tree = dirtree()){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
   temp_dir <- sub_path(tree, "tmp")
   if (!dir.exists(temp_dir)){
     create_tmp(tree)
@@ -134,18 +158,22 @@ clear_tmp <- function(tree = dirtree()){
   }
 }
 
-#' @title Prepare data subdirectory for a forecast run or hindcast runs
+#' @title Prepare data subdirectory for a forecast or hindcast run(s)
 #'
-#' @description Prepare the data directory for a forecasting run or a set
-#'   of hindcasting runs
+#' @description Make sure that the data subdirectory has the updated files
+#'   for a forecasting run or a set of hindcasting runs. Uses the 
+#'   \code{metadata.yaml} file to verify validity.
 #'
-#' @param options_data the data options list
-#'
-#' @return nothing
+#' @param options_data Class-\code{data_options} \code{list} containing the
+#'   options for filling the data subdirectory. See 
+#'   \code{\link{data_options}}. 
 #'
 #' @export
 #'
 prep_data <- function(options_data = data_options()){
+  if (!("data_options" %in% class(options_data))){
+    stop("`options_data` not of class `data_options`")
+  }
   if (!options_data$quiet){
     cat("Preparing data", "\n")
   }
@@ -162,19 +190,22 @@ prep_data <- function(options_data = data_options()){
   }
 }
 
-#' @title Multiple forecast or hindcast
+#' @title Run one or potentially multiple forecasts or hindcasts
 #' 
-#' @description Given the data and models are prepared accordingly, run the
-#'   forecast or hindcasts, (optionally) add an ensemble, combine the 
-#'   results into the predictions folder.
+#' @description Given that the data and models are prepared accordingly, run 
+#'   a set of one or more forecast or hindcasts, (optionally) add an ensemble,
+#'   combine the results, and add them to the predictions folder. \cr \cr
+#'   \code{casts}: run one or more -casts flexibly
 #'
-#' @param options_all full options list
-#'
-#' @return nothing
+#' @param options_all \code{all_options}-class \code{list} of options 
+#'   controlling the portalcasting directory. See \code{\link{all_options}}.
 #'
 #' @export
 #'
 casts <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
   cast(options_all$options_cast)
   step_casts(options_all)
   if (!options_all$options_cast$quiet){
@@ -184,43 +215,42 @@ casts <- function(options_all = all_options()){
   }
 }
 
-#' @title Actually forecast or hindcast
+#' @rdname casts
 #' 
-#' @description Given the data and models are prepared accordingly, run the
-#'   forecast or hindcast, (optionally) add an ensemble, combine the 
-#'   results into the predictions folder.
+#' @description \code{cast}: run a single -cast
 #'
-#' @param options_cast casting options list
-#'
-#' @return nothing
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @export
 #'
 cast <- function(options_cast = cast_options()){
-
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (check_to_skip(options_cast)){
     return()
   }
   cast_models(options_cast)
   combined <- combine_forecasts(options_cast)
   ensemble <- add_ensemble(options_cast)
-
-  message("##########################################################")
+  if (!options_cast$quiet){
+    message("##########################################################")
+  }
   clear_tmp(options_cast$tree)
 }
 
-#' @title Step through the subsequent casts
+#' @rdname casts
 #' 
-#' @description If there are multiple steps in the hindcast, update the data
-#'   and continue casting
-#'
-#' @param options_all full options list
-#'
-#' @return nothing
+#' @description \code{step_casts}: iterate through subsequent-to-the-first
+#'   -cast(s) within \code{casts}. 
 #'
 #' @export
 #'
 step_casts <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
   n_steps <- length(options_all$options_data$covariates$end)
   if (n_steps > 1){
     for (i in 2:n_steps){
@@ -231,22 +261,44 @@ step_casts <- function(options_all = all_options()){
   }
 }
 
-
-
-
-
-
-#' @title Check if the newmoon should be skipped
-#' 
-#' @description For hindcasts, skip casting newmoons with incomplete surveys
+#' @title Step the hind_step values forward
 #'
-#' @param options_cast casting options list
+#' @description Iterate the \code{hind_step} elements of options \code{list}s
+#'   through subsequent-to-the-first -cast(s) within \code{\link{casts}}.
+#'
+#' @param options_all \code{all_options}-class \code{list} of options 
+#'   controlling the portalcasting directory. See \code{\link{all_options}}.
+#'   
+#' @return Updated \code{options_all} \code{list} for the next -cast.
+#'
+#' @export
+#'
+step_hind_forward <- function(options_all = all_options()){
+  if (!("all_options" %in% class(options_all))){
+    stop("`all_options` not of class `options_all`")
+  }
+  new_step <- options_all$options_data$covariates$hind_step + 1
+  options_all$options_data$rodents$hind_step <- new_step
+  options_all$options_data$covariates$hind_step <- new_step
+  options_all$options_cast$hind_step <- new_step
+  options_all
+}
+
+#' @title Check if the newmoon should be skipped during a set of hindcasts
+#' 
+#' @description For hindcasts, skip newmoons with incomplete surveys.
+#'
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @return logical indicating if the cast should be skipped
 #'
 #' @export
 #'
 check_to_skip <- function(options_cast){
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   out <- FALSE
   if (options_cast$cast_type == "hindcasts"){ 
     end_step <- options_cast$end[options_cast$hind_step]
@@ -278,15 +330,18 @@ check_to_skip <- function(options_cast){
 #'
 #' @description Rather than re-create the full rodent and covariate files
 #'   again, simply step back in time through the hindcast's end vector 
-#'   and trim the last "historical" sample off
+#'   and trim the last "historical" sample off.
 #'
-#' @param options_data data options list
-#'
-#' @return nothing
+#' @param options_data Class-\code{data_options} \code{list} containing the
+#'   options for filling the data subdirectory. See 
+#'   \code{\link{data_options}}. 
 #'
 #' @export
 #'
 update_data <- function(options_data){
+  if (!("data_options" %in% class(options_data))){
+    stop("`options_data` not of class `data_options`")
+  }
   if (!options_data$moons$quiet){
     message("Updating forecasting data files in data subdirectory")
   }
@@ -300,20 +355,32 @@ update_data <- function(options_data){
 
 #' @title Update the covariate data for a step in a hindcast
 #'
-#' @description Given an updated hind_step, update the covariate data 
+#' @description Given an updated \code{options_covariates$hind_step}, update
+#'   the covariate data.
 #'
-#' @param moons current newmoon table
+#' @param moons Class-\code{moons} \code{data.frame} containing the historic 
+#'   and future newmoons, as produced by \code{\link{prep_moons}}.
 #'
-#' @param options_covariates covariates options list
+#' @param options_covariates A class-\code{covariates_options} \code{list} of 
+#'   settings controlling the covariates data creation.
 #'
-#' @return nothing
+#' @return An updated \code{covariates}-class \code{data.frame} with needed 
+#'   forecasted covariates associated with the focal forecast or hindcast 
+#'   newmoon.
 #'
 #' @export
 #'
 update_covariates <- function(moons, options_covariates){
+  if (!("covariates_options") %in% class(options_covariates)){
+    stop("`options_covariates` is not a covariates_options list")
+  }
+  if (!("moons" %in% class(moons))){
+    stop("`moons` is not of class moons")
+  }
   end_step <- options_covariates$end[options_covariates$hind_step]
   covs_path <- file_path(options_covariates$tree, "data/covariates.csv")
-  covs <- read.csv(covs_path, stringsAsFactors = FALSE)
+  covs <- read.csv(covs_path, stringsAsFactors = FALSE) 
+  covs <- classy(covs, c("data.frame", "covariates"))
   hist_cov <- covs[covs$newmoonnumber <= end_step, ]
   fcast_cov <- prep_fcast_covariates(hist_cov, moons, options_covariates)
   out <- bind_rows(hist_cov, fcast_cov)
@@ -322,45 +389,35 @@ update_covariates <- function(moons, options_covariates){
 
 #' @title Update the rodent data for a step in a hindcast
 #'
-#' @description Given an updated hind_step, update the rodent data objects
+#' @description Given an updated \code{options_rodents$hind_step}, update
+#'   the rodent data.
 #'
-#' @param options_rodents rodents options list
+#' @param options_rodents A class-\code{rodents_options} \code{list} of 
+#'   settings controlling the rodents data creation.
 #'
-#' @return a list of two dataframes, all plots and control plots, updated
+#' @return A \code{rodents_list}-class \code{list} of two \code{rodents}-class
+#'   \code{data.frames}: \code{"all"} (containing counts across all plots)
+#'   \code{"controls"} (containing counts across just the control plots), 
+#'   updated for the particular step in the hindcast.
 #'
 #' @export
 #'
 update_rodents <- function(options_rodents){
+  if (!("rodents_options") %in% class(options_rodents)){
+    stop("`options_rodents` is not a rodents_options list")
+  }
   end_step <- options_rodents$end[options_rodents$hind_step]
   all_path <- file_path(options_rodents$tree, "data/all.csv")
   all <- read.csv(all_path, stringsAsFactors = FALSE)
   all <- all[all$newmoonnumber <= end_step, ]
   write.csv(all, all_path, row.names = FALSE)
+  all <- classy(all, c("data.frame", "rodents"))
 
   ctls_path <- file_path(options_rodents$tree, "data/controls.csv")
   ctls <- read.csv(ctls_path, stringsAsFactors = FALSE)
   ctls <- ctls[ctls$newmoonnumber <= end_step, ]
   write.csv(ctls, ctls_path, row.names = FALSE)
-
-  list("all" = all, "controls" = ctls)
+  ctls <- classy(ctls, c("data.frame", "rodents"))
+  
+  classy(list("all" = all, "controls" = ctls), c("rodents_list", "list"))
 }
-
-#' @title Step the hind_step values forward
-#'
-#' @description Step all of the hind_step values in a full options control 
-#'   list forward one
-#'
-#' @param options_all all options control list
-#'
-#' @return updated options_all
-#'
-#' @export
-#'
-step_hind_forward <- function(options_all = all_options()){
-  new_step <- options_all$options_data$covariates$hind_step + 1
-  options_all$options_data$rodents$hind_step <- new_step
-  options_all$options_data$covariates$hind_step <- new_step
-  options_all$options_cast$hind_step <- new_step
-  return(options_all)
-}
-

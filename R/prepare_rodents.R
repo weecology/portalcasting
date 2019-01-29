@@ -25,7 +25,7 @@ prep_rodents <- function(moons = prep_moons(),
   options_c <- enforce_rodents_options(options_rodents, "controls")
   ctls <- rodents_data(moons, options_c)
 
-  list("all" = all, "controls" = ctls)
+  classy(list("all" = all, "controls" = ctls), c("rodents_list", "list"))
 }
 
 #' @title Collect and process historic rodent data

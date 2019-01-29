@@ -4,7 +4,7 @@
 \alias{ESSS}
 \title{Exponential Smoothing State Space model for Portal Predictions}
 \usage{
-ESSS(abundances, metadata, level = "All")
+ESSS(abundances, metadata, level = "All", quiet = FALSE)
 }
 \arguments{
 \item{abundances}{table of rodent abundances and time measures}
@@ -12,6 +12,8 @@ ESSS(abundances, metadata, level = "All")
 \item{metadata}{model metadata list}
 
 \item{level}{name of the type of plots included ("All" or "Controls")}
+
+\item{quiet}{logical indicating if the function should be quiet}
 }
 \value{
 list of forecast and aic tables
