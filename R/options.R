@@ -467,7 +467,7 @@ rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL,
        hind_step = hind_step, drop_spp = drop_spp, min_plots = min_plots, 
        tmnt_type = tmnt_type, level = level, plots = plots, output = output,
        save = save, filename = filename, treatment = treatment, tree = tree,
-       quiet = quiet) %>%
+       quiet = quiet, class = "rodents") %>%
   classy(c("rodents_options", "list"))
 }
 
@@ -533,7 +533,8 @@ metadata_options <- function(fdate = today(), cast_type = "forecasts",
                      quiet = quiet, tree = tree)
   list(fdate = fdate, cast_type = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
-       filename = filename, quiet = quiet, tree = tree) %>%
+       filename = filename, quiet = quiet, tree = tree, 
+       class = "metadata") %>%
   classy(c("metadata_options", "list"))
 }
 

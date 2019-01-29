@@ -7,11 +7,16 @@
 update_rodents(options_rodents)
 }
 \arguments{
-\item{options_rodents}{rodents options list}
+\item{options_rodents}{A class-\code{rodents_options} \code{list} of 
+settings controlling the rodents data creation.}
 }
 \value{
-a list of two dataframes, all plots and control plots, updated
+A \code{rodents_list}-class \code{list} of two \code{rodents}-class
+  \code{data.frames}: \code{"all"} (containing counts across all plots)
+  \code{"controls"} (containing counts across just the control plots), 
+  updated for the particular step in the hindcast.
 }
 \description{
-Given an updated hind_step, update the rodent data objects
+Given an updated \code{options_rodents$hind_step}, update
+  the rodent data.
 }

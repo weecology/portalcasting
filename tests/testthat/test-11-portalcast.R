@@ -15,6 +15,9 @@ options_all9 <- all_options(main = "ok3", model = models(NULL, "AutoArima"),
                             cast_type = "hindcasts", end = 490:493)
 options_all10 <- all_options(main = "ok", model = models(NULL, "AutoArima"),
                              cast_type = "hindcasts", end = 476)
+options_all11 <- all_options(main = "ok3", model = models(NULL, "AutoArima"),
+                             cast_type = "hindcasts", end = 490:493, 
+                             quiet = TRUE)
 
 setup_dir(options_all1)
 setup_dir(options_all7)
@@ -109,6 +112,28 @@ test_that("check_to_skip", {
   expect_equal(check_to_skip(options_all8$options_cast), TRUE)
   expect_equal(check_to_skip(options_all10$options_cast), TRUE)
   expect_equal(check_to_skip(options_all6$options_cast), FALSE)
+})
+
+test_that("update_data", {
+  expect_error(update_data(1))
+  expect_message(update_data(options_all9$options_data))
+  expect_silent(update_data(options_all11$options_data))
+})
+
+test_that("update_covariates", {
+  moons <- prep_moons(options_all9$options_data$moons)
+  expect_error(update_covariates(1, options_all9$options_data$covariates))
+  expect_error(update_covariates(moons, 1))
+  updcov <- update_covariates(moons, options_all9$options_data$covariates)
+  expect_is(updcov, "covariates")
+})
+
+test_that("update_rodents", {
+  expect_error(update_rodents(1))
+  updrod <- update_rodents(options_all9$options_data$rodents)
+  expect_is(updrod, "rodents_list")
+  expect_is(updrod[[1]], "rodents")
+  expect_is(updrod[[2]], "rodents")
 })
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

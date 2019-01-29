@@ -330,15 +330,18 @@ check_to_skip <- function(options_cast){
 #'
 #' @description Rather than re-create the full rodent and covariate files
 #'   again, simply step back in time through the hindcast's end vector 
-#'   and trim the last "historical" sample off
+#'   and trim the last "historical" sample off.
 #'
-#' @param options_data data options list
-#'
-#' @return nothing
+#' @param options_data Class-\code{data_options} \code{list} containing the
+#'   options for filling the data subdirectory. See 
+#'   \code{\link{data_options}}. 
 #'
 #' @export
 #'
 update_data <- function(options_data){
+  if (!("data_options" %in% class(options_data))){
+    stop("`options_data` not of class `data_options`")
+  }
   if (!options_data$moons$quiet){
     message("Updating forecasting data files in data subdirectory")
   }
@@ -352,17 +355,24 @@ update_data <- function(options_data){
 
 #' @title Update the covariate data for a step in a hindcast
 #'
-#' @description Given an updated hind_step, update the covariate data 
+#' @description Given an updated \code{options_covariates$hind_step}, update
+#'   the covariate data.
 #'
-#' @param moons current newmoon table
+#' @param moons Class-\code{moons} \code{data.frame} containing the historic 
+#'   and future newmoons, as produced by \code{\link{prep_moons}}.
 #'
-#' @param options_covariates covariates options list
-#'
-#' @return nothing
+#' @return \code{covariates_options}: a \code{covariates_options} \code{list} 
+#'   of settings controlling the covariates data creation.
 #'
 #' @export
 #'
 update_covariates <- function(moons, options_covariates){
+  if (!("covariates_options") %in% class(options_covariates)){
+    stop("`options_covariates` is not a covariates_options list")
+  }
+  if (!("moons" %in% class(moons))){
+    stop("`moons` is not of class moons")
+  }
   end_step <- options_covariates$end[options_covariates$hind_step]
   covs_path <- file_path(options_covariates$tree, "data/covariates.csv")
   covs <- read.csv(covs_path, stringsAsFactors = FALSE) 
@@ -375,25 +385,35 @@ update_covariates <- function(moons, options_covariates){
 
 #' @title Update the rodent data for a step in a hindcast
 #'
-#' @description Given an updated hind_step, update the rodent data objects
+#' @description Given an updated \code{options_rodents$hind_step}, update
+#'   the rodent data.
 #'
-#' @param options_rodents rodents options list
+#' @param options_rodents A class-\code{rodents_options} \code{list} of 
+#'   settings controlling the rodents data creation.
 #'
-#' @return a list of two dataframes, all plots and control plots, updated
+#' @return A \code{rodents_list}-class \code{list} of two \code{rodents}-class
+#'   \code{data.frames}: \code{"all"} (containing counts across all plots)
+#'   \code{"controls"} (containing counts across just the control plots), 
+#'   updated for the particular step in the hindcast.
 #'
 #' @export
 #'
 update_rodents <- function(options_rodents){
+  if (!("rodents_options") %in% class(options_rodents)){
+    stop("`options_rodents` is not a rodents_options list")
+  }
   end_step <- options_rodents$end[options_rodents$hind_step]
   all_path <- file_path(options_rodents$tree, "data/all.csv")
   all <- read.csv(all_path, stringsAsFactors = FALSE)
   all <- all[all$newmoonnumber <= end_step, ]
   write.csv(all, all_path, row.names = FALSE)
+  all <- classy(all, c("data.frame", "rodents"))
 
   ctls_path <- file_path(options_rodents$tree, "data/controls.csv")
   ctls <- read.csv(ctls_path, stringsAsFactors = FALSE)
   ctls <- ctls[ctls$newmoonnumber <= end_step, ]
   write.csv(ctls, ctls_path, row.names = FALSE)
-
-  list("all" = all, "controls" = ctls)
+  ctls <- classy(ctls, c("data.frame", "rodents"))
+  
+  classy(list("all" = all, "controls" = ctls), c("rodents_list", "list"))
 }

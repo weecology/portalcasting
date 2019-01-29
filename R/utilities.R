@@ -25,7 +25,7 @@ dataout <- function(df, options_out = moons_options()){
     }
   }
   if (!is.null(options_out$class)){
-    class(df) <- c(options_out$class, class(df))
+    class(df) <- unique(c(options_out$class, class(df)))
   }
   df
 }

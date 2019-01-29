@@ -7,13 +7,14 @@
 update_covariates(moons, options_covariates)
 }
 \arguments{
-\item{moons}{current newmoon table}
-
-\item{options_covariates}{covariates options list}
+\item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
+and future newmoons, as produced by \code{\link{prep_moons}}.}
 }
 \value{
-nothing
+\code{covariates_options}: a \code{covariates_options} \code{list} 
+  of settings controlling the covariates data creation.
 }
 \description{
-Given an updated hind_step, update the covariate data
+Given an updated \code{options_covariates$hind_step}, update
+  the covariate data.
 }

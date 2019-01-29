@@ -24,7 +24,7 @@
 forecast_covariates <- function(covariate_data, moons, 
                                 options_covariates = covariates_options()){
   if (!("covariates_options") %in% class(options_covariates)){
-    stop("options_covariates is not a covariates_options list")
+    stop("`options_covariates` is not a covariates_options list")
   }
   if (!("moons" %in% class(moons))){
     stop("`moons` is not of class moons")
