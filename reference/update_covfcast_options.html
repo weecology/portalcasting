@@ -35,7 +35,7 @@
   data — update_covfcast_options" />
 
 <meta property="og:description" content="Update the covariate data control options based on the 
-  historical covariate data and moon data" />
+  historical covariate data and moon data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,32 +132,36 @@
     <div class="ref-description">
     
     <p>Update the covariate data control options based on the 
-  historical covariate data and moon data</p>
+  historical covariate data and moon data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>update_covfcast_options</span>(<span class='no'>options_covariates</span>, <span class='no'>hist_data</span>, <span class='no'>moons</span>)</pre>
+    <pre class="usage"><span class='fu'>update_covfcast_options</span>(<span class='no'>options_covariates</span>, <span class='no'>hist_cov</span>, <span class='no'>moons</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_covariates</th>
-      <td><p>covariate data options</p></td>
+      <td><p>A class-<code>covariates_options</code> <code>list</code> of 
+settings controlling the covariates data creation.</p></td>
     </tr>
     <tr>
-      <th>hist_data</th>
-      <td><p>historical covariate data</p></td>
+      <th>hist_cov</th>
+      <td><p>Historical covariate data table as a codecovariates-class 
+<code>data.frame</code>, returned from <code><a href='prep_hist_covariates.html'>prep_hist_covariates</a></code>.</p></td>
     </tr>
     <tr>
       <th>moons</th>
-      <td><p>current newmoon table</p></td>
+      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
+and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>control options list for covariates</p>
+    <p>An updated <code>covariates_options</code> <code>list</code> of control options 
+  for covariates.</p>
     
 
   </div>
