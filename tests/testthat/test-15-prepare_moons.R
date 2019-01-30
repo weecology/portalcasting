@@ -23,6 +23,9 @@ test_that("add_future_moons", {
             read.csv(stringsAsFactors = FALSE) %>% 
             classy(c("data.frame", "moons"))
   expect_is(add_future_moons(moons, moons_opts), "moons")
+  moons_opts2 <- moons_opts
+  moons_opts2$n_future_moons <- 0
+  expect_is(add_future_moons(moons, moons_opts2), "moons")
 })
 
 test_that("add_addl_future_moons", {
@@ -31,6 +34,8 @@ test_that("add_addl_future_moons", {
   fdate <- moons_opts$fdate
   expect_error(add_addl_future_moons(future_moons, 1), "`fdate` is not")
   expect_error(add_addl_future_moons(1, fdate), "`future_moons` is not")
+  expect_error(add_addl_future_moons(future_moons, c(fdate, fdate)), 
+               "`fdate` can only be")
   expect_is(add_addl_future_moons(future_moons, fdate), "moons")
   fdate2 <- as.Date("2100-01-01")
   expect_is(add_addl_future_moons(future_moons, fdate2), "moons")
