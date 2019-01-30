@@ -33,9 +33,10 @@
 <meta property="og:title" content="Append missing past moons to the raw data — append_past_moons_to_raw" />
 
 <meta property="og:description" content="Sometimes the raw moon data table is not up-to-date. Because
-  the portalr functions weather and fcast_ndvi point to the
-  raw moons data, that table needs to be updated to produce the correct
-  current data table" />
+  the portalr functions weather and 
+  fcast_ndvi point to the raw moons data, that table
+  needs to be updated to produce the correct current data table for 
+  casting." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,30 +132,33 @@
     <div class="ref-description">
     
     <p>Sometimes the raw moon data table is not up-to-date. Because
-  the portalr functions <code>weather</code> and <code>fcast_ndvi</code> point to the
-  raw moons data, that table needs to be updated to produce the correct
-  current data table</p>
+  the <code>portalr</code> functions <code><a href='https://www.rdocumentation.org/packages/portalr/topics/weather'>weather</a></code> and 
+  <code><a href='https://www.rdocumentation.org/packages/portalr/topics/fcast_ndvi'>fcast_ndvi</a></code> point to the raw moons data, that table
+  needs to be updated to produce the correct current data table for 
+  casting.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>append_past_moons_to_raw</span>(<span class='no'>data</span>, <span class='kw'>options_moons</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>moons_options</a></span>())</pre>
+    <pre class="usage"><span class='fu'>append_past_moons_to_raw</span>(<span class='no'>moons</span>, <span class='kw'>options_moons</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>moons_options</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>moons table with future moons added</p></td>
+      <th>moons</th>
+      <td><p>Moons data table as a codemoons-class <code>data.frame</code>.</p></td>
     </tr>
     <tr>
       <th>options_moons</th>
-      <td><p>moon data options</p></td>
+      <td><p>A class-<code>moons_options</code> <code>list</code> of options 
+for the moons data. See <code><a href='all_options.html'>moons_options</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data as came in</p>
+    <p><code>moons</code> as it was input (a <code>moons</code>-class 
+  <code>data.frame</code>).</p>
     
 
   </div>

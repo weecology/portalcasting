@@ -33,8 +33,9 @@
 <meta property="og:title" content="Add future moons to the moon table — add_future_moons" />
 
 <meta property="og:description" content="Add future moons to the moon table, counting forward from
-  fdate. Because the moon table might not have the most recent 
-  moons, more rows than n_future_moons may be added to the table." />
+  the forecast date (options_moons$fdate). Because the moons
+  table might not have the most recent moons, more rows than anticipated
+  (options_moons$n_future_moons) may need to be added to the table." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,8 +131,9 @@
     <div class="ref-description">
     
     <p>Add future moons to the moon table, counting forward from
-  <code>fdate</code>. Because the moon table might not have the most recent 
-  moons, more rows than <code>n_future_moons</code> may be added to the table.</p>
+  the forecast date (<code>options_moons$fdate</code>). Because the <code>moons</code>
+  table might not have the most recent moons, more rows than anticipated
+  (<code>options_moons$n_future_moons</code>) may need to be added to the table.</p>
     
     </div>
 
@@ -142,7 +144,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>moons</th>
-      <td><p>current newmoonnumber table</p></td>
+      <td><p>Moons data table as a codemoons-class <code>data.frame</code>.</p></td>
     </tr>
     <tr>
       <th>options_moons</th>
@@ -152,7 +154,8 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>appended moon table</p>
+    <p>Appended <code>moons</code> data table as a <code>moons</code>-class 
+  <code>data.frame</code>.</p>
     
 
   </div>

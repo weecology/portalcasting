@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Format the moon data — format_moons" />
 
-<meta property="og:description" content="Add year and month columns and encode newmoon date as a Date" />
+<meta property="og:description" content="Enforce the year and month columns and encode 
+  newmoondate as a Date." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,24 +128,26 @@
 
     <div class="ref-description">
     
-    <p>Add year and month columns and encode newmoon date as a Date</p>
+    <p>Enforce the <code>year</code> and <code>month</code> columns and encode 
+  <code>newmoondate</code> as a <code><a href='https://www.rdocumentation.org/packages/base/topics/Dates'>Date</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>format_moons</span>(<span class='kw'>moons</span> <span class='kw'>=</span> <span class='fu'><a href='prep_moons.html'>prep_moons</a></span>())</pre>
+    <pre class="usage"><span class='fu'>format_moons</span>(<span class='no'>moons</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>moons</th>
-      <td><p>newmoon table</p></td>
+      <td><p>Moons data table as a codemoons-class <code>data.frame</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>appended moon table</p>
+    <p>Moons data table as a codemoons-class <code>data.frame</code> with
+  force-formatted columns.</p>
     
 
   </div>
