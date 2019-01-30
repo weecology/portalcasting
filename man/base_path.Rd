@@ -19,7 +19,7 @@ sub_path(tree = dirtree(), specific_sub)
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
 
 \item{specific_sub}{\code{character}-value name of the specific 
-subdirectory of interest.}
+subdirectory/subdirectories of interest.}
 }
 \value{
 \code{base_path}: The normalized path of the main folder in the 
@@ -31,8 +31,8 @@ subdirectory of interest.}
 \code{sub_paths}: The normalized paths of the sub folders in the 
   directory tree as a character vector (see \code{\link{normalizePath}}).
 
-\code{sub_paths}: The normalized path of the \code{specific_sub}
-  folder in the directory tree as a character value (see 
+\code{sub_paths}: The normalized path(s) of the \code{specific_sub}
+  folder(s) in the directory tree as \code{character} value(s) (see 
   \code{\link{normalizePath}}).
 }
 \description{
@@ -46,5 +46,5 @@ subdirectory of interest.}
   in the directory.
 
 \code{sub_path}: Return the path for a specific \code{subs} 
-  folder in the directory.
+  folder or folders in the directory.
 }

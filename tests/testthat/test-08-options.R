@@ -98,6 +98,7 @@ test_that("all_options", {
   expect_error(all_options(confidence_level = -0.5))
   expect_error(all_options(model = "AutoArima"))
   expect_error(all_options(tmnt_type = "ok"))
+  expect_error(all_options(to_cleanup = 1))
   expect_is(all_options(model = models(NULL, "AutoArima")), "all_options")
 })
 
@@ -110,6 +111,7 @@ test_that("dir_options", {
   expect_error(dir_options(subs = "ok"))
   expect_error(dir_options(quiet = 1))
   expect_error(dir_options(quiet = c(TRUE, FALSE)))
+  expect_error(dir_options(to_cleanup = 1))
 })
 
 test_that("PortalData_options", {

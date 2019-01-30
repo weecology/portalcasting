@@ -145,13 +145,13 @@ sub_paths <- function(tree = dirtree()){
 #' @rdname base_path
 #'
 #' @description \code{sub_path}: Return the path for a specific \code{subs} 
-#'   folder in the directory. 
+#'   folder or folders in the directory. 
 #'
 #' @param specific_sub \code{character}-value name of the specific 
-#'   subdirectory of interest.
+#'   subdirectory/subdirectories of interest.
 #'
-#' @return \code{sub_paths}: The normalized path of the \code{specific_sub}
-#'   folder in the directory tree as a character value (see 
+#' @return \code{sub_paths}: The normalized path(s) of the \code{specific_sub}
+#'   folder(s) in the directory tree as \code{character} value(s) (see 
 #'   \code{\link{normalizePath}}).
 #'
 #' @export
@@ -160,10 +160,7 @@ sub_path <- function(tree = dirtree(), specific_sub){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
-  if (length(specific_sub) > 1){
-    stop("`specific_sub` can only be of length = 1")
-  }
-  if (!(specific_sub %in% tree$subs)){
+  if (!all(specific_sub %in% tree$subs)){
     stop("`specific_sub` not in `tree`")
   }
   base <- tree$base

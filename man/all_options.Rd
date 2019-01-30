@@ -30,9 +30,11 @@ all_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
   download_existing_predictions = FALSE, model = models(),
-  ensemble = TRUE, version = "latest", from_zenodo = TRUE)
+  ensemble = TRUE, version = "latest", from_zenodo = TRUE,
+  to_cleanup = c("tmp", "PortalData"))
 
-dir_options(base = ".", main = "", subs = subdirs(), quiet = FALSE)
+dir_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
+  to_cleanup = c("tmp", "PortalData"))
 
 PortalData_options(base = ".", main = "", subs = subdirs(),
   quiet = FALSE, version = "latest", from_zenodo = TRUE)
@@ -102,7 +104,7 @@ check_options_args(base = ".", main = "", subs = subdirs(),
   download_existing_predictions = FALSE, model = models(),
   ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   n_future_moons = 12, save = TRUE, filename = "moons.csv",
-  tree = dirtree())
+  tree = dirtree(), to_cleanup = c("tmp", "PortalData"))
 }
 \arguments{
 \item{base}{\code{character} name of the base folder where the directory 
@@ -245,6 +247,9 @@ model.}
 
 \item{from_zenodo}{\code{logical} indicator of whether or not the Portal 
 Data should come from Zenodo (come from GitHub if not).}
+
+\item{to_cleanup}{\code{character} vector of subdirectory names to
+cleanup after completion of casting.}
 
 \item{n_future_moons}{\code{integer} (or integer \code{numeric}) value for 
 the number of future moons to add.}
