@@ -275,8 +275,8 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 
 #' @title Remove the temporary files in PortalData and tmp
 #'
-#' @description Remove the PortalData and tmp subdirectories and the 
-#'   subdirectories themselves.
+#' @description Remove content in specified (by \code{options_dir$to_cleanup})
+#'   subdirectories and the subdirectories themselves.
 #'
 #' @param options_all Class-\code{all_options} list containing all options 
 #'   available for controlling the set up and population of the directory (see 
@@ -288,9 +288,17 @@ cleanup_dir <- function(options_all = all_options()){
   if (!("all_options" %in% class(options_all))){
     stop("`options_all` is not an all_options list")
   }
-  tree <- options_all$options_dir$tree
-  PD_dir <- sub_path(tree, "PortalData")
-  temp_dir <- sub_path(tree, "tmp")
-  unlink(PD_dir, recursive = TRUE, force = TRUE)
-  unlink(temp_dir, recursive = TRUE, force = TRUE)
+  options_dir <- options_all$options_dir
+  subs <- sub_path(options_dir$tree, options_dir$to_cleanup)
+  if (!options_dir$quiet){
+    subnames <- options_dir$to_cleanup
+    if (length(subnames) > 0){
+      subnames2 <- paste(subnames, collapse = " ")
+      msg <- paste("removing", subnames2, "subdirectories", sep = " ")
+    } else {
+      msg <- "no subdirectories requested to be removed"
+    }
+    message(msg)
+  }
+  cleaned <- sapply(subs, unlink, recursive = TRUE, force = TRUE)
 }

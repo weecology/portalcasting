@@ -12,6 +12,6 @@ available for controlling the set up and population of the directory (see
 \code{\link{all_options}}).}
 }
 \description{
-Remove the PortalData and tmp subdirectories and the 
-  subdirectories themselves.
+Remove content in specified (by \code{options_dir$to_cleanup})
+  subdirectories and the subdirectories themselves.
 }

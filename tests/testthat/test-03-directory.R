@@ -35,8 +35,23 @@ test_that("fill_dir", {
   expect_error(fill_dir(1), "`options_all`")
 })
 
+test_that("cleanup_dir", {
+  expect_error(cleanup_dir(1), "`options_all`")
+  opts1 <- all_options(main = "testing_casting", to_cleanup = NULL)
+  opts2 <- all_options(main = "testing_casting", to_cleanup = NULL, 
+                       quiet = TRUE)
+  opts3 <- all_options(main = "testing_casting")
+  opts4 <- all_options(main = "testing_casting", quiet = TRUE)
+  expect_message(cleanup_dir(opts1))
+  expect_silent(cleanup_dir(opts2))
+  expect_message(cleanup_dir(opts3))
+  expect_silent(cleanup_dir(opts4))
+})
+
 test_that("fill_PortalData", {
   expect_error(fill_PortalData(1), "`options_PortalData`")
+  pd_opts <- PortalData_options(main = "testing_casting", quiet = TRUE)
+  expect_silent(fill_PortalData(pd_opts))
 })
 
 test_that("fill_data", {
@@ -51,5 +66,11 @@ test_that("fill_predictions", {
     fill_predictions(opts$options_predictions)
   }
 })
+
+test_that("fill_models", {
+  expect_error(fill_models(1), "`options_models`")
+})
+
+
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

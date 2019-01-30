@@ -56,7 +56,6 @@ test_that("sub_path", {
   expect_equal(length(sub_path(specific_sub = "data")), 1)
   expect_equal(length(sub_path(specific_sub = "tmp")), 1)
   expect_error(sub_path(1, 1))
-  expect_error(sub_path(dirtree(), c("tmp", "predictions")))
   expect_error(sub_path(dirtree(), "ok"))
 })
 
