@@ -7,14 +7,15 @@
 prep_moons(options_moons = moons_options())
 }
 \arguments{
-\item{options_moons}{control options list for moons}
+\item{options_moons}{A class-\code{moons_options} \code{list} of options 
+for the moons data. See \code{\link{moons_options}}.}
 }
 \value{
-data table of time variables for all surveys
+Moons data table as a code{moons}-class \code{data.frame}.
 }
 \description{
 Get time information (calendar dates, census periods, 
   newmoon numbers) associated with trapping events (achieved and missed)
   based on a lunar survey schedule. If needed, additional moons will be
-  added to the data table, both the in-use and raw versions
+  added to both the in-use and raw versions of the data table.
 }

@@ -4,14 +4,16 @@
 \alias{format_moons}
 \title{Format the moon data}
 \usage{
-format_moons(moons = prep_moons())
+format_moons(moons)
 }
 \arguments{
-\item{moons}{newmoon table}
+\item{moons}{Moons data table as a code{moons}-class \code{data.frame}.}
 }
 \value{
-appended moon table
+Moons data table as a code{moons}-class \code{data.frame} with
+  force-formatted columns.
 }
 \description{
-Add year and month columns and encode newmoon date as a Date
+Enforce the \code{year} and \code{month} columns and encode 
+  \code{newmoondate} as a \code{\link{Date}}.
 }
