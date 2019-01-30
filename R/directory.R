@@ -246,7 +246,8 @@ fill_models <- function(options_models = models_options()){
 #'   \code{\link{dirtree}}.
 #'
 #' @param filename \code{character}-valued vector of name(s) of the file(s) to
-#'   specifically check.
+#'   use for specific checking. Default (\code{moon_dates.csv}) settings use
+#'   the moon dates table.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'

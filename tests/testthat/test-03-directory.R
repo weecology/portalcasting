@@ -71,6 +71,12 @@ test_that("fill_models", {
   expect_error(fill_models(1), "`options_models`")
 })
 
+test_that("verify_PortalData", {
+  expect_error(verify_PortalData(1))
+  expect_error(verify_PortalData(dirtree(main = "testing_casting"), 1))
+  cleanup_dir(all_options(main = "testing_casting"))
+  expect_message(verify_PortalData(dirtree(main = "testing_casting")))
+})
 
 
 unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

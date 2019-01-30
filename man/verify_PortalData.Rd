@@ -13,7 +13,8 @@ verify_PortalData(tree = dirtree(), filename = "moon_dates.csv",
 \code{\link{dirtree}}.}
 
 \item{filename}{\code{character}-valued vector of name(s) of the file(s) to
-specifically check.}
+use for specific checking. Default (\code{moon_dates.csv}) settings use
+the moon dates table.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }
