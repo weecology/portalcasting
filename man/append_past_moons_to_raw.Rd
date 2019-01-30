@@ -4,19 +4,22 @@
 \alias{append_past_moons_to_raw}
 \title{Append missing past moons to the raw data}
 \usage{
-append_past_moons_to_raw(data, options_moons = moons_options())
+append_past_moons_to_raw(moons, options_moons = moons_options())
 }
 \arguments{
-\item{data}{moons table with future moons added}
+\item{moons}{Moons data table as a code{moons}-class \code{data.frame}.}
 
-\item{options_moons}{moon data options}
+\item{options_moons}{A class-\code{moons_options} \code{list} of options 
+for the moons data. See \code{\link{moons_options}}.}
 }
 \value{
-data as came in
+\code{moons} as it was input (a \code{moons}-class 
+  \code{data.frame}).
 }
 \description{
 Sometimes the raw moon data table is not up-to-date. Because
-  the portalr functions \code{weather} and \code{fcast_ndvi} point to the
-  raw moons data, that table needs to be updated to produce the correct
-  current data table
+  the \code{portalr} functions \code{\link[portalr]{weather}} and 
+  \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table
+  needs to be updated to produce the correct current data table for 
+  casting.
 }

@@ -7,15 +7,17 @@
 add_future_moons(moons = prep_moons(), options_moons = moons_options())
 }
 \arguments{
-\item{moons}{current newmoonnumber table}
+\item{moons}{Moons data table as a code{moons}-class \code{data.frame}.}
 
 \item{options_moons}{control options list for moons}
 }
 \value{
-appended moon table
+Appended \code{moons} data table as a \code{moons}-class 
+  \code{data.frame}.
 }
 \description{
 Add future moons to the moon table, counting forward from
-  \code{fdate}. Because the moon table might not have the most recent 
-  moons, more rows than \code{n_future_moons} may be added to the table.
+  the forecast date (\code{options_moons$fdate}). Because the \code{moons}
+  table might not have the most recent moons, more rows than anticipated
+  (\code{options_moons$n_future_moons}) may need to be added to the table.
 }
