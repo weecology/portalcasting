@@ -7,12 +7,11 @@
 transfer_trapping_table(options_data = data_options())
 }
 \arguments{
-\item{options_data}{data options}
-}
-\value{
-nothing
+\item{options_data}{Class-\code{data_options} list containing available
+for controlling the set up and population of the data folder in the 
+portalcasting directory (see \code{\link{data_options}}).}
 }
 \description{
-Move the trapping table from the raw sub directory to the
-  for-use sub directory
+Move the trapping table from the PortalData sub directory to 
+  the data subdirectory for use.
 }

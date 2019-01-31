@@ -7,13 +7,17 @@
 prep_rodents(moons = prep_moons(), options_rodents = rodents_options())
 }
 \arguments{
-\item{moons}{current newmoon table}
+\item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
+and future newmoons, as produced by \code{\link{prep_moons}}.}
 
-\item{options_rodents}{data options list for rodents, which is forced to 
-conform internally for the two treatment types (all and controls)}
+\item{options_rodents}{Class-\code{rodents_options} \code{list} of 
+settings controlling the rodents data creation. See 
+\code{\link{rodents_options}}.}
 }
 \value{
-a list of two dataframes, all plots and control plots
+A class-\code{rodents_list} \code{list} of two class-
+  \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
+  and \code{controls} (abundances on control plots only).
 }
 \description{
 Prepare the rodent dataset, tailored for forecasting. 

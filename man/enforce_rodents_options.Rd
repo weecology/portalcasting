@@ -2,21 +2,41 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{enforce_rodents_options}
 \alias{enforce_rodents_options}
-\title{Enforce the specific data options for the two rodent data types}
+\title{Enforce the specific options for a given rodent data type}
 \usage{
 enforce_rodents_options(options_rodents = rodents_options(),
   tmnt_type = NULL)
 }
 \arguments{
-\item{options_rodents}{existing control options list for rodents}
+\item{options_rodents}{Class-\code{rodents_options} \code{list} of 
+settings controlling the rodents data creation. See 
+\code{\link{rodents_options}}.}
 
-\item{tmnt_type}{treatment type ("all" or "controls") used to enfore the 
-options list}
+\item{tmnt_type}{\code{character}-value representation of treatment type 
+(\code{"all"} or \code{"controls"}) used to enforce certain elements of 
+the \code{options_rodents} \code{list}. Alternatively, use \code{NULL}
+to not change the options at all.}
 }
 \value{
-updated control options list for rodents
+Updated \code{options_rodents} input, still a class-
+  \code{rodents_options} \code{list}.
 }
 \description{
-Force a list of control options for the rodent data based on
-  the rodent data type
+Enforce a list of control options for the rodent data 
+  (\code{rodents_options}, see \code{\link{rodents_options}}) based on
+  the requested data type. Specifically, the \code{tmnt_type}, 
+  \code{level}, \code{length}, \code{plots}, \code{output}, 
+  \code{treatment}, and \code{filename} elements are set by the selection.
+}
+\details{
+If \code{tmnt_type = "all"}, the elements are \code{tmnt_type} as
+  \code{"all"}, \code{level} as \code{"Site"}, \code{length} as 
+  \code{"all"}, \code{plots} as \code{"all"}, \code{output} as 
+  \code{"abundance"}, \code{treatment} as \code{NULL}, and \code{filename} 
+  as \code{"all.csv"}. \cr \cr
+  If \code{tmnt_type = "controls"}, the elements are \code{tmnt_type} as
+  \code{"controls"}, \code{level} as \code{"Treatment"}, \code{length} as 
+  \code{"Longterm"}, \code{plots} as \code{"Longterm"}, \code{output} as 
+  \code{"abundance"}, \code{treatment} as \code{controls}, and 
+  \code{filename} as \code{"controls.csv"},
 }

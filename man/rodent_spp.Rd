@@ -7,8 +7,9 @@
 rodent_spp()
 }
 \value{
-vector of species abbreviations
+\code{character} vector of species abbreviations.
 }
 \description{
-Create a simple vector of species abbreviations
+Creates a simple \code{character} vector of abbreviations for
+  the \href{https://portal.naturecast.org/profiles.html}{Portal Rodents}.
 }
