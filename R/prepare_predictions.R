@@ -28,9 +28,9 @@ download_predictions <- function(tree = dirtree(), download = TRUE){
   from3 <- "https://raw.github.com/weecology/portalPredictions/master/"
   to_path_choices <- sub_paths(tree)
   to_path <- to_path_choices[grepl("predictions", to_path_choices)]
+    req <- GET(from_path)
 
   if (download){
-    req <- GET(from_path)
     stop_for_status(req)
     filelist <- unlist(lapply(content(req), "[", "path"), use.names = FALSE)
     to_fpaths <- file_path(tree, filelist)
