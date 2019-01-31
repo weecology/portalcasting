@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download the predictions files from the portalPredictions repo — download_predictions • portalcasting</title>
+<title>Download the predictions files from the Portal Predictions repo — download_predictions • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,11 @@
 
 
 
-<meta property="og:title" content="Download the predictions files from the portalPredictions repo — download_predictions" />
+<meta property="og:title" content="Download the predictions files from the Portal Predictions repo — download_predictions" />
 
 <meta property="og:description" content="Download the files into the predictions subdirectory in the
   the portalcasting directory tree from the 
-  main repository.
-  Due to the volume of files, download.file is forced 
-  quiet = TRUE." />
+  main repository." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -124,7 +122,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download the predictions files from the portalPredictions repo</h1>
+    <h1>Download the predictions files from the Portal Predictions repo</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_predictions.R'><code>R/prepare_predictions.R</code></a></small>
     <div class="hidden name"><code>download_predictions.Rd</code></div>
     </div>
@@ -133,13 +131,12 @@
     
     <p>Download the files into the predictions subdirectory in the
   the portalcasting directory tree from the 
-  <a href='https://github.com/weecology/portalPredictions/tree/master/predictions'>main repository</a>.
-  Due to the volume of files, <code><a href='https://www.rdocumentation.org/packages/utils/topics/download.file'>download.file</a></code> is forced 
-  <code>quiet = TRUE</code>.</p>
+  <a href='https://github.com/weecology/portalPredictions/tree/master/predictions'>main repository</a>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_predictions</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>download</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_predictions</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>download</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,6 +150,11 @@
       <th>download</th>
       <td><p><code>logical</code> indicator of whether the download should 
 actually happen. Should be <code>TRUE</code> except for testing purposes.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p><code>logical</code> indicator of whether the download messages 
+are returned to the console.</p></td>
     </tr>
     </table>
     
