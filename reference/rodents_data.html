@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collect and process historic rodent data — rodents_data • portalcasting</title>
+<title>Collect and process historic rodent data for -casting — rodents_data • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,12 @@
 
 
 
-<meta property="og:title" content="Collect and process historic rodent data — rodents_data" />
+<meta property="og:title" content="Collect and process historic rodent data for -casting — rodents_data" />
 
 <meta property="og:description" content="Prepare a particular version of the rodent dataset, tailored 
-  for forecasting." />
+  for forecasting or hindcasting. Available versions of the data currently
+  include all (abundances on all plots) and controls 
+  (abundances on control plots only)" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,7 +123,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collect and process historic rodent data</h1>
+    <h1>Collect and process historic rodent data for -casting</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
     <div class="hidden name"><code>rodents_data.Rd</code></div>
     </div>
@@ -129,7 +131,9 @@
     <div class="ref-description">
     
     <p>Prepare a particular version of the rodent dataset, tailored 
-  for forecasting.</p>
+  for forecasting or hindcasting. Available versions of the data currently
+  include <code>all</code> (abundances on all plots) and <code>controls</code> 
+  (abundances on control plots only)</p>
     
     </div>
 
@@ -140,17 +144,24 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>moons</th>
-      <td><p>current newmoon table</p></td>
+      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
+and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
     </tr>
     <tr>
       <th>options_rodents</th>
-      <td><p>data options list for rodents</p></td>
+      <td><p>Class-<code>rodents_options</code> <code>list</code> of 
+settings controlling the rodents data creation. See 
+<code><a href='all_options.html'>rodents_options</a></code> for general creation and 
+<code><a href='enforce_rodents_options.html'>enforce_rodents_options</a></code> for bulk setting of options for
+each of the possible data table outputs.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of two dataframes, all plots and control plots</p>
+    <p>One of two class-<code>rodents</code> <code>data.frame</code>s, 
+  <code>all</code> (abundances on all plots) or <code>controls</code> (abundances on
+  control plots only).</p>
     
 
   </div>

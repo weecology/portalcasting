@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Enforce the specific data options for the two rodent data types — enforce_rodents_options • portalcasting</title>
+<title>Enforce the specific options for a given rodent data type — enforce_rodents_options • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,13 @@
 
 
 
-<meta property="og:title" content="Enforce the specific data options for the two rodent data types — enforce_rodents_options" />
+<meta property="og:title" content="Enforce the specific options for a given rodent data type — enforce_rodents_options" />
 
-<meta property="og:description" content="Force a list of control options for the rodent data based on
-  the rodent data type" />
+<meta property="og:description" content="Enforce a list of control options for the rodent data 
+  (rodents_options, see rodents_options) based on
+  the requested data type. Specifically, the tmnt_type, 
+  level, length, plots, output, 
+  treatment, and filename elements are set by the selection." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,15 +124,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Enforce the specific data options for the two rodent data types</h1>
+    <h1>Enforce the specific options for a given rodent data type</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
     <div class="hidden name"><code>enforce_rodents_options.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Force a list of control options for the rodent data based on
-  the rodent data type</p>
+    <p>Enforce a list of control options for the rodent data 
+  (<code>rodents_options</code>, see <code><a href='all_options.html'>rodents_options</a></code>) based on
+  the requested data type. Specifically, the <code>tmnt_type</code>, 
+  <code>level</code>, <code>length</code>, <code>plots</code>, <code>output</code>, 
+  <code>treatment</code>, and <code>filename</code> elements are set by the selection.</p>
     
     </div>
 
@@ -141,18 +147,36 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_rodents</th>
-      <td><p>existing control options list for rodents</p></td>
+      <td><p>Class-<code>rodents_options</code> <code>list</code> of 
+settings controlling the rodents data creation. See 
+<code><a href='all_options.html'>rodents_options</a></code>.</p></td>
     </tr>
     <tr>
       <th>tmnt_type</th>
-      <td><p>treatment type ("all" or "controls") used to enfore the 
-options list</p></td>
+      <td><p><code>character</code>-value representation of treatment type 
+(<code>"all"</code> or <code>"controls"</code>) used to enforce certain elements of 
+the <code>options_rodents</code> <code>list</code>. Alternatively, use <code>NULL</code>
+to not change the options at all.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>updated control options list for rodents</p>
+    <p>Updated <code>options_rodents</code> input, still a class-
+  <code>rodents_options</code> <code>list</code>.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If <code>tmnt_type = "all"</code>, the elements are <code>tmnt_type</code> as
+  <code>"all"</code>, <code>level</code> as <code>"Site"</code>, <code>length</code> as 
+  <code>"all"</code>, <code>plots</code> as <code>"all"</code>, <code>output</code> as 
+  <code>"abundance"</code>, <code>treatment</code> as <code>NULL</code>, and <code>filename</code> 
+  as <code>"all.csv"</code>. <br /> <br />
+  If <code>tmnt_type = "controls"</code>, the elements are <code>tmnt_type</code> as
+  <code>"controls"</code>, <code>level</code> as <code>"Treatment"</code>, <code>length</code> as 
+  <code>"Longterm"</code>, <code>plots</code> as <code>"Longterm"</code>, <code>output</code> as 
+  <code>"abundance"</code>, <code>treatment</code> as <code>controls</code>, and 
+  <code>filename</code> as <code>"controls.csv"</code>,</p>
     
 
   </div>
@@ -162,6 +186,8 @@ options list</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

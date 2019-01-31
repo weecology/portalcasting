@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interpolate Missing Rodent Data — interpolate_abundance • portalcasting</title>
+<title>Interpolate missing rodent data — interpolate_abundance • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,12 @@
 
 
 
-<meta property="og:title" content="Interpolate Missing Rodent Data — interpolate_abundance" />
+<meta property="og:title" content="Interpolate missing rodent data — interpolate_abundance" />
 
 <meta property="og:description" content="Interpolation of missing data in the rodent abundance data 
-  set. Each species is individually linearly interpolated, then the total 
-  number of rodents is calculated from the sum of the individual species." />
+  set using na.interp. Each species is individually 
+  linearly interpolated, then the total number of rodents is calculated 
+  from the sum of the individual species." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,7 +123,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interpolate Missing Rodent Data</h1>
+    <h1>Interpolate missing rodent data</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_data.R'><code>R/process_data.R</code></a></small>
     <div class="hidden name"><code>interpolate_abundance.Rd</code></div>
     </div>
@@ -130,8 +131,9 @@
     <div class="ref-description">
     
     <p>Interpolation of missing data in the rodent abundance data 
-  set. Each species is individually linearly interpolated, then the total 
-  number of rodents is calculated from the sum of the individual species.</p>
+  set using <code><a href='https://www.rdocumentation.org/packages/forecast/topics/na.interp'>na.interp</a></code>. Each species is individually 
+  linearly interpolated, then the total number of rodents is calculated 
+  from the sum of the individual species.</p>
     
     </div>
 
@@ -142,14 +144,16 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>abundance</th>
-      <td><p>data table with new moon column</p></td>
+      <td><p><code>data.frame</code> rodents data table with a
+<code>newmoon</code> column.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data table of interpolation-inclusive counts for each species and 
- total</p>
+    <p><code>data.frame</code> data table of interpolation-inclusive counts
+  for each species and total and with the columns trimmed to just 
+  the species, total, and newmoonnumber (<code>moons</code>).</p>
     
 
   </div>

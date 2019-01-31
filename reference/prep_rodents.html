@@ -142,18 +142,22 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>moons</th>
-      <td><p>current newmoon table</p></td>
+      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
+and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
     </tr>
     <tr>
       <th>options_rodents</th>
-      <td><p>data options list for rodents, which is forced to 
-conform internally for the two treatment types (all and controls)</p></td>
+      <td><p>Class-<code>rodents_options</code> <code>list</code> of 
+settings controlling the rodents data creation. See 
+<code><a href='all_options.html'>rodents_options</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of two dataframes, all plots and control plots</p>
+    <p>A class-<code>rodents_list</code> <code>list</code> of two class-
+  <code>rodents</code> <code>data.frame</code>s, <code>all</code> (abundances on all plots)
+  and <code>controls</code> (abundances on control plots only).</p>
     
 
   </div>

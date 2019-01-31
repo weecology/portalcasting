@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lag Covariate Data — lag_data • portalcasting</title>
+<title>Lag covariate data — lag_data • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Lag Covariate Data — lag_data" />
+<meta property="og:title" content="Lag covariate data — lag_data" />
 
 <meta property="og:description" content="Lag the weather data together based on the new moons" />
 <meta name="twitter:card" content="summary" />
@@ -120,7 +120,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lag Covariate Data</h1>
+    <h1>Lag covariate data</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_data.R'><code>R/process_data.R</code></a></small>
     <div class="hidden name"><code>lag_data.Rd</code></div>
     </div>
@@ -138,22 +138,24 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>dataframe of weather or ndvi data to be lagged</p></td>
+      <td><p><code>data.frame</code> of covariate data to be lagged.</p></td>
     </tr>
     <tr>
       <th>lag</th>
-      <td><p>lag between census and weather data, in new moons</p></td>
+      <td><p><code>integer</code> lag between rodent census and covariate data, in
+new moons.</p></td>
     </tr>
     <tr>
       <th>tail</th>
-      <td><p>logical, if the data lagged to the tail end should be retained</p></td>
+      <td><p><code>logical</code> indicator if the data lagged to the tail end 
+should be retained.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a dataframe of weather data with newmoonnumber now reflecting the
- lag</p>
+    <p><code>data</code> <code>data.frame</code> <code>newmoonnumber</code> columnn now 
+  reflecting the lag.</p>
     
 
   </div>
