@@ -1,11 +1,9 @@
 
-#' @title Download the predictions files from the portalPredictions repo
+#' @title Download the predictions files from the Portal Predictions repo
 #'
 #' @description Download the files into the predictions subdirectory in the
 #'   the portalcasting directory tree from the 
 #'   \href{https://github.com/weecology/portalPredictions/tree/master/predictions}{main repository}.
-#'   Due to the volume of files, \code{\link{download.file}} is forced 
-#'   \code{quiet = TRUE}.
 #'
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}.
@@ -13,14 +11,21 @@
 #' @param download \code{logical} indicator of whether the download should 
 #'   actually happen. Should be \code{TRUE} except for testing purposes.
 #'
+#' @param quiet \code{logical} indicator of whether the download messages 
+#'   are returned to the console.
+#'
 #' @export
 #'
-download_predictions <- function(tree = dirtree(), download = TRUE){
+download_predictions <- function(tree = dirtree(), download = TRUE, 
+                                 quiet = FALSE){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
   if (!("logical" %in% class(download))){
     stop("`download` is not logical")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not logical")
   }
   from1 <- "https://api.github.com/repos/weecology/portalPredictions/"
   from2 <- "contents/predictions"
@@ -35,8 +40,11 @@ download_predictions <- function(tree = dirtree(), download = TRUE){
   from_fpaths <- paste0(from3, filelist)
 
   if (download){
+    if (!quiet){
+      message("Downloading predictions files")
+    }
     x <- mapply(download.file, url = from_fpaths, destfile = to_fpaths, 
-                quiet = TRUE)
+                quiet = quiet)
   }
 }
 
