@@ -4,16 +4,19 @@
 \alias{download_predictions}
 \title{Download the predictions files from the portalPredictions repo}
 \usage{
-download_predictions(tree = dirtree())
+download_predictions(tree = dirtree(), download = TRUE)
 }
 \arguments{
-\item{tree}{the name tree of the forecasting directory}
-}
-\value{
-nothing
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
+
+\item{download}{\code{logical} indicator of whether the download should 
+actually happen. Should be \code{TRUE} except for testing purposes.}
 }
 \description{
 Download the files into the predictions subdirectory in the
-  the tree. Due to the volume of files, the function \code{download.file}
-  is forced quiet.
+  the portalcasting directory tree from the 
+  \href{https://github.com/weecology/portalPredictions/tree/master/predictions}{main repository}.
+  Due to the volume of files, \code{\link{download.file}} is forced 
+  \code{quiet = TRUE}.
 }
