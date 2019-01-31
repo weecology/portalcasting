@@ -7,7 +7,7 @@
 interpolate_abundance(abundance)
 }
 \arguments{
-\item{abundance}{Class-\code{rodents} \code{data.frame} data table with a
+\item{abundance}{\code{data.frame} rodents data table with a
 \code{newmoon} column.}
 }
 \value{

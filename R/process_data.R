@@ -5,7 +5,7 @@
 #'   linearly interpolated, then the total number of rodents is calculated 
 #'   from the sum of the individual species.
 #'
-#' @param abundance Class-\code{rodents} \code{data.frame} data table with a
+#' @param abundance \code{data.frame} rodents data table with a
 #'   \code{newmoon} column. 
 #'
 #' @return \code{data.frame} data table of interpolation-inclusive counts
@@ -15,8 +15,8 @@
 #' @export
 #' 
 interpolate_abundance <- function(abundance){
-  if (!("rodents" %in% class(abundance))){
-    stop("`abundance` is not of class rodents")
+  if (!("data.frame" %in% class(abundance))){
+    stop("`abundance` is not of class data.frame")
   }
   moons <- (min(abundance$newmoonnumber)):(max(abundance$newmoonnumber))
   nmoons <- length(moons)
