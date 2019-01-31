@@ -111,7 +111,7 @@ rodents_data <- function(moons = prep_moons(),
 #' @title Enforce the specific options for a given rodent data type
 #'
 #' @description Enforce a list of control options for the rodent data 
-#'   (\code{rodents_options}, see \code{\link{rodents_rodents}}) based on
+#'   (\code{rodents_options}, see \code{\link{rodents_options}}) based on
 #'   the requested data type. Specifically, the \code{tmnt_type}, 
 #'   \code{level}, \code{length}, \code{plots}, \code{output}, 
 #'   \code{treatment}, and \code{filename} elements are set by the selection.

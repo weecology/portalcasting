@@ -40,7 +40,7 @@ test_that("enforce_rodents_options", {
 })
 
 test_that("remove_spp", {
-  rodents <- prep_rodents(moons, rod_opts)
+  rodents <- prep_rodents(moons, rod_opts)$all
   expect_error(remove_spp(1, "BA"), "`data` is not")
   expect_error(remove_spp(rodents, 1), "`drop_spp` is not")
   expect_silent(rodents1 <- remove_spp(rodents, NULL))
@@ -62,7 +62,7 @@ test_that("rodent_spp", {
 })
 
 test_that("is.spcol", {
-  rodents <- prep_rodents(moons, rod_opts)
+  rodents <- prep_rodents(moons, rod_opts)$all
   expect_error(is.spcol(1, rodent_spp()), "`x` is not")
   expect_error(is.spcol(rodents, 1), "`spp_names` is not")
   expect_silent(sppTF <- is.spcol(rodents, rodent_spp()))
@@ -98,7 +98,7 @@ test_that("trim_treatment", {
             classy(c("data.frame", "rodents"))
 
   expect_error(trim_treatment(1, rod_opts), "`data` is not")
-  expect_error(trim_treatment(rodents_a, 1), "`options_rodents` is not")
+  expect_error(trim_treatment(roda, 1), "`options_rodents` is not")
   expect_silent(rodat <-  trim_treatment(roda, rod_opts_a))
   expect_silent(rodct <-  trim_treatment(rodc, rod_opts_c))
   expect_equal(roda, rodat)
