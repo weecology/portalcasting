@@ -12,5 +12,4 @@ devtools::load_all()
 options_all <- all_options(main = "testing_casting")
 setup_dir(options_all)
 portalcast(options_all)
-
-prep_moons(options_all$options_data$moons)
+cleanup_dir(options_all)
