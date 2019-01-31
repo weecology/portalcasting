@@ -50,16 +50,36 @@ interpolate_abundance <- function(abundance){
 #'
 #' @description Lag the weather data together based on the new moons
 #'
-#' @param data dataframe of weather or ndvi data to be lagged
-#' @param lag lag between census and weather data, in new moons
-#' @param tail logical, if the data lagged to the tail end should be retained
-#' @return a dataframe of weather data with newmoonnumber now reflecting the
-#'  lag
+#' @param data \code{data.frame} of covariate data to be lagged. 
+#'  
+#' @param lag \code{integer} lag between rodent census and covariate data, in
+#'   new moons.
+#'  
+#' @param tail \code{logical} indicator if the data lagged to the tail end 
+#'   should be retained.
+#'  
+#' @return \code{data} \code{data.frame} \code{newmoonnumber} columnn now 
+#'   reflecting the lag.
 #'
 #' @export
 #'
 lag_data <- function(data, lag, tail = FALSE){
 
+  if (!("data.frame" %in% class(data))){
+    stop("`data` is not of class data.frame")
+  }
+  if (!("logical" %in% class(tail))){
+    stop("`tail` is not of class logical")
+  }
+  if (length(lag) > 1){
+    stop("`lag` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(lag)) & !("integer" %in% class(lag))){
+    stop("`lag` is not of class numeric or integer")
+  }
+  if(lag < 0 | lag %% 1 != 0){
+    stop("`lag` is not a non-negative integer")
+  }
   data$newmoonnumber_lag <- data$newmoonnumber + lag
   
   if(tail == FALSE){
@@ -69,7 +89,9 @@ lag_data <- function(data, lag, tail = FALSE){
     hist_moons_table <- data.frame(newmoonnumber = hist_newmoons)
     nm_match <- c("newmoonnumber_lag" = "newmoonnumber")
     data <- right_join(data, hist_moons_table, by = nm_match) 
-    data <- data[-(1:lag), ]
+    if (lag > 0){
+      data <- data[-(1:lag), ]
+    }
   }
   data <- select(data, -newmoonnumber)
   cn_data <- colnames(data)

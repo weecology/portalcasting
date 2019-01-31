@@ -2,7 +2,7 @@
 % Please edit documentation in R/process_data.R
 \name{interpolate_abundance}
 \alias{interpolate_abundance}
-\title{Interpolate Missing Rodent Data}
+\title{Interpolate missing rodent data}
 \usage{
 interpolate_abundance(abundance)
 }

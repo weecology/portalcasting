@@ -2,20 +2,22 @@
 % Please edit documentation in R/process_data.R
 \name{lag_data}
 \alias{lag_data}
-\title{Lag Covariate Data}
+\title{Lag covariate data}
 \usage{
 lag_data(data, lag, tail = FALSE)
 }
 \arguments{
-\item{data}{dataframe of weather or ndvi data to be lagged}
+\item{data}{\code{data.frame} of covariate data to be lagged.}
 
-\item{lag}{lag between census and weather data, in new moons}
+\item{lag}{\code{integer} lag between rodent census and covariate data, in
+new moons.}
 
-\item{tail}{logical, if the data lagged to the tail end should be retained}
+\item{tail}{\code{logical} indicator if the data lagged to the tail end 
+should be retained.}
 }
 \value{
-a dataframe of weather data with newmoonnumber now reflecting the
- lag
+\code{data} \code{data.frame} \code{newmoonnumber} columnn now 
+  reflecting the lag.
 }
 \description{
 Lag the weather data together based on the new moons
