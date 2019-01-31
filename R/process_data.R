@@ -1,17 +1,23 @@
-#' @title Interpolate Missing Rodent Data
+#' @title Interpolate missing rodent data
 #' 
 #' @description Interpolation of missing data in the rodent abundance data 
-#'   set. Each species is individually linearly interpolated, then the total 
-#'   number of rodents is calculated from the sum of the individual species.
+#'   set using \code{\link[forecast]{na.interp}}. Each species is individually 
+#'   linearly interpolated, then the total number of rodents is calculated 
+#'   from the sum of the individual species.
 #'
-#' @param abundance data table with new moon column
-#' @return data table of interpolation-inclusive counts for each species and 
-#'  total
+#' @param abundance Class-\code{rodents} \code{data.frame} data table with a
+#'   \code{newmoon} column. 
+#'
+#' @return \code{data.frame} data table of interpolation-inclusive counts
+#'   for each species and total and with the columns trimmed to just 
+#'   the species, total, and newmoonnumber (\code{moons}).
 #'
 #' @export
 #' 
 interpolate_abundance <- function(abundance){
-
+  if (!("rodents" %in% class(abundance))){
+    stop("`abundance` is not of class rodents")
+  }
   moons <- (min(abundance$newmoonnumber)):(max(abundance$newmoonnumber))
   nmoons <- length(moons)
 
@@ -37,12 +43,10 @@ interpolate_abundance <- function(abundance){
 
   interpolated_total <- apply(interpolated_abunds, 1, sum)
 
-  out <- data.frame(moons, interpolated_abunds, total = interpolated_total)
-
-  return(out)
+  data.frame(moons, interpolated_abunds, total = interpolated_total)
 }
 
-#' @title Lag Covariate Data
+#' @title Lag covariate data
 #'
 #' @description Lag the weather data together based on the new moons
 #'
@@ -71,6 +75,5 @@ lag_data <- function(data, lag, tail = FALSE){
   cn_data <- colnames(data)
   cn_nmn_l <- which(cn_data == "newmoonnumber_lag")
   colnames(data)[cn_nmn_l] <- "newmoonnumber"
-
-  return(data)
+  data
 }

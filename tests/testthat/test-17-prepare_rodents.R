@@ -37,7 +37,7 @@ test_that("enforce_rodents_options", {
   expect_is(rod_opts1b, "rodents_options")  
   expect_is(rod_opts1c, "rodents_options")  
   expect_equal(rod_opts, rod_opts1c)
-}
+})
 
 test_that("remove_spp", {
   rodents <- prep_rodents(moons, rod_opts)

@@ -23,7 +23,7 @@ Updated \code{options_rodents} input, still a class-
 }
 \description{
 Enforce a list of control options for the rodent data 
-  (\code{rodents_options}, see \code{\link{options_rodents}}) based on
+  (\code{rodents_options}, see \code{\link{rodents_rodents}}) based on
   the requested data type. Specifically, the \code{tmnt_type}, 
   \code{level}, \code{length}, \code{plots}, \code{output}, 
   \code{treatment}, and \code{filename} elements are set by the selection.

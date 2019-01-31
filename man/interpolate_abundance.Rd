@@ -7,14 +7,17 @@
 interpolate_abundance(abundance)
 }
 \arguments{
-\item{abundance}{data table with new moon column}
+\item{abundance}{Class-\code{rodents} \code{data.frame} data table with a
+\code{newmoon} column.}
 }
 \value{
-data table of interpolation-inclusive counts for each species and 
- total
+\code{data.frame} data table of interpolation-inclusive counts
+  for each species and total and with the columns trimmed to just 
+  the species, total, and newmoonnumber (\code{moons}).
 }
 \description{
 Interpolation of missing data in the rodent abundance data 
-  set. Each species is individually linearly interpolated, then the total 
-  number of rodents is calculated from the sum of the individual species.
+  set using \code{\link[forecast]{na.interp}}. Each species is individually 
+  linearly interpolated, then the total number of rodents is calculated 
+  from the sum of the individual species.
 }
