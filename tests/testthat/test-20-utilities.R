@@ -42,7 +42,7 @@ test_that("fcast0", {
 
 test_that("today", {
   expect_equal(today(), Sys.Date())
-  expect_equal(today(time = TRUE), Sys.time())
+  expect_equal(round(today(time = TRUE), "secs"), round(Sys.time(), "secs"))
 })
 
 test_that("classy", {

@@ -7,15 +7,17 @@
 trim_treatment(data, options_rodents = rodents_options())
 }
 \arguments{
-\item{data}{rodent data table}
+\item{data}{Class-\code{rodents} \code{data.table} of rodent data.}
 
-\item{options_rodents}{rodent data options list}
+\item{options_rodents}{Class-\code{rodents_options} \code{list} of 
+settings controlling the rodents data creation. See 
+\code{\link{rodents_options}}}
 }
 \value{
-trimmed data
+Trimmed \code{data}.
 }
 \description{
 Remove the treatment column from the rodent data table if 
   needed (in the case of controls, for example, where the data have been
-  reduced already so the column is vestigial)
+  reduced already so the column is vestigial).
 }

@@ -9,11 +9,11 @@ is.spcol(x, spp_names = rodent_spp())
 \arguments{
 \item{x}{data table of interest}
 
-\item{spp_names}{species name abbreviations}
+\item{spp_names}{\code{character} vector of species name abbreviations.}
 }
 \value{
-logical vector corresponding to the columns in x
+\code{logical} vector corresponding to the columns in \code{x}.
 }
 \description{
-Check column names to verify if they're species
+Check column names to verify if they are species names.
 }
