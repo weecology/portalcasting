@@ -33,8 +33,10 @@
 <meta property="og:title" content="Download the predictions files from the portalPredictions repo — download_predictions" />
 
 <meta property="og:description" content="Download the files into the predictions subdirectory in the
-  the tree. Due to the volume of files, the function download.file
-  is forced quiet." />
+  the portalcasting directory tree from the 
+  main repository.
+  Due to the volume of files, download.file is forced 
+  quiet = TRUE." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,25 +132,29 @@
     <div class="ref-description">
     
     <p>Download the files into the predictions subdirectory in the
-  the tree. Due to the volume of files, the function <code>download.file</code>
-  is forced quiet.</p>
+  the portalcasting directory tree from the 
+  <a href='https://github.com/weecology/portalPredictions/tree/master/predictions'>main repository</a>.
+  Due to the volume of files, <code><a href='https://www.rdocumentation.org/packages/utils/topics/download.file'>download.file</a></code> is forced 
+  <code>quiet = TRUE</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_predictions</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>download_predictions</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>download</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tree</th>
-      <td><p>the name tree of the forecasting directory</p></td>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>download</th>
+      <td><p><code>logical</code> indicator of whether the download should 
+actually happen. Should be <code>TRUE</code> except for testing purposes.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>nothing</p>
     
 
   </div>
@@ -156,9 +162,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
