@@ -39,7 +39,7 @@ main_path: Return the path for the main folder
 sub_paths: Return the paths for the subs folders
   in the directory.
 sub_path: Return the path for a specific subs 
-  folder in the directory." />
+  folder or folders in the directory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -141,7 +141,7 @@ sub_path: Return the path for a specific subs
 <p><code>sub_paths</code>: Return the paths for the <code>subs</code> folders
   in the directory.</p>
 <p><code>sub_path</code>: Return the path for a specific <code>subs</code> 
-  folder in the directory.</p>
+  folder or folders in the directory.</p>
     
     </div>
 
@@ -163,7 +163,7 @@ sub_path: Return the path for a specific subs
     <tr>
       <th>specific_sub</th>
       <td><p><code>character</code>-value name of the specific 
-subdirectory of interest.</p></td>
+subdirectory/subdirectories of interest.</p></td>
     </tr>
     </table>
     
@@ -175,8 +175,8 @@ subdirectory of interest.</p></td>
   directory tree as a character value (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
 <p><code>sub_paths</code>: The normalized paths of the sub folders in the 
   directory tree as a character vector (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
-<p><code>sub_paths</code>: The normalized path of the <code>specific_sub</code>
-  folder in the directory tree as a character value (see 
+<p><code>sub_paths</code>: The normalized path(s) of the <code>specific_sub</code>
+  folder(s) in the directory tree as <code>character</code> value(s) (see 
   <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
     
 

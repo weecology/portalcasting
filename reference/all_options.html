@@ -204,9 +204,11 @@ check_options_args verifies the validity (class, size,
   <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>meta_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>meta_filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>,
   <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(),
-  <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))
 
-<span class='fu'>dir_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>dir_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))
 
 <span class='fu'>PortalData_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
   <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -276,7 +278,7 @@ check_options_args verifies the validity (class, size,
   <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(),
   <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>n_future_moons</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>,
-  <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+  <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -505,6 +507,11 @@ model.</p></td>
       <th>from_zenodo</th>
       <td><p><code>logical</code> indicator of whether or not the Portal 
 Data should come from Zenodo (come from GitHub if not).</p></td>
+    </tr>
+    <tr>
+      <th>to_cleanup</th>
+      <td><p><code>character</code> vector of subdirectory names to
+cleanup after completion of casting.</p></td>
     </tr>
     <tr>
       <th>n_future_moons</th>
