@@ -15,7 +15,7 @@ test_that("interpolate_abundance", {
 
 test_that("lag_data", {
   tree <- dirtree(main = "testing_casting")
-  covariates <- read.csv(file_path(tree, "data/covariates.csv"))
+  covariates <- read_data(tree, "covariates")
   expect_error(lag_data(covariates, 1, 1))
   expect_error(lag_data(covariates, "ok", FALSE))
   expect_error(lag_data(covariates, -1, FALSE))
@@ -32,3 +32,20 @@ test_that("lag_data", {
   expect_equal(nrow(lagged3) == nrow(covariates), TRUE)
   expect_equal(nrow(lagged4) == nrow(covariates), TRUE)
 })
+
+test_that("read_data", {
+  tree <- dirtree(main = "testing_casting")
+  expect_error(read_data(1, "all"))
+  expect_error(read_data(tree, c("all", "controls")))
+  expect_error(read_data(tree, "ok"))
+  expect_error(read_data(tree, 1))
+  expect_silent(all <- read_data(tree, "all"))
+  expect_is(all , "rodents")
+  expect_silent(controls <- read_data(tree, "controls"))
+  expect_is(controls , "rodents")
+  expect_silent(covariates <- read_data(tree, "covariates"))
+  expect_is(covariates , "covariates")
+  expect_silent(metadata <- read_data(tree, "metadata"))
+  expect_is(metadata , "metadata")
+})
+

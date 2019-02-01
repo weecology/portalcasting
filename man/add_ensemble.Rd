@@ -2,16 +2,19 @@
 % Please edit documentation in R/process_forecasts.R
 \name{add_ensemble}
 \alias{add_ensemble}
-\title{Add Ensemble Model to Forecasts}
+\title{Add ensemble model to forecasts}
 \usage{
 add_ensemble(options_cast = cast_options())
 }
 \arguments{
-\item{options_cast}{casting options}
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \value{
-list of [1] the forecasts and [2] the model AIC values
+\code{list} of [1] \code{"forecasts"} (the forecasted abundances)
+  and [2] \code{"all_model_aic"} (the model AIC values).
 }
 \description{
-Add ensembles to the forecast files
+Add the predictions of an ensemble model to the forecasting 
+  files.
 }
