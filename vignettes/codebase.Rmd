@@ -53,7 +53,6 @@ are flexible, as detailed in [Options List](#options_list).
       * `create_sub_dir()`
   * `fill_dir()`
     * `fill_PortalData()`
-	  * `download_observations()`
     * `fill_data()`
       * `transfer_hist_covariate_forecasts()`
       * `transfer_trapping_table()`
@@ -61,7 +60,7 @@ are flexible, as detailed in [Options List](#options_list).
 	  * `prep_rodents()`
 	  * `prep_covariates()`
 	  * `prep_metadata()`
-	* `fill predictions()`
+	* `fill_predictions()`
 	* `fill_models()`
 	  * `write_model()`
 
