@@ -28,7 +28,8 @@ Fit an AutoARIMA model in the portalcasting pipeline.
 }
 \details{
 Model "AutoARIMA" is a flexible auto-regressive integrated 
- moving average model fit to the data using \code{auto.arima} in the
+ moving average model fit to the data using 
+ \code{\link[forecast]{auto.arima}} in the
  \href{http://pkg.robjhyndman.com/forecast/}{\code{forecast} package}
  (Hyndman \emph{et al}. 2018).
 
@@ -36,9 +37,9 @@ Model "AutoARIMA" is a flexible auto-regressive integrated
  which \code{\link[forecast]{auto.arima}} cannot accommodate, seasonal 
  models are not included.
 
- Although the auto.arima model can handle missing data, the other models
- used currently cannot, so we interpolate missing data here for 
- comparison.
+ Although \code{\link[forecast]{auto.arima}} can handle missing data, the
+ other models used currently cannot, so we interpolate missing data here 
+ for comparison.
 }
 \references{
 Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
