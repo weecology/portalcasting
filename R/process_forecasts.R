@@ -61,19 +61,23 @@ save_forecast_output <- function(all, controls, name, metadata,
 
 }
 
-#' @title Combine Forecasts and Append to Existing Files
+#' @title Combine forecasts and append them to existing files
 #' 
-#' @description Combine all new forecasts (from the tmp directory), add 
-#'   append the results to the existing files
+#' @description Combine all new forecasts (from the tmp subdirectory) into
+#'   and append the results to the existing files.
 #' 
-#' @param options_cast casting options
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
-#' @return list of [1] the forecasts and [2] the model AIC values
+#' @return \code{list} of [1] \code{"forecasts"} (the forecasted abundances)
+#'   and [2] \code{"all_model_aic"} (the model AIC values).
 #'
 #' @export
 #'
 combine_forecasts <- function(options_cast = cast_options()){
-
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (!options_cast$quiet){
     message(paste0("Compiling ", options_cast$cast_type))
   }
@@ -102,24 +106,29 @@ combine_forecasts <- function(options_cast = cast_options()){
   append_csv(fcasts, forecast_filename)
   append_csv(aics, model_aic_filename)
   
-  return(list(forecasts = fcasts, all_model_aic = aics))
+  list(forecasts = fcasts, all_model_aic = aics)
 }
 
-#' @title Add Ensemble Model to Forecasts
+#' @title Add ensemble model to forecasts
 #' 
-#' @description Add ensembles to the forecast files
+#' @description Add the predictions of an ensemble model to the forecasting 
+#'   files.
 #' 
-#' @param options_cast casting options
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
-#' @return list of [1] the forecasts and [2] the model AIC values
+#' @return \code{list} of [1] \code{"forecasts"} (the forecasted abundances)
+#'   and [2] \code{"all_model_aic"} (the model AIC values).
 #' 
 #' @export
 #'
 add_ensemble <- function(options_cast = cast_options()){
-
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (options_cast$ensemble){
     if (!options_cast$quiet){
-      cat("Creating ensemble model", "\n")
+      message("Creating ensemble model")
     }
     temp_dir <- sub_path(options_cast$tree, "tmp")
     pred_dir <- sub_path(options_cast$tree, "predictions")
@@ -143,18 +152,25 @@ add_ensemble <- function(options_cast = cast_options()){
   }
 }
 
-#' @title Calculate Model Weights
+#' @title Calculate model weights
 #' 
-#' @description calculate akaike weights across the models
+#' @description Calculate AIC-based weights across the models for the full
+#'   time series.
 #' 
-#' @param pred_dir directory name where the saved model predictions reside
+#' @param pred_dir \code{character} value of the path to the directory where 
+#'   the saved model predictions reside.
 #'
-#' @return model weights
+#' @return \code{data.frame} of model weights.
 #' 
 #' @export
 #'
 compile_aic_weights <- function(pred_dir){
-
+  if (length(pred_dir) > 1){
+    stop("`pred_dir` can only be of length = 1")
+  }
+  if (!is.character(pred_dir)){
+    stop("`pred_dir` is not a character")
+  }
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]
 
@@ -165,44 +181,61 @@ compile_aic_weights <- function(pred_dir){
   grps <- quos(date, currency, level, species, fit_start_newmoon, 
             fit_end_newmoon, initial_newmoon)
  
-  wts <- aics %>%
-         group_by(!!!grps) %>%
-         mutate(delta_aic = aic - min(aic), 
-                weight = exp(-0.5 * delta_aic) / sum(exp(-0.5*delta_aic))) %>%
-         ungroup()
-
-  return(wts)
+  aics %>%
+  group_by(!!!grps) %>%
+  mutate(delta_aic = aic - min(aic), 
+         weight = exp(-0.5 * delta_aic) / sum(exp(-0.5*delta_aic))) %>%
+  ungroup()
 }
 
 #' @title Create the ensemble model from all other forecasts
 #' 
-#' @description Uses the weighted mean and weighted sample variance
-#'   Mean is the weighted mean of all model means. Variance is the weighted 
-#'   mean of all model variances + the variances of the weighted mean using
-#'   the unbiased estimate of sample variance. See
-#'   https://github.com/weecology/portalPredictions/pull/65
-#'   We only store the prediction interval for models, so backcalculate 
-#'   individual model variance assuming the same CI_level throughout. Assert
-#'   that the summed weight of all the model ensembles is 1, as that's what
-#'   the above variance estimates assume. Rounded to account for precision
-#'   errors. Summed weights can also be NA if there are not weights availble
-#'   for that ensemble. 
-#' 
-#' @param all_forecasts alll forecasts
-#' 
-#' @param pred_dir directory name where the saved model predictions reside
+#' @description Combine the fitted models to make an ensemble prediction. 
 #'
-#' @param models_to_use models to use
+#' @details Uses the weighted mean and weighted sample variance to combine
+#'   the models. The mean is the weighted mean of all model means and the
+#'   variance is the weighted mean of all model variances + the variances of 
+#'   the weighted mean using the unbiased estimate of sample variance. See
+#'   https://github.com/weecology/portalPredictions/pull/65
+#'   We only store the prediction interval for models, so we backcalculate 
+#'   individual model variance assuming the same \code{CI_level} throughout. 
+#'   Assert that the summed weight of all the model ensembles is 1, as 
+#'   that's what the variance estimates assume. The weight values are rounded 
+#'   to account for precision errors. Summed weights can also be \code{NA} if
+#'   there are not weights availble for that ensemble. 
 #' 
-#' @param CI_level confidence interval level
+#' @param all_forecasts \code{data.frame} of all of the forecasts to be 
+#'   combined. 
+#' 
+#' @param pred_dir \code{character} value of the path to the directory where 
+#'   the saved model predictions reside.
+#'
+#' @param CI_level \code{numeric} confidence interval level to use (must be
+#'   between 0 and 1. 
 #' 
 #' @return ensemble
 #' 
 #' @export
 #'
-make_ensemble <- function(all_forecasts, pred_dir, models_to_use = NA,  
-                          CI_level = 0.9){
-
+make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
+  if (!("data.frame" %in% class(all_forecasts))){
+    stop("`all_forecasts` is not a data.frame")
+  } 
+  if (length(pred_dir) > 1){
+    stop("`pred_dir` can only be of length = 1")
+  }
+  if (!is.character(pred_dir)){
+    stop("`pred_dir` is not a character")
+  }
+  if (length(CI_level) > 1){
+    stop("`CI_level` can only be of length = 1")
+  }
+  if (!is.numeric(CI_level)){
+    stop("`CI_level` is not numeric")
+  }
+  if (CI_level <= 0 | CI_level > 1){
+    stop("`CI_level` is not between 0 and 1")
+  }
   weights <- compile_aic_weights(pred_dir)
   weights$date <- as.Date(weights$date)
   CI_quantile <- qnorm((1 - CI_level) / 2, lower.tail = FALSE)

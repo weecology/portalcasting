@@ -4,31 +4,34 @@
 \alias{make_ensemble}
 \title{Create the ensemble model from all other forecasts}
 \usage{
-make_ensemble(all_forecasts, pred_dir, models_to_use = NA,
-  CI_level = 0.9)
+make_ensemble(all_forecasts, pred_dir, CI_level = 0.9)
 }
 \arguments{
-\item{all_forecasts}{alll forecasts}
+\item{all_forecasts}{\code{data.frame} of all of the forecasts to be 
+combined.}
 
-\item{pred_dir}{directory name where the saved model predictions reside}
+\item{pred_dir}{\code{character} value of the path to the directory where 
+the saved model predictions reside.}
 
-\item{models_to_use}{models to use}
-
-\item{CI_level}{confidence interval level}
+\item{CI_level}{\code{numeric} confidence interval level to use (must be
+between 0 and 1.}
 }
 \value{
 ensemble
 }
 \description{
-Uses the weighted mean and weighted sample variance
-  Mean is the weighted mean of all model means. Variance is the weighted 
-  mean of all model variances + the variances of the weighted mean using
-  the unbiased estimate of sample variance. See
+Combine the fitted models to make an ensemble prediction.
+}
+\details{
+Uses the weighted mean and weighted sample variance to combine
+  the models. The mean is the weighted mean of all model means and the
+  variance is the weighted mean of all model variances + the variances of 
+  the weighted mean using the unbiased estimate of sample variance. See
   https://github.com/weecology/portalPredictions/pull/65
-  We only store the prediction interval for models, so backcalculate 
-  individual model variance assuming the same CI_level throughout. Assert
-  that the summed weight of all the model ensembles is 1, as that's what
-  the above variance estimates assume. Rounded to account for precision
-  errors. Summed weights can also be NA if there are not weights availble
-  for that ensemble.
+  We only store the prediction interval for models, so we backcalculate 
+  individual model variance assuming the same \code{CI_level} throughout. 
+  Assert that the summed weight of all the model ensembles is 1, as 
+  that's what the variance estimates assume. The weight values are rounded 
+  to account for precision errors. Summed weights can also be \code{NA} if
+  there are not weights availble for that ensemble.
 }

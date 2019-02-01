@@ -2,17 +2,19 @@
 % Please edit documentation in R/process_forecasts.R
 \name{combine_forecasts}
 \alias{combine_forecasts}
-\title{Combine Forecasts and Append to Existing Files}
+\title{Combine forecasts and append them to existing files}
 \usage{
 combine_forecasts(options_cast = cast_options())
 }
 \arguments{
-\item{options_cast}{casting options}
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \value{
-list of [1] the forecasts and [2] the model AIC values
+\code{list} of [1] \code{"forecasts"} (the forecasted abundances)
+  and [2] \code{"all_model_aic"} (the model AIC values).
 }
 \description{
-Combine all new forecasts (from the tmp directory), add 
-  append the results to the existing files
+Combine all new forecasts (from the tmp subdirectory) into
+  and append the results to the existing files.
 }

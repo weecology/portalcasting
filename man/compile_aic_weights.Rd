@@ -2,16 +2,18 @@
 % Please edit documentation in R/process_forecasts.R
 \name{compile_aic_weights}
 \alias{compile_aic_weights}
-\title{Calculate Model Weights}
+\title{Calculate model weights}
 \usage{
 compile_aic_weights(pred_dir)
 }
 \arguments{
-\item{pred_dir}{directory name where the saved model predictions reside}
+\item{pred_dir}{\code{character} value of the path to the directory where 
+the saved model predictions reside.}
 }
 \value{
-model weights
+\code{data.frame} of model weights.
 }
 \description{
-calculate akaike weights across the models
+Calculate AIC-based weights across the models for the full
+  time series.
 }
