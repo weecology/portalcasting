@@ -63,13 +63,6 @@ test_that("compile_aic_weights", {
 })
 
 test_that("make_ensemble", {
-  expect_error(make_ensemble(fcasts, 1), "`pred_dir` is")
-  expect_error(make_ensemble(fcasts, c(sub1, sub1)), "`pred_dir` can")
-  expect_error(make_ensemble(1, sub1), "`all_forecasts` is")
-  expect_error(make_ensemble(fcasts, sub1, "ok"), "`CI_level` is")
-  expect_error(make_ensemble(fcasts, sub1, 1:2), "`CI_level` can")
-  expect_error(make_ensemble(fcasts, sub1, -1), "`CI_level` is")
-
   temp_dir <- sub_path(cast_opts1$tree, "tmp")
   pred_dir <- sub_path(cast_opts1$tree, "predictions")
   forecast_date <- cast_opts1$fdate
@@ -83,4 +76,10 @@ test_that("make_ensemble", {
             lapply(files, read.csv, na.strings = "", colClasses  = cclass))
   expect_silent(ensemble <- make_ensemble(fcasts, sub1, 0.9))
   expect_is(ensemble, "data.frame")  
+  expect_error(make_ensemble(fcasts, 1), "`pred_dir` is")
+  expect_error(make_ensemble(fcasts, c(sub1, sub1)), "`pred_dir` can")
+  expect_error(make_ensemble(1, sub1), "`all_forecasts` is")
+  expect_error(make_ensemble(fcasts, sub1, "ok"), "`CI_level` is")
+  expect_error(make_ensemble(fcasts, sub1, 1:2), "`CI_level` can")
+  expect_error(make_ensemble(fcasts, sub1, -1), "`CI_level` is")
 })

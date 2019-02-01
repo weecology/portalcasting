@@ -115,7 +115,7 @@ test_that("cast", {
          recursive = TRUE)
   create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all3$options_data)
-  expect_output(cast(options_all3$options_cast))
+  expect_message(cast(options_all3$options_cast))
 
   unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
