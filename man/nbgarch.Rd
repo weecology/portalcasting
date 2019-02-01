@@ -8,22 +8,31 @@
 nbGARCH(abundances, metadata, level = "All", quiet = FALSE)
 }
 \arguments{
-\item{abundances}{table of rodent abundances and time measures}
+\item{abundances}{Class-\code{rodents} \code{data.frame} table of rodent 
+abundances and time measures.}
 
-\item{metadata}{model metadata list}
+\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
 
-\item{level}{name of the type of plots included ("All" or "Controls")}
+\item{level}{\code{character} value name of the type of plots included 
+(\code{"All"} or \code{"Controls"}).}
 
-\item{quiet}{logical indicating if the function should be quiet}
+\item{quiet}{\code{logical} value indicating if the function should be 
+quiet.}
 }
 \value{
-list of forecast and aic tables
+\code{list} of [1] \code{"forecast"} (the forecasted abundances)
+  and [2] \code{"all_model_aic"} (the model AIC values).
 }
 \description{
+Fit an nbGARCH model in the portalcasting pipeline.
+}
+\details{
 Model "nbGARCH" is a generalized autoregresive conditional 
   heteroscedasticity model with overdispersion (\emph{i.e.}, a negative 
-  binomial response variable) fit to the data using \code{tsglm} in the
-  \code{tscount} package (Liboschik \emph{et al}. 2017).
+  binomial response variable) fit to the data using 
+  \code{\link[tscount]{tsglm}} in the
+  \href{http://tscount.r-forge.r-project.org/}{\code{tscount} package}
+  (Liboschik \emph{et al}. 2017).
 }
 \references{
 Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 

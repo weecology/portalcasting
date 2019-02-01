@@ -61,7 +61,7 @@ ESSS <- function(abundances, metadata, level = "All", quiet = FALSE){
 
     ss <- gsub("NA.", "NA", s)
     if (!quiet){
-      message(paste0("Fitting ESSS model for", ss))
+      message(paste0("Fitting ESSS model for ", ss))
     }
 
     abund_s <- extract2(abundances, s)

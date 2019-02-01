@@ -1,20 +1,28 @@
 #' @title negative binomial Generalized AutoRegressive Conditional
 #'   Heteroscedasticity model for Portal Predictions
 #'
-#' @description Model "nbGARCH" is a generalized autoregresive conditional 
+#' @description Fit an nbGARCH model in the portalcasting pipeline.
+#'
+#' @details Model "nbGARCH" is a generalized autoregresive conditional 
 #'   heteroscedasticity model with overdispersion (\emph{i.e.}, a negative 
-#'   binomial response variable) fit to the data using \code{tsglm} in the
-#'   \code{tscount} package (Liboschik \emph{et al}. 2017). 
+#'   binomial response variable) fit to the data using 
+#'   \code{\link[tscount]{tsglm}} in the
+#'   \href{http://tscount.r-forge.r-project.org/}{\code{tscount} package}
+#'   (Liboschik \emph{et al}. 2017). 
 #'
-#' @param abundances table of rodent abundances and time measures
+#' @param abundances Class-\code{rodents} \code{data.frame} table of rodent 
+#'   abundances and time measures.
 #'
-#' @param metadata model metadata list
+#' @param metadata Class-\code{metadata} model metadata \code{list}.
 #'
-#' @param level name of the type of plots included ("All" or "Controls")
+#' @param level \code{character} value name of the type of plots included 
+#'   (\code{"All"} or \code{"Controls"}).
 #'
-#' @param quiet logical indicating if the function should be quiet
+#' @param quiet \code{logical} value indicating if the function should be 
+#'   quiet.
 #'
-#' @return list of forecast and aic tables
+#' @return \code{list} of [1] \code{"forecast"} (the forecasted abundances)
+#'   and [2] \code{"all_model_aic"} (the model AIC values).
 #'
 #' @references
 #'   Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
@@ -25,6 +33,24 @@
 #' @export
 #'
 nbGARCH <- function(abundances, metadata, level = "All", quiet = FALSE){
+  if (!("rodents" %in% class(abundances))){
+    stop("`abundances` is not of class rodents")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(level) > 1){
+    stop("`level` can only be of length = 1")
+  }
+  if (!is.character(level)){
+    stop("`level` is not a character")
+  }
+  if (!any(c("All", "Controls") %in% level)){
+    stop("`level` is not valid option")
+  } 
+  if (!("metadata" %in% class(metadata))){
+    stop("`metadata` is not a metadata list")
+  } 
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level
@@ -37,7 +63,7 @@ nbGARCH <- function(abundances, metadata, level = "All", quiet = FALSE){
 
     ss <- gsub("NA.", "NA", s)
     if (!quiet){
-      cat("Fitting nbGARCH model for", ss, "\n")
+      message(paste0("Fitting nbGARCH model for ", ss))
     }
     abund_s <- extract2(abundances, s)
     past <- list(past_obs = 1, past_mean = 12)

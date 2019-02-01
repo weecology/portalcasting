@@ -21,7 +21,7 @@ interpolate_abundance <- function(abundance){
   moons <- (min(abundance$newmoonnumber)):(max(abundance$newmoonnumber))
   nmoons <- length(moons)
 
-  species <- colnames(abundance)[2:(ncol(abundance) - 4)]
+  species <- colnames(abundance)[which(colnames(abundance) %in% rodent_spp())]
   nspecies <- length(species)
 
   abunds <- matrix(NA, nrow = nmoons, ncol = nspecies)
