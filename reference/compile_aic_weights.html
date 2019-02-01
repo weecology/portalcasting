@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate Model Weights — compile_aic_weights • portalcasting</title>
+<title>Calculate model weights — compile_aic_weights • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Calculate Model Weights — compile_aic_weights" />
+<meta property="og:title" content="Calculate model weights — compile_aic_weights" />
 
-<meta property="og:description" content="calculate akaike weights across the models" />
+<meta property="og:description" content="Calculate AIC-based weights across the models for the full
+  time series." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,14 +121,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate Model Weights</h1>
+    <h1>Calculate model weights</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
     <div class="hidden name"><code>compile_aic_weights.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>calculate akaike weights across the models</p>
+    <p>Calculate AIC-based weights across the models for the full
+  time series.</p>
     
     </div>
 
@@ -138,13 +140,14 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pred_dir</th>
-      <td><p>directory name where the saved model predictions reside</p></td>
+      <td><p><code>character</code> value of the path to the directory where 
+the saved model predictions reside.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>model weights</p>
+    <p><code>data.frame</code> of model weights.</p>
     
 
   </div>

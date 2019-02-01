@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add Ensemble Model to Forecasts — add_ensemble • portalcasting</title>
+<title>Add ensemble model to forecasts — add_ensemble • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Add Ensemble Model to Forecasts — add_ensemble" />
+<meta property="og:title" content="Add ensemble model to forecasts — add_ensemble" />
 
-<meta property="og:description" content="Add ensembles to the forecast files" />
+<meta property="og:description" content="Add the predictions of an ensemble model to the forecasting 
+  files." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,14 +121,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add Ensemble Model to Forecasts</h1>
+    <h1>Add ensemble model to forecasts</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
     <div class="hidden name"><code>add_ensemble.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add ensembles to the forecast files</p>
+    <p>Add the predictions of an ensemble model to the forecasting 
+  files.</p>
     
     </div>
 
@@ -138,13 +140,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>options_cast</th>
-      <td><p>casting options</p></td>
+      <td><p>Class-<code>cast_options</code> <code>list</code> containing the
+hind- or forecasting options. See <code><a href='all_options.html'>cast_options</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of [1] the forecasts and [2] the model AIC values</p>
+    <p><code>list</code> of [1] <code>"forecasts"</code> (the forecasted abundances)
+  and [2] <code>"all_model_aic"</code> (the model AIC values).</p>
     
 
   </div>
