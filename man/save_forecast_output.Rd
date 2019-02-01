@@ -7,20 +7,23 @@
 save_forecast_output(all, controls, name, metadata, temp_dir)
 }
 \arguments{
-\item{all}{ouput from the forecasting function for all data}
+\item{all}{Ouput from a forecasting model function (e.g., 
+\code{\link{AutoArima}}) run on the "all" data. Required to be a 
+\code{list} with two elements named \code{forecast} and \code{aic}.}
 
-\item{controls}{ouput from the forecasting function for controls data}
+\item{controls}{Ouput from a forecasting model function (e.g., 
+\code{\link{AutoArima}}) run on the "controls" data. Required to be a 
+\code{list} with two elements named \code{forecast} and \code{aic}.}
 
-\item{name}{model name for saving in files}
+\item{name}{\code{character} model name for saving in files.}
 
 \item{metadata}{model metadata}
 
-\item{temp_dir}{directory name for the temporary housing of predictions}
-}
-\value{
-Nothing
+\item{temp_dir}{\code{character} of the path to the subdirectory 
+temporarily housing the predictions. Under default settings, this should 
+be \code{sub_path(dirtree(), "tmp")}.}
 }
 \description{
-Save out the forecast and AIC values from a given set of 
-  forecasts on all and control-only rodent data
+Save out the forecast abundances and AIC values from a given 
+  set of forecasts on all and control-only rodent data.
 }

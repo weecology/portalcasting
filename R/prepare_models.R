@@ -97,11 +97,11 @@ model_template <- function(options_model = model_options()){
     c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
     args_c <- paste0(c_arg, lag_arg, quiet_arg)
     path_cov <- 'file_path(tree, "data/covariates.csv")'
-    covariate_text <- paste0('\ncovariates <- read.csv(', path_cov, '); \n')
+    cov_text <- paste0('\ncovariates <- read_data(tree, "covaraites"); \n')
   } else{
     args_a <- paste0("all, metadata, ", quiet_arg)
     args_c <- paste0('controls, metadata, level = "Controls", ', quiet_arg)
-    covariate_text <- "\n"
+    cov_text <- "\n"
   }
 
   path_a <- 'file_path(tree, "data/all.csv")'
@@ -110,10 +110,10 @@ model_template <- function(options_model = model_options()){
 
   paste0(
 'tree <- dirtree("', tree$base, '", "', tree$main, '", ', subs, ');
-all <- read.csv(', path_a, ');
-controls <- read.csv(', path_c, ');',
-covariate_text, 
-'metadata <- yaml::yaml.load_file(', path_m, ');
+all <- read_data(tree, "all");
+controls <-read_data(tree, "controls");',
+cov_text, 
+'metadata <- read_data(tree, "metadata");
 f_a <- ', name ,'(', args_a, ');
 f_c <- ', name ,'(', args_c, ');
 save_forecast_output(f_a, f_c, "', 

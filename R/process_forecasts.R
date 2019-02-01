@@ -1,25 +1,53 @@
 #' @title Save forecast output to files
 #'
-#' @description Save out the forecast and AIC values from a given set of 
-#'   forecasts on all and control-only rodent data
+#' @description Save out the forecast abundances and AIC values from a given 
+#'   set of forecasts on all and control-only rodent data.
 #'
-#' @param all ouput from the forecasting function for all data
+#' @param all Ouput from a forecasting model function (e.g., 
+#'   \code{\link{AutoArima}}) run on the "all" data. Required to be a 
+#'   \code{list} with two elements named \code{forecast} and \code{aic}.
 #'
-#' @param controls ouput from the forecasting function for controls data
+#' @param controls Ouput from a forecasting model function (e.g., 
+#'   \code{\link{AutoArima}}) run on the "controls" data. Required to be a 
+#'   \code{list} with two elements named \code{forecast} and \code{aic}.
 #'
-#' @param name model name for saving in files
+#' @param name \code{character} model name for saving in files.
 #'
 #' @param metadata model metadata
 #'
-#' @param temp_dir directory name for the temporary housing of predictions
-#'
-#' @return Nothing
+#' @param temp_dir \code{character} of the path to the subdirectory 
+#'   temporarily housing the predictions. Under default settings, this should 
+#'   be \code{sub_path(dirtree(), "tmp")}.
 #'
 #' @export
 #'
 save_forecast_output <- function(all, controls, name, metadata,
                                  temp_dir){
- 
+  if (!("list" %in% class(all))){
+    stop("`all` is not a list")
+  } 
+  if (!all(c("forecast", "aic") %in% names(all))){
+    stop("`all` does not have elements named `forecast` and `aic`")
+  } 
+  if (!("list" %in% class(controls))){
+    stop("`controls` is not a list")
+  } 
+  if (!all(c("forecast", "aic") %in% names(controls))){
+    stop("`controls` does not have elements named `forecast` and `aic`")
+  } 
+  if (length(name) > 1){
+    stop("`name` can only be of length = 1")
+  }
+  if (!is.character(name)){
+    stop("`name` is not a character")
+  }
+  if (length(temp_dir) > 1){
+    stop("`temp_dir` can only be of length = 1")
+  }
+  if (!is.character(temp_dir)){
+    stop("`temp_dir` is not a character")
+  }
+
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 

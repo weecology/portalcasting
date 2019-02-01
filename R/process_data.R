@@ -5,8 +5,8 @@
 #'   linearly interpolated, then the total number of rodents is calculated 
 #'   from the sum of the individual species.
 #'
-#' @param abundance \code{data.frame} rodents data table with a
-#'   \code{newmoon} column. 
+#' @param abundance Class \code{rodents} \code{data.frame} rodents data table 
+#'   with a \code{newmoon} column. 
 #'
 #' @return \code{data.frame} data table of interpolation-inclusive counts
 #'   for each species and total and with the columns trimmed to just 
@@ -15,8 +15,8 @@
 #' @export
 #' 
 interpolate_abundance <- function(abundance){
-  if (!("data.frame" %in% class(abundance))){
-    stop("`abundance` is not of class data.frame")
+  if (!("rodents" %in% class(abundance))){
+    stop("`abundance` is not of class rodents")
   }
   moons <- (min(abundance$newmoonnumber)):(max(abundance$newmoonnumber))
   nmoons <- length(moons)
@@ -50,7 +50,8 @@ interpolate_abundance <- function(abundance){
 #'
 #' @description Lag the weather data together based on the new moons
 #'
-#' @param data \code{data.frame} of covariate data to be lagged. 
+#' @param data Class \code{covariates} \code{data.frame} of covariate data 
+#'   to be lagged. 
 #'  
 #' @param lag \code{integer} lag between rodent census and covariate data, in
 #'   new moons.
@@ -65,8 +66,8 @@ interpolate_abundance <- function(abundance){
 #'
 lag_data <- function(data, lag, tail = FALSE){
 
-  if (!("data.frame" %in% class(data))){
-    stop("`data` is not of class data.frame")
+  if (!("covariates" %in% class(data))){
+    stop("`data` is not of class covariates")
   }
   if (!("logical" %in% class(tail))){
     stop("`tail` is not of class logical")
@@ -97,5 +98,55 @@ lag_data <- function(data, lag, tail = FALSE){
   cn_data <- colnames(data)
   cn_nmn_l <- which(cn_data == "newmoonnumber_lag")
   colnames(data)[cn_nmn_l] <- "newmoonnumber"
+  data
+}
+
+#' @title Read in a data file and format it for specific class
+#'
+#' @description Read in a specified data file and ensure its class attribute
+#'   is appropriate for usage within the portalcasting pipeline. Current 
+#'   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
+#'   and \code{"metadata"}.
+#'
+#' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
+#'  
+#' @param data_name \code{character} representation of the data needed.
+#'   Current options include \code{"all"}, \code{"controls"},
+#'   \code{"covariates"}, and \code{"metadata"}.
+#'  
+#' @return Data requested with appropriate classes.
+#'
+#' @export
+#'
+read_data <- function(tree, data_name){
+  valid_names <- c("all", "controls", "covariates", "metadata")
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (length(data_name) > 1){
+    stop("`data_name` can only be of length = 1")
+  }
+  if (!is.character(data_name)){
+    stop("`data_name` is not a character")
+  }
+  if (!any(valid_names %in% data_name)){
+    stop("`data_name` is not valid option")
+  } 
+  if (data_name == "all"){
+    data <- read.csv(file_path(tree, "data/all.csv")) %>%
+            classy(c("data.frame", "rodents"))
+  }
+  if (data_name == "controls"){
+    data <- read.csv(file_path(tree, "data/all.csv")) %>%
+            classy(c("data.frame", "rodents"))
+  }
+  if (data_name == "covariates"){
+    data <- read.csv(file_path(tree, "data/covariates.csv")) %>%
+            classy(c("data.frame", "covariates"))
+  }
+  if (data_name == "metadata"){
+    data <- yaml.load_file(file_path(tree, "data/metadata.yaml")) %>%
+            classy(c("list", "metadata"))
+  }
   data
 }

@@ -7,7 +7,8 @@
 lag_data(data, lag, tail = FALSE)
 }
 \arguments{
-\item{data}{\code{data.frame} of covariate data to be lagged.}
+\item{data}{Class \code{covariates} \code{data.frame} of covariate data 
+to be lagged.}
 
 \item{lag}{\code{integer} lag between rodent census and covariate data, in
 new moons.}
