@@ -97,7 +97,7 @@ model_template <- function(options_model = model_options()){
     c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
     args_c <- paste0(c_arg, lag_arg, quiet_arg)
     path_cov <- 'file_path(tree, "data/covariates.csv")'
-    cov_text <- paste0('\ncovariates <- read_data(tree, "covaraites"); \n')
+    cov_text <- paste0('\ncovariates <- read_data(tree, "covariates"); \n')
   } else{
     args_a <- paste0("all, metadata, ", quiet_arg)
     args_c <- paste0('controls, metadata, level = "Controls", ', quiet_arg)

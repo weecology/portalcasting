@@ -1,17 +1,65 @@
-# LDATS (development version)
+# portalcasting (development version)
 
-## [portalcasting 0.1.2](https://github.com/weecology/portalcasting)
-*Ongoing*
+## [portalcasting 0.2.0](https://github.com/weecology/portalcasting)
+*2019-02-01* *[last code edit](https://github.com/weecology/portalcasting/pull/74)*
+
+### Code testing
+* All of the code is now tested via [`testthat`](https://github.com/weecology/portalcasting/tree/master/tests).
+* Test coverage is tracked via [Codecov](https://codecov.io/gh/weecology/portalcasting).
+* The only functionality not covered in testing on Codecov is associated with
+`download_predictions()`, which intermittently hangs on Travis. Testing is
+available, but requires manual toggling of the `test_location` value to
+`"local"` in the relevant test scripts (02-directory and 12-prepare_predictions).
+
+### Enforcement of inputs
+* Most of the functions previously did not have any checks on input argument 
+classes, sizes, etc.
+* Now all functions specifically check each argument's value for validity
+and throw specific errors.
+
+### Documentation
+* All of the functions have fleshed out documentation that specify argument
+requirements, link to each other and externally, and include more information.
+
+### Data classes
+* To smooth checking of different data structures, we now define data
+objects with classes in addition to their existing (`data.frame` or
+`list`) definitions.
+* `rodents`, `rodents_list`, `covariates`, `metadata`, `moons`
+* These classes do not presently have any specified methods or functions.
+
+## Options list classes 
+* To smooth checking of different list structures, we now define the options
+list objects with classes in addition to their existing `list` definitions.
+* `all_options`, `dir_options`, `PortalData_options`, `data_options`, 
+`moons_options`, `rodents_options`, `covariates_options`, `metadata_options`,
+`predictions_options`, `models_options`, and `cast_options`
+* Each of these classes is created by a function of that name.
+* These classes do not presently have any specified methods or functions 
+that operate on them.
+
+### Added functions
+* `classy()` allows for easy application of classes to objects in a `%>%` pipeline
+* `read_data()` provides simple interface for loading and applying classes to
+model-ready data files.
+* `remove_incompletes()` removes any incomplete entries in a table, as defined
+by an `NA` in a specific column.
+* `check_options_args()` provides a tidy way to check the input arguments (wrt
+class, length, numeric limitations, etc.) to the options functions.
 
 ### Vignettes
 * Three vignettes were added:
-  * [current models vignette](https://weecology.github.io/portalcasting/articles/models.html) was brought from the [forecasting website](https://portal.naturecast.org/models.html)
-  * [codebase vignette]() was created from the earlier `README.md` file
+  * [current models vignette](https://weecology.github.io/portalcasting/articles/models.html) was brought from the [forecasting website](https://portal.naturecast.org/models.html).
+  * [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) was created from the earlier `README.md` file.
   * [adding a model vignette](https://weecology.github.io/portalcasting/articles/adding_a_model.html) was constructed based on two pages from the 
     [Portal Predictions repository](https://github.com/weecology/portalPredictions) wiki
     ([1](https://github.com/weecology/portalPredictions/wiki/Adding-a-new-model) and 
     [2](https://github.com/weecology/portalPredictions/wiki/Forecast-file-format)) and with substantial additional text added.
 
+### Retention of all forecasts of covariates
+* Previous versions retained only one covariate forecast per newmoon.
+* We now enable retension of multiple covariate forecasts per newmoon and tag 
+the forecast date with a time stamp as well.
 
 ### Website
 * Added a website driven by [pkgdown](https://pkgdown.r-lib.org/).
