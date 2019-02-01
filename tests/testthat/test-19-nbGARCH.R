@@ -18,9 +18,9 @@ test_that("nbGARCH", {
   expect_equal(names(f_c), c("forecast", "aic"))
   expect_error(nbGARCH(1, metadata, level = "Controls", quiet = FALSE))
   expect_error(nbGARCH(controls, 1, level = "Controls", quiet = FALSE))
-  expect_error(nbGARCH(1, metadata, level = 1, quiet = FALSE))
-  expect_error(nbGARCH(1, metadata, level = c("All", "Controls"), 
+  expect_error(nbGARCH(controls, metadata, level = 1, quiet = FALSE))
+  expect_error(nbGARCH(controls, metadata, level = c("All", "Controls"), 
                quiet = FALSE))
-  expect_error(nbGARCH(1, metadata, level = "ok", quiet = FALSE))
-  expect_error(nbGARCH(1, metadata, level = "Controls", quiet = 1))
+  expect_error(nbGARCH(controls, metadata, level = "ok", quiet = FALSE))
+  expect_error(nbGARCH(controls, metadata, level = "Controls", quiet = 1))
 })

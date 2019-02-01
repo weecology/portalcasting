@@ -15,9 +15,9 @@ test_that("ESSS", {
   expect_equal(names(f_c), c("forecast", "aic"))
   expect_error(ESSS(1, metadata, level = "Controls", quiet = FALSE))
   expect_error(ESSS(controls, 1, level = "Controls", quiet = FALSE))
-  expect_error(ESSS(1, metadata, level = 1, quiet = FALSE))
-  expect_error(ESSS(1, metadata, level = c("All", "Controls"), 
+  expect_error(ESSS(controls, metadata, level = 1, quiet = FALSE))
+  expect_error(ESSS(controls, metadata, level = c("All", "Controls"), 
                quiet = FALSE))
-  expect_error(ESSS(1, metadata, level = "ok", quiet = FALSE))
-  expect_error(ESSS(1, metadata, level = "Controls", quiet = 1))
+  expect_error(ESSS(controls, metadata, level = "ok", quiet = FALSE))
+  expect_error(ESSS(controls, metadata, level = "Controls", quiet = 1))
 })

@@ -15,10 +15,10 @@ test_that("AutoArima", {
   expect_equal(names(f_c), c("forecast", "aic"))
   expect_error(AutoArima(1, metadata, level = "Controls", quiet = FALSE))
   expect_error(AutoArima(controls, 1, level = "Controls", quiet = FALSE))
-  expect_error(AutoArima(1, metadata, level = 1, quiet = FALSE))
-  expect_error(AutoArima(1, metadata, level = c("All", "Controls"), 
+  expect_error(AutoArima(controls, metadata, level = 1, quiet = FALSE))
+  expect_error(AutoArima(controls, metadata, level = c("All", "Controls"), 
                quiet = FALSE))
-  expect_error(AutoArima(1, metadata, level = "ok", quiet = FALSE))
-  expect_error(AutoArima(1, metadata, level = "Controls", quiet = 1))
+  expect_error(AutoArima(controls, metadata, level = "ok", quiet = FALSE))
+  expect_error(AutoArima(controls, metadata, level = "Controls", quiet = 1))
 })
 

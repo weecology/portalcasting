@@ -1,29 +1,37 @@
 #' @title poisson environmental variable Generalized Auto-Regressive 
 #'   Conditional Heteroscedasticity model for Portal Predictions
 #'
-#' @description Model "pevGARCH" is a generalized autoregresive conditional 
+#' @description Fit a pevGARCH model in the portalcasting pipeline.
+#'
+#' @details Model "pevGARCH" is a generalized autoregresive conditional 
 #'   heteroscedasticity model with a Poisson response variable  fit to the 
-#'   data using \code{tsglm} in the \code{tscount} package (Liboschik 
-#'   \emph{et al}. 2017). 
+#'   data using \code{\link[tscount]{tsglm}} in the
+#'   \href{http://tscount.r-forge.r-project.org/}{\code{tscount} package}
+#'   (Liboschik \emph{et al}. 2017). 
 #'
-#'   For this model, environmental data are included as predictors of ,
-#'   abundance but with a 6 month lag between the covariate values and the 
-#'   abundances.
+#'   For this model, environmental data are included as predictors of 
+#'   abundance with an optional \code{lag} between the covariate values and 
+#'   abundances (defaults to 6 newmoons).
 #'
-#' @param abundances table of rodent abundances and time measures
+#' @param abundances Class-\code{rodents} \code{data.frame} table of rodent 
+#'   abundances and time measures.
 #'
-#' @param covariates table of historical and forecast covariate data and time 
-#'   measures
+#' @param covariates Class-\code{covaraites} \code{data.frame} table of 
+#'   historical and forecast covariate data and time measures.
 #'
-#' @param metadata model metadata list
+#' @param metadata Class-\code{metadata} model metadata \code{list}.
 #'
-#' @param level name of the type of plots included ("All" or "Controls")
+#' @param level \code{character} value name of the type of plots included 
+#'   (\code{"All"} or \code{"Controls"}).
 #'
-#' @param lag the lag used for the covariate data
+#' @param lag \code{integer} (or integer \code{numeric}) of the lag time to
+#'   use for the covariates.
 #'
-#' @param quiet logical indicating if the function should be quiet
+#' @param quiet \code{logical} value indicating if the function should be 
+#'   quiet.
 #'
-#' @return list of forecast and aic tables
+#' @return \code{list} of [1] \code{"forecast"} (the forecasted abundances)
+#'   and [2] \code{"all_model_aic"} (the model AIC values).
 #'
 #' @references
 #'   Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
@@ -35,7 +43,36 @@
 #'
 pevGARCH <- function(abundances, covariates, metadata, level = "All", 
                      lag = 6, quiet = FALSE){
-
+  if (!("rodents" %in% class(abundances))){
+    stop("`abundances` is not of class rodents")
+  }
+  if (!("covariates" %in% class(covariates))){
+    stop("`covariates` is not of class covariates")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(level) > 1){
+    stop("`level` can only be of length = 1")
+  }
+  if (!is.character(level)){
+    stop("`level` is not a character")
+  }
+  if (!any(c("All", "Controls") %in% level)){
+    stop("`level` is not valid option")
+  } 
+  if (!("metadata" %in% class(metadata))){
+    stop("`metadata` is not a metadata list")
+  } 
+  if (length(lag) > 1){
+    stop("`lag` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(lag)) & !("integer" %in% class(lag))){
+    stop("`lag` is not of class numeric or integer")
+  }
+  if(lag < 0 | lag %% 1 != 0){
+    stop("`lag` is not a non-negative integer")
+  }
   fcnm <- metadata$rodent_forecast_newmoons
   nfcnm <- length(fcnm)
   CL <- metadata$confidence_level
@@ -56,7 +93,7 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
 
     ss <- gsub("NA.", "NA", s)
     if (!quiet){
-      cat("Fitting pevGARCH models for", ss, "\n")
+      message(paste0("Fitting pevGARCH models for ", ss))
     }
 
     abund_s <- extract2(abundances, s)
@@ -72,7 +109,7 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
 
       for(m in models){
         model_name <- paste(m, collapse = ", ")
-        cat("Fitting Model ", model_count, ": ", model_name, "\n", sep = "")
+        message(paste0("Fitting Model ", model_count, ": ", model_name))
         predictors <- NULL
         fcast_predictors <- NULL
         if (!(is.null(unlist(m)))){

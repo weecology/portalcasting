@@ -9,31 +9,40 @@ pevGARCH(abundances, covariates, metadata, level = "All", lag = 6,
   quiet = FALSE)
 }
 \arguments{
-\item{abundances}{table of rodent abundances and time measures}
+\item{abundances}{Class-\code{rodents} \code{data.frame} table of rodent 
+abundances and time measures.}
 
-\item{covariates}{table of historical and forecast covariate data and time 
-measures}
+\item{covariates}{Class-\code{covaraites} \code{data.frame} table of 
+historical and forecast covariate data and time measures.}
 
-\item{metadata}{model metadata list}
+\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
 
-\item{level}{name of the type of plots included ("All" or "Controls")}
+\item{level}{\code{character} value name of the type of plots included 
+(\code{"All"} or \code{"Controls"}).}
 
-\item{lag}{the lag used for the covariate data}
+\item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to
+use for the covariates.}
 
-\item{quiet}{logical indicating if the function should be quiet}
+\item{quiet}{\code{logical} value indicating if the function should be 
+quiet.}
 }
 \value{
-list of forecast and aic tables
+\code{list} of [1] \code{"forecast"} (the forecasted abundances)
+  and [2] \code{"all_model_aic"} (the model AIC values).
 }
 \description{
+Fit a pevGARCH model in the portalcasting pipeline.
+}
+\details{
 Model "pevGARCH" is a generalized autoregresive conditional 
   heteroscedasticity model with a Poisson response variable  fit to the 
-  data using \code{tsglm} in the \code{tscount} package (Liboschik 
-  \emph{et al}. 2017). 
+  data using \code{\link[tscount]{tsglm}} in the
+  \href{http://tscount.r-forge.r-project.org/}{\code{tscount} package}
+  (Liboschik \emph{et al}. 2017). 
 
-  For this model, environmental data are included as predictors of ,
-  abundance but with a 6 month lag between the covariate values and the 
-  abundances.
+  For this model, environmental data are included as predictors of 
+  abundance with an optional \code{lag} between the covariate values and 
+  abundances (defaults to 6 newmoons).
 }
 \references{
 Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
