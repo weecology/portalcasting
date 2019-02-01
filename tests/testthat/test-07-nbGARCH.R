@@ -1,1 +1,0 @@
-context("Test nbGARCH functions")

@@ -13,7 +13,7 @@
 #'
 #' @param name \code{character} model name for saving in files.
 #'
-#' @param metadata model metadata
+#' @param metadata Class-\code{metadata} model metadata \code{list}.
 #'
 #' @param temp_dir \code{character} of the path to the subdirectory 
 #'   temporarily housing the predictions. Under default settings, this should 
@@ -47,7 +47,9 @@ save_forecast_output <- function(all, controls, name, metadata,
   if (!is.character(temp_dir)){
     stop("`temp_dir` is not a character")
   }
-
+  if (!("metadata" %in% class(metadata))){
+    stop("`metadata` is not a metadata list")
+  } 
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 
