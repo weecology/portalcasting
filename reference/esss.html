@@ -32,11 +32,7 @@
 
 <meta property="og:title" content="Exponential Smoothing State Space model for Portal Predictions — ESSS" />
 
-<meta property="og:description" content="Model &quot;ESSS&quot; is a flexible exponential smoothing state space 
- model fit using ets in the forecast package (Hyndman 
- et al. 2018) with the possibility of multiplicative trends.
-Because the seasonality and sampling occurring with different frequencies,
- which ets cannot accommodate, seasonal models are not included." />
+<meta property="og:description" content="Fit an ESSS model in the portalcasting pipeline." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,11 +127,7 @@ Because the seasonality and sampling occurring with different frequencies,
 
     <div class="ref-description">
     
-    <p>Model "ESSS" is a flexible exponential smoothing state space 
- model fit using <code>ets</code> in the <code>forecast</code> package (Hyndman 
- <em>et al</em>. 2018) with the possibility of multiplicative trends.</p>
-<p>Because the seasonality and sampling occurring with different frequencies,
- which <code>ets</code> cannot accommodate, seasonal models are not included.</p>
+    <p>Fit an ESSS model in the portalcasting pipeline.</p>
     
     </div>
 
@@ -146,25 +138,37 @@ Because the seasonality and sampling occurring with different frequencies,
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>abundances</th>
-      <td><p>table of rodent abundances and time measures</p></td>
+      <td><p>Class-<code>rodents</code> <code>data.frame</code> table of rodent 
+abundances and time measures.</p></td>
     </tr>
     <tr>
       <th>metadata</th>
-      <td><p>model metadata list</p></td>
+      <td><p>Class-<code>metadata</code> model metadata <code>list</code>.</p></td>
     </tr>
     <tr>
       <th>level</th>
-      <td><p>name of the type of plots included ("All" or "Controls")</p></td>
+      <td><p><code>character</code> value name of the type of plots included 
+(<code>"All"</code> or <code>"Controls"</code>).</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical indicating if the function should be quiet</p></td>
+      <td><p><code>logical</code> value indicating if the function should be 
+quiet.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of forecast and aic tables</p>
+    <p><code>list</code> of [1] <code>"forecast"</code> (the forecasted abundances)
+  and [2] <code>"all_model_aic"</code> (the model AIC values).</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Model "ESSS" is a flexible exponential smoothing state space 
+ model with the possibility of multiplicative trends fit using 
+ <code><a href='https://www.rdocumentation.org/packages/forecast/topics/ets'>ets</a></code> in the
+ <a href='http://pkg.robjhyndman.com/forecast/'><code>forecast</code> package</a>
+ (Hyndman <em>et al</em>. 2018).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -181,6 +185,8 @@ Because the seasonality and sampling occurring with different frequencies,
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
           </ul>

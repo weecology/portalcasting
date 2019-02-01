@@ -34,10 +34,7 @@
 <meta property="og:title" content="negative binomial Generalized AutoRegressive Conditional
   Heteroscedasticity model for Portal Predictions — nbGARCH" />
 
-<meta property="og:description" content="Model &quot;nbGARCH&quot; is a generalized autoregresive conditional 
-  heteroscedasticity model with overdispersion (i.e., a negative 
-  binomial response variable) fit to the data using tsglm in the
-  tscount package (Liboschik et al. 2017)." />
+<meta property="og:description" content="Fit an nbGARCH model in the portalcasting pipeline." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -133,10 +130,7 @@
 
     <div class="ref-description">
     
-    <p>Model "nbGARCH" is a generalized autoregresive conditional 
-  heteroscedasticity model with overdispersion (<em>i.e.</em>, a negative 
-  binomial response variable) fit to the data using <code>tsglm</code> in the
-  <code>tscount</code> package (Liboschik <em>et al</em>. 2017).</p>
+    <p>Fit an nbGARCH model in the portalcasting pipeline.</p>
     
     </div>
 
@@ -147,25 +141,38 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>abundances</th>
-      <td><p>table of rodent abundances and time measures</p></td>
+      <td><p>Class-<code>rodents</code> <code>data.frame</code> table of rodent 
+abundances and time measures.</p></td>
     </tr>
     <tr>
       <th>metadata</th>
-      <td><p>model metadata list</p></td>
+      <td><p>Class-<code>metadata</code> model metadata <code>list</code>.</p></td>
     </tr>
     <tr>
       <th>level</th>
-      <td><p>name of the type of plots included ("All" or "Controls")</p></td>
+      <td><p><code>character</code> value name of the type of plots included 
+(<code>"All"</code> or <code>"Controls"</code>).</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical indicating if the function should be quiet</p></td>
+      <td><p><code>logical</code> value indicating if the function should be 
+quiet.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of forecast and aic tables</p>
+    <p><code>list</code> of [1] <code>"forecast"</code> (the forecasted abundances)
+  and [2] <code>"all_model_aic"</code> (the model AIC values).</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Model "nbGARCH" is a generalized autoregresive conditional 
+  heteroscedasticity model with overdispersion (<em>i.e.</em>, a negative 
+  binomial response variable) fit to the data using 
+  <code><a href='https://www.rdocumentation.org/packages/tscount/topics/tsglm'>tsglm</a></code> in the
+  <a href='http://tscount.r-forge.r-project.org/'><code>tscount</code> package</a>
+  (Liboschik <em>et al</em>. 2017).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -182,6 +189,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
           </ul>

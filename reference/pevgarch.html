@@ -34,13 +34,7 @@
 <meta property="og:title" content="poisson environmental variable Generalized Auto-Regressive 
   Conditional Heteroscedasticity model for Portal Predictions — pevGARCH" />
 
-<meta property="og:description" content="Model &quot;pevGARCH&quot; is a generalized autoregresive conditional 
-  heteroscedasticity model with a Poisson response variable  fit to the 
-  data using tsglm in the tscount package (Liboschik 
-  et al. 2017).
-For this model, environmental data are included as predictors of ,
-  abundance but with a 6 month lag between the covariate values and the 
-  abundances." />
+<meta property="og:description" content="Fit a pevGARCH model in the portalcasting pipeline." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -136,13 +130,7 @@ For this model, environmental data are included as predictors of ,
 
     <div class="ref-description">
     
-    <p>Model "pevGARCH" is a generalized autoregresive conditional 
-  heteroscedasticity model with a Poisson response variable  fit to the 
-  data using <code>tsglm</code> in the <code>tscount</code> package (Liboschik 
-  <em>et al</em>. 2017).</p>
-<p>For this model, environmental data are included as predictors of ,
-  abundance but with a 6 month lag between the covariate values and the 
-  abundances.</p>
+    <p>Fit a pevGARCH model in the portalcasting pipeline.</p>
     
     </div>
 
@@ -154,34 +142,50 @@ For this model, environmental data are included as predictors of ,
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>abundances</th>
-      <td><p>table of rodent abundances and time measures</p></td>
+      <td><p>Class-<code>rodents</code> <code>data.frame</code> table of rodent 
+abundances and time measures.</p></td>
     </tr>
     <tr>
       <th>covariates</th>
-      <td><p>table of historical and forecast covariate data and time 
-measures</p></td>
+      <td><p>Class-<code>covaraites</code> <code>data.frame</code> table of 
+historical and forecast covariate data and time measures.</p></td>
     </tr>
     <tr>
       <th>metadata</th>
-      <td><p>model metadata list</p></td>
+      <td><p>Class-<code>metadata</code> model metadata <code>list</code>.</p></td>
     </tr>
     <tr>
       <th>level</th>
-      <td><p>name of the type of plots included ("All" or "Controls")</p></td>
+      <td><p><code>character</code> value name of the type of plots included 
+(<code>"All"</code> or <code>"Controls"</code>).</p></td>
     </tr>
     <tr>
       <th>lag</th>
-      <td><p>the lag used for the covariate data</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) of the lag time to
+use for the covariates.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical indicating if the function should be quiet</p></td>
+      <td><p><code>logical</code> value indicating if the function should be 
+quiet.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of forecast and aic tables</p>
+    <p><code>list</code> of [1] <code>"forecast"</code> (the forecasted abundances)
+  and [2] <code>"all_model_aic"</code> (the model AIC values).</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Model "pevGARCH" is a generalized autoregresive conditional 
+  heteroscedasticity model with a Poisson response variable  fit to the 
+  data using <code><a href='https://www.rdocumentation.org/packages/tscount/topics/tsglm'>tsglm</a></code> in the
+  <a href='http://tscount.r-forge.r-project.org/'><code>tscount</code> package</a>
+  (Liboschik <em>et al</em>. 2017).</p>
+<p>For this model, environmental data are included as predictors of 
+  abundance with an optional <code>lag</code> between the covariate values and 
+  abundances (defaults to 6 newmoons).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -198,6 +202,8 @@ measures</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
           </ul>
