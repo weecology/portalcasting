@@ -7,24 +7,30 @@
 ESSS(abundances, metadata, level = "All", quiet = FALSE)
 }
 \arguments{
-\item{abundances}{table of rodent abundances and time measures}
+\item{abundances}{Class-\code{rodents} \code{data.frame} table of rodent 
+abundances and time measures.}
 
-\item{metadata}{model metadata list}
+\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
 
-\item{level}{name of the type of plots included ("All" or "Controls")}
+\item{level}{\code{character} value name of the type of plots included 
+(\code{"All"} or \code{"Controls"}).}
 
-\item{quiet}{logical indicating if the function should be quiet}
+\item{quiet}{\code{logical} value indicating if the function should be 
+quiet.}
 }
 \value{
-list of forecast and aic tables
+\code{list} of [1] \code{"forecast"} (the forecasted abundances)
+  and [2] \code{"all_model_aic"} (the model AIC values).
 }
 \description{
+Fit an ESSS model in the portalcasting pipeline.
+}
+\details{
 Model "ESSS" is a flexible exponential smoothing state space 
- model fit using \code{ets} in the \code{forecast} package (Hyndman 
- \emph{et al}. 2018) with the possibility of multiplicative trends.  
-
- Because the seasonality and sampling occurring with different frequencies,
- which \code{ets} cannot accommodate, seasonal models are not included.
+ model with the possibility of multiplicative trends fit using 
+ \code{\link[forecast]{ets}} in the
+ \href{http://pkg.robjhyndman.com/forecast/}{\code{forecast} package}
+ (Hyndman \emph{et al}. 2018).
 }
 \references{
 Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos

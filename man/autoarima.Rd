@@ -8,29 +8,38 @@
 AutoArima(abundances, metadata, level = "All", quiet = FALSE)
 }
 \arguments{
-\item{abundances}{table of rodent abundances and time measures}
+\item{abundances}{Class-\code{rodents} \code{data.frame} table of rodent 
+abundances and time measures.}
 
-\item{metadata}{model metadata list}
+\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
 
-\item{level}{name of the type of plots included ("All" or "Controls")}
+\item{level}{\code{character} value name of the type of plots included 
+(\code{"All"} or \code{"Controls"}).}
 
-\item{quiet}{logical indicating if the function should be quiet}
+\item{quiet}{\code{logical} value indicating if the function should be 
+quiet.}
 }
 \value{
-list of forecast and aic tables
+\code{list} of [1] \code{"forecast"} (the forecasted abundances)
+  and [2] \code{"all_model_aic"} (the model AIC values).
 }
 \description{
+Fit an AutoARIMA model in the portalcasting pipeline.
+}
+\details{
 Model "AutoARIMA" is a flexible auto-regressive integrated 
- moving average model fit to the data using \code{auto.arima} in the
- \code{forecast} package (Hyndman \emph{et al}. 2018).
+ moving average model fit to the data using 
+ \code{\link[forecast]{auto.arima}} in the
+ \href{http://pkg.robjhyndman.com/forecast/}{\code{forecast} package}
+ (Hyndman \emph{et al}. 2018).
 
  Because the seasonality and sampling occurring with different frequencies,
- which \code{auto.arima} cannot accommodate, seasonal models are not 
- included.
+ which \code{\link[forecast]{auto.arima}} cannot accommodate, seasonal 
+ models are not included.
 
- Although the auto.arima model can handle missing data, the other models
- used currently cannot, so we interpolate missing data here for 
- comparison.
+ Although \code{\link[forecast]{auto.arima}} can handle missing data, the
+ other models used currently cannot, so we interpolate missing data here 
+ for comparison.
 }
 \references{
 Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos

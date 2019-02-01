@@ -1,27 +1,35 @@
 #' @title Flexible Auto-Regressive Integrated Moving Average model for Portal 
 #'  Predictions
 #'
-#' @description Model "AutoARIMA" is a flexible auto-regressive integrated 
-#'  moving average model fit to the data using \code{auto.arima} in the
-#'  \code{forecast} package (Hyndman \emph{et al}. 2018).
+#' @description Fit an AutoARIMA model in the portalcasting pipeline. 
+#'
+#' @details Model "AutoARIMA" is a flexible auto-regressive integrated 
+#'  moving average model fit to the data using 
+#'  \code{\link[forecast]{auto.arima}} in the
+#'  \href{http://pkg.robjhyndman.com/forecast/}{\code{forecast} package}
+#'  (Hyndman \emph{et al}. 2018).
 #'
 #'  Because the seasonality and sampling occurring with different frequencies,
-#'  which \code{auto.arima} cannot accommodate, seasonal models are not 
-#'  included.
+#'  which \code{\link[forecast]{auto.arima}} cannot accommodate, seasonal 
+#'  models are not included.
 #'
-#'  Although the auto.arima model can handle missing data, the other models
-#'  used currently cannot, so we interpolate missing data here for 
-#'  comparison.
+#'  Although \code{\link[forecast]{auto.arima}} can handle missing data, the
+#'  other models used currently cannot, so we interpolate missing data here 
+#'  for comparison.
 #'
-#' @param abundances table of rodent abundances and time measures
+#' @param abundances Class-\code{rodents} \code{data.frame} table of rodent 
+#'   abundances and time measures.
 #'
-#' @param metadata model metadata list
+#' @param metadata Class-\code{metadata} model metadata \code{list}.
 #'
-#' @param level name of the type of plots included ("All" or "Controls")
+#' @param level \code{character} value name of the type of plots included 
+#'   (\code{"All"} or \code{"Controls"}).
 #'
-#' @param quiet logical indicating if the function should be quiet
+#' @param quiet \code{logical} value indicating if the function should be 
+#'   quiet.
 #'
-#' @return list of forecast and aic tables
+#' @return \code{list} of [1] \code{"forecast"} (the forecasted abundances)
+#'   and [2] \code{"all_model_aic"} (the model AIC values).
 #'
 #' @references 
 #'  Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
@@ -32,7 +40,24 @@
 #' @export
 #'
 AutoArima <- function(abundances, metadata, level = "All", quiet = FALSE){
-
+  if (!("rodents" %in% class(abundances))){
+    stop("`abundances` is not of class rodents")
+  }
+  if (!("logical" %in% class(quiet))){
+    stop("`quiet` is not of class logical")
+  }
+  if (length(level) > 1){
+    stop("`level` can only be of length = 1")
+  }
+  if (!is.character(level)){
+    stop("`level` is not a character")
+  }
+  if (!any(c("All", "Controls") %in% level)){
+    stop("`level` is not valid option")
+  } 
+  if (!("metadata" %in% class(metadata))){
+    stop("`metadata` is not a metadata list")
+  } 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level
   abundances <- interpolate_abundance(abundances)
@@ -44,7 +69,7 @@ AutoArima <- function(abundances, metadata, level = "All", quiet = FALSE){
 
     ss <- gsub("NA.", "NA", s)
     if (!quiet){
-      cat("Fitting AutoArima model for", ss, "\n")
+      message(paste0("Fitting AutoArima model for ", ss))
     }
     abund_s <- extract2(abundances, s)
   
@@ -87,6 +112,5 @@ AutoArima <- function(abundances, metadata, level = "All", quiet = FALSE){
     fcast <- rbind(fcast, fcast_s)
     aic <- rbind(aic, aic_s)
   }
-  output <- list("forecast" = fcast, "aic" = aic)
-  return(output)
+  list("forecast" = fcast, "aic" = aic)
 }

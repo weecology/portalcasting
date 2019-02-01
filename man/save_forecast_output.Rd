@@ -17,7 +17,7 @@ save_forecast_output(all, controls, name, metadata, temp_dir)
 
 \item{name}{\code{character} model name for saving in files.}
 
-\item{metadata}{model metadata}
+\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
 
 \item{temp_dir}{\code{character} of the path to the subdirectory 
 temporarily housing the predictions. Under default settings, this should 
