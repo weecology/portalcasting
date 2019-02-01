@@ -1,6 +1,7 @@
 context("Test process_forecasts functions")
 
-tree <- dirtree(".", "testing_casting", subdirs());
+fill_data(data_options(main = "testing_casting"))
+tree <- dirtree(main = "testing_casting");
 all <- read_data(tree, "all");
 controls <-read_data(tree, "controls");
 metadata <- read_data(tree, "metadata");

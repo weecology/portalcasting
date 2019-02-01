@@ -92,7 +92,6 @@ combine_forecasts <- function(options_cast = cast_options()){
                  "numeric", "integer", "integer", "integer")
   fcasts <- do.call(rbind, 
             lapply(files, read.csv, na.strings = "", colClasses  = col_class))
-
   file_ptn <- paste(filename_suffix, "_model_aic.csv", sep = "")
   files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
 
