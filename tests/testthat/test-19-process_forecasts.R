@@ -9,6 +9,10 @@ f_a <- AutoArima(all, metadata, quiet = FALSE);
 f_c <- AutoArima(controls, metadata, level = "Controls", quiet = FALSE);
 f_a2 <- ESSS(all, metadata, quiet = FALSE);
 f_c2 <- ESSS(controls, metadata, level = "Controls", quiet = FALSE);
+f_ax <- f_a
+names(f_ax)[1] <- "ok"
+f_cx <- f_c
+names(f_cx)[1] <- "ok"
 
 test_that("save_forecast_output", {
   expect_error(save_forecast_output(1, f_c, "AutoArima", metadata, 
@@ -22,6 +26,13 @@ test_that("save_forecast_output", {
   expect_error(save_forecast_output(f_a, f_c, "AutoArima", 1, 
                                      sub_path(tree, "tmp")))
   expect_error(save_forecast_output(f_a, f_c, "AutoArima", metadata, 1)) 
+  expect_error(save_forecast_output(f_a, f_c, "AutoArima", metadata, 
+                                    c("a", "b"))) 
+  expect_error(save_forecast_output(f_ax, f_c, "AutoArima", metadata, 
+                                     sub_path(tree, "tmp")))
+  expect_error(save_forecast_output(f_a, f_cx, "AutoArima", metadata, 
+                                     sub_path(tree, "tmp")))
+
   expect_silent(save_forecast_output(f_a, f_c, "AutoArima", metadata, 
                                      sub_path(tree, "tmp")))
   expect_silent(save_forecast_output(f_a2, f_c2, "ESSS", metadata, 
