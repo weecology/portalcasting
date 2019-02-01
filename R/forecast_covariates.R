@@ -351,7 +351,7 @@ append_cov_fcast_csv <- function(new_forecast_covariates,
 
   covar_new <- new_forecast_covariates
   covar_new$source <- options_covariates$source_name
-  covar_new$date_made <- today(time = TRUE)
+  covar_new$date_made <- as.character(today(time = TRUE))
 
   fname <- paste0("data/", options_covariates$hist_fcast_file)
   hist_file <- file_path(options_covariates$tree, fname)
