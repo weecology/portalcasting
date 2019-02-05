@@ -3,6 +3,10 @@
 #  our covariate forecasts as well
 #
 
+library(portalcasting); library(portalr); library(dplyr)
+moons <- prep_moons()
+covariates <- prep_hist_covariates()
+
 fill_fcast <- function(dtable){
 
   t_date <- as.Date(paste(dtable$year, dtable$month, "1", sep = "-"))
@@ -114,7 +118,9 @@ maxtemps <- rnorm(nrow(hist_tab), maxpred$fit[,1], maxpred$residual.scale)
 hist_tab$mintemp <- mintemps
 hist_tab$maxtemp <- maxtemps
 hist_tab$source <- "retroactive"
-hist_tab$date_made <- Sys.Date()
+date_made <- Sys.time()
+tz <- format(date_made, "%Z")
+hist_tab$date_made <- paste0(date_made, " ", tz)
 
 write.csv(hist_tab, "covariate_forecasts.csv", row.names = FALSE)
 
