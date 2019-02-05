@@ -1,7 +1,7 @@
 # portalcasting (development version)
 
 # [portalcasting 0.2.0](https://github.com/weecology/portalcasting)
-*2019-02-01* *[last code edit](https://github.com/weecology/portalcasting/pull/75)*
+*2019-02-04* *[last code edit](https://github.com/weecology/portalcasting/pull/78)*
 
 ## Code testing
 * All of the code is now tested via [`testthat`](https://github.com/weecology/portalcasting/tree/master/tests).
