@@ -57,7 +57,7 @@ append_past_moons_to_raw <- function(moons, options_moons = moons_options()){
   }
   if (options_moons$append_missing_to_raw){
     path <- file_path(options_moons$tree, "PortalData/Rodents/moon_dates.csv")
-    included_moons <- moons$newmoondate <= today()
+    included_moons <- moons$newmoondate < today()
     newraw <- moons[included_moons, ]
     write.csv(newraw, path, row.names = FALSE)
   }
