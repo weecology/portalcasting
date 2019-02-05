@@ -352,7 +352,7 @@ append_cov_fcast_csv <- function(new_forecast_covariates,
   covar_new <- new_forecast_covariates
   covar_new$source <- options_covariates$source_name
   date_made <- today(time = TRUE)
-  tx <- format(date_made, "%Z")
+  tz <- format(date_made, "%Z")
   covar_new$date_made <- paste0(date_made, " ", tz)
 
   fname <- paste0("data/", options_covariates$hist_fcast_file)
