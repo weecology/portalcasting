@@ -137,7 +137,7 @@ read_data <- function(tree, data_name){
             classy(c("data.frame", "rodents"))
   }
   if (data_name == "controls"){
-    data <- read.csv(file_path(tree, "data/all.csv")) %>%
+    data <- read.csv(file_path(tree, "data/controls.csv")) %>%
             classy(c("data.frame", "rodents"))
   }
   if (data_name == "covariates"){
