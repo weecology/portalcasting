@@ -1,6 +1,14 @@
 # portalcasting (development version)
 
-# [portalcasting 0.2.0](https://github.com/weecology/portalcasting)
+# [portalcasting 0.2.1](https://github.com/weecology/portalcasting)
+*2019-02-12* *[last code edit](https://github.com/weecology/portalcasting/pull/81)*
+
+## Bug fix in `read_data`
+* `read_data` was reading the All rodents file for Controls as well, which caused
+the forecasts for the Controls to be duplicated of the All forecasts.
+* Simple correction here.
+
+# [portalcasting 0.2.0]
 *2019-02-04* *[last code edit](https://github.com/weecology/portalcasting/pull/79)*
 
 ## Code testing
