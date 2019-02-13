@@ -21,7 +21,8 @@ interpolate_abundance <- function(abundance){
   moons <- (min(abundance$newmoonnumber)):(max(abundance$newmoonnumber))
   nmoons <- length(moons)
 
-  species <- colnames(abundance)[which(colnames(abundance) %in% rodent_spp())]
+  rodent_cols <- which(colnames(abundance) %in% rodent_spp(nadot = TRUE))
+  species <- colnames(abundance)[rodent_cols]
   nspecies <- length(species)
 
   abunds <- matrix(NA, nrow = nmoons, ncol = nspecies)
@@ -106,20 +107,20 @@ lag_data <- function(data, lag, tail = FALSE){
 #' @description Read in a specified data file and ensure its class attribute
 #'   is appropriate for usage within the portalcasting pipeline. Current 
 #'   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
-#'   and \code{"metadata"}.
+#'   \code{"moons"}, and \code{"metadata"}.
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'  
 #' @param data_name \code{character} representation of the data needed.
 #'   Current options include \code{"all"}, \code{"controls"},
-#'   \code{"covariates"}, and \code{"metadata"}.
+#'   \code{"covariates"}, \code{"moons"}, and \code{"metadata"}.
 #'  
 #' @return Data requested with appropriate classes.
 #'
 #' @export
 #'
 read_data <- function(tree, data_name){
-  valid_names <- c("all", "controls", "covariates", "metadata")
+  valid_names <- c("all", "controls", "covariates", "moons", "metadata")
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
@@ -143,6 +144,10 @@ read_data <- function(tree, data_name){
   if (data_name == "covariates"){
     data <- read.csv(file_path(tree, "data/covariates.csv")) %>%
             classy(c("data.frame", "covariates"))
+  }
+  if (data_name == "moons"){
+    data <- read.csv(file_path(tree, "data/moons.csv")) %>%
+            classy(c("data.frame", "moons"))
   }
   if (data_name == "metadata"){
     data <- yaml.load_file(file_path(tree, "data/metadata.yaml")) %>%

@@ -206,12 +206,19 @@ remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
 #' @description Creates a simple \code{character} vector of abbreviations for
 #'   the \href{https://portal.naturecast.org/profiles.html}{Portal Rodents}.
 #'
+#' @param nadot \code{logical} indicator if the dot should be added to the 
+#'   \code{"NA"} species name. Defaults to \code{FALSE}.
+#'
 #' @return \code{character} vector of species abbreviations.
 #'
 #' @export
 #'
-rodent_spp <- function(){
-  c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", 
+rodent_spp <- function(nadot = FALSE){
+  xNAx <- "NA"
+  if (nadot){
+    xNAx <- "NA."
+  }
+  c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", "PI", 
     "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
 }
 

@@ -12,8 +12,24 @@ devtools::load_all()
 options_all <- all_options(main = "testing_casting")
 setup_dir(options_all)
 portalcast(options_all)
+
+
+rmarkdown::render_site()
+
 cleanup_dir(options_all)
 
 
 #
 #
+
+tree <- dirtree(main = "testing_casting")
+
+
+# new functions:
+# read_casts
+# plot_cast
+# select_cast
+# castplot_ylab
+# castplot_xaxis
+
+plot_cast(tree, species = "DM", castdate = "2019-02-12")

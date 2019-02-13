@@ -58,7 +58,10 @@ test_that("rodent_spp", {
   expect_silent(spp <- rodent_spp())
   expect_is(spp, "character")
   expect_equal(length(spp), 21)
-  expect_error(rodent_spp(1))
+  expect_error(rodent_spp("1"))
+  expect_silent(spp <- rodent_spp(TRUE))
+  expect_is(spp, "character")
+  expect_equal(length(spp), 21)
 })
 
 test_that("is.spcol", {
