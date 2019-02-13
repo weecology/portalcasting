@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collect and process historic rodent data for -casting — rodents_data • portalcasting</title>
+<title>Select the specific fore- or hindcast from a casts table — select_cast • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,10 @@
 
 
 
-<meta property="og:title" content="Collect and process historic rodent data for -casting — rodents_data" />
+<meta property="og:title" content="Select the specific fore- or hindcast from a casts table — select_cast" />
 
-<meta property="og:description" content="Prepare a particular version of the rodent dataset, tailored 
-  for forecasting or hindcasting. Available versions of the data currently
-  include all (abundances on all plots) and controls 
-  (abundances on control plots only)" />
+<meta property="og:description" content="Given a casts-class data.frame of many models'
+  predictions, select a specific one for use." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,45 +121,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collect and process historic rodent data for -casting</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
-    <div class="hidden name"><code>rodents_data.Rd</code></div>
+    <h1>Select the specific fore- or hindcast from a casts table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
+    <div class="hidden name"><code>select_cast.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Prepare a particular version of the rodent dataset, tailored 
-  for forecasting or hindcasting. Available versions of the data currently
-  include <code>all</code> (abundances on all plots) and <code>controls</code> 
-  (abundances on control plots only)</p>
+    <p>Given a <code>casts</code>-class <code>data.frame</code> of many models'
+  predictions, select a specific one for use.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rodents_data</span>(<span class='kw'>moons</span> <span class='kw'>=</span> <span class='fu'><a href='prep_moons.html'>prep_moons</a></span>(), <span class='kw'>options_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>rodents_options</a></span>())</pre>
+    <pre class="usage"><span class='fu'>select_cast</span>(<span class='no'>casts</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"Ensemble"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>moons</th>
-      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
-and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
+      <th>casts</th>
+      <td><p>Class <code>casts</code> <code>data.frame</code> of requested fore- or 
+hindcasts to be selected from.</p></td>
     </tr>
     <tr>
-      <th>options_rodents</th>
-      <td><p>Class-<code>rodents_options</code> <code>list</code> of 
-settings controlling the rodents data creation. See 
-<code><a href='all_options.html'>rodents_options</a></code> for general creation and 
-<code><a href='enforce_rodents_options.html'>enforce_rodents_options</a></code> for bulk setting of options for
-each of the possible data table outputs.</p></td>
+      <th>species</th>
+      <td><p><code>character</code> value of the species code or <code>"total"</code>
+for the total across species.</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p><code>character</code> value of the level of interest (<code>"All"</code> 
+or <code>"Controls"</code>).</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p><code>character</code> value of the name (or <code>"Ensemble"</code>) of
+the model to be plotted.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>One of two class-<code>rodents</code> <code>data.frame</code>s, 
-  <code>all</code> (abundances on all plots) or <code>controls</code> (abundances on
-  control plots only).</p>
     
 
   </div>
@@ -169,9 +167,7 @@ each of the possible data table outputs.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

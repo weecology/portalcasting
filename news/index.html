@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -121,10 +121,43 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="portalcasting-0-2-2" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-2-2" class="anchor"></a><a href="https://github.com/weecology/portalcasting">portalcasting 0.2.2</a>
+</h1>
+<p><em>2019-02-12</em> <em><a href="https://github.com/weecology/portalcasting/pull/82">last code edit</a></em></p>
+<div id="beginning-to-migrate-plotting-code" class="section level2">
+<h2 class="hasAnchor">
+<a href="#beginning-to-migrate-plotting-code" class="anchor"></a>Beginning to migrate plotting code</h2>
+<ul>
+<li>
+<code>plot_cast</code> is developed but not yet fully vetted and tested, nor integrated in the main repository. It will replace <code>forecast_viz</code> as a main plotting function.</li>
+</ul>
+</div>
+<div id="added-moons-to-read_data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#added-moons-to-read_data" class="anchor"></a>Added <code>"moons"</code> to <code>read_data</code>
+</h2>
+<ul>
+<li>
+<code>read_data</code>’s options have been expanded to include <code>"moons"</code>.</li>
+<li>Not fully implemented everywhere, but now available.</li>
+</ul>
+</div>
+<div id="bug-fix-in-interpolate_data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fix-in-interpolate_data" class="anchor"></a>Bug fix in <code>interpolate_data</code>
+</h2>
+<ul>
+<li>
+<code>interpolate_data</code> was using <code>rodent_spp</code> in a way that assumed the <code>"NA"</code> species was coded as <code>"NA."</code>, which it wasn’t.</li>
+<li>Expansion of <code>rodent_spp</code> to include an <code>nadot</code> logical argument, with default value of <code>FALSE</code>.</li>
+</ul>
+</div>
+</div>
     <div id="portalcasting-0-2-1" class="section level1">
 <h1 class="page-header">
-<a href="#portalcasting-0-2-1" class="anchor"></a><a href="https://github.com/weecology/portalcasting">portalcasting 0.2.1</a>
-</h1>
+<a href="#portalcasting-0-2-1" class="anchor"></a>portalcasting 0.2.1</h1>
 <p><em>2019-02-12</em> <em><a href="https://github.com/weecology/portalcasting/pull/81">last code edit</a></em></p>
 <div id="bug-fix-in-read_data" class="section level2">
 <h2 class="hasAnchor">
@@ -134,6 +167,117 @@
 <li>
 <code>read_data</code> was reading the All rodents file for Controls as well, which caused the forecasts for the Controls to be duplicated of the All forecasts.</li>
 <li>Simple correction here.</li>
+</ul>
+</div>
+</div>
+    <div id="portalcasting-0-2-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-2-0" class="anchor"></a>portalcasting 0.2.0</h1>
+<p><em>2019-02-04</em> <em><a href="https://github.com/weecology/portalcasting/pull/79">last code edit</a></em></p>
+<div id="code-testing" class="section level2">
+<h2 class="hasAnchor">
+<a href="#code-testing" class="anchor"></a>Code testing</h2>
+<ul>
+<li>All of the code is now tested via <a href="https://github.com/weecology/portalcasting/tree/master/tests"><code>testthat</code></a>.</li>
+<li>Test coverage is tracked via <a href="https://codecov.io/gh/weecology/portalcasting">Codecov</a>.</li>
+<li>The only functionality not covered in testing on Codecov is associated with <code><a href="../reference/download_predictions.html">download_predictions()</a></code>, which intermittently hangs on Travis. Testing is available, but requires manual toggling of the <code>test_location</code> value to <code>"local"</code> in the relevant test scripts (02-directory and 12-prepare_predictions).</li>
+</ul>
+</div>
+<div id="enforcement-of-inputs" class="section level2">
+<h2 class="hasAnchor">
+<a href="#enforcement-of-inputs" class="anchor"></a>Enforcement of inputs</h2>
+<ul>
+<li>Most of the functions previously did not have any checks on input argument classes, sizes, etc.</li>
+<li>Now all functions specifically check each argument’s value for validity and throw specific errors.</li>
+</ul>
+</div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<ul>
+<li>All of the functions have fleshed out documentation that specify argument requirements, link to each other and externally, and include more information.</li>
+</ul>
+</div>
+<div id="data-classes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-classes" class="anchor"></a>Data classes</h2>
+<ul>
+<li>To smooth checking of different data structures, we now define data objects with classes in addition to their existing (<code>data.frame</code> or <code>list</code>) definitions.</li>
+<li>
+<code>rodents</code>, <code>rodents_list</code>, <code>covariates</code>, <code>metadata</code>, <code>moons</code>
+</li>
+<li>These classes do not presently have any specified methods or functions.</li>
+</ul>
+</div>
+<div id="options-list-classes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#options-list-classes" class="anchor"></a>Options list classes</h2>
+<ul>
+<li>To smooth checking of different list structures, we now define the options list objects with classes in addition to their existing <code>list</code> definitions.</li>
+<li>
+<code>all_options</code>, <code>dir_options</code>, <code>PortalData_options</code>, <code>data_options</code>, <code>moons_options</code>, <code>rodents_options</code>, <code>covariates_options</code>, <code>metadata_options</code>, <code>predictions_options</code>, <code>models_options</code>, and <code>cast_options</code>
+</li>
+<li>Each of these classes is created by a function of that name.</li>
+<li>These classes do not presently have any specified methods or functions that operate on them.</li>
+</ul>
+</div>
+<div id="added-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#added-functions" class="anchor"></a>Added functions</h2>
+<ul>
+<li>
+<code><a href="../reference/classy.html">classy()</a></code> allows for easy application of classes to objects in a <code>%&gt;%</code> pipeline</li>
+<li>
+<code><a href="../reference/read_data.html">read_data()</a></code> provides simple interface for loading and applying classes to model-ready data files.</li>
+<li>
+<code><a href="../reference/remove_incompletes.html">remove_incompletes()</a></code> removes any incomplete entries in a table, as defined by an <code>NA</code> in a specific column.</li>
+<li>
+<code><a href="../reference/all_options.html">check_options_args()</a></code> provides a tidy way to check the input arguments (wrt class, length, numeric limitations, etc.) to the options functions.</li>
+</ul>
+</div>
+<div id="vignettes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#vignettes" class="anchor"></a>Vignettes</h2>
+<ul>
+<li>Three vignettes were added:
+<ul>
+<li>
+<a href="https://weecology.github.io/portalcasting/articles/models.html">current models vignette</a> was brought from the <a href="https://portal.naturecast.org/models.html">forecasting website</a>.</li>
+<li>
+<a href="https://weecology.github.io/portalcasting/articles/codebase.html">codebase vignette</a> was created from the earlier <code>README.md</code> file.</li>
+<li>
+<a href="https://weecology.github.io/portalcasting/articles/adding_a_model.html">adding a model vignette</a> was constructed based on two pages from the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repository</a> wiki (<a href="https://github.com/weecology/portalPredictions/wiki/Adding-a-new-model">1</a> and <a href="https://github.com/weecology/portalPredictions/wiki/Forecast-file-format">2</a>) and with substantial additional text added.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="retention-of-all-forecasts-of-covariates" class="section level2">
+<h2 class="hasAnchor">
+<a href="#retention-of-all-forecasts-of-covariates" class="anchor"></a>Retention of all forecasts of covariates</h2>
+<ul>
+<li>Previous versions retained only one covariate forecast per newmoon.</li>
+<li>We now enable retension of multiple covariate forecasts per newmoon and tag the forecast date with a time stamp as well.</li>
+</ul>
+</div>
+<div id="website" class="section level2">
+<h2 class="hasAnchor">
+<a href="#website" class="anchor"></a>Website</h2>
+<ul>
+<li>Added a website driven by <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</li>
+</ul>
+</div>
+<div id="changelog" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changelog" class="anchor"></a>Changelog</h2>
+<ul>
+<li>Developed this changelog as part of the package.</li>
+</ul>
+</div>
+<div id="support-documents" class="section level2">
+<h2 class="hasAnchor">
+<a href="#support-documents" class="anchor"></a>Support documents</h2>
+<ul>
+<li>Added <a href="https://github.com/weecology/portalcasting/blob/master/CODE_OF_CONDUCT.md">code of conduct</a> and <a href="https://github.com/weecology/portalcasting/blob/master/CONTRIBUTING.md">contribution guidelines</a> to the repository.</li>
 </ul>
 </div>
 </div>
@@ -207,7 +351,9 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#portalcasting-0-2-2">0.2.2</a></li>
         <li><a href="#portalcasting-0-2-1">0.2.1</a></li>
+        <li><a href="#portalcasting-0-2-0">0.2.0</a></li>
         <li><a href="#portalcasting-0-1-1">0.1.1</a></li>
         <li><a href="#portalcasting-0-1-0">0.1.0</a></li>
         <li><a href="#portalcasting-0-0-1">0.0.1</a></li>

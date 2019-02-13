@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collect and process historic rodent data for -casting — rodents_data • portalcasting</title>
+<title>Expand the name with formating for a -cast plot y label — castplot_ylab • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,10 @@
 
 
 
-<meta property="og:title" content="Collect and process historic rodent data for -casting — rodents_data" />
+<meta property="og:title" content="Expand the name with formating for a -cast plot y label — castplot_ylab" />
 
-<meta property="og:description" content="Prepare a particular version of the rodent dataset, tailored 
-  for forecasting or hindcasting. Available versions of the data currently
-  include all (abundances on all plots) and controls 
-  (abundances on control plots only)" />
+<meta property="og:description" content="Produce a list with text and font elements to
+  control the y-axis label in plot_cast." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,45 +121,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collect and process historic rodent data for -casting</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
-    <div class="hidden name"><code>rodents_data.Rd</code></div>
+    <h1>Expand the name with formating for a -cast plot y label</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>castplot_ylab.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Prepare a particular version of the rodent dataset, tailored 
-  for forecasting or hindcasting. Available versions of the data currently
-  include <code>all</code> (abundances on all plots) and <code>controls</code> 
-  (abundances on control plots only)</p>
+    <p>Produce a list with <code>text</code> and <code>font</code> elements to
+  control the y-axis label in <code><a href='plot_cast.html'>plot_cast</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rodents_data</span>(<span class='kw'>moons</span> <span class='kw'>=</span> <span class='fu'><a href='prep_moons.html'>prep_moons</a></span>(), <span class='kw'>options_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>rodents_options</a></span>())</pre>
+    <pre class="usage"><span class='fu'>castplot_ylab</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>moons</th>
-      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
-and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
+      <th>tree</th>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>. Used to access the species list.</p></td>
     </tr>
     <tr>
-      <th>options_rodents</th>
-      <td><p>Class-<code>rodents_options</code> <code>list</code> of 
-settings controlling the rodents data creation. See 
-<code><a href='all_options.html'>rodents_options</a></code> for general creation and 
-<code><a href='enforce_rodents_options.html'>enforce_rodents_options</a></code> for bulk setting of options for
-each of the possible data table outputs.</p></td>
+      <th>species</th>
+      <td><p><code>character</code> value of the species code or <code>"total"</code>
+for the total across species.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>One of two class-<code>rodents</code> <code>data.frame</code>s, 
-  <code>all</code> (abundances on all plots) or <code>controls</code> (abundances on
-  control plots only).</p>
+    <p><code>list</code> of <code>text</code> and <code>font</code> elements.</p>
     
 
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collect and process historic rodent data for -casting — rodents_data • portalcasting</title>
+<title>Visualize a forecast or hindcast — plot_cast • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,11 @@
 
 
 
-<meta property="og:title" content="Collect and process historic rodent data for -casting — rodents_data" />
+<meta property="og:title" content="Visualize a forecast or hindcast — plot_cast" />
 
-<meta property="og:description" content="Prepare a particular version of the rodent dataset, tailored 
-  for forecasting or hindcasting. Available versions of the data currently
-  include all (abundances on all plots) and controls 
-  (abundances on control plots only)" />
+<meta property="og:description" content="Plot an observed timeseries and forecast or hindcast 
+  timeseries with a prediction interval. Currently only reliable for 
+  forecasts." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,45 +122,63 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collect and process historic rodent data for -casting</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
-    <div class="hidden name"><code>rodents_data.Rd</code></div>
+    <h1>Visualize a forecast or hindcast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>plot_cast.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Prepare a particular version of the rodent dataset, tailored 
-  for forecasting or hindcasting. Available versions of the data currently
-  include <code>all</code> (abundances on all plots) and <code>controls</code> 
-  (abundances on control plots only)</p>
+    <p>Plot an observed timeseries and forecast or hindcast 
+  timeseries with a prediction interval. Currently only reliable for 
+  forecasts.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rodents_data</span>(<span class='kw'>moons</span> <span class='kw'>=</span> <span class='fu'><a href='prep_moons.html'>prep_moons</a></span>(), <span class='kw'>options_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>rodents_options</a></span>())</pre>
+    <pre class="usage"><span class='fu'>plot_cast</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
+  <span class='kw'>casttype</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>, <span class='kw'>castdate</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"Ensemble"</span>,
+  <span class='kw'>start_newmoon</span> <span class='kw'>=</span> <span class='fl'>300</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>moons</th>
-      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
-and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
+      <th>tree</th>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     <tr>
-      <th>options_rodents</th>
-      <td><p>Class-<code>rodents_options</code> <code>list</code> of 
-settings controlling the rodents data creation. See 
-<code><a href='all_options.html'>rodents_options</a></code> for general creation and 
-<code><a href='enforce_rodents_options.html'>enforce_rodents_options</a></code> for bulk setting of options for
-each of the possible data table outputs.</p></td>
+      <th>species</th>
+      <td><p><code>character</code> value of the species code or <code>"total"</code>
+for the total across species.</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p><code>character</code> value of the level of interest (<code>"All"</code> 
+or <code>"Controls"</code>).</p></td>
+    </tr>
+    <tr>
+      <th>casttype</th>
+      <td><p><code>character</code> value of the type of -cast of model. Used
+to select the file in the predictions subdirectory. Currently only 
+reliably coded for <code>"forecasts"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>castdate</th>
+      <td><p><code>Date</code> the predictions were made. Used to select the
+file in the predictions subdirectory.</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p><code>character</code> value of the name (or <code>"Ensemble"</code>) of
+the model to be plotted.</p></td>
+    </tr>
+    <tr>
+      <th>start_newmoon</th>
+      <td><p><code>integer</code>-conformable newmoon number used as the
+the minimum x value for the plot.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>One of two class-<code>rodents</code> <code>data.frame</code>s, 
-  <code>all</code> (abundances on all plots) or <code>controls</code> (abundances on
-  control plots only).</p>
     
 
   </div>
@@ -169,9 +186,7 @@ each of the possible data table outputs.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
