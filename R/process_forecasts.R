@@ -313,15 +313,14 @@ classy(c("data.frame", "casts"))
 #' @description Given a \code{casts}-class \code{data.frame} of many models'
 #'   predictions, select a specific one for use.
 #'
+#' @param casts Class \code{casts} \code{data.frame} of requested fore- or 
+#'   hindcasts to be selected from.
+#'
 #' @param species \code{character} value of the species code or \code{"total"}
 #'   for the total across species.
 #'
 #' @param level \code{character} value of the level of interest (\code{"All"} 
 #'   or \code{"Controls"}).
-#'
-#' @param casttype \code{character} value of the type of -cast of model. Used
-#'   to select the file in the predictions subdirectory. Currently only 
-#'   reliably coded for \code{"forecasts"}.
 #'
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
 #'   the model to be plotted.

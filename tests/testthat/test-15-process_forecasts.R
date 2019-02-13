@@ -95,3 +95,14 @@ test_that("make_ensemble", {
   expect_error(make_ensemble(fcasts, sub1, 1:2), "`CI_level` can")
   expect_error(make_ensemble(fcasts, sub1, -1), "`CI_level` is")
 })
+
+test_that("read_casts", {
+  expect_silent(casts <- read_casts(cast_opts1$tree))
+  expect_is(casts, "casts")
+})
+
+test_that("select_cast", {
+  casts <- read_casts(cast_opts1$tree)
+  expect_silent(cast <- select_cast(casts))
+  expect_is(cast, "casts")
+})

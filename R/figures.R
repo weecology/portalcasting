@@ -82,7 +82,7 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
 #'
 #' @export
 #'
-castplot_xaxis <- function(tree, rangex, rangey){
+castplot_xaxis <- function(tree, rangex){
   moons <- read_data(tree, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])

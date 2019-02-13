@@ -8,6 +8,9 @@ select_cast(casts, species = "total", level = "Controls",
   model = "Ensemble")
 }
 \arguments{
+\item{casts}{Class \code{casts} \code{data.frame} of requested fore- or 
+hindcasts to be selected from.}
+
 \item{species}{\code{character} value of the species code or \code{"total"}
 for the total across species.}
 
@@ -16,10 +19,6 @@ or \code{"Controls"}).}
 
 \item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
 the model to be plotted.}
-
-\item{casttype}{\code{character} value of the type of -cast of model. Used
-to select the file in the predictions subdirectory. Currently only 
-reliably coded for \code{"forecasts"}.}
 }
 \description{
 Given a \code{casts}-class \code{data.frame} of many models'

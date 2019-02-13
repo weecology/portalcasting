@@ -4,7 +4,7 @@
 \alias{castplot_xaxis}
 \title{Add a -cast plot x-axis}
 \usage{
-castplot_xaxis(tree, rangex, rangey)
+castplot_xaxis(tree, rangex)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
