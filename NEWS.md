@@ -1,6 +1,24 @@
 # portalcasting (development version)
 
-# [portalcasting 0.2.1](https://github.com/weecology/portalcasting)
+# [portalcasting 0.2.2](https://github.com/weecology/portalcasting)
+*2019-02-12* *[last code edit](https://github.com/weecology/portalcasting/pull/82)*
+
+## Beginning to migrate plotting code
+* `plot_cast` is developed but not yet fully vetted and tested, nor integrated
+in the main repository. It will replace `forecast_viz` as a main plotting
+function.
+
+## Added `"moons"` to `read_data`
+* `read_data`'s options have been expanded to include `"moons"`.
+* Not fully implemented everywhere, but now available.
+
+## Bug fix in `interpolate_data`
+* `interpolate_data` was using `rodent_spp` in a way that assumed the `"NA"` 
+species was coded as `"NA."`, which it wasn't. 
+* Expansion of `rodent_spp` to include an `nadot` logical argument, with default
+value of `FALSE`.
+
+# portalcasting 0.2.1
 *2019-02-12* *[last code edit](https://github.com/weecology/portalcasting/pull/81)*
 
 ## Bug fix in `read_data`
@@ -8,7 +26,7 @@
 the forecasts for the Controls to be duplicated of the All forecasts.
 * Simple correction here.
 
-# [portalcasting 0.2.0]
+# portalcasting 0.2.0
 *2019-02-04* *[last code edit](https://github.com/weecology/portalcasting/pull/79)*
 
 ## Code testing

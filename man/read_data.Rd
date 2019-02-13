@@ -11,7 +11,7 @@ read_data(tree, data_name)
 
 \item{data_name}{\code{character} representation of the data needed.
 Current options include \code{"all"}, \code{"controls"},
-\code{"covariates"}, and \code{"metadata"}.}
+\code{"covariates"}, \code{"moons"}, and \code{"metadata"}.}
 }
 \value{
 Data requested with appropriate classes.
@@ -20,5 +20,5 @@ Data requested with appropriate classes.
 Read in a specified data file and ensure its class attribute
   is appropriate for usage within the portalcasting pipeline. Current 
   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
-  and \code{"metadata"}.
+  \code{"moons"}, and \code{"metadata"}.
 }

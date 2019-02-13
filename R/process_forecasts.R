@@ -279,3 +279,62 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
   return(ensemble)
 }
 
+
+#' @title Read in a cast file and format it for specific class
+#'
+#' @description Read in a specified forecast or hindcast data file and ensure 
+#'   its class attribute is appropriate for usage within the portalcasting 
+#'   pipeline. Current 
+#'
+#' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
+#'  
+#' @param casttype \code{character} value of the type of -cast of model. Used
+#'   to select the file in the predictions subdirectory. Currently only 
+#'   reliably coded for \code{"forecasts"}.
+#'
+#' @param castdate \code{Date} the predictions were made. Used to select the
+#'   file in the predictions subdirectory. 
+#'  
+#' @return Class \code{casts} \code{data.frame} of requested fore- or 
+#'   hindcasts.
+#'
+#' @export
+#'
+read_casts <- function(tree, casttype = "forecasts", castdate = today()){
+
+lpath <- paste0("predictions/", castdate, casttype, ".csv")
+read.csv(file_path(tree, lpath)) %>%
+classy(c("data.frame", "casts"))
+
+}
+
+#' @title Select the specific fore- or hindcast from a casts table
+#'
+#' @description Given a \code{casts}-class \code{data.frame} of many models'
+#'   predictions, select a specific one for use.
+#'
+#' @param casts Class \code{casts} \code{data.frame} of requested fore- or 
+#'   hindcasts to be selected from.
+#'
+#' @param species \code{character} value of the species code or \code{"total"}
+#'   for the total across species.
+#'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'   or \code{"Controls"}).
+#'
+#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
+#'   the model to be plotted.
+#'
+#' @export
+#'
+select_cast <- function(casts, species = "total", level = "Controls", 
+                        model = "Ensemble"){
+
+  incl_species <- casts[ , "species"] == species
+  incl_level <- casts[ , "level"] == level
+  incl_model <- casts[ , "model"] == model
+  incl <- which(incl_species & incl_level & incl_model)
+  casts[incl, ]
+}
+
+
