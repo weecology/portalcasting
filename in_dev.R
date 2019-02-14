@@ -32,4 +32,4 @@ tree <- dirtree(main = "testing_casting")
 # castplot_ylab
 # castplot_xaxis
 
-plot_cast(tree, species = "DM", castdate = "2019-02-12")
+plot_cast(tree, species = "NA", castdate = "2019-02-13")

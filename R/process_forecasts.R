@@ -303,7 +303,7 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 read_casts <- function(tree, casttype = "forecasts", castdate = today()){
 
 lpath <- paste0("predictions/", castdate, casttype, ".csv")
-read.csv(file_path(tree, lpath)) %>%
+read.csv(file_path(tree, lpath), stringsAsFactors = FALSE) %>%
 classy(c("data.frame", "casts"))
 
 }
@@ -329,7 +329,10 @@ classy(c("data.frame", "casts"))
 #'
 select_cast <- function(casts, species = "total", level = "Controls", 
                         model = "Ensemble"){
-
+  nasppname <- which(is.na(casts[ , "species"]))
+  if (length(nasppname) > 0){
+    casts[nasppname, "species"] <- "NA"
+  }
   incl_species <- casts[ , "species"] == species
   incl_level <- casts[ , "level"] == level
   incl_model <- casts[ , "model"] == model

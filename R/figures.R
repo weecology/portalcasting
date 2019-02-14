@@ -121,7 +121,7 @@ castplot_xaxis <- function(tree, rangex){
 #' @export
 #'
 castplot_ylab <- function(tree = dirtree(), species = "total"){
-
+  lab <- list(text = "", font = 1)
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   nasppname <- which(is.na(sptab[ , "speciescode"]) == TRUE)
