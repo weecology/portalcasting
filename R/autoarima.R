@@ -1,5 +1,5 @@
 #' @title Flexible Auto-Regressive Integrated Moving Average model for Portal 
-#'  Predictions
+#'  Predictions or something
 #'
 #' @description Fit an AutoARIMA model in the portalcasting pipeline. 
 #'
