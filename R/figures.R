@@ -34,7 +34,7 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
 
   obs <- read_data(tree, tolower(level))
   pred <- read_casts(tree, casttype = casttype, castdate = castdate) %>%
-          select_cast(species = species, level = level, model = model)   
+          select_casts(species = species, level = level, model = model)   
 
   species_o <- species
   if (species == "NA"){
