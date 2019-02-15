@@ -27,6 +27,7 @@ options_all11 <- all_options(main = "testing_casting",
                              cast_type = "hindcasts", end = 490:493, 
                              quiet = TRUE)
 
+portalcast(options_all3)
 test_that("portalcast", {
   expect_error(portalcast(1), "`all_options`")
   expect_message(portalcast(options_all3))
