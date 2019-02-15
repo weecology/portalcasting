@@ -3,6 +3,13 @@ context("Test figure functions")
 tree <- dirtree(main = "testing_casting");
 metadata <- read_data(tree, "metadata")
 castdate <- metadata$forecast_date
+cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
+spath <- sub_paths(dirtree(main = "testing_casting", 
+                           subs = subdirs(NULL, "predictions")))
+create_sub_dir(spath)
+options_all3 <- all_options(main = "testing_casting", 
+                            model = models(NULL, "AutoArima"))
+portalcast(options_all3)
 
 test_that("plot_species_casts", {
 
@@ -13,8 +20,10 @@ test_that("sppcastsplot_yaxis", {
 })
 
 test_that("plot_cast", {
-  #expect_silent(plot_cast(tree, species = "total", castdate = castdate))
-  #expect_silent(plot_cast(tree, species = "NA", castdate = castdate))
+  expect_silent(
+plot_cast(tree, species = "total", model = "AutoArima", castdate = castdate)
+)
+  expect_silent(plot_cast(tree, species = "NA", model = "AutoArima", castdate = castdate))
 })
 
 test_that("castplot_xaxis", {
