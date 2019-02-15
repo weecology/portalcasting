@@ -103,6 +103,6 @@ test_that("read_casts", {
 
 test_that("select_cast", {
   casts <- read_casts(cast_opts1$tree)
-  expect_silent(cast <- select_cast(casts))
+  expect_silent(cast <- select_casts(casts))
   expect_is(cast, "casts")
 })
