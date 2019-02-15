@@ -1,6 +1,6 @@
 #' @importFrom digest digest
 #' @importFrom dplyr arrange bind_rows filter full_join group_by inner_join 
-#'   left_join mutate rename right_join select summarise summarize ungroup 
+#'   left_join mutate n rename right_join select summarise summarize ungroup 
 #' @importFrom forecast auto.arima ets forecast na.interp
 #' @importFrom graphics axis mtext par plot points polygon
 #' @importFrom grDevices rgb
