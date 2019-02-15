@@ -311,32 +311,54 @@ classy(c("data.frame", "casts"))
 #' @title Select the specific fore- or hindcast from a casts table
 #'
 #' @description Given a \code{casts}-class \code{data.frame} of many models'
-#'   predictions, select a specific one for use.
+#'   predictions, select a specific subset for use.
 #'
 #' @param casts Class \code{casts} \code{data.frame} of requested fore- or 
 #'   hindcasts to be selected from.
 #'
 #' @param species \code{character} value of the species code or \code{"total"}
-#'   for the total across species.
+#'   for the total across species. If \code{NULL}, all species and "total" are
+#'   returned. 
 #'
 #' @param level \code{character} value of the level of interest (\code{"All"} 
-#'   or \code{"Controls"}).
+#'   or \code{"Controls"}). If \code{NULL}, all levels are returned.
 #'
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
-#'   the model to be plotted.
+#'   the model of interest. If \code{NULL}, all models are returned.
+#'
+#' @param newmoonnumber \code{integer}-conformable value of the newmoonnumbers
+#'   of interest. If \code{NULL}, all newmoons are returned.
+#'
+#' @return Class \code{casts} \code{data.frame} of trimmed fore- or 
+#'   hindcasts.
 #'
 #' @export
 #'
-select_cast <- function(casts, species = "total", level = "Controls", 
-                        model = "Ensemble"){
+select_casts <- function(casts, species = NULL, level = NULL, model = NULL, 
+                         newmoonnumber = NULL){
+
+  incl_species <- rep(TRUE, nrow(casts))
+  incl_level <- rep(TRUE, nrow(casts))
+  incl_model <- rep(TRUE, nrow(casts))
+  incl_nmm <- rep(TRUE, nrow(casts))
+
   nasppname <- which(is.na(casts[ , "species"]))
   if (length(nasppname) > 0){
     casts[nasppname, "species"] <- "NA"
   }
-  incl_species <- casts[ , "species"] == species
-  incl_level <- casts[ , "level"] == level
-  incl_model <- casts[ , "model"] == model
-  incl <- which(incl_species & incl_level & incl_model)
+  if (!is.null(species)){
+    incl_species <- casts[ , "species"] %in% species
+  }
+  if (!is.null(level)){
+    incl_level <- casts[ , "level"] %in% level
+  }
+  if (!is.null(model)){
+    incl_model <- casts[ , "model"] %in% model
+  }
+  if (!is.null(newmoonnumber)){
+    incl_nmm <- casts[ , "newmoonnumber"] %in% newmoonnumber
+  }
+  incl <- which(incl_species & incl_level & incl_model & incl_nmm)
   casts[incl, ]
 }
 

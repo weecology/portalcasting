@@ -101,8 +101,19 @@ test_that("read_casts", {
   expect_is(casts, "casts")
 })
 
-test_that("select_cast", {
+test_that("select_casts", {
   casts <- read_casts(cast_opts1$tree)
-  expect_silent(cast <- select_cast(casts))
+  expect_silent(cast <- select_casts(casts))
+  expect_is(cast, "casts")
+  expect_silent(cast <- select_casts(casts, species = "total"))
+  expect_is(cast, "casts")
+  expect_silent(cast <- select_casts(casts, level = "All"))
+  expect_is(cast, "casts")
+  expect_silent(cast <- select_casts(casts, model = "Ensemble"))
+  expect_is(cast, "casts")
+
+  metadata <- read_data(cast_opts1$tree, "metadata")
+  nmn <- metadata$rodent_forecast_newmoons
+  expect_silent(cast <- select_casts(casts, newmoonnumber = nmn))
   expect_is(cast, "casts")
 })

@@ -1,3 +1,113 @@
+#' @title Plot forecast or hindcast predictions for a given point in time 
+#'   across multiple species.
+#'
+#' @description Plot the point value with confidence interval for a step in
+#'   a forecast or hindcast across multiple species.
+#'
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
+#'
+#' @param species \code{character} vector of the species codes (or 
+#'   \code{"total"} for the total across species) to be plotted or 
+#'   \code{NULL} (default) to plot all species and the total.
+#'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'   or \code{"Controls"}).
+#'
+#' @param casttype \code{character} value of the type of -cast of model. Used
+#'   to select the file in the predictions subdirectory. Currently only 
+#'   reliably coded for \code{"forecasts"}.
+#'
+#' @param castdate \code{Date} the predictions were made. Used to select the
+#'   file in the predictions subdirectory. 
+#'
+#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
+#'   the model to be plotted.
+#'
+#' @param start_newmoon \code{integer}-conformable newmoon number used as the
+#'   the minimum x value for the plot. 
+#'
+#' @export
+#'
+plot_species_casts <- function(tree = dirtree(), species = NULL,
+                             level = "Controls",
+                             casttype = "forecasts", castdate = today(),
+                             model = "Ensemble", lead = 1){
+
+  metadata <- read_data(tree, "metadata")
+  obs <- read_data(tree, tolower(level))
+  newmoonnumber <- metadata$rodent_forecast_newmoons[lead]
+  pred <- read_casts(tree, casttype = casttype, castdate = castdate) %>%
+          select_casts(species = species, level = level, model = model,
+                       newmoonnumber = newmoonnumber)  
+
+  pred <- pred[order(pred$estimate, decreasing = TRUE), ]
+  nspp <- nrow(pred)
+  rangey <- c(nspp + 0.25, 0.75)
+  rangex <- c(0, max(pred$UpperPI))
+
+  par(mar = c(3.5, 9.5, 1, 1))
+  plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", 
+       las = 1, xlim = rangex, ylim = rangey)
+  mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
+  mtext("Species", side = 2, cex = 1.5, line = 8.25)
+  sppcastsplot_yaxis(tree = tree, species = pred$species)
+
+  for(i in 1:nspp){
+    low <- pred$LowerPI[i]
+    up <- pred$UpperPI[i]
+    est <- pred$estimate[i]
+    vbars <- i + (0.015 * nspp * c(-1, 1))
+    points(c(low, up), rep(i, 2), type = "l", lwd = 2)
+    points(rep(low, 2), vbars, type = "l", lwd = 2)
+    points(rep(up, 2), vbars, type = "l", lwd = 2)
+    points(est, i, pch = 16, col = "white", cex = 1.25)
+    points(est, i, lwd = 2, cex = 1.25)
+  }
+}
+
+#' @title Expand the names with formating for a multi-species -cast plot y 
+#'   axis
+#'
+#' @description Add the y-axis of formatted species names to a 
+#'   \code{\link{plot_species_casts}}.
+#'
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}. Used to access the species list.
+#'
+#' @param species \code{character} vector of the species codes (or 
+#'   \code{"total"} for the total across species) being plotted.
+#'
+#' @return \code{list} of \code{text} and \code{font} elements. 
+#'
+#' @export
+#'
+sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
+
+  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
+  nasppname <- which(is.na(sptab[ , "speciescode"]) == TRUE)
+  if (length(nasppname) == 1){
+    sptab[nasppname, "speciescode"] <- "NA"
+  }
+  nspp <- length(species)
+  for(i in 1:nspp){
+    if (species[i] == "total"){
+      lab_text <- "Total"
+      lab_font <- 1
+    } else{
+      sppmatch <- which(sptab[ , "speciescode"] == species[i])
+      lab_text <- sptab[sppmatch , "scientificname"]
+      lab_font <- 3
+    }
+    axis(2, at = i, label = lab_text, font = lab_font, las = 1, 
+         cex.axis = 0.65, tck = 0, line = -0.5, lwd = 0)
+    axis(2, at = i, label = FALSE, las = 1, 
+         cex.axis = 0.65, tck = -0.01)
+  }
+}
+
+
 #' @title Visualize a forecast or hindcast
 #'
 #' @description Plot an observed timeseries and forecast or hindcast 
@@ -34,7 +144,7 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
 
   obs <- read_data(tree, tolower(level))
   pred <- read_casts(tree, casttype = casttype, castdate = castdate) %>%
-          select_cast(species = species, level = level, model = model)   
+          select_casts(species = species, level = level, model = model)   
 
   species_o <- species
   if (species == "NA"){

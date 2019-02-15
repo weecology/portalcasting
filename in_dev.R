@@ -24,12 +24,16 @@ cleanup_dir(options_all)
 
 tree <- dirtree(main = "testing_casting")
 
+read_casts(tree, castdate = "2019-02-13")
 
 # new functions:
 # read_casts
 # plot_cast
-# select_cast
+# select_casts
 # castplot_ylab
 # castplot_xaxis
+# plot_species_casts
+# sppcastsplot_yaxis
 
-plot_cast(tree, species = "NA", castdate = "2019-02-13")
+plot_cast(tree, species = "total", castdate = "2019-02-13")
+plot_species_casts(tree, castdate = "2019-02-13")
