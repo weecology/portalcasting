@@ -24,8 +24,8 @@
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
 #'   the model to be plotted.
 #'
-#' @param start_newmoon \code{integer}-conformable newmoon number used as the
-#'   the minimum x value for the plot. 
+#' @param lead \code{integer}-conformable lead of the newmoon number used to
+#'   select the data plotted. 
 #'
 #' @export
 #'
@@ -100,9 +100,9 @@ sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
       lab_text <- sptab[sppmatch , "scientificname"]
       lab_font <- 3
     }
-    axis(2, at = i, label = lab_text, font = lab_font, las = 1, 
+    axis(2, at = i, labels = lab_text, font = lab_font, las = 1, 
          cex.axis = 0.65, tck = 0, line = -0.5, lwd = 0)
-    axis(2, at = i, label = FALSE, las = 1, 
+    axis(2, at = i, labels = FALSE, las = 1, 
          cex.axis = 0.65, tck = -0.01)
   }
 }

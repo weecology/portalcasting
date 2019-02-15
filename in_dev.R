@@ -18,6 +18,9 @@ rmarkdown::render_site()
 
 cleanup_dir(options_all)
 
+# catch up on tests in figures
+# move on to bottom part of index page
+#  should be a "top x" function? and then apply the plot function over them
 
 #
 #

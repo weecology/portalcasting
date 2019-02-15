@@ -30,8 +30,8 @@ file in the predictions subdirectory.}
 \item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
 the model to be plotted.}
 
-\item{start_newmoon}{\code{integer}-conformable newmoon number used as the
-the minimum x value for the plot.}
+\item{lead}{\code{integer}-conformable lead of the newmoon number used to
+select the data plotted.}
 }
 \description{
 Plot the point value with confidence interval for a step in
