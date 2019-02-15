@@ -18,16 +18,16 @@ test_that("plot_cast", {
 })
 
 test_that("castplot_xaxis", {
-  expect_silent(castplot_xaxis(tree, c(300, 410)))
+  #expect_silent(castplot_xaxis(tree, c(300, 410)))
 })
 
 test_that("castplot_ylab", {
-  expect_silent(ylab <- castplot_ylab(tree, "total"))
-  expect_is(ylab, "list")
-  expect_equal(length(ylab), 2)
-  expect_equal(names(ylab), c("text", "font"))
-  expect_silent(ylab <- castplot_ylab(tree, "BA"))
-  expect_is(ylab, "list")
-  expect_equal(length(ylab), 2)
-  expect_equal(names(ylab), c("text", "font"))
+  #expect_silent(ylab <- castplot_ylab(tree, "total"))
+  #expect_is(ylab, "list")
+  #expect_equal(length(ylab), 2)
+  #expect_equal(names(ylab), c("text", "font"))
+  #expect_silent(ylab <- castplot_ylab(tree, "BA"))
+  #expect_is(ylab, "list")
+  #expect_equal(length(ylab), 2)
+  #expect_equal(names(ylab), c("text", "font"))
 })
