@@ -9,7 +9,8 @@
 #
 
 devtools::load_all()
-options_all <- all_options(main = "testing_casting")
+options_all <- all_options(main = "testing_casting",
+                           model = models(NULL, "AutoArima"))
 setup_dir(options_all)
 portalcast(options_all)
 

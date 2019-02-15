@@ -237,6 +237,12 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
   if (CI_level <= 0 | CI_level > 1){
     stop("`CI_level` is not between 0 and 1")
   }
+  if (length(unique(all_forecasts$model)) == 1){
+    ensemble <- all_forecasts
+    ensemble$model <- "Ensemble"
+    ensemble$LowerPI <- ifelse(ensemble$LowerPI < 0, 0, ensemble$LowerPI)
+    return(ensemble)
+  }
   weights <- compile_aic_weights(pred_dir)
   weights$date <- as.Date(weights$date)
   CI_quantile <- qnorm((1 - CI_level) / 2, lower.tail = FALSE)
