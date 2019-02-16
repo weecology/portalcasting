@@ -320,7 +320,10 @@ read_casts <- function(tree, cast_type = "forecasts", cast_date = today()){
     stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
   }
   if (!("Date" %in% class(cast_date))){
-    stop("`cast_date` is not of class Date")
+    cast_date <- tryCatch(as.Date(cast_date), error = function(x){NA})
+    if (is.na(cast_date)){
+      stop("`cast_date` is not of class Date or conformable to class Date")
+    }
   }
   if (length(cast_date) > 1){
     stop("`cast_date` can only be of length = 1")

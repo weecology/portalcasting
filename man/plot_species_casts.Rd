@@ -6,7 +6,7 @@
   across multiple species.}
 \usage{
 plot_species_casts(tree = dirtree(), species = NULL,
-  level = "Controls", cast_type = "forecasts", castdate = today(),
+  level = "Controls", cast_type = "forecasts", cast_date = today(),
   model = "Ensemble", lead = 1)
 }
 \arguments{
@@ -24,7 +24,7 @@ or \code{"Controls"}).}
 to select the file in the predictions subdirectory. Currently only 
 reliably coded for \code{"forecasts"}.}
 
-\item{castdate}{\code{Date} the predictions were made. Used to select the
+\item{cast_date}{\code{Date} the predictions were made. Used to select the
 file in the predictions subdirectory.}
 
 \item{model}{\code{character} value of the name (or \code{"Ensemble"}) of

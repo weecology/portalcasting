@@ -7,7 +7,7 @@
 #  should be a "top x" function? and then apply the plot function over them
 
 devtools::load_all()
-options_all <- all_options(main = "testing_casting")
+options_all <- all_options(main = "testing_casting", model = models("ESSS"))
 setup_dir(options_all)
 portalcast(options_all)
 
@@ -19,9 +19,10 @@ cleanup_dir(options_all)
 
 tree <- dirtree(main = "testing_casting")
 
-read_casts(tree, castdate = "2019-02-13")
+read_casts(tree)
 
 # new functions:
+# fully integrated and tested
 # read_casts
 # plot_cast
 # select_casts
@@ -30,5 +31,5 @@ read_casts(tree, castdate = "2019-02-13")
 # plot_species_casts
 # sppcastsplot_yaxis
 
-plot_cast(tree, species = "total", castdate = "2019-02-13")
-plot_species_casts(tree, castdate = "2019-02-13")
+plot_cast(tree, species = "total")
+plot_species_casts(tree)

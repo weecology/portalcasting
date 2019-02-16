@@ -30,9 +30,60 @@
 #' @export
 #'
 plot_species_casts <- function(tree = dirtree(), species = NULL,
-                             level = "Controls",
-                             cast_type = "forecasts", cast_date = today(),
-                             model = "Ensemble", lead = 1){
+                               level = "Controls",
+                               cast_type = "forecasts", cast_date = today(),
+                               model = "Ensemble", lead = 1){
+
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.null(species)){
+    if (!("character" %in% class(species))){
+      stop("`species` is not a character")
+    }
+    if (!all(species %in% c(rodent_spp(), "total"))){
+      stop("invalid entry in `species`")
+    }   
+  }
+  if (!is.character(level)){
+    stop("`level` is not a character")
+  }
+  if (length(level) > 1){
+    stop("`level` can only be of length = 1")
+  }
+  if (level != "All" & level != "Controls"){
+    stop("`level` must be 'All' or 'Controls'")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!("Date" %in% class(cast_date))){
+    stop("`cast_date` is not of class Date")
+  }
+  if (length(cast_date) > 1){
+    stop("`cast_date` can only be of length = 1")
+  }
+  if (!("character" %in% class(model))){
+    stop("`model` is not a character")
+  }
+  if (length(model) > 1){
+    stop("`model` can only be of length = 1")
+  }
+  if (!is.numeric(lead)){
+    stop("`lead` is not numeric")
+  }
+  if (length(lead) > 1){
+    stop("`lead` can only be of length = 1")
+  }
+  if(lead < 1 | lead %% 1 != 0){
+    stop("`lead` is not a positive integer")
+  }
 
   metadata <- read_data(tree, "metadata")
   obs <- read_data(tree, tolower(level))
@@ -84,6 +135,17 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
 #'
 sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
 
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.null(species)){
+    if (!("character" %in% class(species))){
+      stop("`species` is not a character")
+    }
+    if (!all(species %in% c(rodent_spp(), "total"))){
+      stop("invalid entry in `species`")
+    }   
+  }
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   nasppname <- which(is.na(sptab[ , "speciescode"]) == TRUE)
@@ -142,6 +204,58 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
                       cast_type = "forecasts", cast_date = today(),
                       model = "Ensemble", start_newmoon = 300){
 
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(species)){
+    stop("`species` is not a character")
+  }
+  if (length(species) > 1){
+    stop("`species` can only be of length = 1")
+  }
+  if (!(species %in% c(rodent_spp(), "total"))){
+    stop("invalid entry in `species`")
+  }   
+  if (!is.character(level)){
+    stop("`level` is not a character")
+  }
+  if (length(level) > 1){
+    stop("`level` can only be of length = 1")
+  }
+  if (level != "All" & level != "Controls"){
+    stop("`level` must be 'All' or 'Controls'")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!("Date" %in% class(cast_date))){
+    stop("`cast_date` is not of class Date")
+  }
+  if (length(cast_date) > 1){
+    stop("`cast_date` can only be of length = 1")
+  }
+  if (!("character" %in% class(model))){
+    stop("`model` is not a character")
+  }
+  if (length(model) > 1){
+    stop("`model` can only be of length = 1")
+  }
+  if (!is.numeric(start_newmoon)){
+    stop("`start_newmoon` is not numeric")
+  }
+  if (length(start_newmoon) > 1){
+    stop("`start_newmoon` can only be of length = 1")
+  }
+  if(start_newmoon < 1 | start_newmoon %% 1 != 0){
+    stop("`start_newmoon` is not a positive integer")
+  }
+
   obs <- read_data(tree, tolower(level))
   pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model)   
@@ -193,6 +307,19 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
 #' @export
 #'
 castplot_xaxis <- function(tree, rangex){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.numeric(rangex)){
+    stop("`rangex` is not numeric")
+  }
+  if (length(rangex) != 2){
+    stop("`start_newmoon` can only be of length = 2")
+  }
+  if(any(rangex < 1) | any(rangex %% 1 != 0)){
+    stop("`rangex` is not a positive integer")
+  }
+
   moons <- read_data(tree, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
@@ -231,6 +358,20 @@ castplot_xaxis <- function(tree, rangex){
 #' @export
 #'
 castplot_ylab <- function(tree = dirtree(), species = "total"){
+
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(species)){
+    stop("`species` is not a character")
+  }
+  if (length(species) > 1){
+    stop("`species` can only be of length = 1")
+  }
+  if (!(species %in% c(rodent_spp(), "total"))){
+    stop("invalid entry in `species`")
+  }   
+
   lab <- list(text = "", font = 1)
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
