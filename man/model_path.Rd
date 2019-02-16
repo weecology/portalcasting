@@ -11,7 +11,7 @@ model_path(tree = dirtree(), model = NULL, extension = ".R")
 
 \item{model}{\code{character} name of the specific model.}
 
-\item{extension}{\code{character} file extension.}
+\item{extension}{\code{character} file extension (including the period).}
 }
 \value{
 The normalized path of the specified model script (see 

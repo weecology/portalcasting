@@ -9,8 +9,7 @@
 #
 
 devtools::load_all()
-options_all <- all_options(main = "testing_casting",
-                           model = models(NULL, "AutoArima"))
+options_all <- all_options(main = "testing_casting")
 setup_dir(options_all)
 portalcast(options_all)
 
@@ -19,7 +18,6 @@ rmarkdown::render_site()
 
 cleanup_dir(options_all)
 
-# catch up on tests in figures
 # move on to bottom part of index page
 #  should be a "top x" function? and then apply the plot function over them
 

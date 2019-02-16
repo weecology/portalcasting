@@ -29,8 +29,8 @@ all_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, model = models(),
-  ensemble = TRUE, version = "latest", from_zenodo = TRUE,
+  download_existing_predictions = FALSE, model = models(set =
+  "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   to_cleanup = c("tmp", "PortalData"))
 
 dir_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
@@ -80,12 +80,13 @@ predictions_options(base = ".", main = "", subs = subdirs(),
   download_existing_predictions = FALSE, quiet = FALSE)
 
 models_options(base = ".", main = "", subs = subdirs(),
-  quiet = FALSE, model = models())
+  quiet = FALSE, model = models(set = "prefab"))
 
 cast_options(base = ".", main = "", subs = subdirs(),
-  quiet = FALSE, model = models(), cast_type = "forecasts",
-  fdate = today(), ensemble = TRUE, start = 217, end = NULL,
-  hind_step = 1, min_plots = 24, min_traps = 1)
+  quiet = FALSE, model = models(set = "prefab"),
+  cast_type = "forecasts", fdate = today(), ensemble = TRUE,
+  start = 217, end = NULL, hind_step = 1, min_plots = 24,
+  min_traps = 1)
 
 check_options_args(base = ".", main = "", subs = subdirs(),
   quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
@@ -101,8 +102,8 @@ check_options_args(base = ".", main = "", subs = subdirs(),
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, model = models(),
-  ensemble = TRUE, version = "latest", from_zenodo = TRUE,
+  download_existing_predictions = FALSE, model = models(set =
+  "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   n_future_moons = 12, save = TRUE, filename = "moons.csv",
   tree = dirtree(), to_cleanup = c("tmp", "PortalData"))
 }

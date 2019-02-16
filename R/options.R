@@ -184,7 +184,7 @@ all_options <- function(base = ".", main = "", subs = subdirs(),
                         confidence_level = 0.9, meta_save = TRUE, 
                         meta_filename = "metadata.yaml",
                         download_existing_predictions = FALSE,
-                        model = models(), ensemble = TRUE,
+                        model = models(set = "prefab"), ensemble = TRUE,
                         version = "latest", from_zenodo = TRUE,
                         to_cleanup = c("tmp", "PortalData")){
 
@@ -582,7 +582,7 @@ predictions_options <- function(base = ".", main = "",
 #' @export
 #'
 models_options <- function(base = ".", main = "", subs = subdirs(),
-                           quiet = FALSE, model = models()){
+                           quiet = FALSE, model = models(set = "prefab")){
   check_options_args(base = base, main = main, subs = subs, quiet = quiet,
                      model = model)
   tree <- dirtree(base, main, subs)
@@ -601,7 +601,7 @@ models_options <- function(base = ".", main = "", subs = subdirs(),
 #' @export
 #'
 cast_options <- function(base = ".", main = "", subs = subdirs(), 
-                         quiet = FALSE, model = models(), 
+                         quiet = FALSE, model = models(set = "prefab"), 
                          cast_type = "forecasts", fdate = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){
@@ -647,7 +647,8 @@ check_options_args <- function(base = ".", main = "", subs = subdirs(),
                                confidence_level = 0.9, meta_save = TRUE, 
                                meta_filename = "metadata.yaml",
                                download_existing_predictions = FALSE,
-                               model = models(), ensemble = TRUE,
+                               model = models(set = "prefab"), 
+                               ensemble = TRUE,
                                version = "latest", from_zenodo = TRUE,
                                n_future_moons = 12, save = TRUE,
                                filename = "moons.csv", tree = dirtree(),

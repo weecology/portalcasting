@@ -3,18 +3,18 @@
 #' @description Based on a \code{set}, returns a character vectory of model
 #'   names to be included. Currently only support for \code{set = "prefab"}.
 #'
+#' @param add \code{character} vector of name(s) of model(s) to add to the 
+#'   setup by \code{set}.
+#'
 #' @param set \code{characher} value of the type of model (currently only 
 #'   support for \code{"prefab"}). Use \code{NULL} to build a custom set
 #'   from scratch via \code{add}.
-#'
-#' @param add \code{character} vector of name(s) of model(s) to add to the 
-#'   setup by \code{set}.
 #'
 #' @return \code{models}-class \code{character} vector of model names.
 #'
 #' @export
 #'
-models <- function(set = "prefab", add = NULL){
+models <- function(add = NULL, set = NULL){
   if (!is.null(set) & !is.character(set)){
     stop("`set` is not NULL or a character")
   }

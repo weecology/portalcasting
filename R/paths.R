@@ -176,7 +176,7 @@ sub_path <- function(tree = dirtree(), specific_sub){
 #'
 #' @param model \code{character} name of the specific model.
 #'
-#' @param extension \code{character} file extension.
+#' @param extension \code{character} file extension (including the period).
 #'
 #' @return The normalized path of the specified model script (see 
 #'   \code{\link{normalizePath}}).
@@ -192,9 +192,6 @@ model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
   }
   if (!is.character(model)){
     stop("`model` is not a character")
-  }
-  if (!all(model %in% models())){
-    stop("`model` not in models() list")
   }
   if (is.null(extension)){
     stop("`extension` needs to be specified")

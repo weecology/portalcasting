@@ -67,7 +67,6 @@ test_that("model_path", {
   expect_equal(length(model_path(model = c("AutoArima", "ESSS"))), 2)
   expect_error(model_path(tree = 1, model = "AutoArima"))
   expect_error(model_path(model = 1))
-  expect_error(model_path(model = c("AutoArima", "xx")))
   expect_error(model_path(model = "AutoArima", extension = 1))
   expect_error(model_path(model = "AutoArima", extension = "ok"))
   expect_error(model_path(model = "AutoArima", extension = c("ok", "ok")))
