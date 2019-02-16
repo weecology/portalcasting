@@ -5,6 +5,19 @@
 
 ## Continued migration of plotting code
 * `plot_cast` is now fully vetted and tested
+* `plot_species_casts` is now added to replace `plot_species_forecast`, but
+is not yet fully vetted and tested.
+
+## Processing of forecasts
+* `select_cast` is now `select_casts` and allows a more flexible selection
+by default.
+* `make_ensemble` now returns a set of predictions with non-`NA` bounds when 
+only one model is included (it returns that model as the ensemble).
+
+## Minor changes
+* Argument order in `models` is reveresed (`add` then `set`) and defaults in general
+are now `NULL` and `NULL`, but `set = "prefab"` within the options functions, to
+make it easy to run a novel model set.
 
 # portalcasting 0.2.2
 *2019-02-12* *[last code edit](https://github.com/weecology/portalcasting/pull/82)*
