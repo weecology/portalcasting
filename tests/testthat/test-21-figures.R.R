@@ -2,7 +2,7 @@ context("Test figure functions")
 
 tree <- dirtree(main = "testing_casting");
 metadata <- read_data(tree, "metadata")
-castdate <- metadata$forecast_date
+cast_date <- metadata$forecast_date
 cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
 spath <- sub_paths(dirtree(main = "testing_casting", 
                            subs = subdirs("predictions")))
@@ -12,20 +12,20 @@ options_all3 <- all_options(main = "testing_casting",
 portalcast(options_all3)
 
 test_that("plot_species_casts", {
-  expect_silent(plot_species_casts(tree, castdate = castdate))
+  expect_silent(plot_species_casts(tree, cast_date = cast_date))
 })
 
 test_that("sppcastsplot_yaxis", {
   species = NULL
   level = "Controls"
-  casttype = "forecasts"
+  cast_type = "forecasts"
   model = "Ensemble"
   lead = 1
 
   metadata <- read_data(tree, "metadata")
   obs <- read_data(tree, tolower(level))
   newmoonnumber <- metadata$rodent_forecast_newmoons[lead]
-  pred <- read_casts(tree, casttype = casttype, castdate = castdate) %>%
+  pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
   expect_silent(sppcastsplot_yaxis(tree = tree, species = pred$species))
@@ -33,8 +33,8 @@ test_that("sppcastsplot_yaxis", {
 })
 
 test_that("plot_cast", {
-  expect_silent(plot_cast(tree, species = "total", castdate = castdate))
-  expect_silent(plot_cast(tree, species = "NA", castdate = castdate))
+  expect_silent(plot_cast(tree, species = "total", cast_date = cast_date))
+  expect_silent(plot_cast(tree, species = "NA", cast_date = cast_date))
 })
 
 test_that("castplot_xaxis", {

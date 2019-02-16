@@ -385,7 +385,7 @@ select_casts <- function(casts, species = NULL, level = NULL, model = NULL,
     }
   }
   if (!is.null(newmoonnumber)){
-    if(newmoonnumber < 0 | newmoonnumber %% 1 != 0){
+    if(any(newmoonnumber < 0) | any(newmoonnumber %% 1 != 0)){
       stop("`newmoonnumber` is not a non-negative integer")
     }
   }

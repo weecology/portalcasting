@@ -18,7 +18,7 @@
 #'   to select the file in the predictions subdirectory. Currently only 
 #'   reliably coded for \code{"forecasts"}.
 #'
-#' @param castdate \code{Date} the predictions were made. Used to select the
+#' @param cast_date \code{Date} the predictions were made. Used to select the
 #'   file in the predictions subdirectory. 
 #'
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
@@ -31,13 +31,13 @@
 #'
 plot_species_casts <- function(tree = dirtree(), species = NULL,
                              level = "Controls",
-                             cast_type = "forecasts", castdate = today(),
+                             cast_type = "forecasts", cast_date = today(),
                              model = "Ensemble", lead = 1){
 
   metadata <- read_data(tree, "metadata")
   obs <- read_data(tree, tolower(level))
   newmoonnumber <- metadata$rodent_forecast_newmoons[lead]
-  pred <- read_casts(tree, casttype = casttype, castdate = castdate) %>%
+  pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
 
@@ -123,11 +123,11 @@ sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
 #' @param level \code{character} value of the level of interest (\code{"All"} 
 #'   or \code{"Controls"}).
 #'
-#' @param casttype \code{character} value of the type of -cast of model. Used
+#' @param cast_type \code{character} value of the type of -cast of model. Used
 #'   to select the file in the predictions subdirectory. Currently only 
 #'   reliably coded for \code{"forecasts"}.
 #'
-#' @param castdate \code{Date} the predictions were made. Used to select the
+#' @param cast_date \code{Date} the predictions were made. Used to select the
 #'   file in the predictions subdirectory. 
 #'
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
@@ -139,11 +139,11 @@ sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
 #' @export
 #'
 plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
-                      casttype = "forecasts", castdate = today(),
+                      cast_type = "forecasts", cast_date = today(),
                       model = "Ensemble", start_newmoon = 300){
 
   obs <- read_data(tree, tolower(level))
-  pred <- read_casts(tree, casttype = casttype, castdate = castdate) %>%
+  pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model)   
 
   species_o <- species
