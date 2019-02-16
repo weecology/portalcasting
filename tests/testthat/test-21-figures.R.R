@@ -5,7 +5,7 @@ metadata <- read_data(tree, "metadata")
 castdate <- metadata$forecast_date
 cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
 spath <- sub_paths(dirtree(main = "testing_casting", 
-                           subs = subdirs(NULL, "predictions")))
+                           subs = subdirs("predictions")))
 create_sub_dir(spath)
 options_all3 <- all_options(main = "testing_casting", 
                             model = models("AutoArima"))

@@ -130,7 +130,7 @@ create_tmp <- function(tree = dirtree()){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
-  subs <- subdirs(NULL, "tmp")
+  subs <- subdirs("tmp")
   opts <- dir_options(base = tree$base, main = tree$main, subs = subs)
   create_sub_dirs(opts)
 }

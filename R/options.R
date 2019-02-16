@@ -16,10 +16,10 @@
 #'   contains the subdirectories. Default \code{""} (no main level included). 
 #'
 #' @param subs \code{character} vector naming the specific subdirectories
-#'   within the portalcasting directory tree. Default \code{subdirs()} sets
-#'   the subdirectories as \code{"predictions"}, \code{"models"},
-#'   \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
-#'   not advised to change the subdirectories. 
+#'   within the portalcasting directory tree. Default \code{subdirs(type = 
+#'   "portalcasting")} sets the subdirectories as \code{"predictions"}, 
+#'   \code{"models"}, \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. 
+#'   It is generally not advised to change the subdirectories. 
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -163,7 +163,8 @@
 #'
 #' @export
 #'
-all_options <- function(base = ".", main = "", subs = subdirs(), 
+all_options <- function(base = ".", main = "", 
+                        subs = subdirs(type = "portalcasting"), 
                         quiet = FALSE, fdate = today(), 
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
@@ -271,7 +272,8 @@ all_options <- function(base = ".", main = "", subs = subdirs(),
 #'
 #' @export
 #'
-dir_options <- function(base = ".", main = "", subs = subdirs(),
+dir_options <- function(base = ".", main = "", 
+                        subs = subdirs(type = "portalcasting"),
                         quiet = FALSE, to_cleanup = c("tmp", "PortalData")){
   check_options_args(base = base, main = main, subs = subs, quiet = quiet,
                      to_cleanup = to_cleanup)
@@ -290,7 +292,8 @@ dir_options <- function(base = ".", main = "", subs = subdirs(),
 #'
 #' @export
 #'
-PortalData_options <- function(base = ".", main = "", subs = subdirs(), 
+PortalData_options <- function(base = ".", main = "", 
+                               subs = subdirs(type = "portalcasting"), 
                                quiet = FALSE,
                                version = "latest", from_zenodo = TRUE){
   check_options_args(base = base, main = main, subs = subs, quiet = quiet,
@@ -316,7 +319,8 @@ PortalData_options <- function(base = ".", main = "", subs = subdirs(),
 #'
 #' @export
 #'
-data_options <- function(base = ".", main = "", subs = subdirs(),
+data_options <- function(base = ".", main = "", 
+                         subs = subdirs(type = "portalcasting"),
                          quiet = FALSE, fdate = today(), 
                          append_missing_to_raw = TRUE, m_save = TRUE, 
                          m_filename = "moons.csv", tmnt_type = NULL, 
@@ -556,7 +560,7 @@ metadata_options <- function(fdate = today(), cast_type = "forecasts",
 #' @export
 #'
 predictions_options <- function(base = ".", main = "", 
-                                subs = subdirs(), 
+                                subs = subdirs(type = "portalcasting"), 
                                 download_existing_predictions = FALSE,
                                 quiet = FALSE){
 
@@ -581,7 +585,8 @@ predictions_options <- function(base = ".", main = "",
 #'
 #' @export
 #'
-models_options <- function(base = ".", main = "", subs = subdirs(),
+models_options <- function(base = ".", main = "", 
+                           subs = subdirs(type = "portalcasting"),
                            quiet = FALSE, model = models(set = "prefab")){
   check_options_args(base = base, main = main, subs = subs, quiet = quiet,
                      model = model)
@@ -600,7 +605,8 @@ models_options <- function(base = ".", main = "", subs = subdirs(),
 #'
 #' @export
 #'
-cast_options <- function(base = ".", main = "", subs = subdirs(), 
+cast_options <- function(base = ".", main = "", 
+                         subs = subdirs(type = "portalcasting"), 
                          quiet = FALSE, model = models(set = "prefab"), 
                          cast_type = "forecasts", fdate = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
@@ -625,7 +631,8 @@ cast_options <- function(base = ".", main = "", subs = subdirs(),
 #'
 #' @export
 #'
-check_options_args <- function(base = ".", main = "", subs = subdirs(), 
+check_options_args <- function(base = ".", main = "", 
+                               subs = subdirs(type = "portalcasting"), 
                                quiet = FALSE, fdate = today(), 
                                append_missing_to_raw = TRUE, m_save = TRUE, 
                                m_filename = "moons.csv", tmnt_type = NULL,

@@ -81,12 +81,13 @@ model_template <- function(options_model = model_options()){
     stop("`options_model` is not a model_options list")
   }
   tree <- options_model$tree
-  if (any(!(tree$subs %in% subdirs()))){
-    addl <- which(!(tree$treesubs %in% subdirs()))
+  if (any(!(tree$subs %in% subdirs(type = "portalcasting")))){
+    addl <- which(!(tree$subs %in% subdirs(type = "portalcasting")))
     subnames <- paste(tree$subs[addl], collapse = '", "')
-    subs <- paste0('subdirs(subs = c("', subnames, '"))')
+    subs <- paste0('subdirs(subs = c("', subnames, 
+                   '"), type = "portalcasting")')
   } else{
-    subs <- "subdirs()"
+    subs <- 'subdirs(type = "portalcasting")'
   }
   name <- options_model$name
   quiet_arg <- paste0("quiet = ", options_model$quiet)
