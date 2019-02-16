@@ -2,7 +2,7 @@ context("Test figure functions")
 
 tree <- dirtree(main = "testing_casting");
 metadata <- read_data(tree, "metadata")
-cast_date <- metadata$forecast_date
+cast_date <- as.Date(metadata$forecast_date)
 cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
 spath <- sub_paths(dirtree(main = "testing_casting", 
                            subs = subdirs("predictions")))

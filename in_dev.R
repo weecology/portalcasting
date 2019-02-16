@@ -1,12 +1,10 @@
 # script for active development
 #  pushed to git but ignored in the R package build
 
-# working through tests and documentation
-# scripts to do:
-#  AutoArima, ESSS, nbGARCH, pevGARCH
-#  portalcast, prepare_covariates, prepare_metadata, prepare_models,
-#  prepare_rodents, prepare_data, process_forecasts
-#
+# working on bringing the rest of the function code from portalPrediction over
+#   working through page by page on the site
+# move on to bottom part of index page
+#  should be a "top x" function? and then apply the plot function over them
 
 devtools::load_all()
 options_all <- all_options(main = "testing_casting")
@@ -18,11 +16,6 @@ rmarkdown::render_site()
 
 cleanup_dir(options_all)
 
-# move on to bottom part of index page
-#  should be a "top x" function? and then apply the plot function over them
-
-#
-#
 
 tree <- dirtree(main = "testing_casting")
 
