@@ -4,16 +4,16 @@
 \alias{read_casts}
 \title{Read in a cast file and format it for specific class}
 \usage{
-read_casts(tree, casttype = "forecasts", castdate = today())
+read_casts(tree, cast_type = "forecasts", cast_date = today())
 }
 \arguments{
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
 
-\item{casttype}{\code{character} value of the type of -cast of model. Used
+\item{cast_type}{\code{character} value of the type of -cast of model. Used
 to select the file in the predictions subdirectory. Currently only 
 reliably coded for \code{"forecasts"}.}
 
-\item{castdate}{\code{Date} the predictions were made. Used to select the
+\item{cast_date}{\code{Date} the predictions were made. Used to select the
 file in the predictions subdirectory.}
 }
 \value{

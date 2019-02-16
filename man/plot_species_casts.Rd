@@ -6,7 +6,7 @@
   across multiple species.}
 \usage{
 plot_species_casts(tree = dirtree(), species = NULL,
-  level = "Controls", casttype = "forecasts", castdate = today(),
+  level = "Controls", cast_type = "forecasts", castdate = today(),
   model = "Ensemble", lead = 1)
 }
 \arguments{
@@ -20,7 +20,7 @@ plot_species_casts(tree = dirtree(), species = NULL,
 \item{level}{\code{character} value of the level of interest (\code{"All"} 
 or \code{"Controls"}).}
 
-\item{casttype}{\code{character} value of the type of -cast of model. Used
+\item{cast_type}{\code{character} value of the type of -cast of model. Used
 to select the file in the predictions subdirectory. Currently only 
 reliably coded for \code{"forecasts"}.}
 

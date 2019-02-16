@@ -11,18 +11,19 @@ select_casts(casts, species = NULL, level = NULL, model = NULL,
 \item{casts}{Class \code{casts} \code{data.frame} of requested fore- or 
 hindcasts to be selected from.}
 
-\item{species}{\code{character} value of the species code or \code{"total"}
-for the total across species. If \code{NULL}, all species and "total" are
-returned.}
+\item{species}{\code{character} value(s) of the species code(s) or
+\code{"total"} for the total across species. If \code{NULL}, all species 
+and "total" are returned.}
 
 \item{level}{\code{character} value of the level of interest (\code{"All"} 
 or \code{"Controls"}). If \code{NULL}, all levels are returned.}
 
-\item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
-the model of interest. If \code{NULL}, all models are returned.}
+\item{model}{\code{character} value(s) of the name(s) (or 
+\code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+models are returned.}
 
-\item{newmoonnumber}{\code{integer}-conformable value of the newmoonnumbers
-of interest. If \code{NULL}, all newmoons are returned.}
+\item{newmoonnumber}{\code{integer}-conformable value(s) of the 
+newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.}
 }
 \value{
 Class \code{casts} \code{data.frame} of trimmed fore- or 

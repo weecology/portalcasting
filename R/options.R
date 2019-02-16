@@ -23,8 +23,8 @@
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
-#' @param fdate \code{Date} from which future is defined, typically today's 
-#'   date (using \code{\link{today}}).
+#' @param cast_date \code{Date} from which future is defined, typically 
+#'   today's date (using \code{\link{today}}).
 #'
 #' @param append_missing_to_raw \code{logical} indicator dictating if the 
 #'   missing moon dates should be appended to the raw data file (should be 
@@ -165,7 +165,7 @@
 #'
 all_options <- function(base = ".", main = "", 
                         subs = subdirs(type = "portalcasting"), 
-                        quiet = FALSE, fdate = today(), 
+                        quiet = FALSE, cast_date = today(), 
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
                         start = 217, end = NULL, hind_step = 1, 
@@ -190,7 +190,7 @@ all_options <- function(base = ".", main = "",
                         to_cleanup = c("tmp", "PortalData")){
 
   check_options_args(base = base, main = main, subs = subs, 
-                     quiet = quiet, fdate = fdate, 
+                     quiet = quiet, cast_date = cast_date, 
                      append_missing_to_raw = append_missing_to_raw, 
                      m_save = m_save, m_filename = m_filename, 
                      tmnt_type = tmnt_type, start = start, end = end, 
@@ -223,7 +223,7 @@ all_options <- function(base = ".", main = "",
                                             version = version, 
                                             from_zenodo = from_zenodo),
     options_data = data_options(base = base, main = main, subs = subs,
-                                quiet = quiet, fdate = fdate,
+                                quiet = quiet, cast_date = cast_date,
                                 append_missing_to_raw = append_missing_to_raw,
                                 m_save = m_save, m_filename = m_filename,
                                 tmnt_type = tmnt_type, start = start, 
@@ -254,7 +254,7 @@ all_options <- function(base = ".", main = "",
     options_cast = cast_options(base = base, main = main, subs = subs, 
                                 quiet = quiet, model = model, 
                                 cast_type = cast_type, 
-                                fdate = fdate, ensemble = ensemble,
+                                cast_date = cast_date, ensemble = ensemble,
                                 start = start, end = end, 
                                 hind_step = hind_step, 
                                 min_plots = min_plots, min_traps = min_traps)
@@ -321,7 +321,7 @@ PortalData_options <- function(base = ".", main = "",
 #'
 data_options <- function(base = ".", main = "", 
                          subs = subdirs(type = "portalcasting"),
-                         quiet = FALSE, fdate = today(), 
+                         quiet = FALSE, cast_date = today(), 
                          append_missing_to_raw = TRUE, m_save = TRUE, 
                          m_filename = "moons.csv", tmnt_type = NULL, 
                          start = 217, end = NULL, hind_step = 1, 
@@ -342,7 +342,7 @@ data_options <- function(base = ".", main = "",
                          meta_save = TRUE, meta_filename = "metadata.yaml"){
 
   check_options_args(base = base, main = main, subs = subs, 
-                     quiet = quiet, fdate = fdate, 
+                     quiet = quiet, cast_date = cast_date, 
                      append_missing_to_raw = append_missing_to_raw, 
                      m_save = m_save, m_filename = m_filename, 
                      tmnt_type = tmnt_type, start = start, end = end, 
@@ -365,7 +365,7 @@ data_options <- function(base = ".", main = "",
   }
   tree <- dirtree(base, main, subs)
   list(
-    moons = moons_options(n_future_moons = lead_time, fdate = fdate,
+    moons = moons_options(n_future_moons = lead_time, cast_date = cast_date,
                           append_missing_to_raw = append_missing_to_raw,
                           save = m_save, filename = m_filename,
                           quiet = quiet, tree = tree),
@@ -379,7 +379,8 @@ data_options <- function(base = ".", main = "",
                               quiet = quiet, tree = tree),
     covariates = covariates_options(cast_type = cast_type, 
                                     cov_hist = cov_hist, 
-                                    cov_fcast = cov_fcast, fdate = fdate, 
+                                    cov_fcast = cov_fcast, 
+                                    cast_date = cast_date, 
                                     yr = yr, start = start, end = end, 
                                     hind_step = hind_step, 
                                     lead_time = lead_time, min_lag = min_lag, 
@@ -389,7 +390,7 @@ data_options <- function(base = ".", main = "",
                                     source_name = source_name,
                                     save = c_save, filename = c_filename,
                                     quiet = quiet, tree = tree),
-    metadata = metadata_options(fdate = fdate, 
+    metadata = metadata_options(cast_date = cast_date, 
                                 cast_type = cast_type,
                                 confidence_level = confidence_level,
                                 lead_time = lead_time, save = meta_save,
@@ -420,15 +421,15 @@ data_options <- function(base = ".", main = "",
 #'
 #' @export
 #'
-moons_options <- function(n_future_moons = 12, fdate = today(), 
+moons_options <- function(n_future_moons = 12, cast_date = today(), 
                           append_missing_to_raw = TRUE, save = TRUE,
                           filename = "moons.csv", tree = dirtree(), 
                           quiet = FALSE){
-  check_options_args(n_future_moons = n_future_moons, fdate = fdate, 
+  check_options_args(n_future_moons = n_future_moons, cast_date = cast_date, 
                      append_missing_to_raw = append_missing_to_raw,
                      save = save, filename = filename, tree = tree, 
                      quiet = quiet)                          
-  list(n_future_moons = n_future_moons, fdate = fdate, 
+  list(n_future_moons = n_future_moons, cast_date = cast_date, 
        append_missing_to_raw = append_missing_to_raw, save = save,
        filename = filename, tree = tree, quiet = quiet, class = "moons") %>%
   classy(c("moons_options", "list"))
@@ -491,7 +492,7 @@ rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL,
 #' @export
 #'
 covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE, 
-                               cov_fcast = TRUE, fdate = today(), 
+                               cov_fcast = TRUE, cast_date = today(), 
                                yr = as.numeric(format(today(), "%Y")),
                                start = 217, end = NULL, hind_step = 1, 
                                lead_time = 12, min_lag = 6, fcast_nms = NULL,
@@ -501,7 +502,7 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
                                save = TRUE, filename = "covariates.csv", 
                                tree = dirtree(), quiet = FALSE){
   check_options_args(cast_type = cast_type, cov_hist = cov_hist,
-                     cov_fcast = cov_fcast, fdate = fdate, yr = yr, 
+                     cov_fcast = cov_fcast, cast_date = cast_date, yr = yr, 
                      start = start, end = end, hind_step = hind_step, 
                      lead_time = lead_time, min_lag = min_lag, 
                      fcast_nms = fcast_nms, nfcnm = nfcnm, 
@@ -513,7 +514,7 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
     end <- 490:403
   }
   list(cast_type = cast_type, cov_hist = cov_hist, cov_fcast = cov_fcast, 
-       fdate = fdate, yr = yr, start = start, end = end, 
+       cast_date = cast_date, yr = yr, start = start, end = end, 
        hind_step = hind_step, lead_time = lead_time, min_lag = min_lag, 
        fcast_nms = fcast_nms, nfcnm = nfcnm, 
        append_fcast_csv = append_fcast_csv, hist_fcast_file = hist_fcast_file,
@@ -532,15 +533,15 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
 #'
 #' @export
 #'
-metadata_options <- function(fdate = today(), cast_type = "forecasts",
+metadata_options <- function(cast_date = today(), cast_type = "forecasts",
                              confidence_level = 0.9, lead_time = 12,
                              save = TRUE, filename = "metadata.yaml", 
                              quiet = FALSE, tree = dirtree()){
-  check_options_args(fdate = fdate, cast_type = cast_type, 
+  check_options_args(cast_date = cast_date, cast_type = cast_type, 
                      confidence_level = confidence_level, 
                      lead_time = lead_time, save = save, filename = filename,
                      quiet = quiet, tree = tree)
-  list(fdate = fdate, cast_type = cast_type, 
+  list(cast_date = cast_date, cast_type = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
        filename = filename, quiet = quiet, tree = tree, 
        class = "metadata") %>%
@@ -608,17 +609,18 @@ models_options <- function(base = ".", main = "",
 cast_options <- function(base = ".", main = "", 
                          subs = subdirs(type = "portalcasting"), 
                          quiet = FALSE, model = models(set = "prefab"), 
-                         cast_type = "forecasts", fdate = today(), 
+                         cast_type = "forecasts", cast_date = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){
   check_options_args(base = base, main = main, subs = subs,
                      quiet = quiet, model = model, cast_type = cast_type,
-                     fdate = fdate, ensemble = ensemble, start = start, 
+                     cast_date = cast_date, ensemble = ensemble, 
+                     start = start, 
                      end = end, hind_step = hind_step, min_plots = min_plots, 
                      min_traps = min_traps)
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, model = model, cast_type = cast_type,
-       fdate = fdate, ensemble = ensemble, start = start, end = end, 
+       cast_date = cast_date, ensemble = ensemble, start = start, end = end, 
        hind_step = hind_step, min_plots = min_plots, 
        min_traps = min_traps) %>%
   classy(c("cast_options", "list"))
@@ -633,7 +635,7 @@ cast_options <- function(base = ".", main = "",
 #'
 check_options_args <- function(base = ".", main = "", 
                                subs = subdirs(type = "portalcasting"), 
-                               quiet = FALSE, fdate = today(), 
+                               quiet = FALSE, cast_date = today(), 
                                append_missing_to_raw = TRUE, m_save = TRUE, 
                                m_filename = "moons.csv", tmnt_type = NULL,
                                start = 217, end = NULL, hind_step = 1, 
@@ -681,11 +683,11 @@ check_options_args <- function(base = ".", main = "",
   if (length(quiet) > 1){
     stop("`quiet` can only be of length = 1")
   }
-  if (!("Date" %in% class(fdate))){
-    stop("`fdate` is not of class Date")
+  if (!("Date" %in% class(cast_date))){
+    stop("`cast_date` is not of class Date")
   }
-  if (length(fdate) > 1){
-    stop("`fdate` can only be of length = 1")
+  if (length(cast_date) > 1){
+    stop("`cast_date` can only be of length = 1")
   }
   if (!("logical" %in% class(append_missing_to_raw))){
     stop("`append_missing_to_raw` is not of class logical")

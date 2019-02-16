@@ -99,6 +99,12 @@ test_that("make_ensemble", {
 test_that("read_casts", {
   expect_silent(casts <- read_casts(cast_opts1$tree))
   expect_is(casts, "casts")
+  expect_error(read_casts(1))
+  expect_error(read_casts(cast_opts1$tree, cast_type = 1))
+  expect_error(read_casts(cast_opts1$tree, cast_type = rep("forecasts", 2)))
+  expect_error(read_casts(cast_opts1$tree, cast_type = "ok"))
+  expect_error(read_casts(cast_opts1$tree, cast_date = rep(today(), 2)))
+  expect_error(read_casts(cast_opts1$tree, cast_date = "ok"))
 })
 
 test_that("select_casts", {
@@ -116,4 +122,14 @@ test_that("select_casts", {
   nmn <- metadata$rodent_forecast_newmoons
   expect_silent(cast <- select_casts(casts, newmoonnumber = nmn))
   expect_is(cast, "casts")
+
+  expect_error(select_casts(1))
+  expect_error(select_casts(casts, species = 1))
+  expect_error(select_casts(casts, species = "ok"))
+  expect_error(select_casts(casts, level = 1))
+  expect_error(select_casts(casts, level = "ok"))
+  expect_error(select_casts(casts, model = 1))
+  expect_error(select_casts(casts, newmoonnumber = -1))
+  expect_error(select_casts(casts, newmoonnumber = 300.5))
+  expect_error(select_casts(casts, newmoonnumber = "ok"))
 })

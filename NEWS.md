@@ -15,9 +15,13 @@ by default.
 only one model is included (it returns that model as the ensemble).
 
 ## Minor changes
-* Argument order in `models` is reveresed (`add` then `set`) and defaults in general
+* Argument order in `models` is reversed (`add` then `set`) and defaults in general
 are now `NULL` and `NULL`, but `set = "prefab"` within the options functions, to
 make it easy to run a novel model set.
+* Argument order in `subdirs` is reversed (`subs` then `type`) and defaults in 
+general are now `NULL` and `NULL`, but `type = "portalcasting"` within options
+functions and `dirtree` to make it easier to manage a single subdirectory.
+* `fdate` argument has been replaced throughout with `cast_date` for generality.
 
 # portalcasting 0.2.2
 *2019-02-12* *[last code edit](https://github.com/weecology/portalcasting/pull/82)*

@@ -85,7 +85,7 @@ combine_forecasts <- function(options_cast = cast_options()){
   }
   temp_dir <- sub_path(options_cast$tree, "tmp")
   pred_dir <- sub_path(options_cast$tree, "predictions")
-  forecast_date <- options_cast$fdate
+  forecast_date <- options_cast$cast_date
   filename_suffix <- options_cast$cast_type
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
   files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
@@ -133,7 +133,7 @@ add_ensemble <- function(options_cast = cast_options()){
     }
     temp_dir <- sub_path(options_cast$tree, "tmp")
     pred_dir <- sub_path(options_cast$tree, "predictions")
-    forecast_date <- options_cast$fdate
+    forecast_date <- options_cast$cast_date
     filename_suffix <- options_cast$cast_type
     file_ptn <- paste(filename_suffix, ".csv", sep = "")
     files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
@@ -294,11 +294,11 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'  
-#' @param casttype \code{character} value of the type of -cast of model. Used
+#' @param cast_type \code{character} value of the type of -cast of model. Used
 #'   to select the file in the predictions subdirectory. Currently only 
 #'   reliably coded for \code{"forecasts"}.
 #'
-#' @param castdate \code{Date} the predictions were made. Used to select the
+#' @param cast_date \code{Date} the predictions were made. Used to select the
 #'   file in the predictions subdirectory. 
 #'  
 #' @return Class \code{casts} \code{data.frame} of requested fore- or 
@@ -306,11 +306,28 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'
 #' @export
 #'
-read_casts <- function(tree, casttype = "forecasts", castdate = today()){
-
-lpath <- paste0("predictions/", castdate, casttype, ".csv")
-read.csv(file_path(tree, lpath), stringsAsFactors = FALSE) %>%
-classy(c("data.frame", "casts"))
+read_casts <- function(tree, cast_type = "forecasts", cast_date = today()){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!("Date" %in% class(cast_date))){
+    stop("`cast_date` is not of class Date")
+  }
+  if (length(cast_date) > 1){
+    stop("`cast_date` can only be of length = 1")
+  }
+  lpath <- paste0("predictions/", cast_date, cast_type, ".csv")
+  read.csv(file_path(tree, lpath), stringsAsFactors = FALSE) %>%
+  classy(c("data.frame", "casts"))
 
 }
 
@@ -322,18 +339,19 @@ classy(c("data.frame", "casts"))
 #' @param casts Class \code{casts} \code{data.frame} of requested fore- or 
 #'   hindcasts to be selected from.
 #'
-#' @param species \code{character} value of the species code or \code{"total"}
-#'   for the total across species. If \code{NULL}, all species and "total" are
-#'   returned. 
+#' @param species \code{character} value(s) of the species code(s) or
+#'   \code{"total"} for the total across species. If \code{NULL}, all species 
+#'   and "total" are returned. 
 #'
 #' @param level \code{character} value of the level of interest (\code{"All"} 
 #'   or \code{"Controls"}). If \code{NULL}, all levels are returned.
 #'
-#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
-#'   the model of interest. If \code{NULL}, all models are returned.
+#' @param model \code{character} value(s) of the name(s) (or 
+#'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+#'   models are returned.
 #'
-#' @param newmoonnumber \code{integer}-conformable value of the newmoonnumbers
-#'   of interest. If \code{NULL}, all newmoons are returned.
+#' @param newmoonnumber \code{integer}-conformable value(s) of the 
+#'   newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.
 #'
 #' @return Class \code{casts} \code{data.frame} of trimmed fore- or 
 #'   hindcasts.
@@ -342,6 +360,35 @@ classy(c("data.frame", "casts"))
 #'
 select_casts <- function(casts, species = NULL, level = NULL, model = NULL, 
                          newmoonnumber = NULL){
+  if (!("casts" %in% class(casts))){
+    stop("`casts` is not of class casts")
+  }
+  if (!is.null(species)){
+    if (!("character" %in% class(species))){
+      stop("`species` is not a character")
+    }
+    if (!all(species %in% c(rodent_spp(), "total"))){
+      stop("invalid entry in `species`")
+    }   
+  }
+  if (!is.null(level)){
+    if (!("character" %in% class(level))){
+      stop("`level` is not a character")
+    }
+    if (!all(level %in% c("All", "Controls"))){
+      stop("invalid entry in `level`")
+    }   
+  }
+  if (!is.null(model)){
+    if (!("character" %in% class(model))){
+      stop("`model` is not a character")
+    }
+  }
+  if (!is.null(newmoonnumber)){
+    if(newmoonnumber < 0 | newmoonnumber %% 1 != 0){
+      stop("`newmoonnumber` is not a non-negative integer")
+    }
+  }
 
   incl_species <- rep(TRUE, nrow(casts))
   incl_level <- rep(TRUE, nrow(casts))

@@ -39,7 +39,7 @@ prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(),
     message("Loading metadata file into data subdirectory")
   }
 
-  forecast_date <- options_metadata$fdate
+  forecast_date <- options_metadata$cast_date
   
   covariates_fcasts <- which(covariates$source == "fcast")
   if (options_metadata$cast_type == "forecasts"){

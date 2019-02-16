@@ -14,7 +14,7 @@
 #' @param level \code{character} value of the level of interest (\code{"All"} 
 #'   or \code{"Controls"}).
 #'
-#' @param casttype \code{character} value of the type of -cast of model. Used
+#' @param cast_type \code{character} value of the type of -cast of model. Used
 #'   to select the file in the predictions subdirectory. Currently only 
 #'   reliably coded for \code{"forecasts"}.
 #'
@@ -31,7 +31,7 @@
 #'
 plot_species_casts <- function(tree = dirtree(), species = NULL,
                              level = "Controls",
-                             casttype = "forecasts", castdate = today(),
+                             cast_type = "forecasts", castdate = today(),
                              model = "Ensemble", lead = 1){
 
   metadata <- read_data(tree, "metadata")
