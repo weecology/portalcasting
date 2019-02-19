@@ -299,14 +299,15 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'   reliably coded for \code{"forecasts"}.
 #'
 #' @param cast_date \code{Date} the predictions were made. Used to select the
-#'   file in the predictions subdirectory. 
+#'   file in the predictions subdirectory. If \code{NULL} (default), selects
+#'   the most recent -casts.
 #'  
 #' @return Class \code{casts} \code{data.frame} of requested fore- or 
 #'   hindcasts.
 #'
 #' @export
 #'
-read_casts <- function(tree, cast_type = "forecasts", cast_date = today()){
+read_casts <- function(tree, cast_type = "forecasts", cast_date = NULL){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
@@ -319,12 +320,26 @@ read_casts <- function(tree, cast_type = "forecasts", cast_date = today()){
   if (cast_type!= "forecasts" & cast_type != "hindcasts"){
     stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
   }
-  if (!("Date" %in% class(cast_date))){
-    cast_date <- tryCatch(as.Date(cast_date), error = function(x){NA})
-    if (is.na(cast_date)){
-      stop("`cast_date` is not of class Date or conformable to class Date")
+  if (!is.null(cast_date)){
+    if( !("Date" %in% class(cast_date))){
+      cast_date <- tryCatch(as.Date(cast_date), error = function(x){NA})
+      if (is.na(cast_date)){
+        stop("`cast_date` is not of class Date or conformable to class Date")
+      }
     }
+  } else{
+    pfolderpath <- sub_path(tree = tree, "predictions")
+    pfiles <- list.files(pfolderpath)
+    of_interest <- grep(cast_type, pfiles)
+    of_interest <- grep("aic", pfiles[of_interest], invert = TRUE)
+    if (length(of_interest) < 1){
+      stop("no valid files in the predictions folder for `cast_type`")
+    }
+    cast_text <- paste0(cast_type, ".csv")
+    cast_dates <- gsub(cast_text, "", pfiles[of_interest])
+    cast_date <- max(as.Date(cast_dates))
   }
+
   if (length(cast_date) > 1){
     stop("`cast_date` can only be of length = 1")
   }

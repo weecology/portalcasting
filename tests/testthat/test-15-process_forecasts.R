@@ -13,6 +13,7 @@ f_ax <- f_a
 names(f_ax)[1] <- "ok"
 f_cx <- f_c
 names(f_cx)[1] <- "ok"
+cast_date <- as.Date(metadata$forecast_date)
 
 test_that("save_forecast_output", {
   expect_error(save_forecast_output(1, f_c, "AutoArima", metadata, 
@@ -99,6 +100,9 @@ test_that("make_ensemble", {
 test_that("read_casts", {
   expect_silent(casts <- read_casts(cast_opts1$tree))
   expect_is(casts, "casts")
+  expect_silent(casts2 <- read_casts(cast_opts1$tree, cast_date = cast_date))
+  expect_is(casts2, "casts")
+  expect_equal(casts, casts2)
   expect_error(read_casts(1))
   expect_error(read_casts(cast_opts1$tree, cast_type = 1))
   expect_error(read_casts(cast_opts1$tree, cast_type = rep("forecasts", 2)))
