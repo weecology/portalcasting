@@ -307,7 +307,8 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'
 #' @export
 #'
-read_casts <- function(tree, cast_type = "forecasts", cast_date = NULL){
+read_casts <- function(tree = dirtree(), cast_type = "forecasts", 
+                       cast_date = NULL){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }

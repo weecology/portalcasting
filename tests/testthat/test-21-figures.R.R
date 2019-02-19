@@ -99,6 +99,10 @@ test_that("select_most_ab_spp", {
   expect_silent(spp <- select_most_ab_spp(tree = tree, cast_date = cast_date))
   expect_is(spp, "character")
   expect_equal(length(spp), 3)
+  expect_silent(spp2 <- select_most_ab_spp(tree = tree, cast_date = NULL))
+  expect_is(spp2, "character")
+  expect_equal(length(spp2), 3)
+  expect_equal(spp, spp2)
   expect_error(select_most_ab_spp(topx = "ok", 
       tree = tree, cast_date = cast_date))
   expect_error(select_most_ab_spp(topx = 1:2, 

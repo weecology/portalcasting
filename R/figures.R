@@ -21,7 +21,8 @@
 #'   reliably coded for \code{"forecasts"}.
 #'
 #' @param cast_date \code{Date} the predictions were made. Used to select the
-#'   file in the predictions subdirectory. 
+#'   file in the predictions subdirectory. If \code{NULL} (default), the
+#'   most recently made -cast is selected. 
 #'
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
 #'   the model to be plotted.
@@ -43,7 +44,7 @@
 select_most_ab_spp <- function(topx = 3, tree = dirtree(), 
                                species = rodent_spp(),
                                level = "Controls", cast_type = "forecasts", 
-                               cast_date = today(), model = "Ensemble", 
+                               cast_date = NULL, model = "Ensemble", 
                                lead = 1, from_date = NULL){
 
   if (!("dirtree" %in% class(tree))){
@@ -75,11 +76,15 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
   if (cast_type!= "forecasts" & cast_type != "hindcasts"){
     stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
   }
-  if (!("Date" %in% class(cast_date))){
-    stop("`cast_date` is not of class Date")
-  }
-  if (length(cast_date) > 1){
-    stop("`cast_date` can only be of length = 1")
+  if (!is.null(cast_date)){
+    if (!("Date" %in% class(cast_date))){
+      stop("`cast_date` is not of class Date")
+    }
+    if (length(cast_date) > 1){
+      stop("`cast_date` can only be of length = 1")
+    }
+  } else{
+    cast_date <- most_recent_cast(tree, cast_type)
   }
   if (!("character" %in% class(model))){
     stop("`model` is not a character")
