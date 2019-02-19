@@ -4,7 +4,7 @@
 \alias{read_casts}
 \title{Read in a cast file and format it for specific class}
 \usage{
-read_casts(tree, cast_type = "forecasts", cast_date = today())
+read_casts(tree, cast_type = "forecasts", cast_date = NULL)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
@@ -14,7 +14,8 @@ to select the file in the predictions subdirectory. Currently only
 reliably coded for \code{"forecasts"}.}
 
 \item{cast_date}{\code{Date} the predictions were made. Used to select the
-file in the predictions subdirectory.}
+file in the predictions subdirectory. If \code{NULL} (default), selects
+the most recent -casts.}
 }
 \value{
 Class \code{casts} \code{data.frame} of requested fore- or 
@@ -23,5 +24,5 @@ Class \code{casts} \code{data.frame} of requested fore- or
 \description{
 Read in a specified forecast or hindcast data file and ensure 
   its class attribute is appropriate for usage within the portalcasting 
-  pipeline. Current
+  pipeline. Current not reliably coded for hindcasts.
 }

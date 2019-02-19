@@ -290,7 +290,7 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'
 #' @description Read in a specified forecast or hindcast data file and ensure 
 #'   its class attribute is appropriate for usage within the portalcasting 
-#'   pipeline. Current 
+#'   pipeline. Current not reliably coded for hindcasts.
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'  
@@ -328,16 +328,7 @@ read_casts <- function(tree, cast_type = "forecasts", cast_date = NULL){
       }
     }
   } else{
-    pfolderpath <- sub_path(tree = tree, "predictions")
-    pfiles <- list.files(pfolderpath)
-    of_interest <- grep(cast_type, pfiles)
-    of_interest <- grep("aic", pfiles[of_interest], invert = TRUE)
-    if (length(of_interest) < 1){
-      stop("no valid files in the predictions folder for `cast_type`")
-    }
-    cast_text <- paste0(cast_type, ".csv")
-    cast_dates <- gsub(cast_text, "", pfiles[of_interest])
-    cast_date <- max(as.Date(cast_dates))
+    cast_date <- most_recent_cast(tree, cast_type)
   }
 
   if (length(cast_date) > 1){
@@ -347,6 +338,45 @@ read_casts <- function(tree, cast_type = "forecasts", cast_date = NULL){
   read.csv(file_path(tree, lpath), stringsAsFactors = FALSE) %>%
   classy(c("data.frame", "casts"))
 
+}
+
+#' @title Determine the most recent forecast or hindcast
+#'
+#' @description Determine the most recently produced forecast or hindcast
+#'   in a predictions folder. 
+#'
+#' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
+#'  
+#' @param cast_type \code{character} value of the type of -cast of model. Used
+#'   to select the file in the predictions subdirectory. 
+#'
+#' @return \code{Date} \code{data.frame} of the most recent cast.
+#'
+#' @export
+#'
+most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts"){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  pfolderpath <- sub_path(tree = tree, "predictions")
+  pfiles <- list.files(pfolderpath)
+  of_interest <- grep(cast_type, pfiles)
+  of_interest <- grep("aic", pfiles[of_interest], invert = TRUE)
+  if (length(of_interest) < 1){
+    stop("no valid files in the predictions folder for `cast_type`")
+  }
+  cast_text <- paste0(cast_type, ".csv")
+  cast_dates <- gsub(cast_text, "", pfiles[of_interest])
+  max(as.Date(cast_dates))
 }
 
 #' @title Select the specific fore- or hindcast from a casts table

@@ -5,7 +5,7 @@
 \title{Visualize a forecast or hindcast}
 \usage{
 plot_cast(tree = dirtree(), species = "total", level = "Controls",
-  cast_type = "forecasts", cast_date = today(), model = "Ensemble",
+  cast_type = "forecasts", cast_date = NULL, model = "Ensemble",
   start_newmoon = 300)
 }
 \arguments{

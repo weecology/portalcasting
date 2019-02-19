@@ -137,3 +137,13 @@ test_that("select_casts", {
   expect_error(select_casts(casts, newmoonnumber = 300.5))
   expect_error(select_casts(casts, newmoonnumber = "ok"))
 })
+
+test_that("most_recent_cast", {
+  expect_silent(cast_date <- most_recent_cast(cast_opts1$tree))
+  expect_is(cast_date, "Date")
+  expect_error(most_recent_cast(1))
+  expect_error(most_recent_cast(cast_opts1$tree, cast_type = 1))
+  expect_error(most_recent_cast(cast_opts1$tree, 
+                                cast_type = rep("forecasts", 2)))
+  expect_error(most_recent_cast(cast_opts1$tree, cast_type = "ok"))
+})
