@@ -122,7 +122,6 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
     stop("`topx` is not a positive integer")
   }
 
-
   metadata <- read_data(tree, "metadata")
   obs <- read_data(tree, tolower(level))
   moons <- read_data(tree, "moons")
@@ -138,8 +137,6 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
                        newmoonnumber = newmoonnumber)  
   pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
 }
-
-
 
 #' @title Plot forecast or hindcast predictions for a given point in time 
 #'   across multiple species.
@@ -264,6 +261,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
 
 
   moons <- read_data(tree, "moons")
+  casts <- read_casts(tree, cast_type = cast_type, cast_date = cast_date)
 
   if (with_census){
     obs <- read_data(tree, tolower(level))
@@ -275,6 +273,9 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
     nmdate <- as.Date(as.character(moons$newmoondate[most_recent_c_spot]))
     newmoonmonth <- as.numeric(format(nmdate, "%m"))
     newmoonyear <- as.numeric(format(nmdate, "%Y"))
+    if (length(which(casts$newmoonnumber == newmoonnumber)) == 0){
+      stop("census not available for requested date")
+    }
   } else{
     nmdates <- as.Date(as.character(moons$newmoondate))
     most_recent_nm_spot <- max(which(nmdates <= from_date))
@@ -287,10 +288,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
     newmoonyear <- metadata$rodent_forecast_years[to_plot]
   }
 
-
-  pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, model = model,
-                       newmoonnumber = newmoonnumber)  
+  pred <- select_casts(casts, species, level, model, newmoonnumber)  
 
   pred <- pred[order(pred$estimate, decreasing = TRUE), ]
   nspp <- nrow(pred)

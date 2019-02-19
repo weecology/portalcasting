@@ -34,4 +34,8 @@ plot_species_casts(tree = tree, level = "All", with_census=T)
 # most_recent_cast
 # most_recent_census
 
+# need to add in testing for stuff that uses most_recent_census
+# unfort that's all requiring of at least some predictions, so hits the 
+# test_location issue
+
 

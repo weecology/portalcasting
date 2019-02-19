@@ -336,7 +336,11 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
     stop("`cast_date` can only be of length = 1")
   }
   lpath <- paste0("predictions/", cast_date, cast_type, ".csv")
-  read.csv(file_path(tree, lpath), stringsAsFactors = FALSE) %>%
+  fpath <- file_path(tree, lpath)
+  if (!file.exists(fpath)){
+    stop(paste0(cast_type, " from ", cast_date, " not available"))
+  }
+  read.csv(fpath, stringsAsFactors = FALSE) %>%
   classy(c("data.frame", "casts"))
 
 }
@@ -380,13 +384,13 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
   }
   pfolderpath <- sub_path(tree = tree, "predictions")
   pfiles <- list.files(pfolderpath)
-  of_interest <- grep(cast_type, pfiles)
-  of_interest <- grep("aic", pfiles[of_interest], invert = TRUE)
-  if (length(of_interest) < 1){
+  of_interest1 <- grepl(cast_type, pfiles)
+  of_interest2 <- grepl("aic", pfiles)
+  if (sum(of_interest1 & !of_interest2) < 1){
     stop("no valid files in the predictions folder for `cast_type`")
   }
   cast_text <- paste0(cast_type, ".csv")
-  cast_dates <- gsub(cast_text, "", pfiles[of_interest])
+  cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
   cast_dates <- as.Date(cast_dates)
   prior_to <- today() + 1
   if (with_census){
