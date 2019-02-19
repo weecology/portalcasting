@@ -44,7 +44,7 @@ conducts forecasting or hindcasting as requested), and `cleanup_dir()`
 (which removed temporary folders). The functions are designed to operate 
 out-of-the-box with no need to alter arguments for operation, in particular 
 within the context of the Portal Predictions repo. However, the functions
-are flexible, as detailed in [Options List](#options_list).
+are flexible, as detailed in Options List.
 
 * `setup_dir()`
   * `create_dir()`
@@ -111,7 +111,7 @@ list using `main_path()`, `sub_path()`, and `sub_paths()`. In addition,
 and `file_path()` can be used to find the full path of any file within
 the directory.
 
-## Options List <a name="options_list"></a>
+## Options List
 
 The options list is a hierarchical list containing a suite of inter-linked
 options controlling the structure, content, and usage of the directory.

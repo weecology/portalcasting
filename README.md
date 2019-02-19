@@ -19,9 +19,9 @@ This package is currently ***in development*** by the
 forecasting functionality has been migrated over from the [predictions
 repository](https://github.com/weecology/portalPredictions),
 which contains the code executed by the continuous integration.
-Output (website) generation functionality is still housed there, however.
 Coincidingly, the `portalcasting` package is deployed for use within the 
 [repository](https://github.com/weecology/portalPredictions).
+Output (website) generation functionality is still housed there, however.
 
 Note that the current master branch code is not necessarily always being
 executed within the [predictions 
@@ -47,10 +47,8 @@ the [predictions repository](https://github.com/weecology/portalPredictions).
 
 You can install the R package from github with:
 
-```
+```r
 install.packages("devtools")
-```
-```
 devtools::install_github("weecology/portalcasting")
 ```
 
@@ -101,13 +99,9 @@ hierarchical list of options settings, defined through the options-settting
 function `all_options()` and the default values are appropriate for basic 
 forecast usage:
 
-```
+```r
 setup_dir()
-```
-```
 portalcast()
-```
-```
 cleanup_dir()
 ```
 
