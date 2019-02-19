@@ -351,11 +351,21 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 #' @param cast_type \code{character} value of the type of -cast of model. Used
 #'   to select the file in the predictions subdirectory. 
 #'
+#' @param with_census \code{logical} toggle if the plot should include the
+#'   observed data collected during the predicted census.
+#'
 #' @return \code{Date} \code{data.frame} of the most recent cast.
 #'
 #' @export
 #'
-most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts"){
+most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
+                             with_census = FALSE){
+  if (length(with_census) > 1){
+    stop("`with_census` can only be of length = 1")
+  }
+  if (!is.logical(with_census)){
+    stop("`with_census` is not logical")
+  }
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
@@ -377,7 +387,12 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts"){
   }
   cast_text <- paste0(cast_type, ".csv")
   cast_dates <- gsub(cast_text, "", pfiles[of_interest])
-  max(as.Date(cast_dates))
+  cast_dates <- as.Date(cast_dates)
+  prior_to <- today() + 1
+  if (with_census){
+    prior_to <- most_recent_census(tree)
+  }
+  max(cast_dates[cast_dates < prior_to])
 }
 
 #' @title Select the specific fore- or hindcast from a casts table

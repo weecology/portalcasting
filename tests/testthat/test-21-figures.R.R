@@ -13,6 +13,7 @@ portalcast(options_all3)
 
 test_that("plot_species_casts", {
   expect_silent(plot_species_casts(tree, cast_date = cast_date))
+  expect_silent(plot_species_casts(tree))
   expect_error(plot_species_casts(1))
   expect_error(plot_species_casts(tree, species = 1))
   expect_error(plot_species_casts(tree, species = "ok"))

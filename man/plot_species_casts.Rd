@@ -7,7 +7,8 @@
 \usage{
 plot_species_casts(tree = dirtree(), species = NULL,
   level = "Controls", cast_type = "forecasts", cast_date = NULL,
-  model = "Ensemble", lead = 1, from_date = NULL)
+  model = "Ensemble", lead = 1, from_date = NULL,
+  with_census = FALSE)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
@@ -26,7 +27,8 @@ reliably coded for \code{"forecasts"}.}
 
 \item{cast_date}{\code{Date} the predictions were made. Used to select the
 file in the predictions subdirectory. If \code{NULL} (default), selects
-the most recent -casts.}
+the most recent -casts (if \code{with_census = FALSE}) or the most 
+recent -casts with a subsequent census (if \code{with_census = TRUE}).}
 
 \item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
 the model to be plotted.}
@@ -39,6 +41,9 @@ the \code{lead} from. If \code{NULL} (default), for
 \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
 \code{plot_species_casts} is not yet reliable for 
 \code{cast_type = "hindcasts"}.}
+
+\item{with_census}{\code{logical} toggle if the plot should include the
+observed data collected during the predicted census.}
 }
 \description{
 Plot the point value with confidence interval for a step in

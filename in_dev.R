@@ -5,20 +5,21 @@
 #   working through page by page on the site
 
 
+
 devtools::load_all()
 options_all <- all_options(main = "testing_casting")
 setup_dir(options_all)
 portalcast(options_all)
-
+tree <- dirtree(main = "testing_casting")
 
 rmarkdown::render_site()
 
 cleanup_dir(options_all)
 
 
-tree <- dirtree(main = "testing_casting")
 
-casts <- read_casts(tree)
+plot_species_casts(tree = tree, level = "All", with_census=T)
+
 
 # new functions:
 # fully integrated and tested
@@ -31,11 +32,6 @@ casts <- read_casts(tree)
 # sppcastsplot_yaxis
 # select_most_ab_spp
 # most_recent_cast
+# most_recent_census
 
-plot_cast(tree)
-plot_species_casts(tree)
-most_ab <- select_most_ab_spp(tree = tree)
-for(i in 1:3){
-plot_cast(tree, species = most_ab[i])
-}
 

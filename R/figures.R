@@ -164,7 +164,8 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
 #'
 #' @param cast_date \code{Date} the predictions were made. Used to select the
 #'   file in the predictions subdirectory. If \code{NULL} (default), selects
-#'   the most recent -casts.
+#'   the most recent -casts (if \code{with_census = FALSE}) or the most 
+#'   recent -casts with a subsequent census (if \code{with_census = TRUE}).
 #'
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
 #'   the model to be plotted.
@@ -178,13 +179,23 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
 #'   \code{plot_species_casts} is not yet reliable for 
 #'   \code{cast_type = "hindcasts"}.
 #'
+#' @param with_census \code{logical} toggle if the plot should include the
+#'   observed data collected during the predicted census.
+#'
 #' @export
 #'
 plot_species_casts <- function(tree = dirtree(), species = NULL,
                                level = "Controls", cast_type = "forecasts", 
                                cast_date = NULL, model = "Ensemble", 
-                               lead = 1, from_date = NULL){
+                               lead = 1, from_date = NULL, 
+                               with_census = FALSE){
 
+  if (length(with_census) > 1){
+    stop("`with_census` can only be of length = 1")
+  }
+  if (!is.logical(with_census)){
+    stop("`with_census` is not logical")
+  }
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
@@ -222,7 +233,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
       stop("`cast_date` can only be of length = 1")
     }
   } else{
-    cast_date <- most_recent_cast(tree, cast_type)
+    cast_date <- most_recent_cast(tree, cast_type, with_census)
   }
   if (!("character" %in% class(model))){
     stop("`model` is not a character")
@@ -251,17 +262,32 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
     stop("`from_date` can only be of length = 1")
   }
 
-  metadata <- read_data(tree, "metadata")
-  obs <- read_data(tree, tolower(level))
+
   moons <- read_data(tree, "moons")
-  nmdates <- as.Date(as.character(moons$newmoondate))
-  most_recent_nm_spot <- max(which(nmdates <= from_date))
-  most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
-  cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
-  to_plot <- which(cast_nms_io)[lead]
-  newmoonnumber <- metadata$rodent_forecast_newmoons[to_plot]
-  newmoonmonth <- metadata$rodent_forecast_months[to_plot]
-  newmoonyear <- metadata$rodent_forecast_years[to_plot]
+
+  if (with_census){
+    obs <- read_data(tree, tolower(level))
+    lead <- 1
+    most_recent_c_date <- most_recent_census(tree)
+    cdates <- as.Date(as.character(moons$censusdate))
+    most_recent_c_spot <- which(cdates == most_recent_c_date) 
+    newmoonnumber <- moons$newmoonnumber[most_recent_c_spot]
+    nmdate <- as.Date(as.character(moons$newmoondate[most_recent_c_spot]))
+    newmoonmonth <- as.numeric(format(nmdate, "%m"))
+    newmoonyear <- as.numeric(format(nmdate, "%Y"))
+  } else{
+    nmdates <- as.Date(as.character(moons$newmoondate))
+    most_recent_nm_spot <- max(which(nmdates <= from_date))
+    most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
+    metadata <- read_data(tree, "metadata")
+    cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
+    to_plot <- which(cast_nms_io)[lead]
+    newmoonnumber <- metadata$rodent_forecast_newmoons[to_plot]
+    newmoonmonth <- metadata$rodent_forecast_months[to_plot]
+    newmoonyear <- metadata$rodent_forecast_years[to_plot]
+  }
+
+
   pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
@@ -292,6 +318,15 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
     points(rep(up, 2), vbars, type = "l", lwd = 2)
     points(est, i, pch = 16, col = "white", cex = 1.25)
     points(est, i, lwd = 2, cex = 1.25)
+
+    if (with_census){
+      nmmatch <- which(obs$newmoonnumber == newmoonnumber)
+      spmatch <- pred$species[i]
+      spmatch[spmatch == "NA"] <- "NA."
+      obsi <- obs[nmmatch, spmatch]
+      points(obsi, i, pch = 16, col = rgb(0, 0.4, 0.9, 0.8), cex = 1.25)
+      points(obsi, i, pch = 1, col = rgb(0.2, 0.2, 0.2, 0.8), cex = 1.25)
+    }
   }
 }
 
