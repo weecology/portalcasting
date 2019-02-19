@@ -7,6 +7,8 @@
 * `plot_cast` is now fully vetted and tested
 * `plot_species_casts` is now added to replace `plot_species_forecast`, but
 is not yet fully vetted and tested.
+* `select_most_ab_spp` allows for a simple selection of the most abundant
+species from a -cast.
 
 ## Processing of forecasts
 * `select_cast` is now `select_casts` and allows a more flexible selection
