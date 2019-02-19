@@ -2,7 +2,8 @@
 #'   across multiple species.
 #'
 #' @description Plot the point value with confidence interval for a step in
-#'   a forecast or hindcast across multiple species.
+#'   a forecast or hindcast across multiple species. Currently only reliable
+#'   for forecasts.
 #'
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}.
@@ -27,12 +28,18 @@
 #' @param lead \code{integer}-conformable lead of the newmoon number used to
 #'   select the data plotted. 
 #'
+#' @param from_date \code{Date} to be used as a reference of when to count
+#'   the \code{lead} from. If \code{NULL} (default), for 
+#'   \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
+#'   \code{plot_species_casts} is not yet reliable for 
+#'   \code{cast_type = "hindcasts"}.
+#'
 #' @export
 #'
 plot_species_casts <- function(tree = dirtree(), species = NULL,
-                               level = "Controls",
-                               cast_type = "forecasts", cast_date = today(),
-                               model = "Ensemble", lead = 1){
+                               level = "Controls", cast_type = "forecasts", 
+                               cast_date = today(), model = "Ensemble", 
+                               lead = 1, from_date = NULL){
 
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
@@ -81,13 +88,32 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
   if (length(lead) > 1){
     stop("`lead` can only be of length = 1")
   }
-  if(lead < 1 | lead %% 1 != 0){
+  if (lead < 1 | lead %% 1 != 0){
     stop("`lead` is not a positive integer")
+  }
+  if (is.null(from_date)){
+    if(cast_type == "forecasts"){
+      from_date <- cast_date
+    }
+  }
+  if (!("Date" %in% class(from_date))){
+    stop("`from_date` is not of class Date")
+  }
+  if (length(from_date) > 1){
+    stop("`from_date` can only be of length = 1")
   }
 
   metadata <- read_data(tree, "metadata")
   obs <- read_data(tree, tolower(level))
-  newmoonnumber <- metadata$rodent_forecast_newmoons[lead]
+  moons <- read_data(tree, "moons")
+  nmdates <- as.Date(as.character(moons$newmoondate))
+  most_recent_nm_spot <- max(which(nmdates <= from_date))
+  most_recent_nm_number <- moons$newmoonnumber[most_recent_nmdate]
+  cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
+  to_plot <- which(cast_nms_io)[lead]
+  newmoonnumber <- metadata$rodent_forecast_newmoons[to_plot]
+  newmoonmonth <- metadata$rodent_forecast_months[to_plot]
+  newmoonyear <- metadata$rodent_forecast_years[to_plot]
   pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
@@ -97,13 +123,17 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
   rangey <- c(nspp + 0.25, 0.75)
   rangex <- c(0, max(pred$UpperPI))
 
-  par(mar = c(3.5, 9.5, 1, 1))
+  main_date <- paste(month(newmoonmonth, TRUE), newmoonyear, sep = " ")
+  main <- paste0(main_date, ": " , level)
+
+  par(mar = c(3.5, 9.5, 2, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
   mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
   sppcastsplot_yaxis(tree = tree, species = pred$species)
-
+  mtext(main, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
+  
   for(i in 1:nspp){
     low <- pred$LowerPI[i]
     up <- pred$UpperPI[i]

@@ -7,7 +7,7 @@
 \usage{
 plot_species_casts(tree = dirtree(), species = NULL,
   level = "Controls", cast_type = "forecasts", cast_date = today(),
-  model = "Ensemble", lead = 1)
+  model = "Ensemble", lead = 1, from_date = NULL)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
@@ -32,8 +32,15 @@ the model to be plotted.}
 
 \item{lead}{\code{integer}-conformable lead of the newmoon number used to
 select the data plotted.}
+
+\item{from_date}{\code{Date} to be used as a reference of when to count
+the \code{lead} from. If \code{NULL} (default), for 
+\code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
+\code{plot_species_casts} is not yet reliable for 
+\code{cast_type = "hindcasts"}.}
 }
 \description{
 Plot the point value with confidence interval for a step in
-  a forecast or hindcast across multiple species.
+  a forecast or hindcast across multiple species. Currently only reliable
+  for forecasts.
 }

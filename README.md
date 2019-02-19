@@ -105,9 +105,43 @@ portalcast()
 cleanup_dir()
 ```
 
-There are many options available for the user to control, and a full list
-can be found by running `?all_options`, to return the help file for the 
-function that generates the hierarchical options list. 
+There are many options available for the user to control the `portalcasting`
+pipeline. A full list can be found by running `?all_options`, to return the 
+help file for the function that generates the hierarchical options list. 
+
+Once the models have finished running, you can read the results back into R
+using
+
+```r
+read_casts()
+```
+
+and select specific subsets of the results with the `select_casts` function,
+which has arguments to allow filtering based on `species`, `level`,
+`model`, and `newmoonnumber`, with the default being to return all values:
+
+```r
+casts <- read_cast()
+select_casts(casts, species = "total", model = "Ensemble", level = "All")
+```
+
+Basic plotting of the forecasts can be executed for single-species timeseries
+using `plot_cast`, which defaults to plotting the total abundance for the 
+control plots under the ensemble model, but has arguments to allow full 
+flexibility:
+
+```r
+plot_cast()
+```
+
+Similarly, the point-in-time forecasts for multiple species can be compared
+using `plot_species_casts`, which defaults to all species and the total 
+abundance one step ahead for the control plots under the ensemble model,
+but has arguments to allow full flexibility:
+
+```r
+plot_species_casts()
+```
 
 For further information about the `portalcasting` codebase see the 
 [vignette](https://weecology.github.io/portalcasting/articles/codebase.html).

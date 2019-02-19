@@ -27,6 +27,8 @@ test_that("plot_species_casts", {
   expect_error(plot_species_casts(tree, lead = 0))
   expect_error(plot_species_casts(tree, lead = 1:2))
   expect_error(plot_species_casts(tree, lead = 1.5))
+  expect_error(plot_species_casts(tree, from_date = 1))
+  expect_error(plot_species_casts(tree, from_date = rep(cast_date, 2)))
 })
 
 test_that("sppcastsplot_yaxis", {
