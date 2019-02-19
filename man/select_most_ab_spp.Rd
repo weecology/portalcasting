@@ -6,7 +6,7 @@
 \usage{
 select_most_ab_spp(topx = 3, tree = dirtree(),
   species = rodent_spp(), level = "Controls",
-  cast_type = "forecasts", cast_date = today(), model = "Ensemble",
+  cast_type = "forecasts", cast_date = NULL, model = "Ensemble",
   lead = 1, from_date = NULL)
 }
 \arguments{
@@ -28,7 +28,8 @@ to select the file in the predictions subdirectory. Currently only
 reliably coded for \code{"forecasts"}.}
 
 \item{cast_date}{\code{Date} the predictions were made. Used to select the
-file in the predictions subdirectory.}
+file in the predictions subdirectory. If \code{NULL} (default), the
+most recently made -cast is selected.}
 
 \item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
 the model to be plotted.}

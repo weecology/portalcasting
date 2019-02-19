@@ -4,7 +4,8 @@
 \alias{read_casts}
 \title{Read in a cast file and format it for specific class}
 \usage{
-read_casts(tree, cast_type = "forecasts", cast_date = NULL)
+read_casts(tree = dirtree(), cast_type = "forecasts",
+  cast_date = NULL)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
