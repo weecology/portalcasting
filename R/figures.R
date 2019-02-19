@@ -123,7 +123,7 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
   moons <- read_data(tree, "moons")
   nmdates <- as.Date(as.character(moons$newmoondate))
   most_recent_nm_spot <- max(which(nmdates <= from_date))
-  most_recent_nm_number <- moons$newmoonnumber[most_recent_nmdate]
+  most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
   cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
   to_include <- which(cast_nms_io)[lead]
   newmoonnumber <- metadata$rodent_forecast_newmoons[to_include]
@@ -246,7 +246,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
   moons <- read_data(tree, "moons")
   nmdates <- as.Date(as.character(moons$newmoondate))
   most_recent_nm_spot <- max(which(nmdates <= from_date))
-  most_recent_nm_number <- moons$newmoonnumber[most_recent_nmdate]
+  most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
   cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
   to_plot <- which(cast_nms_io)[lead]
   newmoonnumber <- metadata$rodent_forecast_newmoons[to_plot]
