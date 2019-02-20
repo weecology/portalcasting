@@ -1,7 +1,7 @@
 
 plot_eval_recent <- function(tree = dirtree(), 
                              model = NULL,
-                             species = NULL,
+                             species = rodent_spp(set = "evalplot"),
                              level = "Controls",
                              cast_dates = NULL, cast_type = "forecasts"){
 

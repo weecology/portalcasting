@@ -390,8 +390,6 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 
 }
 
-
-
 #' @title Verify that a read-in cast file is formatted appropriately
 #'
 #' @description Ensure that a -cast file that has been read in is formatted

@@ -21,7 +21,7 @@ cleanup_dir(options_all)
 plot_cast_ts(tree)
 plot_cast_point(tree = tree, with_census = T)
 
-casts <- compile_casts(tree)
+casts <- read_casts(tree)
 
 # new functions...some of the names might still change...
 #

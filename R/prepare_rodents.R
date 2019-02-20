@@ -220,11 +220,13 @@ rodent_spp <- function(nadot = FALSE, set = NULL){
   if (nadot){
     xNAx <- "NA."
   }
-  if (set == "evalplot"){
-    out <- c("BA", "DM", "DO", "PP", "OT", "NA", "total")
-  } else{
+  if (is.null(set)){
     out <- c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", 
              "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+  } else if (set == "evalplot"){
+    out <- c("BA", "DM", "DO", "PP", "OT", "NA", "total")
+  } else{
+    stop("`set` not recognized")
   }
   out
 }
