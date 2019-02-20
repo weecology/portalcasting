@@ -3,7 +3,7 @@
 
 # working on bringing the rest of the function code from portalPrediction over
 #   working through page by page on the site: just evaluation page now
-
+#  uh oh, that's not RMSE
 
 
 devtools::load_all()

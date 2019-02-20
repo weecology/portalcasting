@@ -7,10 +7,23 @@ plot_eval_recent <- function(tree = dirtree(),
 
   metadata <- read_data(tree, "metadata")
   moons <- read_data(tree, "moons")
-  obs <- read_data(tree, tolower(level))
+  obs <- read_data(tree, tolower(level)) 
+  colnames(obs)[which(colnames(obs) == "NA.")] <- "NA"
 
   casts <- read_casts(tree, cast_type, cast_dates) %>%
            select_cast(species = species, level = level, model = model)
+
+  casts$observed <- NA
+  for(i in 1:nrow(casts)){
+    nmmatch <- which(obs$newmoonnumber == casts$newmoonnumber[i])
+    sppmatch <- which(colnames(obs) == casts$species[i])
+    obsval <- obs[nmmatch, sppmatch]
+    if (length(obsval) == 1){
+      casts$observed[i] <- obsval
+    }
+  }
+  no_obs <- which(is.na(casts$observed) == TRUE)
+  casts <- casts[-no_obs, ]
 
 }
 

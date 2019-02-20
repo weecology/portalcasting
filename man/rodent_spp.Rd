@@ -4,11 +4,13 @@
 \alias{rodent_spp}
 \title{Rodent species abbreviations}
 \usage{
-rodent_spp(nadot = FALSE)
+rodent_spp(nadot = FALSE, set = NULL)
 }
 \arguments{
 \item{nadot}{\code{logical} indicator if the dot should be added to the 
 \code{"NA"} species name. Defaults to \code{FALSE}.}
+
+\item{set}{Optional input to return a specified set of species.}
 }
 \value{
 \code{character} vector of species abbreviations.

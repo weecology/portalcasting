@@ -19,11 +19,12 @@ to select the file in the predictions subdirectory. Currently only
 reliably coded for \code{"forecasts"}.}
 
 \item{cast_date}{\code{Date} the predictions were made. Used to select the
-file in the predictions subdirectory. 
-\cr \cr \code{read_cast}: Can only be length 1 and if \code{NULL} 
-(default), selects the most recent -casts.
-\cr \cr \code{read_casts}: Can be length 1 or more and if \code{NULL} 
-(default), selects all available -casts.}
+file in the predictions subdirectory. Can only be length 1 and if 
+\code{NULL} (default), selects the most recent -casts.}
+
+\item{cast_dates}{\code{Date}s the predictions were made. Used to select 
+the files in the predictions subdirectory. Can be length 1 or more and if 
+\code{NULL} (default), selects all available -casts.}
 }
 \value{
 Class \code{casts} \code{data.frame} of requested fore- or 
