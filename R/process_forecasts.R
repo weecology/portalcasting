@@ -286,11 +286,15 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 }
 
 
-#' @title Read in a cast file and format it for specific class
+
+#' @title Read in a cast file or multiple cast files and set the class
 #'
 #' @description Read in a specified forecast or hindcast data file and ensure 
 #'   its class attribute is appropriate for usage within the portalcasting 
 #'   pipeline. Current not reliably coded for hindcasts.
+#'   \cr \cr \code{read_cast}: Only allows for a single date and defaults to
+#'   the most recent.
+#'   \cr \cr \code{read_casts}: Allows for multiple dates and defaults to all.
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'  
@@ -299,15 +303,18 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'   reliably coded for \code{"forecasts"}.
 #'
 #' @param cast_date \code{Date} the predictions were made. Used to select the
-#'   file in the predictions subdirectory. If \code{NULL} (default), selects
-#'   the most recent -casts.
+#'   file in the predictions subdirectory. 
+#'   \cr \cr \code{read_cast}: Can only be length 1 and if \code{NULL} 
+#'   (default), selects the most recent -casts.
+#'   \cr \cr \code{read_casts}: Can be length 1 or more and if \code{NULL} 
+#'   (default), selects all available -casts.
 #'  
 #' @return Class \code{casts} \code{data.frame} of requested fore- or 
 #'   hindcasts.
 #'
 #' @export
 #'
-read_casts <- function(tree = dirtree(), cast_type = "forecasts", 
+read_cast <- function(tree = dirtree(), cast_type = "forecasts", 
                        cast_date = NULL){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
@@ -331,7 +338,6 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
   } else{
     cast_date <- most_recent_cast(tree, cast_type)
   }
-
   if (length(cast_date) > 1){
     stop("`cast_date` can only be of length = 1")
   }
@@ -341,8 +347,160 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
     stop(paste0(cast_type, " from ", cast_date, " not available"))
   }
   read.csv(fpath, stringsAsFactors = FALSE) %>%
+  na_conformer() %>%
+  verify_cast() %>%
   classy(c("data.frame", "casts"))
+}
 
+#' @rdname read_cast 
+#'
+#' @export
+#'
+read_casts <- function(tree = dirtree(), cast_type = "forecasts", 
+                       cast_dates = NULL){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+
+  if (is.null(cast_dates)){
+    pfolderpath <- sub_path(tree = tree, "predictions")
+    pfiles <- list.files(pfolderpath)
+    of_interest1 <- grepl(cast_type, pfiles)
+    of_interest2 <- grepl("aic", pfiles)
+    cast_text <- paste0(cast_type, ".csv")
+    cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
+    cast_dates <- as.Date(cast_dates)
+  }
+  ndates <- length(cast_dates)
+  all_casts <- data.frame()
+  for(i in 1:ndates){  
+    all_casts <- read_cast(tree, cast_type, cast_dates[i]) %>%
+                 bind_rows(all_casts, .)
+  }
+  classy(all_casts, c("data.frame", "casts"))
+
+}
+
+
+
+#' @title Verify that a read-in cast file is formatted appropriately
+#'
+#' @description Ensure that a -cast file that has been read in is formatted
+#'   according to 
+#'   \href{https://github.com/weecology/portalPredictions/wiki/Forecast-file-format}{specifications.}
+#'
+#' @param cast \code{data.frame} -cast file read in.
+#'
+#' @param verbose \code{logical} indicator if details of failure should
+#'   be printed
+#'
+#' @return \code{verify_cast}: \code{cast} as read in (as long as it is 
+#'   valid). \cr \cr
+#'   \code{cast_is_valid}: \code{logical} of if the -cast is formatted 
+#'   properly.
+#' 
+#' @export
+#'
+verify_cast <- function(cast, verbose = FALSE){
+  if(!cast_is_valid(cast, verbose)){
+    stop("cast not valid")
+  }
+  cast
+}
+
+#' @rdname verify_cast
+#'
+#' @export
+#'
+cast_is_valid <- function(cast, verbose = FALSE){
+  is_valid <- TRUE
+  violations <- c()
+  valid_columns <- c("date", "forecastmonth", "forecastyear", "newmoonnumber",
+                     "model", "currency", "level", "species", "estimate",
+                     "LowerPI", "UpperPI", "fit_start_newmoon",
+                     "fit_end_newmoon", "initial_newmoon")
+  valid_currencies <- c("abundance", "richness", "biomass", "energy")
+  valid_levels <- c("All", "Controls", "FullExclosure", "KratExclosure",
+                     paste("Plot", 1:24, " ", sep = ""))
+  valid_species <- c("total", rodent_spp())
+
+  if(!(all(colnames(cast) %in% valid_columns) & 
+       all(valid_columns %in% colnames(cast)))){
+    if(verbose){
+      print("file column names invalid")
+    }
+    return(FALSE)
+  }
+
+  cast$date <- as.Date(cast$date, "%Y-%m-%d")
+  if(any(is.na(cast$date))){
+    is_valid <- FALSE
+    violations <- c("date", violations) 
+  }
+  if(!all(unique(cast$currency) %in% valid_currencies)){
+    is_valid <- FALSE
+    violations <- c("currency", violations) 
+  }
+  if(!all(unique(cast$level) %in% valid_levels)){ 
+    is_valid <- FALSE
+    violations <- c("level", violations) 
+  }
+  if(!all(unique(cast$species) %in% valid_species)){ 
+    is_valid <- FALSE
+    violations <- c("species", violations) 
+  }
+  if(any(is.na(cast$estimate))) { 
+    is_valid <- FALSE
+    violations <- c("NA esimates", violations) 
+  }
+  if(any(is.na(cast$LowerPI))) { 
+    is_valid <- FALSE
+    violations <- c("NA LowerPI", violations) 
+  }
+  if(any(is.na(cast$UpperPI))) { 
+    is_valid <- FALSE
+    violations <- c("NA UpperPI", violations) 
+  }
+
+  if(!is.integer(cast$fit_start_newmoon)) {
+    is_valid <- FALSE
+    violations <- c("fit_start_newmoon not int", violations)
+  }
+  if(!is.integer(cast$fit_end_newmoon)) { 
+    is_valid <- FALSE
+    violations <- c("fit_end_newmoon not int", violations)
+  }
+  if(!is.integer(cast$initial_newmoon)) {
+    is_valid <- FALSE
+    violations <- c("initial_newmoon not int", violations)
+  }
+  if(any(is.na(cast$fit_start_newmoon))) {
+    is_valid <- FALSE
+    violations <- c("fit_start_newmoon contains NA", violations)
+  }
+  if(any(is.na(cast$fit_end_newmoon))) {
+    is_valid <- FALSE
+    violations <- c("fit_end_newmoon contains NA", violations)
+  }
+  if(any(is.na(cast$initial_newmoon))) {
+    is_valid <- FALSE
+    violations <- c("initial_newmoon contains NA", violations)
+  }
+  
+  if(verbose & length(violations) > 0){
+    violationses <- paste(violations, collapse = ", ")
+    print(paste0("Forecast validation failed: ", violationses))
+  }
+  is_valid
 }
 
 #' @title Determine the most recent forecast or hindcast
@@ -426,7 +584,7 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 #' @export
 #'
-select_casts <- function(casts, species = NULL, level = NULL, model = NULL, 
+select_cast <- function(casts, species = NULL, level = NULL, model = NULL, 
                          newmoonnumber = NULL){
   if (!("casts" %in% class(casts))){
     stop("`casts` is not of class casts")
@@ -463,10 +621,7 @@ select_casts <- function(casts, species = NULL, level = NULL, model = NULL,
   incl_model <- rep(TRUE, nrow(casts))
   incl_nmm <- rep(TRUE, nrow(casts))
 
-  nasppname <- which(is.na(casts[ , "species"]))
-  if (length(nasppname) > 0){
-    casts[nasppname, "species"] <- "NA"
-  }
+  casts <- na_conformer(casts)
   if (!is.null(species)){
     incl_species <- casts[ , "species"] %in% species
   }

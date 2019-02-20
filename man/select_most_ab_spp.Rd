@@ -40,7 +40,7 @@ select the data plotted.}
 \item{from_date}{\code{Date} to be used as a reference of when to count
 the \code{lead} from. If \code{NULL} (default), for 
 \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
-\code{plot_species_casts} is not yet reliable for 
+\code{plot_cast_point} is not yet reliable for 
 \code{cast_type = "hindcasts"}.}
 }
 \value{

@@ -11,28 +11,28 @@ options_all3 <- all_options(main = "testing_casting",
                             model = models("AutoArima"))
 portalcast(options_all3)
 
-test_that("plot_species_casts", {
-  expect_silent(plot_species_casts(tree, cast_date = cast_date))
-  expect_silent(plot_species_casts(tree))
-  expect_error(plot_species_casts(1))
-  expect_error(plot_species_casts(tree, species = 1))
-  expect_error(plot_species_casts(tree, species = "ok"))
-  expect_error(plot_species_casts(tree, level = 1))
-  expect_error(plot_species_casts(tree, level = "ok" ))
-  expect_error(plot_species_casts(tree, level = rep("All", 2)))
-  expect_error(plot_species_casts(tree, cast_type = 1))
-  expect_error(plot_species_casts(tree, cast_type = "ok"))
-  expect_error(plot_species_casts(tree, cast_type = rep("forecasts", 2)))
-  expect_error(plot_species_casts(tree, cast_date = 1))
-  expect_error(plot_species_casts(tree, cast_date = rep(cast_date, 2)))
-  expect_error(plot_species_casts(tree, lead = 0))
-  expect_error(plot_species_casts(tree, lead = 1:2))
-  expect_error(plot_species_casts(tree, lead = 1.5))
-  expect_error(plot_species_casts(tree, from_date = 1))
-  expect_error(plot_species_casts(tree, from_date = rep(cast_date, 2)))
+test_that("plot_cast_point", {
+  expect_silent(plot_cast_point(tree, cast_date = cast_date))
+  expect_silent(plot_cast_point(tree))
+  expect_error(plot_cast_point(1))
+  expect_error(plot_cast_point(tree, species = 1))
+  expect_error(plot_cast_point(tree, species = "ok"))
+  expect_error(plot_cast_point(tree, level = 1))
+  expect_error(plot_cast_point(tree, level = "ok" ))
+  expect_error(plot_cast_point(tree, level = rep("All", 2)))
+  expect_error(plot_cast_point(tree, cast_type = 1))
+  expect_error(plot_cast_point(tree, cast_type = "ok"))
+  expect_error(plot_cast_point(tree, cast_type = rep("forecasts", 2)))
+  expect_error(plot_cast_point(tree, cast_date = 1))
+  expect_error(plot_cast_point(tree, cast_date = rep(cast_date, 2)))
+  expect_error(plot_cast_point(tree, lead = 0))
+  expect_error(plot_cast_point(tree, lead = 1:2))
+  expect_error(plot_cast_point(tree, lead = 1.5))
+  expect_error(plot_cast_point(tree, from_date = 1))
+  expect_error(plot_cast_point(tree, from_date = rep(cast_date, 2)))
 })
 
-test_that("sppcastsplot_yaxis", {
+test_that("plotcastpoint_yaxis", {
   species = NULL
   level = "Controls"
   cast_type = "forecasts"
@@ -42,58 +42,58 @@ test_that("sppcastsplot_yaxis", {
   metadata <- read_data(tree, "metadata")
   obs <- read_data(tree, tolower(level))
   newmoonnumber <- metadata$rodent_forecast_newmoons[lead]
-  pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, model = model,
+  pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
+          select_cast(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
-  expect_silent(sppcastsplot_yaxis(tree = tree, species = pred$species))
-  expect_error(sppcastsplot_yaxis(1))
-  expect_error(sppcastsplot_yaxis(tree, "ok"))
-  expect_error(sppcastsplot_yaxis(tree, 1))
+  expect_silent(plotcastpoint_yaxis(tree = tree, species = pred$species))
+  expect_error(plotcastpoint_yaxis(1))
+  expect_error(plotcastpoint_yaxis(tree, "ok"))
+  expect_error(plotcastpoint_yaxis(tree, 1))
 })
 
-test_that("plot_cast", {
-  expect_silent(plot_cast(tree, species = "total", cast_date = cast_date))
-  expect_silent(plot_cast(tree, species = "NA", cast_date = cast_date))
+test_that("plot_cast_ts", {
+  expect_silent(plot_cast_ts(tree, species = "total", cast_date = cast_date))
+  expect_silent(plot_cast_ts(tree, species = "NA", cast_date = cast_date))
 
-  expect_error(plot_cast(1))
-  expect_error(plot_cast(tree, species = 1))
-  expect_error(plot_cast(tree, species = "ok"))
-  expect_error(plot_cast(tree, species = rep("total", 2)))
-  expect_error(plot_cast(tree, level = 1))
-  expect_error(plot_cast(tree, level = "ok" ))
-  expect_error(plot_cast(tree, level = rep("All", 2)))
-  expect_error(plot_cast(tree, cast_type = 1))
-  expect_error(plot_cast(tree, cast_type = "ok"))
-  expect_error(plot_cast(tree, cast_type = rep("forecasts", 2)))
-  expect_error(plot_cast(tree, cast_date = 1))
-  expect_error(plot_cast(tree, cast_date = rep(cast_date, 2)))
-  expect_error(plot_cast(tree, start_newmoon = 0))
-  expect_error(plot_cast(tree, start_newmoon = 1:2))
-  expect_error(plot_cast(tree, start_newmoon = 1.5))
+  expect_error(plot_cast_ts(1))
+  expect_error(plot_cast_ts(tree, species = 1))
+  expect_error(plot_cast_ts(tree, species = "ok"))
+  expect_error(plot_cast_ts(tree, species = rep("total", 2)))
+  expect_error(plot_cast_ts(tree, level = 1))
+  expect_error(plot_cast_ts(tree, level = "ok" ))
+  expect_error(plot_cast_ts(tree, level = rep("All", 2)))
+  expect_error(plot_cast_ts(tree, cast_type = 1))
+  expect_error(plot_cast_ts(tree, cast_type = "ok"))
+  expect_error(plot_cast_ts(tree, cast_type = rep("forecasts", 2)))
+  expect_error(plot_cast_ts(tree, cast_date = 1))
+  expect_error(plot_cast_ts(tree, cast_date = rep(cast_date, 2)))
+  expect_error(plot_cast_ts(tree, start_newmoon = 0))
+  expect_error(plot_cast_ts(tree, start_newmoon = 1:2))
+  expect_error(plot_cast_ts(tree, start_newmoon = 1.5))
 })
 
-test_that("castplot_xaxis", {
-  expect_silent(castplot_xaxis(tree, c(300, 410)))
-  expect_error(castplot_xaxis("ok", 1:2))
-  expect_error(castplot_xaxis(tree, rep("ok", 2)))
-  expect_error(castplot_xaxis(tree, 1:3))
-  expect_error(castplot_xaxis(tree, c(300.1, 410)))
+test_that("plotcastts_xaxis", {
+  expect_silent(plotcastts_xaxis(tree, c(300, 410)))
+  expect_error(plotcastts_xaxis("ok", 1:2))
+  expect_error(plotcastts_xaxis(tree, rep("ok", 2)))
+  expect_error(plotcastts_xaxis(tree, 1:3))
+  expect_error(plotcastts_xaxis(tree, c(300.1, 410)))
 })
 
-test_that("castplot_ylab", {
-  expect_silent(ylab <- castplot_ylab(tree, "total"))
+test_that("plotcastts_ylab", {
+  expect_silent(ylab <- plotcastts_ylab(tree, "total"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
-  expect_silent(ylab <- castplot_ylab(tree, "BA"))
+  expect_silent(ylab <- plotcastts_ylab(tree, "BA"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
 
-  expect_error(castplot_ylab(1))
-  expect_error(castplot_ylab(tree, species = 1))
-  expect_error(castplot_ylab(tree, species = "ok"))
-  expect_error(castplot_ylab(tree, species = rep("total", 2)))
+  expect_error(plotcastts_ylab(1))
+  expect_error(plotcastts_ylab(tree, species = 1))
+  expect_error(plotcastts_ylab(tree, species = "ok"))
+  expect_error(plotcastts_ylab(tree, species = rep("total", 2)))
 })
 
 test_that("select_most_ab_spp", {

@@ -209,17 +209,24 @@ remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
 #' @param nadot \code{logical} indicator if the dot should be added to the 
 #'   \code{"NA"} species name. Defaults to \code{FALSE}.
 #'
+#' @param set Optional input to return a specified set of species.
+#'
 #' @return \code{character} vector of species abbreviations.
 #'
 #' @export
 #'
-rodent_spp <- function(nadot = FALSE){
+rodent_spp <- function(nadot = FALSE, set = NULL){
   xNAx <- "NA"
   if (nadot){
     xNAx <- "NA."
   }
-  c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", "PI", 
-    "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+  if (set == "evalplot"){
+    out <- c("BA", "DM", "DO", "PP", "OT", "NA", "total")
+  } else{
+    out <- c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", 
+             "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+  }
+  out
 }
 
 #' @title Which columns are species columns

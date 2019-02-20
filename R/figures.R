@@ -1,3 +1,23 @@
+
+plot_eval_recent <- function(tree = dirtree(), 
+                             model = NULL,
+                             species = NULL,
+                             level = "Controls",
+                             cast_dates = NULL, cast_type = "forecasts"){
+
+  metadata <- read_data(tree, "metadata")
+  moons <- read_data(tree, "moons")
+  obs <- read_data(tree, tolower(level))
+
+  casts <- read_casts(tree, cast_type, cast_dates) %>%
+           select_cast(species = species, level = level, model = model)
+
+}
+
+
+
+
+
 #' @title Select the most abundant species from a forecast or hindcast
 #'
 #' @description Given a forecast or hindcast, determine the most abundant
@@ -33,7 +53,7 @@
 #' @param from_date \code{Date} to be used as a reference of when to count
 #'   the \code{lead} from. If \code{NULL} (default), for 
 #'   \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
-#'   \code{plot_species_casts} is not yet reliable for 
+#'   \code{plot_cast_point} is not yet reliable for 
 #'   \code{cast_type = "hindcasts"}.
 #'
 #' @return \code{character} vector of length \code{topx} of the species codes
@@ -132,9 +152,9 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
   to_include <- which(cast_nms_io)[lead]
   newmoonnumber <- metadata$rodent_forecast_newmoons[to_include]
 
-  pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, model = model,
-                       newmoonnumber = newmoonnumber)  
+  pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
+          select_cast(species = species, level = level, model = model,
+                      newmoonnumber = newmoonnumber)  
   pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
 }
 
@@ -173,7 +193,7 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
 #' @param from_date \code{Date} to be used as a reference of when to count
 #'   the \code{lead} from. If \code{NULL} (default), for 
 #'   \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
-#'   \code{plot_species_casts} is not yet reliable for 
+#'   \code{plot_cast_point} is not yet reliable for 
 #'   \code{cast_type = "hindcasts"}.
 #'
 #' @param with_census \code{logical} toggle if the plot should include the
@@ -181,7 +201,7 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
 #'
 #' @export
 #'
-plot_species_casts <- function(tree = dirtree(), species = NULL,
+plot_cast_point <- function(tree = dirtree(), species = NULL,
                                level = "Controls", cast_type = "forecasts", 
                                cast_date = NULL, model = "Ensemble", 
                                lead = 1, from_date = NULL, 
@@ -261,7 +281,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
 
 
   moons <- read_data(tree, "moons")
-  casts <- read_casts(tree, cast_type = cast_type, cast_date = cast_date)
+  casts <- read_cast(tree, cast_type = cast_type, cast_date = cast_date)
 
   if (with_census){
     obs <- read_data(tree, tolower(level))
@@ -288,7 +308,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
     newmoonyear <- metadata$rodent_forecast_years[to_plot]
   }
 
-  pred <- select_casts(casts, species, level, model, newmoonnumber)  
+  pred <- select_cast(casts, species, level, model, newmoonnumber)  
 
   pred <- pred[order(pred$estimate, decreasing = TRUE), ]
   nspp <- nrow(pred)
@@ -303,7 +323,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
        las = 1, xlim = rangex, ylim = rangey)
   mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
-  sppcastsplot_yaxis(tree = tree, species = pred$species)
+  plotcastpoint_yaxis(tree = tree, species = pred$species)
   mtext(main, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
   
   for(i in 1:nspp){
@@ -332,7 +352,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
 #'   axis
 #'
 #' @description Add the y-axis of formatted species names to a 
-#'   \code{\link{plot_species_casts}}.
+#'   \code{\link{plot_cast_point}}.
 #'
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}. Used to access the species list.
@@ -344,7 +364,7 @@ plot_species_casts <- function(tree = dirtree(), species = NULL,
 #'
 #' @export
 #'
-sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
+plotcastpoint_yaxis <- function(tree = dirtree(), species = "total"){
 
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
@@ -359,10 +379,7 @@ sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
   }
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
-  nasppname <- which(is.na(sptab[ , "speciescode"]) == TRUE)
-  if (length(nasppname) == 1){
-    sptab[nasppname, "speciescode"] <- "NA"
-  }
+  sptab <- na_conformer(sptab, "speciescode")
   nspp <- length(species)
   for(i in 1:nspp){
     if (species[i] == "total"){
@@ -411,9 +428,10 @@ sppcastsplot_yaxis <- function(tree = dirtree(), species = "total"){
 #'
 #' @export
 #'
-plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
-                      cast_type = "forecasts", cast_date = NULL,
-                      model = "Ensemble", start_newmoon = 300){
+plot_cast_ts <- function(tree = dirtree(), species = "total", 
+                         level = "Controls", cast_type = "forecasts", 
+                         cast_date = NULL, model = "Ensemble", 
+                         start_newmoon = 300){
 
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
@@ -472,8 +490,8 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
   }
 
   obs <- read_data(tree, tolower(level))
-  pred <- read_casts(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, model = model)   
+  pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
+          select_cast(species = species, level = level, model = model)   
 
   species_o <- species
   if (species == "NA"){
@@ -494,13 +512,13 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
 
   rangex <- c(max(c(start_newmoon, min(obs_x))), max(pred_x))
   rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
-  ylab <- castplot_ylab(tree, species)
+  ylab <- plotcastts_ylab(tree, species)
 
   par(mar = c(3, 4.5, 1, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
   mtext(ylab$text, side = 2, font = ylab$font, cex = 1.5, line = 3)
-  castplot_xaxis(tree, rangex)
+  plotcastts_xaxis(tree, rangex)
 
   points(obs_x, obs_y, type = "l")
   polygon(pred_px, pred_py, col = rgb(0.6757, 0.8438, 0.8984), border = NA)
@@ -511,7 +529,7 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
 
 #' @title Add a -cast plot x-axis
 #'
-#' @description Add the x-axis in \code{\link{plot_cast}}.
+#' @description Add the x-axis in \code{\link{plot_cast_ts}}.
 #'
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}. Used to access the species list.
@@ -521,7 +539,7 @@ plot_cast <- function(tree = dirtree(), species = "total", level = "Controls",
 #'
 #' @export
 #'
-castplot_xaxis <- function(tree, rangex){
+plotcastts_xaxis <- function(tree, rangex){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
@@ -560,7 +578,7 @@ castplot_xaxis <- function(tree, rangex){
 #' @title Expand the name with formating for a -cast plot y label
 #'
 #' @description Produce a list with \code{text} and \code{font} elements to
-#'   control the y-axis label in \code{\link{plot_cast}}.
+#'   control the y-axis label in \code{\link{plot_cast_ts}}.
 #'
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}. Used to access the species list.
@@ -572,7 +590,7 @@ castplot_xaxis <- function(tree, rangex){
 #'
 #' @export
 #'
-castplot_ylab <- function(tree = dirtree(), species = "total"){
+plotcastts_ylab <- function(tree = dirtree(), species = "total"){
 
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
@@ -590,10 +608,7 @@ castplot_ylab <- function(tree = dirtree(), species = "total"){
   lab <- list(text = "", font = 1)
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
-  nasppname <- which(is.na(sptab[ , "speciescode"]) == TRUE)
-  if (length(nasppname) == 1){
-    sptab[nasppname, "speciescode"] <- "NA"
-  }
+  sptab <- na_conformer(sptab, "speciescode")
   if (species == "total"){
     lab$text <- "Total Abundance"
     lab$font <- 1
