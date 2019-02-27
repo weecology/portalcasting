@@ -1,3 +1,183 @@
+#' @title Plot error as a function of lead time for each of a combination of
+#'   species and model
+#'
+#' @description Plot the model-species matrix of error as a function of
+#'   lead time.
+#'
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
+#'
+#' @param species \code{character} vector of the species codes (or 
+#'   \code{"total"} for the total across species) to be selected from or 
+#'   \code{NULL} to include all species and the total. Default set to 
+#'   \code{rodent_spp(set = "evalplot")}, the only setting for which the
+#'   plot is reliably coded/ 
+#'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'   or \code{"Controls"}).
+#'
+#' @param cast_type \code{character} value of the type of -cast of model. Used
+#'   to select the file in the predictions subdirectory. Currently only 
+#'   reliably coded for \code{"forecasts"}.
+#'
+#' @param ndates \code{integer} number of -cast issue dates to include.
+#'
+#' @export
+#'
+plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts", 
+                                   species = rodent_spp(set = "evalplot"),
+                                   level = "Controls", ndates = 3){
+ if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.null(species)){
+    if (!("character" %in% class(species))){
+      stop("`species` is not a character")
+    }
+    if (!all(species %in% rodent_spp("wtotal"))){
+      stop("invalid entry in `species`")
+    }   
+  }
+  if (!is.character(level)){
+    stop("`level` is not a character")
+  }
+  if (length(level) > 1){
+    stop("`level` can only be of length = 1")
+  }
+  if (level != "All" & level != "Controls"){
+    stop("`level` must be 'All' or 'Controls'")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!is.numeric(ndates)){
+    stop("`ndates` is not numeric")
+  }
+  if (length(ndates) > 1){
+    stop("`ndates` can only be of length = 1")
+  }
+  if (ndates < 1 | ndates %% 1 != 0){
+    stop("`ndates` is not a positive integer")
+  }
+
+  casts <- read_casts(tree, cast_type = cast_type) %>%
+           select_casts(species = species, level = level) %>%
+           append_observed_to_cast(tree)
+
+  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
+  sptab <- na_conformer(sptab, "speciescode")
+
+  uspecies <- unique(casts$species)
+  nspecies <- length(uspecies)
+  umodels <- unique(casts$model)
+  nmodels <- length(umodels)
+  if(is.null(ndates)){
+    udates <- unique(casts$date)
+  } else{
+    posdates <- unique(casts$date)
+    nposdates <- length(posdates)
+    nleads <- rep(NA, nposdates)
+    for(i in 1:nposdates){
+      incl <- casts$date == posdates[i] & is.na(casts$error) == FALSE
+      nleads[i] <- length(unique(casts$lead[incl]))
+    }
+    posdates2 <- sort(posdates[nleads > 2], decreasing = TRUE)
+    udates <- posdates2[c(1, 24, 48, 72)[1:ndates]]
+  }
+  nudates <- length(udates)
+  cols <- viridis(nudates, 1, 0, 0.75)
+
+  par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
+  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+       bty = "n")
+  mtext(side = 1, "Lead time (new moons)", line = -0.75)
+  mtext(side = 2, "Forecast error", line = -1)
+  text(1.39, 1.1, "Forecast Issue ", xpd = TRUE, cex = 0.5)
+  text(1.39, 1.09, "Date", xpd = TRUE, cex = 0.5)
+  ys <- seq(1.075, by = -0.011, length.out = nudates)
+  text(1.39, ys, udates, xpd = TRUE, cex = 0.5, col = cols)
+
+  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
+  xrange <- c(max(leads), min(leads))
+
+  incl <- which(casts$species %in% uspecies & casts$model %in% umodels &
+                casts$date %in% udates)
+  casts <- casts[incl, ]
+
+  rowc <- 1 
+  for(i in 1:nspecies){
+    colc <- 0
+    in_i <- which(casts$species == uspecies[i])
+    casts_i <- casts[in_i, ]
+    ymin <- min(c(0, min(casts_i$error, na.rm = TRUE)))
+    ymax <- max(c(0, max(casts_i$error, na.rm = TRUE)))
+    yrange <- c(ymin, ymax)
+    for(j in 1:nmodels){
+      in_ij <- which(casts$species == uspecies[i] & casts$model == umodels[j])
+      casts_ij <- casts[in_ij, ]
+      x1 <- 0.075 + (j - 1) * 0.8 * (1/nmodels)
+      x2 <- x1 + 0.8 * (1/nmodels)
+      y1 <- 0.05 + (i - 1) * 0.9 * (1/nspecies)
+      y2 <- y1 + 0.9 * (1/nspecies)
+      par(mar = c(0.5, 0, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+      nnonna <- length(which(is.na(casts_ij$error) == FALSE))
+      if (nnonna == 0){
+        plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
+             bty = "n")
+      }else{
+        colc <- colc + 1
+        plot(casts_ij$lead, casts_ij$error, xaxt = "n", yaxt = "n", ylab = "", 
+             xlab = "", type = "n", xlim = xrange, ylim = yrange, bty = "L")
+        abline(h = 0, lwd = 2)
+        if(rowc == 1){
+          axis(1, tck = -0.04, labels = FALSE)
+          axis(1, las = 1, cex.axis = 0.5, lwd = 0, line = -1.125)
+        }
+        if(colc == 1){
+          axis(2, tck = -0.04, labels = FALSE)
+          axis(2, las = 1, cex.axis = 0.5, lwd = 0, line = -0.625)
+        }
+        for(k in 1:nudates){
+          casts_ijk <- casts_ij[which(casts_ij$date == udates[k]), ]
+          plotx <- casts_ijk$lead[order(casts_ijk$lead)]
+          ploty <- casts_ijk$error[order(casts_ijk$lead)]
+          plotx <- plotx[-which(is.na(ploty))]
+          ploty <- ploty[-which(is.na(ploty))]
+          points(plotx, ploty, type = "o", pch = 16, col = cols[k], 
+                 cex = 0.75)
+
+        }
+      }
+      if (rowc == nspecies){
+        mtext(side = 3, umodels[j], cex = 0.75, font = 2, line = 0.5) 
+      }
+      if(j == nmodels){
+        par(mar = c(0, 0, 0, 0), fig = c(x2, 0.9, y1, y2), new = TRUE)   
+        plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
+             bty = "n")   
+        if (uspecies[i] == "total"){
+          spt <- "Total Rodents"
+          spf <- 1
+        } else{
+          spptextmatch <- which(sptab[ , "speciescode"] == uspecies[i])
+          spt <- sptab[spptextmatch, "scientificname"]
+          spf <- 3
+        }  
+        text(1, 1, spt, font = spf, cex = 0.4, xpd = TRUE, srt = 270)
+      }
+    }
+    rowc <- rowc + 1
+  }
+
+}
+
 #' @title Select the most abundant species from a forecast or hindcast
 #'
 #' @description Given a forecast or hindcast, determine the most abundant

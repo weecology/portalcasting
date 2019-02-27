@@ -29,6 +29,7 @@ Imports:
   rlang,
   tidyselect,
   tscount,
+  viridis,
   yaml
 Remotes: github::weecology/portalr
 Suggests:

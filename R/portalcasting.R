@@ -18,6 +18,7 @@
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file read.csv read.table tail write.csv 
 #'   write.table
+#' @importFrom viridis viridis
 #' @importFrom yaml as.yaml yaml.load_file
 #'
 

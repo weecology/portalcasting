@@ -708,7 +708,7 @@ append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
     }
   }
   if (add_error){
-    casts$error <- casts$observed - casts$estimate
+    casts$error <- casts$estimate - casts$observed
   }
   if (add_in_window){
     above_lower <- casts$observed > casts$LowerPI
