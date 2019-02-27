@@ -10,7 +10,7 @@ most_recent_census(tree = dirtree())
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
 }
 \value{
-\code{Date} \code{data.frame} of the most recent census.
+\code{Date} of the most recent census.
 }
 \description{
 Determine the most recent census.

@@ -23,23 +23,7 @@ plot_cast_point(tree = tree, with_census = T)
 
 casts <- read_casts(tree)
 
-# new functions...some of the names might still change...
-#
-# fully integrated and tested:
-# read_casts -> read_cast
-# plot_cast -> plot_cast_ts
-# select_casts -> select_cast
-# castplot_ylab -> plotcastts_ylab
-# castplot_xaxis -> plotcastts_xaxis
-# plot_species_casts -> plot_cast_point
-# sppcastsplot_yaxis -> plotcastpoint_yaxis
-# select_most_ab_spp
-# most_recent_cast
-# most_recent_census
-# na_conformer
-# read_casts 
-# cast_is_valid
-# verify_cast 
+
 
 # in progress:
 

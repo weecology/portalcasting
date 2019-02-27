@@ -4,17 +4,31 @@
 *active development*
 
 ## Completed migration of plotting code
-* `plot_cast` is now fully vetted and tested
-* `plot_species_casts` is now added to replace `plot_species_forecast`, but
-is not yet fully vetted and tested.
+* `plot_cast` is now `plot_cast_ts` and is now fully vetted and tested
+* `plotcastts_ylab` and `plotcastts_xaxis` provide tidied functions for
+producing the y label and x axis (respectively) for `plot_cast_ts`.
+* `plot_cast_point` is now added to replace `plot_species_forecast`.
+* `plotcastpoint_yaxis` provides tidied functionality for the y axis of 
+`plot_cast_point`.
 * `select_most_ab_spp` allows for a simple selection of the most abundant
 species from a -cast.
 
 ## Processing of forecasts
+* `read_casts` (old) is now `read_cast` and specifically works for only one -cast.
+* `read_casts` (new) reads in multiple -casts.
 * `select_cast` is now `select_casts` and allows a more flexible selection
 by default.
 * `make_ensemble` now returns a set of predictions with non-`NA` bounds when 
 only one model is included (it returns that model as the ensemble).
+* `most_recent_cast` returns the date of the most recent -cast. Can be dependent
+on the presence of a census.
+* `verify_cast` and `cast_is_valid` replace `forecast_is_valid` from the 
+repo codebase. `verify_cast` is a logical wrapper on `cast_is_valid` that 
+facilitates a pipeline integration. `cast_is_valid` does the major set of
+checks of the cast data frame.  
+
+## Processing of data
+* `most_recent_census` returns the date of the most recent census.
 
 ## Minor changes
 * Argument order in `models` is reversed (`add` then `set`) and defaults in general
@@ -24,6 +38,11 @@ make it easy to run a novel model set.
 general are now `NULL` and `NULL`, but `type = "portalcasting"` within options
 functions and `dirtree` to make it easier to manage a single subdirectory.
 * `fdate` argument has been replaced throughout with `cast_date` for generality.
+
+## Utilities
+* `na_conformer` provides tidy functionality for converting non-character `NA` 
+entries (can get read in from the data due to the `"NA"` species) to `"NA"`. 
+Works for both vectors and data frames.
 
 # portalcasting 0.2.2
 *2019-02-12* *[last code edit](https://github.com/weecology/portalcasting/pull/82)*

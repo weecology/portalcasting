@@ -17,9 +17,9 @@ to select the file in the predictions subdirectory.}
 observed data collected during the predicted census.}
 }
 \value{
-\code{Date} \code{data.frame} of the most recent cast.
+\code{Date} of the most recent cast.
 }
 \description{
-Determine the most recently produced forecast or hindcast
-  in a predictions folder.
+Determine the date of the most recently produced forecast or 
+  hindcast in a predictions folder.
 }

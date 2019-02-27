@@ -508,8 +508,8 @@ cast_is_valid <- function(cast, verbose = FALSE){
 
 #' @title Determine the most recent forecast or hindcast
 #'
-#' @description Determine the most recently produced forecast or hindcast
-#'   in a predictions folder. 
+#' @description Determine the date of the most recently produced forecast or 
+#'   hindcast in a predictions folder.
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'  
@@ -519,7 +519,7 @@ cast_is_valid <- function(cast, verbose = FALSE){
 #' @param with_census \code{logical} toggle if the plot should include the
 #'   observed data collected during the predicted census.
 #'
-#' @return \code{Date} \code{data.frame} of the most recent cast.
+#' @return \code{Date} of the most recent cast.
 #'
 #' @export
 #'

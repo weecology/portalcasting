@@ -163,7 +163,7 @@ read_data <- function(tree, data_name){
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'
-#' @return \code{Date} \code{data.frame} of the most recent census.
+#' @return \code{Date} of the most recent census.
 #'
 #' @export
 #'

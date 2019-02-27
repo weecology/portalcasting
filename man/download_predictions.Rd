@@ -20,5 +20,5 @@ are returned to the console.}
 \description{
 Download the files into the predictions subdirectory in the
   the portalcasting directory tree from the 
-  \href{https://github.com/weecology/portalPredictions/tree/master/predictions}{main repository}.
+  \href{https://bit.ly/2IFuPd7}{main repository}.
 }
