@@ -394,8 +394,7 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 #' @title Verify that a read-in cast file is formatted appropriately
 #'
 #' @description Ensure that a -cast file that has been read in is formatted
-#'   according to 
-#'   \href{https://github.com/weecology/portalPredictions/wiki/Forecast-file-format}{specifications.}
+#'   according to \href{https://bit.ly/2H2z3Jb}{specifications.}
 #'
 #' @param cast \code{data.frame} -cast file read in.
 #'
@@ -430,7 +429,7 @@ cast_is_valid <- function(cast, verbose = FALSE){
   valid_currencies <- c("abundance", "richness", "biomass", "energy")
   valid_levels <- c("All", "Controls", "FullExclosure", "KratExclosure",
                      paste("Plot", 1:24, " ", sep = ""))
-  valid_species <- c("total", rodent_spp())
+  valid_species <- rodent_spp("wtotal")
 
   if(!(all(colnames(cast) %in% valid_columns) & 
        all(valid_columns %in% colnames(cast)))){
@@ -592,7 +591,7 @@ select_cast <- function(casts, species = NULL, level = NULL, model = NULL,
     if (!("character" %in% class(species))){
       stop("`species` is not a character")
     }
-    if (!all(species %in% c(rodent_spp(), "total"))){
+    if (!all(species %in% rodent_spp("wtotal"))){
       stop("invalid entry in `species`")
     }   
   }
@@ -637,4 +636,141 @@ select_cast <- function(casts, species = NULL, level = NULL, model = NULL,
   casts[incl, ]
 }
 
+
+#' @title Append the observed values to a table of -casts
+#'
+#' @description Add a column of observed values and optionally raw error,
+#'   in-prediction-window logical indicator, and lead time columns. Additional
+#'   columns are added by default.
+#'
+#' @param casts Class \code{casts} \code{data.frame} of requested fore- or 
+#'   hindcasts to have observations added to.
+#'
+#' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
+#'
+#' @param add_error \code{logical} indicator if the \code{error} column should
+#'   be added to the output as well. 
+#'
+#' @param add_in_window \code{logical} indicator if the \code{in_window} 
+#'   column should be added to the output as well. 
+#'
+#' @param add_lead \code{logical} indicator if the \code{lead} column should
+#'   be added to the output as well. 
+#'
+#' @return Class \code{casts} \code{data.frame} with additional columns.
+#'
+#' @export
+#'
+append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE, 
+                                    add_in_window = TRUE, add_lead = TRUE){
+  if (!("casts" %in% class(casts))){
+    stop("`casts` is not of class casts")
+  }
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (length(add_error) > 1){
+    stop("`add_error` can only be of length = 1")
+  }
+  if (!is.logical(add_error)){
+    stop("`add_error` is not a logical")
+  }
+  if (length(add_in_window) > 1){
+    stop("`add_in_window` can only be of length = 1")
+  }
+  if (!is.logical(add_in_window)){
+    stop("`add_in_window` is not a logical")
+  }
+  if (length(add_lead) > 1){
+    stop("`add_lead` can only be of length = 1")
+  }
+  if (!is.logical(add_lead)){
+    stop("`add_lead` is not a logical")
+  }
+
+  obs <- read_data(tree, tolower(level)) 
+  colnames(obs)[which(colnames(obs) == "NA.")] <- "NA"
+  casts$observed <- NA
+  for(i in 1:nrow(casts)){
+    nmmatch <- which(obs$newmoonnumber == casts$newmoonnumber[i])
+    sppmatch <- which(colnames(obs) == casts$species[i])
+    obsval <- obs[nmmatch, sppmatch]
+    if (length(obsval) == 1){
+      casts$observed[i] <- obsval
+    }
+  }
+  if (add_error){
+    casts$error <- casts$observed - casts$estimate
+  }
+  if (add_in_window){
+    above_lower <- casts$observed > casts$LowerPI
+    below_upper <- casts$observed < casts$UpperPI
+    casts$in_window <- above_lower & below_upper
+  }
+  if (add_lead){
+    casts$lead <- casts$newmoonnumber - casts$initial_newmoon
+  }
+  casts
+}
+
+#' @title Summarize a table of -casts to -cast-level errors
+#'
+#' @description Summarize error across all of the data points within each 
+#'   forecast or hindcast in a set of -casts. 
+#'
+#' @param casts Class \code{casts} \code{data.frame} of requested fore- or 
+#'   hindcasts with observed values and errors included.
+#'
+#' @param min_observed \code{integer} value for the minimum number of observed
+#'   values needed for a -cast to be retained in the output table. Default is
+#'   \code{1}, which returns all -casts with any observations. To include all
+#'   -casts (even those without any evaluations), set to \code{0}. 
+#'
+#' @return \code{data.frame} of errors summarized to the -cast-level. 
+#'
+#' @export
+#'
+measure_cast_error <- function(casts, min_observed = 1){
+
+  if (!("casts" %in% class(casts))){
+    stop("`casts` is not of class casts")
+  }
+  groupcols <- c("model", "species", "level", "date", "initial_newmoon")
+  cols <- which(colnames(casts) %in% groupcols)
+  castgroup <- apply(casts[ ,cols], 1, paste, collapse = "_")
+  ugroups <- unique(castgroup)
+  ngroups <- length(ugroups)
+  
+  RMSE <- rep(NA, ngroups)
+  coverage <- rep(NA, ngroups)
+  nsamples <- rep(NA, ngroups)
+  nsampleso <- rep(NA, ngroups)
+  tmodel <- rep(NA, ngroups) 
+  tspecies <- rep(NA, ngroups)
+  tlevel <- rep(NA, ngroups)
+  tdate <- rep(NA, ngroups)
+  for(i in 1:ngroups){
+    incl <- which(castgroup == ugroups[i])
+    nsamples[i] <- length(incl)
+    nsampleso[i] <- length(na.omit(casts$observed[incl]))
+    splitname <- strsplit(ugroups[i], "_")[[1]]
+    tmodel[i] <- splitname[2]
+    tspecies[i] <- splitname[4] 
+    tlevel[i] <- splitname[3] 
+    tdate[i] <- splitname[1] 
+    errs <- na.omit(casts$error[incl])
+    RMSE[i] <- sqrt(mean(errs^2))
+    in_window <- na.omit(casts$in_window[incl])
+    coverage[i] <- sum(in_window)/length(in_window)
+  }
+  casttab <- data.frame(model = tmodel, species = tspecies, level = tlevel, 
+                        date = tdate, nsamples = nsamples, 
+                        nsamples_obs = nsampleso, RMSE = RMSE, 
+                        coverage = coverage)
+  no_obs <- which(nsampleso < min_observed)
+  if (length(no_obs) > 0){
+    casttab <- casttab[-no_obs, ]    
+  }
+  casttab
+}
 

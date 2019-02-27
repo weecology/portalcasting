@@ -23,6 +23,5 @@ be printed}
 }
 \description{
 Ensure that a -cast file that has been read in is formatted
-  according to 
-  \href{https://github.com/weecology/portalPredictions/wiki/Forecast-file-format}{specifications.}
+  according to \href{https://bit.ly/2H2z3Jb}{specifications.}
 }

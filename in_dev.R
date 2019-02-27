@@ -3,7 +3,7 @@
 
 # working on bringing the rest of the function code from portalPrediction over
 #   working through page by page on the site: just evaluation page now
-#  uh oh, that's not RMSE
+#  uh oh, that's not RMSE, it's absolute point-wise error
 
 
 devtools::load_all()
@@ -38,17 +38,33 @@ casts <- read_casts(tree)
 # most_recent_census
 
 # in progress:
-# plot_eval_recent (figures)
 # read_casts (process_forecasts)
 # cast_is_valid (process_forecasts)
 # verify_cast (process_forecasts)
+# append_observed_to_cast (process_forecasts)
+# measure_cast_errors (process_forecasts)
 # na_conformer (utilities)
+
+
+
+
+model = NULL
+species = rodent_spp(set = "evalplot")
+level = "Controls"
+cast_dates = NULL
+cast_type = "hindcasts"
+
+
+
+  casts <- read_casts(tree, cast_type, cast_dates) %>%
+           select_cast(species = species, level = level, model = model) %>%
+           append_observed_to_cast(tree)
+  cast_errors <- measure_cast_error(casts)
+
+
 
 # need to add in testing for stuff that uses most_recent_census
 # unfort that's all requiring of at least some predictions, so hits the 
 # test_location issue
-
-# think of compile_casts as wrapper on read_casts for reading in multiples
-# and combining them
 
 

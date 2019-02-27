@@ -1,36 +1,3 @@
-
-plot_eval_recent <- function(tree = dirtree(), 
-                             model = NULL,
-                             species = rodent_spp(set = "evalplot"),
-                             level = "Controls",
-                             cast_dates = NULL, cast_type = "forecasts"){
-
-  metadata <- read_data(tree, "metadata")
-  moons <- read_data(tree, "moons")
-  obs <- read_data(tree, tolower(level)) 
-  colnames(obs)[which(colnames(obs) == "NA.")] <- "NA"
-
-  casts <- read_casts(tree, cast_type, cast_dates) %>%
-           select_cast(species = species, level = level, model = model)
-
-  casts$observed <- NA
-  for(i in 1:nrow(casts)){
-    nmmatch <- which(obs$newmoonnumber == casts$newmoonnumber[i])
-    sppmatch <- which(colnames(obs) == casts$species[i])
-    obsval <- obs[nmmatch, sppmatch]
-    if (length(obsval) == 1){
-      casts$observed[i] <- obsval
-    }
-  }
-  no_obs <- which(is.na(casts$observed) == TRUE)
-  casts <- casts[-no_obs, ]
-
-}
-
-
-
-
-
 #' @title Select the most abundant species from a forecast or hindcast
 #'
 #' @description Given a forecast or hindcast, determine the most abundant
@@ -87,7 +54,7 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
     if (!("character" %in% class(species))){
       stop("`species` is not a character")
     }
-    if (!all(species %in% c(rodent_spp(), "total"))){
+    if (!all(species %in% rodent_spp("wtotal"))){
       stop("invalid entry in `species`")
     }   
   }
@@ -233,7 +200,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
     if (!("character" %in% class(species))){
       stop("`species` is not a character")
     }
-    if (!all(species %in% c(rodent_spp(), "total"))){
+    if (!all(species %in% rodent_spp("wtotal"))){
       stop("invalid entry in `species`")
     }   
   }
@@ -386,7 +353,7 @@ plotcastpoint_yaxis <- function(tree = dirtree(), species = "total"){
     if (!("character" %in% class(species))){
       stop("`species` is not a character")
     }
-    if (!all(species %in% c(rodent_spp(), "total"))){
+    if (!all(species %in% rodent_spp("wtotal"))){
       stop("invalid entry in `species`")
     }   
   }
@@ -455,7 +422,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
   if (length(species) > 1){
     stop("`species` can only be of length = 1")
   }
-  if (!(species %in% c(rodent_spp(), "total"))){
+  if (!(species %in% rodent_spp("wtotal"))){
     stop("invalid entry in `species`")
   }   
   if (!is.character(level)){
@@ -614,7 +581,7 @@ plotcastts_ylab <- function(tree = dirtree(), species = "total"){
   if (length(species) > 1){
     stop("`species` can only be of length = 1")
   }
-  if (!(species %in% c(rodent_spp(), "total"))){
+  if (!(species %in% rodent_spp("wtotal"))){
     stop("invalid entry in `species`")
   }   
 
