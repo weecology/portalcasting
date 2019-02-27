@@ -142,8 +142,6 @@ test_that("select_casts", {
 test_that("most_recent_cast", {
   expect_silent(cdat <- most_recent_cast(cast_opts1$tree))
   expect_is(cdat, "Date")
-  expect_silent(cdat <- most_recent_cast(cast_opts1$tree, with_census = TRUE))
-  expect_is(cdat, "Date")
   expect_error(most_recent_cast(1))
   expect_error(most_recent_cast(cast_opts1$tree, cast_type = 1))
   expect_error(most_recent_cast(cast_opts1$tree, 
