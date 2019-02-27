@@ -219,12 +219,12 @@ remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
 #'
 #' @export
 #'
-rodent_spp <- function(set = NULL, nadot = FALSE){
+rodent_spp <- function(set = "base", nadot = FALSE){
   xNAx <- "NA"
   if (nadot){
     xNAx <- "NA."
   }
-  if (is.null(set) | set == "base"){
+  if (is.null(set) || set == "base"){
     out <- c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", 
              "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
   } else if (set == "wtotal"){

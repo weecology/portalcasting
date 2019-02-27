@@ -41,7 +41,7 @@ casts <- read_casts(tree)
 # read_casts (process_forecasts)
 # cast_is_valid (process_forecasts)
 # verify_cast (process_forecasts)
-# append_observed_to_cast (process_forecasts)
+# append_observed_to_casts (process_forecasts)
 # measure_cast_errors (process_forecasts)
 # na_conformer (utilities)
 

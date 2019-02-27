@@ -4,7 +4,7 @@
 \alias{rodent_spp}
 \title{Rodent species abbreviations}
 \usage{
-rodent_spp(set = NULL, nadot = FALSE)
+rodent_spp(set = "base", nadot = FALSE)
 }
 \arguments{
 \item{set}{\code{character} input of a specified set of species. Default
