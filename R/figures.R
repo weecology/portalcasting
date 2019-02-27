@@ -136,12 +136,12 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
         plot(casts_ij$lead, casts_ij$error, xaxt = "n", yaxt = "n", ylab = "", 
              xlab = "", type = "n", xlim = xrange, ylim = yrange, bty = "L")
         abline(h = 0, lwd = 2)
+        axis(1, tck = -0.03, labels = FALSE)
+        axis(2, tck = -0.03, labels = FALSE)
         if(rowc == 1){
-          axis(1, tck = -0.04, labels = FALSE)
           axis(1, las = 1, cex.axis = 0.65, lwd = 0, line = -1)
         }
         if(colc == 1){
-          axis(2, tck = -0.04, labels = FALSE)
           axis(2, las = 1, cex.axis = 0.65, lwd = 0, line = -0.625)
         }
         for(k in 1:nudates){

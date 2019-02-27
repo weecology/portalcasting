@@ -131,7 +131,6 @@ test_that("select_most_ab_spp", {
 })
 
 test_that("plot_err_lead_spp_mods", {
-  expect_silent(plot_err_lead_spp_mods(tree))
   expect_error(plot_err_lead_spp_mods(1))
   expect_error(plot_err_lead_spp_mods(tree, cast_type = 1))
   expect_error(plot_err_lead_spp_mods(tree, cast_type = "ok"))

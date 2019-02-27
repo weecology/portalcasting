@@ -2,7 +2,7 @@
 #' @importFrom dplyr arrange bind_rows filter full_join group_by inner_join 
 #'   left_join mutate n rename right_join select summarise summarize ungroup 
 #' @importFrom forecast auto.arima ets forecast na.interp
-#' @importFrom graphics axis mtext par plot points polygon
+#' @importFrom graphics abline axis mtext par plot points polygon text
 #' @importFrom grDevices rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate as_date is.Date month year
