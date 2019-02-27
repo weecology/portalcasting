@@ -36,6 +36,7 @@ casts <- read_casts(tree)
 # select_most_ab_spp
 # most_recent_cast
 # most_recent_census
+# na_conformer
 
 # in progress:
 # read_casts (process_forecasts)
@@ -43,7 +44,7 @@ casts <- read_casts(tree)
 # verify_cast (process_forecasts)
 # append_observed_to_casts (process_forecasts)
 # measure_cast_errors (process_forecasts)
-# na_conformer (utilities)
+
 
 
 

@@ -60,3 +60,11 @@ test_that("remove_incompletes", {
   expect_error(remove_incompletes(df, c("ok", "ok")))
   expect_is(remove_incompletes(df, "ok"), "data.frame")
 })
+
+test_that("na_conformer", {
+  expect_silent(nac <- na_conformer(NA))
+  expect_equal(nac, "NA")
+  df <- data.frame(ok = NA)
+  expect_silent(na_conformer(df, "ok"))
+  expect_error(na_conformer(as.matrix(1)))
+})
