@@ -182,8 +182,10 @@ test_that("cast_is_valid", {
 
 
 test_that("append_observed_to_cast", {
-  casts <- read_cast(cast_opts1$tree) 
-  expect_silent(append_observed_to_cast(casts, cast_opts1$tree))
+  casts <- read_cast(cast_opts1$tree)
+  casts1 <- select_casts(casts, level = "Controls")
+  expect_silent(append_observed_to_cast(casts1, cast_opts1$tree))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree))
   expect_error(append_observed_to_cast(casts, 1))
   expect_error(append_observed_to_cast(1, cast_opts1$tree))
   expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
@@ -202,6 +204,7 @@ test_that("append_observed_to_cast", {
 
 test_that("measure_cast_error", {
   casts <- read_cast(cast_opts1$tree) %>% 
+           select_casts(level = "Controls") %>%
            append_observed_to_cast(cast_opts1$tree)
   expect_silent(casttab <- measure_cast_error(casts)) 
   expect_error(measure_cast_error(1))

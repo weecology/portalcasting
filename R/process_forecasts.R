@@ -692,7 +692,10 @@ append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
   if (!is.logical(add_lead)){
     stop("`add_lead` is not a logical")
   }
-
+  level <- unique(casts$level)
+  if (length(level) != 1){
+    stop("`casts` must have (only) one type for `level` column")
+  }
   obs <- read_data(tree, tolower(level)) 
   colnames(obs)[which(colnames(obs) == "NA.")] <- "NA"
   casts$observed <- NA
