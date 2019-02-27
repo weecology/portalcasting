@@ -99,10 +99,10 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
        bty = "n")
   mtext(side = 1, "Lead time (new moons)", line = -0.75)
   mtext(side = 2, "Forecast error", line = -1)
-  text(1.39, 1.1, "Forecast Issue ", xpd = TRUE, cex = 0.5)
-  text(1.39, 1.09, "Date", xpd = TRUE, cex = 0.5)
-  ys <- seq(1.075, by = -0.011, length.out = nudates)
-  text(1.39, ys, udates, xpd = TRUE, cex = 0.5, col = cols)
+  text(1.39, 1.11, "Forecast Issue ", xpd = TRUE, cex = 0.75)
+  text(1.39, 1.095, "Date", xpd = TRUE, cex = 0.75)
+  ys <- seq(1.08, by = -0.013, length.out = nudates)
+  text(1.39, ys, udates, xpd = TRUE, cex = 0.75, col = cols)
 
   leads <- casts$lead[which(is.na(casts$error) == FALSE)]
   xrange <- c(max(leads), min(leads))
@@ -122,10 +122,10 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
     for(j in 1:nmodels){
       in_ij <- which(casts$species == uspecies[i] & casts$model == umodels[j])
       casts_ij <- casts[in_ij, ]
-      x1 <- 0.075 + (j - 1) * 0.8 * (1/nmodels)
+      x1 <- 0.07 + (j - 1) * 0.8 * (1/nmodels)
       x2 <- x1 + 0.8 * (1/nmodels)
-      y1 <- 0.05 + (i - 1) * 0.9 * (1/nspecies)
-      y2 <- y1 + 0.9 * (1/nspecies)
+      y1 <- 0.04 + (i - 1) * 0.92 * (1/nspecies)
+      y2 <- y1 + 0.92 * (1/nspecies)
       par(mar = c(0.5, 0, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
       nnonna <- length(which(is.na(casts_ij$error) == FALSE))
       if (nnonna == 0){
@@ -138,11 +138,11 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
         abline(h = 0, lwd = 2)
         if(rowc == 1){
           axis(1, tck = -0.04, labels = FALSE)
-          axis(1, las = 1, cex.axis = 0.5, lwd = 0, line = -1.125)
+          axis(1, las = 1, cex.axis = 0.65, lwd = 0, line = -1)
         }
         if(colc == 1){
           axis(2, tck = -0.04, labels = FALSE)
-          axis(2, las = 1, cex.axis = 0.5, lwd = 0, line = -0.625)
+          axis(2, las = 1, cex.axis = 0.65, lwd = 0, line = -0.625)
         }
         for(k in 1:nudates){
           casts_ijk <- casts_ij[which(casts_ij$date == udates[k]), ]
@@ -164,13 +164,13 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
              bty = "n")   
         if (uspecies[i] == "total"){
           spt <- "Total Rodents"
-          spf <- 1
+          spf <- 2
         } else{
           spptextmatch <- which(sptab[ , "speciescode"] == uspecies[i])
           spt <- sptab[spptextmatch, "scientificname"]
-          spf <- 3
+          spf <- 4
         }  
-        text(1, 1, spt, font = spf, cex = 0.4, xpd = TRUE, srt = 270)
+        text(0.75, 1, spt, font = spf, cex = 0.55, xpd = TRUE, srt = 270)
       }
     }
     rowc <- rowc + 1

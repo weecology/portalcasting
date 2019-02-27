@@ -12,6 +12,8 @@ producing the y label and x axis (respectively) for `plot_cast_ts`.
 `plot_cast_point`.
 * `select_most_ab_spp` allows for a simple selection of the most abundant
 species from a -cast.
+* `plot_err_lead_spp_mods` is now added to replace the raw code in the 
+evaluation page.
 
 ## Processing of forecasts
 * `read_casts` (old) is now `read_cast` and specifically works for only one -cast.
