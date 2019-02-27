@@ -111,31 +111,31 @@ test_that("read_cast", {
   expect_error(read_cast(cast_opts1$tree, cast_date = "ok"))
 })
 
-test_that("select_cast", {
+test_that("select_casts", {
   casts <- read_cast(cast_opts1$tree)
-  expect_silent(cast <- select_cast(casts))
+  expect_silent(cast <- select_casts(casts))
   expect_is(cast, "casts")
-  expect_silent(cast <- select_cast(casts, species = "total"))
+  expect_silent(cast <- select_casts(casts, species = "total"))
   expect_is(cast, "casts")
-  expect_silent(cast <- select_cast(casts, level = "All"))
+  expect_silent(cast <- select_casts(casts, level = "All"))
   expect_is(cast, "casts")
-  expect_silent(cast <- select_cast(casts, model = "Ensemble"))
+  expect_silent(cast <- select_casts(casts, model = "Ensemble"))
   expect_is(cast, "casts")
 
   metadata <- read_data(cast_opts1$tree, "metadata")
   nmn <- metadata$rodent_forecast_newmoons
-  expect_silent(cast <- select_cast(casts, newmoonnumber = nmn))
+  expect_silent(cast <- select_casts(casts, newmoonnumber = nmn))
   expect_is(cast, "casts")
 
-  expect_error(select_cast(1))
-  expect_error(select_cast(casts, species = 1))
-  expect_error(select_cast(casts, species = "ok"))
-  expect_error(select_cast(casts, level = 1))
-  expect_error(select_cast(casts, level = "ok"))
-  expect_error(select_cast(casts, model = 1))
-  expect_error(select_cast(casts, newmoonnumber = -1))
-  expect_error(select_cast(casts, newmoonnumber = 300.5))
-  expect_error(select_cast(casts, newmoonnumber = "ok"))
+  expect_error(select_casts(1))
+  expect_error(select_casts(casts, species = 1))
+  expect_error(select_casts(casts, species = "ok"))
+  expect_error(select_casts(casts, level = 1))
+  expect_error(select_casts(casts, level = "ok"))
+  expect_error(select_casts(casts, model = 1))
+  expect_error(select_casts(casts, newmoonnumber = -1))
+  expect_error(select_casts(casts, newmoonnumber = 300.5))
+  expect_error(select_casts(casts, newmoonnumber = "ok"))
 })
 
 test_that("most_recent_cast", {

@@ -43,7 +43,7 @@ test_that("plotcastpoint_yaxis", {
   obs <- read_data(tree, tolower(level))
   newmoonnumber <- metadata$rodent_forecast_newmoons[lead]
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_cast(species = species, level = level, model = model,
+          select_casts(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
   expect_silent(plotcastpoint_yaxis(tree = tree, species = pred$species))
   expect_error(plotcastpoint_yaxis(1))

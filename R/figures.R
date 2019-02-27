@@ -133,7 +133,7 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
   newmoonnumber <- metadata$rodent_forecast_newmoons[to_include]
 
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_cast(species = species, level = level, model = model,
+          select_casts(species = species, level = level, model = model,
                       newmoonnumber = newmoonnumber)  
   pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
 }
@@ -288,7 +288,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
     newmoonyear <- metadata$rodent_forecast_years[to_plot]
   }
 
-  pred <- select_cast(casts, species, level, model, newmoonnumber)  
+  pred <- select_casts(casts, species, level, model, newmoonnumber)  
 
   pred <- pred[order(pred$estimate, decreasing = TRUE), ]
   nspp <- nrow(pred)
@@ -471,7 +471,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 
   obs <- read_data(tree, tolower(level))
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_cast(species = species, level = level, model = model)   
+          select_casts(species = species, level = level, model = model)   
 
   species_o <- species
   if (species == "NA"){

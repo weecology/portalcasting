@@ -1,9 +1,9 @@
 # portalcasting (development version)
 
-# [portalcasting 0.2.3](https://github.com/weecology/portalcasting)
+# [portalcasting 0.3.0](https://github.com/weecology/portalcasting)
 *active development*
 
-## Continued migration of plotting code
+## Completed migration of plotting code
 * `plot_cast` is now fully vetted and tested
 * `plot_species_casts` is now added to replace `plot_species_forecast`, but
 is not yet fully vetted and tested.

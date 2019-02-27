@@ -587,7 +587,7 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 #' @export
 #'
-select_cast <- function(casts, species = NULL, level = NULL, model = NULL, 
+select_casts <- function(casts, species = NULL, level = NULL, model = NULL, 
                          newmoonnumber = NULL){
   if (!("casts" %in% class(casts))){
     stop("`casts` is not of class casts")
