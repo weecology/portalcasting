@@ -109,6 +109,7 @@ test_that("read_cast", {
   expect_error(read_cast(cast_opts1$tree, cast_type = "ok"))
   expect_error(read_cast(cast_opts1$tree, cast_date = rep(today(), 2)))
   expect_error(read_cast(cast_opts1$tree, cast_date = "ok"))
+  expect_error(read_cast(cast_opts1$tree, cast_date = "2020-01-01"))
 })
 
 test_that("select_casts", {
@@ -139,13 +140,18 @@ test_that("select_casts", {
 })
 
 test_that("most_recent_cast", {
-  expect_silent(cast_date <- most_recent_cast(cast_opts1$tree))
-  expect_is(cast_date, "Date")
+  expect_silent(cdat <- most_recent_cast(cast_opts1$tree))
+  expect_is(cdat, "Date")
+  expect_silent(cdat <- most_recent_cast(cast_opts1$tree, with_census = TRUE))
+  expect_is(cdat, "Date")
   expect_error(most_recent_cast(1))
   expect_error(most_recent_cast(cast_opts1$tree, cast_type = 1))
   expect_error(most_recent_cast(cast_opts1$tree, 
                                 cast_type = rep("forecasts", 2)))
   expect_error(most_recent_cast(cast_opts1$tree, cast_type = "ok"))
+  expect_error(most_recent_cast(cast_opts1$tree, with_census = "ok"))
+  expect_error(most_recent_cast(cast_opts1$tree, with_census = rep(TRUE, 2)))
+  expect_error(most_recent_cast())
 })
 
 test_that("read_casts", {
@@ -173,4 +179,5 @@ test_that("cast_is_valid", {
   expect_equal(cast_is_valid(bad_cast1), FALSE)
   expect_output(expect_equal(cast_is_valid(bad_cast1, TRUE), FALSE))
   expect_equal(cast_is_valid(bad_cast2), FALSE)
+  expect_output(expect_equal(cast_is_valid(bad_cast2, TRUE), FALSE))
 })
