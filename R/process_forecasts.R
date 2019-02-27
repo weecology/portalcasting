@@ -740,6 +740,16 @@ measure_cast_error <- function(casts, min_observed = 1){
   if (!("casts" %in% class(casts))){
     stop("`casts` is not of class casts")
   }
+  if (length(min_observed) > 1){
+    stop("`min_observed` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(min_observed)) & 
+      !("integer" %in% class(min_observed))){
+    stop("`min_observed` is not of class numeric or integer")
+  }
+  if(min_observed < 0 | min_observed %% 1 != 0){
+    stop("`min_observed` is not a non-negative integer")
+  }
   groupcols <- c("model", "species", "level", "date", "initial_newmoon")
   cols <- which(colnames(casts) %in% groupcols)
   castgroup <- apply(casts[ ,cols], 1, paste, collapse = "_")

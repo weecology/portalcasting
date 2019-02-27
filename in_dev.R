@@ -25,25 +25,17 @@ casts <- read_casts(tree)
 
 
 
-# in progress:
-
-# append_observed_to_casts (process_forecasts)
-# measure_cast_errors (process_forecasts)
-
-
-
-
 
 model = NULL
 species = rodent_spp(set = "evalplot")
 level = "Controls"
 cast_dates = NULL
-cast_type = "hindcasts"
+cast_type = "forecasts"
 
 
 
   casts <- read_casts(tree, cast_type, cast_dates) %>%
-           select_cast(species = species, level = level, model = model) %>%
+           select_casts(species = species, level = level, model = model) %>%
            append_observed_to_cast(tree)
   cast_errors <- measure_cast_error(casts)
 

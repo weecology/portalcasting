@@ -181,3 +181,34 @@ test_that("cast_is_valid", {
   expect_equal(cast_is_valid(bad_cast2), FALSE)
   expect_output(expect_equal(cast_is_valid(bad_cast2, TRUE), FALSE))
 })
+
+
+test_that("append_observed_to_cast", {
+  casts <- read_cast(cast_opts1$tree) 
+  expect_silent(append_observed_to_cast(casts, cast_opts1$tree))
+  expect_error(append_observed_to_cast(casts, 1))
+  expect_error(append_observed_to_cast(1, cast_opts1$tree))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_error = 1))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_error = rep(T,2)))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_in_window = 1))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_in_window = rep(T,2)))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_lead = 1))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_lead = rep(T,2)))
+})
+
+test_that("measure_cast_error", {
+  casts <- read_cast(cast_opts1$tree) %>% 
+           append_observed_to_cast(cast_opts1$tree)
+  expect_silent(casttab <- measure_cast_error(casts)) 
+  expect_error(measure_cast_error(1))
+  expect_error(measure_cast_error(casts, 1.5))
+  expect_error(measure_cast_error(casts, 1:2))
+  expect_error(measure_cast_error(casts, "ok"))
+})
+
