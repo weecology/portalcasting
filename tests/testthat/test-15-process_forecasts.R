@@ -147,3 +147,30 @@ test_that("most_recent_cast", {
                                 cast_type = rep("forecasts", 2)))
   expect_error(most_recent_cast(cast_opts1$tree, cast_type = "ok"))
 })
+
+test_that("read_casts", {
+  expect_silent(casts <- read_casts(cast_opts1$tree))
+  expect_is(casts, "casts")
+  expect_silent(casts2 <- read_casts(cast_opts1$tree, cast_dates = cast_date))
+  expect_is(casts2, "casts")
+  expect_error(read_casts(1))
+  expect_error(read_casts(cast_opts1$tree, cast_type = 1))
+  expect_error(read_casts(cast_opts1$tree, cast_type = rep("forecasts", 2)))
+  expect_error(read_casts(cast_opts1$tree, cast_type = "ok"))
+  expect_error(read_casts(cast_opts1$tree, cast_dates = "ok"))
+})
+
+bad_cast1 <- read.csv("bad_cast1.csv", stringsAsFactors = FALSE)
+bad_cast2 <- read.csv("bad_cast2.csv", stringsAsFactors = FALSE)
+
+test_that("verify_casts", {
+  expect_error(verify_cast(bad_cast1))
+  expect_output(expect_error(verify_cast(bad_cast1, TRUE)))
+  expect_error(verify_cast(na_conformer(bad_cast2)))
+})
+
+test_that("cast_is_valid", {
+  expect_equal(cast_is_valid(bad_cast1), FALSE)
+  expect_output(expect_equal(cast_is_valid(bad_cast1, TRUE), FALSE))
+  expect_equal(cast_is_valid(bad_cast2), FALSE)
+})

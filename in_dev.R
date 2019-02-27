@@ -37,11 +37,12 @@ casts <- read_casts(tree)
 # most_recent_cast
 # most_recent_census
 # na_conformer
+# read_casts 
+# cast_is_valid
+# verify_cast 
 
 # in progress:
-# read_casts (process_forecasts)
-# cast_is_valid (process_forecasts)
-# verify_cast (process_forecasts)
+
 # append_observed_to_casts (process_forecasts)
 # measure_cast_errors (process_forecasts)
 

@@ -371,7 +371,12 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
   if (cast_type!= "forecasts" & cast_type != "hindcasts"){
     stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
   }
-
+  if (!is.null(cast_dates)){
+    cast_dates2 <- tryCatch(as.Date(cast_dates), error = function(x){NA})
+    if (is.na(cast_dates2)){
+      stop("`cast_dates` is not of class Date or conformable to class Date")
+    }
+  }
   if (is.null(cast_dates)){
     pfolderpath <- sub_path(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
