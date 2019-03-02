@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clear tmp subdirectory — clear_tmp • portalcasting</title>
+<title>Verify that a read-in cast file is formatted appropriately — verify_cast • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Clear tmp subdirectory — clear_tmp" />
+<meta property="og:title" content="Verify that a read-in cast file is formatted appropriately — verify_cast" />
 
-<meta property="og:description" content="Remove all of the files from the tmp subdirectory 
-  specifically." />
+<meta property="og:description" content="Ensure that a -cast file that has been read in is formatted
+  according to specifications." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,29 +121,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clear tmp subdirectory</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
-    <div class="hidden name"><code>clear_tmp.Rd</code></div>
+    <h1>Verify that a read-in cast file is formatted appropriately</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
+    <div class="hidden name"><code>verify_cast.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove all of the files from the tmp subdirectory 
-  specifically.</p>
+    <p>Ensure that a -cast file that has been read in is formatted
+  according to <a href='https://bit.ly/2H2z3Jb'>specifications.</a></p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>verify_cast</span>(<span class='no'>cast</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>cast_is_valid</span>(<span class='no'>cast</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tree</th>
-      <td><p><code>dirtree</code>-class directory tree list. See 
-<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+      <th>cast</th>
+      <td><p><code>data.frame</code> -cast file read in.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p><code>logical</code> indicator if details of failure should
+be printed</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>verify_cast</code>: <code>cast</code> as read in (as long as it is 
+  valid). <br /> <br />
+  <code>cast_is_valid</code>: <code>logical</code> of if the -cast is formatted 
+  properly.</p>
     
 
   </div>
@@ -151,7 +164,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

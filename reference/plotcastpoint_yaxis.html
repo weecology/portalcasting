@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read in a cast file and format it for specific class — read_casts • portalcasting</title>
+<title>Expand the names with formating for a multi-species -cast plot y 
+  axis — plotcastpoint_yaxis • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +31,11 @@
 
 
 
-<meta property="og:title" content="Read in a cast file and format it for specific class — read_casts" />
+<meta property="og:title" content="Expand the names with formating for a multi-species -cast plot y 
+  axis — plotcastpoint_yaxis" />
 
-<meta property="og:description" content="Read in a specified forecast or hindcast data file and ensure 
-  its class attribute is appropriate for usage within the portalcasting 
-  pipeline. Current" />
+<meta property="og:description" content="Add the y-axis of formatted species names to a 
+  plot_cast_point." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -122,45 +123,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read in a cast file and format it for specific class</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
-    <div class="hidden name"><code>read_casts.Rd</code></div>
+    <h1>Expand the names with formating for a multi-species -cast plot y 
+  axis</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>plotcastpoint_yaxis.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Read in a specified forecast or hindcast data file and ensure 
-  its class attribute is appropriate for usage within the portalcasting 
-  pipeline. Current</p>
+    <p>Add the y-axis of formatted species names to a 
+  <code><a href='plot_cast_point.html'>plot_cast_point</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_casts</span>(<span class='no'>tree</span>, <span class='kw'>casttype</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>, <span class='kw'>castdate</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>())</pre>
+    <pre class="usage"><span class='fu'>plotcastpoint_yaxis</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tree</th>
-      <td><p><code>dirtree</code>-class list. See <code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>. Used to access the species list.</p></td>
     </tr>
     <tr>
-      <th>casttype</th>
-      <td><p><code>character</code> value of the type of -cast of model. Used
-to select the file in the predictions subdirectory. Currently only 
-reliably coded for <code>"forecasts"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>castdate</th>
-      <td><p><code>Date</code> the predictions were made. Used to select the
-file in the predictions subdirectory.</p></td>
+      <th>species</th>
+      <td><p><code>character</code> vector of the species codes (or 
+<code>"total"</code> for the total across species) being plotted.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Class <code>casts</code> <code>data.frame</code> of requested fore- or 
-  hindcasts.</p>
+    <p><code>list</code> of <code>text</code> and <code>font</code> elements.</p>
     
 
   </div>

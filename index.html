@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
 <div id="status-deployed-in-development" class="section level2">
 <h2 class="hasAnchor">
 <a href="#status-deployed-in-development" class="anchor"></a>Status: Deployed, In Development</h2>
-<p>This package is currently <strong><em>in development</em></strong> by the <a href="https://www.weecology.org">Weecology Team</a>. Most of the code underlying the forecasting functionality has been migrated over from the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>, which contains the code executed by the continuous integration. Output (website) generation functionality is still housed there, however. Coincidingly, the <code>portalcasting</code> package is deployed for use within the <a href="https://github.com/weecology/portalPredictions">repository</a>.</p>
+<p>This package is currently <strong><em>in development</em></strong> by the <a href="https://www.weecology.org">Weecology Team</a>. Most of the code underlying the forecasting functionality has been migrated over from the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>, which contains the code executed by the continuous integration. Coincidingly, the <code>portalcasting</code> package is deployed for use within the <a href="https://github.com/weecology/portalPredictions">repository</a>. Output (website) generation functionality is still housed there, however.</p>
 <p>Note that the current master branch code is not necessarily always being executed within the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>. This is a desired result of our use of a <a href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">software container</a>, which enables reproducibility. Presently, we use a <a href="https://www.docker.com/">Docker</a> image of the software environment ro create a container for the code and house it on <a href="https://hub.docker.com/r/weecology/portal_predictions">DockerHub</a>. The image update (<em>i.e.</em> the integration of the current master branch of <code>portalcasting</code> into the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>) necessarily lags behind updates to the master branch of <code>portalcasting</code>, although ideally not long behind.</p>
 <p>The API is moderately well defined at this point, but is evolving and may change substantially. Output functions have not been brought over from the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>.</p>
 </div>
@@ -107,8 +107,8 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the R package from github with:</p>
-<pre><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("devtools")</a></code></pre>
-<pre><code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_github("weecology/portalcasting")</a></code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"weecology/portalcasting"</span>)</a></code></pre></div>
 <p>If you wish to spin up a local container from the Portal Predictions image (to ensure a stable runtime environment for implementation of the <code>portalcasting</code> pipeline), you can run</p>
 <pre><code>sudo docker pull weecology/portal_predictions</code></pre>
 <p>from a shell on a computer with <a href="https://www.docker.com/">Docker</a> installed (Windows users need not include <code>sudo</code>). A tutorial on using the image to spin up a container is forthcoming. In the meantime, general usage should be consistent if the user installs the current version of the packages listed in the <a href="https://github.com/weecology/portalPredictions/blob/master/install-packages.R"><code>install-packages.R</code> file in the main repository</a>.</p>
@@ -120,10 +120,19 @@
 <p>The <code><a href="reference/portalcast.html">portalcast()</a></code> function controls the running of potentially multiple models for either a forecast or a hindcast. It will prepare the data (rodents, covariates, model metadata) as needed, verify that the requested models are available to run, run the models, compile the output, and generate an ensemble (if desired). Presently, the preloaded model set includes <a href="https://weecology.github.io/portalcasting/articles/models.html">four models</a>: ESSS, AutoArima, nbGARCH, and pevGARCH.</p>
 <p>The <code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code> function simply removes the temporary files and folders from the directory.</p>
 <p>All required inputs to <code><a href="reference/setup_dir.html">setup_dir()</a></code>, <code><a href="reference/portalcast.html">portalcast()</a></code>, and <code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code> are encompassed within the singular argument <code>options_all</code>, which is a hierarchical list of options settings, defined through the options-settting function <code><a href="reference/all_options.html">all_options()</a></code> and the default values are appropriate for basic forecast usage:</p>
-<pre><code><a href="reference/setup_dir.html">setup_dir()</a></code></pre>
-<pre><code><a href="reference/portalcast.html">portalcast()</a></code></pre>
-<pre><code><a href="reference/cleanup_dir.html">cleanup_dir()</a></code></pre>
-<p>There are many options available for the user to control, and a full list can be found by running <code><a href="reference/all_options.html">?all_options</a></code>, to return the help file for the function that generates the hierarchical options list.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/setup_dir.html">setup_dir</a></span>()</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="reference/portalcast.html">portalcast</a></span>()</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="reference/cleanup_dir.html">cleanup_dir</a></span>()</a></code></pre></div>
+<p>There are many options available for the user to control the <code>portalcasting</code> pipeline. A full list can be found by running <code><a href="reference/all_options.html">?all_options</a></code>, to return the help file for the function that generates the hierarchical options list.</p>
+<p>Once the models have finished running, you can read the results back into R using</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/read_cast.html">read_casts</a></span>()</a></code></pre></div>
+<p>and select specific subsets of the results with the <code>select_casts</code> function, which has arguments to allow filtering based on <code>species</code>, <code>level</code>, <code>model</code>, and <code>newmoonnumber</code>, with the default being to return all values:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">casts &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_cast.html">read_cast</a></span>()</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="reference/select_casts.html">select_casts</a></span>(casts, <span class="dt">species =</span> <span class="st">"total"</span>, <span class="dt">model =</span> <span class="st">"Ensemble"</span>, <span class="dt">level =</span> <span class="st">"All"</span>)</a></code></pre></div>
+<p>Basic plotting of the forecasts can be executed for single-species timeseries using <code>plot_cast</code>, which defaults to plotting the total abundance for the control plots under the ensemble model, but has arguments to allow full flexibility:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">plot_cast</span>()</a></code></pre></div>
+<p>Similarly, the point-in-time forecasts for multiple species can be compared using <code>plot_species_casts</code>, which defaults to all species and the total abundance one step ahead for the control plots under the ensemble model, but has arguments to allow full flexibility:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">plot_species_casts</span>()</a></code></pre></div>
 <p>For further information about the <code>portalcasting</code> codebase see the <a href="https://weecology.github.io/portalcasting/articles/codebase.html">vignette</a>.</p>
 <p>If you are interested in adding a model to the preloaded <a href="https://weecology.github.io/portalcasting/articles/models.html">set of four models</a>, see the <a href="https://weecology.github.io/portalcasting/articles/adding_a_model.html">Adding a Model vignette</a>.</p>
 </div>

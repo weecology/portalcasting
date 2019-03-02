@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -133,11 +133,19 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>rodent_spp</span>(<span class='kw'>nadot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>rodent_spp</span>(<span class='kw'>set</span> <span class='kw'>=</span> <span class='st'>"base"</span>, <span class='kw'>nadot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>set</th>
+      <td><p><code>character</code> input of a specified set of species. Default
+entry (<code>"base"</code>) returns the standard set of all species included.
+Other options include <code>"wtotal"</code> (same as <code>"base"</code> but
+with "total" as well) and <code>"evalplot"</code> which only returns a subset
+of common species to be included in the evaluations plots.</p></td>
+    </tr>
     <tr>
       <th>nadot</th>
       <td><p><code>logical</code> indicator if the dot should be added to the 

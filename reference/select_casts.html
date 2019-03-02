@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clear tmp subdirectory — clear_tmp • portalcasting</title>
+<title>Select the specific fore- or hindcast from a casts table — select_casts • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Clear tmp subdirectory — clear_tmp" />
+<meta property="og:title" content="Select the specific fore- or hindcast from a casts table — select_casts" />
 
-<meta property="og:description" content="Remove all of the files from the tmp subdirectory 
-  specifically." />
+<meta property="og:description" content="Given a casts-class data.frame of many models'
+  predictions, select a specific subset for use." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,29 +121,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clear tmp subdirectory</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
-    <div class="hidden name"><code>clear_tmp.Rd</code></div>
+    <h1>Select the specific fore- or hindcast from a casts table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
+    <div class="hidden name"><code>select_casts.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove all of the files from the tmp subdirectory 
-  specifically.</p>
+    <p>Given a <code>casts</code>-class <code>data.frame</code> of many models'
+  predictions, select a specific subset for use.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>select_casts</span>(<span class='no'>casts</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>newmoonnumber</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tree</th>
-      <td><p><code>dirtree</code>-class directory tree list. See 
-<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+      <th>casts</th>
+      <td><p>Class <code>casts</code> <code>data.frame</code> of requested fore- or 
+hindcasts to be selected from.</p></td>
+    </tr>
+    <tr>
+      <th>species</th>
+      <td><p><code>character</code> value(s) of the species code(s) or
+<code>"total"</code> for the total across species. If <code>NULL</code>, all species 
+and "total" are returned.</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p><code>character</code> value of the level of interest (<code>"All"</code> 
+or <code>"Controls"</code>). If <code>NULL</code>, all levels are returned.</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p><code>character</code> value(s) of the name(s) (or 
+<code>"Ensemble"</code>) of the model(s) of interest. If <code>NULL</code>, all
+models are returned.</p></td>
+    </tr>
+    <tr>
+      <th>newmoonnumber</th>
+      <td><p><code>integer</code>-conformable value(s) of the 
+newmoonnumber(s) of interest. If <code>NULL</code>, all newmoons are returned.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Class <code>casts</code> <code>data.frame</code> of trimmed fore- or 
+  hindcasts.</p>
     
 
   </div>
@@ -151,7 +179,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

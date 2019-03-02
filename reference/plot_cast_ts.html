@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clear tmp subdirectory — clear_tmp • portalcasting</title>
+<title>Visualize a forecast or hindcast — plot_cast_ts • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Clear tmp subdirectory — clear_tmp" />
+<meta property="og:title" content="Visualize a forecast or hindcast — plot_cast_ts" />
 
-<meta property="og:description" content="Remove all of the files from the tmp subdirectory 
-  specifically." />
+<meta property="og:description" content="Plot an observed timeseries and forecast or hindcast 
+  timeseries with a prediction interval. Currently only reliable for 
+  forecasts." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,19 +122,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clear tmp subdirectory</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
-    <div class="hidden name"><code>clear_tmp.Rd</code></div>
+    <h1>Visualize a forecast or hindcast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>plot_cast_ts.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove all of the files from the tmp subdirectory 
-  specifically.</p>
+    <p>Plot an observed timeseries and forecast or hindcast 
+  timeseries with a prediction interval. Currently only reliable for 
+  forecasts.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>plot_cast_ts</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
+  <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"Ensemble"</span>,
+  <span class='kw'>start_newmoon</span> <span class='kw'>=</span> <span class='fl'>300</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,6 +146,37 @@
       <th>tree</th>
       <td><p><code>dirtree</code>-class directory tree list. See 
 <code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>species</th>
+      <td><p><code>character</code> value of the species code or <code>"total"</code>
+for the total across species.</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p><code>character</code> value of the level of interest (<code>"All"</code> 
+or <code>"Controls"</code>).</p></td>
+    </tr>
+    <tr>
+      <th>cast_type</th>
+      <td><p><code>character</code> value of the type of -cast of model. Used
+to select the file in the predictions subdirectory. Currently only 
+reliably coded for <code>"forecasts"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>cast_date</th>
+      <td><p><code>Date</code> the predictions were made. Used to select the
+file in the predictions subdirectory.</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p><code>character</code> value of the name (or <code>"Ensemble"</code>) of
+the model to be plotted.</p></td>
+    </tr>
+    <tr>
+      <th>start_newmoon</th>
+      <td><p><code>integer</code>-conformable newmoon number used as the
+the minimum x value for the plot.</p></td>
     </tr>
     </table>
     

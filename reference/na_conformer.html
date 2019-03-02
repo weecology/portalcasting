@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add a -cast plot x-axis — castplot_xaxis • portalcasting</title>
+<title>Conform NA entries to "NA" entries — na_conformer • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Add a -cast plot x-axis — castplot_xaxis" />
+<meta property="og:title" content="Conform NA entries to "NA" entries — na_conformer" />
 
-<meta property="og:description" content="Add the x-axis in plot_cast." />
+<meta property="og:description" content="Given the species abbreviation NA, when data are read in, 
+  there can be an NA when it should be an &quot;NA&quot;. This function
+  conforms the entries to be proper character values." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -120,33 +122,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add a -cast plot x-axis</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
-    <div class="hidden name"><code>castplot_xaxis.Rd</code></div>
+    <h1>Conform NA entries to "NA" entries</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
+    <div class="hidden name"><code>na_conformer.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Add the x-axis in <code><a href='plot_cast.html'>plot_cast</a></code>.</p>
+    <p>Given the species abbreviation NA, when data are read in, 
+  there can be an <code>NA</code> when it should be an <code>"NA"</code>. This function
+  conforms the entries to be proper character values.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>castplot_xaxis</span>(<span class='no'>tree</span>, <span class='no'>rangex</span>)</pre>
+    <pre class="usage"><span class='fu'>na_conformer</span>(<span class='no'>x</span>, <span class='kw'>colname</span> <span class='kw'>=</span> <span class='st'>"species"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tree</th>
-      <td><p><code>dirtree</code>-class directory tree list. See 
-<code><a href='dirtree.html'>dirtree</a></code>. Used to access the species list.</p></td>
+      <th>x</th>
+      <td><p>Either [1] a <code>data.frame</code> containing <code>colname</code> as a 
+column with <code>NA</code>s that need to be conformed to <code>"NA"</code>s or [2]
+a vector with <code>NA</code>s that need to be conformed to <code>"NA"</code>s</p></td>
     </tr>
     <tr>
-      <th>rangex</th>
-      <td><p><code>integer</code>-conformable vector of two values corresponding
-to the minimum and maximum newmoonnumbers plotted.</p></td>
+      <th>colname</th>
+      <td><p><code>character</code> value of the column name in <code>tab</code> to 
+conform the <code>NA</code>s to <code>"NA"</code>s.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>x</code> with any <code>NA</code> in <code>colname</code> replaced with 
+  <code>"NA"</code></p>
     
 
   </div>
@@ -154,7 +164,9 @@ to the minimum and maximum newmoonnumbers plotted.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

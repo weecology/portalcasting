@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clear tmp subdirectory — clear_tmp • portalcasting</title>
+<title>Append the observed values to a table of -casts — append_observed_to_cast • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Clear tmp subdirectory — clear_tmp" />
+<meta property="og:title" content="Append the observed values to a table of -casts — append_observed_to_cast" />
 
-<meta property="og:description" content="Remove all of the files from the tmp subdirectory 
-  specifically." />
+<meta property="og:description" content="Add a column of observed values and optionally raw error,
+  in-prediction-window logical indicator, and lead time columns. Additional
+  columns are added by default." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,29 +122,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clear tmp subdirectory</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
-    <div class="hidden name"><code>clear_tmp.Rd</code></div>
+    <h1>Append the observed values to a table of -casts</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
+    <div class="hidden name"><code>append_observed_to_cast.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove all of the files from the tmp subdirectory 
-  specifically.</p>
+    <p>Add a column of observed values and optionally raw error,
+  in-prediction-window logical indicator, and lead time columns. Additional
+  columns are added by default.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>append_observed_to_cast</span>(<span class='no'>casts</span>, <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>add_error</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>add_in_window</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>add_lead</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>casts</th>
+      <td><p>Class <code>casts</code> <code>data.frame</code> of requested fore- or 
+hindcasts to have observations added to.</p></td>
+    </tr>
+    <tr>
       <th>tree</th>
-      <td><p><code>dirtree</code>-class directory tree list. See 
-<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+      <td><p><code>dirtree</code>-class list. See <code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>add_error</th>
+      <td><p><code>logical</code> indicator if the <code>error</code> column should
+be added to the output as well.</p></td>
+    </tr>
+    <tr>
+      <th>add_in_window</th>
+      <td><p><code>logical</code> indicator if the <code>in_window</code> 
+column should be added to the output as well.</p></td>
+    </tr>
+    <tr>
+      <th>add_lead</th>
+      <td><p><code>logical</code> indicator if the <code>lead</code> column should
+be added to the output as well.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Class <code>casts</code> <code>data.frame</code> with additional columns.</p>
     
 
   </div>
@@ -151,7 +177,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

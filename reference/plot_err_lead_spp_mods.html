@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clear tmp subdirectory — clear_tmp • portalcasting</title>
+<title>Plot error as a function of lead time for each of a combination of
+  species and model — plot_err_lead_spp_mods • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +31,11 @@
 
 
 
-<meta property="og:title" content="Clear tmp subdirectory — clear_tmp" />
+<meta property="og:title" content="Plot error as a function of lead time for each of a combination of
+  species and model — plot_err_lead_spp_mods" />
 
-<meta property="og:description" content="Remove all of the files from the tmp subdirectory 
-  specifically." />
+<meta property="og:description" content="Plot the model-species matrix of error as a function of
+  lead time." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,19 +123,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clear tmp subdirectory</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
-    <div class="hidden name"><code>clear_tmp.Rd</code></div>
+    <h1>Plot error as a function of lead time for each of a combination of
+  species and model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>plot_err_lead_spp_mods.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove all of the files from the tmp subdirectory 
-  specifically.</p>
+    <p>Plot the model-species matrix of error as a function of
+  lead time.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>plot_err_lead_spp_mods</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
+  <span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='rodent_spp.html'>rodent_spp</a></span>(<span class='kw'>set</span> <span class='kw'>=</span> <span class='st'>"evalplot"</span>), <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
+  <span class='kw'>ndates</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,6 +147,29 @@
       <th>tree</th>
       <td><p><code>dirtree</code>-class directory tree list. See 
 <code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>cast_type</th>
+      <td><p><code>character</code> value of the type of -cast of model. Used
+to select the file in the predictions subdirectory. Currently only 
+reliably coded for <code>"forecasts"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>species</th>
+      <td><p><code>character</code> vector of the species codes (or 
+<code>"total"</code> for the total across species) to be selected from or 
+<code>NULL</code> to include all species and the total. Default set to 
+<code><a href='rodent_spp.html'>rodent_spp(set = "evalplot")</a></code>, the only setting for which the
+plot is reliably coded/</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p><code>character</code> value of the level of interest (<code>"All"</code> 
+or <code>"Controls"</code>).</p></td>
+    </tr>
+    <tr>
+      <th>ndates</th>
+      <td><p><code>integer</code> number of -cast issue dates to include.</p></td>
     </tr>
     </table>
     

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select the specific fore- or hindcast from a casts table — select_cast • portalcasting</title>
+<title>Select the most abundant species from a forecast or hindcast — select_most_ab_spp • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Select the specific fore- or hindcast from a casts table — select_cast" />
+<meta property="og:title" content="Select the most abundant species from a forecast or hindcast — select_most_ab_spp" />
 
-<meta property="og:description" content="Given a casts-class data.frame of many models'
-  predictions, select a specific one for use." />
+<meta property="og:description" content="Given a forecast or hindcast, determine the most abundant
+  species predicted. Currently only reliable for forecasts." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -121,33 +121,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select the specific fore- or hindcast from a casts table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_forecasts.R'><code>R/process_forecasts.R</code></a></small>
-    <div class="hidden name"><code>select_cast.Rd</code></div>
+    <h1>Select the most abundant species from a forecast or hindcast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>select_most_ab_spp.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Given a <code>casts</code>-class <code>data.frame</code> of many models'
-  predictions, select a specific one for use.</p>
+    <p>Given a forecast or hindcast, determine the most abundant
+  species predicted. Currently only reliable for forecasts.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>select_cast</span>(<span class='no'>casts</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"Ensemble"</span>)</pre>
+    <pre class="usage"><span class='fu'>select_most_ab_spp</span>(<span class='kw'>topx</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(),
+  <span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='rodent_spp.html'>rodent_spp</a></span>(), <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
+  <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"Ensemble"</span>,
+  <span class='kw'>lead</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>from_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>casts</th>
-      <td><p>Class <code>casts</code> <code>data.frame</code> of requested fore- or 
-hindcasts to be selected from.</p></td>
+      <th>topx</th>
+      <td><p><code>integer</code>-conformable numeric value for the top number of
+species to select.</p></td>
+    </tr>
+    <tr>
+      <th>tree</th>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     <tr>
       <th>species</th>
-      <td><p><code>character</code> value of the species code or <code>"total"</code>
-for the total across species.</p></td>
+      <td><p><code>character</code> vector of the species codes (or 
+<code>"total"</code> for the total across species) to be selected from or 
+<code>NULL</code> to include all species and the total.</p></td>
     </tr>
     <tr>
       <th>level</th>
@@ -155,11 +163,41 @@ for the total across species.</p></td>
 or <code>"Controls"</code>).</p></td>
     </tr>
     <tr>
+      <th>cast_type</th>
+      <td><p><code>character</code> value of the type of -cast of model. Used
+to select the file in the predictions subdirectory. Currently only 
+reliably coded for <code>"forecasts"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>cast_date</th>
+      <td><p><code>Date</code> the predictions were made. Used to select the
+file in the predictions subdirectory. If <code>NULL</code> (default), the
+most recently made -cast is selected.</p></td>
+    </tr>
+    <tr>
       <th>model</th>
       <td><p><code>character</code> value of the name (or <code>"Ensemble"</code>) of
 the model to be plotted.</p></td>
     </tr>
+    <tr>
+      <th>lead</th>
+      <td><p><code>integer</code>-conformable lead of the newmoon number used to
+select the data plotted.</p></td>
+    </tr>
+    <tr>
+      <th>from_date</th>
+      <td><p><code>Date</code> to be used as a reference of when to count
+the <code>lead</code> from. If <code>NULL</code> (default), for 
+<code>cast_type = "forecasts"</code>, <code>from_date = cast_date</code> and 
+<code>plot_cast_point</code> is not yet reliable for 
+<code>cast_type = "hindcasts"</code>.</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>character</code> vector of length <code>topx</code> of the species codes
+  (see <code><a href='rodent_spp.html'>rodent_spp</a></code>) of the selected species.</p>
     
 
   </div>
@@ -167,7 +205,9 @@ the model to be plotted.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

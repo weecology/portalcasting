@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clear tmp subdirectory — clear_tmp • portalcasting</title>
+<title>Add a -cast plot x-axis — plotcastts_xaxis • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Clear tmp subdirectory — clear_tmp" />
+<meta property="og:title" content="Add a -cast plot x-axis — plotcastts_xaxis" />
 
-<meta property="og:description" content="Remove all of the files from the tmp subdirectory 
-  specifically." />
+<meta property="og:description" content="Add the x-axis in plot_cast_ts." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,19 +120,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clear tmp subdirectory</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
-    <div class="hidden name"><code>clear_tmp.Rd</code></div>
+    <h1>Add a -cast plot x-axis</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>plotcastts_xaxis.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove all of the files from the tmp subdirectory 
-  specifically.</p>
+    <p>Add the x-axis in <code><a href='plot_cast_ts.html'>plot_cast_ts</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
+    <pre class="usage"><span class='fu'>plotcastts_xaxis</span>(<span class='no'>tree</span>, <span class='no'>rangex</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +139,12 @@
     <tr>
       <th>tree</th>
       <td><p><code>dirtree</code>-class directory tree list. See 
-<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
+<code><a href='dirtree.html'>dirtree</a></code>. Used to access the species list.</p></td>
+    </tr>
+    <tr>
+      <th>rangex</th>
+      <td><p><code>integer</code>-conformable vector of two values corresponding
+to the minimum and maximum newmoonnumbers plotted.</p></td>
     </tr>
     </table>
     

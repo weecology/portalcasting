@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -174,6 +174,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="append_observed_to_cast.html">append_observed_to_cast()</a></code> </p>
+        </td>
+        <td><p>Append the observed values to a table of -casts</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="append_past_moons_to_raw.html">append_past_moons_to_raw()</a></code> </p>
         </td>
         <td><p>Append missing past moons to the raw data</p></td>
@@ -196,18 +202,6 @@
           <p><code><a href="cast_models.html">cast_models()</a></code> </p>
         </td>
         <td><p>Source the scripts to run the selected forecast or hindcast models</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="castplot_xaxis.html">castplot_xaxis()</a></code> </p>
-        </td>
-        <td><p>Add a -cast plot x-axis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="castplot_ylab.html">castplot_ylab()</a></code> </p>
-        </td>
-        <td><p>Expand the name with formating for a -cast plot y label</p></td>
       </tr><tr>
         
         <td>
@@ -361,6 +355,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="measure_cast_error.html">measure_cast_error()</a></code> </p>
+        </td>
+        <td><p>Summarize a table of -casts to -cast-level errors</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="model_options.html">model_options()</a></code> <code><a href="model_options.html">AutoArima_options()</a></code> <code><a href="model_options.html">ESSS_options()</a></code> <code><a href="model_options.html">nbGARCH_options()</a></code> <code><a href="model_options.html">pevGARCH_options()</a></code> </p>
         </td>
         <td><p>Prepare options for a portalcasting model</p></td>
@@ -386,6 +386,24 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="most_recent_cast.html">most_recent_cast()</a></code> </p>
+        </td>
+        <td><p>Determine the most recent forecast or hindcast</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="most_recent_census.html">most_recent_census()</a></code> </p>
+        </td>
+        <td><p>Determine the most recent data collection</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="na_conformer.html">na_conformer()</a></code> </p>
+        </td>
+        <td><p>Conform NA entries to "NA" entries</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="nbgarch.html">nbGARCH()</a></code> </p>
         </td>
         <td><p>negative binomial Generalized AutoRegressive Conditional
@@ -400,9 +418,48 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="plot_cast.html">plot_cast()</a></code> </p>
+          <p><code><a href="plot_cast_point.html">plot_cast_point()</a></code> </p>
+        </td>
+        <td><p>Plot forecast or hindcast predictions for a given point in time 
+  across multiple species.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_cast_ts.html">plot_cast_ts()</a></code> </p>
         </td>
         <td><p>Visualize a forecast or hindcast</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_cov_RMSE_mod_spp.html">plot_cov_RMSE_mod_spp()</a></code> </p>
+        </td>
+        <td><p>Plot RMSE and coverage as a function of model for each species</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_err_lead_spp_mods.html">plot_err_lead_spp_mods()</a></code> </p>
+        </td>
+        <td><p>Plot error as a function of lead time for each of a combination of
+  species and model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plotcastpoint_yaxis.html">plotcastpoint_yaxis()</a></code> </p>
+        </td>
+        <td><p>Expand the names with formating for a multi-species -cast plot y 
+  axis</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plotcastts_xaxis.html">plotcastts_xaxis()</a></code> </p>
+        </td>
+        <td><p>Add a -cast plot x-axis</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plotcastts_ylab.html">plotcastts_ylab()</a></code> </p>
+        </td>
+        <td><p>Expand the name with formating for a -cast plot y label</p></td>
       </tr><tr>
         
         <td>
@@ -466,9 +523,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="read_casts.html">read_casts()</a></code> </p>
+          <p><code><a href="read_cast.html">read_cast()</a></code> <code><a href="read_cast.html">read_casts()</a></code> </p>
         </td>
-        <td><p>Read in a cast file and format it for specific class</p></td>
+        <td><p>Read in a cast file or multiple cast files and set the class</p></td>
       </tr><tr>
         
         <td>
@@ -508,9 +565,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="select_cast.html">select_cast()</a></code> </p>
+          <p><code><a href="select_casts.html">select_casts()</a></code> </p>
         </td>
         <td><p>Select the specific fore- or hindcast from a casts table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="select_most_ab_spp.html">select_most_ab_spp()</a></code> </p>
+        </td>
+        <td><p>Select the most abundant species from a forecast or hindcast</p></td>
       </tr><tr>
         
         <td>
@@ -591,6 +654,12 @@
         </td>
         <td><p>Verify that the PortalData subdirectory is present and has required 
   data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="verify_cast.html">verify_cast()</a></code> <code><a href="verify_cast.html">cast_is_valid()</a></code> </p>
+        </td>
+        <td><p>Verify that a read-in cast file is formatted appropriately</p></td>
       </tr><tr>
         
         <td>

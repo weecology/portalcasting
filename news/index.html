@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -121,10 +121,82 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="portalcasting-0-3-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-3-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting">portalcasting 0.3.0</a>
+</h1>
+<p><em>active development</em></p>
+<div id="completed-migration-of-plotting-code" class="section level2">
+<h2 class="hasAnchor">
+<a href="#completed-migration-of-plotting-code" class="anchor"></a>Completed migration of plotting code</h2>
+<ul>
+<li>
+<code>plot_cast</code> is now <code>plot_cast_ts</code> and is now fully vetted and tested</li>
+<li>
+<code>plotcastts_ylab</code> and <code>plotcastts_xaxis</code> provide tidied functions for producing the y label and x axis (respectively) for <code>plot_cast_ts</code>.</li>
+<li>
+<code>plot_cast_point</code> is now added to replace <code>plot_species_forecast</code>.</li>
+<li>
+<code>plotcastpoint_yaxis</code> provides tidied functionality for the y axis of <code>plot_cast_point</code>.</li>
+<li>
+<code>select_most_ab_spp</code> allows for a simple selection of the most abundant species from a -cast.</li>
+<li>
+<code>plot_err_lead_spp_mods</code> and <code>plot_cov_RMSE_mod_spp</code> now added to replace the raw code in the evaluation page.</li>
+</ul>
+</div>
+<div id="processing-of-forecasts" class="section level2">
+<h2 class="hasAnchor">
+<a href="#processing-of-forecasts" class="anchor"></a>Processing of forecasts</h2>
+<ul>
+<li>
+<code>read_casts</code> (old) is now <code>read_cast</code> and specifically works for only one -cast.</li>
+<li>
+<code>read_casts</code> (new) reads in multiple -casts.</li>
+<li>
+<code>select_cast</code> is now <code>select_casts</code> and allows a more flexible selection by default.</li>
+<li>
+<code>make_ensemble</code> now returns a set of predictions with non-<code>NA</code> bounds when only one model is included (it returns that model as the ensemble).</li>
+<li>
+<code>most_recent_cast</code> returns the date of the most recent -cast. Can be dependent on the presence of a census.</li>
+<li>
+<code>verify_cast</code> and <code>cast_is_valid</code> replace <code>forecast_is_valid</code> from the repo codebase. <code>verify_cast</code> is a logical wrapper on <code>cast_is_valid</code> that facilitates a pipeline integration. <code>cast_is_valid</code> does the major set of checks of the cast data frame.<br>
+</li>
+<li>
+<code>append_observed_to_cast</code> is provided to add the observed data to the forecasts and add columns for the raw error, in-forecast-window, and lead time as well.</li>
+<li>
+<code>measure_cast_error</code> allows for summarization of errors at the -cast level.</li>
+</ul>
+</div>
+<div id="processing-of-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#processing-of-data" class="anchor"></a>Processing of data</h2>
+<ul>
+<li>
+<code>most_recent_census</code> returns the date of the most recent census.</li>
+</ul>
+</div>
+<div id="minor-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes" class="anchor"></a>Minor changes</h2>
+<ul>
+<li>Argument order in <code>models</code> is reversed (<code>add</code> then <code>set</code>) and defaults in general are now <code>NULL</code> and <code>NULL</code>, but <code>set = "prefab"</code> within the options functions, to make it easy to run a novel model set.</li>
+<li>Argument order in <code>subdirs</code> is reversed (<code>subs</code> then <code>type</code>) and defaults in general are now <code>NULL</code> and <code>NULL</code>, but <code>type = "portalcasting"</code> within options functions and <code>dirtree</code> to make it easier to manage a single subdirectory.</li>
+<li>
+<code>fdate</code> argument has been replaced throughout with <code>cast_date</code> for generality.</li>
+</ul>
+</div>
+<div id="utilities" class="section level2">
+<h2 class="hasAnchor">
+<a href="#utilities" class="anchor"></a>Utilities</h2>
+<ul>
+<li>
+<code>na_conformer</code> provides tidy functionality for converting non-character <code>NA</code> entries (can get read in from the data due to the <code>"NA"</code> species) to <code>"NA"</code>. Works for both vectors and data frames.</li>
+</ul>
+</div>
+</div>
     <div id="portalcasting-0-2-2" class="section level1">
 <h1 class="page-header">
-<a href="#portalcasting-0-2-2" class="anchor"></a><a href="https://github.com/weecology/portalcasting">portalcasting 0.2.2</a>
-</h1>
+<a href="#portalcasting-0-2-2" class="anchor"></a>portalcasting 0.2.2</h1>
 <p><em>2019-02-12</em> <em><a href="https://github.com/weecology/portalcasting/pull/82">last code edit</a></em></p>
 <div id="beginning-to-migrate-plotting-code" class="section level2">
 <h2 class="hasAnchor">
@@ -351,6 +423,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#portalcasting-0-3-0">0.3.0</a></li>
         <li><a href="#portalcasting-0-2-2">0.2.2</a></li>
         <li><a href="#portalcasting-0-2-1">0.2.1</a></li>
         <li><a href="#portalcasting-0-2-0">0.2.0</a></li>

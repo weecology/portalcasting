@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -133,21 +133,21 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>models</span>(<span class='kw'>set</span> <span class='kw'>=</span> <span class='st'>"prefab"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>models</span>(<span class='kw'>add</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>set</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>add</th>
+      <td><p><code>character</code> vector of name(s) of model(s) to add to the 
+setup by <code>set</code>.</p></td>
+    </tr>
+    <tr>
       <th>set</th>
       <td><p><code>characher</code> value of the type of model (currently only 
 support for <code>"prefab"</code>). Use <code>NULL</code> to build a custom set
 from scratch via <code>add</code>.</p></td>
-    </tr>
-    <tr>
-      <th>add</th>
-      <td><p><code>character</code> vector of name(s) of model(s) to add to the 
-setup by <code>set</code>.</p></td>
     </tr>
     </table>
     

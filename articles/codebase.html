@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1>portalcasting Codebase</h1>
             
-            <h4 class="date">13 February, 2019</h4>
+            <h4 class="date">02 March, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/codebase.Rmd"><code>vignettes/codebase.Rmd</code></a></small>
       <div class="hidden name"><code>codebase.Rmd</code></div>
@@ -97,7 +97,7 @@
 
     
     
-<p>This vignette outlines the codebase for the <strong>portalcasting</strong> package (v0.2.2), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>.</p>
+<p>This vignette outlines the codebase for the <strong>portalcasting</strong> package (v0.2.3), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -108,7 +108,7 @@
 <div id="function-pipeline" class="section level2">
 <h2 class="hasAnchor">
 <a href="#function-pipeline" class="anchor"></a>Function pipeline</h2>
-<p>The package organizes the main actions into a set of hierarchical functions <code><a href="../reference/setup_dir.html">setup_dir()</a></code> (which creates and fills the directory), <code><a href="../reference/portalcast.html">portalcast()</a></code> (which conducts forecasting or hindcasting as requested), and <code><a href="../reference/cleanup_dir.html">cleanup_dir()</a></code> (which removed temporary folders). The functions are designed to operate out-of-the-box with no need to alter arguments for operation, in particular within the context of the Portal Predictions repo. However, the functions are flexible, as detailed in <a href="#options_list">Options List</a>.</p>
+<p>The package organizes the main actions into a set of hierarchical functions <code><a href="../reference/setup_dir.html">setup_dir()</a></code> (which creates and fills the directory), <code><a href="../reference/portalcast.html">portalcast()</a></code> (which conducts forecasting or hindcasting as requested), and <code><a href="../reference/cleanup_dir.html">cleanup_dir()</a></code> (which removed temporary folders). The functions are designed to operate out-of-the-box with no need to alter arguments for operation, in particular within the context of the Portal Predictions repo. However, the functions are flexible, as detailed in Options List.</p>
 <ul>
 <li>
 <code><a href="../reference/setup_dir.html">setup_dir()</a></code>
@@ -229,8 +229,7 @@
 </div>
 <div id="options-list" class="section level2">
 <h2 class="hasAnchor">
-<a href="#options-list" class="anchor"></a>Options List <a name="options_list"></a>
-</h2>
+<a href="#options-list" class="anchor"></a>Options List</h2>
 <p>The options list is a hierarchical list containing a suite of inter-linked options controlling the structure, content, and usage of the directory.</p>
 <ul>
 <li>
@@ -284,9 +283,7 @@
 <li><a href="#installation">Installation</a></li>
       <li><a href="#function-pipeline">Function pipeline</a></li>
       <li><a href="#directory-tree">Directory Tree</a></li>
-      <li>
-<a href="#options-list">Options List </a><a name="options_list" href="NA"></a>
-</li>
+      <li><a href="#options-list">Options List</a></li>
       </ul>
 </div>
       </div>
