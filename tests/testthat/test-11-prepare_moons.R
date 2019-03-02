@@ -31,14 +31,14 @@ test_that("add_future_moons", {
 test_that("add_addl_future_moons", {
   future_moons <- get_future_moons(moons, moons_opts$n_future_moons) %>%
                   classy(c("data.frame", "moons"))
-  fdate <- moons_opts$fdate
-  expect_error(add_addl_future_moons(future_moons, 1), "`fdate` is not")
-  expect_error(add_addl_future_moons(1, fdate), "`future_moons` is not")
-  expect_error(add_addl_future_moons(future_moons, c(fdate, fdate)), 
-               "`fdate` can only be")
-  expect_is(add_addl_future_moons(future_moons, fdate), "moons")
-  fdate2 <- as.Date("2100-01-01")
-  expect_is(add_addl_future_moons(future_moons, fdate2), "moons")
+  cast_date <- moons_opts$cast_date
+  expect_error(add_addl_future_moons(future_moons, 1), "`cast_date` is not")
+  expect_error(add_addl_future_moons(1, cast_date), "`future_moons` is not")
+  expect_error(add_addl_future_moons(future_moons, c(cast_date, cast_date)), 
+               "`cast_date` can only be")
+  expect_is(add_addl_future_moons(future_moons, cast_date), "moons")
+  cast_date2 <- as.Date("2100-01-01")
+  expect_is(add_addl_future_moons(future_moons, cast_date2), "moons")
 })
 
 test_that("format_moons", {

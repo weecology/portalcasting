@@ -4,9 +4,15 @@
 \alias{rodent_spp}
 \title{Rodent species abbreviations}
 \usage{
-rodent_spp(nadot = FALSE)
+rodent_spp(set = "base", nadot = FALSE)
 }
 \arguments{
+\item{set}{\code{character} input of a specified set of species. Default
+entry (\code{"base"}) returns the standard set of all species included.
+Other options include \code{"wtotal"} (same as \code{"base"} but
+with "total" as well) and \code{"evalplot"} which only returns a subset
+of common species to be included in the evaluations plots.}
+
 \item{nadot}{\code{logical} indicator if the dot should be added to the 
 \code{"NA"} species name. Defaults to \code{FALSE}.}
 }

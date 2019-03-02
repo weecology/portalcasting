@@ -13,6 +13,7 @@ f_ax <- f_a
 names(f_ax)[1] <- "ok"
 f_cx <- f_c
 names(f_cx)[1] <- "ok"
+cast_date <- as.Date(metadata$forecast_date)
 
 test_that("save_forecast_output", {
   expect_error(save_forecast_output(1, f_c, "AutoArima", metadata, 
@@ -96,13 +97,119 @@ test_that("make_ensemble", {
   expect_error(make_ensemble(fcasts, sub1, -1), "`CI_level` is")
 })
 
+test_that("read_cast", {
+  expect_silent(casts <- read_cast(cast_opts1$tree))
+  expect_is(casts, "casts")
+  expect_silent(casts2 <- read_cast(cast_opts1$tree, cast_date = cast_date))
+  expect_is(casts2, "casts")
+  expect_equal(casts, casts2)
+  expect_error(read_cast(1))
+  expect_error(read_cast(cast_opts1$tree, cast_type = 1))
+  expect_error(read_cast(cast_opts1$tree, cast_type = rep("forecasts", 2)))
+  expect_error(read_cast(cast_opts1$tree, cast_type = "ok"))
+  expect_error(read_cast(cast_opts1$tree, cast_date = rep(today(), 2)))
+  expect_error(read_cast(cast_opts1$tree, cast_date = "ok"))
+  expect_error(read_cast(cast_opts1$tree, cast_date = "2020-01-01"))
+})
+
+test_that("select_casts", {
+  casts <- read_cast(cast_opts1$tree)
+  expect_silent(cast <- select_casts(casts))
+  expect_is(cast, "casts")
+  expect_silent(cast <- select_casts(casts, species = "total"))
+  expect_is(cast, "casts")
+  expect_silent(cast <- select_casts(casts, level = "All"))
+  expect_is(cast, "casts")
+  expect_silent(cast <- select_casts(casts, model = "Ensemble"))
+  expect_is(cast, "casts")
+
+  metadata <- read_data(cast_opts1$tree, "metadata")
+  nmn <- metadata$rodent_forecast_newmoons
+  expect_silent(cast <- select_casts(casts, newmoonnumber = nmn))
+  expect_is(cast, "casts")
+
+  expect_error(select_casts(1))
+  expect_error(select_casts(casts, species = 1))
+  expect_error(select_casts(casts, species = "ok"))
+  expect_error(select_casts(casts, level = 1))
+  expect_error(select_casts(casts, level = "ok"))
+  expect_error(select_casts(casts, model = 1))
+  expect_error(select_casts(casts, newmoonnumber = -1))
+  expect_error(select_casts(casts, newmoonnumber = 300.5))
+  expect_error(select_casts(casts, newmoonnumber = "ok"))
+})
+
+test_that("most_recent_cast", {
+  expect_silent(cdat <- most_recent_cast(cast_opts1$tree))
+  expect_is(cdat, "Date")
+  expect_error(most_recent_cast(1))
+  expect_error(most_recent_cast(cast_opts1$tree, cast_type = 1))
+  expect_error(most_recent_cast(cast_opts1$tree, 
+                                cast_type = rep("forecasts", 2)))
+  expect_error(most_recent_cast(cast_opts1$tree, cast_type = "ok"))
+  expect_error(most_recent_cast(cast_opts1$tree, with_census = "ok"))
+  expect_error(most_recent_cast(cast_opts1$tree, with_census = rep(TRUE, 2)))
+  expect_error(most_recent_cast())
+})
+
 test_that("read_casts", {
   expect_silent(casts <- read_casts(cast_opts1$tree))
   expect_is(casts, "casts")
+  expect_silent(casts2 <- read_casts(cast_opts1$tree, cast_dates = cast_date))
+  expect_is(casts2, "casts")
+  expect_error(read_casts(1))
+  expect_error(read_casts(cast_opts1$tree, cast_type = 1))
+  expect_error(read_casts(cast_opts1$tree, cast_type = rep("forecasts", 2)))
+  expect_error(read_casts(cast_opts1$tree, cast_type = "ok"))
+  expect_error(read_casts(cast_opts1$tree, cast_dates = "ok"))
 })
 
-test_that("select_cast", {
-  casts <- read_casts(cast_opts1$tree)
-  expect_silent(cast <- select_cast(casts))
-  expect_is(cast, "casts")
+bad_cast1 <- read.csv("bad_cast1.csv", stringsAsFactors = FALSE)
+bad_cast2 <- read.csv("bad_cast2.csv", stringsAsFactors = FALSE)
+
+test_that("verify_casts", {
+  expect_error(verify_cast(bad_cast1))
+  expect_output(expect_error(verify_cast(bad_cast1, TRUE)))
+  expect_error(verify_cast(na_conformer(bad_cast2)))
 })
+
+test_that("cast_is_valid", {
+  expect_equal(cast_is_valid(bad_cast1), FALSE)
+  expect_output(expect_equal(cast_is_valid(bad_cast1, TRUE), FALSE))
+  expect_equal(cast_is_valid(bad_cast2), FALSE)
+  expect_output(expect_equal(cast_is_valid(bad_cast2, TRUE), FALSE))
+})
+
+
+test_that("append_observed_to_cast", {
+  casts <- read_cast(cast_opts1$tree)
+  casts1 <- select_casts(casts, level = "Controls")
+  expect_silent(append_observed_to_cast(casts1, cast_opts1$tree))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree))
+  expect_error(append_observed_to_cast(casts, 1))
+  expect_error(append_observed_to_cast(1, cast_opts1$tree))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_error = 1))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_error = rep(T,2)))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_in_window = 1))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_in_window = rep(T,2)))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_lead = 1))
+  expect_error(append_observed_to_cast(casts, cast_opts1$tree, 
+                                       add_lead = rep(T,2)))
+})
+
+test_that("measure_cast_error", {
+  casts <- read_cast(cast_opts1$tree) %>% 
+           select_casts(level = "Controls") %>%
+           append_observed_to_cast(cast_opts1$tree)
+  expect_silent(casttab <- measure_cast_error(casts)) 
+  expect_error(measure_cast_error(1))
+  expect_error(measure_cast_error(casts, 1.5))
+  expect_error(measure_cast_error(casts, 1:2))
+  expect_error(measure_cast_error(casts, "ok"))
+})
+

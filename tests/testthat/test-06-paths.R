@@ -15,15 +15,15 @@ test_that("dirtree", {
 })
 
 test_that("subdirs", {
-  expect_is(subdirs(), "subdirs")
-  expect_is(subdirs(subs = "ok"), "subdirs")
+  expect_is(subdirs(type = "portalcasting"), "subdirs")
+  expect_is(subdirs(type = "portalcasting", subs = "ok"), "subdirs")
   expect_is(subdirs(type = NULL, subs = "ok"), "subdirs")
-  expect_equal(length(subdirs()), 5)
-  expect_equal(length(subdirs(subs = "ok")), 6)
+  expect_equal(length(subdirs(type = "portalcasting")), 5)
+  expect_equal(length(subdirs(type = "portalcasting", subs = "ok")), 6)
   expect_equal(length(subdirs(type = NULL, subs = "ok")), 1)
   expect_error(subdirs(type = NULL))
   expect_error(subdirs(type = "ok"))
-  expect_error(subdirs(subs = 1))
+  expect_error(subdirs(type = "portalcasting", subs = 1))
 })
 
 test_that("base_path", {
@@ -67,7 +67,6 @@ test_that("model_path", {
   expect_equal(length(model_path(model = c("AutoArima", "ESSS"))), 2)
   expect_error(model_path(tree = 1, model = "AutoArima"))
   expect_error(model_path(model = 1))
-  expect_error(model_path(model = c("AutoArima", "xx")))
   expect_error(model_path(model = "AutoArima", extension = 1))
   expect_error(model_path(model = "AutoArima", extension = "ok"))
   expect_error(model_path(model = "AutoArima", extension = c("ok", "ok")))

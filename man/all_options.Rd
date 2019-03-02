@@ -15,8 +15,9 @@
 \alias{check_options_args}
 \title{Prepare options lists for a portalcasting directory}
 \usage{
-all_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
-  fdate = today(), append_missing_to_raw = TRUE, m_save = TRUE,
+all_options(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), quiet = FALSE, cast_date = today(),
+  append_missing_to_raw = TRUE, m_save = TRUE,
   m_filename = "moons.csv", tmnt_type = NULL, start = 217,
   end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
   min_traps = 1, level = "Site", treatment = NULL, plots = "all",
@@ -29,21 +30,23 @@ all_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, model = models(),
-  ensemble = TRUE, version = "latest", from_zenodo = TRUE,
+  download_existing_predictions = FALSE, model = models(set =
+  "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   to_cleanup = c("tmp", "PortalData"))
 
-dir_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
-  to_cleanup = c("tmp", "PortalData"))
+dir_options(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), quiet = FALSE, to_cleanup = c("tmp", "PortalData"))
 
-PortalData_options(base = ".", main = "", subs = subdirs(),
-  quiet = FALSE, version = "latest", from_zenodo = TRUE)
+PortalData_options(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), quiet = FALSE, version = "latest",
+  from_zenodo = TRUE)
 
-data_options(base = ".", main = "", subs = subdirs(),
-  quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
-  m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
-  min_plots = 24, level = "Site", treatment = NULL, plots = "all",
+data_options(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), quiet = FALSE, cast_date = today(),
+  append_missing_to_raw = TRUE, m_save = TRUE,
+  m_filename = "moons.csv", tmnt_type = NULL, start = 217,
+  end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
+  level = "Site", treatment = NULL, plots = "all",
   output = "abundance", r_save = TRUE, r_filename = "all.csv",
   cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
   "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL,
@@ -54,7 +57,7 @@ data_options(base = ".", main = "", subs = subdirs(),
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml")
 
-moons_options(n_future_moons = 12, fdate = today(),
+moons_options(n_future_moons = 12, cast_date = today(),
   append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv",
   tree = dirtree(), quiet = FALSE)
 
@@ -65,44 +68,48 @@ rodents_options(cast_type = "forecasts", tmnt_type = NULL,
   tree = dirtree(), quiet = FALSE)
 
 covariates_options(cast_type = "forecasts", cov_hist = TRUE,
-  cov_fcast = TRUE, fdate = today(), yr = as.numeric(format(today(),
-  "\%Y")), start = 217, end = NULL, hind_step = 1, lead_time = 12,
-  min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
+  cov_fcast = TRUE, cast_date = today(),
+  yr = as.numeric(format(today(), "\%Y")), start = 217, end = NULL,
+  hind_step = 1, lead_time = 12, min_lag = 6, fcast_nms = NULL,
+  nfcnm = 0, append_fcast_csv = TRUE,
+  hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", save = TRUE,
   filename = "covariates.csv", tree = dirtree(), quiet = FALSE)
 
-metadata_options(fdate = today(), cast_type = "forecasts",
+metadata_options(cast_date = today(), cast_type = "forecasts",
   confidence_level = 0.9, lead_time = 12, save = TRUE,
   filename = "metadata.yaml", quiet = FALSE, tree = dirtree())
 
-predictions_options(base = ".", main = "", subs = subdirs(),
-  download_existing_predictions = FALSE, quiet = FALSE)
+predictions_options(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), download_existing_predictions = FALSE,
+  quiet = FALSE)
 
-models_options(base = ".", main = "", subs = subdirs(),
-  quiet = FALSE, model = models())
+models_options(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), quiet = FALSE, model = models(set = "prefab"))
 
-cast_options(base = ".", main = "", subs = subdirs(),
-  quiet = FALSE, model = models(), cast_type = "forecasts",
-  fdate = today(), ensemble = TRUE, start = 217, end = NULL,
-  hind_step = 1, min_plots = 24, min_traps = 1)
+cast_options(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), quiet = FALSE, model = models(set = "prefab"),
+  cast_type = "forecasts", cast_date = today(), ensemble = TRUE,
+  start = 217, end = NULL, hind_step = 1, min_plots = 24,
+  min_traps = 1)
 
-check_options_args(base = ".", main = "", subs = subdirs(),
-  quiet = FALSE, fdate = today(), append_missing_to_raw = TRUE,
-  m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
-  min_plots = 24, min_traps = 1, level = "Site", treatment = NULL,
-  plots = "all", output = "abundance", r_save = TRUE,
-  r_filename = "all.csv", cov_hist = TRUE, cov_fcast = TRUE,
-  yr = as.numeric(format(today(), "\%Y")), lead_time = 12,
-  min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
+check_options_args(base = ".", main = "", subs = subdirs(type =
+  "portalcasting"), quiet = FALSE, cast_date = today(),
+  append_missing_to_raw = TRUE, m_save = TRUE,
+  m_filename = "moons.csv", tmnt_type = NULL, start = 217,
+  end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
+  min_traps = 1, level = "Site", treatment = NULL, plots = "all",
+  output = "abundance", r_save = TRUE, r_filename = "all.csv",
+  cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
+  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL,
+  nfcnm = 0, append_fcast_csv = TRUE,
+  hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, model = models(),
-  ensemble = TRUE, version = "latest", from_zenodo = TRUE,
+  download_existing_predictions = FALSE, model = models(set =
+  "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   n_future_moons = 12, save = TRUE, filename = "moons.csv",
   tree = dirtree(), to_cleanup = c("tmp", "PortalData"))
 }
@@ -115,15 +122,15 @@ created if it doesn't exist.}
 contains the subdirectories. Default \code{""} (no main level included).}
 
 \item{subs}{\code{character} vector naming the specific subdirectories
-within the portalcasting directory tree. Default \code{subdirs()} sets
-the subdirectories as \code{"predictions"}, \code{"models"},
-\code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
-not advised to change the subdirectories.}
+within the portalcasting directory tree. Default \code{subdirs(type = 
+"portalcasting")} sets the subdirectories as \code{"predictions"}, 
+\code{"models"}, \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. 
+It is generally not advised to change the subdirectories.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
-\item{fdate}{\code{Date} from which future is defined, typically today's 
-date (using \code{\link{today}}).}
+\item{cast_date}{\code{Date} from which future is defined, typically 
+today's date (using \code{\link{today}}).}
 
 \item{append_missing_to_raw}{\code{logical} indicator dictating if the 
 missing moon dates should be appended to the raw data file (should be 

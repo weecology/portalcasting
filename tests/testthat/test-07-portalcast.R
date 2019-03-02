@@ -3,27 +3,27 @@ context("Test portalcast functions")
 options_all1 <- all_options(main = "testing_casting")
 options_all2 <- all_options(main = "testing_casting", quiet = TRUE)
 options_all3 <- all_options(main = "testing_casting", 
-                            model = models(NULL, "AutoArima"))
+                            model = models("AutoArima"))
 options_all4 <- all_options(main = "testing_casting", 
-                            model = models(NULL, "ok"))
+                            model = models("ok"))
 options_all5 <- all_options(main = "testing_casting", 
-                            model = models(NULL, "all"))
+                            model = models("all"))
 options_all6 <- all_options(main = "testing_casting", 
-                            model = models(NULL, "AutoArima"),
+                            model = models("AutoArima"),
                             cast_type = "hindcasts", end = 490)
 options_all7 <- all_options(main = "testing_casting", 
-                            model = models(NULL, "AutoArima"), quiet = TRUE)
+                            model = models("AutoArima"), quiet = TRUE)
 options_all8 <- all_options(main = "testing_casting", 
-                            model = models(NULL, "AutoArima"),
+                            model = models("AutoArima"),
                             cast_type = "hindcasts", end = 496)
 options_all9 <- all_options(main = "testing_casting", 
-                            model = models(NULL, "AutoArima"),
+                            model = models("AutoArima"),
                             cast_type = "hindcasts", end = 490:493)
 options_all10 <- all_options(main = "testing_casting", 
-                             model = models(NULL, "AutoArima"),
+                             model = models("AutoArima"),
                              cast_type = "hindcasts", end = 476)
 options_all11 <- all_options(main = "testing_casting", 
-                             model = models(NULL, "AutoArima"),
+                             model = models("AutoArima"),
                              cast_type = "hindcasts", end = 490:493, 
                              quiet = TRUE)
 
@@ -53,7 +53,7 @@ test_that("models_to_cast", {
   expect_equal(length(mtc3), 1)
   mtc5 <- models_to_cast(options_all5$options_cast)
   expect_is(mtc5, "character")
-  expect_equal(length(mtc5), length(models()))
+  expect_equal(length(mtc5), length(models(set = "prefab")))
 })
 
 test_that("create_tmp", {

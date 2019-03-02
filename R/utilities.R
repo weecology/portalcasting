@@ -1,3 +1,37 @@
+#' @title Conform NA entries to "NA" entries
+#'
+#' @description Given the species abbreviation NA, when data are read in, 
+#'   there can be an \code{NA} when it should be an \code{"NA"}. This function
+#'   conforms the entries to be proper character values. 
+#'
+#' @param x Either [1] a \code{data.frame} containing \code{colname} as a 
+#'   column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
+#'   a vector with \code{NA}s that need to be conformed to \code{"NA"}s
+#'
+#' @param colname \code{character} value of the column name in \code{tab} to 
+#'   conform the \code{NA}s to \code{"NA"}s.
+#'
+#' @return \code{x} with any \code{NA} in \code{colname} replaced with 
+#'   \code{"NA"}
+#'
+#' @export
+#'
+na_conformer <- function(x, colname = "species"){
+
+  if (is.vector(x)){
+    naentries <- which(is.na(x))
+    x[naentries] <- "NA"
+  } else if (is.data.frame(x)){
+    nasppname <- which(is.na(x[ , colname]))
+    if (length(nasppname) > 0){
+      x[nasppname, colname] <- "NA"
+    }
+  } else {
+    stop("`x` must be a vector or a data frame")
+  }
+  x
+}
+
 #' @title Save data out to a file and return it
 #'
 #' @description Save inputted data out to a data file if requested via an 

@@ -23,7 +23,8 @@
 #'
 #' @export
 #'
-dirtree <- function(base = ".", main = "", subs = subdirs()){
+dirtree <- function(base = ".", main = "", 
+                    subs = subdirs(type = "portalcasting")){
   if (length(base) > 1){
     stop("`base` can only be of length = 1")
   }
@@ -52,20 +53,20 @@ dirtree <- function(base = ".", main = "", subs = subdirs()){
 #'   \code{"data"}, and \code{"tmp"}. It is generally not advised to change
 #'   the subdirectory structure at this time.
 #'
+#' @param subs Either [1] names of additional subdirectories to add to the
+#'   vector set up by \code{type} or [2] an optional way to input all 
+#'   subdirectory names (requires \code{type = NULL}, which is the default). 
+#'
 #' @param type \code{character} name for quick generation of subdirectory
 #'   vector. Presently only defined for the default input 
 #'   \code{"portalcasting"}.
-#'
-#' @param subs Either [1] names of additional subdirectories to add to the
-#'   vector set up by \code{type} or [2] an optional way to input all 
-#'   subdirectory names (requires setting \code{type = NULL}). 
 #'
 #' @return Class-\code{subdirs} vector of character elements of 
 #'   subdirectory names.
 #'
 #' @export
 #'
-subdirs <- function(type = "portalcasting", subs = NULL){
+subdirs <- function(subs = NULL, type = NULL){
   if (is.null(type) & is.null(subs)){
     stop("both `type` and `subs` are NULL")
   }
@@ -176,7 +177,7 @@ sub_path <- function(tree = dirtree(), specific_sub){
 #'
 #' @param model \code{character} name of the specific model.
 #'
-#' @param extension \code{character} file extension.
+#' @param extension \code{character} file extension (including the period).
 #'
 #' @return The normalized path of the specified model script (see 
 #'   \code{\link{normalizePath}}).
@@ -192,9 +193,6 @@ model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
   }
   if (!is.character(model)){
     stop("`model` is not a character")
-  }
-  if (!all(model %in% models())){
-    stop("`model` not in models() list")
   }
   if (is.null(extension)){
     stop("`extension` needs to be specified")

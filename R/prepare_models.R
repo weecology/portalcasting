@@ -3,18 +3,18 @@
 #' @description Based on a \code{set}, returns a character vectory of model
 #'   names to be included. Currently only support for \code{set = "prefab"}.
 #'
+#' @param add \code{character} vector of name(s) of model(s) to add to the 
+#'   setup by \code{set}.
+#'
 #' @param set \code{characher} value of the type of model (currently only 
 #'   support for \code{"prefab"}). Use \code{NULL} to build a custom set
 #'   from scratch via \code{add}.
-#'
-#' @param add \code{character} vector of name(s) of model(s) to add to the 
-#'   setup by \code{set}.
 #'
 #' @return \code{models}-class \code{character} vector of model names.
 #'
 #' @export
 #'
-models <- function(set = "prefab", add = NULL){
+models <- function(add = NULL, set = NULL){
   if (!is.null(set) & !is.character(set)){
     stop("`set` is not NULL or a character")
   }
@@ -81,12 +81,13 @@ model_template <- function(options_model = model_options()){
     stop("`options_model` is not a model_options list")
   }
   tree <- options_model$tree
-  if (any(!(tree$subs %in% subdirs()))){
-    addl <- which(!(tree$treesubs %in% subdirs()))
+  if (any(!(tree$subs %in% subdirs(type = "portalcasting")))){
+    addl <- which(!(tree$subs %in% subdirs(type = "portalcasting")))
     subnames <- paste(tree$subs[addl], collapse = '", "')
-    subs <- paste0('subdirs(subs = c("', subnames, '"))')
+    subs <- paste0('subdirs(subs = c("', subnames, 
+                   '"), type = "portalcasting")')
   } else{
-    subs <- "subdirs()"
+    subs <- 'subdirs(type = "portalcasting")'
   }
   name <- options_model$name
   quiet_arg <- paste0("quiet = ", options_model$quiet)

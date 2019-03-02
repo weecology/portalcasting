@@ -17,7 +17,8 @@ Appended \code{moons} data table as a \code{moons}-class
 }
 \description{
 Add future moons to the moon table, counting forward from
-  the forecast date (\code{options_moons$fdate}). Because the \code{moons}
-  table might not have the most recent moons, more rows than anticipated
-  (\code{options_moons$n_future_moons}) may need to be added to the table.
+  the forecast date (\code{options_moons$cast_date}). Because the 
+  \code{moons} table might not have the most recent moons, more rows than 
+  anticipated (\code{options_moons$n_future_moons}) may need to be added to 
+  the table.
 }

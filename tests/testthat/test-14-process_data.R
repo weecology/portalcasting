@@ -51,3 +51,9 @@ test_that("read_data", {
   expect_is(metadata, "metadata")
 })
 
+
+test_that("most_recent_census", {
+  expect_silent(cdate <- most_recent_census(tree))
+  expect_is(cdate, "Date")
+  expect_error(most_recent_census(1))
+})

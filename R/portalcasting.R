@@ -1,8 +1,8 @@
 #' @importFrom digest digest
 #' @importFrom dplyr arrange bind_rows filter full_join group_by inner_join 
-#'   left_join mutate rename right_join select summarise summarize ungroup 
+#'   left_join mutate n rename right_join select summarise summarize ungroup 
 #' @importFrom forecast auto.arima ets forecast na.interp
-#' @importFrom graphics axis mtext par plot points polygon
+#' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate as_date is.Date month year
@@ -13,11 +13,12 @@
 #' @importFrom purrr map
 #' @importFrom RCurl getURL
 #' @importFrom rlang !! !!! .data quo quos
-#' @importFrom stats AIC lm predict qnorm 
+#' @importFrom stats AIC lm na.omit predict qnorm quantile runif
 #' @importFrom tidyselect one_of
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file read.csv read.table tail write.csv 
 #'   write.table
+#' @importFrom viridis viridis
 #' @importFrom yaml as.yaml yaml.load_file
 #'
 
@@ -41,7 +42,7 @@ if (getRversion() >= "2.15.1"){
       "ensemble_estimate", "ensemble_var", 
       "estimate", "fit_end_newmoon", "fit_start_newmoon", 
       "forecast_newmoon", "forecastmonth", "forecastyear", "initial_newmoon",
-      "level", "LowerPI", "maxtemp", "meantemp", "mintemp", "model_var", "n", 
+      "level", "LowerPI", "maxtemp", "meantemp", "mintemp", "model_var",  
       "newmoondate", "newmoonnumber", "period", "PI", "precipitation", 
       "species", "sum_weight", "treatment", "locally_measured", "battery_low",
       "UpperPI", "weight", "weighted_ss")

@@ -1,9 +1,9 @@
 context("Test prepare_models functions")
 
 test_that("models", {
-  expect_is(models(), "character")
-  expect_is(models(), "models")
-  expect_error(models(1), "`set` is not")
+  expect_is(models(set = "prefab"), "character")
+  expect_is(models(set = "prefab"), "models")
+  expect_error(models(set = 1), "`set` is not")
   expect_error(models(add = 1), "`add` is not")
   expect_error(models(set = c("prefab", "prefab")), "`set` can only be")
   expect_error(models(set = "ok"), "not defined for that `set`")

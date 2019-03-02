@@ -155,3 +155,24 @@ read_data <- function(tree, data_name){
   }
   data
 }
+
+
+#' @title Determine the most recent data collection
+#'
+#' @description Determine the most recent census.
+#'
+#' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
+#'
+#' @return \code{Date} of the most recent census.
+#'
+#' @export
+#'
+most_recent_census <- function(tree = dirtree()){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  all <- read_data(tree, "all")
+  moons <- read_data(tree, "moons")
+  matched <- moons$newmoonnumber == max(all$newmoonnumber)
+  as.Date(as.character(moons$censusdate[matched]))
+}

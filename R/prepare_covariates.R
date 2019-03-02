@@ -203,7 +203,7 @@ update_covfcast_options <- function(options_covariates, hist_cov, moons){
   if (!("covariates" %in% class(hist_cov))){
     stop("`hist_cov` is not of class covariates")
   }
-  prev_newmoon <- max(which(moons$newmoondate < options_covariates$fdate))
+  prev_newmoon <- max(which(moons$newmoondate < options_covariates$cast_date))
   prev_newmoon <- moons$newmoonnumber[prev_newmoon]
   if (options_covariates$cast_type == "hindcasts"){
     prev_newmoon <- options_covariates$end[options_covariates$hind_step]    

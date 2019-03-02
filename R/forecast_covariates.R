@@ -185,7 +185,7 @@ trim_moons_fcast <- function(moons, options_covariates){
 #' @title Download downscaled weather forecasts for Portal
 #' 
 #' @description Lunar cycle-based climate forecasts obtained from 
-#'   \href{https://climate.northwestknowledge.net/RangelandForecast/download.php}{Northwest Knowledge
+#'   \href{https://bit.ly/2tCP8NX}{Northwest Knowledge
 #'   Network (NKN) at the University of Idaho}
 #'   and downscaled to Portal, AZ (31.9555, -109.0744). The downscaled 
 #'   forecasts are based on the 
