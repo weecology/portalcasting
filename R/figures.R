@@ -1,3 +1,222 @@
+#' @title Plot RMSE and coverage as a function of model for each species
+#'
+#' @description Plot the RMSE and coverage by species matrix of cast error 
+#'   as a function of model.
+#'
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
+#'
+#' @param species \code{character} vector of the species codes (or 
+#'   \code{"total"} for the total across species) to be selected from or 
+#'   \code{NULL} to include all species and the total. Default set to 
+#'   \code{rodent_spp(set = "evalplot")}, the only setting for which the
+#'   plot is reliably coded/ 
+#'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'   or \code{"Controls"}).
+#'
+#' @param cast_type \code{character} value of the type of -cast of model. Used
+#'   to select the file in the predictions subdirectory. Currently only 
+#'   reliably coded for \code{"hindcasts"}.
+#'
+#' @param cast_dates \code{Date}s the predictions were made. Used to select 
+#'   the files in the predictions subdirectory. Can be length 1 or more and if 
+#'   \code{NULL} (default), selects all available -casts.
+#'
+#' @param min_observed \code{integer} value for the minimum number of observed
+#'   values needed for a -cast to be retained in the output table. Default is
+#'   \code{1}, which returns all -casts with any observations. To include all
+#'   -casts (even those without any evaluations), set to \code{0}. 
+#'
+#' @export
+#'
+plot_cast_R_c_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts", 
+                                  species = rodent_spp(set = "evalplot"),
+                                  level = "Controls", cast_dates = NULL, 
+                                  min_observed = 1){
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.null(species)){
+    if (!("character" %in% class(species))){
+      stop("`species` is not a character")
+    }
+    if (!all(species %in% rodent_spp("wtotal"))){
+      stop("invalid entry in `species`")
+    }   
+  }
+  if (!is.character(level)){
+    stop("`level` is not a character")
+  }
+  if (length(level) > 1){
+    stop("`level` can only be of length = 1")
+  }
+  if (level != "All" & level != "Controls"){
+    stop("`level` must be 'All' or 'Controls'")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!is.numeric(min_observed)){
+    stop("`min_observed` is not numeric")
+  }
+  if (length(min_observed) > 1){
+    stop("`min_observed` can only be of length = 1")
+  }
+  if (min_observed < 1 | min_observed %% 1 != 0){
+    stop("`min_observed` is not a positive integer")
+  }
+  if (!is.null(cast_dates)){
+    cast_dates2 <- tryCatch(as.Date(cast_dates), error = function(x){NA})
+    if (is.na(cast_dates2)){
+      stop("`cast_dates` is not of class Date or conformable to class Date")
+    }
+  }
+  if (is.null(cast_dates)){
+    pfolderpath <- sub_path(tree = tree, "predictions")
+    pfiles <- list.files(pfolderpath)
+    of_interest1 <- grepl(cast_type, pfiles)
+    of_interest2 <- grepl("aic", pfiles)
+    cast_text <- paste0(cast_type, ".csv")
+    cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
+    cast_dates <- as.Date(cast_dates)
+  }
+
+  errs <- read_casts(tree = tree, cast_type = cast_type, 
+                     cast_dates = cast_dates) %>%
+          select_casts(species = species, level = level) %>%
+          append_observed_to_cast(tree) %>%
+          measure_cast_error(min_observed = min_observed)
+
+  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
+  sptab <- na_conformer(sptab, "speciescode")
+
+  uspecies <- as.character(unique(errs$species))
+  ntspecies <- uspecies[!grepl("total", uspecies)]
+  ntspeciesm <- sptab[ , "speciescode"] %in% ntspecies
+  ntspeciesn <- sort(sptab[ntspeciesm , "scientificname"], decreasing = TRUE)
+  ntspeciesm2 <- rep(NA, length(ntspeciesn))
+  for(i in 1:length(ntspeciesm2)){
+    ntspeciesm2[i] <- which(sptab[ , "scientificname"] == ntspeciesn[i])
+  }
+  ntspecies <- sptab[ntspeciesm2, "speciescode"]
+  tspecies <- sort(uspecies[grepl("total", uspecies)])
+  uspecies <- c(tspecies, ntspecies)
+  nspecies <- length(uspecies)
+  umodels <- as.character(unique(errs$model))
+  nemodels <- sort(umodels[!grepl("Ensemble", umodels)])
+  emodels <- sort(umodels[grepl("Ensemble", umodels)])
+  umodels <- c(nemodels, emodels)
+  nmodels <- length(umodels)
+
+
+  par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
+  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+       bty = "n")
+
+  x1 <- 0
+  x2 <- 0.49
+  y1 <- 0.0
+  y2 <- 0.06
+  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = umodels, cex = 0.5, 
+       xpd = TRUE, srt = 45, adj = 1)
+  x1 <- 0.48
+  x2 <- 0.97
+  y1 <- 0.0
+  y2 <- 0.06
+  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = umodels, cex = 0.5, 
+       xpd = TRUE, srt = 45, adj = 1)
+
+  for(i in 1:nspecies){
+
+    x1 <- 0
+    x2 <- 0.49
+    y1 <- 0.06 + (i - 1) * 0.94 * (1/nspecies)
+    y2 <- y1 + 0.94 * (1/nspecies)
+    par(mar = c(0, 2.5, 1, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", 
+         xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0,1), bty = "L")
+    axis(2, at = seq(0, 1, 0.2), cex.axis = 0.6, las = 1, line = -0.5, 
+         lwd = 0)
+    axis(2, at = seq(0, 1, 0.2), labels = FALSE, tck = -0.025)
+    mtext(side = 2, "Coverage", line = 1.5, cex = 0.75)
+    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    for(j in 1:nmodels){
+      in_ij <- which(errs$species == uspecies[i] & errs$model == umodels[j])
+
+      ys <- errs$coverage[in_ij]
+      ys2 <- runif(length(ys), ys - 0.005, ys + 0.005)
+      xs <- runif(length(ys), j - 0.05, j + 0.05)
+      quants <- quantile(ys, seq(0, 1, 0.25))
+      points(rep(j, 2), quants[c(1, 5)], type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l")
+      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
+      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
+      points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+    }
+    
+    abline(h = 0.90, lwd = 2, lty = 3)
+
+    in_i <- which(errs$species == uspecies[i])
+    errs_i <- errs[in_i, ]
+    ymax <- max(max(errs_i$RMSE, na.rm = TRUE))
+    x1 <- 0.48
+    x2 <- 0.97
+    y1 <- 0.06 + (i - 1) * 0.94 * (1/nspecies)
+    y2 <- y1 + 0.94 * (1/nspecies)
+    par(mar = c(0, 2.5, 1, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", bty = "L",
+         xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0, ymax))
+    axis(2, cex.axis = 0.6, las = 1, line = -0.5, lwd = 0)
+    axis(2, labels = FALSE, tck = -0.025)
+    mtext(side = 2, "RMSE", line = 1.625, cex = 0.75)
+    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    for(j in 1:nmodels){
+      in_ij <- which(errs$species == uspecies[i] & errs$model == umodels[j])
+
+      ys <- errs$RMSE[in_ij]
+      ys2 <- runif(length(ys), ys - 0.005, ys + 0.005)
+      xs <- runif(length(ys), j - 0.05, j + 0.05)
+      quants <- quantile(ys, seq(0, 1, 0.25))
+      points(rep(j, 2), quants[c(1, 5)], type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l")
+      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
+      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
+      points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+    }
+    par(mar = c(0, 0, 0, 0), fig = c(0.97, 1, y1, y2), new = TRUE)   
+    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
+         bty = "n") 
+    if (uspecies[i] == "total"){
+      spt <- "Total Rodents"
+      spf <- 2
+    } else{
+      spptextmatch <- which(sptab[ , "speciescode"] == uspecies[i])
+      spt <- sptab[spptextmatch, "scientificname"]
+      spf <- 4
+    }  
+    text(0.9, 1, spt, font = spf, cex = 0.55, xpd = TRUE, srt = 270)
+  }
+
+
+}
+
+
 #' @title Plot error as a function of lead time for each of a combination of
 #'   species and model
 #'
@@ -74,9 +293,22 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
 
-  uspecies <- unique(casts$species)
+  uspecies <- as.character(unique(casts$species))
+  ntspecies <- uspecies[!grepl("total", uspecies)]
+  ntspeciesm <- sptab[ , "speciescode"] %in% ntspecies
+  ntspeciesn <- sort(sptab[ntspeciesm , "scientificname"], decreasing = TRUE)
+  ntspeciesm2 <- rep(NA, length(ntspeciesn))
+  for(i in 1:length(ntspeciesm2)){
+    ntspeciesm2[i] <- which(sptab[ , "scientificname"] == ntspeciesn[i])
+  }
+  ntspecies <- sptab[ntspeciesm2, "speciescode"]
+  tspecies <- sort(uspecies[grepl("total", uspecies)])
+  uspecies <- c(tspecies, ntspecies)
   nspecies <- length(uspecies)
   umodels <- unique(casts$model)
+  nemodels <- sort(umodels[!grepl("Ensemble", umodels)])
+  emodels <- sort(umodels[grepl("Ensemble", umodels)])
+  umodels <- c(nemodels, emodels)
   nmodels <- length(umodels)
   if(is.null(ndates)){
     udates <- unique(casts$date)
@@ -89,7 +321,7 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
       nleads[i] <- length(unique(casts$lead[incl]))
     }
     posdates2 <- sort(posdates[nleads > 2], decreasing = TRUE)
-    udates <- posdates2[c(1, 24, 48, 72)[1:ndates]]
+    udates <- posdates2[c(1, 12, 24, 48, 72)[1:ndates]]
   }
   nudates <- length(udates)
   cols <- viridis(nudates, 1, 0, 0.75)

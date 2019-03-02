@@ -711,8 +711,8 @@ append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
     casts$error <- casts$estimate - casts$observed
   }
   if (add_in_window){
-    above_lower <- casts$observed > casts$LowerPI
-    below_upper <- casts$observed < casts$UpperPI
+    above_lower <- casts$observed >= casts$LowerPI
+    below_upper <- casts$observed <= casts$UpperPI
     casts$in_window <- above_lower & below_upper
   }
   if (add_lead){
@@ -767,6 +767,9 @@ measure_cast_error <- function(casts, min_observed = 1){
   tspecies <- rep(NA, ngroups)
   tlevel <- rep(NA, ngroups)
   tdate <- rep(NA, ngroups)
+  tdate <- rep(NA, ngroups)
+  fit_start_newmoon <- rep(NA, ngroups)
+  fit_end_newmoon <- rep(NA, ngroups)
   for(i in 1:ngroups){
     incl <- which(castgroup == ugroups[i])
     nsamples[i] <- length(incl)
@@ -780,11 +783,14 @@ measure_cast_error <- function(casts, min_observed = 1){
     RMSE[i] <- sqrt(mean(errs^2))
     in_window <- na.omit(casts$in_window[incl])
     coverage[i] <- sum(in_window)/length(in_window)
+    fit_start_newmoon[i] <- unique(casts$fit_start_newmoon[incl])
+    fit_end_newmoon[i] <- unique(casts$fit_end_newmoon[incl])
   }
   casttab <- data.frame(model = tmodel, species = tspecies, level = tlevel, 
-                        date = tdate, nsamples = nsamples, 
-                        nsamples_obs = nsampleso, RMSE = RMSE, 
-                        coverage = coverage)
+                        date = tdate, fit_start_newmoon = fit_start_newmoon,
+                        fit_end_newmoon = fit_end_newmoon, 
+                        nsamples = nsamples, nsamples_obs = nsampleso, 
+                        RMSE = RMSE, coverage = coverage)
   no_obs <- which(nsampleso < min_observed)
   if (length(no_obs) > 0){
     casttab <- casttab[-no_obs, ]    
