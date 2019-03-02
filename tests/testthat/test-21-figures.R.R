@@ -145,3 +145,18 @@ test_that("plot_err_lead_spp_mods", {
   expect_error(plot_err_lead_spp_mods(tree, ndates = 1:5))
 })
 
+test_that("plot_cast_R_c_mod_spp", {
+  expect_error(plot_err_lead_spp_mods(1))
+  expect_error(plot_err_lead_spp_mods(tree, cast_type = 1))
+  expect_error(plot_err_lead_spp_mods(tree, cast_type = "ok"))
+  expect_error(plot_err_lead_spp_mods(tree, cast_type = rep("forecasts", 2)))
+  expect_error(plot_err_lead_spp_mods(tree, species = 1))
+  expect_error(plot_err_lead_spp_mods(tree, species = "ok"))
+  expect_error(plot_err_lead_spp_mods(tree, level = 1))
+  expect_error(plot_err_lead_spp_mods(tree, level = "ok"))
+  expect_error(plot_err_lead_spp_mods(tree, level = rep("All", 2)))
+  expect_error(plot_err_lead_spp_mods(tree, min_observed = 1.5))
+  expect_error(plot_err_lead_spp_mods(tree, min_observed = "ok"))
+  expect_error(plot_err_lead_spp_mods(tree, min_observed = 1:5))
+  expect_error(plot_err_lead_spp_mods(tree, cast_dates = 1))
+})

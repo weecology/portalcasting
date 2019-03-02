@@ -63,15 +63,6 @@ plot_cast_R_c_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
   if (cast_type!= "forecasts" & cast_type != "hindcasts"){
     stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
   }
-  if (!is.numeric(min_observed)){
-    stop("`min_observed` is not numeric")
-  }
-  if (length(min_observed) > 1){
-    stop("`min_observed` can only be of length = 1")
-  }
-  if (min_observed < 1 | min_observed %% 1 != 0){
-    stop("`min_observed` is not a positive integer")
-  }
   if (!is.null(cast_dates)){
     cast_dates2 <- tryCatch(as.Date(cast_dates), error = function(x){NA})
     if (is.na(cast_dates2)){
@@ -87,6 +78,16 @@ plot_cast_R_c_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
     cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
     cast_dates <- as.Date(cast_dates)
   }
+  if (!is.numeric(min_observed)){
+    stop("`min_observed` is not numeric")
+  }
+  if (length(min_observed) > 1){
+    stop("`min_observed` can only be of length = 1")
+  }
+  if (min_observed < 1 | min_observed %% 1 != 0){
+    stop("`min_observed` is not a positive integer")
+  }
+
 
   errs <- read_casts(tree = tree, cast_type = cast_type, 
                      cast_dates = cast_dates) %>%
