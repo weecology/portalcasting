@@ -17,6 +17,6 @@ cleanup_dir(options_all)
 plot_cast_ts(tree)
 plot_cast_point(tree = tree, with_census = T)
 plot_err_lead_spp_mods(tree)
-plot_cast_R_c_mod_spp(tree)
+plot_cov_RMSE_mod_spp(tree)
 
 

@@ -30,7 +30,7 @@
 #'
 #' @export
 #'
-plot_cast_R_c_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts", 
+plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts", 
                                   species = rodent_spp(set = "evalplot"),
                                   level = "Controls", cast_dates = NULL, 
                                   min_observed = 1){

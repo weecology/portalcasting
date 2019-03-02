@@ -12,8 +12,8 @@ producing the y label and x axis (respectively) for `plot_cast_ts`.
 `plot_cast_point`.
 * `select_most_ab_spp` allows for a simple selection of the most abundant
 species from a -cast.
-* `plot_err_lead_spp_mods` is now added to replace the raw code in the 
-evaluation page.
+* `plot_err_lead_spp_mods` and `plot_cov_RMSE_mod_spp` now added to 
+replace the raw code in the evaluation page.
 
 ## Processing of forecasts
 * `read_casts` (old) is now `read_cast` and specifically works for only one -cast.
@@ -28,6 +28,9 @@ on the presence of a census.
 repo codebase. `verify_cast` is a logical wrapper on `cast_is_valid` that 
 facilitates a pipeline integration. `cast_is_valid` does the major set of
 checks of the cast data frame.  
+* `append_observed_to_cast` is provided to add the observed data to the forecasts
+and add columns for the raw error, in-forecast-window, and lead time as well.
+* `measure_cast_error` allows for summarization of errors at the -cast level.
 
 ## Processing of data
 * `most_recent_census` returns the date of the most recent census.
