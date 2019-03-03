@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
     <div class="page-header toc-ignore">
       <h1>portalcasting Codebase</h1>
             
-            <h4 class="date">02 March, 2019</h4>
+            <h4 class="date">03 March, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/codebase.Rmd"><code>vignettes/codebase.Rmd</code></a></small>
       <div class="hidden name"><code>codebase.Rmd</code></div>
@@ -97,7 +97,7 @@
 
     
     
-<p>This vignette outlines the codebase for the <strong>portalcasting</strong> package (v0.2.3), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>.</p>
+<p>This vignette outlines the codebase for the <strong>portalcasting</strong> package (v0.3.0), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -273,6 +273,52 @@
 </ul>
 <p>In addition, model-specific scripts (housed within <code>models/</code>) are generated using options lists, based on the <code><a href="../reference/model_options.html">model_options()</a></code> template (not to be confused with <code><a href="../reference/all_options.html">models_options()</a></code>).</p>
 </div>
+<div id="figures" class="section level2">
+<h2 class="hasAnchor">
+<a href="#figures" class="anchor"></a>Figures</h2>
+<p>There are currently four main figure functions, each of which involves some level of data and forcast processing. The default settings for each function are designed to produce the figures on the <a href="http://portal.naturecast.org/">Portal Predictions site</a>, but are flexible to allow for a wider range of options.</p>
+<ul>
+<li>
+<code><a href="../reference/plot_cast_ts.html">plot_cast_ts()</a></code>
+<ul>
+<li><code>most_recent_cast_date()</code></li>
+<li><code><a href="../reference/read_data.html">read_data()</a></code></li>
+<li><code><a href="../reference/read_cast.html">read_cast()</a></code></li>
+<li><code><a href="../reference/select_casts.html">select_casts()</a></code></li>
+<li><code><a href="../reference/plot_cast_ts_xaxis.html">plot_cast_ts_xaxis()</a></code></li>
+<li><code><a href="../reference/plot_cast_ts_ylab.html">plot_cast_ts_ylab()</a></code></li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/plot_cast_point.html">plot_cast_point()</a></code>
+<ul>
+<li><code>most_recent_cast_date()</code></li>
+<li><code><a href="../reference/most_recent_census.html">most_recent_census()</a></code></li>
+<li><code><a href="../reference/read_data.html">read_data()</a></code></li>
+<li><code><a href="../reference/read_cast.html">read_cast()</a></code></li>
+<li><code><a href="../reference/select_casts.html">select_casts()</a></code></li>
+<li><code>plot_cast_point_yaxis()</code></li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/plot_err_lead_spp_mods.html">plot_err_lead_spp_mods()</a></code>
+<ul>
+<li><code><a href="../reference/read_cast.html">read_casts()</a></code></li>
+<li><code><a href="../reference/select_casts.html">select_casts()</a></code></li>
+<li><code><a href="../reference/append_observed_to_cast.html">append_observed_to_cast()</a></code></li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/plot_cov_RMSE_mod_spp.html">plot_cov_RMSE_mod_spp()</a></code>
+<ul>
+<li><code><a href="../reference/read_cast.html">read_casts()</a></code></li>
+<li><code><a href="../reference/select_casts.html">select_casts()</a></code></li>
+<li><code><a href="../reference/append_observed_to_cast.html">append_observed_to_cast()</a></code></li>
+<li><code><a href="../reference/measure_cast_error.html">measure_cast_error()</a></code></li>
+</ul>
+</li>
+</ul>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -284,6 +330,7 @@
       <li><a href="#function-pipeline">Function pipeline</a></li>
       <li><a href="#directory-tree">Directory Tree</a></li>
       <li><a href="#options-list">Options List</a></li>
+      <li><a href="#figures">Figures</a></li>
       </ul>
 </div>
       </div>
