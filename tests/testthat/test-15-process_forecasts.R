@@ -213,3 +213,39 @@ test_that("measure_cast_error", {
   expect_error(measure_cast_error(casts, "ok"))
 })
 
+
+
+test_that("select_most_ab_spp", {
+  expect_silent(spp <- select_most_ab_spp(tree = tree, cast_date = cast_date))
+  expect_is(spp, "character")
+  expect_equal(length(spp), 3)
+  expect_silent(spp2 <- select_most_ab_spp(tree = tree, cast_date = NULL))
+  expect_is(spp2, "character")
+  expect_equal(length(spp2), 3)
+  expect_equal(spp, spp2)
+  expect_error(select_most_ab_spp(topx = "ok", 
+      tree = tree, cast_date = cast_date))
+  expect_error(select_most_ab_spp(topx = 1:2, 
+      tree = tree, cast_date = cast_date))
+  expect_error(select_most_ab_spp(topx = 1.2, 
+      tree = tree, cast_date = cast_date))
+  expect_error(select_most_ab_spp(tree = 1))
+  expect_error(select_most_ab_spp(tree = tree, species = 1))
+  expect_error(select_most_ab_spp(tree = tree, species = "ok"))
+  expect_error(select_most_ab_spp(tree = tree, level = 1))
+  expect_error(select_most_ab_spp(tree = tree, level = "ok" ))
+  expect_error(select_most_ab_spp(tree = tree, level = rep("All", 2)))
+  expect_error(select_most_ab_spp(tree = tree, cast_type = 1))
+  expect_error(select_most_ab_spp(tree = tree, cast_type = "ok"))
+  expect_error(
+     select_most_ab_spp(tree = tree, cast_type = rep("forecasts", 2)))
+  expect_error(select_most_ab_spp(tree = tree, cast_date = 1))
+  expect_error(select_most_ab_spp(tree = tree, cast_date = rep(cast_date, 2)))
+  expect_error(select_most_ab_spp(tree = tree, lead = 0))
+  expect_error(select_most_ab_spp(tree = tree, lead = 1:2))
+  expect_error(select_most_ab_spp(tree = tree, lead = 1.5))
+  expect_error(select_most_ab_spp(tree = tree, from_date = 1))
+  expect_error(select_most_ab_spp(tree = tree, from_date = rep(cast_date, 2)))
+
+})
+

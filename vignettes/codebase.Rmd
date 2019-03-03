@@ -132,3 +132,35 @@ options controlling the structure, content, and usage of the directory.
 In addition, model-specific scripts (housed within `models/`) are generated 
 using options lists, based on the `model_options()` template (not to be 
 confused with `models_options()`). 
+
+## Figures
+
+There are currently four main figure functions, each of which involves
+some level of data and forcast processing. The default settings for each
+function are designed to produce the figures on the [Portal Predictions
+site](http://portal.naturecast.org/), but are flexible to allow for a
+wider range of options. 
+
+* `plot_cast_ts()`
+  * `most_recent_cast_date()`
+  * `read_data()`
+  * `read_cast()`
+  * `select_casts()`
+  * `plot_cast_ts_xaxis()`
+  * `plot_cast_ts_ylab()`
+* `plot_cast_point()`
+  * `most_recent_cast_date()`
+  * `most_recent_census()`
+  * `read_data()`
+  * `read_cast()`
+  * `select_casts()`
+  * `plot_cast_point_yaxis()`
+* `plot_err_lead_spp_mods()`
+  * `read_casts()`
+  * `select_casts()`
+  * `append_observed_to_cast()`
+* `plot_cov_RMSE_mod_spp()`
+  * `read_casts()`
+  * `select_casts()`
+  * `append_observed_to_cast()`
+  * `measure_cast_error()`

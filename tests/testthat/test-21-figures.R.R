@@ -72,62 +72,28 @@ test_that("plot_cast_ts", {
   expect_error(plot_cast_ts(tree, start_newmoon = 1.5))
 })
 
-test_that("plotcastts_xaxis", {
-  expect_silent(plotcastts_xaxis(tree, c(300, 410)))
-  expect_error(plotcastts_xaxis("ok", 1:2))
-  expect_error(plotcastts_xaxis(tree, rep("ok", 2)))
-  expect_error(plotcastts_xaxis(tree, 1:3))
-  expect_error(plotcastts_xaxis(tree, c(300.1, 410)))
+test_that("plot_cast_ts_xaxis", {
+  expect_silent(plot_cast_ts_xaxis(tree, c(300, 410)))
+  expect_error(plot_cast_ts_xaxis("ok", 1:2))
+  expect_error(plot_cast_ts_xaxis(tree, rep("ok", 2)))
+  expect_error(plot_cast_ts_xaxis(tree, 1:3))
+  expect_error(plot_cast_ts_xaxis(tree, c(300.1, 410)))
 })
 
-test_that("plotcastts_ylab", {
-  expect_silent(ylab <- plotcastts_ylab(tree, "total"))
+test_that("plot_cast_ts_ylab", {
+  expect_silent(ylab <- plot_cast_ts_ylab(tree, "total"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
-  expect_silent(ylab <- plotcastts_ylab(tree, "BA"))
+  expect_silent(ylab <- plot_cast_ts_ylab(tree, "BA"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
 
-  expect_error(plotcastts_ylab(1))
-  expect_error(plotcastts_ylab(tree, species = 1))
-  expect_error(plotcastts_ylab(tree, species = "ok"))
-  expect_error(plotcastts_ylab(tree, species = rep("total", 2)))
-})
-
-test_that("select_most_ab_spp", {
-  expect_silent(spp <- select_most_ab_spp(tree = tree, cast_date = cast_date))
-  expect_is(spp, "character")
-  expect_equal(length(spp), 3)
-  expect_silent(spp2 <- select_most_ab_spp(tree = tree, cast_date = NULL))
-  expect_is(spp2, "character")
-  expect_equal(length(spp2), 3)
-  expect_equal(spp, spp2)
-  expect_error(select_most_ab_spp(topx = "ok", 
-      tree = tree, cast_date = cast_date))
-  expect_error(select_most_ab_spp(topx = 1:2, 
-      tree = tree, cast_date = cast_date))
-  expect_error(select_most_ab_spp(topx = 1.2, 
-      tree = tree, cast_date = cast_date))
-  expect_error(select_most_ab_spp(tree = 1))
-  expect_error(select_most_ab_spp(tree = tree, species = 1))
-  expect_error(select_most_ab_spp(tree = tree, species = "ok"))
-  expect_error(select_most_ab_spp(tree = tree, level = 1))
-  expect_error(select_most_ab_spp(tree = tree, level = "ok" ))
-  expect_error(select_most_ab_spp(tree = tree, level = rep("All", 2)))
-  expect_error(select_most_ab_spp(tree = tree, cast_type = 1))
-  expect_error(select_most_ab_spp(tree = tree, cast_type = "ok"))
-  expect_error(
-     select_most_ab_spp(tree = tree, cast_type = rep("forecasts", 2)))
-  expect_error(select_most_ab_spp(tree = tree, cast_date = 1))
-  expect_error(select_most_ab_spp(tree = tree, cast_date = rep(cast_date, 2)))
-  expect_error(select_most_ab_spp(tree = tree, lead = 0))
-  expect_error(select_most_ab_spp(tree = tree, lead = 1:2))
-  expect_error(select_most_ab_spp(tree = tree, lead = 1.5))
-  expect_error(select_most_ab_spp(tree = tree, from_date = 1))
-  expect_error(select_most_ab_spp(tree = tree, from_date = rep(cast_date, 2)))
-
+  expect_error(plot_cast_ts_ylab(1))
+  expect_error(plot_cast_ts_ylab(tree, species = 1))
+  expect_error(plot_cast_ts_ylab(tree, species = "ok"))
+  expect_error(plot_cast_ts_ylab(tree, species = rep("total", 2)))
 })
 
 test_that("plot_err_lead_spp_mods", {
