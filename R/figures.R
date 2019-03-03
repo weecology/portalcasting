@@ -411,145 +411,6 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
 
 }
 
-#' @title Select the most abundant species from a forecast or hindcast
-#'
-#' @description Given a forecast or hindcast, determine the most abundant
-#'   species predicted. Currently only reliable for forecasts.
-#'
-#' @param topx \code{integer}-conformable numeric value for the top number of
-#'   species to select.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
-#'
-#' @param species \code{character} vector of the species codes (or 
-#'   \code{"total"} for the total across species) to be selected from or 
-#'   \code{NULL} to include all species and the total.
-#'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'   or \code{"Controls"}).
-#'
-#' @param cast_type \code{character} value of the type of -cast of model. Used
-#'   to select the file in the predictions subdirectory. Currently only 
-#'   reliably coded for \code{"forecasts"}.
-#'
-#' @param cast_date \code{Date} the predictions were made. Used to select the
-#'   file in the predictions subdirectory. If \code{NULL} (default), the
-#'   most recently made -cast is selected. 
-#'
-#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
-#'   the model to be plotted.
-#'
-#' @param lead \code{integer}-conformable lead of the newmoon number used to
-#'   select the data plotted. 
-#'
-#' @param from_date \code{Date} to be used as a reference of when to count
-#'   the \code{lead} from. If \code{NULL} (default), for 
-#'   \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
-#'   \code{plot_cast_point} is not yet reliable for 
-#'   \code{cast_type = "hindcasts"}.
-#'
-#' @return \code{character} vector of length \code{topx} of the species codes
-#'   (see \code{\link{rodent_spp}}) of the selected species.
-#'
-#' @export
-#'
-select_most_ab_spp <- function(topx = 3, tree = dirtree(), 
-                               species = rodent_spp(),
-                               level = "Controls", cast_type = "forecasts", 
-                               cast_date = NULL, model = "Ensemble", 
-                               lead = 1, from_date = NULL){
-
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.null(species)){
-    if (!("character" %in% class(species))){
-      stop("`species` is not a character")
-    }
-    if (!all(species %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    }   
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (level != "All" & level != "Controls"){
-    stop("`level` must be 'All' or 'Controls'")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.null(cast_date)){
-    if (!("Date" %in% class(cast_date))){
-      stop("`cast_date` is not of class Date")
-    }
-    if (length(cast_date) > 1){
-      stop("`cast_date` can only be of length = 1")
-    }
-  } else{
-    cast_date <- most_recent_cast(tree, cast_type)
-  }
-  if (!("character" %in% class(model))){
-    stop("`model` is not a character")
-  }
-  if (length(model) > 1){
-    stop("`model` can only be of length = 1")
-  }
-  if (!is.numeric(lead)){
-    stop("`lead` is not numeric")
-  }
-  if (length(lead) > 1){
-    stop("`lead` can only be of length = 1")
-  }
-  if (lead < 1 | lead %% 1 != 0){
-    stop("`lead` is not a positive integer")
-  }
-  if (is.null(from_date)){
-    if(cast_type == "forecasts"){
-      from_date <- cast_date
-    }
-  }
-  if (!("Date" %in% class(from_date))){
-    stop("`from_date` is not of class Date")
-  }
-  if (length(from_date) > 1){
-    stop("`from_date` can only be of length = 1")
-  }
-  if (!is.numeric(topx)){
-    stop("`topx` is not numeric")
-  }
-  if (length(topx) > 1){
-    stop("`topx` can only be of length = 1")
-  }
-  if (topx < 1 | topx %% 1 != 0){
-    stop("`topx` is not a positive integer")
-  }
-
-  metadata <- read_data(tree, "metadata")
-  obs <- read_data(tree, tolower(level))
-  moons <- read_data(tree, "moons")
-  nmdates <- as.Date(as.character(moons$newmoondate))
-  most_recent_nm_spot <- max(which(nmdates <= from_date))
-  most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
-  cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
-  to_include <- which(cast_nms_io)[lead]
-  newmoonnumber <- metadata$rodent_forecast_newmoons[to_include]
-
-  pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, model = model,
-                      newmoonnumber = newmoonnumber)  
-  pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
-}
 
 #' @title Plot forecast or hindcast predictions for a given point in time 
 #'   across multiple species.
@@ -905,13 +766,13 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 
   rangex <- c(max(c(start_newmoon, min(obs_x))), max(pred_x))
   rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
-  ylab <- plotcastts_ylab(tree, species)
+  ylab <- plot_cast_ts_ylab(tree, species)
 
   par(mar = c(3, 4.5, 1, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
   mtext(ylab$text, side = 2, font = ylab$font, cex = 1.5, line = 3)
-  plotcastts_xaxis(tree, rangex)
+  plot_cast_ts_xaxis(tree, rangex)
 
   points(obs_x, obs_y, type = "l")
   polygon(pred_px, pred_py, col = rgb(0.6757, 0.8438, 0.8984), border = NA)
@@ -932,7 +793,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 #'
 #' @export
 #'
-plotcastts_xaxis <- function(tree, rangex){
+plot_cast_ts_xaxis <- function(tree, rangex){
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
   }
@@ -983,7 +844,7 @@ plotcastts_xaxis <- function(tree, rangex){
 #'
 #' @export
 #'
-plotcastts_ylab <- function(tree = dirtree(), species = "total"){
+plot_cast_ts_ylab <- function(tree = dirtree(), species = "total"){
 
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
