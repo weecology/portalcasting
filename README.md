@@ -12,16 +12,20 @@ analysis and forecasting of [Portal rodent populations](https://portal.weecology
 [output website](http://portal.naturecast.org/),
 [Zenodo archive](https://zenodo.org/record/2543733)).
 
-## Status: Deployed, In Development
+## Status: Deployed, Active Development
 
-This package is currently ***in development*** by the 
-[Weecology Team](https://www.weecology.org). Most of the code underlying the 
-forecasting functionality has been migrated over from the [predictions
-repository](https://github.com/weecology/portalPredictions),
+The `portalcasting` package is deployed for use within the [Portal Predictions
+repository](https://github.com/weecology/portalPredictions), providing
+the underlying R code to populate the directory with up-to-date data,
+analyze the data, produce new forecasts, generate new output figures,
+and render a new version of the [website](http://portal.naturecast.org/).
+All of the code underlying the forecasting functionality has been migrated 
+over from the [predictions repository](https://github.com/weecology/portalPredictions),
 which contains the code executed by the continuous integration.
-Coincidingly, the `portalcasting` package is deployed for use within the 
-[repository](https://github.com/weecology/portalPredictions).
-Output (website) generation functionality is still housed there, however.
+
+Having relocated the code here, the `portalcasting` package is therefore now
+the present location for active development of the model set and additional
+functionality. 
 
 Note that the current master branch code is not necessarily always being
 executed within the [predictions 
@@ -39,8 +43,7 @@ lags behind updates to the master branch of `portalcasting`, although
 ideally not long behind.
 
 The API is moderately well defined at this point, but is evolving and
-may change substantially. Output functions have not been brought over from
-the [predictions repository](https://github.com/weecology/portalPredictions).
+may change.
 
 
 ## Installation
@@ -126,22 +129,44 @@ select_casts(casts, species = "total", model = "Ensemble", level = "All")
 ```
 
 Basic plotting of the forecasts can be executed for single-species timeseries
-using `plot_cast`, which defaults to plotting the total abundance for the 
+using `plot_cast_ts`, which defaults to plotting the total abundance for the 
 control plots under the ensemble model, but has arguments to allow full 
 flexibility:
 
 ```r
-plot_cast()
+plot_cast_ts()
 ```
 
 Similarly, the point-in-time forecasts for multiple species can be compared
-using `plot_species_casts`, which defaults to all species and the total 
+using `plot_cast_point`, which defaults to all species and the total 
 abundance one step ahead for the control plots under the ensemble model,
 but has arguments to allow full flexibility:
 
 ```r
-plot_species_casts()
+plot_cast_point()
 ```
+
+The models are evaluated using a variety of error metrics, which can be plotted
+using `plot_err_lead_spp_mods` and `plot_cov_RMSE_mod_spp()`. 
+`plot_err_lead_spp_mods` shows the raw forecast error as a function of lead time
+across the combination of species and models. The arguments are set up by default
+to plot a set of recent forecasts for a set of common species in the control
+plots, but they allow for flexibility:
+
+
+```r
+plot_err_lead_spp_mods()
+```
+
+Similarly, `plot_cov_RMSE_mod_spp()` displays the coverage and root mean squared 
+error (RMSE) of each model across species. By default, the function produces a
+figure using all available hindcasts for a set of common species in the control 
+plots, but the arguments allow for flexibility:
+
+```r
+plot_cov_RMSE_mod_spp()
+```
+
 
 For further information about the `portalcasting` codebase see the 
 [vignette](https://weecology.github.io/portalcasting/articles/codebase.html).
@@ -168,6 +193,6 @@ Brown for establishing the Portal Project.
 ## Author Contributions
 
 All authors conceived the ideas, designed methodology, and developed the 
-automated forecasting system. JLS is leading the transition of code from
+automated forecasting system. JLS led the transition of code from
 the [Portal Predictions repo](https://github.com/weecology/portalPredictions)
 to `portalcasting`. 
