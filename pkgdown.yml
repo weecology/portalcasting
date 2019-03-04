@@ -4,5 +4,6 @@ pkgdown_sha: ~
 articles:
   adding_a_model: adding_a_model.html
   codebase: codebase.html
+  howto: howto.html
   models: models.html
 
