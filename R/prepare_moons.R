@@ -9,6 +9,13 @@
 #'   for the moons data. See \code{\link{moons_options}}.
 #'
 #' @return Moons data table as a code{moons}-class \code{data.frame}.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' prep_moons()
+#' }
 #'
 #' @export
 #' 

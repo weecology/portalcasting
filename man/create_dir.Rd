@@ -40,3 +40,13 @@ quieted.}
 \code{create_sub_dir}: Create a specific subdirectory 
   folder if it does not already exist.
 }
+\examples{
+\dontrun{
+
+create_dir()
+create_main_dir()
+create_sub_dirs()
+create_sub_dir()
+}
+
+}

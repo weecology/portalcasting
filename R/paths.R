@@ -20,6 +20,12 @@
 #'
 #' @return Class-\code{dirtree} named list (elements: \code{base}, 
 #'   \code{main}, and \code{subs}) representing the directory tree.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' dirtree()
+#' }
 #'
 #' @export
 #'
@@ -93,6 +99,16 @@ subdirs <- function(subs = NULL, type = NULL){
 #'
 #' @return \code{base_path}: The normalized path of the main folder in the 
 #'   directory tree as a character value (see \code{\link{normalizePath}}).
+#' 
+#' @examples
+#' \dontrun{
+#'
+#' setup_dir()
+#' base_path()
+#' main_path()
+#' sub_paths()
+#' sub_path(specific_sub = "models")
+#' }
 #'
 #' @export
 #'
@@ -181,6 +197,13 @@ sub_path <- function(tree = dirtree(), specific_sub){
 #'
 #' @return The normalized path of the specified model script (see 
 #'   \code{\link{normalizePath}}).
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' model_path(model = "AutoArima")
+#' }
 #'
 #' @export
 #'
@@ -230,6 +253,13 @@ model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
 #'
 #' @return The normalized path of the specified file (see 
 #'   \code{\link{normalizePath}}).
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' file_path(local_path = "PortalData/Rodents/Portal_rodent_species.csv")
+#' }
 #'
 #' @export
 #'

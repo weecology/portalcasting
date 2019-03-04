@@ -10,8 +10,13 @@
 #'   the (fore- or hind-)casting.
 #'   \cr \cr To run a default hindcast, use 
 #'   \code{options_all = all_options(cast_type = "hindcasts")}
-#'
-#' @return Nothing
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' portalcast()
+#' }
 #'
 #' @export
 #'

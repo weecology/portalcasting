@@ -6,7 +6,13 @@
 \alias{portalcasting-package}
 \title{Functions for Portal Forecasting}
 \description{
-This package contains the functions used to forecast rodent
-  abundance at Portal.
+This package contains the functions used for continuous
+  analysis and forecasting of 
+  \href{https://portal.weecology.org/}{Portal rodent populations},
+  as implemented in the 
+  \href{https://github.com/weecology/portalPredictions}{Portal Predictions repository}.
+  Functions in \code{portalcasting} are designed to be portable, allowing
+  users to set up a fully-functional replica repository for development
+  and testing of new models.
 }
 \keyword{package}

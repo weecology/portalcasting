@@ -49,3 +49,12 @@ Plot the point value with confidence interval for a step in
   a forecast or hindcast across multiple species. Currently only reliable
   for forecasts.
 }
+\examples{
+\dontrun{
+
+setup_dir(all_options(download_existing_predictions = TRUE))
+plot_cast_point()
+plot_cast_point(with_census = TRUE)
+}
+
+}

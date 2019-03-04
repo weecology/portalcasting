@@ -17,3 +17,10 @@ Create (via \code{\link{create_dir}}) and populate (via
   function overwrites any existing components of the directory. Future
   iterations will allow for updating, overwriting, or neither.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+}
+
+}

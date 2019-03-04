@@ -22,3 +22,15 @@ Read in a specified data file and ensure its class attribute
   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
   \code{"moons"}, and \code{"metadata"}.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+read_data(data_name = "all")
+read_data(data_name = "controls")
+read_data(data_name = "covariates")
+read_data(data_name = "moons")
+read_data(data_name = "metadata")
+}
+
+}

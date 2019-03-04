@@ -48,3 +48,14 @@ subdirectory/subdirectories of interest.}
 \code{sub_path}: Return the path for a specific \code{subs} 
   folder or folders in the directory.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+base_path()
+main_path()
+sub_paths()
+sub_path(specific_sub = "models")
+}
+
+}

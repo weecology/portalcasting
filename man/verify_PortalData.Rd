@@ -23,3 +23,11 @@ Check that the PortalData subdirectory exists and has the
   needed specified file(s) within the "Rodents" subdirectory. If any of
    the file(s) is(/are) not present, the (entire) directory is filled.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+verify_PortalData()
+}
+
+}

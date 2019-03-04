@@ -38,3 +38,11 @@ values needed for a -cast to be retained in the output table. Default is
 Plot the RMSE and coverage by species matrix of cast error 
   as a function of model.
 }
+\examples{
+\dontrun{
+
+setup_dir(all_options(download_existing_predictions = TRUE))
+plot_cov_RMSE_mod_spp()
+}
+
+}

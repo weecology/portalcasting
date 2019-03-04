@@ -15,6 +15,13 @@
 #'   settings controlling the metadata data creation.
 #'
 #' @return Model metadata as a \code{metadata}-class \code{list}.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' prep_metadata()
+#' }
 #'
 #' @export
 #'

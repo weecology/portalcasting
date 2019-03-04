@@ -31,3 +31,10 @@ A cross-platform, tidy way to pass the full tree structure
   directory and no additional "main" level (so the subdirectories are 
   located within the working directory).
 }
+\examples{
+\dontrun{
+
+dirtree()
+}
+
+}

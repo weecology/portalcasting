@@ -23,3 +23,11 @@ observed data collected during the predicted census.}
 Determine the date of the most recently produced forecast or 
   hindcast in a predictions folder.
 }
+\examples{
+\dontrun{
+
+setup_dir(all_options(download_existing_predictions = TRUE))
+most_recent_cast()
+}
+
+}

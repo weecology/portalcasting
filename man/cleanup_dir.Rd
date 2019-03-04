@@ -15,3 +15,12 @@ available for controlling the set up and population of the directory (see
 Remove content in specified (by \code{options_dir$to_cleanup})
   subdirectories and the subdirectories themselves.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+portalcast()
+cleanup_dir()
+}
+
+}

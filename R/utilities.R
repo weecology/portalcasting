@@ -135,6 +135,13 @@ fcast0 <- function(nfcnm, pred_name = "pred"){
 #'
 #' @return Today's date, as a \code{Date} or date and time as a 
 #'   \code{POSIXct}.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' today()
+#' today(time = TRUE)
+#' }
 #'
 #' @export
 #'

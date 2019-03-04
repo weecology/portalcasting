@@ -22,3 +22,11 @@ Prepare covariate data for forecasting or hindcasting,
   including saving out the data and appending the new forecasts of 
   covariates to the existing covariate forecast table.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+prep_covariates()
+}
+
+}

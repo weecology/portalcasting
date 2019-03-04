@@ -9,6 +9,12 @@
 #'   available for controlling the set up and population of the directory (see 
 #'   \code{\link{all_options}}). 
 #' 
+#' @examples
+#' \dontrun{
+#'
+#' setup_dir()
+#' }
+#'
 #' @export
 #'
 setup_dir <- function(options_all = all_options()){
@@ -27,6 +33,15 @@ setup_dir <- function(options_all = all_options()){
 #' @param options_dir Class-\code{dir_options} list containing all options 
 #'   available for controlling the set up of the directory (see 
 #'   \code{\link{dir_options}}). 
+#' 
+#' @examples
+#' \dontrun{
+#'
+#' create_dir()
+#' create_main_dir()
+#' create_sub_dirs()
+#' create_sub_dir()
+#' }
 #'
 #' @export
 #'
@@ -111,6 +126,17 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
 #' @param options_all Class-\code{all_options} list containing all options 
 #'   available for controlling the set up and population of the directory (see 
 #'   \code{\link{all_options}}). 
+#' 
+#' @examples
+#' \dontrun{
+#'
+#' create_dir()
+#' fill_dir()
+#' fill_PortalData()
+#' fill_data()
+#' fill_predictions()
+#' fill_models()
+#' }
 #' 
 #' @export
 #'
@@ -250,6 +276,13 @@ fill_models <- function(options_models = models_options()){
 #'   the moon dates table.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
+#' 
+#' @examples
+#' \dontrun{
+#'
+#' setup_dir()
+#' verify_PortalData()
+#' }
 #'
 #' @export
 #' 
@@ -282,6 +315,14 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 #' @param options_all Class-\code{all_options} list containing all options 
 #'   available for controlling the set up and population of the directory (see 
 #'   \code{\link{all_options}}). 
+#' 
+#' @examples
+#' \dontrun{
+#'
+#' setup_dir()
+#' portalcast()
+#' cleanup_dir()
+#' }
 #'
 #' @export
 #' 

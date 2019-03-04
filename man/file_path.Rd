@@ -20,3 +20,11 @@ The normalized path of the specified file (see
 Return the normalized path for a specific file within the
   directory.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+file_path(local_path = "PortalData/Rodents/Portal_rodent_species.csv")
+}
+
+}

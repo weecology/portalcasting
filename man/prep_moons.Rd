@@ -19,3 +19,11 @@ Get time information (calendar dates, census periods,
   based on a lunar survey schedule. If needed, additional moons will be
   added to both the in-use and raw versions of the data table.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+prep_moons()
+}
+
+}

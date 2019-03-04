@@ -60,3 +60,15 @@ folder in the portalcasting directory (see
 \code{fill_models}: Populate the model folder with specified 
   model scripts to be run.
 }
+\examples{
+\dontrun{
+
+create_dir()
+fill_dir()
+fill_PortalData()
+fill_data()
+fill_predictions()
+fill_models()
+}
+
+}
