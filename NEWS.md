@@ -1,6 +1,6 @@
 # portalcasting (development version)
 
-# [portalcasting 0.3.0](https://github.com/weecology/portalcasting)
+## [portalcasting 0.3.0](https://github.com/weecology/portalcasting)
 *active development*
 
 ### Completed migration of plotting code
