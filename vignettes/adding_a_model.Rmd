@@ -1,6 +1,7 @@
 ---
 title: "Adding a Model"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Juniper L. Simonis and Glenda M. Yenni"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{adding_a_model}
@@ -23,14 +24,14 @@ main respository.
 For the purposes here, consider that you are interested in adding a model
 named "newmod" to the forecasting suite. 
 
-## Model input
+### Model input
 
 All of the information needed to make a new forecast can be found in the
 `data/` subdirectory, including rodent and weather data files as well as
 a `metadata.yaml` file that contains the metadata controls to make sure
 the models match each other.
 
-## Model requirements
+### Model requirements
 
 In order to realize "newmod", you need to create an R script named
 `newmod.R` and located within the `models/` subdirectory. 
@@ -45,7 +46,7 @@ also generate a table of AIC values, also with specific column names, saved
 to a file in `tmp/` named [modelname]forecasts_model_aic.csv. 
 
 
-### Columns of the `-forecasts.csv` file need to be:  
+#### Columns of the `-forecasts.csv` file need to be:  
 
 `date`: date on which the model was run. In the format `'YYYY-MM-DD'`. 
 (If hindcasting is done then the date will be a later date than `forecastyear`
@@ -96,7 +97,7 @@ models will be compared with each other. That is, a model predicting
 `level`: `"all"`, `currency`: `"abundance"`, `species`: `"AH"` will only
 be compared against models making those same predictions.
 
-### Columns of the `-forecasts_model_aic.csv` file need to be:
+#### Columns of the `-forecasts_model_aic.csv` file need to be:
 
 `date`, `currency`, `model`, `level`, `species`, `fit_start_newmoon`, 
 `fit_end_newmoon`, and `initial_newmoon` as in the `-forecasts.csv` file.
@@ -104,7 +105,7 @@ be compared against models making those same predictions.
 `aic`: [Akaike Information 
 Criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion) value.
 
-## Adding models locally
+### Adding models locally
 
 Firstly, set up a base local version of the Portal Predictions repository
 via `setup_dir()`.
@@ -123,7 +124,7 @@ or, to run "newmod" in addition to the existing set of models, use
 portalcast(all_options(model = models(add = "newmod")))
 ```
 
-## Contributing models to the base set
+### Contributing models to the base set
 
 The prefabricated (base) set of models available for use within the 
 Portal Predictions pipeline is controlled through a few functions

@@ -1,6 +1,7 @@
 ---
 title: "portalcasting Codebase"
 output: rmarkdown::html_vignette
+author: "Juniper L. Simonis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 vignette: >
   %\VignetteIndexEntry{codebase}
@@ -25,7 +26,7 @@ This vignette outlines the codebase for the **portalcasting** package
 (v`r vers`), which underlies the automated iterative forecasting within the
 [Portal Predictions repo](https://github.com/weecology/portalPredictions).
 
-## Installation
+### Installation
 
 To obtain the most recent version of **portalcasting**, install the most recent 
 version from GitHub:
@@ -36,7 +37,7 @@ devtools::install_github("weecology/portalcasting")
 ```
 
 
-## Function pipeline
+### Function pipeline
 
 The package organizes the main actions into a set of hierarchical functions 
 `setup_dir()` (which creates and fills the directory), `portalcast()` (which
@@ -91,7 +92,7 @@ are flexible, as detailed in Options List.
 
 * `cleanup_dir()`
 
-## Directory Tree
+### Directory Tree
 
 The package uses a simple directory tree to organize the project. There are 
 three levels to the hierarchy:
@@ -111,7 +112,7 @@ list using `main_path()`, `sub_path()`, and `sub_paths()`. In addition,
 and `file_path()` can be used to find the full path of any file within
 the directory.
 
-## Options List
+### Options List
 
 The options list is a hierarchical list containing a suite of inter-linked
 options controlling the structure, content, and usage of the directory.
@@ -133,7 +134,7 @@ In addition, model-specific scripts (housed within `models/`) are generated
 using options lists, based on the `model_options()` template (not to be 
 confused with `models_options()`). 
 
-## Figures
+### Figures
 
 There are currently four main figure functions, each of which involves
 some level of data and forcast processing. The default settings for each

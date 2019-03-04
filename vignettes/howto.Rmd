@@ -1,0 +1,154 @@
+---
+title: "Set Up and Use a Portal Predictions Directory"
+output: rmarkdown::html_vignette
+author: "Juniper L. Simonis"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+vignette: >
+  %\VignetteIndexEntry{howto}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include=FALSE}
+library(portalcasting)
+vers <- packageVersion("portalcasting")
+today <- Sys.Date()
+```
+
+This vignette shows how to set up and run your own [Portal 
+Predictions](https://github.com/weecology/portalPredictions) directory.
+
+### Create a Portal Predictions directory
+
+The `setup_dir()` function creates and populates a standard Portal Predictions
+directory within the present location (by default) that includes `data`,
+`models`, `PortalData`, `predictions` and `tmp` subdirectories. By default,
+`setup_dir()` downloads the most up-to-date version of the 
+[Portal Data from Zenodo](https://zenodo.org/record/2541170)
+into the `PortalData` subdirectory, prepares the moons, rodents, covariates,
+and metadata data files (and places them in the `data` subdirectory), copies 
+the historic covariate forecast data file available in the package 
+(`/inst/extdata/covariate_forecasts.csv`) into the `data` subdirectory, 
+downloads the most recent set of model forecasts into the `predictions` 
+subdirectory and populates the `models` subdirectory with scripts for the four
+existing models ("AutoArima", "ESSS", "nbGARCH", and "pevGARCH").
+
+```{r, eval=FALSE}
+setup_dir()
+```
+
+### Run a "-cast" (forecast or hindcast)
+
+The `portalcast()` function controls the running of potentially multiple 
+models for either a forecast or a hindcast. It will prepare the data 
+(rodents, covariates, newmoons, metadata) as needed, verify that the requested
+models are available to run, run the models, compile the output, and
+generate an ensemble (if desired). Presently, the preloaded model set includes
+[four models](https://weecology.github.io/portalcasting/articles/models.html):
+ESSS, AutoArima, nbGARCH, and pevGARCH. 
+
+```{r, eval=FALSE}
+portalcast()
+```
+
+### Tidy up the temporary files
+
+The `cleanup_dir()` function simply removes the temporary files and folders
+from the directory.
+
+```{r, eval=FALSE}
+cleanup_dir()
+```
+
+### Options
+
+All required inputs to `setup_dir()`, `portalcast()`, and `cleanup_dir()`
+are encompassed within the singular argument `options_all`, which is a 
+hierarchical list of control arguments, defined through the options-settting 
+function `all_options()` and the default values are appropriate for basic 
+forecast usage. There are many options available for the user to and a full 
+list can be found by running `?all_options`, to return the help file for 
+the functions that generate the hierarchical options list. 
+
+### Loading the model output into an R session
+
+Once the models have finished running, you can read the results back into R
+using `read_cast()`, which loads the most recent model forecast or hindcast,
+or `read_casts()`, which loads all forecasts or hindcasts:
+
+```{r, eval=FALSE}
+cast <- read_cast()
+casts <- read_casts()
+```
+
+Both functions have simple controls for forecasts or hindcasts and which files
+to load based on their date.
+
+### Selecting a subset of model output
+
+The model output that has been loaded can be subset using `select_casts()`,
+which has arguments to allow filtering based on `species`, `level`,
+`model`, and `newmoonnumber`, with the default being to return all values:
+
+```{r, eval=FALSE}
+select_casts(casts, species = "total", model = "Ensemble", level = "All")
+```
+
+### Visualizing the model output
+
+Basic plotting of a single-species forecast can be executed using 
+`plot_cast_ts()`, which defaults to plotting the total abundance for the 
+control plots under the ensemble model, but has arguments to allow full 
+flexibility.
+
+```{r, eval=FALSE}
+plot_cast_ts()
+```
+
+Similarly, the point-in-time forecasts for multiple species can be compared
+using `plot_cast_point`, which defaults to all species and the total 
+abundance one step ahead for the control plots under the ensemble model,
+but has arguments to allow full flexibility.
+
+```{r, eval=FALSE}
+plot_cast_point()
+```
+
+It is possible to compare the point-in-time forecasts with observed data
+by setting `with_census = TRUE`: 
+
+```{r, eval=FALSE}
+plot_cast_point(with_census = TRUE)
+```
+
+### Visualizing model evaluation
+
+The models are evaluated using a variety of error metrics, which can be plotted
+using `plot_err_lead_spp_mods()` and `plot_cov_RMSE_mod_spp()`. 
+
+`plot_err_lead_spp_mods()` shows the raw forecast error as a function of lead time
+across the combination of species and models:
+
+```{r, eval=FALSE}
+plot_err_lead_spp_mods()
+```
+
+The arguments are set up by default to plot a set of recent forecasts for a set 
+of common species in the control plots, but they allow for flexibility
+
+Similarly, `plot_cov_RMSE_mod_spp()` displays the coverage and root mean squared 
+error (RMSE) of each model across species:
+
+```{r, eval=FALSE}
+plot_cov_RMSE_mod_spp()
+```
+
+By default, the function produces a figure using all available hindcasts for a 
+set of common species in the control plots, but the arguments allow for flexibility.
