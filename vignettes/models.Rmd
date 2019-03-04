@@ -1,6 +1,7 @@
 ---
 title: "Current Models"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Juniper L. Simonis"
 output: rmarkdown::html_vignette
 bibliography: refs.bibtex
 vignette: >
@@ -22,7 +23,7 @@ ESSS, AutoArima, nbGARCH, and pevGARCH [@PortalPredictions]. Each model
 has a function with its name (*e.g.*, `ESSS()`) and an associated R script
 in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
 
-## ESSS
+### ESSS
 
 ESSS (Exponential Smoothing State Space) is a flexible exponential smoothing 
 state space model [@Hyndman2008] fit to the data at the composite (full site
@@ -44,7 +45,7 @@ seasonal components to the ESSS model. ESSS is fit flexibly, such that the
 model parameters can vary from fit to fit.
 
 
-## AutoArima
+### AutoArima
 
 AutoArima (Automatic Auto-Regressive Integrated Moving Average) is a 
 flexible Auto-Regressive Integrated Moving Average (ARIMA) model fit to the 
@@ -62,7 +63,7 @@ which is not the case for the Portal rodent surveys. As a result, no seasonal
 models were evaluated. AutoArima is fit flexibly, such that the model 
 parameters can vary from fit to fit.
 
-## nbGARCH
+### nbGARCH
 
 nbGARCH (Negative Binomial Auto-Regressive Conditional Heteroskedasticity) 
 is a generalized autoregressive conditional heteroskedasticity (GARCH) 
@@ -87,7 +88,7 @@ overdispersion as an additional parameter in a two-step approach. This
 two-stage approach has only been minimally evaluated, although preliminary 
 simulation-based studies are promising [@Liboschik2017b].    
 
-## pevGARCH
+### pevGARCH
 
 pevGARCH (Poisson Environmental Variable Auto-Regressive Conditional
 Heteroskedasticity) is a generalized autoregressive conditional
@@ -130,7 +131,7 @@ environmental covariates:
 The final model is an intercept-only model. The single best model of the 11 is 
 selected based on AIC. 
 
-## Ensemble
+### Ensemble
 
 In addition to the base models, we include an ensemble, constructed using the
 base model AIC weights. The ensemble mean is calculated as the AIC-weighted
@@ -138,4 +139,4 @@ mean of all model means. The ensemble variance is estimated as the sum of
 the AIC-weighted mean of all model variances and the variance of the estimated
 AIC-weighted mean, calculated using the unbiased estimate of sample variances.
 
-# References
+### References
