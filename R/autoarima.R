@@ -1,9 +1,9 @@
 #' @title Flexible Auto-Regressive Integrated Moving Average model for Portal 
 #'  Predictions
 #'
-#' @description Fit an AutoARIMA model in the portalcasting pipeline. 
+#' @description Fit an AutoArima model in the portalcasting pipeline. 
 #'
-#' @details Model "AutoARIMA" is a flexible auto-regressive integrated 
+#' @details Model "AutoArima" is a flexible auto-regressive integrated 
 #'  moving average model fit to the data using 
 #'  \code{\link[forecast]{auto.arima}} in the
 #'  \href{http://pkg.robjhyndman.com/forecast/}{\code{forecast} package}
