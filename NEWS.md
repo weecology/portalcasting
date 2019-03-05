@@ -155,7 +155,7 @@ to the repository.
 * Updated `fill_PortalData()` and new `PortalData_options()` allow 
 for control over download source.
 
-## [portalcasting 0.1.0](https://github.com/weecology/portalcasting/tree/77fb0c8a32de5ff39715e652ce8e5b813ad02ff3) 
+# [portalcasting 0.1.0](https://github.com/weecology/portalcasting/tree/77fb0c8a32de5ff39715e652ce8e5b813ad02ff3) 
 *true code edits 2018-12-14, version number updated 2019-01-02*
 
 ### Migration from Portal Predictions repository
