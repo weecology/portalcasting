@@ -36,3 +36,12 @@ Plot an observed timeseries and forecast or hindcast
   timeseries with a prediction interval. Currently only reliable for 
   forecasts.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+portalcast()
+plot_cast_ts()
+}
+
+}

@@ -32,3 +32,11 @@ or \code{"Controls"}).}
 Plot the model-species matrix of error as a function of
   lead time.
 }
+\examples{
+\dontrun{
+
+setup_dir(all_options(download_existing_predictions = TRUE))
+plot_err_lead_spp_mods()
+}
+
+}

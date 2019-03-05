@@ -15,10 +15,15 @@ the (fore- or hind-)casting.
 \cr \cr To run a default hindcast, use 
 \code{options_all = all_options(cast_type = "hindcasts")}}
 }
-\value{
-Nothing
-}
 \description{
 Run potentially multiple models for either a forecast or a 
   hindcast.
+}
+\examples{
+\dontrun{
+
+setup_dir()
+portalcast()
+}
+
 }

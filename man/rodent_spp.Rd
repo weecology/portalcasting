@@ -23,3 +23,12 @@ of common species to be included in the evaluations plots.}
 Creates a simple \code{character} vector of abbreviations for
   the \href{https://portal.naturecast.org/profiles.html}{Portal Rodents}.
 }
+\examples{
+\dontrun{
+
+rodent_spp()
+rodent_spp("wtotal")
+rodent_spp("evalplot")
+}
+
+}

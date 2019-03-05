@@ -27,6 +27,13 @@
 #'   values needed for a -cast to be retained in the output table. Default is
 #'   \code{1}, which returns all -casts with any observations. To include all
 #'   -casts (even those without any evaluations), set to \code{0}. 
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir(all_options(download_existing_predictions = TRUE))
+#' plot_cov_RMSE_mod_spp()
+#' }
 #'
 #' @export
 #'
@@ -241,6 +248,13 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 #'   reliably coded for \code{"forecasts"}.
 #'
 #' @param ndates \code{integer} number of -cast issue dates to include.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir(all_options(download_existing_predictions = TRUE))
+#' plot_err_lead_spp_mods()
+#' }
 #'
 #' @export
 #'
@@ -452,6 +466,14 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 #' @param with_census \code{logical} toggle if the plot should include the
 #'   observed data collected during the predicted census.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir(all_options(download_existing_predictions = TRUE))
+#' plot_cast_point()
+#' plot_cast_point(with_census = TRUE)
+#' }
 #'
 #' @export
 #'
@@ -679,6 +701,14 @@ plotcastpoint_yaxis <- function(tree = dirtree(), species = "total"){
 #'
 #' @param start_newmoon \code{integer}-conformable newmoon number used as the
 #'   the minimum x value for the plot. 
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' portalcast()
+#' plot_cast_ts()
+#' }
 #'
 #' @export
 #'

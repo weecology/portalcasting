@@ -24,3 +24,11 @@ Prepare the rodent dataset, tailored for forecasting.
   Specifically, return data for all plots and control plots only, for each 
   species except PI and the total
 }
+\examples{
+\dontrun{
+
+setup_dir()
+prep_rodents()
+}
+
+}

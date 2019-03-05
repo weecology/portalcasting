@@ -33,3 +33,13 @@ Class \code{casts} \code{data.frame} of trimmed fore- or
 Given a \code{casts}-class \code{data.frame} of many models'
   predictions, select a specific subset for use.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+portalcast()
+casts <- read_casts()
+scasts <- select_casts(casts)
+}
+
+}

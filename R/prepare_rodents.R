@@ -14,6 +14,13 @@
 #' @return A class-\code{rodents_list} \code{list} of two class-
 #'   \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
 #'   and \code{controls} (abundances on control plots only).
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' prep_rodents()
+#' }
 #'
 #' @export
 #'
@@ -216,6 +223,14 @@ remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
 #'   \code{"NA"} species name. Defaults to \code{FALSE}.
 #'
 #' @return \code{character} vector of species abbreviations.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' rodent_spp()
+#' rodent_spp("wtotal")
+#' rodent_spp("evalplot")
+#' }
 #'
 #' @export
 #'

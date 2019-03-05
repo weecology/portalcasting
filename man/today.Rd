@@ -17,3 +17,11 @@ Today's date, as a \code{Date} or date and time as a
 \description{
 Provide the current date (and optionally time) of the system.
 }
+\examples{
+\dontrun{
+
+today()
+today(time = TRUE)
+}
+
+}

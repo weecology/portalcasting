@@ -27,3 +27,11 @@ Model metadata as a \code{metadata}-class \code{list}.
 Set up the metadata list used for -casting, primarily the 
   time periods.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+prep_metadata()
+}
+
+}

@@ -13,6 +13,13 @@
 #'
 #' @param quiet \code{logical} indicator of whether the download messages 
 #'   are returned to the console.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' download_predictions()
+#' }
 #'
 #' @export
 #'

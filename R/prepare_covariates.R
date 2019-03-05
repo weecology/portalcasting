@@ -11,6 +11,13 @@
 #'   settings controlling the covariates data creation.
 #'
 #' @return Covariate data table as a code{covariates}-class \code{data.frame}.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' prep_covariates()
+#' }
 #'
 #' @export
 #'

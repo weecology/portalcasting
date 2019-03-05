@@ -308,6 +308,15 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'  
 #' @return Class \code{casts} \code{data.frame} of requested fore- or 
 #'   hindcasts.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' portalcast()
+#' read_cast()
+#' read_casts()
+#' }
 #'
 #' @export
 #'
@@ -521,6 +530,13 @@ cast_is_valid <- function(cast, verbose = FALSE){
 #'
 #' @return \code{Date} of the most recent cast.
 #'
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir(all_options(download_existing_predictions = TRUE))
+#' most_recent_cast()
+#' }
+#'
 #' @export
 #'
 most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
@@ -584,6 +600,15 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 #' @return Class \code{casts} \code{data.frame} of trimmed fore- or 
 #'   hindcasts.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' portalcast()
+#' casts <- read_casts()
+#' scasts <- select_casts(casts)
+#' }
 #'
 #' @export
 #'
@@ -663,6 +688,15 @@ select_casts <- function(casts, species = NULL, level = NULL, model = NULL,
 #'   be added to the output as well. 
 #'
 #' @return Class \code{casts} \code{data.frame} with additional columns.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir(all_options(download_existing_predictions = TRUE))
+#' casts <- read_casts()
+#' casts_a <- select_casts(casts, level = "All")
+#' casts_a <- append_observed_to_cast(casts_a) 
+#' }
 #'
 #' @export
 #'
@@ -735,6 +769,16 @@ append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
 #'   -casts (even those without any evaluations), set to \code{0}. 
 #'
 #' @return \code{data.frame} of errors summarized to the -cast-level. 
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir(all_options(download_existing_predictions = TRUE))
+#' casts <- read_casts()
+#' casts_a <- select_casts(casts, level = "All")
+#' casts_a <- append_observed_to_cast(casts_a)
+#' measure_cast_error(casts_a)
+#' }
 #'
 #' @export
 #'

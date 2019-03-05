@@ -30,3 +30,13 @@ Add a column of observed values and optionally raw error,
   in-prediction-window logical indicator, and lead time columns. Additional
   columns are added by default.
 }
+\examples{
+\dontrun{
+
+setup_dir(all_options(download_existing_predictions = TRUE))
+casts <- read_casts()
+casts_a <- select_casts(casts, level = "All")
+casts_a <- append_observed_to_cast(casts_a) 
+}
+
+}

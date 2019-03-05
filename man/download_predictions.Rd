@@ -22,3 +22,11 @@ Download the files into the predictions subdirectory in the
   the portalcasting directory tree from the 
   \href{https://bit.ly/2IFuPd7}{main repository}.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+download_predictions()
+}
+
+}

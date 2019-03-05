@@ -357,3 +357,22 @@ Suite of functions used to generate options \code{list}s
 \code{check_options_args} verifies the validity (class, size,
   etc.) of the inputs to the options list functions.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+all_options()
+dir_options()
+PortalData_options()
+data_options()
+moons_options()
+rodents_options()
+covariates_options()
+metadata_options()
+predictions_options()
+models_options()
+cast_options()
+check_options_args()
+}
+
+}

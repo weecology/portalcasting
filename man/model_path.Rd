@@ -20,3 +20,11 @@ The normalized path of the specified model script (see
 \description{
 Return the normalized path for a specific model.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+model_path(model = "AutoArima")
+}
+
+}

@@ -22,3 +22,14 @@ values needed for a -cast to be retained in the output table. Default is
 Summarize error across all of the data points within each 
   forecast or hindcast in a set of -casts.
 }
+\examples{
+\dontrun{
+
+setup_dir(all_options(download_existing_predictions = TRUE))
+casts <- read_casts()
+casts_a <- select_casts(casts, level = "All")
+casts_a <- append_observed_to_cast(casts_a)
+measure_cast_error(casts_a)
+}
+
+}

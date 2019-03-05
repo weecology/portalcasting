@@ -38,3 +38,13 @@ Read in a specified forecast or hindcast data file and ensure
   the most recent.
   \cr \cr \code{read_casts}: Allows for multiple dates and defaults to all.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+portalcast()
+read_cast()
+read_casts()
+}
+
+}

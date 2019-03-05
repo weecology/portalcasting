@@ -116,6 +116,17 @@ lag_data <- function(data, lag, tail = FALSE){
 #'   \code{"covariates"}, \code{"moons"}, and \code{"metadata"}.
 #'  
 #' @return Data requested with appropriate classes.
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' read_data(data_name = "all")
+#' read_data(data_name = "controls")
+#' read_data(data_name = "covariates")
+#' read_data(data_name = "moons")
+#' read_data(data_name = "metadata")
+#' }
 #'
 #' @export
 #'
