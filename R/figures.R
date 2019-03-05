@@ -130,7 +130,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
        bty = "n")
 
   x1 <- 0
-  x2 <- 0.49
+  x2 <- 0.48
   y1 <- 0.0
   y2 <- 0.06
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
@@ -139,7 +139,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
   text(x = 1:nmodels, y = rep(0.9, nmodels), labels = umodels, cex = 0.5, 
        xpd = TRUE, srt = 45, adj = 1)
   x1 <- 0.48
-  x2 <- 0.97
+  x2 <- 0.96
   y1 <- 0.0
   y2 <- 0.06
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
@@ -151,10 +151,10 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
   for(i in 1:nspecies){
 
     x1 <- 0
-    x2 <- 0.49
+    x2 <- 0.48
     y1 <- 0.06 + (i - 1) * 0.94 * (1/nspecies)
     y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 1, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", 
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0,1), bty = "L")
     axis(2, at = seq(0, 1, 0.2), cex.axis = 0.6, las = 1, line = -0.5, 
@@ -182,11 +182,11 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
     in_i <- which(errs$species == uspecies[i])
     errs_i <- errs[in_i, ]
     ymax <- max(max(errs_i$RMSE, na.rm = TRUE))
-    x1 <- 0.48
-    x2 <- 0.97
+    x1 <- 0.485
+    x2 <- 0.965
     y1 <- 0.06 + (i - 1) * 0.94 * (1/nspecies)
     y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 1, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", bty = "L",
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0, ymax))
     axis(2, cex.axis = 0.6, las = 1, line = -0.5, lwd = 0)
@@ -218,7 +218,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
       spt <- sptab[spptextmatch, "scientificname"]
       spf <- 4
     }  
-    text(0.9, 1, spt, font = spf, cex = 0.55, xpd = TRUE, srt = 270)
+    text(0.9, 1, spt, font = spf, cex = 0.65, xpd = TRUE, srt = 270)
   }
 
 
