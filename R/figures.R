@@ -154,7 +154,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
     x2 <- 0.48
     y1 <- 0.06 + (i - 1) * 0.94 * (1/nspecies)
     y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 2, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", 
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0,1), bty = "L")
     axis(2, at = seq(0, 1, 0.2), cex.axis = 0.6, las = 1, line = -0.5, 
@@ -186,7 +186,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
     x2 <- 0.96
     y1 <- 0.06 + (i - 1) * 0.94 * (1/nspecies)
     y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 2, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", bty = "L",
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0, ymax))
     axis(2, cex.axis = 0.6, las = 1, line = -0.5, lwd = 0)
