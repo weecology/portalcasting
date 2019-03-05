@@ -1,6 +1,6 @@
 # portalcasting (development version)
 
-## [portalcasting 0.3.0](https://github.com/weecology/portalcasting)
+# [portalcasting 0.3.0](https://github.com/weecology/portalcasting)
 *active development*
 
 ### Completed migration of plotting code
@@ -49,7 +49,7 @@ functions and `dirtree` to make it easier to manage a single subdirectory.
 entries (can get read in from the data due to the `"NA"` species) to `"NA"`. 
 Works for both vectors and data frames.
 
-## [portalcasting 0.2.2](https://github.com/weecology/portalcasting/pull/82)
+# [portalcasting 0.2.2](https://github.com/weecology/portalcasting/pull/82)
 *2019-02-12* 
 
 ### Beginning to migrate plotting code
@@ -67,7 +67,7 @@ species was coded as `"NA."`, which it wasn't.
 * Expansion of `rodent_spp` to include an `nadot` logical argument, with default
 value of `FALSE`.
 
-## [portalcasting 0.2.1](https://github.com/weecology/portalcasting/pull/81)
+# [portalcasting 0.2.1](https://github.com/weecology/portalcasting/pull/81)
 *2019-02-12* 
 
 ### Bug fix in `read_data`
@@ -75,7 +75,7 @@ value of `FALSE`.
 the forecasts for the Controls to be duplicated of the All forecasts.
 * Simple correction here.
 
-## [portalcasting 0.2.0](https://github.com/weecology/portalcasting/pull/79)
+# [portalcasting 0.2.0](https://github.com/weecology/portalcasting/pull/79)
 *2019-02-04* 
 
 ### Code testing
@@ -147,7 +147,7 @@ the forecast date with a time stamp as well.
 and [contribution guidelines](https://github.com/weecology/portalcasting/blob/master/CONTRIBUTING.md)
 to the repository.
 
-## [portalcasting 0.1.1](https://github.com/weecology/portalcasting/commit/05ed76f76a82f32a5a3120eb7c9ef0dc95bd8ae4)
+# [portalcasting 0.1.1](https://github.com/weecology/portalcasting/commit/05ed76f76a82f32a5a3120eb7c9ef0dc95bd8ae4)
 *2019-01-13*
 
 ### Addressing Portal Data download
@@ -193,7 +193,7 @@ changes to inputs throughout the code hierarchy, we include a set of functions
 that default options for all aspects of the codebase.
 * See the [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) for further details.
 
-## [portalcasting 0.0.1](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 
+# [portalcasting 0.0.1](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 
 *2018-11-06*
 
 * This is the last iteration of the code that now exists in portalcasting in
