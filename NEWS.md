@@ -1,7 +1,11 @@
 # portalcasting (development version)
 
-# [portalcasting 0.3.0](https://github.com/weecology/portalcasting)
+# [portalcasting 0.3.1](https://github.com/weecology/portalcasting)
 *active development*
+
+
+# [portalcasting 0.3.0](https://github.com/weecology/portalcasting/releases/tag/v0.3.0)
+*2019-03-04*
 
 ### Completed migration of plotting code
 * `plot_cast` is now `plot_cast_ts` and is now fully vetted and tested
