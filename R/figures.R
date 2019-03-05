@@ -182,8 +182,8 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
     in_i <- which(errs$species == uspecies[i])
     errs_i <- errs[in_i, ]
     ymax <- max(max(errs_i$RMSE, na.rm = TRUE))
-    x1 <- 0.48
-    x2 <- 0.96
+    x1 <- 0.485
+    x2 <- 0.965
     y1 <- 0.06 + (i - 1) * 0.94 * (1/nspecies)
     y2 <- y1 + 0.94 * (1/nspecies)
     par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
