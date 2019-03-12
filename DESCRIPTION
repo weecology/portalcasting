@@ -7,7 +7,8 @@ Authors@R: c(
   person(c("Ellen", "K."), "Bledsoe", role = c("aut"), comment = c(ORCID = "0000-0002-3629-7235")),
   person(c("Erica", "M."), "Christensen", role = c("aut"), comment = c(ORCID = "0000-0002-5635-2502")),
   person(c("Shawn", "D."), "Taylor", role = c("aut"), comment = c(ORCID = "0000-0002-6178-6903")),
-  person(c("Ethan", "P."), "Ethan", role = c("aut"), comment = c(ORCID = "0000-0001-6728-7745")), 
+  person("Hao", "Ye", role = c("aut"), comment = c(ORCID = "0000-0002-8630-1458")), 
+  person(c("Ethan", "P."), "White", role = c("aut"), comment = c(ORCID = "0000-0001-6728-7745")), 
   person(c("S.K.", "Morgan"), "Ernest", role = c("aut"), comment = c(ORCID = "0000-0002-6026-8530")))
 Description: Create a directory, populate it with data, build 
   models, forecast rodent populations, and visualize the results.

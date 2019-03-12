@@ -42,7 +42,7 @@ devtools::install_github("weecology/portalcasting")
 The package organizes the main actions into a set of hierarchical functions 
 `setup_dir()` (which creates and fills the directory), `portalcast()` (which
 conducts forecasting or hindcasting as requested), and `cleanup_dir()`
-(which removed temporary folders). The functions are designed to operate 
+(which removes temporary folders). The functions are designed to operate 
 out-of-the-box with no need to alter arguments for operation, in particular 
 within the context of the Portal Predictions repo. However, the functions
 are flexible, as detailed in Options List.

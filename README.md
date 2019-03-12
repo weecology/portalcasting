@@ -15,7 +15,7 @@ analysis and forecasting of [Portal rodent populations](https://portal.weecology
 `portalcasting`'s functions are also designed to be portable, allowing
 users to set up a fully-functional replica repository on a local or 
 remote machine. This facilitates development and testing of new models
-via a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(software_development)
+via a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(software_development))
 approach. 
 
 ## Status: Deployed, Active Development
