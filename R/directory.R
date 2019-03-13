@@ -268,12 +268,7 @@ fill_models <- function(options_models = models_options()){
 #' 
 verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
                               quiet = FALSE){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.character(filename)){
-    stop("`filename` is not a character")
-  }
+  check_args(tree = tree, filename = filename, quiet = quiet)
   path <- file_path(tree = tree, paste0("PortalData/Rodents/", filename)) 
   if (!all(file.exists(path))){
     options_dir <- dir_options()
@@ -307,7 +302,7 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 #' @export
 #' 
 cleanup_dir <- function(options_all = all_options()){
-  check_args(options_all)
+  check_args(options_all = options_all)
   options_dir <- options_all$options_dir
   subs <- sub_path(options_dir$tree, options_dir$to_cleanup)
   if (!options_dir$quiet){

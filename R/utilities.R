@@ -588,7 +588,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (!(is.null(treatment)) && treatment != "control"){
     stop("`treatment` must be `NULL` or 'control'")
   }
-  if (is.null(toggle)){
+  if (toggle == "null"){
     if (level != "Site" & level != "Treatment"){
       stop("`level` for portalr must be 'Site' or 'Treatment'")
     }
