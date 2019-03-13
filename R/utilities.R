@@ -497,6 +497,9 @@ remove_incompletes <- function(df, col_to_check){
 #'   options used to set up a general model script. See 
 #'   \code{\link{model_options}}.
 #'
+#' @param hist_cov Historical covariate data table as a code{covariates}-class 
+#'   \code{data.frame}, returned from \code{\link{prep_hist_covariates}}.
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -545,7 +548,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        cast_dates = NULL, min_observed = 1, ndates = 3,
                        from_date = today(), with_census = FALSE,
                        rangex = 2:3, start_newmoon = 300, add_obs = TRUE,
-                       moons = NULL, covariate_data = NULL,
+                       moons = NULL, covariate_data = NULL, hist_cov = NULL,
                        new_forecast_covariates = NULL, name = "AutoArima",
                        lag = NULL, mod_covariates = FALSE,
                        subs_names = NULL, subs_type = "portalcasting",
@@ -1009,6 +1012,10 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (!is.null(covariate_data) & 
       !("covariates" %in% class(covariate_data))){
     stop("`covariate_data` is not NULL or of class covariates")
+  }
+  if (!is.null(hist_cov) & 
+      !("covariates" %in% class(hist_cov))){
+    stop("`hist_cov` is not NULL or of class covariates")
   }
   if (!is.null(new_forecast_covariates) & 
       !("covariates" %in% class(new_forecast_covariates))){

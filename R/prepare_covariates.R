@@ -132,7 +132,7 @@ prep_fcast_covariates <- function(hist_cov = prep_hist_covariates(),
                                   moons = prep_moons(),
                                   options_covariates = covariates_options()){
   check_args(options_covariates = options_covariates, moons = moons,
-             covariate_data = hist_cov)
+             hist_cov = hist_cov)
   update_covfcast_options(options_covariates, hist_cov, moons) %>%
   forecast_covariates(hist_cov, moons, .) %>%
   append_cov_fcast_csv(options_covariates) %>%
@@ -186,7 +186,7 @@ prep_weather_data <- function(tree = dirtree()){
 #'
 update_covfcast_options <- function(options_covariates, hist_cov, moons){
   check_args(options_covariates = options_covariates, moons = moons,
-             covariate_data = hist_cov)
+             hist_cov = hist_cov)
   prev_newmoon <- max(which(moons$newmoondate < options_covariates$cast_date))
   prev_newmoon <- moons$newmoonnumber[prev_newmoon]
   if (options_covariates$cast_type == "hindcasts"){

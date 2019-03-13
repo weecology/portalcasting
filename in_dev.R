@@ -9,6 +9,9 @@ models = "AutoArima")
 
 # dropped the models class, that was unnecessary
 
+# things to align the rest of the way
+# ugg that toggle for plotting
+
 
 #setup_dir(options_all)
 tree <- dirtree(base = "~", main = "portalcasting_dev")
