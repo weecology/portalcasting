@@ -4,9 +4,9 @@
 \alias{check_args}
 \title{Check arguments}
 \usage{
-check_args(base = ".", main = "", subs = subdirs(type =
-  "portalcasting"), quiet = FALSE, cast_date = today(),
-  append_missing_to_raw = TRUE, m_save = TRUE,
+check_args(toggle = NULL, base = ".", main = "",
+  subs = subdirs(type = "portalcasting"), quiet = FALSE,
+  cast_date = today(), append_missing_to_raw = TRUE, m_save = TRUE,
   m_filename = "moons.csv", tmnt_type = NULL, start = 217,
   end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
   min_traps = 1, level = "Site", treatment = NULL, plots = "all",
@@ -23,13 +23,17 @@ check_args(base = ".", main = "", subs = subdirs(type =
   "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   n_future_moons = 12, save = TRUE, filename = "moons.csv",
   tree = dirtree(), to_cleanup = c("tmp", "PortalData"),
-  options_all = all_options(), options_dir = dir_options(),
-  options_PortalData = PortalData_options(),
-  options_data = data_options(),
-  options_predictions = predictions_options(),
-  options_models = models_options(), path = path)
+  options_all = NULL, options_dir = NULL, options_PortalData = NULL,
+  options_data = NULL, options_predictions = NULL,
+  options_models = NULL, path = NULL, species = rodent_spp(set =
+  "evalplot"), cast_dates = NULL, min_observed = 1, ndates = 3,
+  from_date = today(), with_census = FALSE, rangex = 2:3,
+  start_newmoon = 300, add_obs = TRUE)
 }
 \arguments{
+\item{toggle}{\code{character} value indicating special aspects of 
+checking.}
+
 \item{base}{\code{character} name of the base folder where the directory 
 should or does exist. Default \code{"."} (working directory). Will be 
 created if it doesn't exist.}
@@ -83,9 +87,13 @@ number of plots surveyed for a survey to be used.}
 \item{min_traps}{\code{integer} (or integer \code{numeric}) of the minimum 
 number of traps trapped for a plot to be used.}
 
-\item{level}{\code{character} input for 
-\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
-\code{tmnt_type}.}
+\item{level}{For data collection, \code{character} input of \code{level} 
+for \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}. \cr \cr For -casts, \code{character} value of the 
+\code{level} of interest  (\code{"All"} or \code{"Controls"}) in the 
+-casts. \cr \cr Differentiation by \code{toggle} (\code{NULL} for
+data collection and a toggle character value including \code{"plot"}
+for -casts).}
 
 \item{treatment}{\code{character} input for 
 \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
@@ -159,8 +167,14 @@ existing predictions files should be retrieved from the
 \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 repo}.}
 
-\item{model}{\code{character} vector of the names of model scripts to 
-include in a cast of the pipeline.}
+\item{model}{For pipeline setup and execution, a \code{character} vector 
+of the names of model scripts to include in a cast of the pipeline. 
+\cr \cr For plotting, the \code{character} value for a \code{model} in 
+the plotting functions corresponding to the name (or \code{"Ensemble"}) 
+of the model to be plotted. \cr \cr Differentiation by \code{toggle} 
+(\code{NULL} for pipeline setup and execution and a toggle character 
+value including \code{"plot"} and \code{"1mod"} for plots which only
+allow one species).}
 
 \item{ensemble}{\code{logical} indicator of whether to create an ensemble
 model.}
@@ -215,10 +229,45 @@ folder in the portalcasting directory (see
 \item{path}{The normalized path of the specific subdirectory folder to be 
 created in the directory tree as a \code{character} value (see 
 \code{\link{normalizePath}}, \code{\link{sub_path}}).}
+
+\item{species}{\code{character} vector of the species codes (or 
+\code{"total"} for the total across species) to be selected from or 
+\code{NULL} to include all species and the total. Default set to 
+\code{rodent_spp(set = "evalplot")}, the only setting for which the
+plot is reliably coded/}
+
+\item{cast_dates}{\code{Date}s the predictions were made. Used to select 
+the files in the predictions subdirectory. Can be length 1 or more and if 
+\code{NULL} (default), selects all available -casts.}
+
+\item{min_observed}{\code{integer} value for the minimum number of observed
+values needed for a -cast to be retained in the output table. Default is
+\code{1}, which returns all -casts with any observations. To include all
+-casts (even those without any evaluations), set to \code{0}.}
+
+\item{ndates}{\code{integer} number of -cast issue dates to include.}
+
+\item{from_date}{\code{Date} to be used as a reference of when to count
+the \code{lead} from. If \code{NULL} (default), for 
+\code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
+\code{plot_cast_point} is not yet reliable for 
+\code{cast_type = "hindcasts"}.}
+
+\item{with_census}{\code{logical} toggle if the plot should include the
+observed data collected during the predicted census.}
+
+\item{rangex}{\code{integer}-conformable vector of two values corresponding
+to the minimum and maximum newmoonnumbers plotted.}
+
+\item{start_newmoon}{\code{integer}-conformable newmoon number used as the
+the minimum x value for the plot.}
+
+\item{add_obs}{\code{logical} indicator if values observed during the 
+-cast time should be added (default is \code{TRUE}).}
 }
 \description{
-Verify the validity (class, size, etc.) of the inputs to the 
-  functions.
+Omnibus function to verify the validity (class, size, etc.) 
+  of the inputs to the functions.
 }
 \examples{
 \dontrun{

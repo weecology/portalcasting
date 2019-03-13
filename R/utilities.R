@@ -209,8 +209,8 @@ remove_incompletes <- function(df, col_to_check){
 
 #' @title Check arguments
 #'
-#' @description Verify the validity (class, size, etc.) of the inputs to the 
-#'   functions.
+#' @description Omnibus function to verify the validity (class, size, etc.) 
+#'   of the inputs to the functions.
 #'
 #' @param base \code{character} name of the base folder where the directory 
 #'   should or does exist. Default \code{"."} (working directory). Will be 
@@ -229,6 +229,10 @@ remove_incompletes <- function(df, col_to_check){
 #'
 #' @param cast_date \code{Date} from which future is defined, typically 
 #'   today's date (using \code{\link{today}}).
+#'
+#' @param cast_dates \code{Date}s the predictions were made. Used to select 
+#'   the files in the predictions subdirectory. Can be length 1 or more and if 
+#'   \code{NULL} (default), selects all available -casts.
 #'
 #' @param append_missing_to_raw \code{logical} indicator dictating if the 
 #'   missing moon dates should be appended to the raw data file (should be 
@@ -265,9 +269,13 @@ remove_incompletes <- function(df, col_to_check){
 #' @param min_traps \code{integer} (or integer \code{numeric}) of the minimum 
 #'   number of traps trapped for a plot to be used.
 #'
-#' @param level \code{character} input for 
-#'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
-#'   \code{tmnt_type}.
+#' @param level For data collection, \code{character} input of \code{level} 
+#'   for \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+#'   \code{tmnt_type}. \cr \cr For -casts, \code{character} value of the 
+#'   \code{level} of interest  (\code{"All"} or \code{"Controls"}) in the 
+#'   -casts. \cr \cr Differentiation by \code{toggle} (\code{NULL} for
+#'   data collection and a toggle character value including \code{"plot"}
+#'   for -casts).
 #'
 #' @param treatment \code{character} input for 
 #'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
@@ -341,8 +349,14 @@ remove_incompletes <- function(df, col_to_check){
 #'   \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 #'   repo}.
 #'
-#' @param model \code{character} vector of the names of model scripts to 
-#'   include in a cast of the pipeline.
+#' @param model For pipeline setup and execution, a \code{character} vector 
+#'   of the names of model scripts to include in a cast of the pipeline. 
+#'   \cr \cr For plotting, the \code{character} value for a \code{model} in 
+#'   the plotting functions corresponding to the name (or \code{"Ensemble"}) 
+#'   of the model to be plotted. \cr \cr Differentiation by \code{toggle} 
+#'   (\code{NULL} for pipeline setup and execution and a toggle character 
+#'   value including \code{"plot"} and \code{"1mod"} for plots which only
+#'   allow one species).
 #'
 #' @param ensemble \code{logical} indicator of whether to create an ensemble
 #'   model.
@@ -398,6 +412,40 @@ remove_incompletes <- function(df, col_to_check){
 #' @param save \code{logical} indicator if the specific data should be saved 
 #'   out.
 #'
+#' @param species \code{character} vector of the species codes (or 
+#'   \code{"total"} for the total across species) to be selected from or 
+#'   \code{NULL} to include all species and the total. Default set to 
+#'   \code{rodent_spp(set = "evalplot")}, the only setting for which the
+#'   plot is reliably coded/ 
+#'
+#' @param min_observed \code{integer} value for the minimum number of observed
+#'   values needed for a -cast to be retained in the output table. Default is
+#'   \code{1}, which returns all -casts with any observations. To include all
+#'   -casts (even those without any evaluations), set to \code{0}. 
+#'
+#' @param ndates \code{integer} number of -cast issue dates to include.
+#'
+#' @param from_date \code{Date} to be used as a reference of when to count
+#'   the \code{lead} from. If \code{NULL} (default), for 
+#'   \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
+#'   \code{plot_cast_point} is not yet reliable for 
+#'   \code{cast_type = "hindcasts"}.
+#'
+#' @param with_census \code{logical} toggle if the plot should include the
+#'   observed data collected during the predicted census.
+#'
+#' @param rangex \code{integer}-conformable vector of two values corresponding
+#'   to the minimum and maximum newmoonnumbers plotted. 
+#'
+#' @param start_newmoon \code{integer}-conformable newmoon number used as the
+#'   the minimum x value for the plot. 
+#'
+#' @param add_obs \code{logical} indicator if values observed during the 
+#'   -cast time should be added (default is \code{TRUE}).
+#'
+#' @param toggle \code{character} value indicating special aspects of 
+#'   checking. 
+#'
 #' @examples
 #' \dontrun{
 #'
@@ -406,7 +454,7 @@ remove_incompletes <- function(df, col_to_check){
 #'
 #' @export
 #'
-check_args <- function(base = ".", main = "", 
+check_args <- function(toggle = NULL, base = ".", main = "", 
                        subs = subdirs(type = "portalcasting"), quiet = FALSE, 
                        cast_date = today(), append_missing_to_raw = TRUE, 
                        m_save = TRUE, m_filename = "moons.csv", 
@@ -435,8 +483,14 @@ check_args <- function(base = ".", main = "",
                        options_PortalData = NULL,
                        options_data = NULL,
                        options_predictions = NULL,
-                       options_models = NULL,
-                       path = NULL){
+                       options_models = NULL, 
+                       path = NULL, species = rodent_spp(set = "evalplot"),
+                       cast_dates = NULL, min_observed = 1, ndates = 3,
+                       from_date = today(), with_census = FALSE,
+                       rangex = 2:3, start_newmoon = 300, add_obs = TRUE){
+  if(is.null(toggle)){
+    toggle <- "null"
+  }
   if (length(base) > 1){
     stop("`base` can only be of length = 1")
   }
@@ -534,8 +588,20 @@ check_args <- function(base = ".", main = "",
   if (!(is.null(treatment)) && treatment != "control"){
     stop("`treatment` must be `NULL` or 'control'")
   }
-  if (level != "Site" & level != "Treatment"){
-    stop("`level` must be 'Site' or 'Treatment'")
+  if (is.null(toggle)){
+    if (level != "Site" & level != "Treatment"){
+      stop("`level` for portalr must be 'Site' or 'Treatment'")
+    }
+  } else if (grepl("plot", toggle)){
+    if (!is.character(level)){
+      stop("`level` for -casts is not a character")
+    }
+    if (length(level) > 1){
+      stop("`level` for -casts can only be of length = 1")
+    }
+    if (!(level %in% c("All", "Controls"))){
+      stop("`level` for -casts must be 'All' or 'Controls'")
+    }
   }
   if (output != "abundance"){
     stop("`output` must be 'abundance'")
@@ -764,5 +830,89 @@ check_args <- function(base = ".", main = "",
   if (!is.null(options_models) & 
       !("models_options" %in% class(options_models))){
     stop("`options_models` is not NULL or a models_options list")
+  }
+  if (!is.null(species)){
+    if (!("character" %in% class(species))){
+      stop("`species` is not a character")
+    }
+    if (!all(species %in% rodent_spp("wtotal"))){
+      stop("invalid entry in `species`")
+    } 
+    if(grepl("1sp", toggle)){
+      if (length(species) > 1){
+        stop("`species` can only be of length = 1")
+      }  
+    }
+  }
+  if (!is.null(cast_dates)){
+    cast_dates2 <- tryCatch(as.Date(cast_dates), error = function(x){NA})
+    if (is.na(cast_dates2)){
+      stop("`cast_dates` is not of class Date or conformable to class Date")
+    }
+  }
+  if (!is.numeric(min_observed)){
+    stop("`min_observed` is not numeric")
+  }
+  if (length(min_observed) > 1){
+    stop("`min_observed` can only be of length = 1")
+  }
+  if (min_observed < 1 | min_observed %% 1 != 0){
+    stop("`min_observed` is not a positive integer")
+  }
+
+  if (!is.numeric(ndates)){
+    stop("`ndates` is not numeric")
+  }
+  if (length(ndates) > 1){
+    stop("`ndates` can only be of length = 1")
+  }
+  if (ndates < 1 | ndates %% 1 != 0){
+    stop("`ndates` is not a positive integer")
+  }
+
+
+
+  if (!("Date" %in% class(from_date))){
+    stop("`from_date` is not of class Date")
+  }
+  if (length(from_date) > 1){
+    stop("`from_date` can only be of length = 1")
+  }
+  if (length(with_census) > 1){
+    stop("`with_census` can only be of length = 1")
+  }
+  if (!is.logical(with_census)){
+    stop("`with_census` is not logical")
+  }
+
+
+  if (grepl("1mod", toggle) & grepl("plot", toggle)){
+    if (length(model) > 1){
+      stop("`model` can only be of length = 1 for plotting")
+    }
+  }
+  if (!is.numeric(rangex)){
+    stop("`rangex` is not numeric")
+  }
+  if (length(rangex) != 2){
+    stop("`start_newmoon` can only be of length = 2")
+  }
+  if(any(rangex < 1) | any(rangex %% 1 != 0)){
+    stop("`rangex` is not a positive integer")
+  }
+  if (!is.numeric(start_newmoon)){
+    stop("`start_newmoon` is not numeric")
+  }
+  if (length(start_newmoon) > 1){
+    stop("`start_newmoon` can only be of length = 1")
+  }
+  if(start_newmoon < 1 | start_newmoon %% 1 != 0){
+    stop("`start_newmoon` is not a positive integer")
+  }
+  if (!("logical" %in% class(add_obs))){
+    stop("`add_obs` is not of class logical")
+  }
+  if (length(add_obs) > 1){
+    stop("`add_obs` can only be of length = 1")
   }
 }
