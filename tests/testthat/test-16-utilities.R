@@ -196,7 +196,7 @@ test_that("check_args", {
   expect_error(check_args(from_date = 1))
   expect_error(check_args(from_date = rep(cast_date, 2)))
   expect_error(check_args(with_census = 1))
-  expect_error(check_args(with_census = rep(TRUE, 2))
+  expect_error(check_args(with_census = rep(TRUE, 2)))
   expect_error(check_args(rangex = rep("ok", 2)))
   expect_error(check_args(rangex = 1:3))
   expect_error(check_args(rangex = c(300.1, 410)))
