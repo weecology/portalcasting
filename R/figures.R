@@ -414,7 +414,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
   if (is.null(from_date) & cast_type == "forecasts"){
     from_date <- cast_date
   }
-  check_args(tree = tree, species = species, level_c = level,
+  check_args(tree = tree, species = species, level = level,
              cast_type = cast_type, cast_date = cast_date,
              lead_time = lead, from_date = from_date, 
              with_census = with_census, model = model, toggle = "plot1mod")
@@ -577,7 +577,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type, with_census)
   }
-  check_args(tree = tree, species = species, level_c = level,
+  check_args(tree = tree, species = species, level = level,
              cast_type = cast_type, cast_date = cast_date, model = model,
              start_newmoon = start_newmoon, add_obs = add_obs,
              toggle = "plot1mod1sp")
@@ -685,7 +685,7 @@ plot_cast_ts_xaxis <- function(tree, rangex){
 #' @export
 #'
 plot_cast_ts_ylab <- function(tree = dirtree(), species = "total"){
-  check_args(tree = tree, species = species) 
+  check_args(tree = tree, species = species, toggle = "plot1mod1sp") 
   lab <- list(text = "", font = 1)
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
