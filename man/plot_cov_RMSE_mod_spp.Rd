@@ -22,6 +22,9 @@ reliably coded for \code{"hindcasts"}.}
 \code{rodent_spp(set = "evalplot")}, the only setting for which the
 plot is reliably coded/}
 
+\item{level}{\code{character} value of the treatment type of interest 
+(\code{"All"} or \code{"Controls"}).}
+
 \item{cast_dates}{\code{Date}s the predictions were made. Used to select 
 the files in the predictions subdirectory. Can be length 1 or more and if 
 \code{NULL} (default), selects all available -casts.}
@@ -30,9 +33,6 @@ the files in the predictions subdirectory. Can be length 1 or more and if
 values needed for a -cast to be retained in the output table. Default is
 \code{1}, which returns all -casts with any observations. To include all
 -casts (even those without any evaluations), set to \code{0}.}
-
-\item{tmnt_type}{\code{character} value of the treatment type of interest 
-(\code{"All"} or \code{"Controls"}).}
 }
 \description{
 Plot the RMSE and coverage by species matrix of cast error 

@@ -12,7 +12,7 @@
 #'   \code{rodent_spp(set = "evalplot")}, the only setting for which the
 #'   plot is reliably coded/ 
 #'
-#' @param tmnt_type \code{character} value of the treatment type of interest 
+#' @param level \code{character} value of the treatment type of interest 
 #'   (\code{"All"} or \code{"Controls"}).
 #'
 #' @param cast_type \code{character} value of the type of -cast of model. Used

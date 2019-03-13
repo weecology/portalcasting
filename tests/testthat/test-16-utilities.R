@@ -184,6 +184,7 @@ test_that("check_args", {
   expect_error(check_args(options_data = 1))
   expect_error(check_args(options_predictions = 1))
   expect_error(check_args(options_models = 1))
+  expect_error(check_args(options_covariates = 1))
   expect_error(check_args(path = 1))
   expect_error(check_args(toggle = "1sp"))
   expect_error(check_args(cast_dates = 1))
@@ -205,5 +206,8 @@ test_that("check_args", {
   expect_error(check_args(start_newmoon = 0))
   expect_error(check_args(start_newmoon = 1:2))
   expect_error(check_args(start_newmoon = 1.5))
+  expect_error(check_args(covariates = 1.5))
+  expect_error(check_args(moons = 1.5))
+  expect_error(check_args(new_forecast_covariates = 1.5))
 
 })

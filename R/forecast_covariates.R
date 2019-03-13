@@ -23,15 +23,9 @@
 #'
 forecast_covariates <- function(covariate_data, moons, 
                                 options_covariates = covariates_options()){
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("covariates" %in% class(covariate_data))){
-    stop("`covariate_data` is not of class covariates")
-  }
+  check_args(covariate_data = covariate_data, moons = moons,
+             options_covariates = options_covariates)
+
   if (options_covariates$cast_type == "forecasts"){
     moons <- trim_moons_fcast(moons, options_covariates)
     weather_f <- forecast_weather(moons, options_covariates)
@@ -65,15 +59,8 @@ forecast_covariates <- function(covariate_data, moons,
 #' @export
 #'
 forecast_ndvi <- function(covariate_data, moons, options_covariates){
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("covariates" %in% class(covariate_data))){
-    stop("`covariate_data` is not of class covariates")
-  }
+  check_args(covariate_data = covariate_data, moons = moons,
+             options_covariates = options_covariates)
   ndvi_data <- select(covariate_data, c("newmoonnumber", "ndvi"))
   ndvi_lead <- options_covariates$nfcnm - options_covariates$min_lag
   fcast_ndvi(ndvi_data, "newmoon", lead = ndvi_lead, moons)
@@ -94,12 +81,7 @@ forecast_ndvi <- function(covariate_data, moons, options_covariates){
 #'
 forecast_weather <- function(moons = prep_moons(), 
                              options_covariates = covariates_options()){
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }  
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
+  check_args(moons = moons, options_covariates = options_covariates)
   mpath <- main_path(options_covariates$tree)
   dayweather <- weather("daily", fill = TRUE, mpath)
   yrs <- dayweather$year
@@ -167,12 +149,7 @@ forecast_weather <- function(moons = prep_moons(),
 #' @export
 #'
 trim_moons_fcast <- function(moons, options_covariates){
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  } 
+  check_args(moons = moons, options_covariates = options_covariates)
   moons <- moons[, c("newmoonnumber", "newmoondate", "period", "censusdate")]
   fc_nms <- moons
   addl_fcast <- which(moons$newmoonnumber %in% options_covariates$fcast_nms)
@@ -207,12 +184,7 @@ trim_moons_fcast <- function(moons, options_covariates){
 #'
 get_climate_forecasts <- function(moons = prep_moons(), 
                                   options_covariates = covariates_options()){
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  } 
+  check_args(moons = moons, options_covariates = options_covariates)
   
   lead_time <- options_covariates$lead_time - options_covariates$min_lag
 
@@ -335,13 +307,9 @@ get_climate_forecasts <- function(moons = prep_moons(),
 #'
 append_cov_fcast_csv <- function(new_forecast_covariates, 
                                  options_covariates = covariates_options()){
-  if (!("covariates" %in% class(new_forecast_covariates))){
-    stop("`new_forecast_covariates` is not of class covariates")
-  }
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  } 
-  
+  check_args(new_forecast_covariates = new_forecast_covariates,
+             options_covariates = options_covariates)  
+
   if (!options_covariates$append_fcast_csv){
     return(new_forecast_covariates)
   }
