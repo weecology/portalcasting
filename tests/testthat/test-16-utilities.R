@@ -191,6 +191,7 @@ test_that("check_args", {
   expect_error(check_args(options_covariates = 1))
   expect_error(check_args(options_rodents = 1))
   expect_error(check_args(options_cast = 1))
+  expect_error(check_args(options_moons = 1))
   expect_error(check_args(path = 1))
   expect_error(check_args(toggle = "1sp"))
   expect_error(check_args(cast_dates = 1))
