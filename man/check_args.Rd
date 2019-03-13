@@ -35,7 +35,7 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   mod_covariates = FALSE, subs_names = NULL,
   subs_type = "portalcasting", specific_sub = NULL, extension = ".R",
   local_path = "data/all.csv", model = "AutoArima", set = "prefab",
-  add = NULL)
+  add = NULL, lead = 1)
 }
 \arguments{
 \item{toggle}{\code{character} value indicating special aspects of 
@@ -328,6 +328,9 @@ from scratch via \code{add}.}
 
 \item{add}{\code{character} vector of name(s) of model(s) to add to the 
 setup by \code{set}.}
+
+\item{lead}{\code{integer}-conformable lead of the newmoon number used to
+select the data plotted.}
 }
 \description{
 Omnibus function to verify the validity (class, size, etc.) 

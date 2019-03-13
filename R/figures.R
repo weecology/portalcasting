@@ -416,7 +416,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
   }
   check_args(tree = tree, species = species, level = level,
              cast_type = cast_type, cast_date = cast_date,
-             lead_time = lead, from_date = from_date, 
+             lead = lead, from_date = from_date, 
              with_census = with_census, model = model, toggle = "plot1mod")
 
 

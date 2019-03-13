@@ -500,6 +500,9 @@ remove_incompletes <- function(df, col_to_check){
 #' @param hist_cov Historical covariate data table as a code{covariates}-class 
 #'   \code{data.frame}, returned from \code{\link{prep_hist_covariates}}.
 #'
+#' @param lead \code{integer}-conformable lead of the newmoon number used to
+#'   select the data plotted. 
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -554,7 +557,8 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        subs_names = NULL, subs_type = "portalcasting",
                        specific_sub = NULL, extension = ".R",
                        local_path = "data/all.csv",
-                       model = "AutoArima", set = "prefab", add = NULL){
+                       model = "AutoArima", set = "prefab", add = NULL,
+                       lead = 1){
   if(is.null(toggle)){
     toggle <- "null"
   }
@@ -716,15 +720,23 @@ check_args <- function(toggle = NULL, base = ".", main = "",
       !("integer" %in% class(lead_time))){
     stop("`lead_time` is not of class numeric or integer")
   }
-  if(toggle == "null"){
-    if(lead_time < 0 | lead_time %% 1 != 0){
-      stop("`lead_time` is not a non-negative integer")
-    }
-  } else if(grepl("plot", toggle)){
-    if(lead_time < 1 | lead_time %% 1 != 0){
-      stop("`lead_time` is not a positive integer")
-    }
+  if(lead_time < 0 | lead_time %% 1 != 0){
+    stop("`lead_time` is not a non-negative integer")
   }
+
+  if (length(lead) > 1){
+    stop("`lead` can only be of length = 1")
+  }
+  if (!("numeric" %in% class(lead)) & 
+      !("integer" %in% class(lead))){
+    stop("`lead` is not of class numeric or integer")
+  }
+  if(lead < 1 | lead %% 1 != 0){
+    stop("`lead` is not a positive integer")
+  }
+
+
+
   if (length(min_lag) > 1){
     stop("`min_lag` can only be of length = 1")
   }
