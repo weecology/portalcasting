@@ -520,6 +520,8 @@ remove_incompletes <- function(df, col_to_check){
 #' @param download \code{logical} indicator of whether the download should 
 #'   actually happen. Should be \code{TRUE} except for testing purposes.
 #'
+#' @param rodents Class-\code{rodents} \code{data.table} of rodent data.
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -573,7 +575,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        lag = NULL, mod_covariates = FALSE,
                        subs_names = NULL, subs_type = "portalcasting",
                        specific_sub = NULL, extension = ".R",
-                       local_path = "data/all.csv",
+                       local_path = "data/all.csv", rodents = NULL,
                        model = "AutoArima", set = "prefab", add = NULL,
                        lead = 1, rodents_list = NULL, future_moons = NULL){
   if(is.null(toggle)){
@@ -1061,6 +1063,10 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (!is.null(rodents_list) & 
       !("rodents_list" %in% class(rodents_list))){
     stop("`rodents_list` is not of class rodents_list")
+  }
+  if (!is.null(rodents) & 
+      !("rodents" %in% class(rodents))){
+    stop("`rodents` is not of class rodents")
   }
   if (!is.null(covariates) & 
       !("covariates" %in% class(covariates))){

@@ -35,8 +35,8 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   name = "AutoArima", lag = NULL, mod_covariates = FALSE,
   subs_names = NULL, subs_type = "portalcasting",
   specific_sub = NULL, extension = ".R", local_path = "data/all.csv",
-  model = "AutoArima", set = "prefab", add = NULL, lead = 1,
-  rodents_list = NULL, future_moons = NULL)
+  rodents = NULL, model = "AutoArima", set = "prefab", add = NULL,
+  lead = 1, rodents_list = NULL, future_moons = NULL)
 }
 \arguments{
 \item{toggle}{\code{character} value indicating special aspects of 
@@ -328,6 +328,8 @@ subdirectory/subdirectories of interest.}
 
 \item{local_path}{\code{character} file path within the \code{main} level 
 of the portalcasting directory.}
+
+\item{rodents}{Class-\code{rodents} \code{data.table} of rodent data.}
 
 \item{model}{A singular \code{character} value for a \code{model} or 
 \code{"Ensemble"} in certain situations.}
