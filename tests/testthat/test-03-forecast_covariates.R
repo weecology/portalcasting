@@ -17,7 +17,7 @@ nsteps <- up_cov_opts$lead_time - up_cov_opts$min_lag
 
 
 test_that("forecast_covariates", {
-  expect_error(forecast_covariates(1, moons, up_cov_opts), "`covariate_data`")
+  expect_error(forecast_covariates(1, moons, up_cov_opts), "`covariates`")
   expect_error(forecast_covariates(hist_cov, 1, up_cov_opts), "`moons`")
   expect_error(forecast_covariates(hist_cov, moons, 1), "`options_covariates")
   expect_is(fcast_covs, c("covariates", "data.frame"))
@@ -28,7 +28,7 @@ test_that("forecast_covariates", {
 })
 
 test_that("forecast_ndvi", {
-  expect_error(forecast_ndvi(1, moons, up_cov_opts), "`covariate_data`")
+  expect_error(forecast_ndvi(1, moons, up_cov_opts), "`covariates`")
   expect_error(forecast_ndvi(hist_cov, moons, 1), "`options_covariates`")
   expect_error(forecast_ndvi(hist_cov, 1, up_cov_opts), "`moons`")
 })

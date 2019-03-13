@@ -28,19 +28,8 @@
 prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(), 
                           covariates = prep_covariates(), 
                           options_metadata = metadata_options()){
-  if (!("metadata_options") %in% class(options_metadata)){
-    stop("`options_metadata` is not a metadata_options list")
-  }
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("rodents_list" %in% class(rodents))){
-    stop("`rodents` is not of class rodents_list")
-  }
-  if (!("covariates" %in% class(covariates))){
-    stop("`covariates` is not of class covariates")
-  }
-
+  check_args(moons = moons, rodents = rodents, covariates = covariates,
+             options_metadata = options_metadata)
 
   if (!options_metadata$quiet){
     message("Loading metadata file into data subdirectory")

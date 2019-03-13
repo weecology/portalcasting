@@ -232,5 +232,5 @@ test_that("check_args", {
  # expect_error(check_args(model = "AutoArima", extension = ".R."))
   expect_error(check_args(model = "AutoArima", extension = NULL))
 
-
+  expect_error(check_args(covariates = "ok"))
 })
