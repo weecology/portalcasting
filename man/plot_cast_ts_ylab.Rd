@@ -4,14 +4,21 @@
 \alias{plot_cast_ts_ylab}
 \title{Expand the name with formating for a -cast plot y label}
 \usage{
-plot_cast_ts_ylab(tree = dirtree(), species = "total")
+plot_cast_ts_ylab(tree = dirtree(), level = "Controls",
+  species = "total", model = "Ensemble")
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
 \code{\link{dirtree}}. Used to access the species list.}
 
+\item{level}{\code{character} value of the level of interest (\code{"All"} 
+or \code{"Controls"}).}
+
 \item{species}{\code{character} value of the species code or \code{"total"}
 for the total across species.}
+
+\item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
+the model to be plotted.}
 }
 \value{
 \code{list} of \code{text} and \code{font} elements.

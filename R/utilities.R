@@ -771,8 +771,14 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (confidence_level < 0.001 | confidence_level > 0.999){
     stop("`confidence_level` is not between 0.001 and 0.999")
   }
-  if (!("models" %in% class(model))){
-    stop("`model` must be of class models")
+  if(toggle == "null"){
+    if (!("models" %in% class(model))){
+      stop("`model` must be of class models")
+    }
+  } else if (grepl("1mod", toggle) & grepl("plot", toggle)){
+    if (length(model) > 1){
+      stop("`model` can only be of length = 1 for plotting")
+    }
   }
   if (!("logical" %in% class(save))){
     stop("`save` is not of class logical")
@@ -885,12 +891,6 @@ check_args <- function(toggle = NULL, base = ".", main = "",
     stop("`with_census` is not logical")
   }
 
-
-  if (grepl("1mod", toggle) & grepl("plot", toggle)){
-    if (length(model) > 1){
-      stop("`model` can only be of length = 1 for plotting")
-    }
-  }
   if (!is.numeric(rangex)){
     stop("`rangex` is not numeric")
   }

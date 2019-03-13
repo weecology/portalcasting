@@ -612,7 +612,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 
   rangex <- c(max(c(start_newmoon, min(obs_x))), max(pred_x))
   rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
-  ylab <- plot_cast_ts_ylab(tree, species)
+  ylab <- plot_cast_ts_ylab(tree, level, species, model)
 
   par(mar = c(3, 4.5, 1, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
@@ -680,12 +680,20 @@ plot_cast_ts_xaxis <- function(tree, rangex){
 #' @param species \code{character} value of the species code or \code{"total"}
 #'   for the total across species.
 #'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'   or \code{"Controls"}).
+#'
+#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
+#'   the model to be plotted.
+#'
 #' @return \code{list} of \code{text} and \code{font} elements. 
 #'
 #' @export
 #'
-plot_cast_ts_ylab <- function(tree = dirtree(), species = "total"){
-  check_args(tree = tree, species = species, toggle = "plot1mod1sp") 
+plot_cast_ts_ylab <- function(tree = dirtree(), level = "Controls",
+                              species = "total", model = "Ensemble"){
+  check_args(tree = tree, species = species, level = level, model = model,
+             toggle = "plot1mod1sp") 
   lab <- list(text = "", font = 1)
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
