@@ -649,8 +649,14 @@ check_args <- function(toggle = NULL, base = ".", main = "",
       !("integer" %in% class(lead_time))){
     stop("`lead_time` is not of class numeric or integer")
   }
-  if(lead_time < 0 | lead_time %% 1 != 0){
-    stop("`lead_time` is not a non-negative integer")
+  if(toggle == "null"){
+    if(lead_time < 0 | lead_time %% 1 != 0){
+      stop("`lead_time` is not a non-negative integer")
+    }
+  } else if(grepl("plot", toggle)){
+    if(lead_time < 1 | lead_time %% 1 != 0){
+      stop("`lead_time` is not a positive integer")
+    }
   }
   if (length(min_lag) > 1){
     stop("`min_lag` can only be of length = 1")

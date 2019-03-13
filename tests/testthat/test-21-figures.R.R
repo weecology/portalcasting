@@ -83,11 +83,11 @@ test_that("plot_cast_ts_xaxis", {
 })
 
 test_that("plot_cast_ts_ylab", {
-  expect_silent(ylab <- plot_cast_ts_ylab(tree, "total"))
+  expect_silent(ylab <- plot_cast_ts_ylab(tree, species = "total"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
-  expect_silent(ylab <- plot_cast_ts_ylab(tree, "BA"))
+  expect_silent(ylab <- plot_cast_ts_ylab(tree, species = "BA"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
