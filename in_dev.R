@@ -1,11 +1,19 @@
 devtools::load_all()
 options_all <- all_options(base = "~", main = "portalcasting_dev1",
-                          download_existing_predictions = FALSE)
+                          download_existing_predictions = FALSE,
+models = "AutoArima")
+
+# presently integrating functions into check_args
+# now on prepare_covariates
+
+
+# dropped the models class, that was unnecessary
+
+
 #setup_dir(options_all)
 tree <- dirtree(base = "~", main = "portalcasting_dev")
 portalcast(options_all)
 
-# currently running the models today to see how the figures will look on friday
 
 
 all <- read_data(tree, "all")

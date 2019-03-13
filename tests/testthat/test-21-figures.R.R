@@ -8,7 +8,7 @@ spath <- sub_paths(dirtree(main = "testing_casting",
                            subs = subdirs("predictions")))
 create_sub_dir(spath)
 options_all3 <- all_options(main = "testing_casting", 
-                            model = models("AutoArima"))
+                            model = "AutoArima")
 portalcast(options_all3)
 
 test_that("plot_cast_point", {

@@ -168,7 +168,7 @@ test_that("check_args", {
   expect_error(check_args(confidence_level = c(0.1, 0.2)))
   expect_error(check_args(confidence_level = 1.5))
   expect_error(check_args(confidence_level = -0.5))
-  expect_error(check_args(models = "AutoArima"))
+  expect_silent(check_args(models = "AutoArima"))
   expect_error(check_args(model = 1))
   expect_error(check_args(model = rep("AutoArima", 2)))
   expect_error(check_args(tmnt_type = "ok"))
@@ -187,6 +187,8 @@ test_that("check_args", {
   expect_error(check_args(options_predictions = 1))
   expect_error(check_args(options_models = 1))
   expect_error(check_args(options_covariates = 1))
+  expect_error(check_args(options_rodents = 1))
+  expect_error(check_args(options_cast = 1))
   expect_error(check_args(path = 1))
   expect_error(check_args(toggle = "1sp"))
   expect_error(check_args(cast_dates = 1))
@@ -224,10 +226,11 @@ test_that("check_args", {
   expect_error(check_args(subs_type = "ok"))
   expect_error(check_args(subs_type = "portalcasting", subs_names = 1))
 
- # expect_error(check_args(model = "AutoArima", extension = 1))
+  expect_error(check_args(model = "AutoArima", extension = 1))
   #expect_error(check_args(model = "AutoArima", extension = "ok"))
-#  expect_error(check_args(model = "AutoArima", extension = c("ok", "ok")))
+  expect_error(check_args(model = "AutoArima", extension = c("ok", "ok")))
  # expect_error(check_args(model = "AutoArima", extension = ".R."))
-  #expect_error(check_args(model = "AutoArima", extension = NULL))
+  expect_error(check_args(model = "AutoArima", extension = NULL))
+
 
 })

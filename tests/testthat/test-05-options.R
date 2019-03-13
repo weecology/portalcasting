@@ -96,10 +96,10 @@ test_that("all_options", {
   expect_error(all_options(confidence_level = c(0.1, 0.2)))
   expect_error(all_options(confidence_level = 1.5))
   expect_error(all_options(confidence_level = -0.5))
-  expect_error(all_options(model = "AutoArima"))
+  expect_silent(all_options(model = "AutoArima"))
   expect_error(all_options(tmnt_type = "ok"))
   expect_error(all_options(to_cleanup = 1))
-  expect_is(all_options(model = models("AutoArima")), "all_options")
+  expect_is(all_options(model = model_names("AutoArima")), "all_options")
 })
 
 test_that("dir_options", {
@@ -372,9 +372,9 @@ test_that("models_options", {
   expect_error(models_options(subs = "ok"))
   expect_error(models_options(quiet = 1))
   expect_error(models_options(quiet = c(TRUE, FALSE)))
-  expect_is(models_options(model = models("AutoArima")), 
+  expect_is(models_options(model = model_names("AutoArima")), 
             "models_options")
-  expect_error(models_options(model = "AutoArima"))
+  expect_silent(models_options(model = "AutoArima"))
 })
 
 test_that("cast_options", {
@@ -386,9 +386,9 @@ test_that("cast_options", {
   expect_error(cast_options(subs = "ok"))
   expect_error(cast_options(quiet = 1))
   expect_error(cast_options(quiet = c(TRUE, FALSE)))
-  expect_is(cast_options(model = models("AutoArima")), 
+  expect_is(cast_options(model = model_names("AutoArima")), 
             "cast_options")
-  expect_error(cast_options(model = "AutoArima"))
+  expect_silent(cast_options(model = "AutoArima"))
   expect_error(cast_options(cast_date = 1))
   expect_error(cast_options(cast_date = c(today(), today())))
   expect_error(cast_options(start = NULL))

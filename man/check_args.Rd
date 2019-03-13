@@ -24,16 +24,17 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   tree = NULL, to_cleanup = c("tmp", "PortalData"),
   options_all = NULL, options_dir = NULL, options_PortalData = NULL,
   options_data = NULL, options_predictions = NULL,
-  options_models = NULL, options_covariates = NULL, path = NULL,
-  species = rodent_spp(set = "evalplot"), cast_dates = NULL,
-  min_observed = 1, ndates = 3, from_date = today(),
-  with_census = FALSE, rangex = 2:3, start_newmoon = 300,
-  add_obs = TRUE, moons = NULL, covariate_data = NULL,
-  new_forecast_covariates = NULL, name = "AutoArima", lag = NULL,
-  mod_covariates = FALSE, subs_names = NULL,
-  subs_type = "portalcasting", specific_sub = NULL, extension = ".R",
-  local_path = "data/all.csv", model = "AutoArima", set = "prefab",
-  add = NULL)
+  options_models = NULL, options_model = NULL,
+  options_covariates = NULL, options_rodents = NULL,
+  options_cast = NULL, path = NULL, species = rodent_spp(set =
+  "evalplot"), cast_dates = NULL, min_observed = 1, ndates = 3,
+  from_date = today(), with_census = FALSE, rangex = 2:3,
+  start_newmoon = 300, add_obs = TRUE, moons = NULL,
+  covariate_data = NULL, new_forecast_covariates = NULL,
+  name = "AutoArima", lag = NULL, mod_covariates = FALSE,
+  subs_names = NULL, subs_type = "portalcasting",
+  specific_sub = NULL, extension = ".R", local_path = "data/all.csv",
+  model = "AutoArima", set = "prefab", add = NULL)
 }
 \arguments{
 \item{toggle}{\code{character} value indicating special aspects of 
@@ -172,8 +173,8 @@ existing predictions files should be retrieved from the
 \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 repo}.}
 
-\item{models}{\code{character} vector of class \code{models} of the names 
-of models to include in a cast of the pipeline.}
+\item{models}{\code{character} vector of the names of models to include 
+in a cast of the pipeline.}
 
 \item{ensemble}{\code{logical} indicator of whether to create an ensemble
 model.}
@@ -225,8 +226,18 @@ available for controlling the set up and population of the models
 folder in the portalcasting directory (see 
 \code{\link{models_options}}).}
 
+\item{options_model}{A class-\code{model_options} \code{list} of
+options used to set up a general model script. See 
+\code{\link{model_options}}.}
+
 \item{options_covariates}{Class-\code{covariates_options} list of 
 options for the covariate data. See \code{\link{covariates_options}}.}
+
+\item{options_rodents}{A class-\code{rodents_options} \code{list} of 
+settings controlling the rodents data creation.}
+
+\item{options_cast}{Class-\code{cast_options} \code{list} containing the
+hind- or forecasting options. See \code{\link{cast_options}}.}
 
 \item{path}{The normalized path of the specific subdirectory folder to be 
 created in the directory tree as a \code{character} value (see 

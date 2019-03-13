@@ -349,8 +349,8 @@ remove_incompletes <- function(df, col_to_check){
 #'   \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 #'   repo}.
 #'
-#' @param models \code{character} vector of class \code{models} of the names 
-#'   of models to include in a cast of the pipeline.
+#' @param models \code{character} vector of the names of models to include 
+#'   in a cast of the pipeline.
 #'   
 #' @param model A singular \code{character} value for a \code{model} or 
 #'   \code{"Ensemble"} in certain situations.
@@ -396,6 +396,12 @@ remove_incompletes <- function(df, col_to_check){
 #'
 #' @param options_covariates Class-\code{covariates_options} list of 
 #'   options for the covariate data. See \code{\link{covariates_options}}.
+#'
+#' @param options_rodents A class-\code{rodents_options} \code{list} of 
+#'   settings controlling the rodents data creation.
+#'
+#' @param options_cast Class-\code{cast_options} \code{list} containing the
+#'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
 #' @param path The normalized path of the specific subdirectory folder to be 
 #'   created in the directory tree as a \code{character} value (see 
@@ -487,6 +493,10 @@ remove_incompletes <- function(df, col_to_check){
 #'   support for \code{"prefab"}). Use \code{NULL} to build a custom set
 #'   from scratch via \code{add}.
 #'
+#' @param options_model A class-\code{model_options} \code{list} of
+#'   options used to set up a general model script. See 
+#'   \code{\link{model_options}}.
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -528,8 +538,9 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        options_PortalData = NULL,
                        options_data = NULL,
                        options_predictions = NULL,
-                       options_models = NULL, 
-                       options_covariates = NULL, 
+                       options_models = NULL, options_model = NULL, 
+                       options_covariates = NULL, options_rodents = NULL,
+                       options_cast = NULL,
                        path = NULL, species = rodent_spp(set = "evalplot"),
                        cast_dates = NULL, min_observed = 1, ndates = 3,
                        from_date = today(), with_census = FALSE,
@@ -830,8 +841,8 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (confidence_level < 0.001 | confidence_level > 0.999){
     stop("`confidence_level` is not between 0.001 and 0.999")
   }
-  if (!(is.null(models)) & !("models" %in% class(models))){
-    stop("`models` must be NULL or of class models")
+  if (!(is.null(models)) & !("character" %in% class(models))){
+    stop("`models` must be NULL or of class character")
   }
   if (length(model) > 1){
       stop("`model` can only be of length = 1 for plotting")
@@ -886,6 +897,10 @@ check_args <- function(toggle = NULL, base = ".", main = "",
       !("data_options" %in% class(options_data))){
     stop("`options_data` is not NULL or a data_options list")
   }
+  if (!is.null(options_cast) & 
+      !("cast_options" %in% class(options_cast))){
+    stop("`options_cast` is not NULL or a cast_options list")
+  }
   if (!is.null(options_predictions) & 
       !("predictions_options" %in% class(options_predictions))){
     stop("`options_predictions` is not NULL or a predictions_options list")
@@ -896,6 +911,14 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (!is.null(options_models) & 
       !("models_options" %in% class(options_models))){
     stop("`options_models` is not NULL or a models_options list")
+  }
+  if (!is.null(options_model) & 
+      !("model_options" %in% class(options_model))){
+    stop("`options_model` is not NULL or a model_options list")
+  }
+  if (!is.null(options_rodents) & 
+      !("rodents_options" %in% class(options_rodents))){
+    stop("`options_rodents` is not NULL or a rodents_options list")
   }
   if (!is.null(options_covariates) & 
       !("covariates_options" %in% class(options_covariates))){

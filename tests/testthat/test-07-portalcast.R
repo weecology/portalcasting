@@ -2,33 +2,27 @@ context("Test portalcast functions")
 
 options_all1 <- all_options(main = "testing_casting")
 options_all2 <- all_options(main = "testing_casting", quiet = TRUE)
-options_all3 <- all_options(main = "testing_casting", 
-                            model = models("AutoArima"))
+options_all3 <- all_options(main = "testing_casting", models = "AutoArima")
 options_all4 <- all_options(main = "testing_casting", 
-                            model = models("ok"))
+                            models = "ok")
 options_all5 <- all_options(main = "testing_casting", 
-                            model = models("all"))
-options_all6 <- all_options(main = "testing_casting", 
-                            model = models("AutoArima"),
+                            models = model_names("all", set = NULL))
+options_all6 <- all_options(main = "testing_casting", models = "AutoArima",
                             cast_type = "hindcasts", end = 490)
-options_all7 <- all_options(main = "testing_casting", 
-                            model = models("AutoArima"), quiet = TRUE)
-options_all8 <- all_options(main = "testing_casting", 
-                            model = models("AutoArima"),
+options_all7 <- all_options(main = "testing_casting", models = "AutoArima",
+                            quiet = TRUE)
+options_all8 <- all_options(main = "testing_casting", models = "AutoArima",
                             cast_type = "hindcasts", end = 496)
-options_all9 <- all_options(main = "testing_casting", 
-                            model = models("AutoArima"),
+options_all9 <- all_options(main = "testing_casting", models = "AutoArima",
                             cast_type = "hindcasts", end = 490:493)
-options_all10 <- all_options(main = "testing_casting", 
-                             model = models("AutoArima"),
+options_all10 <- all_options(main = "testing_casting", models = "AutoArima",
                              cast_type = "hindcasts", end = 476)
-options_all11 <- all_options(main = "testing_casting", 
-                             model = models("AutoArima"),
+options_all11 <- all_options(main = "testing_casting", models = "AutoArima",
                              cast_type = "hindcasts", end = 490:493, 
                              quiet = TRUE)
 
 test_that("portalcast", {
-  expect_error(portalcast(1), "`all_options`")
+  expect_error(portalcast(1), "`options_all`")
   expect_message(portalcast(options_all3))
 })
 
@@ -53,7 +47,7 @@ test_that("models_to_cast", {
   expect_equal(length(mtc3), 1)
   mtc5 <- models_to_cast(options_all5$options_cast)
   expect_is(mtc5, "character")
-  expect_equal(length(mtc5), length(models(set = "prefab")))
+  expect_equal(length(mtc5), length(model_names(set = "prefab")))
 })
 
 test_that("create_tmp", {

@@ -202,7 +202,7 @@ all_options <- function(base = ".", main = "",
                         confidence_level = 0.9, meta_save = TRUE, 
                         meta_filename = "metadata.yaml",
                         download_existing_predictions = FALSE,
-                        models = models(set = "prefab"), ensemble = TRUE,
+                        models = model_names(set = "prefab"), ensemble = TRUE,
                         version = "latest", from_zenodo = TRUE,
                         to_cleanup = c("tmp", "PortalData")){
 
@@ -595,7 +595,8 @@ predictions_options <- function(base = ".", main = "",
 #'
 models_options <- function(base = ".", main = "", 
                            subs = subdirs(subs_type = "portalcasting"),
-                           quiet = FALSE, models = models(set = "prefab")){
+                           quiet = FALSE, 
+                           models = model_names(set = "prefab")){
   check_args(base = base, main = main, subs = subs, quiet = quiet,
              models = models)
   tree <- dirtree(base, main, subs)
@@ -615,7 +616,7 @@ models_options <- function(base = ".", main = "",
 #'
 cast_options <- function(base = ".", main = "", 
                          subs = subdirs(subs_type = "portalcasting"), 
-                         quiet = FALSE, models = models(set = "prefab"), 
+                         quiet = FALSE, models = model_names(set = "prefab"), 
                          cast_type = "forecasts", cast_date = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){

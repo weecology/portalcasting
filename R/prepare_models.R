@@ -14,17 +14,13 @@
 #'
 #' @export
 #'
-models <- function(add = NULL, set = NULL){
+model_names <- function(add = NULL, set = "prefab"){
   check_args(add = add, set = set)
   out <- NULL
   if (!is.null(set) && set == "prefab"){
     out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
   } 
-  out <- unique(c(out, add))
-  if (length(out) > 0){
-    out <- classy(out, c("models"))
-  }
-  out
+  unique(c(out, add))
 }
 
 #' @title Write the template for a model into model subdirectory
@@ -66,13 +62,13 @@ write_model <- function(options_model = model_options()){
 model_template <- function(options_model = model_options()){
   check_args(options_model = options_model)
   tree <- options_model$tree
-  if (any(!(tree$subs %in% subdirs(type = "portalcasting")))){
-    addl <- which(!(tree$subs %in% subdirs(type = "portalcasting")))
+  if (any(!(tree$subs %in% subdirs(subs_type = "portalcasting")))){
+    addl <- which(!(tree$subs %in% subdirs(subs_type = "portalcasting")))
     subnames <- paste(tree$subs[addl], collapse = '", "')
     subs <- paste0('subdirs(subs = c("', subnames, 
-                   '"), type = "portalcasting")')
+                   '"), subs_type = "portalcasting")')
   } else{
-    subs <- 'subdirs(type = "portalcasting")'
+    subs <- 'subdirs(subs_type = "portalcasting")'
   }
   name <- options_model$name
   quiet_arg <- paste0("quiet = ", options_model$quiet)
