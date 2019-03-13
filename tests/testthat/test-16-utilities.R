@@ -209,5 +209,10 @@ test_that("check_args", {
   expect_error(check_args(covariates = 1.5))
   expect_error(check_args(moons = 1.5))
   expect_error(check_args(new_forecast_covariates = 1.5))
-
+  expect_error(check_args(name = 1.5))
+  expect_error(check_args(name = rep("AutoArima", 2)))
+  expect_error(check_args(lag = 1.5))
+  expect_error(check_args(lag = 1:2))
+  expect_error(check_args(lag = "ok"))
+  expect_error(check_args(mod_covariates = 1.5))
 })
