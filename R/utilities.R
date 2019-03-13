@@ -517,6 +517,9 @@ remove_incompletes <- function(df, col_to_check){
 #' @param lead \code{integer}-conformable lead of the newmoon number used to
 #'   select the data plotted. 
 #'
+#' @param download \code{logical} indicator of whether the download should 
+#'   actually happen. Should be \code{TRUE} except for testing purposes.
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -547,8 +550,8 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        c_filename = "covariates.csv", cast_type = "forecasts",
                        confidence_level = 0.9, meta_save = TRUE, 
                        meta_filename = "metadata.yaml",
-                       download_existing_predictions = FALSE,
-                       models = NULL, ensemble = TRUE,
+                       download_existing_predictions = FALSE, 
+                       models = NULL, ensemble = TRUE, download = FALSE,
                        version = "latest", from_zenodo = TRUE,
                        n_future_moons = 12, save = TRUE,
                        filename = "moons.csv", tree = NULL,
@@ -575,6 +578,9 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        lead = 1, rodents = NULL, future_moons = NULL){
   if(is.null(toggle)){
     toggle <- "null"
+  }
+  if (!("logical" %in% class(download))){
+    stop("`download` is not logical")
   }
   if (length(base) > 1){
     stop("`base` can only be of length = 1")

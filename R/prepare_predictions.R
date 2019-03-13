@@ -25,15 +25,7 @@
 #'
 download_predictions <- function(tree = dirtree(), download = TRUE, 
                                  quiet = FALSE){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!("logical" %in% class(download))){
-    stop("`download` is not logical")
-  }
-  if (!("logical" %in% class(quiet))){
-    stop("`quiet` is not logical")
-  }
+  check_args(tree = tree, download = download, quiet = quiet)
   from1 <- "https://api.github.com/repos/weecology/portalPredictions/"
   from2 <- "contents/predictions"
   from_path <- paste0(from1, from2)

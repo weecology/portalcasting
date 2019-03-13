@@ -4,7 +4,7 @@ options_all <- all_options(base = "~", main = "portalcasting_dev1",
 models = "AutoArima")
 
 # presently integrating functions into check_args
-# now on prepare_predictions
+# now on prepare_rodents
 
 
 # dropped the models class, that was unnecessary

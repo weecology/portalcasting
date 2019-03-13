@@ -19,11 +19,11 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
   download_existing_predictions = FALSE, models = NULL,
-  ensemble = TRUE, version = "latest", from_zenodo = TRUE,
-  n_future_moons = 12, save = TRUE, filename = "moons.csv",
-  tree = NULL, to_cleanup = c("tmp", "PortalData"),
-  options_all = NULL, options_moons = NULL, options_dir = NULL,
-  options_PortalData = NULL, options_data = NULL,
+  ensemble = TRUE, download = FALSE, version = "latest",
+  from_zenodo = TRUE, n_future_moons = 12, save = TRUE,
+  filename = "moons.csv", tree = NULL, to_cleanup = c("tmp",
+  "PortalData"), options_all = NULL, options_moons = NULL,
+  options_dir = NULL, options_PortalData = NULL, options_data = NULL,
   options_predictions = NULL, options_models = NULL,
   options_model = NULL, options_covariates = NULL,
   options_rodents = NULL, options_cast = NULL,
@@ -180,6 +180,9 @@ in a cast of the pipeline.}
 
 \item{ensemble}{\code{logical} indicator of whether to create an ensemble
 model.}
+
+\item{download}{\code{logical} indicator of whether the download should 
+actually happen. Should be \code{TRUE} except for testing purposes.}
 
 \item{version}{\code{character} values of the version number or 
 \code{"latest"} (default) for the Portal Data to be download.}
