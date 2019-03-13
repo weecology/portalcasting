@@ -48,8 +48,8 @@ prep_metadata <- function(moons = prep_moons(),
   if (options_metadata$cast_type == "hindcasts"){
     last_newmoon <- max(covariates$newmoonnumber[covariates$source == "hist"]) 
   }
-  last_rodent_pd_all <- tail(rodents$all, 1)$period
-  last_rodent_pd_control <- tail(rodents$control, 1)$period
+  last_rodent_pd_all <- tail(rodents_list$all, 1)$period
+  last_rodent_pd_control <- tail(rodents_list$control, 1)$period
   last_rodent_pd <- max(last_rodent_pd_all, last_rodent_pd_control)
   which_last_rodent_pd <- which(moons$period == last_rodent_pd)
   last_rodent_newmoon <- moons$newmoonnumber[which_last_rodent_pd]
