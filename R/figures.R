@@ -42,9 +42,9 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
                                   level = "Controls", cast_dates = NULL, 
                                   min_observed = 1){
 
-  check_args(tree = tree, species = species, level_c = level,
+  check_args(tree = tree, species = species, level = level,
              cast_type = cast_type, cast_dates = cast_dates, 
-             min_observed = min_observed)
+             min_observed = min_observed, toggle = "plot")
 
   if (is.null(cast_dates)){
     pfolderpath <- sub_path(tree = tree, "predictions")
@@ -223,7 +223,7 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
                                    level = "Controls", ndates = 3){
 
   check_args(tree = tree, cast_type = cast_type, species = species, 
-             level_c = level, ndates = ndates)
+             level = level, ndates = ndates, toggle = "plot")
 
   casts <- read_casts(tree, cast_type = cast_type) %>%
            select_casts(species = species, level = level) %>%
