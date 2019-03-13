@@ -575,7 +575,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
                          start_newmoon = 300, add_obs = TRUE){
 
   if (is.null(cast_date)){
-    cast_date <- most_recent_cast(tree, cast_type, with_census)
+    cast_date <- most_recent_cast(tree, cast_type)
   }
   check_args(tree = tree, species = species, level = level,
              cast_type = cast_type, cast_date = cast_date, model = model,
