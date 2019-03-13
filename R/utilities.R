@@ -349,14 +349,11 @@ remove_incompletes <- function(df, col_to_check){
 #'   \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 #'   repo}.
 #'
-#' @param model For pipeline setup and execution, a \code{character} vector 
-#'   of the names of model scripts to include in a cast of the pipeline. 
-#'   \cr \cr For plotting, the \code{character} value for a \code{model} in 
-#'   the plotting functions corresponding to the name (or \code{"Ensemble"}) 
-#'   of the model to be plotted. \cr \cr Differentiation by \code{toggle} 
-#'   (\code{NULL} for pipeline setup and execution and a toggle character 
-#'   value including \code{"plot"} and \code{"1mod"} for plots which only
-#'   allow one species).
+#' @param models \code{character} vector of class \code{models} of the names 
+#'   of models to include in a cast of the pipeline.
+#'   
+#' @param model A singular \code{character} value for a \code{model} or 
+#'   \code{"Ensemble"} in certain situations.
 #'
 #' @param ensemble \code{logical} indicator of whether to create an ensemble
 #'   model.
@@ -483,6 +480,13 @@ remove_incompletes <- function(df, col_to_check){
 #' @param local_path \code{character} file path within the \code{main} level 
 #'   of the portalcasting directory.
 #'
+#' @param add \code{character} vector of name(s) of model(s) to add to the 
+#'   setup by \code{set}.
+#'
+#' @param set \code{characher} value of the type of model (currently only 
+#'   support for \code{"prefab"}). Use \code{NULL} to build a custom set
+#'   from scratch via \code{add}.
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -514,7 +518,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        confidence_level = 0.9, meta_save = TRUE, 
                        meta_filename = "metadata.yaml",
                        download_existing_predictions = FALSE,
-                       model = models(set = "prefab"), ensemble = TRUE,
+                       models = NULL, ensemble = TRUE,
                        version = "latest", from_zenodo = TRUE,
                        n_future_moons = 12, save = TRUE,
                        filename = "moons.csv", tree = NULL,
@@ -535,7 +539,8 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        lag = NULL, mod_covariates = FALSE,
                        subs_names = NULL, subs_type = "portalcasting",
                        specific_sub = NULL, extension = ".R",
-                       local_path = "data/all.csv"){
+                       local_path = "data/all.csv",
+                       model = "AutoArima", set = "prefab", add = NULL){
   if(is.null(toggle)){
     toggle <- "null"
   }
@@ -825,14 +830,14 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (confidence_level < 0.001 | confidence_level > 0.999){
     stop("`confidence_level` is not between 0.001 and 0.999")
   }
-  if(toggle == "null"){
-    if (!("models" %in% class(model))){
-      stop("`model` must be of class models")
-    }
-  } else if (grepl("1mod", toggle) & grepl("plot", toggle)){
-    if (length(model) > 1){
+  if (!(is.null(models)) & !("models" %in% class(models))){
+    stop("`models` must be NULL or of class models")
+  }
+  if (length(model) > 1){
       stop("`model` can only be of length = 1 for plotting")
-    }
+  }
+  if (!("character" %in% class(model))){
+    stop("`model` must be of class character")
   }
   if (!("logical" %in% class(save))){
     stop("`save` is not of class logical")
@@ -1037,5 +1042,21 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   }
   if (!is.character(local_path)){
     stop("`local_path` is not a character")
+  }
+  if (is.null(set) & is.null(add)){
+    stop("both `set` and `add` are NULL")
+  }
+  if (!is.null(set) & !is.character(set)){
+    stop("`set` is not NULL or a character")
+  }
+  if (length(set) > 1){
+    stop("`set` can only be of length = 1")
+  } 
+
+  if (!is.null(set) && !(set %in% c("prefab"))){
+    stop("`models` not defined for that `set`")
+  }
+  if (!is.null(add) & !is.character(add)){
+      stop("`add` is not NULL or a character")
   }
 }

@@ -14,7 +14,7 @@
 \alias{cast_options}
 \title{Prepare options lists for a portalcasting directory}
 \usage{
-all_options(base = ".", main = "", subs = subdirs(type =
+all_options(base = ".", main = "", subs = subdirs(subs_type =
   "portalcasting"), quiet = FALSE, cast_date = today(),
   append_missing_to_raw = TRUE, m_save = TRUE,
   m_filename = "moons.csv", tmnt_type = NULL, start = 217,
@@ -29,18 +29,18 @@ all_options(base = ".", main = "", subs = subdirs(type =
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, model = models(set =
+  download_existing_predictions = FALSE, models = models(set =
   "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   to_cleanup = c("tmp", "PortalData"))
 
-dir_options(base = ".", main = "", subs = subdirs(type =
+dir_options(base = ".", main = "", subs = subdirs(subs_type =
   "portalcasting"), quiet = FALSE, to_cleanup = c("tmp", "PortalData"))
 
-PortalData_options(base = ".", main = "", subs = subdirs(type =
+PortalData_options(base = ".", main = "", subs = subdirs(subs_type =
   "portalcasting"), quiet = FALSE, version = "latest",
   from_zenodo = TRUE)
 
-data_options(base = ".", main = "", subs = subdirs(type =
+data_options(base = ".", main = "", subs = subdirs(subs_type =
   "portalcasting"), quiet = FALSE, cast_date = today(),
   append_missing_to_raw = TRUE, m_save = TRUE,
   m_filename = "moons.csv", tmnt_type = NULL, start = 217,
@@ -79,15 +79,15 @@ metadata_options(cast_date = today(), cast_type = "forecasts",
   confidence_level = 0.9, lead_time = 12, save = TRUE,
   filename = "metadata.yaml", quiet = FALSE, tree = dirtree())
 
-predictions_options(base = ".", main = "", subs = subdirs(type =
+predictions_options(base = ".", main = "", subs = subdirs(subs_type =
   "portalcasting"), download_existing_predictions = FALSE,
   quiet = FALSE)
 
-models_options(base = ".", main = "", subs = subdirs(type =
-  "portalcasting"), quiet = FALSE, model = models(set = "prefab"))
+models_options(base = ".", main = "", subs = subdirs(subs_type =
+  "portalcasting"), quiet = FALSE, models = models(set = "prefab"))
 
-cast_options(base = ".", main = "", subs = subdirs(type =
-  "portalcasting"), quiet = FALSE, model = models(set = "prefab"),
+cast_options(base = ".", main = "", subs = subdirs(subs_type =
+  "portalcasting"), quiet = FALSE, models = models(set = "prefab"),
   cast_type = "forecasts", cast_date = today(), ensemble = TRUE,
   start = 217, end = NULL, hind_step = 1, min_plots = 24,
   min_traps = 1)
@@ -222,8 +222,8 @@ existing predictions files should be retrieved from the
 \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 repo}.}
 
-\item{model}{\code{character} vector of the names of model scripts to 
-include in a cast of the pipeline.}
+\item{models}{\code{character} vector of class \code{models} of the names 
+of models to include in a cast of the pipeline.}
 
 \item{ensemble}{\code{logical} indicator of whether to create an ensemble
 model.}

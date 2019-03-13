@@ -15,27 +15,16 @@
 #' @export
 #'
 models <- function(add = NULL, set = NULL){
-  if (!is.null(set) & !is.character(set)){
-    stop("`set` is not NULL or a character")
-  }
-  if (length(set) > 1){
-    stop("`set` can only be of length = 1")
-  } 
+  check_args(add = add, set = set)
   out <- NULL
-  if (!is.null(set)){
-    if (set == "prefab"){
-      out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
-    } else{
-      stop("`models` not defined for that `set`")
-    }
+  if (!is.null(set) && set == "prefab"){
+    out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
+  } 
+  out <- unique(c(out, add))
+  if (length(out) > 0){
+    out <- classy(out, c("models"))
   }
-  if (!is.null(add)){
-    if (!is.character(add)){
-      stop("`add` is not a character")
-    }
-    out <- c(out, add)
-  }
-  classy(out, c("character", "models"))
+  out
 }
 
 #' @title Write the template for a model into model subdirectory
@@ -50,9 +39,7 @@ models <- function(add = NULL, set = NULL){
 #' @export
 #'
 write_model <- function(options_model = model_options()){
-  if (!("model_options" %in% class(options_model))){
-    stop("`options_model` is not a model_options list")
-  }
+  check_args(options_model = options_model)
   model <- options_model$name
   if (is.null(model)){
     return()
@@ -77,9 +64,7 @@ write_model <- function(options_model = model_options()){
 #' @export
 #'
 model_template <- function(options_model = model_options()){
-  if (!("model_options" %in% class(options_model))){
-    stop("`options_model` is not a model_options list")
-  }
+  check_args(options_model = options_model)
   tree <- options_model$tree
   if (any(!(tree$subs %in% subdirs(type = "portalcasting")))){
     addl <- which(!(tree$subs %in% subdirs(type = "portalcasting")))

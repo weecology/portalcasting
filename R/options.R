@@ -137,8 +137,8 @@
 #'   \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 #'   repo}.
 #'
-#' @param model \code{character} vector of the names of model scripts to 
-#'   include in a cast of the pipeline.
+#' @param models \code{character} vector of class \code{models} of the names 
+#'   of models to include in a cast of the pipeline.
 #'
 #' @param ensemble \code{logical} indicator of whether to create an ensemble
 #'   model.
@@ -181,7 +181,7 @@
 #' @export
 #'
 all_options <- function(base = ".", main = "", 
-                        subs = subdirs(type = "portalcasting"), 
+                        subs = subdirs(subs_type = "portalcasting"), 
                         quiet = FALSE, cast_date = today(), 
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
@@ -202,7 +202,7 @@ all_options <- function(base = ".", main = "",
                         confidence_level = 0.9, meta_save = TRUE, 
                         meta_filename = "metadata.yaml",
                         download_existing_predictions = FALSE,
-                        model = models(set = "prefab"), ensemble = TRUE,
+                        models = models(set = "prefab"), ensemble = TRUE,
                         version = "latest", from_zenodo = TRUE,
                         to_cleanup = c("tmp", "PortalData")){
 
@@ -222,7 +222,7 @@ all_options <- function(base = ".", main = "",
              confidence_level = confidence_level, 
              meta_save = meta_save, meta_filename = meta_filename,
              download_existing_predictions = download_existing_predictions,
-             model = model, ensemble = ensemble, version = version,
+             models = models, ensemble = ensemble, version = version,
              from_zenodo = from_zenodo, to_cleanup = to_cleanup)
 
   if (is.null(end) & cast_type == "hindcasts"){
@@ -263,9 +263,9 @@ all_options <- function(base = ".", main = "",
                                                 download_existing_predictions, 
                                               quiet = quiet),
     options_models = models_options(base = base, main = main, subs = subs,
-                                    quiet = quiet, model = model),
+                                    quiet = quiet, models = models),
     options_cast = cast_options(base = base, main = main, subs = subs, 
-                                quiet = quiet, model = model, 
+                                quiet = quiet, models = models, 
                                 cast_type = cast_type, 
                                 cast_date = cast_date, ensemble = ensemble,
                                 start = start, end = end, 
@@ -286,7 +286,7 @@ all_options <- function(base = ".", main = "",
 #' @export
 #'
 dir_options <- function(base = ".", main = "", 
-                        subs = subdirs(type = "portalcasting"),
+                        subs = subdirs(subs_type = "portalcasting"),
                         quiet = FALSE, to_cleanup = c("tmp", "PortalData")){
   check_args(base = base, main = main, subs = subs, quiet = quiet,
              to_cleanup = to_cleanup)
@@ -306,7 +306,7 @@ dir_options <- function(base = ".", main = "",
 #' @export
 #'
 PortalData_options <- function(base = ".", main = "", 
-                               subs = subdirs(type = "portalcasting"), 
+                               subs = subdirs(subs_type = "portalcasting"), 
                                quiet = FALSE,
                                version = "latest", from_zenodo = TRUE){
   check_args(base = base, main = main, subs = subs, quiet = quiet,
@@ -333,7 +333,7 @@ PortalData_options <- function(base = ".", main = "",
 #' @export
 #'
 data_options <- function(base = ".", main = "", 
-                         subs = subdirs(type = "portalcasting"),
+                         subs = subdirs(subs_type = "portalcasting"),
                          quiet = FALSE, cast_date = today(), 
                          append_missing_to_raw = TRUE, m_save = TRUE, 
                          m_filename = "moons.csv", tmnt_type = NULL, 
@@ -569,7 +569,7 @@ metadata_options <- function(cast_date = today(), cast_type = "forecasts",
 #' @export
 #'
 predictions_options <- function(base = ".", main = "", 
-                                subs = subdirs(type = "portalcasting"), 
+                                subs = subdirs(subs_type = "portalcasting"), 
                                 download_existing_predictions = FALSE,
                                 quiet = FALSE){
 
@@ -594,12 +594,12 @@ predictions_options <- function(base = ".", main = "",
 #' @export
 #'
 models_options <- function(base = ".", main = "", 
-                           subs = subdirs(type = "portalcasting"),
-                           quiet = FALSE, model = models(set = "prefab")){
+                           subs = subdirs(subs_type = "portalcasting"),
+                           quiet = FALSE, models = models(set = "prefab")){
   check_args(base = base, main = main, subs = subs, quiet = quiet,
-             model = model)
+             models = models)
   tree <- dirtree(base, main, subs)
-  list(model = model, quiet = quiet, tree = tree) %>%
+  list(models = models, quiet = quiet, tree = tree) %>%
   classy(c("models_options", "list"))
 }
 
@@ -614,18 +614,18 @@ models_options <- function(base = ".", main = "",
 #' @export
 #'
 cast_options <- function(base = ".", main = "", 
-                         subs = subdirs(type = "portalcasting"), 
-                         quiet = FALSE, model = models(set = "prefab"), 
+                         subs = subdirs(subs_type = "portalcasting"), 
+                         quiet = FALSE, models = models(set = "prefab"), 
                          cast_type = "forecasts", cast_date = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){
   check_args(base = base, main = main, subs = subs, quiet = quiet, 
-             model = model, cast_type = cast_type, cast_date = cast_date, 
+             models = models, cast_type = cast_type, cast_date = cast_date, 
              ensemble = ensemble, start = start, end = end, 
              hind_step = hind_step, min_plots = min_plots, 
              min_traps = min_traps)
   tree <- dirtree(base, main, subs)
-  list(tree = tree, quiet = quiet, model = model, cast_type = cast_type,
+  list(tree = tree, quiet = quiet, models = models, cast_type = cast_type,
        cast_date = cast_date, ensemble = ensemble, start = start, end = end, 
        hind_step = hind_step, min_plots = min_plots, 
        min_traps = min_traps) %>%

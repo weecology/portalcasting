@@ -18,8 +18,8 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, model = models(set =
-  "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
+  download_existing_predictions = FALSE, models = NULL,
+  ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   n_future_moons = 12, save = TRUE, filename = "moons.csv",
   tree = NULL, to_cleanup = c("tmp", "PortalData"),
   options_all = NULL, options_dir = NULL, options_PortalData = NULL,
@@ -32,7 +32,8 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   new_forecast_covariates = NULL, name = "AutoArima", lag = NULL,
   mod_covariates = FALSE, subs_names = NULL,
   subs_type = "portalcasting", specific_sub = NULL, extension = ".R",
-  local_path = "data/all.csv")
+  local_path = "data/all.csv", model = "AutoArima", set = "prefab",
+  add = NULL)
 }
 \arguments{
 \item{toggle}{\code{character} value indicating special aspects of 
@@ -171,14 +172,8 @@ existing predictions files should be retrieved from the
 \href{https://github.com/weecology/portalPredictions}{portalPredictions 
 repo}.}
 
-\item{model}{For pipeline setup and execution, a \code{character} vector 
-of the names of model scripts to include in a cast of the pipeline. 
-\cr \cr For plotting, the \code{character} value for a \code{model} in 
-the plotting functions corresponding to the name (or \code{"Ensemble"}) 
-of the model to be plotted. \cr \cr Differentiation by \code{toggle} 
-(\code{NULL} for pipeline setup and execution and a toggle character 
-value including \code{"plot"} and \code{"1mod"} for plots which only
-allow one species).}
+\item{models}{\code{character} vector of class \code{models} of the names 
+of models to include in a cast of the pipeline.}
 
 \item{ensemble}{\code{logical} indicator of whether to create an ensemble
 model.}
@@ -308,6 +303,16 @@ subdirectory/subdirectories of interest.}
 
 \item{local_path}{\code{character} file path within the \code{main} level 
 of the portalcasting directory.}
+
+\item{model}{A singular \code{character} value for a \code{model} or 
+\code{"Ensemble"} in certain situations.}
+
+\item{set}{\code{characher} value of the type of model (currently only 
+support for \code{"prefab"}). Use \code{NULL} to build a custom set
+from scratch via \code{add}.}
+
+\item{add}{\code{character} vector of name(s) of model(s) to add to the 
+setup by \code{set}.}
 }
 \description{
 Omnibus function to verify the validity (class, size, etc.) 

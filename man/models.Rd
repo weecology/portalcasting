@@ -4,7 +4,7 @@
 \alias{models}
 \title{Provide the names of models}
 \usage{
-models(add = NULL, set = NULL)
+models(add = NULL, set = "prefab")
 }
 \arguments{
 \item{add}{\code{character} vector of name(s) of model(s) to add to the 
