@@ -6,7 +6,7 @@
 \usage{
 plot_cast_ts(tree = dirtree(), species = "total", level = "Controls",
   cast_type = "forecasts", cast_date = NULL, model = "Ensemble",
-  start_newmoon = 300)
+  start_newmoon = 300, add_obs = TRUE)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
@@ -30,6 +30,9 @@ the model to be plotted.}
 
 \item{start_newmoon}{\code{integer}-conformable newmoon number used as the
 the minimum x value for the plot.}
+
+\item{add_obs}{\code{logical} indicator if values observed during the 
+-cast time should be added (default is \code{TRUE}).}
 }
 \description{
 Plot an observed timeseries and forecast or hindcast 

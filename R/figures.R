@@ -701,6 +701,9 @@ plotcastpoint_yaxis <- function(tree = dirtree(), species = "total"){
 #'
 #' @param start_newmoon \code{integer}-conformable newmoon number used as the
 #'   the minimum x value for the plot. 
+#'
+#' @param add_obs \code{logical} indicator if values observed during the 
+#'   -cast time should be added (default is \code{TRUE}).
 #' 
 #' @examples
 #' \dontrun{
@@ -715,7 +718,7 @@ plotcastpoint_yaxis <- function(tree = dirtree(), species = "total"){
 plot_cast_ts <- function(tree = dirtree(), species = "total", 
                          level = "Controls", cast_type = "forecasts", 
                          cast_date = NULL, model = "Ensemble", 
-                         start_newmoon = 300){
+                         start_newmoon = 300, add_obs = TRUE){
 
   if (!("dirtree" %in% class(tree))){
     stop("`tree` is not of class dirtree")
@@ -772,10 +775,23 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
   if(start_newmoon < 1 | start_newmoon %% 1 != 0){
     stop("`start_newmoon` is not a positive integer")
   }
+  if (!("logical" %in% class(add_obs))){
+    stop("`add_obs` is not of class logical")
+  }
+  if (length(add_obs) > 1){
+    stop("`add_obs` can only be of length = 1")
+  }
 
   obs <- read_data(tree, tolower(level))
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model)   
+  first_pred <- min(pred$newmoonnumber)
+  which_obs_after_pred <- which(obs$newmoonnumber >= first_pred)
+  nwhich_obs_after_pred <- length(which_obs_after_pred)
+  if (nwhich_obs_after_pred > 0){
+    obs_after_pred <- obs[which_obs_after_pred, ]
+    obs <- obs[-which_obs_after_pred, ]
+  }
 
   species_o <- species
   if (species == "NA"){
@@ -806,8 +822,14 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 
   points(obs_x, obs_y, type = "l")
   polygon(pred_px, pred_py, col = rgb(0.6757, 0.8438, 0.8984), border = NA)
-  points(pred_x2, pred_ym2, type = "l", col = rgb(0, 0, 1))
-  
+  points(pred_x2, pred_ym2, type = "l", col = rgb(0, 0, 1), lty = 2)
+  if (add_obs && nwhich_obs_after_pred > 0){
+    obs_after_pred_x <- obs_after_pred[ , "newmoonnumber"]
+    obs_after_pred_y <- obs_after_pred[ , species_o]
+    obs_oap_x <- c(obs_xf, obs_after_pred_x)
+    obs_oap_y <- c(obs_yf, obs_after_pred_y)
+    points(obs_oap_x, obs_oap_y, type = "l", lty = 1)
+  }
 }
 
 

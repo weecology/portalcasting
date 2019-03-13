@@ -3,6 +3,14 @@
 # [portalcasting 0.3.1](https://github.com/weecology/portalcasting)
 *active development*
 
+### Bug fix in `plot_cast_ts()`
+* `plot_cast_ts` did not cleanly plot time series where observations had 
+been made after the start of the prediction window.
+* The function has been set up to now split observations that occurred
+during the prediction window out, execute the plot as if they didn't 
+exist, then add them on top. 
+* Functionality has now been added to allow the toggling on and off of
+those points via the `add_obs` input (defaults to `TRUE`).
 
 # [portalcasting 0.3.0](https://github.com/weecology/portalcasting/releases/tag/v0.3.0)
 *2019-03-04*

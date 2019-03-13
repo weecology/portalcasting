@@ -67,6 +67,8 @@ test_that("plot_cast_ts", {
   expect_error(plot_cast_ts(tree, cast_type = rep("forecasts", 2)))
   expect_error(plot_cast_ts(tree, cast_date = 1))
   expect_error(plot_cast_ts(tree, cast_date = rep(cast_date, 2)))
+  expect_error(plot_cast_ts(tree, add_obs = 1))
+  expect_error(plot_cast_ts(tree, add_obs = rep(TRUE, 2)))
   expect_error(plot_cast_ts(tree, start_newmoon = 0))
   expect_error(plot_cast_ts(tree, start_newmoon = 1:2))
   expect_error(plot_cast_ts(tree, start_newmoon = 1.5))
