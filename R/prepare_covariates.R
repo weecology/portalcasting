@@ -23,12 +23,7 @@
 #'
 prep_covariates <- function(moons = prep_moons(),
                             options_covariates = covariates_options()){
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
+  check_args(moons = moons, options_covariates = options_covariates)
 
   if (!options_covariates$quiet){
     message("Loading covariate data files into data subdirectory")
@@ -61,6 +56,7 @@ prep_covariates <- function(moons = prep_moons(),
 #' @export
 #'
 transfer_hist_covariate_forecasts <- function(options_data = data_options()){
+  check_args(options_data = options_data)
   path_to <- file_path(options_data$tree, "data/covariate_forecasts.csv")
 
   fname <- "extdata/covariate_forecasts.csv"
@@ -99,9 +95,7 @@ transfer_hist_covariate_forecasts <- function(options_data = data_options()){
 #' @export
 #'
 prep_hist_covariates <- function(options_covariates = covariates_options()){
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }
+  check_args(options_covariates = options_covariates)
   tree <- options_covariates$tree
   weather_data <- prep_weather_data(tree = tree)
   ndvi_data <- ndvi("newmoon", fill = TRUE, path = main_path(tree))
@@ -137,16 +131,8 @@ prep_hist_covariates <- function(options_covariates = covariates_options()){
 prep_fcast_covariates <- function(hist_cov = prep_hist_covariates(),
                                   moons = prep_moons(),
                                   options_covariates = covariates_options()){
-
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("covariates" %in% class(hist_cov))){
-    stop("`hist_cov` is not of class covariates")
-  }
+  check_args(options_covariates = options_covariates, moons = moons,
+             covariate_data = hist_cov)
   update_covfcast_options(options_covariates, hist_cov, moons) %>%
   forecast_covariates(hist_cov, moons, .) %>%
   append_cov_fcast_csv(options_covariates) %>%
@@ -168,9 +154,7 @@ prep_fcast_covariates <- function(hist_cov = prep_hist_covariates(),
 #' @export
 #'
 prep_weather_data <- function(tree = dirtree()){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
+  check_args(tree = tree)
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
   weather("newmoon", fill = TRUE, path = main_path(tree)) %>% 
@@ -201,15 +185,8 @@ prep_weather_data <- function(tree = dirtree()){
 #' @export
 #'
 update_covfcast_options <- function(options_covariates, hist_cov, moons){
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("covariates" %in% class(hist_cov))){
-    stop("`hist_cov` is not of class covariates")
-  }
+  check_args(options_covariates = options_covariates, moons = moons,
+             covariate_data = hist_cov)
   prev_newmoon <- max(which(moons$newmoondate < options_covariates$cast_date))
   prev_newmoon <- moons$newmoonnumber[prev_newmoon]
   if (options_covariates$cast_type == "hindcasts"){
