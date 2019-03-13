@@ -30,25 +30,10 @@
 #' @export
 #'
 dirtree <- function(base = ".", main = "", 
-                    subs = subdirs(type = "portalcasting")){
-  if (length(base) > 1){
-    stop("`base` can only be of length = 1")
-  }
-  if (length(main) > 1){
-    stop("`main` can only be of length = 1")
-  }
-  if (!is.character(base)){
-    stop("`base` is not a character")
-  }
-  if (!is.character(main)){
-    stop("`main` is not a character")
-  }
-  if (!("subdirs" %in% class(subs))){
-    stop("`subs` is not a subdirs list")
-  }
-  tree <- list("base" = base, "main" = main, "subs" = subs)
-  class(tree) <- c("dirtree", "list")
-  tree
+                    subs = subdirs(subs_type = "portalcasting")){
+  check_args(base = base, main = main, subs = subs)
+  list("base" = base, "main" = main, "subs" = subs) %>%
+  classy(c("dirtree", "list"))
 }
 
 #' @title Define the names of the subdirectories in a forecasting directory
@@ -59,35 +44,26 @@ dirtree <- function(base = ".", main = "",
 #'   \code{"data"}, and \code{"tmp"}. It is generally not advised to change
 #'   the subdirectory structure at this time.
 #'
-#' @param subs Either [1] names of additional subdirectories to add to the
-#'   vector set up by \code{type} or [2] an optional way to input all 
+#' @param subs_names Either [1] names of additional subdirectories to add to
+#'   the vector set up by \code{type} or [2] an optional way to input all 
 #'   subdirectory names (requires \code{type = NULL}, which is the default). 
 #'
-#' @param type \code{character} name for quick generation of subdirectory
-#'   vector. Presently only defined for the default input 
-#'   \code{"portalcasting"}.
+#' @param subs_type \code{character} name for quick generation of subdirectory
+#'   vector. Presently only defined for \code{"portalcasting"}.
 #'
 #' @return Class-\code{subdirs} vector of character elements of 
 #'   subdirectory names.
 #'
 #' @export
 #'
-subdirs <- function(subs = NULL, type = NULL){
-  if (is.null(type) & is.null(subs)){
-    stop("both `type` and `subs` are NULL")
+subdirs <- function(subs_names = NULL, subs_type = NULL){
+  check_args(subs_names = subs_names, subs_type = subs_type)
+  if (!is.null(subs_type) && subs_type == "portalcasting"){
+    pc_subs <- c("predictions", "models", "PortalData", "data", "tmp")
+    subs_names <- c(subs_names, pc_subs)
+    subs_names <- unique(subs_names)
   }
-  if (!("portalcasting" %in% type) & is.null(subs)){
-    stop("`type` is not recognized and `subs` is NULL")
-  }
-  if (!is.null(subs) && !is.character(subs)){
-    stop("`subs` is not a character")
-  }
-  if (!is.null(type) &&type == "portalcasting"){
-    subs <- c(subs, "predictions", "models", "PortalData", "data", "tmp")
-    subs <- unique(subs)
-  }
-  class(subs) <- "subdirs"
-  subs
+  classy(subs_names, "subdirs")
 }
 
 #' @title Determine the path for a specific level of a portalcasting directory
@@ -113,9 +89,7 @@ subdirs <- function(subs = NULL, type = NULL){
 #' @export
 #'
 base_path <- function(tree = dirtree()){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
+  check_args(tree = tree)
   base <- tree$base
   normalizePath(file.path(base), mustWork = FALSE)
 }
@@ -131,9 +105,7 @@ base_path <- function(tree = dirtree()){
 #' @export
 #'
 main_path <- function(tree = dirtree()){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
+  check_args(tree = tree)
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main), mustWork = FALSE)
@@ -150,9 +122,7 @@ main_path <- function(tree = dirtree()){
 #' @export
 #'
 sub_paths <- function(tree = dirtree()){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
+  check_args(tree = tree)
   base <- tree$base
   main <- tree$main
   subs <- tree$subs
@@ -173,13 +143,8 @@ sub_paths <- function(tree = dirtree()){
 #'
 #' @export
 #'
-sub_path <- function(tree = dirtree(), specific_sub){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!all(specific_sub %in% tree$subs)){
-    stop("`specific_sub` not in `tree`")
-  }
+sub_path <- function(tree = dirtree(), specific_sub = "tmp"){
+  check_args(tree = tree, specific_sub = specific_sub)
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main, specific_sub), mustWork = FALSE)
@@ -208,24 +173,16 @@ sub_path <- function(tree = dirtree(), specific_sub){
 #' @export
 #'
 model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
+  check_args(tree = tree, extension = extension)
+ 
+
   if (is.null(model)){
     stop("`model` needs to be specified")
   }
   if (!is.character(model)){
     stop("`model` is not a character")
   }
-  if (is.null(extension)){
-    stop("`extension` needs to be specified")
-  }
-  if (!is.character(extension)){
-    stop("`extension` is not a character")
-  }
-  if (length(extension) > 1){
-    stop("`extension` can only be length 1")
-  }
+
   lext <- nchar(extension)
   spot <- rep(NA, lext)
   for(i in 1:lext){
@@ -264,15 +221,7 @@ model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
 #' @export
 #'
 file_path <- function(tree = dirtree(), local_path = NULL){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (is.null(local_path)){
-    stop("`local_path` needs to be specified")
-  }
-  if (!is.character(local_path)){
-    stop("`local_path` is not a character")
-  }
+  check_args(tree = tree, local_path = local_path)
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main, local_path), mustWork = FALSE)

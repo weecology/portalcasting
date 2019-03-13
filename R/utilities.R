@@ -468,6 +468,21 @@ remove_incompletes <- function(df, col_to_check){
 #' @param lag \code{integer} (or integer \code{numeric}) lag time used for the
 #'   covariates or \code{NULL} if \code{covariates} is \code{FALSE}.
 #'
+#' @param subs_names Either [1] names of additional subdirectories to add to
+#'   the vector set up by \code{type} or [2] an optional way to input all 
+#'   subdirectory names (requires \code{type = NULL}, which is the default). 
+#'
+#' @param subs_type \code{character} name for quick generation of subdirectory
+#'   vector. Presently only defined for \code{"portalcasting"}.
+#'
+#' @param specific_sub \code{character}-value name of the specific 
+#'   subdirectory/subdirectories of interest.
+#'
+#' @param extension \code{character} file extension (including the period).
+#'
+#' @param local_path \code{character} file path within the \code{main} level 
+#'   of the portalcasting directory.
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -480,7 +495,8 @@ remove_incompletes <- function(df, col_to_check){
 #' @export
 #'
 check_args <- function(toggle = NULL, base = ".", main = "", 
-                       subs = subdirs(type = "portalcasting"), quiet = FALSE, 
+                       subs = NULL, 
+                       quiet = FALSE, 
                        cast_date = today(), append_missing_to_raw = TRUE, 
                        m_save = TRUE, m_filename = "moons.csv", 
                        tmnt_type = NULL, start = 217, end = NULL, 
@@ -501,7 +517,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        model = models(set = "prefab"), ensemble = TRUE,
                        version = "latest", from_zenodo = TRUE,
                        n_future_moons = 12, save = TRUE,
-                       filename = "moons.csv", tree = dirtree(),
+                       filename = "moons.csv", tree = NULL,
                        to_cleanup = c("tmp", "PortalData"), 
                        options_all = NULL, 
                        options_dir = NULL,
@@ -516,7 +532,10 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        rangex = 2:3, start_newmoon = 300, add_obs = TRUE,
                        moons = NULL, covariate_data = NULL,
                        new_forecast_covariates = NULL, name = "AutoArima",
-                       lag = NULL, mod_covariates = FALSE){
+                       lag = NULL, mod_covariates = FALSE,
+                       subs_names = NULL, subs_type = "portalcasting",
+                       specific_sub = NULL, extension = ".R",
+                       local_path = "data/all.csv"){
   if(is.null(toggle)){
     toggle <- "null"
   }
@@ -532,8 +551,8 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (!is.character(main)){
     stop("`main` is not a character")
   }
-  if (!("subdirs" %in% class(subs))){
-    stop("`subs` is not a subdirs list")
+  if (!is.null(subs) & !("subdirs" %in% class(subs))){
+    stop("`subs` is not NULL or a subdirs list")
   }
   if (!("logical" %in% class(quiet))){
     stop("`quiet` is not of class logical")
@@ -839,8 +858,9 @@ check_args <- function(toggle = NULL, base = ".", main = "",
       stop("`n_future_moons` is not a non-negative integer")
     }
   }
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
+  if (!is.null(tree) & 
+     !("dirtree" %in% class(tree))){
+    stop("`tree` is not NULL or of class dirtree")
   }
   if (!is.null(to_cleanup) & !is.character(to_cleanup)){
     stop("`to_cleanup` is not NULL or a character")
@@ -985,5 +1005,37 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   }
   if (!("logical" %in% class(mod_covariates))){
     stop("`mod_covariates` is not of class logical")
+  }
+  if (is.null(subs_type) & is.null(subs_names)){
+    stop("both `subs_type` and `subs_names` are NULL")
+  }
+  if (!("portalcasting" %in% subs_type) & is.null(subs_names)){
+    stop("`subs_type` is not recognized and `subs` is NULL")
+  }
+  if (!is.null(subs_names) && !is.character(subs_names)){
+    stop("`subs_names` is not a character")
+  }
+  if (!is.null(specific_sub)){
+    if (is.null(tree)){
+      stop("`tree` is NULL, so `specific_sub` cannot be checked")
+    }
+    if (!all(specific_sub %in% tree$subs)){
+      stop("`specific_sub` not in `tree`")
+    }
+  }
+  if (is.null(extension)){
+    stop("`extension` needs to be specified")
+  }
+  if (!is.character(extension)){
+    stop("`extension` is not a character")
+  }
+  if (length(extension) > 1){
+    stop("`extension` can only be length 1")
+  }
+  if (is.null(local_path)){
+    stop("`local_path` needs to be specified")
+  }
+  if (!is.character(local_path)){
+    stop("`local_path` is not a character")
   }
 }

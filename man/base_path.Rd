@@ -13,7 +13,7 @@ main_path(tree = dirtree())
 
 sub_paths(tree = dirtree())
 
-sub_path(tree = dirtree(), specific_sub)
+sub_path(tree = dirtree(), specific_sub = "tmp")
 }
 \arguments{
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}

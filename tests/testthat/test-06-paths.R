@@ -15,15 +15,17 @@ test_that("dirtree", {
 })
 
 test_that("subdirs", {
-  expect_is(subdirs(type = "portalcasting"), "subdirs")
-  expect_is(subdirs(type = "portalcasting", subs = "ok"), "subdirs")
-  expect_is(subdirs(type = NULL, subs = "ok"), "subdirs")
-  expect_equal(length(subdirs(type = "portalcasting")), 5)
-  expect_equal(length(subdirs(type = "portalcasting", subs = "ok")), 6)
-  expect_equal(length(subdirs(type = NULL, subs = "ok")), 1)
-  expect_error(subdirs(type = NULL))
-  expect_error(subdirs(type = "ok"))
-  expect_error(subdirs(type = "portalcasting", subs = 1))
+  expect_is(subdirs(subs_type = "portalcasting"), "subdirs")
+  expect_is(subdirs(subs_type = "portalcasting", subs_names = "ok"), 
+                    "subdirs")
+  expect_is(subdirs(subs_type = NULL, subs_names = "ok"), "subdirs")
+  expect_equal(length(subdirs(subs_type = "portalcasting")), 5)
+  expect_equal(length(subdirs(subs_type = "portalcasting", 
+                              subs_names = "ok")), 6)
+  expect_equal(length(subdirs(subs_type = NULL, subs_names = "ok")), 1)
+  expect_error(subdirs(subs_type = NULL))
+  expect_error(subdirs(subs_type = "ok"))
+  expect_error(subdirs(subs_type = "portalcasting", subs_names = 1))
 })
 
 test_that("base_path", {

@@ -4,7 +4,7 @@
 \alias{dirtree}
 \title{Define the names of the directory tree for a forecasting directory}
 \usage{
-dirtree(base = ".", main = "", subs = subdirs(type =
+dirtree(base = ".", main = "", subs = subdirs(subs_type =
   "portalcasting"))
 }
 \arguments{

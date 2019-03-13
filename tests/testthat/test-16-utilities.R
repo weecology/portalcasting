@@ -215,4 +215,17 @@ test_that("check_args", {
   expect_error(check_args(lag = 1:2))
   expect_error(check_args(lag = "ok"))
   expect_error(check_args(mod_covariates = 1.5))
+
+  expect_error(check_args(specific_sub = "tmp"))
+  expect_error(check_args(specific_sub = "ok", tree = tree))
+  expect_error(check_args(subs_type = NULL))
+  expect_error(check_args(subs_type = "ok"))
+  expect_error(check_args(subs_type = "portalcasting", subs_names = 1))
+
+ # expect_error(check_args(model = "AutoArima", extension = 1))
+  #expect_error(check_args(model = "AutoArima", extension = "ok"))
+#  expect_error(check_args(model = "AutoArima", extension = c("ok", "ok")))
+ # expect_error(check_args(model = "AutoArima", extension = ".R."))
+  #expect_error(check_args(model = "AutoArima", extension = NULL))
+
 })

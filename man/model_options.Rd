@@ -9,19 +9,19 @@
 \title{Prepare options for a portalcasting model}
 \usage{
 model_options(tree = dirtree(), name = "AutoArima",
-  covariates = FALSE, lag = NULL, quiet = FALSE)
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 
 AutoArima_options(tree = dirtree(), name = "AutoArima",
-  covariates = FALSE, lag = NULL, quiet = FALSE)
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 
-ESSS_options(tree = dirtree(), name = "ESSS", covariates = FALSE,
+ESSS_options(tree = dirtree(), name = "ESSS", mod_covariates = FALSE,
   lag = NULL, quiet = FALSE)
 
 nbGARCH_options(tree = dirtree(), name = "nbGARCH",
-  covariates = FALSE, lag = NULL, quiet = FALSE)
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 
 pevGARCH_options(tree = dirtree(), name = "pevGARCH",
-  covariates = TRUE, lag = 6, quiet = FALSE)
+  mod_covariates = TRUE, lag = 6, quiet = FALSE)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
@@ -30,7 +30,7 @@ pevGARCH_options(tree = dirtree(), name = "pevGARCH",
 \item{name}{\code{character}-valued name of the model (MUST match the 
 function name).}
 
-\item{covariates}{\code{logical} indicator for if the model requires 
+\item{mod_covariates}{\code{logical} indicator for if the model requires 
 covariates.}
 
 \item{lag}{\code{integer} (or integer \code{numeric}) lag time used for the
