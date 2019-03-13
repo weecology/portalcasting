@@ -180,9 +180,9 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
 remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
   check_args(rodents = rodents, drop_spp = drop_spp)
   if (!is.null(drop_spp)){
-    data <- select(data, -one_of(drop_spp))
+    rodents <- select(rodents, -one_of(drop_spp))
   }
-  data
+  rodents
 }        
  
 #' @title Rodent species abbreviations
@@ -276,7 +276,7 @@ trim_treatment <- function(rodents, options_rodents = rodents_options()){
                 filter(treatment == options_rodents$treatment) %>%
                 select(-treatment)
   }
-  classy(data, c("data.frame", "rodents"))
+  classy(rodents, c("data.frame", "rodents"))
 }
 
 #' @title Transfer the trapping table to the data folder
