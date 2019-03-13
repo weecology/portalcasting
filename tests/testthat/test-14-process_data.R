@@ -3,7 +3,7 @@ context("Test process_data functions")
 rod_opts <- all_options(main = "testing_casting")$options_data$rodents
 moon_opts <- all_options(main = "testing_casting")$options_data$moons
 moons <- prep_moons(moon_opts)
-rodents <- rodents_data(moons, rod_opts)
+rodents <- prep_rodents(moons, rod_opts)
 
 test_that("interpolate_abundance", {
   expect_error(interpolate_abundance(1), "`abundance` is not")
