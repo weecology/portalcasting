@@ -137,7 +137,7 @@ add_addl_future_moons <- function(future_moons, cast_date){
 #' @export
 #' 
 format_moons <- function(moons){
-  check_args(moons)
+  check_args(moons = moons)
   moons$year <- year(moons$newmoondate)
   moons$month <- month(moons$newmoondate)
   moons$newmoondate <- as.Date(moons$newmoondate)
