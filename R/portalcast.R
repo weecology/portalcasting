@@ -327,9 +327,9 @@ update_data <- function(options_data){
   options_data$moons$quiet <- TRUE
   options_data$metadata$quiet <- TRUE
   moons <- prep_moons(options_data$moons)
-  rodents <- update_rodents(options_data$rodents)
+  rodents_list <- update_rodents_list(options_data$rodents)
   covariates <- update_covariates(moons, options_data$covariates)
-  meta <- prep_metadata(moons, rodents, covariates, options_data$metadata)
+  met <- prep_metadata(moons, rodents_list, covariates, options_data$metadata)
 }
 
 #' @title Update the covariate data for a step in a hindcast
@@ -376,7 +376,7 @@ update_covariates <- function(moons, options_covariates){
 #'
 #' @export
 #'
-update_rodents <- function(options_rodents){
+update_rodents_list <- function(options_rodents){
   check_args(options_rodents = options_rodents)
   end_step <- options_rodents$end[options_rodents$hind_step]
   all_path <- file_path(options_rodents$tree, "data/all.csv")

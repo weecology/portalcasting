@@ -187,9 +187,9 @@ fill_data <- function(options_data = data_options()){
   transfer_hist_covariate_forecasts(options_data)
   transfer_trapping_table(options_data)
   moons <- prep_moons(options_data$moons)
-  rodents <- prep_rodents(moons, options_data$rodents)
+  rodents_list <- prep_rodents_list(moons, options_data$rodents)
   covariates <- prep_covariates(moons, options_data$covariates)
-  meta <- prep_metadata(moons, rodents, covariates, options_data$metadata)
+  met <- prep_metadata(moons, rodents_list, covariates, options_data$metadata)
 }
 
 #' @rdname fill_dir

@@ -653,9 +653,9 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if(hind_step < 0 | hind_step %% 1 != 0){
     stop("`hind_step` is not a non-negative integer")
   }
-  if (!is.character(drop_spp)){
-    stop("`drop_spp` is not a character")
-  }
+  if (!is.null(drop_spp) & !("character") %in% class(drop_spp)){
+    stop("`drop_spp` is not NULL or a character")
+  }  
   if (length(min_plots) > 1){
     stop("`min_plots` can only be of length = 1")
   }

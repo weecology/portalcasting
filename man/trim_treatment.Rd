@@ -4,10 +4,10 @@
 \alias{trim_treatment}
 \title{Remove the treatment column from the rodent data table}
 \usage{
-trim_treatment(data, options_rodents = rodents_options())
+trim_treatment(rodents, options_rodents = rodents_options())
 }
 \arguments{
-\item{data}{Class-\code{rodents} \code{data.table} of rodent data.}
+\item{rodents}{Class-\code{rodents} \code{data.table} of rodent data.}
 
 \item{options_rodents}{Class-\code{rodents_options} \code{list} of 
 settings controlling the rodents data creation. See 

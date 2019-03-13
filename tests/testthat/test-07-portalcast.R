@@ -162,9 +162,9 @@ test_that("update_covariates", {
   expect_is(updcov, "covariates")
 })
 
-test_that("update_rodents", {
-  expect_error(update_rodents(1))
-  updrod <- update_rodents(options_all9$options_data$rodents)
+test_that("update_rodents_list", {
+  expect_error(update_rodents_list(1))
+  updrod <- update_rodents_list(options_all9$options_data$rodents)
   expect_is(updrod, "rodents_list")
   expect_is(updrod[[1]], "rodents")
   expect_is(updrod[[2]], "rodents")
