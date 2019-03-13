@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{prep_rodents}
 \alias{prep_rodents}
-\title{Prepare historic rodent data}
+\title{Collect and process historic rodent data for -casting}
 \usage{
 prep_rodents(moons = prep_moons(), options_rodents = rodents_options())
 }
@@ -12,23 +12,18 @@ and future newmoons, as produced by \code{\link{prep_moons}}.}
 
 \item{options_rodents}{Class-\code{rodents_options} \code{list} of 
 settings controlling the rodents data creation. See 
-\code{\link{rodents_options}}.}
+\code{\link{rodents_options}} for general creation and 
+\code{\link{enforce_rodents_options}} for bulk setting of options for
+each of the possible data table outputs.}
 }
 \value{
-A class-\code{rodents_list} \code{list} of two class-
-  \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
-  and \code{controls} (abundances on control plots only).
+One of two class-\code{rodents} \code{data.frame}s, 
+  \code{all} (abundances on all plots) or \code{controls} (abundances on
+  control plots only).
 }
 \description{
-Prepare the rodent dataset, tailored for forecasting. 
-  Specifically, return data for all plots and control plots only, for each 
-  species except PI and the total
-}
-\examples{
-\dontrun{
-
-setup_dir()
-prep_rodents()
-}
-
+Prepare a particular version of the rodent dataset, tailored 
+  for forecasting or hindcasting. Available versions of the data currently
+  include \code{all} (abundances on all plots) and \code{controls} 
+  (abundances on control plots only)
 }

@@ -24,23 +24,18 @@
 #'
 #' @export
 #'
-prep_rodents <- function(moons = prep_moons(), 
+prep_rodents_list <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("rodents_options") %in% class(options_rodents)){
-    stop("`options_rodents` is not a rodents_options list")
-  }
+  check_args(moons = moons, options_rodents = options_rodents)
   if (!options_rodents$quiet){
     message("Loading rodents data files into data subdirectory")
   }
   verify_PortalData(options_rodents$tree, "Portal_rodent.csv")
 
   options_a <- enforce_rodents_options(options_rodents, "all")
-  all <- rodents_data(moons, options_a)
+  all <- prep_rodents(moons, options_a)
   options_c <- enforce_rodents_options(options_rodents, "controls")
-  ctls <- rodents_data(moons, options_c)
+  ctls <- prep_rodents(moons, options_c)
 
   classy(list("all" = all, "controls" = ctls), c("rodents_list", "list"))
 }
@@ -67,14 +62,9 @@ prep_rodents <- function(moons = prep_moons(),
 #'
 #' @export
 #'
-rodents_data <- function(moons = prep_moons(), 
+prep_rodents <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("rodents_options") %in% class(options_rodents)){
-    stop("`options_rodents` is not a rodents_options list")
-  }
+  check_args(moons = moons, options_rodents = options_rodents)
   end_step <- options_rodents$end[options_rodents$hind_step]
   if (options_rodents$quiet){
     suppressMessages(

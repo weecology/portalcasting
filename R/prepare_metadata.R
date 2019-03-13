@@ -6,7 +6,7 @@
 #' @param moons Class-\code{moons} \code{data.frame} containing the historic 
 #'   and future newmoons, as produced by \code{\link{prep_moons}}. 
 #'
-#' @param rodents A class-\code{rodents_list} \code{list} of two class-
+#' @param rodents_list A class-\code{rodents_list} \code{list} of two class-
 #'   \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
 #'   and \code{controls} (abundances on control plots only).
 #'
@@ -27,7 +27,8 @@
 #'
 #' @export
 #'
-prep_metadata <- function(moons = prep_moons(), rodents = prep_rodents(), 
+prep_metadata <- function(moons = prep_moons(), 
+                          rodents_list = prep_rodents_list(), 
                           covariates = prep_covariates(), 
                           options_metadata = metadata_options()){
   check_args(moons = moons, rodents = rodents, covariates = covariates,

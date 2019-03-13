@@ -4,7 +4,7 @@
 \alias{prep_metadata}
 \title{Prepare model metadata}
 \usage{
-prep_metadata(moons = prep_moons(), rodents = prep_rodents(),
+prep_metadata(moons = prep_moons(), rodents_list = prep_rodents_list(),
   covariates = prep_covariates(),
   options_metadata = metadata_options())
 }
@@ -12,7 +12,7 @@ prep_metadata(moons = prep_moons(), rodents = prep_rodents(),
 \item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
 and future newmoons, as produced by \code{\link{prep_moons}}.}
 
-\item{rodents}{A class-\code{rodents_list} \code{list} of two class-
+\item{rodents_list}{A class-\code{rodents_list} \code{list} of two class-
 \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
 and \code{controls} (abundances on control plots only).}
 

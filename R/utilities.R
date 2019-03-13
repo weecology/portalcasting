@@ -510,7 +510,7 @@ remove_incompletes <- function(df, col_to_check){
 #' @param hist_cov Historical covariate data table as a code{covariates}-class 
 #'   \code{data.frame}, returned from \code{\link{prep_hist_covariates}}.
 #'
-#' @param rodents A class-\code{rodents_list} \code{list} of two class-
+#' @param rodents_list A class-\code{rodents_list} \code{list} of two class-
 #'   \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
 #'   and \code{controls} (abundances on control plots only).
 #'
@@ -575,7 +575,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        specific_sub = NULL, extension = ".R",
                        local_path = "data/all.csv",
                        model = "AutoArima", set = "prefab", add = NULL,
-                       lead = 1, rodents = NULL, future_moons = NULL){
+                       lead = 1, rodents_list = NULL, future_moons = NULL){
   if(is.null(toggle)){
     toggle <- "null"
   }
@@ -1058,9 +1058,9 @@ check_args <- function(toggle = NULL, base = ".", main = "",
     stop("`future_moons` is not NULL or of class moons")
   }
 
-  if (!is.null(rodents) & 
-      !("rodents_list" %in% class(rodents))){
-    stop("`rodents` is not of class rodents_list")
+  if (!is.null(rodents_list) & 
+      !("rodents_list" %in% class(rodents_list))){
+    stop("`rodents_list` is not of class rodents_list")
   }
   if (!is.null(covariates) & 
       !("covariates" %in% class(covariates))){

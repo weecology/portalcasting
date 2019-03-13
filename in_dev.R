@@ -5,7 +5,12 @@ models = "AutoArima")
 
 # presently integrating functions into check_args
 # now on prepare_rodents
-
+#
+#  step back to making rodents actually rodents_list
+#
+# update data to rodents
+#change prep_rodents to prep_rodents_list
+# change rodents_data to prep_rodents
 
 # dropped the models class, that was unnecessary
 

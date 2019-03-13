@@ -6,21 +6,21 @@ rod_opts2$quiet <- TRUE
 moon_opts <- all_options(main = "testing_casting")$options_data$moons
 moons <- prep_moons(moon_opts)
 
-test_that("prep_rodents", {
-  expect_error(prep_rodents(1, rod_opts), "`moons` is not")
-  expect_error(prep_rodents(moons, 1), "`options_rodents` is not")
-  expect_message(rodents <- prep_rodents(moons, rod_opts))
-  expect_silent(rodents2 <- prep_rodents(moons, rod_opts2))
+test_that("prep_rodents_list", {
+  expect_error(prep_rodents_list(1, rod_opts), "`moons` is not")
+  expect_error(prep_rodents_list(moons, 1), "`options_rodents` is not")
+  expect_message(rodents <- prep_rodents_list(moons, rod_opts))
+  expect_silent(rodents2 <- prep_rodents_list(moons, rod_opts2))
   expect_is(rodents, "rodents_list")
   expect_is(rodents2, "rodents_list")
   expect_equal(rodents, rodents2)
 })
 
-test_that("rodents_data", {
-  expect_error(rodents_data(1, rod_opts), "`moons` is not")
-  expect_error(rodents_data(moons, 1), "`options_rodents` is not")
-  expect_message(rodents <- rodents_data(moons, rod_opts))
-  expect_silent(rodents2 <- rodents_data(moons, rod_opts2))
+test_that("prep_rodents", {
+  expect_error(prep_rodents(1, rod_opts), "`moons` is not")
+  expect_error(prep_rodents(moons, 1), "`options_rodents` is not")
+  expect_message(rodents <- prep_rodents(moons, rod_opts))
+  expect_silent(rodents2 <- prep_rodents(moons, rod_opts2))
   expect_is(rodents, "rodents")
   expect_is(rodents2, "rodents")
   expect_equal(rodents, rodents2)
@@ -40,7 +40,7 @@ test_that("enforce_rodents_options", {
 })
 
 test_that("remove_spp", {
-  rodents <- prep_rodents(moons, rod_opts)$all
+  rodents <- prep_rodents_list(moons, rod_opts)$all
   expect_error(remove_spp(1, "BA"), "`data` is not")
   expect_error(remove_spp(rodents, 1), "`drop_spp` is not")
   expect_silent(rodents1 <- remove_spp(rodents, NULL))
@@ -71,7 +71,7 @@ test_that("rodent_spp", {
 })
 
 test_that("is.spcol", {
-  rodents <- prep_rodents(moons, rod_opts)$all
+  rodents <- prep_rodents_list(moons, rod_opts)$all
   expect_error(is.spcol(1, rodent_spp()), "`x` is not")
   expect_error(is.spcol(rodents, 1), "`spp_names` is not")
   expect_silent(sppTF <- is.spcol(rodents, rodent_spp()))

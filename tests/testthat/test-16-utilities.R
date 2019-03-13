@@ -190,6 +190,7 @@ test_that("check_args", {
   expect_error(check_args(options_models = 1))
   expect_error(check_args(options_covariates = 1))
   expect_error(check_args(options_rodents = 1))
+  expect_error(check_args(rodents_list = 1))
   expect_error(check_args(options_cast = 1))
   expect_error(check_args(options_moons = 1))
   expect_error(check_args(path = 1))

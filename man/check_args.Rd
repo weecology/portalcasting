@@ -36,7 +36,7 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   subs_names = NULL, subs_type = "portalcasting",
   specific_sub = NULL, extension = ".R", local_path = "data/all.csv",
   model = "AutoArima", set = "prefab", add = NULL, lead = 1,
-  rodents = NULL, future_moons = NULL)
+  rodents_list = NULL, future_moons = NULL)
 }
 \arguments{
 \item{toggle}{\code{character} value indicating special aspects of 
@@ -342,7 +342,7 @@ setup by \code{set}.}
 \item{lead}{\code{integer}-conformable lead of the newmoon number used to
 select the data plotted.}
 
-\item{rodents}{A class-\code{rodents_list} \code{list} of two class-
+\item{rodents_list}{A class-\code{rodents_list} \code{list} of two class-
 \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
 and \code{controls} (abundances on control plots only).}
 
