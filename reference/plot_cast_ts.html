@@ -140,7 +140,7 @@
 
     <pre class="usage"><span class='fu'>plot_cast_ts</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
   <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"Ensemble"</span>,
-  <span class='kw'>start_newmoon</span> <span class='kw'>=</span> <span class='fl'>300</span>)</pre>
+  <span class='kw'>start_newmoon</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>add_obs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,6 +181,11 @@ the model to be plotted.</p></td>
       <td><p><code>integer</code>-conformable newmoon number used as the
 the minimum x value for the plot.</p></td>
     </tr>
+    <tr>
+      <th>add_obs</th>
+      <td><p><code>logical</code> indicator if values observed during the 
+-cast time should be added (default is <code>TRUE</code>).</p></td>
+    </tr>
     </table>
     
 
@@ -205,7 +210,7 @@ the minimum x value for the plot.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Shawn D. Taylor, Ethan P. Ethan, S.K. Morgan Ernest.</p>
+  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Shawn D. Taylor, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
 </div>
 
 <div class="pkgdown">

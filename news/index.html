@@ -129,6 +129,17 @@
 <a href="#portalcasting-0-3-1" class="anchor"></a><a href="https://github.com/weecology/portalcasting">portalcasting 0.3.1</a>
 </h1>
 <p><em>active development</em></p>
+<div id="bug-fix-in-plot_cast_ts" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fix-in-plot_cast_ts" class="anchor"></a>Bug fix in <code><a href="../reference/plot_cast_ts.html">plot_cast_ts()</a></code>
+</h3>
+<ul>
+<li>
+<code>plot_cast_ts</code> did not cleanly plot time series where observations had been made after the start of the prediction window.</li>
+<li>The function has been set up to now split observations that occurred during the prediction window out, execute the plot as if they didn’t exist, then add them on top.</li>
+<li>Functionality has now been added to allow the toggling on and off of those points via the <code>add_obs</code> input (defaults to <code>TRUE</code>).</li>
+</ul>
+</div>
 </div>
     <div id="portalcasting-0-3-0" class="section level1">
 <h1 class="page-header">
@@ -451,7 +462,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Shawn D. Taylor, Ethan P. Ethan, S.K. Morgan Ernest.</p>
+  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Shawn D. Taylor, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
 </div>
 
 <div class="pkgdown">
