@@ -26,15 +26,16 @@ check_args(toggle = NULL, base = ".", main = "", subs = NULL,
   options_data = NULL, options_predictions = NULL,
   options_models = NULL, options_model = NULL,
   options_covariates = NULL, options_rodents = NULL,
-  options_cast = NULL, path = NULL, species = rodent_spp(set =
-  "evalplot"), cast_dates = NULL, min_observed = 1, ndates = 3,
-  from_date = today(), with_census = FALSE, rangex = 2:3,
-  start_newmoon = 300, add_obs = TRUE, moons = NULL,
-  covariates = NULL, hist_cov = NULL, new_forecast_covariates = NULL,
-  name = "AutoArima", lag = NULL, mod_covariates = FALSE,
-  subs_names = NULL, subs_type = "portalcasting",
-  specific_sub = NULL, extension = ".R", local_path = "data/all.csv",
-  model = "AutoArima", set = "prefab", add = NULL, lead = 1)
+  options_cast = NULL, options_metadata = NULL, path = NULL,
+  species = rodent_spp(set = "evalplot"), cast_dates = NULL,
+  min_observed = 1, ndates = 3, from_date = today(),
+  with_census = FALSE, rangex = 2:3, start_newmoon = 300,
+  add_obs = TRUE, moons = NULL, covariates = NULL, hist_cov = NULL,
+  new_forecast_covariates = NULL, name = "AutoArima", lag = NULL,
+  mod_covariates = FALSE, subs_names = NULL,
+  subs_type = "portalcasting", specific_sub = NULL, extension = ".R",
+  local_path = "data/all.csv", model = "AutoArima", set = "prefab",
+  add = NULL, lead = 1, rodents = NULL)
 }
 \arguments{
 \item{toggle}{\code{character} value indicating special aspects of 
@@ -238,6 +239,9 @@ settings controlling the rodents data creation.}
 
 \item{options_cast}{Class-\code{cast_options} \code{list} containing the
 hind- or forecasting options. See \code{\link{cast_options}}.}
+
+\item{options_metadata}{A class-\code{metadata_options} \code{list} of 
+settings controlling the metadata data creation.}
 
 \item{path}{The normalized path of the specific subdirectory folder to be 
 created in the directory tree as a \code{character} value (see 

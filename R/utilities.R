@@ -403,6 +403,9 @@ remove_incompletes <- function(df, col_to_check){
 #' @param options_cast Class-\code{cast_options} \code{list} containing the
 #'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
+#' @param options_metadata A class-\code{metadata_options} \code{list} of 
+#'   settings controlling the metadata data creation.
+#'
 #' @param path The normalized path of the specific subdirectory folder to be 
 #'   created in the directory tree as a \code{character} value (see 
 #'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
@@ -546,7 +549,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        options_predictions = NULL,
                        options_models = NULL, options_model = NULL, 
                        options_covariates = NULL, options_rodents = NULL,
-                       options_cast = NULL,
+                       options_cast = NULL, options_metadata = NULL,
                        path = NULL, species = rodent_spp(set = "evalplot"),
                        cast_dates = NULL, min_observed = 1, ndates = 3,
                        from_date = today(), with_census = FALSE,
@@ -558,7 +561,7 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        specific_sub = NULL, extension = ".R",
                        local_path = "data/all.csv",
                        model = "AutoArima", set = "prefab", add = NULL,
-                       lead = 1){
+                       lead = 1, rodents = NULL){
   if(is.null(toggle)){
     toggle <- "null"
   }
@@ -912,6 +915,11 @@ check_args <- function(toggle = NULL, base = ".", main = "",
       !("data_options" %in% class(options_data))){
     stop("`options_data` is not NULL or a data_options list")
   }
+  if (!is.null(options_metadata) & 
+      !("metadata_options" %in% class(options_metadata))){
+    stop("`options_metadata` is not NULL or a metadata_options list")
+  }
+
   if (!is.null(options_cast) & 
       !("cast_options" %in% class(options_cast))){
     stop("`options_cast` is not NULL or a cast_options list")
@@ -1020,6 +1028,10 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   if (!is.null(moons) & 
       !("moons" %in% class(moons))){
     stop("`moons` is not NULL or of class moons")
+  }
+  if (!is.null(rodents) & 
+      !("rodents_list" %in% class(rodents))){
+    stop("`rodents` is not of class rodents_list")
   }
   if (!is.null(covariates) & 
       !("covariates" %in% class(covariates))){
