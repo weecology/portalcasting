@@ -22,7 +22,12 @@ check_args(base = ".", main = "", subs = subdirs(type =
   download_existing_predictions = FALSE, model = models(set =
   "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
   n_future_moons = 12, save = TRUE, filename = "moons.csv",
-  tree = dirtree(), to_cleanup = c("tmp", "PortalData"))
+  tree = dirtree(), to_cleanup = c("tmp", "PortalData"),
+  options_all = all_options(), options_dir = dir_options(),
+  options_PortalData = PortalData_options(),
+  options_data = data_options(),
+  options_predictions = predictions_options(),
+  options_models = models_options(), path = path)
 }
 \arguments{
 \item{base}{\code{character} name of the base folder where the directory 
@@ -166,8 +171,50 @@ model.}
 \item{from_zenodo}{\code{logical} indicator of whether or not the Portal 
 Data should come from Zenodo (come from GitHub if not).}
 
+\item{n_future_moons}{\code{integer} (or integer \code{numeric}) value for 
+the number of future moons to add.}
+
+\item{save}{\code{logical} indicator if the specific data should be saved 
+out.}
+
+\item{filename}{\code{character} name of the file for the saving.}
+
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
+
 \item{to_cleanup}{\code{character} vector of subdirectory names to
 cleanup after completion of casting.}
+
+\item{options_all}{Class-\code{all_options} list containing all options 
+available for controlling the set up and population of the directory (see 
+\code{\link{all_options}}).}
+
+\item{options_dir}{Class-\code{dir_options} list containing all options 
+available for controlling the set up of the directory (see 
+\code{\link{dir_options}}).}
+
+\item{options_PortalData}{Class-\code{PortalData_options} list containing 
+available for controlling the set up and population of the PortalData
+folder in the portalcasting directory (see 
+\code{\link{PortalData_options}}).}
+
+\item{options_data}{Class-\code{data_options} list containing available
+for controlling the set up and population of the data folder in the 
+portalcasting directory (see \code{\link{data_options}}).}
+
+\item{options_predictions}{Class-\code{predictions_options} list containing 
+available for controlling the set up and population of the predictions
+folder in the portalcasting directory (see 
+\code{\link{predictions_options}}).}
+
+\item{options_models}{Class-\code{models_options} list containing 
+available for controlling the set up and population of the models
+folder in the portalcasting directory (see 
+\code{\link{models_options}}).}
+
+\item{path}{The normalized path of the specific subdirectory folder to be 
+created in the directory tree as a \code{character} value (see 
+\code{\link{normalizePath}}, \code{\link{sub_path}}).}
 }
 \description{
 Verify the validity (class, size, etc.) of the inputs to the 

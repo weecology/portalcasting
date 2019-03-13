@@ -175,4 +175,6 @@ test_that("check_args", {
   expect_error(check_args(filename = 1))
   expect_error(check_args(filename = c("ok.csv", "ok.csv")))
   expect_error(check_args(tree = 1))
+  expect_error(check_args(options_all = 1))
+  expect_error(check_args(options_dir = 1))
 })

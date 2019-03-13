@@ -32,7 +32,7 @@ na_conformer <- function(x, colname = "species"){
   x
 }
 
-#' @title Save data out to a file and return it
+#' @title Save data out to a file and return it	
 #'
 #' @description Save inputted data out to a data file if requested via an 
 #'   options list (request is handled by the \code{save} element and the file
@@ -356,6 +356,48 @@ remove_incompletes <- function(df, col_to_check){
 #' @param to_cleanup \code{character} vector of subdirectory names to
 #'   cleanup after completion of casting.
 #' 
+#' @param options_all Class-\code{all_options} list containing all options 
+#'   available for controlling the set up and population of the directory (see 
+#'   \code{\link{all_options}}). 
+#' 
+#' @param options_dir Class-\code{dir_options} list containing all options 
+#'   available for controlling the set up of the directory (see 
+#'   \code{\link{dir_options}}). 
+#'
+#' @param options_PortalData Class-\code{PortalData_options} list containing 
+#'   available for controlling the set up and population of the PortalData
+#'   folder in the portalcasting directory (see 
+#'   \code{\link{PortalData_options}}). 
+#'
+#' @param options_data Class-\code{data_options} list containing available
+#'   for controlling the set up and population of the data folder in the 
+#'   portalcasting directory (see \code{\link{data_options}}).
+#'
+#' @param options_predictions Class-\code{predictions_options} list containing 
+#'   available for controlling the set up and population of the predictions
+#'   folder in the portalcasting directory (see 
+#'   \code{\link{predictions_options}}). 
+#'
+#' @param options_models Class-\code{models_options} list containing 
+#'   available for controlling the set up and population of the models
+#'   folder in the portalcasting directory (see 
+#'   \code{\link{models_options}}). 
+#'
+#' @param path The normalized path of the specific subdirectory folder to be 
+#'   created in the directory tree as a \code{character} value (see 
+#'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
+#'
+#' @param filename \code{character} name of the file for the saving.
+#'
+#' @param n_future_moons \code{integer} (or integer \code{numeric}) value for 
+#'   the number of future moons to add.
+#'
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
+#'
+#' @param save \code{logical} indicator if the specific data should be saved 
+#'   out.
+#'
 #' @examples
 #' \dontrun{
 #'
@@ -387,7 +429,14 @@ check_args <- function(base = ".", main = "",
                        version = "latest", from_zenodo = TRUE,
                        n_future_moons = 12, save = TRUE,
                        filename = "moons.csv", tree = dirtree(),
-                       to_cleanup = c("tmp", "PortalData")){
+                       to_cleanup = c("tmp", "PortalData"), 
+                       options_all = NULL, 
+                       options_dir = NULL,
+                       options_PortalData = NULL,
+                       options_data = NULL,
+                       options_predictions = NULL,
+                       options_models = NULL,
+                       path = NULL){
   if (length(base) > 1){
     stop("`base` can only be of length = 1")
   }
@@ -688,5 +737,32 @@ check_args <- function(base = ".", main = "",
   }
   if (!is.null(to_cleanup) & !is.character(to_cleanup)){
     stop("`to_cleanup` is not NULL or a character")
+  }
+  if (!is.null(options_all) & 
+      !("all_options" %in% class(options_all))){
+    stop("`options_all` is not NULL or an all_options list")
+  }
+  if (!is.null(options_dir) & 
+      !("dir_options" %in% class(options_dir))){
+    stop("`options_dir` is not NULL or a dir_options list")
+  }
+  if (!is.null(options_PortalData) & 
+      !("PortalData_options" %in% class(options_PortalData))){
+    stop("`options_PortalData` is not NULL or a PortalData_options list")
+  }
+  if (!is.null(options_data) & 
+      !("data_options" %in% class(options_data))){
+    stop("`options_data` is not NULL or a data_options list")
+  }
+  if (!is.null(options_predictions) & 
+      !("predictions_options" %in% class(options_predictions))){
+    stop("`options_predictions` is not NULL or a predictions_options list")
+  }
+  if (!is.null(path) & !("character" %in% class(path))){
+    stop("`path` is not NULL or a character")
+  }
+  if (!is.null(options_models) & 
+      !("models_options" %in% class(options_models))){
+    stop("`options_models` is not NULL or a models_options list")
   }
 }

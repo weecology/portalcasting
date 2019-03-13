@@ -18,9 +18,7 @@
 #' @export
 #'
 setup_dir <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`options_all` is not an all_options list")
-  }
+  check_args(options_all = options_all)
   create_dir(options_all$options_dir)
   fill_dir(options_all)
 }
@@ -46,9 +44,7 @@ setup_dir <- function(options_all = all_options()){
 #' @export
 #'
 create_dir <- function(options_dir = dir_options()){
-  if (!("dir_options" %in% class(options_dir))){
-    stop("`options_dir` is not a dir_options list")
-  }
+  check_args(options_dir = options_dir)
   create_main_dir(options_dir)
   create_sub_dirs(options_dir)
 }
@@ -61,9 +57,7 @@ create_dir <- function(options_dir = dir_options()){
 #' @export
 #'
 create_main_dir <- function(options_dir = dir_options()){
-  if (!("dir_options" %in% class(options_dir))){
-    stop("`options_dir` is not a dir_options list")
-  }
+  check_args(options_dir = options_dir)
   main <- main_path(tree = options_dir$tree)
   if (!dir.exists(main)){
     if (!options_dir$quiet){
@@ -81,9 +75,7 @@ create_main_dir <- function(options_dir = dir_options()){
 #' @export
 #'
 create_sub_dirs <- function(options_dir = dir_options()){
-  if (!("dir_options" %in% class(options_dir))){
-    stop("`options_dir` is not a dir_options list")
-  }
+  check_args(options_dir = options_dir)
   subs <- sub_paths(tree = options_dir$tree)
   sub_dirs <- sapply(subs, create_sub_dir, quiet = options_dir$quiet)
 }
@@ -103,9 +95,7 @@ create_sub_dirs <- function(options_dir = dir_options()){
 #' @export
 #'
 create_sub_dir <- function(path = NULL, quiet = FALSE){
-  if (!is.null(path) & !("character" %in% class(path))){
-    stop("`path` is not NULL or a character")
-  }
+  check_args(path = path)
   if (is.null(path)){
     return()
   }
@@ -141,9 +131,7 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
 #' @export
 #'
 fill_dir <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`options_all` is not an all_options list")
-  }
+  check_args(options_all = options_all)
   fill_PortalData(options_all$options_PortalData)
   fill_data(options_all$options_data)
   fill_predictions(options_all$options_predictions)
@@ -163,9 +151,7 @@ fill_dir <- function(options_all = all_options()){
 #' @export
 #'
 fill_PortalData <- function(options_PortalData = PortalData_options()){
-  if (!("PortalData_options" %in% class(options_PortalData))){
-    stop("`options_PortalData` is not a PortalData_options list")
-  }
+  check_args(options_PortalData = options_PortalData)
   if (!options_PortalData$quiet){
     message("Downloading raw data into PortalData subdirectory")
   }
@@ -194,9 +180,7 @@ fill_PortalData <- function(options_PortalData = PortalData_options()){
 #' @export
 #'
 fill_data <- function(options_data = data_options()){
-  if (!("data_options" %in% class(options_data))){
-    stop("`options_data` is not a data_options list")
-  }
+  check_args(options_data = options_data)
   if (!options_data$moons$quiet){
     message("Loading forecasting data files into data subdirectory")
   }
@@ -221,9 +205,7 @@ fill_data <- function(options_data = data_options()){
 #' @export
 #'
 fill_predictions <- function(options_predictions = predictions_options()){
-  if (!("predictions_options" %in% class(options_predictions))){
-    stop("`options_predictions` is not a predictions_options list")
-  }
+  check_args(options_predictions = options_predictions)
   if (options_predictions$download_existing_predictions){
     if (!options_predictions$quiet){
       message("Downloading predictions into predictions subdirectory")
@@ -245,9 +227,7 @@ fill_predictions <- function(options_predictions = predictions_options()){
 #' @export
 #'
 fill_models <- function(options_models = models_options()){
-  if (!("models_options" %in% class(options_models))){
-    stop("`options_models` is not a models_options list")
-  }
+  check_args(options_models = options_models)
   if (!options_models$quiet){
     message("Adding prefab models to models subdirectory:")
   }
@@ -327,9 +307,7 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 #' @export
 #' 
 cleanup_dir <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`options_all` is not an all_options list")
-  }
+  check_args(options_all)
   options_dir <- options_all$options_dir
   subs <- sub_path(options_dir$tree, options_dir$to_cleanup)
   if (!options_dir$quiet){
