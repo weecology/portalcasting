@@ -12,7 +12,6 @@
 \alias{predictions_options}
 \alias{models_options}
 \alias{cast_options}
-\alias{check_options_args}
 \title{Prepare options lists for a portalcasting directory}
 \usage{
 all_options(base = ".", main = "", subs = subdirs(type =
@@ -92,26 +91,6 @@ cast_options(base = ".", main = "", subs = subdirs(type =
   cast_type = "forecasts", cast_date = today(), ensemble = TRUE,
   start = 217, end = NULL, hind_step = 1, min_plots = 24,
   min_traps = 1)
-
-check_options_args(base = ".", main = "", subs = subdirs(type =
-  "portalcasting"), quiet = FALSE, cast_date = today(),
-  append_missing_to_raw = TRUE, m_save = TRUE,
-  m_filename = "moons.csv", tmnt_type = NULL, start = 217,
-  end = NULL, hind_step = 1, drop_spp = "PI", min_plots = 24,
-  min_traps = 1, level = "Site", treatment = NULL, plots = "all",
-  output = "abundance", r_save = TRUE, r_filename = "all.csv",
-  cov_hist = TRUE, cov_fcast = TRUE, yr = as.numeric(format(today(),
-  "\%Y")), lead_time = 12, min_lag = 6, fcast_nms = NULL,
-  nfcnm = 0, append_fcast_csv = TRUE,
-  hist_fcast_file = "covariate_forecasts.csv",
-  source_name = "current_archive", c_save = TRUE,
-  c_filename = "covariates.csv", cast_type = "forecasts",
-  confidence_level = 0.9, meta_save = TRUE,
-  meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, model = models(set =
-  "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
-  n_future_moons = 12, save = TRUE, filename = "moons.csv",
-  tree = dirtree(), to_cleanup = c("tmp", "PortalData"))
 }
 \arguments{
 \item{base}{\code{character} name of the base folder where the directory 
@@ -353,9 +332,6 @@ Suite of functions used to generate options \code{list}s
 
 \code{cast_options} creates a \code{cast_options} \code{list} 
   of control options for running \code{\link{portalcast}}.
-
-\code{check_options_args} verifies the validity (class, size,
-  etc.) of the inputs to the options list functions.
 }
 \examples{
 \dontrun{
@@ -372,7 +348,6 @@ metadata_options()
 predictions_options()
 models_options()
 cast_options()
-check_options_args()
 }
 
 }
