@@ -220,7 +220,7 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{source_name}: must be a length-1 \code{character} vector in
     \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
-  \code{species}: must be \code{character} vector in
+  \code{species}: must be \code{NULL} or a \code{character} vector in
     \code{\link{plot_cov_RMSE_mod_spp}}, 
     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
     \code{\link{plot_cast_point_yaxis}}; specifically length-1 in
@@ -233,8 +233,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{start_newmoon}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in \code{\link{plot_cast_ts}}  
     \cr \cr
-  \code{sub_path}: must be a length-1 \code{character} vector in
-    \code{\link{create_sub_dir}}  \cr \cr
+  \code{sub_path}: must be \code{NULL} or a length-1 \code{character} 
+    vector in \code{\link{create_sub_dir}}  \cr \cr
   \code{subs} must be a class-\code{subdirs} vector in
     \code{\link{all_options}}, \code{\link{dir_options}},
     \code{\link{PortalData_options}}, \code{\link{data_options}} 
@@ -244,7 +244,7 @@ Usage and rules for arguments are as follows: \cr \cr
     vector of value \code{"all"} or \code{"controls"} in 
     \code{\link{all_options}}, \code{\link{rodents_options}}, 
     \code{\link{data_options}} \cr \cr
-  \code{to_cleanup}: must be a \code{character} vector in
+  \code{to_cleanup}: must be \code{NULL} or a \code{character} vector in
     \code{\link{all_options}}, \code{\link{dir_options}} \cr \cr
   \code{treatment}: must be \code{NULL} or \code{"control"} in
     \code{\link{all_options}},
