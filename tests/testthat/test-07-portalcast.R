@@ -58,10 +58,10 @@ test_that("create_tmp", {
 test_that("clear_tmp", {
   expect_error(clear_tmp(1))
   expect_silent(clear_tmp(dirtree(main = "testing_casting")))
-  unlink(sub_path(dirtree(main = "testing_casting"), "tmp"), recursive = TRUE, 
-         force = TRUE)
-  unlink(sub_path(dirtree(main = "testing_casting"), "tmp"), recursive = TRUE, 
-         force = TRUE)
+  unlink(sub_paths(dirtree(main = "testing_casting"), "tmp"),
+         recursive = TRUE, force = TRUE)
+  unlink(sub_paths(dirtree(main = "testing_casting"), "tmp"), 
+         recursive = TRUE, force = TRUE)
   expect_message(clear_tmp(dirtree(main = "testing_casting")))
 })
 
@@ -78,26 +78,26 @@ test_that("prep_data", {
   writeLines(as.yaml(metadata), con = metadata_path)
   expect_output(prep_data(options_all1$options_data))
 
-  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   expect_output(prep_data(options_all6$options_data))
 })
 
 test_that("casts", {
   expect_error(casts(1))
-  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all3$options_data)
   expect_output(casts(options_all3))
-  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
-  unlink(sub_path(dirtree(main = "testing_casting"), "models"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "models"), 
          recursive = TRUE)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all7$options_data)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "models"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "models"))
   fill_models(options_all7$options_models)
   expect_silent(casts(options_all7))
 })
@@ -105,25 +105,25 @@ test_that("casts", {
 
 test_that("cast", {
   expect_error(cast(1))
-  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all3$options_data)
   expect_message(cast(options_all3$options_cast))
 
-  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
-  unlink(sub_path(dirtree(main = "testing_casting"), "models"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "models"), 
          recursive = TRUE)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all7$options_data)
   create_sub_dir(sub_path(dirtree(main = "testing_casting"), "models"))
   fill_models(options_all7$options_models)
   expect_silent(cast(options_all7$options_cast))
 
-  unlink(sub_path(dirtree(main = "testing_casting"), "data"), 
+  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "data"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all8$options_data)
   expect_message(cast(options_all8$options_cast))
   expect_equal(cast(options_all8$options_cast), NULL)
