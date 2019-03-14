@@ -19,6 +19,8 @@ models = "AutoArima")
 # update_rodents to update_rodents_list
 #read_ functions
 # model_path to model_paths
+# sub_path and sub_paths have been merged into sub_paths, which returns all
+#  if specific_subs is NULL
 
 # lag_data to lag_covariates
 

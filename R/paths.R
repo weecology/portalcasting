@@ -83,7 +83,7 @@ subdirs <- function(subs_names = NULL, subs_type = NULL){
 #' base_path()
 #' main_path()
 #' sub_paths()
-#' sub_path(specific_sub = "models")
+#' sub_paths(specific_subs = "models")
 #' }
 #'
 #' @export
@@ -113,44 +113,30 @@ main_path <- function(tree = dirtree()){
 
 #' @rdname base_path
 #'
-#' @description \code{sub_paths}: Return the paths for the \code{subs} folders
-#'   in the directory. 
+#' @description \code{sub_paths}: Return the path(s) for a specific 
+#'   \code{subs} folder or folders in the directory. 
 #'
-#' @return \code{sub_paths}: The normalized paths of the sub folders in the 
-#'   directory tree as a character vector (see \code{\link{normalizePath}}).
+#' @param specific_subs \code{character}-value name of the specific 
+#'   subdirectory/subdirectories of interest, or \code{NULL} (default)
+#'   for all.
 #'
-#' @export
-#'
-sub_paths <- function(tree = dirtree()){
-  check_argsX()
-  base <- tree$base
-  main <- tree$main
-  subs <- tree$subs
-  normalizePath(file.path(base, main, subs), mustWork = FALSE)
-}
-
-#' @rdname base_path
-#'
-#' @description \code{sub_path}: Return the path for a specific \code{subs} 
-#'   folder or folders in the directory. 
-#'
-#' @param specific_sub \code{character}-value name of the specific 
-#'   subdirectory/subdirectories of interest.
-#'
-#' @return \code{sub_paths}: The normalized path(s) of the \code{specific_sub}
-#'   folder(s) in the directory tree as \code{character} value(s) (see 
-#'   \code{\link{normalizePath}}).
+#' @return \code{sub_paths}: The normalized path(s) of the 
+#'   \code{specific_subs} folder(s) in the directory tree as \code{character}
+#'    value(s) (see \code{\link{normalizePath}}).
 #'
 #' @export
 #'
-sub_path <- function(tree = dirtree(), specific_sub = "tmp"){
+sub_paths <- function(tree = dirtree(), specific_subs = NULL){
   check_argsX()
-  if (!is.null(specific_sub) && (!all(specific_sub %in% tree$subs))){
-    stop("`specific_sub` not in `tree`")
+  if (!is.null(specific_subs) && (!all(specific_subs %in% tree$subs))){
+    stop("some `specific_subs` not in `tree`")
+  }
+  if (is.null(specific_subs)){
+    specific_subs <- tree$subs
   }
   base <- tree$base
   main <- tree$main
-  normalizePath(file.path(base, main, specific_sub), mustWork = FALSE)
+  normalizePath(file.path(base, main, specific_subs), mustWork = FALSE)
 }
 
 #' @title Determine the path for one or more models in the model sub directory

@@ -4,22 +4,20 @@
 \alias{base_path}
 \alias{main_path}
 \alias{sub_paths}
-\alias{sub_path}
 \title{Determine the path for a specific level of a portalcasting directory}
 \usage{
 base_path(tree = dirtree())
 
 main_path(tree = dirtree())
 
-sub_paths(tree = dirtree())
-
-sub_path(tree = dirtree(), specific_sub = "tmp")
+sub_paths(tree = dirtree(), specific_subs = NULL)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
 
-\item{specific_sub}{\code{character}-value name of the specific 
-subdirectory/subdirectories of interest.}
+\item{specific_subs}{\code{character}-value name of the specific 
+subdirectory/subdirectories of interest, or \code{NULL} (default)
+for all.}
 }
 \value{
 \code{base_path}: The normalized path of the main folder in the 
@@ -28,12 +26,9 @@ subdirectory/subdirectories of interest.}
 \code{main_path}: The normalized path of the main folder in the 
   directory tree as a character value (see \code{\link{normalizePath}}).
 
-\code{sub_paths}: The normalized paths of the sub folders in the 
-  directory tree as a character vector (see \code{\link{normalizePath}}).
-
-\code{sub_paths}: The normalized path(s) of the \code{specific_sub}
-  folder(s) in the directory tree as \code{character} value(s) (see 
-  \code{\link{normalizePath}}).
+\code{sub_paths}: The normalized path(s) of the 
+  \code{specific_subs} folder(s) in the directory tree as \code{character}
+   value(s) (see \code{\link{normalizePath}}).
 }
 \description{
 \code{base_path}: Return the path for the \code{base} folder
@@ -42,11 +37,8 @@ subdirectory/subdirectories of interest.}
 \code{main_path}: Return the path for the \code{main} folder
   in the directory.
 
-\code{sub_paths}: Return the paths for the \code{subs} folders
-  in the directory.
-
-\code{sub_path}: Return the path for a specific \code{subs} 
-  folder or folders in the directory.
+\code{sub_paths}: Return the path(s) for a specific 
+  \code{subs} folder or folders in the directory.
 }
 \examples{
 \dontrun{
@@ -55,7 +47,7 @@ setup_dir()
 base_path()
 main_path()
 sub_paths()
-sub_path(specific_sub = "models")
+sub_paths(specific_subs = "models")
 }
 
 }

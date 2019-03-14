@@ -17,7 +17,7 @@
 #'
 #' @param temp_dir \code{character} of the path to the subdirectory 
 #'   temporarily housing the predictions. Under default settings, this should 
-#'   be \code{sub_path(dirtree(), "tmp")}.
+#'   be \code{sub_paths(dirtree(), "tmp")}.
 #'
 #' @export
 #'
@@ -83,8 +83,8 @@ combine_forecasts <- function(options_cast = cast_options()){
   if (!options_cast$quiet){
     message(paste0("Compiling ", options_cast$cast_type))
   }
-  temp_dir <- sub_path(options_cast$tree, "tmp")
-  pred_dir <- sub_path(options_cast$tree, "predictions")
+  temp_dir <- sub_paths(options_cast$tree, "tmp")
+  pred_dir <- sub_paths(options_cast$tree, "predictions")
   forecast_date <- options_cast$cast_date
   filename_suffix <- options_cast$cast_type
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
@@ -131,8 +131,8 @@ add_ensemble <- function(options_cast = cast_options()){
     if (!options_cast$quiet){
       message("Creating ensemble model")
     }
-    temp_dir <- sub_path(options_cast$tree, "tmp")
-    pred_dir <- sub_path(options_cast$tree, "predictions")
+    temp_dir <- sub_paths(options_cast$tree, "tmp")
+    pred_dir <- sub_paths(options_cast$tree, "predictions")
     forecast_date <- options_cast$cast_date
     filename_suffix <- options_cast$cast_type
     file_ptn <- paste(filename_suffix, ".csv", sep = "")
@@ -387,7 +387,7 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
     }
   }
   if (is.null(cast_dates)){
-    pfolderpath <- sub_path(tree = tree, "predictions")
+    pfolderpath <- sub_paths(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
     of_interest1 <- grepl(cast_type, pfiles)
     of_interest2 <- grepl("aic", pfiles)
@@ -559,7 +559,7 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
   if (cast_type!= "forecasts" & cast_type != "hindcasts"){
     stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
   }
-  pfolderpath <- sub_path(tree = tree, "predictions")
+  pfolderpath <- sub_paths(tree = tree, "predictions")
   pfiles <- list.files(pfolderpath)
   of_interest1 <- grepl(cast_type, pfiles)
   of_interest2 <- grepl("aic", pfiles)

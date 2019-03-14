@@ -43,7 +43,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
                                   min_observed = 1){
   check_argsX()
   if (is.null(cast_dates)){
-    pfolderpath <- sub_path(tree = tree, "predictions")
+    pfolderpath <- sub_paths(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
     of_interest1 <- grepl(cast_type, pfiles)
     of_interest2 <- grepl("aic", pfiles)

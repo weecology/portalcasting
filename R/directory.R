@@ -92,7 +92,7 @@ create_sub_dirs <- function(options_dir = dir_options()){
 #'
 #' @param sub_path The normalized path of the specific subdirectory folder to 
 #'   be created in the directory tree as a \code{character} value (see 
-#'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
+#'   \code{\link{normalizePath}}, \code{\link{sub_paths}}).
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'   quieted.
@@ -309,7 +309,7 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 cleanup_dir <- function(options_all = all_options()){
   check_argsX()
   options_dir <- options_all$options_dir
-  subs <- sub_path(options_dir$tree, options_dir$to_cleanup)
+  subs <- sub_paths(options_dir$tree, options_dir$to_cleanup)
   if (!options_dir$quiet){
     subnames <- options_dir$to_cleanup
     if (length(subnames) > 0){

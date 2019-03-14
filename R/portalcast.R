@@ -43,7 +43,7 @@ verify_models <- function(options_cast = cast_options()){
   if (!options_cast$quiet){
     cat("Checking model availability", "\n")
   }
-  model_dir <- sub_path(options_cast$tree, "models")
+  model_dir <- sub_paths(options_cast$tree, "models")
   if (!dir.exists(model_dir)){
     stop("Models subidrectory does not exist")
   }
@@ -103,7 +103,7 @@ cast_models <- function(options_cast = cast_options()){
 #'
 models_to_cast <- function(options_cast = cast_options()){
   check_args(options_cast = options_cast)
-  model_dir <- sub_path(options_cast$tree, "models")
+  model_dir <- sub_paths(options_cast$tree, "models")
   if (options_cast$model[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
   } else{
@@ -142,7 +142,7 @@ create_tmp <- function(tree = dirtree()){
 #'
 clear_tmp <- function(tree = dirtree()){
   check_args(tree = tree)
-  temp_dir <- sub_path(tree, "tmp")
+  temp_dir <- sub_paths(tree, "tmp")
   if (!dir.exists(temp_dir)){
     create_tmp(tree)
   }

@@ -99,7 +99,7 @@ cov_text,
 f_a <- ', name ,'(', args_a, ');
 f_c <- ', name ,'(', args_c, ');
 save_forecast_output(f_a, f_c, "', 
-options_model$name, '", metadata, sub_path(tree, "tmp"))'
+options_model$name, '", metadata, sub_paths(tree, "tmp"))'
 )
 
 }

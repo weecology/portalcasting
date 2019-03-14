@@ -1461,7 +1461,7 @@ check_argsX <- function(){
 #'     \code{\link{rodents_options}}, \code{\link{metadata_options}}, 
 #'     \code{\link{covariates_options}}, \code{\link{moons_options}},
 #'     \code{\link{base_path}}, \code{\link{main_path}}, 
-#'     \code{\link{sub_paths}}, \code{\link{sub_path}},
+#'     \code{\link{sub_paths}}, 
 #'     \code{\link{file_paths}}, \code{\link{model_paths}} \cr \cr 
 #'   \code{version}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
@@ -2036,9 +2036,6 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
         stop("`specific_sub` is not a character")
-      }
-      if (length(arg_value) != 1){
-        stop("`specific_sub` can only be of length = 1")
       }
     }
   }

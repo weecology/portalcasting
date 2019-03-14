@@ -21,7 +21,7 @@ save_forecast_output(all, controls, name, metadata, temp_dir)
 
 \item{temp_dir}{\code{character} of the path to the subdirectory 
 temporarily housing the predictions. Under default settings, this should 
-be \code{sub_path(dirtree(), "tmp")}.}
+be \code{sub_paths(dirtree(), "tmp")}.}
 }
 \description{
 Save out the forecast abundances and AIC values from a given 
