@@ -117,7 +117,7 @@ test_that("cast", {
          recursive = TRUE)
   create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all7$options_data)
-  create_sub_dir(sub_path(dirtree(main = "testing_casting"), "models"))
+  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "models"))
   fill_models(options_all7$options_models)
   expect_silent(cast(options_all7$options_cast))
 
