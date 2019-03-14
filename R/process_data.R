@@ -5,7 +5,7 @@
 #'   linearly interpolated, then the total number of rodents is calculated 
 #'   from the sum of the individual species.
 #'
-#' @param abundance Class \code{rodents} \code{data.frame} rodents data table 
+#' @param rodents Class \code{rodents} \code{data.frame} rodents data table 
 #'   with a \code{newmoon} column. 
 #'
 #' @return \code{data.frame} data table of interpolation-inclusive counts
@@ -14,23 +14,21 @@
 #'
 #' @export
 #' 
-interpolate_abundance <- function(abundance){
-  if (!("rodents" %in% class(abundance))){
-    stop("`abundance` is not of class rodents")
-  }
-  moons <- (min(abundance$newmoonnumber)):(max(abundance$newmoonnumber))
+interpolate_abundance <- function(rodents){
+  check_args(rodents = rodents)
+  moons <- (min(rodents$newmoonnumber)):(max(rodents$newmoonnumber))
   nmoons <- length(moons)
 
-  rodent_cols <- which(colnames(abundance) %in% rodent_spp(nadot = TRUE))
-  species <- colnames(abundance)[rodent_cols]
+  rodent_cols <- which(colnames(rodents) %in% rodent_spp(nadot = TRUE))
+  species <- colnames(rodents)[rodent_cols]
   nspecies <- length(species)
 
   abunds <- matrix(NA, nrow = nmoons, ncol = nspecies)
 
   for(i in 1:nmoons){
-    if(length(which(abundance$newmoonnumber == moons[i])) > 0){
-      temp <- abundance[which(abundance$newmoonnumber == moons[i]),
-                        which(colnames(abundance) %in% species)]
+    if(length(which(rodents$newmoonnumber == moons[i])) > 0){
+      temp <- rodents[which(rodents$newmoonnumber == moons[i]),
+                        which(colnames(rodents) %in% species)]
       abunds[i, ] <- as.numeric(temp)
     }
   }
@@ -49,10 +47,10 @@ interpolate_abundance <- function(abundance){
 
 #' @title Lag covariate data
 #'
-#' @description Lag the weather data together based on the new moons
+#' @description Lag the covariate data together based on the new moons
 #'
-#' @param data Class \code{covariates} \code{data.frame} of covariate data 
-#'   to be lagged. 
+#' @param covariates Class \code{covariates} \code{data.frame} of covariate
+#'   data to be lagged. 
 #'  
 #' @param lag \code{integer} lag between rodent census and covariate data, in
 #'   new moons.
@@ -60,46 +58,31 @@ interpolate_abundance <- function(abundance){
 #' @param tail \code{logical} indicator if the data lagged to the tail end 
 #'   should be retained.
 #'  
-#' @return \code{data} \code{data.frame} \code{newmoonnumber} columnn now 
-#'   reflecting the lag.
+#' @return \code{covariates} \code{data.frame} with a \code{newmoonnumber} 
+#'   columnn reflecting the lag.
 #'
 #' @export
 #'
-lag_data <- function(data, lag, tail = FALSE){
-
-  if (!("covariates" %in% class(data))){
-    stop("`data` is not of class covariates")
-  }
-  if (!("logical" %in% class(tail))){
-    stop("`tail` is not of class logical")
-  }
-  if (length(lag) > 1){
-    stop("`lag` can only be of length = 1")
-  }
-  if (!("numeric" %in% class(lag)) & !("integer" %in% class(lag))){
-    stop("`lag` is not of class numeric or integer")
-  }
-  if(lag < 0 | lag %% 1 != 0){
-    stop("`lag` is not a non-negative integer")
-  }
-  data$newmoonnumber_lag <- data$newmoonnumber + lag
+lag_covariates <- function(covariates, lag, tail = FALSE){
+  check_args(covariates = covariates, lag = lag, tail = tail)
+  covariates$newmoonnumber_lag <- covariates$newmoonnumber + lag
   
   if(tail == FALSE){
-    oldest_included_newmoon <- data$newmoonnumber[1]
-    most_recent_newmoon <- data$newmoonnumber[nrow(data)]
+    oldest_included_newmoon <- covariates$newmoonnumber[1]
+    most_recent_newmoon <- covariates$newmoonnumber[nrow(covariates)]
     hist_newmoons <- oldest_included_newmoon:most_recent_newmoon
     hist_moons_table <- data.frame(newmoonnumber = hist_newmoons)
     nm_match <- c("newmoonnumber_lag" = "newmoonnumber")
-    data <- right_join(data, hist_moons_table, by = nm_match) 
+    data <- right_join(covariates, hist_moons_table, by = nm_match) 
     if (lag > 0){
-      data <- data[-(1:lag), ]
+      covariates <- covariates[-(1:lag), ]
     }
   }
-  data <- select(data, -newmoonnumber)
-  cn_data <- colnames(data)
-  cn_nmn_l <- which(cn_data == "newmoonnumber_lag")
-  colnames(data)[cn_nmn_l] <- "newmoonnumber"
-  data
+  covariates <- select(covariates, -newmoonnumber)
+  cn_covariates <- colnames(covariates)
+  cn_nmn_l <- which(cn_covariates == "newmoonnumber_lag")
+  colnames(covariates)[cn_nmn_l] <- "newmoonnumber"
+  covariates
 }
 
 #' @title Read in a data file and format it for specific class
@@ -107,7 +90,9 @@ lag_data <- function(data, lag, tail = FALSE){
 #' @description Read in a specified data file and ensure its class attribute
 #'   is appropriate for usage within the portalcasting pipeline. Current 
 #'   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
-#'   \code{"moons"}, and \code{"metadata"}.
+#'   \code{"moons"}, and \code{"metadata"}. And are available as calls to
+#'   \code{read_data} with a specified \code{data_name} or as calls to the
+#'   specific \code{read_<data_name>} functions (like \code{read_moons}).
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'  
@@ -126,24 +111,18 @@ lag_data <- function(data, lag, tail = FALSE){
 #' read_data(data_name = "covariates")
 #' read_data(data_name = "moons")
 #' read_data(data_name = "metadata")
+#'
+#' read_all()
+#' read_controls()
+#' read_covariates()
+#' read_moons()
+#' read_metadata()
 #' }
 #'
 #' @export
 #'
-read_data <- function(tree, data_name){
-  valid_names <- c("all", "controls", "covariates", "moons", "metadata")
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (length(data_name) > 1){
-    stop("`data_name` can only be of length = 1")
-  }
-  if (!is.character(data_name)){
-    stop("`data_name` is not a character")
-  }
-  if (!any(valid_names %in% data_name)){
-    stop("`data_name` is not valid option")
-  } 
+read_data <- function(tree = dirtree(), data_name){
+  check_args(tree = tree, data_name = data_name)
   if (data_name == "all"){
     data <- read.csv(file_path(tree, "data/all.csv")) %>%
             classy(c("data.frame", "rodents"))
@@ -179,9 +158,7 @@ read_data <- function(tree, data_name){
 #' @export
 #'
 most_recent_census <- function(tree = dirtree()){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
+  check_args(tree = tree)
   all <- read_data(tree, "all")
   moons <- read_data(tree, "moons")
   matched <- moons$newmoonnumber == max(all$newmoonnumber)

@@ -4,10 +4,10 @@
 \alias{interpolate_abundance}
 \title{Interpolate missing rodent data}
 \usage{
-interpolate_abundance(abundance)
+interpolate_abundance(rodents)
 }
 \arguments{
-\item{abundance}{Class \code{rodents} \code{data.frame} rodents data table 
+\item{rodents}{Class \code{rodents} \code{data.frame} rodents data table 
 with a \code{newmoon} column.}
 }
 \value{

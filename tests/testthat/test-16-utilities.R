@@ -238,4 +238,8 @@ test_that("check_args", {
 
   expect_error(check_args(covariates = "ok"))
   expect_error(check_args(download = "ok"))
+  expect_error(check_args(tail = "ok"))
+  expect_error(check_args(data_name = "ok"))
+  expect_error(check_args(data_name = 1))
+  expect_error(check_args(data_name = rep("all", 2)))
 })

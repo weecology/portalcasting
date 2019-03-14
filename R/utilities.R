@@ -268,6 +268,9 @@ remove_incompletes <- function(df, col_to_check){
 #'
 #' @param min_traps \code{integer} (or integer \code{numeric}) of the minimum 
 #'   number of traps trapped for a plot to be used.
+#'  
+#' @param tail \code{logical} indicator if the data lagged to the tail end 
+#'   should be retained.
 #'
 #' @param level For data collection, \code{character} input of \code{level} 
 #'   for \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
@@ -522,6 +525,10 @@ remove_incompletes <- function(df, col_to_check){
 #'
 #' @param rodents Class-\code{rodents} \code{data.table} of rodent data.
 #'
+#' @param data_name \code{character} representation of the data needed.
+#'   Current options include \code{"all"}, \code{"controls"},
+#'   \code{"covariates"}, \code{"moons"}, and \code{"metadata"}.
+#'
 #' @param toggle \code{character} value indicating special aspects of 
 #'   checking. 
 #'
@@ -534,7 +541,7 @@ remove_incompletes <- function(df, col_to_check){
 #' @export
 #'
 check_args <- function(toggle = NULL, base = ".", main = "", 
-                       subs = NULL, 
+                       subs = NULL, tail = FALSE,
                        quiet = FALSE, 
                        cast_date = today(), append_missing_to_raw = TRUE, 
                        m_save = TRUE, m_filename = "moons.csv", 
@@ -577,10 +584,22 @@ check_args <- function(toggle = NULL, base = ".", main = "",
                        specific_sub = NULL, extension = ".R",
                        local_path = "data/all.csv", rodents = NULL,
                        model = "AutoArima", set = "prefab", add = NULL,
-                       lead = 1, rodents_list = NULL, future_moons = NULL){
+                       lead = 1, rodents_list = NULL, future_moons = NULL,
+                       data_name = "all"){
   if(is.null(toggle)){
     toggle <- "null"
   }
+  valid_names <- c("all", "controls", "covariates", "moons", "metadata")
+  if (length(data_name) > 1){
+    stop("`data_name` can only be of length = 1")
+  }
+  if (!is.character(data_name)){
+    stop("`data_name` is not a character")
+  }
+  if (!any(valid_names %in% data_name)){
+    stop("`data_name` is not valid option")
+  } 
+
   if (!("logical" %in% class(download))){
     stop("`download` is not logical")
   }
@@ -1147,5 +1166,8 @@ check_args <- function(toggle = NULL, base = ".", main = "",
   }
   if (!is.null(add) & !is.character(add)){
       stop("`add` is not NULL or a character")
+  }
+  if (!("logical" %in% class(tail))){
+    stop("`tail` is not of class logical")
   }
 }

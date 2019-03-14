@@ -78,7 +78,7 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
   CL <- metadata$confidence_level
   abundances <- interpolate_abundance(abundances)
   species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
-  covar_lag <- lag_data(covariates, lag, tail = TRUE)
+  covar_lag <- lag_covariates(covariates, lag, tail = TRUE)
   for_hist <- which(covar_lag$newmoonnumber %in% abundances$moons)
   for_fcast <- which(covar_lag$newmoonnumber %in% fcnm) 
   covar_hist <- covar_lag[for_hist, ]
