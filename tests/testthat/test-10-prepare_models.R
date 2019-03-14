@@ -12,9 +12,6 @@ test_that("write_model", {
   expect_error(write_model(1), "`options_model` is not")
   expect_output(
     write_model(AutoArima_options(dirtree(main = "testing_casting"))))
-  expect_silent(
-    write_model(
-      model_options(dirtree(main = "testing_casting"), name = NULL)))
 })
 
 test_that("model_template", {

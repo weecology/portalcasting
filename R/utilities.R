@@ -1410,7 +1410,7 @@ check_argsX <- function(){
 #'   \code{source_name}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
-#'   \code{species}: must be \code{character} vector in
+#'   \code{species}: must be \code{NULL} or a \code{character} vector in
 #'     \code{\link{plot_cov_RMSE_mod_spp}}, 
 #'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
 #'     \code{\link{plot_cast_point_yaxis}}; specifically length-1 in
@@ -1423,8 +1423,8 @@ check_argsX <- function(){
 #'   \code{start_newmoon}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{plot_cast_ts}}  
 #'     \cr \cr
-#'   \code{sub_path}: must be a length-1 \code{character} vector in
-#'     \code{\link{create_sub_dir}}  \cr \cr
+#'   \code{sub_path}: must be \code{NULL} or a length-1 \code{character} 
+#'     vector in \code{\link{create_sub_dir}}  \cr \cr
 #'   \code{subs} must be a class-\code{subdirs} vector in
 #'     \code{\link{all_options}}, \code{\link{dir_options}},
 #'     \code{\link{PortalData_options}}, \code{\link{data_options}} 
@@ -1434,7 +1434,7 @@ check_argsX <- function(){
 #'     vector of value \code{"all"} or \code{"controls"} in 
 #'     \code{\link{all_options}}, \code{\link{rodents_options}}, 
 #'     \code{\link{data_options}} \cr \cr
-#'   \code{to_cleanup}: must be a \code{character} vector in
+#'   \code{to_cleanup}: must be \code{NULL} or a \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{dir_options}} \cr \cr
 #'   \code{treatment}: must be \code{NULL} or \code{"control"} in
 #'     \code{\link{all_options}},
@@ -1587,7 +1587,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (!is.numeric(arg_value)){
         stop("`end` is not numeric")
       }
-      if (arg_value < 1 | arg_value %% 1 != 0){
+      if (any(arg_value < 1 )| any(arg_value %% 1 != 0)){
         stop("`end` is not a positive integer")
       }
     }
@@ -1620,12 +1620,12 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   }
   if (arg_name == "from_date"){
     if (!is.null(arg_value)){
+      if (length(arg_value) != 1){
+        stop("`from_date` can only be of length = 1")
+      }
       from_date2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
       if (is.na(from_date2)){
         stop("`from_date` is not of class Date or conformable to class Date")
-      }
-      if (length(arg_value) != 1){
-        stop("`from_date` can only be of length = 1")
       }
     }
   }
@@ -1976,16 +1976,18 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "species"){
-    if (!("character" %in% class(arg_value))){
-      stop("`species` is not a character")
-    }
-    if (!all(arg_value %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    } 
-    sp_funs <- c("plot_cast_ts", "plot_cast_ts_ylab")
-    if (fun_name %in% sp_funs){
-      if (length(arg_value) != 1){
-        stop("`species` can only be of length = 1")
+    if(!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`species` is not a character")
+      }
+      if (!all(arg_value %in% rodent_spp("wtotal"))){
+        stop("invalid entry in `species`")
+      } 
+      sp_funs <- c("plot_cast_ts", "plot_cast_ts_ylab")
+      if (fun_name %in% sp_funs){
+        if (length(arg_value) != 1){
+          stop("`species` can only be of length = 1")
+        }
       }
     }
   }
@@ -2012,11 +2014,13 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "sub_path"){
-    if (!("character" %in% class(arg_value))){
-      stop("`sub_path` is not a character")
-    }
-    if (length(arg_value) != 1){
-      stop("`sub_path` can only be of length = 1")
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`sub_path` is not a character")
+      }
+      if (length(arg_value) != 1){
+        stop("`sub_path` can only be of length = 1")
+      }
     }
   }
   if (arg_name == "subs"){
@@ -2038,8 +2042,10 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "to_cleanup"){
-    if (!("character" %in% class(arg_value))){
-      stop("`to_cleanup` is not a character")
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`to_cleanup` is not a character")
+      }
     }
   }
   if (arg_name == "treatment"){
