@@ -1,1 +1,1 @@
-unlink(dirtree(main = "testing_casting"), recursive = TRUE, force = TRUE)
+#unlink(dirtree(main = "testing_casting"), recursive = TRUE, force = TRUE)
