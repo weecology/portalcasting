@@ -77,7 +77,9 @@ save_forecast_output <- function(all, controls, name, metadata,
 #' @export
 #'
 combine_forecasts <- function(options_cast = cast_options()){
-  check_args(options_cast = options_cast)
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (!options_cast$quiet){
     message(paste0("Compiling ", options_cast$cast_type))
   }
@@ -122,7 +124,9 @@ combine_forecasts <- function(options_cast = cast_options()){
 #' @export
 #'
 add_ensemble <- function(options_cast = cast_options()){
-  check_args(options_cast = options_cast)
+  if (!("cast_options" %in% class(options_cast))){
+    stop("`cast_options` not of class `options_cast`")
+  }
   if (options_cast$ensemble){
     if (!options_cast$quiet){
       message("Creating ensemble model")
@@ -318,10 +322,31 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'
 read_cast <- function(tree = dirtree(), cast_type = "forecasts", 
                        cast_date = NULL){
-  if (is.null(cast_date)){
-    cast_date <- most_recent_cast(tree, cast_type, with_census)
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
   }
-  check_args(tree = tree, cast_type = cast_type, cast_date = cast_date)
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!is.null(cast_date)){
+    if( !("Date" %in% class(cast_date))){
+      cast_date <- tryCatch(as.Date(cast_date), error = function(x){NA})
+      if (is.na(cast_date)){
+        stop("`cast_date` is not of class Date or conformable to class Date")
+      }
+    }
+  } else{
+    cast_date <- most_recent_cast(tree, cast_type)
+  }
+  if (length(cast_date) > 1){
+    stop("`cast_date` can only be of length = 1")
+  }
   lpath <- paste0("predictions/", cast_date, cast_type, ".csv")
   fpath <- file_path(tree, lpath)
   if (!file.exists(fpath)){
@@ -343,7 +368,24 @@ read_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 read_casts <- function(tree = dirtree(), cast_type = "forecasts", 
                        cast_dates = NULL){
-  check_args(tree = tree, cast_type = cast_type, cast_dates = cast_dates)
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
+  if (!is.null(cast_dates)){
+    cast_dates2 <- tryCatch(as.Date(cast_dates), error = function(x){NA})
+    if (is.na(cast_dates2)){
+      stop("`cast_dates` is not of class Date or conformable to class Date")
+    }
+  }
   if (is.null(cast_dates)){
     pfolderpath <- sub_path(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
@@ -499,7 +541,24 @@ cast_is_valid <- function(cast, verbose = FALSE){
 #'
 most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
                              with_census = FALSE){
-  check_args(tree = tree, cast_type = cast_type, with_census = with_census) 
+  if (length(with_census) > 1){
+    stop("`with_census` can only be of length = 1")
+  }
+  if (!is.logical(with_census)){
+    stop("`with_census` is not logical")
+  }
+  if (!("dirtree" %in% class(tree))){
+    stop("`tree` is not of class dirtree")
+  }
+  if (!is.character(cast_type)){
+    stop("`cast_type` is not a character")
+  }
+  if (length(cast_type) > 1){
+    stop("`cast_type` can only be of length = 1")
+  }
+  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
+    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
+  }
   pfolderpath <- sub_path(tree = tree, "predictions")
   pfiles <- list.files(pfolderpath)
   of_interest1 <- grepl(cast_type, pfiles)
