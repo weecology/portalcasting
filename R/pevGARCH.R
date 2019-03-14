@@ -87,7 +87,7 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
   fcast <- data.frame()
   aic <- data.frame()
 
-  models <- covariate_models("pevgarch")
+  models <- covariate_models("pevGARCH")
 
   for(s in species){
 

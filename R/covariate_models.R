@@ -2,18 +2,17 @@
 #'
 #' @description Convenience function for creating covariate model lists
 #'
-#' @param type type name for covariate models. Currently only "pevgarch" is
-#'   supported.
+#' @param mod_type \code{character} name for covariate models. Currently only 
+#'   \code{"pevGARCH"} is supported.
 #'
-#' @return list of covariate model structures
+#' @return \code{list} of covariate model structures
 #'
 #' @export
 #'
-covariate_models <- function(type = "pevgarch"){
-
+covariate_models <- function(mod_type = "pevGARCH"){
+  check_argsX()
   out <- NULL
-
-  if (type == "pevgarch"){
+  if (mod_type == "pevGARCH"){
     out <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),
                 c("maxtemp", "mintemp", "precipitation", "ndvi"),
                 c("mintemp", "maxtemp", "meantemp", "precipitation"),

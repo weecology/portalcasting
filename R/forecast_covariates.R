@@ -23,9 +23,7 @@
 #'
 forecast_covariates <- function(covariates, moons, 
                                 options_covariates = covariates_options()){
-  check_args(covariates = covariates, moons = moons,
-             options_covariates = options_covariates)
-
+  check_argsX()
   if (options_covariates$cast_type == "forecasts"){
     moons <- trim_moons_fcast(moons, options_covariates)
     weather_f <- forecast_weather(moons, options_covariates)
@@ -59,8 +57,7 @@ forecast_covariates <- function(covariates, moons,
 #' @export
 #'
 forecast_ndvi <- function(covariates, moons, options_covariates){
-  check_args(covariates = covariates, moons = moons,
-             options_covariates = options_covariates)
+  check_argsX()
   ndvi_data <- select(covariates, c("newmoonnumber", "ndvi"))
   ndvi_lead <- options_covariates$nfcnm - options_covariates$min_lag
   fcast_ndvi(ndvi_data, "newmoon", lead = ndvi_lead, moons)
@@ -81,7 +78,7 @@ forecast_ndvi <- function(covariates, moons, options_covariates){
 #'
 forecast_weather <- function(moons = prep_moons(), 
                              options_covariates = covariates_options()){
-  check_args(moons = moons, options_covariates = options_covariates)
+  check_argsX()
   mpath <- main_path(options_covariates$tree)
   dayweather <- weather("daily", fill = TRUE, mpath)
   yrs <- dayweather$year
@@ -149,7 +146,7 @@ forecast_weather <- function(moons = prep_moons(),
 #' @export
 #'
 trim_moons_fcast <- function(moons, options_covariates){
-  check_args(moons = moons, options_covariates = options_covariates)
+  check_argsX()
   moons <- moons[, c("newmoonnumber", "newmoondate", "period", "censusdate")]
   fc_nms <- moons
   addl_fcast <- which(moons$newmoonnumber %in% options_covariates$fcast_nms)
@@ -184,8 +181,7 @@ trim_moons_fcast <- function(moons, options_covariates){
 #'
 get_climate_forecasts <- function(moons = prep_moons(), 
                                   options_covariates = covariates_options()){
-  check_args(moons = moons, options_covariates = options_covariates)
-  
+  check_argsX()  
   lead_time <- options_covariates$lead_time - options_covariates$min_lag
 
   if(!lead_time %in% 1:7){
@@ -307,9 +303,7 @@ get_climate_forecasts <- function(moons = prep_moons(),
 #'
 append_cov_fcast_csv <- function(new_forecast_covariates, 
                                  options_covariates = covariates_options()){
-  check_args(new_forecast_covariates = new_forecast_covariates,
-             options_covariates = options_covariates)  
-
+  check_argsX()
   if (!options_covariates$append_fcast_csv){
     return(new_forecast_covariates)
   }

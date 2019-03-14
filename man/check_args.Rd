@@ -74,7 +74,8 @@ be saved out.}
 
 \item{m_filename}{\code{character} name of the file for saving moons data.}
 
-\item{tmnt_type}{Treatment type: \code{"all"} or \code{"controls"}.}
+\item{tmnt_type}{Treatment type: \code{NULL}, \code{"all"} or 
+\code{"controls"}.}
 
 \item{start}{\code{integer} (or integer \code{numeric}) newmoon number of 
 the first sample to be included. Default value is \code{217}, 

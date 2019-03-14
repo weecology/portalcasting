@@ -32,7 +32,7 @@ test_that("plot_cast_point", {
   expect_error(plot_cast_point(tree, from_date = rep(cast_date, 2)))
 })
 
-test_that("plotcastpoint_yaxis", {
+test_that("plot_cast_point_yaxis", {
   species = NULL
   level = "Controls"
   cast_type = "forecasts"
@@ -45,10 +45,10 @@ test_that("plotcastpoint_yaxis", {
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
-  expect_silent(plotcastpoint_yaxis(tree = tree, species = pred$species))
-  expect_error(plotcastpoint_yaxis(1))
-  expect_error(plotcastpoint_yaxis(tree, "ok"))
-  expect_error(plotcastpoint_yaxis(tree, 1))
+  expect_silent(plot_cast_point_yaxis(tree = tree, species = pred$species))
+  expect_error(plot_cast_point_yaxis(1))
+  expect_error(plot_cast_point_yaxis(tree, "ok"))
+  expect_error(plot_cast_point_yaxis(tree, 1))
 })
 
 test_that("plot_cast_ts", {

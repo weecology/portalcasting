@@ -206,73 +206,52 @@ all_options <- function(base = ".", main = "",
                         version = "latest", from_zenodo = TRUE,
                         to_cleanup = c("tmp", "PortalData")){
 
-  check_args(base = base, main = main, subs = subs, quiet = quiet, 
-             cast_date = cast_date, 
-             append_missing_to_raw = append_missing_to_raw, m_save = m_save, 
-             m_filename = m_filename, tmnt_type = tmnt_type, start = start, 
-             end = end, hind_step = hind_step, drop_spp = drop_spp, 
-             min_plots = min_plots, min_traps = min_traps, level = level, 
-             treatment = treatment, plots = plots, output = output, 
-             r_save = r_save, r_filename = r_filename, cov_hist = cov_hist, 
-             cov_fcast = cov_fcast, yr = yr, lead_time = lead_time, 
-             min_lag = min_lag, fcast_nms = fcast_nms, nfcnm = nfcnm,
-             append_fcast_csv = append_fcast_csv, 
-             hist_fcast_file = hist_fcast_file, source_name = source_name, 
-             c_save = c_save, c_filename = c_filename, cast_type = cast_type,
-             confidence_level = confidence_level, 
-             meta_save = meta_save, meta_filename = meta_filename,
-             download_existing_predictions = download_existing_predictions,
-             models = models, ensemble = ensemble, version = version,
-             from_zenodo = from_zenodo, to_cleanup = to_cleanup)
-
+  check_argsX()
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
   list(
-    options_dir = dir_options(base = base, main = main, subs = subs,
-                              quiet = quiet, to_cleanup = to_cleanup),
-    options_PortalData = PortalData_options(base = base, main = main, 
-                                            subs = subs, quiet = quiet,
-                                            version = version, 
-                                            from_zenodo = from_zenodo),
-    options_data = data_options(base = base, main = main, subs = subs,
-                                quiet = quiet, cast_date = cast_date,
-                                append_missing_to_raw = append_missing_to_raw,
-                                m_save = m_save, m_filename = m_filename,
-                                tmnt_type = tmnt_type, start = start, 
-                                end = end, hind_step = hind_step,
-                                drop_spp = drop_spp, min_plots = min_plots, 
-                                level = level, treatment = treatment, 
-                                plots = plots, output = output,
-                                r_save = r_save, r_filename = r_filename,
-                                cov_hist = cov_hist, 
-                                cov_fcast = cov_fcast, yr = yr, 
-                                lead_time = lead_time, min_lag = min_lag, 
-                                fcast_nms = fcast_nms, nfcnm = nfcnm,
-                                append_fcast_csv = append_fcast_csv, 
-                                hist_fcast_file = hist_fcast_file,
-                                source_name = source_name,
-                                c_save = c_save, c_filename = c_filename,
-                                cast_type = cast_type,
-                                confidence_level = confidence_level,  
-                                meta_save = meta_save, 
-                                meta_filename = meta_filename),
-    options_predictions = predictions_options(base = base, main = main, 
-                                              subs = subs,
-                                              download_existing_predictions = 
-                                                download_existing_predictions, 
-                                              quiet = quiet),
-    options_models = models_options(base = base, main = main, subs = subs,
-                                    quiet = quiet, models = models),
-    options_cast = cast_options(base = base, main = main, subs = subs, 
-                                quiet = quiet, models = models, 
-                                cast_type = cast_type, 
-                                cast_date = cast_date, ensemble = ensemble,
-                                start = start, end = end, 
-                                hind_step = hind_step, 
-                                min_plots = min_plots, min_traps = min_traps)
+    options_dir = 
+      dir_options(base = base, main = main, subs = subs, quiet = quiet, 
+                  to_cleanup = to_cleanup),
+    options_PortalData = 
+      PortalData_options(base = base, main = main, subs = subs, quiet = quiet,
+                         version = version, from_zenodo = from_zenodo),
+    options_data = 
+      data_options(base = base, main = main, subs = subs, quiet = quiet, 
+                   cast_date = cast_date,
+                   append_missing_to_raw = append_missing_to_raw,
+                   m_save = m_save, m_filename = m_filename,
+                   tmnt_type = tmnt_type, start = start, end = end, 
+                   hind_step = hind_step, drop_spp = drop_spp, 
+                   min_plots = min_plots, level = level, 
+                   treatment = treatment, plots = plots, output = output,
+                   r_save = r_save, r_filename = r_filename,
+                   cov_hist = cov_hist, cov_fcast = cov_fcast, yr = yr, 
+                   lead_time = lead_time, min_lag = min_lag, 
+                   fcast_nms = fcast_nms, nfcnm = nfcnm,
+                   append_fcast_csv = append_fcast_csv, 
+                   hist_fcast_file = hist_fcast_file,
+                   source_name = source_name, c_save = c_save, 
+                   c_filename = c_filename, cast_type = cast_type,
+                   confidence_level = confidence_level,  
+                   meta_save = meta_save, meta_filename = meta_filename),
+    options_predictions = 
+      predictions_options(base = base, main = main, subs = subs,
+                download_existing_predictions = download_existing_predictions, 
+                quiet = quiet),
+    options_models = 
+      models_options(base = base, main = main, subs = subs, quiet = quiet, 
+                     models = models),
+    options_cast = 
+      cast_options(base = base, main = main, subs = subs, quiet = quiet, 
+                   models = models, cast_type = cast_type, 
+                   cast_date = cast_date, ensemble = ensemble, start = start, 
+                   end = end, hind_step = hind_step, min_plots = min_plots, 
+                   min_traps = min_traps)
   ) %>%
   classy(c("all_options", "list"))
+
 }
 
 #' @rdname all_options
@@ -288,8 +267,7 @@ all_options <- function(base = ".", main = "",
 dir_options <- function(base = ".", main = "", 
                         subs = subdirs(subs_type = "portalcasting"),
                         quiet = FALSE, to_cleanup = c("tmp", "PortalData")){
-  check_args(base = base, main = main, subs = subs, quiet = quiet,
-             to_cleanup = to_cleanup)
+  check_argsX()
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, to_cleanup = to_cleanup) %>%
   classy(c("dir_options", "list"))
@@ -309,8 +287,7 @@ PortalData_options <- function(base = ".", main = "",
                                subs = subdirs(subs_type = "portalcasting"), 
                                quiet = FALSE,
                                version = "latest", from_zenodo = TRUE){
-  check_args(base = base, main = main, subs = subs, quiet = quiet,
-             version = version, from_zenodo = from_zenodo)
+  check_argsX()
   tree <- dirtree(base, main, subs)
   list(tree = tree, version = version, from_zenodo = from_zenodo, 
               quiet = quiet) %>%
@@ -353,61 +330,43 @@ data_options <- function(base = ".", main = "",
                          cast_type = "forecasts",
                          confidence_level = 0.9, 
                          meta_save = TRUE, meta_filename = "metadata.yaml"){
-
-  check_args(base = base, main = main, subs = subs, quiet = quiet, 
-             cast_date = cast_date, 
-             append_missing_to_raw = append_missing_to_raw, m_save = m_save, 
-             m_filename = m_filename, tmnt_type = tmnt_type, start = start, 
-             end = end, hind_step = hind_step, drop_spp = drop_spp, 
-             min_plots = min_plots, level = level, treatment = treatment, 
-             plots = plots, output = output, r_save = r_save, 
-             r_filename = r_filename, cov_hist = cov_hist, 
-             cov_fcast = cov_fcast, yr = yr, lead_time = lead_time, 
-             min_lag = min_lag, fcast_nms = fcast_nms, nfcnm = nfcnm,
-             append_fcast_csv = append_fcast_csv, 
-             hist_fcast_file = hist_fcast_file,
-             source_name = source_name, c_save = c_save, 
-             c_filename = c_filename, cast_type = cast_type,
-             confidence_level = confidence_level, 
-             meta_save = meta_save, meta_filename = meta_filename)
-
+  check_argsX()
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
   tree <- dirtree(base, main, subs)
   list(
-    moons = moons_options(n_future_moons = lead_time, cast_date = cast_date,
-                          append_missing_to_raw = append_missing_to_raw,
-                          save = m_save, filename = m_filename,
-                          quiet = quiet, tree = tree),
-    rodents = rodents_options(cast_type = cast_type,
-                              tmnt_type = tmnt_type, start = start, end = end,
-                              hind_step = hind_step, 
-                              drop_spp = drop_spp, min_plots = min_plots, 
-                              level = level, treatment = treatment, 
-                              plots = plots, output = output,
-                              save = r_save, filename = r_filename,
-                              quiet = quiet, tree = tree),
-    covariates = covariates_options(cast_type = cast_type, 
-                                    cov_hist = cov_hist, 
-                                    cov_fcast = cov_fcast, 
-                                    cast_date = cast_date, 
-                                    yr = yr, start = start, end = end, 
-                                    hind_step = hind_step, 
-                                    lead_time = lead_time, min_lag = min_lag, 
-                                    fcast_nms = fcast_nms, nfcnm = nfcnm,
-                                    append_fcast_csv = append_fcast_csv, 
-                                    hist_fcast_file = hist_fcast_file,
-                                    source_name = source_name,
-                                    save = c_save, filename = c_filename,
-                                    quiet = quiet, tree = tree),
-    metadata = metadata_options(cast_date = cast_date, 
-                                cast_type = cast_type,
-                                confidence_level = confidence_level,
-                                lead_time = lead_time, save = meta_save,
-                                filename = meta_filename, quiet = quiet, 
-                                tree = tree),
-    cast_type = cast_type, quiet = quiet, tree = tree) %>%
+    moons = 
+      moons_options(n_future_moons = lead_time, cast_date = cast_date,
+                    append_missing_to_raw = append_missing_to_raw,
+                    save = m_save, filename = m_filename, quiet = quiet, 
+                    tree = tree),
+    rodents =
+      rodents_options(cast_type = cast_type, tmnt_type = tmnt_type, 
+                      start = start, end = end, hind_step = hind_step, 
+                      drop_spp = drop_spp, min_plots = min_plots, 
+                      level = level, treatment = treatment, plots = plots, 
+                      output = output, save = r_save, filename = r_filename,
+                      quiet = quiet, tree = tree),
+    covariates =
+      covariates_options(cast_type = cast_type, cov_hist = cov_hist, 
+                         cov_fcast = cov_fcast, cast_date = cast_date, 
+                         yr = yr, start = start, end = end, 
+                         hind_step = hind_step, lead_time = lead_time, 
+                         min_lag = min_lag, fcast_nms = fcast_nms, 
+                         nfcnm = nfcnm,
+                         append_fcast_csv = append_fcast_csv, 
+                         hist_fcast_file = hist_fcast_file,
+                         source_name = source_name, save = c_save, 
+                         filename = c_filename, quiet = quiet, tree = tree),
+    metadata =
+      metadata_options(cast_date = cast_date, cast_type = cast_type,
+                       confidence_level = confidence_level,
+                       lead_time = lead_time, save = meta_save,
+                       filename = meta_filename, quiet = quiet, tree = tree),
+    cast_type = cast_type, 
+    quiet = quiet, 
+    tree = tree) %>%
   classy(c("data_options", "list"))
 }
 
@@ -436,9 +395,7 @@ moons_options <- function(n_future_moons = 12, cast_date = today(),
                           append_missing_to_raw = TRUE, save = TRUE,
                           filename = "moons.csv", tree = dirtree(), 
                           quiet = FALSE){
-  check_args(n_future_moons = n_future_moons, cast_date = cast_date, 
-             append_missing_to_raw = append_missing_to_raw,
-             save = save, filename = filename, tree = tree, quiet = quiet)                          
+  check_argsX()                         
   list(n_future_moons = n_future_moons, cast_date = cast_date, 
        append_missing_to_raw = append_missing_to_raw, save = save,
        filename = filename, tree = tree, quiet = quiet, class = "moons") %>%
@@ -462,11 +419,7 @@ rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL,
                             output = "abundance", save = TRUE, 
                             filename = "all.csv", tree = dirtree(), 
                             quiet = FALSE){
-  check_args(cast_type = cast_type, tmnt_type = tmnt_type, start = start, 
-             end = end, hind_step = hind_step, drop_spp = drop_spp, 
-             min_plots = min_plots, level = level, treatment = treatment, 
-             plots = plots, output = output, save = save, filename = filename,
-             tree = tree, quiet = quiet) 
+  check_argsX() 
   if (!is.null(tmnt_type)){
     if (tmnt_type == "all"){
       level <- "Site"
@@ -510,14 +463,7 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
                                source_name = "current_archive",
                                save = TRUE, filename = "covariates.csv", 
                                tree = dirtree(), quiet = FALSE){
-  check_args(cast_type = cast_type, cov_hist = cov_hist,
-             cov_fcast = cov_fcast, cast_date = cast_date, yr = yr, 
-             start = start, end = end, hind_step = hind_step, 
-             lead_time = lead_time, min_lag = min_lag, fcast_nms = fcast_nms,
-             nfcnm = nfcnm, append_fcast_csv = append_fcast_csv, 
-             hist_fcast_file = hist_fcast_file,
-             source_name = source_name, save = save, filename = filename, 
-             tree = tree, quiet = quiet)
+  check_argsX()
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
@@ -545,10 +491,7 @@ metadata_options <- function(cast_date = today(), cast_type = "forecasts",
                              confidence_level = 0.9, lead_time = 12,
                              save = TRUE, filename = "metadata.yaml", 
                              quiet = FALSE, tree = dirtree()){
-  check_args(cast_date = cast_date, cast_type = cast_type, 
-             confidence_level = confidence_level, 
-             lead_time = lead_time, save = save, filename = filename,
-             quiet = quiet, tree = tree)
+  check_argsX()
   list(cast_date = cast_date, cast_type = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
        filename = filename, quiet = quiet, tree = tree, 
@@ -573,9 +516,7 @@ predictions_options <- function(base = ".", main = "",
                                 download_existing_predictions = FALSE,
                                 quiet = FALSE){
 
-  check_args(base = base, main = main, subs = subs, 
-             download_existing_predictions = download_existing_predictions,
-             quiet = quiet)
+  check_argsX()
   tree <- dirtree(base, main, subs)
   list(tree = tree, 
        download_existing_predictions = download_existing_predictions, 
@@ -597,8 +538,7 @@ models_options <- function(base = ".", main = "",
                            subs = subdirs(subs_type = "portalcasting"),
                            quiet = FALSE, 
                            models = model_names(set = "prefab")){
-  check_args(base = base, main = main, subs = subs, quiet = quiet,
-             models = models)
+  check_argsX()
   tree <- dirtree(base, main, subs)
   list(models = models, quiet = quiet, tree = tree) %>%
   classy(c("models_options", "list"))
@@ -620,11 +560,7 @@ cast_options <- function(base = ".", main = "",
                          cast_type = "forecasts", cast_date = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){
-  check_args(base = base, main = main, subs = subs, quiet = quiet, 
-             models = models, cast_type = cast_type, cast_date = cast_date, 
-             ensemble = ensemble, start = start, end = end, 
-             hind_step = hind_step, min_plots = min_plots, 
-             min_traps = min_traps)
+  check_argsX()
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, models = models, cast_type = cast_type,
        cast_date = cast_date, ensemble = ensemble, start = start, end = end, 

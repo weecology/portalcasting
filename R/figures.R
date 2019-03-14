@@ -41,11 +41,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
                                   species = rodent_spp(set = "evalplot"),
                                   level = "Controls", cast_dates = NULL, 
                                   min_observed = 1){
-
-  check_args(tree = tree, species = species, level = level,
-             cast_type = cast_type, cast_dates = cast_dates, 
-             min_observed = min_observed, toggle = "plot")
-
+  check_argsX()
   if (is.null(cast_dates)){
     pfolderpath <- sub_path(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
@@ -221,10 +217,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts", 
                                    species = rodent_spp(set = "evalplot"),
                                    level = "Controls", ndates = 3){
-
-  check_args(tree = tree, cast_type = cast_type, species = species, 
-             level = level, ndates = ndates, toggle = "plot")
-
+  check_argsX()
   casts <- read_casts(tree, cast_type = cast_type) %>%
            select_casts(species = species, level = level) %>%
            append_observed_to_cast(tree)
@@ -407,18 +400,13 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
                                cast_date = NULL, model = "Ensemble", 
                                lead = 1, from_date = NULL, 
                                with_census = FALSE){
-
+  check_argsX()
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type, with_census)
   }
   if (is.null(from_date) & cast_type == "forecasts"){
     from_date <- cast_date
   }
-  check_args(tree = tree, species = species, level = level,
-             cast_type = cast_type, cast_date = cast_date,
-             lead = lead, from_date = from_date, 
-             with_census = with_census, model = model, toggle = "plot1mod")
-
 
   moons <- read_data(tree, "moons")
   casts <- read_cast(tree, cast_type = cast_type, cast_date = cast_date)
@@ -463,7 +451,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
        las = 1, xlim = rangex, ylim = rangey)
   mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
-  plotcastpoint_yaxis(tree = tree, species = pred$species)
+  plot_cast_point_yaxis(tree = tree, species = pred$species)
   mtext(main, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
   
   for(i in 1:nspp){
@@ -504,9 +492,9 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
 #'
 #' @export
 #'
-plotcastpoint_yaxis <- function(tree = dirtree(), species = "total"){
+plot_cast_point_yaxis <- function(tree = dirtree(), species = "total"){
 
-  check_args(tree = tree, species = species)
+  check_argsX()
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
@@ -573,15 +561,10 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
                          level = "Controls", cast_type = "forecasts", 
                          cast_date = NULL, model = "Ensemble", 
                          start_newmoon = 300, add_obs = TRUE){
-
+  check_argsX()
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type)
   }
-  check_args(tree = tree, species = species, level = level,
-             cast_type = cast_type, cast_date = cast_date, model = model,
-             start_newmoon = start_newmoon, add_obs = add_obs,
-             toggle = "plot1mod1sp")
-
   obs <- read_data(tree, tolower(level))
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model)   
@@ -646,6 +629,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 #' @export
 #'
 plot_cast_ts_xaxis <- function(tree, rangex){
+  check_argsX()
   check_args(tree = tree, rangex = rangex)
   moons <- read_data(tree, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
@@ -692,8 +676,7 @@ plot_cast_ts_xaxis <- function(tree, rangex){
 #'
 plot_cast_ts_ylab <- function(tree = dirtree(), level = "Controls",
                               species = "total", model = "Ensemble"){
-  check_args(tree = tree, species = species, level = level, model = model,
-             toggle = "plot1mod1sp") 
+  check_argsX()
   lab <- list(text = "", font = 1)
   lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 

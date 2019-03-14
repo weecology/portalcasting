@@ -21,7 +21,7 @@ test_that("create_sub_dirs", {
 })
 
 test_that("create_sub_dir", {
-  expect_error(create_sub_dir(1), "`path`")
+  expect_error(create_sub_dir(1), "`sub_path`")
   expect_equal(create_sub_dir(), NULL)
   expect_message(create_sub_dir(sub_paths(tree = dirtree(main = "ok"))[1]))
   unlink(dirtree(main = "ok"), recursive = TRUE, force = TRUE)

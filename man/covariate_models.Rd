@@ -4,14 +4,14 @@
 \alias{covariate_models}
 \title{Create a covariate model list}
 \usage{
-covariate_models(type = "pevgarch")
+covariate_models(mod_type = "pevGARCH")
 }
 \arguments{
-\item{type}{type name for covariate models. Currently only "pevgarch" is
-supported.}
+\item{mod_type}{\code{character} name for covariate models. Currently only 
+\code{"pevGARCH"} is supported.}
 }
 \value{
-list of covariate model structures
+\code{list} of covariate model structures
 }
 \description{
 Convenience function for creating covariate model lists
