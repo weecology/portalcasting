@@ -124,28 +124,72 @@ lag_covariates <- function(covariates, lag, tail = FALSE){
 read_data <- function(tree = dirtree(), data_name){
   check_args(tree = tree, data_name = data_name)
   if (data_name == "all"){
-    data <- read.csv(file_path(tree, "data/all.csv")) %>%
-            classy(c("data.frame", "rodents"))
+    data <- read_all(tree)
   }
   if (data_name == "controls"){
-    data <- read.csv(file_path(tree, "data/controls.csv")) %>%
-            classy(c("data.frame", "rodents"))
+    data <- read_controls(tree)
   }
   if (data_name == "covariates"){
-    data <- read.csv(file_path(tree, "data/covariates.csv")) %>%
-            classy(c("data.frame", "covariates"))
+    data <- read_covariates(tree)
   }
   if (data_name == "moons"){
-    data <- read.csv(file_path(tree, "data/moons.csv")) %>%
-            classy(c("data.frame", "moons"))
+    data <- read_moons(tree)
   }
   if (data_name == "metadata"){
-    data <- yaml.load_file(file_path(tree, "data/metadata.yaml")) %>%
-            classy(c("list", "metadata"))
+    data <- read_metadata(tree)
   }
   data
 }
 
+#' @rdname read_data
+#'
+#' @export
+#'
+read_all <- function(tree = dirtree()){
+  check_args(tree = tree)
+  read.csv(file_path(tree, "data/all.csv")) %>%
+           classy(c("data.frame", "rodents"))
+}
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_controls <- function(tree = dirtree()){
+  check_args(tree = tree)
+  read.csv(file_path(tree, "data/controls.csv")) %>%
+            classy(c("data.frame", "rodents"))
+}
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_covariates <- function(tree = dirtree()){
+  check_args(tree = tree)
+  read.csv(file_path(tree, "data/covariates.csv")) %>%
+           classy(c("data.frame", "covariates"))
+}
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_moons <- function(tree = dirtree()){
+  check_args(tree = tree)
+  read.csv(file_path(tree, "data/moons.csv")) %>%
+           classy(c("data.frame", "moons"))
+}
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_metadata <- function(tree = dirtree()){
+  check_args(tree = tree)
+  yaml.load_file(file_path(tree, "data/metadata.yaml")) %>%
+                 classy(c("list", "metadata"))
+}
 
 #' @title Determine the most recent data collection
 #'
