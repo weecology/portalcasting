@@ -54,7 +54,7 @@ dataout <- function(df, options_out = moons_options()){
   }
   if (!is.null(options_out$save)){
     if (options_out$save){
-      file_path(options_out$tree, paste0("data/", options_out$filename)) %>%
+      file_paths(options_out$tree, paste0("data/", options_out$filename)) %>%
       write.csv(df, ., row.names = FALSE)
     }
   }
