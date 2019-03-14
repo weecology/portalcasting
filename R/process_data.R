@@ -147,7 +147,7 @@ read_data <- function(tree = dirtree(), data_name){
 #'
 read_all <- function(tree = dirtree()){
   check_args(tree = tree)
-  read.csv(file_path(tree, "data/all.csv")) %>%
+  read.csv(file_paths(tree, "data/all.csv")) %>%
            classy(c("data.frame", "rodents"))
 }
 
@@ -157,7 +157,7 @@ read_all <- function(tree = dirtree()){
 #'
 read_controls <- function(tree = dirtree()){
   check_args(tree = tree)
-  read.csv(file_path(tree, "data/controls.csv")) %>%
+  read.csv(file_paths(tree, "data/controls.csv")) %>%
             classy(c("data.frame", "rodents"))
 }
 
@@ -167,7 +167,7 @@ read_controls <- function(tree = dirtree()){
 #'
 read_covariates <- function(tree = dirtree()){
   check_args(tree = tree)
-  read.csv(file_path(tree, "data/covariates.csv")) %>%
+  read.csv(file_paths(tree, "data/covariates.csv")) %>%
            classy(c("data.frame", "covariates"))
 }
 
@@ -177,7 +177,7 @@ read_covariates <- function(tree = dirtree()){
 #'
 read_moons <- function(tree = dirtree()){
   check_args(tree = tree)
-  read.csv(file_path(tree, "data/moons.csv")) %>%
+  read.csv(file_paths(tree, "data/moons.csv")) %>%
            classy(c("data.frame", "moons"))
 }
 
@@ -187,7 +187,7 @@ read_moons <- function(tree = dirtree()){
 #'
 read_metadata <- function(tree = dirtree()){
   check_args(tree = tree)
-  yaml.load_file(file_path(tree, "data/metadata.yaml")) %>%
+  yaml.load_file(file_paths(tree, "data/metadata.yaml")) %>%
                  classy(c("list", "metadata"))
 }
 

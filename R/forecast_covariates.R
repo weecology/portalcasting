@@ -34,8 +34,8 @@ forecast_covariates <- function(covariates, moons,
   }
   if (options_covariates$cast_type == "hindcasts"){
     end_step <- options_covariates$end[options_covariates$hind_step]
-    path <- file_path(options_covariates$tree, "data/covariate_forecasts.csv")
-    hist_fcast <- read.csv(path, stringsAsFactors = FALSE)
+    pth <- file_paths(options_covariates$tree, "data/covariate_forecasts.csv")
+    hist_fcast <- read.csv(pth, stringsAsFactors = FALSE)
     nmin <- hist_fcast$newmoonnumber %in% options_covariates$fcast_nms
     esin <- hist_fcast$forecast_newmoon %in% end_step
     out <- select(hist_fcast[which(nmin & esin), ], -date_made)
@@ -318,7 +318,7 @@ append_cov_fcast_csv <- function(new_forecast_covariates,
   covar_new$date_made <- paste0(date_made, " ", tz)
 
   fname <- paste0("data/", options_covariates$hist_fcast_file)
-  hist_file <- file_path(options_covariates$tree, fname)
+  hist_file <- file_paths(options_covariates$tree, fname)
 
   if (file.exists(hist_file)){
     covar_hist <- read.csv(hist_file, stringsAsFactors = FALSE)

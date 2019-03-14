@@ -82,7 +82,7 @@ prep_metadata <- function(moons = prep_moons(),
                confidence_level = options_metadata$confidence_level)
   if (options_metadata$save){
     local_path <- paste0("data/", options_metadata$filename)
-    con_path <- file_path(options_metadata$tree, local_path)
+    con_path <- file_paths(options_metadata$tree, local_path)
     writeLines(as.yaml(out), con = con_path)
   }
   classy(out, c(class(out), "metadata"))

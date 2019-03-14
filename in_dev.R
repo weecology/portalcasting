@@ -10,7 +10,7 @@ models = "AutoArima")
 #  what's left for now: a chunk of the process_forecasts functions and the 
 #  model functions (both are undergoing some updates)
 #
-# using the match.call approach
+# using the match.call approach...catching up through options script
 #
 # update data to rodents
 #changes (add to news)
@@ -18,10 +18,12 @@ models = "AutoArima")
 # rodents_data to prep_rodents
 # update_rodents to update_rodents_list
 #read_ functions
+# model_path to model_paths
 
 # lag_data to lag_covariates
 
 # dropped the models class, that was unnecessary
+  check_argsX()
 
 # things to align the rest of the way
 # ugg that toggle for plotting
@@ -54,4 +56,7 @@ level <- "All"
 metadata <- read_data(tree, "metadata")
 
 mo <- LTAvg(all, metadata, level)
+
+
+
 

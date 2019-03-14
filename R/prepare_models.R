@@ -43,7 +43,7 @@ write_model <- function(options_model = model_options()){
   if (!options_model$quiet){
     cat("", paste0("adding ", model, " model to models subdirectory \n"))
   }
-  mod_path <- model_path(options_model$tree, model = options_model$name)
+  mod_path <- model_paths(options_model$tree, models = options_model$name)
   mod_template <- model_template(options_model)
   write(mod_template, mod_path)
 }
@@ -78,7 +78,7 @@ model_template <- function(options_model = model_options()){
     args_a <- paste0('all, covariates, metadata', lag_arg, quiet_arg)
     c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
     args_c <- paste0(c_arg, lag_arg, quiet_arg)
-    path_cov <- 'file_path(tree, "data/covariates.csv")'
+    path_cov <- 'file_paths(tree, "data/covariates.csv")'
     cov_text <- paste0('\ncovariates <- read_data(tree, "covariates"); \n')
   } else{
     args_a <- paste0("all, metadata, ", quiet_arg)
@@ -86,9 +86,9 @@ model_template <- function(options_model = model_options()){
     cov_text <- "\n"
   }
 
-  path_a <- 'file_path(tree, "data/all.csv")'
-  path_c <- 'file_path(tree, "data/controls.csv")'
-  path_m <- 'file_path(tree, "data/metadata.yaml")'
+  path_a <- 'file_paths(tree, "data/all.csv")'
+  path_c <- 'file_paths(tree, "data/controls.csv")'
+  path_m <- 'file_paths(tree, "data/metadata.yaml")'
 
   paste0(
 'tree <- dirtree("', tree$base, '", "', tree$main, '", ', subs, ');

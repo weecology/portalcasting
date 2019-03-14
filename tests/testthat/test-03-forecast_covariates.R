@@ -65,7 +65,7 @@ test_that("append_cov_fcast_csv",{
   expect_equal(fcast_covs2, fcast_covs)
 
   fname <- paste0("data/", up_cov_opts$hist_fcast_file)
-  hist_file <- file_path(up_cov_opts$tree, fname)
+  hist_file <- file_paths(up_cov_opts$tree, fname)
   unlink(hist_file)
   expect_silent(fcast_covs3 <- append_cov_fcast_csv(fcast_covs, up_cov_opts))
   expect_equal(fcast_covs3, fcast_covs)

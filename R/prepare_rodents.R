@@ -293,8 +293,8 @@ trim_treatment <- function(rodents, options_rodents = rodents_options()){
 transfer_trapping_table <- function(options_data = data_options()){
   check_args(options_data = options_data)
   tree <- options_data$tree
-  from <- file_path(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
-  to <- file_path(tree, "data/trapping.csv")
+  from <- file_paths(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
+  to <- file_paths(tree, "data/trapping.csv")
   if (file.exists(from)){
     if (!options_data$quiet){
       message("Loading rodent trapping table into data subdirectory")

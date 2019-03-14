@@ -68,10 +68,10 @@ test_that("clear_tmp", {
 test_that("prep_data", {
   expect_error(prep_data(1))
   expect_output(prep_data(options_all1$options_data))
-  unlink(file_path(dirtree(main = "testing_casting"), "data/metadata.yaml"))
+  unlink(file_paths(dirtree(main = "testing_casting"), "data/metadata.yaml"))
   expect_output(prep_data(options_all1$options_data))
 
-  metadata_path <- file_path(dirtree(main = "testing_casting"), 
+  metadata_path <- file_paths(dirtree(main = "testing_casting"), 
                              "data/metadata.yaml")
   metadata <- yaml.load_file(metadata_path)    
   metadata$forecast_date <- "1970-01-01"

@@ -19,7 +19,8 @@ test_that("add_future_moons", {
   expect_error(add_future_moons(moons, 1), "`options_moons` is not")
   expect_error(add_future_moons(1, moons_opts), "`moons` is not")
 
-  moons <- file_path(moons_opts$tree, "PortalData/Rodents/moon_dates.csv") %>%
+  moons <- file_paths(moons_opts$tree, 
+                      "PortalData/Rodents/moon_dates.csv") %>%
             read.csv(stringsAsFactors = FALSE) %>% 
             classy(c("data.frame", "moons"))
   expect_is(add_future_moons(moons, moons_opts), "moons")

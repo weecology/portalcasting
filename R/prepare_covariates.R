@@ -57,7 +57,7 @@ prep_covariates <- function(moons = prep_moons(),
 #'
 transfer_hist_covariate_forecasts <- function(options_data = data_options()){
   check_args(options_data = options_data)
-  path_to <- file_path(options_data$tree, "data/covariate_forecasts.csv")
+  path_to <- file_paths(options_data$tree, "data/covariate_forecasts.csv")
 
   fname <- "extdata/covariate_forecasts.csv"
   path_from <- system.file(fname, package = "portalcasting")

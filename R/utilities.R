@@ -1222,7 +1222,8 @@ check_argsX <- function(){
 #'     \code{\link{all_options}}, \code{\link{dir_options}},
 #'     \code{\link{PortalData_options}}, \code{\link{data_options}} 
 #'     \code{\link{predictions_options}} 
-#'     \code{\link{models_options}}, \code{\link{cast_options}} \cr \cr
+#'     \code{\link{models_options}}, \code{\link{cast_options}},
+#'     \code{\link{dirtree}} \cr \cr
 #'   \code{c_filename}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{data_options}},
 #'     \code{\link{covariates_options}}  \cr \cr
@@ -1266,6 +1267,8 @@ check_argsX <- function(){
 #'     \cr \cr
 #'   \code{ensemble}: must be a length-1 \code{logical} vector in
 #'     \code{\link{all_options}}, \code{\link{cast_options}}  \cr \cr
+#'   \code{extension}: must be a length-1 \code{character} vector with
+#'     a single period in \code{\link{model_paths}} \cr \cr 
 #'   \code{fcast_nms}: must be \code{NULL} or a non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} 
@@ -1304,6 +1307,8 @@ check_argsX <- function(){
 #'     \code{"Treatment"} in \code{\link{all_options}}, 
 #'     \code{\link{rodents_options}}, \code{\link{data_options}}, 
 #'     \code{\link{metadata_options}} \cr \cr
+#'   \code{local_paths}: must be a \code{character} 
+#'     vector in \code{\link{file_paths}} \cr \cr 
 #'   \code{m_filename}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{moons_options}}, \code{\link{data_options}}  \cr \cr
@@ -1320,7 +1325,8 @@ check_argsX <- function(){
 #'     \code{\link{all_options}}, \code{\link{dir_options}},
 #'     \code{\link{PortalData_options}}, \code{\link{data_options}} 
 #'     \code{\link{predictions_options}} 
-#'     \code{\link{models_options}}, \code{\link{cast_options}} \cr \cr
+#'     \code{\link{models_options}}, \code{\link{cast_options}},
+#'     \code{\link{dirtree}} \cr \cr
 #'   \code{min_lag}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -1341,10 +1347,10 @@ check_argsX <- function(){
 #'     \code{\link{covariate_models}}  \cr \cr
 #'   \code{model}: must be a length-1 \code{character} vector in
 #'     \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}},
-#'     \code{\link{plot_cast_ts_ylab}} \cr \cr
+#'     \code{\link{plot_cast_ts_ylab}}  \cr \cr
 #'   \code{models}: must be a \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{models_options}},
-#'     \code{\link{cast_options}} \cr \cr
+#'     \code{\link{cast_options}}, \code{\link{model_paths}} \cr \cr
 #'   \code{moons}: must be a \code{data.frame} of class \code{options} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
@@ -1415,6 +1421,8 @@ check_argsX <- function(){
 #'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
 #'     \code{\link{plot_cast_point_yaxis}}; specifically length-1 in
 #'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
+#'   \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
+#'     vector in \code{\link{sub_path}} \cr \cr 
 #'   \code{start}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} 
@@ -1429,7 +1437,12 @@ check_argsX <- function(){
 #'     \code{\link{all_options}}, \code{\link{dir_options}},
 #'     \code{\link{PortalData_options}}, \code{\link{data_options}} 
 #'     \code{\link{predictions_options}} 
-#'     \code{\link{models_options}}, \code{\link{cast_options}} \cr \cr
+#'     \code{\link{models_options}}, \code{\link{cast_options}},
+#'     \code{\link{dirtree}} \cr \cr
+#'   \code{subs_names}: must be \code{NULL} or a \code{character} 
+#'     vector in \code{\link{subdirs}}  \cr \cr
+#'   \code{subs_type}: must be \code{NULL} or a length-1 \code{character} 
+#'     vector in \code{\link{subdirs}}  \cr \cr
 #'   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector of value \code{"all"} or \code{"controls"} in 
 #'     \code{\link{all_options}}, \code{\link{rodents_options}}, 
@@ -1445,8 +1458,11 @@ check_argsX <- function(){
 #'     \code{\link{plot_cast_point_yaxis}}, \code{\link{plot_cast_ts}},
 #'     \code{\link{plot_cast_ts_xaxis}}, \code{\link{plot_cast_ts_ylab}},
 #'     \code{\link{model_options}},
-#'     \code{\link{rodents_options}}, \code{\link{metadata_options}} 
-#'     \code{\link{covariates_options}}, \code{\link{moons_options}} \cr \cr 
+#'     \code{\link{rodents_options}}, \code{\link{metadata_options}}, 
+#'     \code{\link{covariates_options}}, \code{\link{moons_options}},
+#'     \code{\link{base_path}}, \code{\link{main_path}}, 
+#'     \code{\link{sub_paths}}, \code{\link{sub_path}},
+#'     \code{\link{file_paths}}, \code{\link{model_paths}} \cr \cr 
 #'   \code{version}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{with_census}: must be a length-1 \code{logical} vector in
@@ -1600,6 +1616,24 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`ensemble` can only be of length = 1")
     }
   }
+  if (arg_name == "extension"){
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`extension` is not a character")
+      }
+      if (length(arg_value) != 1){
+        stop("`extension` can only be of length = 1")
+      }
+      lext <- nchar(arg_value)
+      spot <- rep(NA, lext)
+      for(i in 1:lext){
+        spot[i] <- substr(arg_value, i, i) == "."
+      }
+      if (sum(spot) != 1){
+        stop("`extension` is not an extension")
+      }
+    }
+  }
   if (arg_name == "fcast_nms"){
     if (!is.null(arg_value)){
       if (!is.numeric(arg_value)){
@@ -1712,6 +1746,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       }
     }
   }
+  if (arg_name == "local_paths"){
+    if (!("character" %in% class(arg_value))){
+      stop("`local_path` is not a character")
+    }
+  }
   if (arg_name == "m_filename"){
     if (!("character" %in% class(arg_value))){
       stop("`m_filename` is not a character")
@@ -1810,11 +1849,13 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "model"){
-    if (!("character" %in% class(arg_value))){
-      stop("`model` is not a character")
-    }
-    if (length(arg_value) != 1){
-      stop("`model` can only be of length = 1")
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`model` is not a character")
+      }
+      if (length(arg_value) != 1){
+        stop("`model` can only be of length = 1")
+      }
     }
   }
   if (arg_name == "models"){
@@ -1991,6 +2032,16 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       }
     }
   }
+  if (arg_name == "specific_sub"){
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`specific_sub` is not a character")
+      }
+      if (length(arg_value) != 1){
+        stop("`specific_sub` can only be of length = 1")
+      }
+    }
+  }
   if (arg_name == "start"){
     if (!is.numeric(arg_value)){
       stop("`start` is not numeric")
@@ -2026,6 +2077,26 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   if (arg_name == "subs"){
     if (!("subdirs" %in% class(arg_value))){
       stop("`subs` is not a subdirs vector")
+    }
+  }
+  if (arg_name == "subs_names"){
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`subs_names` is not a character")
+      }
+    }
+  }
+  if (arg_name == "subs_type"){
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`subs_type` is not a character")
+      }
+      if (length(arg_value) != 1){
+        stop("`subs_type` can only be of length = 1")
+      }
+      if (!(arg_value %in% c("portalcasting"))){
+        stop("`subs_type` is not recognized ")
+      }
     }
   }
   if (arg_name == "tmnt_type"){

@@ -21,7 +21,7 @@ test_that("transfer_hist_covariate_forecasts", {
   d_opts2 <- d_opts
   d_opts2$quiet <- TRUE
   expect_silent(transfer_hist_covariate_forecasts(d_opts))
-  path_to <- file_path(d_opts$tree, "data/covariate_forecasts.csv")
+  path_to <- file_paths(d_opts$tree, "data/covariate_forecasts.csv")
   unlink(path_to, force = TRUE)  
   expect_message(transfer_hist_covariate_forecasts(d_opts))
   unlink(path_to, force = TRUE)  

@@ -39,7 +39,7 @@ download_predictions <- function(tree = dirtree(), download = TRUE,
     req <- GET(from_path)
     stop_for_status(req)
     filelist <- unlist(lapply(content(req), "[", "path"), use.names = FALSE)
-    to_fpaths <- file_path(tree, filelist)
+    to_fpaths <- file_paths(tree, filelist)
     from_fpaths <- paste0(from3, filelist)
     x <- mapply(download.file, url = from_fpaths, destfile = to_fpaths, 
                 quiet = quiet)

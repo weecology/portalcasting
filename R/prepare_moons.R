@@ -25,7 +25,7 @@ prep_moons <- function(options_moons = moons_options()){
     message("Loading moons data file into the data subdirectory")
   }
   verify_PortalData(options_moons$tree, "moon_dates.csv")
-  file_path(options_moons$tree, "PortalData/Rodents/moon_dates.csv") %>%
+  file_paths(options_moons$tree, "PortalData/Rodents/moon_dates.csv") %>%
   read.csv(stringsAsFactors = FALSE) %>% 
   classy(c("data.frame", "moons")) %>%
   add_future_moons(options_moons) %>%
@@ -56,10 +56,10 @@ prep_moons <- function(options_moons = moons_options()){
 append_past_moons_to_raw <- function(moons, options_moons = moons_options()){
   check_args(options_moons = options_moons, moons = moons)
   if (options_moons$append_missing_to_raw){
-    path <- file_path(options_moons$tree, "PortalData/Rodents/moon_dates.csv")
+    pth <- file_paths(options_moons$tree, "PortalData/Rodents/moon_dates.csv")
     included_moons <- moons$newmoondate < today()
     newraw <- moons[included_moons, ]
-    write.csv(newraw, path, row.names = FALSE)
+    write.csv(newraw, pth, row.names = FALSE)
   }
   moons
 }

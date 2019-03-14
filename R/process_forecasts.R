@@ -348,7 +348,7 @@ read_cast <- function(tree = dirtree(), cast_type = "forecasts",
     stop("`cast_date` can only be of length = 1")
   }
   lpath <- paste0("predictions/", cast_date, cast_type, ".csv")
-  fpath <- file_path(tree, lpath)
+  fpath <- file_paths(tree, lpath)
   if (!file.exists(fpath)){
     stop(paste0(cast_type, " from ", cast_date, " not available"))
   }

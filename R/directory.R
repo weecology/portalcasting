@@ -274,7 +274,7 @@ fill_models <- function(options_models = models_options()){
 verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
                               quiet = FALSE){
   check_argsX()
-  path <- file_path(tree = tree, paste0("PortalData/Rodents/", filename)) 
+  path <- file_paths(tree = tree, paste0("PortalData/Rodents/", filename)) 
   if (!all(file.exists(path))){
     options_dir <- dir_options()
     options_dir$tree <- tree

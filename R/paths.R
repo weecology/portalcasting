@@ -31,7 +31,7 @@
 #'
 dirtree <- function(base = ".", main = "", 
                     subs = subdirs(subs_type = "portalcasting")){
-  check_args(base = base, main = main, subs = subs)
+  check_argsX()
   list("base" = base, "main" = main, "subs" = subs) %>%
   classy(c("dirtree", "list"))
 }
@@ -57,7 +57,7 @@ dirtree <- function(base = ".", main = "",
 #' @export
 #'
 subdirs <- function(subs_names = NULL, subs_type = NULL){
-  check_args(subs_names = subs_names, subs_type = subs_type)
+  check_argsX()
   if (!is.null(subs_type) && subs_type == "portalcasting"){
     pc_subs <- c("predictions", "models", "PortalData", "data", "tmp")
     subs_names <- c(subs_names, pc_subs)
@@ -89,7 +89,7 @@ subdirs <- function(subs_names = NULL, subs_type = NULL){
 #' @export
 #'
 base_path <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   base <- tree$base
   normalizePath(file.path(base), mustWork = FALSE)
 }
@@ -105,7 +105,7 @@ base_path <- function(tree = dirtree()){
 #' @export
 #'
 main_path <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main), mustWork = FALSE)
@@ -122,7 +122,7 @@ main_path <- function(tree = dirtree()){
 #' @export
 #'
 sub_paths <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   base <- tree$base
   main <- tree$main
   subs <- tree$subs
@@ -144,19 +144,22 @@ sub_paths <- function(tree = dirtree()){
 #' @export
 #'
 sub_path <- function(tree = dirtree(), specific_sub = "tmp"){
-  check_args(tree = tree, specific_sub = specific_sub)
+  check_argsX()
+  if (!is.null(specific_sub) && (!all(specific_sub %in% tree$subs))){
+    stop("`specific_sub` not in `tree`")
+  }
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main, specific_sub), mustWork = FALSE)
 }
 
-#' @title Determine the path for a model in the model sub directory
+#' @title Determine the path for one or more models in the model sub directory
 #'
-#' @description Return the normalized path for a specific model.
+#' @description Return the normalized path(s) for a specific model or models.
 #'
 #' @param tree \code{dirtree}-class list.
 #'
-#' @param model \code{character} name of the specific model.
+#' @param models \code{character} name of the specific model(s).
 #'
 #' @param extension \code{character} file extension (including the period).
 #'
@@ -167,62 +170,45 @@ sub_path <- function(tree = dirtree(), specific_sub = "tmp"){
 #' \dontrun{
 #' 
 #' setup_dir()
-#' model_path(model = "AutoArima")
+#' model_paths(models = "AutoArima")
 #' }
 #'
 #' @export
 #'
-model_path <- function(tree = dirtree(), model = NULL, extension = ".R"){
-  check_args(tree = tree, extension = extension)
- 
-
-  if (is.null(model)){
-    stop("`model` needs to be specified")
-  }
-  if (!is.character(model)){
-    stop("`model` is not a character")
-  }
-
-  lext <- nchar(extension)
-  spot <- rep(NA, lext)
-  for(i in 1:lext){
-    spot[i] <- substr(extension, i, i) == "."
-  }
-  if (sum(spot) != 1){
-    stop("`extension` is not an extension")
-  }
+model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
+  check_argsX()
   base <- tree$base
   main <- tree$main
   sub <- "models"
-  mod <- paste0(model, extension)
+  mod <- paste0(models, extension)
   normalizePath(file.path(base, main, sub, mod), mustWork = FALSE)
 }
 
-#' @title Determine the path for a file in the forecasting directory
+#' @title Determine the path for a file or files in the forecasting directory
 #'
-#' @description Return the normalized path for a specific file within the
-#'   directory. 
+#' @description Return the normalized path for a specific file or files 
+#'   within the directory. 
 #'
 #' @param tree \code{dirtree}-class list.
 #'
-#' @param local_path \code{character} file path within the \code{main} level 
-#'   of the portalcasting directory.
+#' @param local_paths \code{character} file path(s) within the \code{main}
+#'   level of the portalcasting directory.
 #'
-#' @return The normalized path of the specified file (see 
+#' @return The normalized path(s) of the specified file(s) (see 
 #'   \code{\link{normalizePath}}).
 #' 
 #' @examples
 #' \dontrun{
 #' 
 #' setup_dir()
-#' file_path(local_path = "PortalData/Rodents/Portal_rodent_species.csv")
+#' file_paths(local_paths = "PortalData/Rodents/Portal_rodent_species.csv")
 #' }
 #'
 #' @export
 #'
-file_path <- function(tree = dirtree(), local_path = NULL){
-  check_args(tree = tree, local_path = local_path)
+file_paths <- function(tree = dirtree(), local_paths = NULL){
+  check_argsX()
   base <- tree$base
   main <- tree$main
-  normalizePath(file.path(base, main, local_path), mustWork = FALSE)
+  normalizePath(file.path(base, main, local_paths), mustWork = FALSE)
 }

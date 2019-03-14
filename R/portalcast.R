@@ -147,7 +147,7 @@ clear_tmp <- function(tree = dirtree()){
     create_tmp(tree)
   }
   if (length(list.files(temp_dir)) > 0){
-    file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
+    file.remove(file_paths(tree, paste0("tmp/", list.files(temp_dir))))
   }
 }
 
@@ -168,7 +168,7 @@ prep_data <- function(options_data = data_options()){
   if (!options_data$quiet){
     cat("Preparing data", "\n")
   }
-  metadata_path <- file_path(options_data$tree, "data/metadata.yaml")
+  metadata_path <- file_paths(options_data$tree, "data/metadata.yaml")
   if (!file.exists(metadata_path)){
     fill_data(options_data)
   }
@@ -283,9 +283,9 @@ check_to_skip <- function(options_cast){
   out <- FALSE
   if (options_cast$cast_type == "hindcasts"){ 
     end_step <- options_cast$end[options_cast$hind_step]
-    trap_path <- file_path(options_cast$tree, "data/trapping.csv")
+    trap_path <- file_paths(options_cast$tree, "data/trapping.csv")
     trap_tab <- read.csv(trap_path, stringsAsFactors = FALSE)
-    moon_path <- file_path(options_cast$tree, "data/moons.csv")
+    moon_path <- file_paths(options_cast$tree, "data/moons.csv")
     moons <- read.csv(moon_path, stringsAsFactors = FALSE)
     min_plots <- options_cast$min_plots
     min_traps <- options_cast$min_traps
@@ -352,7 +352,7 @@ update_data <- function(options_data){
 update_covariates <- function(moons, options_covariates){
   check_args(moons = moons, options_covariates = options_covariates)
   end_step <- options_covariates$end[options_covariates$hind_step]
-  covs_path <- file_path(options_covariates$tree, "data/covariates.csv")
+  covs_path <- file_paths(options_covariates$tree, "data/covariates.csv")
   covs <- read.csv(covs_path, stringsAsFactors = FALSE) 
   covs <- classy(covs, c("data.frame", "covariates"))
   hist_cov <- covs[covs$newmoonnumber <= end_step, ]
@@ -379,13 +379,13 @@ update_covariates <- function(moons, options_covariates){
 update_rodents_list <- function(options_rodents){
   check_args(options_rodents = options_rodents)
   end_step <- options_rodents$end[options_rodents$hind_step]
-  all_path <- file_path(options_rodents$tree, "data/all.csv")
+  all_path <- file_paths(options_rodents$tree, "data/all.csv")
   all <- read.csv(all_path, stringsAsFactors = FALSE)
   all <- all[all$newmoonnumber <= end_step, ]
   write.csv(all, all_path, row.names = FALSE)
   all <- classy(all, c("data.frame", "rodents"))
 
-  ctls_path <- file_path(options_rodents$tree, "data/controls.csv")
+  ctls_path <- file_paths(options_rodents$tree, "data/controls.csv")
   ctls <- read.csv(ctls_path, stringsAsFactors = FALSE)
   ctls <- ctls[ctls$newmoonnumber <= end_step, ]
   write.csv(ctls, ctls_path, row.names = FALSE)

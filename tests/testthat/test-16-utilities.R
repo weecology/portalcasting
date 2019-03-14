@@ -3,7 +3,7 @@ context("Test utilities functions")
 test_that("dataout", {
   df <- data.frame(x = 1:10, y = 11:20)
   dfo <- dataout(df, moons_options(save = FALSE))
-  fp <- file_path(dirtree(main = ""), "ok.csv")
+  fp <- file_paths(dirtree(main = ""), "ok.csv")
   fp1 <- gsub("ok.csv", "", fp)
   fp2 <- paste0(fp1, "data")
   dir.create(fp2)

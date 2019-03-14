@@ -58,7 +58,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
           append_observed_to_cast(tree) %>%
           measure_cast_error(min_observed = min_observed)
 
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -222,7 +222,7 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
            select_casts(species = species, level = level) %>%
            append_observed_to_cast(tree)
 
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -495,7 +495,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
 plot_cast_point_yaxis <- function(tree = dirtree(), species = "total"){
 
   check_argsX()
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
   nspp <- length(species)
@@ -678,7 +678,7 @@ plot_cast_ts_ylab <- function(tree = dirtree(), level = "Controls",
                               species = "total", model = "Ensemble"){
   check_argsX()
   lab <- list(text = "", font = 1)
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
   if (species == "total"){
