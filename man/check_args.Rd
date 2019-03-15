@@ -258,7 +258,7 @@ settings controlling the metadata data creation.}
 
 \item{path}{The normalized path of the specific subdirectory folder to be 
 created in the directory tree as a \code{character} value (see 
-\code{\link{normalizePath}}, \code{\link{sub_path}}).}
+\code{\link{normalizePath}}.}
 
 \item{species}{\code{character} vector of the species codes (or 
 \code{"total"} for the total across species) to be selected from or 

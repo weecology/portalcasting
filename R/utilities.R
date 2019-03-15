@@ -415,7 +415,7 @@ remove_incompletes <- function(df, col_to_check){
 #'
 #' @param path The normalized path of the specific subdirectory folder to be 
 #'   created in the directory tree as a \code{character} value (see 
-#'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
+#'   \code{\link{normalizePath}}.
 #'
 #' @param filename \code{character} name of the file for the saving.
 #'
@@ -1354,7 +1354,8 @@ check_argsX <- function(){
 #'   \code{moons}: must be a \code{data.frame} of class \code{options} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
-#'     \code{\link{get_climate_forecasts}} \cr \cr
+#'     \code{\link{get_climate_forecasts}},
+#'     \code{\link{update_covariates}} \cr \cr
 #'   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{moons_options}}
 #'     \cr \cr
@@ -1370,14 +1371,22 @@ check_argsX <- function(){
 #'     \code{options} in \code{\link{append_cov_fcast_csv}} \cr \cr
 #'   \code{options_all}: must be of class \code{all_options} in
 #'     \code{\link{setup_dir}}, \code{\link{fill_dir}}, 
-#'     \code{\link{cleanup_dir}}  \cr \cr
+#'     \code{\link{cleanup_dir}}, \code{\link{portalcast}},
+#'     \code{\link{casts}}, \code{\link{step_casts}},
+#'     \code{\link{step_hind_forward}}  \cr \cr
+#'   \code{options_cast}: must be of class \code{cast_options} in
+#'     \code{\link{verify_models}}, \code{\link{cast_models}}, 
+#'     \code{\link{models_to_cast}}, \code{\link{cast}},
+#'     \code{\link{check_to_skip}} \cr \cr
 #'   \code{options_covariates}: must be of class \code{covariates_options} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
 #'     \code{\link{get_climate_forecasts}}, 
-#'     \code{\link{append_cov_fcast_csv}} \cr \cr
+#'     \code{\link{append_cov_fcast_csv}},
+#'     \code{\link{update_covariates}} \cr \cr
 #'   \code{options_data}: must be of class \code{data_options} in
-#'     \code{\link{fill_data}} \cr \cr
+#'     \code{\link{fill_data}}, \code{\link{prep_data}}
+#'     \code{\link{update_data}} \cr \cr
 #'   \code{options_dir}: must be of class \code{dir_options} in
 #'     \code{\link{create_dir}}, \code{\link{create_main_dir}},
 #'     \code{\link{create_sub_dirs}}  \cr \cr
@@ -1387,6 +1396,8 @@ check_argsX <- function(){
 #'     \code{\link{fill_PortalData}} \cr \cr
 #'   \code{options_predictions}: must be of class \code{predictions_options}
 #'     in \code{\link{fill_predictions}} \cr \cr
+#'   \code{options_rodents}: must be of class \code{rodents_options} in
+#'     \code{\link{update_rodents_list}}  \cr \cr
 #'   \code{output}: must be \code{"abundance"} in \code{\link{all_options}}, 
 #'     \code{\link{data_options}}, \code{\link{rodents_options}}  
 #'     \cr \cr
@@ -1422,7 +1433,7 @@ check_argsX <- function(){
 #'     \code{\link{plot_cast_point_yaxis}}; specifically length-1 in
 #'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
 #'   \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector in \code{\link{sub_path}} \cr \cr 
+#'     vector in \code{\link{sub_paths}} \cr \cr 
 #'   \code{start}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} 
@@ -1462,7 +1473,8 @@ check_argsX <- function(){
 #'     \code{\link{covariates_options}}, \code{\link{moons_options}},
 #'     \code{\link{base_path}}, \code{\link{main_path}}, 
 #'     \code{\link{sub_paths}}, 
-#'     \code{\link{file_paths}}, \code{\link{model_paths}} \cr \cr 
+#'     \code{\link{file_paths}}, \code{\link{model_paths}},
+#'     \code{\link{create_tmp}}, \code{\link{clear_tmp}} \cr \cr 
 #'   \code{version}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{with_census}: must be a length-1 \code{logical} vector in
@@ -1919,6 +1931,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`options_all` is not an all_options list")
     }
   }
+  if (arg_name == "options_cast"){
+    if (!("cast_options" %in% class(arg_value))){
+      stop("`options_cast` is not a cast_options list")
+    }
+  }
   if (arg_name == "options_covariates"){
     if (!("covariates_options" %in% class(arg_value))){
       stop("`options_covariates` is not a covariates_options list")
@@ -1947,6 +1964,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   if (arg_name == "options_predictions"){
     if (!("predictions_options" %in% class(arg_value))){
       stop("`options_predictions` is not a predictions_options list")
+    }
+  }
+  if (arg_name == "options_rodents"){
+    if (!("rodents_options" %in% class(arg_value))){
+      stop("`options_rodents` is not a rodents_options list")
     }
   }
   if (arg_name == "output"){
