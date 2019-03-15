@@ -45,7 +45,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{plot_cast_ts}}, \code{\link{all_options}}, 
     \code{\link{data_options}}, \code{\link{cast_options}},
     \code{\link{moons_options}}, \code{\link{metadata_options}},
-    \code{\link{covariates_options}} \cr \cr
+    \code{\link{covariates_options}},
+    \code{\link{add_addl_future_moons}} \cr \cr
   \code{cast_dates}: must be \code{NULL} or a \code{Date} or 
     \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}  
     \cr \cr
@@ -91,6 +92,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \cr \cr
   \code{from_zenodo}: must be a length-1 \code{logical} vector in
     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
+  \code{future_moons}: must be a \code{data.frame} of class \code{moons} 
+    in \code{\link{add_addl_future_moons}} \cr \cr
   \code{hind_step}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} 
@@ -165,13 +168,14 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{models}: must be a \code{character} vector in
     \code{\link{all_options}}, \code{\link{models_options}},
     \code{\link{cast_options}}, \code{\link{model_paths}} \cr \cr
-  \code{moons}: must be a \code{data.frame} of class \code{options} in
+  \code{moons}: must be a \code{data.frame} of class \code{moons} in
     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
     \code{\link{get_climate_forecasts}}, \code{\link{update_covariates}},
     \code{\link{prep_covariates}}, \code{\link{prep_fcast_covariates}},
     \code{\link{update_covfcast_options}},
-    \code{\link{prep_metadata}} \cr \cr
+    \code{\link{prep_metadata}}, \code{\link{append_past_moons_to_raw}},
+    \code{\link{add_future_moons}}, \code{\link{format_moons}} \cr \cr
   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
     \code{integer}-conformable vector in \code{\link{moons_options}}
     \cr \cr
@@ -213,6 +217,9 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{prep_metadata}} \cr \cr
   \code{options_models}: must be of class \code{models_options} in
     \code{\link{fill_models}} \cr \cr
+  \code{options_moons}: must be of class \code{moons_options} in
+    \code{\link{fill_moons}}, \code{\link{append_past_moons_to_raw}},
+    \code{\link{add_future_moons}} \cr \cr
   \code{options_PortalData}: must be of class \code{PortalData_options} in
     \code{\link{fill_PortalData}} \cr \cr
   \code{options_predictions}: must be of class \code{predictions_options}
