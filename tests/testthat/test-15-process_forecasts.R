@@ -44,7 +44,7 @@ cast_opts1 <- cast_options(main = "testing_casting")
 cast_opts2 <- cast_options(main = "testing_casting", quiet = TRUE)
 
 test_that("combine_forecasts", {
-  expect_error(combine_forecasts(1), "`cast_options` not of class")
+  expect_error(combine_forecasts(1), "`options_cast` is not")
   expect_message(comb_fcast1 <- combine_forecasts(cast_opts1))
   expect_silent(comb_fcast2 <- combine_forecasts(cast_opts2))
   expect_equal(comb_fcast1, comb_fcast2)
@@ -53,7 +53,7 @@ test_that("combine_forecasts", {
 })
 
 test_that("add_ensemble", {
-  expect_error(add_ensemble(1), "`cast_options` not of class")
+  expect_error(add_ensemble(1), "`options_cast` is not")
   expect_message(ensmb1 <- add_ensemble(cast_opts1))
   expect_silent(ensmb2 <- add_ensemble(cast_opts2))
   expect_equal(ensmb1, ensmb2)

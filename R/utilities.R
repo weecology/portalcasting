@@ -366,8 +366,8 @@ check_args <- function(){
 #'     \code{integer}-conformable vector in \code{\link{all_options}}, 
 #'     \code{\link{metadata_options}}, \code{\link{covariates_options}}, 
 #'     \code{\link{data_options}} \cr \cr
-#'   \code{level}: must be a length-1 \code{character} vector of value
-#'     \code{"All"} or \code{"Controls"} in 
+#'   \code{level}: must be \code{NULL} or a length-1 \code{character} vector 
+#'     of value \code{"All"} or \code{"Controls"} in 
 #'     \code{\link{plot_cov_RMSE_mod_spp}}, 
 #'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
 #'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}},
@@ -421,7 +421,7 @@ check_args <- function(){
 #'     \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}},
 #'     \code{\link{plot_cast_ts_ylab}},
 #'     \code{\link{select_most_ab_spp}} \cr \cr
-#'   \code{models}: must be a \code{character} vector in
+#'   \code{models}: must be \code{NULL} or a \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{models_options}},
 #'     \code{\link{cast_options}}, \code{\link{model_paths}},
 #'     \code{\link{select_casts}}  \cr \cr
@@ -976,23 +976,25 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "level"){
-    if (!is.character(arg_value)){
-      stop("`level` is not a character")
-    }
-    if (length(arg_value) != 1){
-      stop("`level` can only be of length = 1")
-    }
-    AC_funs <- c("plot_cov_RMSE_mod_spp", "plot_err_lead_spp_mods",
-                 "plot_cast_point", "select_most_ab_spp", "select_casts")
-    ST_funs <- c("all_options")
-    if (fun_name %in% AC_funs){
-      if (!(arg_value %in% c("All", "Controls"))){
-        stop("`level` must be 'All' or 'Controls'")
+    if (!is.null(arg_value)){    
+      if (!is.character(arg_value)){
+        stop("`level` is not a character")
       }
-    }
-    if (fun_name %in% ST_funs){
-      if (!(arg_value %in% c("Site", "Treatment"))){
-        stop("`level` must be 'Site' or 'Treatment'")
+      if (length(arg_value) != 1){
+        stop("`level` can only be of length = 1")
+      }
+      AC_funs <- c("plot_cov_RMSE_mod_spp", "plot_err_lead_spp_mods",
+                   "plot_cast_point", "select_most_ab_spp", "select_casts")
+      ST_funs <- c("all_options")
+      if (fun_name %in% AC_funs){
+        if (!(arg_value %in% c("All", "Controls"))){
+          stop("`level` must be 'All' or 'Controls'")
+        }
+      }
+      if (fun_name %in% ST_funs){
+        if (!(arg_value %in% c("Site", "Treatment"))){
+          stop("`level` must be 'Site' or 'Treatment'")
+        }
       }
     }
   }
@@ -1114,8 +1116,10 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "models"){
-    if (!("character" %in% class(arg_value))){
-      stop("`models` is not a character")
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`models` is not a character")
+      }
     }
   }
   if (arg_name == "moons"){

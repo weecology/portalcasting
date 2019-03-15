@@ -5,7 +5,7 @@ test_that("model_names", {
   expect_error(model_names(set = 1), "`set` is not")
   expect_error(model_names(add = 1), "`add` is not")
   expect_error(model_names(set = c("prefab", "prefab")), "`set` can only be")
-  expect_error(model_names(set = "ok"), "not defined for that `set`")
+  expect_error(model_names(set = "ok"), "`set` must be")
 })
 
 test_that("write_model", {
