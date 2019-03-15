@@ -309,7 +309,11 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 cleanup_dir <- function(options_all = all_options()){
   check_argsX()
   options_dir <- options_all$options_dir
-  subs <- sub_paths(options_dir$tree, options_dir$to_cleanup)
+  if (is.null(options_dir$to_cleanup)){
+    subs <- NULL
+  } else{
+    subs <- sub_paths(options_dir$tree, options_dir$to_cleanup)
+  }
   if (!options_dir$quiet){
     subnames <- options_dir$to_cleanup
     if (length(subnames) > 0){
