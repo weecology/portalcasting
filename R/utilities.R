@@ -194,7 +194,7 @@ remove_incompletes <- function(df, col_to_check){
     stop("`df` not a data.frame class object")
   }
   if (length(col_to_check) > 1){
-    stop("`col_to_check` currently only able to length 1")
+    stop("`col_to_check` currently only able to be length 1")
   }
   if (!("character" %in% class(col_to_check))){
     stop("`col_to_check` not of class character")

@@ -10,7 +10,7 @@ models = "AutoArima")
 #  where it happened
 
 # presently integrating functions into check_args
-#  what's left for now: a chunk of the process_forecasts functions and the 
+#  what's left for now: the utilities functions and the 
 #  model functions (both are undergoing some updates)
 #
 # using the match.call approach...catching up through options script
