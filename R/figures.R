@@ -630,7 +630,6 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 #'
 plot_cast_ts_xaxis <- function(tree, rangex){
   check_args()
-  check_args(tree = tree, rangex = rangex)
   moons <- read_data(tree, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
