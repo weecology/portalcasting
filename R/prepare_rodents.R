@@ -26,7 +26,7 @@
 #'
 prep_rodents_list <- function(moons = prep_moons(), 
                               options_rodents = rodents_options()){
-  check_args(moons = moons, options_rodents = options_rodents)
+  check_argsX()
   if (!options_rodents$quiet){
     message("Loading rodents data files into data subdirectory")
   }
@@ -64,7 +64,7 @@ prep_rodents_list <- function(moons = prep_moons(),
 #'
 prep_rodents <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
-  check_args(moons = moons, options_rodents = options_rodents)
+  check_argsX()
   end_step <- options_rodents$end[options_rodents$hind_step]
   if (options_rodents$quiet){
     suppressMessages(
@@ -140,7 +140,7 @@ prep_rodents <- function(moons = prep_moons(),
 #'
 enforce_rodents_options <- function(options_rodents = rodents_options(),
                                     tmnt_type = NULL){
-  check_args(options_rodents = options_rodents, tmnt_type = tmnt_type)
+  check_argsX()
   if (!is.null(tmnt_type)){
     if (tmnt_type == "all"){
       options_rodents$tmnt_type <- "all"
@@ -178,7 +178,7 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
 #' @export
 #'
 remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
-  check_args(rodents = rodents, drop_spp = drop_spp)
+  check_argsX()
   if (!is.null(drop_spp)){
     rodents <- select(rodents, -one_of(drop_spp))
   }
@@ -212,6 +212,7 @@ remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
 #' @export
 #'
 rodent_spp <- function(set = "base", nadot = FALSE){
+  check_argsX()
   xNAx <- "NA"
   if (nadot){
     xNAx <- "NA."
@@ -225,8 +226,6 @@ rodent_spp <- function(set = "base", nadot = FALSE){
               "total")
   } else if (set == "evalplot"){
     out <- c("BA", "DM", "DO", "PP", "OT", "NA", "total")
-  } else{
-    stop("`set` not recognized")
   }
   out
 }
@@ -235,7 +234,7 @@ rodent_spp <- function(set = "base", nadot = FALSE){
 #'
 #' @description Check column names to verify if they are species names.
 #'
-#' @param x data table of interest
+#' @param rodents Class-\code{rodents} \code{data.table} of rodent data.
 #'
 #' @param spp_names \code{character} vector of species name abbreviations.
 #'
@@ -243,14 +242,9 @@ rodent_spp <- function(set = "base", nadot = FALSE){
 #'
 #' @export
 #'
-is.spcol <- function(x, spp_names = rodent_spp()){
-  if (!("data.frame" %in% class(x))){
-    stop("`x` is not of class data.frame")
-  }
-  if (!("character" %in% class(spp_names))){
-    stop("`spp_names` is not of class character")
-  }
-  colnames(x) %in% spp_names
+is.spcol <- function(rodents, spp_names = rodent_spp()){
+  check_argsX()
+  colnames(rodents) %in% spp_names
 }
 
 #' @title Remove the treatment column from the rodent data table
@@ -270,7 +264,7 @@ is.spcol <- function(x, spp_names = rodent_spp()){
 #' @export
 #'
 trim_treatment <- function(rodents, options_rodents = rodents_options()){
-  check_args(rodents = rodents, options_rodents = options_rodents)
+  check_argsX()
   if (options_rodents$level == "Treatment"){
     rodents <-  rodents %>%
                 filter(treatment == options_rodents$treatment) %>%
@@ -291,7 +285,7 @@ trim_treatment <- function(rodents, options_rodents = rodents_options()){
 #' @export
 #'
 transfer_trapping_table <- function(options_data = data_options()){
-  check_args(options_data = options_data)
+  check_argsX()
   tree <- options_data$tree
   from <- file_paths(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
   to <- file_paths(tree, "data/trapping.csv")

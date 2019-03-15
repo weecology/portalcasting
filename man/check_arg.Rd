@@ -73,7 +73,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{download_predictions}} \cr \cr 
   \code{drop_spp}: must be a \code{character} vector in
     \code{\link{all_options}}, \code{\link{data_options}},
-    \code{\link{rodents_options}} \cr \cr
+    \code{\link{rodents_options}}, \code{\link{remove_spp}} \cr \cr
   \code{end}: must be \code{NULL} or a positive \code{integer} or 
     \code{integer}-conformable vector in \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} 
@@ -177,10 +177,13 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{prep_covariates}}, \code{\link{prep_fcast_covariates}},
     \code{\link{update_covfcast_options}},
     \code{\link{prep_metadata}}, \code{\link{append_past_moons_to_raw}},
-    \code{\link{add_future_moons}}, \code{\link{format_moons}} \cr \cr
+    \code{\link{add_future_moons}}, \code{\link{format_moons}},
+    \code{\link{prep_rodents_list}}, \code{\link{prep_rodents}} \cr \cr
   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
     \code{integer}-conformable vector in \code{\link{moons_options}}
     \cr \cr
+  \code{nadot}: must be a length-1 \code{logical} vector in
+    code{\link{rodent_spp}} \cr \cr
   \code{name}: must be a length-1 \code{character} vector of the model name
     in \code{\link{model_options}} \cr \cr
   \code{ndates}: must be a length-1 positive \code{integer} or 
@@ -211,7 +214,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{options_data}: must be of class \code{data_options} in
     \code{\link{fill_data}}, \code{\link{prep_data}},
     \code{\link{update_data}},
-    \code{\link{transfer_hist_covariate_forecasts}} \cr \cr
+    \code{\link{transfer_hist_covariate_forecasts}},
+    \code{\link{transfer_trapping_table}} \cr \cr
   \code{options_dir}: must be of class \code{dir_options} in
     \code{\link{create_dir}}, \code{\link{create_main_dir}},
     \code{\link{create_sub_dirs}}  \cr \cr
@@ -227,7 +231,9 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{options_predictions}: must be of class \code{predictions_options}
     in \code{\link{fill_predictions}} \cr \cr
   \code{options_rodents}: must be of class \code{rodents_options} in
-    \code{\link{update_rodents_list}}  \cr \cr
+    \code{\link{update_rodents_list}}, \code{\link{prep_rodents_list}}, 
+    \code{\link{prep_rodents}}, \code{\link{enforce_rodents_options}},
+    \code{\link{trim_treatment}} \cr \cr
   \code{output}: must be \code{"abundance"} in \code{\link{all_options}}, 
     \code{\link{data_options}}, \code{\link{rodents_options}}  
     \cr \cr
@@ -252,11 +258,17 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{rangex}: must be a length-2 positive \code{integer} or 
     \code{integer}-conformable vector in \code{\link{plot_cast_ts_xaxis}}  
     \cr \cr
+  \code{rodents}: must be a \code{data.table} of class \code{rodents} in 
+    \code{\link{remove_spp}}, \code{\link{trim_treatment}},
+    \code{\link{is.spcol}}  \cr \cr 
   \code{rodents_list}: must be of class \code{rodents_list} in 
-    \code{\link{prep_metadata}} \cr \cr
+    \code{\link{prep_metadata}} \cr \cr 
   \code{save}: must be a length-1 \code{logical} vector in
     \code{\link{covariates_options}}, \code{\link{metadata_options}},
     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
+  \code{rodent_spp}: must be \code{NULL} or a length-1 \code{character} 
+    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
+    \code{\link{rodent_spp}} \cr \c
   \code{source_name}: must be a length-1 \code{character} vector in
     \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -267,6 +279,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
   \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
     vector in \code{\link{sub_paths}} \cr \cr 
+  \code{spp_names}: must be a \code{character} vector in
+    \code{\link{is.spcol}} \cr \cr
   \code{start}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} 
@@ -290,7 +304,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
     vector of value \code{"all"} or \code{"controls"} in 
     \code{\link{all_options}}, \code{\link{rodents_options}}, 
-    \code{\link{data_options}} \cr \cr
+    \code{\link{data_options}}, \code{\link{enforce_rodents_options}}
+    \cr \cr
   \code{to_cleanup}: must be \code{NULL} or a \code{character} vector in
     \code{\link{all_options}}, \code{\link{dir_options}} \cr \cr
   \code{treatment}: must be \code{NULL} or \code{"control"} in
