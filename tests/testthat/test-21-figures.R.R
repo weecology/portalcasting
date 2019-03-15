@@ -1,9 +1,13 @@
 context("Test figure functions")
 
 tree <- dirtree(main = "testing_casting");
-moons <- prep_moons(tree)
-rod_opts <- all_options(main = "testing_casting")$options_data$rodents
-prep_rodents(moons, rod_opts)
+data_opts <- all_options(main = "testing_casting")$options_data
+moons <- prep_moons(data_opts$moons)
+rodents_opts <- data_opts$rodents
+rodents_opts <- enforce_rodents_options(rodents_opts, "all")
+prep_rodents(moons, rodents_opts)
+rodents_opts <- enforce_rodents_options(rodents_opts, "controls")
+prep_rodents(moons, rodents_opts)
 metadata <- read_data(tree, "metadata")
 cast_date <- as.Date(metadata$forecast_date)
 cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
