@@ -31,9 +31,7 @@ prep_metadata <- function(moons = prep_moons(),
                           rodents_list = prep_rodents_list(), 
                           covariates = prep_covariates(), 
                           options_metadata = metadata_options()){
-  check_args(moons = moons, rodents_list = rodents_list, 
-             covariates = covariates, options_metadata = options_metadata)
-
+  check_argsX()
   if (!options_metadata$quiet){
     message("Loading metadata file into data subdirectory")
   }

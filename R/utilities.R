@@ -1253,7 +1253,8 @@ check_argsX <- function(){
 #'     \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
 #'   \code{covariates}: must be a \code{data.frame} of class \code{options} in
-#'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}} \cr \cr
+#'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
+#'     \code{\link{prep_metadata}} \cr \cr
 #'   \code{download_existing_predictions}: must be a length-1 \code{logical} 
 #'     vector in \code{\link{all_options}}, 
 #'     \code{\link{predictions_options}} \cr \cr
@@ -1359,7 +1360,8 @@ check_argsX <- function(){
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
 #'     \code{\link{get_climate_forecasts}}, \code{\link{update_covariates}},
 #'     \code{\link{prep_covariates}}, \code{\link{prep_fcast_covariates}},
-#'     \code{\link{update_covfcast_options}} \cr \cr
+#'     \code{\link{update_covfcast_options}},
+#'     \code{\link{prep_metadata}} \cr \cr
 #'   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{moons_options}}
 #'     \cr \cr
@@ -1397,6 +1399,8 @@ check_argsX <- function(){
 #'   \code{options_dir}: must be of class \code{dir_options} in
 #'     \code{\link{create_dir}}, \code{\link{create_main_dir}},
 #'     \code{\link{create_sub_dirs}}  \cr \cr
+#'   \code{options_metadata}: must be of class \code{metadata_options} in
+#'     \code{\link{prep_metadata}} \cr \cr
 #'   \code{options_models}: must be of class \code{models_options} in
 #'     \code{\link{fill_models}} \cr \cr
 #'   \code{options_PortalData}: must be of class \code{PortalData_options} in
@@ -1428,6 +1432,8 @@ check_argsX <- function(){
 #'   \code{rangex}: must be a length-2 positive \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{plot_cast_ts_xaxis}}  
 #'     \cr \cr
+#'   \code{rodents_list}: must be of class \code{rodents_list} in 
+#'     \code{\link{prep_metadata}} \cr \cr
 #'   \code{save}: must be a length-1 \code{logical} vector in
 #'     \code{\link{covariates_options}}, \code{\link{metadata_options}},
 #'     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
@@ -1964,6 +1970,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`options_dir` is not a dir_options list")
     }
   }
+  if (arg_name == "options_metadata"){
+    if (!("metadata_options" %in% class(arg_value))){
+      stop("`options_metadata` is not a metadata_options list")
+    }
+  }
   if (arg_name == "options_models"){
     if (!("models_options" %in% class(arg_value))){
       stop("`options_models` is not a models_options list")
@@ -2033,6 +2044,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (any(arg_value < 1) | any(arg_value %% 1 != 0)){
       stop("`rangex` is not a positive integer")
+    }
+  }
+  if (arg_name == "rodents_list"){
+    if (!("rodents_list" %in% class(arg_value))){
+      stop("`rodents_list` is not an rodents_list list")
     }
   }
   if (arg_name == "save"){
