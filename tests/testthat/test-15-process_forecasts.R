@@ -17,27 +17,27 @@ cast_date <- as.Date(metadata$forecast_date)
 
 test_that("save_forecast_output", {
   expect_error(save_forecast_output(1, f_c, "AutoArima", metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
   expect_error(save_forecast_output(f_a, 1, "AutoArima", metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
   expect_error(save_forecast_output(f_a, f_c, 1, metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
   expect_error(save_forecast_output(f_a, f_c, rep("AutoArima", 2), metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
   expect_error(save_forecast_output(f_a, f_c, "AutoArima", 1, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
   expect_error(save_forecast_output(f_a, f_c, "AutoArima", metadata, 1)) 
   expect_error(save_forecast_output(f_a, f_c, "AutoArima", metadata, 
                                     c("a", "b"))) 
   expect_error(save_forecast_output(f_ax, f_c, "AutoArima", metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
   expect_error(save_forecast_output(f_a, f_cx, "AutoArima", metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
 
   expect_silent(save_forecast_output(f_a, f_c, "AutoArima", metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
   expect_silent(save_forecast_output(f_a2, f_c2, "ESSS", metadata, 
-                                     sub_path(tree, "tmp")))
+                                     sub_paths(tree, "tmp")))
 })
 
 cast_opts1 <- cast_options(main = "testing_casting")
@@ -64,8 +64,8 @@ test_that("add_ensemble", {
   expect_equal(ensmb3, NULL)
 })
 
-sub1 <- sub_path(cast_opts1$tree, "predictions")
-sub2 <- sub_path(cast_opts1$tree, "PortalData")
+sub1 <- sub_paths(cast_opts1$tree, "predictions")
+sub2 <- sub_paths(cast_opts1$tree, "PortalData")
 
 test_that("compile_aic_weights", {
   expect_error(compile_aic_weights(1), "`pred_dir` is")
@@ -76,8 +76,8 @@ test_that("compile_aic_weights", {
 })
 
 test_that("make_ensemble", {
-  temp_dir <- sub_path(cast_opts1$tree, "tmp")
-  pred_dir <- sub_path(cast_opts1$tree, "predictions")
+  temp_dir <- sub_paths(cast_opts1$tree, "tmp")
+  pred_dir <- sub_paths(cast_opts1$tree, "predictions")
   forecast_date <- cast_opts1$fdate
   filename_suffix <- cast_opts1$cast_type
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
