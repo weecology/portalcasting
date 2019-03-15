@@ -4,13 +4,11 @@
 \alias{ESSS}
 \title{Exponential Smoothing State Space model for Portal Predictions}
 \usage{
-ESSS(abundances, metadata, level = "All", quiet = FALSE)
+ESSS(tree = dirtree(), level = "All", quiet = FALSE)
 }
 \arguments{
-\item{abundances}{Class-\code{rodents} \code{data.frame} table of rodent 
-abundances and time measures.}
-
-\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 
 \item{level}{\code{character} value name of the type of plots included 
 (\code{"All"} or \code{"Controls"}).}

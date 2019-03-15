@@ -17,7 +17,7 @@ the saved model predictions reside.}
 between 0 and 1.}
 }
 \value{
-ensemble
+Forecast abundance table for the ensemble model.
 }
 \description{
 Combine the fitted models to make an ensemble prediction.

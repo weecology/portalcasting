@@ -4,7 +4,7 @@
 \alias{save_forecast_output}
 \title{Save forecast output to files}
 \usage{
-save_forecast_output(all, controls, name, metadata, temp_dir)
+save_forecast_output(all, controls, name, tree)
 }
 \arguments{
 \item{all}{Ouput from a forecasting model function (e.g., 
@@ -17,11 +17,8 @@ save_forecast_output(all, controls, name, metadata, temp_dir)
 
 \item{name}{\code{character} model name for saving in files.}
 
-\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
-
-\item{temp_dir}{\code{character} of the path to the subdirectory 
-temporarily housing the predictions. Under default settings, this should 
-be \code{sub_paths(dirtree(), "tmp")}.}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 }
 \description{
 Save out the forecast abundances and AIC values from a given 

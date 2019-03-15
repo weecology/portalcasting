@@ -75,31 +75,23 @@ model_template <- function(options_model = model_options()){
 
   if (options_model$mod_covariates){
     lag_arg <- paste0(', lag = ', options_model$lag, ', ')
-    args_a <- paste0('all, covariates, metadata', lag_arg, quiet_arg)
-    c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
+    args_a <- paste0('tree, level = "All"', lag_arg, quiet_arg)
+    c_arg <- paste0('tree, level = "Controls"')
     args_c <- paste0(c_arg, lag_arg, quiet_arg)
     path_cov <- 'file_paths(tree, "data/covariates.csv")'
     cov_text <- paste0('\ncovariates <- read_data(tree, "covariates"); \n')
   } else{
-    args_a <- paste0("all, metadata, ", quiet_arg)
-    args_c <- paste0('controls, metadata, level = "Controls", ', quiet_arg)
+    args_a <- paste0('tree, level = "All", ', quiet_arg)
+    args_c <- paste0('tree, level = "Controls", ', quiet_arg)
     cov_text <- "\n"
   }
 
-  path_a <- 'file_paths(tree, "data/all.csv")'
-  path_c <- 'file_paths(tree, "data/controls.csv")'
-  path_m <- 'file_paths(tree, "data/metadata.yaml")'
-
   paste0(
 'tree <- dirtree("', tree$base, '", "', tree$main, '", ', subs, ');
-all <- read_data(tree, "all");
-controls <-read_data(tree, "controls");',
-cov_text, 
-'metadata <- read_data(tree, "metadata");
 f_a <- ', name ,'(', args_a, ');
 f_c <- ', name ,'(', args_c, ');
 save_forecast_output(f_a, f_c, "', 
-options_model$name, '", metadata, sub_paths(tree, "tmp"))'
+options_model$name, '", tree)'
 )
 
 }

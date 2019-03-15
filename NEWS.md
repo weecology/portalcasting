@@ -1,7 +1,35 @@
 # portalcasting (development version)
 
-# [portalcasting 0.3.1](https://github.com/weecology/portalcasting)
+# [portalcasting 0.4.0](https://github.com/weecology/portalcasting)
 *active development*
+
+### Tidied functionality for checking function arguments
+* Introduction of `check_args` and `check_arg` which collaborate to
+check the validity of function arguments using a standardized set
+of requirments based on the argument names, thereby helping to unify
+and standardize the use of the codebase's arguments.
+
+### Updated function names
+* `prep_rodents` is now  `prep_rodents_list`
+* `rodents_data` is now `prep_rodents`
+* `update_rodents` is now `update_rodents_list`
+* `read_data` has been split out into `read_all`, `read_controls`,
+`read_covariates`, `read_moons`, and `read_metadata`
+* `model_path` is now `model_paths`
+* `sub_path` and `sub_paths` have been merged into `sub_paths`, which 
+returns all if `specific_subs` is NULL
+* `lag_data` is now `lag_covariates`
+
+## Updated argument names to leverage `check_args`
+* In multiple functions `data` has been replaced with `rodents` to be
+specific.
+
+### Removal of classes
+* The `models` class has been removed.
+
+
+# [portalcasting 0.3.1](https://github.com/weecology/portalcasting/pull/93)
+*2019-03-12* 
 
 ### Bug fix in `plot_cast_ts()`
 * `plot_cast_ts` did not cleanly plot time series where observations had 

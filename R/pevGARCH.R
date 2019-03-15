@@ -13,13 +13,8 @@
 #'   abundance with an optional \code{lag} between the covariate values and 
 #'   abundances (defaults to 6 newmoons).
 #'
-#' @param abundances Class-\code{rodents} \code{data.frame} table of rodent 
-#'   abundances and time measures.
-#'
-#' @param covariates Class-\code{covaraites} \code{data.frame} table of 
-#'   historical and forecast covariate data and time measures.
-#'
-#' @param metadata Class-\code{metadata} model metadata \code{list}.
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @param level \code{character} value name of the type of plots included 
 #'   (\code{"All"} or \code{"Controls"}).
@@ -41,8 +36,12 @@
 #'
 #' @export
 #'
-pevGARCH <- function(abundances, covariates, metadata, level = "All", 
-                     lag = 6, quiet = FALSE){
+pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
+
+  abundances <- read_data(tree, tolower(level))
+  metadata <- read_metadata(tree)
+  covariates <- read_covariates(tree)
+
   if (!("rodents" %in% class(abundances))){
     stop("`abundances` is not of class rodents")
   }

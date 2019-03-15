@@ -17,10 +17,8 @@
 #'  other models used currently cannot, so we interpolate missing data here 
 #'  for comparison.
 #'
-#' @param abundances Class-\code{rodents} \code{data.frame} table of rodent 
-#'   abundances and time measures.
-#'
-#' @param metadata Class-\code{metadata} model metadata \code{list}.
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @param level \code{character} value name of the type of plots included 
 #'   (\code{"All"} or \code{"Controls"}).
@@ -39,7 +37,10 @@
 #'
 #' @export
 #'
-AutoArima <- function(abundances, metadata, level = "All", quiet = FALSE){
+AutoArima <- function(tree = dirtree(), level = "All", quiet = FALSE){
+
+  abundances <- read_data(tree, tolower(level))
+  metadata <- read_metadata(tree)
   if (!("rodents" %in% class(abundances))){
     stop("`abundances` is not of class rodents")
   }

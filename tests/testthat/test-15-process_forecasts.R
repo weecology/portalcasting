@@ -16,28 +16,16 @@ names(f_cx)[1] <- "ok"
 cast_date <- as.Date(metadata$forecast_date)
 
 test_that("save_forecast_output", {
-  expect_error(save_forecast_output(1, f_c, "AutoArima", metadata, 
-                                     sub_paths(tree, "tmp")))
-  expect_error(save_forecast_output(f_a, 1, "AutoArima", metadata, 
-                                     sub_paths(tree, "tmp")))
-  expect_error(save_forecast_output(f_a, f_c, 1, metadata, 
-                                     sub_paths(tree, "tmp")))
-  expect_error(save_forecast_output(f_a, f_c, rep("AutoArima", 2), metadata, 
-                                     sub_paths(tree, "tmp")))
-  expect_error(save_forecast_output(f_a, f_c, "AutoArima", 1, 
-                                     sub_paths(tree, "tmp")))
-  expect_error(save_forecast_output(f_a, f_c, "AutoArima", metadata, 1)) 
-  expect_error(save_forecast_output(f_a, f_c, "AutoArima", metadata, 
-                                    c("a", "b"))) 
-  expect_error(save_forecast_output(f_ax, f_c, "AutoArima", metadata, 
-                                     sub_paths(tree, "tmp")))
-  expect_error(save_forecast_output(f_a, f_cx, "AutoArima", metadata, 
-                                     sub_paths(tree, "tmp")))
+  expect_error(save_forecast_output(1, f_c, "AutoArima", tree))
+  expect_error(save_forecast_output(f_a, 1, "AutoArima", tree))
+  expect_error(save_forecast_output(f_a, f_c, 1, tree))
+  expect_error(save_forecast_output(f_a, f_c, rep("AutoArima", 2), tree))
+  expect_error(save_forecast_output(f_a, f_c, "AutoArima", 1))
+  expect_error(save_forecast_output(f_ax, f_c, "AutoArima", tree))
+  expect_error(save_forecast_output(f_a, f_cx, "AutoArima", tree))
 
-  expect_silent(save_forecast_output(f_a, f_c, "AutoArima", metadata, 
-                                     sub_paths(tree, "tmp")))
-  expect_silent(save_forecast_output(f_a2, f_c2, "ESSS", metadata, 
-                                     sub_paths(tree, "tmp")))
+  expect_silent(save_forecast_output(f_a, f_c, "AutoArima", tree))
+  expect_silent(save_forecast_output(f_a2, f_c2, "ESSS", tree))
 })
 
 cast_opts1 <- cast_options(main = "testing_casting")

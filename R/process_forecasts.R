@@ -13,17 +13,16 @@
 #'
 #' @param name \code{character} model name for saving in files.
 #'
-#' @param metadata Class-\code{metadata} model metadata \code{list}.
-#'
-#' @param temp_dir \code{character} of the path to the subdirectory 
-#'   temporarily housing the predictions. Under default settings, this should 
-#'   be \code{sub_paths(dirtree(), "tmp")}.
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @export
 #'
-save_forecast_output <- function(all, controls, name, metadata,
-                                 temp_dir){
+save_forecast_output <- function(all, controls, name, tree){
   check_args()
+
+  metadata <- read_data(tree, "metadata");
+  temp_dir <- sub_paths(tree, "tmp")
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 
@@ -90,8 +89,7 @@ combine_forecasts <- function(options_cast = cast_options()){
 #' @param options_cast Class-\code{cast_options} \code{list} containing the
 #'   hind- or forecasting options. See \code{\link{cast_options}}. 
 #'
-#' @return \code{list} of [1] \code{"forecasts"} (the forecasted abundances)
-#'   and [2] \code{"all_model_aic"} (the model AIC values).
+#' @return Forecast abundance table for the ensemble model.
 #' 
 #' @export
 #'
@@ -179,7 +177,7 @@ compile_aic_weights <- function(pred_dir){
 #' @param CI_level \code{numeric} confidence interval level to use (must be
 #'   between 0 and 1. 
 #' 
-#' @return ensemble
+#' @return Forecast abundance table for the ensemble model.
 #' 
 #' @export
 #'
