@@ -1,6 +1,8 @@
 context("Test figure functions")
 
 tree <- dirtree(main = "testing_casting");
+rod_opts <- all_options(main = "testing_casting")$options_data$rodents
+prep_rodents(rod_opts)
 metadata <- read_data(tree, "metadata")
 cast_date <- as.Date(metadata$forecast_date)
 cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
