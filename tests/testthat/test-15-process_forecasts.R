@@ -7,8 +7,8 @@ controls <-read_data(tree, "controls");
 metadata <- read_data(tree, "metadata");
 f_a <- AutoArima(tree, level = "All", quiet = FALSE);
 f_c <- AutoArima(tree, level = "Controls", quiet = FALSE);
-f_a2 <- ESSS(all, metadata, quiet = FALSE);
-f_c2 <- ESSS(controls, metadata, level = "Controls", quiet = FALSE);
+f_a2 <- ESSS(tree, level = "All", quiet = FALSE);
+f_c2 <- ESSS(tree, level = "Controls", quiet = FALSE);
 f_ax <- f_a
 names(f_ax)[1] <- "ok"
 f_cx <- f_c
