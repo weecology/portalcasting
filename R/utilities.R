@@ -1285,6 +1285,9 @@ check_argsX <- function(){
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} 
 #'     \code{\link{rodents_options}}, \code{\link{cast_options}}   
 #'     \cr \cr
+#'   \code{hist_cov}: must be a \code{data.frame} of class \code{options} in
+#'     \code{\link{prep_fcast_covariates}},
+#'     \code{\link{update_covfcast_options}} \cr \cr
 #'   \code{hist_fcast_file}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, 
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -1354,8 +1357,9 @@ check_argsX <- function(){
 #'   \code{moons}: must be a \code{data.frame} of class \code{options} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
-#'     \code{\link{get_climate_forecasts}},
-#'     \code{\link{update_covariates}} \cr \cr
+#'     \code{\link{get_climate_forecasts}}, \code{\link{update_covariates}},
+#'     \code{\link{prep_covariates}}, \code{\link{prep_fcast_covariates}},
+#'     \code{\link{update_covfcast_options}} \cr \cr
 #'   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{moons_options}}
 #'     \cr \cr
@@ -1382,11 +1386,14 @@ check_argsX <- function(){
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
 #'     \code{\link{get_climate_forecasts}}, 
-#'     \code{\link{append_cov_fcast_csv}},
-#'     \code{\link{update_covariates}} \cr \cr
+#'     \code{\link{append_cov_fcast_csv}}, \code{\link{update_covariates}} 
+#'     \code{\link{prep_covariates}}, \code{\link{prep_hist_covariates}}, 
+#'     \code{\link{prep_fcast_covariates}},
+#'     \code{\link{update_covfcast_options}} \cr \cr
 #'   \code{options_data}: must be of class \code{data_options} in
-#'     \code{\link{fill_data}}, \code{\link{prep_data}}
-#'     \code{\link{update_data}} \cr \cr
+#'     \code{\link{fill_data}}, \code{\link{prep_data}},
+#'     \code{\link{update_data}},
+#'     \code{\link{transfer_hist_covariate_forecasts}} \cr \cr
 #'   \code{options_dir}: must be of class \code{dir_options} in
 #'     \code{\link{create_dir}}, \code{\link{create_main_dir}},
 #'     \code{\link{create_sub_dirs}}  \cr \cr
@@ -1474,7 +1481,8 @@ check_argsX <- function(){
 #'     \code{\link{base_path}}, \code{\link{main_path}}, 
 #'     \code{\link{sub_paths}}, 
 #'     \code{\link{file_paths}}, \code{\link{model_paths}},
-#'     \code{\link{create_tmp}}, \code{\link{clear_tmp}} \cr \cr 
+#'     \code{\link{create_tmp}}, \code{\link{clear_tmp}},
+#'     \code{\link{prep_weather_data}} \cr \cr 
 #'   \code{version}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{with_census}: must be a length-1 \code{logical} vector in
@@ -1692,6 +1700,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (arg_value < 1 | arg_value %% 1 != 0){
       stop("`hind_step` is not a positive integer")
+    }
+  }
+  if (arg_name == "hist_cov"){
+    if (!("covariates" %in% class(arg_value))){
+      stop("`hist_cov` is not a covariates table")
     }
   }
   if (arg_name == "hist_fcast_file"){
