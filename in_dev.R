@@ -6,6 +6,8 @@ models = "AutoArima")
 # thoughts: 
 # make subs_type default to "portalcasting"
 # messageq function that eliminates the boolean calls
+# make the error message hit all faulty arguments and report the function
+#  where it happened
 
 # presently integrating functions into check_args
 #  what's left for now: a chunk of the process_forecasts functions and the 

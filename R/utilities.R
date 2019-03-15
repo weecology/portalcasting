@@ -1259,6 +1259,8 @@ check_argsX <- function(){
 #'   \code{download_existing_predictions}: must be a length-1 \code{logical} 
 #'     vector in \code{\link{all_options}}, 
 #'     \code{\link{predictions_options}} \cr \cr
+#'   \code{download}: must be a length-1 \code{logical} vector in
+#'     \code{\link{download_predictions}} \cr \cr 
 #'   \code{drop_spp}: must be a \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{data_options}},
 #'     \code{\link{rodents_options}} \cr \cr
@@ -1429,7 +1431,8 @@ check_argsX <- function(){
 #'     \code{\link{data_options}}, \code{\link{covariates_options}}, 
 #'     \code{\link{predictions_options}}, \code{\link{models_options}}, 
 #'     \code{\link{cast_options}}, \code{\link{metadata_options}},
-#'     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
+#'     \code{\link{moons_options}}, \code{\link{rodents_options}},
+#'     \code{\link{download_predictions}} \cr \cr 
 #'   \code{r_filename}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
@@ -1495,7 +1498,8 @@ check_argsX <- function(){
 #'     \code{\link{sub_paths}}, 
 #'     \code{\link{file_paths}}, \code{\link{model_paths}},
 #'     \code{\link{create_tmp}}, \code{\link{clear_tmp}},
-#'     \code{\link{prep_weather_data}} \cr \cr 
+#'     \code{\link{prep_weather_data}},
+#'     \code{\link{download_predictions}} \cr \cr 
 #'   \code{version}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{with_census}: must be a length-1 \code{logical} vector in
@@ -1616,6 +1620,14 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   if (arg_name == "covariates"){
     if (!("covariates" %in% class(arg_value))){
       stop("`covariates` is not a covariates table")
+    }
+  }
+  if (arg_name == "download"){
+    if (!("logical" %in% class(arg_value))){
+      stop("`download` is not logical")
+    }
+    if (length(arg_value) != 1){
+      stop("`download` can only be of length = 1")
     }
   }
   if (arg_name == "download_existing_predictions"){
