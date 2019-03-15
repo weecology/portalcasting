@@ -144,8 +144,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{integer}-conformable vector in \code{\link{all_options}}, 
     \code{\link{metadata_options}}, \code{\link{covariates_options}}, 
     \code{\link{data_options}} \cr \cr
-  \code{level}: must be a length-1 \code{character} vector of value
-    \code{"All"} or \code{"Controls"} in 
+  \code{level}: must be \code{NULL} or a length-1 \code{character} vector 
+    of value \code{"All"} or \code{"Controls"} in 
     \code{\link{plot_cov_RMSE_mod_spp}}, 
     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}},
@@ -199,7 +199,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}},
     \code{\link{plot_cast_ts_ylab}},
     \code{\link{select_most_ab_spp}} \cr \cr
-  \code{models}: must be a \code{character} vector in
+  \code{models}: must be \code{NULL} or a \code{character} vector in
     \code{\link{all_options}}, \code{\link{models_options}},
     \code{\link{cast_options}}, \code{\link{model_paths}},
     \code{\link{select_casts}}  \cr \cr
