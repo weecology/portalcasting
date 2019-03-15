@@ -10,7 +10,7 @@
 #' @export
 #'
 covariate_models <- function(mod_type = "pevGARCH"){
-  check_argsX()
+  check_args()
   out <- NULL
   if (mod_type == "pevGARCH"){
     out <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),

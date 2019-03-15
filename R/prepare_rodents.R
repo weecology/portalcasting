@@ -26,7 +26,7 @@
 #'
 prep_rodents_list <- function(moons = prep_moons(), 
                               options_rodents = rodents_options()){
-  check_argsX()
+  check_args()
   if (!options_rodents$quiet){
     message("Loading rodents data files into data subdirectory")
   }
@@ -64,7 +64,7 @@ prep_rodents_list <- function(moons = prep_moons(),
 #'
 prep_rodents <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
-  check_argsX()
+  check_args()
   end_step <- options_rodents$end[options_rodents$hind_step]
   if (options_rodents$quiet){
     suppressMessages(
@@ -140,7 +140,7 @@ prep_rodents <- function(moons = prep_moons(),
 #'
 enforce_rodents_options <- function(options_rodents = rodents_options(),
                                     tmnt_type = NULL){
-  check_argsX()
+  check_args()
   if (!is.null(tmnt_type)){
     if (tmnt_type == "all"){
       options_rodents$tmnt_type <- "all"
@@ -178,7 +178,7 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
 #' @export
 #'
 remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
-  check_argsX()
+  check_args()
   if (!is.null(drop_spp)){
     rodents <- select(rodents, -one_of(drop_spp))
   }
@@ -212,7 +212,7 @@ remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
 #' @export
 #'
 rodent_spp <- function(set = "base", nadot = FALSE){
-  check_argsX()
+  check_args()
   xNAx <- "NA"
   if (nadot){
     xNAx <- "NA."
@@ -243,7 +243,7 @@ rodent_spp <- function(set = "base", nadot = FALSE){
 #' @export
 #'
 is.spcol <- function(rodents, spp_names = rodent_spp()){
-  check_argsX()
+  check_args()
   colnames(rodents) %in% spp_names
 }
 
@@ -264,7 +264,7 @@ is.spcol <- function(rodents, spp_names = rodent_spp()){
 #' @export
 #'
 trim_treatment <- function(rodents, options_rodents = rodents_options()){
-  check_argsX()
+  check_args()
   if (options_rodents$level == "Treatment"){
     rodents <-  rodents %>%
                 filter(treatment == options_rodents$treatment) %>%
@@ -285,7 +285,7 @@ trim_treatment <- function(rodents, options_rodents = rodents_options()){
 #' @export
 #'
 transfer_trapping_table <- function(options_data = data_options()){
-  check_argsX()
+  check_args()
   tree <- options_data$tree
   from <- file_paths(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
   to <- file_paths(tree, "data/trapping.csv")

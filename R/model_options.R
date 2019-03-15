@@ -29,7 +29,7 @@
 model_options <- function(tree = dirtree(), name = "AutoArima", 
                           mod_covariates = FALSE, lag = NULL, quiet = FALSE){
 
-  check_argsX()
+  check_args()
   list(name = name, mod_covariates = mod_covariates, lag = lag, quiet = quiet, 
        tree = tree) %>%
   classy(c("model_options", "list"))

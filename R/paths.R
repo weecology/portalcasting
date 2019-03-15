@@ -31,7 +31,7 @@
 #'
 dirtree <- function(base = ".", main = "", 
                     subs = subdirs(subs_type = "portalcasting")){
-  check_argsX()
+  check_args()
   list("base" = base, "main" = main, "subs" = subs) %>%
   classy(c("dirtree", "list"))
 }
@@ -57,7 +57,7 @@ dirtree <- function(base = ".", main = "",
 #' @export
 #'
 subdirs <- function(subs_names = NULL, subs_type = NULL){
-  check_argsX()
+  check_args()
   if (!is.null(subs_type) && subs_type == "portalcasting"){
     pc_subs <- c("predictions", "models", "PortalData", "data", "tmp")
     subs_names <- c(subs_names, pc_subs)
@@ -89,7 +89,7 @@ subdirs <- function(subs_names = NULL, subs_type = NULL){
 #' @export
 #'
 base_path <- function(tree = dirtree()){
-  check_argsX()
+  check_args()
   base <- tree$base
   normalizePath(file.path(base), mustWork = FALSE)
 }
@@ -105,7 +105,7 @@ base_path <- function(tree = dirtree()){
 #' @export
 #'
 main_path <- function(tree = dirtree()){
-  check_argsX()
+  check_args()
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main), mustWork = FALSE)
@@ -127,7 +127,7 @@ main_path <- function(tree = dirtree()){
 #' @export
 #'
 sub_paths <- function(tree = dirtree(), specific_subs = NULL){
-  check_argsX()
+  check_args()
   if (!is.null(specific_subs) && (!all(specific_subs %in% tree$subs))){
     stop("some `specific_subs` not in `tree`")
   }
@@ -162,7 +162,7 @@ sub_paths <- function(tree = dirtree(), specific_subs = NULL){
 #' @export
 #'
 model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
-  check_argsX()
+  check_args()
   base <- tree$base
   main <- tree$main
   sub <- "models"
@@ -193,7 +193,7 @@ model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
 #' @export
 #'
 file_paths <- function(tree = dirtree(), local_paths = NULL){
-  check_argsX()
+  check_args()
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main, local_paths), mustWork = FALSE)

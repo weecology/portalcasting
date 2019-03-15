@@ -18,7 +18,7 @@
 #' @export
 #'
 setup_dir <- function(options_all = all_options()){
-  check_argsX()
+  check_args()
   create_dir(options_all$options_dir)
   fill_dir(options_all)
 }
@@ -44,7 +44,7 @@ setup_dir <- function(options_all = all_options()){
 #' @export
 #'
 create_dir <- function(options_dir = dir_options()){
-  check_argsX()
+  check_args()
   create_main_dir(options_dir)
   create_sub_dirs(options_dir)
 }
@@ -57,7 +57,7 @@ create_dir <- function(options_dir = dir_options()){
 #' @export
 #'
 create_main_dir <- function(options_dir = dir_options()){
-  check_argsX()
+  check_args()
   main <- main_path(tree = options_dir$tree)
   if (!dir.exists(main)){
     if (!options_dir$quiet){
@@ -75,7 +75,7 @@ create_main_dir <- function(options_dir = dir_options()){
 #' @export
 #'
 create_sub_dirs <- function(options_dir = dir_options()){
-  check_argsX()
+  check_args()
   subs <- sub_paths(tree = options_dir$tree)
   nsubs <- length(subs)
   if (nsubs > 0){
@@ -100,7 +100,7 @@ create_sub_dirs <- function(options_dir = dir_options()){
 #' @export
 #'
 create_sub_dir <- function(sub_path = NULL, quiet = FALSE){
-  check_argsX()
+  check_args()
   if (is.null(sub_path)){
     return()
   }
@@ -136,7 +136,7 @@ create_sub_dir <- function(sub_path = NULL, quiet = FALSE){
 #' @export
 #'
 fill_dir <- function(options_all = all_options()){
-  check_argsX()
+  check_args()
   fill_PortalData(options_all$options_PortalData)
   fill_data(options_all$options_data)
   fill_predictions(options_all$options_predictions)
@@ -156,7 +156,7 @@ fill_dir <- function(options_all = all_options()){
 #' @export
 #'
 fill_PortalData <- function(options_PortalData = PortalData_options()){
-  check_argsX()
+  check_args()
   if (!options_PortalData$quiet){
     message("Downloading raw data into PortalData subdirectory")
   }
@@ -185,7 +185,7 @@ fill_PortalData <- function(options_PortalData = PortalData_options()){
 #' @export
 #'
 fill_data <- function(options_data = data_options()){
-  check_argsX()
+  check_args()
   if (!options_data$moons$quiet){
     message("Loading forecasting data files into data subdirectory")
   }
@@ -210,7 +210,7 @@ fill_data <- function(options_data = data_options()){
 #' @export
 #'
 fill_predictions <- function(options_predictions = predictions_options()){
-  check_argsX()
+  check_args()
   if (options_predictions$download_existing_predictions){
     if (!options_predictions$quiet){
       message("Downloading predictions into predictions subdirectory")
@@ -232,7 +232,7 @@ fill_predictions <- function(options_predictions = predictions_options()){
 #' @export
 #'
 fill_models <- function(options_models = models_options()){
-  check_argsX()
+  check_args()
   if (!options_models$quiet){
     message("Adding prefab models to models subdirectory:")
   }
@@ -273,7 +273,7 @@ fill_models <- function(options_models = models_options()){
 #' 
 verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
                               quiet = FALSE){
-  check_argsX()
+  check_args()
   path <- file_paths(tree = tree, paste0("PortalData/Rodents/", filename)) 
   if (!all(file.exists(path))){
     options_dir <- dir_options()
@@ -307,7 +307,7 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 #' @export
 #' 
 cleanup_dir <- function(options_all = all_options()){
-  check_argsX()
+  check_args()
   options_dir <- options_all$options_dir
   if (is.null(options_dir$to_cleanup)){
     subs <- NULL

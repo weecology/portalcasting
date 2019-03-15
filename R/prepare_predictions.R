@@ -25,7 +25,7 @@
 #'
 download_predictions <- function(tree = dirtree(), download = TRUE, 
                                  quiet = FALSE){
-  check_argsX()
+  check_args()
   from1 <- "https://api.github.com/repos/weecology/portalPredictions/"
   from2 <- "contents/predictions"
   from_path <- paste0(from1, from2)

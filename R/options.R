@@ -206,7 +206,7 @@ all_options <- function(base = ".", main = "",
                         version = "latest", from_zenodo = TRUE,
                         to_cleanup = c("tmp", "PortalData")){
 
-  check_argsX()
+  check_args()
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
@@ -267,7 +267,7 @@ all_options <- function(base = ".", main = "",
 dir_options <- function(base = ".", main = "", 
                         subs = subdirs(subs_type = "portalcasting"),
                         quiet = FALSE, to_cleanup = c("tmp", "PortalData")){
-  check_argsX()
+  check_args()
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, to_cleanup = to_cleanup) %>%
   classy(c("dir_options", "list"))
@@ -287,7 +287,7 @@ PortalData_options <- function(base = ".", main = "",
                                subs = subdirs(subs_type = "portalcasting"), 
                                quiet = FALSE,
                                version = "latest", from_zenodo = TRUE){
-  check_argsX()
+  check_args()
   tree <- dirtree(base, main, subs)
   list(tree = tree, version = version, from_zenodo = from_zenodo, 
               quiet = quiet) %>%
@@ -330,7 +330,7 @@ data_options <- function(base = ".", main = "",
                          cast_type = "forecasts",
                          confidence_level = 0.9, 
                          meta_save = TRUE, meta_filename = "metadata.yaml"){
-  check_argsX()
+  check_args()
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
@@ -395,7 +395,7 @@ moons_options <- function(n_future_moons = 12, cast_date = today(),
                           append_missing_to_raw = TRUE, save = TRUE,
                           filename = "moons.csv", tree = dirtree(), 
                           quiet = FALSE){
-  check_argsX()                         
+  check_args()                         
   list(n_future_moons = n_future_moons, cast_date = cast_date, 
        append_missing_to_raw = append_missing_to_raw, save = save,
        filename = filename, tree = tree, quiet = quiet, class = "moons") %>%
@@ -419,7 +419,7 @@ rodents_options <- function(cast_type = "forecasts", tmnt_type = NULL,
                             output = "abundance", save = TRUE, 
                             filename = "all.csv", tree = dirtree(), 
                             quiet = FALSE){
-  check_argsX() 
+  check_args() 
   if (!is.null(tmnt_type)){
     if (tmnt_type == "all"){
       level <- "Site"
@@ -463,7 +463,7 @@ covariates_options <- function(cast_type = "forecasts", cov_hist = TRUE,
                                source_name = "current_archive",
                                save = TRUE, filename = "covariates.csv", 
                                tree = dirtree(), quiet = FALSE){
-  check_argsX()
+  check_args()
   if (is.null(end) & cast_type == "hindcasts"){
     end <- 490:403
   }
@@ -491,7 +491,7 @@ metadata_options <- function(cast_date = today(), cast_type = "forecasts",
                              confidence_level = 0.9, lead_time = 12,
                              save = TRUE, filename = "metadata.yaml", 
                              quiet = FALSE, tree = dirtree()){
-  check_argsX()
+  check_args()
   list(cast_date = cast_date, cast_type = cast_type, 
        confidence_level = confidence_level,lead_time = lead_time, save = save,
        filename = filename, quiet = quiet, tree = tree, 
@@ -516,7 +516,7 @@ predictions_options <- function(base = ".", main = "",
                                 download_existing_predictions = FALSE,
                                 quiet = FALSE){
 
-  check_argsX()
+  check_args()
   tree <- dirtree(base, main, subs)
   list(tree = tree, 
        download_existing_predictions = download_existing_predictions, 
@@ -538,7 +538,7 @@ models_options <- function(base = ".", main = "",
                            subs = subdirs(subs_type = "portalcasting"),
                            quiet = FALSE, 
                            models = model_names(set = "prefab")){
-  check_argsX()
+  check_args()
   tree <- dirtree(base, main, subs)
   list(models = models, quiet = quiet, tree = tree) %>%
   classy(c("models_options", "list"))
@@ -560,7 +560,7 @@ cast_options <- function(base = ".", main = "",
                          cast_type = "forecasts", cast_date = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){
-  check_argsX()
+  check_args()
   tree <- dirtree(base, main, subs)
   list(tree = tree, quiet = quiet, models = models, cast_type = cast_type,
        cast_date = cast_date, ensemble = ensemble, start = start, end = end, 

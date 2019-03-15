@@ -15,7 +15,7 @@
 #' @export
 #'
 model_names <- function(add = NULL, set = "prefab"){
-  check_args(add = add, set = set)
+  check_args()
   out <- NULL
   if (!is.null(set) && set == "prefab"){
     out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
@@ -35,7 +35,7 @@ model_names <- function(add = NULL, set = "prefab"){
 #' @export
 #'
 write_model <- function(options_model = model_options()){
-  check_args(options_model = options_model)
+  check_args()
   model <- options_model$name
   if (is.null(model)){
     return()
@@ -60,7 +60,7 @@ write_model <- function(options_model = model_options()){
 #' @export
 #'
 model_template <- function(options_model = model_options()){
-  check_args(options_model = options_model)
+  check_args()
   tree <- options_model$tree
   if (any(!(tree$subs %in% subdirs(subs_type = "portalcasting")))){
     addl <- which(!(tree$subs %in% subdirs(subs_type = "portalcasting")))

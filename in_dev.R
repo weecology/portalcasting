@@ -36,7 +36,7 @@ models = "AutoArima")
 # remove the double up of CI_level and confidence_level
 # remove the double up of name and model
 # handle cast argument in verify_cast cast_is_valid combo
-
+# set is used for both species (rodent_spp) and models (model_names)
 
 #'   \code{}: must be \code{} in
 #'     \code{\link{}}  \cr \cr

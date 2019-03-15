@@ -23,7 +23,7 @@
 #'
 save_forecast_output <- function(all, controls, name, metadata,
                                  temp_dir){
-  check_argsX()
+  check_args()
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 
@@ -51,7 +51,7 @@ save_forecast_output <- function(all, controls, name, metadata,
 #' @export
 #'
 combine_forecasts <- function(options_cast = cast_options()){
-  check_argsX()
+  check_args()
   if (!options_cast$quiet){
     message(paste0("Compiling ", options_cast$cast_type))
   }
@@ -96,7 +96,7 @@ combine_forecasts <- function(options_cast = cast_options()){
 #' @export
 #'
 add_ensemble <- function(options_cast = cast_options()){
-  check_argsX()
+  check_args()
   if (options_cast$ensemble){
     if (!options_cast$quiet){
       message("Creating ensemble model")
@@ -136,7 +136,7 @@ add_ensemble <- function(options_cast = cast_options()){
 #' @export
 #'
 compile_aic_weights <- function(pred_dir){
-  check_argsX()
+  check_args()
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]
 
@@ -184,7 +184,7 @@ compile_aic_weights <- function(pred_dir){
 #' @export
 #'
 make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
-  check_argsX()
+  check_args()
   if (length(unique(all_forecasts$model)) == 1){
     ensemble <- all_forecasts
     ensemble$model <- "Ensemble"
@@ -270,7 +270,7 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'
 read_cast <- function(tree = dirtree(), cast_type = "forecasts", 
                        cast_date = NULL){
-  check_argsX()
+  check_args()
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type)
   }
@@ -295,7 +295,7 @@ read_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 read_casts <- function(tree = dirtree(), cast_type = "forecasts", 
                        cast_dates = NULL){
-  check_argsX()
+  check_args()
   if (is.null(cast_dates)){
     pfolderpath <- sub_paths(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
@@ -333,7 +333,7 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 #' @export
 #'
 verify_cast <- function(cast, verbose = FALSE){
-  check_argsX()
+  check_args()
   if(!cast_is_valid(cast, verbose)){
     stop("cast not valid")
   }
@@ -345,7 +345,7 @@ verify_cast <- function(cast, verbose = FALSE){
 #' @export
 #'
 cast_is_valid <- function(cast, verbose = FALSE){
-  check_argsX()
+  check_args()
   is_valid <- TRUE
   violations <- c()
   valid_columns <- c("date", "forecastmonth", "forecastyear", "newmoonnumber",
@@ -453,7 +453,7 @@ cast_is_valid <- function(cast, verbose = FALSE){
 #'
 most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
                              with_census = FALSE){
-  check_argsX()
+  check_args()
   pfolderpath <- sub_paths(tree = tree, "predictions")
   pfiles <- list.files(pfolderpath)
   of_interest1 <- grepl(cast_type, pfiles)
@@ -509,7 +509,7 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 select_casts <- function(casts, species = NULL, level = NULL, models = NULL, 
                          newmoonnumbers = NULL){
-  check_argsX()
+  check_args()
   incl_species <- rep(TRUE, nrow(casts))
   incl_level <- rep(TRUE, nrow(casts))
   incl_model <- rep(TRUE, nrow(casts))
@@ -522,7 +522,7 @@ select_casts <- function(casts, species = NULL, level = NULL, models = NULL,
   if (!is.null(level)){
     incl_level <- casts[ , "level"] %in% level
   }
-  if (!is.null(model)){
+  if (!is.null(models)){
     incl_model <- casts[ , "model"] %in% models
   }
   if (!is.null(newmoonnumber)){
@@ -568,7 +568,7 @@ select_casts <- function(casts, species = NULL, level = NULL, models = NULL,
 #'
 append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
                                     add_in_window = TRUE, add_lead = TRUE){
-  check_argsX()
+  check_args()
   level <- unique(casts$level)
   if (length(level) != 1){
     stop("`casts` must have (only) one type for `level` column")
@@ -626,7 +626,7 @@ append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
 #' @export
 #'
 measure_cast_error <- function(casts, min_observed = 1){
-  check_argsX()
+  check_args()
   groupcols <- c("model", "species", "level", "date", "initial_newmoon")
   cols <- which(colnames(casts) %in% groupcols)
   castgroup <- apply(casts[ ,cols], 1, paste, collapse = "_")
@@ -720,7 +720,7 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
                                level = "Controls", cast_type = "forecasts", 
                                cast_date = NULL, model = "Ensemble", 
                                lead = 1, from_date = NULL){
-  check_argsX()
+  check_args()
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type)
   }
@@ -737,11 +737,11 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
   most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
   cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
   to_include <- which(cast_nms_io)[lead]
-  newmoonnumber <- metadata$rodent_forecast_newmoons[to_include]
+  newmoonnumbers <- metadata$rodent_forecast_newmoons[to_include]
 
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, model = model,
-                      newmoonnumber = newmoonnumber)  
+          select_casts(species = species, level = level, models = model,
+                      newmoonnumbers = newmoonnumbers)  
   pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
 }
 

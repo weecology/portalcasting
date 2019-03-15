@@ -21,7 +21,7 @@
 #' @export
 #'
 portalcast <- function(options_all = all_options()){
-  check_argsX()
+  check_args()
   clear_tmp(options_all$options_dir$tree)
   verify_models(options_all$options_cast)
   prep_data(options_all$options_data)
@@ -39,7 +39,7 @@ portalcast <- function(options_all = all_options()){
 #' @export
 #'
 verify_models <- function(options_cast = cast_options()){
-  check_argsX()
+  check_args()
   if (!options_cast$quiet){
     cat("Checking model availability", "\n")
   }
@@ -71,7 +71,7 @@ verify_models <- function(options_cast = cast_options()){
 #' @export
 #'
 cast_models <- function(options_cast = cast_options()){
-  check_argsX()
+  check_args()
   if (!options_cast$quiet){
     if (options_cast$cast_type == "forecasts"){
       message("##########################################################")
@@ -102,7 +102,7 @@ cast_models <- function(options_cast = cast_options()){
 #' @export
 #'
 models_to_cast <- function(options_cast = cast_options()){
-  check_argsX()
+  check_args()
   model_dir <- sub_paths(options_cast$tree, "models")
   if (options_cast$model[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
@@ -124,7 +124,7 @@ models_to_cast <- function(options_cast = cast_options()){
 #' @export
 #'
 create_tmp <- function(tree = dirtree()){
-  check_argsX()
+  check_args()
   subs <- subdirs("tmp")
   opts <- dir_options(base = tree$base, main = tree$main, subs = subs)
   create_sub_dirs(opts)
@@ -141,7 +141,7 @@ create_tmp <- function(tree = dirtree()){
 #' @export
 #'
 clear_tmp <- function(tree = dirtree()){
-  check_argsX()
+  check_args()
   temp_dir <- sub_paths(tree, "tmp")
   if (!dir.exists(temp_dir)){
     create_tmp(tree)
@@ -164,7 +164,7 @@ clear_tmp <- function(tree = dirtree()){
 #' @export
 #'
 prep_data <- function(options_data = data_options()){
-  check_argsX()
+  check_args()
   if (!options_data$quiet){
     cat("Preparing data", "\n")
   }
@@ -194,7 +194,7 @@ prep_data <- function(options_data = data_options()){
 #' @export
 #'
 casts <- function(options_all = all_options()){
-  check_argsX()
+  check_args()
   cast(options_all$options_cast)
   step_casts(options_all)
   if (!options_all$options_cast$quiet){
@@ -214,7 +214,7 @@ casts <- function(options_all = all_options()){
 #' @export
 #'
 cast <- function(options_cast = cast_options()){
-  check_argsX()
+  check_args()
   if (check_to_skip(options_cast)){
     return()
   }
@@ -235,7 +235,7 @@ cast <- function(options_cast = cast_options()){
 #' @export
 #'
 step_casts <- function(options_all = all_options()){
-  check_argsX()
+  check_args()
   n_steps <- length(options_all$options_data$covariates$end)
   if (n_steps > 1){
     for (i in 2:n_steps){
@@ -259,7 +259,7 @@ step_casts <- function(options_all = all_options()){
 #' @export
 #'
 step_hind_forward <- function(options_all = all_options()){
-  check_argsX()
+  check_args()
   new_step <- options_all$options_data$covariates$hind_step + 1
   options_all$options_data$rodents$hind_step <- new_step
   options_all$options_data$covariates$hind_step <- new_step
@@ -279,7 +279,7 @@ step_hind_forward <- function(options_all = all_options()){
 #' @export
 #'
 check_to_skip <- function(options_cast){
-  check_argsX()
+  check_args()
   out <- FALSE
   if (options_cast$cast_type == "hindcasts"){ 
     end_step <- options_cast$end[options_cast$hind_step]
@@ -320,7 +320,7 @@ check_to_skip <- function(options_cast){
 #' @export
 #'
 update_data <- function(options_data){
-  check_argsX()
+  check_args()
   if (!options_data$moons$quiet){
     message("Updating forecasting data files in data subdirectory")
   }
@@ -350,7 +350,7 @@ update_data <- function(options_data){
 #' @export
 #'
 update_covariates <- function(moons, options_covariates){
-  check_argsX()
+  check_args()
   end_step <- options_covariates$end[options_covariates$hind_step]
   covs_path <- file_paths(options_covariates$tree, "data/covariates.csv")
   covs <- read.csv(covs_path, stringsAsFactors = FALSE) 
@@ -377,7 +377,7 @@ update_covariates <- function(moons, options_covariates){
 #' @export
 #'
 update_rodents_list <- function(options_rodents){
-  check_argsX()
+  check_args()
   end_step <- options_rodents$end[options_rodents$hind_step]
   all_path <- file_paths(options_rodents$tree, "data/all.csv")
   all <- read.csv(all_path, stringsAsFactors = FALSE)

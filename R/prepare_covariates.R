@@ -23,7 +23,7 @@
 #'
 prep_covariates <- function(moons = prep_moons(),
                             options_covariates = covariates_options()){
-  check_argsX()
+  check_args()
 
   if (!options_covariates$quiet){
     message("Loading covariate data files into data subdirectory")
@@ -56,7 +56,7 @@ prep_covariates <- function(moons = prep_moons(),
 #' @export
 #'
 transfer_hist_covariate_forecasts <- function(options_data = data_options()){
-  check_argsX()
+  check_args()
   path_to <- file_paths(options_data$tree, "data/covariate_forecasts.csv")
 
   fname <- "extdata/covariate_forecasts.csv"
@@ -95,7 +95,7 @@ transfer_hist_covariate_forecasts <- function(options_data = data_options()){
 #' @export
 #'
 prep_hist_covariates <- function(options_covariates = covariates_options()){
-  check_argsX()
+  check_args()
   tree <- options_covariates$tree
   weather_data <- prep_weather_data(tree = tree)
   ndvi_data <- ndvi("newmoon", fill = TRUE, path = main_path(tree))
@@ -131,7 +131,7 @@ prep_hist_covariates <- function(options_covariates = covariates_options()){
 prep_fcast_covariates <- function(hist_cov = prep_hist_covariates(),
                                   moons = prep_moons(),
                                   options_covariates = covariates_options()){
-  check_argsX()
+  check_args()
   update_covfcast_options(options_covariates, hist_cov, moons) %>%
   forecast_covariates(hist_cov, moons, .) %>%
   append_cov_fcast_csv(options_covariates) %>%
@@ -153,7 +153,7 @@ prep_fcast_covariates <- function(hist_cov = prep_hist_covariates(),
 #' @export
 #'
 prep_weather_data <- function(tree = dirtree()){
-  check_argsX()
+  check_args()
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
   weather("newmoon", fill = TRUE, path = main_path(tree)) %>% 
@@ -184,7 +184,7 @@ prep_weather_data <- function(tree = dirtree()){
 #' @export
 #'
 update_covfcast_options <- function(options_covariates, hist_cov, moons){
-  check_argsX()
+  check_args()
   prev_newmoon <- max(which(moons$newmoondate < options_covariates$cast_date))
   prev_newmoon <- moons$newmoonnumber[prev_newmoon]
   if (options_covariates$cast_type == "hindcasts"){
