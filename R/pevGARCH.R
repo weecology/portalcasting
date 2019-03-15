@@ -37,41 +37,11 @@
 #' @export
 #'
 pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
-
+  check_args()
   abundances <- read_data(tree, tolower(level))
   metadata <- read_metadata(tree)
   covariates <- read_covariates(tree)
 
-  if (!("rodents" %in% class(abundances))){
-    stop("`abundances` is not of class rodents")
-  }
-  if (!("covariates" %in% class(covariates))){
-    stop("`covariates` is not of class covariates")
-  }
-  if (!("logical" %in% class(quiet))){
-    stop("`quiet` is not of class logical")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (!any(c("All", "Controls") %in% level)){
-    stop("`level` is not valid option")
-  } 
-  if (!("metadata" %in% class(metadata))){
-    stop("`metadata` is not a metadata list")
-  } 
-  if (length(lag) > 1){
-    stop("`lag` can only be of length = 1")
-  }
-  if (!("numeric" %in% class(lag)) & !("integer" %in% class(lag))){
-    stop("`lag` is not of class numeric or integer")
-  }
-  if(lag < 0 | lag %% 1 != 0){
-    stop("`lag` is not a non-negative integer")
-  }
   fcnm <- metadata$rodent_forecast_newmoons
   nfcnm <- length(fcnm)
   CL <- metadata$confidence_level

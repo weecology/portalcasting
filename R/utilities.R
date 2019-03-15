@@ -358,7 +358,7 @@ check_args <- function(){
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
 #'   \code{lag}: must be \code{NULL} or a length-1 non-negative \code{integer}
 #'     or \code{integer}-conformable vector in \code{\link{model_options}},
-#'     \code{\link{lag_covariates}} \cr \cr
+#'     \code{\link{lag_covariates}},  \code{\link{pevGARCH}} \cr \cr
 #'   \code{lead}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{plot_cast_point}},
 #'     \code{\link{select_most_ab_spp}} \cr \cr
@@ -375,7 +375,9 @@ check_args <- function(){
 #'     or a length-1 \code{character} vector of value \code{"Site"} or 
 #'     \code{"Treatment"} in \code{\link{all_options}}, 
 #'     \code{\link{rodents_options}}, \code{\link{data_options}}, 
-#'     \code{\link{metadata_options}} \cr \cr
+#'     \code{\link{metadata_options}},
+#'     \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
+#'     \code{\link{pevGARCH}}  \cr \cr
 #'   \code{local_paths}: must be a \code{character} 
 #'     vector in \code{\link{file_paths}} \cr \cr 
 #'   \code{m_filename}: must be a length-1 \code{character} vector in
@@ -511,7 +513,9 @@ check_args <- function(){
 #'     \code{\link{predictions_options}}, \code{\link{models_options}}, 
 #'     \code{\link{cast_options}}, \code{\link{metadata_options}},
 #'     \code{\link{moons_options}}, \code{\link{rodents_options}},
-#'     \code{\link{download_predictions}} \cr \cr 
+#'     \code{\link{download_predictions}},
+#'     \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
+#'     \code{\link{pevGARCH}} \cr \cr 
 #'   \code{r_filename}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
@@ -605,7 +609,9 @@ check_args <- function(){
 #'     \code{\link{read_cast}}, \code{\link{read_casts}}, 
 #'     \code{\link{most_recent_cast}},
 #'     \code{\link{append_observed_to_cast}},
-#'     \code{\link{select_most_ab_spp}} \cr \cr
+#'     \code{\link{select_most_ab_spp}},
+#'     \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
+#'     \code{\link{pevGARCH}} \cr \cr
 #'   \code{verbose}: must be a length-1 \code{logical} vector in
 #'     \code{\link{verify_cast}}, \code{\link{cast_is_valid}} \cr \cr
 #'   \code{version}: must be a length-1 \code{character} vector in

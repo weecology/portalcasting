@@ -29,27 +29,9 @@
 #' @export
 #'
 ESSS <- function(tree = dirtree(), level = "All", quiet = FALSE){
-
+  check_args()
   abundances <- read_data(tree, tolower(level))
   metadata <- read_metadata(tree)
-  if (!("rodents" %in% class(abundances))){
-    stop("`abundances` is not of class rodents")
-  }
-  if (!("logical" %in% class(quiet))){
-    stop("`quiet` is not of class logical")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (!any(c("All", "Controls") %in% level)){
-    stop("`level` is not valid option")
-  } 
-  if (!("metadata" %in% class(metadata))){
-    stop("`metadata` is not a metadata list")
-  } 
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level
