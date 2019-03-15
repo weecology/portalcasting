@@ -60,7 +60,7 @@ test_that("sub_paths", {
 })
 
 test_that("model_paths", {
-  expect_error(model_paths())
+  expect_is(model_paths(), "character")
   expect_is(model_paths(models = "AutoArima"), "character")
   expect_is(model_paths(models = c("AutoArima", "ESSS")), "character")
   expect_equal(length(model_paths(models = "AutoArima")), 1)

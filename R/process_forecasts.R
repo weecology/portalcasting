@@ -525,8 +525,8 @@ select_casts <- function(casts, species = NULL, level = NULL, models = NULL,
   if (!is.null(models)){
     incl_model <- casts[ , "model"] %in% models
   }
-  if (!is.null(newmoonnumber)){
-    incl_nmm <- casts[ , "newmoonnumber"] %in% newmoonnumber
+  if (!is.null(newmoonnumbers)){
+    incl_nmm <- casts[ , "newmoonnumber"] %in% newmoonnumbers
   }
   incl <- which(incl_species & incl_level & incl_model & incl_nmm)
   casts[incl, ]

@@ -446,8 +446,9 @@ check_args <- function(){
 #'     \code{\link{plot_err_lead_spp_mods}}  \cr \cr
 #'   \code{new_forecast_covariates}: must be a \code{data.frame} of class 
 #'     \code{options} in \code{\link{append_cov_fcast_csv}} \cr \cr
-#'   \code{newmoonnumbers}: must be a length-1 non-negative \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{select_casts}} \cr \cr
+#'   \code{newmoonnumbers}: must be \code{NULL} or a length-1 non-negative 
+#'     \code{integer} or \code{integer}-conformable vector in 
+#'     \code{\link{select_casts}} \cr \cr
 #'   \code{nfcnm}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -1171,11 +1172,13 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "newmoonnumbers"){
-    if (!is.numeric(arg_value)){
-      stop("`newmoonnumbers` is not numeric")
-    }
-    if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
-      stop("`newmoonnumbers` is not a non-negative integer")
+    if (!is.null(arg_value)){
+      if (!is.numeric(arg_value)){
+        stop("`newmoonnumbers` is not numeric")
+      }
+      if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
+        stop("`newmoonnumbers` is not a non-negative integer")
+      }
     }
   }
   if (arg_name == "nfcnm"){
