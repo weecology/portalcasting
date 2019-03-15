@@ -20,6 +20,8 @@ Check that an argument's value is valid, potentially
 }
 \details{
 Usage and rules for arguments are as follows: \cr \cr
+  \code{add}: must be \code{NULL} or a \code{character} vector in
+    \code{\link{model_names}} \cr \cr
   \code{add_error}: must be a length-1 \code{logical} vector in
     \code{\link{append_observed_to_cast}} \cr \cr
   \code{add_in_window}: must be a length-1 \code{logical} vector in
@@ -255,6 +257,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{create_sub_dirs}}  \cr \cr
   \code{options_metadata}: must be of class \code{metadata_options} in
     \code{\link{prep_metadata}} \cr \cr
+  \code{options_model}: must be of class \code{model_options} in
+    \code{\link{model_template}}, \code{\link{write_model}} \cr \cr
   \code{options_models}: must be of class \code{models_options} in
     \code{\link{fill_models}} \cr \cr
   \code{options_moons}: must be of class \code{moons_options} in
@@ -299,12 +303,13 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{is.spcol}}, \code{\link{interpolate_abundance}}  \cr \cr 
   \code{rodents_list}: must be of class \code{rodents_list} in 
     \code{\link{prep_metadata}} \cr \cr 
-  \code{rodent_spp}: must be \code{NULL} or a length-1 \code{character} 
-    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
-    \code{\link{rodent_spp}} \cr \cr
   \code{save}: must be a length-1 \code{logical} vector in
     \code{\link{covariates_options}}, \code{\link{metadata_options}},
     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
+  \code{set}: must be \code{NULL} or a length-1 \code{character} 
+    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
+    \code{\link{rodent_spp}} or a length-\code{character} vector 
+    with value \code{"prefab"} in  \code{\link{model_names}} \cr \cr
   \code{source_name}: must be a length-1 \code{character} vector in
     \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
