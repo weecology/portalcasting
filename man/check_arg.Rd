@@ -66,6 +66,9 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{covariates}: must be a \code{data.frame} of class \code{options} in
     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
     \code{\link{prep_metadata}} \cr \cr
+  \code{ata_name}: must be a length-1 \code{character} vector of value 
+    \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
+    or \code{"metadata"} in \code{\link{read_data}} \cr \c
   \code{download_existing_predictions}: must be a length-1 \code{logical} 
     vector in \code{\link{all_options}}, 
     \code{\link{predictions_options}} \cr \cr
@@ -108,8 +111,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{all_options}}, 
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
   \code{lag}: must be \code{NULL} or a length-1 positive \code{integer} or 
-    \code{integer}-conformable vector in \code{\link{model_options}}
-    \cr \cr
+    \code{integer}-conformable vector in \code{\link{model_options}},
+    \code{\link{lag_covariates}} \cr \cr
   \code{lead}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in \code{\link{plot_cast_point}}  
     \cr \cr
@@ -260,7 +263,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \cr \cr
   \code{rodents}: must be a \code{data.table} of class \code{rodents} in 
     \code{\link{remove_spp}}, \code{\link{trim_treatment}},
-    \code{\link{is.spcol}}  \cr \cr 
+    \code{\link{is.spcol}}, \code{\link{interpolate_abundance}}  \cr \cr 
   \code{rodents_list}: must be of class \code{rodents_list} in 
     \code{\link{prep_metadata}} \cr \cr 
   \code{save}: must be a length-1 \code{logical} vector in
@@ -301,6 +304,8 @@ Usage and rules for arguments are as follows: \cr \cr
     vector in \code{\link{subdirs}}  \cr \cr
   \code{subs_type}: must be \code{NULL} or a length-1 \code{character} 
     vector in \code{\link{subdirs}}  \cr \cr
+  \code{tail}: must be a length-1 \code{logical} vector in
+    \code{\link{lag_covariates}} \cr \cr
   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
     vector of value \code{"all"} or \code{"controls"} in 
     \code{\link{all_options}}, \code{\link{rodents_options}}, 
@@ -324,7 +329,11 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{file_paths}}, \code{\link{model_paths}},
     \code{\link{create_tmp}}, \code{\link{clear_tmp}},
     \code{\link{prep_weather_data}},
-    \code{\link{download_predictions}} \cr \cr 
+    \code{\link{download_predictions}},
+    \code{\link{read_data}}, \code{\link{read_all}}, 
+    \code{\link{read_controls}}, \code{\link{read_covariates}}, 
+    \code{\link{read_moons}}, \code{\link{read_metadata}},  
+    \code{\link{most_recent_census}} \cr \cr 
   \code{version}: must be a length-1 \code{character} vector in
     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
   \code{with_census}: must be a length-1 \code{logical} vector in

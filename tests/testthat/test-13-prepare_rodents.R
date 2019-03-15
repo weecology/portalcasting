@@ -28,7 +28,7 @@ test_that("prep_rodents", {
 
 test_that("enforce_rodents_options", {
   expect_error(enforce_rodents_options(1, "all"), "`options_rodents` is not")
-  expect_error(enforce_rodents_options(rod_opts, 1), "`tmnt_type` must")
+  expect_error(enforce_rodents_options(rod_opts, 1), "`tmnt_type` is not")
   expect_error(enforce_rodents_options(rod_opts, "ok"), "`tmnt_type` must")
   expect_silent(rod_opts1a <- enforce_rodents_options(rod_opts, "all"))
   expect_silent(rod_opts1b <- enforce_rodents_options(rod_opts, "controls"))
@@ -72,7 +72,7 @@ test_that("rodent_spp", {
 
 test_that("is.spcol", {
   rodents <- prep_rodents_list(moons, rod_opts)$all
-  expect_error(is.spcol(1, rodent_spp()), "`x` is not")
+  expect_error(is.spcol(1, rodent_spp()), "`rodents` is not")
   expect_error(is.spcol(rodents, 1), "`spp_names` is not")
   expect_silent(sppTF <- is.spcol(rodents, rodent_spp()))
   expect_is(sppTF, "logical")

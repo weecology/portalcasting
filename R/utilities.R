@@ -1256,6 +1256,9 @@ check_argsX <- function(){
 #'   \code{covariates}: must be a \code{data.frame} of class \code{options} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{prep_metadata}} \cr \cr
+#'   \code{ata_name}: must be a length-1 \code{character} vector of value 
+#'     \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
+#'     or \code{"metadata"} in \code{\link{read_data}} \cr \c
 #'   \code{download_existing_predictions}: must be a length-1 \code{logical} 
 #'     vector in \code{\link{all_options}}, 
 #'     \code{\link{predictions_options}} \cr \cr
@@ -1298,8 +1301,8 @@ check_argsX <- function(){
 #'     \code{\link{all_options}}, 
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
 #'   \code{lag}: must be \code{NULL} or a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{model_options}}
-#'     \cr \cr
+#'     \code{integer}-conformable vector in \code{\link{model_options}},
+#'     \code{\link{lag_covariates}} \cr \cr
 #'   \code{lead}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{plot_cast_point}}  
 #'     \cr \cr
@@ -1450,7 +1453,7 @@ check_argsX <- function(){
 #'     \cr \cr
 #'   \code{rodents}: must be a \code{data.table} of class \code{rodents} in 
 #'     \code{\link{remove_spp}}, \code{\link{trim_treatment}},
-#'     \code{\link{is.spcol}}  \cr \cr 
+#'     \code{\link{is.spcol}}, \code{\link{interpolate_abundance}}  \cr \cr 
 #'   \code{rodents_list}: must be of class \code{rodents_list} in 
 #'     \code{\link{prep_metadata}} \cr \cr 
 #'   \code{save}: must be a length-1 \code{logical} vector in
@@ -1491,6 +1494,8 @@ check_argsX <- function(){
 #'     vector in \code{\link{subdirs}}  \cr \cr
 #'   \code{subs_type}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector in \code{\link{subdirs}}  \cr \cr
+#'   \code{tail}: must be a length-1 \code{logical} vector in
+#'     \code{\link{lag_covariates}} \cr \cr
 #'   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector of value \code{"all"} or \code{"controls"} in 
 #'     \code{\link{all_options}}, \code{\link{rodents_options}}, 
@@ -1514,7 +1519,11 @@ check_argsX <- function(){
 #'     \code{\link{file_paths}}, \code{\link{model_paths}},
 #'     \code{\link{create_tmp}}, \code{\link{clear_tmp}},
 #'     \code{\link{prep_weather_data}},
-#'     \code{\link{download_predictions}} \cr \cr 
+#'     \code{\link{download_predictions}},
+#'     \code{\link{read_data}}, \code{\link{read_all}}, 
+#'     \code{\link{read_controls}}, \code{\link{read_covariates}}, 
+#'     \code{\link{read_moons}}, \code{\link{read_metadata}},  
+#'     \code{\link{most_recent_census}} \cr \cr 
 #'   \code{version}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{with_census}: must be a length-1 \code{logical} vector in
@@ -1637,6 +1646,19 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`covariates` is not a covariates table")
     }
   }
+  if (arg_name == "data_name"){
+    valid_names <- c("all", "controls", "covariates", "moons", "metadata")
+    if (!is.character(arg_value)){
+      stop("`data_name` is not a character")
+    }
+    if (length(arg_value) != 1){
+      stop("`data_name` can only be of length = 1")
+    }
+    if (!(arg_value %in% valid_names)){
+      stop("`data_name` is not valid option")
+    }
+  }
+
   if (arg_name == "download"){
     if (!("logical" %in% class(arg_value))){
       stop("`download` is not logical")
@@ -1654,8 +1676,10 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "drop_spp"){
-    if (!("character" %in% class(arg_value))){
-      stop("`drop_spp` is not a character")
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`drop_spp` is not a character")
+      }
     }
   }
   if (arg_name == "end"){
@@ -2220,6 +2244,14 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (!(arg_value %in% c("portalcasting"))){
         stop("`subs_type` is not recognized ")
       }
+    }
+  }
+  if (arg_name == "tail"){
+    if (!("logical" %in% class(arg_value))){
+      stop("`tail` is not logical")
+    }
+    if (length(arg_value) != 1){
+      stop("`tail` can only be of length = 1")
     }
   }
   if (arg_name == "tmnt_type"){

@@ -15,7 +15,7 @@
 #' @export
 #' 
 interpolate_abundance <- function(rodents){
-  check_args(rodents = rodents)
+  check_argsX()
   moons <- (min(rodents$newmoonnumber)):(max(rodents$newmoonnumber))
   nmoons <- length(moons)
 
@@ -64,7 +64,7 @@ interpolate_abundance <- function(rodents){
 #' @export
 #'
 lag_covariates <- function(covariates, lag, tail = FALSE){
-  check_args(covariates = covariates, lag = lag, tail = tail)
+  check_argsX()
   covariates$newmoonnumber_lag <- covariates$newmoonnumber + lag
   
   if(tail == FALSE){
@@ -122,7 +122,7 @@ lag_covariates <- function(covariates, lag, tail = FALSE){
 #' @export
 #'
 read_data <- function(tree = dirtree(), data_name){
-  check_args(tree = tree, data_name = data_name)
+  check_argsX()
   if (data_name == "all"){
     data <- read_all(tree)
   }
@@ -146,7 +146,7 @@ read_data <- function(tree = dirtree(), data_name){
 #' @export
 #'
 read_all <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   read.csv(file_paths(tree, "data/all.csv")) %>%
            classy(c("data.frame", "rodents"))
 }
@@ -156,7 +156,7 @@ read_all <- function(tree = dirtree()){
 #' @export
 #'
 read_controls <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   read.csv(file_paths(tree, "data/controls.csv")) %>%
             classy(c("data.frame", "rodents"))
 }
@@ -166,7 +166,7 @@ read_controls <- function(tree = dirtree()){
 #' @export
 #'
 read_covariates <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   read.csv(file_paths(tree, "data/covariates.csv")) %>%
            classy(c("data.frame", "covariates"))
 }
@@ -176,7 +176,7 @@ read_covariates <- function(tree = dirtree()){
 #' @export
 #'
 read_moons <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   read.csv(file_paths(tree, "data/moons.csv")) %>%
            classy(c("data.frame", "moons"))
 }
@@ -186,7 +186,7 @@ read_moons <- function(tree = dirtree()){
 #' @export
 #'
 read_metadata <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   yaml.load_file(file_paths(tree, "data/metadata.yaml")) %>%
                  classy(c("list", "metadata"))
 }
@@ -202,7 +202,7 @@ read_metadata <- function(tree = dirtree()){
 #' @export
 #'
 most_recent_census <- function(tree = dirtree()){
-  check_args(tree = tree)
+  check_argsX()
   all <- read_data(tree, "all")
   moons <- read_data(tree, "moons")
   matched <- moons$newmoonnumber == max(all$newmoonnumber)
