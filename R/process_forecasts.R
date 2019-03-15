@@ -23,33 +23,7 @@
 #'
 save_forecast_output <- function(all, controls, name, metadata,
                                  temp_dir){
-  if (!("list" %in% class(all))){
-    stop("`all` is not a list")
-  } 
-  if (!all(c("forecast", "aic") %in% names(all))){
-    stop("`all` does not have elements named `forecast` and `aic`")
-  } 
-  if (!("list" %in% class(controls))){
-    stop("`controls` is not a list")
-  } 
-  if (!all(c("forecast", "aic") %in% names(controls))){
-    stop("`controls` does not have elements named `forecast` and `aic`")
-  } 
-  if (length(name) > 1){
-    stop("`name` can only be of length = 1")
-  }
-  if (!is.character(name)){
-    stop("`name` is not a character")
-  }
-  if (length(temp_dir) > 1){
-    stop("`temp_dir` can only be of length = 1")
-  }
-  if (!is.character(temp_dir)){
-    stop("`temp_dir` is not a character")
-  }
-  if (!("metadata" %in% class(metadata))){
-    stop("`metadata` is not a metadata list")
-  } 
+  check_argsX()
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 
@@ -77,9 +51,7 @@ save_forecast_output <- function(all, controls, name, metadata,
 #' @export
 #'
 combine_forecasts <- function(options_cast = cast_options()){
-  if (!("cast_options" %in% class(options_cast))){
-    stop("`cast_options` not of class `options_cast`")
-  }
+  check_argsX()
   if (!options_cast$quiet){
     message(paste0("Compiling ", options_cast$cast_type))
   }
@@ -124,9 +96,7 @@ combine_forecasts <- function(options_cast = cast_options()){
 #' @export
 #'
 add_ensemble <- function(options_cast = cast_options()){
-  if (!("cast_options" %in% class(options_cast))){
-    stop("`cast_options` not of class `options_cast`")
-  }
+  check_argsX()
   if (options_cast$ensemble){
     if (!options_cast$quiet){
       message("Creating ensemble model")
@@ -166,12 +136,7 @@ add_ensemble <- function(options_cast = cast_options()){
 #' @export
 #'
 compile_aic_weights <- function(pred_dir){
-  if (length(pred_dir) > 1){
-    stop("`pred_dir` can only be of length = 1")
-  }
-  if (!is.character(pred_dir)){
-    stop("`pred_dir` is not a character")
-  }
+  check_argsX()
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]
 
@@ -219,24 +184,7 @@ compile_aic_weights <- function(pred_dir){
 #' @export
 #'
 make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
-  if (!("data.frame" %in% class(all_forecasts))){
-    stop("`all_forecasts` is not a data.frame")
-  } 
-  if (length(pred_dir) > 1){
-    stop("`pred_dir` can only be of length = 1")
-  }
-  if (!is.character(pred_dir)){
-    stop("`pred_dir` is not a character")
-  }
-  if (length(CI_level) > 1){
-    stop("`CI_level` can only be of length = 1")
-  }
-  if (!is.numeric(CI_level)){
-    stop("`CI_level` is not numeric")
-  }
-  if (CI_level <= 0 | CI_level > 1){
-    stop("`CI_level` is not between 0 and 1")
-  }
+  check_argsX()
   if (length(unique(all_forecasts$model)) == 1){
     ensemble <- all_forecasts
     ensemble$model <- "Ensemble"
@@ -322,30 +270,9 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
 #'
 read_cast <- function(tree = dirtree(), cast_type = "forecasts", 
                        cast_date = NULL){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.null(cast_date)){
-    if( !("Date" %in% class(cast_date))){
-      cast_date <- tryCatch(as.Date(cast_date), error = function(x){NA})
-      if (is.na(cast_date)){
-        stop("`cast_date` is not of class Date or conformable to class Date")
-      }
-    }
-  } else{
+  check_argsX()
+  if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type)
-  }
-  if (length(cast_date) > 1){
-    stop("`cast_date` can only be of length = 1")
   }
   lpath <- paste0("predictions/", cast_date, cast_type, ".csv")
   fpath <- file_paths(tree, lpath)
@@ -368,24 +295,7 @@ read_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 read_casts <- function(tree = dirtree(), cast_type = "forecasts", 
                        cast_dates = NULL){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.null(cast_dates)){
-    cast_dates2 <- tryCatch(as.Date(cast_dates), error = function(x){NA})
-    if (is.na(cast_dates2)){
-      stop("`cast_dates` is not of class Date or conformable to class Date")
-    }
-  }
+  check_argsX()
   if (is.null(cast_dates)){
     pfolderpath <- sub_paths(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
@@ -423,6 +333,7 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 #' @export
 #'
 verify_cast <- function(cast, verbose = FALSE){
+  check_argsX()
   if(!cast_is_valid(cast, verbose)){
     stop("cast not valid")
   }
@@ -434,6 +345,7 @@ verify_cast <- function(cast, verbose = FALSE){
 #' @export
 #'
 cast_is_valid <- function(cast, verbose = FALSE){
+  check_argsX()
   is_valid <- TRUE
   violations <- c()
   valid_columns <- c("date", "forecastmonth", "forecastyear", "newmoonnumber",
@@ -541,24 +453,7 @@ cast_is_valid <- function(cast, verbose = FALSE){
 #'
 most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
                              with_census = FALSE){
-  if (length(with_census) > 1){
-    stop("`with_census` can only be of length = 1")
-  }
-  if (!is.logical(with_census)){
-    stop("`with_census` is not logical")
-  }
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
+  check_argsX()
   pfolderpath <- sub_paths(tree = tree, "predictions")
   pfiles <- list.files(pfolderpath)
   of_interest1 <- grepl(cast_type, pfiles)
@@ -591,11 +486,11 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #' @param level \code{character} value of the level of interest (\code{"All"} 
 #'   or \code{"Controls"}). If \code{NULL}, all levels are returned.
 #'
-#' @param model \code{character} value(s) of the name(s) (or 
+#' @param models \code{character} value(s) of the name(s) (or 
 #'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 #'   models are returned.
 #'
-#' @param newmoonnumber \code{integer}-conformable value(s) of the 
+#' @param newmoonnumbers \code{integer}-conformable value(s) of the 
 #'   newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.
 #'
 #' @return Class \code{casts} \code{data.frame} of trimmed fore- or 
@@ -612,38 +507,9 @@ most_recent_cast <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 #' @export
 #'
-select_casts <- function(casts, species = NULL, level = NULL, model = NULL, 
-                         newmoonnumber = NULL){
-  if (!("casts" %in% class(casts))){
-    stop("`casts` is not of class casts")
-  }
-  if (!is.null(species)){
-    if (!("character" %in% class(species))){
-      stop("`species` is not a character")
-    }
-    if (!all(species %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    }   
-  }
-  if (!is.null(level)){
-    if (!("character" %in% class(level))){
-      stop("`level` is not a character")
-    }
-    if (!all(level %in% c("All", "Controls"))){
-      stop("invalid entry in `level`")
-    }   
-  }
-  if (!is.null(model)){
-    if (!("character" %in% class(model))){
-      stop("`model` is not a character")
-    }
-  }
-  if (!is.null(newmoonnumber)){
-    if(any(newmoonnumber < 0) | any(newmoonnumber %% 1 != 0)){
-      stop("`newmoonnumber` is not a non-negative integer")
-    }
-  }
-
+select_casts <- function(casts, species = NULL, level = NULL, models = NULL, 
+                         newmoonnumbers = NULL){
+  check_argsX()
   incl_species <- rep(TRUE, nrow(casts))
   incl_level <- rep(TRUE, nrow(casts))
   incl_model <- rep(TRUE, nrow(casts))
@@ -657,7 +523,7 @@ select_casts <- function(casts, species = NULL, level = NULL, model = NULL,
     incl_level <- casts[ , "level"] %in% level
   }
   if (!is.null(model)){
-    incl_model <- casts[ , "model"] %in% model
+    incl_model <- casts[ , "model"] %in% models
   }
   if (!is.null(newmoonnumber)){
     incl_nmm <- casts[ , "newmoonnumber"] %in% newmoonnumber
@@ -700,32 +566,9 @@ select_casts <- function(casts, species = NULL, level = NULL, model = NULL,
 #'
 #' @export
 #'
-append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE, 
+append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
                                     add_in_window = TRUE, add_lead = TRUE){
-  if (!("casts" %in% class(casts))){
-    stop("`casts` is not of class casts")
-  }
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (length(add_error) > 1){
-    stop("`add_error` can only be of length = 1")
-  }
-  if (!is.logical(add_error)){
-    stop("`add_error` is not a logical")
-  }
-  if (length(add_in_window) > 1){
-    stop("`add_in_window` can only be of length = 1")
-  }
-  if (!is.logical(add_in_window)){
-    stop("`add_in_window` is not a logical")
-  }
-  if (length(add_lead) > 1){
-    stop("`add_lead` can only be of length = 1")
-  }
-  if (!is.logical(add_lead)){
-    stop("`add_lead` is not a logical")
-  }
+  check_argsX()
   level <- unique(casts$level)
   if (length(level) != 1){
     stop("`casts` must have (only) one type for `level` column")
@@ -783,20 +626,7 @@ append_observed_to_cast <- function(casts, tree = dirtree(), add_error = TRUE,
 #' @export
 #'
 measure_cast_error <- function(casts, min_observed = 1){
-
-  if (!("casts" %in% class(casts))){
-    stop("`casts` is not of class casts")
-  }
-  if (length(min_observed) > 1){
-    stop("`min_observed` can only be of length = 1")
-  }
-  if (!("numeric" %in% class(min_observed)) & 
-      !("integer" %in% class(min_observed))){
-    stop("`min_observed` is not of class numeric or integer")
-  }
-  if(min_observed < 0 | min_observed %% 1 != 0){
-    stop("`min_observed` is not a non-negative integer")
-  }
+  check_argsX()
   groupcols <- c("model", "species", "level", "date", "initial_newmoon")
   cols <- which(colnames(casts) %in% groupcols)
   castgroup <- apply(casts[ ,cols], 1, paste, collapse = "_")
@@ -890,82 +720,15 @@ select_most_ab_spp <- function(topx = 3, tree = dirtree(),
                                level = "Controls", cast_type = "forecasts", 
                                cast_date = NULL, model = "Ensemble", 
                                lead = 1, from_date = NULL){
-
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.null(species)){
-    if (!("character" %in% class(species))){
-      stop("`species` is not a character")
-    }
-    if (!all(species %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    }   
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (level != "All" & level != "Controls"){
-    stop("`level` must be 'All' or 'Controls'")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.null(cast_date)){
-    if (!("Date" %in% class(cast_date))){
-      stop("`cast_date` is not of class Date")
-    }
-    if (length(cast_date) > 1){
-      stop("`cast_date` can only be of length = 1")
-    }
-  } else{
+  check_argsX()
+  if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type)
-  }
-  if (!("character" %in% class(model))){
-    stop("`model` is not a character")
-  }
-  if (length(model) > 1){
-    stop("`model` can only be of length = 1")
-  }
-  if (!is.numeric(lead)){
-    stop("`lead` is not numeric")
-  }
-  if (length(lead) > 1){
-    stop("`lead` can only be of length = 1")
-  }
-  if (lead < 1 | lead %% 1 != 0){
-    stop("`lead` is not a positive integer")
   }
   if (is.null(from_date)){
     if(cast_type == "forecasts"){
       from_date <- cast_date
     }
   }
-  if (!("Date" %in% class(from_date))){
-    stop("`from_date` is not of class Date")
-  }
-  if (length(from_date) > 1){
-    stop("`from_date` can only be of length = 1")
-  }
-  if (!is.numeric(topx)){
-    stop("`topx` is not numeric")
-  }
-  if (length(topx) > 1){
-    stop("`topx` can only be of length = 1")
-  }
-  if (topx < 1 | topx %% 1 != 0){
-    stop("`topx` is not a positive integer")
-  }
-
   metadata <- read_data(tree, "metadata")
   obs <- read_data(tree, tolower(level))
   moons <- read_data(tree, "moons")

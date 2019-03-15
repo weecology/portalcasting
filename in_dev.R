@@ -33,6 +33,10 @@ models = "AutoArima")
 # things to align the rest of the way
 # ugg that toggle for plotting
 
+# remove the double up of CI_level and confidence_level
+# remove the double up of name and model
+# handle cast argument in verify_cast cast_is_valid combo
+
 
 #'   \code{}: must be \code{} in
 #'     \code{\link{}}  \cr \cr
@@ -53,6 +57,7 @@ all <- read_data(tree, "all")
 
 plot(all$newmoonnumber, all$total, type = "l")
 
+# alphabetize: where does _ come in? (check_arg)
 y <- all$total
 x <- all$newmoonnumber
 

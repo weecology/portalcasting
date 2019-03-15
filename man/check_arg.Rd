@@ -20,8 +20,18 @@ Check that an argument's value is valid, potentially
 }
 \details{
 Usage and rules for arguments are as follows: \cr \cr
+  \code{add_error}: must be a length-1 \code{logical} vector in
+    \code{\link{append_observed_to_cast}} \cr \cr
+  \code{add_in_window}: must be a length-1 \code{logical} vector in
+    \code{\link{append_observed_to_cast}} \cr \cr
+  \code{add_lead}: must be a length-1 \code{logical} vector in
+    \code{\link{append_observed_to_cast}} \cr \cr
   \code{add_obs}: must be a length-1 \code{logical} vector in
     \code{\link{plot_cast_ts}} \cr \cr
+  \code{all}: must be a \code{list} with elements named \code{forecast} 
+    and \code{aic} in \code{\link{save_forecast_output}} \cr \cr
+  \code{all_forecasts}: must be a \code{data.frame} in
+    \code{\link{make_ensemble}} \cr \cr
   \code{append_fcast_csv}: must be a length-1 \code{logical} vector in
     \code{\link{all_options}}, \code{\link{data_options}},
     \code{\link{covariates_options}} \cr \cr
@@ -40,23 +50,35 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{c_save}: must be a length-1 \code{logical} vector in
     \code{\link{all_options}}, \code{\link{data_options}},
     \code{\link{covariates_options}}  \cr \cr
+  \code{cast}: must be a \code{data.frame} in
+    \code{\link{verify_cast}}, \code{\link{cast_is_valid}} \cr \cr
+  \code{casts}: must be of class \code{casts} in
+    \code{\link{append_observed_to_cast}},
+    \code{\link{measure_cast_error}} \cr \cr
   \code{cast_date}: must be \code{NULL} or a length-1 \code{Date} or 
     \code{Date}-conformable vector in \code{\link{plot_cast_point}},  
     \code{\link{plot_cast_ts}}, \code{\link{all_options}}, 
     \code{\link{data_options}}, \code{\link{cast_options}},
     \code{\link{moons_options}}, \code{\link{metadata_options}},
     \code{\link{covariates_options}},
-    \code{\link{add_addl_future_moons}} \cr \cr
+    \code{\link{add_addl_future_moons}}, \code{\link{read_cast}} \cr \cr
   \code{cast_dates}: must be \code{NULL} or a \code{Date} or 
-    \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}  
-    \cr \cr
+    \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}, 
+    \code{\link{read_casts}}, \code{\link{select_most_ab_spp}} \cr \cr
   \code{cast_type}: must be a length-1 \code{character} vector in
     \code{\link{plot_cov_RMSE_mod_spp}}, 
     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
-    \code{\link{plot_cast_ts}} \cr \cr
+    \code{\link{plot_cast_ts}}, \code{\link{read_cast}}, 
+    \code{\link{read_casts}}, \code{\link{most_recent_cast}},
+    \code{\link{select_most_ab_spp}} \cr \cr
+  \code{CI_level}: must be a length-1 \code{numeric} value between
+    0 and 1 in \code{\link{make_ensemble}} \cr \cr
   \code{confidence_level}: must be a length-1 \code{numeric} value between
     0 and 1 in \code{\link{all_options}}, \code{\link{data_options}}, 
     \code{\link{metadata_options}} \cr \cr
+  \code{controls}: must be a \code{list} with elements named 
+    \code{forecast} and \code{aic} in \code{\link{save_forecast_output}} 
+    \cr \cr
   \code{cov_fcast}: must be a length-1 \code{logical} vector in
     \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -66,9 +88,9 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{covariates}: must be a \code{data.frame} of class \code{options} in
     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
     \code{\link{prep_metadata}} \cr \cr
-  \code{ata_name}: must be a length-1 \code{character} vector of value 
+  \code{data_name}: must be a length-1 \code{character} vector of value 
     \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
-    or \code{"metadata"} in \code{\link{read_data}} \cr \c
+    or \code{"metadata"} in \code{\link{read_data}} \cr \cr
   \code{download_existing_predictions}: must be a length-1 \code{logical} 
     vector in \code{\link{all_options}}, 
     \code{\link{predictions_options}} \cr \cr
@@ -93,8 +115,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{filename}: must be a length-1 \code{character} vector in
     \code{\link{verify_PortalData}}  \cr \cr
   \code{from_date}: must be \code{NULL} or a length-1 \code{Date} or 
-    \code{Date}-conformable vector in \code{\link{plot_cast_point}}  
-    \cr \cr
+    \code{Date}-conformable vector in \code{\link{plot_cast_point}},
+    \code{\link{select_most_ab_spp}} \cr \cr
   \code{from_zenodo}: must be a length-1 \code{logical} vector in
     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
   \code{future_moons}: must be a \code{data.frame} of class \code{moons} 
@@ -110,12 +132,12 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{hist_fcast_file}: must be a length-1 \code{character} vector in
     \code{\link{all_options}}, 
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
-  \code{lag}: must be \code{NULL} or a length-1 positive \code{integer} or 
-    \code{integer}-conformable vector in \code{\link{model_options}},
+  \code{lag}: must be \code{NULL} or a length-1 non-negative \code{integer}
+    or \code{integer}-conformable vector in \code{\link{model_options}},
     \code{\link{lag_covariates}} \cr \cr
   \code{lead}: must be a length-1 positive \code{integer} or 
-    \code{integer}-conformable vector in \code{\link{plot_cast_point}}  
-    \cr \cr
+    \code{integer}-conformable vector in \code{\link{plot_cast_point}},
+    \code{\link{select_most_ab_spp}} \cr \cr
   \code{lead_time}: must be a length-1 non-negative \code{integer} or 
     \code{integer}-conformable vector in \code{\link{all_options}}, 
     \code{\link{metadata_options}}, \code{\link{covariates_options}}, 
@@ -124,7 +146,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{"All"} or \code{"Controls"} in 
     \code{\link{plot_cov_RMSE_mod_spp}}, 
     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
-    \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} 
+    \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}},
+    \code{\link{select_most_ab_spp}}, \code{\link{select_casts}}   
     or a length-1 \code{character} vector of value \code{"Site"} or 
     \code{"Treatment"} in \code{\link{all_options}}, 
     \code{\link{rodents_options}}, \code{\link{data_options}}, 
@@ -143,6 +166,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{meta_save}: must be a length-1 \code{logical} vector in
     \code{\link{all_options}},
     \code{\link{metadata_options}}, \code{\link{data_options}} \cr \cr
+  \code{metadata}: must be of class \code{metadata} in
+    \code{\link{save_forecast_output}} \cr \cr
   \code{main} must be a length-1 \code{character} vector in
     \code{\link{all_options}}, \code{\link{dir_options}},
     \code{\link{PortalData_options}}, \code{\link{data_options}} 
@@ -154,7 +179,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
   \code{min_observed}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in 
-    \code{\link{plot_cov_RMSE_mod_spp}}  \cr \cr
+    \code{\link{plot_cov_RMSE_mod_spp}}, \code{\link{measure_cast_error}}
+    \cr \cr
   \code{min_plots}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in \code{\link{all_options}}, 
     \code{\link{data_options}}, \code{\link{rodents_options}}, 
@@ -169,10 +195,12 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{covariate_models}}  \cr \cr
   \code{model}: must be a length-1 \code{character} vector in
     \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}},
-    \code{\link{plot_cast_ts_ylab}}  \cr \cr
+    \code{\link{plot_cast_ts_ylab}},
+    \code{\link{select_most_ab_spp}} \cr \cr
   \code{models}: must be a \code{character} vector in
     \code{\link{all_options}}, \code{\link{models_options}},
-    \code{\link{cast_options}}, \code{\link{model_paths}} \cr \cr
+    \code{\link{cast_options}}, \code{\link{model_paths}},
+    \code{\link{select_casts}}  \cr \cr
   \code{moons}: must be a \code{data.frame} of class \code{moons} in
     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
@@ -186,17 +214,19 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{integer}-conformable vector in \code{\link{moons_options}}
     \cr \cr
   \code{nadot}: must be a length-1 \code{logical} vector in
-    code{\link{rodent_spp}} \cr \cr
-  \code{name}: must be a length-1 \code{character} vector of the model name
-    in \code{\link{model_options}} \cr \cr
+    \code{\link{rodent_spp}} \cr \cr
+  \code{name}: must be a length-1 \code{character} vector in
+    \code{\link{model_options}}, \code{\link{save_forecast_output}} \cr \cr
   \code{ndates}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in 
     \code{\link{plot_err_lead_spp_mods}}  \cr \cr
+  \code{new_forecast_covariates}: must be a \code{data.frame} of class 
+    \code{options} in \code{\link{append_cov_fcast_csv}} \cr \cr
+  \code{newmoonnumbers}: must be a length-1 non-negative \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{select_casts}} \cr \cr
   \code{nfcnm}: must be a length-1 non-negative \code{integer} or 
     \code{integer}-conformable vector in \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
-  \code{new_forecast_covariates}: must be a \code{data.frame} of class 
-    \code{options} in \code{\link{append_cov_fcast_csv}} \cr \cr
   \code{options_all}: must be of class \code{all_options} in
     \code{\link{setup_dir}}, \code{\link{fill_dir}}, 
     \code{\link{cleanup_dir}}, \code{\link{portalcast}},
@@ -205,7 +235,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{options_cast}: must be of class \code{cast_options} in
     \code{\link{verify_models}}, \code{\link{cast_models}}, 
     \code{\link{models_to_cast}}, \code{\link{cast}},
-    \code{\link{check_to_skip}} \cr \cr
+    \code{\link{check_to_skip}}, \code{\link{combine_forecasts}},
+    \code{\link{add_ensemble}} \cr \cr
   \code{options_covariates}: must be of class \code{covariates_options} in
     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
@@ -227,7 +258,7 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{options_models}: must be of class \code{models_options} in
     \code{\link{fill_models}} \cr \cr
   \code{options_moons}: must be of class \code{moons_options} in
-    \code{\link{fill_moons}}, \code{\link{append_past_moons_to_raw}},
+    \code{\link{prep_moons}}, \code{\link{append_past_moons_to_raw}},
     \code{\link{add_future_moons}} \cr \cr
   \code{options_PortalData}: must be of class \code{PortalData_options} in
     \code{\link{fill_PortalData}} \cr \cr
@@ -243,6 +274,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{plots}: must be a length-1 \code{character} vector of value
     \code{"all"} or \code{"longerm"} in \code{\link{all_options}},
     \code{\link{data_options}}, \code{\link{rodents_options}} \cr \cr
+  \code{pred_dir}: must be a length-1 \code{character} vector in
+    \code{\link{compile_aic_weights}}, \code{\link{make_ensemble}} \cr \cr
   \code{quiet}: must be a length-1 \code{logical} vector in
     \code{\link{create_sub_dir}}, \code{\link{verify_PortalData}},
     \code{\link{model_options}}, \code{\link{all_options}},   
@@ -266,19 +299,21 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{is.spcol}}, \code{\link{interpolate_abundance}}  \cr \cr 
   \code{rodents_list}: must be of class \code{rodents_list} in 
     \code{\link{prep_metadata}} \cr \cr 
+  \code{rodent_spp}: must be \code{NULL} or a length-1 \code{character} 
+    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
+    \code{\link{rodent_spp}} \cr \cr
   \code{save}: must be a length-1 \code{logical} vector in
     \code{\link{covariates_options}}, \code{\link{metadata_options}},
     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
-  \code{rodent_spp}: must be \code{NULL} or a length-1 \code{character} 
-    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
-    \code{\link{rodent_spp}} \cr \c
   \code{source_name}: must be a length-1 \code{character} vector in
     \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
   \code{species}: must be \code{NULL} or a \code{character} vector in
     \code{\link{plot_cov_RMSE_mod_spp}}, 
     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
-    \code{\link{plot_cast_point_yaxis}}; specifically length-1 in
+    \code{\link{plot_cast_point_yaxis}},
+    \code{\link{select_most_ab_spp}}; \code{\link{select_casts}}  
+    specifically length-1 in
     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
   \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
     vector in \code{\link{sub_paths}} \cr \cr 
@@ -306,6 +341,8 @@ Usage and rules for arguments are as follows: \cr \cr
     vector in \code{\link{subdirs}}  \cr \cr
   \code{tail}: must be a length-1 \code{logical} vector in
     \code{\link{lag_covariates}} \cr \cr
+  \code{temp_dir}: must be a length-1 \code{character} vector in
+    \code{\link{save_forecast_output}} \cr \cr
   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
     vector of value \code{"all"} or \code{"controls"} in 
     \code{\link{all_options}}, \code{\link{rodents_options}}, 
@@ -313,6 +350,9 @@ Usage and rules for arguments are as follows: \cr \cr
     \cr \cr
   \code{to_cleanup}: must be \code{NULL} or a \code{character} vector in
     \code{\link{all_options}}, \code{\link{dir_options}} \cr \cr
+  \code{topx}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{select_most_ab_spp}}
+    \cr \cr
   \code{treatment}: must be \code{NULL} or \code{"control"} in
     \code{\link{all_options}},
     \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
@@ -333,11 +373,17 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{read_data}}, \code{\link{read_all}}, 
     \code{\link{read_controls}}, \code{\link{read_covariates}}, 
     \code{\link{read_moons}}, \code{\link{read_metadata}},  
-    \code{\link{most_recent_census}} \cr \cr 
+    \code{\link{most_recent_census}}, 
+    \code{\link{read_cast}}, \code{\link{read_casts}}, 
+    \code{\link{most_recent_cast}},
+    \code{\link{append_observed_to_cast}},
+    \code{\link{select_most_ab_spp}} \cr \cr
+  \code{verbose}: must be a length-1 \code{logical} vector in
+    \code{\link{verify_cast}}, \code{\link{cast_is_valid}} \cr \cr
   \code{version}: must be a length-1 \code{character} vector in
     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
   \code{with_census}: must be a length-1 \code{logical} vector in
-    \code{\link{plot_cast_point}} \cr \cr
+    \code{\link{plot_cast_point}}, \code{\link{most_recent_cast}} \cr \cr
   \code{yr}: must be a length-1 \code{integer} or 
     \code{integer}-conformable value after 1970 in 
     \code{\link{all_options}},   

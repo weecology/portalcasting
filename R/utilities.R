@@ -1210,8 +1210,18 @@ check_argsX <- function(){
 #' @param fun_name \code{character} value of the function name or \code{NULL}.
 #'
 #' @details Usage and rules for arguments are as follows: \cr \cr
+#'   \code{add_error}: must be a length-1 \code{logical} vector in
+#'     \code{\link{append_observed_to_cast}} \cr \cr
+#'   \code{add_in_window}: must be a length-1 \code{logical} vector in
+#'     \code{\link{append_observed_to_cast}} \cr \cr
+#'   \code{add_lead}: must be a length-1 \code{logical} vector in
+#'     \code{\link{append_observed_to_cast}} \cr \cr
 #'   \code{add_obs}: must be a length-1 \code{logical} vector in
 #'     \code{\link{plot_cast_ts}} \cr \cr
+#'   \code{all}: must be a \code{list} with elements named \code{forecast} 
+#'     and \code{aic} in \code{\link{save_forecast_output}} \cr \cr
+#'   \code{all_forecasts}: must be a \code{data.frame} in
+#'     \code{\link{make_ensemble}} \cr \cr
 #'   \code{append_fcast_csv}: must be a length-1 \code{logical} vector in
 #'     \code{\link{all_options}}, \code{\link{data_options}},
 #'     \code{\link{covariates_options}} \cr \cr
@@ -1230,23 +1240,35 @@ check_argsX <- function(){
 #'   \code{c_save}: must be a length-1 \code{logical} vector in
 #'     \code{\link{all_options}}, \code{\link{data_options}},
 #'     \code{\link{covariates_options}}  \cr \cr
+#'   \code{cast}: must be a \code{data.frame} in
+#'     \code{\link{verify_cast}}, \code{\link{cast_is_valid}} \cr \cr
+#'   \code{casts}: must be of class \code{casts} in
+#'     \code{\link{append_observed_to_cast}},
+#'     \code{\link{measure_cast_error}} \cr \cr
 #'   \code{cast_date}: must be \code{NULL} or a length-1 \code{Date} or 
 #'     \code{Date}-conformable vector in \code{\link{plot_cast_point}},  
 #'     \code{\link{plot_cast_ts}}, \code{\link{all_options}}, 
 #'     \code{\link{data_options}}, \code{\link{cast_options}},
 #'     \code{\link{moons_options}}, \code{\link{metadata_options}},
 #'     \code{\link{covariates_options}},
-#'     \code{\link{add_addl_future_moons}} \cr \cr
+#'     \code{\link{add_addl_future_moons}}, \code{\link{read_cast}} \cr \cr
 #'   \code{cast_dates}: must be \code{NULL} or a \code{Date} or 
-#'     \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}  
-#'     \cr \cr
+#'     \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}, 
+#'     \code{\link{read_casts}}, \code{\link{select_most_ab_spp}} \cr \cr
 #'   \code{cast_type}: must be a length-1 \code{character} vector in
 #'     \code{\link{plot_cov_RMSE_mod_spp}}, 
 #'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
-#'     \code{\link{plot_cast_ts}} \cr \cr
+#'     \code{\link{plot_cast_ts}}, \code{\link{read_cast}}, 
+#'     \code{\link{read_casts}}, \code{\link{most_recent_cast}},
+#'     \code{\link{select_most_ab_spp}} \cr \cr
+#'   \code{CI_level}: must be a length-1 \code{numeric} value between
+#'     0 and 1 in \code{\link{make_ensemble}} \cr \cr
 #'   \code{confidence_level}: must be a length-1 \code{numeric} value between
 #'     0 and 1 in \code{\link{all_options}}, \code{\link{data_options}}, 
 #'     \code{\link{metadata_options}} \cr \cr
+#'   \code{controls}: must be a \code{list} with elements named 
+#'     \code{forecast} and \code{aic} in \code{\link{save_forecast_output}} 
+#'     \cr \cr
 #'   \code{cov_fcast}: must be a length-1 \code{logical} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -1256,9 +1278,9 @@ check_argsX <- function(){
 #'   \code{covariates}: must be a \code{data.frame} of class \code{options} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{prep_metadata}} \cr \cr
-#'   \code{ata_name}: must be a length-1 \code{character} vector of value 
+#'   \code{data_name}: must be a length-1 \code{character} vector of value 
 #'     \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
-#'     or \code{"metadata"} in \code{\link{read_data}} \cr \c
+#'     or \code{"metadata"} in \code{\link{read_data}} \cr \cr
 #'   \code{download_existing_predictions}: must be a length-1 \code{logical} 
 #'     vector in \code{\link{all_options}}, 
 #'     \code{\link{predictions_options}} \cr \cr
@@ -1283,8 +1305,8 @@ check_argsX <- function(){
 #'   \code{filename}: must be a length-1 \code{character} vector in
 #'     \code{\link{verify_PortalData}}  \cr \cr
 #'   \code{from_date}: must be \code{NULL} or a length-1 \code{Date} or 
-#'     \code{Date}-conformable vector in \code{\link{plot_cast_point}}  
-#'     \cr \cr
+#'     \code{Date}-conformable vector in \code{\link{plot_cast_point}},
+#'     \code{\link{select_most_ab_spp}} \cr \cr
 #'   \code{from_zenodo}: must be a length-1 \code{logical} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{future_moons}: must be a \code{data.frame} of class \code{moons} 
@@ -1300,12 +1322,12 @@ check_argsX <- function(){
 #'   \code{hist_fcast_file}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, 
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
-#'   \code{lag}: must be \code{NULL} or a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{model_options}},
+#'   \code{lag}: must be \code{NULL} or a length-1 non-negative \code{integer}
+#'     or \code{integer}-conformable vector in \code{\link{model_options}},
 #'     \code{\link{lag_covariates}} \cr \cr
 #'   \code{lead}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{plot_cast_point}}  
-#'     \cr \cr
+#'     \code{integer}-conformable vector in \code{\link{plot_cast_point}},
+#'     \code{\link{select_most_ab_spp}} \cr \cr
 #'   \code{lead_time}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}}, 
 #'     \code{\link{metadata_options}}, \code{\link{covariates_options}}, 
@@ -1314,7 +1336,8 @@ check_argsX <- function(){
 #'     \code{"All"} or \code{"Controls"} in 
 #'     \code{\link{plot_cov_RMSE_mod_spp}}, 
 #'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
-#'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} 
+#'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}},
+#'     \code{\link{select_most_ab_spp}}, \code{\link{select_casts}}   
 #'     or a length-1 \code{character} vector of value \code{"Site"} or 
 #'     \code{"Treatment"} in \code{\link{all_options}}, 
 #'     \code{\link{rodents_options}}, \code{\link{data_options}}, 
@@ -1333,6 +1356,8 @@ check_argsX <- function(){
 #'   \code{meta_save}: must be a length-1 \code{logical} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{metadata_options}}, \code{\link{data_options}} \cr \cr
+#'   \code{metadata}: must be of class \code{metadata} in
+#'     \code{\link{save_forecast_output}} \cr \cr
 #'   \code{main} must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{dir_options}},
 #'     \code{\link{PortalData_options}}, \code{\link{data_options}} 
@@ -1344,7 +1369,8 @@ check_argsX <- function(){
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
 #'   \code{min_observed}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in 
-#'     \code{\link{plot_cov_RMSE_mod_spp}}  \cr \cr
+#'     \code{\link{plot_cov_RMSE_mod_spp}}, \code{\link{measure_cast_error}}
+#'     \cr \cr
 #'   \code{min_plots}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}}, 
 #'     \code{\link{data_options}}, \code{\link{rodents_options}}, 
@@ -1359,10 +1385,12 @@ check_argsX <- function(){
 #'     \code{\link{covariate_models}}  \cr \cr
 #'   \code{model}: must be a length-1 \code{character} vector in
 #'     \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}},
-#'     \code{\link{plot_cast_ts_ylab}}  \cr \cr
+#'     \code{\link{plot_cast_ts_ylab}},
+#'     \code{\link{select_most_ab_spp}} \cr \cr
 #'   \code{models}: must be a \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{models_options}},
-#'     \code{\link{cast_options}}, \code{\link{model_paths}} \cr \cr
+#'     \code{\link{cast_options}}, \code{\link{model_paths}},
+#'     \code{\link{select_casts}}  \cr \cr
 #'   \code{moons}: must be a \code{data.frame} of class \code{moons} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
@@ -1376,17 +1404,19 @@ check_argsX <- function(){
 #'     \code{integer}-conformable vector in \code{\link{moons_options}}
 #'     \cr \cr
 #'   \code{nadot}: must be a length-1 \code{logical} vector in
-#'     code{\link{rodent_spp}} \cr \cr
-#'   \code{name}: must be a length-1 \code{character} vector of the model name
-#'     in \code{\link{model_options}} \cr \cr
+#'     \code{\link{rodent_spp}} \cr \cr
+#'   \code{name}: must be a length-1 \code{character} vector in
+#'     \code{\link{model_options}}, \code{\link{save_forecast_output}} \cr \cr
 #'   \code{ndates}: must be a length-1 positive \code{integer} or 
 #'     \code{integer}-conformable vector in 
 #'     \code{\link{plot_err_lead_spp_mods}}  \cr \cr
+#'   \code{new_forecast_covariates}: must be a \code{data.frame} of class 
+#'     \code{options} in \code{\link{append_cov_fcast_csv}} \cr \cr
+#'   \code{newmoonnumbers}: must be a length-1 non-negative \code{integer} or 
+#'     \code{integer}-conformable vector in \code{\link{select_casts}} \cr \cr
 #'   \code{nfcnm}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
-#'   \code{new_forecast_covariates}: must be a \code{data.frame} of class 
-#'     \code{options} in \code{\link{append_cov_fcast_csv}} \cr \cr
 #'   \code{options_all}: must be of class \code{all_options} in
 #'     \code{\link{setup_dir}}, \code{\link{fill_dir}}, 
 #'     \code{\link{cleanup_dir}}, \code{\link{portalcast}},
@@ -1395,7 +1425,8 @@ check_argsX <- function(){
 #'   \code{options_cast}: must be of class \code{cast_options} in
 #'     \code{\link{verify_models}}, \code{\link{cast_models}}, 
 #'     \code{\link{models_to_cast}}, \code{\link{cast}},
-#'     \code{\link{check_to_skip}} \cr \cr
+#'     \code{\link{check_to_skip}}, \code{\link{combine_forecasts}},
+#'     \code{\link{add_ensemble}} \cr \cr
 #'   \code{options_covariates}: must be of class \code{covariates_options} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
@@ -1417,7 +1448,7 @@ check_argsX <- function(){
 #'   \code{options_models}: must be of class \code{models_options} in
 #'     \code{\link{fill_models}} \cr \cr
 #'   \code{options_moons}: must be of class \code{moons_options} in
-#'     \code{\link{fill_moons}}, \code{\link{append_past_moons_to_raw}},
+#'     \code{\link{prep_moons}}, \code{\link{append_past_moons_to_raw}},
 #'     \code{\link{add_future_moons}} \cr \cr
 #'   \code{options_PortalData}: must be of class \code{PortalData_options} in
 #'     \code{\link{fill_PortalData}} \cr \cr
@@ -1433,6 +1464,8 @@ check_argsX <- function(){
 #'   \code{plots}: must be a length-1 \code{character} vector of value
 #'     \code{"all"} or \code{"longerm"} in \code{\link{all_options}},
 #'     \code{\link{data_options}}, \code{\link{rodents_options}} \cr \cr
+#'   \code{pred_dir}: must be a length-1 \code{character} vector in
+#'     \code{\link{compile_aic_weights}}, \code{\link{make_ensemble}} \cr \cr
 #'   \code{quiet}: must be a length-1 \code{logical} vector in
 #'     \code{\link{create_sub_dir}}, \code{\link{verify_PortalData}},
 #'     \code{\link{model_options}}, \code{\link{all_options}},   
@@ -1456,19 +1489,21 @@ check_argsX <- function(){
 #'     \code{\link{is.spcol}}, \code{\link{interpolate_abundance}}  \cr \cr 
 #'   \code{rodents_list}: must be of class \code{rodents_list} in 
 #'     \code{\link{prep_metadata}} \cr \cr 
+#'   \code{rodent_spp}: must be \code{NULL} or a length-1 \code{character} 
+#'     vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
+#'     \code{\link{rodent_spp}} \cr \cr
 #'   \code{save}: must be a length-1 \code{logical} vector in
 #'     \code{\link{covariates_options}}, \code{\link{metadata_options}},
 #'     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
-#'   \code{rodent_spp}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
-#'     \code{\link{rodent_spp}} \cr \c
 #'   \code{source_name}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
 #'   \code{species}: must be \code{NULL} or a \code{character} vector in
 #'     \code{\link{plot_cov_RMSE_mod_spp}}, 
 #'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
-#'     \code{\link{plot_cast_point_yaxis}}; specifically length-1 in
+#'     \code{\link{plot_cast_point_yaxis}},
+#'     \code{\link{select_most_ab_spp}}; \code{\link{select_casts}}  
+#'     specifically length-1 in
 #'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
 #'   \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector in \code{\link{sub_paths}} \cr \cr 
@@ -1496,6 +1531,8 @@ check_argsX <- function(){
 #'     vector in \code{\link{subdirs}}  \cr \cr
 #'   \code{tail}: must be a length-1 \code{logical} vector in
 #'     \code{\link{lag_covariates}} \cr \cr
+#'   \code{temp_dir}: must be a length-1 \code{character} vector in
+#'     \code{\link{save_forecast_output}} \cr \cr
 #'   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector of value \code{"all"} or \code{"controls"} in 
 #'     \code{\link{all_options}}, \code{\link{rodents_options}}, 
@@ -1503,6 +1540,9 @@ check_argsX <- function(){
 #'     \cr \cr
 #'   \code{to_cleanup}: must be \code{NULL} or a \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{dir_options}} \cr \cr
+#'   \code{topx}: must be a length-1 positive \code{integer} or 
+#'     \code{integer}-conformable vector in \code{\link{select_most_ab_spp}}
+#'     \cr \cr
 #'   \code{treatment}: must be \code{NULL} or \code{"control"} in
 #'     \code{\link{all_options}},
 #'     \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
@@ -1523,11 +1563,17 @@ check_argsX <- function(){
 #'     \code{\link{read_data}}, \code{\link{read_all}}, 
 #'     \code{\link{read_controls}}, \code{\link{read_covariates}}, 
 #'     \code{\link{read_moons}}, \code{\link{read_metadata}},  
-#'     \code{\link{most_recent_census}} \cr \cr 
+#'     \code{\link{most_recent_census}}, 
+#'     \code{\link{read_cast}}, \code{\link{read_casts}}, 
+#'     \code{\link{most_recent_cast}},
+#'     \code{\link{append_observed_to_cast}},
+#'     \code{\link{select_most_ab_spp}} \cr \cr
+#'   \code{verbose}: must be a length-1 \code{logical} vector in
+#'     \code{\link{verify_cast}}, \code{\link{cast_is_valid}} \cr \cr
 #'   \code{version}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{with_census}: must be a length-1 \code{logical} vector in
-#'     \code{\link{plot_cast_point}} \cr \cr
+#'     \code{\link{plot_cast_point}}, \code{\link{most_recent_cast}} \cr \cr
 #'   \code{yr}: must be a length-1 \code{integer} or 
 #'     \code{integer}-conformable value after 1970 in 
 #'     \code{\link{all_options}},   
@@ -1536,12 +1582,49 @@ check_argsX <- function(){
 #' @export
 #'
 check_arg <- function(arg_name, arg_value, fun_name = NULL){
+  if (arg_name == "add_error"){
+    if (!("logical" %in% class(arg_value))){
+      stop("`add_error` is not logical")
+    }
+    if (length(arg_value) != 1){
+      stop("`add_error` can only be of length = 1")
+    }
+  }
+  if (arg_name == "add_in_window"){
+    if (!("logical" %in% class(arg_value))){
+      stop("`add_in_window` is not logical")
+    }
+    if (length(arg_value) != 1){
+      stop("`add_in_window` can only be of length = 1")
+    }
+  }
+  if (arg_name == "add_lead"){
+    if (!("logical" %in% class(arg_value))){
+      stop("`add_lead` is not logical")
+    }
+    if (length(arg_value) != 1){
+      stop("`add_lead` can only be of length = 1")
+    }
+  }
   if (arg_name == "add_obs"){
     if (!("logical" %in% class(arg_value))){
       stop("`add_obs` is not logical")
     }
     if (length(arg_value) != 1){
       stop("`add_obs` can only be of length = 1")
+    }
+  }
+  if (arg_name == "all"){
+    if (!("list" %in% class(arg_value))){
+      stop("`all` is not a list")
+    }
+    if (!all(c("forecast", "aic") %in% names(arg_value))){
+      stop("`all` does not have elements named `forecast` and `aic`")
+    }
+  }
+  if (arg_name == "all_forecasts"){
+    if (!("data.frame" %in% class(arg_value))){
+      stop("`all_forecasts` is not a data frame")
     }
   }
   if (arg_name == "append_fcast_csv"){
@@ -1584,6 +1667,16 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`c_save` can only be of length = 1")
     }
   }
+  if (arg_name == "cast"){
+    if (!("data.frame" %in% class(arg_value))){
+      stop("`cast` is not a data frame")
+    }
+  }
+  if (arg_name == "casts"){
+    if (!("casts" %in% class(arg_value))){
+      stop("`casts` is not of class casts")
+    }
+  }
   if (arg_name == "cast_date"){
     if (!is.null(arg_value)){
       if (length(arg_value) != 1){
@@ -1614,6 +1707,17 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`cast_type` can only be `forecasts` or `hindcasts`")
     }
   }
+  if (arg_name == "CI_level"){
+    if (!is.numeric(arg_value)){
+      stop("`CI_level` is not numeric")
+    }
+    if (length(arg_value) != 1){
+      stop("`CI_level` can only be of length = 1")
+    }
+    if (arg_value < 0.001 | arg_value > 0.999){
+      stop("`CI_level` is not between 0.001 and 0.999")
+    }
+  }
   if (arg_name == "confidence_level"){
     if (!is.numeric(arg_value)){
       stop("`confidence_level` is not numeric")
@@ -1623,6 +1727,14 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (arg_value < 0.001 | arg_value > 0.999){
       stop("`confidence_level` is not between 0.001 and 0.999")
+    }
+  }
+  if (arg_name == "controls"){
+    if (!("list" %in% class(arg_value))){
+      stop("`controls` is not a list")
+    }
+    if (!controls(c("forecast", "aic") %in% names(arg_value))){
+      stop("`controls` does not have elements named `forecast` and `aic`")
     }
   }
   if (arg_name == "cov_fcast"){
@@ -1792,8 +1904,8 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (length(arg_value) != 1){
         stop("`lag` can only be of length = 1")
       }
-      if (arg_value < 1 | arg_value %% 1 != 0){
-        stop("`lag` is not a positive integer")
+      if (arg_value < 0 | arg_value %% 1 != 0){
+        stop("`lag` is not a non-negative integer")
       }
     }
   }
@@ -1827,7 +1939,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`level` can only be of length = 1")
     }
     AC_funs <- c("plot_cov_RMSE_mod_spp", "plot_err_lead_spp_mods",
-                 "plot_cast_point")
+                 "plot_cast_point", "select_most_ab_spp", "select_casts")
     ST_funs <- c("all_options")
     if (fun_name %in% AC_funs){
       if (!(arg_value %in% c("All", "Controls"))){
@@ -1859,6 +1971,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (length(arg_value) != 1){
       stop("`m_save` can only be of length = 1")
+    }
+  }
+  if (arg_name == "metadata"){
+    if (!("metadata" %in% class(arg_value))){
+      stop("`metadata` is not a metadata list")
     }
   }
   if (arg_name == "meta_filename"){
@@ -1973,11 +2090,6 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`n_future_moons` is not a non-negative integer")
     }
   }
-  if (arg_name == "new_forecast_covariates"){
-    if (!("covariates" %in% class(arg_value))){
-      stop("`new_forecast_covariates` is not a covariates table")
-    }
-  }
   if (arg_name == "nadot"){
     if (!("logical" %in% class(arg_value))){
       stop("`nadot` is not logical")
@@ -2003,6 +2115,19 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (arg_value < 1 | arg_value %% 1 != 0){
       stop("`ndates` is not a positive integer")
+    }
+  }
+  if (arg_name == "new_forecast_covariates"){
+    if (!("covariates" %in% class(arg_value))){
+      stop("`new_forecast_covariates` is not a covariates table")
+    }
+  }
+  if (arg_name == "newmoonnumbers"){
+    if (!is.numeric(arg_value)){
+      stop("`newmoonnumbers` is not numeric")
+    }
+    if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
+      stop("`newmoonnumbers` is not a non-negative integer")
     }
   }
   if (arg_name == "nfcnm"){
@@ -2085,6 +2210,14 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!(arg_value %in% c("all", "longterm"))){
       stop("`plots` must be 'all' or 'longterm'")
+    }
+  }
+  if (arg_name == "pred_dir"){
+    if (!("character" %in% class(arg_value))){
+      stop("`pred_dir` is not a character")
+    }
+    if (length(arg_value) != 1){
+      stop("`pred_dir` can only be of length = 1")
     }
   }
   if (arg_name == "quiet"){
@@ -2254,6 +2387,14 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`tail` can only be of length = 1")
     }
   }
+  if (arg_name == "temp_dir"){
+    if (!("character" %in% class(arg_value))){
+      stop("`temp_dir` is not a character")
+    }
+    if (length(arg_value) != 1){
+      stop("`temp_dir` can only be of length = 1")
+    }
+  }
   if (arg_name == "tmnt_type"){
     if (!is.null(arg_value)){
       if (!is.character(arg_value)){
@@ -2274,6 +2415,17 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       }
     }
   }
+  if (arg_name == "topx"){
+    if (!is.numeric(arg_value)){
+      stop("`topx` is not numeric")
+    }
+    if (length(arg_value) != 1){
+      stop("`topx` can only be of length = 1")
+    }
+    if (arg_value < 1 | arg_value %% 1 != 0){
+      stop("`topx` is not a positive integer")
+    }
+  }
   if (arg_name == "treatment"){
     if (!(is.null(arg_value)) && arg_value != "control"){
       stop("`treatment` must be `NULL` or 'control'")
@@ -2282,6 +2434,14 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   if (arg_name == "tree"){
     if (!("dirtree" %in% class(arg_value))){
       stop("`tree` is not a dirtree list")
+    }
+  }
+  if (arg_name == "verbose"){
+    if (!("logical" %in% class(arg_value))){
+      stop("`verbose` is not logical")
+    }
+    if (length(arg_value) != 1){
+      stop("`verbose` can only be of length = 1")
     }
   }
   if (arg_name == "version"){
