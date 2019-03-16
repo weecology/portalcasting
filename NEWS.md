@@ -43,7 +43,7 @@ leverage `check_arg` for `verify_cast`.
 * `messageq` function is added to tidy code around messages being printed
 based on the `quiet` arguments.
 
-### Inclusion of `wEnsemble` as an option in `model_names`
+### Inclusion of `"wEnsemble"` as an option in `model_names`
 * Produces the `prefab` list with an `"Ensemble"` entry added, to allow for
 that simply without using the `NULL` options, which collects all model names.
 * This facilitated addition of `models` as an argument in the evaluations 
