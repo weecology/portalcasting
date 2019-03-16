@@ -750,7 +750,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
         out <- c(out, "`cast_date` can only be of length = 1")
       }
       cast_date2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
-      if (is.na(cast_date2)){
+      if (any(is.na(cast_date2))){
         out <- c(out, "`cast_date` is not a Date")
       }
     }
@@ -758,7 +758,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   if (arg_name == "cast_dates"){
     if (!is.null(arg_value)){
       cast_dates2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
-      if (is.na(cast_dates2)){
+      if (any(is.na(cast_dates2))){
         out <- c(out, "`cast_dates` is not a Date")
       }
     }
@@ -949,7 +949,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
         out <- c(out, "`from_date` can only be of length = 1")
       }
       from_date2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
-      if (is.na(from_date2)){
+      if (any(is.na(from_date2))){
         out <- c(out, "`from_date` is not a Date")
       }
     }
