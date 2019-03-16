@@ -1,3 +1,26 @@
+#' @title Optionally generate a message based on a logical input
+#'
+#' @description Given the input to \code{quiet}, generate the message(s) 
+#'   in \code{msg} or not.
+#'
+#' @param msg \code{character} vector of the message(s) to generate or 
+#'   \code{NULL}. If more than one element is contained in \code{msg}, they
+#'   are concatenated with a newline between.
+#'
+#' @param quiet \code{logical} indicator controlling if the message is
+#'   generated.
+#'
+#' @export
+#'
+messageq <- function(msg = NULL, quiet = FALSE){
+  check_args()
+  if (!quiet){
+    msg2 <- paste(msg, collapse = "\n")
+    message(msg2)
+  }
+}
+
+
 #' @title Conform NA entries to "NA" entries
 #'
 #' @description Given the species abbreviation NA, when data are read in, 
@@ -12,7 +35,7 @@
 #'   conform the \code{NA}s to \code{"NA"}s.
 #'
 #' @return \code{x} with any \code{NA} in \code{colname} replaced with 
-#'   \code{"NA"}
+#'   \code{"NA"}.
 #'
 #' @export
 #'
@@ -411,6 +434,8 @@ check_args <- function(){
 #'     \code{\link{prep_metadata}}, \code{\link{append_past_moons_to_raw}},
 #'     \code{\link{add_future_moons}}, \code{\link{format_moons}},
 #'     \code{\link{prep_rodents_list}}, \code{\link{prep_rodents}} \cr \cr
+#'   \code{msg}: must be \code{NULL} or a \code{character} vector in
+#'     \code{\link{messageq}} \cr \cr
 #'   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
 #'     \code{integer}-conformable vector in \code{\link{moons_options}}
 #'     \cr \cr
@@ -490,7 +515,7 @@ check_args <- function(){
 #'     \code{\link{moons_options}}, \code{\link{rodents_options}},
 #'     \code{\link{download_predictions}},
 #'     \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
-#'     \code{\link{pevGARCH}} \cr \cr 
+#'     \code{\link{pevGARCH}}, \code{\link{messageq}} \cr \cr 
 #'   \code{r_filename}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
@@ -1132,6 +1157,13 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   if (arg_name == "moons"){
     if (!("moons" %in% class(arg_value))){
       stop("`moons` is not an moons table")
+    }
+  }
+  if (arg_name == "msg"){
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`msg` is not a character")
+      }
     }
   }
   if (arg_name == "n_future_moons"){

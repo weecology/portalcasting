@@ -21,7 +21,8 @@
 #'   \code{"models"}, \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. 
 #'   It is generally not advised to change the subdirectories. 
 #'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
+#' @param quiet \code{logical} indicator controlling if messages are 
+#'   generated.
 #'
 #' @param cast_date \code{Date} from which future is defined, typically 
 #'   today's date (using \code{\link{today}}).

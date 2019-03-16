@@ -11,19 +11,19 @@ test_that("dirtree", {
   expect_error(dirtree(main = c("ok", "ok")))
   expect_error(dirtree(base = 1))
   expect_error(dirtree(main = 1))
-  expect_error(dirtree(subs = "ok"))
+  expect_error(dirtree(subs = 1))
 })
 
 test_that("subdirs", {
-  expect_is(subdirs(subs_type = "portalcasting"), "subdirs")
+  expect_is(subdirs(subs_type = "portalcasting"), "character")
   expect_is(subdirs(subs_type = "portalcasting", subs_names = "ok"), 
-                    "subdirs")
-  expect_is(subdirs(subs_type = NULL, subs_names = "ok"), "subdirs")
+                    "character")
+  expect_is(subdirs(subs_type = NULL, subs_names = "ok"), "character")
   expect_equal(length(subdirs(subs_type = "portalcasting")), 5)
   expect_equal(length(subdirs(subs_type = "portalcasting", 
                               subs_names = "ok")), 6)
   expect_equal(length(subdirs(subs_type = NULL, subs_names = "ok")), 1)
-  expect_error(subdirs(subs_type = NULL))
+  expect_equal(subdirs(subs_type = NULL), NULL)
   expect_error(subdirs(subs_type = "ok"))
   expect_error(subdirs(subs_type = "portalcasting", subs_names = 1))
 })

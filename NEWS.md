@@ -36,6 +36,10 @@ directory tree, and the script generation is updated to match.
 * The `models` class has been removed.
 * The `subdirs` class has been removed.
 
+### `messageq` function
+* `messageq` function is added to tidy code around messages being printed
+based on the `quiet` arguments.
+
 
 # [portalcasting 0.3.1](https://github.com/weecology/portalcasting/pull/93)
 *2019-03-12* 

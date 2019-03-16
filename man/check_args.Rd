@@ -227,6 +227,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{prep_metadata}}, \code{\link{append_past_moons_to_raw}},
     \code{\link{add_future_moons}}, \code{\link{format_moons}},
     \code{\link{prep_rodents_list}}, \code{\link{prep_rodents}} \cr \cr
+  \code{msg}: must be \code{NULL} or a \code{character} vector in
+    \code{\link{messageq}} \cr \cr
   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
     \code{integer}-conformable vector in \code{\link{moons_options}}
     \cr \cr
@@ -306,7 +308,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{moons_options}}, \code{\link{rodents_options}},
     \code{\link{download_predictions}},
     \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
-    \code{\link{pevGARCH}} \cr \cr 
+    \code{\link{pevGARCH}}, \code{\link{messageq}} \cr \cr 
   \code{r_filename}: must be a length-1 \code{character} vector in
     \code{\link{all_options}},
     \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr

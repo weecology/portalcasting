@@ -16,7 +16,7 @@ conform the \code{NA}s to \code{"NA"}s.}
 }
 \value{
 \code{x} with any \code{NA} in \code{colname} replaced with 
-  \code{"NA"}
+  \code{"NA"}.
 }
 \description{
 Given the species abbreviation NA, when data are read in, 

@@ -7,24 +7,13 @@ setup_dir(options_all)
 tree <- dirtree(base = "~", main = "portalcasting_dev1")
 portalcast(options_all)
 
-# working on
-# make subs_type default to "portalcasting" (maybe call it set? )
-# switch order of arguments in model_names 
-
-to do:
-remove subdirs class
-can tidy up create_tmp
-and a test in test 10
-
-
 # to dos (later!): 
 # check out the eval plots, the top one has a slightly weird x axis
 # messageq function that eliminates the boolean calls
 # make the error message hit all faulty arguments and report the function
 #  where it happened
 # handle cast argument in verify_cast cast_is_valid combo
+# tidy up the documentation in check_args
 
-
-#'     \code{\link{model_options}}, \code{\link{save_forecast_output}} \cr \cr
-
-
+#'   \code{msg}: must be a length-1 \code{character} vector in
+#'     \code{\link{messageq}} \cr \cr

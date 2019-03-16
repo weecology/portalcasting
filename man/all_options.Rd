@@ -101,7 +101,8 @@ sets the subdirectories as \code{"predictions"},
 \code{"models"}, \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. 
 It is generally not advised to change the subdirectories.}
 
-\item{quiet}{\code{logical} indicator controlling if messages are printed.}
+\item{quiet}{\code{logical} indicator controlling if messages are 
+generated.}
 
 \item{cast_date}{\code{Date} from which future is defined, typically 
 today's date (using \code{\link{today}}).}
