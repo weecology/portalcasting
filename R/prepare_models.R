@@ -70,7 +70,7 @@ model_template <- function(options_model = model_options()){
   } else{
     subs <- 'subdirs(subs_type = "portalcasting")'
   }
-  name <- options_model$name
+  name <- options_model$model
   quiet_arg <- paste0("quiet = ", options_model$quiet)
 
   if (options_model$mod_covariates){

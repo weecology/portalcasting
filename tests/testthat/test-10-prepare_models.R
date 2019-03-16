@@ -2,11 +2,11 @@ context("Test prepare_models functions")
 
 test_that("model_names", {
   expect_is(model_names(model_set = "prefab"), "character")
-  expect_error(model_names(set = 1), "`model_set` is not")
+  expect_error(model_names(model_set = 1), "`model_set` is not")
   expect_error(model_names(add = 1), "`add` is not")
-  expect_error(model_names(set = c("prefab", "prefab")), 
+  expect_error(model_names(model_set = c("prefab", "prefab")), 
                "`model_set` can only be")
-  expect_error(model_names(set = "ok"), "`model_set` must be")
+  expect_error(model_names(model_set = "ok"), "`model_set` must be")
 })
 
 test_that("write_model", {
