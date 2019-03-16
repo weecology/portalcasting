@@ -17,7 +17,6 @@ test_that("transfer_hist_covariate_forecasts", {
   path_to <- file_paths(d_opts$tree, "data/covariate_forecasts.csv")
   unlink(path_to, force = TRUE)  
   expect_message(transfer_hist_covariate_forecasts(d_opts))
-  unlink(path_to, force = TRUE)  
   exists <- read.csv(path_to, stringsAsFactors = FALSE) 
   exists$date_made <- "1970-01-01"
   write.csv(exists, path_to, row.names = FALSE)
