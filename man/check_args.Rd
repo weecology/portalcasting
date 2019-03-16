@@ -50,8 +50,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{dir_options}}, \code{\link{models_options}}, 
     \code{\link{PortalData_options}}, and
     \code{\link{predictions_options}}. \cr \cr
-  \code{cast}: must be a \code{data.frame} in \code{\link{cast_is_valid}}
-    and \code{\link{verify_cast}}. \cr \cr
+  \code{cast}: must be a valid -cast \code{data.frame} as checked by
+    \code{\link{cast_is_valid}} in \code{\link{verify_cast}}. \cr \cr
   \code{casts}: must be of class \code{casts} in
     \code{\link{append_observed_to_cast}} and 
     \code{\link{measure_cast_error}}. \cr \cr
@@ -65,6 +65,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{cast_dates}: must be \code{NULL} or a \code{Date} or 
     \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}, 
     \code{\link{read_casts}}, and \code{\link{select_most_ab_spp}}. \cr \cr
+  \code{cast_to_check}: must be a \code{data.frame} in 
+    \code{\link{cast_is_valid}}. \cr \cr
   \code{cast_type}: must be a length-1 \code{character} vector in
     \code{\link{most_recent_cast}}, \code{\link{plot_cast_point}},
     \code{\link{plot_cast_ts}}, \code{\link{plot_cov_RMSE_mod_spp}}, 
@@ -409,7 +411,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{rodents_options}}, \code{\link{select_most_ab_spp}},    
     \code{\link{sub_paths}}, and \code{\link{verify_PortalData}}. \cr \cr
   \code{verbose}: must be a length-1 \code{logical} vector in
-    \code{\link{cast_is_valid}} and \code{\link{verify_cast}}. \cr \cr
+    \code{\link{cast_is_valid}}. \cr \cr
   \code{version}: must be a length-1 \code{character} vector in
     \code{\link{all_options}} and \code{\link{PortalData_options}}. \cr \cr
   \code{with_census}: must be a length-1 \code{logical} vector in

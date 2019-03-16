@@ -152,7 +152,6 @@ bad_cast2 <- read.csv("bad_cast2.csv", stringsAsFactors = FALSE)
 
 test_that("verify_casts", {
   expect_error(verify_cast(bad_cast1))
-  expect_output(expect_error(verify_cast(bad_cast1, TRUE)))
   expect_error(verify_cast(na_conformer(bad_cast2)))
 })
 

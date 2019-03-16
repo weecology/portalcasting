@@ -31,6 +31,9 @@ specific.
 * The default `subs_type` for `subdirs` is now `"portalcasting"`.
 * The four model functions have a reduced set of inputs to leverage the 
 directory tree, and the script generation is updated to match.
+* Updating the `cast` argument to `cast_to_check` in `cast_is_valid` and 
+removing the `verbose` argument from `verify_cast` to allow `check_arg` to 
+leverage `check_arg` for `verify_cast`.
 
 ### Removal of classes
 * The `models` class has been removed.

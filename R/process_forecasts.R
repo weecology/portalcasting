@@ -317,6 +317,9 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 #'
 #' @param cast \code{data.frame} -cast file read in.
 #'
+#' @param cast_to_check \code{data.frame} -cast file being checked within 
+#'   \code{cast_is_valid} using \code{\link{check_arg}}.
+#'
 #' @param verbose \code{logical} indicator if details of failure should
 #'   be printed
 #'
@@ -327,11 +330,8 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 #' 
 #' @export
 #'
-verify_cast <- function(cast, verbose = FALSE){
+verify_cast <- function(cast){
   check_args()
-  if(!cast_is_valid(cast, verbose)){
-    stop("cast not valid")
-  }
   cast
 }
 
@@ -339,7 +339,7 @@ verify_cast <- function(cast, verbose = FALSE){
 #'
 #' @export
 #'
-cast_is_valid <- function(cast, verbose = FALSE){
+cast_is_valid <- function(cast_to_check, verbose = FALSE){
   check_args()
   is_valid <- TRUE
   violations <- c()
