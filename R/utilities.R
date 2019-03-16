@@ -775,7 +775,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     if (length(arg_value) != 1){
       out <- c(out, "`cast_type` can only be of length = 1")
     }
-    if (!(arg_value %in% c("forecasts", "hindcasts"))){
+    if (!(all(arg_value %in% c("forecasts", "hindcasts")))){
       out <- c(out, "`cast_type` can only be `forecasts` or `hindcasts`")
     }
   }
@@ -800,7 +800,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`confidence_level` is not numeric")
-    } else if (arg_value < 0.001 | arg_value > 0.999){
+    } else if (any(arg_value < 0.001 | arg_value > 0.999)){
       out <- c(out, "`confidence_level` is not between 0.001 and 0.999")
     }
   }
@@ -858,7 +858,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     if (length(arg_value) != 1){
       out <- c(out, "`data_name` can only be of length = 1")
     }
-    if (!(arg_value %in% valid_names)){
+    if (!(all(arg_value %in% valid_names))){
       out <- c(out, "`data_name` is not valid option")
     }
   }
@@ -1034,7 +1034,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
                    "plot_cast_point", "select_most_ab_spp", "select_casts")
       ST_funs <- c("all_options")
       if (fun_name %in% AC_funs){
-        if (!(arg_value %in% c("All", "Controls"))){
+        if (!(all(arg_value %in% c("All", "Controls")))){
           out <- c(out, "`level` must be 'All' or 'Controls'")
         }
       }
@@ -1144,7 +1144,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (length(arg_value) != 1){
         out <- c(out, "`model_set` can only be of length = 1")
       }
-      if (!(arg_value %in% c("prefab", "wEnsemble"))){
+      if (!(all(arg_value %in% c("prefab", "wEnsemble")))){
         out <- c(out, "`model_set` must be 'prefab' or 'wEnsemble'")
       }
     }
@@ -1319,7 +1319,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     if (length(arg_value) != 1){
       out <- c(out, "`plots` can only be of length = 1")
     }
-    if (!(arg_value %in% c("all", "longterm"))){
+    if (!(all(arg_value %in% c("all", "longterm")))){
       out <- c(out, "`plots` must be 'all' or 'longterm'")
     }
   }
@@ -1416,7 +1416,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (length(arg_value) != 1){
         out <- c(out, "`species_set` can only be of length = 1")
       }
-      if (!(arg_value %in% c("base", "wtotal", "evalplot"))){
+      if (!(all(arg_value %in% c("base", "wtotal", "evalplot")))){
         out <- c(out, "`species_set` must be 'base', 'wtotal', or 'evalplot'")
       }
     }
@@ -1473,7 +1473,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (length(arg_value) != 1){
         out <- c(out, "`subs_type` can only be of length = 1")
       }
-      if (!(arg_value %in% c("portalcasting"))){
+      if (!(all(arg_value %in% c("portalcasting")))){
         out <- c(out, "`subs_type` is not recognized ")
       }
     }
@@ -1520,7 +1520,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (length(arg_value) != 1){
         out <- c(out, "`tmnt_type` can only be of length = 1")
       }
-      if (!(arg_value %in% c("all", "controls"))){
+      if (!(all(arg_value %in% c("all", "controls")))){
         out <- c(out, "`tmnt_type` must be 'all' or 'controls'")
       }
     }
@@ -1591,7 +1591,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`yr` is not numeric")
-    } else if (arg_value < 1970 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1970 | arg_value %% 1 != 0)){
       out <- c(out, "`yr` is not an integer after 1970")
     }
   }
