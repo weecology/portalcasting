@@ -351,7 +351,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \cr \cr
   \code{sub_path}: must be \code{NULL} or a length-1 \code{character} 
     vector in \code{\link{create_sub_dir}}  \cr \cr
-  \code{subs} must be a class-\code{subdirs} vector in
+  \code{subs} must be a class-\code{character} vector in
     \code{\link{all_options}}, \code{\link{dir_options}},
     \code{\link{PortalData_options}}, \code{\link{data_options}} 
     \code{\link{predictions_options}} 

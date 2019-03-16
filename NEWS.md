@@ -34,6 +34,7 @@ directory tree, and the script generation is updated to match.
 
 ### Removal of classes
 * The `models` class has been removed.
+* The `subdirs` class has been removed.
 
 
 # [portalcasting 0.3.1](https://github.com/weecology/portalcasting/pull/93)

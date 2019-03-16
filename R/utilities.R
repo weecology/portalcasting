@@ -535,7 +535,7 @@ check_args <- function(){
 #'     \cr \cr
 #'   \code{sub_path}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector in \code{\link{create_sub_dir}}  \cr \cr
-#'   \code{subs} must be a class-\code{subdirs} vector in
+#'   \code{subs} must be a class-\code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{dir_options}},
 #'     \code{\link{PortalData_options}}, \code{\link{data_options}} 
 #'     \code{\link{predictions_options}} 
@@ -1415,8 +1415,8 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "subs"){
-    if (!("subdirs" %in% class(arg_value))){
-      stop("`subs` is not a subdirs vector")
+    if (!("character" %in% class(arg_value))){
+      stop("`subs` is not a character vector")
     }
   }
   if (arg_name == "subs_names"){

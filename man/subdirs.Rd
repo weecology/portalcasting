@@ -15,8 +15,7 @@ subdirectory names (requires \code{type = NULL}, which is the default).}
 vector. Presently only defined for \code{"portalcasting"}.}
 }
 \value{
-Class-\code{subdirs} vector of character elements of 
-  subdirectory names.
+Class-\code{character} vector of subdirectory names.
 }
 \description{
 Produces a vector of subdirectory names that is of class

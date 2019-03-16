@@ -11,11 +11,9 @@ prep_rodents(moons, rodents_opts)
 metadata <- read_data(tree, "metadata")
 cast_date <- as.Date(metadata$forecast_date)
 cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
-spath <- sub_paths(dirtree(main = "testing_casting", 
-                           subs = subdirs("predictions", subs_type = NULL)))
+spath <- sub_paths(dirtree(main = "testing_casting", subs = "predictions"))
 create_sub_dir(spath)
-options_all3 <- all_options(main = "testing_casting", 
-                            model = "AutoArima")
+options_all3 <- all_options(main = "testing_casting", model = "AutoArima")
 portalcast(options_all3)
 
 test_that("plot_cast_point", {

@@ -50,8 +50,7 @@ dirtree <- function(base = ".", main = "", subs = subdirs()){
 #' @param subs_type \code{character} name for quick generation of subdirectory
 #'   vector. Presently only defined for \code{"portalcasting"}.
 #'
-#' @return Class-\code{subdirs} vector of character elements of 
-#'   subdirectory names.
+#' @return Class-\code{character} vector of subdirectory names.
 #'
 #' @export
 #'
@@ -62,7 +61,7 @@ subdirs <- function(subs_names = NULL, subs_type = "portalcasting"){
     subs_names <- c(subs_names, pc_subs)
     subs_names <- unique(subs_names)
   }
-  classy(subs_names, "subdirs")
+  subs_names
 }
 
 #' @title Determine the path for a specific level of a portalcasting directory

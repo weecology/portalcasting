@@ -28,7 +28,7 @@ test_that("model_template", {
   expect_equal(length(temp2), 1)
 
   temp3 <- model_template(AutoArima_options(dirtree(main = "testing_casting",
-                                        subs = subdirs(subs_names = "test"))))
+                                        subs = "test")))
   expect_is(temp3, "character")
   expect_equal(length(temp3), 1)
 })
