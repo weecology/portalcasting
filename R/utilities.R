@@ -973,7 +973,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`hind_step` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`hind_step` is not a positive integer")
     }
   }
@@ -997,7 +997,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       }
       if (!is.numeric(arg_value)){
         out <- c(out, "`lag` is not numeric")
-      } else if (arg_value < 0 | arg_value %% 1 != 0){
+      } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
         out <- c(out, "`lag` is not a non-negative integer")
       }
     }
@@ -1008,7 +1008,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`lead` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`lead` is not a positive integer")
     }
   }
@@ -1018,7 +1018,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`lead_time` is not numeric")
-    } else if (arg_value < 0 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
       out <- c(out, "`lead_time` is not a non-negative integer")
     }
   }
@@ -1085,7 +1085,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`min_lag` is not numeric")
-    } else if (arg_value < 0 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
       out <- c(out, "`min_lag` is not a non-negative integer")
     }
   }
@@ -1095,7 +1095,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`min_observed` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`min_observed` is not a positive integer")
     }
   }
@@ -1105,7 +1105,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`min_plots` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`min_plots` is not a positive integer")
     }
   }
@@ -1115,7 +1115,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`min_traps` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`min_traps` is not a positive integer")
     }
   }
@@ -1204,7 +1204,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`ndates` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`ndates` is not a positive integer")
     }
   }
@@ -1228,7 +1228,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`nfcnm` is not numeric")
-    } else if (arg_value < 0 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
       out <- c(out, "`nfcnm` is not a non-negative integer")
     }
   }
@@ -1238,7 +1238,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`n_future_moons` is not numeric")
-    } else if (arg_value < 0 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
       out <- c(out, "`n_future_moons` is not a non-negative integer")
     }
   }
@@ -1439,7 +1439,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`start` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`start` is not a positive integer")
     }
   }
@@ -1449,7 +1449,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`start_newmoon` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`start_newmoon` is not a positive integer")
     }
   }
@@ -1538,7 +1538,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!is.numeric(arg_value)){
       out <- c(out, "`topx` is not numeric")
-    } else if (arg_value < 1 | arg_value %% 1 != 0){
+    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
       out <- c(out, "`topx` is not a positive integer")
     }
   }
