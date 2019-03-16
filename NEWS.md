@@ -20,7 +20,7 @@ and standardize the use of the codebase's arguments.
 returns all if `specific_subs` is NULL
 * `lag_data` is now `lag_covariates`
 
-## Updated argument (names to leverage `check_args`, etc.)
+### Updated argument (names to leverage `check_args`, etc.)
 * In multiple functions `data` has been replaced with `rodents` to be
 specific.
 * `CI_level` is now subsumed by `confidence_level`
