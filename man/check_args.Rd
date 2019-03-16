@@ -2,11 +2,421 @@
 % Please edit documentation in R/utilities.R
 \name{check_args}
 \alias{check_args}
-\title{Check all of a function's arguments values for validity}
+\alias{check_arg}
+\title{Check a function's arguments values for validity}
 \usage{
 check_args()
+
+check_arg(arg_name, arg_value, fun_name = NULL)
+}
+\arguments{
+\item{arg_name}{\code{character} value of the argument name.}
+
+\item{arg_value}{Input value for the argument.}
+
+\item{fun_name}{\code{character} value of the function name or \code{NULL}.}
 }
 \description{
-Check that all of the arguments to a given function have
-  valid values, by wrapping around \code{\link{check_arg}}.
+\code{check_args} checks that all of the arguments to a given
+  function have valid values within the pipeline to avoid naming collision
+  and improper formatting, by wrapping around \code{check_arg} for each
+  argument. See \code{Details} for argument-specific rules.
+}
+\details{
+Usage and rules for arguments are as follows: \cr \cr
+  \code{add}: must be \code{NULL} or a \code{character} vector in
+    \code{\link{model_names}} \cr \cr
+  \code{add_error}: must be a length-1 \code{logical} vector in
+    \code{\link{append_observed_to_cast}} \cr \cr
+  \code{add_in_window}: must be a length-1 \code{logical} vector in
+    \code{\link{append_observed_to_cast}} \cr \cr
+  \code{add_lead}: must be a length-1 \code{logical} vector in
+    \code{\link{append_observed_to_cast}} \cr \cr
+  \code{add_obs}: must be a length-1 \code{logical} vector in
+    \code{\link{plot_cast_ts}} \cr \cr
+  \code{all}: must be a \code{list} with elements named \code{forecast} 
+    and \code{aic} in \code{\link{save_forecast_output}} \cr \cr
+  \code{all_forecasts}: must be a \code{data.frame} in
+    \code{\link{make_ensemble}} \cr \cr
+  \code{append_fcast_csv}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}}, \code{\link{data_options}},
+    \code{\link{covariates_options}} \cr \cr
+  \code{append_missing_to_raw}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}}, \code{\link{data_options}} , 
+    \code{\link{moons_options}} \cr \cr
+  \code{base} must be a length-1 \code{character} vector in
+    \code{\link{all_options}}, \code{\link{dir_options}},
+    \code{\link{PortalData_options}}, \code{\link{data_options}} 
+    \code{\link{predictions_options}} 
+    \code{\link{models_options}}, \code{\link{cast_options}},
+    \code{\link{dirtree}} \cr \cr
+  \code{c_filename}: must be a length-1 \code{character} vector in
+    \code{\link{all_options}}, \code{\link{data_options}},
+    \code{\link{covariates_options}}  \cr \cr
+  \code{c_save}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}}, \code{\link{data_options}},
+    \code{\link{covariates_options}}  \cr \cr
+  \code{cast}: must be a \code{data.frame} in
+    \code{\link{verify_cast}}, \code{\link{cast_is_valid}} \cr \cr
+  \code{casts}: must be of class \code{casts} in
+    \code{\link{append_observed_to_cast}},
+    \code{\link{measure_cast_error}} \cr \cr
+  \code{cast_date}: must be \code{NULL} or a length-1 \code{Date} or 
+    \code{Date}-conformable vector in \code{\link{plot_cast_point}},  
+    \code{\link{plot_cast_ts}}, \code{\link{all_options}}, 
+    \code{\link{data_options}}, \code{\link{cast_options}},
+    \code{\link{moons_options}}, \code{\link{metadata_options}},
+    \code{\link{covariates_options}},
+    \code{\link{add_addl_future_moons}}, \code{\link{read_cast}} \cr \cr
+  \code{cast_dates}: must be \code{NULL} or a \code{Date} or 
+    \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}, 
+    \code{\link{read_casts}}, \code{\link{select_most_ab_spp}} \cr \cr
+  \code{cast_type}: must be a length-1 \code{character} vector in
+    \code{\link{plot_cov_RMSE_mod_spp}}, 
+    \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
+    \code{\link{plot_cast_ts}}, \code{\link{read_cast}}, 
+    \code{\link{read_casts}}, \code{\link{most_recent_cast}},
+    \code{\link{select_most_ab_spp}} \cr \cr
+  \code{CI_level}: must be a length-1 \code{numeric} value between
+    0 and 1 in \code{\link{make_ensemble}} \cr \cr
+  \code{class}: must be \code{NULL} or a \code{character} vector in
+    \code{\link{classy}} \cr \cr
+  \code{colname}: must be a length-1 \code{character} vector in
+    \code{\link{na_conformer}}, \code{\link{fcast0}},
+    \code{\link{remove_incompletes}} \cr \cr
+  \code{confidence_level}: must be a length-1 \code{numeric} value between
+    0 and 1 in \code{\link{all_options}}, \code{\link{data_options}}, 
+    \code{\link{metadata_options}} \cr \cr
+  \code{controls}: must be a \code{list} with elements named 
+    \code{forecast} and \code{aic} in \code{\link{save_forecast_output}} 
+    \cr \cr
+  \code{cov_fcast}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
+  \code{cov_hist}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
+  \code{covariates}: must be a \code{data.frame} of class \code{options} in
+    \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
+    \code{\link{prep_metadata}} \cr \cr
+  \code{data_name}: must be a length-1 \code{character} vector of value 
+    \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
+    or \code{"metadata"} in \code{\link{read_data}} \cr \cr
+  \code{df}: must be a \code{data.frame} in 
+    \code{\link{remove_incompletes}},
+    \code{\link{append_csv}}, \code{\link{dataout}} \cr \cr
+  \code{download_existing_predictions}: must be a length-1 \code{logical} 
+    vector in \code{\link{all_options}}, 
+    \code{\link{predictions_options}} \cr \cr
+  \code{download}: must be a length-1 \code{logical} vector in
+    \code{\link{download_predictions}} \cr \cr 
+  \code{drop_spp}: must be a \code{character} vector in
+    \code{\link{all_options}}, \code{\link{data_options}},
+    \code{\link{rodents_options}}, \code{\link{remove_spp}} \cr \cr
+  \code{end}: must be \code{NULL} or a positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} 
+    \code{\link{rodents_options}}, \code{\link{cast_options}}  
+    \cr \cr
+  \code{ensemble}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}}, \code{\link{cast_options}}  \cr \cr
+  \code{extension}: must be a length-1 \code{character} vector with
+    a single period in \code{\link{model_paths}} \cr \cr 
+  \code{fcast_nms}: must be \code{NULL} or a non-negative \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} 
+    \cr \cr
+  \code{filename}: must be a length-1 \code{character} vector in
+    \code{\link{verify_PortalData}}, \code{\link{append_csv}} \cr \cr
+  \code{from_date}: must be \code{NULL} or a length-1 \code{Date} or 
+    \code{Date}-conformable vector in \code{\link{plot_cast_point}},
+    \code{\link{select_most_ab_spp}} \cr \cr
+  \code{from_zenodo}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
+  \code{future_moons}: must be a \code{data.frame} of class \code{moons} 
+    in \code{\link{add_addl_future_moons}} \cr \cr
+  \code{hind_step}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} 
+    \code{\link{rodents_options}}, \code{\link{cast_options}}   
+    \cr \cr
+  \code{hist_cov}: must be a \code{data.frame} of class \code{options} in
+    \code{\link{prep_fcast_covariates}},
+    \code{\link{update_covfcast_options}} \cr \cr
+  \code{hist_fcast_file}: must be a length-1 \code{character} vector in
+    \code{\link{all_options}}, 
+    \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
+  \code{lag}: must be \code{NULL} or a length-1 non-negative \code{integer}
+    or \code{integer}-conformable vector in \code{\link{model_options}},
+    \code{\link{lag_covariates}},  \code{\link{pevGARCH}} \cr \cr
+  \code{lead}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{plot_cast_point}},
+    \code{\link{select_most_ab_spp}} \cr \cr
+  \code{lead_time}: must be a length-1 non-negative \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}}, 
+    \code{\link{metadata_options}}, \code{\link{covariates_options}}, 
+    \code{\link{data_options}} \cr \cr
+  \code{level}: must be \code{NULL} or a length-1 \code{character} vector 
+    of value \code{"All"} or \code{"Controls"} in 
+    \code{\link{plot_cov_RMSE_mod_spp}}, 
+    \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
+    \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}},
+    \code{\link{select_most_ab_spp}}, \code{\link{select_casts}}   
+    or a length-1 \code{character} vector of value \code{"Site"} or 
+    \code{"Treatment"} in \code{\link{all_options}}, 
+    \code{\link{rodents_options}}, \code{\link{data_options}}, 
+    \code{\link{metadata_options}},
+    \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
+    \code{\link{pevGARCH}}  \cr \cr
+  \code{local_paths}: must be a \code{character} 
+    vector in \code{\link{file_paths}} \cr \cr 
+  \code{m_filename}: must be a length-1 \code{character} vector in
+    \code{\link{all_options}},
+    \code{\link{moons_options}}, \code{\link{data_options}}  \cr \cr
+  \code{m_save}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}},
+    \code{\link{moons_options}}, \code{\link{data_options}}  \cr \cr
+  \code{meta_filename}: must be a length-1 \code{character} vector in
+    \code{\link{all_options}},
+    \code{\link{metadata_options}}, \code{\link{data_options}}  \cr \cr
+  \code{meta_save}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}},
+    \code{\link{metadata_options}}, \code{\link{data_options}} \cr \cr
+  \code{metadata}: must be of class \code{metadata} in
+    \code{\link{save_forecast_output}} \cr \cr
+  \code{main} must be a length-1 \code{character} vector in
+    \code{\link{all_options}}, \code{\link{dir_options}},
+    \code{\link{PortalData_options}}, \code{\link{data_options}} 
+    \code{\link{predictions_options}} 
+    \code{\link{models_options}}, \code{\link{cast_options}},
+    \code{\link{dirtree}} \cr \cr
+  \code{min_lag}: must be a length-1 non-negative \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
+  \code{min_observed}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in 
+    \code{\link{plot_cov_RMSE_mod_spp}}, \code{\link{measure_cast_error}}
+    \cr \cr
+  \code{min_plots}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}}, 
+    \code{\link{data_options}}, \code{\link{rodents_options}}, 
+    \code{\link{cast_options}} \cr \cr
+  \code{min_traps}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}}, 
+    \code{\link{data_options}}, \code{\link{rodents_options}}, 
+    \code{\link{cast_options}} \cr \cr
+  \code{mod_covariates}: must be a length-1 \code{logical} vector in 
+    \code{\link{model_options}} \cr \cr
+  \code{mod_type}: must be \code{"pevGARCH"} in
+    \code{\link{covariate_models}}  \cr \cr
+  \code{model}: must be a length-1 \code{character} vector in
+    \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}},
+    \code{\link{plot_cast_ts_ylab}},
+    \code{\link{select_most_ab_spp}} \cr \cr
+  \code{models}: must be \code{NULL} or a \code{character} vector in
+    \code{\link{all_options}}, \code{\link{models_options}},
+    \code{\link{cast_options}}, \code{\link{model_paths}},
+    \code{\link{select_casts}}  \cr \cr
+  \code{moons}: must be a \code{data.frame} of class \code{moons} in
+    \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
+    \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
+    \code{\link{get_climate_forecasts}}, \code{\link{update_covariates}},
+    \code{\link{prep_covariates}}, \code{\link{prep_fcast_covariates}},
+    \code{\link{update_covfcast_options}},
+    \code{\link{prep_metadata}}, \code{\link{append_past_moons_to_raw}},
+    \code{\link{add_future_moons}}, \code{\link{format_moons}},
+    \code{\link{prep_rodents_list}}, \code{\link{prep_rodents}} \cr \cr
+  \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{moons_options}}
+    \cr \cr
+  \code{nadot}: must be a length-1 \code{logical} vector in
+    \code{\link{rodent_spp}} \cr \cr
+  \code{name}: must be a length-1 \code{character} vector in
+    \code{\link{model_options}}, \code{\link{save_forecast_output}} \cr \cr
+  \code{ndates}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in 
+    \code{\link{plot_err_lead_spp_mods}}  \cr \cr
+  \code{new_forecast_covariates}: must be a \code{data.frame} of class 
+    \code{options} in \code{\link{append_cov_fcast_csv}} \cr \cr
+  \code{newmoonnumbers}: must be \code{NULL} or a length-1 non-negative 
+    \code{integer} or \code{integer}-conformable vector in 
+    \code{\link{select_casts}} \cr \cr
+  \code{nfcnm}: must be a length-1 non-negative \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
+  \code{options_all}: must be of class \code{all_options} in
+    \code{\link{setup_dir}}, \code{\link{fill_dir}}, 
+    \code{\link{cleanup_dir}}, \code{\link{portalcast}},
+    \code{\link{casts}}, \code{\link{step_casts}},
+    \code{\link{step_hind_forward}}  \cr \cr
+  \code{options_cast}: must be of class \code{cast_options} in
+    \code{\link{verify_models}}, \code{\link{cast_models}}, 
+    \code{\link{models_to_cast}}, \code{\link{cast}},
+    \code{\link{check_to_skip}}, \code{\link{combine_forecasts}},
+    \code{\link{add_ensemble}} \cr \cr
+  \code{options_covariates}: must be of class \code{covariates_options} in
+    \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
+    \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
+    \code{\link{get_climate_forecasts}}, 
+    \code{\link{append_cov_fcast_csv}}, \code{\link{update_covariates}} 
+    \code{\link{prep_covariates}}, \code{\link{prep_hist_covariates}}, 
+    \code{\link{prep_fcast_covariates}},
+    \code{\link{update_covfcast_options}} \cr \cr
+  \code{options_data}: must be of class \code{data_options} in
+    \code{\link{fill_data}}, \code{\link{prep_data}},
+    \code{\link{update_data}},
+    \code{\link{transfer_hist_covariate_forecasts}},
+    \code{\link{transfer_trapping_table}} \cr \cr
+  \code{options_dir}: must be of class \code{dir_options} in
+    \code{\link{create_dir}}, \code{\link{create_main_dir}},
+    \code{\link{create_sub_dirs}}  \cr \cr
+  \code{options_metadata}: must be of class \code{metadata_options} in
+    \code{\link{prep_metadata}} \cr \cr
+  \code{options_model}: must be of class \code{model_options} in
+    \code{\link{model_template}}, \code{\link{write_model}} \cr \cr
+  \code{options_models}: must be of class \code{models_options} in
+    \code{\link{fill_models}} \cr \cr
+  \code{options_moons}: must be of class \code{moons_options} in
+    \code{\link{prep_moons}}, \code{\link{append_past_moons_to_raw}},
+    \code{\link{add_future_moons}} \cr \cr
+  \code{options_out}: must be an options \code{list} in
+    \code{\link{dataout}} \cr \cr
+  \code{options_PortalData}: must be of class \code{PortalData_options} in
+    \code{\link{fill_PortalData}} \cr \cr
+  \code{options_predictions}: must be of class \code{predictions_options}
+    in \code{\link{fill_predictions}} \cr \cr
+  \code{options_rodents}: must be of class \code{rodents_options} in
+    \code{\link{update_rodents_list}}, \code{\link{prep_rodents_list}}, 
+    \code{\link{prep_rodents}}, \code{\link{enforce_rodents_options}},
+    \code{\link{trim_treatment}} \cr \cr
+  \code{output}: must be \code{"abundance"} in \code{\link{all_options}}, 
+    \code{\link{data_options}}, \code{\link{rodents_options}}  
+    \cr \cr
+  \code{plots}: must be a length-1 \code{character} vector of value
+    \code{"all"} or \code{"longerm"} in \code{\link{all_options}},
+    \code{\link{data_options}}, \code{\link{rodents_options}} \cr \cr
+  \code{pred_dir}: must be a length-1 \code{character} vector in
+    \code{\link{compile_aic_weights}}, \code{\link{make_ensemble}} \cr \cr
+  \code{quiet}: must be a length-1 \code{logical} vector in
+    \code{\link{create_sub_dir}}, \code{\link{verify_PortalData}},
+    \code{\link{model_options}}, \code{\link{all_options}},   
+    \code{\link{dir_options}}, \code{\link{PortalData_options}}, 
+    \code{\link{data_options}}, \code{\link{covariates_options}}, 
+    \code{\link{predictions_options}}, \code{\link{models_options}}, 
+    \code{\link{cast_options}}, \code{\link{metadata_options}},
+    \code{\link{moons_options}}, \code{\link{rodents_options}},
+    \code{\link{download_predictions}},
+    \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
+    \code{\link{pevGARCH}} \cr \cr 
+  \code{r_filename}: must be a length-1 \code{character} vector in
+    \code{\link{all_options}},
+    \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
+  \code{r_save}: must be a length-1 \code{logical} vector in
+    \code{\link{all_options}},
+    \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
+  \code{rangex}: must be a length-2 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{plot_cast_ts_xaxis}}  
+    \cr \cr
+  \code{rodents}: must be a \code{data.table} of class \code{rodents} in 
+    \code{\link{remove_spp}}, \code{\link{trim_treatment}},
+    \code{\link{is.spcol}}, \code{\link{interpolate_abundance}}  \cr \cr 
+  \code{rodents_list}: must be of class \code{rodents_list} in 
+    \code{\link{prep_metadata}} \cr \cr 
+  \code{save}: must be a length-1 \code{logical} vector in
+    \code{\link{covariates_options}}, \code{\link{metadata_options}},
+    \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
+  \code{set}: must be \code{NULL} or a length-1 \code{character} 
+    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
+    \code{\link{rodent_spp}} or a length-\code{character} vector 
+    with value \code{"prefab"} in  \code{\link{model_names}} \cr \cr
+  \code{source_name}: must be a length-1 \code{character} vector in
+    \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
+  \code{species}: must be \code{NULL} or a \code{character} vector in
+    \code{\link{plot_cov_RMSE_mod_spp}}, 
+    \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
+    \code{\link{plot_cast_point_yaxis}},
+    \code{\link{select_most_ab_spp}}; \code{\link{select_casts}}  
+    specifically length-1 in
+    \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
+  \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
+    vector in \code{\link{sub_paths}} \cr \cr 
+  \code{spp_names}: must be a \code{character} vector in
+    \code{\link{is.spcol}} \cr \cr
+  \code{start}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{all_options}},
+    \code{\link{covariates_options}}, \code{\link{data_options}} 
+    \code{\link{rodents_options}}, \code{\link{cast_options}}  
+    \cr \cr
+  \code{start_newmoon}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{plot_cast_ts}}  
+    \cr \cr
+  \code{sub_path}: must be \code{NULL} or a length-1 \code{character} 
+    vector in \code{\link{create_sub_dir}}  \cr \cr
+  \code{subs} must be a class-\code{subdirs} vector in
+    \code{\link{all_options}}, \code{\link{dir_options}},
+    \code{\link{PortalData_options}}, \code{\link{data_options}} 
+    \code{\link{predictions_options}} 
+    \code{\link{models_options}}, \code{\link{cast_options}},
+    \code{\link{dirtree}} \cr \cr
+  \code{subs_names}: must be \code{NULL} or a \code{character} 
+    vector in \code{\link{subdirs}}  \cr \cr
+  \code{subs_type}: must be \code{NULL} or a length-1 \code{character} 
+    vector in \code{\link{subdirs}}  \cr \cr
+  \code{tail}: must be a length-1 \code{logical} vector in
+    \code{\link{lag_covariates}} \cr \cr
+  \code{temp_dir}: must be a length-1 \code{character} vector in
+    \code{\link{save_forecast_output}} \cr \cr
+  \code{time}: must be a length-1 \code{logical} vector in
+    \code{\link{today}} \cr \cr
+  \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
+    vector of value \code{"all"} or \code{"controls"} in 
+    \code{\link{all_options}}, \code{\link{rodents_options}}, 
+    \code{\link{data_options}}, \code{\link{enforce_rodents_options}}
+    \cr \cr
+  \code{to_cleanup}: must be \code{NULL} or a \code{character} vector in
+    \code{\link{all_options}}, \code{\link{dir_options}} \cr \cr
+  \code{topx}: must be a length-1 positive \code{integer} or 
+    \code{integer}-conformable vector in \code{\link{select_most_ab_spp}}
+    \cr \cr
+  \code{treatment}: must be \code{NULL} or \code{"control"} in
+    \code{\link{all_options}},
+    \code{\link{rodents_options}}, \code{\link{data_options}} \cr \cr
+  \code{tree}: must be of class \code{dirtree} in
+    \code{\link{verify_PortalData}}, \code{\link{plot_cov_RMSE_mod_spp}},
+    \code{\link{plot_err_lead_spp_mods}}, \code{\link{plot_cast_point}},
+    \code{\link{plot_cast_point_yaxis}}, \code{\link{plot_cast_ts}},
+    \code{\link{plot_cast_ts_xaxis}}, \code{\link{plot_cast_ts_ylab}},
+    \code{\link{model_options}},
+    \code{\link{rodents_options}}, \code{\link{metadata_options}}, 
+    \code{\link{covariates_options}}, \code{\link{moons_options}},
+    \code{\link{base_path}}, \code{\link{main_path}}, 
+    \code{\link{sub_paths}}, 
+    \code{\link{file_paths}}, \code{\link{model_paths}},
+    \code{\link{create_tmp}}, \code{\link{clear_tmp}},
+    \code{\link{prep_weather_data}},
+    \code{\link{download_predictions}},
+    \code{\link{read_data}}, \code{\link{read_all}}, 
+    \code{\link{read_controls}}, \code{\link{read_covariates}}, 
+    \code{\link{read_moons}}, \code{\link{read_metadata}},  
+    \code{\link{most_recent_census}}, 
+    \code{\link{read_cast}}, \code{\link{read_casts}}, 
+    \code{\link{most_recent_cast}},
+    \code{\link{append_observed_to_cast}},
+    \code{\link{select_most_ab_spp}},
+    \code{\link{AutoArima}}, \code{\link{ESSS}}, \code{\link{nbGARCH}},
+    \code{\link{pevGARCH}} \cr \cr
+  \code{verbose}: must be a length-1 \code{logical} vector in
+    \code{\link{verify_cast}}, \code{\link{cast_is_valid}} \cr \cr
+  \code{version}: must be a length-1 \code{character} vector in
+    \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
+  \code{with_census}: must be a length-1 \code{logical} vector in
+    \code{\link{plot_cast_point}}, \code{\link{most_recent_cast}} \cr \cr
+  \code{x}: must be a \code{data.frame} or \code{vector} in
+    \code{\link{na_conformer}}, must simply exist as an object that can
+     have a class attribute in \code{\link{classy}} \cr \cr
+  \code{yr}: must be a length-1 \code{integer} or 
+    \code{integer}-conformable value after 1970 in 
+    \code{\link{all_options}},   
+    \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
 }

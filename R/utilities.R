@@ -17,7 +17,7 @@
 #' @export
 #'
 na_conformer <- function(x, colname = "species"){
-
+  check_args()
   if (is.vector(x)){
     naentries <- which(is.na(x))
     x[naentries] <- "NA"
@@ -26,9 +26,7 @@ na_conformer <- function(x, colname = "species"){
     if (length(nasppname) > 0){
       x[nasppname, colname] <- "NA"
     }
-  } else {
-    stop("`x` must be a vector or a data frame")
-  }
+  } 
   x
 }
 
@@ -41,7 +39,7 @@ na_conformer <- function(x, colname = "species"){
 #'
 #' @param df \code{data.frame} table to be written out.
 #'
-#' @param options_out an options list that includes a save element and 
+#' @param options_out an options \code{list} that includes a save element and 
 #'   a filename element, and potentially a class element.
 #'
 #' @return df (as input)
@@ -49,9 +47,7 @@ na_conformer <- function(x, colname = "species"){
 #' @export
 #'
 dataout <- function(df, options_out = moons_options()){
-  if (! "data.frame" %in% class(df)){
-    stop("`df` not a data.frame")
-  }
+  check_args()
   if (!is.null(options_out$save)){
     if (options_out$save){
       file_paths(options_out$tree, paste0("data/", options_out$filename)) %>%
@@ -77,15 +73,7 @@ dataout <- function(df, options_out = moons_options()){
 #' @export
 #'
 append_csv <- function(df, filename){
-  if (length(filename) > 1){
-    stop("`filename` can only be of length = 1")
-  }
-  if (!is.character(filename)){
-    stop("`filename` not a character")
-  }
-  if (! "data.frame" %in% class(df)){
-    stop("`df` not a data.frame")
-  }
+  check_args()
   write.table(df, filename, sep = ",", row.names = FALSE, 
     col.names = !file.exists(filename), append = file.exists(filename))
 }
@@ -97,7 +85,7 @@ append_csv <- function(df, filename){
 #'
 #' @param nfcnm \code{integer} number of forecast newmoons.
 #'
-#' @param pred_name \code{character} name for the predictor column (to match
+#' @param colname \code{character} name for the predictor column (to match
 #'   variable model output names).
 #'
 #' @return Two-element \code{list} of means and interval values for a 
@@ -106,23 +94,12 @@ append_csv <- function(df, filename){
 #'
 #' @export
 #'
-fcast0 <- function(nfcnm, pred_name = "pred"){
-  if (length(nfcnm) > 1){
-    stop("`nfcnm` can only be of length = 1")
-  }
-  if (nfcnm %% 1 != 0){
-    stop("`nfcnm` not an integer")
-  }
-  if (!is.character(pred_name)){
-    stop("`pred_name` not a character")
-  }
-  if (length(pred_name) > 1){
-    stop("`pred_name` can only be of length = 1")
-  }
+fcast0 <- function(nfcnm, colname = "pred"){
+  check_args()
   mean_0 <- rep(0, nfcnm)
   int_0 <- data.frame("lower" = rep(0, nfcnm), "upper" = rep(0, nfcnm))
   out <- list(mean_0, interval = int_0)
-  names(out)[1] <- pred_name
+  names(out)[1] <- colname
   out
 }
 
@@ -146,6 +123,7 @@ fcast0 <- function(nfcnm, pred_name = "pred"){
 #' @export
 #'
 today <- function(time = FALSE){
+  check_args()
   if (time){
     Sys.time()
   } else{
@@ -167,9 +145,7 @@ today <- function(time = FALSE){
 #' @export
 #'
 classy <- function(x, class = NULL){
-  if (!is.character(class)){
-    stop("`class` must be a character vector")
-  }
+  check_args()
   class(x) <- class
   x
 }
@@ -182,34 +158,28 @@ classy <- function(x, class = NULL){
 #'
 #' @param df \code{data.frame} table to be written out.
 #'
-#' @param col_to_check A single \code{character} value of the column to use
+#' @param colname A single \code{character} value of the column to use
 #'   to remove incomplete entries. 
 #'
 #' @return df without any incomplete entries. 
 #'
 #' @export
 #'
-remove_incompletes <- function(df, col_to_check){
-  if (!("data.frame" %in% class(df))){
-    stop("`df` not a data.frame class object")
-  }
-  if (length(col_to_check) > 1){
-    stop("`col_to_check` currently only able to be length 1")
-  }
-  if (!("character" %in% class(col_to_check))){
-    stop("`col_to_check` not of class character")
-  }
-  incompletes <- which(is.na(df[ , col_to_check]))
+remove_incompletes <- function(df, colname){
+  check_args()
+  incompletes <- which(is.na(df[ , colname]))
   if (length(incompletes) > 0){
     df <- df[-incompletes, ]
   }
   df
 }
 
-#' @title Check all of a function's arguments values for validity
+#' @title Check a function's arguments values for validity
 #'
-#' @description Check that all of the arguments to a given function have
-#'   valid values, by wrapping around \code{\link{check_arg}}. 
+#' @description \code{check_args} checks that all of the arguments to a given
+#'   function have valid values within the pipeline to avoid naming collision
+#'   and improper formatting, by wrapping around \code{check_arg} for each
+#'   argument. See \code{Details} for argument-specific rules.
 #'
 #' @export
 #'
@@ -229,11 +199,7 @@ check_args <- function(){
 
 }
 
-#' @title Check an argument's value for validity
-#'
-#' @description Check that an argument's value is valid, potentially 
-#'   dependent upon the function. See \code{Details} for argument-specific
-#'   rules.
+#' @rdname check_args
 #'
 #' @param arg_name \code{character} value of the argument name.
 #'
@@ -297,6 +263,11 @@ check_args <- function(){
 #'     \code{\link{select_most_ab_spp}} \cr \cr
 #'   \code{CI_level}: must be a length-1 \code{numeric} value between
 #'     0 and 1 in \code{\link{make_ensemble}} \cr \cr
+#'   \code{class}: must be \code{NULL} or a \code{character} vector in
+#'     \code{\link{classy}} \cr \cr
+#'   \code{colname}: must be a length-1 \code{character} vector in
+#'     \code{\link{na_conformer}}, \code{\link{fcast0}},
+#'     \code{\link{remove_incompletes}} \cr \cr
 #'   \code{confidence_level}: must be a length-1 \code{numeric} value between
 #'     0 and 1 in \code{\link{all_options}}, \code{\link{data_options}}, 
 #'     \code{\link{metadata_options}} \cr \cr
@@ -315,6 +286,9 @@ check_args <- function(){
 #'   \code{data_name}: must be a length-1 \code{character} vector of value 
 #'     \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
 #'     or \code{"metadata"} in \code{\link{read_data}} \cr \cr
+#'   \code{df}: must be a \code{data.frame} in 
+#'     \code{\link{remove_incompletes}},
+#'     \code{\link{append_csv}}, \code{\link{dataout}} \cr \cr
 #'   \code{download_existing_predictions}: must be a length-1 \code{logical} 
 #'     vector in \code{\link{all_options}}, 
 #'     \code{\link{predictions_options}} \cr \cr
@@ -337,7 +311,7 @@ check_args <- function(){
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} 
 #'     \cr \cr
 #'   \code{filename}: must be a length-1 \code{character} vector in
-#'     \code{\link{verify_PortalData}}  \cr \cr
+#'     \code{\link{verify_PortalData}}, \code{\link{append_csv}} \cr \cr
 #'   \code{from_date}: must be \code{NULL} or a length-1 \code{Date} or 
 #'     \code{Date}-conformable vector in \code{\link{plot_cast_point}},
 #'     \code{\link{select_most_ab_spp}} \cr \cr
@@ -489,6 +463,8 @@ check_args <- function(){
 #'   \code{options_moons}: must be of class \code{moons_options} in
 #'     \code{\link{prep_moons}}, \code{\link{append_past_moons_to_raw}},
 #'     \code{\link{add_future_moons}} \cr \cr
+#'   \code{options_out}: must be an options \code{list} in
+#'     \code{\link{dataout}} \cr \cr
 #'   \code{options_PortalData}: must be of class \code{PortalData_options} in
 #'     \code{\link{fill_PortalData}} \cr \cr
 #'   \code{options_predictions}: must be of class \code{predictions_options}
@@ -575,6 +551,8 @@ check_args <- function(){
 #'     \code{\link{lag_covariates}} \cr \cr
 #'   \code{temp_dir}: must be a length-1 \code{character} vector in
 #'     \code{\link{save_forecast_output}} \cr \cr
+#'   \code{time}: must be a length-1 \code{logical} vector in
+#'     \code{\link{today}} \cr \cr
 #'   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector of value \code{"all"} or \code{"controls"} in 
 #'     \code{\link{all_options}}, \code{\link{rodents_options}}, 
@@ -618,6 +596,9 @@ check_args <- function(){
 #'     \code{\link{all_options}}, \code{\link{PortalData_options}} \cr \cr
 #'   \code{with_census}: must be a length-1 \code{logical} vector in
 #'     \code{\link{plot_cast_point}}, \code{\link{most_recent_cast}} \cr \cr
+#'   \code{x}: must be a \code{data.frame} or \code{vector} in
+#'     \code{\link{na_conformer}}, must simply exist as an object that can
+#'      have a class attribute in \code{\link{classy}} \cr \cr
 #'   \code{yr}: must be a length-1 \code{integer} or 
 #'     \code{integer}-conformable value after 1970 in 
 #'     \code{\link{all_options}},   
@@ -769,6 +750,21 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`CI_level` is not between 0.001 and 0.999")
     }
   }
+  if (arg_name == "class"){
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        stop("`class` is not a character")
+      }
+    }
+  }
+  if (arg_name == "colname"){
+    if (!("character" %in% class(arg_value))){
+      stop("`colname` is not a character")
+    }
+    if (length(arg_value) != 1){
+      stop("`colname` can only be of length = 1")
+    }
+  }
   if (arg_name == "confidence_level"){
     if (!is.numeric(arg_value)){
       stop("`confidence_level` is not numeric")
@@ -821,7 +817,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`data_name` is not valid option")
     }
   }
-
+  if (arg_name == "df"){
+    if (!("data.frame" %in% class(arg_value))){
+      stop("`df` not a data.frame")
+    }
+  }
   if (arg_name == "download"){
     if (!("logical" %in% class(arg_value))){
       stop("`download` is not logical")
@@ -1243,6 +1243,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`options_moons` is not a moons_options list")
     }
   }
+  if (arg_name == "options_out"){
+    if (!any(grepl("options", class(arg_value)))){
+      stop("`options_out` is not an options list")
+    }
+  }
   if (arg_name == "options_PortalData"){
     if (!("PortalData_options" %in% class(arg_value))){
       stop("`options_PortalData` is not a PortalData_options list")
@@ -1464,6 +1469,14 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`temp_dir` can only be of length = 1")
     }
   }
+  if (arg_name == "time"){
+    if (!("logical" %in% class(arg_value))){
+      stop("`time` is not logical")
+    }
+    if (length(arg_value) != 1){
+      stop("`time` can only be of length = 1")
+    }
+  }
   if (arg_name == "tmnt_type"){
     if (!is.null(arg_value)){
       if (!is.character(arg_value)){
@@ -1527,6 +1540,15 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (length(arg_value) != 1){
       stop("`with_census` can only be of length = 1")
+    }
+  }
+  if (arg_name == "x"){
+    if (fun_name == "na_conformer"){
+      if (!(is.data.frame(arg_value) | is.vector(arg_value))){
+        stop("`x` is not a data.frame or vector")
+      }
+    }
+    if (fun_name == "classy"){
     }
   }
   if (arg_name == "yr"){

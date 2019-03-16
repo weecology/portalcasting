@@ -8,7 +8,6 @@ tree <- dirtree(base = "~", main = "portalcasting_dev1")
 portalcast(options_all)
 
 # to dos : 
-# integrate utilities functions into check_args
 # make subs_type default to "portalcasting"
 # remove the double up of CI_level and confidence_level
 # remove the double up of name and model
