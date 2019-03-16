@@ -8,8 +8,8 @@ tree <- dirtree(base = "~", main = "portalcasting_dev1")
 portalcast(options_all)
 
 # to dos : 
-# make subs_type default to "portalcasting"
-# set is used for both species (rodent_spp) and models (model_names)
+# make subs_type default to "portalcasting" (maybe call it set? )
+# switch order of arguments in model_names 
 
 
 # to dos (later!): 

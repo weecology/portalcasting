@@ -216,6 +216,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{all_options}}, \code{\link{models_options}},
     \code{\link{cast_options}}, \code{\link{model_paths}},
     \code{\link{select_casts}}  \cr \cr
+  \code{model_set}: must be \code{NULL} or a length-1 \code{character} 
+    vector with value \code{"prefab"} in  \code{\link{model_names}} \cr \cr
   \code{moons}: must be a \code{data.frame} of class \code{moons} in
     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
@@ -322,10 +324,6 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{save}: must be a length-1 \code{logical} vector in
     \code{\link{covariates_options}}, \code{\link{metadata_options}},
     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
-  \code{set}: must be \code{NULL} or a length-1 \code{character} 
-    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
-    \code{\link{rodent_spp}} or a length-\code{character} vector 
-    with value \code{"prefab"} in  \code{\link{model_names}} \cr \cr
   \code{source_name}: must be a length-1 \code{character} vector in
     \code{\link{all_options}},
     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -336,6 +334,9 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{select_most_ab_spp}}; \code{\link{select_casts}}  
     specifically length-1 in
     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
+  \code{species_set}: must be \code{NULL} or a length-1 \code{character} 
+    vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
+    \code{\link{rodent_spp}}  \cr \cr
   \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
     vector in \code{\link{sub_paths}} \cr \cr 
   \code{spp_names}: must be a \code{character} vector in

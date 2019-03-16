@@ -190,11 +190,11 @@ remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
 #' @description Creates a simple \code{character} vector of abbreviations for
 #'   the \href{https://portal.naturecast.org/profiles.html}{Portal Rodents}.
 #'
-#' @param set \code{character} input of a specified set of species. Default
-#'   entry (\code{"base"}) returns the standard set of all species included.
-#'   Other options include \code{"wtotal"} (same as \code{"base"} but
-#'   with "total" as well) and \code{"evalplot"} which only returns a subset
-#'   of common species to be included in the evaluations plots.
+#' @param species_set \code{character} input of a specified set of species. 
+#'   Default entry (\code{"base"}) returns the standard set of all species 
+#'   included. Other options include \code{"wtotal"} (same as \code{"base"} 
+#'   but with "total" as well) and \code{"evalplot"} which only returns a 
+#'   subset of common species to be included in the evaluations plots.
 #'
 #' @param nadot \code{logical} indicator if the dot should be added to the 
 #'   \code{"NA"} species name. Defaults to \code{FALSE}.
@@ -211,20 +211,20 @@ remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
 #'
 #' @export
 #'
-rodent_spp <- function(set = "base", nadot = FALSE){
+rodent_spp <- function(species_set = "base", nadot = FALSE){
   check_args()
   xNAx <- "NA"
   if (nadot){
     xNAx <- "NA."
   }
-  if (is.null(set) || set == "base"){
+  if (is.null(species_set) || species_set == "base"){
     out <- c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", 
              "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
-  } else if (set == "wtotal"){
+  } else if (species_set == "wtotal"){
     out <- c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", 
              "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO",
               "total")
-  } else if (set == "evalplot"){
+  } else if (species_set == "evalplot"){
     out <- c("BA", "DM", "DO", "PP", "OT", "NA", "total")
   }
   out

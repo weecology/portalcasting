@@ -25,6 +25,7 @@ returns all if `specific_subs` is NULL
 specific.
 * `CI_level` is now subsumed by `confidence_level`
 * `name` is now subsumed by `model`
+* `set` is not split into `species_set` and `model_set`
 
 ### Removal of classes
 * The `models` class has been removed.

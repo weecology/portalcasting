@@ -6,18 +6,18 @@
 #' @param add \code{character} vector of name(s) of model(s) to add to the 
 #'   setup by \code{set}.
 #'
-#' @param set \code{characher} value of the type of model (currently only 
-#'   support for \code{"prefab"}). Use \code{NULL} to build a custom set
+#' @param model_set \code{characher} value of the type of model (currently 
+#'   only support for \code{"prefab"}). Use \code{NULL} to build a custom set
 #'   from scratch via \code{add}.
 #'
 #' @return \code{models}-class \code{character} vector of model names.
 #'
 #' @export
 #'
-model_names <- function(add = NULL, set = "prefab"){
+model_names <- function(add = NULL, model_set = "prefab"){
   check_args()
   out <- NULL
-  if (!is.null(set) && set == "prefab"){
+  if (!is.null(model_set) && model_set == "prefab"){
     out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
   } 
   unique(c(out, add))

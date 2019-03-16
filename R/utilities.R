@@ -400,6 +400,8 @@ check_args <- function(){
 #'     \code{\link{all_options}}, \code{\link{models_options}},
 #'     \code{\link{cast_options}}, \code{\link{model_paths}},
 #'     \code{\link{select_casts}}  \cr \cr
+#'   \code{model_set}: must be \code{NULL} or a length-1 \code{character} 
+#'     vector with value \code{"prefab"} in  \code{\link{model_names}} \cr \cr
 #'   \code{moons}: must be a \code{data.frame} of class \code{moons} in
 #'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     \code{\link{forecast_weather}}, \code{\link{trim_moons_fcast}},
@@ -506,10 +508,6 @@ check_args <- function(){
 #'   \code{save}: must be a length-1 \code{logical} vector in
 #'     \code{\link{covariates_options}}, \code{\link{metadata_options}},
 #'     \code{\link{moons_options}}, \code{\link{rodents_options}} \cr \cr
-#'   \code{set}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
-#'     \code{\link{rodent_spp}} or a length-\code{character} vector 
-#'     with value \code{"prefab"} in  \code{\link{model_names}} \cr \cr
 #'   \code{source_name}: must be a length-1 \code{character} vector in
 #'     \code{\link{all_options}},
 #'     \code{\link{covariates_options}}, \code{\link{data_options}} \cr \cr
@@ -520,6 +518,9 @@ check_args <- function(){
 #'     \code{\link{select_most_ab_spp}}; \code{\link{select_casts}}  
 #'     specifically length-1 in
 #'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}} \cr \cr
+#'   \code{species_set}: must be \code{NULL} or a length-1 \code{character} 
+#'     vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
+#'     \code{\link{rodent_spp}}  \cr \cr
 #'   \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
 #'     vector in \code{\link{sub_paths}} \cr \cr 
 #'   \code{spp_names}: must be a \code{character} vector in
@@ -1115,6 +1116,19 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       }
     }
   }
+  if (arg_name == "model_set"){
+    if (!is.null(arg_value)){
+      if (!is.character(arg_value)){
+        stop("`model_set` is not a character")
+      }
+      if (length(arg_value) != 1){
+        stop("`model_set` can only be of length = 1")
+      }
+      if (!(arg_value %in% c("prefab"))){
+        stop("`model_set` must be 'prefab'")
+      }
+    }
+  }
   if (arg_name == "moons"){
     if (!("moons" %in% class(arg_value))){
       stop("`moons` is not an moons table")
@@ -1318,26 +1332,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       stop("`save` can only be of length = 1")
     }
   }
-  if (arg_name == "set"){
-    if (!is.null(arg_value)){
-      if (!is.character(arg_value)){
-        stop("`set` is not a character")
-      }
-      if (length(arg_value) != 1){
-        stop("`set` can only be of length = 1")
-      }
-      if (fun_name %in% c("rodent_spp")){
-        if (!(arg_value %in% c("base", "wtotal", "evalplot"))){
-          stop("`set` must be 'base', 'wtotal', or 'evalplot'")
-        }
-      }
-      if (fun_name %in% c("model_names")){
-        if (!(arg_value %in% c("prefab"))){
-          stop("`set` must be 'prefab'")
-        }
-      }
-    }
-  }
+
   if (arg_name == "source_name"){
     if (!("character" %in% class(arg_value))){
       stop("`source_name` is not a character")
@@ -1359,6 +1354,19 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
         if (length(arg_value) != 1){
           stop("`species` can only be of length = 1")
         }
+      }
+    }
+  }
+  if (arg_name == "species_set"){
+    if (!is.null(arg_value)){
+      if (!is.character(arg_value)){
+        stop("`species_set` is not a character")
+      }
+      if (length(arg_value) != 1){
+        stop("`species_set` can only be of length = 1")
+      }
+      if (!(arg_value %in% c("base", "wtotal", "evalplot"))){
+        stop("`species_set` must be 'base', 'wtotal', or 'evalplot'")
       }
     }
   }
