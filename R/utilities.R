@@ -202,7 +202,13 @@ remove_incompletes <- function(df, colname){
 #' @description \code{check_args} checks that all of the arguments to a given
 #'   function have valid values within the pipeline to avoid naming collision
 #'   and improper formatting, by wrapping around \code{check_arg} for each
-#'   argument. See \code{Details} for argument-specific rules.
+#'   argument. \cr \cr
+#'   \code{check_arg} produces (returns) a \code{NULL} if the 
+#'   argument is valid or \code{character} vector of error messages associated 
+#'   with the specific situation (\code{<fun_name>(<arg_name> = arg_value)})
+#'   if the argument is invalid. \cr \cr
+#'   \code{check_args} should only be called within a function. \cr \cr
+#'   See \code{Details} for argument-specific rules.
 #'
 #' @export
 #'
@@ -213,13 +219,22 @@ check_args <- function(){
   arg_values <- fun_call[-1]
   arg_names <- names(arg_values)
   nargs <- length(arg_names)
-
+  out <- NULL
   if(nargs > 0){
     for(i in 1:nargs){
-      check_arg(arg_names[i], eval.parent(arg_values[[i]], 2), fun_name)
+      arg_value <- eval.parent(arg_values[[i]], 2)
+      out <- c(out, check_arg(arg_names[i], arg_value, fun_name))
     }
   }
-
+  if (!is.null(out)){
+    if (length(out) > 1){
+      out2 <- paste(out, collapse = "; ")
+    } else{
+      out2 <- out
+    }
+    out3 <- paste0("in ", fun_name, ": ", out2)
+    stop(out3)
+  }
 }
 
 #' @rdname check_args
@@ -229,6 +244,10 @@ check_args <- function(){
 #' @param arg_value Input value for the argument.
 #'
 #' @param fun_name \code{character} value of the function name or \code{NULL}.
+#'
+#' @return \code{check_arg}: \code{character} vector of error messages
+#'   associated with the specific situation 
+#'   (\code{<fun_name>(<arg_name> = arg_value)}).
 #'
 #' @details Usage and rules for arguments are as follows: \cr \cr
 #'   \code{add}: must be \code{NULL} or a \code{character} vector in
@@ -635,103 +654,104 @@ check_args <- function(){
 #' @export
 #'
 check_arg <- function(arg_name, arg_value, fun_name = NULL){
+  out <- NULL
   if (arg_name == "add"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`add` is not a character")
+        out <- c(out, "`add` is not a character")
       }
     }
   }
   if (arg_name == "add_error"){
     if (!("logical" %in% class(arg_value))){
-      stop("`add_error` is not logical")
+      out <- c(out, "`add_error` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`add_error` can only be of length = 1")
+      out <- c(out, "`add_error` can only be of length = 1")
     }
   }
   if (arg_name == "add_in_window"){
     if (!("logical" %in% class(arg_value))){
-      stop("`add_in_window` is not logical")
+      out <- c(out, "`add_in_window` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`add_in_window` can only be of length = 1")
+      out <- c(out, "`add_in_window` can only be of length = 1")
     }
   }
   if (arg_name == "add_lead"){
     if (!("logical" %in% class(arg_value))){
-      stop("`add_lead` is not logical")
+      out <- c(out, "`add_lead` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`add_lead` can only be of length = 1")
+      out <- c(out, "`add_lead` can only be of length = 1")
     }
   }
   if (arg_name == "add_obs"){
     if (!("logical" %in% class(arg_value))){
-      stop("`add_obs` is not logical")
+      out <- c(out, "`add_obs` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`add_obs` can only be of length = 1")
+      out <- c(out, "`add_obs` can only be of length = 1")
     }
   }
   if (arg_name == "all"){
     if (!("list" %in% class(arg_value))){
-      stop("`all` is not a list")
+      out <- c(out, "`all` is not a list")
     }
     if (!all(c("forecast", "aic") %in% names(arg_value))){
-      stop("`all` does not have elements named `forecast` and `aic`")
+      out <- c(out, "`all` does not have elements named `forecast` and `aic`")
     }
   }
   if (arg_name == "all_forecasts"){
     if (!("data.frame" %in% class(arg_value))){
-      stop("`all_forecasts` is not a data frame")
+      out <- c(out, "`all_forecasts` is not a data frame")
     }
   }
   if (arg_name == "append_fcast_csv"){
     if (!("logical" %in% class(arg_value))){
-      stop("`append_fcast_csv` is not logical")
+      out <- c(out, "`append_fcast_csv` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`append_fcast_csv` can only be of length = 1")
+      out <- c(out, "`append_fcast_csv` can only be of length = 1")
     }
   }
   if (arg_name == "append_missing_to_raw"){
     if (!("logical" %in% class(arg_value))){
-      stop("`append_missing_to_raw` is not logical")
+      out <- c(out, "`append_missing_to_raw` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`append_missing_to_raw` can only be of length = 1")
+      out <- c(out, "`append_missing_to_raw` can only be of length = 1")
     }
   }
   if (arg_name == "base"){
     if (!("character" %in% class(arg_value))){
-      stop("`base` is not a character")
+      out <- c(out, "`base` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`base` can only be of length = 1")
+      out <- c(out, "`base` can only be of length = 1")
     }
   }
   if (arg_name == "cast"){
     if (!("data.frame" %in% class(arg_value))){
-      stop("`cast` is not a data frame")
+      out <- c(out, "`cast` is not a data frame")
     }
     if(!cast_is_valid(arg_value)){
-      stop("`cast` is not valid")
+      out <- c(out, "`cast` is not valid")
     }
   }
   if (arg_name == "casts"){
     if (!("casts" %in% class(arg_value))){
-      stop("`casts` is not of class casts")
+      out <- c(out, "`casts` is not of class casts")
     }
   }
   if (arg_name == "cast_date"){
     if (!is.null(arg_value)){
       if (length(arg_value) != 1){
-        stop("`cast_date` can only be of length = 1")
+        out <- c(out, "`cast_date` can only be of length = 1")
       }
       cast_date2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
       if (is.na(cast_date2)){
-        stop("`cast_date` is not of class Date or conformable to class Date")
+        out <- c(out, "`cast_date` is not a Date")
       }
     }
   }
@@ -739,162 +759,162 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     if (!is.null(arg_value)){
       cast_dates2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
       if (is.na(cast_dates2)){
-        stop("`cast_dates` is not of class Date or conformable to class Date")
+        out <- c(out, "`cast_dates` is not a Date")
       }
     }
   }
   if (arg_name == "cast_to_check"){
     if (!("data.frame" %in% class(arg_value))){
-      stop("`cast_to_check` is not a data frame")
+      out <- c(out, "`cast_to_check` is not a data frame")
     }
   }
   if (arg_name == "cast_type"){
     if (!("character" %in% class(arg_value))){
-      stop("`cast_type` is not a character")
+      out <- c(out, "`cast_type` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`cast_type` can only be of length = 1")
+      out <- c(out, "`cast_type` can only be of length = 1")
     }
     if (!(arg_value %in% c("forecasts", "hindcasts"))){
-      stop("`cast_type` can only be `forecasts` or `hindcasts`")
+      out <- c(out, "`cast_type` can only be `forecasts` or `hindcasts`")
     }
   }
   if (arg_name == "class"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`class` is not a character")
+        out <- c(out, "`class` is not a character")
       }
     }
   }
   if (arg_name == "colname"){
     if (!("character" %in% class(arg_value))){
-      stop("`colname` is not a character")
+      out <- c(out, "`colname` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`colname` can only be of length = 1")
+      out <- c(out, "`colname` can only be of length = 1")
     }
   }
   if (arg_name == "confidence_level"){
-    if (!is.numeric(arg_value)){
-      stop("`confidence_level` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`confidence_level` can only be of length = 1")
+      out <- c(out, "`confidence_level` can only be of length = 1")
     }
-    if (arg_value < 0.001 | arg_value > 0.999){
-      stop("`confidence_level` is not between 0.001 and 0.999")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`confidence_level` is not numeric")
+    } else if (arg_value < 0.001 | arg_value > 0.999){
+      out <- c(out, "`confidence_level` is not between 0.001 and 0.999")
     }
   }
   if (arg_name == "controls"){
     if (!("list" %in% class(arg_value))){
-      stop("`controls` is not a list")
+      out <- c(out, "`controls` is not a list")
     }
     if (!all(c("forecast", "aic") %in% names(arg_value))){
-      stop("`controls` does not have elements named `forecast` and `aic`")
+      msg <- "`controls` does not have elements named `forecast` and `aic`"
+      out <- c(out, msg)
     }
   }
   if (arg_name == "covariates"){
     if (!("covariates" %in% class(arg_value))){
-      stop("`covariates` is not a covariates table")
+      out <- c(out, "`covariates` is not a covariates table")
     }
   }
   if (arg_name == "cov_fcast"){
     if (!("logical" %in% class(arg_value))){
-      stop("`cov_fcast` is not logical")
+      out <- c(out, "`cov_fcast` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`cov_fcast` can only be of length = 1")
+      out <- c(out, "`cov_fcast` can only be of length = 1")
     }
   }
   if (arg_name == "cov_hist"){
     if (!("logical" %in% class(arg_value))){
-      stop("`cov_hist` is not logical")
+      out <- c(out, "`cov_hist` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`cov_hist` can only be of length = 1")
+      out <- c(out, "`cov_hist` can only be of length = 1")
     }
   }
   if (arg_name == "c_filename"){
     if (!("character" %in% class(arg_value))){
-      stop("`c_filename` is not a character")
+      out <- c(out, "`c_filename` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`c_filename` can only be of length = 1")
+      out <- c(out, "`c_filename` can only be of length = 1")
     }
   }
   if (arg_name == "c_save"){
     if (!("logical" %in% class(arg_value))){
-      stop("`c_save` is not logical")
+      out <- c(out, "`c_save` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`c_save` can only be of length = 1")
+      out <- c(out, "`c_save` can only be of length = 1")
     }
   }
   if (arg_name == "data_name"){
     valid_names <- c("all", "controls", "covariates", "moons", "metadata")
     if (!is.character(arg_value)){
-      stop("`data_name` is not a character")
+      out <- c(out, "`data_name` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`data_name` can only be of length = 1")
+      out <- c(out, "`data_name` can only be of length = 1")
     }
     if (!(arg_value %in% valid_names)){
-      stop("`data_name` is not valid option")
+      out <- c(out, "`data_name` is not valid option")
     }
   }
   if (arg_name == "df"){
     if (!("data.frame" %in% class(arg_value))){
-      stop("`df` not a data.frame")
+      out <- c(out, "`df` not a data.frame")
     }
   }
   if (arg_name == "download"){
     if (!("logical" %in% class(arg_value))){
-      stop("`download` is not logical")
+      out <- c(out, "`download` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`download` can only be of length = 1")
+      out <- c(out, "`download` can only be of length = 1")
     }
   }
   if (arg_name == "download_existing_predictions"){
     if (!("logical" %in% class(arg_value))){
-      stop("`download_existing_predictions` is not logical")
+      out <- c(out, "`download_existing_predictions` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`download_existing_predictions` can only be of length = 1")
+      msg <- "`download_existing_predictions` can only be of length = 1"
+      out <- c(out, msg)
     }
   }
   if (arg_name == "drop_spp"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`drop_spp` is not a character")
+        out <- c(out, "`drop_spp` is not a character")
       }
     }
   }
   if (arg_name == "end"){
     if (!is.null(arg_value)){
       if (!is.numeric(arg_value)){
-        stop("`end` is not numeric")
-      }
-      if (any(arg_value < 1 )| any(arg_value %% 1 != 0)){
-        stop("`end` is not a positive integer")
+        out <- c(out, "`end` is not numeric")
+      } else if (any(arg_value < 1 )| any(arg_value %% 1 != 0)){
+        out <- c(out, "`end` is not a positive integer")
       }
     }
   }
   if (arg_name == "ensemble"){
     if (!("logical" %in% class(arg_value))){
-      stop("`ensemble` is not logical")
+      out <- c(out, "`ensemble` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`ensemble` can only be of length = 1")
+      out <- c(out, "`ensemble` can only be of length = 1")
     }
   }
   if (arg_name == "extension"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`extension` is not a character")
+        out <- c(out, "`extension` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`extension` can only be of length = 1")
+        out <- c(out, "`extension` can only be of length = 1")
       }
       lext <- nchar(arg_value)
       spot <- rep(NA, lext)
@@ -902,502 +922,488 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
         spot[i] <- substr(arg_value, i, i) == "."
       }
       if (sum(spot) != 1){
-        stop("`extension` is not an extension")
+        out <- c(out, "`extension` is not an extension")
       }
     }
   }
   if (arg_name == "fcast_nms"){
     if (!is.null(arg_value)){
       if (!is.numeric(arg_value)){
-        stop("`fcast_nms` is not numeric")
-      }
-      if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
-        stop("`fcast_nms` is not a non-negative integer")
+        out <- c(out, "`fcast_nms` is not numeric")
+      } else if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
+        out <- c(out, "`fcast_nms` is not a non-negative integer")
       }
     }
   }
   if (arg_name == "filename"){
     if (!("character" %in% class(arg_value))){
-      stop("`filename` is not a character")
+      out <- c(out, "`filename` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`filename` can only be of length = 1")
+      out <- c(out, "`filename` can only be of length = 1")
     }
   }
   if (arg_name == "from_date"){
     if (!is.null(arg_value)){
       if (length(arg_value) != 1){
-        stop("`from_date` can only be of length = 1")
+        out <- c(out, "`from_date` can only be of length = 1")
       }
       from_date2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
       if (is.na(from_date2)){
-        stop("`from_date` is not of class Date or conformable to class Date")
+        out <- c(out, "`from_date` is not a Date")
       }
     }
   }
   if (arg_name == "from_zenodo"){
     if (!("logical" %in% class(arg_value))){
-      stop("`from_zenodo` is not logical")
+      out <- c(out, "`from_zenodo` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`from_zenodo` can only be of length = 1")
+      out <- c(out, "`from_zenodo` can only be of length = 1")
     }
   }
   if (arg_name == "future_moons"){
     if (!("moons" %in% class(arg_value))){
-      stop("`future_moons` is not an moons table")
+      out <- c(out, "`future_moons` is not an moons table")
     }
   }
   if (arg_name == "hind_step"){
-    if (!is.numeric(arg_value)){
-      stop("`hind_step` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`hind_step` can only be of length = 1")
+      out <- c(out, "`hind_step` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`hind_step` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`hind_step` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`hind_step` is not a positive integer")
     }
   }
   if (arg_name == "hist_cov"){
     if (!("covariates" %in% class(arg_value))){
-      stop("`hist_cov` is not a covariates table")
+      out <- c(out, "`hist_cov` is not a covariates table")
     }
   }
   if (arg_name == "hist_fcast_file"){
     if (!("character" %in% class(arg_value))){
-      stop("`hist_fcast_file` is not a character")
+      out <- c(out, "`hist_fcast_file` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`hist_fcast_file` can only be of length = 1")
+      out <- c(out, "`hist_fcast_file` can only be of length = 1")
     }
   }
   if (arg_name == "lag"){
     if(!is.null(arg_value)){
-      if (!is.numeric(arg_value)){
-        stop("`lag` is not numeric")
-      }
       if (length(arg_value) != 1){
-        stop("`lag` can only be of length = 1")
+        out <- c(out, "`lag` can only be of length = 1")
       }
-      if (arg_value < 0 | arg_value %% 1 != 0){
-        stop("`lag` is not a non-negative integer")
+      if (!is.numeric(arg_value)){
+        out <- c(out, "`lag` is not numeric")
+      } else if (arg_value < 0 | arg_value %% 1 != 0){
+        out <- c(out, "`lag` is not a non-negative integer")
       }
     }
   }
   if (arg_name == "lead"){
-    if (!is.numeric(arg_value)){
-      stop("`lead` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`lead` can only be of length = 1")
+      out <- c(out, "`lead` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`lead` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`lead` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`lead` is not a positive integer")
     }
   }
   if (arg_name == "lead_time"){
-    if (!is.numeric(arg_value)){
-      stop("`lead_time` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`lead_time` can only be of length = 1")
+      out <- c(out, "`lead_time` can only be of length = 1")
     }
-    if (arg_value < 0 | arg_value %% 1 != 0){
-      stop("`lead_time` is not a non-negative integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`lead_time` is not numeric")
+    } else if (arg_value < 0 | arg_value %% 1 != 0){
+      out <- c(out, "`lead_time` is not a non-negative integer")
     }
   }
   if (arg_name == "level"){
     if (!is.null(arg_value)){    
       if (!is.character(arg_value)){
-        stop("`level` is not a character")
+        out <- c(out, "`level` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`level` can only be of length = 1")
+        out <- c(out, "`level` can only be of length = 1")
       }
       AC_funs <- c("plot_cov_RMSE_mod_spp", "plot_err_lead_spp_mods",
                    "plot_cast_point", "select_most_ab_spp", "select_casts")
       ST_funs <- c("all_options")
       if (fun_name %in% AC_funs){
         if (!(arg_value %in% c("All", "Controls"))){
-          stop("`level` must be 'All' or 'Controls'")
+          out <- c(out, "`level` must be 'All' or 'Controls'")
         }
       }
       if (fun_name %in% ST_funs){
         if (!(arg_value %in% c("Site", "Treatment"))){
-          stop("`level` must be 'Site' or 'Treatment'")
+          out <- c(out, "`level` must be 'Site' or 'Treatment'")
         }
       }
     }
   }
   if (arg_name == "local_paths"){
     if (!("character" %in% class(arg_value))){
-      stop("`local_path` is not a character")
+      out <- c(out, "`local_path` is not a character")
     }
   }
   if (arg_name == "main"){
     if (!("character" %in% class(arg_value))){
-      stop("`main` is not a character")
+      out <- c(out, "`main` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`main` can only be of length = 1")
+      out <- c(out, "`main` can only be of length = 1")
     }
   }
   if (arg_name == "metadata"){
     if (!("metadata" %in% class(arg_value))){
-      stop("`metadata` is not a metadata list")
+      out <- c(out, "`metadata` is not a metadata list")
     }
   }
   if (arg_name == "meta_filename"){
     if (!("character" %in% class(arg_value))){
-      stop("`meta_filename` is not a character")
+      out <- c(out, "`meta_filename` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`meta_filename` can only be of length = 1")
+      out <- c(out, "`meta_filename` can only be of length = 1")
     }
   }
   if (arg_name == "meta_save"){
     if (!("logical" %in% class(arg_value))){
-      stop("`meta_save` is not logical")
+      out <- c(out, "`meta_save` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`meta_save` can only be of length = 1")
+      out <- c(out, "`meta_save` can only be of length = 1")
     }
   }
   if (arg_name == "min_lag"){
-    if (!is.numeric(arg_value)){
-      stop("`min_lag` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`min_lag` can only be of length = 1")
+      out <- c(out, "`min_lag` can only be of length = 1")
     }
-    if (arg_value < 0 | arg_value %% 1 != 0){
-      stop("`min_lag` is not a non-negative integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`min_lag` is not numeric")
+    } else if (arg_value < 0 | arg_value %% 1 != 0){
+      out <- c(out, "`min_lag` is not a non-negative integer")
     }
   }
   if (arg_name == "min_observed"){
-    if (!is.numeric(arg_value)){
-      stop("`min_observed` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`min_observed` can only be of length = 1")
+      out <- c(out, "`min_observed` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`min_observed` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`min_observed` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`min_observed` is not a positive integer")
     }
   }
   if (arg_name == "min_plots"){
-    if (!is.numeric(arg_value)){
-      stop("`min_plots` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`min_plots` can only be of length = 1")
+      out <- c(out, "`min_plots` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`min_plots` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`min_plots` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`min_plots` is not a positive integer")
     }
   }
   if (arg_name == "min_traps"){
-    if (!is.numeric(arg_value)){
-      stop("`min_traps` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`min_traps` can only be of length = 1")
+      out <- c(out, "`min_traps` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`min_traps` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`min_traps` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`min_traps` is not a positive integer")
     }
   }
   if (arg_name == "model"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`model` is not a character")
+        out <- c(out, "`model` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`model` can only be of length = 1")
+        out <- c(out, "`model` can only be of length = 1")
       }
     }
   }
   if (arg_name == "models"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`models` is not a character")
+        out <- c(out, "`models` is not a character")
       }
     }
   }
   if (arg_name == "model_set"){
     if (!is.null(arg_value)){
       if (!is.character(arg_value)){
-        stop("`model_set` is not a character")
+        out <- c(out, "`model_set` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`model_set` can only be of length = 1")
+        out <- c(out, "`model_set` can only be of length = 1")
       }
       if (!(arg_value %in% c("prefab", "wEnsemble"))){
-        stop("`model_set` must be 'prefab' or 'wEnsemble'")
+        out <- c(out, "`model_set` must be 'prefab' or 'wEnsemble'")
       }
     }
   }
   if (arg_name == "mod_covariates"){
     if (!("logical" %in% class(arg_value))){
-      stop("`mod_covariates` is not logical")
+      out <- c(out, "`mod_covariates` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`mod_covariates` can only be of length = 1")
+      out <- c(out, "`mod_covariates` can only be of length = 1")
     }
   }
   if (arg_name == "mod_type"){
     if (arg_value != "pevGARCH"){
-      stop("only `pevGARCH` supported for `mod_type`")
+      out <- c(out, "only `pevGARCH` supported for `mod_type`")
     }
   }
   if (arg_name == "moons"){
     if (!("moons" %in% class(arg_value))){
-      stop("`moons` is not an moons table")
+      out <- c(out, "`moons` is not an moons table")
     }
   }
   if (arg_name == "msg"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`msg` is not a character")
+        out <- c(out, "`msg` is not a character")
       }
     }
   }
   if (arg_name == "m_filename"){
     if (!("character" %in% class(arg_value))){
-      stop("`m_filename` is not a character")
+      out <- c(out, "`m_filename` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`m_filename` can only be of length = 1")
+      out <- c(out, "`m_filename` can only be of length = 1")
     }
   }
   if (arg_name == "m_save"){
     if (!("logical" %in% class(arg_value))){
-      stop("`m_save` is not logical")
+      out <- c(out, "`m_save` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`m_save` can only be of length = 1")
+      out <- c(out, "`m_save` can only be of length = 1")
     }
   }
   if (arg_name == "nadot"){
     if (!("logical" %in% class(arg_value))){
-      stop("`nadot` is not logical")
+      out <- c(out, "`nadot` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`nadot` can only be of length = 1")
+      out <- c(out, "`nadot` can only be of length = 1")
     }
   }
   if (arg_name == "ndates"){
-    if (!is.numeric(arg_value)){
-      stop("`ndates` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`ndates` can only be of length = 1")
+      out <- c(out, "`ndates` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`ndates` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`ndates` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`ndates` is not a positive integer")
     }
   }
   if (arg_name == "newmoonnumbers"){
     if (!is.null(arg_value)){
       if (!is.numeric(arg_value)){
-        stop("`newmoonnumbers` is not numeric")
-      }
-      if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
-        stop("`newmoonnumbers` is not a non-negative integer")
+        out <- c(out, "`newmoonnumbers` is not numeric")
+      } else if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
+        out <- c(out, "`newmoonnumbers` is not a non-negative integer")
       }
     }
   }
   if (arg_name == "new_forecast_covariates"){
     if (!("covariates" %in% class(arg_value))){
-      stop("`new_forecast_covariates` is not a covariates table")
+      out <- c(out, "`new_forecast_covariates` is not a covariates table")
     }
   }
   if (arg_name == "nfcnm"){
-    if (!is.numeric(arg_value)){
-      stop("`nfcnm` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`nfcnm` can only be of length = 1")
+      out <- c(out, "`nfcnm` can only be of length = 1")
     }
-    if (arg_value < 0 | arg_value %% 1 != 0){
-      stop("`nfcnm` is not a non-negative integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`nfcnm` is not numeric")
+    } else if (arg_value < 0 | arg_value %% 1 != 0){
+      out <- c(out, "`nfcnm` is not a non-negative integer")
     }
   }
   if (arg_name == "n_future_moons"){
-    if (!is.numeric(arg_value)){
-      stop("`n_future_moons` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`n_future_moons` can only be of length = 1")
+      out <- c(out, "`n_future_moons` can only be of length = 1")
     }
-    if (arg_value < 0 | arg_value %% 1 != 0){
-      stop("`n_future_moons` is not a non-negative integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`n_future_moons` is not numeric")
+    } else if (arg_value < 0 | arg_value %% 1 != 0){
+      out <- c(out, "`n_future_moons` is not a non-negative integer")
     }
   }
   if (arg_name == "options_all"){
     if (!("all_options" %in% class(arg_value))){
-      stop("`options_all` is not an all_options list")
+      out <- c(out, "`options_all` is not an all_options list")
     }
   }
   if (arg_name == "options_cast"){
     if (!("cast_options" %in% class(arg_value))){
-      stop("`options_cast` is not a cast_options list")
+      out <- c(out, "`options_cast` is not a cast_options list")
     }
   }
   if (arg_name == "options_covariates"){
     if (!("covariates_options" %in% class(arg_value))){
-      stop("`options_covariates` is not a covariates_options list")
+      out <- c(out, "`options_covariates` is not a covariates_options list")
     }
   }
   if (arg_name == "options_data"){
     if (!("data_options" %in% class(arg_value))){
-      stop("`options_data` is not a data_options list")
+      out <- c(out, "`options_data` is not a data_options list")
     }
   }
   if (arg_name == "options_dir"){
     if (!("dir_options" %in% class(arg_value))){
-      stop("`options_dir` is not a dir_options list")
+      out <- c(out, "`options_dir` is not a dir_options list")
     }
   }
   if (arg_name == "options_metadata"){
     if (!("metadata_options" %in% class(arg_value))){
-      stop("`options_metadata` is not a metadata_options list")
+      out <- c(out, "`options_metadata` is not a metadata_options list")
     }
   }
   if (arg_name == "options_model"){
     if (!("model_options" %in% class(arg_value))){
-      stop("`options_model` is not a model_options list")
+      out <- c(out, "`options_model` is not a model_options list")
     }
   }
   if (arg_name == "options_models"){
     if (!("models_options" %in% class(arg_value))){
-      stop("`options_models` is not a models_options list")
+      out <- c(out, "`options_models` is not a models_options list")
     }
   }
   if (arg_name == "options_moons"){
     if (!("moons_options" %in% class(arg_value))){
-      stop("`options_moons` is not a moons_options list")
+      out <- c(out, "`options_moons` is not a moons_options list")
     }
   }
   if (arg_name == "options_out"){
     if (!any(grepl("options", class(arg_value)))){
-      stop("`options_out` is not an options list")
+      out <- c(out, "`options_out` is not an options list")
     }
   }
   if (arg_name == "options_PortalData"){
     if (!("PortalData_options" %in% class(arg_value))){
-      stop("`options_PortalData` is not a PortalData_options list")
+      out <- c(out, "`options_PortalData` is not a PortalData_options list")
     }
   }
   if (arg_name == "options_predictions"){
     if (!("predictions_options" %in% class(arg_value))){
-      stop("`options_predictions` is not a predictions_options list")
+      out <- c(out, "`options_predictions` is not a predictions_options list")
     }
   }
   if (arg_name == "options_rodents"){
     if (!("rodents_options" %in% class(arg_value))){
-      stop("`options_rodents` is not a rodents_options list")
+      out <- c(out, "`options_rodents` is not a rodents_options list")
     }
   }
   if (arg_name == "output"){
     if (arg_value != "abundance"){
-      stop("only `abundance` supported for `output`")
+      out <- c(out, "only `abundance` supported for `output`")
     }
   }
   if (arg_name == "plots"){
     if (!is.character(arg_value)){
-      stop("`plots` is not a character")
+      out <- c(out, "`plots` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`plots` can only be of length = 1")
+      out <- c(out, "`plots` can only be of length = 1")
     }
     if (!(arg_value %in% c("all", "longterm"))){
-      stop("`plots` must be 'all' or 'longterm'")
+      out <- c(out, "`plots` must be 'all' or 'longterm'")
     }
   }
   if (arg_name == "pred_dir"){
     if (!("character" %in% class(arg_value))){
-      stop("`pred_dir` is not a character")
+      out <- c(out, "`pred_dir` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`pred_dir` can only be of length = 1")
+      out <- c(out, "`pred_dir` can only be of length = 1")
     }
   }
   if (arg_name == "quiet"){
     if (!("logical" %in% class(arg_value))){
-      stop("`quiet` is not logical")
+      out <- c(out, "`quiet` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`quiet` can only be of length = 1")
+      out <- c(out, "`quiet` can only be of length = 1")
     }
   }
   if (arg_name == "rangex"){
-    if (!is.numeric(arg_value)){
-      stop("`rangex` is not numeric")
-    }
     if (length(arg_value) != 2){
-      stop("`rangex` can only be of length = 2")
+      out <- c(out, "`rangex` can only be of length = 2")
     }
-    if (any(arg_value < 1) | any(arg_value %% 1 != 0)){
-      stop("`rangex` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`rangex` is not numeric")
+    } else if (any(arg_value < 1) | any(arg_value %% 1 != 0)){
+      out <- c(out, "`rangex` is not a positive integer")
     }
   }
   if (arg_name == "rodents"){
     if (!("rodents" %in% class(arg_value))){
-      stop("`rodents` is not of class rodents")
+      out <- c(out, "`rodents` is not of class rodents")
     }
   }
   if (arg_name == "rodents_list"){
     if (!("rodents_list" %in% class(arg_value))){
-      stop("`rodents_list` is not a rodents_list list")
+      out <- c(out, "`rodents_list` is not a rodents_list list")
     }
   }
   if (arg_name == "r_filename"){
     if (!("character" %in% class(arg_value))){
-      stop("`r_filename` is not a character")
+      out <- c(out, "`r_filename` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`r_filename` can only be of length = 1")
+      out <- c(out, "`r_filename` can only be of length = 1")
     }
   }
   if (arg_name == "r_save"){
     if (!("logical" %in% class(arg_value))){
-      stop("`r_save` is not logical")
+      out <- c(out, "`r_save` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`r_save` can only be of length = 1")
+      out <- c(out, "`r_save` can only be of length = 1")
     }
   }
   if (arg_name == "save"){
     if (!("logical" %in% class(arg_value))){
-      stop("`save` is not logical")
+      out <- c(out, "`save` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`save` can only be of length = 1")
+      out <- c(out, "`save` can only be of length = 1")
     }
   }
 
   if (arg_name == "source_name"){
     if (!("character" %in% class(arg_value))){
-      stop("`source_name` is not a character")
+      out <- c(out, "`source_name` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`source_name` can only be of length = 1")
+      out <- c(out, "`source_name` can only be of length = 1")
     }
   }
   if (arg_name == "species"){
     if(!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`species` is not a character")
+        out <- c(out, "`species` is not a character")
       }
       if (!all(arg_value %in% rodent_spp("wtotal"))){
-        stop("invalid entry in `species`")
+        out <- c(out, "invalid entry in `species`")
       } 
       sp_funs <- c("plot_cast_ts", "plot_cast_ts_ylab")
       if (fun_name %in% sp_funs){
         if (length(arg_value) != 1){
-          stop("`species` can only be of length = 1")
+          out <- c(out, "`species` can only be of length = 1")
         }
       }
     }
@@ -1405,193 +1411,191 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   if (arg_name == "species_set"){
     if (!is.null(arg_value)){
       if (!is.character(arg_value)){
-        stop("`species_set` is not a character")
+        out <- c(out, "`species_set` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`species_set` can only be of length = 1")
+        out <- c(out, "`species_set` can only be of length = 1")
       }
       if (!(arg_value %in% c("base", "wtotal", "evalplot"))){
-        stop("`species_set` must be 'base', 'wtotal', or 'evalplot'")
+        out <- c(out, "`species_set` must be 'base', 'wtotal', or 'evalplot'")
       }
     }
   }
   if (arg_name == "specific_subs"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`specific_subs` is not a character")
+        out <- c(out, "`specific_subs` is not a character")
       }
     }
   }
   if (arg_name == "spp_names"){
     if (!("character" %in% class(arg_value))){
-      stop("`spp_names` is not a character")
+      out <- c(out, "`spp_names` is not a character")
     }
   }
   if (arg_name == "start"){
-    if (!is.numeric(arg_value)){
-      stop("`start` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`start` can only be of length = 1")
+      out <- c(out, "`start` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`start` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`start` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`start` is not a positive integer")
     }
   }
   if (arg_name == "start_newmoon"){
-    if (!is.numeric(arg_value)){
-      stop("`start_newmoon` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`start_newmoon` can only be of length = 1")
+      out <- c(out, "`start_newmoon` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`start_newmoon` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`start_newmoon` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`start_newmoon` is not a positive integer")
     }
   }
   if (arg_name == "subs"){
     if (!("character" %in% class(arg_value))){
-      stop("`subs` is not a character vector")
+      out <- c(out, "`subs` is not a character vector")
     }
   }
   if (arg_name == "subs_names"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`subs_names` is not a character")
+        out <- c(out, "`subs_names` is not a character")
       }
     }
   }
   if (arg_name == "subs_type"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`subs_type` is not a character")
+        out <- c(out, "`subs_type` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`subs_type` can only be of length = 1")
+        out <- c(out, "`subs_type` can only be of length = 1")
       }
       if (!(arg_value %in% c("portalcasting"))){
-        stop("`subs_type` is not recognized ")
+        out <- c(out, "`subs_type` is not recognized ")
       }
     }
   }
   if (arg_name == "sub_path"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`sub_path` is not a character")
+        out <- c(out, "`sub_path` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`sub_path` can only be of length = 1")
+        out <- c(out, "`sub_path` can only be of length = 1")
       }
     }
   }
   if (arg_name == "tail"){
     if (!("logical" %in% class(arg_value))){
-      stop("`tail` is not logical")
+      out <- c(out, "`tail` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`tail` can only be of length = 1")
+      out <- c(out, "`tail` can only be of length = 1")
     }
   }
   if (arg_name == "temp_dir"){
     if (!("character" %in% class(arg_value))){
-      stop("`temp_dir` is not a character")
+      out <- c(out, "`temp_dir` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`temp_dir` can only be of length = 1")
+      out <- c(out, "`temp_dir` can only be of length = 1")
     }
   }
   if (arg_name == "time"){
     if (!("logical" %in% class(arg_value))){
-      stop("`time` is not logical")
+      out <- c(out, "`time` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`time` can only be of length = 1")
+      out <- c(out, "`time` can only be of length = 1")
     }
   }
   if (arg_name == "tmnt_type"){
     if (!is.null(arg_value)){
       if (!is.character(arg_value)){
-        stop("`tmnt_type` is not a character")
+        out <- c(out, "`tmnt_type` is not a character")
       }
       if (length(arg_value) != 1){
-        stop("`tmnt_type` can only be of length = 1")
+        out <- c(out, "`tmnt_type` can only be of length = 1")
       }
       if (!(arg_value %in% c("all", "controls"))){
-        stop("`tmnt_type` must be 'all' or 'controls'")
+        out <- c(out, "`tmnt_type` must be 'all' or 'controls'")
       }
     }
   }
   if (arg_name == "to_cleanup"){
     if (!is.null(arg_value)){
       if (!("character" %in% class(arg_value))){
-        stop("`to_cleanup` is not a character")
+        out <- c(out, "`to_cleanup` is not a character")
       }
     }
   }
   if (arg_name == "topx"){
-    if (!is.numeric(arg_value)){
-      stop("`topx` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`topx` can only be of length = 1")
+      out <- c(out, "`topx` can only be of length = 1")
     }
-    if (arg_value < 1 | arg_value %% 1 != 0){
-      stop("`topx` is not a positive integer")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`topx` is not numeric")
+    } else if (arg_value < 1 | arg_value %% 1 != 0){
+      out <- c(out, "`topx` is not a positive integer")
     }
   }
   if (arg_name == "treatment"){
     if (!(is.null(arg_value)) && arg_value != "control"){
-      stop("`treatment` must be `NULL` or 'control'")
+      out <- c(out, "`treatment` must be `NULL` or 'control'")
     }
   }
   if (arg_name == "tree"){
     if (!("dirtree" %in% class(arg_value))){
-      stop("`tree` is not a dirtree list")
+      out <- c(out, "`tree` is not a dirtree list")
     }
   }
   if (arg_name == "verbose"){
     if (!("logical" %in% class(arg_value))){
-      stop("`verbose` is not logical")
+      out <- c(out, "`verbose` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`verbose` can only be of length = 1")
+      out <- c(out, "`verbose` can only be of length = 1")
     }
   }
   if (arg_name == "version"){
     if (!("character" %in% class(arg_value))){
-      stop("`version` is not a character")
+      out <- c(out, "`version` is not a character")
     }
     if (length(arg_value) != 1){
-      stop("`version` can only be of length = 1")
+      out <- c(out, "`version` can only be of length = 1")
     }
   }
   if (arg_name == "with_census"){
     if (!("logical" %in% class(arg_value))){
-      stop("`with_census` is not logical")
+      out <- c(out, "`with_census` is not logical")
     }
     if (length(arg_value) != 1){
-      stop("`with_census` can only be of length = 1")
+      out <- c(out, "`with_census` can only be of length = 1")
     }
   }
   if (arg_name == "x"){
     if (fun_name == "na_conformer"){
       if (!(is.data.frame(arg_value) | is.vector(arg_value))){
-        stop("`x` is not a data.frame or vector")
+        out <- c(out, "`x` is not a data.frame or vector")
       }
     }
     if (fun_name == "classy"){
     }
   }
   if (arg_name == "yr"){
-    if (!is.numeric(arg_value)){
-      stop("`yr` is not numeric")
-    }
     if (length(arg_value) != 1){
-      stop("`yr` can only be of length = 1")
+      out <- c(out, "`yr` can only be of length = 1")
     }
-    if (arg_value < 1970 | arg_value %% 1 != 0){
-      stop("`yr` is not an integer after 1970")
+    if (!is.numeric(arg_value)){
+      out <- c(out, "`yr` is not numeric")
+    } else if (arg_value < 1970 | arg_value %% 1 != 0){
+      out <- c(out, "`yr` is not an integer after 1970")
     }
   }
+  out
 }
+
 

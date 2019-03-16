@@ -16,11 +16,22 @@ check_arg(arg_name, arg_value, fun_name = NULL)
 
 \item{fun_name}{\code{character} value of the function name or \code{NULL}.}
 }
+\value{
+\code{check_arg}: \code{character} vector of error messages
+  associated with the specific situation 
+  (\code{<fun_name>(<arg_name> = arg_value)}).
+}
 \description{
 \code{check_args} checks that all of the arguments to a given
   function have valid values within the pipeline to avoid naming collision
   and improper formatting, by wrapping around \code{check_arg} for each
-  argument. See \code{Details} for argument-specific rules.
+  argument. \cr \cr
+  \code{check_arg} produces (returns) a \code{NULL} if the 
+  argument is valid or \code{character} vector of error messages associated 
+  with the specific situation (\code{<fun_name>(<arg_name> = arg_value)})
+  if the argument is invalid. \cr \cr
+  \code{check_args} should only be called within a function. \cr \cr
+  See \code{Details} for argument-specific rules.
 }
 \details{
 Usage and rules for arguments are as follows: \cr \cr
