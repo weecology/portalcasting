@@ -2,6 +2,7 @@ context("Test prepare_models functions")
 
 test_that("model_names", {
   expect_is(model_names(model_set = "prefab"), "character")
+  expect_is(model_names(model_set = "wEnsemble"), "character")
   expect_error(model_names(model_set = 1))
   expect_error(model_names(add = 1))
   expect_error(model_names(model_set = c("prefab", "prefab")))

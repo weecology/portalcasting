@@ -27,6 +27,10 @@
 #'   values needed for a -cast to be retained in the output table. Default is
 #'   \code{1}, which returns all -casts with any observations. To include all
 #'   -casts (even those without any evaluations), set to \code{0}. 
+#'
+#' @param models \code{character} value(s) of the name(s) (or 
+#'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+#'   models are returned.
 #' 
 #' @examples
 #' \dontrun{
@@ -40,7 +44,8 @@
 plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts", 
                                species = rodent_spp(species_set = "evalplot"),
                                level = "Controls", cast_dates = NULL, 
-                               min_observed = 1){
+                               min_observed = 1, 
+                               models = model_names("wEnsemble")){
   check_args()
   if (is.null(cast_dates)){
     pfolderpath <- sub_paths(tree = tree, "predictions")
@@ -54,7 +59,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 
   errs <- read_casts(tree = tree, cast_type = cast_type, 
                      cast_dates = cast_dates) %>%
-          select_casts(species = species, level = level) %>%
+          select_casts(species = species, level = level, models = models) %>%
           append_observed_to_cast(tree) %>%
           measure_cast_error(min_observed = min_observed)
 
@@ -204,6 +209,10 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 #'   reliably coded for \code{"forecasts"}.
 #'
 #' @param ndates \code{integer} number of -cast issue dates to include.
+#'
+#' @param models \code{character} value(s) of the name(s) (or 
+#'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+#'   models are returned.
 #' 
 #' @examples
 #' \dontrun{
@@ -216,10 +225,11 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 #'
 plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts", 
                                species = rodent_spp(species_set = "evalplot"),
-                               level = "Controls", ndates = 3){
+                               level = "Controls", ndates = 3,
+                               models = model_names("wEnsemble")){
   check_args()
   casts <- read_casts(tree, cast_type = cast_type) %>%
-           select_casts(species = species, level = level) %>%
+           select_casts(species = species, level = level, models = models) %>%
            append_observed_to_cast(tree)
 
   lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")

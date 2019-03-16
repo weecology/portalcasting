@@ -413,9 +413,11 @@ check_args <- function(){
 #'   \code{models}: must be \code{NULL} or a \code{character} vector in
 #'     \code{\link{all_options}}, \code{\link{cast_options}}, 
 #'     \code{\link{models_options}}, \code{\link{model_paths}}, and 
-#'     \code{\link{select_casts}} . \cr \cr
+#'     \code{\link{select_casts}}, \code{\link{plot_cov_RMSE_mod_spp}}, and
+#'     \code{\link{plot_err_lead_spp_mods}}. \cr \cr
 #'   \code{model_set}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector with value \code{"prefab"} in \code{\link{model_names}}. \cr \cr
+#'     vector with value \code{"prefab"} or \code{"wEnsemble"} in 
+#'     \code{\link{model_names}}. \cr \cr
 #'   \code{mod_covariates}: must be a length-1 \code{logical} vector in 
 #'     \code{\link{model_options}}. \cr \cr
 #'   \code{mod_type}: must be \code{"pevGARCH"} in
@@ -1121,8 +1123,8 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       if (length(arg_value) != 1){
         stop("`model_set` can only be of length = 1")
       }
-      if (!(arg_value %in% c("prefab"))){
-        stop("`model_set` must be 'prefab'")
+      if (!(arg_value %in% c("prefab", "wEnsemble"))){
+        stop("`model_set` must be 'prefab' or 'wEnsemble'")
       }
     }
   }

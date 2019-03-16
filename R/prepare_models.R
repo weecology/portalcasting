@@ -7,18 +7,23 @@
 #'   setup by \code{model_set}.
 #'
 #' @param model_set \code{characher} value of the type of model (currently 
-#'   only support for \code{"prefab"}). Use \code{NULL} to build a custom set
-#'   from scratch via \code{add}.
+#'   only support for \code{"prefab"} and \code{"wEnsemble"}). Use \code{NULL}
+#'   to build a custom set from scratch via \code{add}.
 #'
-#' @return \code{models}-class \code{character} vector of model names.
+#' @return \code{character} vector of model names.
 #'
 #' @export
 #'
 model_names <- function(model_set = "prefab", add = NULL){
   check_args()
   out <- NULL
-  if (!is.null(model_set) && model_set == "prefab"){
-    out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
+  if (!is.null(model_set)){
+    if(model_set == "prefab"){
+      out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
+    }
+    if(model_set == "wEnsemble"){
+      out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH", "Ensemble")
+    }
   } 
   unique(c(out, add))
 }

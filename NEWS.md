@@ -40,6 +40,11 @@ directory tree, and the script generation is updated to match.
 * `messageq` function is added to tidy code around messages being printed
 based on the `quiet` arguments.
 
+### Inclusion of `wEnsemble` as an option in `model_names`
+* Produces the `prefab` list with an `"Ensemble"` entry added, to allow for
+that simply without using the `NULL` options, which collects all model names.
+* This facilitated addition of `models` as an argument in the evaluations 
+plots.
 
 # [portalcasting 0.3.1](https://github.com/weecology/portalcasting/pull/93)
 *2019-03-12* 

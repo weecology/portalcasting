@@ -7,7 +7,7 @@
 \usage{
 plot_err_lead_spp_mods(tree = dirtree(), cast_type = "forecasts",
   species = rodent_spp(species_set = "evalplot"), level = "Controls",
-  ndates = 3)
+  ndates = 3, models = model_names("wEnsemble"))
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
@@ -27,6 +27,10 @@ plot is reliably coded/}
 or \code{"Controls"}).}
 
 \item{ndates}{\code{integer} number of -cast issue dates to include.}
+
+\item{models}{\code{character} value(s) of the name(s) (or 
+\code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+models are returned.}
 }
 \description{
 Plot the model-species matrix of error as a function of

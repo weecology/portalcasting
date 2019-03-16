@@ -116,6 +116,7 @@ test_that("plot_err_lead_spp_mods", {
   expect_error(plot_err_lead_spp_mods(tree, ndates = 1.5))
   expect_error(plot_err_lead_spp_mods(tree, ndates = "ok"))
   expect_error(plot_err_lead_spp_mods(tree, ndates = 1:5))
+  expect_error(plot_err_lead_spp_mods(tree, models = 1))
 })
 
 test_that("plot_cov_RMSE_mod_spp", {
@@ -132,4 +133,5 @@ test_that("plot_cov_RMSE_mod_spp", {
   expect_error(plot_cov_RMSE_mod_spp(tree, min_observed = "ok"))
   expect_error(plot_cov_RMSE_mod_spp(tree, min_observed = 1:5))
   expect_error(plot_cov_RMSE_mod_spp(tree, cast_dates = 1))
+  expect_error(plot_cov_RMSE_mod_spp(tree, models = 1))
 })

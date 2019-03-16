@@ -50,7 +50,7 @@ dirtree <- function(base = ".", main = "", subs = subdirs()){
 #' @param subs_type \code{character} name for quick generation of subdirectory
 #'   vector. Presently only defined for \code{"portalcasting"}.
 #'
-#' @return Class-\code{character} vector of subdirectory names.
+#' @return \code{character} vector of subdirectory names.
 #'
 #' @export
 #'
