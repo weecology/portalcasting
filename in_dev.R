@@ -15,7 +15,3 @@ portalcast(options_all)
 # make the error message hit all faulty arguments and report the function
 #  where it happened
 # handle cast argument in verify_cast cast_is_valid combo
-# tidy up the documentation in check_args
-
-# in portalr, it would be nice to add quiet argument to download_observations
-# and summarize_rodent_data
