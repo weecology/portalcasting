@@ -38,9 +38,9 @@
 #' @export
 #'
 plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts", 
-                                  species = rodent_spp(set = "evalplot"),
-                                  level = "Controls", cast_dates = NULL, 
-                                  min_observed = 1){
+                               species = rodent_spp(species_set = "evalplot"),
+                               level = "Controls", cast_dates = NULL, 
+                               min_observed = 1){
   check_args()
   if (is.null(cast_dates)){
     pfolderpath <- sub_paths(tree = tree, "predictions")
@@ -215,8 +215,8 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 #' @export
 #'
 plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts", 
-                                   species = rodent_spp(set = "evalplot"),
-                                   level = "Controls", ndates = 3){
+                               species = rodent_spp(species_set = "evalplot"),
+                               level = "Controls", ndates = 3){
   check_args()
   casts <- read_casts(tree, cast_type = cast_type) %>%
            select_casts(species = species, level = level) %>%
