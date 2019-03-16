@@ -6,7 +6,7 @@
   species and model}
 \usage{
 plot_err_lead_spp_mods(tree = dirtree(), cast_type = "forecasts",
-  species = rodent_spp(set = "evalplot"), level = "Controls",
+  species = rodent_spp(species_set = "evalplot"), level = "Controls",
   ndates = 3)
 }
 \arguments{

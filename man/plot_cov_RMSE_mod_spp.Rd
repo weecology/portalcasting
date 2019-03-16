@@ -5,7 +5,7 @@
 \title{Plot RMSE and coverage as a function of model for each species}
 \usage{
 plot_cov_RMSE_mod_spp(tree = dirtree(), cast_type = "hindcasts",
-  species = rodent_spp(set = "evalplot"), level = "Controls",
+  species = rodent_spp(species_set = "evalplot"), level = "Controls",
   cast_dates = NULL, min_observed = 1)
 }
 \arguments{

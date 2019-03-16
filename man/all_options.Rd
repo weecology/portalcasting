@@ -29,9 +29,9 @@ all_options(base = ".", main = "", subs = subdirs(subs_type =
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
   meta_filename = "metadata.yaml",
-  download_existing_predictions = FALSE, models = model_names(set =
-  "prefab"), ensemble = TRUE, version = "latest", from_zenodo = TRUE,
-  to_cleanup = c("tmp", "PortalData"))
+  download_existing_predictions = FALSE, models = model_names(model_set
+  = "prefab"), ensemble = TRUE, version = "latest",
+  from_zenodo = TRUE, to_cleanup = c("tmp", "PortalData"))
 
 dir_options(base = ".", main = "", subs = subdirs(subs_type =
   "portalcasting"), quiet = FALSE, to_cleanup = c("tmp", "PortalData"))
@@ -84,11 +84,11 @@ predictions_options(base = ".", main = "", subs = subdirs(subs_type =
   quiet = FALSE)
 
 models_options(base = ".", main = "", subs = subdirs(subs_type =
-  "portalcasting"), quiet = FALSE, models = model_names(set =
+  "portalcasting"), quiet = FALSE, models = model_names(model_set =
   "prefab"))
 
 cast_options(base = ".", main = "", subs = subdirs(subs_type =
-  "portalcasting"), quiet = FALSE, models = model_names(set =
+  "portalcasting"), quiet = FALSE, models = model_names(model_set =
   "prefab"), cast_type = "forecasts", cast_date = today(),
   ensemble = TRUE, start = 217, end = NULL, hind_step = 1,
   min_plots = 24, min_traps = 1)
