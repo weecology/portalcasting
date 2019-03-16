@@ -43,7 +43,7 @@ write_model <- function(options_model = model_options()){
   if (!options_model$quiet){
     cat("", paste0("adding ", model, " model to models subdirectory \n"))
   }
-  mod_path <- model_paths(options_model$tree, models = options_model$name)
+  mod_path <- model_paths(options_model$tree, models = options_model$model)
   mod_template <- model_template(options_model)
   write(mod_template, mod_path)
 }
