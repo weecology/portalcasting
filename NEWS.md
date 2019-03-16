@@ -24,6 +24,7 @@ returns all if `specific_subs` is NULL
 * In multiple functions `data` has been replaced with `rodents` to be
 specific.
 * `CI_level` is now subsumed by `confidence_level`
+* `name` is now subsumed by `model`
 
 ### Removal of classes
 * The `models` class has been removed.

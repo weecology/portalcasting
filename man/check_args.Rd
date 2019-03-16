@@ -210,7 +210,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{model}: must be a length-1 \code{character} vector in
     \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}},
     \code{\link{plot_cast_ts_ylab}},
-    \code{\link{select_most_ab_spp}} \cr \cr
+    \code{\link{select_most_ab_spp}},
+    \code{\link{model_options}}, \code{\link{save_forecast_output}} \cr \cr
   \code{models}: must be \code{NULL} or a \code{character} vector in
     \code{\link{all_options}}, \code{\link{models_options}},
     \code{\link{cast_options}}, \code{\link{model_paths}},
@@ -229,8 +230,6 @@ Usage and rules for arguments are as follows: \cr \cr
     \cr \cr
   \code{nadot}: must be a length-1 \code{logical} vector in
     \code{\link{rodent_spp}} \cr \cr
-  \code{name}: must be a length-1 \code{character} vector in
-    \code{\link{model_options}}, \code{\link{save_forecast_output}} \cr \cr
   \code{ndates}: must be a length-1 positive \code{integer} or 
     \code{integer}-conformable vector in 
     \code{\link{plot_err_lead_spp_mods}}  \cr \cr

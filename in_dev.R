@@ -9,7 +9,6 @@ portalcast(options_all)
 
 # to dos : 
 # make subs_type default to "portalcasting"
-# remove the double up of name and model
 # set is used for both species (rodent_spp) and models (model_names)
 
 
@@ -21,5 +20,6 @@ portalcast(options_all)
 # handle cast argument in verify_cast cast_is_valid combo
 
 
+#'     \code{\link{model_options}}, \code{\link{save_forecast_output}} \cr \cr
 
 

@@ -10,8 +10,7 @@
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}.
 #'
-#' @param name \code{character}-valued name of the model (MUST match the 
-#'   function name).
+#' @param model \code{character} value of the name of the model.
 #'
 #' @param mod_covariates \code{logical} indicator for if the model requires 
 #'   covariates.
@@ -26,12 +25,12 @@
 #'
 #' @export
 #'
-model_options <- function(tree = dirtree(), name = "AutoArima", 
+model_options <- function(tree = dirtree(), model = "AutoArima", 
                           mod_covariates = FALSE, lag = NULL, quiet = FALSE){
 
   check_args()
-  list(name = name, mod_covariates = mod_covariates, lag = lag, quiet = quiet, 
-       tree = tree) %>%
+  list(model = model, mod_covariates = mod_covariates, lag = lag, 
+       quiet = quiet, tree = tree) %>%
   classy(c("model_options", "list"))
 }
 
@@ -46,10 +45,10 @@ model_options <- function(tree = dirtree(), name = "AutoArima",
 #'
 #' @export
 #'
-AutoArima_options <- function(tree = dirtree(), name = "AutoArima", 
+AutoArima_options <- function(tree = dirtree(), model = "AutoArima", 
                               mod_covariates = FALSE, lag = NULL, 
                               quiet = FALSE){
-  model_options(tree = tree, name = name, mod_covariates = mod_covariates, 
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
                 lag = lag, quiet = quiet) 
 }
 
@@ -64,9 +63,9 @@ AutoArima_options <- function(tree = dirtree(), name = "AutoArima",
 #'
 #' @export
 #'
-ESSS_options <- function(tree = dirtree(),  name = "ESSS", 
+ESSS_options <- function(tree = dirtree(),  model = "ESSS", 
                          mod_covariates = FALSE, lag = NULL, quiet = FALSE){
-  model_options(tree = tree, name = name, mod_covariates = mod_covariates, 
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
                 lag = lag, quiet = quiet) 
 }
 
@@ -81,10 +80,10 @@ ESSS_options <- function(tree = dirtree(),  name = "ESSS",
 #'
 #' @export
 #'
-nbGARCH_options <- function(tree = dirtree(), name = "nbGARCH", 
+nbGARCH_options <- function(tree = dirtree(), model = "nbGARCH", 
                             mod_covariates = FALSE, lag = NULL, 
                             quiet = FALSE){
-  model_options(tree = tree, name = name, mod_covariates = mod_covariates, 
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
                 lag = lag, quiet = quiet) 
 }
 
@@ -99,8 +98,8 @@ nbGARCH_options <- function(tree = dirtree(), name = "nbGARCH",
 #'
 #' @export
 #'
-pevGARCH_options <- function(tree = dirtree(), name = "pevGARCH", 
+pevGARCH_options <- function(tree = dirtree(), model = "pevGARCH", 
                              mod_covariates = TRUE, lag = 6, quiet = FALSE){
-  model_options(tree = tree, name = name, mod_covariates = mod_covariates, 
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
                 lag = lag, quiet = quiet) 
 }

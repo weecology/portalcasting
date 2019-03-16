@@ -4,7 +4,7 @@
 \alias{save_forecast_output}
 \title{Save forecast output to files}
 \usage{
-save_forecast_output(all, controls, name, tree)
+save_forecast_output(all, controls, model, tree)
 }
 \arguments{
 \item{all}{Ouput from a forecasting model function (e.g., 
@@ -15,7 +15,7 @@ save_forecast_output(all, controls, name, tree)
 \code{\link{AutoArima}}) run on the "controls" data. Required to be a 
 \code{list} with two elements named \code{forecast} and \code{aic}.}
 
-\item{name}{\code{character} model name for saving in files.}
+\item{model}{\code{character} value of the name of the model.}
 
 \item{tree}{\code{dirtree}-class directory tree list. See 
 \code{\link{dirtree}}.}

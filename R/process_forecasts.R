@@ -11,14 +11,14 @@
 #'   \code{\link{AutoArima}}) run on the "controls" data. Required to be a 
 #'   \code{list} with two elements named \code{forecast} and \code{aic}.
 #'
-#' @param name \code{character} model name for saving in files.
+#' @param model \code{character} value of the name of the model.
 #'
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}.
 #'
 #' @export
 #'
-save_forecast_output <- function(all, controls, name, tree){
+save_forecast_output <- function(all, controls, model, tree){
   check_args()
 
   metadata <- read_data(tree, "metadata");
@@ -26,11 +26,11 @@ save_forecast_output <- function(all, controls, name, tree){
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 
-  fcast_fname <- paste0(name, metadata$filename_suffix, ".csv")
+  fcast_fname <- paste0(model, metadata$filename_suffix, ".csv")
   fcast_path <- file.path(temp_dir, fcast_fname)
   write.csv(forecasts, fcast_path, row.names = FALSE)
 
-  aic_fname <- paste0(name, metadata$filename_suffix, "_model_aic.csv")
+  aic_fname <- paste0(model, metadata$filename_suffix, "_model_aic.csv")
   aic_path <- file.path(temp_dir, aic_fname)
   write.csv(aics, aic_path, row.names = FALSE)
 
