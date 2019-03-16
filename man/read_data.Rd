@@ -2,9 +2,24 @@
 % Please edit documentation in R/process_data.R
 \name{read_data}
 \alias{read_data}
+\alias{read_all}
+\alias{read_controls}
+\alias{read_covariates}
+\alias{read_moons}
+\alias{read_metadata}
 \title{Read in a data file and format it for specific class}
 \usage{
-read_data(tree, data_name)
+read_data(tree = dirtree(), data_name)
+
+read_all(tree = dirtree())
+
+read_controls(tree = dirtree())
+
+read_covariates(tree = dirtree())
+
+read_moons(tree = dirtree())
+
+read_metadata(tree = dirtree())
 }
 \arguments{
 \item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
@@ -20,7 +35,9 @@ Data requested with appropriate classes.
 Read in a specified data file and ensure its class attribute
   is appropriate for usage within the portalcasting pipeline. Current 
   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
-  \code{"moons"}, and \code{"metadata"}.
+  \code{"moons"}, and \code{"metadata"}. And are available as calls to
+  \code{read_data} with a specified \code{data_name} or as calls to the
+  specific \code{read_<data_name>} functions (like \code{read_moons}).
 }
 \examples{
 \dontrun{
@@ -31,6 +48,12 @@ read_data(data_name = "controls")
 read_data(data_name = "covariates")
 read_data(data_name = "moons")
 read_data(data_name = "metadata")
+
+read_all()
+read_controls()
+read_covariates()
+read_moons()
+read_metadata()
 }
 
 }

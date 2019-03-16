@@ -1,36 +1,35 @@
 context("Test model_options functions")
 
 test_that("model_options", {
-  expect_error(model_options(tree = 1, name = "AutoArima", 
-                             covariates = FALSE, lag = NULL, quiet = FALSE),
-               "`tree`")
-  expect_error(model_options(tree = dirtree(), name = 1, 
-                             covariates = FALSE, lag = NULL, quiet = FALSE),
-               "`name` is not")
-  expect_error(model_options(tree = dirtree(), name = c("AutoArima", "ESSS"), 
-                             covariates = FALSE, lag = NULL, quiet = FALSE),
-               "`name` can only be")
-  expect_error(model_options(tree = dirtree(), name = "AutoArima", 
-                             covariates = 1, lag = NULL, quiet = FALSE),
-               "`covariates`")
-  expect_error(model_options(tree = dirtree(), name = "AutoArima", 
-                             covariates = FALSE, lag = -1, quiet = FALSE),
-               "`lag` is not")
-  expect_error(model_options(tree = dirtree(), name = "AutoArima", 
-                             covariates = FALSE, lag = 2.2, quiet = FALSE),
-               "`lag` is not")
-  expect_error(model_options(tree = dirtree(), name = "AutoArima", 
-                             covariates = FALSE, lag = "a", quiet = FALSE),
-               "`lag` is not")
-  expect_error(model_options(tree = dirtree(), name = "AutoArima", 
-                             covariates = FALSE, lag = 1:2, quiet = FALSE),
-               "`lag` can only be")
-  expect_error(model_options(tree = dirtree(), name = "AutoArima", 
-                             covariates = FALSE, lag = NULL, quiet = 1),
-               "`quiet` is not")
+  expect_error(model_options(tree = 1, model = "AutoArima", 
+                             mod_covariates = FALSE, lag = NULL, 
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = 1, 
+                             mod_covariates = FALSE, lag = NULL, 
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = c("AutoArima", "ESSS"), 
+                             mod_covariates = FALSE, lag = NULL, 
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = "AutoArima", 
+                             mod_covariates = 1, lag = NULL, 
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = "AutoArima", 
+                             mod_covariates = FALSE, lag = -1,
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = "AutoArima", 
+                             mod_covariates = FALSE, lag = 2.2, 
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = "AutoArima", 
+                             mod_covariates = FALSE, lag = "a", 
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = "AutoArima", 
+                             mod_covariates = FALSE, lag = 1:2, 
+                             quiet = FALSE))
+  expect_error(model_options(tree = dirtree(), model = "AutoArima", 
+                             mod_covariates = FALSE, lag = NULL, quiet = 1))
 
-  opts <- model_options(tree = dirtree(), name = "AutoArima", 
-                        covariates = FALSE, lag = NULL, quiet = FALSE)
+  opts <- model_options(tree = dirtree(), model = "AutoArima", 
+                        mod_covariates = FALSE, lag = NULL, quiet = FALSE)
   expect_is(opts, "model_options")
 })
 

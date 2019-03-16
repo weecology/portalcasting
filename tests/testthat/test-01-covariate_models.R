@@ -13,8 +13,7 @@ test_that("covariate_models", {
               c("ndvi"),
               c(NULL))
   mods1 <- covariate_models()
-  mods2 <- covariate_models("ok")
+  expect_error(covariate_models("ok"))
   expect_equal(length(mods1), 11)
   expect_equal(mods1, ref)
-  expect_equal(mods2, NULL)
 })

@@ -1,9 +1,19 @@
 context("Test utilities functions")
 
+test_that("messageq", {
+  expect_silent(messageq("ok", TRUE))
+  expect_message(messageq("ok"))
+  expect_message(messageq(c("ok", "_ok_")))
+  expect_message(messageq(rep("ok", 2)))
+  expect_error(messageq("ok", 1))
+  expect_error(messageq("ok", rep(TRUE, 2)))
+})
+
+
 test_that("dataout", {
   df <- data.frame(x = 1:10, y = 11:20)
   dfo <- dataout(df, moons_options(save = FALSE))
-  fp <- file_path(dirtree(main = ""), "ok.csv")
+  fp <- file_paths(dirtree(main = ""), "ok.csv")
   fp1 <- gsub("ok.csv", "", fp)
   fp2 <- paste0(fp1, "data")
   dir.create(fp2)

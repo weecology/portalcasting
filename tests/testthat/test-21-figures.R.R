@@ -1,14 +1,19 @@
 context("Test figure functions")
 
 tree <- dirtree(main = "testing_casting");
+data_opts <- all_options(main = "testing_casting")$options_data
+moons <- prep_moons(data_opts$moons)
+rodents_opts <- data_opts$rodents
+rodents_opts <- enforce_rodents_options(rodents_opts, "all")
+prep_rodents(moons, rodents_opts)
+rodents_opts <- enforce_rodents_options(rodents_opts, "controls")
+prep_rodents(moons, rodents_opts)
 metadata <- read_data(tree, "metadata")
 cast_date <- as.Date(metadata$forecast_date)
 cleanup_dir(all_options(main = "testing_casting", to_cleanup = "predictions"))
-spath <- sub_paths(dirtree(main = "testing_casting", 
-                           subs = subdirs("predictions")))
+spath <- sub_paths(dirtree(main = "testing_casting", subs = "predictions"))
 create_sub_dir(spath)
-options_all3 <- all_options(main = "testing_casting", 
-                            model = models("AutoArima"))
+options_all3 <- all_options(main = "testing_casting", model = "AutoArima")
 portalcast(options_all3)
 
 test_that("plot_cast_point", {
@@ -32,7 +37,7 @@ test_that("plot_cast_point", {
   expect_error(plot_cast_point(tree, from_date = rep(cast_date, 2)))
 })
 
-test_that("plotcastpoint_yaxis", {
+test_that("plot_cast_point_yaxis", {
   species = NULL
   level = "Controls"
   cast_type = "forecasts"
@@ -45,10 +50,10 @@ test_that("plotcastpoint_yaxis", {
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, model = model,
                        newmoonnumber = newmoonnumber)  
-  expect_silent(plotcastpoint_yaxis(tree = tree, species = pred$species))
-  expect_error(plotcastpoint_yaxis(1))
-  expect_error(plotcastpoint_yaxis(tree, "ok"))
-  expect_error(plotcastpoint_yaxis(tree, 1))
+  expect_silent(plot_cast_point_yaxis(tree = tree, species = pred$species))
+  expect_error(plot_cast_point_yaxis(1))
+  expect_error(plot_cast_point_yaxis(tree, "ok"))
+  expect_error(plot_cast_point_yaxis(tree, 1))
 })
 
 test_that("plot_cast_ts", {
@@ -83,11 +88,11 @@ test_that("plot_cast_ts_xaxis", {
 })
 
 test_that("plot_cast_ts_ylab", {
-  expect_silent(ylab <- plot_cast_ts_ylab(tree, "total"))
+  expect_silent(ylab <- plot_cast_ts_ylab(tree, species = "total"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
-  expect_silent(ylab <- plot_cast_ts_ylab(tree, "BA"))
+  expect_silent(ylab <- plot_cast_ts_ylab(tree, species = "BA"))
   expect_is(ylab, "list")
   expect_equal(length(ylab), 2)
   expect_equal(names(ylab), c("text", "font"))
@@ -111,6 +116,7 @@ test_that("plot_err_lead_spp_mods", {
   expect_error(plot_err_lead_spp_mods(tree, ndates = 1.5))
   expect_error(plot_err_lead_spp_mods(tree, ndates = "ok"))
   expect_error(plot_err_lead_spp_mods(tree, ndates = 1:5))
+  expect_error(plot_err_lead_spp_mods(tree, models = 1))
 })
 
 test_that("plot_cov_RMSE_mod_spp", {
@@ -127,4 +133,5 @@ test_that("plot_cov_RMSE_mod_spp", {
   expect_error(plot_cov_RMSE_mod_spp(tree, min_observed = "ok"))
   expect_error(plot_cov_RMSE_mod_spp(tree, min_observed = 1:5))
   expect_error(plot_cov_RMSE_mod_spp(tree, cast_dates = 1))
+  expect_error(plot_cov_RMSE_mod_spp(tree, models = 1))
 })

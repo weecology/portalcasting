@@ -4,16 +4,16 @@
 \alias{remove_spp}
 \title{Remove species from the rodent data table}
 \usage{
-remove_spp(data, drop_spp = rodents_options()$drop_spp)
+remove_spp(rodents, drop_spp = rodents_options()$drop_spp)
 }
 \arguments{
-\item{data}{Class-\code{rodents} \code{data.table} of rodent data.}
+\item{rodents}{Class-\code{rodents} \code{data.table} of rodent data.}
 
 \item{drop_spp}{\code{character} vector of species name(s) (column header)
 to drop from \code{data} or \code{NULL} to not drop any species.}
 }
 \value{
-Trimmed \code{data}.
+Trimmed \code{rodents}.
 }
 \description{
 Remove species from the rodent data table

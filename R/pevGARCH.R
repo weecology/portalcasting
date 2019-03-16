@@ -13,13 +13,8 @@
 #'   abundance with an optional \code{lag} between the covariate values and 
 #'   abundances (defaults to 6 newmoons).
 #'
-#' @param abundances Class-\code{rodents} \code{data.frame} table of rodent 
-#'   abundances and time measures.
-#'
-#' @param covariates Class-\code{covaraites} \code{data.frame} table of 
-#'   historical and forecast covariate data and time measures.
-#'
-#' @param metadata Class-\code{metadata} model metadata \code{list}.
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @param level \code{character} value name of the type of plots included 
 #'   (\code{"All"} or \code{"Controls"}).
@@ -41,44 +36,18 @@
 #'
 #' @export
 #'
-pevGARCH <- function(abundances, covariates, metadata, level = "All", 
-                     lag = 6, quiet = FALSE){
-  if (!("rodents" %in% class(abundances))){
-    stop("`abundances` is not of class rodents")
-  }
-  if (!("covariates" %in% class(covariates))){
-    stop("`covariates` is not of class covariates")
-  }
-  if (!("logical" %in% class(quiet))){
-    stop("`quiet` is not of class logical")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (!any(c("All", "Controls") %in% level)){
-    stop("`level` is not valid option")
-  } 
-  if (!("metadata" %in% class(metadata))){
-    stop("`metadata` is not a metadata list")
-  } 
-  if (length(lag) > 1){
-    stop("`lag` can only be of length = 1")
-  }
-  if (!("numeric" %in% class(lag)) & !("integer" %in% class(lag))){
-    stop("`lag` is not of class numeric or integer")
-  }
-  if(lag < 0 | lag %% 1 != 0){
-    stop("`lag` is not a non-negative integer")
-  }
+pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
+  check_args()
+  abundances <- read_data(tree, tolower(level))
+  metadata <- read_metadata(tree)
+  covariates <- read_covariates(tree)
+
   fcnm <- metadata$rodent_forecast_newmoons
   nfcnm <- length(fcnm)
   CL <- metadata$confidence_level
   abundances <- interpolate_abundance(abundances)
   species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
-  covar_lag <- lag_data(covariates, lag, tail = TRUE)
+  covar_lag <- lag_covariates(covariates, lag, tail = TRUE)
   for_hist <- which(covar_lag$newmoonnumber %in% abundances$moons)
   for_fcast <- which(covar_lag$newmoonnumber %in% fcnm) 
   covar_hist <- covar_lag[for_hist, ]
@@ -87,14 +56,12 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
   fcast <- data.frame()
   aic <- data.frame()
 
-  models <- covariate_models("pevgarch")
+  models <- covariate_models("pevGARCH")
 
   for(s in species){
 
     ss <- gsub("NA.", "NA", s)
-    if (!quiet){
-      message(paste0("Fitting pevGARCH models for ", ss))
-    }
+    messageq(paste0("Fitting pevGARCH models for ", ss), quiet)
 
     abund_s <- extract2(abundances, s)
   
@@ -109,7 +76,8 @@ pevGARCH <- function(abundances, covariates, metadata, level = "All",
 
       for(m in models){
         model_name <- paste(m, collapse = ", ")
-        message(paste0("Fitting Model ", model_count, ": ", model_name))
+        msg <- paste0("Fitting Model ", model_count, ": ", model_name)
+        messageq(msg, quiet)
         predictors <- NULL
         fcast_predictors <- NULL
         if (!(is.null(unlist(m)))){

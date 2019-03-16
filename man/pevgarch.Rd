@@ -5,17 +5,11 @@
 \title{poisson environmental variable Generalized Auto-Regressive 
   Conditional Heteroscedasticity model for Portal Predictions}
 \usage{
-pevGARCH(abundances, covariates, metadata, level = "All", lag = 6,
-  quiet = FALSE)
+pevGARCH(tree = dirtree(), level = "All", lag = 6, quiet = FALSE)
 }
 \arguments{
-\item{abundances}{Class-\code{rodents} \code{data.frame} table of rodent 
-abundances and time measures.}
-
-\item{covariates}{Class-\code{covaraites} \code{data.frame} table of 
-historical and forecast covariate data and time measures.}
-
-\item{metadata}{Class-\code{metadata} model metadata \code{list}.}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
 
 \item{level}{\code{character} value name of the type of plots included 
 (\code{"All"} or \code{"Controls"}).}

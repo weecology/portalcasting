@@ -1,7 +1,56 @@
 # portalcasting (development version)
 
-# [portalcasting 0.3.1](https://github.com/weecology/portalcasting)
-*active development*
+# [portalcasting 0.4.0](https://github.com/weecology/portalcasting/pull/94)
+*2019-03-16* 
+
+### Tidied functionality for checking function arguments
+* Introduction of `check_args` and `check_arg` which collaborate to
+check the validity of function arguments using a standardized set
+of requirments based on the argument names, thereby helping to unify
+and standardize the use of the codebase's arguments.
+
+### Updated function names
+* `prep_rodents` is now  `prep_rodents_list`
+* `rodents_data` is now `prep_rodents`
+* `update_rodents` is now `update_rodents_list`
+* `read_data` has been split out into `read_all`, `read_controls`,
+`read_covariates`, `read_moons`, and `read_metadata`
+* `model_path` is now `model_paths`
+* `sub_path` and `sub_paths` have been merged into `sub_paths`, which 
+returns all if `specific_subs` is NULL
+* `lag_data` is now `lag_covariates`
+
+### Updated argument (names to leverage `check_args`, etc.)
+* In multiple functions `data` has been replaced with `rodents` to be
+specific.
+* `CI_level` is now subsumed by `confidence_level`
+* `name` is now subsumed by `model`
+* `set` is not split into `species_set` and `model_set`
+* The order of arguments in `model_names` is now back to `model_set`, 
+`add`.
+* The default `subs_type` for `subdirs` is now `"portalcasting"`.
+* The four model functions have a reduced set of inputs to leverage the 
+directory tree, and the script generation is updated to match.
+* Updating the `cast` argument to `cast_to_check` in `cast_is_valid` and 
+removing the `verbose` argument from `verify_cast` to allow `check_arg` to 
+leverage `check_arg` for `verify_cast`.
+
+### Removal of classes
+* The `models` class has been removed.
+* The `subdirs` class has been removed.
+
+### `messageq` function
+* `messageq` function is added to tidy code around messages being printed
+based on the `quiet` arguments.
+
+### Inclusion of `"wEnsemble"` as an option in `model_names`
+* Produces the `prefab` list with an `"Ensemble"` entry added, to allow for
+that simply without using the `NULL` options, which collects all model names.
+* This facilitated addition of `models` as an argument in the evaluations 
+plots.
+
+# [portalcasting 0.3.1](https://github.com/weecology/portalcasting/pull/93)
+*2019-03-12* 
 
 ### Bug fix in `plot_cast_ts()`
 * `plot_cast_ts` did not cleanly plot time series where observations had 

@@ -20,14 +20,11 @@
 #' @export
 #' 
 prep_moons <- function(options_moons = moons_options()){
-  if (!("moons_options") %in% class(options_moons)){
-    stop("`options_moons` is not a moons_options list")
-  }
-  if (!options_moons$quiet){
-    message("Loading moons data file into the data subdirectory")
-  }
+  check_args()
+  msg <- "Loading moons data file into the data subdirectory"
+  messageq(msg, options_moons$quiet)
   verify_PortalData(options_moons$tree, "moon_dates.csv")
-  file_path(options_moons$tree, "PortalData/Rodents/moon_dates.csv") %>%
+  file_paths(options_moons$tree, "PortalData/Rodents/moon_dates.csv") %>%
   read.csv(stringsAsFactors = FALSE) %>% 
   classy(c("data.frame", "moons")) %>%
   add_future_moons(options_moons) %>%
@@ -56,17 +53,12 @@ prep_moons <- function(options_moons = moons_options()){
 #' @export
 #'
 append_past_moons_to_raw <- function(moons, options_moons = moons_options()){
-  if (!("moons_options") %in% class(options_moons)){
-    stop("`options_moons` is not a moons_options list")
-  }
-  if (!("moons") %in% class(moons)){
-    stop("`moons` is not a moons data table")
-  }
+  check_args()
   if (options_moons$append_missing_to_raw){
-    path <- file_path(options_moons$tree, "PortalData/Rodents/moon_dates.csv")
+    pth <- file_paths(options_moons$tree, "PortalData/Rodents/moon_dates.csv")
     included_moons <- moons$newmoondate < today()
     newraw <- moons[included_moons, ]
-    write.csv(newraw, path, row.names = FALSE)
+    write.csv(newraw, pth, row.names = FALSE)
   }
   moons
 }
@@ -91,12 +83,7 @@ append_past_moons_to_raw <- function(moons, options_moons = moons_options()){
 #' 
 add_future_moons <- function(moons = prep_moons(), 
                              options_moons = moons_options()){
-  if (!("moons_options") %in% class(options_moons)){
-    stop("`options_moons` is not a moons_options list")
-  }
-  if (!("moons") %in% class(moons)){
-    stop("`moons` is not a moons data table")
-  }
+  check_args()
   if (options_moons$n_future_moons == 0){
     return(moons)
   }
@@ -127,15 +114,7 @@ add_future_moons <- function(moons = prep_moons(),
 #' @export
 #' 
 add_addl_future_moons <- function(future_moons, cast_date){
-  if (!("moons") %in% class(future_moons)){
-    stop("`future_moons` is not a moons data table")
-  }
-  if (!("Date" %in% class(cast_date))){
-    stop("`cast_date` is not of class Date")
-  }
-  if (length(cast_date) > 1){
-    stop("`cast_date` can only be of length = 1")
-  }
+  check_args()
   n_addl_future_moons <- length(which(future_moons$newmoondate < cast_date))
   if (n_addl_future_moons > 0){
     addl_moons <- get_future_moons(future_moons, n_addl_future_moons)
@@ -157,9 +136,7 @@ add_addl_future_moons <- function(future_moons, cast_date){
 #' @export
 #' 
 format_moons <- function(moons){
-  if (!("moons") %in% class(moons)){
-    stop("`moons` is not a moons data table")
-  }
+  check_args()
   moons$year <- year(moons$newmoondate)
   moons$month <- month(moons$newmoondate)
   moons$newmoondate <- as.Date(moons$newmoondate)

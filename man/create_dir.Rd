@@ -13,16 +13,16 @@ create_main_dir(options_dir = dir_options())
 
 create_sub_dirs(options_dir = dir_options())
 
-create_sub_dir(path = NULL, quiet = FALSE)
+create_sub_dir(sub_path = NULL, quiet = FALSE)
 }
 \arguments{
 \item{options_dir}{Class-\code{dir_options} list containing all options 
 available for controlling the set up of the directory (see 
 \code{\link{dir_options}}).}
 
-\item{path}{The normalized path of the specific subdirectory folder to be 
-created in the directory tree as a \code{character} value (see 
-\code{\link{normalizePath}}, \code{\link{sub_path}}).}
+\item{sub_path}{The normalized path of the specific subdirectory folder to 
+be created in the directory tree as a \code{character} value (see 
+\code{\link{normalizePath}}, \code{\link{sub_paths}}).}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

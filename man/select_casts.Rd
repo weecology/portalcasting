@@ -4,8 +4,8 @@
 \alias{select_casts}
 \title{Select the specific fore- or hindcast from a casts table}
 \usage{
-select_casts(casts, species = NULL, level = NULL, model = NULL,
-  newmoonnumber = NULL)
+select_casts(casts, species = NULL, level = NULL, models = NULL,
+  newmoonnumbers = NULL)
 }
 \arguments{
 \item{casts}{Class \code{casts} \code{data.frame} of requested fore- or 
@@ -18,11 +18,11 @@ and "total" are returned.}
 \item{level}{\code{character} value of the level of interest (\code{"All"} 
 or \code{"Controls"}). If \code{NULL}, all levels are returned.}
 
-\item{model}{\code{character} value(s) of the name(s) (or 
+\item{models}{\code{character} value(s) of the name(s) (or 
 \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 models are returned.}
 
-\item{newmoonnumber}{\code{integer}-conformable value(s) of the 
+\item{newmoonnumbers}{\code{integer}-conformable value(s) of the 
 newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.}
 }
 \value{

@@ -24,23 +24,17 @@
 #'
 #' @export
 #'
-prep_rodents <- function(moons = prep_moons(), 
-                         options_rodents = rodents_options()){
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("rodents_options") %in% class(options_rodents)){
-    stop("`options_rodents` is not a rodents_options list")
-  }
-  if (!options_rodents$quiet){
-    message("Loading rodents data files into data subdirectory")
-  }
+prep_rodents_list <- function(moons = prep_moons(), 
+                              options_rodents = rodents_options()){
+  check_args()
+  msg <- "Loading rodents data files into data subdirectory"
+  messageq(msg, options_rodents$quiet)
   verify_PortalData(options_rodents$tree, "Portal_rodent.csv")
 
   options_a <- enforce_rodents_options(options_rodents, "all")
-  all <- rodents_data(moons, options_a)
+  all <- prep_rodents(moons, options_a)
   options_c <- enforce_rodents_options(options_rodents, "controls")
-  ctls <- rodents_data(moons, options_c)
+  ctls <- prep_rodents(moons, options_c)
 
   classy(list("all" = all, "controls" = ctls), c("rodents_list", "list"))
 }
@@ -67,14 +61,9 @@ prep_rodents <- function(moons = prep_moons(),
 #'
 #' @export
 #'
-rodents_data <- function(moons = prep_moons(), 
+prep_rodents <- function(moons = prep_moons(), 
                          options_rodents = rodents_options()){
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
-  if (!("rodents_options") %in% class(options_rodents)){
-    stop("`options_rodents` is not a rodents_options list")
-  }
+  check_args()
   end_step <- options_rodents$end[options_rodents$hind_step]
   if (options_rodents$quiet){
     suppressMessages(
@@ -150,16 +139,8 @@ rodents_data <- function(moons = prep_moons(),
 #'
 enforce_rodents_options <- function(options_rodents = rodents_options(),
                                     tmnt_type = NULL){
-  if (!("rodents_options") %in% class(options_rodents)){
-    stop("`options_rodents` is not a rodents_options list")
-  }
-  if (!is.null(tmnt_type) & !("character") %in% class(tmnt_type)){
-    stop("`tmnt_type` is not NULL or a character")
-  }
+  check_args()
   if (!is.null(tmnt_type)){
-    if (!(tmnt_type %in% c("all", "controls"))){
-      stop("`tmnt_type` must be 'all' or 'controls'")
-    }
     if (tmnt_type == "all"){
       options_rodents$tmnt_type <- "all"
       options_rodents$level <- "Site"
@@ -186,26 +167,21 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
 #'
 #' @description Remove species from the rodent data table
 #'
-#' @param data Class-\code{rodents} \code{data.table} of rodent data.
+#' @param rodents Class-\code{rodents} \code{data.table} of rodent data.
 #'
 #' @param drop_spp \code{character} vector of species name(s) (column header)
 #'   to drop from \code{data} or \code{NULL} to not drop any species.
 #'
-#' @return Trimmed \code{data}.
+#' @return Trimmed \code{rodents}.
 #'
 #' @export
 #'
-remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
-  if (!("rodents" %in% class(data))){
-    stop("`data` is not of class rodents")
-  }
-  if (!is.null(drop_spp) & !("character") %in% class(drop_spp)){
-    stop("`drop_spp` is not NULL or a character")
-  }  
+remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
+  check_args()
   if (!is.null(drop_spp)){
-    data <- select(data, -one_of(drop_spp))
+    rodents <- select(rodents, -one_of(drop_spp))
   }
-  data
+  rodents
 }        
  
 #' @title Rodent species abbreviations
@@ -213,11 +189,11 @@ remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
 #' @description Creates a simple \code{character} vector of abbreviations for
 #'   the \href{https://portal.naturecast.org/profiles.html}{Portal Rodents}.
 #'
-#' @param set \code{character} input of a specified set of species. Default
-#'   entry (\code{"base"}) returns the standard set of all species included.
-#'   Other options include \code{"wtotal"} (same as \code{"base"} but
-#'   with "total" as well) and \code{"evalplot"} which only returns a subset
-#'   of common species to be included in the evaluations plots.
+#' @param species_set \code{character} input of a specified set of species. 
+#'   Default entry (\code{"base"}) returns the standard set of all species 
+#'   included. Other options include \code{"wtotal"} (same as \code{"base"} 
+#'   but with "total" as well) and \code{"evalplot"} which only returns a 
+#'   subset of common species to be included in the evaluations plots.
 #'
 #' @param nadot \code{logical} indicator if the dot should be added to the 
 #'   \code{"NA"} species name. Defaults to \code{FALSE}.
@@ -234,22 +210,21 @@ remove_spp <- function(data, drop_spp = rodents_options()$drop_spp){
 #'
 #' @export
 #'
-rodent_spp <- function(set = "base", nadot = FALSE){
+rodent_spp <- function(species_set = "base", nadot = FALSE){
+  check_args()
   xNAx <- "NA"
   if (nadot){
     xNAx <- "NA."
   }
-  if (is.null(set) || set == "base"){
+  if (is.null(species_set) || species_set == "base"){
     out <- c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", 
              "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
-  } else if (set == "wtotal"){
+  } else if (species_set == "wtotal"){
     out <- c("BA", "DM", "DO", "DS", xNAx, "OL", "OT", "PB", "PE", "PF", "PH", 
              "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO",
               "total")
-  } else if (set == "evalplot"){
+  } else if (species_set == "evalplot"){
     out <- c("BA", "DM", "DO", "PP", "OT", "NA", "total")
-  } else{
-    stop("`set` not recognized")
   }
   out
 }
@@ -258,7 +233,7 @@ rodent_spp <- function(set = "base", nadot = FALSE){
 #'
 #' @description Check column names to verify if they are species names.
 #'
-#' @param x data table of interest
+#' @param rodents Class-\code{rodents} \code{data.table} of rodent data.
 #'
 #' @param spp_names \code{character} vector of species name abbreviations.
 #'
@@ -266,14 +241,9 @@ rodent_spp <- function(set = "base", nadot = FALSE){
 #'
 #' @export
 #'
-is.spcol <- function(x, spp_names = rodent_spp()){
-  if (!("data.frame" %in% class(x))){
-    stop("`x` is not of class data.frame")
-  }
-  if (!("character" %in% class(spp_names))){
-    stop("`spp_names` is not of class character")
-  }
-  colnames(x) %in% spp_names
+is.spcol <- function(rodents, spp_names = rodent_spp()){
+  check_args()
+  colnames(rodents) %in% spp_names
 }
 
 #' @title Remove the treatment column from the rodent data table
@@ -282,7 +252,7 @@ is.spcol <- function(x, spp_names = rodent_spp()){
 #'   needed (in the case of controls, for example, where the data have been
 #'   reduced already so the column is vestigial).
 #'
-#' @param data Class-\code{rodents} \code{data.table} of rodent data.
+#' @param rodents Class-\code{rodents} \code{data.table} of rodent data.
 #'
 #' @param options_rodents Class-\code{rodents_options} \code{list} of 
 #'   settings controlling the rodents data creation. See 
@@ -292,19 +262,14 @@ is.spcol <- function(x, spp_names = rodent_spp()){
 #'
 #' @export
 #'
-trim_treatment <- function(data, options_rodents = rodents_options()){
-  if (!("rodents" %in% class(data))){
-    stop("`data` is not of class rodents")
-  }
-  if (!("rodents_options") %in% class(options_rodents)){
-    stop("`options_rodents` is not a rodents_options list")
-  }
+trim_treatment <- function(rodents, options_rodents = rodents_options()){
+  check_args()
   if (options_rodents$level == "Treatment"){
-    data <-  data %>%
-             filter(treatment == options_rodents$treatment) %>%
-             select(-treatment)
+    rodents <-  rodents %>%
+                filter(treatment == options_rodents$treatment) %>%
+                select(-treatment)
   }
-  classy(data, c("data.frame", "rodents"))
+  classy(rodents, c("data.frame", "rodents"))
 }
 
 #' @title Transfer the trapping table to the data folder
@@ -319,16 +284,13 @@ trim_treatment <- function(data, options_rodents = rodents_options()){
 #' @export
 #'
 transfer_trapping_table <- function(options_data = data_options()){
-  if (!("data_options" %in% class(options_data))){
-    stop("`options_data` is not a data_options list")
-  }
+  check_args()
   tree <- options_data$tree
-  from <- file_path(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
-  to <- file_path(tree, "data/trapping.csv")
+  from <- file_paths(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
+  to <- file_paths(tree, "data/trapping.csv")
   if (file.exists(from)){
-    if (!options_data$quiet){
-      message("Loading rodent trapping table into data subdirectory")
-    }
+    msg <- "Loading rodent trapping table into data subdirectory"
+    messageq(msg, options_data$quiet)
     ttable <- read.csv(from, stringsAsFactors = FALSE)
     write.csv(ttable, to, row.names = FALSE)
   }

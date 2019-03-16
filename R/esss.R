@@ -8,10 +8,8 @@
 #'  \href{http://pkg.robjhyndman.com/forecast/}{\code{forecast} package}
 #'  (Hyndman \emph{et al}. 2018).
 #'
-#' @param abundances Class-\code{rodents} \code{data.frame} table of rodent 
-#'   abundances and time measures.
-#'
-#' @param metadata Class-\code{metadata} model metadata \code{list}.
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
 #'
 #' @param level \code{character} value name of the type of plots included 
 #'   (\code{"All"} or \code{"Controls"}).
@@ -30,25 +28,10 @@
 #'
 #' @export
 #'
-ESSS <- function(abundances, metadata, level = "All", quiet = FALSE){
-  if (!("rodents" %in% class(abundances))){
-    stop("`abundances` is not of class rodents")
-  }
-  if (!("logical" %in% class(quiet))){
-    stop("`quiet` is not of class logical")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (!any(c("All", "Controls") %in% level)){
-    stop("`level` is not valid option")
-  } 
-  if (!("metadata" %in% class(metadata))){
-    stop("`metadata` is not a metadata list")
-  } 
+ESSS <- function(tree = dirtree(), level = "All", quiet = FALSE){
+  check_args()
+  abundances <- read_data(tree, tolower(level))
+  metadata <- read_metadata(tree)
 
   nfcnm <- length(metadata$rodent_forecast_newmoons)
   CL <- metadata$confidence_level
@@ -60,9 +43,7 @@ ESSS <- function(abundances, metadata, level = "All", quiet = FALSE){
   for (s in species){
 
     ss <- gsub("NA.", "NA", s)
-    if (!quiet){
-      message(paste0("Fitting ESSS model for ", ss))
-    }
+    messageq(paste0("Fitting ESSS model for ", ss), quiet)
 
     abund_s <- extract2(abundances, s)
   

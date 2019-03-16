@@ -5,8 +5,9 @@
 \title{Plot RMSE and coverage as a function of model for each species}
 \usage{
 plot_cov_RMSE_mod_spp(tree = dirtree(), cast_type = "hindcasts",
-  species = rodent_spp(set = "evalplot"), level = "Controls",
-  cast_dates = NULL, min_observed = 1)
+  species = rodent_spp(species_set = "evalplot"), level = "Controls",
+  cast_dates = NULL, min_observed = 1,
+  models = model_names("wEnsemble"))
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
@@ -22,8 +23,8 @@ reliably coded for \code{"hindcasts"}.}
 \code{rodent_spp(set = "evalplot")}, the only setting for which the
 plot is reliably coded/}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}).}
+\item{level}{\code{character} value of the treatment type of interest 
+(\code{"All"} or \code{"Controls"}).}
 
 \item{cast_dates}{\code{Date}s the predictions were made. Used to select 
 the files in the predictions subdirectory. Can be length 1 or more and if 
@@ -33,6 +34,10 @@ the files in the predictions subdirectory. Can be length 1 or more and if
 values needed for a -cast to be retained in the output table. Default is
 \code{1}, which returns all -casts with any observations. To include all
 -casts (even those without any evaluations), set to \code{0}.}
+
+\item{models}{\code{character} value(s) of the name(s) (or 
+\code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+models are returned.}
 }
 \description{
 Plot the RMSE and coverage by species matrix of cast error 

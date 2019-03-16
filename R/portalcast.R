@@ -21,9 +21,7 @@
 #' @export
 #'
 portalcast <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`all_options` not of class `options_all`")
-  }
+  check_args()
   clear_tmp(options_all$options_dir$tree)
   verify_models(options_all$options_cast)
   prep_data(options_all$options_data)
@@ -41,13 +39,9 @@ portalcast <- function(options_all = all_options()){
 #' @export
 #'
 verify_models <- function(options_cast = cast_options()){
-  if (!("cast_options" %in% class(options_cast))){
-    stop("`cast_options` not of class `options_cast`")
-  }
-  if (!options_cast$quiet){
-    cat("Checking model availability", "\n")
-  }
-  model_dir <- sub_path(options_cast$tree, "models")
+  check_args()
+  messageq("Checking model availability", options_cast$quiet)
+  model_dir <- sub_paths(options_cast$tree, "models")
   if (!dir.exists(model_dir)){
     stop("Models subidrectory does not exist")
   }
@@ -75,20 +69,14 @@ verify_models <- function(options_cast = cast_options()){
 #' @export
 #'
 cast_models <- function(options_cast = cast_options()){
-  if (!("cast_options" %in% class(options_cast))){
-    stop("`cast_options` not of class `options_cast`")
+  check_args()
+  msg1 <- "##########################################################"
+  msg2 <- "Running models"
+  if (options_cast$cast_type == "hindcasts"){ 
+    end_step <- options_cast$end[options_cast$hind_step]
+    msg2 <- paste0(msg2, " for initial newmoon ", end_step)  
   }
-  if (!options_cast$quiet){
-    if (options_cast$cast_type == "forecasts"){
-      message("##########################################################")
-      message("Running models")
-    }
-    if (options_cast$cast_type == "hindcasts"){ 
-      end_step <- options_cast$end[options_cast$hind_step]
-      message("##########################################################")
-      message(paste0("Running models for initial newmoon ", end_step))
-    }
-  }
+  messageq(c(msg1, msg2), options_cast$quiet)
   sapply(models_to_cast(options_cast), source)
 }
 
@@ -108,10 +96,8 @@ cast_models <- function(options_cast = cast_options()){
 #' @export
 #'
 models_to_cast <- function(options_cast = cast_options()){
-  if (!("cast_options" %in% class(options_cast))){
-    stop("`cast_options` not of class `options_cast`")
-  }
-  model_dir <- sub_path(options_cast$tree, "models")
+  check_args()
+  model_dir <- sub_paths(options_cast$tree, "models")
   if (options_cast$model[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
   } else{
@@ -132,11 +118,8 @@ models_to_cast <- function(options_cast = cast_options()){
 #' @export
 #'
 create_tmp <- function(tree = dirtree()){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  subs <- subdirs("tmp")
-  opts <- dir_options(base = tree$base, main = tree$main, subs = subs)
+  check_args()
+  opts <- dir_options(base = tree$base, main = tree$main, subs = "tmp")
   create_sub_dirs(opts)
 }
 
@@ -151,15 +134,13 @@ create_tmp <- function(tree = dirtree()){
 #' @export
 #'
 clear_tmp <- function(tree = dirtree()){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  temp_dir <- sub_path(tree, "tmp")
+  check_args()
+  temp_dir <- sub_paths(tree, "tmp")
   if (!dir.exists(temp_dir)){
     create_tmp(tree)
   }
   if (length(list.files(temp_dir)) > 0){
-    file.remove(file_path(tree, paste0("tmp/", list.files(temp_dir))))
+    file.remove(file_paths(tree, paste0("tmp/", list.files(temp_dir))))
   }
 }
 
@@ -176,13 +157,9 @@ clear_tmp <- function(tree = dirtree()){
 #' @export
 #'
 prep_data <- function(options_data = data_options()){
-  if (!("data_options" %in% class(options_data))){
-    stop("`options_data` not of class `data_options`")
-  }
-  if (!options_data$quiet){
-    cat("Preparing data", "\n")
-  }
-  metadata_path <- file_path(options_data$tree, "data/metadata.yaml")
+  check_args()
+  messageq("Preparing data", options_data$quiet)
+  metadata_path <- file_paths(options_data$tree, "data/metadata.yaml")
   if (!file.exists(metadata_path)){
     fill_data(options_data)
   }
@@ -208,16 +185,12 @@ prep_data <- function(options_data = data_options()){
 #' @export
 #'
 casts <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`all_options` not of class `options_all`")
-  }
+  check_args()
   cast(options_all$options_cast)
   step_casts(options_all)
-  if (!options_all$options_cast$quiet){
-    cat("##########################################################", "\n")
-    cat("Models done", "\n")
-    cat("##########################################################", "\n")
-  }
+  msg1 <- "##########################################################"
+  msg2 <- "Models done"
+  messageq(c(msg1, msg2, msg1), options_all$options_cast$quiet)
 }
 
 #' @rdname casts
@@ -230,18 +203,15 @@ casts <- function(options_all = all_options()){
 #' @export
 #'
 cast <- function(options_cast = cast_options()){
-  if (!("cast_options" %in% class(options_cast))){
-    stop("`cast_options` not of class `options_cast`")
-  }
+  check_args()
   if (check_to_skip(options_cast)){
     return()
   }
   cast_models(options_cast)
   combined <- combine_forecasts(options_cast)
   ensemble <- add_ensemble(options_cast)
-  if (!options_cast$quiet){
-    message("##########################################################")
-  }
+  msg <- "##########################################################"
+  messageq(msg, options_cast$quiet)
   clear_tmp(options_cast$tree)
 }
 
@@ -253,9 +223,7 @@ cast <- function(options_cast = cast_options()){
 #' @export
 #'
 step_casts <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`all_options` not of class `options_all`")
-  }
+  check_args()
   n_steps <- length(options_all$options_data$covariates$end)
   if (n_steps > 1){
     for (i in 2:n_steps){
@@ -279,9 +247,7 @@ step_casts <- function(options_all = all_options()){
 #' @export
 #'
 step_hind_forward <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`all_options` not of class `options_all`")
-  }
+  check_args()
   new_step <- options_all$options_data$covariates$hind_step + 1
   options_all$options_data$rodents$hind_step <- new_step
   options_all$options_data$covariates$hind_step <- new_step
@@ -301,15 +267,13 @@ step_hind_forward <- function(options_all = all_options()){
 #' @export
 #'
 check_to_skip <- function(options_cast){
-  if (!("cast_options" %in% class(options_cast))){
-    stop("`cast_options` not of class `options_cast`")
-  }
+  check_args()
   out <- FALSE
   if (options_cast$cast_type == "hindcasts"){ 
     end_step <- options_cast$end[options_cast$hind_step]
-    trap_path <- file_path(options_cast$tree, "data/trapping.csv")
+    trap_path <- file_paths(options_cast$tree, "data/trapping.csv")
     trap_tab <- read.csv(trap_path, stringsAsFactors = FALSE)
-    moon_path <- file_path(options_cast$tree, "data/moons.csv")
+    moon_path <- file_paths(options_cast$tree, "data/moons.csv")
     moons <- read.csv(moon_path, stringsAsFactors = FALSE)
     min_plots <- options_cast$min_plots
     min_traps <- options_cast$min_traps
@@ -322,11 +286,10 @@ check_to_skip <- function(options_cast){
     }
   }
   if (out){
-    if (!options_cast$quiet){
-      end_step <- options_cast$end[options_cast$hind_step]
-      message(paste0("Initial newmoon ", end_step, " not fully sampled"))
-      message("##########################################################")
-    }
+    end_step <- options_cast$end[options_cast$hind_step]
+    msg1 <- paste0("Initial newmoon ", end_step, " not fully sampled")
+    msg2 <- "##########################################################"
+    messageq(c(msg1, msg2) , options_cast$quiet)
   }
   out
 }
@@ -344,18 +307,15 @@ check_to_skip <- function(options_cast){
 #' @export
 #'
 update_data <- function(options_data){
-  if (!("data_options" %in% class(options_data))){
-    stop("`options_data` not of class `data_options`")
-  }
-  if (!options_data$moons$quiet){
-    message("Updating forecasting data files in data subdirectory")
-  }
+  check_args()
+  msg <- "Updating forecasting data files in data subdirectory"
+  messageq(msg, options_data$moons$quiet)
   options_data$moons$quiet <- TRUE
   options_data$metadata$quiet <- TRUE
   moons <- prep_moons(options_data$moons)
-  rodents <- update_rodents(options_data$rodents)
+  rodents_list <- update_rodents_list(options_data$rodents)
   covariates <- update_covariates(moons, options_data$covariates)
-  meta <- prep_metadata(moons, rodents, covariates, options_data$metadata)
+  met <- prep_metadata(moons, rodents_list, covariates, options_data$metadata)
 }
 
 #' @title Update the covariate data for a step in a hindcast
@@ -376,14 +336,9 @@ update_data <- function(options_data){
 #' @export
 #'
 update_covariates <- function(moons, options_covariates){
-  if (!("covariates_options") %in% class(options_covariates)){
-    stop("`options_covariates` is not a covariates_options list")
-  }
-  if (!("moons" %in% class(moons))){
-    stop("`moons` is not of class moons")
-  }
+  check_args()
   end_step <- options_covariates$end[options_covariates$hind_step]
-  covs_path <- file_path(options_covariates$tree, "data/covariates.csv")
+  covs_path <- file_paths(options_covariates$tree, "data/covariates.csv")
   covs <- read.csv(covs_path, stringsAsFactors = FALSE) 
   covs <- classy(covs, c("data.frame", "covariates"))
   hist_cov <- covs[covs$newmoonnumber <= end_step, ]
@@ -407,18 +362,16 @@ update_covariates <- function(moons, options_covariates){
 #'
 #' @export
 #'
-update_rodents <- function(options_rodents){
-  if (!("rodents_options") %in% class(options_rodents)){
-    stop("`options_rodents` is not a rodents_options list")
-  }
+update_rodents_list <- function(options_rodents){
+  check_args()
   end_step <- options_rodents$end[options_rodents$hind_step]
-  all_path <- file_path(options_rodents$tree, "data/all.csv")
+  all_path <- file_paths(options_rodents$tree, "data/all.csv")
   all <- read.csv(all_path, stringsAsFactors = FALSE)
   all <- all[all$newmoonnumber <= end_step, ]
   write.csv(all, all_path, row.names = FALSE)
   all <- classy(all, c("data.frame", "rodents"))
 
-  ctls_path <- file_path(options_rodents$tree, "data/controls.csv")
+  ctls_path <- file_paths(options_rodents$tree, "data/controls.csv")
   ctls <- read.csv(ctls_path, stringsAsFactors = FALSE)
   ctls <- ctls[ctls$newmoonnumber <= end_step, ]
   write.csv(ctls, ctls_path, row.names = FALSE)

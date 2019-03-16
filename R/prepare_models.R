@@ -4,38 +4,28 @@
 #'   names to be included. Currently only support for \code{set = "prefab"}.
 #'
 #' @param add \code{character} vector of name(s) of model(s) to add to the 
-#'   setup by \code{set}.
+#'   setup by \code{model_set}.
 #'
-#' @param set \code{characher} value of the type of model (currently only 
-#'   support for \code{"prefab"}). Use \code{NULL} to build a custom set
-#'   from scratch via \code{add}.
+#' @param model_set \code{characher} value of the type of model (currently 
+#'   only support for \code{"prefab"} and \code{"wEnsemble"}). Use \code{NULL}
+#'   to build a custom set from scratch via \code{add}.
 #'
-#' @return \code{models}-class \code{character} vector of model names.
+#' @return \code{character} vector of model names.
 #'
 #' @export
 #'
-models <- function(add = NULL, set = NULL){
-  if (!is.null(set) & !is.character(set)){
-    stop("`set` is not NULL or a character")
-  }
-  if (length(set) > 1){
-    stop("`set` can only be of length = 1")
-  } 
+model_names <- function(model_set = "prefab", add = NULL){
+  check_args()
   out <- NULL
-  if (!is.null(set)){
-    if (set == "prefab"){
+  if (!is.null(model_set)){
+    if(model_set == "prefab"){
       out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
-    } else{
-      stop("`models` not defined for that `set`")
     }
-  }
-  if (!is.null(add)){
-    if (!is.character(add)){
-      stop("`add` is not a character")
+    if(model_set == "wEnsemble"){
+      out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH", "Ensemble")
     }
-    out <- c(out, add)
-  }
-  classy(out, c("character", "models"))
+  } 
+  unique(c(out, add))
 }
 
 #' @title Write the template for a model into model subdirectory
@@ -50,17 +40,14 @@ models <- function(add = NULL, set = NULL){
 #' @export
 #'
 write_model <- function(options_model = model_options()){
-  if (!("model_options" %in% class(options_model))){
-    stop("`options_model` is not a model_options list")
-  }
-  model <- options_model$name
+  check_args()
+  model <- options_model$model
   if (is.null(model)){
     return()
   }
-  if (!options_model$quiet){
-    cat("", paste0("adding ", model, " model to models subdirectory \n"))
-  }
-  mod_path <- model_path(options_model$tree, model = options_model$name)
+  msg <- paste0(" adding ", model, " model to models subdirectory")
+  messageq(msg, options_model$quiet)
+  mod_path <- model_paths(options_model$tree, models = options_model$model)
   mod_template <- model_template(options_model)
   write(mod_template, mod_path)
 }
@@ -77,48 +64,37 @@ write_model <- function(options_model = model_options()){
 #' @export
 #'
 model_template <- function(options_model = model_options()){
-  if (!("model_options" %in% class(options_model))){
-    stop("`options_model` is not a model_options list")
-  }
+  check_args()
   tree <- options_model$tree
-  if (any(!(tree$subs %in% subdirs(type = "portalcasting")))){
-    addl <- which(!(tree$subs %in% subdirs(type = "portalcasting")))
+  if (any(!(tree$subs %in% subdirs()))){
+    addl <- which(!(tree$subs %in% subdirs()))
     subnames <- paste(tree$subs[addl], collapse = '", "')
-    subs <- paste0('subdirs(subs = c("', subnames, 
-                   '"), type = "portalcasting")')
+    subs <- paste0('subdirs(subs_names = c("', subnames, '")')
   } else{
-    subs <- 'subdirs(type = "portalcasting")'
+    subs <- 'subdirs()'
   }
-  name <- options_model$name
+  name <- options_model$model
   quiet_arg <- paste0("quiet = ", options_model$quiet)
 
-  if (options_model$covariates){
+  if (options_model$mod_covariates){
     lag_arg <- paste0(', lag = ', options_model$lag, ', ')
-    args_a <- paste0('all, covariates, metadata', lag_arg, quiet_arg)
-    c_arg <- paste0('controls, covariates, metadata, level = "Controls"')
+    args_a <- paste0('tree, level = "All"', lag_arg, quiet_arg)
+    c_arg <- paste0('tree, level = "Controls"')
     args_c <- paste0(c_arg, lag_arg, quiet_arg)
-    path_cov <- 'file_path(tree, "data/covariates.csv")'
+    path_cov <- 'file_paths(tree, "data/covariates.csv")'
     cov_text <- paste0('\ncovariates <- read_data(tree, "covariates"); \n')
   } else{
-    args_a <- paste0("all, metadata, ", quiet_arg)
-    args_c <- paste0('controls, metadata, level = "Controls", ', quiet_arg)
+    args_a <- paste0('tree, level = "All", ', quiet_arg)
+    args_c <- paste0('tree, level = "Controls", ', quiet_arg)
     cov_text <- "\n"
   }
 
-  path_a <- 'file_path(tree, "data/all.csv")'
-  path_c <- 'file_path(tree, "data/controls.csv")'
-  path_m <- 'file_path(tree, "data/metadata.yaml")'
-
   paste0(
 'tree <- dirtree("', tree$base, '", "', tree$main, '", ', subs, ');
-all <- read_data(tree, "all");
-controls <-read_data(tree, "controls");',
-cov_text, 
-'metadata <- read_data(tree, "metadata");
 f_a <- ', name ,'(', args_a, ');
 f_c <- ', name ,'(', args_c, ');
 save_forecast_output(f_a, f_c, "', 
-options_model$name, '", metadata, sub_path(tree, "tmp"))'
+options_model$name, '", tree)'
 )
 
 }

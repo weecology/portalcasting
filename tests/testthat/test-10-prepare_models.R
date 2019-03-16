@@ -1,25 +1,22 @@
 context("Test prepare_models functions")
 
-test_that("models", {
-  expect_is(models(set = "prefab"), "character")
-  expect_is(models(set = "prefab"), "models")
-  expect_error(models(set = 1), "`set` is not")
-  expect_error(models(add = 1), "`add` is not")
-  expect_error(models(set = c("prefab", "prefab")), "`set` can only be")
-  expect_error(models(set = "ok"), "not defined for that `set`")
+test_that("model_names", {
+  expect_is(model_names(model_set = "prefab"), "character")
+  expect_is(model_names(model_set = "wEnsemble"), "character")
+  expect_error(model_names(model_set = 1))
+  expect_error(model_names(add = 1))
+  expect_error(model_names(model_set = c("prefab", "prefab")))
+  expect_error(model_names(model_set = "ok"))
 })
 
 test_that("write_model", {
-  expect_error(write_model(1), "`options_model` is not")
-  expect_output(
+  expect_error(write_model(1))
+  expect_message(
     write_model(AutoArima_options(dirtree(main = "testing_casting"))))
-  expect_silent(
-    write_model(
-      model_options(dirtree(main = "testing_casting"), name = NULL)))
 })
 
 test_that("model_template", {
-  expect_error(model_template(1), "`options_model` is not")
+  expect_error(model_template(1))
 
   temp1 <- model_template(
               AutoArima_options(dirtree(main = "testing_casting")))
@@ -31,7 +28,7 @@ test_that("model_template", {
   expect_equal(length(temp2), 1)
 
   temp3 <- model_template(AutoArima_options(dirtree(main = "testing_casting",
-                                             subs = subdirs(subs = "test"))))
+                                        subs = "test")))
   expect_is(temp3, "character")
   expect_equal(length(temp3), 1)
 })

@@ -5,12 +5,15 @@
 \alias{cast_is_valid}
 \title{Verify that a read-in cast file is formatted appropriately}
 \usage{
-verify_cast(cast, verbose = FALSE)
+verify_cast(cast)
 
-cast_is_valid(cast, verbose = FALSE)
+cast_is_valid(cast_to_check, verbose = FALSE)
 }
 \arguments{
 \item{cast}{\code{data.frame} -cast file read in.}
+
+\item{cast_to_check}{\code{data.frame} -cast file being checked within 
+\code{cast_is_valid} using \code{\link{check_arg}}.}
 
 \item{verbose}{\code{logical} indicator if details of failure should
 be printed}

@@ -18,9 +18,7 @@
 #' @export
 #'
 setup_dir <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`options_all` is not an all_options list")
-  }
+  check_args()
   create_dir(options_all$options_dir)
   fill_dir(options_all)
 }
@@ -46,9 +44,7 @@ setup_dir <- function(options_all = all_options()){
 #' @export
 #'
 create_dir <- function(options_dir = dir_options()){
-  if (!("dir_options" %in% class(options_dir))){
-    stop("`options_dir` is not a dir_options list")
-  }
+  check_args()
   create_main_dir(options_dir)
   create_sub_dirs(options_dir)
 }
@@ -61,14 +57,11 @@ create_dir <- function(options_dir = dir_options()){
 #' @export
 #'
 create_main_dir <- function(options_dir = dir_options()){
-  if (!("dir_options" %in% class(options_dir))){
-    stop("`options_dir` is not a dir_options list")
-  }
+  check_args()
   main <- main_path(tree = options_dir$tree)
   if (!dir.exists(main)){
-    if (!options_dir$quiet){
-      message(paste0("Creating main directory at ", main))
-    }
+    msg <- paste0("Creating main directory at ", main)
+    messageq(msg, options_dir$quiet)
     dir.create(main)
   }
 }
@@ -81,11 +74,14 @@ create_main_dir <- function(options_dir = dir_options()){
 #' @export
 #'
 create_sub_dirs <- function(options_dir = dir_options()){
-  if (!("dir_options" %in% class(options_dir))){
-    stop("`options_dir` is not a dir_options list")
-  }
+  check_args()
   subs <- sub_paths(tree = options_dir$tree)
-  sub_dirs <- sapply(subs, create_sub_dir, quiet = options_dir$quiet)
+  nsubs <- length(subs)
+  if (nsubs > 0){
+    for(i in 1:nsubs){
+      create_sub_dir(sub_path = subs[i], quiet = options_dir$quiet)
+    }
+  }
 }
 
 #' @rdname create_dir
@@ -93,27 +89,24 @@ create_sub_dirs <- function(options_dir = dir_options()){
 #' @description \code{create_sub_dir}: Create a specific subdirectory 
 #'   folder if it does not already exist.
 #'
-#' @param path The normalized path of the specific subdirectory folder to be 
-#'   created in the directory tree as a \code{character} value (see 
-#'   \code{\link{normalizePath}}, \code{\link{sub_path}}).
+#' @param sub_path The normalized path of the specific subdirectory folder to 
+#'   be created in the directory tree as a \code{character} value (see 
+#'   \code{\link{normalizePath}}, \code{\link{sub_paths}}).
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'   quieted.
 #'
 #' @export
 #'
-create_sub_dir <- function(path = NULL, quiet = FALSE){
-  if (!is.null(path) & !("character" %in% class(path))){
-    stop("`path` is not NULL or a character")
-  }
-  if (is.null(path)){
+create_sub_dir <- function(sub_path = NULL, quiet = FALSE){
+  check_args()
+  if (is.null(sub_path)){
     return()
   }
-  if (!dir.exists(path)){
-    if (!quiet){
-      message(paste0("Creating ", basename(path), " subdirectory"))
-    }
-    dir.create(path)
+  if (!dir.exists(sub_path)){
+    msg <- paste0("Creating ", basename(sub_path), " subdirectory")
+    messageq(msg, quiet)
+    dir.create(sub_path)
   }
 }
 
@@ -141,9 +134,7 @@ create_sub_dir <- function(path = NULL, quiet = FALSE){
 #' @export
 #'
 fill_dir <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`options_all` is not an all_options list")
-  }
+  check_args()
   fill_PortalData(options_all$options_PortalData)
   fill_data(options_all$options_data)
   fill_predictions(options_all$options_predictions)
@@ -163,12 +154,9 @@ fill_dir <- function(options_all = all_options()){
 #' @export
 #'
 fill_PortalData <- function(options_PortalData = PortalData_options()){
-  if (!("PortalData_options" %in% class(options_PortalData))){
-    stop("`options_PortalData` is not a PortalData_options list")
-  }
-  if (!options_PortalData$quiet){
-    message("Downloading raw data into PortalData subdirectory")
-  }
+  check_args()
+  msg <- "Downloading raw data into PortalData subdirectory"
+  messageq(msg, options_PortalData$quiet)
   base_folder <- main_path(options_PortalData$tree)
   version <- options_PortalData$version
   from_zenodo <- options_PortalData$from_zenodo
@@ -194,18 +182,15 @@ fill_PortalData <- function(options_PortalData = PortalData_options()){
 #' @export
 #'
 fill_data <- function(options_data = data_options()){
-  if (!("data_options" %in% class(options_data))){
-    stop("`options_data` is not a data_options list")
-  }
-  if (!options_data$moons$quiet){
-    message("Loading forecasting data files into data subdirectory")
-  }
+  check_args()
+  msg <- "Loading forecasting data files into data subdirectory"
+  messageq(msg, options_data$moons$quiet)
   transfer_hist_covariate_forecasts(options_data)
   transfer_trapping_table(options_data)
   moons <- prep_moons(options_data$moons)
-  rodents <- prep_rodents(moons, options_data$rodents)
+  rodents_list <- prep_rodents_list(moons, options_data$rodents)
   covariates <- prep_covariates(moons, options_data$covariates)
-  meta <- prep_metadata(moons, rodents, covariates, options_data$metadata)
+  met <- prep_metadata(moons, rodents_list, covariates, options_data$metadata)
 }
 
 #' @rdname fill_dir
@@ -221,13 +206,10 @@ fill_data <- function(options_data = data_options()){
 #' @export
 #'
 fill_predictions <- function(options_predictions = predictions_options()){
-  if (!("predictions_options" %in% class(options_predictions))){
-    stop("`options_predictions` is not a predictions_options list")
-  }
+  check_args()
   if (options_predictions$download_existing_predictions){
-    if (!options_predictions$quiet){
-      message("Downloading predictions into predictions subdirectory")
-    }
+    msg <- "Downloading predictions into predictions subdirectory"
+    messageq(msg, options_predictions$quiet)
     download_predictions(tree = options_predictions$tree)
   }
 }
@@ -245,12 +227,9 @@ fill_predictions <- function(options_predictions = predictions_options()){
 #' @export
 #'
 fill_models <- function(options_models = models_options()){
-  if (!("models_options" %in% class(options_models))){
-    stop("`options_models` is not a models_options list")
-  }
-  if (!options_models$quiet){
-    message("Adding prefab models to models subdirectory:")
-  }
+  check_args()
+  msg <- "Adding prefab models to models subdirectory:"
+  messageq(msg, options_models$quiet)
   nmods <- length(options_models$model)
   for (i in 1:nmods){
     modname <- options_models$model[i]
@@ -288,13 +267,8 @@ fill_models <- function(options_models = models_options()){
 #' 
 verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
                               quiet = FALSE){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.character(filename)){
-    stop("`filename` is not a character")
-  }
-  path <- file_path(tree = tree, paste0("PortalData/Rodents/", filename)) 
+  check_args()
+  path <- file_paths(tree = tree, paste0("PortalData/Rodents/", filename)) 
   if (!all(file.exists(path))){
     options_dir <- dir_options()
     options_dir$tree <- tree
@@ -327,20 +301,20 @@ verify_PortalData <- function(tree = dirtree(), filename = "moon_dates.csv",
 #' @export
 #' 
 cleanup_dir <- function(options_all = all_options()){
-  if (!("all_options" %in% class(options_all))){
-    stop("`options_all` is not an all_options list")
-  }
+  check_args()
   options_dir <- options_all$options_dir
-  subs <- sub_path(options_dir$tree, options_dir$to_cleanup)
-  if (!options_dir$quiet){
-    subnames <- options_dir$to_cleanup
-    if (length(subnames) > 0){
-      subnames2 <- paste(subnames, collapse = " ")
-      msg <- paste("removing", subnames2, "subdirectories", sep = " ")
-    } else {
-      msg <- "no subdirectories requested to be removed"
-    }
-    message(msg)
+  if (is.null(options_dir$to_cleanup)){
+    subs <- NULL
+  } else{
+    subs <- sub_paths(options_dir$tree, options_dir$to_cleanup)
   }
+  subnames <- options_dir$to_cleanup
+  if (length(subnames) > 0){
+    subnames2 <- paste(subnames, collapse = " ")
+    msg <- paste("removing", subnames2, "subdirectories", sep = " ")
+  } else {
+    msg <- "no subdirectories requested to be removed"
+  }
+  messageq(msg, options_dir$quiet)
   cleaned <- sapply(subs, unlink, recursive = TRUE, force = TRUE)
 }

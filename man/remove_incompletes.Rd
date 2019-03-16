@@ -4,12 +4,12 @@
 \alias{remove_incompletes}
 \title{Remove any specific incomplete entries as noted by an NA}
 \usage{
-remove_incompletes(df, col_to_check)
+remove_incompletes(df, colname)
 }
 \arguments{
 \item{df}{\code{data.frame} table to be written out.}
 
-\item{col_to_check}{A single \code{character} value of the column to use
+\item{colname}{A single \code{character} value of the column to use
 to remove incomplete entries.}
 }
 \value{

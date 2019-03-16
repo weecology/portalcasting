@@ -12,8 +12,8 @@
 #'   \code{rodent_spp(set = "evalplot")}, the only setting for which the
 #'   plot is reliably coded/ 
 #'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'   or \code{"Controls"}).
+#' @param level \code{character} value of the treatment type of interest 
+#'   (\code{"All"} or \code{"Controls"}).
 #'
 #' @param cast_type \code{character} value of the type of -cast of model. Used
 #'   to select the file in the predictions subdirectory. Currently only 
@@ -27,6 +27,10 @@
 #'   values needed for a -cast to be retained in the output table. Default is
 #'   \code{1}, which returns all -casts with any observations. To include all
 #'   -casts (even those without any evaluations), set to \code{0}. 
+#'
+#' @param models \code{character} value(s) of the name(s) (or 
+#'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+#'   models are returned.
 #' 
 #' @examples
 #' \dontrun{
@@ -38,46 +42,13 @@
 #' @export
 #'
 plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts", 
-                                  species = rodent_spp(set = "evalplot"),
-                                  level = "Controls", cast_dates = NULL, 
-                                  min_observed = 1){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.null(species)){
-    if (!("character" %in% class(species))){
-      stop("`species` is not a character")
-    }
-    if (!all(species %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    }   
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (level != "All" & level != "Controls"){
-    stop("`level` must be 'All' or 'Controls'")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.null(cast_dates)){
-    cast_dates2 <- tryCatch(as.Date(cast_dates), error = function(x){NA})
-    if (is.na(cast_dates2)){
-      stop("`cast_dates` is not of class Date or conformable to class Date")
-    }
-  }
+                               species = rodent_spp(species_set = "evalplot"),
+                               level = "Controls", cast_dates = NULL, 
+                               min_observed = 1, 
+                               models = model_names("wEnsemble")){
+  check_args()
   if (is.null(cast_dates)){
-    pfolderpath <- sub_path(tree = tree, "predictions")
+    pfolderpath <- sub_paths(tree = tree, "predictions")
     pfiles <- list.files(pfolderpath)
     of_interest1 <- grepl(cast_type, pfiles)
     of_interest2 <- grepl("aic", pfiles)
@@ -85,24 +56,14 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
     cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
     cast_dates <- as.Date(cast_dates)
   }
-  if (!is.numeric(min_observed)){
-    stop("`min_observed` is not numeric")
-  }
-  if (length(min_observed) > 1){
-    stop("`min_observed` can only be of length = 1")
-  }
-  if (min_observed < 1 | min_observed %% 1 != 0){
-    stop("`min_observed` is not a positive integer")
-  }
-
 
   errs <- read_casts(tree = tree, cast_type = cast_type, 
                      cast_dates = cast_dates) %>%
-          select_casts(species = species, level = level) %>%
+          select_casts(species = species, level = level, models = models) %>%
           append_observed_to_cast(tree) %>%
           measure_cast_error(min_observed = min_observed)
 
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -248,6 +209,10 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 #'   reliably coded for \code{"forecasts"}.
 #'
 #' @param ndates \code{integer} number of -cast issue dates to include.
+#'
+#' @param models \code{character} value(s) of the name(s) (or 
+#'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+#'   models are returned.
 #' 
 #' @examples
 #' \dontrun{
@@ -259,52 +224,15 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 #' @export
 #'
 plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts", 
-                                   species = rodent_spp(set = "evalplot"),
-                                   level = "Controls", ndates = 3){
- if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.null(species)){
-    if (!("character" %in% class(species))){
-      stop("`species` is not a character")
-    }
-    if (!all(species %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    }   
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (level != "All" & level != "Controls"){
-    stop("`level` must be 'All' or 'Controls'")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.numeric(ndates)){
-    stop("`ndates` is not numeric")
-  }
-  if (length(ndates) > 1){
-    stop("`ndates` can only be of length = 1")
-  }
-  if (ndates < 1 | ndates %% 1 != 0){
-    stop("`ndates` is not a positive integer")
-  }
-
+                               species = rodent_spp(species_set = "evalplot"),
+                               level = "Controls", ndates = 3,
+                               models = model_names("wEnsemble")){
+  check_args()
   casts <- read_casts(tree, cast_type = cast_type) %>%
-           select_casts(species = species, level = level) %>%
+           select_casts(species = species, level = level, models = models) %>%
            append_observed_to_cast(tree)
 
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -351,12 +279,11 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
   ys <- seq(1.08, by = -0.013, length.out = nudates)
   text(1.39, ys, udates, xpd = TRUE, cex = 0.75, col = cols)
 
-  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
-  xrange <- c(max(leads), min(leads))
-
   incl <- which(casts$species %in% uspecies & casts$model %in% umodels &
                 casts$date %in% udates)
   casts <- casts[incl, ]
+  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
+  xrange <- c(max(leads) + 1, 0)
 
   rowc <- 1 
   for(i in 1:nspecies){
@@ -365,6 +292,8 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
     casts_i <- casts[in_i, ]
     ymin <- min(c(0, min(casts_i$error, na.rm = TRUE)))
     ymax <- max(c(0, max(casts_i$error, na.rm = TRUE)))
+    ymin <- ymin - 0.05 * (ymax - ymin)
+    ymax <- ymax + 0.05 * (ymax - ymin)
     yrange <- c(ymin, ymax)
     for(j in 1:nmodels){
       in_ij <- which(casts$species == uspecies[i] & casts$model == umodels[j])
@@ -482,79 +411,13 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
                                cast_date = NULL, model = "Ensemble", 
                                lead = 1, from_date = NULL, 
                                with_census = FALSE){
-
-  if (length(with_census) > 1){
-    stop("`with_census` can only be of length = 1")
-  }
-  if (!is.logical(with_census)){
-    stop("`with_census` is not logical")
-  }
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.null(species)){
-    if (!("character" %in% class(species))){
-      stop("`species` is not a character")
-    }
-    if (!all(species %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    }   
-  }
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (level != "All" & level != "Controls"){
-    stop("`level` must be 'All' or 'Controls'")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.null(cast_date)){
-    if (!("Date" %in% class(cast_date))){
-      stop("`cast_date` is not of class Date")
-    }
-    if (length(cast_date) > 1){
-      stop("`cast_date` can only be of length = 1")
-    }
-  } else{
+  check_args()
+  if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type, with_census)
   }
-  if (!("character" %in% class(model))){
-    stop("`model` is not a character")
+  if (is.null(from_date) & cast_type == "forecasts"){
+    from_date <- cast_date
   }
-  if (length(model) > 1){
-    stop("`model` can only be of length = 1")
-  }
-  if (!is.numeric(lead)){
-    stop("`lead` is not numeric")
-  }
-  if (length(lead) > 1){
-    stop("`lead` can only be of length = 1")
-  }
-  if (lead < 1 | lead %% 1 != 0){
-    stop("`lead` is not a positive integer")
-  }
-  if (is.null(from_date)){
-    if(cast_type == "forecasts"){
-      from_date <- cast_date
-    }
-  }
-  if (!("Date" %in% class(from_date))){
-    stop("`from_date` is not of class Date")
-  }
-  if (length(from_date) > 1){
-    stop("`from_date` can only be of length = 1")
-  }
-
 
   moons <- read_data(tree, "moons")
   casts <- read_cast(tree, cast_type = cast_type, cast_date = cast_date)
@@ -599,7 +462,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
        las = 1, xlim = rangex, ylim = rangey)
   mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
-  plotcastpoint_yaxis(tree = tree, species = pred$species)
+  plot_cast_point_yaxis(tree = tree, species = pred$species)
   mtext(main, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
   
   for(i in 1:nspp){
@@ -640,20 +503,10 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
 #'
 #' @export
 #'
-plotcastpoint_yaxis <- function(tree = dirtree(), species = "total"){
+plot_cast_point_yaxis <- function(tree = dirtree(), species = "total"){
 
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.null(species)){
-    if (!("character" %in% class(species))){
-      stop("`species` is not a character")
-    }
-    if (!all(species %in% rodent_spp("wtotal"))){
-      stop("invalid entry in `species`")
-    }   
-  }
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  check_args()
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
   nspp <- length(species)
@@ -719,72 +572,13 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
                          level = "Controls", cast_type = "forecasts", 
                          cast_date = NULL, model = "Ensemble", 
                          start_newmoon = 300, add_obs = TRUE){
-
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.character(species)){
-    stop("`species` is not a character")
-  }
-  if (length(species) > 1){
-    stop("`species` can only be of length = 1")
-  }
-  if (!(species %in% rodent_spp("wtotal"))){
-    stop("invalid entry in `species`")
-  }   
-  if (!is.character(level)){
-    stop("`level` is not a character")
-  }
-  if (length(level) > 1){
-    stop("`level` can only be of length = 1")
-  }
-  if (level != "All" & level != "Controls"){
-    stop("`level` must be 'All' or 'Controls'")
-  }
-  if (!is.character(cast_type)){
-    stop("`cast_type` is not a character")
-  }
-  if (length(cast_type) > 1){
-    stop("`cast_type` can only be of length = 1")
-  }
-  if (cast_type!= "forecasts" & cast_type != "hindcasts"){
-    stop("`cast_type` can only be 'forecasts' or 'hindcasts'")
-  }
-  if (!is.null(cast_date)){
-    if (!("Date" %in% class(cast_date))){
-      stop("`cast_date` is not of class Date")
-    }
-    if (length(cast_date) > 1){
-      stop("`cast_date` can only be of length = 1")
-    }
-  } else{
+  check_args()
+  if (is.null(cast_date)){
     cast_date <- most_recent_cast(tree, cast_type)
   }
-  if (!("character" %in% class(model))){
-    stop("`model` is not a character")
-  }
-  if (length(model) > 1){
-    stop("`model` can only be of length = 1")
-  }
-  if (!is.numeric(start_newmoon)){
-    stop("`start_newmoon` is not numeric")
-  }
-  if (length(start_newmoon) > 1){
-    stop("`start_newmoon` can only be of length = 1")
-  }
-  if(start_newmoon < 1 | start_newmoon %% 1 != 0){
-    stop("`start_newmoon` is not a positive integer")
-  }
-  if (!("logical" %in% class(add_obs))){
-    stop("`add_obs` is not of class logical")
-  }
-  if (length(add_obs) > 1){
-    stop("`add_obs` can only be of length = 1")
-  }
-
   obs <- read_data(tree, tolower(level))
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, model = model)   
+          select_casts(species = species, level = level, models = model)   
   first_pred <- min(pred$newmoonnumber)
   which_obs_after_pred <- which(obs$newmoonnumber >= first_pred)
   nwhich_obs_after_pred <- length(which_obs_after_pred)
@@ -812,7 +606,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 
   rangex <- c(max(c(start_newmoon, min(obs_x))), max(pred_x))
   rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
-  ylab <- plot_cast_ts_ylab(tree, species)
+  ylab <- plot_cast_ts_ylab(tree, level, species, model)
 
   par(mar = c(3, 4.5, 1, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
@@ -846,19 +640,7 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
 #' @export
 #'
 plot_cast_ts_xaxis <- function(tree, rangex){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.numeric(rangex)){
-    stop("`rangex` is not numeric")
-  }
-  if (length(rangex) != 2){
-    stop("`start_newmoon` can only be of length = 2")
-  }
-  if(any(rangex < 1) | any(rangex %% 1 != 0)){
-    stop("`rangex` is not a positive integer")
-  }
-
+  check_args()
   moons <- read_data(tree, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
@@ -892,27 +674,21 @@ plot_cast_ts_xaxis <- function(tree, rangex){
 #' @param species \code{character} value of the species code or \code{"total"}
 #'   for the total across species.
 #'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'   or \code{"Controls"}).
+#'
+#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
+#'   the model to be plotted.
+#'
 #' @return \code{list} of \code{text} and \code{font} elements. 
 #'
 #' @export
 #'
-plot_cast_ts_ylab <- function(tree = dirtree(), species = "total"){
-
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.character(species)){
-    stop("`species` is not a character")
-  }
-  if (length(species) > 1){
-    stop("`species` can only be of length = 1")
-  }
-  if (!(species %in% rodent_spp("wtotal"))){
-    stop("invalid entry in `species`")
-  }   
-
+plot_cast_ts_ylab <- function(tree = dirtree(), level = "Controls",
+                              species = "total", model = "Ensemble"){
+  check_args()
   lab <- list(text = "", font = 1)
-  lpath <- file_path(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
   if (species == "total"){

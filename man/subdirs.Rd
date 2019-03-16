@@ -4,20 +4,18 @@
 \alias{subdirs}
 \title{Define the names of the subdirectories in a forecasting directory}
 \usage{
-subdirs(subs = NULL, type = NULL)
+subdirs(subs_names = NULL, subs_type = "portalcasting")
 }
 \arguments{
-\item{subs}{Either [1] names of additional subdirectories to add to the
-vector set up by \code{type} or [2] an optional way to input all 
+\item{subs_names}{Either [1] names of additional subdirectories to add to
+the vector set up by \code{type} or [2] an optional way to input all 
 subdirectory names (requires \code{type = NULL}, which is the default).}
 
-\item{type}{\code{character} name for quick generation of subdirectory
-vector. Presently only defined for the default input 
-\code{"portalcasting"}.}
+\item{subs_type}{\code{character} name for quick generation of subdirectory
+vector. Presently only defined for \code{"portalcasting"}.}
 }
 \value{
-Class-\code{subdirs} vector of character elements of 
-  subdirectory names.
+\code{character} vector of subdirectory names.
 }
 \description{
 Produces a vector of subdirectory names that is of class

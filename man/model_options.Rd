@@ -8,29 +8,28 @@
 \alias{pevGARCH_options}
 \title{Prepare options for a portalcasting model}
 \usage{
-model_options(tree = dirtree(), name = "AutoArima",
-  covariates = FALSE, lag = NULL, quiet = FALSE)
+model_options(tree = dirtree(), model = "AutoArima",
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 
-AutoArima_options(tree = dirtree(), name = "AutoArima",
-  covariates = FALSE, lag = NULL, quiet = FALSE)
+AutoArima_options(tree = dirtree(), model = "AutoArima",
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 
-ESSS_options(tree = dirtree(), name = "ESSS", covariates = FALSE,
-  lag = NULL, quiet = FALSE)
+ESSS_options(tree = dirtree(), model = "ESSS",
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 
-nbGARCH_options(tree = dirtree(), name = "nbGARCH",
-  covariates = FALSE, lag = NULL, quiet = FALSE)
+nbGARCH_options(tree = dirtree(), model = "nbGARCH",
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 
-pevGARCH_options(tree = dirtree(), name = "pevGARCH",
-  covariates = TRUE, lag = 6, quiet = FALSE)
+pevGARCH_options(tree = dirtree(), model = "pevGARCH",
+  mod_covariates = TRUE, lag = 6, quiet = FALSE)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
 \code{\link{dirtree}}.}
 
-\item{name}{\code{character}-valued name of the model (MUST match the 
-function name).}
+\item{model}{\code{character} value of the name of the model.}
 
-\item{covariates}{\code{logical} indicator for if the model requires 
+\item{mod_covariates}{\code{logical} indicator for if the model requires 
 covariates.}
 
 \item{lag}{\code{integer} (or integer \code{numeric}) lag time used for the

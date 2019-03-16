@@ -9,7 +9,7 @@ dataout(df, options_out = moons_options())
 \arguments{
 \item{df}{\code{data.frame} table to be written out.}
 
-\item{options_out}{an options list that includes a save element and 
+\item{options_out}{an options \code{list} that includes a save element and 
 a filename element, and potentially a class element.}
 }
 \value{

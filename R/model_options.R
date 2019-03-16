@@ -10,10 +10,9 @@
 #' @param tree \code{dirtree}-class directory tree list. See 
 #'   \code{\link{dirtree}}.
 #'
-#' @param name \code{character}-valued name of the model (MUST match the 
-#'   function name).
+#' @param model \code{character} value of the name of the model.
 #'
-#' @param covariates \code{logical} indicator for if the model requires 
+#' @param mod_covariates \code{logical} indicator for if the model requires 
 #'   covariates.
 #'
 #' @param lag \code{integer} (or integer \code{numeric}) lag time used for the
@@ -26,36 +25,12 @@
 #'
 #' @export
 #'
-model_options <- function(tree = dirtree(), name = "AutoArima", 
-                          covariates = FALSE, lag = NULL, quiet = FALSE){
-  if (!("dirtree" %in% class(tree))){
-    stop("`tree` is not of class dirtree")
-  }
-  if (!is.null(name) & !is.character(name)){
-    stop("`name` is not NULL nor a character")
-  }
-  if (length(name) > 1){
-    stop("`name` can only be of length = 1")
-  }
-  if (!("logical" %in% class(covariates))){
-    stop("`covariates` is not of class logical")
-  }
-  if (!("logical" %in% class(quiet))){
-    stop("`quiet` is not of class logical")
-  }
-  if (length(lag) > 1){
-    stop("`lag` can only be of length = 1")
-  }
-  if (!is.null(lag)){
-    if (!("numeric" %in% class(lag)) & !("integer" %in% class(lag))){
-      stop("`lag` is not of class numeric or integer")
-    }
-    if(lag < 0 | lag %% 1 != 0){
-      stop("`lag` is not a non-negative integer")
-    }
-  }
-  list(name = name, covariates = covariates, lag = lag, quiet = quiet, 
-       tree = tree) %>%
+model_options <- function(tree = dirtree(), model = "AutoArima", 
+                          mod_covariates = FALSE, lag = NULL, quiet = FALSE){
+
+  check_args()
+  list(model = model, mod_covariates = mod_covariates, lag = lag, 
+       quiet = quiet, tree = tree) %>%
   classy(c("model_options", "list"))
 }
 
@@ -70,10 +45,11 @@ model_options <- function(tree = dirtree(), name = "AutoArima",
 #'
 #' @export
 #'
-AutoArima_options <- function(tree = dirtree(), name = "AutoArima", 
-                              covariates = FALSE, lag = NULL, quiet = FALSE){
-  model_options(tree = tree, name = name, covariates = covariates, lag = lag, 
-                quiet = quiet) 
+AutoArima_options <- function(tree = dirtree(), model = "AutoArima", 
+                              mod_covariates = FALSE, lag = NULL, 
+                              quiet = FALSE){
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
+                lag = lag, quiet = quiet) 
 }
 
 #' @rdname model_options
@@ -87,10 +63,10 @@ AutoArima_options <- function(tree = dirtree(), name = "AutoArima",
 #'
 #' @export
 #'
-ESSS_options <- function(tree = dirtree(),  name = "ESSS", covariates = FALSE, 
-                         lag = NULL, quiet = FALSE){
-  model_options(tree = tree, name = name, covariates = covariates, lag = lag, 
-                quiet = quiet) 
+ESSS_options <- function(tree = dirtree(),  model = "ESSS", 
+                         mod_covariates = FALSE, lag = NULL, quiet = FALSE){
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
+                lag = lag, quiet = quiet) 
 }
 
 #' @rdname model_options
@@ -104,10 +80,11 @@ ESSS_options <- function(tree = dirtree(),  name = "ESSS", covariates = FALSE,
 #'
 #' @export
 #'
-nbGARCH_options <- function(tree = dirtree(), name = "nbGARCH", 
-                            covariates = FALSE, lag = NULL, quiet = FALSE){
-  model_options(tree = tree, name = name, covariates = covariates, lag = lag, 
-                quiet = quiet) 
+nbGARCH_options <- function(tree = dirtree(), model = "nbGARCH", 
+                            mod_covariates = FALSE, lag = NULL, 
+                            quiet = FALSE){
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
+                lag = lag, quiet = quiet) 
 }
 
 #' @rdname model_options
@@ -121,8 +98,8 @@ nbGARCH_options <- function(tree = dirtree(), name = "nbGARCH",
 #'
 #' @export
 #'
-pevGARCH_options <- function(tree = dirtree(), name = "pevGARCH", 
-                             covariates = TRUE, lag = 6, quiet = FALSE){
-  model_options(tree = tree, name = name, covariates = covariates, lag = lag, 
-                quiet = quiet) 
+pevGARCH_options <- function(tree = dirtree(), model = "pevGARCH", 
+                             mod_covariates = TRUE, lag = 6, quiet = FALSE){
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
+                lag = lag, quiet = quiet) 
 }

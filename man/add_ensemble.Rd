@@ -11,8 +11,7 @@ add_ensemble(options_cast = cast_options())
 hind- or forecasting options. See \code{\link{cast_options}}.}
 }
 \value{
-\code{list} of [1] \code{"forecasts"} (the forecasted abundances)
-  and [2] \code{"all_model_aic"} (the model AIC values).
+Forecast abundance table for the ensemble model.
 }
 \description{
 Add the predictions of an ensemble model to the forecasting 

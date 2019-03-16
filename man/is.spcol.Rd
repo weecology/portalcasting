@@ -4,10 +4,10 @@
 \alias{is.spcol}
 \title{Which columns are species columns}
 \usage{
-is.spcol(x, spp_names = rodent_spp())
+is.spcol(rodents, spp_names = rodent_spp())
 }
 \arguments{
-\item{x}{data table of interest}
+\item{rodents}{Class-\code{rodents} \code{data.table} of rodent data.}
 
 \item{spp_names}{\code{character} vector of species name abbreviations.}
 }
