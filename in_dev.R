@@ -13,4 +13,3 @@ portalcast(options_all)
 # to dos (later!): 
 # make the error message hit all faulty arguments and report the function
 #  where it happened
-# handle cast argument in verify_cast cast_is_valid combo

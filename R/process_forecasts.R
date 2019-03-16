@@ -352,65 +352,65 @@ cast_is_valid <- function(cast_to_check, verbose = FALSE){
                      paste("Plot", 1:24, " ", sep = ""))
   valid_species <- rodent_spp("wtotal")
 
-  if(!(all(colnames(cast) %in% valid_columns) & 
-       all(valid_columns %in% colnames(cast)))){
+  if(!(all(colnames(cast_to_check) %in% valid_columns) & 
+       all(valid_columns %in% colnames(cast_to_check)))){
     if(verbose){
       print("file column names invalid")
     }
     return(FALSE)
   }
 
-  cast$date <- as.Date(cast$date, "%Y-%m-%d")
-  if(any(is.na(cast$date))){
+  cast_to_check$date <- as.Date(cast_to_check$date, "%Y-%m-%d")
+  if(any(is.na(cast_to_check$date))){
     is_valid <- FALSE
     violations <- c("date", violations) 
   }
-  if(!all(unique(cast$currency) %in% valid_currencies)){
+  if(!all(unique(cast_to_check$currency) %in% valid_currencies)){
     is_valid <- FALSE
     violations <- c("currency", violations) 
   }
-  if(!all(unique(cast$level) %in% valid_levels)){ 
+  if(!all(unique(cast_to_check$level) %in% valid_levels)){ 
     is_valid <- FALSE
     violations <- c("level", violations) 
   }
-  if(!all(unique(cast$species) %in% valid_species)){ 
+  if(!all(unique(cast_to_check$species) %in% valid_species)){ 
     is_valid <- FALSE
     violations <- c("species", violations) 
   }
-  if(any(is.na(cast$estimate))) { 
+  if(any(is.na(cast_to_check$estimate))) { 
     is_valid <- FALSE
     violations <- c("NA esimates", violations) 
   }
-  if(any(is.na(cast$LowerPI))) { 
+  if(any(is.na(cast_to_check$LowerPI))) { 
     is_valid <- FALSE
     violations <- c("NA LowerPI", violations) 
   }
-  if(any(is.na(cast$UpperPI))) { 
+  if(any(is.na(cast_to_check$UpperPI))) { 
     is_valid <- FALSE
     violations <- c("NA UpperPI", violations) 
   }
 
-  if(!is.integer(cast$fit_start_newmoon)) {
+  if(!is.integer(cast_to_check$fit_start_newmoon)) {
     is_valid <- FALSE
     violations <- c("fit_start_newmoon not int", violations)
   }
-  if(!is.integer(cast$fit_end_newmoon)) { 
+  if(!is.integer(cast_to_check$fit_end_newmoon)) { 
     is_valid <- FALSE
     violations <- c("fit_end_newmoon not int", violations)
   }
-  if(!is.integer(cast$initial_newmoon)) {
+  if(!is.integer(cast_to_check$initial_newmoon)) {
     is_valid <- FALSE
     violations <- c("initial_newmoon not int", violations)
   }
-  if(any(is.na(cast$fit_start_newmoon))) {
+  if(any(is.na(cast_to_check$fit_start_newmoon))) {
     is_valid <- FALSE
     violations <- c("fit_start_newmoon contains NA", violations)
   }
-  if(any(is.na(cast$fit_end_newmoon))) {
+  if(any(is.na(cast_to_check$fit_end_newmoon))) {
     is_valid <- FALSE
     violations <- c("fit_end_newmoon contains NA", violations)
   }
-  if(any(is.na(cast$initial_newmoon))) {
+  if(any(is.na(cast_to_check$initial_newmoon))) {
     is_valid <- FALSE
     violations <- c("initial_newmoon contains NA", violations)
   }
