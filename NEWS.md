@@ -1,7 +1,7 @@
 # portalcasting (development version)
 
-# [portalcasting 0.4.0](https://github.com/weecology/portalcasting)
-*active development*
+# [portalcasting 0.4.0](https://github.com/weecology/portalcasting/pull/94)
+*2019-03-16* 
 
 ### Tidied functionality for checking function arguments
 * Introduction of `check_args` and `check_arg` which collaborate to
