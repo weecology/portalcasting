@@ -36,7 +36,7 @@ model_names <- function(add = NULL, set = "prefab"){
 #'
 write_model <- function(options_model = model_options()){
   check_args()
-  model <- options_model$name
+  model <- options_model$model
   if (is.null(model)){
     return()
   }
