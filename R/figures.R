@@ -269,12 +269,11 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
   ys <- seq(1.08, by = -0.013, length.out = nudates)
   text(1.39, ys, udates, xpd = TRUE, cex = 0.75, col = cols)
 
-  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
-  xrange <- c(max(leads), min(leads))
-
   incl <- which(casts$species %in% uspecies & casts$model %in% umodels &
                 casts$date %in% udates)
   casts <- casts[incl, ]
+  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
+  xrange <- c(max(leads) + 1, 0)
 
   rowc <- 1 
   for(i in 1:nspecies){
@@ -283,6 +282,8 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
     casts_i <- casts[in_i, ]
     ymin <- min(c(0, min(casts_i$error, na.rm = TRUE)))
     ymax <- max(c(0, max(casts_i$error, na.rm = TRUE)))
+    ymin <- ymin - 0.05 * (ymax - ymin)
+    ymax <- ymax + 0.05 * (ymax - ymin)
     yrange <- c(ymin, ymax)
     for(j in 1:nmodels){
       in_ij <- which(casts$species == uspecies[i] & casts$model == umodels[j])
