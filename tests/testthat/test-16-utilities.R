@@ -3,7 +3,7 @@ context("Test utilities functions")
 test_that("messageq", {
   expect_silent(messageq("ok", TRUE))
   expect_message(messageq("ok"))
-  expect_message(messageq(c("ok", "_ok_"))
+  expect_message(messageq(c("ok", "_ok_")))
   expect_error(messageq(rep("ok", 2)))
   expect_error(messageq("ok", 1))
   expect_error(messageq("ok", rep(TRUE, 2)))
