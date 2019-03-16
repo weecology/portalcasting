@@ -9,7 +9,6 @@ portalcast(options_all)
 
 # to dos : 
 # make subs_type default to "portalcasting"
-# remove the double up of CI_level and confidence_level
 # remove the double up of name and model
 # set is used for both species (rodent_spp) and models (model_names)
 

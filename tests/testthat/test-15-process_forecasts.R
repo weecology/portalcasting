@@ -80,9 +80,9 @@ test_that("make_ensemble", {
   expect_error(make_ensemble(fcasts, 1), "`pred_dir` is")
   expect_error(make_ensemble(fcasts, c(sub1, sub1)), "`pred_dir` can")
   expect_error(make_ensemble(1, sub1), "`all_forecasts` is")
-  expect_error(make_ensemble(fcasts, sub1, "ok"), "`CI_level` is")
-  expect_error(make_ensemble(fcasts, sub1, 1:2), "`CI_level` can")
-  expect_error(make_ensemble(fcasts, sub1, -1), "`CI_level` is")
+  expect_error(make_ensemble(fcasts, sub1, "ok"))
+  expect_error(make_ensemble(fcasts, sub1, 1:2))
+  expect_error(make_ensemble(fcasts, sub1, -1))
 })
 
 test_that("read_cast", {

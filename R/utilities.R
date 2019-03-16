@@ -261,8 +261,6 @@ check_args <- function(){
 #'     \code{\link{plot_cast_ts}}, \code{\link{read_cast}}, 
 #'     \code{\link{read_casts}}, \code{\link{most_recent_cast}},
 #'     \code{\link{select_most_ab_spp}} \cr \cr
-#'   \code{CI_level}: must be a length-1 \code{numeric} value between
-#'     0 and 1 in \code{\link{make_ensemble}} \cr \cr
 #'   \code{class}: must be \code{NULL} or a \code{character} vector in
 #'     \code{\link{classy}} \cr \cr
 #'   \code{colname}: must be a length-1 \code{character} vector in
@@ -270,7 +268,7 @@ check_args <- function(){
 #'     \code{\link{remove_incompletes}} \cr \cr
 #'   \code{confidence_level}: must be a length-1 \code{numeric} value between
 #'     0 and 1 in \code{\link{all_options}}, \code{\link{data_options}}, 
-#'     \code{\link{metadata_options}} \cr \cr
+#'     \code{\link{metadata_options}}, \code{\link{make_ensemble}} \cr \cr
 #'   \code{controls}: must be a \code{list} with elements named 
 #'     \code{forecast} and \code{aic} in \code{\link{save_forecast_output}} 
 #'     \cr \cr
@@ -737,17 +735,6 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     if (!(arg_value %in% c("forecasts", "hindcasts"))){
       stop("`cast_type` can only be `forecasts` or `hindcasts`")
-    }
-  }
-  if (arg_name == "CI_level"){
-    if (!is.numeric(arg_value)){
-      stop("`CI_level` is not numeric")
-    }
-    if (length(arg_value) != 1){
-      stop("`CI_level` can only be of length = 1")
-    }
-    if (arg_value < 0.001 | arg_value > 0.999){
-      stop("`CI_level` is not between 0.001 and 0.999")
     }
   }
   if (arg_name == "class"){

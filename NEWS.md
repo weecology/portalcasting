@@ -23,6 +23,7 @@ returns all if `specific_subs` is NULL
 ## Updated argument names to leverage `check_args`
 * In multiple functions `data` has been replaced with `rodents` to be
 specific.
+* `CI_level` is now subsumed by `confidence_level`
 
 ### Removal of classes
 * The `models` class has been removed.

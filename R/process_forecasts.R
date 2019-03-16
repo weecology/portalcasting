@@ -162,11 +162,11 @@ compile_aic_weights <- function(pred_dir){
 #'   the weighted mean using the unbiased estimate of sample variance. See
 #'   https://github.com/weecology/portalPredictions/pull/65
 #'   We only store the prediction interval for models, so we backcalculate 
-#'   individual model variance assuming the same \code{CI_level} throughout. 
-#'   Assert that the summed weight of all the model ensembles is 1, as 
-#'   that's what the variance estimates assume. The weight values are rounded 
-#'   to account for precision errors. Summed weights can also be \code{NA} if
-#'   there are not weights availble for that ensemble. 
+#'   individual model variance assuming the same \code{confidence_level} 
+#'   throughout. Assert that the summed weight of all the model ensembles is 
+#'   1, as that's what the variance estimates assume. The weight values are 
+#'   rounded to account for precision errors. Summed weights can also be 
+#'   \code{NA} if there are not weights availble for that ensemble. 
 #' 
 #' @param all_forecasts \code{data.frame} of all of the forecasts to be 
 #'   combined. 
@@ -174,14 +174,14 @@ compile_aic_weights <- function(pred_dir){
 #' @param pred_dir \code{character} value of the path to the directory where 
 #'   the saved model predictions reside.
 #'
-#' @param CI_level \code{numeric} confidence interval level to use (must be
-#'   between 0 and 1. 
+#' @param confidence_level \code{numeric} confidence level used in 
+#'   summarizing model output. Must be between \code{0} and \code{1}.
 #' 
 #' @return Forecast abundance table for the ensemble model.
 #' 
 #' @export
 #'
-make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
+make_ensemble <- function(all_forecasts, pred_dir, confidence_level = 0.9){
   check_args()
   if (length(unique(all_forecasts$model)) == 1){
     ensemble <- all_forecasts
@@ -191,7 +191,7 @@ make_ensemble <- function(all_forecasts, pred_dir, CI_level = 0.9){
   }
   weights <- compile_aic_weights(pred_dir)
   weights$date <- as.Date(weights$date)
-  CI_quantile <- qnorm((1 - CI_level) / 2, lower.tail = FALSE)
+  CI_quantile <- qnorm((1 - confidence_level) / 2, lower.tail = FALSE)
 
   leftj <- c("date", "model", "currency", "level", "species", 
              "fit_start_newmoon", "fit_end_newmoon", "initial_newmoon")
