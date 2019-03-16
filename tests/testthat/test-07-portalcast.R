@@ -6,7 +6,7 @@ options_all3 <- all_options(main = "testing_casting", models = "AutoArima")
 options_all4 <- all_options(main = "testing_casting", 
                             models = "ok")
 options_all5 <- all_options(main = "testing_casting", 
-                            models = model_names("all", model_set = NULL))
+                            models = model_names(model_set = NULL, "all"))
 options_all6 <- all_options(main = "testing_casting", models = "AutoArima",
                             cast_type = "hindcasts", end = 490)
 options_all7 <- all_options(main = "testing_casting", models = "AutoArima",
@@ -47,7 +47,7 @@ test_that("models_to_cast", {
   expect_equal(length(mtc3), 1)
   mtc5 <- models_to_cast(options_all5$options_cast)
   expect_is(mtc5, "character")
-  expect_equal(length(mtc5), length(model_names(model_set = "prefab")))
+  expect_equal(length(mtc5), length(model_names()))
 })
 
 test_that("create_tmp", {

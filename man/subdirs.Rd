@@ -4,7 +4,7 @@
 \alias{subdirs}
 \title{Define the names of the subdirectories in a forecasting directory}
 \usage{
-subdirs(subs_names = NULL, subs_type = NULL)
+subdirs(subs_names = NULL, subs_type = "portalcasting")
 }
 \arguments{
 \item{subs_names}{Either [1] names of additional subdirectories to add to

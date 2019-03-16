@@ -337,7 +337,7 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{species_set}: must be \code{NULL} or a length-1 \code{character} 
     vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
     \code{\link{rodent_spp}}  \cr \cr
-  \code{specific_sub}: must be \code{NULL} or a length-1 \code{character} 
+  \code{specific_subs}: must be \code{NULL} or a length-1 \code{character} 
     vector in \code{\link{sub_paths}} \cr \cr 
   \code{spp_names}: must be a \code{character} vector in
     \code{\link{is.spcol}} \cr \cr

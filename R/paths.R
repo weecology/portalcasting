@@ -29,8 +29,7 @@
 #'
 #' @export
 #'
-dirtree <- function(base = ".", main = "", 
-                    subs = subdirs(subs_type = "portalcasting")){
+dirtree <- function(base = ".", main = "", subs = subdirs()){
   check_args()
   list("base" = base, "main" = main, "subs" = subs) %>%
   classy(c("dirtree", "list"))
@@ -56,7 +55,7 @@ dirtree <- function(base = ".", main = "",
 #'
 #' @export
 #'
-subdirs <- function(subs_names = NULL, subs_type = NULL){
+subdirs <- function(subs_names = NULL, subs_type = "portalcasting"){
   check_args()
   if (!is.null(subs_type) && subs_type == "portalcasting"){
     pc_subs <- c("predictions", "models", "PortalData", "data", "tmp")

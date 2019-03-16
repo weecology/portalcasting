@@ -7,9 +7,14 @@ setup_dir(options_all)
 tree <- dirtree(base = "~", main = "portalcasting_dev1")
 portalcast(options_all)
 
-# to dos : 
+# working on
 # make subs_type default to "portalcasting" (maybe call it set? )
 # switch order of arguments in model_names 
+
+to do:
+remove subdirs class
+can tidy up create_tmp
+and a test in test 10
 
 
 # to dos (later!): 

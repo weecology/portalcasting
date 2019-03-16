@@ -1,4 +1,3 @@
-
 #' @title Download the predictions files from the Portal Predictions repo
 #'
 #' @description Download the files into the predictions subdirectory in the

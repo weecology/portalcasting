@@ -4,15 +4,15 @@
 \alias{model_names}
 \title{Provide the names of models}
 \usage{
-model_names(add = NULL, model_set = "prefab")
+model_names(model_set = "prefab", add = NULL)
 }
 \arguments{
-\item{add}{\code{character} vector of name(s) of model(s) to add to the 
-setup by \code{ model_set}.}
-
 \item{model_set}{\code{characher} value of the type of model (currently 
 only support for \code{"prefab"}). Use \code{NULL} to build a custom set
 from scratch via \code{add}.}
+
+\item{add}{\code{character} vector of name(s) of model(s) to add to the 
+setup by \code{model_set}.}
 }
 \value{
 \code{models}-class \code{character} vector of model names.

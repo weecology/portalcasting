@@ -16,8 +16,8 @@
 #'   contains the subdirectories. Default \code{""} (no main level included). 
 #'
 #' @param subs \code{character} vector naming the specific subdirectories
-#'   within the portalcasting directory tree. Default \code{subdirs(type = 
-#'   "portalcasting")} sets the subdirectories as \code{"predictions"}, 
+#'   within the portalcasting directory tree. Default \code{subdirs()}
+#'   sets the subdirectories as \code{"predictions"}, 
 #'   \code{"models"}, \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. 
 #'   It is generally not advised to change the subdirectories. 
 #'
@@ -180,8 +180,7 @@
 #'
 #' @export
 #'
-all_options <- function(base = ".", main = "", 
-                        subs = subdirs(subs_type = "portalcasting"), 
+all_options <- function(base = ".", main = "", subs = subdirs(), 
                         quiet = FALSE, cast_date = today(), 
                         append_missing_to_raw = TRUE, m_save = TRUE, 
                         m_filename = "moons.csv", tmnt_type = NULL,
@@ -202,7 +201,7 @@ all_options <- function(base = ".", main = "",
                         confidence_level = 0.9, meta_save = TRUE, 
                         meta_filename = "metadata.yaml",
                         download_existing_predictions = FALSE,
-                        models = model_names(model_set = "prefab"), 
+                        models = model_names(), 
                         ensemble = TRUE,
                         version = "latest", from_zenodo = TRUE,
                         to_cleanup = c("tmp", "PortalData")){
@@ -265,8 +264,7 @@ all_options <- function(base = ".", main = "",
 #'
 #' @export
 #'
-dir_options <- function(base = ".", main = "", 
-                        subs = subdirs(subs_type = "portalcasting"),
+dir_options <- function(base = ".", main = "", subs = subdirs(),
                         quiet = FALSE, to_cleanup = c("tmp", "PortalData")){
   check_args()
   tree <- dirtree(base, main, subs)
@@ -284,8 +282,7 @@ dir_options <- function(base = ".", main = "",
 #'
 #' @export
 #'
-PortalData_options <- function(base = ".", main = "", 
-                               subs = subdirs(subs_type = "portalcasting"), 
+PortalData_options <- function(base = ".", main = "", subs = subdirs(), 
                                quiet = FALSE,
                                version = "latest", from_zenodo = TRUE){
   check_args()
@@ -310,8 +307,7 @@ PortalData_options <- function(base = ".", main = "",
 #'
 #' @export
 #'
-data_options <- function(base = ".", main = "", 
-                         subs = subdirs(subs_type = "portalcasting"),
+data_options <- function(base = ".", main = "", subs = subdirs(),
                          quiet = FALSE, cast_date = today(), 
                          append_missing_to_raw = TRUE, m_save = TRUE, 
                          m_filename = "moons.csv", tmnt_type = NULL, 
@@ -512,8 +508,7 @@ metadata_options <- function(cast_date = today(), cast_type = "forecasts",
 #'
 #' @export
 #'
-predictions_options <- function(base = ".", main = "", 
-                                subs = subdirs(subs_type = "portalcasting"), 
+predictions_options <- function(base = ".", main = "", subs = subdirs(), 
                                 download_existing_predictions = FALSE,
                                 quiet = FALSE){
 
@@ -535,10 +530,8 @@ predictions_options <- function(base = ".", main = "",
 #'
 #' @export
 #'
-models_options <- function(base = ".", main = "", 
-                           subs = subdirs(subs_type = "portalcasting"),
-                           quiet = FALSE, 
-                           models = model_names(model_set = "prefab")){
+models_options <- function(base = ".", main = "", subs = subdirs(),
+                           quiet = FALSE, models = model_names()){
   check_args()
   tree <- dirtree(base, main, subs)
   list(models = models, quiet = quiet, tree = tree) %>%
@@ -555,10 +548,8 @@ models_options <- function(base = ".", main = "",
 #'
 #' @export
 #'
-cast_options <- function(base = ".", main = "", 
-                         subs = subdirs(subs_type = "portalcasting"), 
-                         quiet = FALSE, 
-                         models = model_names(model_set = "prefab"), 
+cast_options <- function(base = ".", main = "", subs = subdirs(), 
+                         quiet = FALSE, models = model_names(), 
                          cast_type = "forecasts", cast_date = today(), 
                          ensemble = TRUE, start = 217, end = NULL, 
                          hind_step = 1, min_plots = 24, min_traps = 1){

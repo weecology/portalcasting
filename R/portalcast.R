@@ -125,7 +125,7 @@ models_to_cast <- function(options_cast = cast_options()){
 #'
 create_tmp <- function(tree = dirtree()){
   check_args()
-  subs <- subdirs("tmp")
+  subs <- subdirs(subs_names = "tmp", subs_type = NULL)
   opts <- dir_options(base = tree$base, main = tree$main, subs = subs)
   create_sub_dirs(opts)
 }

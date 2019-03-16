@@ -20,12 +20,17 @@ and standardize the use of the codebase's arguments.
 returns all if `specific_subs` is NULL
 * `lag_data` is now `lag_covariates`
 
-## Updated argument names to leverage `check_args`
+## Updated argument (names to leverage `check_args`, etc.)
 * In multiple functions `data` has been replaced with `rodents` to be
 specific.
 * `CI_level` is now subsumed by `confidence_level`
 * `name` is now subsumed by `model`
 * `set` is not split into `species_set` and `model_set`
+* The order of arguments in `model_names` is now back to `model_set`, 
+`add`.
+* The default `subs_type` for `subdirs` is now `"portalcasting"`.
+* The four model functions have a reduced set of inputs to leverage the 
+directory tree, and the script generation is updated to match.
 
 ### Removal of classes
 * The `models` class has been removed.
