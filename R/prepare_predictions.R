@@ -32,9 +32,7 @@ download_predictions <- function(tree = dirtree(), download = TRUE,
   to_path_choices <- sub_paths(tree)
   to_path <- to_path_choices[grepl("predictions", to_path_choices)]
   if (download){
-    if (!quiet){
-      message("Downloading predictions files")
-    }
+    messageq("Downloading predictions files", quiet)
     req <- GET(from_path)
     stop_for_status(req)
     filelist <- unlist(lapply(content(req), "[", "path"), use.names = FALSE)

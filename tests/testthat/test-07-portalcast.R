@@ -1,7 +1,6 @@
 context("Test portalcast functions")
 
 options_all1 <- all_options(main = "testing_casting")
-options_all2 <- all_options(main = "testing_casting", quiet = TRUE)
 options_all3 <- all_options(main = "testing_casting", models = "AutoArima")
 options_all4 <- all_options(main = "testing_casting", 
                             models = "ok")
@@ -9,20 +8,15 @@ options_all5 <- all_options(main = "testing_casting",
                             models = model_names(model_set = NULL, "all"))
 options_all6 <- all_options(main = "testing_casting", models = "AutoArima",
                             cast_type = "hindcasts", end = 490)
-options_all7 <- all_options(main = "testing_casting", models = "AutoArima",
-                            quiet = TRUE)
 options_all8 <- all_options(main = "testing_casting", models = "AutoArima",
                             cast_type = "hindcasts", end = 496)
 options_all9 <- all_options(main = "testing_casting", models = "AutoArima",
                             cast_type = "hindcasts", end = 490:493)
 options_all10 <- all_options(main = "testing_casting", models = "AutoArima",
                              cast_type = "hindcasts", end = 476)
-options_all11 <- all_options(main = "testing_casting", models = "AutoArima",
-                             cast_type = "hindcasts", end = 490:493, 
-                             quiet = TRUE)
 
 test_that("portalcast", {
-  expect_error(portalcast(1), "`options_all`")
+  expect_error(portalcast(1))
   expect_message(portalcast(options_all3))
 })
 
@@ -30,7 +24,6 @@ test_that("verify_models", {
   expect_error(verify_models(1))
   expect_error(verify_models())
   expect_message(verify_models(options_all1$options_cast))
-  expect_message(verify_models(options_all2$options_cast))
   expect_error(verify_models(options_all4$options_cast))
 })
 
@@ -67,21 +60,21 @@ test_that("clear_tmp", {
 
 test_that("prep_data", {
   expect_error(prep_data(1))
-  expect_output(prep_data(options_all1$options_data))
+  expect_message(prep_data(options_all1$options_data))
   unlink(file_paths(dirtree(main = "testing_casting"), "data/metadata.yaml"))
-  expect_output(prep_data(options_all1$options_data))
+  expect_message(prep_data(options_all1$options_data))
 
   metadata_path <- file_paths(dirtree(main = "testing_casting"), 
                              "data/metadata.yaml")
   metadata <- yaml.load_file(metadata_path)    
   metadata$forecast_date <- "1970-01-01"
   writeLines(as.yaml(metadata), con = metadata_path)
-  expect_output(prep_data(options_all1$options_data))
+  expect_message(prep_data(options_all1$options_data))
 
   unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
   create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
-  expect_output(prep_data(options_all6$options_data))
+  expect_message(prep_data(options_all6$options_data))
 })
 
 test_that("casts", {
@@ -90,16 +83,7 @@ test_that("casts", {
          recursive = TRUE)
   create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all3$options_data)
-  expect_output(casts(options_all3))
-  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
-         recursive = TRUE)
-  unlink(sub_paths(dirtree(main = "testing_casting"), "models"), 
-         recursive = TRUE)
-  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
-  prep_data(options_all7$options_data)
-  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "models"))
-  fill_models(options_all7$options_models)
-  expect_silent(casts(options_all7))
+  expect_message(casts(options_all3))
 })
 
 
@@ -110,16 +94,6 @@ test_that("cast", {
   create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
   prep_data(options_all3$options_data)
   expect_message(cast(options_all3$options_cast))
-
-  unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
-         recursive = TRUE)
-  unlink(sub_paths(dirtree(main = "testing_casting"), "models"), 
-         recursive = TRUE)
-  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "data"))
-  prep_data(options_all7$options_data)
-  create_sub_dir(sub_paths(dirtree(main = "testing_casting"), "models"))
-  fill_models(options_all7$options_models)
-  expect_silent(cast(options_all7$options_cast))
 
   unlink(sub_paths(dirtree(main = "testing_casting"), "data"), 
          recursive = TRUE)
@@ -151,7 +125,6 @@ test_that("check_to_skip", {
 test_that("update_data", {
   expect_error(update_data(1))
   expect_message(update_data(options_all9$options_data))
-  expect_silent(update_data(options_all11$options_data))
 })
 
 test_that("update_covariates", {

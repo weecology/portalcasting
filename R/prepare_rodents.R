@@ -27,9 +27,8 @@
 prep_rodents_list <- function(moons = prep_moons(), 
                               options_rodents = rodents_options()){
   check_args()
-  if (!options_rodents$quiet){
-    message("Loading rodents data files into data subdirectory")
-  }
+  msg <- "Loading rodents data files into data subdirectory"
+  messageq(msg, options_rodents$quiet)
   verify_PortalData(options_rodents$tree, "Portal_rodent.csv")
 
   options_a <- enforce_rodents_options(options_rodents, "all")
@@ -290,9 +289,8 @@ transfer_trapping_table <- function(options_data = data_options()){
   from <- file_paths(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
   to <- file_paths(tree, "data/trapping.csv")
   if (file.exists(from)){
-    if (!options_data$quiet){
-      message("Loading rodent trapping table into data subdirectory")
-    }
+    msg <- "Loading rodent trapping table into data subdirectory"
+    messageq(msg, options_data$quiet)
     ttable <- read.csv(from, stringsAsFactors = FALSE)
     write.csv(ttable, to, row.names = FALSE)
   }

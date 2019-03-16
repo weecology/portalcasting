@@ -43,9 +43,7 @@ ESSS <- function(tree = dirtree(), level = "All", quiet = FALSE){
   for (s in species){
 
     ss <- gsub("NA.", "NA", s)
-    if (!quiet){
-      message(paste0("Fitting ESSS model for ", ss))
-    }
+    messageq(paste0("Fitting ESSS model for ", ss), quiet)
 
     abund_s <- extract2(abundances, s)
   

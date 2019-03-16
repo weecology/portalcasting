@@ -60,9 +60,8 @@ create_main_dir <- function(options_dir = dir_options()){
   check_args()
   main <- main_path(tree = options_dir$tree)
   if (!dir.exists(main)){
-    if (!options_dir$quiet){
-      message(paste0("Creating main directory at ", main))
-    }
+    msg <- paste0("Creating main directory at ", main)
+    messageq(msg, options_dir$quiet)
     dir.create(main)
   }
 }
@@ -105,9 +104,8 @@ create_sub_dir <- function(sub_path = NULL, quiet = FALSE){
     return()
   }
   if (!dir.exists(sub_path)){
-    if (!quiet){
-      message(paste0("Creating ", basename(sub_path), " subdirectory"))
-    }
+    msg <- paste0("Creating ", basename(sub_path), " subdirectory")
+    messageq(msg, quiet)
     dir.create(sub_path)
   }
 }
@@ -157,9 +155,8 @@ fill_dir <- function(options_all = all_options()){
 #'
 fill_PortalData <- function(options_PortalData = PortalData_options()){
   check_args()
-  if (!options_PortalData$quiet){
-    message("Downloading raw data into PortalData subdirectory")
-  }
+  msg <- "Downloading raw data into PortalData subdirectory"
+  messageq(msg, options_PortalData$quiet)
   base_folder <- main_path(options_PortalData$tree)
   version <- options_PortalData$version
   from_zenodo <- options_PortalData$from_zenodo
@@ -186,9 +183,8 @@ fill_PortalData <- function(options_PortalData = PortalData_options()){
 #'
 fill_data <- function(options_data = data_options()){
   check_args()
-  if (!options_data$moons$quiet){
-    message("Loading forecasting data files into data subdirectory")
-  }
+  msg <- "Loading forecasting data files into data subdirectory"
+  messageq(msg, options_data$moons$quiet)
   transfer_hist_covariate_forecasts(options_data)
   transfer_trapping_table(options_data)
   moons <- prep_moons(options_data$moons)
@@ -212,9 +208,8 @@ fill_data <- function(options_data = data_options()){
 fill_predictions <- function(options_predictions = predictions_options()){
   check_args()
   if (options_predictions$download_existing_predictions){
-    if (!options_predictions$quiet){
-      message("Downloading predictions into predictions subdirectory")
-    }
+    msg <- "Downloading predictions into predictions subdirectory"
+    messageq(msg, options_predictions$quiet)
     download_predictions(tree = options_predictions$tree)
   }
 }
@@ -233,9 +228,8 @@ fill_predictions <- function(options_predictions = predictions_options()){
 #'
 fill_models <- function(options_models = models_options()){
   check_args()
-  if (!options_models$quiet){
-    message("Adding prefab models to models subdirectory:")
-  }
+  msg <- "Adding prefab models to models subdirectory:"
+  messageq(msg, options_models$quiet)
   nmods <- length(options_models$model)
   for (i in 1:nmods){
     modname <- options_models$model[i]
@@ -314,15 +308,13 @@ cleanup_dir <- function(options_all = all_options()){
   } else{
     subs <- sub_paths(options_dir$tree, options_dir$to_cleanup)
   }
-  if (!options_dir$quiet){
-    subnames <- options_dir$to_cleanup
-    if (length(subnames) > 0){
-      subnames2 <- paste(subnames, collapse = " ")
-      msg <- paste("removing", subnames2, "subdirectories", sep = " ")
-    } else {
-      msg <- "no subdirectories requested to be removed"
-    }
-    message(msg)
+  subnames <- options_dir$to_cleanup
+  if (length(subnames) > 0){
+    subnames2 <- paste(subnames, collapse = " ")
+    msg <- paste("removing", subnames2, "subdirectories", sep = " ")
+  } else {
+    msg <- "no subdirectories requested to be removed"
   }
+  messageq(msg, options_dir$quiet)
   cleaned <- sapply(subs, unlink, recursive = TRUE, force = TRUE)
 }

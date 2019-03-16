@@ -21,9 +21,8 @@
 #' 
 prep_moons <- function(options_moons = moons_options()){
   check_args()
-  if (!options_moons$quiet){
-    message("Loading moons data file into the data subdirectory")
-  }
+  msg <- "Loading moons data file into the data subdirectory"
+  messageq(msg, options_moons$quiet)
   verify_PortalData(options_moons$tree, "moon_dates.csv")
   file_paths(options_moons$tree, "PortalData/Rodents/moon_dates.csv") %>%
   read.csv(stringsAsFactors = FALSE) %>% 

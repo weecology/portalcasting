@@ -61,9 +61,7 @@ pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
   for(s in species){
 
     ss <- gsub("NA.", "NA", s)
-    if (!quiet){
-      message(paste0("Fitting pevGARCH models for ", ss))
-    }
+    messageq(paste0("Fitting pevGARCH models for ", ss), quiet)
 
     abund_s <- extract2(abundances, s)
   
@@ -78,7 +76,8 @@ pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
 
       for(m in models){
         model_name <- paste(m, collapse = ", ")
-        message(paste0("Fitting Model ", model_count, ": ", model_name))
+        msg <- paste0("Fitting Model ", model_count, ": ", model_name)
+        messageq(msg, quiet)
         predictors <- NULL
         fcast_predictors <- NULL
         if (!(is.null(unlist(m)))){

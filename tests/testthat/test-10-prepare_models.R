@@ -2,21 +2,20 @@ context("Test prepare_models functions")
 
 test_that("model_names", {
   expect_is(model_names(model_set = "prefab"), "character")
-  expect_error(model_names(model_set = 1), "`model_set` is not")
-  expect_error(model_names(add = 1), "`add` is not")
-  expect_error(model_names(model_set = c("prefab", "prefab")), 
-               "`model_set` can only be")
-  expect_error(model_names(model_set = "ok"), "`model_set` must be")
+  expect_error(model_names(model_set = 1))
+  expect_error(model_names(add = 1))
+  expect_error(model_names(model_set = c("prefab", "prefab")))
+  expect_error(model_names(model_set = "ok"))
 })
 
 test_that("write_model", {
-  expect_error(write_model(1), "`options_model` is not")
-  expect_output(
+  expect_error(write_model(1))
+  expect_message(
     write_model(AutoArima_options(dirtree(main = "testing_casting"))))
 })
 
 test_that("model_template", {
-  expect_error(model_template(1), "`options_model` is not")
+  expect_error(model_template(1))
 
   temp1 <- model_template(
               AutoArima_options(dirtree(main = "testing_casting")))

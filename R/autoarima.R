@@ -52,9 +52,7 @@ AutoArima <- function(tree = dirtree(), level = "All", quiet = FALSE){
   for (s in species){
 
     ss <- gsub("NA.", "NA", s)
-    if (!quiet){
-      message(paste0("Fitting AutoArima model for ", ss))
-    }
+    messageq(paste0("Fitting AutoArima model for ", ss), quiet)
     abund_s <- extract2(abundances, s)
   
     if (sum(abund_s) == 0){

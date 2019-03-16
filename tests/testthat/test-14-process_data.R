@@ -6,7 +6,7 @@ moons <- prep_moons(moon_opts)
 rodents <- prep_rodents(moons, rod_opts)
 
 test_that("interpolate_abundance", {
-  expect_error(interpolate_abundance(1), "`rodents` is not")
+  expect_error(interpolate_abundance(1))
   expect_silent(rodents_int <- interpolate_abundance(rodents))
   expect_equal(nrow(rodents_int) > nrow(rodents), TRUE)
   expect_equal(ncol(rodents_int) < ncol(rodents), TRUE)

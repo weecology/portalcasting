@@ -45,9 +45,8 @@ nbGARCH <- function(tree = dirtree(), level = "All", quiet = FALSE){
   for (s in species){
 
     ss <- gsub("NA.", "NA", s)
-    if (!quiet){
-      message(paste0("Fitting nbGARCH model for ", ss))
-    }
+    messageq(paste0("Fitting nbGARCH model for ", ss), quiet)
+
     abund_s <- extract2(abundances, s)
     past <- list(past_obs = 1, past_mean = 12)
     if (sum(abund_s) == 0){

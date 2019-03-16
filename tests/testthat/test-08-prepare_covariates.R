@@ -9,30 +9,20 @@ test_that("prep_covariates", {
   expect_error(prep_covariates(moons, 1))
   expect_message(cov_tab <- prep_covariates(moons, cov_opts))
   expect_is(cov_tab, "covariates")
-  cov_opts2 <- cov_opts
-  cov_opts2$quiet <- TRUE
-  expect_silent(cov_tab2 <- prep_covariates(moons, cov_opts2))
-  expect_is(cov_tab2, "covariates")
-  expect_equal(cov_tab, cov_tab2)
 })
 
 test_that("transfer_hist_covariate_forecasts", {
   d_opts <- options_all$options_data
-  d_opts2 <- d_opts
-  d_opts2$quiet <- TRUE
   expect_silent(transfer_hist_covariate_forecasts(d_opts))
   path_to <- file_paths(d_opts$tree, "data/covariate_forecasts.csv")
   unlink(path_to, force = TRUE)  
   expect_message(transfer_hist_covariate_forecasts(d_opts))
   unlink(path_to, force = TRUE)  
-  expect_silent(transfer_hist_covariate_forecasts(d_opts2))
   exists <- read.csv(path_to, stringsAsFactors = FALSE) 
   exists$date_made <- "1970-01-01"
   write.csv(exists, path_to, row.names = FALSE)
   expect_message(transfer_hist_covariate_forecasts(d_opts))
   write.csv(exists, path_to, row.names = FALSE)
-  expect_silent(transfer_hist_covariate_forecasts(d_opts2))
-  unlink(path_to, force = TRUE)  
   expect_message(transfer_hist_covariate_forecasts(d_opts))
 })
 

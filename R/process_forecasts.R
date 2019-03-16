@@ -51,9 +51,8 @@ save_forecast_output <- function(all, controls, model, tree){
 #'
 combine_forecasts <- function(options_cast = cast_options()){
   check_args()
-  if (!options_cast$quiet){
-    message(paste0("Compiling ", options_cast$cast_type))
-  }
+  msg <- paste0("Compiling ", options_cast$cast_type)
+  messageq(msg, options_cast$quiet)
   temp_dir <- sub_paths(options_cast$tree, "tmp")
   pred_dir <- sub_paths(options_cast$tree, "predictions")
   forecast_date <- options_cast$cast_date
@@ -96,9 +95,7 @@ combine_forecasts <- function(options_cast = cast_options()){
 add_ensemble <- function(options_cast = cast_options()){
   check_args()
   if (options_cast$ensemble){
-    if (!options_cast$quiet){
-      message("Creating ensemble model")
-    }
+    messageq("Creating ensemble model", options_cast$quiet)
     temp_dir <- sub_paths(options_cast$tree, "tmp")
     pred_dir <- sub_paths(options_cast$tree, "predictions")
     forecast_date <- options_cast$cast_date

@@ -29,22 +29,17 @@ test_that("save_forecast_output", {
 })
 
 cast_opts1 <- cast_options(main = "testing_casting")
-cast_opts2 <- cast_options(main = "testing_casting", quiet = TRUE)
 
 test_that("combine_forecasts", {
-  expect_error(combine_forecasts(1), "`options_cast` is not")
+  expect_error(combine_forecasts(1))
   expect_message(comb_fcast1 <- combine_forecasts(cast_opts1))
-  expect_silent(comb_fcast2 <- combine_forecasts(cast_opts2))
-  expect_equal(comb_fcast1, comb_fcast2)
   expect_is(comb_fcast1, "list")
   expect_equal(names(comb_fcast1), c("forecasts", "all_model_aic"))
 })
 
 test_that("add_ensemble", {
-  expect_error(add_ensemble(1), "`options_cast` is not")
+  expect_error(add_ensemble(1))
   expect_message(ensmb1 <- add_ensemble(cast_opts1))
-  expect_silent(ensmb2 <- add_ensemble(cast_opts2))
-  expect_equal(ensmb1, ensmb2)
   expect_is(ensmb1, "data.frame")
   cast_opts3 <- cast_opts1
   cast_opts3$ensemble <- FALSE
@@ -56,8 +51,8 @@ sub1 <- sub_paths(cast_opts1$tree, "predictions")
 sub2 <- sub_paths(cast_opts1$tree, "PortalData")
 
 test_that("compile_aic_weights", {
-  expect_error(compile_aic_weights(1), "`pred_dir` is")
-  expect_error(compile_aic_weights(c(sub1, sub1)), "`pred_dir` can")
+  expect_error(compile_aic_weights(1))
+  expect_error(compile_aic_weights(c(sub1, sub1)))
   expect_error(compile_aic_weights(sub2))
   expect_silent(weights <- compile_aic_weights(sub1))
   expect_is(weights, "data.frame")
@@ -77,9 +72,9 @@ test_that("make_ensemble", {
             lapply(files, read.csv, na.strings = "", colClasses  = cclass))
   expect_silent(ensemble <- make_ensemble(fcasts, sub1, 0.9))
   expect_is(ensemble, "data.frame")  
-  expect_error(make_ensemble(fcasts, 1), "`pred_dir` is")
-  expect_error(make_ensemble(fcasts, c(sub1, sub1)), "`pred_dir` can")
-  expect_error(make_ensemble(1, sub1), "`all_forecasts` is")
+  expect_error(make_ensemble(fcasts, 1))
+  expect_error(make_ensemble(fcasts, c(sub1, sub1)))
+  expect_error(make_ensemble(1, sub1))
   expect_error(make_ensemble(fcasts, sub1, "ok"))
   expect_error(make_ensemble(fcasts, sub1, 1:2))
   expect_error(make_ensemble(fcasts, sub1, -1))

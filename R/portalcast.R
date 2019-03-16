@@ -40,9 +40,7 @@ portalcast <- function(options_all = all_options()){
 #'
 verify_models <- function(options_cast = cast_options()){
   check_args()
-  if (!options_cast$quiet){
-    cat("Checking model availability", "\n")
-  }
+  messageq("Checking model availability", options_cast$quiet)
   model_dir <- sub_paths(options_cast$tree, "models")
   if (!dir.exists(model_dir)){
     stop("Models subidrectory does not exist")
@@ -72,17 +70,13 @@ verify_models <- function(options_cast = cast_options()){
 #'
 cast_models <- function(options_cast = cast_options()){
   check_args()
-  if (!options_cast$quiet){
-    if (options_cast$cast_type == "forecasts"){
-      message("##########################################################")
-      message("Running models")
-    }
-    if (options_cast$cast_type == "hindcasts"){ 
-      end_step <- options_cast$end[options_cast$hind_step]
-      message("##########################################################")
-      message(paste0("Running models for initial newmoon ", end_step))
-    }
+  msg1 <- "##########################################################"
+  msg2 <- "Running models"
+  if (options_cast$cast_type == "hindcasts"){ 
+    end_step <- options_cast$end[options_cast$hind_step]
+    msg2 <- paste0(msg2, " for initial newmoon ", end_step)  
   }
+  messageq(c(msg1, msg2), options_cast$quiet)
   sapply(models_to_cast(options_cast), source)
 }
 
@@ -164,9 +158,7 @@ clear_tmp <- function(tree = dirtree()){
 #'
 prep_data <- function(options_data = data_options()){
   check_args()
-  if (!options_data$quiet){
-    cat("Preparing data", "\n")
-  }
+  messageq("Preparing data", options_data$quiet)
   metadata_path <- file_paths(options_data$tree, "data/metadata.yaml")
   if (!file.exists(metadata_path)){
     fill_data(options_data)
@@ -196,11 +188,9 @@ casts <- function(options_all = all_options()){
   check_args()
   cast(options_all$options_cast)
   step_casts(options_all)
-  if (!options_all$options_cast$quiet){
-    cat("##########################################################", "\n")
-    cat("Models done", "\n")
-    cat("##########################################################", "\n")
-  }
+  msg1 <- "##########################################################"
+  msg2 <- "Models done"
+  messageq(c(msg1, msg2, msg1), options_all$options_cast$quiet)
 }
 
 #' @rdname casts
@@ -220,9 +210,8 @@ cast <- function(options_cast = cast_options()){
   cast_models(options_cast)
   combined <- combine_forecasts(options_cast)
   ensemble <- add_ensemble(options_cast)
-  if (!options_cast$quiet){
-    message("##########################################################")
-  }
+  msg <- "##########################################################"
+  messageq(msg, options_cast$quiet)
   clear_tmp(options_cast$tree)
 }
 
@@ -297,11 +286,10 @@ check_to_skip <- function(options_cast){
     }
   }
   if (out){
-    if (!options_cast$quiet){
-      end_step <- options_cast$end[options_cast$hind_step]
-      message(paste0("Initial newmoon ", end_step, " not fully sampled"))
-      message("##########################################################")
-    }
+    end_step <- options_cast$end[options_cast$hind_step]
+    msg1 <- paste0("Initial newmoon ", end_step, " not fully sampled")
+    msg2 <- "##########################################################"
+    messageq(c(msg1, msg2) , options_cast$quiet)
   }
   out
 }
@@ -320,9 +308,8 @@ check_to_skip <- function(options_cast){
 #'
 update_data <- function(options_data){
   check_args()
-  if (!options_data$moons$quiet){
-    message("Updating forecasting data files in data subdirectory")
-  }
+  msg <- "Updating forecasting data files in data subdirectory"
+  messageq(msg, options_data$moons$quiet)
   options_data$moons$quiet <- TRUE
   options_data$metadata$quiet <- TRUE
   moons <- prep_moons(options_data$moons)

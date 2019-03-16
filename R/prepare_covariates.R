@@ -24,10 +24,8 @@
 prep_covariates <- function(moons = prep_moons(),
                             options_covariates = covariates_options()){
   check_args()
-
-  if (!options_covariates$quiet){
-    message("Loading covariate data files into data subdirectory")
-  }
+  msg <- "Loading covariate data files into data subdirectory"
+  messageq(msg, options_covariates$quiet)
   hist_cov <- prep_hist_covariates(options_covariates)
 
   if (options_covariates$cov_fcast){
@@ -67,16 +65,14 @@ transfer_hist_covariate_forecasts <- function(options_data = data_options()){
   temp <- read.csv(path_from, stringsAsFactors = FALSE)
 
   if (!file.exists(path_to)){
-    if (!options_data$quiet){
-      message("Loading historical covariate forecasts into data subdirectory")
-    }
+    msg <- "Loading historical covariate forecasts into data subdirectory"
+    message(msg, options_data$quiet)
     write.csv(temp, path_to, row.names = FALSE)    
   } else{
     exists <- read.csv(path_to, stringsAsFactors = FALSE) 
     if (max(temp$date_made) > max(exists$date_made)){
-      if (!options_data$quiet){
-        message("Updating historical covariate forecasts")
-      }
+      msg <- "Updating historical covariate forecasts"
+      message(msg, options_data$quiet)
       write.csv(temp, path_to, row.names = FALSE)
     }
   }

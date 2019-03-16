@@ -7,18 +7,15 @@ moon_opts <- all_options(main = "testing_casting")$options_data$moons
 moons <- prep_moons(moon_opts)
 
 test_that("prep_rodents_list", {
-  expect_error(prep_rodents_list(1, rod_opts), "`moons` is not")
-  expect_error(prep_rodents_list(moons, 1), "`options_rodents` is not")
+  expect_error(prep_rodents_list(1, rod_opts))
+  expect_error(prep_rodents_list(moons, 1))
   expect_message(rodents <- prep_rodents_list(moons, rod_opts))
-  expect_silent(rodents2 <- prep_rodents_list(moons, rod_opts2))
   expect_is(rodents, "rodents_list")
-  expect_is(rodents2, "rodents_list")
-  expect_equal(rodents, rodents2)
 })
 
 test_that("prep_rodents", {
-  expect_error(prep_rodents(1, rod_opts), "`moons` is not")
-  expect_error(prep_rodents(moons, 1), "`options_rodents` is not")
+  expect_error(prep_rodents(1, rod_opts))
+  expect_error(prep_rodents(moons, 1))
   expect_message(rodents <- prep_rodents(moons, rod_opts))
   expect_silent(rodents2 <- prep_rodents(moons, rod_opts2))
   expect_is(rodents, "rodents")
@@ -27,9 +24,9 @@ test_that("prep_rodents", {
 })
 
 test_that("enforce_rodents_options", {
-  expect_error(enforce_rodents_options(1, "all"), "`options_rodents` is not")
-  expect_error(enforce_rodents_options(rod_opts, 1), "`tmnt_type` is not")
-  expect_error(enforce_rodents_options(rod_opts, "ok"), "`tmnt_type` must")
+  expect_error(enforce_rodents_options(1, "all"))
+  expect_error(enforce_rodents_options(rod_opts, 1))
+  expect_error(enforce_rodents_options(rod_opts, "ok"))
   expect_silent(rod_opts1a <- enforce_rodents_options(rod_opts, "all"))
   expect_silent(rod_opts1b <- enforce_rodents_options(rod_opts, "controls"))
   expect_silent(rod_opts1c <- enforce_rodents_options(rod_opts, NULL))
@@ -41,8 +38,8 @@ test_that("enforce_rodents_options", {
 
 test_that("remove_spp", {
   rodents <- prep_rodents_list(moons, rod_opts)$all
-  expect_error(remove_spp(1, "BA"), "`rodents` is not")
-  expect_error(remove_spp(rodents, 1), "`drop_spp` is not")
+  expect_error(remove_spp(1, "BA"))
+  expect_error(remove_spp(rodents, 1))
   expect_silent(rodents1 <- remove_spp(rodents, NULL))
   expect_silent(rodents2 <- remove_spp(rodents, "BA"))
   expect_warning(rodents3 <- remove_spp(rodents, "ok"))
@@ -72,8 +69,8 @@ test_that("rodent_spp", {
 
 test_that("is.spcol", {
   rodents <- prep_rodents_list(moons, rod_opts)$all
-  expect_error(is.spcol(1, rodent_spp()), "`rodents` is not")
-  expect_error(is.spcol(rodents, 1), "`spp_names` is not")
+  expect_error(is.spcol(1, rodent_spp()))
+  expect_error(is.spcol(rodents, 1))
   expect_silent(sppTF <- is.spcol(rodents, rodent_spp()))
   expect_is(sppTF, "logical")
   expect_equal(sum(sppTF), 20)
@@ -106,8 +103,8 @@ test_that("trim_treatment", {
             mutate(total = rowSums(.[ , is.spcol(.)])) %>%
             classy(c("data.frame", "rodents"))
 
-  expect_error(trim_treatment(1, rod_opts), "`rodents` is not")
-  expect_error(trim_treatment(roda, 1), "`options_rodents` is not")
+  expect_error(trim_treatment(1, rod_opts))
+  expect_error(trim_treatment(roda, 1))
   expect_silent(rodat <-  trim_treatment(roda, rod_opts_a))
   expect_silent(rodct <-  trim_treatment(rodc, rod_opts_c))
   expect_equal(roda, rodat)
@@ -118,6 +115,6 @@ test_that("trim_treatment", {
 
 test_that("transfer_trapping_table", {
   d_opts <- all_options(main = "testing_casting")$options_data
-  expect_error(transfer_trapping_table(1), "`options_data` is not")
+  expect_error(transfer_trapping_table(1))
   expect_message(transfer_trapping_table(d_opts))
 })

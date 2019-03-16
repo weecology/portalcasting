@@ -32,10 +32,9 @@ prep_metadata <- function(moons = prep_moons(),
                           covariates = prep_covariates(), 
                           options_metadata = metadata_options()){
   check_args()
-  if (!options_metadata$quiet){
-    message("Loading metadata file into data subdirectory")
-  }
-
+  msg <- "Loading metadata file into data subdirectory"
+  message(msg, options_metadata$quiet)
+  
   forecast_date <- options_metadata$cast_date
   
   covariates_fcasts <- which(covariates$source == "fcast")
