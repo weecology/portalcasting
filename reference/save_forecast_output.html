@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>save_forecast_output</span>(<span class='no'>all</span>, <span class='no'>controls</span>, <span class='no'>name</span>, <span class='no'>metadata</span>, <span class='no'>temp_dir</span>)</pre>
+    <pre class="usage"><span class='fu'>save_forecast_output</span>(<span class='no'>all</span>, <span class='no'>controls</span>, <span class='no'>model</span>, <span class='no'>tree</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,18 +154,13 @@
 <code>list</code> with two elements named <code>forecast</code> and <code>aic</code>.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p><code>character</code> model name for saving in files.</p></td>
+      <th>model</th>
+      <td><p><code>character</code> value of the name of the model.</p></td>
     </tr>
     <tr>
-      <th>metadata</th>
-      <td><p>Class-<code>metadata</code> model metadata <code>list</code>.</p></td>
-    </tr>
-    <tr>
-      <th>temp_dir</th>
-      <td><p><code>character</code> of the path to the subdirectory 
-temporarily housing the predictions. Under default settings, this should 
-be <code><a href='base_path.html'>sub_path(dirtree(), "tmp")</a></code>.</p></td>
+      <th>tree</th>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     </table>
     

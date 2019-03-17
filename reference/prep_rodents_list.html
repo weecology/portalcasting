@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove the temporary files in PortalData and tmp — cleanup_dir • portalcasting</title>
+<title>Prepare historic rodent data — prep_rodents_list • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Remove the temporary files in PortalData and tmp — cleanup_dir" />
+<meta property="og:title" content="Prepare historic rodent data — prep_rodents_list" />
 
-<meta property="og:description" content="Remove content in specified (by options_dir$to_cleanup)
-  subdirectories and the subdirectories themselves." />
+<meta property="og:description" content="Prepare the rodent dataset, tailored for forecasting. 
+  Specifically, return data for all plots and control plots only, for each 
+  species except PI and the total" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -124,37 +125,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove the temporary files in PortalData and tmp</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/directory.R'><code>R/directory.R</code></a></small>
-    <div class="hidden name"><code>cleanup_dir.Rd</code></div>
+    <h1>Prepare historic rodent data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
+    <div class="hidden name"><code>prep_rodents_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Remove content in specified (by <code>options_dir$to_cleanup</code>)
-  subdirectories and the subdirectories themselves.</p>
+    <p>Prepare the rodent dataset, tailored for forecasting. 
+  Specifically, return data for all plots and control plots only, for each 
+  species except PI and the total</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cleanup_dir</span>(<span class='kw'>options_all</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>all_options</a></span>())</pre>
+    <pre class="usage"><span class='fu'>prep_rodents_list</span>(<span class='kw'>moons</span> <span class='kw'>=</span> <span class='fu'><a href='prep_moons.html'>prep_moons</a></span>(),
+  <span class='kw'>options_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>rodents_options</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>options_all</th>
-      <td><p>Class-<code>all_options</code> list containing all options 
-available for controlling the set up and population of the directory (see 
-<code><a href='all_options.html'>all_options</a></code>).</p></td>
+      <th>moons</th>
+      <td><p>Class-<code>moons</code> <code>data.frame</code> containing the historic 
+and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>options_rodents</th>
+      <td><p>Class-<code>rodents_options</code> <code>list</code> of 
+settings controlling the rodents data creation. See 
+<code><a href='all_options.html'>rodents_options</a></code>.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A class-<code>rodents_list</code> <code>list</code> of two class-
+  <code>rodents</code> <code>data.frame</code>s, <code>all</code> (abundances on all plots)
+  and <code>controls</code> (abundances on control plots only).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
-<span class='fu'><a href='portalcast.html'>portalcast</a></span>()
-<span class='fu'>cleanup_dir</span>()
+<span class='fu'><a href='prep_rodents.html'>prep_rodents</a></span>()
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
@@ -162,7 +175,9 @@ available for controlling the set up and population of the directory (see
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

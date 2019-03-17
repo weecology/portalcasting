@@ -80,7 +80,7 @@ pevGARCH_options creates a model_options
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -168,20 +168,20 @@ pevGARCH_options creates a model_options
     
     </div>
 
-    <pre class="usage"><span class='fu'>model_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"AutoArima"</span>,
-  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>model_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"AutoArima"</span>,
+  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>AutoArima_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"AutoArima"</span>,
-  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>AutoArima_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"AutoArima"</span>,
+  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ESSS_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"ESSS"</span>, <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ESSS_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"ESSS"</span>,
+  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>nbGARCH_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"nbGARCH"</span>,
-  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>nbGARCH_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"nbGARCH"</span>,
+  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>pevGARCH_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"pevGARCH"</span>,
-  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>pevGARCH_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"pevGARCH"</span>,
+  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,12 +192,11 @@ pevGARCH_options creates a model_options
 <code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p><code>character</code>-valued name of the model (MUST match the 
-function name).</p></td>
+      <th>model</th>
+      <td><p><code>character</code> value of the name of the model.</p></td>
     </tr>
     <tr>
-      <th>covariates</th>
+      <th>mod_covariates</th>
       <td><p><code>logical</code> indicator for if the model requires 
 covariates.</p></td>
     </tr>

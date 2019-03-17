@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -136,7 +136,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>plot_cast_ts_ylab</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_cast_ts_ylab</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
+  <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"Ensemble"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,9 +148,19 @@
 <code><a href='dirtree.html'>dirtree</a></code>. Used to access the species list.</p></td>
     </tr>
     <tr>
+      <th>level</th>
+      <td><p><code>character</code> value of the level of interest (<code>"All"</code> 
+or <code>"Controls"</code>).</p></td>
+    </tr>
+    <tr>
       <th>species</th>
       <td><p><code>character</code> value of the species code or <code>"total"</code>
 for the total across species.</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p><code>character</code> value of the name (or <code>"Ensemble"</code>) of
+the model to be plotted.</p></td>
     </tr>
     </table>
     

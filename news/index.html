@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -124,11 +124,95 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="portalcasting-0-4-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-4-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/pull/94">portalcasting 0.4.0</a>
+</h1>
+<p><em>2019-03-16</em></p>
+<div id="tidied-functionality-for-checking-function-arguments" class="section level3">
+<h3 class="hasAnchor">
+<a href="#tidied-functionality-for-checking-function-arguments" class="anchor"></a>Tidied functionality for checking function arguments</h3>
+<ul>
+<li>Introduction of <code>check_args</code> and <code>check_arg</code> which collaborate to check the validity of function arguments using a standardized set of requirments based on the argument names, thereby helping to unify and standardize the use of the codebase’s arguments.</li>
+</ul>
+</div>
+<div id="updated-function-names" class="section level3">
+<h3 class="hasAnchor">
+<a href="#updated-function-names" class="anchor"></a>Updated function names</h3>
+<ul>
+<li>
+<code>prep_rodents</code> is now <code>prep_rodents_list</code>
+</li>
+<li>
+<code>rodents_data</code> is now <code>prep_rodents</code>
+</li>
+<li>
+<code>update_rodents</code> is now <code>update_rodents_list</code>
+</li>
+<li>
+<code>read_data</code> has been split out into <code>read_all</code>, <code>read_controls</code>, <code>read_covariates</code>, <code>read_moons</code>, and <code>read_metadata</code>
+</li>
+<li>
+<code>model_path</code> is now <code>model_paths</code>
+</li>
+<li>
+<code>sub_path</code> and <code>sub_paths</code> have been merged into <code>sub_paths</code>, which returns all if <code>specific_subs</code> is NULL</li>
+<li>
+<code>lag_data</code> is now <code>lag_covariates</code>
+</li>
+</ul>
+</div>
+<div id="updated-argument-names-to-leverage-check_args-etc-" class="section level3">
+<h3 class="hasAnchor">
+<a href="#updated-argument-names-to-leverage-check_args-etc-" class="anchor"></a>Updated argument (names to leverage <code>check_args</code>, etc.)</h3>
+<ul>
+<li>In multiple functions <code>data</code> has been replaced with <code>rodents</code> to be specific.</li>
+<li>
+<code>CI_level</code> is now subsumed by <code>confidence_level</code>
+</li>
+<li>
+<code>name</code> is now subsumed by <code>model</code>
+</li>
+<li>
+<code>set</code> is not split into <code>species_set</code> and <code>model_set</code>
+</li>
+<li>The order of arguments in <code>model_names</code> is now back to <code>model_set</code>, <code>add</code>.</li>
+<li>The default <code>subs_type</code> for <code>subdirs</code> is now <code>"portalcasting"</code>.</li>
+<li>The four model functions have a reduced set of inputs to leverage the directory tree, and the script generation is updated to match.</li>
+<li>Updating the <code>cast</code> argument to <code>cast_to_check</code> in <code>cast_is_valid</code> and removing the <code>verbose</code> argument from <code>verify_cast</code> to allow <code>check_arg</code> to leverage <code>check_arg</code> for <code>verify_cast</code>.</li>
+</ul>
+</div>
+<div id="removal-of-classes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#removal-of-classes" class="anchor"></a>Removal of classes</h3>
+<ul>
+<li>The <code>models</code> class has been removed.</li>
+<li>The <code>subdirs</code> class has been removed.</li>
+</ul>
+</div>
+<div id="messageq-function" class="section level3">
+<h3 class="hasAnchor">
+<a href="#messageq-function" class="anchor"></a><code>messageq</code> function</h3>
+<ul>
+<li>
+<code>messageq</code> function is added to tidy code around messages being printed based on the <code>quiet</code> arguments.</li>
+</ul>
+</div>
+<div id="inclusion-of-wensemble-as-an-option-in-model_names" class="section level3">
+<h3 class="hasAnchor">
+<a href="#inclusion-of-wensemble-as-an-option-in-model_names" class="anchor"></a>Inclusion of <code>"wEnsemble"</code> as an option in <code>model_names</code>
+</h3>
+<ul>
+<li>Produces the <code>prefab</code> list with an <code>"Ensemble"</code> entry added, to allow for that simply without using the <code>NULL</code> options, which collects all model names.</li>
+<li>This facilitated addition of <code>models</code> as an argument in the evaluations plots.</li>
+</ul>
+</div>
+</div>
     <div id="portalcasting-0-3-1" class="section level1">
 <h1 class="page-header">
-<a href="#portalcasting-0-3-1" class="anchor"></a><a href="https://github.com/weecology/portalcasting">portalcasting 0.3.1</a>
+<a href="#portalcasting-0-3-1" class="anchor"></a><a href="https://github.com/weecology/portalcasting/pull/93">portalcasting 0.3.1</a>
 </h1>
-<p><em>active development</em></p>
+<p><em>2019-03-12</em></p>
 <div id="bug-fix-in-plot_cast_ts" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bug-fix-in-plot_cast_ts" class="anchor"></a>Bug fix in <code><a href="../reference/plot_cast_ts.html">plot_cast_ts()</a></code>
@@ -327,7 +411,7 @@
 <li>
 <code><a href="../reference/remove_incompletes.html">remove_incompletes()</a></code> removes any incomplete entries in a table, as defined by an <code>NA</code> in a specific column.</li>
 <li>
-<code><a href="../reference/all_options.html">check_options_args()</a></code> provides a tidy way to check the input arguments (wrt class, length, numeric limitations, etc.) to the options functions.</li>
+<code>check_options_args()</code> provides a tidy way to check the input arguments (wrt class, length, numeric limitations, etc.) to the options functions.</li>
 </ul>
 </div>
 <div id="vignettes" class="section level3">
@@ -446,6 +530,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#portalcasting-0-4-0">0.4.0</a></li>
         <li><a href="#portalcasting-0-3-1">0.3.1</a></li>
         <li><a href="#portalcasting-0-3-0">0.3.0</a></li>
         <li><a href="#portalcasting-0-2-2">0.2.2</a></li>

@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>prep_metadata</span>(<span class='kw'>moons</span> <span class='kw'>=</span> <span class='fu'><a href='prep_moons.html'>prep_moons</a></span>(), <span class='kw'>rodents</span> <span class='kw'>=</span> <span class='fu'><a href='prep_rodents.html'>prep_rodents</a></span>(),
+    <pre class="usage"><span class='fu'>prep_metadata</span>(<span class='kw'>moons</span> <span class='kw'>=</span> <span class='fu'><a href='prep_moons.html'>prep_moons</a></span>(), <span class='kw'>rodents_list</span> <span class='kw'>=</span> <span class='fu'><a href='prep_rodents_list.html'>prep_rodents_list</a></span>(),
   <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fu'><a href='prep_covariates.html'>prep_covariates</a></span>(),
   <span class='kw'>options_metadata</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>metadata_options</a></span>())</pre>
     
@@ -149,8 +149,10 @@
 and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</a></code>.</p></td>
     </tr>
     <tr>
-      <th>rodents</th>
-      <td><p>rodent data table</p></td>
+      <th>rodents_list</th>
+      <td><p>A class-<code>rodents_list</code> <code>list</code> of two class-
+<code>rodents</code> <code>data.frame</code>s, <code>all</code> (abundances on all plots)
+and <code>controls</code> (abundances on control plots only).</p></td>
     </tr>
     <tr>
       <th>covariates</th>

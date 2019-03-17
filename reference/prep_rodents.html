@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prepare historic rodent data — prep_rodents • portalcasting</title>
+<title>Collect and process historic rodent data for -casting — prep_rodents • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,12 @@
 
 
 
-<meta property="og:title" content="Prepare historic rodent data — prep_rodents" />
+<meta property="og:title" content="Collect and process historic rodent data for -casting — prep_rodents" />
 
-<meta property="og:description" content="Prepare the rodent dataset, tailored for forecasting. 
-  Specifically, return data for all plots and control plots only, for each 
-  species except PI and the total" />
+<meta property="og:description" content="Prepare a particular version of the rodent dataset, tailored 
+  for forecasting or hindcasting. Available versions of the data currently
+  include all (abundances on all plots) and controls 
+  (abundances on control plots only)" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -125,16 +126,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Prepare historic rodent data</h1>
+    <h1>Collect and process historic rodent data for -casting</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
     <div class="hidden name"><code>prep_rodents.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Prepare the rodent dataset, tailored for forecasting. 
-  Specifically, return data for all plots and control plots only, for each 
-  species except PI and the total</p>
+    <p>Prepare a particular version of the rodent dataset, tailored 
+  for forecasting or hindcasting. Available versions of the data currently
+  include <code>all</code> (abundances on all plots) and <code>controls</code> 
+  (abundances on control plots only)</p>
     
     </div>
 
@@ -152,23 +154,19 @@ and future newmoons, as produced by <code><a href='prep_moons.html'>prep_moons</
       <th>options_rodents</th>
       <td><p>Class-<code>rodents_options</code> <code>list</code> of 
 settings controlling the rodents data creation. See 
-<code><a href='all_options.html'>rodents_options</a></code>.</p></td>
+<code><a href='all_options.html'>rodents_options</a></code> for general creation and 
+<code><a href='enforce_rodents_options.html'>enforce_rodents_options</a></code> for bulk setting of options for
+each of the possible data table outputs.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A class-<code>rodents_list</code> <code>list</code> of two class-
-  <code>rodents</code> <code>data.frame</code>s, <code>all</code> (abundances on all plots)
-  and <code>controls</code> (abundances on control plots only).</p>
+    <p>One of two class-<code>rodents</code> <code>data.frame</code>s, 
+  <code>all</code> (abundances on all plots) or <code>controls</code> (abundances on
+  control plots only).</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
-<span class='fu'>prep_rodents</span>()
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -176,9 +174,7 @@ settings controlling the rodents data creation. See
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

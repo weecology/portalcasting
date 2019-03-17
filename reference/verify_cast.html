@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -136,9 +136,9 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>verify_cast</span>(<span class='no'>cast</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>verify_cast</span>(<span class='no'>cast</span>)
 
-<span class='fu'>cast_is_valid</span>(<span class='no'>cast</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>cast_is_valid</span>(<span class='no'>cast_to_check</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +146,11 @@
     <tr>
       <th>cast</th>
       <td><p><code>data.frame</code> -cast file read in.</p></td>
+    </tr>
+    <tr>
+      <th>cast_to_check</th>
+      <td><p><code>data.frame</code> -cast file being checked within 
+<code>cast_is_valid</code> using <code><a href='check_args.html'>check_arg</a></code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>

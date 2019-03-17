@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine the path for a file in the forecasting directory — file_path • portalcasting</title>
+<title>Determine the path for a file or files in the forecasting directory — file_paths • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Determine the path for a file in the forecasting directory — file_path" />
+<meta property="og:title" content="Determine the path for a file or files in the forecasting directory — file_paths" />
 
-<meta property="og:description" content="Return the normalized path for a specific file within the
-  directory." />
+<meta property="og:description" content="Return the normalized path for a specific file or files 
+  within the directory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -124,19 +124,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Determine the path for a file in the forecasting directory</h1>
+    <h1>Determine the path for a file or files in the forecasting directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/paths.R'><code>R/paths.R</code></a></small>
-    <div class="hidden name"><code>file_path.Rd</code></div>
+    <div class="hidden name"><code>file_paths.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Return the normalized path for a specific file within the
-  directory.</p>
+    <p>Return the normalized path for a specific file or files 
+  within the directory.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>file_path</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>local_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>file_paths</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>local_paths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,22 +146,22 @@
       <td><p><code>dirtree</code>-class list.</p></td>
     </tr>
     <tr>
-      <th>local_path</th>
-      <td><p><code>character</code> file path within the <code>main</code> level 
-of the portalcasting directory.</p></td>
+      <th>local_paths</th>
+      <td><p><code>character</code> file path(s) within the <code>main</code>
+level of the portalcasting directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The normalized path of the specified file (see 
+    <p>The normalized path(s) of the specified file(s) (see 
   <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
-<span class='fu'>file_path</span>(<span class='kw'>local_path</span> <span class='kw'>=</span> <span class='st'>"PortalData/Rodents/Portal_rodent_species.csv"</span>)
+<span class='fu'>file_paths</span>(<span class='kw'>local_paths</span> <span class='kw'>=</span> <span class='st'>"PortalData/Rodents/Portal_rodent_species.csv"</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

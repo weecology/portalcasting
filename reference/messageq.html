@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lag covariate data — lag_data • portalcasting</title>
+<title>Optionally generate a message based on a logical input — messageq • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Lag covariate data — lag_data" />
+<meta property="og:title" content="Optionally generate a message based on a logical input — messageq" />
 
-<meta property="og:description" content="Lag the weather data together based on the new moons" />
+<meta property="og:description" content="Given the input to quiet, generate the message(s) 
+  in msg or not." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -123,43 +124,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lag covariate data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_data.R'><code>R/process_data.R</code></a></small>
-    <div class="hidden name"><code>lag_data.Rd</code></div>
+    <h1>Optionally generate a message based on a logical input</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
+    <div class="hidden name"><code>messageq.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Lag the weather data together based on the new moons</p>
+    <p>Given the input to <code>quiet</code>, generate the message(s) 
+  in <code>msg</code> or not.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>lag_data</span>(<span class='no'>data</span>, <span class='no'>lag</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>messageq</span>(<span class='kw'>msg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>Class <code>covariates</code> <code>data.frame</code> of covariate data 
-to be lagged.</p></td>
+      <th>msg</th>
+      <td><p><code>character</code> vector of the message(s) to generate or 
+<code>NULL</code>. If more than one element is contained in <code>msg</code>, they
+are concatenated with a newline between.</p></td>
     </tr>
     <tr>
-      <th>lag</th>
-      <td><p><code>integer</code> lag between rodent census and covariate data, in
-new moons.</p></td>
-    </tr>
-    <tr>
-      <th>tail</th>
-      <td><p><code>logical</code> indicator if the data lagged to the tail end 
-should be retained.</p></td>
+      <th>quiet</th>
+      <td><p><code>logical</code> indicator controlling if the message is
+generated.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p><code>data</code> <code>data.frame</code> <code>newmoonnumber</code> columnn now 
-  reflecting the lag.</p>
     
 
   </div>
@@ -167,9 +160,7 @@ should be retained.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

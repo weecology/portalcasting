@@ -35,7 +35,9 @@
 <meta property="og:description" content="Read in a specified data file and ensure its class attribute
   is appropriate for usage within the portalcasting pipeline. Current 
   options include &quot;all&quot;, &quot;controls&quot;, &quot;covariates&quot;,
-  &quot;moons&quot;, and &quot;metadata&quot;." />
+  &quot;moons&quot;, and &quot;metadata&quot;. And are available as calls to
+  read_data with a specified data_name or as calls to the
+  specific read_&amp;lt;data_name&amp;gt; functions (like read_moons)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -136,11 +138,23 @@
     <p>Read in a specified data file and ensure its class attribute
   is appropriate for usage within the portalcasting pipeline. Current 
   options include <code>"all"</code>, <code>"controls"</code>, <code>"covariates"</code>,
-  <code>"moons"</code>, and <code>"metadata"</code>.</p>
+  <code>"moons"</code>, and <code>"metadata"</code>. And are available as calls to
+  <code>read_data</code> with a specified <code>data_name</code> or as calls to the
+  specific <code>read_&lt;data_name&gt;</code> functions (like <code>read_moons</code>).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_data</span>(<span class='no'>tree</span>, <span class='no'>data_name</span>)</pre>
+    <pre class="usage"><span class='fu'>read_data</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='no'>data_name</span>)
+
+<span class='fu'>read_all</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+
+<span class='fu'>read_controls</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+
+<span class='fu'>read_covariates</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+
+<span class='fu'>read_moons</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+
+<span class='fu'>read_metadata</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,6 +184,12 @@ Current options include <code>"all"</code>, <code>"controls"</code>,
 <span class='fu'>read_data</span>(<span class='kw'>data_name</span> <span class='kw'>=</span> <span class='st'>"covariates"</span>)
 <span class='fu'>read_data</span>(<span class='kw'>data_name</span> <span class='kw'>=</span> <span class='st'>"moons"</span>)
 <span class='fu'>read_data</span>(<span class='kw'>data_name</span> <span class='kw'>=</span> <span class='st'>"metadata"</span>)
+
+<span class='fu'>read_all</span>()
+<span class='fu'>read_controls</span>()
+<span class='fu'>read_covariates</span>()
+<span class='fu'>read_moons</span>()
+<span class='fu'>read_metadata</span>()
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

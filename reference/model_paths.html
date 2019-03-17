@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine the path for a model in the model sub directory — model_path • portalcasting</title>
+<title>Determine the path for one or more models in the model sub directory — model_paths • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Determine the path for a model in the model sub directory — model_path" />
+<meta property="og:title" content="Determine the path for one or more models in the model sub directory — model_paths" />
 
-<meta property="og:description" content="Return the normalized path for a specific model." />
+<meta property="og:description" content="Return the normalized path(s) for a specific model or models." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -123,18 +123,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Determine the path for a model in the model sub directory</h1>
+    <h1>Determine the path for one or more models in the model sub directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/paths.R'><code>R/paths.R</code></a></small>
-    <div class="hidden name"><code>model_path.Rd</code></div>
+    <div class="hidden name"><code>model_paths.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Return the normalized path for a specific model.</p>
+    <p>Return the normalized path(s) for a specific model or models.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>model_path</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extension</span> <span class='kw'>=</span> <span class='st'>".R"</span>)</pre>
+    <pre class="usage"><span class='fu'>model_paths</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extension</span> <span class='kw'>=</span> <span class='st'>".R"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,8 +144,8 @@
       <td><p><code>dirtree</code>-class list.</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p><code>character</code> name of the specific model.</p></td>
+      <th>models</th>
+      <td><p><code>character</code> name of the specific model(s).</p></td>
     </tr>
     <tr>
       <th>extension</th>
@@ -162,7 +162,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
-<span class='fu'>model_path</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"AutoArima"</span>)
+<span class='fu'>model_paths</span>(<span class='kw'>models</span> <span class='kw'>=</span> <span class='st'>"AutoArima"</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

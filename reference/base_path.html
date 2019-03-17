@@ -36,10 +36,8 @@
   in the directory.
 main_path: Return the path for the main folder
   in the directory.
-sub_paths: Return the paths for the subs folders
-  in the directory.
-sub_path: Return the path for a specific subs 
-  folder or folders in the directory." />
+sub_paths: Return the path(s) for a specific 
+  subs folder or folders in the directory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +68,7 @@ sub_path: Return the path for a specific subs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -141,10 +139,8 @@ sub_path: Return the path for a specific subs
   in the directory.</p>
 <p><code>main_path</code>: Return the path for the <code>main</code> folder
   in the directory.</p>
-<p><code>sub_paths</code>: Return the paths for the <code>subs</code> folders
-  in the directory.</p>
-<p><code>sub_path</code>: Return the path for a specific <code>subs</code> 
-  folder or folders in the directory.</p>
+<p><code>sub_paths</code>: Return the path(s) for a specific 
+  <code>subs</code> folder or folders in the directory.</p>
     
     </div>
 
@@ -152,9 +148,7 @@ sub_path: Return the path for a specific subs
 
 <span class='fu'>main_path</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
 
-<span class='fu'>sub_paths</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
-
-<span class='fu'>sub_path</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='no'>specific_sub</span>)</pre>
+<span class='fu'>sub_paths</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>specific_subs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,9 +158,10 @@ sub_path: Return the path for a specific subs
       <td><p><code>dirtree</code>-class list. See <code><a href='dirtree.html'>dirtree</a></code>.</p></td>
     </tr>
     <tr>
-      <th>specific_sub</th>
+      <th>specific_subs</th>
       <td><p><code>character</code>-value name of the specific 
-subdirectory/subdirectories of interest.</p></td>
+subdirectory/subdirectories of interest, or <code>NULL</code> (default)
+for all.</p></td>
     </tr>
     </table>
     
@@ -176,11 +171,9 @@ subdirectory/subdirectories of interest.</p></td>
   directory tree as a character value (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
 <p><code>main_path</code>: The normalized path of the main folder in the 
   directory tree as a character value (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
-<p><code>sub_paths</code>: The normalized paths of the sub folders in the 
-  directory tree as a character vector (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
-<p><code>sub_paths</code>: The normalized path(s) of the <code>specific_sub</code>
-  folder(s) in the directory tree as <code>character</code> value(s) (see 
-  <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
+<p><code>sub_paths</code>: The normalized path(s) of the 
+  <code>specific_subs</code> folder(s) in the directory tree as <code>character</code>
+   value(s) (see <code><a href='https://www.rdocumentation.org/packages/base/topics/normalizePath'>normalizePath</a></code>).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -189,7 +182,7 @@ subdirectory/subdirectories of interest.</p></td>
 <span class='fu'>base_path</span>()
 <span class='fu'>main_path</span>()
 <span class='fu'>sub_paths</span>()
-<span class='fu'>sub_path</span>(<span class='kw'>specific_sub</span> <span class='kw'>=</span> <span class='st'>"models"</span>)
+<span class='fu'>sub_paths</span>(<span class='kw'>specific_subs</span> <span class='kw'>=</span> <span class='st'>"models"</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

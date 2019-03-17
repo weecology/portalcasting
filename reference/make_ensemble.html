@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -134,7 +134,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>make_ensemble</span>(<span class='no'>all_forecasts</span>, <span class='no'>pred_dir</span>, <span class='kw'>CI_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
+    <pre class="usage"><span class='fu'>make_ensemble</span>(<span class='no'>all_forecasts</span>, <span class='no'>pred_dir</span>, <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,15 +150,15 @@ combined.</p></td>
 the saved model predictions reside.</p></td>
     </tr>
     <tr>
-      <th>CI_level</th>
-      <td><p><code>numeric</code> confidence interval level to use (must be
-between 0 and 1.</p></td>
+      <th>confidence_level</th>
+      <td><p><code>numeric</code> confidence level used in 
+summarizing model output. Must be between <code>0</code> and <code>1</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>ensemble</p>
+    <p>Forecast abundance table for the ensemble model.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -168,11 +168,11 @@ between 0 and 1.</p></td>
   the weighted mean using the unbiased estimate of sample variance. See
   https://github.com/weecology/portalPredictions/pull/65
   We only store the prediction interval for models, so we backcalculate 
-  individual model variance assuming the same <code>CI_level</code> throughout. 
-  Assert that the summed weight of all the model ensembles is 1, as 
-  that's what the variance estimates assume. The weight values are rounded 
-  to account for precision errors. Summed weights can also be <code>NA</code> if
-  there are not weights availble for that ensemble.</p>
+  individual model variance assuming the same <code>confidence_level</code> 
+  throughout. Assert that the summed weight of all the model ensembles is 
+  1, as that's what the variance estimates assume. The weight values are 
+  rounded to account for precision errors. Summed weights can also be 
+  <code>NA</code> if there are not weights availble for that ensemble.</p>
     
 
   </div>

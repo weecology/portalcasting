@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -142,29 +142,27 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>subdirs</span>(<span class='kw'>subs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>subdirs</span>(<span class='kw'>subs_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subs_type</span> <span class='kw'>=</span> <span class='st'>"portalcasting"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>subs</th>
-      <td><p>Either [1] names of additional subdirectories to add to the
-vector set up by <code>type</code> or [2] an optional way to input all 
+      <th>subs_names</th>
+      <td><p>Either [1] names of additional subdirectories to add to
+the vector set up by <code>type</code> or [2] an optional way to input all 
 subdirectory names (requires <code>type = NULL</code>, which is the default).</p></td>
     </tr>
     <tr>
-      <th>type</th>
+      <th>subs_type</th>
       <td><p><code>character</code> name for quick generation of subdirectory
-vector. Presently only defined for the default input 
-<code>"portalcasting"</code>.</p></td>
+vector. Presently only defined for <code>"portalcasting"</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Class-<code>subdirs</code> vector of character elements of 
-  subdirectory names.</p>
+    <p><code>character</code> vector of subdirectory names.</p>
     
 
   </div>

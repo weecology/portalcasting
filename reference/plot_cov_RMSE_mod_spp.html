@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -137,8 +137,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>plot_cov_RMSE_mod_spp</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"hindcasts"</span>,
-  <span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='rodent_spp.html'>rodent_spp</a></span>(<span class='kw'>set</span> <span class='kw'>=</span> <span class='st'>"evalplot"</span>), <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
-  <span class='kw'>cast_dates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_observed</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='kw'>species</span> <span class='kw'>=</span> <span class='fu'><a href='rodent_spp.html'>rodent_spp</a></span>(<span class='kw'>species_set</span> <span class='kw'>=</span> <span class='st'>"evalplot"</span>), <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Controls"</span>,
+  <span class='kw'>cast_dates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_observed</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='model_names.html'>model_names</a></span>(<span class='st'>"wEnsemble"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,8 +165,8 @@ plot is reliably coded/</p></td>
     </tr>
     <tr>
       <th>level</th>
-      <td><p><code>character</code> value of the level of interest (<code>"All"</code> 
-or <code>"Controls"</code>).</p></td>
+      <td><p><code>character</code> value of the treatment type of interest 
+(<code>"All"</code> or <code>"Controls"</code>).</p></td>
     </tr>
     <tr>
       <th>cast_dates</th>
@@ -179,6 +180,12 @@ the files in the predictions subdirectory. Can be length 1 or more and if
 values needed for a -cast to be retained in the output table. Default is
 <code>1</code>, which returns all -casts with any observations. To include all
 -casts (even those without any evaluations), set to <code>0</code>.</p></td>
+    </tr>
+    <tr>
+      <th>models</th>
+      <td><p><code>character</code> value(s) of the name(s) (or 
+<code>"Ensemble"</code>) of the model(s) of interest. If <code>NULL</code>, all
+models are returned.</p></td>
     </tr>
     </table>
     

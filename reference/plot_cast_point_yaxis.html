@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update the rodent data for a step in a hindcast — update_rodents • portalcasting</title>
+<title>Expand the names with formating for a multi-species -cast plot y 
+  axis — plot_cast_point_yaxis • portalcasting</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +31,11 @@
 
 
 
-<meta property="og:title" content="Update the rodent data for a step in a hindcast — update_rodents" />
+<meta property="og:title" content="Expand the names with formating for a multi-species -cast plot y 
+  axis — plot_cast_point_yaxis" />
 
-<meta property="og:description" content="Given an updated options_rodents$hind_step, update
-  the rodent data." />
+<meta property="og:description" content="Add the y-axis of formatted species names to a 
+  plot_cast_point." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -64,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -124,36 +126,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update the rodent data for a step in a hindcast</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/portalcast.R'><code>R/portalcast.R</code></a></small>
-    <div class="hidden name"><code>update_rodents.Rd</code></div>
+    <h1>Expand the names with formating for a multi-species -cast plot y 
+  axis</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>plot_cast_point_yaxis.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Given an updated <code>options_rodents$hind_step</code>, update
-  the rodent data.</p>
+    <p>Add the y-axis of formatted species names to a 
+  <code><a href='plot_cast_point.html'>plot_cast_point</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>update_rodents</span>(<span class='no'>options_rodents</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_cast_point_yaxis</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"total"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>options_rodents</th>
-      <td><p>A class-<code>rodents_options</code> <code>list</code> of 
-settings controlling the rodents data creation.</p></td>
+      <th>tree</th>
+      <td><p><code>dirtree</code>-class directory tree list. See 
+<code><a href='dirtree.html'>dirtree</a></code>. Used to access the species list.</p></td>
+    </tr>
+    <tr>
+      <th>species</th>
+      <td><p><code>character</code> vector of the species codes (or 
+<code>"total"</code> for the total across species) being plotted.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>rodents_list</code>-class <code>list</code> of two <code>rodents</code>-class
-  <code>data.frames</code>: <code>"all"</code> (containing counts across all plots)
-  <code>"controls"</code> (containing counts across just the control plots), 
-  updated for the particular step in the hindcast.</p>
+    <p><code>list</code> of <code>text</code> and <code>font</code> elements.</p>
     
 
   </div>

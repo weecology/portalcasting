@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@
       <h1>portalcasting Codebase</h1>
                         <h4 class="author">Juniper L. Simonis</h4>
             
-            <h4 class="date">13 March, 2019</h4>
+            <h4 class="date">17 March, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/codebase.Rmd"><code>vignettes/codebase.Rmd</code></a></small>
       <div class="hidden name"><code>codebase.Rmd</code></div>
@@ -101,7 +101,7 @@
 
     
     
-<p>This vignette outlines the codebase for the <strong>portalcasting</strong> package (v0.3.1), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>.</p>
+<p>This vignette outlines the codebase for the <strong>portalcasting</strong> package (v0.4.0), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repo</a>.</p>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
@@ -138,17 +138,58 @@
 <ul>
 <li><code><a href="../reference/transfer_hist_covariate_forecasts.html">transfer_hist_covariate_forecasts()</a></code></li>
 <li><code><a href="../reference/transfer_trapping_table.html">transfer_trapping_table()</a></code></li>
-<li><code><a href="../reference/prep_moons.html">prep_moons()</a></code></li>
+<li>
+<code><a href="../reference/prep_moons.html">prep_moons()</a></code>
+<ul>
+<li><code><a href="../reference/add_future_moons.html">add_future_moons(options_moons)</a></code></li>
+<li><code><a href="../reference/append_past_moons_to_raw.html">append_past_moons_to_raw(options_moons)</a></code></li>
+<li><code><a href="../reference/format_moons.html">format_moons()</a></code></li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/prep_rodents_list.html">prep_rodents_list()</a></code>
+<ul>
 <li><code><a href="../reference/prep_rodents.html">prep_rodents()</a></code></li>
-<li><code><a href="../reference/prep_covariates.html">prep_covariates()</a></code></li>
+</ul>
+</li>
+<li>
+<code><a href="../reference/prep_covariates.html">prep_covariates()</a></code>
+<ul>
+<li><code><a href="../reference/prep_hist_covariates.html">prep_hist_covariates()</a></code></li>
+<li>
+<code><a href="../reference/prep_fcast_covariates.html">prep_fcast_covariates()</a></code>
+<ul>
+<li>
+<code><a href="../reference/forecast_covariates.html">forecast_covariates()</a></code>
+<ul>
+<li><code><a href="../reference/trim_moons_fcast.html">trim_moons_fcast()</a></code></li>
+<li><code><a href="../reference/forecast_covariates.html">forecast_weather()</a></code></li>
+<li><code><a href="../reference/forecast_covariates.html">forecast_ndvi()</a></code></li>
+</ul>
+</li>
+<li><code><a href="../reference/append_cov_fcast_csv.html">append_cov_fcast_csv()</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><code><a href="../reference/prep_metadata.html">prep_metadata()</a></code></li>
 </ul>
 </li>
-<li><code><a href="../reference/fill_dir.html">fill_predictions()</a></code></li>
+<li>
+<code><a href="../reference/fill_dir.html">fill_predictions()</a></code>
+<ul>
+<li><code><a href="../reference/download_predictions.html">download_predictions()</a></code></li>
+</ul>
+</li>
 <li>
 <code><a href="../reference/fill_dir.html">fill_models()</a></code>
 <ul>
-<li><code><a href="../reference/write_model.html">write_model()</a></code></li>
+<li>
+<code><a href="../reference/write_model.html">write_model()</a></code>
+<ul>
+<li><code><a href="../reference/write_model.html">model_template()</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -160,7 +201,13 @@
 <ul>
 <li><code><a href="../reference/clear_tmp.html">clear_tmp()</a></code></li>
 <li><code><a href="../reference/verify_models.html">verify_models()</a></code></li>
-<li><code><a href="../reference/prep_data.html">prep_data()</a></code></li>
+<li>
+<code><a href="../reference/prep_data.html">prep_data()</a></code>
+<ul>
+<li>if needed, <code><a href="../reference/fill_dir.html">fill_data()</a></code>
+</li>
+</ul>
+</li>
 <li>
 <code><a href="../reference/casts.html">casts()</a></code>
 <ul>
@@ -168,11 +215,21 @@
 <code><a href="../reference/casts.html">cast()</a></code>
 <ul>
 <li><code><a href="../reference/check_to_skip.html">check_to_skip()</a></code></li>
-<li><code><a href="../reference/cast_models.html">cast_models()</a></code></li>
+<li>
+<code><a href="../reference/cast_models.html">cast_models()</a></code>
+<ul>
+<li><code><a href="../reference/models_to_cast.html">models_to_cast()</a></code></li>
+</ul>
+</li>
 <li>
 <code><a href="../reference/combine_forecasts.html">combine_forecasts()</a></code><br>
 </li>
-<li><code><a href="../reference/add_ensemble.html">add_ensemble()</a></code></li>
+<li>
+<code><a href="../reference/add_ensemble.html">add_ensemble()</a></code>
+<ul>
+<li><code><a href="../reference/make_ensemble.html">make_ensemble()</a></code></li>
+</ul>
+</li>
 <li><code><a href="../reference/clear_tmp.html">clear_tmp()</a></code></li>
 <li>
 <code><a href="../reference/casts.html">step_casts()</a></code>
@@ -181,9 +238,34 @@
 <li>
 <code><a href="../reference/update_data.html">update_data()</a></code>
 <ul>
-<li><code><a href="../reference/prep_moons.html">prep_moons()</a></code></li>
-<li><code><a href="../reference/update_rodents.html">update_rodents()</a></code></li>
-<li><code><a href="../reference/update_covariates.html">update_covariates()</a></code></li>
+<li>
+<code><a href="../reference/prep_moons.html">prep_moons()</a></code>
+<ul>
+<li><code><a href="../reference/add_future_moons.html">add_future_moons(options_moons)</a></code></li>
+<li><code><a href="../reference/append_past_moons_to_raw.html">append_past_moons_to_raw(options_moons)</a></code></li>
+<li><code><a href="../reference/format_moons.html">format_moons()</a></code></li>
+</ul>
+</li>
+<li><code><a href="../reference/update_rodents_list.html">update_rodents_list()</a></code></li>
+<li>
+<code><a href="../reference/update_covariates.html">update_covariates()</a></code>
+<ul>
+<li>
+<code><a href="../reference/prep_fcast_covariates.html">prep_fcast_covariates()</a></code>
+<ul>
+<li>
+<code><a href="../reference/forecast_covariates.html">forecast_covariates()</a></code>
+<ul>
+<li><code><a href="../reference/trim_moons_fcast.html">trim_moons_fcast()</a></code></li>
+<li><code><a href="../reference/forecast_covariates.html">forecast_weather()</a></code></li>
+<li><code><a href="../reference/forecast_covariates.html">forecast_ndvi()</a></code></li>
+</ul>
+</li>
+<li><code><a href="../reference/append_cov_fcast_csv.html">append_cov_fcast_csv()</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><code><a href="../reference/prep_metadata.html">prep_metadata()</a></code></li>
 </ul>
 </li>
@@ -191,11 +273,21 @@
 <code><a href="../reference/casts.html">cast()</a></code>
 <ul>
 <li><code><a href="../reference/check_to_skip.html">check_to_skip()</a></code></li>
-<li><code><a href="../reference/cast_models.html">cast_models()</a></code></li>
+<li>
+<code><a href="../reference/cast_models.html">cast_models()</a></code>
+<ul>
+<li><code><a href="../reference/models_to_cast.html">models_to_cast()</a></code></li>
+</ul>
+</li>
 <li>
 <code><a href="../reference/combine_forecasts.html">combine_forecasts()</a></code><br>
 </li>
-<li><code><a href="../reference/add_ensemble.html">add_ensemble()</a></code></li>
+<li>
+<code><a href="../reference/add_ensemble.html">add_ensemble()</a></code>
+<ul>
+<li><code><a href="../reference/make_ensemble.html">make_ensemble()</a></code></li>
+</ul>
+</li>
 <li><code><a href="../reference/clear_tmp.html">clear_tmp()</a></code></li>
 </ul>
 </li>
@@ -229,7 +321,7 @@
 </li>
 </ul>
 <p>The tree is housed in a simple list, created by the <code><a href="../reference/dirtree.html">dirtree()</a></code> function, which allows for the renaming of the folders at all levels, although it is only advisable to alter the <code>base</code> or <code>main</code> levels, as many functions require specifically-named subdirectories.</p>
-<p>The full-path components of the tree can be generated from the simple list using <code><a href="../reference/base_path.html">main_path()</a></code>, <code><a href="../reference/base_path.html">sub_path()</a></code>, and <code><a href="../reference/base_path.html">sub_paths()</a></code>. In addition, <code><a href="../reference/model_path.html">model_path()</a></code> can be used to find a specific model’s full path and <code><a href="../reference/file_path.html">file_path()</a></code> can be used to find the full path of any file within the directory.</p>
+<p>The full-path components of the tree can be generated from the simple list using <code><a href="../reference/base_path.html">main_path()</a></code> and <code><a href="../reference/base_path.html">sub_paths()</a></code>. In addition, <code><a href="../reference/model_paths.html">model_paths()</a></code> can be used to find a specific model’s (or models’) full path(s) and <code><a href="../reference/file_paths.html">file_paths()</a></code> can be used to find the full path of any file(s) within the directory.</p>
 </div>
 <div id="options-list" class="section level3">
 <h3 class="hasAnchor">
@@ -301,7 +393,7 @@
 <li><code><a href="../reference/read_data.html">read_data()</a></code></li>
 <li><code><a href="../reference/read_cast.html">read_cast()</a></code></li>
 <li><code><a href="../reference/select_casts.html">select_casts()</a></code></li>
-<li><code>plot_cast_point_yaxis()</code></li>
+<li><code><a href="../reference/plot_cast_point_yaxis.html">plot_cast_point_yaxis()</a></code></li>
 </ul>
 </li>
 <li>

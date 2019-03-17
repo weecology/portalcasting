@@ -59,9 +59,7 @@ predictions_options creates a
 models_options creates a models_options 
   list of options for populating the models subdirectory.
 cast_options creates a cast_options list 
-  of control options for running portalcast.
-check_options_args verifies the validity (class, size,
-  etc.) of the inputs to the options list functions." />
+  of control options for running portalcast." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -92,7 +90,7 @@ check_options_args verifies the validity (class, size,
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -187,14 +185,11 @@ check_options_args verifies the validity (class, size,
   <code>list</code> of options for populating the models subdirectory.</p>
 <p><code>cast_options</code> creates a <code>cast_options</code> <code>list</code> 
   of control options for running <code><a href='portalcast.html'>portalcast</a></code>.</p>
-<p><code>check_options_args</code> verifies the validity (class, size,
-  etc.) of the inputs to the options list functions.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>all_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(),
-  <span class='kw'>append_missing_to_raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>m_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre class="usage"><span class='fu'>all_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>append_missing_to_raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>m_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>m_filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>, <span class='kw'>tmnt_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>,
   <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>drop_spp</span> <span class='kw'>=</span> <span class='st'>"PI"</span>, <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>,
   <span class='kw'>min_traps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Site"</span>, <span class='kw'>treatment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plots</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
@@ -207,23 +202,21 @@ check_options_args verifies the validity (class, size,
   <span class='kw'>c_filename</span> <span class='kw'>=</span> <span class='st'>"covariates.csv"</span>, <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
   <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>meta_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>meta_filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>,
-  <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(<span class='kw'>set</span> <span class='kw'>=</span>
-  <span class='st'>"prefab"</span>), <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='model_names.html'>model_names</a></span>(),
+  <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))
 
-<span class='fu'>dir_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))
+<span class='fu'>dir_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))
 
-<span class='fu'>PortalData_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>,
-  <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>PortalData_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>data_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(),
-  <span class='kw'>append_missing_to_raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>m_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>m_filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>, <span class='kw'>tmnt_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>,
-  <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>drop_spp</span> <span class='kw'>=</span> <span class='st'>"PI"</span>, <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>,
-  <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Site"</span>, <span class='kw'>treatment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plots</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
+<span class='fu'>data_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>append_missing_to_raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>m_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>m_filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>, <span class='kw'>tmnt_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>drop_spp</span> <span class='kw'>=</span> <span class='st'>"PI"</span>,
+  <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Site"</span>, <span class='kw'>treatment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plots</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
   <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"abundance"</span>, <span class='kw'>r_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>r_filename</span> <span class='kw'>=</span> <span class='st'>"all.csv"</span>,
   <span class='kw'>cov_hist</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cov_fcast</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>yr</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='fu'><a href='today.html'>today</a></span>(),
   <span class='st'>"%Y"</span>)), <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>min_lag</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>fcast_nms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -257,38 +250,16 @@ check_options_args verifies the validity (class, size,
   <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
 
-<span class='fu'>predictions_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>predictions_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
+  <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>models_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(<span class='kw'>set</span> <span class='kw'>=</span> <span class='st'>"prefab"</span>))
+<span class='fu'>models_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='model_names.html'>model_names</a></span>())
 
-<span class='fu'>cast_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(<span class='kw'>set</span> <span class='kw'>=</span> <span class='st'>"prefab"</span>),
-  <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>,
-  <span class='kw'>min_traps</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-
-<span class='fu'>check_options_args</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(<span class='kw'>type</span> <span class='kw'>=</span>
-  <span class='st'>"portalcasting"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(),
-  <span class='kw'>append_missing_to_raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>m_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>m_filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>, <span class='kw'>tmnt_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>,
-  <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>drop_spp</span> <span class='kw'>=</span> <span class='st'>"PI"</span>, <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>,
-  <span class='kw'>min_traps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"Site"</span>, <span class='kw'>treatment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plots</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"abundance"</span>, <span class='kw'>r_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>r_filename</span> <span class='kw'>=</span> <span class='st'>"all.csv"</span>,
-  <span class='kw'>cov_hist</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cov_fcast</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>yr</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='fu'><a href='today.html'>today</a></span>(),
-  <span class='st'>"%Y"</span>)), <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>min_lag</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>fcast_nms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nfcnm</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>append_fcast_csv</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>hist_fcast_file</span> <span class='kw'>=</span> <span class='st'>"covariate_forecasts.csv"</span>,
-  <span class='kw'>source_name</span> <span class='kw'>=</span> <span class='st'>"current_archive"</span>, <span class='kw'>c_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>c_filename</span> <span class='kw'>=</span> <span class='st'>"covariates.csv"</span>, <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
-  <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>meta_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>meta_filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>,
-  <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='models.html'>models</a></span>(<span class='kw'>set</span> <span class='kw'>=</span>
-  <span class='st'>"prefab"</span>), <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>n_future_moons</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>,
-  <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))</pre>
+<span class='fu'>cast_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='model_names.html'>model_names</a></span>(), <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
+  <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>hind_step</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_plots</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>min_traps</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -307,14 +278,15 @@ contains the subdirectories. Default <code>""</code> (no main level included).</
     <tr>
       <th>subs</th>
       <td><p><code>character</code> vector naming the specific subdirectories
-within the portalcasting directory tree. Default <code><a href='subdirs.html'>subdirs(type = 
-"portalcasting")</a></code> sets the subdirectories as <code>"predictions"</code>, 
+within the portalcasting directory tree. Default <code><a href='subdirs.html'>subdirs()</a></code>
+sets the subdirectories as <code>"predictions"</code>, 
 <code>"models"</code>, <code>"PortalData"</code>, <code>"data"</code>, and <code>"tmp"</code>. 
 It is generally not advised to change the subdirectories.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p><code>logical</code> indicator controlling if messages are printed.</p></td>
+      <td><p><code>logical</code> indicator controlling if messages are 
+generated.</p></td>
     </tr>
     <tr>
       <th>cast_date</th>
@@ -499,9 +471,9 @@ existing predictions files should be retrieved from the
 repo</a>.</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p><code>character</code> vector of the names of model scripts to 
-include in a cast of the pipeline.</p></td>
+      <th>models</th>
+      <td><p><code>character</code> vector of class <code>models</code> of the names 
+of models to include in a cast of the pipeline.</p></td>
     </tr>
     <tr>
       <th>ensemble</th>
@@ -595,7 +567,6 @@ out.</p></td>
 <span class='fu'>predictions_options</span>()
 <span class='fu'>models_options</span>()
 <span class='fu'>cast_options</span>()
-<span class='fu'>check_options_args</span>()
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
