@@ -3,7 +3,7 @@
 \name{check_args}
 \alias{check_args}
 \alias{check_arg}
-\title{Check a function's arguments values for validity}
+\title{Check a function's arguments' values for validity}
 \usage{
 check_args()
 

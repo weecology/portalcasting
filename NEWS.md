@@ -1,6 +1,14 @@
 # portalcasting (development version)
 
-# [portalcasting 0.4.0](https://github.com/weecology/portalcasting/pull/94)
+Version numbers follow [Semantic Versioning](https://semver.org/).
+
+# [portalcasting 0.4.1](https://github.com/weecology/portalcasting)
+*active development* 
+
+### Move to usage of CRAN *portalr*
+* To aid with stability, we're now using the [CRAN release of portalr](https://cran.r-project.org/package=portalr)
+
+# [portalcasting 0.4.0](https://github.com/weecology/portalcasting/releases/tag/v0.4.0)
 *2019-03-16* 
 
 ### Tidied functionality for checking function arguments
@@ -254,7 +262,7 @@ changes to inputs throughout the code hierarchy, we include a set of functions
 that default options for all aspects of the codebase.
 * See the [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) for further details.
 
-# [portalcasting 0.0.1](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 
+# [pre-portalcasting](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 
 *2018-11-06*
 
 * This is the last iteration of the code that now exists in portalcasting in
