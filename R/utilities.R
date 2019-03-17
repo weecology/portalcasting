@@ -197,7 +197,7 @@ remove_incompletes <- function(df, colname){
   df
 }
 
-#' @title Check a function's arguments values for validity
+#' @title Check a function's arguments' values for validity
 #'
 #' @description \code{check_args} checks that all of the arguments to a given
 #'   function have valid values within the pipeline to avoid naming collision
