@@ -71,7 +71,7 @@ cleanup_dir()
 
 All required inputs to `setup_dir()`, `portalcast()`, and `cleanup_dir()`
 are encompassed within the singular argument `options_all`, which is a 
-hierarchical list of control arguments, defined through the options-settting 
+hierarchical list of control arguments, defined through the options-setting 
 function `all_options()` and the default values are appropriate for basic 
 forecast usage. There are many options available for the user to and a full 
 list can be found by running `?all_options`, to return the help file for 
