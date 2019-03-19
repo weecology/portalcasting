@@ -33,7 +33,7 @@ prep_metadata <- function(moons = prep_moons(),
                           options_metadata = metadata_options()){
   check_args()
   msg <- "Loading metadata file into data subdirectory"
-  message(msg, options_metadata$quiet)
+  messageq(msg, options_metadata$quiet)
   
   forecast_date <- options_metadata$cast_date
   

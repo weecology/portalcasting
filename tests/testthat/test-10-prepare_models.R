@@ -1,5 +1,13 @@
 context("Test prepare_models functions")
 
+tree <- dirtree(main = "portalcasting")
+
+test_that("model_scripts", {
+  expect_silent(scripts <- model_scripts(tree))
+  expect_is(scripts, "character")
+  expect_error(model_scripts(1))
+})
+
 test_that("model_names", {
   expect_is(model_names(model_set = "prefab"), "character")
   expect_is(model_names(model_set = "wEnsemble"), "character")

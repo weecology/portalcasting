@@ -17,8 +17,8 @@
 #' @importFrom stats AIC lm na.omit predict qnorm quantile runif
 #' @importFrom tidyselect one_of
 #' @importFrom tscount tsglm
-#' @importFrom utils download.file read.csv read.table tail write.csv 
-#'   write.table
+#' @importFrom utils download.file packageDescription read.csv read.table 
+#'   tail write.csv write.table
 #' @importFrom viridis viridis
 #' @importFrom yaml as.yaml yaml.load_file
 #'

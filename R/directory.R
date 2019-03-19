@@ -19,6 +19,9 @@
 #'
 setup_dir <- function(options_all = all_options()){
   check_args()
+  version_number <- packageDescription("portalcasting", fields = "Version")
+  msg <- paste0("This is portalcasting v", version_number)
+  messageq(msg, options_all$options_dir$quiet)
   create_dir(options_all$options_dir)
   fill_dir(options_all)
 }

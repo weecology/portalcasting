@@ -43,9 +43,10 @@ image update (*i.e.* the integration of the current master branch of
 `portalcasting` into the [predictions 
 repository](https://github.com/weecology/portalPredictions)) necessarily
 lags behind updates to the master branch of `portalcasting`, although
-ideally not long behind.
+ideally not long behind. The `latest` image is built using `portalcasting` 
+[v0.4.0](https://github.com/weecology/portalcasting/releases/tag/v0.4.0).
 
-The API is well defined at this point, but is evolving and may change.
+The API is moderately well defined at this point, but is still evolving somewhat.
 
 ## Installation
 
@@ -56,11 +57,11 @@ install.packages("devtools")
 devtools::install_github("weecology/portalcasting")
 ```
 
-## Stable environment
+## Production environment
 
 If you wish to spin up a local container from the Portal Predictions 
-image (to ensure a stable runtime environment for implementation
-of the `portalcasting` pipeline), you can run
+image (to ensure that you are using a copy of the production environment 
+for implementation of the `portalcasting` pipeline), you can run
 
 ```
 sudo docker pull weecology/portal_predictions
@@ -90,10 +91,9 @@ Initiative](http://www.moore.org/programs/science/data-driven-discovery)
 through [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to E. P. 
 White. 
 
-We thank Henry Senyondo for help with continuous integration, Hao
-Ye for feedback on documents and code, Heather Bradley for logistical 
-support, John Abatzoglou for assistance with climate forecasts, and James
-Brown for establishing the Portal Project.
+We thank Henry Senyondo for help with continuous integration, Heather Bradley 
+for logistical support, John Abatzoglou for assistance with climate 
+forecasts, and James Brown for establishing the Portal Project.
 
 ## Author Contributions
 

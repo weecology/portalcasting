@@ -22,6 +22,10 @@
 #'
 portalcast <- function(options_all = all_options()){
   check_args()
+  msg1 <- "##########################################################"
+  version_number <- packageDescription("portalcasting", fields = "Version")
+  msg2 <- paste0("This is portalcasting v", version_number)
+  messageq(c(msg1, msg2), options_all$options_cast$quiet)
   clear_tmp(options_all$options_dir$tree)
   verify_models(options_all$options_cast)
   prep_data(options_all$options_data)

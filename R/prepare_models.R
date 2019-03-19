@@ -1,3 +1,24 @@
+#' @title Provide the names of model scripts in the models subdirectory
+#'
+#' @description Lets the user know what model scripts are available.
+#'
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
+#'
+#' @return \code{character} vector of model names.
+#'
+#' @export
+#'
+model_scripts <- function(tree = dirtree()){
+  check_args()
+  base <- tree$base
+  main <- tree$main
+  sub <- "models"
+  dir_path <- normalizePath(file.path(base, main, sub), mustWork = FALSE)
+  mod_names <- list.files(dir_path)
+  mod_names
+}
+
 #' @title Provide the names of models
 #'
 #' @description Based on a \code{set}, returns a character vectory of model
