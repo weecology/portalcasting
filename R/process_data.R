@@ -1,3 +1,25 @@
+#' @title Calculate the fraction of the year from a date
+#' 
+#' @description Based on the year in which the date occurred, determine the
+#'   fraction of the year (foy) for the date (in relation to New Year's Eve
+#'   in that year). 
+#'
+#' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be 
+#'   converted to the fraction of the year.
+#'
+#' @return \code{numeric} value(s) of the fraction of the year.
+#'
+#' @export
+#'
+foy <- function(dates){
+  check_args()
+  dates <- as.Date(dates)
+  jday <- as.numeric(format(dates, "%j"))
+  nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
+  nyejday <- as.numeric(format(nye, "%j"))
+  round(jday / nyejday, 3)
+}
+
 #' @title Interpolate missing rodent data
 #' 
 #' @description Interpolation of missing data in the rodent abundance data 
