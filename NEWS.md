@@ -2,8 +2,11 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# [portalcasting 0.4.1](https://github.com/weecology/portalcasting)
+# [portalcasting 0.4.2](https://github.com/weecology/portalcasting)
 *active development* 
+
+# [portalcasting 0.4.1](https://github.com/weecology/portalcasting/releases/tag/v0.4.1)
+*2019-03-19*
 
 ### Move to usage of CRAN *portalr*
 * To aid with stability, we're now using the [CRAN release of portalr](https://cran.r-project.org/package=portalr)
@@ -17,6 +20,11 @@ loaded in top level functions.
 
 ### Vignette updates
 * Adding plot (from pre-constructed images) to the how-to vignette.
+
+### Patching a bug in `model_template`
+* There was a lingering old name from the argument switch over that was
+causing model templates to be written with a `""` argument for the `model`
+model name input into `save_forecast_output`.
 
 # [portalcasting 0.4.0](https://github.com/weecology/portalcasting/releases/tag/v0.4.0)
 *2019-03-16* 
