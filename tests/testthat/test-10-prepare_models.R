@@ -2,7 +2,7 @@ context("Test prepare_models functions")
 
 tree <- dirtree(main = "portalcasting")
 
-test_taht("model_scripts", {
+test_that("model_scripts", {
   expect_silent(scripts <- model_scripts(tree))
   expect_is(scripts, "character")
   expect_error(model_scripts(1))
