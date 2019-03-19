@@ -8,6 +8,16 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Move to usage of CRAN *portalr*
 * To aid with stability, we're now using the [CRAN release of portalr](https://cran.r-project.org/package=portalr)
 
+### `model_scripts` function
+* Provides a simple way to list the scripts in the `models` subdirectory.
+
+### Including the package version message in `setup_dir` and `portalcast`
+* Including a simple message to report the version of portalcasting 
+loaded in top level functions.
+
+### Vignette updates
+* Adding plot (from pre-constructed images) to the how-to vignette.
+
 # [portalcasting 0.4.0](https://github.com/weecology/portalcasting/releases/tag/v0.4.0)
 *2019-03-16* 
 

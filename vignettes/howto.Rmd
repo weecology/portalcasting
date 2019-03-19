@@ -73,7 +73,7 @@ All required inputs to `setup_dir()`, `portalcast()`, and `cleanup_dir()`
 are encompassed within the singular argument `options_all`, which is a 
 hierarchical list of control arguments, defined through the options-settting 
 function `all_options()` and the default values are appropriate for basic 
-forecast usage. There are many options available for the user to and a full 
+forecast usage. There are many options available for the user to control and a full 
 list can be found by running `?all_options`, to return the help file for 
 the functions that generate the hierarchical options list. 
 
@@ -98,7 +98,7 @@ which has arguments to allow filtering based on `species`, `level`,
 `model`, and `newmoonnumber`, with the default being to return all values:
 
 ```{r, eval=FALSE}
-select_casts(casts, species = "total", model = "Ensemble", level = "All")
+cast_set <- select_casts(casts, species = "total", model = "Ensemble", level = "All")
 ```
 
 ### Visualizing the model output
@@ -111,6 +111,10 @@ flexibility.
 ```{r, eval=FALSE}
 plot_cast_ts()
 ```
+![Time series plot of the total rodents forecast on the 
+control plots](imgs/plot1.png){width=600px}  
+
+<br>
 
 Similarly, the point-in-time forecasts for multiple species can be compared
 using `plot_cast_point`, which defaults to all species and the total 
@@ -120,6 +124,11 @@ but has arguments to allow full flexibility.
 ```{r, eval=FALSE}
 plot_cast_point()
 ```
+![Point-in-time forecast (mean with 90% CI) for all species and total rodents 
+on the control plots](imgs/plot2.png){width=600px}
+  
+<br>
+
 
 It is possible to compare the point-in-time forecasts with observed data
 by setting `with_census = TRUE`: 
@@ -127,6 +136,8 @@ by setting `with_census = TRUE`:
 ```{r, eval=FALSE}
 plot_cast_point(with_census = TRUE)
 ```
+![Point-in-time forecast (mean with 90% CI) with observed value (blue) for all 
+species and total rodents on the control plots](imgs/plot3.png){width=600px}
 
 ### Visualizing model evaluation
 
@@ -139,9 +150,16 @@ across the combination of species and models:
 ```{r, eval=FALSE}
 plot_err_lead_spp_mods()
 ```
-
+![Forecast error as a function of lead time for six representative species and total 
+rodents (rows) using four models and the ensemble (columns) produced on three 
+forecast dates (lines)](imgs/plot4.png){width=600px}
+  
+<br>
+  
 The arguments are set up by default to plot a set of recent forecasts for a set 
-of common species in the control plots, but they allow for flexibility
+of common species in the control plots, but they allow for flexibility.
+
+<br>
 
 Similarly, `plot_cov_RMSE_mod_spp()` displays the coverage and root mean squared 
 error (RMSE) of each model across species:
@@ -149,6 +167,32 @@ error (RMSE) of each model across species:
 ```{r, eval=FALSE}
 plot_cov_RMSE_mod_spp()
 ```
+![Coverage (left column) and root mean squared error (RMSE, right column) for six 
+representative species and total rodents (rows) using four models and the ensemble 
+(x-axis) produced on all available hindcasts (lines)](imgs/plot5.png){width=600px}
+  
+<br>
 
 By default, the function produces a figure using all available hindcasts for a 
 set of common species in the control plots, but the arguments allow for flexibility.
+
+### Reading in data to the R console from the directory
+
+A series of `read_<name>` functions are available for simple loading of the data
+sets into R from the directory. A generalized `read_data` function includes an 
+argument for which data set to load ("all", "controls", "covariates", "moons", 
+or "metadata"), and each of those data sets also has a specific function, such
+as `read_all`.
+```{r, eval=FALSE}
+read_data(data_name = "all")
+read_data(data_name = "controls")
+read_data(data_name = "covariates")
+read_data(data_name = "moons")
+read_data(data_name = "metadata")
+
+read_all()
+read_controls()
+read_covariates()
+read_moons()
+read_metadata()
+```

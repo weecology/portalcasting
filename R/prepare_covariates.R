@@ -66,7 +66,7 @@ transfer_hist_covariate_forecasts <- function(options_data = data_options()){
 
   if (!file.exists(path_to)){
     msg <- "Loading historical covariate forecasts into data subdirectory"
-    message(msg, options_data$quiet)
+    messageq(msg, options_data$quiet)
     write.csv(temp, path_to, row.names = FALSE)    
   } else{
     exists <- read.csv(path_to, stringsAsFactors = FALSE) 
