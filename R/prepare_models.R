@@ -115,7 +115,7 @@ model_template <- function(options_model = model_options()){
 f_a <- ', name ,'(', args_a, ');
 f_c <- ', name ,'(', args_c, ');
 save_forecast_output(f_a, f_c, "', 
-options_model$name, '", tree)'
+options_model$model, '", tree)'
 )
 
 }
