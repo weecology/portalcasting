@@ -37,8 +37,8 @@ and metadata data files (and places them in the `data` subdirectory), copies
 the historic covariate forecast data file available in the package 
 (`/inst/extdata/covariate_forecasts.csv`) into the `data` subdirectory, 
 downloads the most recent set of model forecasts into the `predictions` 
-subdirectory and populates the `models` subdirectory with scripts for the four
-existing models ("AutoArima", "ESSS", "nbGARCH", and "pevGARCH").
+subdirectory and populates the `models` subdirectory with scripts for the five
+existing models ("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", and "pevGARCH").
 
 ```{r, eval=FALSE}
 setup_dir()

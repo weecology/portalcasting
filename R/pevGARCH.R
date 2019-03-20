@@ -34,10 +34,19 @@
 #'   \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
 #'   \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
 #'
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' pevGARCH()
+#' }
+#' 
 #' @export
 #'
 pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
   check_args()
+  messageq(paste0("### Fitting pevGARCH model for ", level, " ###"), quiet)
+
   abundances <- read_data(tree, tolower(level))
   metadata <- read_metadata(tree)
   covariates <- read_covariates(tree)

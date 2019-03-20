@@ -30,7 +30,7 @@
 #'
 #' @param models \code{character} value(s) of the name(s) (or 
 #'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
-#'   models are returned.
+#'   models with available -casts are returned.
 #' 
 #' @examples
 #' \dontrun{
@@ -212,7 +212,7 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
 #'
 #' @param models \code{character} value(s) of the name(s) (or 
 #'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
-#'   models are returned.
+#'   models with available -casts are returned.
 #' 
 #' @examples
 #' \dontrun{
@@ -269,6 +269,15 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
   nudates <- length(udates)
   cols <- viridis(nudates, 1, 0, 0.75)
 
+  incl <- which(casts$species %in% uspecies & casts$model %in% umodels &
+                casts$date %in% udates)
+  casts <- casts[incl, ]
+  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
+  xrange <- c(max(leads) + 1, 0)
+
+  umodels <- unique(casts$model)
+  nmodels <- length(umodels)
+
   par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n")
@@ -278,12 +287,6 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
   text(1.39, 1.095, "Date", xpd = TRUE, cex = 0.75)
   ys <- seq(1.08, by = -0.013, length.out = nudates)
   text(1.39, ys, udates, xpd = TRUE, cex = 0.75, col = cols)
-
-  incl <- which(casts$species %in% uspecies & casts$model %in% umodels &
-                casts$date %in% udates)
-  casts <- casts[incl, ]
-  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
-  xrange <- c(max(leads) + 1, 0)
 
   rowc <- 1 
   for(i in 1:nspecies){

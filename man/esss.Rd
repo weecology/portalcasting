@@ -30,6 +30,14 @@ Model "ESSS" is a flexible exponential smoothing state space
  \href{http://pkg.robjhyndman.com/forecast/}{\code{forecast} package}
  (Hyndman \emph{et al}. 2018).
 }
+\examples{
+\dontrun{
+
+setup_dir()
+ESSS()
+}
+
+}
 \references{
 Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
  F., Razbash S., Wang E., and Yasmeen F. 2018. forecast: Forecasting 

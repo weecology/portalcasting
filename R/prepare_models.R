@@ -37,13 +37,14 @@ model_scripts <- function(tree = dirtree()){
 #'
 model_names <- function(model_set = "prefab", add = NULL){
   check_args()
+  prefab <- c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")
   out <- NULL
   if (!is.null(model_set)){
     if(model_set == "prefab"){
-      out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH")
+      out <- prefab
     }
     if(model_set == "wEnsemble"){
-      out <- c("AutoArima", "ESSS", "nbGARCH", "pevGARCH", "Ensemble")
+      out <- c(prefab, "Ensemble")
     }
   } 
   unique(c(out, add))

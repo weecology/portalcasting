@@ -113,6 +113,8 @@ Usage and rules for arguments are as follows: \cr \cr
   \code{data_name}: must be a length-1 \code{character} vector of value 
     \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
     or \code{"metadata"} in \code{\link{read_data}}. \cr \cr
+  \code{dates}: must be \code{NULL} or a \code{Date} or 
+    \code{Date}-conformable vector in \code{\link{foy}}. \cr \cr
   \code{df}: must be a \code{data.frame} in 
     \code{\link{append_csv}}, \code{\link{dataout}}, and
     \code{\link{remove_incompletes}}. \cr \cr
@@ -178,6 +180,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{AutoArima}}, \code{\link{all_options}}, 
     \code{\link{data_options}}, \code{\link{ESSS}}, 
     \code{\link{metadata_options}}, \code{\link{nbGARCH}},
+    \code{\link{nbsGARCH}},
     \code{\link{pevGARCH}}, and \code{\link{rodents_options}}. \cr \cr
   \code{local_paths}: must be a \code{character} 
     vector in \code{\link{file_paths}}. \cr \cr 
@@ -325,7 +328,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{models_options}}, \code{\link{model_options}},  
     \code{\link{predictions_options}}, \code{\link{PortalData_options}}, 
     \code{\link{moons_options}}, \code{\link{messageq}},
-    \code{\link{nbGARCH}}, \code{\link{pevGARCH}},
+    \code{\link{nbGARCH}}, \code{\link{nbsGARCH}}, \code{\link{pevGARCH}},
     \code{\link{rodents_options}}, and \code{\link{verify_PortalData}}.
     \cr \cr 
   \code{rangex}: must be a length-2 positive \code{integer} or 
@@ -410,6 +413,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{model_paths}}, \code{\link{model_scripts}}, 
     \code{\link{moons_options}}, \code{\link{most_recent_cast}}, 
     \code{\link{most_recent_census}}, \code{\link{nbGARCH}}, 
+    \code{\link{nbsGARCH}},
     \code{\link{pevGARCH}}, \code{\link{plot_cast_point}},
     \code{\link{plot_cast_point_yaxis}}, \code{\link{plot_cast_ts}},
     \code{\link{plot_cast_ts_xaxis}}, \code{\link{plot_cast_ts_ylab}},

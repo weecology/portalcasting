@@ -103,3 +103,21 @@ pevGARCH_options <- function(tree = dirtree(), model = "pevGARCH",
   model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
                 lag = lag, quiet = quiet) 
 }
+
+#' @rdname model_options
+#'
+#' @description \code{nbsGARCH_options} creates a \code{model_options} 
+#'   \code{list} of control options for the model script controlling the 
+#'   \code{\link{nbsGARCH}} model.
+#'
+#' @return \code{nbsGARCH_options}: a \code{model_options} \code{list} of 
+#'   settings controlling the \code{\link{nbsGARCH}} model creation.
+#'
+#' @export
+#'
+nbsGARCH_options <- function(tree = dirtree(), model = "nbsGARCH", 
+                            mod_covariates = FALSE, lag = NULL, 
+                            quiet = FALSE){
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
+                lag = lag, quiet = quiet) 
+}
