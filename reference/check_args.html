@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -260,6 +260,8 @@
   <code>data_name</code>: must be a length-1 <code>character</code> vector of value 
     <code>"all"</code>, <code>"controls"</code>, <code>"covariates"</code>, <code>"moons"</code>,
     or <code>"metadata"</code> in <code><a href='read_data.html'>read_data</a></code>. <br /> <br />
+  <code>dates</code>: must be <code>NULL</code> or a <code>Date</code> or 
+    <code>Date</code>-conformable vector in <code><a href='foy.html'>foy</a></code>. <br /> <br />
   <code>df</code>: must be a <code>data.frame</code> in 
     <code><a href='append_csv.html'>append_csv</a></code>, <code><a href='dataout.html'>dataout</a></code>, and
     <code><a href='remove_incompletes.html'>remove_incompletes</a></code>. <br /> <br />
@@ -325,6 +327,7 @@
     <code><a href='autoarima.html'>AutoArima</a></code>, <code><a href='all_options.html'>all_options</a></code>, 
     <code><a href='all_options.html'>data_options</a></code>, <code><a href='esss.html'>ESSS</a></code>, 
     <code><a href='all_options.html'>metadata_options</a></code>, <code><a href='nbgarch.html'>nbGARCH</a></code>,
+    <code><a href='nbsGARCH.html'>nbsGARCH</a></code>,
     <code><a href='pevgarch.html'>pevGARCH</a></code>, and <code><a href='all_options.html'>rodents_options</a></code>. <br /> <br />
   <code>local_paths</code>: must be a <code>character</code> 
     vector in <code><a href='file_paths.html'>file_paths</a></code>. <br /> <br /> 
@@ -472,7 +475,7 @@
     <code><a href='all_options.html'>models_options</a></code>, <code><a href='model_options.html'>model_options</a></code>,  
     <code><a href='all_options.html'>predictions_options</a></code>, <code><a href='all_options.html'>PortalData_options</a></code>, 
     <code><a href='all_options.html'>moons_options</a></code>, <code><a href='messageq.html'>messageq</a></code>,
-    <code><a href='nbgarch.html'>nbGARCH</a></code>, <code><a href='pevgarch.html'>pevGARCH</a></code>,
+    <code><a href='nbgarch.html'>nbGARCH</a></code>, <code><a href='nbsGARCH.html'>nbsGARCH</a></code>, <code><a href='pevgarch.html'>pevGARCH</a></code>,
     <code><a href='all_options.html'>rodents_options</a></code>, and <code><a href='verify_PortalData.html'>verify_PortalData</a></code>.
     <br /> <br /> 
   <code>rangex</code>: must be a length-2 positive <code>integer</code> or 
@@ -557,6 +560,7 @@
     <code><a href='model_paths.html'>model_paths</a></code>, <code><a href='model_scripts.html'>model_scripts</a></code>, 
     <code><a href='all_options.html'>moons_options</a></code>, <code><a href='most_recent_cast.html'>most_recent_cast</a></code>, 
     <code><a href='most_recent_census.html'>most_recent_census</a></code>, <code><a href='nbgarch.html'>nbGARCH</a></code>, 
+    <code><a href='nbsGARCH.html'>nbsGARCH</a></code>,
     <code><a href='pevgarch.html'>pevGARCH</a></code>, <code><a href='plot_cast_point.html'>plot_cast_point</a></code>,
     <code><a href='plot_cast_point_yaxis.html'>plot_cast_point_yaxis</a></code>, <code><a href='plot_cast_ts.html'>plot_cast_ts</a></code>,
     <code><a href='plot_cast_ts_xaxis.html'>plot_cast_ts_xaxis</a></code>, <code><a href='plot_cast_ts_ylab.html'>plot_cast_ts_ylab</a></code>,

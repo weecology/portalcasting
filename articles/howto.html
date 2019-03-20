@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
 <div id="create-a-portal-predictions-directory" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-a-portal-predictions-directory" class="anchor"></a>Create a Portal Predictions directory</h3>
-<p>The <code><a href="../reference/setup_dir.html">setup_dir()</a></code> function creates and populates a standard Portal Predictions directory within the present location (by default) that includes <code>data</code>, <code>models</code>, <code>PortalData</code>, <code>predictions</code> and <code>tmp</code> subdirectories. By default, <code><a href="../reference/setup_dir.html">setup_dir()</a></code> downloads the most up-to-date version of the <a href="https://zenodo.org/record/2541170">Portal Data from Zenodo</a> into the <code>PortalData</code> subdirectory, prepares the moons, rodents, covariates, and metadata data files (and places them in the <code>data</code> subdirectory), copies the historic covariate forecast data file available in the package (<code>/inst/extdata/covariate_forecasts.csv</code>) into the <code>data</code> subdirectory, downloads the most recent set of model forecasts into the <code>predictions</code> subdirectory and populates the <code>models</code> subdirectory with scripts for the four existing models (“AutoArima”, “ESSS”, “nbGARCH”, and “pevGARCH”).</p>
+<p>The <code><a href="../reference/setup_dir.html">setup_dir()</a></code> function creates and populates a standard Portal Predictions directory within the present location (by default) that includes <code>data</code>, <code>models</code>, <code>PortalData</code>, <code>predictions</code> and <code>tmp</code> subdirectories. By default, <code><a href="../reference/setup_dir.html">setup_dir()</a></code> downloads the most up-to-date version of the <a href="https://zenodo.org/record/2541170">Portal Data from Zenodo</a> into the <code>PortalData</code> subdirectory, prepares the moons, rodents, covariates, and metadata data files (and places them in the <code>data</code> subdirectory), copies the historic covariate forecast data file available in the package (<code>/inst/extdata/covariate_forecasts.csv</code>) into the <code>data</code> subdirectory, downloads the most recent set of model forecasts into the <code>predictions</code> subdirectory and populates the <code>models</code> subdirectory with scripts for the five existing models (“AutoArima”, “ESSS”, “nbGARCH”, “nbsGARCH”, and “pevGARCH”).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="../reference/setup_dir.html">setup_dir</a></span>()</a></code></pre></div>
 </div>
 <div id="run-a--cast-forecast-or-hindcast" class="section level3">

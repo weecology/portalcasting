@@ -49,7 +49,10 @@ nbGARCH_options creates a model_options
   nbGARCH model.
 pevGARCH_options creates a model_options 
   list of control options for the model script controlling the 
-  pevGARCH model." />
+  pevGARCH model.
+nbsGARCH_options creates a model_options 
+  list of control options for the model script controlling the 
+  nbsGARCH model." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -80,7 +83,7 @@ pevGARCH_options creates a model_options
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -165,6 +168,9 @@ pevGARCH_options creates a model_options
 <p><code>pevGARCH_options</code> creates a <code>model_options</code> 
   <code>list</code> of control options for the model script controlling the 
   <code><a href='pevgarch.html'>pevGARCH</a></code> model.</p>
+<p><code>nbsGARCH_options</code> creates a <code>model_options</code> 
+  <code>list</code> of control options for the model script controlling the 
+  <code><a href='nbsGARCH.html'>nbsGARCH</a></code> model.</p>
     
     </div>
 
@@ -181,7 +187,10 @@ pevGARCH_options creates a model_options
   <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>pevGARCH_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"pevGARCH"</span>,
-  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>nbsGARCH_options</span>(<span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(), <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"nbsGARCH"</span>,
+  <span class='kw'>mod_covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,6 +232,8 @@ covariates or <code>NULL</code> if <code>covariates</code> is <code>FALSE</code>
   settings controlling the <code><a href='nbgarch.html'>nbGARCH</a></code> model creation.</p>
 <p><code>pevGARCH_options</code>: a <code>model_options</code> <code>list</code> of 
   settings controlling the <code><a href='pevgarch.html'>pevGARCH</a></code> model creation.</p>
+<p><code>nbsGARCH_options</code>: a <code>model_options</code> <code>list</code> of 
+  settings controlling the <code><a href='nbsGARCH.html'>nbsGARCH</a></code> model creation.</p>
     
 
   </div>
