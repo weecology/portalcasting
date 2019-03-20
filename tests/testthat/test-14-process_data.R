@@ -52,6 +52,8 @@ test_that("read_data", {
   expect_is(controls, "rodents")
   expect_silent(covariates <- read_data(tree, "covariates"))
   expect_is(covariates , "covariates")
+  expect_silent(covariate_fcasts <- read_data(tree, "covariate_forecasts"))
+  expect_is(covariate_fcasts , "covariates")
   expect_silent(moons <- read_data(tree, "moons"))
   expect_is(moons, "moons")
   expect_silent(metadata <- read_data(tree, "metadata"))

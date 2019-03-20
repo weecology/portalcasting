@@ -30,7 +30,9 @@ all_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
   meta_filename = "metadata.yaml",
   download_existing_predictions = FALSE, models = model_names(),
   ensemble = TRUE, version = "latest", from_zenodo = TRUE,
-  to_cleanup = c("tmp", "PortalData"))
+  to_cleanup = c("tmp", "PortalData"),
+  covariate_source = "retroactive",
+  covariate_date_made = "2018-06-05 12:00:00 PST")
 
 dir_options(base = ".", main = "", subs = subdirs(), quiet = FALSE,
   to_cleanup = c("tmp", "PortalData"))
@@ -51,7 +53,8 @@ data_options(base = ".", main = "", subs = subdirs(),
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", cast_type = "forecasts",
   confidence_level = 0.9, meta_save = TRUE,
-  meta_filename = "metadata.yaml")
+  meta_filename = "metadata.yaml", covariate_source = "retroactive",
+  covariate_date_made = "2018-06-05 12:00:00 PST")
 
 moons_options(n_future_moons = 12, cast_date = today(),
   append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv",
@@ -74,7 +77,9 @@ covariates_options(cast_type = "forecasts", cov_hist = TRUE,
 
 metadata_options(cast_date = today(), cast_type = "forecasts",
   confidence_level = 0.9, lead_time = 12, save = TRUE,
-  filename = "metadata.yaml", quiet = FALSE, tree = dirtree())
+  filename = "metadata.yaml", quiet = FALSE, tree = dirtree(),
+  covariate_source = "retroactive",
+  covariate_date_made = "2018-06-05 12:00:00 PST")
 
 predictions_options(base = ".", main = "", subs = subdirs(),
   download_existing_predictions = FALSE, quiet = FALSE)
@@ -192,7 +197,7 @@ of hindcasting.}
 historical covariate forecasts are held.}
 
 \item{source_name}{\code{character} value for the name to give the 
-covariaate forecast. Currently is \code{"current_archive"}. Previous to
+covariate forecast. Currently is \code{"current_archive"}. Previous to
 \code{"current_archive"}, the data were retroactively filled in and are 
 given the source name \code{"retroactive"}.}
 
@@ -232,6 +237,16 @@ Data should come from Zenodo (come from GitHub if not).}
 
 \item{to_cleanup}{\code{character} vector of subdirectory names to
 cleanup after completion of casting.}
+
+\item{covariate_source}{\code{character} value for the name tagged to the
+covariate forecast. Possible values include \code{"current_archive"} and
+\code{"retroactive"} for hindcasts. Not presently needed for 
+implementation in forecasts.}
+
+\item{covariate_date_made}{\code{character} value for the date-time tagged 
+to the covariate forecast. Possible values depend on the dates available 
+for covariates saved in the covariate_forecasts file for hindcasts. Not 
+presently needed for implementation in forecasts.}
 
 \item{n_future_moons}{\code{integer} (or integer \code{numeric}) value for 
 the number of future moons to add.}

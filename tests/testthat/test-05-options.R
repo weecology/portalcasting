@@ -99,6 +99,11 @@ test_that("all_options", {
   expect_silent(all_options(model = "AutoArima"))
   expect_error(all_options(tmnt_type = "ok"))
   expect_error(all_options(to_cleanup = 1))
+  expect_error(all_options(covariate_source = 1))
+  expect_error(all_options(covariate_source = "ok"))
+  expect_error(all_options(covariate_source = rep("retroactive", 2)))
+  expect_error(all_options(covariate_date_made = 1))
+  expect_error(all_options(covariate_date_made = rep("ok", 2)))
   expect_is(all_options(model = "AutoArima"), "all_options")
 })
 
@@ -214,6 +219,11 @@ test_that("data_options", {
   expect_error(data_options(confidence_level = 1.5))
   expect_error(data_options(confidence_level = -0.5))
   expect_error(data_options(tmnt_type = "ok"))
+  expect_error(data_options(covariate_source = 1))
+  expect_error(data_options(covariate_source = "ok"))
+  expect_error(data_options(covariate_source = rep("retroactive", 2)))
+  expect_error(data_options(covariate_date_made = 1))
+  expect_error(data_options(covariate_date_made = rep("ok", 2)))
 })
 
 test_that("moons_options", {
@@ -347,6 +357,11 @@ test_that("metadata_options", {
   expect_error(metadata_options(filename = 1))
   expect_error(metadata_options(filename = c("ok.csv", "ok.csv")))
   expect_error(metadata_options(tree = 1))
+  expect_error(metadata_options(covariate_source = 1))
+  expect_error(metadata_options(covariate_source = "ok"))
+  expect_error(metadata_options(covariate_source = rep("retroactive", 2)))
+  expect_error(metadata_options(covariate_date_made = 1))
+  expect_error(metadata_options(covariate_date_made = rep("ok", 2)))
 })
 
 test_that("predictions_options", {

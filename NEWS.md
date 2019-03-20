@@ -2,6 +2,18 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.6.0](https://github.com/weecology/portalcasting/releases/tag/v0.6.0)
+*2019-03-20*
+
+### Addressing covariate forecasts in `pevGARCH` under hindcasting
+* `pevGARCH()` was not set up to leverage the `covariate_forecasts` file.
+* It's now set up with a toggle based on the `cast_type` in the metadata list 
+(which has replaced the formerly named `filename_suffix` element) to load
+the `covariate_forecasts` file (using a new `read_covariate_forecasts` function)
+and then select the specific hindcast based on the `source` and `date_made` columns
+as selected by new elements in the metadata list (`covariate_source` and
+`covariate_date_made`).
+
 # [portalcasting 0.5.0](https://github.com/weecology/portalcasting/releases/tag/v0.5.0)
 *2019-03-19* 
 

@@ -60,7 +60,18 @@ pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
   for_hist <- which(covar_lag$newmoonnumber %in% abundances$moons)
   for_fcast <- which(covar_lag$newmoonnumber %in% fcnm) 
   covar_hist <- covar_lag[for_hist, ]
-  covar_fcast <- covar_lag[for_fcast, ]
+  if (metadata$cast_type == "forecasts"){
+    covar_fcast <- covar_lag[for_fcast, ]
+  } 
+  if (metadata$cast_type == "hindcasts"){
+    covariate_fcasts <- read_covariate_forecasts(tree)
+    covar_fcasts_lag <- lag_covariates(covariate_fcasts, lag, tail = TRUE)
+    last_cov_nm <- max(covar_hist$newmoonnumber) - lag
+    fnm_in <- covar_fcasts_lag$forecast_newmoon == last_cov_nm
+    s_in <- covar_fcasts_lag$source == metadata$covariate_source
+    dm_in <- covar_fcasts_lag$date_made == metadata$covariate_date_made
+    covar_fcast <- covar_fcasts_lag[fnm_in & dm_in & s_in, ]
+  }
         
   fcast <- data.frame()
   aic <- data.frame()

@@ -5,6 +5,7 @@
 \alias{read_all}
 \alias{read_controls}
 \alias{read_covariates}
+\alias{read_covariate_forecasts}
 \alias{read_moons}
 \alias{read_metadata}
 \title{Read in a data file and format it for specific class}
@@ -17,6 +18,8 @@ read_controls(tree = dirtree())
 
 read_covariates(tree = dirtree())
 
+read_covariate_forecasts(tree = dirtree())
+
 read_moons(tree = dirtree())
 
 read_metadata(tree = dirtree())
@@ -26,7 +29,8 @@ read_metadata(tree = dirtree())
 
 \item{data_name}{\code{character} representation of the data needed.
 Current options include \code{"all"}, \code{"controls"},
-\code{"covariates"}, \code{"moons"}, and \code{"metadata"}.}
+\code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
+\code{"metadata"}.}
 }
 \value{
 Data requested with appropriate classes.
@@ -35,9 +39,10 @@ Data requested with appropriate classes.
 Read in a specified data file and ensure its class attribute
   is appropriate for usage within the portalcasting pipeline. Current 
   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
-  \code{"moons"}, and \code{"metadata"}. And are available as calls to
-  \code{read_data} with a specified \code{data_name} or as calls to the
-  specific \code{read_<data_name>} functions (like \code{read_moons}).
+  \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
+  And are available as calls to \code{read_data} with a specified 
+  \code{data_name} or as calls to the specific \code{read_<data_name>} 
+  functions (like \code{read_moons}).
 }
 \examples{
 \dontrun{
@@ -46,12 +51,14 @@ setup_dir()
 read_data(data_name = "all")
 read_data(data_name = "controls")
 read_data(data_name = "covariates")
+read_data(data_name = "covariate_forecasts")
 read_data(data_name = "moons")
 read_data(data_name = "metadata")
 
 read_all()
 read_controls()
 read_covariates()
+read_covariate_forecasts()
 read_moons()
 read_metadata()
 }
