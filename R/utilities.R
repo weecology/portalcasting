@@ -1078,7 +1078,8 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
         out <- c(out, "`level` can only be of length = 1")
       }
       AC_funs <- c("plot_cov_RMSE_mod_spp", "plot_err_lead_spp_mods",
-                   "plot_cast_point", "select_most_ab_spp", "select_casts")
+                   "plot_cast_point", "select_most_ab_spp", "select_casts",
+                   "AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")
       ST_funs <- c("all_options")
       if (fun_name %in% AC_funs){
         if (!(all(arg_value %in% c("All", "Controls")))){
