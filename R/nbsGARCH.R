@@ -29,10 +29,18 @@
 #'   \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
 #'   \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
 #'
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' nbsGARCH()
+#' }
+#'
 #' @export
 #'
 nbsGARCH <- function(tree = dirtree(), level = "All", quiet = FALSE){
   check_args()
+  messageq(paste0("### Fitting nbsGARCH model for ", level, " ###"), quiet)
   abundances <- read_data(tree, tolower(level))
   metadata <- read_metadata(tree)
   moons <- read_moons(tree)
@@ -41,15 +49,15 @@ nbsGARCH <- function(tree = dirtree(), level = "All", quiet = FALSE){
   cos2pifoy <- cos(2 * pi * moon_foys)
   fouriers <- data.frame(sin2pifoy, cos2pifoy)
   fcnm <- metadata$rodent_forecast_newmoons
+  nfcnm <- length(metadata$rodent_forecast_newmoons)
+  CL <- metadata$confidence_level
+  abundances <- interpolate_abundance(abundances)
+  species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
   for_hist <- which(moons$newmoonnumber %in% abundances$moons)
   for_fcast <- which(moons$newmoonnumber %in% fcnm) 
   predictors <- fouriers[for_hist, ]
   fcast_predictors <- fouriers[for_fcast, ]
 
-  nfcnm <- length(metadata$rodent_forecast_newmoons)
-  CL <- metadata$confidence_level
-  abundances <- interpolate_abundance(abundances)
-  species <- colnames(abundances)[-which(colnames(abundances) == "moons")]
   fcast <- data.frame()
   aic <- data.frame()
   
@@ -71,7 +79,7 @@ nbsGARCH <- function(tree = dirtree(), level = "All", quiet = FALSE){
       if(is.null(model) || AIC(model) == Inf){
           model <- tsglm(abund_s, 
                      model = past,
-                     distr = "poisson", link = "log")
+                     distr = "poisson", xreg = predictors, link = "log")
       }
       model_fcast <- predict(model, nfcnm, level = CL, 
                              newxreg = fcast_predictors)

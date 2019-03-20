@@ -26,10 +26,19 @@
 #'  functions for time series and linear models. 
 #'  \href{http://pkg.robjhyndman.com/forecast}{R package version 8.3}. 
 #'
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' ESSS()
+#' }
+#' 
 #' @export
 #'
 ESSS <- function(tree = dirtree(), level = "All", quiet = FALSE){
   check_args()
+  messageq(paste0("### Fitting ESSS model for ", level, " ###"), quiet)
+
   abundances <- read_data(tree, tolower(level))
   metadata <- read_metadata(tree)
 

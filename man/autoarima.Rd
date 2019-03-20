@@ -39,6 +39,14 @@ Model "AutoArima" is a flexible auto-regressive integrated
  other models used currently cannot, so we interpolate missing data here 
  for comparison.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+AutoArima()
+}
+
+}
 \references{
 Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
  F., Razbash S., Wang E., and Yasmeen F. 2018. forecast: Forecasting 

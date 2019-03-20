@@ -38,6 +38,14 @@ Model "pevGARCH" is a generalized autoregresive conditional
   abundance with an optional \code{lag} between the covariate values and 
   abundances (defaults to 6 newmoons).
 }
+\examples{
+\dontrun{
+
+setup_dir()
+pevGARCH()
+}
+
+}
 \references{
 Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
   Analysis of Count Time Series Following Generalized Linear Models. 

@@ -30,7 +30,7 @@ or \code{"Controls"}).}
 
 \item{models}{\code{character} value(s) of the name(s) (or 
 \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
-models are returned.}
+models with available -casts are returned.}
 }
 \description{
 Plot the model-species matrix of error as a function of

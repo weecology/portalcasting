@@ -32,6 +32,7 @@
 #'
 nbGARCH <- function(tree = dirtree(), level = "All", quiet = FALSE){
   check_args()
+  messageq(paste0("### Fitting nbGARCH model for ", level, " ###"), quiet)
   abundances <- read_data(tree, tolower(level))
   metadata <- read_metadata(tree)
 

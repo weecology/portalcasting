@@ -37,7 +37,7 @@ values needed for a -cast to be retained in the output table. Default is
 
 \item{models}{\code{character} value(s) of the name(s) (or 
 \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
-models are returned.}
+models with available -casts are returned.}
 }
 \description{
 Plot the RMSE and coverage by species matrix of cast error 

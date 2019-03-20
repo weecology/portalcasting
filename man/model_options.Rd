@@ -6,6 +6,7 @@
 \alias{ESSS_options}
 \alias{nbGARCH_options}
 \alias{pevGARCH_options}
+\alias{nbsGARCH_options}
 \title{Prepare options for a portalcasting model}
 \usage{
 model_options(tree = dirtree(), model = "AutoArima",
@@ -22,6 +23,9 @@ nbGARCH_options(tree = dirtree(), model = "nbGARCH",
 
 pevGARCH_options(tree = dirtree(), model = "pevGARCH",
   mod_covariates = TRUE, lag = 6, quiet = FALSE)
+
+nbsGARCH_options(tree = dirtree(), model = "nbsGARCH",
+  mod_covariates = FALSE, lag = NULL, quiet = FALSE)
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
@@ -52,6 +56,9 @@ covariates or \code{NULL} if \code{covariates} is \code{FALSE}.}
 
 \code{pevGARCH_options}: a \code{model_options} \code{list} of 
   settings controlling the \code{\link{pevGARCH}} model creation.
+
+\code{nbsGARCH_options}: a \code{model_options} \code{list} of 
+  settings controlling the \code{\link{nbsGARCH}} model creation.
 }
 \description{
 Suite of functions used to generate model-writing options 
@@ -76,4 +83,8 @@ Suite of functions used to generate model-writing options
 \code{pevGARCH_options} creates a \code{model_options} 
   \code{list} of control options for the model script controlling the 
   \code{\link{pevGARCH}} model.
+
+\code{nbsGARCH_options} creates a \code{model_options} 
+  \code{list} of control options for the model script controlling the 
+  \code{\link{nbsGARCH}} model.
 }

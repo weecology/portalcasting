@@ -5,6 +5,13 @@ moon_opts <- all_options(main = "testing_casting")$options_data$moons
 moons <- prep_moons(moon_opts)
 rodents <- prep_rodents(moons, rod_opts)
 
+test_that("foy", {
+  expect_silent(foys <- foy(moons$newmoondate))
+  expect_is(foys, "numeric")
+  expect_equal(nrow(moons), length(foys))
+  expect_error(foy("ok"))
+})
+
 test_that("interpolate_abundance", {
   expect_error(interpolate_abundance(1))
   expect_silent(rodents_int <- interpolate_abundance(rodents))

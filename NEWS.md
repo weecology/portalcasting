@@ -2,8 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# [portalcasting 0.4.2](https://github.com/weecology/portalcasting)
-*active development* 
+# [portalcasting 0.5.0](https://github.com/weecology/portalcasting/releases/tag/v0.5.0)
+*2019-03-19* 
+
+### Adding nbsGARCH
+* Model `nbsGARCH` has been added to the base set of models.
+
+### `foy` function
+* `foy()` calculates the fraction of the year for a given date or set
+of dates.
 
 # [portalcasting 0.4.1](https://github.com/weecology/portalcasting/releases/tag/v0.4.1)
 *2019-03-19*

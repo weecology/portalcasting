@@ -33,6 +33,14 @@ Model "nbsGARCH" is a seasonal generalized autoregresive
   (Liboschik \emph{et al}. 2017). Seasonal dynamics are modeled using
   a two-term Fourier transformation.
 }
+\examples{
+\dontrun{
+
+setup_dir()
+nbsGARCH()
+}
+
+}
 \references{
 Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
   Analysis of Count Time Series Following Generalized Linear Models. 

@@ -7,6 +7,18 @@ nbsGARCH (has arguments the same as nbGARCH)
 foy (argument: dates, which has same validity as cast_dates)
 
 
+tree <- dirtree("~", "portalcasting_dev", subdirs());
+f_a <- nbsGARCH(tree, level = "All", quiet = FALSE);
+f_c <- nbsGARCH(tree, level = "Controls", quiet = FALSE);
 
-steps in adding a model
-1. write model function
+plot_err_lead_spp_mods(tree)
+
+
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' setup_dir()
+#' nbsGARCH()
+#' }
+#' 
