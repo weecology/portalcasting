@@ -44,7 +44,7 @@ image update (*i.e.* the integration of the current master branch of
 repository](https://github.com/weecology/portalPredictions)) necessarily
 lags behind updates to the master branch of `portalcasting`, although
 ideally not long behind. The `latest` image is built using `portalcasting` 
-[v0.4.0](https://github.com/weecology/portalcasting/releases/tag/v0.4.0).
+[v0.4.1](https://github.com/weecology/portalcasting/releases/tag/v0.4.1).
 
 The API is moderately well defined at this point, but is still evolving somewhat.
 
