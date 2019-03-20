@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -124,6 +124,21 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="portalcasting-0-6-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-6-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.6.0">portalcasting 0.6.0</a>
+</h1>
+<p><em>2019-03-20</em></p>
+<div id="addressing-covariate-forecasts-in-pevgarch-under-hindcasting" class="section level3">
+<h3 class="hasAnchor">
+<a href="#addressing-covariate-forecasts-in-pevgarch-under-hindcasting" class="anchor"></a>Addressing covariate forecasts in <code>pevGARCH</code> under hindcasting</h3>
+<ul>
+<li>
+<code><a href="../reference/pevgarch.html">pevGARCH()</a></code> was not set up to leverage the <code>covariate_forecasts</code> file.</li>
+<li>It’s now set up with a toggle based on the <code>cast_type</code> in the metadata list (which has replaced the formerly named <code>filename_suffix</code> element) to load the <code>covariate_forecasts</code> file (using a new <code>read_covariate_forecasts</code> function) and then select the specific hindcast based on the <code>source</code> and <code>date_made</code> columns as selected by new elements in the metadata list (<code>covariate_source</code> and <code>covariate_date_made</code>).</li>
+</ul>
+</div>
+</div>
     <div id="portalcasting-0-5-0" class="section level1">
 <h1 class="page-header">
 <a href="#portalcasting-0-5-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.5.0">portalcasting 0.5.0</a>
@@ -586,6 +601,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#portalcasting-0-6-0">0.6.0</a></li>
         <li><a href="#portalcasting-0-5-0">0.5.0</a></li>
         <li><a href="#portalcasting-0-4-1">0.4.1</a></li>
         <li><a href="#portalcasting-0-4-0">0.4.0</a></li>

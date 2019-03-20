@@ -90,7 +90,7 @@ cast_options creates a cast_options list
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -204,7 +204,9 @@ cast_options creates a cast_options list
   <span class='kw'>meta_filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>,
   <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='model_names.html'>model_names</a></span>(),
   <span class='kw'>ensemble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>from_zenodo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))
+  <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>),
+  <span class='kw'>covariate_source</span> <span class='kw'>=</span> <span class='st'>"retroactive"</span>,
+  <span class='kw'>covariate_date_made</span> <span class='kw'>=</span> <span class='st'>"2018-06-05 12:00:00 PST"</span>)
 
 <span class='fu'>dir_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>to_cleanup</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"tmp"</span>, <span class='st'>"PortalData"</span>))
@@ -225,7 +227,8 @@ cast_options creates a cast_options list
   <span class='kw'>source_name</span> <span class='kw'>=</span> <span class='st'>"current_archive"</span>, <span class='kw'>c_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>c_filename</span> <span class='kw'>=</span> <span class='st'>"covariates.csv"</span>, <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
   <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>meta_save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>meta_filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>)
+  <span class='kw'>meta_filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>, <span class='kw'>covariate_source</span> <span class='kw'>=</span> <span class='st'>"retroactive"</span>,
+  <span class='kw'>covariate_date_made</span> <span class='kw'>=</span> <span class='st'>"2018-06-05 12:00:00 PST"</span>)
 
 <span class='fu'>moons_options</span>(<span class='kw'>n_future_moons</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(),
   <span class='kw'>append_missing_to_raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"moons.csv"</span>,
@@ -248,7 +251,9 @@ cast_options creates a cast_options list
 
 <span class='fu'>metadata_options</span>(<span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='today.html'>today</a></span>(), <span class='kw'>cast_type</span> <span class='kw'>=</span> <span class='st'>"forecasts"</span>,
   <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>save</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>())
+  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"metadata.yaml"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tree</span> <span class='kw'>=</span> <span class='fu'><a href='dirtree.html'>dirtree</a></span>(),
+  <span class='kw'>covariate_source</span> <span class='kw'>=</span> <span class='st'>"retroactive"</span>,
+  <span class='kw'>covariate_date_made</span> <span class='kw'>=</span> <span class='st'>"2018-06-05 12:00:00 PST"</span>)
 
 <span class='fu'>predictions_options</span>(<span class='kw'>base</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>subs</span> <span class='kw'>=</span> <span class='fu'><a href='subdirs.html'>subdirs</a></span>(),
   <span class='kw'>download_existing_predictions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -430,7 +435,7 @@ historical covariate forecasts are held.</p></td>
     <tr>
       <th>source_name</th>
       <td><p><code>character</code> value for the name to give the 
-covariaate forecast. Currently is <code>"current_archive"</code>. Previous to
+covariate forecast. Currently is <code>"current_archive"</code>. Previous to
 <code>"current_archive"</code>, the data were retroactively filled in and are 
 given the source name <code>"retroactive"</code>.</p></td>
     </tr>
@@ -494,6 +499,20 @@ Data should come from Zenodo (come from GitHub if not).</p></td>
       <th>to_cleanup</th>
       <td><p><code>character</code> vector of subdirectory names to
 cleanup after completion of casting.</p></td>
+    </tr>
+    <tr>
+      <th>covariate_source</th>
+      <td><p><code>character</code> value for the name tagged to the
+covariate forecast. Possible values include <code>"current_archive"</code> and
+<code>"retroactive"</code> for hindcasts. Not presently needed for 
+implementation in forecasts.</p></td>
+    </tr>
+    <tr>
+      <th>covariate_date_made</th>
+      <td><p><code>character</code> value for the date-time tagged 
+to the covariate forecast. Possible values depend on the dates available 
+for covariates saved in the covariate_forecasts file for hindcasts. Not 
+presently needed for implementation in forecasts.</p></td>
     </tr>
     <tr>
       <th>n_future_moons</th>

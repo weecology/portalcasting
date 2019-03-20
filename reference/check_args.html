@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -245,6 +245,14 @@
   <code>covariates</code>: must be a <code>data.frame</code> of class <code>covariates</code>
     in <code><a href='forecast_covariates.html'>forecast_covariates</a></code>, <code><a href='forecast_covariates.html'>forecast_ndvi</a></code>,
     and <code><a href='prep_metadata.html'>prep_metadata</a></code>. <br /> <br />
+  <code>covariate_source</code>: must be <code>NULL</code> or a length-1 
+    <code>character</code> vector of <code>"current_archive"</code> or 
+    <code>"retroactive"</code> in <code><a href='all_options.html'>all_options</a></code>, 
+    <code><a href='all_options.html'>data_options</a></code>, <code><a href='all_options.html'>metadata_options</a></code>. <br /> <br />
+  <code>covariate_date_made</code>: must be <code>NULL</code> or a length-1 
+    <code>character</code> vector corresponding to the <code>date_made</code> column 
+    in the covariate_forecasts data table in <code><a href='all_options.html'>all_options</a></code>, 
+    <code><a href='all_options.html'>data_options</a></code>, <code><a href='all_options.html'>metadata_options</a></code>. <br /> <br />
   <code>cov_fcast</code>: must be a length-1 <code>logical</code> vector in
     <code><a href='all_options.html'>all_options</a></code>, <code><a href='all_options.html'>covariates_options</a></code>, and
     <code><a href='all_options.html'>data_options</a></code>. <br /> <br />
@@ -258,7 +266,8 @@
     <code><a href='all_options.html'>all_options</a></code>, <code><a href='all_options.html'>covariates_options</a></code>, and 
     <code><a href='all_options.html'>data_options</a></code>. <br /> <br />
   <code>data_name</code>: must be a length-1 <code>character</code> vector of value 
-    <code>"all"</code>, <code>"controls"</code>, <code>"covariates"</code>, <code>"moons"</code>,
+    <code>"all"</code>, <code>"controls"</code>, <code>"covariates"</code>, 
+    <code>"covariate_forecasts"</code>, <code>"moons"</code>,
     or <code>"metadata"</code> in <code><a href='read_data.html'>read_data</a></code>. <br /> <br />
   <code>dates</code>: must be <code>NULL</code> or a <code>Date</code> or 
     <code>Date</code>-conformable vector in <code><a href='foy.html'>foy</a></code>. <br /> <br />
@@ -568,10 +577,11 @@
     <code><a href='plot_err_lead_spp_mods.html'>plot_err_lead_spp_mods</a></code>, <code><a href='prep_weather_data.html'>prep_weather_data</a></code>,
     <code><a href='read_data.html'>read_all</a></code>, <code><a href='read_cast.html'>read_cast</a></code>, 
     <code><a href='read_cast.html'>read_casts</a></code>, <code><a href='read_data.html'>read_controls</a></code>,
-    <code><a href='read_data.html'>read_covariates</a></code>, <code><a href='read_data.html'>read_data</a></code>, 
-    <code><a href='read_data.html'>read_metadata</a></code>, <code><a href='read_data.html'>read_moons</a></code>,  
-    <code><a href='all_options.html'>rodents_options</a></code>, <code><a href='select_most_ab_spp.html'>select_most_ab_spp</a></code>,    
-    <code><a href='base_path.html'>sub_paths</a></code>, and <code><a href='verify_PortalData.html'>verify_PortalData</a></code>. <br /> <br />
+    <code><a href='read_data.html'>read_covariates</a></code>, <code><a href='read_data.html'>read_covariate_forecasts</a></code>, 
+    <code><a href='read_data.html'>read_data</a></code>, <code><a href='read_data.html'>read_metadata</a></code>, 
+    <code><a href='read_data.html'>read_moons</a></code>, <code><a href='all_options.html'>rodents_options</a></code>, 
+    <code><a href='select_most_ab_spp.html'>select_most_ab_spp</a></code>, <code><a href='base_path.html'>sub_paths</a></code>, and 
+    <code><a href='verify_PortalData.html'>verify_PortalData</a></code>. <br /> <br />
   <code>verbose</code>: must be a length-1 <code>logical</code> vector in
     <code><a href='verify_cast.html'>cast_is_valid</a></code>. <br /> <br />
   <code>version</code>: must be a length-1 <code>character</code> vector in
