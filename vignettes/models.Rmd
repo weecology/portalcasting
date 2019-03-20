@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 ```
 
 
-We currently analyze and forecast rodent data at Portal using four models:
-ESSS, AutoArima, nbGARCH, and pevGARCH [@PortalPredictions]. Each model
-has a function with its name (*e.g.*, `ESSS()`) and an associated R script
-in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
+We currently analyze and forecast rodent data at Portal using five models:
+ESSS, AutoArima, nbGARCH, nbsGARCH, and pevGARCH [@PortalPredictions]. Each 
+model has a function with its name (*e.g.*, `ESSS()`) and an associated R 
+script in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
 
 ### ESSS
 
