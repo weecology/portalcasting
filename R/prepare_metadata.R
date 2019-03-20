@@ -68,7 +68,7 @@ prep_metadata <- function(moons = prep_moons(),
   covar_fcast_months <- as.numeric(format(covar_nm_dates, "%m"))
   covar_fcast_years <- as.numeric(format(covar_nm_dates, "%Y"))
 
-  out <-  list(filename_suffix = options_metadata$cast_type, 
+  out <-  list(cast_type = options_metadata$cast_type, 
                forecast_date = as.character(forecast_date), 
                covariate_forecast_newmoons = covar_fcast_newmoons, 
                covariate_forecast_months = covar_fcast_months, 
@@ -76,7 +76,9 @@ prep_metadata <- function(moons = prep_moons(),
                rodent_forecast_newmoons = rodent_fcast_newmoons, 
                rodent_forecast_months = rodent_fcast_months, 
                rodent_forecast_years = rodent_fcast_years,
-               confidence_level = options_metadata$confidence_level)
+               confidence_level = options_metadata$confidence_level,
+               covariate_source = options_metadata$covariate_source,
+               covariate_date_made = options_metadata$covariate_date_made)
   if (options_metadata$save){
     local_path <- paste0("data/", options_metadata$filename)
     con_path <- file_paths(options_metadata$tree, local_path)

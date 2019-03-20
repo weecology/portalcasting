@@ -26,11 +26,11 @@ save_forecast_output <- function(all, controls, model, tree){
   forecasts <- rbind(all$forecast, controls$forecast)
   aics <- rbind(all$aic, controls$aic)
 
-  fcast_fname <- paste0(model, metadata$filename_suffix, ".csv")
+  fcast_fname <- paste0(model, metadata$cast_type, ".csv")
   fcast_path <- file.path(temp_dir, fcast_fname)
   write.csv(forecasts, fcast_path, row.names = FALSE)
 
-  aic_fname <- paste0(model, metadata$filename_suffix, "_model_aic.csv")
+  aic_fname <- paste0(model, metadata$cast_type, "_model_aic.csv")
   aic_path <- file.path(temp_dir, aic_fname)
   write.csv(aics, aic_path, row.names = FALSE)
 

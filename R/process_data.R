@@ -112,15 +112,17 @@ lag_covariates <- function(covariates, lag, tail = FALSE){
 #' @description Read in a specified data file and ensure its class attribute
 #'   is appropriate for usage within the portalcasting pipeline. Current 
 #'   options include \code{"all"}, \code{"controls"}, \code{"covariates"},
-#'   \code{"moons"}, and \code{"metadata"}. And are available as calls to
-#'   \code{read_data} with a specified \code{data_name} or as calls to the
-#'   specific \code{read_<data_name>} functions (like \code{read_moons}).
+#'   \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
+#'   And are available as calls to \code{read_data} with a specified 
+#'   \code{data_name} or as calls to the specific \code{read_<data_name>} 
+#'   functions (like \code{read_moons}).
 #'
 #' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
 #'  
 #' @param data_name \code{character} representation of the data needed.
 #'   Current options include \code{"all"}, \code{"controls"},
-#'   \code{"covariates"}, \code{"moons"}, and \code{"metadata"}.
+#'   \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
+#'   \code{"metadata"}.
 #'  
 #' @return Data requested with appropriate classes.
 #' 
@@ -131,12 +133,14 @@ lag_covariates <- function(covariates, lag, tail = FALSE){
 #' read_data(data_name = "all")
 #' read_data(data_name = "controls")
 #' read_data(data_name = "covariates")
+#' read_data(data_name = "covariate_forecasts")
 #' read_data(data_name = "moons")
 #' read_data(data_name = "metadata")
 #'
 #' read_all()
 #' read_controls()
 #' read_covariates()
+#' read_covariate_forecasts()
 #' read_moons()
 #' read_metadata()
 #' }
@@ -153,6 +157,9 @@ read_data <- function(tree = dirtree(), data_name){
   }
   if (data_name == "covariates"){
     data <- read_covariates(tree)
+  }
+  if (data_name == "covariate_forecasts"){
+    data <- read_covariate_forecasts(tree)
   }
   if (data_name == "moons"){
     data <- read_moons(tree)
@@ -190,6 +197,16 @@ read_controls <- function(tree = dirtree()){
 read_covariates <- function(tree = dirtree()){
   check_args()
   read.csv(file_paths(tree, "data/covariates.csv")) %>%
+           classy(c("data.frame", "covariates"))
+}
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_covariate_forecasts <- function(tree = dirtree()){
+  check_args()
+  read.csv(file_paths(tree, "data/covariate_forecasts.csv")) %>%
            classy(c("data.frame", "covariates"))
 }
 

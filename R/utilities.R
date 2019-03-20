@@ -313,6 +313,14 @@ check_args <- function(){
 #'   \code{covariates}: must be a \code{data.frame} of class \code{covariates}
 #'     in \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
 #'     and \code{\link{prep_metadata}}. \cr \cr
+#'   \code{covariate_source}: must be \code{NULL} or a length-1 
+#'     \code{character} vector of \code{"current_archive"} or 
+#'     \code{"retroactive"} in \code{\link{all_options}}, 
+#'     \code{\link{data_options}}, \code{\link{metadata_options}}. \cr \cr
+#'   \code{covariate_date_made}: must be \code{NULL} or a length-1 
+#'     \code{character} vector corresponding to the \code{date_made} column 
+#'     in the covariate_forecasts data table in \code{\link{all_options}}, 
+#'     \code{\link{data_options}}, \code{\link{metadata_options}}. \cr \cr
 #'   \code{cov_fcast}: must be a length-1 \code{logical} vector in
 #'     \code{\link{all_options}}, \code{\link{covariates_options}}, and
 #'     \code{\link{data_options}}. \cr \cr
@@ -326,7 +334,8 @@ check_args <- function(){
 #'     \code{\link{all_options}}, \code{\link{covariates_options}}, and 
 #'     \code{\link{data_options}}. \cr \cr
 #'   \code{data_name}: must be a length-1 \code{character} vector of value 
-#'     \code{"all"}, \code{"controls"}, \code{"covariates"}, \code{"moons"},
+#'     \code{"all"}, \code{"controls"}, \code{"covariates"}, 
+#'     \code{"covariate_forecasts"}, \code{"moons"},
 #'     or \code{"metadata"} in \code{\link{read_data}}. \cr \cr
 #'   \code{dates}: must be \code{NULL} or a \code{Date} or 
 #'     \code{Date}-conformable vector in \code{\link{foy}}. \cr \cr
@@ -636,10 +645,11 @@ check_args <- function(){
 #'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{prep_weather_data}},
 #'     \code{\link{read_all}}, \code{\link{read_cast}}, 
 #'     \code{\link{read_casts}}, \code{\link{read_controls}},
-#'     \code{\link{read_covariates}}, \code{\link{read_data}}, 
-#'     \code{\link{read_metadata}}, \code{\link{read_moons}},  
-#'     \code{\link{rodents_options}}, \code{\link{select_most_ab_spp}},    
-#'     \code{\link{sub_paths}}, and \code{\link{verify_PortalData}}. \cr \cr
+#'     \code{\link{read_covariates}}, \code{\link{read_covariate_forecasts}}, 
+#'     \code{\link{read_data}}, \code{\link{read_metadata}}, 
+#'     \code{\link{read_moons}}, \code{\link{rodents_options}}, 
+#'     \code{\link{select_most_ab_spp}}, \code{\link{sub_paths}}, and 
+#'     \code{\link{verify_PortalData}}. \cr \cr
 #'   \code{verbose}: must be a length-1 \code{logical} vector in
 #'     \code{\link{cast_is_valid}}. \cr \cr
 #'   \code{version}: must be a length-1 \code{character} vector in
@@ -822,6 +832,30 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       out <- c(out, "`covariates` is not a covariates table")
     }
   }
+  if (arg_name == "covariate_source"){
+    if (!is.null(arg_value)){
+      valid_names <- c("current_archive", "retroactive")
+      if (!is.character(arg_value)){
+        out <- c(out, "`covariate_source` is not a character")
+      }
+      if (length(arg_value) != 1){
+        out <- c(out, "`covariate_source` can only be of length = 1")
+      }
+      if (!(all(arg_value %in% valid_names))){
+        out <- c(out, "`covariate_source` is not valid option")
+      }
+    }
+  }
+  if (arg_name == "covariate_date_made"){
+    if (!is.null(arg_value)){
+      if (!("character" %in% class(arg_value))){
+        out <- c(out, "`covariate_date_made` is not a character")
+      }
+      if (length(arg_value) != 1){
+        out <- c(out, "`covariate_date_made` can only be of length = 1")
+      }
+    }
+  }
   if (arg_name == "cov_fcast"){
     if (!("logical" %in% class(arg_value))){
       out <- c(out, "`cov_fcast` is not logical")
@@ -855,7 +889,8 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   }
   if (arg_name == "data_name"){
-    valid_names <- c("all", "controls", "covariates", "moons", "metadata")
+    valid_names <- c("all", "controls", "covariates", "covariate_forecasts",
+                     "moons", "metadata")
     if (!is.character(arg_value)){
       out <- c(out, "`data_name` is not a character")
     }
