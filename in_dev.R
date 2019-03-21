@@ -1,9 +1,8 @@
-options_all <- all_options(base = "~", main = "portalcasting_hindev",
-                           cast_type = "hindcasts")
+options_all <- all_options(base = "~", main = "portalcasting_dev070")
 setup_dir(options_all)
 portalcast(options_all)
 
-tree <- dirtree(base = "~", main = "portalcasting_dev")
+tree <- dirtree(base = "~", main = "portalcasting_dev070")
 read_all(tree)
 
 new functions:
@@ -17,13 +16,11 @@ f_a <- pevGARCH(tree, level = "All", lag = 6, quiet = FALSE);
 f_c <- nbsGARCH(tree, level = "Controls", quiet = FALSE);
 
 plot_err_lead_spp_mods(tree)
+al<-read_all(dirtree(base="~", main="portalcasting_hindev"))
 
 
-#' 
-#' @examples
-#' \dontrun{
-#' 
-#' setup_dir()
-#' nbsGARCH()
-#' }
-#' 
+tree <- dirtree(base = "~", main = "portalcasting_hindev")
+read_casts(tree, cast_type = "hindcasts")
+
+plot_cov_RMSE_mod_spp(
+dirtree(base = "~", main = "portalcasting_dev"))
