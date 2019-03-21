@@ -173,8 +173,10 @@ representative species and total rodents (rows) using four models and the ensemb
   
 <br>
 
-By default, the function produces a figure using all available hindcasts for a 
-set of common species in the control plots, but the arguments allow for flexibility.
+By default, the function produces a figure using the most recent set of hindcasts for a 
+set of common species in the control plots, but the arguments allow for flexibility,
+including the combination of hindcasts across multiple `cast_dates`.
+
 ### Reading in data to the R console from the directory
 
 A series of `read_<name>` functions are available for simple loading of the data

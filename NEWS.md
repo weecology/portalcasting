@@ -2,6 +2,20 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+
+# [portalcasting 0.8.0](https://github.com/weecology/portalcasting/releases/tag/v0.8.0)
+*2019-03-21*
+
+### `plot_cov_RMSE_mod_spp` now only plots the most recent -cast by default
+* If `cast_dates = NULL` (the default), the plot only uses the most recent -cast
+to avoid swamping more current -casts with historic -casts.
+
+### Added specific checks for no casts returned in plot functions
+* There's a bit of leeway with respect to argument validity, in particular around
+model names (to facilitate users making new models with new names, we don't want
+to hardwire a naming scheme in `check_arg`), so now there are checks to see if 
+the tables returned from `select_casts` have any rows or not.
+
 # [portalcasting 0.7.0](https://github.com/weecology/portalcasting/releases/tag/v0.7.0)
 *2019-03-21*
 

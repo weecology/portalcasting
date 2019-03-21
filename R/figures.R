@@ -21,7 +21,7 @@
 #'
 #' @param cast_dates \code{Date}s the predictions were made. Used to select 
 #'   the files in the predictions subdirectory. Can be length 1 or more and if 
-#'   \code{NULL} (default), selects all available -casts.
+#'   \code{NULL} (default), selects the most recent -casts.
 #'
 #' @param min_observed \code{integer} value for the minimum number of observed
 #'   values needed for a -cast to be retained in the output table. Default is
@@ -48,19 +48,16 @@ plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts",
                                models = model_names("wEnsemble")){
   check_args()
   if (is.null(cast_dates)){
-    pfolderpath <- sub_paths(tree = tree, "predictions")
-    pfiles <- list.files(pfolderpath)
-    of_interest1 <- grepl(cast_type, pfiles)
-    of_interest2 <- grepl("aic", pfiles)
-    cast_text <- paste0(cast_type, ".csv")
-    cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
-    cast_dates <- as.Date(cast_dates)
+    cast_dates <- most_recent_cast(tree, cast_type)
   }
 
-  errs <- read_casts(tree = tree, cast_type = cast_type, 
+  casts <- read_casts(tree = tree, cast_type = cast_type, 
                      cast_dates = cast_dates) %>%
-          select_casts(species = species, level = level, models = models) %>%
-          append_observed_to_cast(tree) %>%
+          select_casts(species = species, level = level, models = models) 
+  if (NROW(casts) == 0){
+    stop("no casts available for specified inputs")
+  }  
+  errs <- append_observed_to_cast(casts, tree) %>%
           measure_cast_error(min_observed = min_observed)
 
   lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
@@ -229,9 +226,12 @@ plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts",
                                models = model_names("wEnsemble")){
   check_args()
   casts <- read_casts(tree, cast_type = cast_type) %>%
-           select_casts(species = species, level = level, models = models) %>%
-           append_observed_to_cast(tree)
-
+           select_casts(species = species, level = level, models = models)
+  if (NROW(casts) == 0){
+    stop("no casts available for specified inputs")
+  } 
+  casts <- append_observed_to_cast(casts, tree)
+ 
   lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
@@ -451,7 +451,9 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
   }
 
   pred <- select_casts(casts, species, level, model, newmoonnumber)  
-
+  if (NROW(pred) == 0){
+    stop("no casts available for specified inputs")
+  }  
   pred <- pred[order(pred$estimate, decreasing = TRUE), ]
   nspp <- nrow(pred)
   rangey <- c(nspp + 0.25, 0.75)
@@ -581,7 +583,10 @@ plot_cast_ts <- function(tree = dirtree(), species = "total",
   }
   obs <- read_data(tree, tolower(level))
   pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, models = model)   
+          select_casts(species = species, level = level, models = model) 
+  if (NROW(pred) == 0){
+    stop("no casts available for specified inputs")
+  }  
   first_pred <- min(pred$newmoonnumber)
   which_obs_after_pred <- which(obs$newmoonnumber >= first_pred)
   nwhich_obs_after_pred <- length(which_obs_after_pred)

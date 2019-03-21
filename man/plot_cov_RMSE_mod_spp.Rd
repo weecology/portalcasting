@@ -28,7 +28,7 @@ plot is reliably coded/}
 
 \item{cast_dates}{\code{Date}s the predictions were made. Used to select 
 the files in the predictions subdirectory. Can be length 1 or more and if 
-\code{NULL} (default), selects all available -casts.}
+\code{NULL} (default), selects the most recent -casts.}
 
 \item{min_observed}{\code{integer} value for the minimum number of observed
 values needed for a -cast to be retained in the output table. Default is
