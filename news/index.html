@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -124,6 +124,19 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="portalcasting-0-7-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-7-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.7.0">portalcasting 0.7.0</a>
+</h1>
+<p><em>2019-03-21</em></p>
+<div id="addressing-nbgarch-and-nbsgarch-when-even-the-poisson-fallback-fails" class="section level3">
+<h3 class="hasAnchor">
+<a href="#addressing-nbgarch-and-nbsgarch-when-even-the-poisson-fallback-fails" class="anchor"></a>Addressing <code>nbGARCH</code> and <code>nbsGARCH</code> when even the Poisson fallback fails</h3>
+<ul>
+<li>In <code>nbGARCH</code> and then extended into <code>nbsGARCH</code>, the models fall back to a Poisson distribution if the negative binomial fit fails. Previously (with only <code>nbGARCH</code>) the Poisson fit always succeeded in those back-ups, but now (with <code>nbsGARCH</code>) that sometimes isn’t the case (because the predictor model is more complex) and even the Poisson fit can fail. So now for both models, if that fit fails, we follow what occurs in <code>pevGARCH</code> which is to use the <code>fcast0</code> forecast of 0s and an arbitrarily high AIC (<code>1e6</code>).</li>
+</ul>
+</div>
+</div>
     <div id="portalcasting-0-6-0" class="section level1">
 <h1 class="page-header">
 <a href="#portalcasting-0-6-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.6.0">portalcasting 0.6.0</a>
@@ -601,6 +614,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#portalcasting-0-7-0">0.7.0</a></li>
         <li><a href="#portalcasting-0-6-0">0.6.0</a></li>
         <li><a href="#portalcasting-0-5-0">0.5.0</a></li>
         <li><a href="#portalcasting-0-4-1">0.4.1</a></li>
