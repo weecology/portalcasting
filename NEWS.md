@@ -16,6 +16,11 @@ model names (to facilitate users making new models with new names, we don't want
 to hardwire a naming scheme in `check_arg`), so now there are checks to see if 
 the tables returned from `select_casts` have any rows or not.
 
+### Handling the edge cases in model function testing
+
+### Fixing a typo bug within `pevGARCH`
+* There was a mismatch between `fcast` and `forecast` for one of the edge cases.
+
 # [portalcasting 0.7.0](https://github.com/weecology/portalcasting/releases/tag/v0.7.0)
 *2019-03-21*
 
