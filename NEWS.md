@@ -2,7 +2,6 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-
 # [portalcasting 0.8.0](https://github.com/weecology/portalcasting/releases/tag/v0.8.0)
 *2019-03-21*
 
@@ -17,6 +16,10 @@ to hardwire a naming scheme in `check_arg`), so now there are checks to see if
 the tables returned from `select_casts` have any rows or not.
 
 ### Handling the edge cases in model function testing
+* The trimming of the data sets for model function testing (happens in the AutoArima
+test script) now includes addition of some dummy values for edge cases (all 0 
+observations and nearly-all-0 observations), which allows better coverage of testing
+for the -GARCH model functions in particular.
 
 ### Fixing a typo bug within `pevGARCH`
 * There was a mismatch between `fcast` and `forecast` for one of the edge cases.
