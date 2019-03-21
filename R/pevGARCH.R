@@ -86,7 +86,7 @@ pevGARCH <- function(tree = dirtree(), level = "All", lag = 6, quiet = FALSE){
     abund_s <- extract2(abundances, s)
   
     if (sum(abund_s) == 0){
-      spec_fcast <- fcast0(nfcnm)
+      spec_forecast <- fcast0(nfcnm)
       spec_aic <- 1e6
     } else{
 
