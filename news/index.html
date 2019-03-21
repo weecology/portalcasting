@@ -143,6 +143,21 @@
 <li>There’s a bit of leeway with respect to argument validity, in particular around model names (to facilitate users making new models with new names, we don’t want to hardwire a naming scheme in <code>check_arg</code>), so now there are checks to see if the tables returned from <code>select_casts</code> have any rows or not.</li>
 </ul>
 </div>
+<div id="handling-the-edge-cases-in-model-function-testing" class="section level3">
+<h3 class="hasAnchor">
+<a href="#handling-the-edge-cases-in-model-function-testing" class="anchor"></a>Handling the edge cases in model function testing</h3>
+<ul>
+<li>The trimming of the data sets for model function testing (happens in the AutoArima test script) now includes addition of some dummy values for edge cases (all 0 observations and nearly-all-0 observations), which allows better coverage of testing for the -GARCH model functions in particular.</li>
+</ul>
+</div>
+<div id="fixing-a-typo-bug-within-pevgarch" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fixing-a-typo-bug-within-pevgarch" class="anchor"></a>Fixing a typo bug within <code>pevGARCH</code>
+</h3>
+<ul>
+<li>There was a mismatch between <code>fcast</code> and <code>forecast</code> for one of the edge cases.</li>
+</ul>
+</div>
 </div>
     <div id="portalcasting-0-7-0" class="section level1">
 <h1 class="page-header">
