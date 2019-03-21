@@ -58,12 +58,18 @@ nbGARCH <- function(tree = dirtree(), level = "All", quiet = FALSE){
                  tsglm(abund_s, model = past, distr = "nbinom", link = "log"),
                  warning = function(x){NULL}, error = function(x){NULL})
       if(is.null(model) || AIC(model) == Inf){
-          model <- tsglm(abund_s, 
-                     model = past,
-                     distr = "poisson", link = "log")
+          model <- tryCatch(
+                     tsglm(abund_s, model = past,
+                           distr = "poisson", link = "log"),
+                     warning = function(x){NULL}, error = function(x){NULL})
       }
-      model_fcast <- predict(model, nfcnm, level = CL)
-      model_aic <- AIC(model)
+      if(is.null(model) || AIC(model) == Inf){
+        model_fcast <- fcast0(nfcnm)
+        model_aic <- 1e6
+      } else {
+        model_fcast <- predict(model, nfcnm, level = CL)
+        model_aic <- AIC(model)
+      }
     }    
 
     estimate <- as.numeric(model_fcast$pred)

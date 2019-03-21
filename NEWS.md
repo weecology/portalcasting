@@ -2,6 +2,18 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.7.0](https://github.com/weecology/portalcasting/releases/tag/v0.7.0)
+*2019-03-21*
+
+### Addressing `nbGARCH` and `nbsGARCH` when even the Poisson fallback fails
+* In `nbGARCH` and then extended into `nbsGARCH`, the models fall back
+to a Poisson distribution if the negative binomial fit fails. Previously
+(with only `nbGARCH`) the Poisson fit always succeeded in those back-ups,
+but now (with `nbsGARCH`) that sometimes isn't the case (because the predictor
+model is more complex) and even the Poisson fit can fail. So now for both 
+models, if that fit fails, we follow what occurs in `pevGARCH` which is to
+use the `fcast0` forecast of 0s and an arbitrarily high AIC (`1e6`).
+
 # [portalcasting 0.6.0](https://github.com/weecology/portalcasting/releases/tag/v0.6.0)
 *2019-03-20*
 
