@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -178,7 +178,11 @@
 <img src="imgs/plot5.png" alt="Coverage (left column) and root mean squared error (RMSE, right column) for six representative species and total rodents (rows) using four models and the ensemble (x-axis) produced on all available hindcasts (lines)" width="600"><p class="caption">Coverage (left column) and root mean squared error (RMSE, right column) for six representative species and total rodents (rows) using four models and the ensemble (x-axis) produced on all available hindcasts (lines)</p>
 </div>
 <p><br></p>
-<p>By default, the function produces a figure using all available hindcasts for a set of common species in the control plots, but the arguments allow for flexibility. ### Reading in data to the R console from the directory</p>
+<p>By default, the function produces a figure using the most recent set of hindcasts for a set of common species in the control plots, but the arguments allow for flexibility, including the combination of hindcasts across multiple <code>cast_dates</code>.</p>
+</div>
+<div id="reading-in-data-to-the-r-console-from-the-directory" class="section level3">
+<h3 class="hasAnchor">
+<a href="#reading-in-data-to-the-r-console-from-the-directory" class="anchor"></a>Reading in data to the R console from the directory</h3>
 <p>A series of <code>read_&lt;name&gt;</code> functions are available for simple loading of the data sets into R from the directory. A generalized <code>read_data</code> function includes an argument for which data set to load (“all”, “controls”, “covariates”, “moons”, or “metadata”), and each of those data sets also has a specific function, such as <code>read_all</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/read_data.html">read_data</a></span>(<span class="dt">data_name =</span> <span class="st">"all"</span>)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/read_data.html">read_data</a></span>(<span class="dt">data_name =</span> <span class="st">"controls"</span>)</a>

@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -124,6 +124,26 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="portalcasting-0-8-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-8-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.8.0">portalcasting 0.8.0</a>
+</h1>
+<p><em>2019-03-21</em></p>
+<div id="plot_cov_rmse_mod_spp-now-only-plots-the-most-recent--cast-by-default" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plot_cov_rmse_mod_spp-now-only-plots-the-most-recent--cast-by-default" class="anchor"></a><code>plot_cov_RMSE_mod_spp</code> now only plots the most recent -cast by default</h3>
+<ul>
+<li>If <code>cast_dates = NULL</code> (the default), the plot only uses the most recent -cast to avoid swamping more current -casts with historic -casts.</li>
+</ul>
+</div>
+<div id="added-specific-checks-for-no-casts-returned-in-plot-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#added-specific-checks-for-no-casts-returned-in-plot-functions" class="anchor"></a>Added specific checks for no casts returned in plot functions</h3>
+<ul>
+<li>There’s a bit of leeway with respect to argument validity, in particular around model names (to facilitate users making new models with new names, we don’t want to hardwire a naming scheme in <code>check_arg</code>), so now there are checks to see if the tables returned from <code>select_casts</code> have any rows or not.</li>
+</ul>
+</div>
+</div>
     <div id="portalcasting-0-7-0" class="section level1">
 <h1 class="page-header">
 <a href="#portalcasting-0-7-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.7.0">portalcasting 0.7.0</a>
@@ -614,6 +634,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#portalcasting-0-8-0">0.8.0</a></li>
         <li><a href="#portalcasting-0-7-0">0.7.0</a></li>
         <li><a href="#portalcasting-0-6-0">0.6.0</a></li>
         <li><a href="#portalcasting-0-5-0">0.5.0</a></li>
