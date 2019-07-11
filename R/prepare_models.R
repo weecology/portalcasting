@@ -21,7 +21,7 @@ model_scripts <- function(tree = dirtree()){
 
 #' @title Provide the names of models
 #'
-#' @description Based on a \code{set}, returns a character vectory of model
+#' @description Based on a \code{set}, returns a character vector of model
 #'   names to be included. Currently only support for \code{set = "prefab"}.
 #'
 #' @param add \code{character} vector of name(s) of model(s) to add to the 

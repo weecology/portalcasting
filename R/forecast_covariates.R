@@ -72,7 +72,7 @@ forecast_ndvi <- function(covariates, moons, options_covariates){
 #'   \code{options_covariates} (see \code{\link{covariates_options}}).
 #'
 #' @return \code{forecast_weather}: \code{data.frame} of needed forecasted
-#'   temperature and precipiation values.
+#'   temperature and precipitation values.
 #'
 #' @export
 #'

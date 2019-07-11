@@ -35,7 +35,7 @@ options for the covariate data. See \code{\link{covariates_options}}.}
   values.
 
 \code{forecast_weather}: \code{data.frame} of needed forecasted
-  temperature and precipiation values.
+  temperature and precipitation values.
 }
 \description{
 \code{forecast_covariates}: Forecast covariates (NDVI and 

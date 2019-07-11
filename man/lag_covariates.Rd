@@ -18,7 +18,7 @@ should be retained.}
 }
 \value{
 \code{covariates} \code{data.frame} with a \code{newmoonnumber} 
-  columnn reflecting the lag.
+  column reflecting the lag.
 }
 \description{
 Lag the covariate data together based on the new moons

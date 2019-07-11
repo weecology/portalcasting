@@ -2,6 +2,12 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.8.1](https://github.com/weecology/portalcasting/releases/tag/v0.8.1)
+*2019-07-11*
+
+### Hookup with Zenodo
+Inclusion of json file and some minor editing of documentation, but no functional coding changes
+
 # [portalcasting 0.8.0](https://github.com/weecology/portalcasting/releases/tag/v0.8.0)
 *2019-03-21*
 
@@ -85,7 +91,7 @@ model name input into `save_forecast_output`.
 ### Tidied functionality for checking function arguments
 * Introduction of `check_args` and `check_arg` which collaborate to
 check the validity of function arguments using a standardized set
-of requirments based on the argument names, thereby helping to unify
+of requirements based on the argument names, thereby helping to unify
 and standardize the use of the codebase's arguments.
 
 ### Updated function names
@@ -273,7 +279,7 @@ class, length, numeric limitations, etc.) to the options functions.
 
 ### Retention of all forecasts of covariates
 * Previous versions retained only one covariate forecast per newmoon.
-* We now enable retension of multiple covariate forecasts per newmoon and tag 
+* We now enable retention of multiple covariate forecasts per newmoon and tag 
 the forecast date with a time stamp as well.
 
 ### Website
@@ -300,7 +306,7 @@ for control over download source.
 
 ### Migration from Portal Predictions repository
 * Code was brought over from the forecasting repository to be housed in its 
-own pacakge.
+own package.
 * Multiple updates to the codebase were included, but intentionally just
 "under the hood", meaning little or no change to the output and simplification
 of the input.

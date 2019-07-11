@@ -492,7 +492,7 @@ plot_cast_point <- function(tree = dirtree(), species = NULL,
   }
 }
 
-#' @title Expand the names with formating for a multi-species -cast plot y 
+#' @title Expand the names with formatting for a multi-species -cast plot y 
 #'   axis
 #'
 #' @description Add the y-axis of formatted species names to a 
@@ -671,7 +671,7 @@ plot_cast_ts_xaxis <- function(tree, rangex){
   axis(1, at = loc, labels = FALSE, tck = -0.005)
 }
 
-#' @title Expand the name with formating for a -cast plot y label
+#' @title Expand the name with formatting for a -cast plot y label
 #'
 #' @description Produce a list with \code{text} and \code{font} elements to
 #'   control the y-axis label in \code{\link{plot_cast_ts}}.

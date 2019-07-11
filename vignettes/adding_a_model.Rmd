@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 The portalcasting package provides the ability to add functions both to a
 local copy of the repository for testing as well as to contribute to the
 base set of models provided within the package (and thus executed in the
-main respository.
+main repository.
 
 For the purposes here, consider that you are interested in adding a model
 named "newmod" to the forecasting suite. 
@@ -128,7 +128,7 @@ portalcast(all_options(model = models(add = "newmod")))
 
 The prefabricated (base) set of models available for use within the 
 Portal Predictions pipeline is controlled through a few functions
-that will need to be ammended to add a new model. In addition to the 
+that will need to be amended to add a new model. In addition to the 
 model requirements outlined above, inclusion in the base set via 
 portalcasting requires additional coding specifications be met to 
 ensure proper use by the package and pipeline.
@@ -221,6 +221,6 @@ into the pipeline under default settings by running `setup_dir()` then
 `cleanup_dir()` to remove the temporary files and folders from the repository**.
 
 Once the code has run successfully (including the integration of the output
-from "newmod" into the ensemble) and the respository has been cleaned up,
+from "newmod" into the ensemble) and the repository has been cleaned up,
 **create a Pull Request to the portalcasting repository**
 
