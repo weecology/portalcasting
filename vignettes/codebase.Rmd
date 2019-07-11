@@ -164,7 +164,7 @@ confused with `models_options()`).
 ### Figures
 
 There are currently four main figure functions, each of which involves
-some level of data and forcast processing. The default settings for each
+some level of data and forecast processing. The default settings for each
 function are designed to produce the figures on the [Portal Predictions
 site](http://portal.naturecast.org/), but are flexible to allow for a
 wider range of options. 

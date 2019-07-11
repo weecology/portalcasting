@@ -33,5 +33,5 @@ Uses the weighted mean and weighted sample variance to combine
   throughout. Assert that the summed weight of all the model ensembles is 
   1, as that's what the variance estimates assume. The weight values are 
   rounded to account for precision errors. Summed weights can also be 
-  \code{NA} if there are not weights availble for that ensemble.
+  \code{NA} if there are not weights available for that ensemble.
 }

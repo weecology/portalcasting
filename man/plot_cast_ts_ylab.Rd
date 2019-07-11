@@ -2,7 +2,7 @@
 % Please edit documentation in R/figures.R
 \name{plot_cast_ts_ylab}
 \alias{plot_cast_ts_ylab}
-\title{Expand the name with formating for a -cast plot y label}
+\title{Expand the name with formatting for a -cast plot y label}
 \usage{
 plot_cast_ts_ylab(tree = dirtree(), level = "Controls",
   species = "total", model = "Ensemble")

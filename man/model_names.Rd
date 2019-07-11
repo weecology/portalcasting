@@ -7,7 +7,7 @@
 model_names(model_set = "prefab", add = NULL)
 }
 \arguments{
-\item{model_set}{\code{characher} value of the type of model (currently 
+\item{model_set}{\code{character} value of the type of model (currently 
 only support for \code{"prefab"} and \code{"wEnsemble"}). Use \code{NULL}
 to build a custom set from scratch via \code{add}.}
 
@@ -18,6 +18,6 @@ setup by \code{model_set}.}
 \code{character} vector of model names.
 }
 \description{
-Based on a \code{set}, returns a character vectory of model
+Based on a \code{set}, returns a character vector of model
   names to be included. Currently only support for \code{set = "prefab"}.
 }

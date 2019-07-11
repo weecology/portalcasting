@@ -81,7 +81,7 @@ interpolate_abundance <- function(rodents){
 #'   should be retained.
 #'  
 #' @return \code{covariates} \code{data.frame} with a \code{newmoonnumber} 
-#'   columnn reflecting the lag.
+#'   column reflecting the lag.
 #'
 #' @export
 #'

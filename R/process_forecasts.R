@@ -3,11 +3,11 @@
 #' @description Save out the forecast abundances and AIC values from a given 
 #'   set of forecasts on all and control-only rodent data.
 #'
-#' @param all Ouput from a forecasting model function (e.g., 
+#' @param all Output from a forecasting model function (e.g., 
 #'   \code{\link{AutoArima}}) run on the "all" data. Required to be a 
 #'   \code{list} with two elements named \code{forecast} and \code{aic}.
 #'
-#' @param controls Ouput from a forecasting model function (e.g., 
+#' @param controls Output from a forecasting model function (e.g., 
 #'   \code{\link{AutoArima}}) run on the "controls" data. Required to be a 
 #'   \code{list} with two elements named \code{forecast} and \code{aic}.
 #'
@@ -163,7 +163,7 @@ compile_aic_weights <- function(pred_dir){
 #'   throughout. Assert that the summed weight of all the model ensembles is 
 #'   1, as that's what the variance estimates assume. The weight values are 
 #'   rounded to account for precision errors. Summed weights can also be 
-#'   \code{NA} if there are not weights availble for that ensemble. 
+#'   \code{NA} if there are not weights available for that ensemble. 
 #' 
 #' @param all_forecasts \code{data.frame} of all of the forecasts to be 
 #'   combined. 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/figures.R
 \name{plot_cast_point_yaxis}
 \alias{plot_cast_point_yaxis}
-\title{Expand the names with formating for a multi-species -cast plot y 
+\title{Expand the names with formatting for a multi-species -cast plot y 
   axis}
 \usage{
 plot_cast_point_yaxis(tree = dirtree(), species = "total")

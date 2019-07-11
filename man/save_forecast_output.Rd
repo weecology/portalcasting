@@ -7,11 +7,11 @@
 save_forecast_output(all, controls, model, tree)
 }
 \arguments{
-\item{all}{Ouput from a forecasting model function (e.g., 
+\item{all}{Output from a forecasting model function (e.g., 
 \code{\link{AutoArima}}) run on the "all" data. Required to be a 
 \code{list} with two elements named \code{forecast} and \code{aic}.}
 
-\item{controls}{Ouput from a forecasting model function (e.g., 
+\item{controls}{Output from a forecasting model function (e.g., 
 \code{\link{AutoArima}}) run on the "controls" data. Required to be a 
 \code{list} with two elements named \code{forecast} and \code{aic}.}
 
