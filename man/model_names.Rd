@@ -7,7 +7,7 @@
 model_names(model_set = "prefab", add = NULL)
 }
 \arguments{
-\item{model_set}{\code{characher} value of the type of model (currently 
+\item{model_set}{\code{character} value of the type of model (currently 
 only support for \code{"prefab"} and \code{"wEnsemble"}). Use \code{NULL}
 to build a custom set from scratch via \code{add}.}
 

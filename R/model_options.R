@@ -121,3 +121,22 @@ nbsGARCH_options <- function(tree = dirtree(), model = "nbsGARCH",
   model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
                 lag = lag, quiet = quiet) 
 }
+
+
+#' @rdname model_options
+#'
+#' @description \code{naiveArima_options} creates a \code{model_options} 
+#'   \code{list} of control options for the model script controlling the 
+#'   \code{\link{naiveArima}} model.
+#'
+#' @return \code{naiveArima_options}: a \code{model_options} \code{list} of 
+#'   settings controlling the \code{\link{naiveArima}} model creation.
+#'
+#' @export
+#'
+naiveArima_options <- function(tree = dirtree(), model = "naiveArima", 
+                              mod_covariates = FALSE, lag = NULL, 
+                              quiet = FALSE){
+  model_options(tree = tree, model = model, mod_covariates = mod_covariates, 
+                lag = lag, quiet = quiet) 
+}

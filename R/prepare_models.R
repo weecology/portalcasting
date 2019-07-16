@@ -37,7 +37,7 @@ model_scripts <- function(tree = dirtree()){
 #'
 model_names <- function(model_set = "prefab", add = NULL){
   check_args()
-  prefab <- c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")
+  prefab <- c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH", "naiveArima")
   out <- NULL
   if (!is.null(model_set)){
     if(model_set == "prefab"){

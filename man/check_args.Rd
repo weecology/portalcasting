@@ -188,8 +188,8 @@ Usage and rules for arguments are as follows: \cr \cr
     of value \code{"Site"} or \code{"Treatment"} in 
     \code{\link{AutoArima}}, \code{\link{all_options}}, 
     \code{\link{data_options}}, \code{\link{ESSS}}, 
-    \code{\link{metadata_options}}, \code{\link{nbGARCH}},
-    \code{\link{nbsGARCH}},
+    \code{\link{metadata_options}}, \code{\link{naiveArima}}, 
+    \code{\link{nbGARCH}}, \code{\link{nbsGARCH}}, 
     \code{\link{pevGARCH}}, and \code{\link{rodents_options}}. \cr \cr
   \code{local_paths}: must be a \code{character} 
     vector in \code{\link{file_paths}}. \cr \cr 
@@ -336,7 +336,7 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{ESSS}}, \code{\link{metadata_options}},
     \code{\link{models_options}}, \code{\link{model_options}},  
     \code{\link{predictions_options}}, \code{\link{PortalData_options}}, 
-    \code{\link{moons_options}}, \code{\link{messageq}},
+    \code{\link{moons_options}}, \code{\link{messageq}}, \code{\link{naiveArima}}, 
     \code{\link{nbGARCH}}, \code{\link{nbsGARCH}}, \code{\link{pevGARCH}},
     \code{\link{rodents_options}}, and \code{\link{verify_PortalData}}.
     \cr \cr 
@@ -421,8 +421,8 @@ Usage and rules for arguments are as follows: \cr \cr
     \code{\link{metadata_options}}, \code{\link{model_options}},
     \code{\link{model_paths}}, \code{\link{model_scripts}}, 
     \code{\link{moons_options}}, \code{\link{most_recent_cast}}, 
-    \code{\link{most_recent_census}}, \code{\link{nbGARCH}}, 
-    \code{\link{nbsGARCH}},
+    \code{\link{most_recent_census}},  \code{\link{naiveArima}},  
+    \code{\link{nbGARCH}}, \code{\link{nbsGARCH}},
     \code{\link{pevGARCH}}, \code{\link{plot_cast_point}},
     \code{\link{plot_cast_point_yaxis}}, \code{\link{plot_cast_ts}},
     \code{\link{plot_cast_ts_xaxis}}, \code{\link{plot_cast_ts_ylab}},
