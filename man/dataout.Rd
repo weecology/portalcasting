@@ -4,13 +4,15 @@
 \alias{dataout}
 \title{Save data out to a file and return it}
 \usage{
-dataout(df, options_out = moons_options())
+dataout(df, tree = dirtree(), control = list())
 }
 \arguments{
 \item{df}{\code{data.frame} table to be written out.}
 
-\item{options_out}{an options \code{list} that includes a save element and 
-a filename element, and potentially a class element.}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
+
+\item{control}{\code{list} that includes control parameters.}
 }
 \value{
 df (as input)

@@ -5,11 +5,22 @@
 \title{Generate the file path(s) to the script(s) of the model(s) forecast
   or hindcast with}
 \usage{
-models_to_cast(options_cast = cast_options())
+models_to_cast(models = NULL, tree = dirtree(),
+  models_control = list())
 }
 \arguments{
-\item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options}}.}
+\item{models}{\code{character} vector of the names of models to include in
+the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+from \code{models_control}, so the models returned by the default
+settings of \code{\link{model_names}}.}
+
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{models_control}{A \code{list} of arguments to control the 
+filling of the models subdirectory. See \code{\link{models_control}}.
+Arguments not specified assume default values.}
 }
 \value{
 \code{character} vector of the path(s) of the R script file(s) to 

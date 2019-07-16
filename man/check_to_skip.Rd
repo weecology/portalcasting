@@ -4,11 +4,19 @@
 \alias{check_to_skip}
 \title{Check if the newmoon should be skipped during a set of hindcasts}
 \usage{
-check_to_skip(options_cast)
+check_to_skip(tree = dirtree(), quiet = FALSE, data_control = list())
 }
 \arguments{
-\item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options}}.}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Values not set assume defaults.}
 }
 \value{
 logical indicating if the cast should be skipped

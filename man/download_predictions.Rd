@@ -4,23 +4,26 @@
 \alias{download_predictions}
 \title{Download the predictions files from the Portal Predictions repo}
 \usage{
-download_predictions(tree = dirtree(), download = TRUE,
-  quiet = FALSE)
+download_predictions(tree = dirtree(), quiet = FALSE,
+  control = list())
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
 \code{\link{dirtree}}.}
 
-\item{download}{\code{logical} indicator of whether the download should 
-actually happen. Should be \code{TRUE} except for testing purposes.}
-
 \item{quiet}{\code{logical} indicator of whether the download messages 
 are returned to the console.}
+
+\item{control}{A \code{list} of arguments to control the 
+filling of the predictions subdirectory. See 
+\code{\link{predictions_options}}. Arguments not specified assume default
+values.}
 }
 \description{
 Download the files into the predictions subdirectory in the
-  the portalcasting directory tree from the 
-  \href{https://bit.ly/2IFuPd7}{main repository}.
+  the portalcasting directory tree from 
+  \href{https://zenodo.org/record/3333770}{Zenodo} (default) or from the 
+  \href{https://bit.ly/2Lo2xnQ}{portalPredictions repo}.
 }
 \examples{
 \dontrun{

@@ -4,11 +4,20 @@
 \alias{combine_forecasts}
 \title{Combine forecasts and append them to existing files}
 \usage{
-combine_forecasts(options_cast = cast_options())
+combine_forecasts(tree = dirtree(), quiet = FALSE,
+  data_control = list())
 }
 \arguments{
-\item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options}}.}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Values not set assume defaults.}
 }
 \value{
 \code{list} of [1] \code{"forecasts"} (the forecasted abundances)

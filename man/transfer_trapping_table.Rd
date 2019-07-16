@@ -4,12 +4,15 @@
 \alias{transfer_trapping_table}
 \title{Transfer the trapping table to the data folder}
 \usage{
-transfer_trapping_table(options_data = data_options())
+transfer_trapping_table(tree = dirtree(), quiet = FALSE)
 }
 \arguments{
-\item{options_data}{Class-\code{data_options} list containing available
-for controlling the set up and population of the data folder in the 
-portalcasting directory (see \code{\link{data_options}}).}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}. An optional format for inputting the file tree
+structure. If used, overrides \code{base}, \code{main}, and \code{subs}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 }
 \description{
 Move the trapping table from the PortalData sub directory to 

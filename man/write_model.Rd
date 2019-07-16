@@ -5,24 +5,34 @@
 \alias{model_template}
 \title{Write the template for a model into model subdirectory}
 \usage{
-write_model(options_model = model_options())
+write_model(name = "AutoArima", covariates = FALSE, lag = NA,
+  update = TRUE, tree = dirtree(), quiet = FALSE)
 
-model_template(options_model = model_options())
+model_template(name = "AutoArima", covariates = FALSE, lag = NULL,
+  tree = dirtree(), quiet = FALSE)
 }
 \arguments{
-\item{options_model}{A class-\code{model_options} \code{list} of
-options used to set up a general model script. See 
-\code{\link{model_options}}.}
-}
-\value{
-\code{model_template}: model script text as a single 
-  \code{character} value.
+\item{name}{\code{character} value of the name of the model.}
+
+\item{covariates}{\code{logical} indicator for if the model requires 
+covariates.}
+
+\item{lag}{\code{integer} (or integer \code{numeric}) lag time used for the
+covariates or \code{NA} if \code{covariates} is \code{FALSE}.}
+
+\item{update}{\code{logical} indicator of whether or not the predictions
+should be updated.}
+
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }
 \description{
-\code{write_model}: Create template script (as written by 
-  \code{model_template}) for a given model
-
-\code{model_template}: create the \code{character}-valued
+\cr \cr
+  \code{write_model}: Create template script (as written by 
+  \code{model_template}) for a given model. \cr \cr
+  \code{model_template}: create the \code{character}-valued
   text for a model script to be housed in the model directory, as written
-  out by \code{write_model}.
+  out by \code{write_model}. \cr \cr
 }

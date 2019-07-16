@@ -4,12 +4,19 @@
 \alias{prep_data}
 \title{Prepare data subdirectory for a forecast or hindcast run(s)}
 \usage{
-prep_data(options_data = data_options())
+prep_data(tree = dirtree(), quiet = FALSE, control = list())
 }
 \arguments{
-\item{options_data}{Class-\code{data_options} \code{list} containing the
-options for filling the data subdirectory. See 
-\code{\link{data_options}}.}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Arguments not specified assume default values.}
 }
 \description{
 Make sure that the data subdirectory has the updated files

@@ -4,14 +4,23 @@
 \alias{update_covariates}
 \title{Update the covariate data for a step in a hindcast}
 \usage{
-update_covariates(moons, options_covariates)
+update_covariates(moons, tree = dirtree(), quiet = FALSE,
+  control = list())
 }
 \arguments{
 \item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
 and future newmoons, as produced by \code{\link{prep_moons}}.}
 
-\item{options_covariates}{A class-\code{covariates_options} \code{list} of 
-settings controlling the covariates data creation.}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{control}{A \code{list} of arguments to control the coviariates
+data. See \code{\link{covariates_control}}. Values not set assume 
+defaults.}
 }
 \value{
 An updated \code{covariates}-class \code{data.frame} with needed 

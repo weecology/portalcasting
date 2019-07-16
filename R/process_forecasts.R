@@ -19,8 +19,6 @@
 #' @export
 #'
 save_forecast_output <- function(all, controls, model, tree){
-  check_args()
-
   metadata <- read_data(tree, "metadata");
   temp_dir <- sub_paths(tree, "tmp")
   forecasts <- rbind(all$forecast, controls$forecast)
@@ -40,23 +38,31 @@ save_forecast_output <- function(all, controls, model, tree){
 #' 
 #' @description Combine all new forecasts (from the tmp subdirectory) into
 #'   and append the results to the existing files.
-#' 
-#' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options}}. 
+#'
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param data_control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
 #'
 #' @return \code{list} of [1] \code{"forecasts"} (the forecasted abundances)
 #'   and [2] \code{"all_model_aic"} (the model AIC values).
 #'
 #' @export
 #'
-combine_forecasts <- function(options_cast = cast_options()){
-  check_args()
-  msg <- paste0("Compiling ", options_cast$cast_type)
-  messageq(msg, options_cast$quiet)
-  temp_dir <- sub_paths(options_cast$tree, "tmp")
-  pred_dir <- sub_paths(options_cast$tree, "predictions")
-  forecast_date <- options_cast$cast_date
-  filename_suffix <- options_cast$cast_type
+combine_forecasts <- function(tree = dirtree(), quiet = FALSE,
+                              data_control = list()){
+  #data_control <- do.call("data_control", data_control)
+  messageq(paste0("Compiling ", data_control$cast_type), quiet)
+  temp_dir <- sub_paths(tree, "tmp")
+  pred_dir <- sub_paths(tree, "predictions")
+  forecast_date <- data_control$metadata$cast_date
+  filename_suffix <- data_control$cast_type
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
   files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
   col_class <- c("Date", "integer", "integer", "integer", "character", 
@@ -84,22 +90,33 @@ combine_forecasts <- function(options_cast = cast_options()){
 #' 
 #' @description Add the predictions of an ensemble model to the forecasting 
 #'   files.
-#' 
-#' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options}}. 
+#'
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param data_control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
+#'
+#' @param ensemble \code{logical} indicator if the ensemble should be added.
 #'
 #' @return Forecast abundance table for the ensemble model.
 #' 
 #' @export
 #'
-add_ensemble <- function(options_cast = cast_options()){
-  check_args()
-  if (options_cast$ensemble){
-    messageq("Creating ensemble model", options_cast$quiet)
-    temp_dir <- sub_paths(options_cast$tree, "tmp")
-    pred_dir <- sub_paths(options_cast$tree, "predictions")
-    forecast_date <- options_cast$cast_date
-    filename_suffix <- options_cast$cast_type
+add_ensemble <- function(tree = dirtree(), quiet = FALSE, 
+                         data_control = list(), ensemble = TRUE){
+  #data_control <- do.call("data_control", data_control)
+  if (ensemble){
+    messageq("Creating ensemble model", quiet)
+    temp_dir <- sub_paths(tree, "tmp")
+    pred_dir <- sub_paths(tree, "predictions")
+    forecast_date <- data_control$metadata$cast_date
+    filename_suffix <- data_control$cast_type
     file_ptn <- paste(filename_suffix, ".csv", sep = "")
     files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
     cclass <- c("Date", "integer", "integer", "integer", "character", 
@@ -110,8 +127,8 @@ add_ensemble <- function(options_cast = cast_options()){
     fcast_date <- as.character(forecast_date)
     fcast_fname <- paste(fcast_date, filename_suffix, ".csv", sep = "")
     forecast_filename <- file.path(pred_dir, fcast_fname)
-
-    ensemble <- make_ensemble(fcasts, pred_dir) %>% 
+    CL <- data_control$metadata$confidence_level
+    ensemble <- make_ensemble(fcasts, pred_dir, CL) %>% 
                 subset(select = colnames(fcasts))
     append_csv(ensemble, forecast_filename)
     return(ensemble)

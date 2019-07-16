@@ -1,4 +1,5 @@
 ^Meta$
+^tests-old$
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
@@ -6,6 +7,7 @@
 ^models$
 ^package_outline.txt$
 ^in_dev.R$
+^notes.R$
 ^CONTRIBUTING\.md$
 ^CODE_OF_CONDUCT\.md$
 ^_pkgdown\.yml$
@@ -13,3 +15,4 @@
 ^cran-comments\.md$
 ^\.zenodo\.json$
 ^inst/WORDLIST$
+^data-raw$

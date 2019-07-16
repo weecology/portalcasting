@@ -6,27 +6,44 @@
 \alias{step_casts}
 \title{Run one or potentially multiple forecasts or hindcasts}
 \usage{
-casts(options_all = all_options())
+casts(models = NULL, tree = dirtree(), quiet = FALSE,
+  data_control = list(), models_control = list(), ensemble = TRUE)
 
-cast(options_cast = cast_options())
+cast(models = NULL, tree = dirtree(), quiet = FALSE,
+  data_control = list(), models_control = list(), ensemble = TRUE)
 
-step_casts(options_all = all_options())
+step_casts(models = NULL, tree = dirtree(), quiet = FALSE,
+  data_control = list(), models_control = list(), ensemble = TRUE)
 }
 \arguments{
-\item{options_all}{\code{all_options}-class \code{list} of options 
-controlling the portalcasting directory. See \code{\link{all_options}}.}
+\item{models}{\code{character} vector of the names of models to include in
+the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+from \code{models_control}, so the models returned by the default
+settings of \code{\link{model_names}}.}
 
-\item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options}}.}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Values not set assume defaults.}
+
+\item{models_control}{A \code{list} of arguments to control the 
+filling of the models subdirectory. See \code{\link{models_control}}.
+Arguments not specified assume default values.}
+
+\item{ensemble}{\code{logical} indicator if the ensemble should be added.}
 }
 \description{
 Given that the data and models are prepared accordingly, run 
   a set of one or more forecast or hindcasts, (optionally) add an ensemble,
   combine the results, and add them to the predictions folder. \cr \cr
-  \code{casts}: run one or more -casts flexibly
-
-\code{cast}: run a single -cast
-
-\code{step_casts}: iterate through subsequent-to-the-first
+  \code{casts}: run one or more -casts flexibly \cr \cr
+  \code{cast}: run a single -cast
+  \code{step_casts}: iterate through subsequent-to-the-first
   -cast(s) within \code{casts}.
 }

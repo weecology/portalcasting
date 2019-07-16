@@ -28,8 +28,7 @@ This vignette outlines the codebase for the **portalcasting** package
 
 ### Installation
 
-To obtain the most recent version of **portalcasting**, install the most recent 
-version from GitHub:
+To install the most recent version of **portalcasting** from GitHub:
 
 ```{r, eval=FALSE}
 install.packages("devtools")
@@ -44,31 +43,43 @@ The package organizes the main actions into a set of hierarchical functions
 conducts forecasting or hindcasting as requested), and `cleanup_dir()`
 (which removes temporary folders). The functions are designed to operate 
 out-of-the-box with no need to alter arguments for operation, in particular 
-within the context of the Portal Predictions repo. However, the functions
-are flexible, as detailed in Options List.
+within the context of the Portal Predictions repo, while also maintaining
+flexibility for sandboxing. To that end, there are two top-level setup
+functions: `setup_dir()` is set with defaults for the production 
+pipeline, whereas `setup_sandbox()` is set with defaults for sandboxing.
 
-* `setup_dir()`
+* `setup_dir()` or `setup_sandbox()`
   * `create_dir()`
+    * `create_base_dir()`
+      * `create()`
     * `create_main_dir()`
+      * `verify()`, `create()`
     * `create_sub_dirs()`
-      * `create_sub_dir()`
+      * `verify()`, `create()`
   * `fill_dir()`
     * `fill_PortalData()`
     * `fill_data()`
-      * `transfer_hist_covariate_forecasts()`
+      * `download_hist_covariate_forecasts()`
       * `transfer_trapping_table()`
       * `prep_moons()`
-        * `add_future_moons(options_moons)`
-        * `append_past_moons_to_raw(options_moons)`
+        * `add_future_moons()`
+        * `append_past_moons_to_raw()`
         * `format_moons()`
       * `prep_rodents_list()`
         * `prep_rodents()`
+          * `portalr::summarize_rodent_data()`
+          * `remove_spp()`
+          * `trim_treatment()`
       * `prep_covariates()`
         * `prep_hist_covariates()`
+          * `prep_weather_data()`
+            * `portalr::weather()`
+          * `portalr::ndvi()`
         * `prep_fcast_covariates()`
           * `forecast_covariates()`
             * `trim_moons_fcast()`
             * `forecast_weather()`
+              * `get_climate_forecasts()`
             * `forecast_ndvi()`
           * `append_cov_fcast_csv()`
       * `prep_metadata()`
@@ -96,8 +107,8 @@ are flexible, as detailed in Options List.
         * `step_hind_forward()`
         * `update_data()`
           * `prep_moons()`
-	        * `add_future_moons(options_moons)`
-            * `append_past_moons_to_raw(options_moons)`
+	        * `add_future_moons()`
+            * `append_past_moons_to_raw()`
 	        * `format_moons()`
           * `update_rodents_list()`
           * `update_covariates()`
@@ -124,7 +135,7 @@ are flexible, as detailed in Options List.
 The package uses a simple directory tree to organize the project. There are 
 three levels to the hierarchy:
 
-* `base`: existing folder where the project folder will be housed
+* `base`: folder where the project folder will be housed (usually pre-existing)
   * `main`: project folder encompassing all subfolders
     * `subs`: specific sub-folders for the project
  
@@ -134,32 +145,34 @@ advisable to alter the `base` or `main` levels, as many functions require
 specifically-named subdirectories. 
 
 The full-path components of the tree can be generated from the simple 
-list using `main_path()` and `sub_paths()`. In addition, `model_paths()` 
-can be used to find a specific model's (or models') full path(s)
-and `file_paths()` can be used to find the full path of any file(s) within
-the directory.
+list using `base_path()`, `main_path()` and `sub_paths()`. 
+In addition, `model_paths()` can be used to find a specific model's 
+(or models') full path(s) and `file_paths()` can be used to find the 
+full path of any file(s) within the directory.
 
-### Options List
+### Control lists
 
-The options list is a hierarchical list containing a suite of inter-linked
-options controlling the structure, content, and usage of the directory.
+The function hierarchy is controlled by a large suite of inter-linked 
+parameters, many of which most users will not need or want to interact
+with, but some of which are variably useful, and so having control is
+nice, but without needing to manage extensive argument inputs. To that
+end, the functions have a minimal number of inputs, grouping most things
+into `control` lists. Each `control` or `<type_name>_control` argument
+takes a list, which is internally passed through a `<type_name>_control`
+function which sets the defaults not user-defined and (usually) enforces
+strict named-argument matching (the exception being the 
+`models_control` list, which needs to be flexible to inputs via `...`).
 
-* `options_all`: created by `all_options()` 
-  * `options_dir`: created by `dir_options()`
-  * `options_PortalData`: created by `PortalData_options()`
-  * `options_data`: created by `data_options()`
-    * `moons`: created by `moons_options()`
-    * `rodents`: created by `rodents_options()`
-    * `covariates`: created by `covariates_options()`
-    * `metadata`: created by `metadata_options()`
-    * additionally includes `cast_type`, `quiet`, and `tree` options
-  * `options_predictions`: created by `predictions_options()`
-  * `options_models`: created by `models_options()`
-  * `options_casts`: created by `casts_options()` 
-
-In addition, model-specific scripts (housed within `models/`) are generated 
-using options lists, based on the `model_options()` template (not to be 
-confused with `models_options()`). 
+* `PortalData_control`: created by `PortalData_control()`
+* `data_control`: created by `data_control()`
+  * `moons_control`: created by `moons_control()`
+  * `rodents_control`: created by `rodents_control()`
+  * `covariates_control`: created by `covariates_control()`
+  * `metadata_control`: created by `metadata_control()`
+* `predictions_control`: created by `predictions_control()`
+* `models_control`: created by `models_control()`
+  * model-specific `model_control` created by `model_control()`
+* `casts_control`: created by `casts_control()` 
 
 ### Figures
 

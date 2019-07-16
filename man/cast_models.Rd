@@ -4,11 +4,29 @@
 \alias{cast_models}
 \title{Source the scripts to run the selected forecast or hindcast models}
 \usage{
-cast_models(options_cast = cast_options())
+cast_models(models = NULL, tree = dirtree(), quiet = FALSE,
+  data_control = list(), models_control = list())
 }
 \arguments{
-\item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options}}.}
+\item{models}{\code{character} vector of the names of models to include in
+the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+from \code{models_control}, so the models returned by the default
+settings of \code{\link{model_names}}.}
+
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Values not set assume defaults.}
+
+\item{models_control}{A \code{list} of arguments to control the 
+filling of the models subdirectory. See \code{\link{models_control}}.
+Arguments not specified assume default values.}
 }
 \description{
 Source the R scripts of the selected model(s) indicated by the

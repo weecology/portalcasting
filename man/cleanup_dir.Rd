@@ -4,12 +4,20 @@
 \alias{cleanup_dir}
 \title{Remove the temporary files in PortalData and tmp}
 \usage{
-cleanup_dir(options_all = all_options())
+cleanup_dir(to_cleanup = c("tmp", "PortalData"), tree = dirtree(),
+  quiet = FALSE)
 }
 \arguments{
-\item{options_all}{Class-\code{all_options} list containing all options 
-available for controlling the set up and population of the directory (see 
-\code{\link{all_options}}).}
+\item{to_cleanup}{\code{character} vector of subdirectory names to
+cleanup after completion of casting. Defaults to the temp and PortalData
+subdirectories: \code{c("tmp", "PortalData")}.}
+
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 }
 \description{
 Remove content in specified (by \code{options_dir$to_cleanup})

@@ -5,18 +5,26 @@
 \title{Verify that the PortalData subdirectory is present and has required 
   data}
 \usage{
-verify_PortalData(tree = dirtree(), filename = "moon_dates.csv",
-  quiet = FALSE)
+verify_PortalData(tree = dirtree(), foldername = "Rodents",
+  filename = "moon_dates.csv", quiet = FALSE, control = list())
 }
 \arguments{
 \item{tree}{\code{dirtree}-class directory tree list. See 
 \code{\link{dirtree}}.}
 
+\item{foldername}{\code{character}-valued vector of name(s) of the 
+folder(s) to use for specific checking. Default (\code{Rodents}) 
+settings use the moon dates table in the Rodents folder.}
+
 \item{filename}{\code{character}-valued vector of name(s) of the file(s) to
-use for specific checking. Default (\code{moon_dates.csv}) settings use
-the moon dates table.}
+use for specific checking. Default (\code{moon_dates.csv})
+settings use the moon dates table in the Rodents folder.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
+
+\item{control}{A \code{list} of arguments to control the filling
+of the PortalData subdirectory. See \code{\link{PortalData_control}}. 
+Arguments not specified assume default values.}
 }
 \description{
 Check that the PortalData subdirectory exists and has the

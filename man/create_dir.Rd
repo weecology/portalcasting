@@ -2,51 +2,49 @@
 % Please edit documentation in R/directory.R
 \name{create_dir}
 \alias{create_dir}
+\alias{create_base_dir}
 \alias{create_main_dir}
 \alias{create_sub_dirs}
-\alias{create_sub_dir}
 \title{Create the structure of a portalcasting directory}
 \usage{
-create_dir(options_dir = dir_options())
+create_dir(tree = dirtree(), quiet = FALSE)
 
-create_main_dir(options_dir = dir_options())
+create_base_dir(tree = dirtree(), quiet = FALSE)
 
-create_sub_dirs(options_dir = dir_options())
+create_main_dir(tree = dirtree(), quiet = FALSE)
 
-create_sub_dir(sub_path = NULL, quiet = FALSE)
+create_sub_dirs(tree = dirtree(), quiet = FALSE)
 }
 \arguments{
-\item{options_dir}{Class-\code{dir_options} list containing all options 
-available for controlling the set up of the directory (see 
-\code{\link{dir_options}}).}
-
-\item{sub_path}{The normalized path of the specific subdirectory folder to 
-be created in the directory tree as a \code{character} value (see 
-\code{\link{normalizePath}}, \code{\link{sub_paths}}).}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 }
 \description{
-\code{create_dir}: Create a full portalcasting directory or 
-  any missing components.
-
-\code{create_main_dir}: Create the main level of the 
-  portalcasting directory.
-
-\code{create_sub_dirs}: Create the sub level folders of the 
-  portalcasting directory.
-
-\code{create_sub_dir}: Create a specific subdirectory 
-  folder if it does not already exist.
+This suite of functions creates the necessary folder structure
+ for a portalcasting directory. At each level of the hierarchy, the more
+ basal folders are required to be present and the relevant folders at that
+ level are created if not present. \cr \cr
+ \code{create_dir}: Create a full portalcasting directory or 
+ any missing components. \cr \cr
+ \code{create_main_dir}: Create the main level of the 
+ portalcasting directory. \cr \cr
+ \code{create_sub_dirs}: Create the sub level folders of the 
+ portalcasting directory. \cr \cr
+ \code{create_sub_dir}: Create a specific subdirectory 
+ folder if it does not already exist.
 }
 \examples{
-\dontrun{
+  \dontrun{
 
-create_dir()
-create_main_dir()
-create_sub_dirs()
-create_sub_dir()
-}
+  create_dir()
+  create_base_dir()
+  create_main_dir()
+  create_sub_dirs()
+  create_sub_dir()
+  }
 
 }

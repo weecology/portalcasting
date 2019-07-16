@@ -4,16 +4,36 @@
 \alias{portalcast}
 \title{Forecast or hindcast Portal rodents models}
 \usage{
-portalcast(options_all = all_options())
+portalcast(models = NULL, cast_type = "forecasts", tree = dirtree(),
+  quiet = FALSE, ensemble = TRUE, data_control = list(),
+  models_control = list())
 }
 \arguments{
-\item{options_all}{\code{all_options}-class \code{list} of options 
-controlling the portalcasting directory. See \code{\link{all_options}}.
-Of particular importance is the \code{options_cast} \code{list},
-(see \code{\link{cast_options}}) which contains the options controlling 
-the (fore- or hind-)casting.
-\cr \cr To run a default hindcast, use 
-\code{options_all = all_options(cast_type = "hindcasts")}}
+\item{models}{\code{character} vector of the names of models to include in
+the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+from \code{models_control}, so the models returned by the default
+settings of \code{\link{model_names}}.}
+
+\item{cast_type}{-cast type: \code{"forecasts"} or \code{"hindcasts"}.
+\strong{NOTE:} takes precendence over the value of 
+\code{data_control$cast_type}.}
+
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{ensemble}{\code{logical} indicator if the ensemble should be added.}
+
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Values not set assume defaults.}
+
+\item{models_control}{A \code{list} of arguments to control the 
+filling of the models subdirectory. See \code{\link{models_control}}.
+Arguments not specified assume default values.}
 }
 \description{
 Run potentially multiple models for either a forecast or a 

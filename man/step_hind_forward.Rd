@@ -4,11 +4,12 @@
 \alias{step_hind_forward}
 \title{Step the hind_step values forward}
 \usage{
-step_hind_forward(options_all = all_options())
+step_hind_forward(data_control = list())
 }
 \arguments{
-\item{options_all}{\code{all_options}-class \code{list} of options 
-controlling the portalcasting directory. See \code{\link{all_options}}.}
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Values not set assume defaults.}
 }
 \value{
 Updated \code{options_all} \code{list} for the next -cast.

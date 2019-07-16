@@ -4,14 +4,14 @@
 \alias{trim_moons_fcast}
 \title{Trim the moons table for covariate forecasting}
 \usage{
-trim_moons_fcast(moons, options_covariates)
+trim_moons_fcast(moons, control = list())
 }
 \arguments{
 \item{moons}{Class-\code{moons} type of a \code{data.frame} containing the
 moons and date data. See \code{\link{prep_moons}}.}
 
-\item{options_covariates}{Class-\code{covariates_options} options 
-\code{list}. See \code{\link{covariates_options}}.}
+\item{control}{\code{list} of options for the covariate data. 
+See \code{\link{covariates_control}}.}
 }
 \value{
 A trimmed \code{moons} \code{data.frame}.

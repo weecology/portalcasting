@@ -4,20 +4,25 @@
 \alias{model_names}
 \title{Provide the names of models}
 \usage{
-model_names(model_set = "prefab", add = NULL)
+model_names(names = prefab, set = NULL)
 }
 \arguments{
-\item{model_set}{\code{character} value of the type of model (currently 
-only support for \code{"prefab"} and \code{"wEnsemble"}). Use \code{NULL}
-to build a custom set from scratch via \code{add}.}
+\item{names}{\code{character} vector of name(s) of model(s) to add to the 
+set created by \code{set}. Defaults to \code{prefab}, which is 
+defined internally as
+\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")}.}
 
-\item{add}{\code{character} vector of name(s) of model(s) to add to the 
-setup by \code{model_set}.}
+\item{set}{\code{character} value of the model set(s) to include. Default
+value is \code{NULL} which allows for full customization with 
+\code{names}. Currently there is only support for the
+only support for \code{"prefab"} (AutoArima, ESSS, nbGARCH, nbsGARCH,
+and pevGARCH) and \code{"wEnsemble"} (the prefab models plus the basic
+ensemble, a specialized case).}
 }
 \value{
 \code{character} vector of model names.
 }
 \description{
-Based on a \code{set}, returns a character vector of model
-  names to be included. Currently only support for \code{set = "prefab"}.
+Based on model \code{names} or a \code{set}, returns a 
+  character vector of model names to be included.
 }

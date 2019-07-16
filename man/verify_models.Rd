@@ -4,11 +4,17 @@
 \alias{verify_models}
 \title{Verify that models requested to forecast or hindcast with exist}
 \usage{
-verify_models(options_cast = cast_options())
+verify_models(models = NULL, tree = dirtree(), quiet = FALSE)
 }
 \arguments{
-\item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options}}.}
+\item{models}{\code{character} vector of the names of models to verify.}
+
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 }
 \description{
 Verify that models requested have scripts in the models 

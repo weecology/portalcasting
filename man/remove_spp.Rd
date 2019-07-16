@@ -4,7 +4,7 @@
 \alias{remove_spp}
 \title{Remove species from the rodent data table}
 \usage{
-remove_spp(rodents, drop_spp = rodents_options()$drop_spp)
+remove_spp(rodents, drop_spp = "PI")
 }
 \arguments{
 \item{rodents}{Class-\code{rodents} \code{data.table} of rodent data.}

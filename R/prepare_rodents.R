@@ -1,20 +1,39 @@
 #' @title Prepare historic rodent data
 #'
 #' @description Prepare the rodent dataset, tailored for forecasting. 
-#'   Specifically, return data for all plots and control plots only, for each 
-#'   species except PI and the total
+#'   Specifically, \code{prep_rodents_list} returns data for all plots and 
+#'   control plots only, for each species except PI and the total.
+#'   \code{prep_rodents} prepares a particular version of the rodent dataset,
+#'   tailored for forecasting or hindcasting. Available versions of the data 
+#'   currently include \code{"all"} (abundances on all plots) and 
+#'   \code{"controls"} (abundances on control plots only).
 #'
 #' @param moons Class-\code{moons} \code{data.frame} containing the historic 
 #'   and future newmoons, as produced by \code{\link{prep_moons}}.
 #'
-#' @param options_rodents Class-\code{rodents_options} \code{list} of 
-#'   settings controlling the rodents data creation. See 
-#'   \code{\link{rodents_options}}.
+#' @param control A \code{list} of arguments to 
+#'   \code{\link[portalr]{summarize_rodent_data}}. Preppared via 
+#'   \code{\link{enforce_rodents_control}}.
 #'
-#' @return A class-\code{rodents_list} \code{list} of two class-
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}.
+#
+#' @param tmnt_type \code{character}-value representation of treatment type 
+#'   (\code{"all"} or \code{"controls"}) used to enforce certain elements of 
+#'   the \code{control} \code{list} in \code{prep_rodents}. 
+#'
+#' @param quiet \code{logical} indicator controlling if messages are printed.
+#'
+#' @return \code{prep_rodents_list}: 
+#'   A class-\code{rodents_list} \code{list} of two class-
 #'   \code{rodents} \code{data.frame}s, \code{all} (abundances on all plots)
-#'   and \code{controls} (abundances on control plots only).
-#' 
+#'   and \code{controls} (abundances on control plots only) (only returned if
+#'   \code{update = TRUE}). \cr \cr
+#'   \code{prep_rodents} 
+#'   One of two class-\code{rodents} \code{data.frame}s, as defined by
+#'   \code{tmnt_type}: \code{"all"} (abundances on all plots) or 
+#'   \code{"controls"} (abundances on control plots only). 
+#'
 #' @examples
 #' \dontrun{
 #' 
@@ -24,90 +43,48 @@
 #'
 #' @export
 #'
-prep_rodents_list <- function(moons = prep_moons(), 
-                              options_rodents = rodents_options()){
-  check_args()
-  msg <- "Loading rodents data files into data subdirectory"
-  messageq(msg, options_rodents$quiet)
-  verify_PortalData(options_rodents$tree, "Portal_rodent.csv")
+prep_rodents_list <- function(moons = prep_moons(), tree = dirtree(), 
+                              quiet = FALSE, control = list()){
 
-  options_a <- enforce_rodents_options(options_rodents, "all")
-  all <- prep_rodents(moons, options_a)
-  options_c <- enforce_rodents_options(options_rodents, "controls")
-  ctls <- prep_rodents(moons, options_c)
-
+  messageq("Loading rodents data files into data subdirectory", quiet)
+  verify_PortalData(tree, quiet = quiet)
+  all <- prep_rodents(moons, tree, control, "all")
+  ctls <- prep_rodents(moons, tree, control, "controls")
   classy(list("all" = all, "controls" = ctls), c("rodents_list", "list"))
 }
 
-#' @title Collect and process historic rodent data for -casting
-#'
-#' @description Prepare a particular version of the rodent dataset, tailored 
-#'   for forecasting or hindcasting. Available versions of the data currently
-#'   include \code{all} (abundances on all plots) and \code{controls} 
-#'   (abundances on control plots only)
-#'
-#' @param moons Class-\code{moons} \code{data.frame} containing the historic 
-#'   and future newmoons, as produced by \code{\link{prep_moons}}.
-#'
-#' @param options_rodents Class-\code{rodents_options} \code{list} of 
-#'   settings controlling the rodents data creation. See 
-#'   \code{\link{rodents_options}} for general creation and 
-#'   \code{\link{enforce_rodents_options}} for bulk setting of options for
-#'   each of the possible data table outputs. 
-#' 
-#' @return One of two class-\code{rodents} \code{data.frame}s, 
-#'   \code{all} (abundances on all plots) or \code{controls} (abundances on
-#'   control plots only).
+#' @rdname prep_rodents_list
 #'
 #' @export
 #'
-prep_rodents <- function(moons = prep_moons(), 
-                         options_rodents = rodents_options()){
-  check_args()
-  end_step <- options_rodents$end[options_rodents$hind_step]
-  if (options_rodents$quiet){
-    suppressMessages(
-      summarize_rodent_data(path = main_path(options_rodents$tree), 
-                            clean = FALSE, type = "Rodents", 
-                            level = options_rodents$level, 
-                            plots = options_rodents$plots, 
-                            min_plots = options_rodents$min_plots, 
-                            output = options_rodents$output) %>%
-      classy(c("data.frame", "rodents")) %>% 
-      remove_spp(options_rodents$drop_spp) %>%
-      mutate(total = rowSums(.[ , is.spcol(.)])) %>%
-      classy(c("data.frame", "rodents")) %>% 
-      trim_treatment(options_rodents) %>%
-      inner_join(moons, by = c("period" = "period")) %>%
-      subset(newmoonnumber >= options_rodents$start) %>%
-      subset(newmoonnumber <= min(c(end_step, max(newmoonnumber)))) %>%
-      select(-newmoondate, -censusdate) %>%
-      dataout(options_rodents)
-    )
-  } else{
-    summarize_rodent_data(path = main_path(options_rodents$tree), 
-                          clean = FALSE, type = "Rodents", 
-                          level = options_rodents$level, 
-                          plots = options_rodents$plots, 
-                          min_plots = options_rodents$min_plots, 
-                          output = options_rodents$output) %>%
-    classy(c("data.frame", "rodents")) %>% 
-    remove_spp(options_rodents$drop_spp) %>%
-    mutate(total = rowSums(.[ , is.spcol(.)])) %>%
-    classy(c("data.frame", "rodents")) %>% 
-    trim_treatment(options_rodents) %>%
-    inner_join(moons, by = c("period" = "period")) %>%
-    subset(newmoonnumber >= options_rodents$start) %>%
-    subset(newmoonnumber <= min(c(end_step, max(newmoonnumber)))) %>%
-    select(-newmoondate, -censusdate) %>%
-    dataout(options_rodents)
-  }
+prep_rodents <- function(moons = prep_moons(), tree = dirtree(), 
+                        control = list(), tmnt_type = NULL){
+  control <- do.call("rodents_control", control)
+  control <- enforce_rodents_control(control, tmnt_type)
+  end_step <- control$end[control$hind_step]
+  summarize_rodent_data(path = main_path(tree), 
+                        clean = FALSE, type = "Rodents", 
+                        level = control$level, 
+                        plots = control$plots, 
+                        min_traps = control$min_traps,
+                        min_plots = control$min_plots, 
+                        output = control$output) %>%
+  classy(c("data.frame", "rodents")) %>% 
+  remove_spp(control$drop_spp) %>%
+  mutate(total = rowSums(.[ , is.spcol(.)])) %>%
+  classy(c("data.frame", "rodents")) %>% 
+  trim_treatment(control$level, control$treatment) %>%
+  inner_join(moons, by = c("period" = "period")) %>%
+  subset(newmoonnumber >= control$start) %>%
+  subset(newmoonnumber <= min(c(end_step, max(newmoonnumber)))) %>%
+  select(-newmoondate, -censusdate) %>%
+  dataout(tree, control)
 }
 
 #' @title Enforce the specific options for a given rodent data type
 #'
 #' @description Enforce a list of control options for the rodent data 
-#'   (\code{rodents_options}, see \code{\link{rodents_options}}) based on
+#'   (\code{rodents_control}, see \code{\link{rodents_control}}) based on
 #'   the requested data type. Specifically, the \code{tmnt_type}, 
 #'   \code{level}, \code{length}, \code{plots}, \code{output}, 
 #'   \code{treatment}, and \code{filename} elements are set by the selection.
@@ -115,52 +92,49 @@ prep_rodents <- function(moons = prep_moons(),
 #' @details If \code{tmnt_type = "all"}, the elements are \code{tmnt_type} as
 #'   \code{"all"}, \code{level} as \code{"Site"}, \code{length} as 
 #'   \code{"all"}, \code{plots} as \code{"all"}, \code{output} as 
-#'   \code{"abundance"}, \code{treatment} as \code{NULL}, and \code{filename} 
-#'   as \code{"all.csv"}. \cr \cr
+#'   \code{"abundance"}, \code{treatment} as \code{NULL}, 
+#'   and \code{filename} as \code{"all.csv"}. \cr \cr
 #'   If \code{tmnt_type = "controls"}, the elements are \code{tmnt_type} as
 #'   \code{"controls"}, \code{level} as \code{"Treatment"}, \code{length} as 
 #'   \code{"Longterm"}, \code{plots} as \code{"Longterm"}, \code{output} as 
-#'   \code{"abundance"}, \code{treatment} as \code{controls}, and 
-#'   \code{filename} as \code{"controls.csv"}, 
+#'   \code{"abundance"}, \code{treatment} as \code{controls}, 
+#'   and \code{filename} as \code{"controls.csv"}. \cr \cr
 #'
-#' @param options_rodents Class-\code{rodents_options} \code{list} of 
-#'   settings controlling the rodents data creation. See 
-#'   \code{\link{rodents_options}}.
+#' @param control \code{list} of settings controlling the rodents data 
+#'   creation. See \code{\link{rodents_control}}.
 #'
 #' @param tmnt_type \code{character}-value representation of treatment type 
 #'   (\code{"all"} or \code{"controls"}) used to enforce certain elements of 
-#'   the \code{options_rodents} \code{list}. Alternatively, use \code{NULL}
-#'   to not change the options at all.
+#'   the \code{control} \code{list}. Alternatively, use \code{NULL}
+#'   to not overwrite any options.
 #'
-#' @return Updated \code{options_rodents} input, still a class-
-#'   \code{rodents_options} \code{list}.
+#' @return An updated \code{list} of control options for rodents.
 #'
 #' @export
 #'
-enforce_rodents_options <- function(options_rodents = rodents_options(),
+enforce_rodents_control <- function(control = rodents_control(),
                                     tmnt_type = NULL){
-  check_args()
   if (!is.null(tmnt_type)){
     if (tmnt_type == "all"){
-      options_rodents$tmnt_type <- "all"
-      options_rodents$level <- "Site"
-      options_rodents$length <- "all"
-      options_rodents$plots <- "all"
-      options_rodents$output <- "abundance"
-      options_rodents$treatment <- NULL
-      options_rodents$filename <- "all.csv"
+      control$tmnt_type <- "all"
+      control$level <- "Site"
+      control$length <- "all"
+      control$plots <- "all"
+      control$output <- "abundance"
+      control$treatment <- NULL
+      control$filename <- "all.csv"
     }
     if (tmnt_type == "controls"){
-      options_rodents$tmnt_type <- "controls"
-      options_rodents$level <- "Treatment"
-      options_rodents$length <- "Longterm"
-      options_rodents$plots <- "Longterm"
-      options_rodents$output <- "abundance"
-      options_rodents$treatment <- "control"
-      options_rodents$filename <- "controls.csv"
+      control$tmnt_type <- "controls"
+      control$level <- "Treatment"
+      control$length <- "Longterm"
+      control$plots <- "Longterm"
+      control$output <- "abundance"
+      control$treatment <- "control"
+      control$filename <- "controls.csv"
     }  
   }
-  options_rodents
+  control
 }
 
 #' @title Remove species from the rodent data table
@@ -176,7 +150,7 @@ enforce_rodents_options <- function(options_rodents = rodents_options(),
 #'
 #' @export
 #'
-remove_spp <- function(rodents, drop_spp = rodents_options()$drop_spp){
+remove_spp <- function(rodents, drop_spp = "PI"){
   check_args()
   if (!is.null(drop_spp)){
     rodents <- select(rodents, -one_of(drop_spp))
@@ -254,19 +228,22 @@ is.spcol <- function(rodents, spp_names = rodent_spp()){
 #'
 #' @param rodents Class-\code{rodents} \code{data.table} of rodent data.
 #'
-#' @param options_rodents Class-\code{rodents_options} \code{list} of 
-#'   settings controlling the rodents data creation. See 
-#'   \code{\link{rodents_options}}
+#' @param level \code{character} input for 
+#'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+#'   \code{tmnt_type}.
+#'
+#' @param treatment \code{character} input for 
+#'   \code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+#'   \code{tmnt_type}.
 #'
 #' @return Trimmed \code{data}.
 #'
 #' @export
 #'
-trim_treatment <- function(rodents, options_rodents = rodents_options()){
-  check_args()
-  if (options_rodents$level == "Treatment"){
+trim_treatment <- function(rodents, level = "Site", treatment = NULL){
+  if (level == "Treatment"){
     rodents <-  rodents %>%
-                filter(treatment == options_rodents$treatment) %>%
+                filter(treatment == !!treatment) %>%
                 select(-treatment)
   }
   classy(rodents, c("data.frame", "rodents"))
@@ -277,20 +254,21 @@ trim_treatment <- function(rodents, options_rodents = rodents_options()){
 #' @description Move the trapping table from the PortalData sub directory to 
 #'   the data subdirectory for use.
 #'
-#' @param options_data Class-\code{data_options} list containing available
-#'   for controlling the set up and population of the data folder in the 
-#'   portalcasting directory (see \code{\link{data_options}}). 
+#' @param tree \code{dirtree}-class directory tree list. See 
+#'   \code{\link{dirtree}}. An optional format for inputting the file tree
+#'   structure. If used, overrides \code{base}, \code{main}, and \code{subs}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'   quieted.
 #'
 #' @export
 #'
-transfer_trapping_table <- function(options_data = data_options()){
-  check_args()
-  tree <- options_data$tree
+transfer_trapping_table <- function(tree = dirtree(), quiet = FALSE){
   from <- file_paths(tree, "PortalData/Rodents/Portal_rodent_trapping.csv")
   to <- file_paths(tree, "data/trapping.csv")
   if (file.exists(from)){
     msg <- "Loading rodent trapping table into data subdirectory"
-    messageq(msg, options_data$quiet)
+    messageq(msg, quiet)
     ttable <- read.csv(from, stringsAsFactors = FALSE)
     write.csv(ttable, to, row.names = FALSE)
   }

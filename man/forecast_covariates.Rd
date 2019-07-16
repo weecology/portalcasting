@@ -4,15 +4,19 @@
 \alias{forecast_covariates}
 \alias{forecast_ndvi}
 \alias{forecast_weather}
+\alias{get_climate_forecasts}
 \title{Forecast covariates for forecasting or hindcasting}
 \usage{
-forecast_covariates(covariates, moons,
-  options_covariates = covariates_options())
+forecast_covariates(covariates, moons, tree = dirtree(), quiet = FALSE,
+  control = list())
 
-forecast_ndvi(covariates, moons, options_covariates)
+forecast_ndvi(covariates, moons, control)
 
-forecast_weather(moons = prep_moons(),
-  options_covariates = covariates_options())
+forecast_weather(moons = prep_moons(), tree = dirtree(),
+  quiet = FALSE, control = list())
+
+get_climate_forecasts(moons = prep_moons(), tree = dirtree(),
+  quiet = FALSE, control = list())
 }
 \arguments{
 \item{covariates}{Class-\code{covariates} \code{data.frame} of 
@@ -24,33 +28,54 @@ and future newmoons, as produced by \code{\link{prep_moons}}. For input
 into \code{forecast_weather} and \code{forecast_ndvi}, \code{moons} 
 should be trimmed by \code{\link{trim_moons_fcast}}.}
 
-\item{options_covariates}{Class-\code{covariates_options} list of 
-options for the covariate data. See \code{\link{covariates_options}}.}
+\item{tree}{\code{dirtree}-class directory tree list. See 
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{control}{\code{list} of options for the covariate data. 
+See \code{\link{covariates_control}}.}
 }
 \value{
 \code{forecast_covariates}: \code{data.frame} with needed 
-  forecasted covariates.
-
-\code{forecast_ndvi}: \code{data.frame} of needed forecasted NDVI
-  values.
-
-\code{forecast_weather}: \code{data.frame} of needed forecasted
-  temperature and precipitation values.
+  forecasted covariates. \cr \cr
+  \code{forecast_ndvi}: \code{data.frame} of needed forecasted NDVI values.
+  \cr \cr
+  \code{forecast_weather}: \code{data.frame} of needed forecasted
+  temperature and precipitation values. \cr \cr
+  \code{get_climate_forecasts}: Class-\code{climate_forecast} 
+  \code{data.frame} with columns 
+  of \code{newmoonnumber}, \code{mintemp}, \code{maxtemp}, \code{meantemp},
+  and \code{precipitation}. Temperatures are in C, precipitation is in mm.
 }
 \description{
-\code{forecast_covariates}: Forecast covariates (NDVI and 
+\code{forecast_covariates}: overall forecast covariates function \cr \cr
+  \code{forecast_ndvi}: forecasts specific NDVI values \cr \cr
+  \code{forecast_weather}: forecasts specific weather values \cr \cr
+  \code{get_climate_forecasts}: downloads downscaled weather forecasts for 
+  Portal
+}
+\details{
+\code{forecast_covariates}: forecasts covariates (NDVI and 
   weather) based on the forecast type (\code{"forecast"} or 
-  \code{"hindcast"}) as indicated by \code{options_covariates$cast_type}.
-
-\code{forecast_ndvi}: Wraps around 
+  \code{"hindcast"}) as indicated by \code{control$cast_type}. \cr \cr
+  \code{forecast_ndvi}: wraps around 
   \code{\link[portalr]{fcast_ndvi}} to forecast specific NDVI values
   as requested by a portalcasting directory based on existing NDVI values
   (from \code{covariates}) and \code{moons} data, and controlled by
-  \code{options_covariates} (see \code{\link{covariates_options}}).
-
-\code{forecast_weather}: Wraps around 
+  \code{control} (see \code{\link{covariates_control}}). \cr \cr
+  \code{forecast_weather}: Wraps around 
   \code{\link{get_climate_forecasts}} to forecast weather covariates 
   (min, max, and mean of temperatures and total precipitation for each
   newmoon) as requested by a portalcasting directory and controlled through
-  \code{options_covariates} (see \code{\link{covariates_options}}).
+  \code{control} (see \code{\link{covariates_control}}). \cr \cr
+  \code{get_climate_forecasts}: lunar cycle-based climate forecasts 
+  obtained from \href{https://bit.ly/2tCP8NX}{Northwest Knowledge
+  Network (NKN) at the University of Idaho}
+  and downscaled to Portal, AZ (31.9555, -109.0744). The downscaled 
+  forecasts are based on the 
+  \href{http://www.cpc.ncep.noaa.gov/products/NMME/}{North American 
+  Multi-Model Ensemble}, and specifically the ENSMEAN (ensemble mean) 
+  model. \cr \cr
 }

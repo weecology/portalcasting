@@ -8,57 +8,66 @@
 \alias{fill_models}
 \title{Populate the components of a portalcasting directory}
 \usage{
-fill_dir(options_all = all_options())
+fill_dir(models = NULL, tree = dirtree(), quiet = FALSE,
+  PortalData_control = list(), data_control = list(),
+  predictions_control = list(), models_control = list())
 
-fill_PortalData(options_PortalData = PortalData_options())
+fill_PortalData(tree = dirtree(), quiet = FALSE, control = list())
 
-fill_data(options_data = data_options())
+fill_data(tree = dirtree(), quiet = FALSE, control = list())
 
-fill_predictions(options_predictions = predictions_options())
+fill_predictions(tree = dirtree(), quiet = FALSE, control = list())
 
-fill_models(options_models = models_options())
+fill_models(models = NULL, tree = dirtree(), quiet = FALSE,
+  control = list())
 }
 \arguments{
-\item{options_all}{Class-\code{all_options} list containing all options 
-available for controlling the set up and population of the directory (see 
-\code{\link{all_options}}).}
+\item{models}{\code{character} vector of the names of models to include in
+the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+from \code{models_control}, so the models returned by the default
+settings of \code{\link{model_names}}.}
 
-\item{options_PortalData}{Class-\code{PortalData_options} list containing 
-available for controlling the set up and population of the PortalData
-folder in the portalcasting directory (see 
-\code{\link{PortalData_options}}).}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
 
-\item{options_data}{Class-\code{data_options} list containing available
-for controlling the set up and population of the data folder in the 
-portalcasting directory (see \code{\link{data_options}}).}
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 
-\item{options_predictions}{Class-\code{predictions_options} list containing 
-available for controlling the set up and population of the predictions
-folder in the portalcasting directory (see 
-\code{\link{predictions_options}}).}
+\item{PortalData_control}{A \code{list} of arguments to control the filling
+of the PortalData subdirectory. See \code{\link{PortalData_control}}. 
+ Arguments not specified assume default values.}
 
-\item{options_models}{Class-\code{models_options} list containing 
-available for controlling the set up and population of the models
-folder in the portalcasting directory (see 
-\code{\link{models_options}}).}
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Arguments not specified assume default values.}
+
+\item{predictions_control}{A \code{list} of arguments to control the 
+filling of the predictions subdirectory. See 
+\code{\link{predictions_control}}. Arguments not specified assume default
+values.}
+
+\item{models_control}{A \code{list} of arguments to control the 
+filling of the models subdirectory. See \code{\link{models_control}}.
+Arguments not specified assume default values.}
+
+\item{control}{A \code{list} of controls specific to the function.}
 }
 \description{
-\code{fill_dir}: Populate the files of an existing 
-   portalcasting directory structure in full. (Future flexibility will 
-   allow for selective population of components.)
-
-\code{fill_portalData}: Populate the components of the 
-  PortalData folder.
-
-\code{fill_data}: Populate the for-use data folder in the 
-  portalcasting directory, including the historical covariates, trapping 
-  table, moons, rodents, covariates, and metadata files.
-
-\code{fill_predictions}: Populate the predictions folder with 
-  existing predictions housed on the main portalPredictions repo site.
-
-\code{fill_models}: Populate the model folder with specified 
-  model scripts to be run.
+Fill each of the components of the directory. \cr \cr
+  \code{fill_dir}: populate the files of an existing 
+  portalcasting directory structure in full. (Future flexibility will 
+  allow for selective population of components.) \cr \cr
+  \code{fill_portalData}: populate the components of the PortalData 
+  folder. \cr \cr
+ \code{fill_data}: populate the for-use data folder in the 
+ portalcasting directory, including the historical covariates, trapping 
+ table, moons, rodents, covariates, and metadata files. \cr \cr
+ \code{fill_predictions}: populate the predictions folder with 
+ existing predictions housed on the main portalPredictions repo site.
+ \cr \cr
+ \code{fill_models}: Populate the model folder with specified 
+ model scripts to be run.
 }
 \examples{
 \dontrun{

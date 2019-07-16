@@ -4,11 +4,22 @@
 \alias{add_ensemble}
 \title{Add ensemble model to forecasts}
 \usage{
-add_ensemble(options_cast = cast_options())
+add_ensemble(tree = dirtree(), quiet = FALSE, data_control = list(),
+  ensemble = TRUE)
 }
 \arguments{
-\item{options_cast}{Class-\code{cast_options} \code{list} containing the
-hind- or forecasting options. See \code{\link{cast_options}}.}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{data_control}{A \code{list} of arguments to control the filling of
+the data subdirectory. See \code{\link{data_control}}. 
+Values not set assume defaults.}
+
+\item{ensemble}{\code{logical} indicator if the ensemble should be added.}
 }
 \value{
 Forecast abundance table for the ensemble model.

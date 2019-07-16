@@ -4,11 +4,15 @@
 \alias{update_rodents_list}
 \title{Update the rodent data for a step in a hindcast}
 \usage{
-update_rodents_list(options_rodents)
+update_rodents_list(tree = dirtree(), control = list())
 }
 \arguments{
-\item{options_rodents}{A class-\code{rodents_options} \code{list} of 
-settings controlling the rodents data creation.}
+\item{tree}{\code{dirtree}-class directory tree list. Consisting of 
+\code{base}, \code{main}, and \code{subs} elements. See
+\code{\link{dirtree}}.}
+
+\item{control}{A \code{list} of arguments to control the rodents
+data. See \code{\link{rodents_control}}. Values not set assume defaults.}
 }
 \value{
 A \code{rodents_list}-class \code{list} of two \code{rodents}-class

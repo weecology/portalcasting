@@ -3,14 +3,32 @@
 #' @description Run potentially multiple models for either a forecast or a 
 #'   hindcast. 
 #'
-#' @param options_all \code{all_options}-class \code{list} of options 
-#'   controlling the portalcasting directory. See \code{\link{all_options}}.
-#'   Of particular importance is the \code{options_cast} \code{list},
-#'   (see \code{\link{cast_options}}) which contains the options controlling 
-#'   the (fore- or hind-)casting.
-#'   \cr \cr To run a default hindcast, use 
-#'   \code{options_all = all_options(cast_type = "hindcasts")}
-#' 
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param data_control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
+#'
+#' @param models \code{character} vector of the names of models to include in
+#'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+#'  from \code{models_control}, so the models returned by the default
+#'  settings of \code{\link{model_names}}.
+#'
+#' @param models_control A \code{list} of arguments to control the 
+#'  filling of the models subdirectory. See \code{\link{models_control}}.
+#'  Arguments not specified assume default values.
+#'
+#' @param cast_type -cast type: \code{"forecasts"} or \code{"hindcasts"}.
+#'  \strong{NOTE:} takes precendence over the value of 
+#'  \code{data_control$cast_type}.
+#'
+#' @param ensemble \code{logical} indicator if the ensemble should be added.
+#'
 #' @examples
 #' \dontrun{
 #' 
@@ -20,16 +38,21 @@
 #'
 #' @export
 #'
-portalcast <- function(options_all = all_options()){
-  check_args()
+portalcast <- function(models = NULL, cast_type = "forecasts", 
+                       tree = dirtree(), quiet = FALSE, ensemble = TRUE, 
+                       data_control = list(), models_control = list()){
+  data_control <- do.call("data_control", data_control)
+  data_control$cast_type <- cast_type
+  models_control <- do.call("models_control", models_control)
   msg1 <- "##########################################################"
   version_number <- packageDescription("portalcasting", fields = "Version")
   msg2 <- paste0("This is portalcasting v", version_number)
-  messageq(c(msg1, msg2), options_all$options_cast$quiet)
-  clear_tmp(options_all$options_dir$tree)
-  verify_models(options_all$options_cast)
-  prep_data(options_all$options_data)
-  casts(options_all)
+  messageq(c(msg1, msg2), quiet)
+  models <- ifnull(models, names(models_control))
+  clear_tmp(tree)
+  verify_models(models, tree, quiet)
+  prep_data(tree, quiet, data_control)
+  casts(models, tree, quiet, data_control, models_control, ensemble)
 }
 
 #' @title Verify that models requested to forecast or hindcast with exist
@@ -37,21 +60,25 @@ portalcast <- function(options_all = all_options()){
 #' @description Verify that models requested have scripts in the models 
 #'   subdirectory. 
 #'
-#' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options}}. 
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param models \code{character} vector of the names of models to verify. 
 #'
 #' @export
 #'
-verify_models <- function(options_cast = cast_options()){
-  check_args()
-  messageq("Checking model availability", options_cast$quiet)
-  model_dir <- sub_paths(options_cast$tree, "models")
+verify_models <- function(models = NULL, tree = dirtree(), quiet = FALSE){
+  messageq("Checking model availability", quiet)
+  model_dir <- sub_paths(tree, "models")
   if (!dir.exists(model_dir)){
     stop("Models subidrectory does not exist")
   }
   available <- list.files(model_dir)
-  if (options_cast$model[1] != "all"){
-    models <- options_cast$model
+  if (models[1] != "all"){
     modelnames <- paste0(models, ".R")
     torun <- (modelnames %in% available)  
     if (any(torun == FALSE)){
@@ -59,7 +86,7 @@ verify_models <- function(options_cast = cast_options()){
       stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
     }
   }
-  message("All requested models available")
+  messageq("All requested models available", quiet)
 }
 
 #' @title Source the scripts to run the selected forecast or hindcast models
@@ -67,21 +94,40 @@ verify_models <- function(options_cast = cast_options()){
 #' @description Source the R scripts of the selected model(s) indicated by the
 #'   \code{model} element in \code{options_cast}.
 #'
-#' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options}}. 
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param data_control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
+#'
+#' @param models \code{character} vector of the names of models to include in
+#'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+#'  from \code{models_control}, so the models returned by the default
+#'  settings of \code{\link{model_names}}.
+#'
+#' @param models_control A \code{list} of arguments to control the 
+#'  filling of the models subdirectory. See \code{\link{models_control}}.
+#'  Arguments not specified assume default values.
 #'
 #' @export
 #'
-cast_models <- function(options_cast = cast_options()){
-  check_args()
+cast_models <- function(models = NULL, tree = dirtree(), quiet = FALSE, 
+                        data_control = list(), models_control = list()){
+  #data_control <- do.call("data_control", data_control)
+  models_control <- do.call("models_control", models_control)
   msg1 <- "##########################################################"
   msg2 <- "Running models"
-  if (options_cast$cast_type == "hindcasts"){ 
-    end_step <- options_cast$end[options_cast$hind_step]
+  if (data_control$cast_type == "hindcasts"){ 
+    end_step <- data_control$covariates$end[data_control$covariates$hind_step]
     msg2 <- paste0(msg2, " for initial newmoon ", end_step)  
   }
-  messageq(c(msg1, msg2), options_cast$quiet)
-  sapply(models_to_cast(options_cast), source)
+  messageq(c(msg1, msg2), quiet)
+  sapply(models_to_cast(models, tree, models_control), source)
 }
 
 #' @title Generate the file path(s) to the script(s) of the model(s) forecast
@@ -91,62 +137,38 @@ cast_models <- function(options_cast = cast_options()){
 #'   \code{character} vector of file path(s) corresponding to the model 
 #'   scripts. 
 #'
-#' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options}}. 
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param models \code{character} vector of the names of models to include in
+#'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+#'  from \code{models_control}, so the models returned by the default
+#'  settings of \code{\link{model_names}}.
+#'
+#' @param models_control A \code{list} of arguments to control the 
+#'  filling of the models subdirectory. See \code{\link{models_control}}.
+#'  Arguments not specified assume default values.
 #'
 #' @return \code{character} vector of the path(s) of the R script file(s) to 
 #'   be run.
 #'
 #' @export
 #'
-models_to_cast <- function(options_cast = cast_options()){
-  check_args()
-  model_dir <- sub_paths(options_cast$tree, "models")
-  if (options_cast$model[1] == "all"){
+models_to_cast <- function(models = NULL, tree = dirtree(),
+                           models_control = list()){
+  models_control <- do.call("models_control", models_control)
+  model_dir <- sub_paths(tree, "models")
+  if (models[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
   } else{
-    modelnames <- paste0(options_cast$model, ".R")
+    modelnames <- paste0(models, ".R")
     torun <- (list.files(model_dir) %in% modelnames)
     runnames <- list.files(model_dir, full.names = TRUE)[torun] 
   }
   runnames
 }
 
-#' @title Create tmp subdirectory
-#'
-#' @description Create the tmp subdirectory specifically.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
-#'
-#' @export
-#'
-create_tmp <- function(tree = dirtree()){
-  check_args()
-  opts <- dir_options(base = tree$base, main = tree$main, subs = "tmp")
-  create_sub_dirs(opts)
-}
-
-#' @title Clear tmp subdirectory
-#'
-#' @description Remove all of the files from the tmp subdirectory 
-#'   specifically.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
-#'
-#' @export
-#'
-clear_tmp <- function(tree = dirtree()){
-  check_args()
-  temp_dir <- sub_paths(tree, "tmp")
-  if (!dir.exists(temp_dir)){
-    create_tmp(tree)
-  }
-  if (length(list.files(temp_dir)) > 0){
-    file.remove(file_paths(tree, paste0("tmp/", list.files(temp_dir))))
-  }
-}
 
 #' @title Prepare data subdirectory for a forecast or hindcast run(s)
 #'
@@ -154,25 +176,32 @@ clear_tmp <- function(tree = dirtree()){
 #'   for a forecasting run or a set of hindcasting runs. Uses the 
 #'   \code{metadata.yaml} file to verify validity.
 #'
-#' @param options_data Class-\code{data_options} \code{list} containing the
-#'   options for filling the data subdirectory. See 
-#'   \code{\link{data_options}}. 
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#' 
+#' @param control A \code{list} of arguments to control the filling of
+#'   the data subdirectory. See \code{\link{data_control}}. 
+#'   Arguments not specified assume default values.
 #'
 #' @export
 #'
-prep_data <- function(options_data = data_options()){
-  check_args()
-  messageq("Preparing data", options_data$quiet)
-  metadata_path <- file_paths(options_data$tree, "data/metadata.yaml")
+prep_data <- function(tree = dirtree(), quiet = FALSE, control = list()){
+  #control <- do.call("data_control", control)
+  messageq("Preparing data", quiet)
+  metadata_path <- file_paths(tree, "data/metadata.yaml")
   if (!file.exists(metadata_path)){
-    fill_data(options_data)
+    fill_data(tree, quiet, control)
   }
   metadata <- yaml.load_file(metadata_path)    
   if (metadata$forecast_date != today()){
-    fill_data(options_data)
+    fill_data(tree, quiet, control)
   }
-  if (options_data$cast_type == "hindcasts"){
-    fill_data(options_data)
+  if (control$cast_type == "hindcasts"){
+    fill_data(tree, quiet, control)
   }
 }
 
@@ -181,59 +210,80 @@ prep_data <- function(options_data = data_options()){
 #' @description Given that the data and models are prepared accordingly, run 
 #'   a set of one or more forecast or hindcasts, (optionally) add an ensemble,
 #'   combine the results, and add them to the predictions folder. \cr \cr
-#'   \code{casts}: run one or more -casts flexibly
-#'
-#' @param options_all \code{all_options}-class \code{list} of options 
-#'   controlling the portalcasting directory. See \code{\link{all_options}}.
-#'
-#' @export
-#'
-casts <- function(options_all = all_options()){
-  check_args()
-  cast(options_all$options_cast)
-  step_casts(options_all)
-  msg1 <- "##########################################################"
-  msg2 <- "Models done"
-  messageq(c(msg1, msg2, msg1), options_all$options_cast$quiet)
-}
-
-#' @rdname casts
-#' 
-#' @description \code{cast}: run a single -cast
-#'
-#' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options}}. 
-#'
-#' @export
-#'
-cast <- function(options_cast = cast_options()){
-  check_args()
-  if (check_to_skip(options_cast)){
-    return()
-  }
-  cast_models(options_cast)
-  combined <- combine_forecasts(options_cast)
-  ensemble <- add_ensemble(options_cast)
-  msg <- "##########################################################"
-  messageq(msg, options_cast$quiet)
-  clear_tmp(options_cast$tree)
-}
-
-#' @rdname casts
-#' 
-#' @description \code{step_casts}: iterate through subsequent-to-the-first
+#'   \code{casts}: run one or more -casts flexibly \cr \cr
+#'   \code{cast}: run a single -cast
+#'   \code{step_casts}: iterate through subsequent-to-the-first
 #'   -cast(s) within \code{casts}. 
 #'
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param data_control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
+#'
+#' @param models \code{character} vector of the names of models to include in
+#'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
+#'  from \code{models_control}, so the models returned by the default
+#'  settings of \code{\link{model_names}}.
+#'
+#' @param models_control A \code{list} of arguments to control the 
+#'  filling of the models subdirectory. See \code{\link{models_control}}.
+#'  Arguments not specified assume default values.
+#'
+#' @param ensemble \code{logical} indicator if the ensemble should be added.
+#'
 #' @export
 #'
-step_casts <- function(options_all = all_options()){
-  check_args()
-  n_steps <- length(options_all$options_data$covariates$end)
+casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
+                  data_control = list(), models_control = list(),
+                  ensemble = TRUE){
+ # data_control <- do.call("data_control", data_control)
+  models_control <- do.call("models_control", models_control)
+  cast(models, tree, quiet, data_control, models_control, ensemble)
+  step_casts(models, tree, quiet, data_control, models_control, ensemble)
+  msg1 <- "########################################################"
+  messageq(c(msg1, "Models done", msg1), quiet)
+}
+
+#' @rdname casts
+#'
+#' @export
+#'
+cast <- function(models = NULL, tree = dirtree(), quiet = FALSE,
+                 data_control = list(), models_control = list(),
+                 ensemble = TRUE){
+  #data_control <- do.call("data_control", data_control)
+  models_control <- do.call("models_control", models_control)
+  if (check_to_skip(tree, quiet, data_control)){
+    return()
+  }
+  cast_models(models, tree, quiet, data_control, models_control)
+  combined <- combine_forecasts(tree, quiet, data_control)
+  ensemble <- add_ensemble(tree, quiet, data_control, ensemble)
+  messageq("########################################################", quiet)
+  clear_tmp(tree, quiet)
+}
+
+#' @rdname casts
+#'
+#' @export
+#'
+step_casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
+                       data_control = list(), models_control = list(),
+                       ensemble = TRUE){
+  #data_control <- do.call("data_control", data_control)
+  models_control <- do.call("models_control", models_control)
+  n_steps <- length(data_control$covariates$end)
   if (n_steps > 1){
     for (i in 2:n_steps){
-      options_all <- step_hind_forward(options_all)
-      update_data(options_all$options_data)
-      cast(options_all$options_cast)
+      data_control <- step_hind_forward(data_control)
+      update_data(tree, quiet, data_control)
+      cast(models, tree, quiet, data_control, models_control, ensemble)
     }  
   }
 }
@@ -243,44 +293,53 @@ step_casts <- function(options_all = all_options()){
 #' @description Iterate the \code{hind_step} elements of options \code{list}s
 #'   through subsequent-to-the-first -cast(s) within \code{\link{casts}}.
 #'
-#' @param options_all \code{all_options}-class \code{list} of options 
-#'   controlling the portalcasting directory. See \code{\link{all_options}}.
+#' @param data_control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
 #'   
 #' @return Updated \code{options_all} \code{list} for the next -cast.
 #'
 #' @export
 #'
-step_hind_forward <- function(options_all = all_options()){
-  check_args()
-  new_step <- options_all$options_data$covariates$hind_step + 1
-  options_all$options_data$rodents$hind_step <- new_step
-  options_all$options_data$covariates$hind_step <- new_step
-  options_all$options_cast$hind_step <- new_step
-  options_all
+step_hind_forward <- function(data_control = list()){
+  #data_control <- do.call("data_control", data_control)
+  new_step <- data_control$covariates$hind_step + 1
+  data_control$rodents$hind_step <- new_step
+  data_control$covariates$hind_step <- new_step
+  data_control
 }
 
 #' @title Check if the newmoon should be skipped during a set of hindcasts
 #' 
 #' @description For hindcasts, skip newmoons with incomplete surveys.
 #'
-#' @param options_cast Class-\code{cast_options} \code{list} containing the
-#'   hind- or forecasting options. See \code{\link{cast_options}}. 
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param data_control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
 #'
 #' @return logical indicating if the cast should be skipped
 #'
 #' @export
 #'
-check_to_skip <- function(options_cast){
-  check_args()
+check_to_skip <- function(tree = dirtree(), quiet = FALSE, 
+                          data_control = list()){
+  #data_control <- do.call("data_control", data_control)
   out <- FALSE
-  if (options_cast$cast_type == "hindcasts"){ 
-    end_step <- options_cast$end[options_cast$hind_step]
-    trap_path <- file_paths(options_cast$tree, "data/trapping.csv")
+  if (data_control$cast_type == "hindcasts"){ 
+    end_step <- data_control$covariates$end[data_control$covariates$hind_step]
+    trap_path <- file_paths(tree, "data/trapping.csv")
     trap_tab <- read.csv(trap_path, stringsAsFactors = FALSE)
-    moon_path <- file_paths(options_cast$tree, "data/moons.csv")
+    moon_path <- file_paths(tree, "data/moons.csv")
     moons <- read.csv(moon_path, stringsAsFactors = FALSE)
-    min_plots <- options_cast$min_plots
-    min_traps <- options_cast$min_traps
+    min_plots <- data_control$rodents$min_plots
+    min_traps <- data_control$rodents$min_traps
     incs <- find_incomplete_censuses(trap_tab, min_plots, min_traps)
     end_step_p <- moons$period[moons$newmoonnumber == end_step]
     if (is.na(end_step_p)){
@@ -293,7 +352,7 @@ check_to_skip <- function(options_cast){
     end_step <- options_cast$end[options_cast$hind_step]
     msg1 <- paste0("Initial newmoon ", end_step, " not fully sampled")
     msg2 <- "##########################################################"
-    messageq(c(msg1, msg2) , options_cast$quiet)
+    messageq(c(msg1, msg2), quiet)
   }
   out
 }
@@ -304,22 +363,28 @@ check_to_skip <- function(options_cast){
 #'   again, simply step back in time through the hindcast's end vector 
 #'   and trim the last "historical" sample off.
 #'
-#' @param options_data Class-\code{data_options} \code{list} containing the
-#'   options for filling the data subdirectory. See 
-#'   \code{\link{data_options}}. 
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param control A \code{list} of arguments to control the filling of
+#'  the data subdirectory. See \code{\link{data_control}}. 
+#'  Values not set assume defaults.
 #'
 #' @export
 #'
-update_data <- function(options_data){
-  check_args()
-  msg <- "Updating forecasting data files in data subdirectory"
-  messageq(msg, options_data$moons$quiet)
-  options_data$moons$quiet <- TRUE
-  options_data$metadata$quiet <- TRUE
-  moons <- prep_moons(options_data$moons)
-  rodents_list <- update_rodents_list(options_data$rodents)
-  covariates <- update_covariates(moons, options_data$covariates)
-  met <- prep_metadata(moons, rodents_list, covariates, options_data$metadata)
+update_data <- function(tree = dirtree, quiet = FALSE, control = list()){
+  #data_control <- do.call("data_control", data_control)
+  messageq("Updating forecasting data files in data subdirectory", quiet)
+  control$moons$quiet <- TRUE
+  control$metadata$quiet <- TRUE
+  moons <- prep_moons(tree, quiet, control$moons)
+  rodents <- update_rodents_list(tree, control$rodents)
+  covar <- update_covariates(moons, tree, quiet, control$covariates)
+  md <- prep_metadata(moons, rodents, covar, tree, quiet, control$metadata)
 }
 
 #' @title Update the covariate data for a step in a hindcast
@@ -330,8 +395,16 @@ update_data <- function(options_data){
 #' @param moons Class-\code{moons} \code{data.frame} containing the historic 
 #'   and future newmoons, as produced by \code{\link{prep_moons}}.
 #'
-#' @param options_covariates A class-\code{covariates_options} \code{list} of 
-#'   settings controlling the covariates data creation.
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param control A \code{list} of arguments to control the coviariates
+#'  data. See \code{\link{covariates_control}}. Values not set assume 
+#'  defaults.
 #'
 #' @return An updated \code{covariates}-class \code{data.frame} with needed 
 #'   forecasted covariates associated with the focal forecast or hindcast 
@@ -339,16 +412,17 @@ update_data <- function(options_data){
 #'
 #' @export
 #'
-update_covariates <- function(moons, options_covariates){
-  check_args()
-  end_step <- options_covariates$end[options_covariates$hind_step]
-  covs_path <- file_paths(options_covariates$tree, "data/covariates.csv")
+update_covariates <- function(moons, tree = dirtree(), quiet = FALSE,
+                              control = list()){
+  control <- do.call("covariates_control", control)
+  end_step <- control$end[control$hind_step]
+  covs_path <- file_paths(tree, "data/covariates.csv")
   covs <- read.csv(covs_path, stringsAsFactors = FALSE) 
   covs <- classy(covs, c("data.frame", "covariates"))
   hist_cov <- covs[covs$newmoonnumber <= end_step, ]
-  fcast_cov <- prep_fcast_covariates(hist_cov, moons, options_covariates)
+  fcast_cov <- prep_fcast_covariates(hist_cov, moons, tree, quiet, control)
   out <- bind_rows(hist_cov, fcast_cov)
-  dataout(out, options_covariates)
+  dataout(out, tree, control)
 }
 
 #' @title Update the rodent data for a step in a hindcast
@@ -356,8 +430,12 @@ update_covariates <- function(moons, options_covariates){
 #' @description Given an updated \code{options_rodents$hind_step}, update
 #'   the rodent data.
 #'
-#' @param options_rodents A class-\code{rodents_options} \code{list} of 
-#'   settings controlling the rodents data creation.
+#' @param tree \code{dirtree}-class directory tree list. Consisting of 
+#'  \code{base}, \code{main}, and \code{subs} elements. See
+#'  \code{\link{dirtree}}.
+#'
+#' @param control A \code{list} of arguments to control the rodents
+#'  data. See \code{\link{rodents_control}}. Values not set assume defaults.
 #'
 #' @return A \code{rodents_list}-class \code{list} of two \code{rodents}-class
 #'   \code{data.frames}: \code{"all"} (containing counts across all plots)
@@ -366,16 +444,16 @@ update_covariates <- function(moons, options_covariates){
 #'
 #' @export
 #'
-update_rodents_list <- function(options_rodents){
-  check_args()
-  end_step <- options_rodents$end[options_rodents$hind_step]
-  all_path <- file_paths(options_rodents$tree, "data/all.csv")
+update_rodents_list <- function(tree = dirtree(), control = list()){
+  control <- do.call("rodents_control", control)
+  end_step <- control$end[control$hind_step]
+  all_path <- file_paths(tree, "data/all.csv")
   all <- read.csv(all_path, stringsAsFactors = FALSE)
   all <- all[all$newmoonnumber <= end_step, ]
   write.csv(all, all_path, row.names = FALSE)
   all <- classy(all, c("data.frame", "rodents"))
 
-  ctls_path <- file_paths(options_rodents$tree, "data/controls.csv")
+  ctls_path <- file_paths(tree, "data/controls.csv")
   ctls <- read.csv(ctls_path, stringsAsFactors = FALSE)
   ctls <- ctls[ctls$newmoonnumber <= end_step, ]
   write.csv(ctls, ctls_path, row.names = FALSE)

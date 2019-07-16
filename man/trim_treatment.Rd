@@ -4,14 +4,18 @@
 \alias{trim_treatment}
 \title{Remove the treatment column from the rodent data table}
 \usage{
-trim_treatment(rodents, options_rodents = rodents_options())
+trim_treatment(rodents, level = "Site", treatment = NULL)
 }
 \arguments{
 \item{rodents}{Class-\code{rodents} \code{data.table} of rodent data.}
 
-\item{options_rodents}{Class-\code{rodents_options} \code{list} of 
-settings controlling the rodents data creation. See 
-\code{\link{rodents_options}}}
+\item{level}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
+
+\item{treatment}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
 }
 \value{
 Trimmed \code{data}.
