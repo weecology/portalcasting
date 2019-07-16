@@ -118,9 +118,12 @@ na_conformer <- function(x, colname = "species"){
 #' @export
 #'
 dataout <- function(df, tree = dirtree(), control = list()){
-  if (!is.null(control$save) & !is.null(control$filename)){
-    if (control$save){
-      file_paths(tree, paste0("data/", control$filename)) %>%
+  cn <- names(control)
+  sv <- grep("save", cn)
+  fn <- grep("filename", cn)
+  if (!is.null(control[[sv]]) & !is.null(control[[fn]])){
+    if (control[[sv]]){
+      file_paths(tree, paste0("data/", control[[fn]])) %>%
       write.csv(df, ., row.names = FALSE)
     }
   }

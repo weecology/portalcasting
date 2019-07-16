@@ -8,26 +8,12 @@
 \alias{metadata_control}
 \title{Create data control lists}
 \usage{
-data_control(cast_date = today(), append_missing_to_raw = TRUE,
-  m_save = TRUE, m_filename = "moons.csv", tmnt_type = NULL,
-  start = 217, end = NULL, hind_step = 1, drop_spp = "PI",
-  min_plots = 24, min_traps = 1, level = "Site", treatment = NULL,
-  plots = "all", output = "abundance", r_save = TRUE,
-  r_filename = "all.csv", cov_hist = TRUE, cov_fcast = TRUE,
-  yr = as.numeric(format(today(), "\%Y")), lead_time = 12,
-  min_lag = 6, fcast_nms = NULL, nfcnm = 0,
-  append_fcast_csv = TRUE, hist_fcast_file = "covariate_forecasts.csv",
-  source_name = "current_archive", c_save = TRUE,
-  c_filename = "covariates.csv", cast_type = "forecasts",
-  confidence_level = 0.9, meta_save = TRUE,
-  meta_filename = "metadata.yaml", covariate_source = "retroactive",
-  covariate_date_made = "2018-06-05 12:00:00 PST", update = TRUE,
-  override_ssl_cert_exp = TRUE, download = FALSE, version = "latest",
-  from_zenodo = TRUE, verbose = FALSE, use_existing_zip = TRUE)
+data_control(moons = moons_control(), rodents = rodents_control(),
+  covariates = covariates_control(), metadata = metadata_control())
 
 moons_control(n_future_moons = 12, cast_date = today(),
-  append_missing_to_raw = TRUE, save = TRUE, filename = "moons.csv",
-  class = "moons")
+  append_missing_to_raw = TRUE, m_save = TRUE,
+  m_filename = "moons.csv", class = "moons", update = TRUE)
 
 covariates_control(cast_type = "forecasts", cov_hist = TRUE,
   cov_fcast = TRUE, cast_date = today(),
@@ -35,8 +21,8 @@ covariates_control(cast_type = "forecasts", cov_hist = TRUE,
   hind_step = 1, lead_time = 12, min_lag = 6, fcast_nms = NULL,
   nfcnm = 0, append_fcast_csv = TRUE,
   hist_fcast_file = "covariate_forecasts.csv",
-  source_name = "current_archive", save = TRUE,
-  filename = "covariates.csv", class = "covariates",
+  source_name = "current_archive", c_save = TRUE,
+  c_filename = "covariates.csv", class = "covariates",
   override_ssl_cert_exp = TRUE, download = TRUE, version = "latest",
   from_zenodo = TRUE, verbose = FALSE, update = TRUE,
   use_existing_zip = TRUE)
@@ -44,15 +30,31 @@ covariates_control(cast_type = "forecasts", cov_hist = TRUE,
 rodents_control(cast_type = "forecasts", start = 217, end = NULL,
   hind_step = 1, drop_spp = "PI", min_plots = 24, level = "Site",
   treatment = NULL, plots = "all", min_traps = 1,
-  output = "abundance", save = TRUE, filename = "all.csv",
-  class = "rodents")
+  output = "abundance", r_save = TRUE, r_filename = "all.csv",
+  update = TRUE, class = "rodents")
 
 metadata_control(cast_date = today(), cast_type = "forecasts",
-  confidence_level = 0.9, lead_time = 12, save = TRUE,
-  filename = "metadata.yaml", covariate_source = "retroactive",
-  covariate_date_made = "2018-06-05 12:00:00 PST", class = "metadata")
+  confidence_level = 0.9, lead_time = 12, meta_save = TRUE,
+  meta_filename = "metadata.yaml", covariate_source = "retroactive",
+  covariate_date_made = "2018-06-05 12:00:00 PST", class = "metadata",
+  update = TRUE)
 }
 \arguments{
+\item{moons}{A \code{list} of arguments to control creating the
+moons data files. See \code{\link{moons_control}}.}
+
+\item{rodents}{A \code{list} of arguments to control creating the
+rodents data files. See \code{\link{rodents_control}}.}
+
+\item{covariates}{A \code{list} of arguments to control creating the
+covariates data files. See \code{\link{covariates_control}}.}
+
+\item{metadata}{A \code{list} of arguments to control creating the
+metadata data files. See \code{\link{metadata_control}}.}
+
+\item{n_future_moons}{\code{integer} (or integer \code{numeric}) value for 
+the number of future moons to add.}
+
 \item{cast_date}{\code{Date} from which future is defined, typically 
 today's date (set using \code{\link{today}}).}
 
@@ -65,7 +67,21 @@ be saved out.}
 
 \item{m_filename}{\code{character} name of the file for saving moons data.}
 
-\item{tmnt_type}{Treatment type: \code{"all"} or \code{"controls"}.}
+\item{class}{General \code{character} value for the name of the 
+special class of the data object.}
+
+\item{update}{\code{logical} indicator of whether or not the data sets
+should be updated.}
+
+\item{cast_type}{-cast type: \code{"forecasts"} or \code{"hindcasts"}.}
+
+\item{cov_hist}{\code{logical} indicator of whether or not historical 
+covariates are to be included.}
+
+\item{cov_fcast}{\code{logical} indicator whether or not forecasted 
+covariates are to be included.}
+
+\item{yr}{\code{numeric} value of the year of today's date.}
 
 \item{start}{\code{integer} (or integer \code{numeric}) newmoon number of 
 the first sample to be included. Default value is \code{217}, 
@@ -81,45 +97,6 @@ to the most recently included sample. If \code{cast_type} is
 \item{hind_step}{\code{integer} (or integer \code{numeric}) iteration 
 parameter used to work across the input values for \code{end}. Default is
 \code{1}, which is likely all it should be run using.}
-
-\item{drop_spp}{\code{character}-valued vector of species names to drop 
-from the forecasting.}
-
-\item{min_plots}{\code{integer} (or integer \code{numeric}) of the minimum 
-number of plots surveyed for a survey to be used.}
-
-\item{min_traps}{\code{integer} (or integer \code{numeric}) of the minimum 
-number of traps collected for a plot to be used.}
-
-\item{level}{\code{character} input for 
-\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
-\code{tmnt_type}.}
-
-\item{treatment}{\code{character} input for 
-\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
-\code{tmnt_type}.}
-
-\item{plots}{\code{character} input for 
-\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
-\code{tmnt_type}.}
-
-\item{output}{\code{character} input for 
-\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
-\code{tmnt_type}.}
-
-\item{r_save}{\code{logical} value indicating if the rodent data should be 
-saved out.}
-
-\item{r_filename}{\code{character} name of the file to save the rodent data
-in.}
-
-\item{cov_hist}{\code{logical} indicator of whether or not historical 
-covariates are to be included.}
-
-\item{cov_fcast}{\code{logical} indicator whether or not forecasted 
-covariates are to be included.}
-
-\item{yr}{\code{numeric} value of the year of today's date.}
 
 \item{lead_time}{\code{integer} (or integer \code{numeric}) number of moons
 into the future the rodents are to be forecast.}
@@ -151,30 +128,6 @@ saved out.}
 \item{c_filename}{\code{character} value for the name of the covariate file 
 for the saving if \code{c_save} is \code{TRUE}.}
 
-\item{cast_type}{-cast type: \code{"forecasts"} or \code{"hindcasts"}.}
-
-\item{confidence_level}{\code{numeric} confidence level used in 
-summarizing model output. Must be between \code{0} and \code{1}.}
-
-\item{meta_save}{\code{logical} indicator for if the metadata should be
-saved out}
-
-\item{meta_filename}{\code{character} value for the name of the metadata 
-file for the saving if \code{meta_save} is \code{TRUE}.}
-
-\item{covariate_source}{\code{character} value for the name tagged to the
-covariate forecast. Possible values include \code{"current_archive"} and
-\code{"retroactive"} for hindcasts. Not presently needed for 
-implementation in forecasts.}
-
-\item{covariate_date_made}{\code{character} value for the date-time tagged 
-to the covariate forecast. Possible values depend on the dates available 
-for covariates saved in the covariate_forecasts file for hindcasts. Not 
-presently needed for implementation in forecasts.}
-
-\item{update}{\code{logical} indicator of whether or not the data sets
-should be updated.}
-
 \item{override_ssl_cert_exp}{\code{logical} indicator for if the error
 caused by the expiration of the SSL certificate should be overriden.}
 
@@ -197,25 +150,70 @@ all of the details.}
 zip in the temp directory should be used or overwritten when downloading 
 files.}
 
-\item{n_future_moons}{\code{integer} (or integer \code{numeric}) value for 
-the number of future moons to add.}
+\item{drop_spp}{\code{character}-valued vector of species names to drop 
+from the forecasting.}
+
+\item{min_plots}{\code{integer} (or integer \code{numeric}) of the minimum 
+number of plots surveyed for a survey to be used.}
+
+\item{level}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
+
+\item{treatment}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
+
+\item{plots}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
+
+\item{min_traps}{\code{integer} (or integer \code{numeric}) of the minimum 
+number of traps collected for a plot to be used.}
+
+\item{output}{\code{character} input for 
+\code{\link[portalr]{summarize_rodent_data}}, automatically set by 
+\code{tmnt_type}.}
+
+\item{r_save}{\code{logical} value indicating if the rodent data should be 
+saved out.}
+
+\item{r_filename}{\code{character} name of the file to save the rodent data
+in.}
+
+\item{confidence_level}{\code{numeric} confidence level used in 
+summarizing model output. Must be between \code{0} and \code{1}.}
+
+\item{meta_save}{\code{logical} indicator for if the metadata should be
+saved out}
+
+\item{meta_filename}{\code{character} value for the name of the metadata 
+file for the saving if \code{meta_save} is \code{TRUE}.}
+
+\item{covariate_source}{\code{character} value for the name tagged to the
+covariate forecast. Possible values include \code{"current_archive"} and
+\code{"retroactive"} for hindcasts. Not presently needed for 
+implementation in forecasts.}
+
+\item{covariate_date_made}{\code{character} value for the date-time tagged 
+to the covariate forecast. Possible values depend on the dates available 
+for covariates saved in the covariate_forecasts file for hindcasts. Not 
+presently needed for implementation in forecasts.}
+
+\item{tmnt_type}{Treatment type: \code{"all"} or \code{"controls"}.}
 
 \item{save}{General \code{logical} indicator for if the file should be
 saved out.}
 
 \item{filename}{General \code{character} value for the name of the 
 file for the saving if \code{save} is \code{TRUE}.}
-
-\item{class}{General \code{character} value for the name of the 
-special class of the data object.}
 }
 \value{
 \code{data_control}: a \code{list} of control 
   options \code{list}s (\code{moons} generated by \code{moons_control}, 
   \code{rodents} generated by \code{rodents_control}, \code{covariates},
   generated by \code{covariates_control}, and \code{metadata} generated by
-  \code{metadata_control}, as well as items \code{cast_type}
-  and \code{update} for simple use with all or ancillary data. \cr \cr
+  \code{metadata_control}. \cr \cr
   \code{moons_control}: a \code{list} of settings controlling the moons
   data creation. \cr \cr
   \code{rodents_control}: a \code{list} of settings controlling the 
@@ -230,7 +228,7 @@ Create the \code{list} of options controlling the filling of
   the data subdirectory, setting any non-set options 
   to default values. \cr \cr
   \code{data_control}: create a \code{list} of \code{list}s of 
-  options for filling the data subdirectory. \cr \cr
+  options for fully filling the data subdirectory. \cr \cr
   \code{moons_control}: create a \code{list} to control the making of
   the moons data. \cr \cr
   \code{rodents_control}: create a \code{list} to control the making of

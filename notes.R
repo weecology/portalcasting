@@ -1,3 +1,8 @@
+DO NOT LOSE THIS
+  if (is.null(end) & cast_type == "hindcasts"){
+    end <- 490:403
+  }
+
 make a
 setup_sandbox
 have 

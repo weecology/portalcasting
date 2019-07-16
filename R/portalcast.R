@@ -25,7 +25,7 @@
 #'
 #' @param cast_type -cast type: \code{"forecasts"} or \code{"hindcasts"}.
 #'  \strong{NOTE:} takes precendence over the value of 
-#'  \code{data_control$cast_type}.
+#'  \code{cast_type} in the control lists.
 #'
 #' @param ensemble \code{logical} indicator if the ensemble should be added.
 #'
@@ -42,7 +42,14 @@ portalcast <- function(models = NULL, cast_type = "forecasts",
                        tree = dirtree(), quiet = FALSE, ensemble = TRUE, 
                        data_control = list(), models_control = list()){
   data_control <- do.call("data_control", data_control)
-  data_control$cast_type <- cast_type
+  if(cast_type == "hindcasts"){
+    data_control[["covariates"]]$cast_type <- "hindcasts"
+    data_control[["metadata"]]$cast_type <- "hindcasts"
+    data_control[["rodents"]]$cast_type <- "hindcasts"
+    data_control[["rodents"]]$end <- 490:403
+    data_control[["covariates"]]$end <- 490:403
+    data_control <- do.call("data_control", data_control)
+  }
   models_control <- do.call("models_control", models_control)
   msg1 <- "##########################################################"
   version_number <- packageDescription("portalcasting", fields = "Version")
@@ -122,7 +129,7 @@ cast_models <- function(models = NULL, tree = dirtree(), quiet = FALSE,
   models_control <- do.call("models_control", models_control)
   msg1 <- "##########################################################"
   msg2 <- "Running models"
-  if (data_control$cast_type == "hindcasts"){ 
+  if (data_control$covariates$cast_type == "hindcasts"){ 
     end_step <- data_control$covariates$end[data_control$covariates$hind_step]
     msg2 <- paste0(msg2, " for initial newmoon ", end_step)  
   }
@@ -190,7 +197,7 @@ models_to_cast <- function(models = NULL, tree = dirtree(),
 #' @export
 #'
 prep_data <- function(tree = dirtree(), quiet = FALSE, control = list()){
-  #control <- do.call("data_control", control)
+  control <- do.call("data_control", control)
   messageq("Preparing data", quiet)
   metadata_path <- file_paths(tree, "data/metadata.yaml")
   if (!file.exists(metadata_path)){
@@ -200,7 +207,7 @@ prep_data <- function(tree = dirtree(), quiet = FALSE, control = list()){
   if (metadata$forecast_date != today()){
     fill_data(tree, quiet, control)
   }
-  if (control$cast_type == "hindcasts"){
+  if (control$covariates$cast_type == "hindcasts"){
     fill_data(tree, quiet, control)
   }
 }
@@ -242,7 +249,7 @@ prep_data <- function(tree = dirtree(), quiet = FALSE, control = list()){
 casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
                   data_control = list(), models_control = list(),
                   ensemble = TRUE){
- # data_control <- do.call("data_control", data_control)
+  data_control <- do.call("data_control", data_control)
   models_control <- do.call("models_control", models_control)
   cast(models, tree, quiet, data_control, models_control, ensemble)
   step_casts(models, tree, quiet, data_control, models_control, ensemble)
@@ -257,7 +264,7 @@ casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
 cast <- function(models = NULL, tree = dirtree(), quiet = FALSE,
                  data_control = list(), models_control = list(),
                  ensemble = TRUE){
-  #data_control <- do.call("data_control", data_control)
+  data_control <- do.call("data_control", data_control)
   models_control <- do.call("models_control", models_control)
   if (check_to_skip(tree, quiet, data_control)){
     return()
@@ -330,9 +337,9 @@ step_hind_forward <- function(data_control = list()){
 #'
 check_to_skip <- function(tree = dirtree(), quiet = FALSE, 
                           data_control = list()){
-  #data_control <- do.call("data_control", data_control)
+  data_control <- do.call("data_control", data_control)
   out <- FALSE
-  if (data_control$cast_type == "hindcasts"){ 
+  if (data_control$covariates$cast_type == "hindcasts"){ 
     end_step <- data_control$covariates$end[data_control$covariates$hind_step]
     trap_path <- file_paths(tree, "data/trapping.csv")
     trap_tab <- read.csv(trap_path, stringsAsFactors = FALSE)
@@ -349,7 +356,7 @@ check_to_skip <- function(tree = dirtree(), quiet = FALSE,
     }
   }
   if (out){
-    end_step <- options_cast$end[options_cast$hind_step]
+    end_step <- data_control$covariates$end[data_control$covariates$hind_step]
     msg1 <- paste0("Initial newmoon ", end_step, " not fully sampled")
     msg2 <- "##########################################################"
     messageq(c(msg1, msg2), quiet)
@@ -379,12 +386,10 @@ check_to_skip <- function(tree = dirtree(), quiet = FALSE,
 update_data <- function(tree = dirtree, quiet = FALSE, control = list()){
   #data_control <- do.call("data_control", data_control)
   messageq("Updating forecasting data files in data subdirectory", quiet)
-  control$moons$quiet <- TRUE
-  control$metadata$quiet <- TRUE
-  moons <- prep_moons(tree, quiet, control$moons)
+  moons <- prep_moons(tree, TRUE, control$moons)
   rodents <- update_rodents_list(tree, control$rodents)
   covar <- update_covariates(moons, tree, quiet, control$covariates)
-  md <- prep_metadata(moons, rodents, covar, tree, quiet, control$metadata)
+  md <- prep_metadata(moons, rodents, covar, tree, TRUE, control$metadata)
 }
 
 #' @title Update the covariate data for a step in a hindcast

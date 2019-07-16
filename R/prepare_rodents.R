@@ -122,7 +122,7 @@ enforce_rodents_control <- function(control = rodents_control(),
       control$plots <- "all"
       control$output <- "abundance"
       control$treatment <- NULL
-      control$filename <- "all.csv"
+      control$r_filename <- "all.csv"
     }
     if (tmnt_type == "controls"){
       control$tmnt_type <- "controls"
@@ -131,7 +131,7 @@ enforce_rodents_control <- function(control = rodents_control(),
       control$plots <- "Longterm"
       control$output <- "abundance"
       control$treatment <- "control"
-      control$filename <- "controls.csv"
+      control$r_filename <- "controls.csv"
     }  
   }
   control

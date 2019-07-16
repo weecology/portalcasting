@@ -57,12 +57,12 @@ save_forecast_output <- function(all, controls, model, tree){
 #'
 combine_forecasts <- function(tree = dirtree(), quiet = FALSE,
                               data_control = list()){
-  #data_control <- do.call("data_control", data_control)
-  messageq(paste0("Compiling ", data_control$cast_type), quiet)
+  data_control <- do.call("data_control", data_control)
+  messageq(paste0("Compiling ", data_control$covariates$cast_type), quiet)
   temp_dir <- sub_paths(tree, "tmp")
   pred_dir <- sub_paths(tree, "predictions")
   forecast_date <- data_control$metadata$cast_date
-  filename_suffix <- data_control$cast_type
+  filename_suffix <- data_control$covariates$cast_type
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
   files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
   col_class <- c("Date", "integer", "integer", "integer", "character", 
@@ -116,7 +116,7 @@ add_ensemble <- function(tree = dirtree(), quiet = FALSE,
     temp_dir <- sub_paths(tree, "tmp")
     pred_dir <- sub_paths(tree, "predictions")
     forecast_date <- data_control$metadata$cast_date
-    filename_suffix <- data_control$cast_type
+    filename_suffix <- data_control$covariates$cast_type
     file_ptn <- paste(filename_suffix, ".csv", sep = "")
     files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
     cclass <- c("Date", "integer", "integer", "integer", "character", 

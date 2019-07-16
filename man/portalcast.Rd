@@ -16,7 +16,7 @@ settings of \code{\link{model_names}}.}
 
 \item{cast_type}{-cast type: \code{"forecasts"} or \code{"hindcasts"}.
 \strong{NOTE:} takes precendence over the value of 
-\code{data_control$cast_type}.}
+\code{cast_type} in the control lists.}
 
 \item{tree}{\code{dirtree}-class directory tree list. Consisting of 
 \code{base}, \code{main}, and \code{subs} elements. See

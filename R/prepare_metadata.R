@@ -83,8 +83,8 @@ prep_metadata <- function(moons = prep_moons(),
                confidence_level = control$confidence_level,
                covariate_source = control$covariate_source,
                covariate_date_made = control$covariate_date_made)
-  if (control$save){
-    local_path <- paste0("data/", control$filename)
+  if (control$meta_save){
+    local_path <- paste0("data/", control$meta_filename)
     con_path <- file_paths(tree, local_path)
     writeLines(as.yaml(out), con = con_path)
   }

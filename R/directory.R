@@ -279,6 +279,9 @@ fill_dir <- function(models = NULL,
                      models_control = list()){
   models_control <- do.call("models_control", models_control)
   models <- ifnull(models, names(models_control))
+  PortalData_control <- do.call("PortalData_control", PortalData_control)
+  predictions_control <- do.call("predictions_control", predictions_control)  
+  data_control <- do.call("data_control", data_control)  
   fill_PortalData(tree, quiet, PortalData_control)
   fill_data(tree, quiet, data_control)
   fill_predictions(tree, quiet, predictions_control)
@@ -308,7 +311,7 @@ fill_PortalData <- function(tree = dirtree(), quiet = FALSE,
 fill_data <- function(tree = dirtree(), quiet = FALSE, control = list()){
   verify_PortalData(tree = tree, quiet = quiet)
   control <- do.call("data_control", control)
-  if(control$update){
+  if(control$covariates$update){
     messageq("Loading forecasting data files into data subdirectory", quiet)
     download_hist_covariate_forecasts(tree, quiet, control$covariates)
     transfer_trapping_table(tree, quiet)
