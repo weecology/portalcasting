@@ -23,7 +23,7 @@ covariates_control(cast_type = "forecasts", cov_hist = TRUE,
   hist_fcast_file = "covariate_forecasts.csv",
   source_name = "current_archive", c_save = TRUE,
   c_filename = "covariates.csv", class = "covariates",
-  override_ssl_cert_exp = TRUE, download = TRUE, version = "latest",
+  override_ssl_cert_exp = TRUE, download = FALSE, version = "latest",
   from_zenodo = TRUE, verbose = FALSE, update = TRUE,
   use_existing_zip = TRUE)
 

@@ -391,7 +391,7 @@ covariates_control <- function(cast_type = "forecasts", cov_hist = TRUE,
                                c_save = TRUE, c_filename = "covariates.csv",
                                class = "covariates",
                                override_ssl_cert_exp = TRUE,
-                               download = TRUE, version = "latest",
+                               download = FALSE, version = "latest",
                                from_zenodo = TRUE, verbose = FALSE,
                                update = TRUE,
                                use_existing_zip = TRUE){

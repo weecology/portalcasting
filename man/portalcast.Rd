@@ -4,9 +4,9 @@
 \alias{portalcast}
 \title{Forecast or hindcast Portal rodents models}
 \usage{
-portalcast(models = NULL, cast_type = "forecasts", tree = dirtree(),
-  quiet = FALSE, ensemble = TRUE, data_control = list(),
-  models_control = list())
+portalcast(models = NULL, cast_type = "forecasts", end = NULL,
+  tree = dirtree(), quiet = FALSE, ensemble = TRUE,
+  data_control = list(), models_control = list())
 }
 \arguments{
 \item{models}{\code{character} vector of the names of models to include in
@@ -17,6 +17,15 @@ settings of \code{\link{model_names}}.}
 \item{cast_type}{-cast type: \code{"forecasts"} or \code{"hindcasts"}.
 \strong{NOTE:} takes precendence over the value of 
 \code{cast_type} in the control lists.}
+
+\item{end}{\code{integer} (or integer \code{numeric}) newmoon number of the
+last sample to be included. Default value is \code{NULL}, which equates
+to the most recently included sample. If \code{cast_type} is 
+\code{"hindcasts"} and \code{end} is \code{NULL}, default becomes 
+\code{490:403}, corresponding to \code{2017-01-01} back to
+\code{2010-01-01}.
+\strong{NOTE:} takes precendence over the value of 
+\code{end} in the control lists.}
 
 \item{tree}{\code{dirtree}-class directory tree list. Consisting of 
 \code{base}, \code{main}, and \code{subs} elements. See

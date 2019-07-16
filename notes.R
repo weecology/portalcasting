@@ -3,6 +3,18 @@ DO NOT LOSE THIS
     end <- 490:403
   }
 
+
+portalcast: 
+currently works fine with forecasts
+breaks with hindcasts in a way 
+	that breaks the default working with forecasts
+		can be fixed by filling data again
+figure ou what calls should be out at the top level
+can we actually get away from using the data_options approach here or not 
+easily?
+should play around with portalcast top basic behavior!
+
+
 make a
 setup_sandbox
 have 

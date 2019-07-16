@@ -29,6 +29,15 @@
 #'
 #' @param ensemble \code{logical} indicator if the ensemble should be added.
 #'
+#' @param end \code{integer} (or integer \code{numeric}) newmoon number of the
+#'  last sample to be included. Default value is \code{NULL}, which equates
+#'  to the most recently included sample. If \code{cast_type} is 
+#'  \code{"hindcasts"} and \code{end} is \code{NULL}, default becomes 
+#'  \code{490:403}, corresponding to \code{2017-01-01} back to
+#'  \code{2010-01-01}.
+#'  \strong{NOTE:} takes precendence over the value of 
+#'  \code{end} in the control lists.
+#'
 #' @examples
 #' \dontrun{
 #' 
@@ -38,7 +47,7 @@
 #'
 #' @export
 #'
-portalcast <- function(models = NULL, cast_type = "forecasts", 
+portalcast <- function(models = NULL, cast_type = "forecasts", end = NULL,
                        tree = dirtree(), quiet = FALSE, ensemble = TRUE, 
                        data_control = list(), models_control = list()){
   data_control <- do.call("data_control", data_control)
@@ -46,8 +55,9 @@ portalcast <- function(models = NULL, cast_type = "forecasts",
     data_control[["covariates"]]$cast_type <- "hindcasts"
     data_control[["metadata"]]$cast_type <- "hindcasts"
     data_control[["rodents"]]$cast_type <- "hindcasts"
-    data_control[["rodents"]]$end <- 490:403
-    data_control[["covariates"]]$end <- 490:403
+    end <- ifnull(end, 490:403)
+    data_control[["rodents"]]$end <- end
+    data_control[["covariates"]]$end <- end
     data_control <- do.call("data_control", data_control)
   }
   models_control <- do.call("models_control", models_control)
@@ -125,7 +135,7 @@ verify_models <- function(models = NULL, tree = dirtree(), quiet = FALSE){
 #'
 cast_models <- function(models = NULL, tree = dirtree(), quiet = FALSE, 
                         data_control = list(), models_control = list()){
-  #data_control <- do.call("data_control", data_control)
+  data_control <- do.call("data_control", data_control)
   models_control <- do.call("models_control", models_control)
   msg1 <- "##########################################################"
   msg2 <- "Running models"
@@ -283,7 +293,7 @@ cast <- function(models = NULL, tree = dirtree(), quiet = FALSE,
 step_casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
                        data_control = list(), models_control = list(),
                        ensemble = TRUE){
-  #data_control <- do.call("data_control", data_control)
+  data_control <- do.call("data_control", data_control)
   models_control <- do.call("models_control", models_control)
   n_steps <- length(data_control$covariates$end)
   if (n_steps > 1){
@@ -309,7 +319,7 @@ step_casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
 #' @export
 #'
 step_hind_forward <- function(data_control = list()){
-  #data_control <- do.call("data_control", data_control)
+  data_control <- do.call("data_control", data_control)
   new_step <- data_control$covariates$hind_step + 1
   data_control$rodents$hind_step <- new_step
   data_control$covariates$hind_step <- new_step
@@ -384,7 +394,7 @@ check_to_skip <- function(tree = dirtree(), quiet = FALSE,
 #' @export
 #'
 update_data <- function(tree = dirtree, quiet = FALSE, control = list()){
-  #data_control <- do.call("data_control", data_control)
+  data_control <- do.call("data_control", control)
   messageq("Updating forecasting data files in data subdirectory", quiet)
   moons <- prep_moons(tree, TRUE, control$moons)
   rodents <- update_rodents_list(tree, control$rodents)
