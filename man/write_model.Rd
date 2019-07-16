@@ -29,8 +29,7 @@ should be updated.}
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }
 \description{
-\cr \cr
-  \code{write_model}: Create template script (as written by 
+\code{write_model}: Create template script (as written by 
   \code{model_template}) for a given model. \cr \cr
   \code{model_template}: create the \code{character}-valued
   text for a model script to be housed in the model directory, as written

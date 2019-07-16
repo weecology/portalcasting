@@ -54,7 +54,7 @@ model_names <- function(names = prefab, set = NULL){
 
 #' @title Write the template for a model into model subdirectory
 #'
-#' @description \cr \cr
+#' @description 
 #'   \code{write_model}: Create template script (as written by 
 #'   \code{model_template}) for a given model. \cr \cr
 #'   \code{model_template}: create the \code{character}-valued
