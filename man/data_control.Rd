@@ -199,14 +199,6 @@ implementation in forecasts.}
 to the covariate forecast. Possible values depend on the dates available 
 for covariates saved in the covariate_forecasts file for hindcasts. Not 
 presently needed for implementation in forecasts.}
-
-\item{tmnt_type}{Treatment type: \code{"all"} or \code{"controls"}.}
-
-\item{save}{General \code{logical} indicator for if the file should be
-saved out.}
-
-\item{filename}{General \code{character} value for the name of the 
-file for the saving if \code{save} is \code{TRUE}.}
 }
 \value{
 \code{data_control}: a \code{list} of control 

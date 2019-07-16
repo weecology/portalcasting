@@ -233,7 +233,7 @@ prep_weather_data <- function(tree = dirtree()){
 #'   and future newmoons, as produced by \code{\link{prep_moons}}.
 #'
 #' @param control \code{list} of settings controlling the covariates data 
-#'   creation. See \code{\link{covariates_options}}.
+#'   creation. See \code{\link{covariates_control}}.
 #'
 #' @return An updated \code{list} of control options for covariates.
 #'

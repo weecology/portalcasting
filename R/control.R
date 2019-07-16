@@ -197,8 +197,6 @@ PortalData_control <- function(version = "latest", from_zenodo = TRUE,
 #'
 #' @param m_filename \code{character} name of the file for saving moons data.
 #'
-#' @param tmnt_type Treatment type: \code{"all"} or \code{"controls"}.
-#'
 #' @param start \code{integer} (or integer \code{numeric}) newmoon number of 
 #'   the first sample to be included. Default value is \code{217}, 
 #'   corresponding to \code{1995-01-01}.
@@ -316,12 +314,6 @@ PortalData_control <- function(version = "latest", from_zenodo = TRUE,
 #'
 #' @param n_future_moons \code{integer} (or integer \code{numeric}) value for 
 #'   the number of future moons to add.
-#'
-#' @param save General \code{logical} indicator for if the file should be
-#'   saved out.
-#'
-#' @param filename General \code{character} value for the name of the 
-#'   file for the saving if \code{save} is \code{TRUE}.
 #'
 #' @param class General \code{character} value for the name of the 
 #'   special class of the data object.

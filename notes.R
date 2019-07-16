@@ -31,6 +31,15 @@ now on to portalcast!
 also um tests
 
 
+#'
+#' @param tmnt_type Treatment type: \code{"all"} or \code{"controls"}.
+
+#' @param save General \code{logical} indicator for if the file should be
+#'   saved out.
+#'
+#' @param filename General \code{character} value for the name of the 
+#'   file for the saving if \code{save} is \code{TRUE}.
+#'
 
 #' @rdname check_args
 #'

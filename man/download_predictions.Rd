@@ -16,7 +16,7 @@ are returned to the console.}
 
 \item{control}{A \code{list} of arguments to control the 
 filling of the predictions subdirectory. See 
-\code{\link{predictions_options}}. Arguments not specified assume default
+\code{\link{predictions_control}}. Arguments not specified assume default
 values.}
 }
 \description{

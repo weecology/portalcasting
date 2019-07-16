@@ -13,7 +13,7 @@ cast_is_valid(cast_to_check, verbose = FALSE)
 \item{cast}{\code{data.frame} -cast file read in.}
 
 \item{cast_to_check}{\code{data.frame} -cast file being checked within 
-\code{cast_is_valid} using \code{\link{check_arg}}.}
+\code{cast_is_valid}.}
 
 \item{verbose}{\code{logical} indicator if details of failure should
 be printed}

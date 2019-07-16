@@ -335,7 +335,7 @@ read_casts <- function(tree = dirtree(), cast_type = "forecasts",
 #' @param cast \code{data.frame} -cast file read in.
 #'
 #' @param cast_to_check \code{data.frame} -cast file being checked within 
-#'   \code{cast_is_valid} using \code{\link{check_arg}}.
+#'   \code{cast_is_valid}.
 #'
 #' @param verbose \code{logical} indicator if details of failure should
 #'   be printed

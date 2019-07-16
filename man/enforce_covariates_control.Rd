@@ -10,7 +10,7 @@ enforce_covariates_control(control = covariates_control(),
 }
 \arguments{
 \item{control}{\code{list} of settings controlling the covariates data 
-creation. See \code{\link{covariates_options}}.}
+creation. See \code{\link{covariates_control}}.}
 
 \item{hist_cov}{Historical covariate data table as a code{covariates}-class 
 \code{data.frame}, returned from \code{\link{prep_hist_covariates}}.}
