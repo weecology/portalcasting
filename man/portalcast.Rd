@@ -6,13 +6,12 @@
 \usage{
 portalcast(models = NULL, cast_type = "forecasts", end = NULL,
   tree = dirtree(), quiet = FALSE, ensemble = TRUE,
-  data_control = list(), models_control = list())
+  data_control = list())
 }
 \arguments{
 \item{models}{\code{character} vector of the names of models to include in
 the pipeline. Defaults to \code{NULL}, which retrieves the model names 
-from \code{models_control}, so the models returned by the default
-settings of \code{\link{model_names}}.}
+from \code{\link{model_names}}.}
 
 \item{cast_type}{-cast type: \code{"forecasts"} or \code{"hindcasts"}.
 \strong{NOTE:} takes precendence over the value of 
@@ -39,10 +38,6 @@ quieted.}
 \item{data_control}{A \code{list} of arguments to control the filling of
 the data subdirectory. See \code{\link{data_control}}. 
 Values not set assume defaults.}
-
-\item{models_control}{A \code{list} of arguments to control the 
-filling of the models subdirectory. See \code{\link{models_control}}.
-Arguments not specified assume default values.}
 }
 \description{
 Run potentially multiple models for either a forecast or a 

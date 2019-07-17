@@ -7,19 +7,18 @@
 \title{Run one or potentially multiple forecasts or hindcasts}
 \usage{
 casts(models = NULL, tree = dirtree(), quiet = FALSE,
-  data_control = list(), models_control = list(), ensemble = TRUE)
+  data_control = list(), ensemble = TRUE)
 
 cast(models = NULL, tree = dirtree(), quiet = FALSE,
-  data_control = list(), models_control = list(), ensemble = TRUE)
+  data_control = list(), ensemble = TRUE)
 
 step_casts(models = NULL, tree = dirtree(), quiet = FALSE,
-  data_control = list(), models_control = list(), ensemble = TRUE)
+  data_control = list(), ensemble = TRUE)
 }
 \arguments{
 \item{models}{\code{character} vector of the names of models to include in
 the pipeline. Defaults to \code{NULL}, which retrieves the model names 
-from \code{models_control}, so the models returned by the default
-settings of \code{\link{model_names}}.}
+from \code{\link{model_names}}.}
 
 \item{tree}{\code{dirtree}-class directory tree list. Consisting of 
 \code{base}, \code{main}, and \code{subs} elements. See
@@ -31,10 +30,6 @@ quieted.}
 \item{data_control}{A \code{list} of arguments to control the filling of
 the data subdirectory. See \code{\link{data_control}}. 
 Values not set assume defaults.}
-
-\item{models_control}{A \code{list} of arguments to control the 
-filling of the models subdirectory. See \code{\link{models_control}}.
-Arguments not specified assume default values.}
 
 \item{ensemble}{\code{logical} indicator if the ensemble should be added.}
 }

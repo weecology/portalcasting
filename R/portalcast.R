@@ -16,12 +16,7 @@
 #'
 #' @param models \code{character} vector of the names of models to include in
 #'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
-#'  from \code{models_control}, so the models returned by the default
-#'  settings of \code{\link{model_names}}.
-#'
-#' @param models_control A \code{list} of arguments to control the 
-#'  filling of the models subdirectory. See \code{\link{models_control}}.
-#'  Arguments not specified assume default values.
+#'  from \code{\link{model_names}}.
 #'
 #' @param cast_type -cast type: \code{"forecasts"} or \code{"hindcasts"}.
 #'  \strong{NOTE:} takes precendence over the value of 
@@ -49,7 +44,7 @@
 #'
 portalcast <- function(models = NULL, cast_type = "forecasts", end = NULL,
                        tree = dirtree(), quiet = FALSE, ensemble = TRUE, 
-                       data_control = list(), models_control = list()){
+                       data_control = list()){
   data_control <- do.call("data_control", data_control)
   if(cast_type == "hindcasts"){
     data_control[["covariates"]]$cast_type <- "hindcasts"
@@ -60,16 +55,15 @@ portalcast <- function(models = NULL, cast_type = "forecasts", end = NULL,
     data_control[["covariates"]]$end <- end
     data_control <- do.call("data_control", data_control)
   }
-  models_control <- do.call("models_control", models_control)
   msg1 <- "##########################################################"
   version_number <- packageDescription("portalcasting", fields = "Version")
   msg2 <- paste0("This is portalcasting v", version_number)
   messageq(c(msg1, msg2), quiet)
-  models <- ifnull(models, names(models_control))
+  models <- ifnull(models, model_names())
   clear_tmp(tree)
   verify_models(models, tree, quiet)
   prep_data(tree, quiet, data_control)
-  casts(models, tree, quiet, data_control, models_control, ensemble)
+  casts(models, tree, quiet, data_control, ensemble)
 }
 
 #' @title Verify that models requested to forecast or hindcast with exist
@@ -124,19 +118,13 @@ verify_models <- function(models = NULL, tree = dirtree(), quiet = FALSE){
 #'
 #' @param models \code{character} vector of the names of models to include in
 #'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
-#'  from \code{models_control}, so the models returned by the default
-#'  settings of \code{\link{model_names}}.
-#'
-#' @param models_control A \code{list} of arguments to control the 
-#'  filling of the models subdirectory. See \code{\link{models_control}}.
-#'  Arguments not specified assume default values.
+#'  from \code{\link{model_names}}.
 #'
 #' @export
 #'
 cast_models <- function(models = NULL, tree = dirtree(), quiet = FALSE, 
-                        data_control = list(), models_control = list()){
+                        data_control = list()){
   data_control <- do.call("data_control", data_control)
-  models_control <- do.call("models_control", models_control)
   msg1 <- "##########################################################"
   msg2 <- "Running models"
   if (data_control$covariates$cast_type == "hindcasts"){ 
@@ -144,7 +132,7 @@ cast_models <- function(models = NULL, tree = dirtree(), quiet = FALSE,
     msg2 <- paste0(msg2, " for initial newmoon ", end_step)  
   }
   messageq(c(msg1, msg2), quiet)
-  sapply(models_to_cast(models, tree, models_control), source)
+  sapply(models_to_cast(models, tree), source)
 }
 
 #' @title Generate the file path(s) to the script(s) of the model(s) forecast
@@ -160,21 +148,14 @@ cast_models <- function(models = NULL, tree = dirtree(), quiet = FALSE,
 #'
 #' @param models \code{character} vector of the names of models to include in
 #'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
-#'  from \code{models_control}, so the models returned by the default
-#'  settings of \code{\link{model_names}}.
-#'
-#' @param models_control A \code{list} of arguments to control the 
-#'  filling of the models subdirectory. See \code{\link{models_control}}.
-#'  Arguments not specified assume default values.
+#'  from \code{\link{model_names}}.
 #'
 #' @return \code{character} vector of the path(s) of the R script file(s) to 
 #'   be run.
 #'
 #' @export
 #'
-models_to_cast <- function(models = NULL, tree = dirtree(),
-                           models_control = list()){
-  models_control <- do.call("models_control", models_control)
+models_to_cast <- function(models = NULL, tree = dirtree()){
   model_dir <- sub_paths(tree, "models")
   if (models[1] == "all"){
     runnames <- list.files(model_dir, full.names = TRUE)
@@ -245,24 +226,18 @@ prep_data <- function(tree = dirtree(), quiet = FALSE, control = list()){
 #'
 #' @param models \code{character} vector of the names of models to include in
 #'  the pipeline. Defaults to \code{NULL}, which retrieves the model names 
-#'  from \code{models_control}, so the models returned by the default
-#'  settings of \code{\link{model_names}}.
-#'
-#' @param models_control A \code{list} of arguments to control the 
-#'  filling of the models subdirectory. See \code{\link{models_control}}.
-#'  Arguments not specified assume default values.
+#'  from \code{\link{model_names}}.
 #'
 #' @param ensemble \code{logical} indicator if the ensemble should be added.
 #'
 #' @export
 #'
 casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
-                  data_control = list(), models_control = list(),
+                  data_control = list(), 
                   ensemble = TRUE){
   data_control <- do.call("data_control", data_control)
-  models_control <- do.call("models_control", models_control)
-  cast(models, tree, quiet, data_control, models_control, ensemble)
-  step_casts(models, tree, quiet, data_control, models_control, ensemble)
+  cast(models, tree, quiet, data_control, ensemble)
+  step_casts(models, tree, quiet, data_control, ensemble)
   msg1 <- "########################################################"
   messageq(c(msg1, "Models done", msg1), quiet)
 }
@@ -272,14 +247,13 @@ casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
 #' @export
 #'
 cast <- function(models = NULL, tree = dirtree(), quiet = FALSE,
-                 data_control = list(), models_control = list(),
+                 data_control = list(), 
                  ensemble = TRUE){
   data_control <- do.call("data_control", data_control)
-  models_control <- do.call("models_control", models_control)
   if (check_to_skip(tree, quiet, data_control)){
     return()
   }
-  cast_models(models, tree, quiet, data_control, models_control)
+  cast_models(models, tree, quiet, data_control)
   combined <- combine_forecasts(tree, quiet, data_control)
   ensemble <- add_ensemble(tree, quiet, data_control, ensemble)
   messageq("########################################################", quiet)
@@ -291,16 +265,15 @@ cast <- function(models = NULL, tree = dirtree(), quiet = FALSE,
 #' @export
 #'
 step_casts <- function(models = NULL, tree = dirtree(), quiet = FALSE,
-                       data_control = list(), models_control = list(),
+                       data_control = list(),
                        ensemble = TRUE){
   data_control <- do.call("data_control", data_control)
-  models_control <- do.call("models_control", models_control)
   n_steps <- length(data_control$covariates$end)
   if (n_steps > 1){
     for (i in 2:n_steps){
       data_control <- step_hind_forward(data_control)
       update_data(tree, quiet, data_control)
-      cast(models, tree, quiet, data_control, models_control, ensemble)
+      cast(models, tree, quiet, data_control, ensemble)
     }  
   }
 }
