@@ -60,8 +60,8 @@ create_dir <- function(tree = dirtree(), base = NULL, main = NULL,
 #'
 create_base <- function(tree = dirtree(), base = NULL, quiet = FALSE){
   tree <- update_tree(tree, base)
-  base <- base_path(tree)
-  create(base, "base", quiet)
+  basep <- base_path(tree)
+  create(basep, "base", quiet)
 }
 
 #' @rdname create_dir
@@ -71,10 +71,10 @@ create_base <- function(tree = dirtree(), base = NULL, quiet = FALSE){
 create_main <- function(tree = dirtree(), base = NULL, main = NULL,
                         quiet = FALSE){
   tree <- update_tree(tree, base, main)
-  base <- base_path(tree)
-  main <- main_path(tree)
-  verify(base, "base")
-  create(main, "main", quiet)
+  basep <- base_path(tree)
+  mainp <- main_path(tree)
+  verify(basep, "base")
+  create(mainp, "main", quiet)
 }
 
 #' @rdname create_dir
@@ -84,11 +84,11 @@ create_main <- function(tree = dirtree(), base = NULL, main = NULL,
 create_subs <- function(tree = dirtree(), base = NULL, main = NULL, 
                         subs = NULL, quiet = FALSE){
   tree <- update_tree(tree, base, main, subs)
-  base <- base_path(tree)
-  main <- main_path(tree)
-  subs <- sub_paths(tree)
-  verify(c(base, main), c("base", "main"))
-  create(subs, basename(subs), quiet)
+  basep <- base_path(tree)
+  mainp <- main_path(tree)
+  subsp <- sub_paths(tree)
+  verify(c(basep, mainp), c("base", "main"))
+  create(subsp, basename(subsp), quiet)
 }
 
 #' @title Verify that a required folder exists

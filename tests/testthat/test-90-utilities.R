@@ -10,3 +10,8 @@ test_that("messageq", {
   expect_message(messageq("ok"))
 })
 
+test_that("list_depth", {
+  expect_equal(list_depth("a"), 0)
+  expect_equal(list_depth(list("a")), 1)
+  expect_equal(list_depth(list(list("a"))), 2)
+})

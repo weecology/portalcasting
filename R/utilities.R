@@ -1,3 +1,23 @@
+#' @title Determine the depth of a list
+#'
+#' @description Evaluate an input for the depth of its nesting. 
+#'
+#' @param x Focal input.
+#'
+#' @return \code{integer} value of the depth of the list.
+#' 
+#' @examples
+#'  list_depth("a")
+#'  list_depth(list("a"))
+#'  list_depth(list(list("a")))
+#'
+#' @export 
+#'
+
+list_depth <- function(x){
+  ifelse(is.list(x), 1L + max(sapply(x, list_depth)), 0L)
+}
+
 #' @title Replace if NULL
 #'
 #' @description If the focal input is \code{NULL}, replace it with 
