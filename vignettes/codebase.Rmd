@@ -60,7 +60,6 @@ base
 │   │   <temporary files>
 ```
 
-The tree is housed in a `list` with special class `dirtree` that is created by `dirtree()`. This allows for easy management and tracking of the directory structure, as well as renaming/relocating of the folders at all three levels, although it is only advisable to alter the `base` and `main` levels, as many functions require specifically-named `subs`. Functions in **portalcasting** can take either `tree` or `base`/`main`/`subs` argument inputs, and any level-specific inputs override the `tree` value.
 
 ## Instantiating a Directory
 
@@ -68,7 +67,7 @@ Setting up a fully functional directory for a production or sandbox pipeline con
 
 ### Creating 
 
-The directory is established using `create_dir()`, which takes a `dirtree` `list` as its first argument (`tree`) or takes individual levels as they would be input into `dirtree()`, including `base`, `main`, and `subs` as arguments, which override any values in `tree`. `create_dir()` in sequence creates each of the levels' (`base`, `main`, `sub`) folders if they do not already exist. This occurs through calls to `create_base()`, `create_main()`, and `create_subs()` using the same directory tree. 
+The directory is established using `create_dir()`, which takes `base`, `main`, and `subs` as arguments, and in sequence creates each of the levels' (`base`, `main`, `sub`) folders if they do not already exist. This occurs through calls to `create_base()`, `create_main()`, and `create_subs()`. 
 
 ### Filling 
 

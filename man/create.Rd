@@ -24,8 +24,7 @@ If folders (specified by \code{path} and named by
  indicated by \code{quiet}.
 }
 \examples{
- tree <- dirtree()
- base <- base_path(tree)
+ base <- base_path()
  create(base, "base")
 
 }

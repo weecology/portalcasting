@@ -42,9 +42,6 @@
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
 #'
-#' @param tree Directory tree \code{list}. Consisting of \code{base}, 
-#'  \code{main}, and \code{subs} elements. See \code{\link{dirtree}}.
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -64,11 +61,7 @@
 #'  should occur
 #'
 #' @details If \code{type = NULL}, it is assumed to be a URL (\emph{i.e.}, 
-#'  \code{type = "url"}). \cr \cr
-#'  Alternatively or in addition to the \code{tree} argument, users 
-#'  can input the folder locations directly via \code{base} and \code{main}
-#'  arguments. In this case, any non-\code{NULL} input for \code{base}
-#'  or \code{main} overrides the respective element in \code{tree}. \cr \cr
+#'  \code{type = "url"}).
 #'
 #' @examples
 #'  \donttest{
@@ -86,20 +79,19 @@
 #'
 download <- function(name = NULL, type = NULL, url = NULL, 
                      concept_rec_id = NULL, rec_version = "latest", 
-                     rec_id = NULL, tree = dirtree(), base = NULL, 
-                     main = NULL, quiet = FALSE, cleanup = TRUE, 
+                     rec_id = NULL, base = ".", 
+                     main = "", quiet = FALSE, cleanup = TRUE, 
                      NULLname = FALSE){
-  tree <- update_tree(tree, base, main)
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
   name <- ifnull(name, record_name_from_url(source_url, NULLname))
-  destin <- download_destin(name, source_url, tree)
+  destin <- download_destin(name, source_url, base, main)
   resp <- GET(source_url)
   stop_for_status(resp)
   download_message(name, type, source_url, rec_version, quiet)
   download.file(source_url, destin, quiet = quiet, mode = "wb")
   extension <- file_ext(source_url)
   if(extension == "zip"){
-    unzip_download(name, destin, tree, cleanup)
+    unzip_download(name, destin, base, main, cleanup)
   } 
 }
 
@@ -109,9 +101,9 @@ download <- function(name = NULL, type = NULL, url = NULL,
 #'
 #' @export
 #'
-unzip_download <- function(name = NULL, zip_destin, tree = dirtree(), 
+unzip_download <- function(name = NULL, zip_destin, base = ".", main = "", 
                            cleanup = TRUE){
-  unzip_destins <- unzip_destins(name, zip_destin, tree)
+  unzip_destins <- unzip_destins(name, zip_destin, base, main)
   unzip(zip_destin, exdir = unzip_destins$initial)
   file.rename(unzip_destins$with_archive, unzip_destins$final)
   if(cleanup){
@@ -124,14 +116,14 @@ unzip_download <- function(name = NULL, zip_destin, tree = dirtree(),
 #'
 #' @export
 #'
-unzip_destins <- function(name = NULL, zip_destin, tree = dirtree()){
-  folder <- sub_paths(tree, "tmp")
+unzip_destins <- function(name = NULL, zip_destin, base = ".", main = ""){
+  folder <- sub_paths(base, main, "tmp")
   full <- paste0(folder, "\\", name)
   initial <- normalizePath(full, mustWork = FALSE) 
   add_lev <- unzip(zip_destin, list = TRUE)$Name[1]
   full <- paste0(initial, "\\", add_lev)
   with_archive <- normalizePath(full, mustWork = FALSE)
-  folder <- sub_paths(tree, "raw")
+  folder <- sub_paths(base, main, subs = subdirs(), "raw")
   full <- paste0(folder, "\\", name)
   final <- normalizePath(full, mustWork = FALSE)
   list(initial = initial, with_archive = with_archive, final = final)
@@ -174,12 +166,12 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
 #'
 #' @export
 #'
-download_destin <- function(name = NULL, source_url, tree = dirtree()){
+download_destin <- function(name = NULL, source_url, base = ".", main = ""){
   extension <- file_ext(source_url)
   if(extension == "zip"){
-    folder <- sub_paths(tree, "tmp")
+    folder <- sub_paths(base, main, subdirs(), "tmp")
   } else{
-    folder <- sub_paths(tree, "raw")
+    folder <- sub_paths(base, main, subdirs(), "raw")
   }
   extension2 <- NULL
   if(!is.null(extension)){

@@ -5,19 +5,16 @@
 \alias{fill_raw}
 \title{Fill a forecasting directory with basic components.}
 \usage{
-fill_dir(downloads = NULL, tree = dirtree(), base = NULL,
-  main = NULL, quiet = FALSE, cleanup = TRUE)
+fill_dir(downloads = NULL, base = NULL, main = NULL, quiet = FALSE,
+  cleanup = TRUE)
 
-fill_raw(downloads = NULL, tree = dirtree(), base = NULL,
-  main = NULL, quiet = FALSE, cleanup = TRUE)
+fill_raw(downloads = NULL, base = NULL, main = NULL, quiet = FALSE,
+  cleanup = TRUE)
 }
 \arguments{
 \item{downloads}{\code{list} or \code{list} of \code{list}s containing
 inputs to \code{\link{download}} for each download to be put into the 
 raw subdirectory.}
-
-\item{tree}{Directory tree \code{list}. Consisting of \code{base}, 
-\code{main}, and \code{subs} elements. See \code{\link{dirtree}}.}
 
 \item{base}{\code{character} value of the name of the base component of
 the directory tree. See \code{Details}.}

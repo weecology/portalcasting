@@ -1,51 +1,3 @@
-#' @title Define the names of the directory tree for a forecasting directory
-#'
-#' @description A cross-platform, tidy way to pass the full tree structure 
-#'   for a portalcasting directory through the codebase. Default setup (for
-#'   using in Portal Predictions) is with the tree based in the working 
-#'   directory and no additional "main" level (so the subdirectories are 
-#'   located within the working directory).
-#'
-#' @param base \code{character} name of the base folder where the directory 
-#'   should or does exist. Default \code{"."} (working directory).
-#'
-#' @param main \code{character} name of the main folder within the base that
-#'   contains the subdirectories. Default \code{""} (no main level included). 
-#'
-#' @param subs \code{character} vector naming the specific subdirectories
-#'   within the portalcasting directory tree. Default \code{subdirs()} sets
-#'   the subdirectories as \code{"predictions"}, \code{"models"},
-#'   \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
-#'   not advised to change the subdirectories. 
-#'
-#' @param tree Directory tree \code{list}. Consisting of \code{base}, 
-#'  \code{main}, and \code{subs} elements. See \code{\link{dirtree}}.
-#'
-#' @return Named \code{list} (elements: \code{base}, 
-#'   \code{main}, and \code{subs}) representing the directory tree.
-#' 
-#' @examples
-#'  dirtree()
-#'  update_tree(dirtree(), base = "~", main = "forecasting_project")
-#'
-#' @export
-#'
-dirtree <- function(base = ".", main = "", subs = subdirs()){
-  list("base" = base, "main" = main, "subs" = subs)
-}
-
-#' @rdname dirtree
-#'
-#' @export
-#'
-update_tree <- function(tree = dirtree(), base = NULL, main = NULL, 
-                        subs = NULL){
-  tree$base <- ifnull(base, tree$base)
-  tree$main <- ifnull(main, tree$main)
-  tree$subs <- ifnull(subs, tree$subs)
-  tree
-}
-
 #' @title Define the names of the subdirectories in a forecasting directory
 #'
 #' @description Produces a vector of subdirectory names that is of class
@@ -79,15 +31,31 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
   subs_names
 }
 
-#' @title Determine the path for a specific level of a portalcasting directory
+#' @title Determine the path for a specific level of a forecasting directory
 #'
-#' @description \code{base_path}: Return the path for the \code{base} folder
-#'   in the directory. 
+#' @description Produce paths for a forecasting directory. \cr \cr
+#'   \code{base_path} returns the path for the \code{base} folder. \cr \cr
+#'   \code{main_path} returns the path for the \code{main} folder. \cr \cr
+#'   \code{sub_paths} returns the path for the \code{subs} folders. \cr \cr
 #'
-#' @param tree Directory tree \code{list}. See \code{\link{dirtree}}.
+#' @param base \code{character} value of the name of the base component of
+#'  the directory tree. 
 #'
-#' @return \code{base_path}: The normalized path of the main folder in the 
-#'   directory tree as a character value (see \code{\link{normalizePath}}).
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'
+#' @param subs \code{character} vector of the names of the sub components of
+#'  the directory tree. 
+#'
+#' @param specific_subs \code{character}-value name of the specific 
+#'   subdirectory/subdirectories of interest, or \code{NULL} (default)
+#'   for all.
+#'
+#' @return \code{character} value normalized paths 
+#'   (see \code{\link{normalizePath}}) . \cr \cr
+#'   \code{base_path} normalized path of the \code{base} folder. \cr \cr
+#'   \code{main_path} normalized path of the \code{main} folder. \cr \cr
+#'   \code{subs_paths} normalized paths of the \code{subs} folders. \cr \cr
 #' 
 #' @examples
 #'  create_dir()
@@ -98,51 +66,30 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #'
 #' @export
 #'
-base_path <- function(tree = dirtree()){
-  base <- tree$base
+base_path <- function(base = "."){
   normalizePath(file.path(base), mustWork = FALSE)
 }
 
 #' @rdname base_path
 #'
-#' @description \code{main_path}: Return the path for the \code{main} folder
-#'   in the directory. 
-#'
-#' @return \code{main_path}: The normalized path of the main folder in the 
-#'   directory tree as a character value (see \code{\link{normalizePath}}).
-#'
 #' @export
 #'
-main_path <- function(tree = dirtree()){
-  base <- tree$base
-  main <- tree$main
+main_path <- function(base = ".", main = ""){
   normalizePath(file.path(base, main), mustWork = FALSE)
 }
 
 #' @rdname base_path
 #'
-#' @description \code{sub_paths}: Return the path(s) for a specific 
-#'   \code{subs} folder or folders in the directory. 
-#'
-#' @param specific_subs \code{character}-value name of the specific 
-#'   subdirectory/subdirectories of interest, or \code{NULL} (default)
-#'   for all.
-#'
-#' @return \code{sub_paths}: The normalized path(s) of the 
-#'   \code{specific_subs} folder(s) in the directory tree as \code{character}
-#'    value(s) (see \code{\link{normalizePath}}).
-#'
 #' @export
 #'
-sub_paths <- function(tree = dirtree(), specific_subs = NULL){
-  if (!is.null(specific_subs) && (!all(specific_subs %in% tree$subs))){
-    stop("some `specific_subs` not in `tree`")
+sub_paths <- function(base = ".", main = "", subs = subdirs(), 
+                      specific_subs = NULL){
+  if (!is.null(specific_subs) && (!all(specific_subs %in% subs))){
+    stop("some `specific_subs` not in `subs`")
   }
   if (is.null(specific_subs)){
-    specific_subs <- tree$subs
+    specific_subs <- subs
   }
-  base <- tree$base
-  main <- tree$main
   normalizePath(file.path(base, main, specific_subs), mustWork = FALSE)
 }
 
@@ -150,7 +97,11 @@ sub_paths <- function(tree = dirtree(), specific_subs = NULL){
 #'
 #' @description Return the normalized path(s) for a specific model or models.
 #'
-#' @param tree Directory tree \code{list}. See \code{\link{dirtree}}.
+#' @param base \code{character} value of the name of the base component of
+#'  the directory tree. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
 #'
 #' @param models \code{character} name of the specific model(s).
 #'
@@ -164,12 +115,11 @@ sub_paths <- function(tree = dirtree(), specific_subs = NULL){
 #'
 #' @export
 #'
-model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
+model_paths <- function(base = ".", main = "", models = NULL, 
+                        extension = ".R"){
   if (is.null(models)){
     NULL
   } else{
-    base <- tree$base
-    main <- tree$main
     sub <- "models"
     mod <- paste0(models, extension)
     normalizePath(file.path(base, main, sub, mod), mustWork = FALSE)
@@ -181,7 +131,11 @@ model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
 #' @description Return the normalized path for a specific file or files 
 #'   within the directory. 
 #'
-#' @param tree Directory tree \code{list}. See \code{\link{dirtree}}.
+#' @param base \code{character} value of the name of the base component of
+#'  the directory tree. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
 #'
 #' @param local_paths \code{character} file path(s) within the \code{main}
 #'   level of the portalcasting directory.
@@ -194,12 +148,10 @@ model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
 #'
 #' @export
 #'
-file_paths <- function(tree = dirtree(), local_paths = NULL){
+file_paths <- function(base = ".", main = "", local_paths = NULL){
   if (is.null(local_paths)){
     NULL
   } else{
-    base <- tree$base
-    main <- tree$main
     normalizePath(file.path(base, main, local_paths), mustWork = FALSE)
   }
 }

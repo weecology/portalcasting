@@ -4,10 +4,14 @@
 \alias{file_paths}
 \title{Determine the path for a file or files in the forecasting directory}
 \usage{
-file_paths(tree = dirtree(), local_paths = NULL)
+file_paths(base = ".", main = "", local_paths = NULL)
 }
 \arguments{
-\item{tree}{Directory tree \code{list}. See \code{\link{dirtree}}.}
+\item{base}{\code{character} value of the name of the base component of
+the directory tree.}
+
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
 
 \item{local_paths}{\code{character} file path(s) within the \code{main}
 level of the portalcasting directory.}

@@ -9,9 +9,6 @@
 #'  inputs to \code{\link{download}} for each download to be put into the 
 #'  raw subdirectory. 
 #'
-#' @param tree Directory tree \code{list}. Consisting of \code{base}, 
-#'  \code{main}, and \code{subs} elements. See \code{\link{dirtree}}.
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -35,16 +32,16 @@
 #'
 #' @export
 #'
-fill_dir <- function(downloads = NULL, tree = dirtree(), base = NULL,
+fill_dir <- function(downloads = NULL, base = NULL,
                      main = NULL, quiet = FALSE, cleanup = TRUE){
-  fill_raw(downloads, tree, base, main, quiet, cleanup)
+  fill_raw(downloads, base, main, quiet, cleanup)
 }
 
 #' @rdname fill_dir
 #'
 #' @export
 #'
-fill_raw <- function(downloads = NULL, tree = dirtree(), base = NULL,
+fill_raw <- function(downloads = NULL,  base = NULL,
                      main = NULL, quiet = FALSE, cleanup = TRUE){
   if(!is.null(downloads)){
     if(list_depth(downloads) == 1){
@@ -54,7 +51,6 @@ fill_raw <- function(downloads = NULL, tree = dirtree(), base = NULL,
     ndl <- length(downloads)
     for(i in 1:ndl){
       downloads[[i]]$cleanup <- ifnull(downloads[[i]]$cleanup, cleanup)
-      downloads[[i]]$tree <- ifnull(downloads[[i]]$tree, tree)
       downloads[[i]]$base <- ifnull(downloads[[i]]$base, base)
       downloads[[i]]$main <- ifnull(downloads[[i]]$main, main)
       downloads[[i]]$quiet <- ifnull(downloads[[i]]$quiet, quiet)

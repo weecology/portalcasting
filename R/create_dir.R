@@ -10,19 +10,11 @@
 #'  \code{create_main} creates the main folder of the directory.\cr \cr
 #'  \code{create_subs} creates the sub folders of the directory.
 #'
-#' @details Alternatively or in addition to the \code{tree} argument, users 
-#'  can input the folder locations directly via \code{base}, \code{main}, and 
-#'  \code{subs} arguments. In this case, any non-\code{NULL} input for 
-#'  \code{base}, \code{main}, or \code{subs} overrides the respective 
-#'  element in \code{tree}. \cr \cr
-#'  Folder paths are created internally using \code{\link{base_path}}, 
+#' @details Folder paths are created internally using \code{\link{base_path}}, 
 #'  \code{\link{main_path}}, and \code{\link{sub_paths}}, such that the user 
 #'  only needs to input folder locations as names within the respective level 
 #'  of the directory tree structure, not as pre-formatted file paths. See 
 #'  \code{Examples}.
-#'
-#' @param tree Directory tree \code{list}. Consisting of \code{base}, 
-#'  \code{main}, and \code{subs} elements. See \code{\link{dirtree}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -47,20 +39,19 @@
 #'
 #' @export
 #'
-create_dir <- function(tree = dirtree(), base = NULL, main = NULL, 
-                       subs = NULL, quiet = FALSE){
-  create_base(tree, base, quiet)
-  create_main(tree, base, main, quiet)
-  create_subs(tree, base, main, subs, quiet)
+create_dir <- function(base = ".", main = "", subs = subdirs(), 
+                       quiet = FALSE){
+  create_base(base, quiet)
+  create_main(base, main, quiet)
+  create_subs(base, main, subs, quiet)
 }
 
 #' @rdname create_dir
 #'
 #' @export
 #'
-create_base <- function(tree = dirtree(), base = NULL, quiet = FALSE){
-  tree <- update_tree(tree, base)
-  basep <- base_path(tree)
+create_base <- function(base = ".", quiet = FALSE){
+  basep <- base_path(base)
   create(basep, "base", quiet)
 }
 
@@ -68,11 +59,9 @@ create_base <- function(tree = dirtree(), base = NULL, quiet = FALSE){
 #'
 #' @export
 #'
-create_main <- function(tree = dirtree(), base = NULL, main = NULL,
-                        quiet = FALSE){
-  tree <- update_tree(tree, base, main)
-  basep <- base_path(tree)
-  mainp <- main_path(tree)
+create_main <- function(base = ".", main = "", quiet = FALSE){
+  basep <- base_path(base)
+  mainp <- main_path(base, main)
   verify(basep, "base")
   create(mainp, "main", quiet)
 }
@@ -81,12 +70,11 @@ create_main <- function(tree = dirtree(), base = NULL, main = NULL,
 #'
 #' @export
 #'
-create_subs <- function(tree = dirtree(), base = NULL, main = NULL, 
-                        subs = NULL, quiet = FALSE){
-  tree <- update_tree(tree, base, main, subs)
-  basep <- base_path(tree)
-  mainp <- main_path(tree)
-  subsp <- sub_paths(tree)
+create_subs <- function(base = ".", main = "", subs = subdirs(), 
+                        quiet = FALSE){
+  basep <- base_path(base)
+  mainp <- main_path(base, main)
+  subsp <- sub_paths(base, main, subs)
   verify(c(basep, mainp), c("base", "main"))
   create(subsp, basename(subsp), quiet)
 }
@@ -106,8 +94,7 @@ create_subs <- function(tree = dirtree(), base = NULL, main = NULL,
 #'  \code{NULL}.
 #'
 #' @examples
-#'  tree <- dirtree()
-#'  base <- base_path(tree)
+#'  base <- base_path()
 #'  verify(base, "base")
 #'
 #' @export
@@ -140,8 +127,7 @@ verify <- function(path = NULL, level = NULL){
 #' @return \code{NULL}.
 #'
 #' @examples
-#'  tree <- dirtree()
-#'  base <- base_path(tree)
+#'  base <- base_path()
 #'  create(base, "base")
 #'
 #' @export

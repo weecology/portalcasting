@@ -1,6 +1,6 @@
 context("Test filling functions")
 
-unlink(main_path(dirtree(main = "testing")), recursive = TRUE, force = TRUE)
+unlink(main_path(main = "testing"), recursive = TRUE, force = TRUE)
 create_dir(main = "testing")
 
 test_that("download", {
@@ -9,4 +9,4 @@ test_that("download", {
 })
 
 
-unlink(main_path(dirtree(main = "testing")), recursive = TRUE, force = TRUE)
+unlink(main_path(main = "testing"), recursive = TRUE, force = TRUE)

@@ -7,21 +7,15 @@
 \alias{create_subs}
 \title{Create the structure of a forecasting directory}
 \usage{
-create_dir(tree = dirtree(), base = NULL, main = NULL, subs = NULL,
-  quiet = FALSE)
+create_dir(base = ".", main = "", subs = subdirs(), quiet = FALSE)
 
-create_base(tree = dirtree(), base = NULL, quiet = FALSE)
+create_base(base = ".", quiet = FALSE)
 
-create_main(tree = dirtree(), base = NULL, main = NULL,
-  quiet = FALSE)
+create_main(base = ".", main = "", quiet = FALSE)
 
-create_subs(tree = dirtree(), base = NULL, main = NULL,
-  subs = NULL, quiet = FALSE)
+create_subs(base = ".", main = "", subs = subdirs(), quiet = FALSE)
 }
 \arguments{
-\item{tree}{Directory tree \code{list}. Consisting of \code{base}, 
-\code{main}, and \code{subs} elements. See \code{\link{dirtree}}.}
-
 \item{base}{\code{character} value of the name of the base component of
 the directory tree. See \code{Details}.}
 
@@ -49,12 +43,7 @@ This suite of functions creates the necessary folder structure
  \code{create_subs} creates the sub folders of the directory.
 }
 \details{
-Alternatively or in addition to the \code{tree} argument, users 
- can input the folder locations directly via \code{base}, \code{main}, and 
- \code{subs} arguments. In this case, any non-\code{NULL} input for 
- \code{base}, \code{main}, or \code{subs} overrides the respective 
- element in \code{tree}. \cr \cr
- Folder paths are created internally using \code{\link{base_path}}, 
+Folder paths are created internally using \code{\link{base_path}}, 
  \code{\link{main_path}}, and \code{\link{sub_paths}}, such that the user 
  only needs to input folder locations as names within the respective level 
  of the directory tree structure, not as pre-formatted file paths. See 

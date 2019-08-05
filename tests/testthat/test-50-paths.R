@@ -1,13 +1,5 @@
 context("Test paths functions")
 
-test_that("dirtree", {
-  expect_is(dirtree(), "list")
-  expect_equal(length(dirtree()), 3)
-})
-
-test_that("update_tree", {
-  expect_is(update_tree(dirtree(), "b", "m", "s"), "list")
-})
 
 test_that("subdirs", {
   expect_is(subdirs(), "character")
@@ -29,8 +21,8 @@ test_that("main_path", {
 test_that("sub_paths", {
   expect_is(sub_paths(), "character")
   expect_equal(length(sub_paths()), 5)
-  expect_equal(length(sub_paths(dirtree(), "tmp")), 1)
-  expect_error(sub_paths(dirtree(), "ok"))
+  expect_equal(length(sub_paths(specific_subs = "tmp")), 1)
+  expect_error(sub_paths(specific_subs = "ok"))
 })
 
 test_that("model_paths", {

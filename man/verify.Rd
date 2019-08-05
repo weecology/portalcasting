@@ -22,8 +22,7 @@ If any of the folders (specified by \code{path} and named by
  \code{level}) do not exist, the operation throws an error.
 }
 \examples{
- tree <- dirtree()
- base <- base_path(tree)
+ base <- base_path()
  verify(base, "base")
 
 }

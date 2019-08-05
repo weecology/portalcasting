@@ -11,13 +11,13 @@
 \usage{
 download(name = NULL, type = NULL, url = NULL,
   concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
-  tree = dirtree(), base = NULL, main = NULL, quiet = FALSE,
-  cleanup = TRUE, NULLname = FALSE)
+  base = ".", main = "", quiet = FALSE, cleanup = TRUE,
+  NULLname = FALSE)
 
-unzip_download(name = NULL, zip_destin, tree = dirtree(),
+unzip_download(name = NULL, zip_destin, base = ".", main = "",
   cleanup = TRUE)
 
-unzip_destins(name = NULL, zip_destin, tree = dirtree())
+unzip_destins(name = NULL, zip_destin, base = ".", main = "")
 
 download_message(name = NULL, type = NULL, url = NULL,
   rec_version = NULL, quiet = FALSE)
@@ -25,7 +25,7 @@ download_message(name = NULL, type = NULL, url = NULL,
 download_url(type = NULL, url = NULL, concept_rec_id = NULL,
   rec_version = "latest", rec_id = NULL)
 
-download_destin(name = NULL, source_url, tree = dirtree())
+download_destin(name = NULL, source_url, base = ".", main = "")
 }
 \arguments{
 \item{name}{\code{character} value of the component's name, used to create
@@ -54,9 +54,6 @@ Used when \code{type = "zenodo"}.}
 
 \item{rec_id}{Optional input record identifier, a \code{character} value
 corresponding to the Zenodo record. Used when \code{type = "zenodo"}.}
-
-\item{tree}{Directory tree \code{list}. Consisting of \code{base}, 
-\code{main}, and \code{subs} elements. See \code{\link{dirtree}}.}
 
 \item{base}{\code{character} value of the name of the base component of
 the directory tree. See \code{Details}.}
@@ -94,11 +91,7 @@ This suite of functions manages the downloading and (if
 }
 \details{
 If \code{type = NULL}, it is assumed to be a URL (\emph{i.e.}, 
- \code{type = "url"}). \cr \cr
- Alternatively or in addition to the \code{tree} argument, users 
- can input the folder locations directly via \code{base} and \code{main}
- arguments. In this case, any non-\code{NULL} input for \code{base}
- or \code{main} overrides the respective element in \code{tree}. \cr \cr
+ \code{type = "url"}).
 }
 \examples{
  \donttest{

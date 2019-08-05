@@ -4,41 +4,41 @@
 \alias{base_path}
 \alias{main_path}
 \alias{sub_paths}
-\title{Determine the path for a specific level of a portalcasting directory}
+\title{Determine the path for a specific level of a forecasting directory}
 \usage{
-base_path(tree = dirtree())
+base_path(base = ".")
 
-main_path(tree = dirtree())
+main_path(base = ".", main = "")
 
-sub_paths(tree = dirtree(), specific_subs = NULL)
+sub_paths(base = ".", main = "", subs = subdirs(),
+  specific_subs = NULL)
 }
 \arguments{
-\item{tree}{Directory tree \code{list}. See \code{\link{dirtree}}.}
+\item{base}{\code{character} value of the name of the base component of
+the directory tree.}
+
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
+
+\item{subs}{\code{character} vector of the names of the sub components of
+the directory tree.}
 
 \item{specific_subs}{\code{character}-value name of the specific 
 subdirectory/subdirectories of interest, or \code{NULL} (default)
 for all.}
 }
 \value{
-\code{base_path}: The normalized path of the main folder in the 
-  directory tree as a character value (see \code{\link{normalizePath}}).
-
-\code{main_path}: The normalized path of the main folder in the 
-  directory tree as a character value (see \code{\link{normalizePath}}).
-
-\code{sub_paths}: The normalized path(s) of the 
-  \code{specific_subs} folder(s) in the directory tree as \code{character}
-   value(s) (see \code{\link{normalizePath}}).
+\code{character} value normalized paths 
+  (see \code{\link{normalizePath}}) . \cr \cr
+  \code{base_path} normalized path of the \code{base} folder. \cr \cr
+  \code{main_path} normalized path of the \code{main} folder. \cr \cr
+  \code{subs_paths} normalized paths of the \code{subs} folders. \cr \cr
 }
 \description{
-\code{base_path}: Return the path for the \code{base} folder
-  in the directory.
-
-\code{main_path}: Return the path for the \code{main} folder
-  in the directory.
-
-\code{sub_paths}: Return the path(s) for a specific 
-  \code{subs} folder or folders in the directory.
+Produce paths for a forecasting directory. \cr \cr
+  \code{base_path} returns the path for the \code{base} folder. \cr \cr
+  \code{main_path} returns the path for the \code{main} folder. \cr \cr
+  \code{sub_paths} returns the path for the \code{subs} folders. \cr \cr
 }
 \examples{
  create_dir()

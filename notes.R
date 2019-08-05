@@ -23,7 +23,6 @@ PortalPredictions <- list(downloads = downloads)
 #  2. github
 # 
 
-# thoughts
-#  should i get rid of the whole dirtree function and tree inputs?
-#   not the structure per se, but the arguments seems to be redundant now
-#   could clean up a lot of code!
+# important notes for news
+#  got rid of most of the unnecessary lists
+#   dirtree is no more, even tho the structure is still there

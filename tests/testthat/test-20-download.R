@@ -30,4 +30,4 @@ test_that("record_name_from_url", {
   expect_equal(record_name_from_url(source_url), "PortalData")
 })
 
-unlink(main_path(dirtree(main = "testing")), recursive = TRUE, force = TRUE)
+unlink(main_path(main = "testing"), recursive = TRUE, force = TRUE)
