@@ -7,24 +7,20 @@
 file_paths(tree = dirtree(), local_paths = NULL)
 }
 \arguments{
-\item{tree}{\code{dirtree}-class list.}
+\item{tree}{Directory tree \code{list}. See \code{\link{dirtree}}.}
 
 \item{local_paths}{\code{character} file path(s) within the \code{main}
 level of the portalcasting directory.}
 }
 \value{
 The normalized path(s) of the specified file(s) (see 
-  \code{\link{normalizePath}}).
+  \code{\link{normalizePath}}) or \code{NULL} if \code{local_paths = NULL}.
 }
 \description{
 Return the normalized path for a specific file or files 
   within the directory.
 }
 \examples{
-\dontrun{
-
-setup_dir()
-file_paths(local_paths = "PortalData/Rodents/Portal_rodent_species.csv")
-}
+ file_paths(local_paths = "PortalData/Rodents/Portal_rodent_species.csv")
 
 }

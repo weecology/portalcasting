@@ -7,7 +7,7 @@
 model_paths(tree = dirtree(), models = NULL, extension = ".R")
 }
 \arguments{
-\item{tree}{\code{dirtree}-class list.}
+\item{tree}{Directory tree \code{list}. See \code{\link{dirtree}}.}
 
 \item{models}{\code{character} name of the specific model(s).}
 
@@ -15,16 +15,12 @@ model_paths(tree = dirtree(), models = NULL, extension = ".R")
 }
 \value{
 The normalized path of the specified model script (see 
-  \code{\link{normalizePath}}).
+  \code{\link{normalizePath}}) or \code{NULL} if \code{models = NULL}.
 }
 \description{
 Return the normalized path(s) for a specific model or models.
 }
 \examples{
-\dontrun{
-
-setup_dir()
-model_paths(models = "AutoArima")
-}
+ model_paths(models = "AutoArima")
 
 }

@@ -13,7 +13,7 @@ main_path(tree = dirtree())
 sub_paths(tree = dirtree(), specific_subs = NULL)
 }
 \arguments{
-\item{tree}{\code{dirtree}-class list. See \code{\link{dirtree}}.}
+\item{tree}{Directory tree \code{list}. See \code{\link{dirtree}}.}
 
 \item{specific_subs}{\code{character}-value name of the specific 
 subdirectory/subdirectories of interest, or \code{NULL} (default)
@@ -41,13 +41,10 @@ for all.}
   \code{subs} folder or folders in the directory.
 }
 \examples{
-\dontrun{
-
-setup_dir()
-base_path()
-main_path()
-sub_paths()
-sub_paths(specific_subs = "models")
-}
+ create_dir()
+ base_path()
+ main_path()
+ sub_paths()
+ sub_paths(specific_subs = "models")
 
 }

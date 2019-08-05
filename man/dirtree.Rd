@@ -2,9 +2,13 @@
 % Please edit documentation in R/paths.R
 \name{dirtree}
 \alias{dirtree}
+\alias{update_tree}
 \title{Define the names of the directory tree for a forecasting directory}
 \usage{
 dirtree(base = ".", main = "", subs = subdirs())
+
+update_tree(tree = dirtree(), base = NULL, main = NULL,
+  subs = NULL)
 }
 \arguments{
 \item{base}{\code{character} name of the base folder where the directory 
@@ -18,9 +22,12 @@ within the portalcasting directory tree. Default \code{subdirs()} sets
 the subdirectories as \code{"predictions"}, \code{"models"},
 \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
 not advised to change the subdirectories.}
+
+\item{tree}{Directory tree \code{list}. Consisting of \code{base}, 
+\code{main}, and \code{subs} elements. See \code{\link{dirtree}}.}
 }
 \value{
-Class-\code{dirtree} named list (elements: \code{base}, 
+Named \code{list} (elements: \code{base}, 
   \code{main}, and \code{subs}) representing the directory tree.
 }
 \description{
@@ -31,9 +38,7 @@ A cross-platform, tidy way to pass the full tree structure
   located within the working directory).
 }
 \examples{
-\dontrun{
-
-dirtree()
-}
+ dirtree()
+ update_tree(dirtree(), base = "~", main = "forecasting_project")
 
 }

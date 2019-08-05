@@ -27,25 +27,8 @@ Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
-  curl,
-  DesignLibrary,
-  digest,
-  dplyr,
-  forecast,
   httr,
-  jsonlite,
-  lubridate,
-  magrittr,
-  portalr,
-  purrr,
-  RCurl,
-  readr,
-  rlang,
-  tidyselect,
-  tscount,
-  usethis,
-  viridis,
-  yaml
+  tools,
 Suggests:
   knitr,
   pkgdown,

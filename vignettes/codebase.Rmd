@@ -22,11 +22,9 @@ vers <- packageVersion("portalcasting")
 today <- Sys.Date()
 ```
 
-This vignette outlines the codebase for the **portalcasting** package
-(v`r vers`), which underlies the automated iterative forecasting within the
-[Portal Predictions repo](https://github.com/weecology/portalPredictions).
+This vignette outlines the codebase for the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions production pipeline](https://github.com/weecology/portalPredictions). **portalcasting** has utilities for setting up local versions of the pipeline for developing and testing new models. 
 
-### Installation
+## Installation
 
 To install the most recent version of **portalcasting** from GitHub:
 
@@ -35,173 +33,45 @@ install.packages("devtools")
 devtools::install_github("weecology/portalcasting")
 ```
 
+## Directory Structure
 
-### Function pipeline
+The package uses a directory tree with three levels to organize the project:
 
-The package organizes the main actions into a set of hierarchical functions 
-`setup_dir()` (which creates and fills the directory), `portalcast()` (which
-conducts forecasting or hindcasting as requested), and `cleanup_dir()`
-(which removes temporary folders). The functions are designed to operate 
-out-of-the-box with no need to alter arguments for operation, in particular 
-within the context of the Portal Predictions repo, while also maintaining
-flexibility for sandboxing. To that end, there are two top-level setup
-functions: `setup_dir()` is set with defaults for the production 
-pipeline, whereas `setup_sandbox()` is set with defaults for sandboxing.
-
-* `setup_dir()` or `setup_sandbox()`
-  * `create_dir()`
-    * `create_base_dir()`
-      * `create()`
-    * `create_main_dir()`
-      * `verify()`, `create()`
-    * `create_sub_dirs()`
-      * `verify()`, `create()`
-  * `fill_dir()`
-    * `fill_PortalData()`
-    * `fill_data()`
-      * `download_hist_covariate_forecasts()`
-      * `transfer_trapping_table()`
-      * `prep_moons()`
-        * `add_future_moons()`
-        * `append_past_moons_to_raw()`
-        * `format_moons()`
-      * `prep_rodents_list()`
-        * `prep_rodents()`
-          * `portalr::summarize_rodent_data()`
-          * `remove_spp()`
-          * `trim_treatment()`
-      * `prep_covariates()`
-        * `prep_hist_covariates()`
-          * `prep_weather_data()`
-            * `portalr::weather()`
-          * `portalr::ndvi()`
-        * `prep_fcast_covariates()`
-          * `forecast_covariates()`
-            * `trim_moons_fcast()`
-            * `forecast_weather()`
-              * `get_climate_forecasts()`
-            * `forecast_ndvi()`
-          * `append_cov_fcast_csv()`
-      * `prep_metadata()`
-    * `fill_predictions()`
-      * `download_predictions()`
-    * `fill_models()`
-      * `write_model()`
-        * `model_template()`
-
-* `portalcast()`
-  * `clear_tmp()`
-  * `verify_models()`
-  * `prep_data()`
-    * if needed, `fill_data()`
-  * `casts()`
-    * `cast()`
-      * `check_to_skip()`
-      * `cast_models()`
-        * `models_to_cast()`
-      * `combine_forecasts()`	  
-      * `add_ensemble()`
-        * `make_ensemble()`
-      * `clear_tmp()`
-	  * `step_casts()`
-        * `step_hind_forward()`
-        * `update_data()`
-          * `prep_moons()`
-	        * `add_future_moons()`
-            * `append_past_moons_to_raw()`
-	        * `format_moons()`
-          * `update_rodents_list()`
-          * `update_covariates()`
-            * `prep_fcast_covariates()`
-              * `forecast_covariates()`
-                * `trim_moons_fcast()`
-                * `forecast_weather()`
-                * `forecast_ndvi()`
-              * `append_cov_fcast_csv()`
-          * `prep_metadata()`
-        * `cast()`	
-          * `check_to_skip()`
-          * `cast_models()`
-            * `models_to_cast()`
-          * `combine_forecasts()`	  
-          * `add_ensemble()`
-            * `make_ensemble()`
-          * `clear_tmp()`
-
-* `cleanup_dir()`
-
-### Directory Tree
-
-The package uses a simple directory tree to organize the project. There are 
-three levels to the hierarchy:
-
-* `base`: folder where the project folder will be housed (usually pre-existing)
-  * `main`: project folder encompassing all subfolders
-    * `subs`: specific sub-folders for the project
+* `base`: folder where the project folder will be housed
+* `main`: project folder encompassing all subfolders
+* `subs`: specific subfolders that organize the project files
  
-The tree is housed in a simple list, created by the `dirtree()` function, which 
-allows for the renaming of the folders at all levels, although it is only 
-advisable to alter the `base` or `main` levels, as many functions require 
-specifically-named subdirectories. 
+In particular, the tree is
 
-The full-path components of the tree can be generated from the simple 
-list using `base_path()`, `main_path()` and `sub_paths()`. 
-In addition, `model_paths()` can be used to find a specific model's 
-(or models') full path(s) and `file_paths()` can be used to find the 
-full path of any file(s) within the directory.
+```
+base
+│   
+└──main
+│   │
+│   └──predictions
+│   │   <previous and current predictions>
+│   └──models
+│   │   <model scripts>
+│   └──data
+│   │   <data used for a specific run of models>
+│   └──raw
+│   │   <stable version of raw data used to populate the data folder>
+│   └──tmp
+│   │   <temporary files>
+```
 
-### Control lists
+The tree is housed in a `list` with special class `dirtree` that is created by `dirtree()`. This allows for easy management and tracking of the directory structure, as well as renaming/relocating of the folders at all three levels, although it is only advisable to alter the `base` and `main` levels, as many functions require specifically-named `subs`. Functions in **portalcasting** can take either `tree` or `base`/`main`/`subs` argument inputs, and any level-specific inputs override the `tree` value.
 
-The function hierarchy is controlled by a large suite of inter-linked 
-parameters, many of which most users will not need or want to interact
-with, but some of which are variably useful, and so having control is
-nice, but without needing to manage extensive argument inputs. To that
-end, the functions have a minimal number of inputs, grouping most things
-into `control` lists. Each `control` or `<type_name>_control` argument
-takes a list, which is internally passed through a `<type_name>_control`
-function which sets the defaults not user-defined and (usually) enforces
-strict named-argument matching (the exception being the 
-`models_control` list, which needs to be flexible to inputs via `...`).
+## Instantiating a Directory
 
-* `PortalData_control`: created by `PortalData_control()`
-* `data_control`: created by `data_control()`
-  * `moons_control`: created by `moons_control()`
-  * `rodents_control`: created by `rodents_control()`
-  * `covariates_control`: created by `covariates_control()`
-  * `metadata_control`: created by `metadata_control()`
-* `predictions_control`: created by `predictions_control()`
-* `models_control`: created by `models_control()`
-  * model-specific `model_control` created by `model_control()`
-* `casts_control`: created by `casts_control()` 
+Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders).
 
-### Figures
+### Creating 
 
-There are currently four main figure functions, each of which involves
-some level of data and forecast processing. The default settings for each
-function are designed to produce the figures on the [Portal Predictions
-site](http://portal.naturecast.org/), but are flexible to allow for a
-wider range of options. 
+The directory is established using `create_dir()`, which takes a `dirtree` `list` as its first argument (`tree`) or takes individual levels as they would be input into `dirtree()`, including `base`, `main`, and `subs` as arguments, which override any values in `tree`. `create_dir()` in sequence creates each of the levels' (`base`, `main`, `sub`) folders if they do not already exist. This occurs through calls to `create_base()`, `create_main()`, and `create_subs()` using the same directory tree. 
 
-* `plot_cast_ts()`
-  * `most_recent_cast_date()`
-  * `read_data()`
-  * `read_cast()`
-  * `select_casts()`
-  * `plot_cast_ts_xaxis()`
-  * `plot_cast_ts_ylab()`
-* `plot_cast_point()`
-  * `most_recent_cast_date()`
-  * `most_recent_census()`
-  * `read_data()`
-  * `read_cast()`
-  * `select_casts()`
-  * `plot_cast_point_yaxis()`
-* `plot_err_lead_spp_mods()`
-  * `read_casts()`
-  * `select_casts()`
-  * `append_observed_to_cast()`
-* `plot_cov_RMSE_mod_spp()`
-  * `read_casts()`
-  * `select_casts()`
-  * `append_observed_to_cast()`
-  * `measure_cast_error()`
+### Filling 
+
+The directory is filled using a series of subdirectory-specific functions that are combined in the overall `fill_dir()` function. 
+
+`fill_raw` downloads each of the raw data sets 

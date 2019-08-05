@@ -1,0 +1,12 @@
+context("Test directory creating functions")
+
+unlink(main_path(dirtree(main = "testing")), recursive = TRUE, force = TRUE)
+test_that("create_dir", {
+  expect_message(create_dir(main = "testing"))
+})
+
+test_that("verify", {
+  expect_error(verify(base_path(dirtree(base ="abcdefghijklmop"))))
+})
+
+unlink(main_path(dirtree(main = "testing")), recursive = TRUE, force = TRUE)

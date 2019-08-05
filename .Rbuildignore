@@ -8,6 +8,7 @@
 ^package_outline.txt$
 ^in_dev.R$
 ^notes.R$
+^notes2.R$
 ^CONTRIBUTING\.md$
 ^CODE_OF_CONDUCT\.md$
 ^_pkgdown\.yml$

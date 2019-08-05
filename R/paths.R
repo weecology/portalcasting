@@ -18,21 +18,32 @@
 #'   \code{"PortalData"}, \code{"data"}, and \code{"tmp"}. It is generally
 #'   not advised to change the subdirectories. 
 #'
-#' @return Class-\code{dirtree} named list (elements: \code{base}, 
+#' @param tree Directory tree \code{list}. Consisting of \code{base}, 
+#'  \code{main}, and \code{subs} elements. See \code{\link{dirtree}}.
+#'
+#' @return Named \code{list} (elements: \code{base}, 
 #'   \code{main}, and \code{subs}) representing the directory tree.
 #' 
 #' @examples
-#' \dontrun{
-#' 
-#' dirtree()
-#' }
+#'  dirtree()
+#'  update_tree(dirtree(), base = "~", main = "forecasting_project")
 #'
 #' @export
 #'
 dirtree <- function(base = ".", main = "", subs = subdirs()){
-  check_args()
-  list("base" = base, "main" = main, "subs" = subs) %>%
-  classy(c("dirtree", "list"))
+  list("base" = base, "main" = main, "subs" = subs)
+}
+
+#' @rdname dirtree
+#'
+#' @export
+#'
+update_tree <- function(tree = dirtree(), base = NULL, main = NULL, 
+                        subs = NULL){
+  tree$base <- ifnull(base, tree$base)
+  tree$main <- ifnull(main, tree$main)
+  tree$subs <- ifnull(subs, tree$subs)
+  tree
 }
 
 #' @title Define the names of the subdirectories in a forecasting directory
@@ -45,21 +56,25 @@ dirtree <- function(base = ".", main = "", subs = subdirs()){
 #'
 #' @param subs_names Either [1] names of additional subdirectories to add to
 #'   the vector set up by \code{type} or [2] an optional way to input all 
-#'   subdirectory names (requires \code{type = NULL}, which is the default). 
+#'   subdirectory names (requires \code{subs_type = NULL}). 
 #'
 #' @param subs_type \code{character} name for quick generation of subdirectory
-#'   vector. Presently only defined for \code{"portalcasting"}.
+#'   vector. Presently only defined for \code{"prefab"}, or the setting
+#'   \code{NULL} which allows for complete customization.
 #'
 #' @return \code{character} vector of subdirectory names.
 #'
 #' @export
 #'
-subdirs <- function(subs_names = NULL, subs_type = "portalcasting"){
-  check_args()
-  if (!is.null(subs_type) && subs_type == "portalcasting"){
-    pc_subs <- c("predictions", "models", "PortalData", "data", "tmp")
-    subs_names <- c(subs_names, pc_subs)
-    subs_names <- unique(subs_names)
+subdirs <- function(subs_names = NULL, subs_type = "prefab"){
+  if (!is.null(subs_type)){
+    if (subs_type == "prefab"){
+      pc_subs <- c("predictions", "models", "raw", "data", "tmp")
+      subs_names <- c(subs_names, pc_subs)
+      subs_names <- unique(subs_names)
+    } else{
+      stop("subs_type can only be `prefab` or `NULL`")
+    }
   }
   subs_names
 }
@@ -69,25 +84,21 @@ subdirs <- function(subs_names = NULL, subs_type = "portalcasting"){
 #' @description \code{base_path}: Return the path for the \code{base} folder
 #'   in the directory. 
 #'
-#' @param tree \code{dirtree}-class list. See \code{\link{dirtree}}.
+#' @param tree Directory tree \code{list}. See \code{\link{dirtree}}.
 #'
 #' @return \code{base_path}: The normalized path of the main folder in the 
 #'   directory tree as a character value (see \code{\link{normalizePath}}).
 #' 
 #' @examples
-#' \dontrun{
-#'
-#' setup_dir()
-#' base_path()
-#' main_path()
-#' sub_paths()
-#' sub_paths(specific_subs = "models")
-#' }
+#'  create_dir()
+#'  base_path()
+#'  main_path()
+#'  sub_paths()
+#'  sub_paths(specific_subs = "models")
 #'
 #' @export
 #'
 base_path <- function(tree = dirtree()){
-  check_args()
   base <- tree$base
   normalizePath(file.path(base), mustWork = FALSE)
 }
@@ -103,7 +114,6 @@ base_path <- function(tree = dirtree()){
 #' @export
 #'
 main_path <- function(tree = dirtree()){
-  check_args()
   base <- tree$base
   main <- tree$main
   normalizePath(file.path(base, main), mustWork = FALSE)
@@ -125,7 +135,6 @@ main_path <- function(tree = dirtree()){
 #' @export
 #'
 sub_paths <- function(tree = dirtree(), specific_subs = NULL){
-  check_args()
   if (!is.null(specific_subs) && (!all(specific_subs %in% tree$subs))){
     stop("some `specific_subs` not in `tree`")
   }
@@ -141,31 +150,30 @@ sub_paths <- function(tree = dirtree(), specific_subs = NULL){
 #'
 #' @description Return the normalized path(s) for a specific model or models.
 #'
-#' @param tree \code{dirtree}-class list.
+#' @param tree Directory tree \code{list}. See \code{\link{dirtree}}.
 #'
 #' @param models \code{character} name of the specific model(s).
 #'
 #' @param extension \code{character} file extension (including the period).
 #'
 #' @return The normalized path of the specified model script (see 
-#'   \code{\link{normalizePath}}).
+#'   \code{\link{normalizePath}}) or \code{NULL} if \code{models = NULL}. 
 #' 
 #' @examples
-#' \dontrun{
-#' 
-#' setup_dir()
-#' model_paths(models = "AutoArima")
-#' }
+#'  model_paths(models = "AutoArima")
 #'
 #' @export
 #'
 model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
-  check_args()
-  base <- tree$base
-  main <- tree$main
-  sub <- "models"
-  mod <- paste0(models, extension)
-  normalizePath(file.path(base, main, sub, mod), mustWork = FALSE)
+  if (is.null(models)){
+    NULL
+  } else{
+    base <- tree$base
+    main <- tree$main
+    sub <- "models"
+    mod <- paste0(models, extension)
+    normalizePath(file.path(base, main, sub, mod), mustWork = FALSE)
+  }
 }
 
 #' @title Determine the path for a file or files in the forecasting directory
@@ -173,26 +181,25 @@ model_paths <- function(tree = dirtree(), models = NULL, extension = ".R"){
 #' @description Return the normalized path for a specific file or files 
 #'   within the directory. 
 #'
-#' @param tree \code{dirtree}-class list.
+#' @param tree Directory tree \code{list}. See \code{\link{dirtree}}.
 #'
 #' @param local_paths \code{character} file path(s) within the \code{main}
 #'   level of the portalcasting directory.
 #'
 #' @return The normalized path(s) of the specified file(s) (see 
-#'   \code{\link{normalizePath}}).
+#'   \code{\link{normalizePath}}) or \code{NULL} if \code{local_paths = NULL}. 
 #' 
 #' @examples
-#' \dontrun{
-#' 
-#' setup_dir()
-#' file_paths(local_paths = "PortalData/Rodents/Portal_rodent_species.csv")
-#' }
+#'  file_paths(local_paths = "PortalData/Rodents/Portal_rodent_species.csv")
 #'
 #' @export
 #'
 file_paths <- function(tree = dirtree(), local_paths = NULL){
-  check_args()
-  base <- tree$base
-  main <- tree$main
-  normalizePath(file.path(base, main, local_paths), mustWork = FALSE)
+  if (is.null(local_paths)){
+    NULL
+  } else{
+    base <- tree$base
+    main <- tree$main
+    normalizePath(file.path(base, main, local_paths), mustWork = FALSE)
+  }
 }

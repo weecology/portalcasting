@@ -18,3 +18,9 @@ ifnull(x = NULL, alt = NULL)
 If the focal input is \code{NULL}, replace it with 
   alternative.
 }
+\examples{
+ ifnull(NULL, 123)
+ ifnull(TRUE, 123)
+ ifnull(FALSE, 123)
+
+}
