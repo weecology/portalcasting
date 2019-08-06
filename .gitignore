@@ -4,9 +4,4 @@ doc
 .Rhistory
 .RData
 docs/*
-predictions/*
-data/*
-PortalData/*
-tmp/*
 inst/doc
-models/*
