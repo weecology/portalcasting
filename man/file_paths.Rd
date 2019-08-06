@@ -4,12 +4,9 @@
 \alias{file_paths}
 \title{Determine the path for a file or files in the forecasting directory}
 \usage{
-file_paths(base = ".", main = "", local_paths = NULL)
+file_paths(main = ".", local_paths = NULL)
 }
 \arguments{
-\item{base}{\code{character} value of the name of the base component of
-the directory tree.}
-
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 

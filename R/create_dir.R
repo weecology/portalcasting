@@ -6,12 +6,11 @@
 #'  \code{\link{verify}}) and the relevant folders at that level are created 
 #'  if not present (using \code{\link{create}}). \cr \cr
 #'  \code{create_dir} creates a full directory or any missing parts. \cr \cr
-#'  \code{create_base} creates the base folder of the directory.\cr \cr
 #'  \code{create_main} creates the main folder of the directory.\cr \cr
 #'  \code{create_subs} creates the sub folders of the directory.
 #'
-#' @details Folder paths are created internally using \code{\link{base_path}}, 
-#'  \code{\link{main_path}}, and \code{\link{sub_paths}}, such that the user 
+#' @details Folder paths are created internally using  
+#'  \code{\link{main_path}} and \code{\link{sub_paths}}, such that the user 
 #'  only needs to input folder locations as names within the respective level 
 #'  of the directory tree structure, not as pre-formatted file paths. See 
 #'  \code{Examples}.
@@ -19,50 +18,39 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param base \code{character} value of the name of the base component of
-#'  the directory tree. See \code{Details}.
-#'
 #' @param main \code{character} value of the name of the main component of
-#'  the directory tree. See \code{Details}.
+#'  the directory tree. Default value (\code{"."}) puts the forecasting
+#'  directory in the present locations. Nesting the forecasting directory
+#'  in a folder can be done by simply adding to the \code{main} input (see
+#'  \code{Examples}).
 #'
 #' @param subs \code{character} vector of the names of the sub components of
-#'  the directory tree. See \code{Details}.
+#'  the directory tree. Generally shouldn't be changed.
 #'
 #' @return All \code{create_} functions return \code{NULL}.
 #'
 #' @examples
 #'   create_dir()
-#'   create_dir(base = "base_folder", main = "main_folder")
-#'   create_base()
+#'   create_dir(main = "./main_folder")
+#'   create_dir(main = ".\\main_folder")
 #'   create_main()
 #'   create_subs()
 #'
 #' @export
 #'
-create_dir <- function(base = ".", main = "", subs = subdirs(), 
-                       quiet = FALSE){
-  create_base(base, quiet)
-  create_main(base, main, quiet)
-  create_subs(base, main, subs, quiet)
+create_dir <- function(main = ".", subs = subdirs(), quiet = FALSE){
+  create_main(main, quiet)
+  create_subs(main, subs, quiet)
 }
+
+
 
 #' @rdname create_dir
 #'
 #' @export
 #'
-create_base <- function(base = ".", quiet = FALSE){
-  basep <- base_path(base)
-  create(basep, "base", quiet)
-}
-
-#' @rdname create_dir
-#'
-#' @export
-#'
-create_main <- function(base = ".", main = "", quiet = FALSE){
-  basep <- base_path(base)
-  mainp <- main_path(base, main)
-  verify(basep, "base")
+create_main <- function(main = ".", quiet = FALSE){
+  mainp <- main_path(main)
   create(mainp, "main", quiet)
 }
 
@@ -70,12 +58,10 @@ create_main <- function(base = ".", main = "", quiet = FALSE){
 #'
 #' @export
 #'
-create_subs <- function(base = ".", main = "", subs = subdirs(), 
-                        quiet = FALSE){
-  basep <- base_path(base)
-  mainp <- main_path(base, main)
-  subsp <- sub_paths(base, main, subs)
-  verify(c(basep, mainp), c("base", "main"))
+create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE){
+  mainp <- main_path(main)
+  subsp <- sub_paths(main, subs)
+  verify(mainp, "main")
   create(subsp, basename(subsp), quiet)
 }
 
@@ -94,8 +80,8 @@ create_subs <- function(base = ".", main = "", subs = subdirs(),
 #'  \code{NULL}.
 #'
 #' @examples
-#'  base <- base_path()
-#'  verify(base, "base")
+#'  main <- main_path()
+#'  verify(main, "main")
 #'
 #' @export
 #'
@@ -127,8 +113,8 @@ verify <- function(path = NULL, level = NULL){
 #' @return \code{NULL}.
 #'
 #' @examples
-#'  base <- base_path()
-#'  create(base, "base")
+#'  main <- main_path()
+#'  create(main, "main")
 #'
 #' @export
 #'

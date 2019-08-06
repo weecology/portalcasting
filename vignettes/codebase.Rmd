@@ -35,31 +35,29 @@ devtools::install_github("weecology/portalcasting")
 
 ## Directory Structure
 
-The package uses a directory tree with three levels to organize the project:
+The package uses a directory tree with two levels to organize the project:
 
-* `base`: folder where the project folder will be housed
 * `main`: project folder encompassing all subfolders
 * `subs`: specific subfolders that organize the project files
  
-In particular, the tree is
+And is organized as
 
 ```
-base
-│   
-└──main
-│   │
-│   └──predictions
-│   │   <previous and current predictions>
-│   └──models
-│   │   <model scripts>
-│   └──data
-│   │   <data used for a specific run of models>
-│   └──raw
-│   │   <stable version of raw data used to populate the data folder>
-│   └──tmp
-│   │   <temporary files>
+main
+│
+└──predictions
+│   <previous and current predictions>
+└──models
+│   <model scripts>
+└──data
+│   <data used for a specific run of models>
+└──raw
+│   <stable version of raw data used to populate the data folder>
+└──tmp
+│   <temporary files>
 ```
 
+(**Note**: Previous versions of **portalcasting** had an explicitly named `base` level more basal than `main`, but that has been removed as of v0.9.0. To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "./project_folder"`.)
 
 ## Instantiating a Directory
 
@@ -67,7 +65,7 @@ Setting up a fully functional directory for a production or sandbox pipeline con
 
 ### Creating 
 
-The directory is established using `create_dir()`, which takes `base`, `main`, and `subs` as arguments, and in sequence creates each of the levels' (`base`, `main`, `sub`) folders if they do not already exist. This occurs through calls to `create_base()`, `create_main()`, and `create_subs()`. 
+The directory is established using `create_dir()`, which takes `main` and `subs` as arguments and in sequence creates each of the levels' folders if they do not already exist. This occurs through calls to `create_main()` and `create_subs()`. A typical user is likely to want to change the `main` input (to locate the forecasting directory where they would like it), but general users should not need to alter the input to `subs`.
 
 ### Filling 
 

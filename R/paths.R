@@ -34,12 +34,8 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #' @title Determine the path for a specific level of a forecasting directory
 #'
 #' @description Produce paths for a forecasting directory. \cr \cr
-#'   \code{base_path} returns the path for the \code{base} folder. \cr \cr
 #'   \code{main_path} returns the path for the \code{main} folder. \cr \cr
 #'   \code{sub_paths} returns the path for the \code{subs} folders. \cr \cr
-#'
-#' @param base \code{character} value of the name of the base component of
-#'  the directory tree. 
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -53,52 +49,38 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #'
 #' @return \code{character} value normalized paths 
 #'   (see \code{\link{normalizePath}}) . \cr \cr
-#'   \code{base_path} normalized path of the \code{base} folder. \cr \cr
 #'   \code{main_path} normalized path of the \code{main} folder. \cr \cr
 #'   \code{subs_paths} normalized paths of the \code{subs} folders. \cr \cr
 #' 
 #' @examples
 #'  create_dir()
-#'  base_path()
 #'  main_path()
 #'  sub_paths()
 #'  sub_paths(specific_subs = "models")
 #'
 #' @export
 #'
-base_path <- function(base = "."){
-  normalizePath(file.path(base), mustWork = FALSE)
+main_path <- function(main = "."){
+  normalizePath(file.path(main), mustWork = FALSE)
 }
 
-#' @rdname base_path
+#' @rdname main_path
 #'
 #' @export
 #'
-main_path <- function(base = ".", main = ""){
-  normalizePath(file.path(base, main), mustWork = FALSE)
-}
-
-#' @rdname base_path
-#'
-#' @export
-#'
-sub_paths <- function(base = ".", main = "", subs = subdirs(), 
-                      specific_subs = NULL){
+sub_paths <- function(main = ".", subs = subdirs(), specific_subs = NULL){
   if (!is.null(specific_subs) && (!all(specific_subs %in% subs))){
     stop("some `specific_subs` not in `subs`")
   }
   if (is.null(specific_subs)){
     specific_subs <- subs
   }
-  normalizePath(file.path(base, main, specific_subs), mustWork = FALSE)
+  normalizePath(file.path(main, specific_subs), mustWork = FALSE)
 }
 
 #' @title Determine the path for one or more models in the model sub directory
 #'
 #' @description Return the normalized path(s) for a specific model or models.
-#'
-#' @param base \code{character} value of the name of the base component of
-#'  the directory tree. 
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -115,14 +97,13 @@ sub_paths <- function(base = ".", main = "", subs = subdirs(),
 #'
 #' @export
 #'
-model_paths <- function(base = ".", main = "", models = NULL, 
-                        extension = ".R"){
+model_paths <- function(main = ".", models = NULL, extension = ".R"){
   if (is.null(models)){
     NULL
   } else{
     sub <- "models"
     mod <- paste0(models, extension)
-    normalizePath(file.path(base, main, sub, mod), mustWork = FALSE)
+    normalizePath(file.path(main, sub, mod), mustWork = FALSE)
   }
 }
 
@@ -130,9 +111,6 @@ model_paths <- function(base = ".", main = "", models = NULL,
 #'
 #' @description Return the normalized path for a specific file or files 
 #'   within the directory. 
-#'
-#' @param base \code{character} value of the name of the base component of
-#'  the directory tree. 
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -148,10 +126,10 @@ model_paths <- function(base = ".", main = "", models = NULL,
 #'
 #' @export
 #'
-file_paths <- function(base = ".", main = "", local_paths = NULL){
+file_paths <- function(main = ".", local_paths = NULL){
   if (is.null(local_paths)){
     NULL
   } else{
-    normalizePath(file.path(base, main, local_paths), mustWork = FALSE)
+    normalizePath(file.path(main, local_paths), mustWork = FALSE)
   }
 }

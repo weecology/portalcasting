@@ -1,9 +1,9 @@
 context("Test downloading functions")
 
-create_dir(main = "testing")
+create_dir(main = "./testing")
 
 test_that("download", {
-  expect_message(download("PortalData", "zenodo", main = "testing",
+  expect_message(download("PortalData", "zenodo", main = "./testing",
                           concept_rec_id = "1215988"))
 })
 
@@ -30,4 +30,4 @@ test_that("record_name_from_url", {
   expect_equal(record_name_from_url(source_url), "PortalData")
 })
 
-unlink(main_path(main = "testing"), recursive = TRUE, force = TRUE)
+unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)

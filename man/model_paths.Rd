@@ -4,12 +4,9 @@
 \alias{model_paths}
 \title{Determine the path for one or more models in the model sub directory}
 \usage{
-model_paths(base = ".", main = "", models = NULL, extension = ".R")
+model_paths(main = ".", models = NULL, extension = ".R")
 }
 \arguments{
-\item{base}{\code{character} value of the name of the base component of
-the directory tree.}
-
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 

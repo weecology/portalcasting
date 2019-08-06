@@ -12,9 +12,6 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param base \code{character} value of the name of the base component of
-#'  the directory tree. See \code{Details}.
-#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. See \code{Details}.
 #'
@@ -32,17 +29,17 @@
 #'
 #' @export
 #'
-fill_dir <- function(downloads = NULL, base = NULL,
-                     main = NULL, quiet = FALSE, cleanup = TRUE){
-  fill_raw(downloads, base, main, quiet, cleanup)
+fill_dir <- function(downloads = NULL, 
+                     main = ".", quiet = FALSE, cleanup = TRUE){
+  fill_raw(downloads, main, quiet, cleanup)
 }
 
 #' @rdname fill_dir
 #'
 #' @export
 #'
-fill_raw <- function(downloads = NULL,  base = NULL,
-                     main = NULL, quiet = FALSE, cleanup = TRUE){
+fill_raw <- function(downloads = NULL,
+                     main = ".", quiet = FALSE, cleanup = TRUE){
   if(!is.null(downloads)){
     if(list_depth(downloads) == 1){
       downloads <- list(downloads)
@@ -51,7 +48,6 @@ fill_raw <- function(downloads = NULL,  base = NULL,
     ndl <- length(downloads)
     for(i in 1:ndl){
       downloads[[i]]$cleanup <- ifnull(downloads[[i]]$cleanup, cleanup)
-      downloads[[i]]$base <- ifnull(downloads[[i]]$base, base)
       downloads[[i]]$main <- ifnull(downloads[[i]]$main, main)
       downloads[[i]]$quiet <- ifnull(downloads[[i]]$quiet, quiet)
       do.call(download, downloads[[i]])

@@ -11,13 +11,11 @@
 \usage{
 download(name = NULL, type = NULL, url = NULL,
   concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
-  base = ".", main = "", quiet = FALSE, cleanup = TRUE,
-  NULLname = FALSE)
+  main = ".", quiet = FALSE, cleanup = TRUE, NULLname = FALSE)
 
-unzip_download(name = NULL, zip_destin, base = ".", main = "",
-  cleanup = TRUE)
+unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE)
 
-unzip_destins(name = NULL, zip_destin, base = ".", main = "")
+unzip_destins(name = NULL, zip_destin, main = ".")
 
 download_message(name = NULL, type = NULL, url = NULL,
   rec_version = NULL, quiet = FALSE)
@@ -25,7 +23,7 @@ download_message(name = NULL, type = NULL, url = NULL,
 download_url(type = NULL, url = NULL, concept_rec_id = NULL,
   rec_version = "latest", rec_id = NULL)
 
-download_destin(name = NULL, source_url, base = ".", main = "")
+download_destin(name = NULL, source_url, main = ".")
 }
 \arguments{
 \item{name}{\code{character} value of the component's name, used to create
@@ -54,9 +52,6 @@ Used when \code{type = "zenodo"}.}
 
 \item{rec_id}{Optional input record identifier, a \code{character} value
 corresponding to the Zenodo record. Used when \code{type = "zenodo"}.}
-
-\item{base}{\code{character} value of the name of the base component of
-the directory tree. See \code{Details}.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree. See \code{Details}.}

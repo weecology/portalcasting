@@ -24,5 +24,8 @@ PortalPredictions <- list(downloads = downloads)
 # 
 
 # important notes for news
-#  got rid of most of the unnecessary lists
+#  directory tree structure simplified
 #   dirtree is no more, even tho the structure is still there
+#   base is no more, if you want to make that structure use main = "./name"
+#  download capacity generalized
+#   any zenodo record or concept; any ready-to-go url; (will add any github)

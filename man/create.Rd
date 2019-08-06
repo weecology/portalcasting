@@ -24,7 +24,7 @@ If folders (specified by \code{path} and named by
  indicated by \code{quiet}.
 }
 \examples{
- base <- base_path()
- create(base, "base")
+ main <- main_path()
+ create(main, "main")
 
 }

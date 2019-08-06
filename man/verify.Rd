@@ -22,7 +22,7 @@ If any of the folders (specified by \code{path} and named by
  \code{level}) do not exist, the operation throws an error.
 }
 \examples{
- base <- base_path()
- verify(base, "base")
+ main <- main_path()
+ verify(main, "main")
 
 }

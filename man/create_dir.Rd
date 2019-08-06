@@ -2,28 +2,25 @@
 % Please edit documentation in R/create_dir.R
 \name{create_dir}
 \alias{create_dir}
-\alias{create_base}
 \alias{create_main}
 \alias{create_subs}
 \title{Create the structure of a forecasting directory}
 \usage{
-create_dir(base = ".", main = "", subs = subdirs(), quiet = FALSE)
+create_dir(main = ".", subs = subdirs(), quiet = FALSE)
 
-create_base(base = ".", quiet = FALSE)
+create_main(main = ".", quiet = FALSE)
 
-create_main(base = ".", main = "", quiet = FALSE)
-
-create_subs(base = ".", main = "", subs = subdirs(), quiet = FALSE)
+create_subs(main = ".", subs = subdirs(), quiet = FALSE)
 }
 \arguments{
-\item{base}{\code{character} value of the name of the base component of
-the directory tree. See \code{Details}.}
-
 \item{main}{\code{character} value of the name of the main component of
-the directory tree. See \code{Details}.}
+the directory tree. Default value (\code{"."}) puts the forecasting
+directory in the present locations. Nesting the forecasting directory
+in a folder can be done by simply adding to the \code{main} input (see
+\code{Examples}).}
 
 \item{subs}{\code{character} vector of the names of the sub components of
-the directory tree. See \code{Details}.}
+the directory tree. Generally shouldn't be changed.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
@@ -38,21 +35,20 @@ This suite of functions creates the necessary folder structure
  \code{\link{verify}}) and the relevant folders at that level are created 
  if not present (using \code{\link{create}}). \cr \cr
  \code{create_dir} creates a full directory or any missing parts. \cr \cr
- \code{create_base} creates the base folder of the directory.\cr \cr
  \code{create_main} creates the main folder of the directory.\cr \cr
  \code{create_subs} creates the sub folders of the directory.
 }
 \details{
-Folder paths are created internally using \code{\link{base_path}}, 
- \code{\link{main_path}}, and \code{\link{sub_paths}}, such that the user 
+Folder paths are created internally using  
+ \code{\link{main_path}} and \code{\link{sub_paths}}, such that the user 
  only needs to input folder locations as names within the respective level 
  of the directory tree structure, not as pre-formatted file paths. See 
  \code{Examples}.
 }
 \examples{
   create_dir()
-  create_dir(base = "base_folder", main = "main_folder")
-  create_base()
+  create_dir(main = "./main_folder")
+  create_dir(main = ".\\\\main_folder")
   create_main()
   create_subs()
 

@@ -8,10 +8,6 @@ test_that("subdirs", {
   expect_null(subdirs(NULL, NULL))
 })
 
-test_that("base_path", {
-  expect_is(base_path(), "character")
-  expect_equal(length(base_path()), 1)
-})
 
 test_that("main_path", {
   expect_is(main_path(), "character")

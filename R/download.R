@@ -45,9 +45,6 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param base \code{character} value of the name of the base component of
-#'  the directory tree. See \code{Details}.
-#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. See \code{Details}.
 #'
@@ -79,19 +76,19 @@
 #'
 download <- function(name = NULL, type = NULL, url = NULL, 
                      concept_rec_id = NULL, rec_version = "latest", 
-                     rec_id = NULL, base = ".", 
-                     main = "", quiet = FALSE, cleanup = TRUE, 
+                     rec_id = NULL, 
+                     main = ".", quiet = FALSE, cleanup = TRUE, 
                      NULLname = FALSE){
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
   name <- ifnull(name, record_name_from_url(source_url, NULLname))
-  destin <- download_destin(name, source_url, base, main)
+  destin <- download_destin(name, source_url, main)
   resp <- GET(source_url)
   stop_for_status(resp)
   download_message(name, type, source_url, rec_version, quiet)
   download.file(source_url, destin, quiet = quiet, mode = "wb")
   extension <- file_ext(source_url)
   if(extension == "zip"){
-    unzip_download(name, destin, base, main, cleanup)
+    unzip_download(name, destin, main, cleanup)
   } 
 }
 
@@ -101,9 +98,9 @@ download <- function(name = NULL, type = NULL, url = NULL,
 #'
 #' @export
 #'
-unzip_download <- function(name = NULL, zip_destin, base = ".", main = "", 
+unzip_download <- function(name = NULL, zip_destin, main = ".", 
                            cleanup = TRUE){
-  unzip_destins <- unzip_destins(name, zip_destin, base, main)
+  unzip_destins <- unzip_destins(name, zip_destin, main)
   unzip(zip_destin, exdir = unzip_destins$initial)
   file.rename(unzip_destins$with_archive, unzip_destins$final)
   if(cleanup){
@@ -116,14 +113,14 @@ unzip_download <- function(name = NULL, zip_destin, base = ".", main = "",
 #'
 #' @export
 #'
-unzip_destins <- function(name = NULL, zip_destin, base = ".", main = ""){
-  folder <- sub_paths(base, main, "tmp")
+unzip_destins <- function(name = NULL, zip_destin, main = "."){
+  folder <- sub_paths(main, "tmp")
   full <- paste0(folder, "\\", name)
   initial <- normalizePath(full, mustWork = FALSE) 
   add_lev <- unzip(zip_destin, list = TRUE)$Name[1]
   full <- paste0(initial, "\\", add_lev)
   with_archive <- normalizePath(full, mustWork = FALSE)
-  folder <- sub_paths(base, main, subs = subdirs(), "raw")
+  folder <- sub_paths(main, subs = subdirs(), "raw")
   full <- paste0(folder, "\\", name)
   final <- normalizePath(full, mustWork = FALSE)
   list(initial = initial, with_archive = with_archive, final = final)
@@ -166,12 +163,12 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
 #'
 #' @export
 #'
-download_destin <- function(name = NULL, source_url, base = ".", main = ""){
+download_destin <- function(name = NULL, source_url, main = "."){
   extension <- file_ext(source_url)
   if(extension == "zip"){
-    folder <- sub_paths(base, main, subdirs(), "tmp")
+    folder <- sub_paths(main, subdirs(), "tmp")
   } else{
-    folder <- sub_paths(base, main, subdirs(), "raw")
+    folder <- sub_paths(main, subdirs(), "raw")
   }
   extension2 <- NULL
   if(!is.null(extension)){
