@@ -98,13 +98,10 @@ sub_paths <- function(main = ".", subs = subdirs(), specific_subs = NULL){
 #' @export
 #'
 model_paths <- function(main = ".", models = NULL, extension = ".R"){
-  if (is.null(models)){
-    NULL
-  } else{
-    sub <- "models"
-    mod <- paste0(models, extension)
-    normalizePath(file.path(main, sub, mod), mustWork = FALSE)
-  }
+  return_if_null(models)
+  sub <- "models"
+  mod <- paste0(models, extension)
+  normalizePath(file.path(main, sub, mod), mustWork = FALSE)
 }
 
 #' @title Determine the path for a file or files in the forecasting directory
@@ -127,9 +124,6 @@ model_paths <- function(main = ".", models = NULL, extension = ".R"){
 #' @export
 #'
 file_paths <- function(main = ".", local_paths = NULL){
-  if (is.null(local_paths)){
-    NULL
-  } else{
-    normalizePath(file.path(main, local_paths), mustWork = FALSE)
-  }
+  return_if_null(local_paths)
+  normalizePath(file.path(main, local_paths), mustWork = FALSE)
 }

@@ -54,7 +54,7 @@ Used when \code{type = "zenodo"}.}
 corresponding to the Zenodo record. Used when \code{type = "zenodo"}.}
 
 \item{main}{\code{character} value of the name of the main component of
-the directory tree. See \code{Details}.}
+the directory tree.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
@@ -74,7 +74,7 @@ should occur}
 \description{
 This suite of functions manages the downloading and (if 
  needed) unzipping of raw files associated with the forecasting directory.
- \code{download_raw} downloads a file from a from a website into the 
+ \code{download} downloads a file from a from a website into the 
  directory, unzipping and cleaning up as needed. \cr \cr
  \code{download_message} creates a customized download message. \cr \cr
  \code{download_url} prepares the URL from the inputs, depending on the

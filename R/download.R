@@ -2,7 +2,7 @@
 #'
 #' @description This suite of functions manages the downloading and (if 
 #'  needed) unzipping of raw files associated with the forecasting directory.
-#'  \code{download_raw} downloads a file from a from a website into the 
+#'  \code{download} downloads a file from a from a website into the 
 #'  directory, unzipping and cleaning up as needed. \cr \cr
 #'  \code{download_message} creates a customized download message. \cr \cr
 #'  \code{download_url} prepares the URL from the inputs, depending on the
@@ -46,7 +46,7 @@
 #'  quieted.
 #'
 #' @param main \code{character} value of the name of the main component of
-#'  the directory tree. See \code{Details}.
+#'  the directory tree. 
 #'
 #' @param NULLname \code{logical} indicator if \code{name} should be kept as
 #'  \code{NULL}.
@@ -283,4 +283,45 @@ record_name_from_url <- function(url, NULLname = FALSE){
     fname2 <- file_path_sans_ext(fname)
     strsplit(fname2, "-")[[1]][1]
   }
+}
+
+#' @title Create a downloads list for zenodo downloads
+#'
+#' @description Create a downloads \code{list} for downloads from Zenodo.
+#'
+#' @param concept_rec_id Concept record identifier, a \code{character} value
+#'  corresponding to the Zenodo concept. 
+#'
+#' @param rec_version \code{character} value of the version number or 
+#'  \code{"latest"} for the data to be download. 
+#'
+#' @param rec_id Optional input record identifier, a \code{character} value
+#'  corresponding to the Zenodo record. 
+#'
+#' @return \code{list} of \code{list}s of arguments to \code{\link{download}}.
+#'
+#' @examples
+#'  zenodo_downloads()
+#'
+#' @export
+#'
+zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
+                             rec_id = NULL){
+  return_if_null(c(concept_rec_id, rec_id))
+  ndls <- max(c(length(concept_rec_id), length(rec_id)))
+  out <- vector("list", length = ndls)
+  if(!is.null(concept_rec_id)){
+   if(length(rec_version) == 1){
+     rec_version <- rep(rec_version, ndls)
+   }
+   for(i in 1:ndls){
+     out[[i]] <- list(type = "zenodo", concept_rec_id = concept_rec_id[i],
+                      rec_version = rec_version[i])
+   }
+  } else{
+   for(i in 1:ndls){
+     out[[i]] <- list(type = "zenodo", rec_id = rec_id[i])
+   }
+  }
+  out
 }

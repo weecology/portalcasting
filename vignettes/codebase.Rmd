@@ -40,7 +40,7 @@ The package uses a directory tree with two levels to organize the project:
 * `main`: project folder encompassing all subfolders
 * `subs`: specific subfolders that organize the project files
  
-And is organized as
+structured as
 
 ```
 main
@@ -52,16 +52,16 @@ main
 └──data
 │   <data used for a specific run of models>
 └──raw
-│   <stable version of raw data used to populate the data folder>
+│   <stable version of raw components used to populate other folders>
 └──tmp
 │   <temporary files>
 ```
 
-(**Note**: Previous versions of **portalcasting** had an explicitly named `base` level more basal than `main`, but that has been removed as of v0.9.0. To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "./project_folder"`.)
+(**Note**: Previous versions of **portalcasting** had an explicitly named `base` level more basal than `main`, but that has been removed as of v0.9.0. To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "~/project_folder"`.)
 
 ## Instantiating a Directory
 
-Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders).
+Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). These steps can be executed separately or in combination via a general `setup_dir()` function. These functions are general and flexible, allowing for customization through a variety of arguments. 
 
 ### Creating 
 
@@ -69,6 +69,8 @@ The directory is established using `create_dir()`, which takes `main` and `subs`
 
 ### Filling 
 
-The directory is filled using a series of subdirectory-specific functions that are combined in the overall `fill_dir()` function. 
+The directory is filled (loaded with files for default forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir()` function:
 
-`fill_raw` downloads each of the raw data sets 
+* `fill_raw()` downloads each of the raw components for the directory, such as the source data and previous forecasts.
+
+

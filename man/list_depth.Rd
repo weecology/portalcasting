@@ -15,8 +15,13 @@ list_depth(x)
 \description{
 Evaluate an input for the depth of its nesting.
 }
+\details{
+If \code{x = list()}, then technically the input value is a list, 
+ but is empty (of length \code{0}), so depth is returned as \code{0}.
+}
 \examples{
  list_depth("a")
+ list_depth(list())
  list_depth(list("a"))
  list_depth(list(list("a")))
 

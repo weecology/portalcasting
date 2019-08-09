@@ -1,15 +1,14 @@
-# stripping down the package to build it back up in a more generalized
-#  fashion
-# the key here will then be that the data loading capacity of R will allow us 
-#  to retain a list that has the set up for any specific forecasting pipeline
-#  like portal
-# we'll want some utilities to make constructing the list easier
+# working on the fill functions
+# on fill_models
 
 
-downloads <- list(PD = list(type = "zenodo", concept_rec_id = "1215988"),
-                  PP = list(type = "zenodo", concept_rec_id = "833438"))
+# work on the model functions in prepare_models
 
-PortalPredictions <- list(downloads = downloads)
+users adding models should permanently add code to model_script_controls()
+rather than write their own functions
+
+
+
 
 # we also might want to create a simple repo for testing!
 # basically, like the PD and PP, but just for tests
@@ -29,3 +28,5 @@ PortalPredictions <- list(downloads = downloads)
 #   base is no more, if you want to make that structure use main = "./name"
 #  download capacity generalized
 #   any zenodo record or concept; any ready-to-go url; (will add any github)
+#  PortalData has been removed as a sub and replaced with "raw", which 
+#   includes all unzipped raw downloads (portal data and portal predictions)

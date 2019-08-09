@@ -1,6 +1,40 @@
+#' @title If a value is NULL, trigger the parent function's return
+#'
+#' @description If the focal input is \code{NULL}, return \code{value} from
+#'  the parent function. Should only be used within a function.
+#'
+#' @param x Focal input.
+#'
+#' @param value If \code{x} is \code{NULL}, \code{\link{return}} this input
+#'  from the parent function. 
+#'
+#' @return If \code{x} is not \code{NULL}, \code{NULL} is returned. If 
+#'  \code{x} is \code{NULL}, the result of \code{\link{return}} with 
+#'  \code{value} as its input evaluated within the parent function's 
+#'  environment is returned.
+#' 
+#' @examples
+#'  ff <- function(x = 1, null_return = "hello"){
+#'    return_if_null(x, null_return)
+#'    x
+#'  }
+#'  ff()
+#'  ff(NULL)
+#'
+#' @export 
+#'
+return_if_null <- function(x, value = NULL){
+  if(is.null(x)){
+    do.call(return, list(value), envir = sys.frame(-1))
+  } 
+}
+
 #' @title Determine the depth of a list
 #'
 #' @description Evaluate an input for the depth of its nesting. 
+#'
+#' @details If \code{x = list()}, then technically the input value is a list, 
+#'  but is empty (of length \code{0}), so depth is returned as \code{0}.
 #'
 #' @param x Focal input.
 #'
@@ -8,14 +42,22 @@
 #' 
 #' @examples
 #'  list_depth("a")
+#'  list_depth(list())
 #'  list_depth(list("a"))
 #'  list_depth(list(list("a")))
 #'
 #' @export 
 #'
-
 list_depth <- function(x){
-  ifelse(is.list(x), 1L + max(sapply(x, list_depth)), 0L)
+  xx <- match.call()
+  xxx <- deparse(xx[[2]])
+  if(xxx == "list()"){
+    0L
+  } else if (is.list(x)){
+    1L + max(sapply(x, list_depth))
+  } else {
+    0L
+  }
 }
 
 #' @title Replace if NULL

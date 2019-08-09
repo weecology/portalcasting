@@ -2,25 +2,56 @@
 % Please edit documentation in R/fill_dir.R
 \name{fill_dir}
 \alias{fill_dir}
+\alias{fill_models}
+\alias{fill_predictions}
 \alias{fill_raw}
 \title{Fill a forecasting directory with basic components.}
 \usage{
-fill_dir(downloads = NULL, main = ".", quiet = FALSE,
-  cleanup = TRUE)
+fill_dir(models = prefab_models(), model_controls = NULL,
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  raw_path_predictions = "portalPredictions/predictions", main = ".",
+  quiet = FALSE, verbose = FALSE, overwrite = TRUE, cleanup = TRUE)
 
-fill_raw(downloads = NULL, main = ".", quiet = FALSE,
-  cleanup = TRUE)
+fill_models(models = prefab_models(), main = ".", quiet = FALSE,
+  model_controls = NULL, overwrite = TRUE)
+
+fill_predictions(raw_path_predictions = NULL, main = ".",
+  quiet = FALSE, verbose = FALSE, overwrite = TRUE)
+
+fill_raw(downloads = zenodo_downloads(c("1215988", "833438")),
+  main = ".", quiet = FALSE, cleanup = TRUE)
 }
 \arguments{
+\item{models}{\code{character} vector of the names of models to include in
+the pipeline. Defaults to \code{\link{prefab_models}}, which retrieves the 
+prefab model names.}
+
+\item{model_controls}{Script-writing controls for models not in the prefab
+set (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")}).
+See \code{\link{model_script_controls}} for details.}
+
 \item{downloads}{\code{list} or \code{list} of \code{list}s containing
 inputs to \code{\link{download}} for each download to be put into the 
 raw subdirectory.}
 
+\item{raw_path_predictions}{\code{character} value indicating the 
+folder path within the \code{raw} subdirectory but above the files. For
+example, the standard portalcasting directory downloads the historic 
+prediction files into \code{"raw\portalPredictions\predictions"}, so
+\code{raw_location_predictions = "portalPredictions\predictions"} (as
+\code{"raw/"} is implied).}
+
 \item{main}{\code{character} value of the name of the main component of
-the directory tree. See \code{Details}.}
+the directory tree.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out
+all of the files and whether they were moved or not.}
+
+\item{overwrite}{\code{logical} indicator of whether or not any existing
+predictions files should be overwritten with the filling.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
@@ -37,9 +68,11 @@ Arguments input directly here take precedence over those in the
 }
 \examples{
  \donttest{
-  data(PortalPredictions)
-  create_dir()
-  fill_raw(PortalPredictions$downloads)
+ create_dir()
+ fill_dir()
+ fill_raw()
+ fill_predictions()
+ fill_models()
  }
 
 }
