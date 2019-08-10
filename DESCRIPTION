@@ -27,8 +27,11 @@ Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
+  dplyr,
   httr,
-  tools,
+  lubridate,
+  portalr,
+  tools
 Suggests:
   knitr,
   pkgdown,

@@ -22,14 +22,23 @@
 #'  all of the files and whether they were moved or not.
 #' 
 #' @param raw_path_predictions \code{character} value indicating the 
-#'  folder path within the \code{raw} subdirectory but above the files. For
-#'  example, the standard portalcasting directory downloads the historic 
+#'  folder path to the predictions within the \code{raw} subdirectory but 
+#'  above the files. A standard portalcasting directory downloads the historic 
 #'  prediction files into \code{"raw\portalPredictions\predictions"}, so
 #'  \code{raw_location_predictions = "portalPredictions\predictions"} (as
 #'  \code{"raw/"} is implied). 
+#' 
+#' @param raw_path_data \code{character} value indicating the folder path
+#'  to the data within the \code{raw} subdirectory but above the files. A 
+#'  standard portalcasting directory downloads the raw data files into 
+#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
+#'  \code{"raw/"} is implied). 
+#'
+#' @param cast_date \code{Date} from which future is defined, typically 
+#'   today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @param overwrite \code{logical} indicator of whether or not any existing
-#'  predictions files should be overwritten with the filling.
+#'  files should be overwritten with the filling.
 #'
 #' @param models \code{character} vector of the names of models to include in
 #'  the pipeline. Defaults to \code{\link{prefab_models}}, which retrieves the 
@@ -38,6 +47,15 @@
 #' @param model_controls Script-writing controls for models not in the prefab
 #'  set (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")}).
 #'  See \code{\link{model_script_controls}} for details.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#' 
+#' @param raw_moons_file \code{character} value indicating the path
+#'  to the moons data file within \code{raw_path_data}. A standard 
+#'  portalcasting directory downloads the raw data files into 
+#'  \code{"raw\PortalData"}, so 
+#'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
 #'
 #' @return All \code{fill_} functions return \code{NULL}.
 #'
@@ -48,6 +66,7 @@
 #'  fill_raw()
 #'  fill_predictions()
 #'  fill_models()
+#'  fill_data()
 #'  }
 #'
 #' @export
@@ -55,12 +74,34 @@
 fill_dir <- function(models = prefab_models(), model_controls = NULL,
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      raw_path_predictions = "portalPredictions/predictions",
+                     raw_path_data = "PortalData",
                      main = ".", quiet = FALSE, verbose = FALSE, 
                      overwrite = TRUE, cleanup = TRUE){
   fill_raw(downloads, main, quiet, cleanup)
   fill_predictions(raw_path_predictions, main, quiet, verbose, overwrite)
   fill_models(models, main, quiet, model_controls, overwrite)
+  #fill_data(raw_path_data, main, downloads, quiet, overwrite, cleanup)
 }
+
+#' @rdname fill_dir
+#'
+#' @export
+#'
+fill_data <- function(raw_path_data = "PortalData", main = ".", 
+                      downloads = zenodo_downloads("1215988"), 
+                      raw_moons_file = "Rodents/moon_dates.csv",
+                      lead_time = 12, cast_date = Sys.Date(),
+                      quiet = FALSE, overwrite = TRUE, cleanup = TRUE){
+  raw_data <- verify_raw_data(raw_path_data, main)
+  if(!raw_data){
+    fill_raw(downloads, main, quiet, cleanup)
+  }
+  messageq("Adding data files to data subdirectory", quiet)
+  raw_path <- paste0(raw_path_data, "/", raw_moons_file)
+  moons <- prep_moons(lead_time, cast_date, raw_path, main, quiet, overwrite)
+}
+
+
 
 #' @rdname fill_dir
 #'
@@ -161,3 +202,6 @@ fill_predictions_message <- function(files = NULL, movedTF = NULL,
   }
   c(msg, paste0(n_moved, " predictions files moved, ", n_not_moved, " not"))
 }
+
+
+

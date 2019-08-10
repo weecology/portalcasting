@@ -1,6 +1,10 @@
+#' @importFrom dplyr %>% bind_rows mutate
 #' @importFrom httr content GET stop_for_status
+#' @importFrom lubridate month year
+#' @importFrom portalr get_future_moons
 #' @importFrom tools file_ext file_path_sans_ext
-#' @importFrom utils download.file packageDescription unzip
+#' @importFrom utils download.file packageDescription read.csv unzip
+#'  write.csv
 
 #' @title Functions for Portal Forecasting
 #'
@@ -20,4 +24,11 @@
 #' @keywords package
 #'
 NULL
+
+# To quiet concerns of R CMD check re: variables used in non-standard eval
+if (getRversion() >= "2.15.1"){
+  utils::globalVariables(
+    c(".", "newmoondate")
+  )
+}
 

@@ -325,3 +325,32 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
   }
   out
 }
+
+#' @title Verify that the raw data folder exists 
+#'
+#' @description Check that the raw data folder exists.
+#'
+#' @param raw_path_data \code{character} value indicating the folder path
+#'  to the data within the \code{raw} subdirectory but above the files where
+#'  the raw data \emph{should} exist. For example, a standard portalcasting 
+#'  directory downloads the raw data files into \code{"raw\PortalData"}, 
+#'  so \code{raw_location_data = "PortalData"} (as \code{"raw/"} is implied). 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'
+#' @return \code{logical} indicator of whether or not the raw data folder
+#'  exists.
+#'
+#' @examples
+#'  verify_raw_data()
+#' 
+#' @export
+#'
+verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
+  folder <- sub_paths(main, subs = subdirs(), "raw")
+  full <- paste0(folder, "\\", raw_path_data)
+  file.exists(full)
+}
+
+

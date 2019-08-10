@@ -2,6 +2,7 @@
 % Please edit documentation in R/fill_dir.R
 \name{fill_dir}
 \alias{fill_dir}
+\alias{fill_data}
 \alias{fill_models}
 \alias{fill_predictions}
 \alias{fill_raw}
@@ -9,8 +10,15 @@
 \usage{
 fill_dir(models = prefab_models(), model_controls = NULL,
   downloads = zenodo_downloads(c("1215988", "833438")),
-  raw_path_predictions = "portalPredictions/predictions", main = ".",
-  quiet = FALSE, verbose = FALSE, overwrite = TRUE, cleanup = TRUE)
+  raw_path_predictions = "portalPredictions/predictions",
+  raw_path_data = "PortalData", main = ".", quiet = FALSE,
+  verbose = FALSE, overwrite = TRUE, cleanup = TRUE)
+
+fill_data(raw_path_data = "PortalData", main = ".",
+  downloads = zenodo_downloads("1215988"),
+  raw_moons_file = "Rodents/moon_dates.csv", lead_time = 12,
+  cast_date = Sys.Date(), quiet = FALSE, overwrite = TRUE,
+  cleanup = TRUE)
 
 fill_models(models = prefab_models(), main = ".", quiet = FALSE,
   model_controls = NULL, overwrite = TRUE)
@@ -35,10 +43,16 @@ inputs to \code{\link{download}} for each download to be put into the
 raw subdirectory.}
 
 \item{raw_path_predictions}{\code{character} value indicating the 
-folder path within the \code{raw} subdirectory but above the files. For
-example, the standard portalcasting directory downloads the historic 
+folder path to the predictions within the \code{raw} subdirectory but 
+above the files. A standard portalcasting directory downloads the historic 
 prediction files into \code{"raw\portalPredictions\predictions"}, so
 \code{raw_location_predictions = "portalPredictions\predictions"} (as
+\code{"raw/"} is implied).}
+
+\item{raw_path_data}{\code{character} value indicating the folder path
+to the data within the \code{raw} subdirectory but above the files. A 
+standard portalcasting directory downloads the raw data files into 
+\code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 \code{"raw/"} is implied).}
 
 \item{main}{\code{character} value of the name of the main component of
@@ -51,10 +65,22 @@ quieted.}
 all of the files and whether they were moved or not.}
 
 \item{overwrite}{\code{logical} indicator of whether or not any existing
-predictions files should be overwritten with the filling.}
+files should be overwritten with the filling.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
+
+\item{raw_moons_file}{\code{character} value indicating the path
+to the moons data file within \code{raw_path_data}. A standard 
+portalcasting directory downloads the raw data files into 
+\code{"raw\PortalData"}, so 
+\code{raw_moons_file = "Rodents/moon_dates.csv"}.}
+
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
+number of timesteps forward a cast will cover.}
+
+\item{cast_date}{\code{Date} from which future is defined, typically 
+today's date (set using \code{\link{Sys.Date}}).}
 }
 \value{
 All \code{fill_} functions return \code{NULL}.
@@ -73,6 +99,7 @@ Arguments input directly here take precedence over those in the
  fill_raw()
  fill_predictions()
  fill_models()
+ fill_data()
  }
 
 }
