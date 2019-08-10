@@ -24,6 +24,10 @@ the directory tree.}
 Check that the raw data folder exists.
 }
 \examples{
- verify_raw_data()
+ \donttest{
+  create_dir()
+  fill_raw()
+  verify_raw_data()
+ }
 
 }

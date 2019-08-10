@@ -24,7 +24,9 @@ If folders (specified by \code{path} and named by
  indicated by \code{quiet}.
 }
 \examples{
- main <- main_path()
- create(main, "main")
+ \donttest{
+  main <- main_path()
+  create(main, "main")
+ }
 
 }

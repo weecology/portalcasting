@@ -30,11 +30,13 @@
 #' @return All \code{create_} functions return \code{NULL}.
 #'
 #' @examples
+#'  \donttest{
 #'   create_dir()
 #'   create_dir(main = "./main_folder")
 #'   create_dir(main = ".\\main_folder")
 #'   create_main()
 #'   create_subs()
+#'  }
 #'
 #' @export
 #'
@@ -80,8 +82,11 @@ create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE){
 #'  \code{NULL}.
 #'
 #' @examples
-#'  main <- main_path()
-#'  verify(main, "main")
+#'  \donttest{
+#'   create_dir()
+#'   main <- main_path()
+#'   verify(main, "main")
+#'  }
 #'
 #' @export
 #'
@@ -113,8 +118,10 @@ verify <- function(path = NULL, level = NULL){
 #' @return \code{NULL}.
 #'
 #' @examples
-#'  main <- main_path()
-#'  create(main, "main")
+#'  \donttest{
+#'   main <- main_path()
+#'   create(main, "main")
+#'  }
 #'
 #' @export
 #'

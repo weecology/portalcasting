@@ -16,6 +16,9 @@
 #'
 #' @return \code{character} vector of subdirectory names.
 #'
+#' @examples
+#'  subdirs()
+#'
 #' @export
 #'
 subdirs <- function(subs_names = NULL, subs_type = "prefab"){
@@ -53,10 +56,12 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #'   \code{subs_paths} normalized paths of the \code{subs} folders. \cr \cr
 #' 
 #' @examples
-#'  create_dir()
-#'  main_path()
-#'  sub_paths()
-#'  sub_paths(specific_subs = "models")
+#'  \donttest{
+#'   create_dir()
+#'   main_path()
+#'   sub_paths()
+#'   sub_paths(specific_subs = "models")
+#'  }
 #'
 #' @export
 #'

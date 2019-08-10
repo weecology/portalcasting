@@ -83,15 +83,15 @@ Sometimes the raw moon data table is not fully up-to-date. Because
   \cr \cr
 }
 \examples{
-\donttest{
- create_dir()
- fill_raw()
- prep_moons()
- fpath <- file_paths(".", "raw/PortalData/Rodents/moon_dates.csv")
- moons <- read.csv(fpath, stringsAsFactors = FALSE)
- moons <- add_future_moons(moons)
- moons <- add_past_moons_to_raw(moons)
- format_moons(moons)
-}
+ \donttest{
+  create_dir()
+  fill_raw()
+  prep_moons()
+  fpath <- file_paths(".", "raw/PortalData/Rodents/moon_dates.csv")
+  moons <- read.csv(fpath, stringsAsFactors = FALSE)
+  moons <- add_future_moons(moons)
+  moons <- add_past_moons_to_raw(moons)
+  format_moons(moons)
+ }
 
 }

@@ -46,10 +46,12 @@ Folder paths are created internally using
  \code{Examples}.
 }
 \examples{
+ \donttest{
   create_dir()
   create_dir(main = "./main_folder")
   create_dir(main = ".\\\\main_folder")
   create_main()
   create_subs()
+ }
 
 }

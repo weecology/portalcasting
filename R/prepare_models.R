@@ -184,9 +184,11 @@ wEnsemble_models <- function(){
 #'  to be housed in the model directory
 #'
 #' @examples
-#'  create_dir()
-#'  write_model()
-#'  model_template()
+#'  \donttest{
+#'   create_dir()
+#'   write_model()
+#'   model_template()
+#'  }
 #'
 #' @export
 #'

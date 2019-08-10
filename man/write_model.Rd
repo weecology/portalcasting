@@ -42,8 +42,10 @@ script should be updated.}
   out by \code{write_model}. \cr \cr
 }
 \examples{
- create_dir()
- write_model()
- model_template()
+ \donttest{
+  create_dir()
+  write_model()
+  model_template()
+ }
 
 }

@@ -344,8 +344,12 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
 #'  exists.
 #'
 #' @examples
-#'  verify_raw_data()
-#' 
+#'  \donttest{
+#'   create_dir()
+#'   fill_raw()
+#'   verify_raw_data()
+#'  }
+#'
 #' @export
 #'
 verify_raw_data <- function(raw_path_data = "PortalData", main = "."){

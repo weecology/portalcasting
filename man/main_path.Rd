@@ -32,9 +32,11 @@ Produce paths for a forecasting directory. \cr \cr
   \code{sub_paths} returns the path for the \code{subs} folders. \cr \cr
 }
 \examples{
- create_dir()
- main_path()
- sub_paths()
- sub_paths(specific_subs = "models")
+ \donttest{
+  create_dir()
+  main_path()
+  sub_paths()
+  sub_paths(specific_subs = "models")
+ }
 
 }

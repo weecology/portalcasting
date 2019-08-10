@@ -25,3 +25,7 @@ Produces a vector of subdirectory names that is of class
   \code{"data"}, and \code{"tmp"}. It is generally not advised to change
   the subdirectory structure at this time.
 }
+\examples{
+ subdirs()
+
+}

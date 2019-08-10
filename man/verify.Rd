@@ -22,7 +22,10 @@ If any of the folders (specified by \code{path} and named by
  \code{level}) do not exist, the operation throws an error.
 }
 \examples{
- main <- main_path()
- verify(main, "main")
+ \donttest{
+  create_dir()
+  main <- main_path()
+  verify(main, "main")
+ }
 
 }
