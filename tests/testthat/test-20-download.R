@@ -35,7 +35,7 @@ test_that("zenodo_downloads", {
   expect_is(zenodo_downloads(rec_id = "12345"), "list")
 })
 raw_path_data = "PortalData"
- main = "."
+ main = "./testing"
 
   lpath <- paste0("raw/", raw_path_data)
   full <- file_paths(main, lpath) 
