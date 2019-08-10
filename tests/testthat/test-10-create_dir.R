@@ -9,4 +9,4 @@ test_that("verify", {
   expect_error(verify(main_path(base ="abcdefghijklmop")))
 })
 
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)
+

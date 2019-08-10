@@ -1,6 +1,6 @@
 context("Test downloading functions")
 
-create_dir(main = "./testing")
+
 
 test_that("download", {
   expect_message(download("PortalData", "zenodo", main = "./testing",
@@ -39,4 +39,3 @@ test_that("verify_raw_data", {
   expect_equal(verify_raw_data(main = "./testing"), TRUE)
 })
 
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)

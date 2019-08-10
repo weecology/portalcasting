@@ -1,7 +1,6 @@
 context("Test prepare_models functions")
 
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)
-create_dir(main = "./testing")
+
 
 test_that("model_script_controls", {
   expect_is(model_script_controls(prefab_models()), "list")
@@ -51,4 +50,3 @@ test_that("model_template", {
   expect_equal(length(temp2), 1)
 
 })
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)

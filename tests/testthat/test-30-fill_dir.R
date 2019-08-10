@@ -1,7 +1,6 @@
 context("Test filling functions")
 
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)
-create_dir(main = "./testing")
+
 
 test_that("fill_predictions", {
   skip_on_cran()
@@ -17,4 +16,3 @@ test_that("fill_models", {
   expect_message(fill_models(main = "./testing"))
 })
 
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)
