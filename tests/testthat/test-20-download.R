@@ -34,6 +34,8 @@ test_that("zenodo_downloads", {
   expect_is(zenodo_downloads(c("1215988", "833438")), "list")
   expect_is(zenodo_downloads(rec_id = "12345"), "list")
 })
+raw_path_data = "PortalData"
+ main = "."
   folder <- sub_paths(main, subs = subdirs(), "raw")
   full <- file.path(folder, raw_path_data)
   norm_full <- normalizePath(full, mustWork = FALSE)
