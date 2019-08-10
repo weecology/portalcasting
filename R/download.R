@@ -116,13 +116,13 @@ print(unzip_destins$final)
 #'
 unzip_destins <- function(name = NULL, zip_destin, main = "."){
   folder <- sub_paths(main, "tmp")
-  full <- paste0(folder, "\\", name)
+  full <- file.path(folder, name)
   initial <- normalizePath(full, mustWork = FALSE) 
   add_lev <- unzip(zip_destin, list = TRUE)$Name[1]
-  full <- paste0(initial, "\\", add_lev)
+  full <- file.path(initial, add_lev)
   with_archive <- normalizePath(full, mustWork = FALSE)
   folder <- sub_paths(main, subs = subdirs(), "raw")
-  full <- paste0(folder, "\\", name)
+  full <- file.path(folder, name)
   final <- normalizePath(full, mustWork = FALSE)
   list(initial = initial, with_archive = with_archive, final = final)
 }
@@ -175,7 +175,8 @@ download_destin <- function(name = NULL, source_url, main = "."){
   if(!is.null(extension)){
     extension2 <- paste0(".", extension)
   } 
-  full <- paste0(folder, "\\", name, extension2)
+  fname <- paste0(name, extension2)
+  full <- file.path(folder, fname)
   normalizePath(full, mustWork = FALSE)
 }
 
