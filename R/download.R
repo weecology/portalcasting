@@ -358,8 +358,8 @@ verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
 
   #full <- file_paths(main, lpath) 
   #full <- file.path(folder, raw_path_data)
-  norm_full <- normalizePath(full, mustWork = FALSE)
-  file.exists(norm_full)
+  #norm_full <- normalizePath(full, mustWork = FALSE)
+  file.exists(full)
 }
 
 

@@ -39,7 +39,7 @@ raw_path_data = "PortalData"
 
   lpath <- paste0("raw/", raw_path_data)
   full <- file_paths(main, lpath) 
-print(normalizePath(full, mustWork = FALSE))
+print(full)
 
 
 print(verify_raw_data(main = "./testing"))
