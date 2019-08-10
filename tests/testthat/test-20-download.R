@@ -3,6 +3,7 @@ context("Test downloading functions")
 
 
 test_that("download", {
+  skip_on_cran() # downloads take too long for cran checks
   expect_message(download("PortalData", "zenodo", main = "./testing",
                           concept_rec_id = "1215988"))
 })
@@ -36,6 +37,7 @@ test_that("zenodo_downloads", {
 })
 
 test_that("verify_raw_data", {
+  skip_on_cran() # downloads take too long for cran checks
   expect_equal(verify_raw_data(main = "./testing"), TRUE)
 })
 

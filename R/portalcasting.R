@@ -1,7 +1,8 @@
-#' @importFrom dplyr %>% bind_rows mutate
+#' @importFrom dplyr %>% bind_rows filter inner_join mutate one_of select
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
-#' @importFrom portalr get_future_moons
+#' @importFrom portalr get_future_moons summarize_rodent_data
+#' @importFrom rlang !!
 #' @importFrom tools file_ext file_path_sans_ext
 #' @importFrom utils download.file packageDescription read.csv unzip
 #'  write.csv

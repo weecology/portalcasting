@@ -9,12 +9,17 @@ rather than write their own functions
 
 
 
+#  end_step <- control$end[control$hind_step]
+cast_type = c("forecasts",
+                            start = 217, end = NULL, hind_step = 1, 
+                            drop_spp = "PI", 
+
+
+
 
 # we also might want to create a simple repo for testing!
 # basically, like the PD and PP, but just for tests
-#
-# can we set it up so we just run a do.call on setup_dir with 
-# PortalPredictions !!!
+
 
 # later capacity: 
 #  1. make it so download version numbers are retained to allow checking to
