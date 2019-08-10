@@ -102,6 +102,7 @@ unzip_download <- function(name = NULL, zip_destin, main = ".",
                            cleanup = TRUE){
   unzip_destins <- unzip_destins(name, zip_destin, main)
   unzip(zip_destin, exdir = unzip_destins$initial)
+print(unzip_destins$final)
   file.rename(unzip_destins$with_archive, unzip_destins$final)
   if(cleanup){
     unlink(unzip_destins$initial, recursive = TRUE)
@@ -348,9 +349,12 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
 #' @export
 #'
 verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
-  folder <- sub_paths(main, subs = subdirs(), "raw")
+  #folder <- sub_paths(main, subs = subdirs(), "raw")
+  #full <- paste0(folder, "/", raw_path_data)
 
-  full <- paste0(folder, "/", raw_path_data)
+  lpath <- paste0("raw/", raw_path_data)
+  full <- file_paths(main, lpath) 
+
   #full <- file_paths(main, lpath) 
   #full <- file.path(folder, raw_path_data)
   norm_full <- normalizePath(full, mustWork = FALSE)

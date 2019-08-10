@@ -36,10 +36,12 @@ test_that("zenodo_downloads", {
 })
 raw_path_data = "PortalData"
  main = "."
-  folder <- sub_paths(main, subs = subdirs(), "raw")
-  full <- file.path(folder, raw_path_data)
-  norm_full <- normalizePath(full, mustWork = FALSE)
-print(norm_full)
+
+  lpath <- paste0("raw/", raw_path_data)
+  full <- file_paths(main, lpath) 
+print(normalizePath(full, mustWork = FALSE))
+
+
 print(verify_raw_data(main = "./testing"))
 test_that("verify_raw_data", {
   expect_equal(verify_raw_data(main = "./testing"), TRUE)
