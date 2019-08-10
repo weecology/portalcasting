@@ -76,7 +76,7 @@
 #' @export
 #'
 prep_rodents_table <- function(species = base_species(), total = TRUE, 
-                               moons = prep_moons(),
+                               moons = prep_moons(main = main),
                                main = ".", start_moon = 217, end_moon = NULL,
                                level = "Site", treatment = NULL,
                                plots = "all", min_plots = 24, min_traps = 1, 

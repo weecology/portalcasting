@@ -10,7 +10,7 @@
 \title{Prepare a rodents data table for forecasting}
 \usage{
 prep_rodents_table(species = base_species(), total = TRUE,
-  moons = prep_moons(), main = ".", start_moon = 217,
+  moons = prep_moons(main = main), main = ".", start_moon = 217,
   end_moon = NULL, level = "Site", treatment = NULL, plots = "all",
   min_plots = 24, min_traps = 1, output = "abundance",
   quiet = TRUE)
