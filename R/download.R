@@ -349,7 +349,10 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
 #'
 verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
   folder <- sub_paths(main, subs = subdirs(), "raw")
-  full <- file.path(folder, raw_path_data)
+
+  full <- paste0(folder, "/", raw_path_data)
+  #full <- file_paths(main, lpath) 
+  #full <- file.path(folder, raw_path_data)
   norm_full <- normalizePath(full, mustWork = FALSE)
   file.exists(norm_full)
 }
