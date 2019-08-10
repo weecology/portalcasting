@@ -2,19 +2,19 @@ context("Test prepare_rodents functions")
 
 test_that("prep_rodents_table", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_is(prep_rodents_table(), "data.frame")
-}
+  expect_is(prep_rodents_table(main = "./testing"), "data.frame")
+})
 
 
 test_that("trim_treatment", {
   skip_on_cran() # downloads take too long for cran checks
-  raw_path <- sub_paths(".", specific_subs = "raw")
+  raw_path <- sub_paths(main = "./testing", specific_subs = "raw")
   dat1 <- summarize_rodent_data(path = raw_path, clean = FALSE,
                                 level = "Treatment")
   dat2 <- trim_species(dat1)
   dat3 <- add_total(dat2)
   expect_is(trim_treatment(dat3, "Treatment", "control"), "data.frame")
-}
+})
 
 test_that("rodents_species", {
   x1 <- rodent_species()
