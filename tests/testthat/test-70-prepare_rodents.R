@@ -5,6 +5,25 @@ test_that("prep_rodents_table", {
   expect_is(prep_rodents_table(main = "./testing"), "data.frame")
 })
 
+test_that("prep_rodents", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(prep_rodents(main = "./testing"), "list")
+  expect_is(prep_rodents(main = "./testing", 
+                              controls = rodents_control()), "list")
+})
+
+
+test_that("rodents_control",{
+  expect_is(rodents_control("all"), "list")
+  expect_is(rodents_control("controls"), "list")
+  expect_is(rodents_controls(c("all", "controls")), "list")
+})
+
+test_that("transpose_args", {
+  in_args <- list(w = quote(x), x = quote(sum(1:4)), y = 1:2, z = NULL)
+  expect_is(transpose_args(in_args, "x", "w"), "list")
+})
+
 
 test_that("trim_treatment", {
   skip_on_cran() # downloads take too long for cran checks

@@ -1,6 +1,7 @@
 context("Test utility functions")
 
 test_that("data_out", {
+  skip_on_cran()
   expect_message(prep_moons(main = "./testing"))
   expect_message(prep_moons(main = "./testing", overwrite = FALSE))
 })

@@ -5,6 +5,11 @@
 #' @details Arguments input directly here take precedence over those in the 
 #'  \code{downloads} \code{list}.
 #'
+#' @param rodents_controls Control \code{list} (from 
+#'  \code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+#'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
+#'  rodents tables. See \code{\link{rodents_control}} for details. 
+#'
 #' @param downloads \code{list} or \code{list} of \code{list}s containing
 #'  inputs to \code{\link{download}} for each download to be put into the 
 #'  raw subdirectory. 
@@ -75,12 +80,16 @@ fill_dir <- function(models = prefab_models(), model_controls = NULL,
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      raw_path_predictions = "portalPredictions/predictions",
                      raw_path_data = "PortalData",
+                     raw_moons_file = "Rodents/moon_dates.csv",
+                     rodents_controls = rodents_controls(),
+                     lead_time = 12, cast_date = Sys.Date(),
                      main = ".", quiet = FALSE, verbose = FALSE, 
                      overwrite = TRUE, cleanup = TRUE){
   fill_raw(downloads, main, quiet, cleanup)
   fill_predictions(raw_path_predictions, main, quiet, verbose, overwrite)
   fill_models(models, main, quiet, model_controls, overwrite)
-  #fill_data(raw_path_data, main, downloads, quiet, overwrite, cleanup)
+  #fill_data(raw_path_data, main, downloads, raw_moons_file, rodents_controls,
+  #          lead_time, cast_date, quiet, overwrite, cleanup)
 }
 
 #' @rdname fill_dir
@@ -90,6 +99,7 @@ fill_dir <- function(models = prefab_models(), model_controls = NULL,
 fill_data <- function(raw_path_data = "PortalData", main = ".", 
                       downloads = zenodo_downloads("1215988"), 
                       raw_moons_file = "Rodents/moon_dates.csv",
+                      rodents_controls = rodents_controls(),
                       lead_time = 12, cast_date = Sys.Date(),
                       quiet = FALSE, overwrite = TRUE, cleanup = TRUE){
   raw_data <- verify_raw_data(raw_path_data, main)
@@ -99,6 +109,7 @@ fill_data <- function(raw_path_data = "PortalData", main = ".",
   messageq("Adding data files to data subdirectory", quiet)
   raw_path <- paste0(raw_path_data, "/", raw_moons_file)
   moons <- prep_moons(lead_time, cast_date, raw_path, main, quiet, overwrite)
+  rodents <- prep_rodents(rodents_controls, moons, main, quiet, overwrite)
 }
 
 

@@ -11,12 +11,16 @@
 fill_dir(models = prefab_models(), model_controls = NULL,
   downloads = zenodo_downloads(c("1215988", "833438")),
   raw_path_predictions = "portalPredictions/predictions",
-  raw_path_data = "PortalData", main = ".", quiet = FALSE,
+  raw_path_data = "PortalData",
+  raw_moons_file = "Rodents/moon_dates.csv",
+  rodents_controls = rodents_controls(), lead_time = 12,
+  cast_date = Sys.Date(), main = ".", quiet = FALSE,
   verbose = FALSE, overwrite = TRUE, cleanup = TRUE)
 
 fill_data(raw_path_data = "PortalData", main = ".",
   downloads = zenodo_downloads("1215988"),
-  raw_moons_file = "Rodents/moon_dates.csv", lead_time = 12,
+  raw_moons_file = "Rodents/moon_dates.csv",
+  rodents_controls = rodents_controls(), lead_time = 12,
   cast_date = Sys.Date(), quiet = FALSE, overwrite = TRUE,
   cleanup = TRUE)
 
@@ -55,6 +59,23 @@ standard portalcasting directory downloads the raw data files into
 \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 \code{"raw/"} is implied).}
 
+\item{raw_moons_file}{\code{character} value indicating the path
+to the moons data file within \code{raw_path_data}. A standard 
+portalcasting directory downloads the raw data files into 
+\code{"raw\PortalData"}, so 
+\code{raw_moons_file = "Rodents/moon_dates.csv"}.}
+
+\item{rodents_controls}{Control \code{list} (from 
+\code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+(from \code{\link{rodents_controls}}) specifying the structuring of the 
+rodents tables. See \code{\link{rodents_control}} for details.}
+
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
+number of timesteps forward a cast will cover.}
+
+\item{cast_date}{\code{Date} from which future is defined, typically 
+today's date (set using \code{\link{Sys.Date}}).}
+
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
@@ -69,18 +90,6 @@ files should be overwritten with the filling.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
-
-\item{raw_moons_file}{\code{character} value indicating the path
-to the moons data file within \code{raw_path_data}. A standard 
-portalcasting directory downloads the raw data files into 
-\code{"raw\PortalData"}, so 
-\code{raw_moons_file = "Rodents/moon_dates.csv"}.}
-
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
-
-\item{cast_date}{\code{Date} from which future is defined, typically 
-today's date (set using \code{\link{Sys.Date}}).}
 }
 \value{
 All \code{fill_} functions return \code{NULL}.

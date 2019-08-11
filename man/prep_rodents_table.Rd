@@ -36,7 +36,7 @@ via \code{\link{base_species}}}
 species) should be added or not. Only available if more than one species
 is included.}
 
-\item{moons}{Moons \code{data.frame}.}
+\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
@@ -104,7 +104,14 @@ editing.}
 This set of functions provides a convenient wrapper on
  \code{\link[portalr]{summarize_rodent_data}} to generate a specific
  data table for use in the forecasting pipeline. Many arguments pipe
- directly to \code{\link[portalr]{summarize_rodent_data}}.
+ directly to \code{\link[portalr]{summarize_rodent_data}}. \cr \cr
+ \code{prep_rodents_table} generates the ready-to-model table. \cr \cr
+ \code{add_total} adds a total (sum-across-species) column. \cr \cr
+ \code{trim_treatment} removes not-requested plots according to treatment
+ levels and then removes the treatment column. \cr \cr
+ \code{add_moons} adds the lunar data associated with the samples. \cr \cr
+ \code{trim_time} reduces the table to the samples within the time window
+ and then removes extra time columns. \cr \cr
 }
 \examples{
  \donttest{

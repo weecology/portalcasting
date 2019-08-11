@@ -27,6 +27,7 @@ Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
+  DesignLibrary,
   dplyr,
   httr,
   lubridate,

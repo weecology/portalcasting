@@ -1,5 +1,5 @@
-prep_moons(main = "~/testing")
-
+moons <- prep_moons(main = "~/testing")
+rodents <- prep_rodents(main = "~/testing", moons = moons)
 
 
 # working on the fill functions
@@ -9,7 +9,11 @@ prep_moons(main = "~/testing")
 users adding models should permanently add code to model_script_controls()
 rather than write their own functions
 
-
+adding a new setup of the rodents data is possible now through direct
+arguments basically to the summarize rodents function
+users can set their own controls as they need
+but permanent additions can also be made by adding a tmnt_type to 
+rodents_control(s)
 
 
 
