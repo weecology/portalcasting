@@ -25,6 +25,9 @@
 #'  in the forecasting data table. Defaults to all species but \code{"PI"}
 #'  via \code{\link{base_species}}
 #'
+#' @param ref_species \code{character}-valued vector of all possible species 
+#'  names that could be used should be set up via \code{\link{all_species}}.
+#'
 #' @param total \code{logical} value indicating if a total (sum across 
 #'  species) should be added or not. Only available if more than one species
 #'  is included. 
@@ -54,7 +57,8 @@
 #'  \code{character} values: \code{"all"} plots or \code{"Longterm"} plots
 #'  (plots that have had the same treatment for the entire time series).
 #'
-#' @param pipes directly to \code{\link[portalr]{summarize_rodent_data}}.
+#' @param rodents \code{data.frame} rodents table, with varying levels of 
+#'  editing.
 #'
 #' @return \code{data.frame} rodents table, with varying levels of editing
 #'  for use in forecasting.
@@ -80,7 +84,8 @@ prep_rodents_table <- function(species = base_species(), total = TRUE,
                                main = ".", start_moon = 217, end_moon = NULL,
                                level = "Site", treatment = NULL,
                                plots = "all", min_plots = 24, min_traps = 1, 
-                               output = "abundance", quiet = TRUE){
+                               output = "abundance", quiet = TRUE,
+                               ref_species = all_species()){
   return_if_null(species) 
   nspecies <- length(species)
   total <- ifelse(nspecies == 1, FALSE, total)
@@ -90,7 +95,7 @@ prep_rodents_table <- function(species = base_species(), total = TRUE,
                         level = level, plots = plots, min_traps = min_traps,
                         min_plots = min_plots, output = output,
                         quiet = quiet) %>%
-  trim_species(species) %>%
+  trim_species(species, ref_species) %>%
   add_total(total) %>%
   trim_treatment(level, treatment) %>%
   add_moons(moons) %>%
@@ -185,7 +190,7 @@ is_sp_col <- function(rodents, species_names = all_species()){
 #' @description Creates a simple \code{character} vector of abbreviations for
 #'   the \href{https://portal.naturecast.org/profiles.html}{Portal Rodents}.
 #'
-#' @param species_set \code{character} input of a specified set of species. 
+#' @param set \code{character} input of a specified set of species. 
 #'   Default entry (\code{"base"}) returns the standard set of all species 
 #'   included. Other options include \code{"wtotal"} (same as \code{"base"} 
 #'   but with "total" as well) and \code{"evalplot"} which only returns a 
@@ -193,6 +198,11 @@ is_sp_col <- function(rodents, species_names = all_species()){
 #'
 #' @param nadot \code{logical} indicator if the dot should be added to the 
 #'   \code{"NA"} species name. Defaults to \code{FALSE}.
+#'
+#' @param species \code{character}-valued vector of species names to include.
+#'
+#' @param total \code{logical} value indicating if \code{"total"} should be 
+#'  added or not.
 #'
 #' @return \code{character} vector of species abbreviations.
 #' 

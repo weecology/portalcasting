@@ -13,7 +13,7 @@ prep_rodents_table(species = base_species(), total = TRUE,
   moons = prep_moons(main = main), main = ".", start_moon = 217,
   end_moon = NULL, level = "Site", treatment = NULL, plots = "all",
   min_plots = 24, min_traps = 1, output = "abundance",
-  quiet = TRUE)
+  quiet = TRUE, ref_species = all_species())
 
 trim_time(rodents, start_moon = NULL, end_moon = NULL)
 
@@ -76,7 +76,11 @@ directly to \code{\link[portalr]{summarize_rodent_data}}.}
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 
-\item{pipes}{directly to \code{\link[portalr]{summarize_rodent_data}}.}
+\item{ref_species}{\code{character}-valued vector of all possible species 
+names that could be used should be set up via \code{\link{all_species}}.}
+
+\item{rodents}{\code{data.frame} rodents table, with varying levels of 
+editing.}
 }
 \value{
 \code{data.frame} rodents table, with varying levels of editing
