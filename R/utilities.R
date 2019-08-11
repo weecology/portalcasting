@@ -1,3 +1,52 @@
+
+#' @title Save data out to a file and return it	
+#'
+#' @description Save inputted data out to a data file if requested and 
+#'  return it to the console.
+#'
+#' @param x \code{data.frame} table to be written out.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'
+#' @param save \code{logical} indicator controlling if \code{x} should 
+#'   be saved out.
+#'
+#' @param filename \code{character} name of the file for saving \code{x}.
+#'
+#' @param overwrite \code{logical} indicator of if the file should be
+#'  overwritten if it exists.
+#'
+#' @param quiet \code{logical} indicator if messages should be quieted.
+#'
+#' @return \code{x} as input.
+#'
+#'
+#' @export
+#'
+data_out <- function(x = NULL, main = ".", save = TRUE, filename = "x.csv", 
+                     overwrite = TRUE, quiet = FALSE){
+  return_if_null(x)
+  if(save){
+    local_path <- paste0("data/", filename)
+    full_path <- file_paths(main, local_path)
+    f_exists <- file.exists(full_path)
+    if(f_exists){
+      if(overwrite){
+        write.csv(x, full_path, row.names = FALSE)
+        msg <- paste0(filename, " exists and overwrite = TRUE; file saved")
+      } else {
+        msg <- paste0(filename, " exists and overwrite = FALSE; not saved") 
+      }
+    } else{
+      write.csv(x, full_path, row.names = FALSE)
+      msg <- paste0(filename, " saved")
+    }
+    messageq(msg, quiet)
+  }
+  x
+}
+
 #' @title If a value is NULL, trigger the parent function's return
 #'
 #' @description If the focal input is \code{NULL}, return \code{value} from

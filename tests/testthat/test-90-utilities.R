@@ -1,5 +1,9 @@
 context("Test utility functions")
 
+test_that("data_out", {
+  expect_message(prep_moons(main = "./testing"))
+  expect_message(prep_moons(main = "./testing", overwrite = FALSE))
+})
 
 test_that("isnull", {
   expect_equal(ifnull(NULL, 123), 123)
@@ -26,3 +30,4 @@ test_that("return_if_null", {
   expect_equal(ff(), 1)
   expect_equal(ff(NULL), "hello")
 })
+unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)

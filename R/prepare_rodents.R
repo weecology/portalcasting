@@ -1,3 +1,9 @@
+
+prep_rodents_list <- function(){
+
+  
+}
+
 #' @title Prepare a rodents data table for forecasting
 #'
 #' @description This set of functions provides a convenient wrapper on
@@ -60,8 +66,21 @@
 #' @param rodents \code{data.frame} rodents table, with varying levels of 
 #'  editing.
 #'
+#' @param save \code{logical} indicator controlling if the output should 
+#'   be saved out.
+#'
+#' @param filename \code{character} name of the file for saving the output.
+#'
+#' @param overwrite \code{logical} indicator of whether or not the existing
+#'  files should be updated (most users should leave as \code{TRUE}).
+#'
 #' @return \code{data.frame} rodents table, with varying levels of editing
-#'  for use in forecasting.
+#'  for use in forecasting. \cr \cr
+#'  \code{prep_rodents_table}, \code{trim_time}: a fully appended and 
+#'  formatted \code{data.frame} (also saved out if \code{save = TRUE}). 
+#'  \cr \cr
+#'  \code{trim_species}, \code{add_total}, \code{trim_treatment}, 
+#'  \code{add_moons}: appropriately appended rodents \code{data.frame}.
 #'
 #' @examples
 #'  \donttest{
@@ -69,7 +88,7 @@
 #'   fill_raw()
 #'   prep_rodents_table()
 #'   raw_path <- sub_paths(".", specific_subs = "raw")
-#'   dat1 <- summarize_rodent_data(path = raw_path, clean = FALSE)
+#'   dat1 <- portalr::summarize_rodent_data(path = raw_path, clean = FALSE)
 #'   dat2 <- trim_species(dat1)
 #'   dat3 <- add_total(dat2)
 #'   dat4 <- trim_treatment(dat3)
@@ -85,11 +104,12 @@ prep_rodents_table <- function(species = base_species(), total = TRUE,
                                level = "Site", treatment = NULL,
                                plots = "all", min_plots = 24, min_traps = 1, 
                                output = "abundance", quiet = TRUE,
-                               ref_species = all_species()){
+                               ref_species = all_species(),
+                               save = TRUE, filename = "rodents_all.csv",
+                               overwrite = TRUE){
   return_if_null(species) 
   nspecies <- length(species)
   total <- ifelse(nspecies == 1, FALSE, total)
-
   raw_path <- sub_paths(main, specific_subs = "raw")
   summarize_rodent_data(path = raw_path, clean = FALSE, type = "Rodents", 
                         level = level, plots = plots, min_traps = min_traps,
@@ -99,7 +119,8 @@ prep_rodents_table <- function(species = base_species(), total = TRUE,
   add_total(total) %>%
   trim_treatment(level, treatment) %>%
   add_moons(moons) %>%
-  trim_time(start_moon, end_moon)
+  trim_time(start_moon, end_moon) %>%
+  data_out(main, save, filename, overwrite, quiet)
 }
 
 #' @rdname prep_rodents_table

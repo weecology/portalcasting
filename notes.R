@@ -1,18 +1,15 @@
+prep_moons(main = "~/testing")
+
+
+
 # working on the fill functions
 # on fill_data
 
-
-# work on the model functions in prepare_models
 
 users adding models should permanently add code to model_script_controls()
 rather than write their own functions
 
 
-
-#  end_step <- control$end[control$hind_step]
-cast_type = c("forecasts",
-                            start = 217, end = NULL, hind_step = 1, 
-                            drop_spp = "PI", 
 
 
 
@@ -35,3 +32,6 @@ cast_type = c("forecasts",
 #   any zenodo record or concept; any ready-to-go url; (will add any github)
 #  PortalData has been removed as a sub and replaced with "raw", which 
 #   includes all unzipped raw downloads (portal data and portal predictions)
+#  users adding models should permanently add code to model_script_controls()
+#   rather than write their own control functions
+

@@ -47,4 +47,3 @@ test_that("rodents_species", {
   expect_equal(length(x9), 7)
 })
 
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)

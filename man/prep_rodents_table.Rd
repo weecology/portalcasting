@@ -13,7 +13,8 @@ prep_rodents_table(species = base_species(), total = TRUE,
   moons = prep_moons(main = main), main = ".", start_moon = 217,
   end_moon = NULL, level = "Site", treatment = NULL, plots = "all",
   min_plots = 24, min_traps = 1, output = "abundance",
-  quiet = TRUE, ref_species = all_species())
+  quiet = TRUE, ref_species = all_species(), save = TRUE,
+  filename = "rodents_all.csv", overwrite = TRUE)
 
 trim_time(rodents, start_moon = NULL, end_moon = NULL)
 
@@ -79,12 +80,25 @@ quieted.}
 \item{ref_species}{\code{character}-valued vector of all possible species 
 names that could be used should be set up via \code{\link{all_species}}.}
 
+\item{save}{\code{logical} indicator controlling if the output should 
+be saved out.}
+
+\item{filename}{\code{character} name of the file for saving the output.}
+
+\item{overwrite}{\code{logical} indicator of whether or not the existing
+files should be updated (most users should leave as \code{TRUE}).}
+
 \item{rodents}{\code{data.frame} rodents table, with varying levels of 
 editing.}
 }
 \value{
 \code{data.frame} rodents table, with varying levels of editing
- for use in forecasting.
+ for use in forecasting. \cr \cr
+ \code{prep_rodents_table}, \code{trim_time}: a fully appended and 
+ formatted \code{data.frame} (also saved out if \code{save = TRUE}). 
+ \cr \cr
+ \code{trim_species}, \code{add_total}, \code{trim_treatment}, 
+ \code{add_moons}: appropriately appended rodents \code{data.frame}.
 }
 \description{
 This set of functions provides a convenient wrapper on
@@ -98,7 +112,7 @@ This set of functions provides a convenient wrapper on
   fill_raw()
   prep_rodents_table()
   raw_path <- sub_paths(".", specific_subs = "raw")
-  dat1 <- summarize_rodent_data(path = raw_path, clean = FALSE)
+  dat1 <- portalr::summarize_rodent_data(path = raw_path, clean = FALSE)
   dat2 <- trim_species(dat1)
   dat3 <- add_total(dat2)
   dat4 <- trim_treatment(dat3)

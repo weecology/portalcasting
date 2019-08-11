@@ -34,7 +34,7 @@
 #' @param moons Moons \code{data.frame}.
 #'
 #' @param overwrite \code{logical} indicator of whether or not the existing
-#'  raw moons file should be updated with the past moons.
+#'  files should be updated (most users should leave as \code{TRUE}).
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -48,13 +48,18 @@
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
+#' @param save \code{logical} indicator controlling if the output should 
+#'   be saved out.
+#'
+#' @param filename \code{character} name of the file for saving the output.
+#'
 #' @return All functions here return some version of a moons \code{data.frame}
 #'  \cr \cr. 
 #'  \code{prep_moons}, \code{format_moons}: fully appended and formatted 
-#'  \code{data.frame}. \cr \cr
+#'  \code{data.frame} (also saved out if \code{save = TRUE}). \cr \cr
 #'  \code{add_past_moons_to_raw}, \code{add_future_moons}, 
-#'  \code{add_extra_future_moons}: appropropriately appended \code{moons} 
-#'  data table as a \code{moons}-class \code{data.frame}.
+#'  \code{add_extra_future_moons}: appropropriately appended moons
+#'  \code{data.frame}.
 #'   
 #' @examples
 #'  \donttest{
@@ -72,13 +77,15 @@
 #' 
 prep_moons <- function(lead_time = 12, cast_date = Sys.Date(), 
                        raw_path = "PortalData/Rodents/moon_dates.csv", 
-                       main = ".", quiet = FALSE, overwrite = TRUE){
+                       main = ".", quiet = FALSE, overwrite = TRUE,
+                       save = TRUE, filename = "moon_dates.csv"){
   paste0("raw/", raw_path) %>%
   file_paths(main, .) %>%
   read.csv(stringsAsFactors = FALSE) %>%
   add_future_moons(lead_time, cast_date) %>%
   add_past_moons_to_raw(main, raw_path, overwrite) %>%
-  format_moons()
+  format_moons() %>%
+  data_out(main, save, filename, overwrite, quiet)
 }
 
 #' @rdname prep_moons
