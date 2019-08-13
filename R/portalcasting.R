@@ -1,11 +1,16 @@
+#' @importFrom curl curl
 #' @importFrom DesignLibrary match.call.defaults
-#' @importFrom dplyr %>% bind_rows filter inner_join mutate one_of select
+#' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join mutate 
+#'  one_of right_join select summarize ungroup
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
-#' @importFrom portalr get_future_moons summarize_rodent_data
-#' @importFrom rlang !!
+#' @importFrom portalr fcast_ndvi get_future_moons ndvi summarize_rodent_data 
+#'  weather
+#' @importFrom readr read_csv
+#' @importFrom rlang !! .data
+#' @importFrom stats rnorm
 #' @importFrom tools file_ext file_path_sans_ext
-#' @importFrom utils download.file packageDescription read.csv unzip
+#' @importFrom utils download.file packageDescription read.csv tail unzip
 #'  write.csv
 
 #' @title Functions for Portal Forecasting
@@ -30,7 +35,9 @@ NULL
 # To quiet concerns of R CMD check re: variables used in non-standard eval
 if (getRversion() >= "2.15.1"){
   utils::globalVariables(
-    c(".", "censusdate", "newmoondate", "newmoonnumber")
+    c(".", "battery_low", "censusdate", "day", "date_made", 
+      "forecast_newmoon", "locally_measured", "main", "maxtemp", "meantemp", 
+      "mintemp", "newmoondate", "newmoonnumber", "precipitation")
   )
 }
 

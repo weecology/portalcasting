@@ -118,7 +118,7 @@ This set of functions provides a convenient wrapper on
   create_dir()
   fill_raw()
   prep_rodents_table()
-  raw_path <- sub_paths(".", specific_subs = "raw")
+  raw_path <- sub_paths(".", "raw")
   dat1 <- portalr::summarize_rodent_data(path = raw_path, clean = FALSE)
   dat2 <- trim_species(dat1)
   dat3 <- add_total(dat2)

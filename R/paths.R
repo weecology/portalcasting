@@ -73,7 +73,7 @@ main_path <- function(main = "."){
 #'
 #' @export
 #'
-sub_paths <- function(main = ".", subs = subdirs(), specific_subs = NULL){
+sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs()){
   if (!is.null(specific_subs) && (!all(specific_subs %in% subs))){
     stop("some `specific_subs` not in `subs`")
   }

@@ -41,3 +41,14 @@ test_that("verify_raw_data", {
   expect_equal(verify_raw_data(main = "./testing"), TRUE)
 })
 
+test_that("NMME_urls", {
+  expect_is(NMME_urls(), "character")
+  expect_error(NMME_urls(start = rep(Sys.Date(), 2)))
+  expect_error(NMME_urls(lat = rep(32, 2)))
+  expect_error(NMME_urls(model = rep("ENSMEAN", 2)))
+  expect_error(NMME_urls(freq = rep("daily", 2)))
+  expect_error(NMME_urls(model = "ok"))
+  expect_error(NMME_urls(freq = "ok"))
+  expect_error(NMME_urls(data = "ok"))
+})
+

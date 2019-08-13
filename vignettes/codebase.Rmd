@@ -77,5 +77,6 @@ The directory is filled (loaded with files for default forecasting) using a seri
   * moons data
   * rodents data
   * covariates data 
+  * metadata
 * `fill_models()` writes the model scripts into the `models` subdirectory.
 

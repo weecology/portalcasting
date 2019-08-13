@@ -144,7 +144,7 @@ fill_predictions <- function(raw_path_predictions = NULL, main = ".",
   pfiles <- list.files(raw_folder)
   raw_files_local <- paste0(local_raw_folder, "/", pfiles)
   raw_files <- file_paths(main, local_paths = raw_files_local)
-  final_folder <- sub_paths(main, specific_subs = "predictions")
+  final_folder <- sub_paths(main, "predictions")
   fc <- file.copy(raw_files, final_folder, overwrite)
   messageq(fill_predictions_message(pfiles, fc, verbose))
 }

@@ -62,7 +62,7 @@ create_main <- function(main = ".", quiet = FALSE){
 #'
 create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE){
   mainp <- main_path(main)
-  subsp <- sub_paths(main, subs)
+  subsp <- sub_paths(main, subs = subs)
   verify(mainp, "main")
   create(subsp, basename(subsp), quiet)
 }

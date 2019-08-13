@@ -120,7 +120,7 @@ unzip_destins <- function(name = NULL, zip_destin, main = "."){
   add_lev <- unzip(zip_destin, list = TRUE)$Name[1]
   full <- file.path(initial, add_lev)
   with_archive <- normalizePath(full, mustWork = FALSE)
-  folder <- sub_paths(main, subs = subdirs(), "raw")
+  folder <- sub_paths(main, "raw")
   full <- file.path(folder, name)
   final <- normalizePath(full, mustWork = FALSE)
   list(initial = initial, with_archive = with_archive, final = final)
@@ -166,9 +166,9 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
 download_destin <- function(name = NULL, source_url, main = "."){
   extension <- file_ext(source_url)
   if(extension == "zip"){
-    folder <- sub_paths(main, subdirs(), "tmp")
+    folder <- sub_paths(main, "tmp")
   } else{
-    folder <- sub_paths(main, subdirs(), "raw")
+    folder <- sub_paths(main, "raw")
   }
   extension2 <- NULL
   if(!is.null(extension)){
@@ -358,4 +358,109 @@ verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
   file.exists(full)
 }
 
+
+
+#' @title Provide URLs for the Northwest Knowledge Network's North American
+#'  Multi-Model Ensemble (NMME) climate forecasts
+#'
+#' @description The 
+#'  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at
+#'  at the University of Idaho provides a 
+#'  \code{https://bit.ly/2tCP8NX}{simple API} to download downscaled
+#'  climate forecasts using the 
+#'  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
+#'  set. This function generates the URL for specific request based on all
+#'  possible user inputs including, time window, location, model,
+#'  frequency of data, and data type. Given the construction of the URL,
+#'  \strong{only \code{data} is vectorized}. See arguments for specifics.
+#'
+#' @param start \code{Date} for the start of the forecast.
+#'
+#' @param end \code{Date} for the end of the forecast. 
+#'
+#' @param model \code{character} value of the model, one of \code{"ENSMEAN"},
+#'  (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"}
+#'  (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
+#'  \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). \cr \cr
+#'  Presently can only take one value.
+#'
+#' @param lat,lon \code{numeric} latitude and longitude values used to 
+#'  downscale the model. \cr \cr
+#'  Presently can only take one value for each.
+#'
+#' @param freq \code{character} value of the frequency of the data, can 
+#'  be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a
+#'  number between \code{1} and \code{7}. \cr \cr
+#'  Presently can only take one value.
+#'
+#' @param data \code{character} value of the type of data, one of 
+#'  \code{"tasmin"} (minimum temperature),  \code{"tasmean"}
+#'  (mean temperature), \code{"tasmax"} (mximum temperature), \code{"pr"}
+#'  (precipitation), \code{"dps"} (dew point), \code{"rsds"}
+#'  (shortwave radiation; sun intensity), \code{"was"} (wind speed).
+#'
+#' @return Named \code{character} vector of URLs, or \code{NULL} if
+#'  \code{data}, \code{freq}, or \code{model} is \code{NULL}.
+#'
+#' @examples
+#'   NMME_urls()
+#'   NMME_urls(end = Sys.Date() + 10)
+#'
+#' @export
+#'
+NMME_urls <- function(start = Sys.Date(), end = Sys.Date(),
+                      model = "ENSMEAN", lat = 31.9555, lon = -109.0744, 
+                      freq = "daily",
+                      data = c("tasmin", "tasmean", "tasmax", "pr")){
+  return_if_null(data)
+  return_if_null(freq)
+  return_if_null(model)
+  if(length(start) > 1 | length(end) > 1){
+    stop("can only take one input for each time argument")
+  }
+  if(length(lat) > 1 | length(lon) > 1){
+    stop("can only take one input for each location argument")
+  }
+  if(length(model) > 1){
+    stop("can only take one input for model")
+  }
+  if(length(freq) > 1){
+    stop("can only take one input for ferq")
+  }
+
+  mods <- c("ENSMEAN", "CMC1", "CMC2", "CFCSv2", "GFDL", "GFDL-FLOR", "NCAR")
+  if(any(!(model %in% mods))){
+    stop("model not in available options")
+  }
+
+  datas <- c("tasmin", "tasmean", "tasmax", "pr", "dps", "rsds", "was")
+  if(any(!(data %in% datas))){
+    stop("at least one of the data sets not in available options")
+  }
+
+  freqs <- c("daily", paste0(1:7, "monthAverage"))
+  if(any(!(freq %in% freqs))){
+    stop("frequency of predictions requested not available")
+  }
+  
+  thredds <- "https://tds-proxy.nkn.uidaho.edu/thredds/"
+  nwcsc <- "ncss/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/"
+  nmme <-  "bcsd-nmme/dailyForecasts/"
+  catalog <- paste0(thredds, nwcsc, nmme)
+
+  nc_model <- paste0("bcsd_nmme_metdata_", model, "_forecast_")
+  nc_data <- paste0(data, "_", freq, ".nc?var=", data)
+  og_nc_data <- paste0(nc_model, nc_data)
+
+  start_time <- paste0(start, "T00%3A00%3A00Z")
+  end_time <- paste0(end, "T00%3A00%3A00Z")
+  locale <- paste0("&latitude=", lat, "&longitude=", lon)
+  times <- paste0("&time_start=", start_time, "&time_end=", end_time)
+  extension <- "&accept=csv"
+  specs <- paste0(locale, times, extension)
+
+  full_urls <- paste0(catalog, og_nc_data, specs)
+  names(full_urls) <- data
+  full_urls
+}
 

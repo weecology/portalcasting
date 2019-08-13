@@ -1,9 +1,23 @@
+devtools::document()
+main = "~/testing"
+create_dir(main = "~/testing")
+fill_raw(main = "~/testing")
 moons <- prep_moons(main = "~/testing")
 rodents <- prep_rodents(main = "~/testing", moons = moons)
+prep_covariates(main = "~/testing")
+f_cov <- prep_fcast_covariates(hist_cov = hist_cov, main = "~/testing")
+head(hist_cov)
+
+covs <- prep_covariates(main=main)
+
+# prep covariates is done!
+# just needs tidying, documentation, and testing, lolz
+# then prep_metadata
 
 
-# working on the fill functions
-# on fill_data
+
+# figure out a way to make the pulling or updating of min_lag automated
+
 
 
 users adding models should permanently add code to model_script_controls()
@@ -15,7 +29,13 @@ users can set their own controls as they need
 but permanent additions can also be made by adding a tmnt_type to 
 rodents_control(s)
 
+make matching of forecast and Forecast and forecasts etc etc
 
+
+THE FORMALS MATCHING IN PREP_RODENTS MIGHT BE BETTER TO FUNCTION
+AND USE WITHIN FILL_DATA FOR EXAMPLE
+
+end_step is now out of the controls list, because come on
 
 
 # we also might want to create a simple repo for testing!
@@ -38,4 +58,6 @@ rodents_control(s)
 #   includes all unzipped raw downloads (portal data and portal predictions)
 #  users adding models should permanently add code to model_script_controls()
 #   rather than write their own control functions
-
+# all the NMME options! :D
+# covariate forecasts are now saved in the raw folder for reference 
+#   rather than only ever loaded within R

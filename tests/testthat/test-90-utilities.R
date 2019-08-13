@@ -1,5 +1,41 @@
 context("Test utility functions")
 
+test_that("pass_and_call", {
+
+  yy <- function(n = 1, z = sqrt(w), w = 40){
+           pass_and_call(rnorm, mean = z, sd  = w)
+         }
+
+  yyy <- function(d = 43){
+            pass_and_call(yy, n = d)
+          }
+  expect_is(yy(), "numeric")
+  expect_is(yy(w = 30), "numeric")
+  expect_is(yy(z = 0, w = 1), "numeric")
+  expect_equal(length(yyy()), 43)
+  expect_equal(length(yyy(d = 2)), 2)
+
+})
+
+test_that("error_if_deep", {
+
+  expect_error(error_if_deep(-1e4))
+  expect_equal(error_if_deep(0), NULL)
+})
+
+test_that("update_list", {
+  orig_list <- list(a = 1, b = 3, c = 4)
+  expect_is(update_list(orig_list), "list")
+  expect_is(update_list(orig_list, a = "a"), "list")
+  expect_is(update_list(orig_list, a = 10, b = NULL), "list")
+  expect_error(update_list("a"))
+})
+
+test_that("remove_incompletes", {
+  df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)
+  expect_is(remove_incompletes(df, "c1"), "data.frame")
+})
+
 test_that("data_out", {
   skip_on_cran()
   expect_message(prep_moons(main = "./testing"))

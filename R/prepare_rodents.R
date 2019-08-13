@@ -177,7 +177,7 @@ prep_rodents <- function(controls = rodents_controls(),
 #'   create_dir()
 #'   fill_raw()
 #'   prep_rodents_table()
-#'   raw_path <- sub_paths(".", specific_subs = "raw")
+#'   raw_path <- sub_paths(".", "raw")
 #'   dat1 <- portalr::summarize_rodent_data(path = raw_path, clean = FALSE)
 #'   dat2 <- trim_species(dat1)
 #'   dat3 <- add_total(dat2)
@@ -200,7 +200,7 @@ prep_rodents_table <- function(species = base_species(), total = TRUE,
   return_if_null(species) 
   nspecies <- length(species)
   total <- ifelse(nspecies == 1, FALSE, total)
-  raw_path <- sub_paths(main, specific_subs = "raw")
+  raw_path <- sub_paths(main, "raw")
   summarize_rodent_data(path = raw_path, clean = FALSE, type = "Rodents", 
                         level = level, plots = plots, min_traps = min_traps,
                         min_plots = min_plots, output = output,

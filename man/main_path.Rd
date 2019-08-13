@@ -7,18 +7,18 @@
 \usage{
 main_path(main = ".")
 
-sub_paths(main = ".", subs = subdirs(), specific_subs = NULL)
+sub_paths(main = ".", specific_subs = NULL, subs = subdirs())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{subs}{\code{character} vector of the names of the sub components of
-the directory tree.}
-
 \item{specific_subs}{\code{character}-value name of the specific 
 subdirectory/subdirectories of interest, or \code{NULL} (default)
 for all.}
+
+\item{subs}{\code{character} vector of the names of the sub components of
+the directory tree.}
 }
 \value{
 \code{character} value normalized paths 

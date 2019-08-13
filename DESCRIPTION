@@ -27,11 +27,13 @@ Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
+  curl,
   DesignLibrary,
   dplyr,
   httr,
   lubridate,
   portalr,
+  readr,
   rlang,
   tools
 Suggests:
