@@ -334,6 +334,8 @@ read_climate_casts <- function(main = ".", raw_path_cov_cast = "cov_casts",
   control_cdl <- do.call(climate_dl_control, control_cdl)
   urls <- do.call(NMME_urls, control_cdl)
   return_if_null(urls)
+
+print("~~~~~~~~~~~~~~~~~~~~~")
   dat_list <- vector("list", length(control_cdl$data))
   ndatas <- length(control_cdl$data)
   for(i in 1:ndatas){

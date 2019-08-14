@@ -21,11 +21,23 @@ covs <- prep_covariates(main=main)
 
 # to do
 
+needs test
+  forecast_covariates: all of cast_covariates
+  prepare_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
+    prep_hist_covariates
+
+needs example
+  prep_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
+   prep_hist_covariates
+  forecast_covariates: all cast_covariates
+
+# fix up the path functions, they seem off the mark now
+
 # use verbose more (re downloads)
 
 # figure out a way to make the pulling or updating of min_lag automated
 
-# still work tidying up
+# still work tidying up, in the rodents stuff in particular
 
 # can transpose_args be replaced?
 
@@ -34,16 +46,6 @@ covs <- prep_covariates(main=main)
 
 # vignettes
 
-needs test
-  forecast_covariates: all of cast_covariates
-  prep_covariates: summarize_daily_weather_by_newmoon
-  prepare_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
-    prep_hist_covariates
-
-needs example
-  prep_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
-   prep_hist_covariates
-  forecast_covariates: all cast_covariates
 
 
 
