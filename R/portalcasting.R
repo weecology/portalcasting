@@ -12,6 +12,8 @@
 #' @importFrom tools file_ext file_path_sans_ext
 #' @importFrom utils download.file packageDescription read.csv tail unzip
 #'  write.csv
+#' @importFrom yaml as.yaml 
+#'
 
 #' @title Functions for Portal Forecasting
 #'

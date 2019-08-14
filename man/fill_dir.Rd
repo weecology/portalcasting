@@ -10,8 +10,9 @@
 \usage{
 fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), cast_type = "forecast",
-  start_moon = 217, hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
+  start_moon = 217, confidence_level = 0.9, hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
+  raw_path_data = "PortalData",
   raw_path_predictions = "portalPredictions/predictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
@@ -21,12 +22,14 @@ fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
   control_cdl = list(), downloads = zenodo_downloads(c("1215988",
   "833438")), quiet = FALSE, verbose = FALSE, save = TRUE,
   overwrite = TRUE, filename_moons = "moon_dates.csv",
-  filename_cov = "covariates.csv", cleanup = TRUE)
+  filename_cov = "covariates.csv", filename_meta = "metadata.yaml",
+  cleanup = TRUE)
 
 fill_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), cast_type = "forecast", start_moon = 217,
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
+  confidence_level = 0.9, hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
+  raw_path_data = "PortalData",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
@@ -35,7 +38,7 @@ fill_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE)
 
 fill_models(main = ".", models = prefab_models(), controls_m = NULL,
   quiet = FALSE, overwrite = TRUE)
@@ -70,6 +73,9 @@ using \code{\link{Sys.Date}}.}
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the first sample to be included. Default value is \code{217}, 
 corresponding to \code{1995-01-01}.}
+
+\item{confidence_level}{\code{numeric} confidence level used in 
+summarizing model output. Must be between \code{0} and \code{1}.}
 
 \item{hist_covariates}{\code{logical} indicator of whether or not 
 historical covariates are to be included.}
@@ -155,6 +161,8 @@ files should be updated (most users should leave as \code{TRUE}).}
 data output.}
 
 \item{filename_cov}{\code{character} filename for saving the output.}
+
+\item{filename_meta}{\code{character} filename for saving the metadata.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}

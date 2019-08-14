@@ -447,22 +447,35 @@ remove_incompletes <- function(df, colname){
 data_out <- function(x = NULL, main = ".", save = TRUE, filename = "x.csv", 
                      overwrite = TRUE, quiet = FALSE){
   return_if_null(x)
+  save_it <- FALSE
   if(save){
+    fext <- file_ext(filename)
     local_path <- paste0("data/", filename)
     full_path <- file_paths(main, local_path)
     f_exists <- file.exists(full_path)
     if(f_exists){
       if(overwrite){
-        write.csv(x, full_path, row.names = FALSE)
+        save_it <- TRUE
         msg <- paste0(filename, " exists and overwrite = TRUE; file saved")
       } else {
         msg <- paste0(filename, " exists and overwrite = FALSE; not saved") 
       }
     } else{
-      write.csv(x, full_path, row.names = FALSE)
+      save_it <- TRUE
       msg <- paste0(filename, " saved")
     }
     messageq(msg, quiet)
+    if( save_it){
+        if(fext == "csv"){
+          write.csv(x, full_path, row.names = FALSE)
+      } else if (fext == "yaml"){
+          yams <- as.yaml(x)
+          writeLines(yams, con = full_path)
+      } else{
+        stop("file type not supported")
+      }
+    }
+   
   }
   x
 }

@@ -32,6 +32,9 @@
 #'  of the first sample to be included. Default value is \code{217}, 
 #'  corresponding to \code{1995-01-01}.
 #'
+#' @param confidence_level \code{numeric} confidence level used in 
+#'   summarizing model output. Must be between \code{0} and \code{1}.
+#'
 #' @param hist_covariates \code{logical} indicator of whether or not 
 #'  historical covariates are to be included.
 #'
@@ -117,6 +120,8 @@
 #'
 #' @param filename_cov \code{character} filename for saving the output.
 #'
+#' @param filename_meta \code{character} filename for saving the metadata.
+#'
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
 #'
@@ -137,6 +142,7 @@
 fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL, 
                      lead_time = 12, cast_date = Sys.Date(),
                      cast_type = "forecast", start_moon = 217, 
+                     confidence_level = 0.9, 
                      hist_covariates = TRUE, cast_covariates = TRUE,
                      raw_path_archive = "portalPredictions",
                      raw_path_data = "PortalData",
@@ -151,7 +157,8 @@ fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, verbose = FALSE, save = TRUE,
                      overwrite = TRUE, filename_moons = "moon_dates.csv",
-                     filename_cov = "covariates.csv", cleanup = TRUE){
+                     filename_cov = "covariates.csv", 
+                     filename_meta = "metadata.yaml", cleanup = TRUE){
 
   pass_and_call(fill_raw)
   pass_and_call(fill_predictions)
@@ -166,6 +173,7 @@ fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
 fill_data <- function(main = ".", end_moon = NULL, 
                       lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
                       cast_type = "forecast", start_moon = 217, 
+                      confidence_level = 0.9, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
                       raw_path_archive = "portalPredictions",
                       raw_path_data = "PortalData",
@@ -181,6 +189,7 @@ fill_data <- function(main = ".", end_moon = NULL,
                       overwrite = TRUE, 
                       filename_moons = "moon_dates.csv",
                       filename_cov = "covariates.csv",
+                      filename_meta = "metadata.yaml",
                       cleanup = TRUE){
 
   raw_data_present <- verify_raw_data(raw_path_data, main)
@@ -188,9 +197,10 @@ fill_data <- function(main = ".", end_moon = NULL,
     fill_raw(downloads, main, quiet, cleanup)
   }
   messageq("Adding data files to data subdirectory", quiet)
-  moons <- pass_and_call(prep_moons)  
-  pass_and_call(prep_rodents, moons = moons)
-  pass_and_call(prep_covariates, moons = moons)
+  d_m <- pass_and_call(prep_moons)  
+  d_r <-  pass_and_call(prep_rodents, moons = d_m)
+  d_c <- pass_and_call(prep_covariates, moons = d_m)
+  pass_and_call(prep_metadata, moons = d_m, rodents = d_r, covariates = d_c)
   NULL
 }
 

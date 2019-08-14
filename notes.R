@@ -21,7 +21,7 @@ covs <- prep_covariates(main=main)
 
 # use verbose more (re downloads)
 
-# prep_metadata
+# figure out a way to make the pulling or updating of min_lag automated
 
 # still work tidying up
 
@@ -39,6 +39,7 @@ needs test
   utilities: forecast_window, add_date_from_components combine_hist_and_cast
   prepare_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
     prep_hist_covariates
+  prepare_metadata
 
 needs example
   prep_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
@@ -46,9 +47,8 @@ needs example
  utilities: combine_hist_and_cast
   prepare_moons: trim_moons, add_newmoons_from_date, target_moons
   forecast_covariates: all cast_covariates
+  prepare_metadata
 
-
-# figure out a way to make the pulling or updating of min_lag automated
 
 
 

@@ -35,7 +35,8 @@ Imports:
   portalr,
   readr,
   rlang,
-  tools
+  tools,
+  yaml
 Suggests:
   knitr,
   pkgdown,
