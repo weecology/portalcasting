@@ -57,13 +57,13 @@ prep_rodents <- function(main = ".", moons = prep_moons(main = main),
     controls_r <- list(controls_r)
   }
   in_args <- as.list(match.call.defaults())[-1]
-  addl_args <- which(names(in_args) != "controls")
+  addl_args <- which(names(in_args) != "controls_r")
   addl_arg_names <- names(in_args)[addl_args]
   naddl_args <- length(addl_args) 
-  ntmnt <- length(controls_r)
-  table_args <- vector("list", length = ntmnt)
-  table_args <- vector("list", length = ntmnt)
-  for(i in 1:ntmnt){
+  ncontrols_r <- length(controls_r)
+  table_args <- vector("list", length = ncontrols_r)
+
+  for(i in 1:ncontrols_r){
     control_args <- controls_r[[i]]
     ncontrol_args <- length(control_args)
     control_arg_names <- names(control_args)
@@ -73,9 +73,9 @@ prep_rodents <- function(main = ".", moons = prep_moons(main = main),
       table_args[[i]][[j]] <- control_args[[j]]
       names(table_args[[i]])[j] <- control_arg_names[j]
     }
-    for(j in 1:naddl_args){
-      table_args[[i]][[j + ncontrol_args]] <- in_args[[addl_args[j]]]
-      names(table_args[[i]])[j + ncontrol_args] <- addl_arg_names[j]
+    for(j in (ncontrol_args + 1):(ncontrol_args + naddl_args)){
+      table_args[[i]][[j]] <- in_args[[addl_args[j - ncontrol_args]]]
+      names(table_args[[i]])[j] <- addl_arg_names[j - ncontrol_args]
     }
     names(table_args)[i] <- controls_r[[i]]$name
   }

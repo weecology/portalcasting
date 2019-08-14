@@ -1,36 +1,36 @@
 devtools::document()
 main = "~/testing1"
 create_dir(main)
-
 fill_dir(main)
+
+rodents <- prep_rodents(main)
+
+
 
 
 moons <- prep_moons(main = "~/testing")
-rodents <- prep_rodents(main = "~/testing", moons = moons)
+
 prep_covariates(main = "~/testing")
 f_cov <- prep_fcast_covariates(hist_cov = hist_cov, main = "~/testing")
 head(hist_cov)
 cc <- cast_covariates(main)
 covs <- prep_covariates(main=main)
 
-# documenting in fill dir
 
+# to do
 
+# use verbose more (re downloads)
 
+# prep_metadata
 
-# i dont think prep_rodents is set up the best way yet
-# not sure if the start and end times are flexible?
+# still work tidying up
 
-
-
-
-
-# then prep_metadata
-
-# can transpose_args be replaced now?????
+# can transpose_args be replaced?
 
 # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
 # the col name is also updated to cast_newmoon
+
+# vignettes
 
 needs test
   forecast_covariates: all of cast_covariates
