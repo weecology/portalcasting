@@ -91,7 +91,7 @@ download <- function(name = NULL, type = NULL, url = NULL,
     unzip_download(name, destin, main, cleanup)
   } 
 print(destin)
-file.exists(destin)
+print(file.exists(destin))
 }
 
 
