@@ -185,7 +185,8 @@ cast_weather <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-save_cast_cov_csv <- function(cast_cov = NULL, cast_type = "forecast",
+save_cast_cov_csv <- function(main = ".",
+                              cast_cov = NULL, cast_type = "forecast",
                               append_cast_csv = TRUE,
                               raw_path_archive = "portalPredictions",
                               raw_cov_cast_file = "data/covariate_casts.csv",
