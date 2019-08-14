@@ -12,6 +12,14 @@
 #'  decide who wins any ties. In the typical portalcasting space, this is 
 #'  kept at its default value throughout.
 #'
+#' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
+#' 
+#' @examples
+#'  hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
+#'  cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+#'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
+#'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
+#'
 #' @export
 #'
 combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 

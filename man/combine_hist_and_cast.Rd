@@ -15,8 +15,18 @@ includig a code{date} column of \code{Date}s, which is used to align them.}
 decide who wins any ties. In the typical portalcasting space, this is 
 kept at its default value throughout.}
 }
+\value{
+\code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
+}
 \description{
 A simple utility for combining a table of historical data
  and a table of cast data that might need to be assigned to either one
  or the other.
+}
+\examples{
+ hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
+ cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+ combine_hist_and_cast(hist_tab, cast_tab, "hist") 
+ combine_hist_and_cast(hist_tab, cast_tab, "cast")  
+
 }

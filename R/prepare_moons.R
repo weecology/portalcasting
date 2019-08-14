@@ -175,7 +175,14 @@ add_past_moons_to_raw <- function(main = ".", moons,
 #' @param target_cols \code{character} vector of columns to retain.
 #'
 #' @return \code{moons} and a \code{data.frame} but trimmed.
-#'
+#' 
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_dir()
+#'   moons <- prep_moons()
+#'   trim_moons(moons, 300:310)
+#'  }
 #'
 #' @export
 #'
@@ -190,7 +197,7 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
   ntarget_moons <- length(which_target_moons)
   if (ntarget_moons > 0){
     if(retain_target_moons){
-      new_moons <- new_moons[which_target_moons ]
+      new_moons <- new_moons[which_target_moons, ]
     } else{
       new_moons <- new_moons[-which_target_moons, ]
     }
@@ -204,12 +211,22 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'  \code{date} (as a \code{Date}) column.
 #' 
 #' @param x \code{data.frame} with column of newmoon \code{Date}s 
-#'  named \code{newmoondate}.
+#'  named \code{date}.
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
 #' @return \code{data.frame} \code{x} with column of \code{newmoonnumber}s 
 #'  added.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_dir()
+#'   moons <- prep_moons()
+#'   raw_path <- sub_paths(specific_subs = "raw")
+#'   weather <- portalr::weather("daily", TRUE, raw_path)
+#'   add_newmoons_from_date(weather, moons)
+#'  }
 #'
 #' @export
 #'
@@ -229,6 +246,9 @@ add_newmoons_from_date <- function(x, moons = NULL){
     newmoon_match_number <- c(newmoon_match_number, temp_numbers)
   }
   newmoon_match_date <- as.Date(newmoon_match_date)
+  if (is.null(x$date)){
+    x <- add_date_from_components(x)
+  }
   matches <- match(x$date, newmoon_match_date)
   x$newmoonnumber <- newmoon_match_number[matches]
   x
@@ -266,6 +286,13 @@ add_newmoons_from_date <- function(x, moons = NULL){
 #'
 #' @return \code{numeric} vector of the newmoon numbers targeted by the date
 #'  window.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_dir()
+#'   target_newmoons()
+#'  }
 #'
 #' @export
 #'

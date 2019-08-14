@@ -1,5 +1,27 @@
 context("Test utility functions")
 
+
+test_that("cast_window", {
+  skip_on_cran() # downloads take too long for cran checks
+  create_dir(main = "./testing")
+  #fill_raw(main = "./testing")
+  cast_window(main = "./testing")
+})
+
+
+test_that("combine_hist_and_cast", {
+  hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
+  cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+  expect_is(combine_hist_and_cast(hist_tab, cast_tab, "hist"), "data.frame")
+  expect_is(combine_hist_and_cast(hist_tab, cast_tab, "cast"), "data.frame")
+  expect_error(combine_hist_and_cast(hist_tab, cast_tab, "c123")) 
+})
+
+test_that("add_date_from_components", {
+  df <- data.frame(year = 2010, month = 2, day = 1:10)
+  expect_is(add_date_from_components(df), "data.frame")
+})
+
 test_that("pass_and_call", {
 
   yy <- function(n = 1, z = sqrt(w), w = 40){

@@ -42,3 +42,11 @@ Based on the forecast origin (using \code{cast_date} if
  \code{cast_type = "hindcast"}) and the lead time, determine which moons
  should be included.
 }
+\examples{
+ \donttest{
+  create_dir()
+  fill_dir()
+  target_newmoons()
+ }
+
+}

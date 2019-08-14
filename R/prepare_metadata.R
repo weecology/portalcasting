@@ -53,6 +53,16 @@
 #' @return \code{list} of casting metadata, which is also saved out as a 
 #'  YAML file (\code{.yaml}) if desired.
 #' 
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_dir()
+#'   moons <- prep_moons(main)
+#'   rodents <- prep_rodents_list(main, moons = moons)
+#'   covariates <- prep_covariates(main, moons = moons)
+#'   prep_metadata(main, moons, rodents, covariates)
+#'  }
+#' 
 #' @export
 #'
 prep_metadata <- function(main = ".", moons = prep_moons(main = main),

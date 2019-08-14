@@ -68,3 +68,14 @@ Sets up the metadata used for casting, in particular the
  after \code{\link{prep_moons}}, \code{\link{prep_rodents}}, and 
  \code{\link{prep_covariates}} before any model is run.
 }
+\examples{
+ \donttest{
+  create_dir()
+  fill_dir()
+  moons <- prep_moons(main)
+  rodents <- prep_rodents_list(main, moons = moons)
+  covariates <- prep_covariates(main, moons = moons)
+  prep_metadata(main, moons, rodents, covariates)
+ }
+
+}

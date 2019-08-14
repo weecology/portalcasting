@@ -30,3 +30,12 @@ Some functions require that a data table of time (the moons)
  is a simple utility to reduce the moons table to that as well as the 
  columns.
 }
+\examples{
+ \donttest{
+  create_dir()
+  fill_dir()
+  moons <- prep_moons()
+  trim_moons(moons, 300:310)
+ }
+
+}

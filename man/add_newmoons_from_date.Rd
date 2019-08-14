@@ -8,7 +8,7 @@ add_newmoons_from_date(x, moons = NULL)
 }
 \arguments{
 \item{x}{\code{data.frame} with column of newmoon \code{Date}s 
-named \code{newmoondate}.}
+named \code{date}.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 }
@@ -19,4 +19,15 @@ named \code{newmoondate}.}
 \description{
 Add a newmoon number column to a table that has a 
  \code{date} (as a \code{Date}) column.
+}
+\examples{
+ \donttest{
+  create_dir()
+  fill_dir()
+  moons <- prep_moons()
+  raw_path <- sub_paths(specific_subs = "raw")
+  weather <- portalr::weather("daily", TRUE, raw_path)
+  add_newmoons_from_date(weather, moons)
+ }
+
 }

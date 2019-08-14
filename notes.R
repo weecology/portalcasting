@@ -3,6 +3,8 @@ main = "~/testing1"
 create_dir(main)
 fill_dir(main)
 
+moons <-prep_moons(main)
+
 rodents <- prep_rodents(main)
 
 
@@ -35,21 +37,21 @@ covs <- prep_covariates(main=main)
 needs test
   forecast_covariates: all of cast_covariates
   prep_covariates: summarize_daily_weather_by_newmoon
-  prepare_moons: trim_moons , add_newmoons_from_date, target_moons
-  utilities: forecast_window, add_date_from_components combine_hist_and_cast
   prepare_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
     prep_hist_covariates
-  prepare_metadata
 
 needs example
   prep_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
    prep_hist_covariates
- utilities: combine_hist_and_cast
-  prepare_moons: trim_moons, add_newmoons_from_date, target_moons
   forecast_covariates: all cast_covariates
-  prepare_metadata
 
 
+
+#' 
+#' @examples
+#'  \donttest{
+#'   
+#'  }
 
 
 users adding models should permanently add code to model_script_controls()
