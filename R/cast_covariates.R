@@ -339,7 +339,7 @@ read_climate_casts <- function(main = ".", raw_path_cov_cast = "cov_casts",
   for(i in 1:ndatas){
     csv_path <- paste0(raw_path_cov_cast, "/", names(urls)[i], ".csv")
     raw_path <- sub_paths(main, "raw")
-    fpath <- paste0(raw_path, "/", csv_path)
+    fpath <- normalizePath(paste0(raw_path, "/", csv_path), mustWork = FALSE)
 print(fpath)
     dat_list[[i]] <- read.csv(fpath)
   }
