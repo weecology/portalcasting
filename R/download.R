@@ -90,6 +90,7 @@ download <- function(name = NULL, type = NULL, url = NULL,
   if(extension == "zip"){
     unzip_download(name, destin, main, cleanup)
   } 
+print(destin)
 }
 
 
