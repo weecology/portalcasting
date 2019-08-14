@@ -36,8 +36,9 @@ cast_weather(main = ".", moons = prep_moons(main = main),
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
   control_cdl = list(), quiet = FALSE)
 
-save_cast_cov_csv(cast_cov = NULL, cast_type = "forecast",
-  append_cast_csv = TRUE, raw_path_archive = "portalPredictions",
+save_cast_cov_csv(main = ".", cast_cov = NULL,
+  cast_type = "forecast", append_cast_csv = TRUE,
+  raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   source_name = "current_archive", quiet = FALSE, save = TRUE,
   overwrite = TRUE)
