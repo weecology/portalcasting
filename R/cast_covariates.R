@@ -337,8 +337,9 @@ read_climate_casts <- function(main = ".", raw_path_cov_cast = "cov_casts",
   dat_list <- vector("list", length(control_cdl$data))
   ndatas <- length(control_cdl$data)
   for(i in 1:ndatas){
-    loc_path <- paste0("raw/", raw_path_cov_cast, "/", names(urls)[i], ".csv")
-    fpath <- file_paths(main, loc_path)
+    csv_path <- paste0(raw_path_cov_cast, "/", names(urls)[i], ".csv")
+    raw_path <- sub_paths(main, "raw")
+    fpath <- paste0(raw_path, "/", csv_path)
 print(fpath)
     dat_list[[i]] <- read.csv(fpath)
   }
