@@ -5,10 +5,10 @@
 \alias{model_template}
 \title{Write the template for a model into model subdirectory}
 \usage{
-write_model(name = "AutoArima", covariates = FALSE, lag = NA,
-  main = ".", quiet = FALSE, overwrite = TRUE)
+write_model(name = NULL, covariates = NULL, lag = NULL, main = ".",
+  quiet = FALSE, overwrite = TRUE, control = list())
 
-model_template(name = "AutoArima", covariates = FALSE, lag = NULL,
+model_template(name = NULL, covariates = FALSE, lag = NULL,
   main = ".", quiet = FALSE)
 }
 \arguments{
@@ -18,7 +18,7 @@ model_template(name = "AutoArima", covariates = FALSE, lag = NULL,
 covariates.}
 
 \item{lag}{\code{integer} (or integer \code{numeric}) lag time used for the
-covariates or \code{NA} if \code{covariates = FALSE}.}
+covariates or \code{NULL} if \code{covariates} is \code{FALSE}.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
@@ -27,6 +27,14 @@ the directory tree.}
 
 \item{overwrite}{\code{logical} indicator of whether or not the model
 script should be updated.}
+
+\item{control}{\code{list} of model-level controls, including
+\code{name}, a \code{character} value of the model's name;
+\code{covariates}, a \code{logical} indicator for if the model requires 
+covariates; and \code{lag}, a \code{integer} (or integer \code{numeric}) 
+lag time used for the covariates or \code{NA} if 
+\code{covariates = FALSE}. Only used if the specific valued argument
+is \code{NULL}.}
 }
 \value{
 \code{write_mode} \code{\link{write}}s the model script out
@@ -44,7 +52,7 @@ script should be updated.}
 \examples{
  \donttest{
   create_dir()
-  write_model()
+  write_model("AutoArima")
   model_template()
  }
 

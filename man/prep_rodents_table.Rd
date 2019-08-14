@@ -9,12 +9,12 @@
 \alias{trim_treatment}
 \title{Prepare a rodents data table for forecasting}
 \usage{
-prep_rodents_table(species = base_species(), total = TRUE,
-  moons = prep_moons(main = main), main = ".", start_moon = 217,
-  end_moon = NULL, level = "Site", treatment = NULL, plots = "all",
+prep_rodents_table(main = ".", moons = prep_moons(main = main),
+  end_moon = NULL, start_moon = 217, species = base_species(),
+  total = TRUE, level = "Site", treatment = NULL, plots = "all",
   min_plots = 24, min_traps = 1, output = "abundance",
-  quiet = TRUE, ref_species = all_species(), save = TRUE,
-  filename = "rodents_all.csv", overwrite = TRUE)
+  ref_species = all_species(), quiet = TRUE, save = TRUE,
+  overwrite = TRUE, filename = "rodents_all.csv")
 
 trim_time(rodents, start_moon = NULL, end_moon = NULL)
 
@@ -28,6 +28,19 @@ trim_species(rodents, species = base_species(),
 trim_treatment(rodents, level = "Site", treatment = NULL)
 }
 \arguments{
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
+
+\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
+
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the last sample to be included. Default value is \code{NULL}, which 
+equates to the most recently included sample.}
+
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the first sample to be included. Default value is \code{217}, 
+corresponding to \code{1995-01-01}.}
+
 \item{species}{\code{character}-valued vector of species names to include 
 in the forecasting data table. Defaults to all species but \code{"PI"}
 via \code{\link{base_species}}}
@@ -35,19 +48,6 @@ via \code{\link{base_species}}}
 \item{total}{\code{logical} value indicating if a total (sum across 
 species) should be added or not. Only available if more than one species
 is included.}
-
-\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
-
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
-
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
 
 \item{level}{\code{character} indicating the type of summary:
 \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 
@@ -74,19 +74,19 @@ number of traps collected for a plot to be used. Pipes directly to
 \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. Pipes 
 directly to \code{\link[portalr]{summarize_rodent_data}}.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
 \item{ref_species}{\code{character}-valued vector of all possible species 
 names that could be used should be set up via \code{\link{all_species}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}
 
-\item{filename}{\code{character} name of the file for saving the output.}
-
 \item{overwrite}{\code{logical} indicator of whether or not the existing
 files should be updated (most users should leave as \code{TRUE}).}
+
+\item{filename}{\code{character} name of the file for saving the output.}
 
 \item{rodents}{\code{data.frame} rodents table, with varying levels of 
 editing.}

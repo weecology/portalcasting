@@ -35,7 +35,7 @@ NULL
 # To quiet concerns of R CMD check re: variables used in non-standard eval
 if (getRversion() >= "2.15.1"){
   utils::globalVariables(
-    c(".", "battery_low", "censusdate", "day", "date_made", 
+    c(".", "battery_low", "cast_newmoon", "censusdate", "day", "date_made", 
       "forecast_newmoon", "locally_measured", "main", "maxtemp", "meantemp", 
       "mintemp", "newmoondate", "newmoonnumber", "precipitation")
   )

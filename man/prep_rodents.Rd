@@ -4,32 +4,41 @@
 \alias{prep_rodents}
 \title{Prepare a list of rodents data tables for forecasting}
 \usage{
-prep_rodents(controls = rodents_controls(), moons = prep_moons(main =
-  main), main = ".", quiet = FALSE, overwrite = TRUE,
-  ref_species = all_species(), save = TRUE)
+prep_rodents(main = ".", moons = prep_moons(main = main),
+  end_moon = NULL, start_moon = 217, controls_r = rodents_controls(),
+  ref_species = all_species(), quiet = FALSE, save = TRUE,
+  overwrite = TRUE)
 }
 \arguments{
-\item{controls}{Control \code{list} (from \code{\link{rodents_control}}) or
-\code{list} of control \code{list}s (from \code{\link{rodents_controls}})
-specifying the structuring of the rodents tables. See
-\code{\link{rodents_control}} for details.}
-
-\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
-
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
+\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the last sample to be included. Default value is \code{NULL}, which 
+equates to the most recently included sample.}
+
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the first sample to be included. Default value is \code{217}, 
+corresponding to \code{1995-01-01}.}
+
+\item{controls_r}{Control \code{list} (from 
+\code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+(from \code{\link{rodents_controls}}) specifying the structuring of the 
+rodents tables. See \code{\link{rodents_control}} for details.}
 
 \item{ref_species}{\code{character}-valued vector of all possible species 
 names that could be used should be set up via \code{\link{all_species}}.}
 
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}
+
+\item{overwrite}{\code{logical} indicator of whether or not the existing
+files should be updated (most users should leave as \code{TRUE}).}
 }
 \value{
 \code{list} of \code{data.frame}s, one for each data subset

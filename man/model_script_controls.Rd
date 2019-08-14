@@ -4,14 +4,14 @@
 \alias{model_script_controls}
 \title{Produce the control lists for the model script writing}
 \usage{
-model_script_controls(models = NULL, controls = NULL)
+model_script_controls(models = NULL, controls_m = NULL)
 }
 \arguments{
 \item{models}{\code{character} vector of name(s) of model(s) whose 
 script-writing controls need to be included in the \code{list} used
 to write the scripts.}
 
-\item{controls}{Additional controls for models not in the prefab set. 
+\item{controls_m}{Additional controls for models not in the prefab set. 
 \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 

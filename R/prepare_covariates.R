@@ -1,59 +1,135 @@
-prep_covariates <- function(moons = prep_moons(main = main),
-                            main = ".", quiet = FALSE, end_moon = NULL,
-                            cov_hist = TRUE, cov_fcast = TRUE,
-                            lead_time = 12, 
+#' @title Prepare covariate data for casting
+#'
+#' @description Combine the historical and forecast or hindcast covariate 
+#'  data for a model run. See \code{link{prep_hist_covariates}} and
+#'  \code{\link{prep_cast_covariates}} for the historical and -casted
+#'  covariate preparation details, respectively.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param cast_type \code{character} value of the -cast type: 
+#'  \code{"forecasts"} or \code{"hindcasts"}.
+#'
+#' @param hist_covariates \code{logical} indicator of whether or not 
+#'  historical covariates are to be included.
+#'
+#' @param cast_covariates \code{logical} indicator whether or not -casted 
+#'   covariates are to be included.
+#'
+#' @param raw_path_archive \code{character} value of the path to the archive
+#'  within the raw sub folder.
+#' 
+#' @param raw_cov_cast_file \code{character} value of the path to the
+#'  covariate cast file within \code{raw_path_archive}.
+#'
+#' @param raw_path_cov_cast \code{character} value of the path to the folder
+#'  that holds any downloaded covariate cast files within the raw sub folder.
+#'
+#' @param source_name \code{character} value for the name to give the 
+#'   covariate forecast. Currently is \code{"current_archive"}. Previous to
+#'   \code{"current_archive"}, the data were retroactively filled in and are 
+#'   given the source name \code{"retroactive"}.
+#'
+#' @param append_cast_csv \code{logical} indicator controlling if the new 
+#'   cast covariates should be appended to the historical casts for the
+#'   purposes of hindcasting later.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param control_cdl \code{list} of specifications for the download, which
+#'  are sent to \code{\link{NMME_urls}} to create the specific URLs. See
+#'  \code{\link{climate_dl_control}}.
+#'
+#' @param overwrite \code{logical} indicator of whether or not the existing
+#'  files should be updated (most users should leave as \code{TRUE}).
+#'
+#' @param save \code{logical} indicator controlling if the output should 
+#'   be saved out.
+#'
+#' @param filename_cov \code{character} filename for saving the output.
+#'
+#' @return \code{data.frame} of historical and -casted covariates, combined
+#'  and saved out to \code{filename} if indicated by \code{save}.
+#'  
+#' @export
+#'
+prep_covariates <- function(main = ".", moons = prep_moons(main = main),
+                            end_moon = NULL, lead_time = 12, min_lag = 6, 
                             cast_date = Sys.Date(), cast_type = "forecast",
-                            save = TRUE, filename = "covariates.csv",
-                            overwrite = TRUE){
+                            hist_covariates = TRUE, cast_covariates = TRUE,
+                            raw_path_archive = "portalPredictions",
+                            raw_cov_cast_file = "data/covariate_casts.csv",
+                            raw_path_cov_cast = "cov_casts", 
+                            source_name = "current_archive",
+                            append_cast_csv = TRUE, 
+                            control_cdl = list(), quiet = FALSE, 
+                            save = TRUE, overwrite = TRUE,
+                            filename_cov = "covariates.csv"){
+
   messageq("Loading covariate data files into data subdirectory", quiet)
   hist_cov <- pass_and_call(prep_hist_covariates)
-  if (cov_fcast){
-
-
-    fcast_cov <- pass_and_call(prep_fcast_covariates, hist_cov = hist_cov)
+  if (cast_covariates){
+    cast_cov <- pass_and_call(prep_cast_covariates, hist_cov = hist_cov)
   }
   out <- hist_cov[-(1:nrow(hist_cov)), ]
-  if (cov_hist){
+  if (hist_covariates){
     out <- bind_rows(out, hist_cov)
   }
-  if (cov_fcast){
-    out <- bind_rows(out, fcast_cov)
+  if (cast_covariates){
+    out <- bind_rows(out, cast_cov)
   }
-  data_out(out, main, save, filename, overwrite, quiet)
+  data_out(out, main, save, filename_cov, overwrite, quiet)
 }
 
 
-# this will now work for a covariate forcast or not
-target_newmoons <- function(moons = prep_moons(main = main),
-                              lead_time = 12, main =  ".",
-                                   cast_date = Sys.Date(),
-                                   cast_type = "forecast", end_moon = NULL,
-                                   hist_cov = NULL){
-
-  if (cast_type == "forecast"){
-
-    which_prev_newmoon <- max(which(moons$newmoondate < cast_date))
-    prev_newmoon <- moons$newmoonnumber[which_prev_newmoon]
-  } else if (cast_type == "hindcast"){
-    prev_newmoon <- end_moon    
-  } else {
-    stop("cast_type can only be forecast or hindcast")
-  } 
-  if(is.null(hist_cov)){
-    first_fcast_newmoon <- prev_newmoon + 1
-  } else {
-    prev_covar_newmoon <- tail(hist_cov, 1)$newmoonnumber
-    first_fcast_newmoon <- prev_covar_newmoon + 1
-  }
-  last_fcast_newmoon <- prev_newmoon + lead_time
-  first_fcast_newmoon:last_fcast_newmoon
-}
-
-
-
-
-prep_hist_covariates <- function(main = ".", quiet = FALSE, end_moon = NULL
-                                 ){
+#' @title Prepare historical covariates data
+#'
+#' @description 
+#'  \code{prep_hist_covariates} creates a \code{data.frame} of historical 
+#'  weather and NDVI data. Automatically goes all the way back to the 
+#'  beginning of the available data, as the table is automatically trimmed 
+#'  later. \cr \cr
+#'  \code{prep_weather_data} creates a \code{data.frame} of historical 
+#'   weather data using \code{\link[portalr]{weather}}. \cr \cr
+#'  NDVI data are generated by \code{\link[portalr]{ndvi}}.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @return 
+#'  \code{prep_hist_covariates}: historical covariate data table as a 
+#'   \code{data.frame}. \cr \cr
+#'  \code{prep_weather_data}: \code{data.frame} of historical weather data.
+#'
+#' @export
+#'
+prep_hist_covariates <- function(main = ".", end_moon = NULL, 
+                                 quiet = FALSE){
   weather_data <- prep_weather_data(main)
   ndvi_data <- ndvi("newmoon", TRUE, sub_paths(main, "raw"))
   out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
@@ -64,7 +140,10 @@ prep_hist_covariates <- function(main = ".", quiet = FALSE, end_moon = NULL
   data.frame(out)
 }
 
-
+#' @rdname prep_hist_covariates
+#'
+#' @export
+#'
 prep_weather_data <- function(main = "."){
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
@@ -72,4 +151,30 @@ prep_weather_data <- function(main = "."){
   ungroup() %>%
   select(cols) %>%
   remove_incompletes("newmoonnumber")
+}
+
+#' @title Summarize a daily weather table by newmoons
+#'
+#' @description Summarizes a daily weather table by newmoons. Taking the 
+#'  max date, min of the min temperatures, max of the max temperatures,
+#'  mean of the mean temperatures, and sum of the precipitation.
+#'
+#' @param x \code{data.frame} of daily weather, with columns named
+#'  \code{"date"}, \code{"mintemp"}, \code{"maxtemp"}, \code{"meantemp"}, 
+#'  \code{"precipitation"}, and \code{"newmoonnumber"}.
+#'
+#' @return \code{data.frame} of \code{x} summarized and arranged by
+#'  \code{x$newmoonnumber}.
+#'
+#' @export
+#'
+summarize_daily_weather_by_newmoon <- function(x){
+  group_by(x, newmoonnumber) %>%
+  summarize(date = max(date, na.rm = TRUE), 
+            mintemp = min(mintemp, na.rm = TRUE), 
+            maxtemp = max(maxtemp, na.rm = TRUE), 
+            meantemp = mean(meantemp, na.rm = TRUE), 
+            precipitation = sum(precipitation, na.rm = TRUE)) %>% 
+  arrange(newmoonnumber) %>% 
+  select(newmoonnumber, mintemp, maxtemp, meantemp, precipitation)
 }

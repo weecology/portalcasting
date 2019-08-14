@@ -7,15 +7,14 @@
 \usage{
 rodents_control(tmnt_type = NULL, name = tmnt_type,
   species = base_species(), total = TRUE,
-  filename = "rodents_all.csv", start_moon = 217, end_moon = NULL,
-  level = "Site", treatment = NULL, plots = "all", min_plots = 24,
-  min_traps = 1, output = "abundance")
+  filename = "rodents_all.csv", level = "Site", treatment = NULL,
+  plots = "all", min_plots = 24, min_traps = 1,
+  output = "abundance")
 
 rodents_controls(tmnt_type = c("all", "controls"), name = tmnt_type,
   species = base_species(), total = TRUE, filename = NULL,
-  start_moon = 217, end_moon = NULL, level = NULL,
-  treatment = NULL, plots = NULL, min_plots = 24, min_traps = 1,
-  output = "abundance")
+  level = NULL, treatment = NULL, plots = NULL, min_plots = 24,
+  min_traps = 1, output = "abundance")
 }
 \arguments{
 \item{tmnt_type}{\code{character} value of the treatment type (currently
@@ -35,14 +34,6 @@ species) should be added or not. Only available if more than one species
 is included.}
 
 \item{filename}{\code{character} name of the file for saving the output.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
-
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
 
 \item{level}{\code{character} indicating the type of summary:
 \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 

@@ -27,7 +27,7 @@
 #'  script-writing controls need to be included in the \code{list} used
 #'  to write the scripts. 
 #'
-#' @param controls Additional controls for models not in the prefab set. 
+#' @param controls_m Additional controls for models not in the prefab set. 
 #'  \cr 
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
@@ -58,13 +58,13 @@
 #'
 #' @export
 #'
-model_script_controls <- function(models = NULL, controls = NULL){
+model_script_controls <- function(models = NULL, controls_m = NULL){
   return_if_null(models)
-  if(list_depth(controls) == 1){
-    controls <- list(controls)
-    names(controls) <- controls[[1]]$name
+  if(list_depth(controls_m) == 1){
+    controls_m <- list(controls_m)
+    names(controls_m) <- controls_m[[1]]$name
   }
-  nadd <- length(controls)
+  nadd <- length(controls_m)
 
   prefab_controls <- list(
         AutoArima = list(name = "AutoArima", covariates = FALSE, lag = NA), 
@@ -74,12 +74,12 @@ model_script_controls <- function(models = NULL, controls = NULL){
         pevGARCH = list(name = "pevGARCH", covariates = TRUE, lag = 6))
   nprefab <- length(prefab_controls)
   for(i in 1:nprefab){
-    controls[nadd + i] <- list(prefab_controls[[i]])
-    names(controls)[nadd + i] <- names(prefab_controls)[i]
+    controls_m[nadd + i] <- list(prefab_controls[[i]])
+    names(controls_m)[nadd + i] <- names(prefab_controls)[i]
   }
-  included_models <- which(names(controls) %in% models)
-  missing_controls <- which((models %in% names(controls)) == FALSE)
-  replicates <- table(names(controls))
+  included_models <- which(names(controls_m) %in% models)
+  missing_controls <- which((models %in% names(controls_m)) == FALSE)
+  replicates <- table(names(controls_m))
   if(length(missing_controls) > 0){
     which_missing <- models[missing_controls]
     all_missing <- paste(which_missing, collapse = ", ")
@@ -92,10 +92,8 @@ model_script_controls <- function(models = NULL, controls = NULL){
     msg <- paste0("conflicting copies of model(s): ", all_conflicting)
     stop(msg)
   }
-  controls[included_models]
+  controls_m[included_models]
 }
-
-
 
 
 #' @title Provide the names of models
@@ -167,11 +165,19 @@ wEnsemble_models <- function(){
 #'
 #' @param name \code{character} value of the name of the model.
 #'
+#' @param control \code{list} of model-level controls, including
+#'  \code{name}, a \code{character} value of the model's name;
+#'  \code{covariates}, a \code{logical} indicator for if the model requires 
+#'  covariates; and \code{lag}, a \code{integer} (or integer \code{numeric}) 
+#'  lag time used for the covariates or \code{NA} if 
+#'  \code{covariates = FALSE}. Only used if the specific valued argument
+#'  is \code{NULL}.
+#'
 #' @param covariates \code{logical} indicator for if the model requires 
 #'   covariates.
 #'
 #' @param lag \code{integer} (or integer \code{numeric}) lag time used for the
-#'   covariates or \code{NA} if \code{covariates = FALSE}.
+#'   covariates or \code{NULL} if \code{covariates} is \code{FALSE}.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -186,15 +192,18 @@ wEnsemble_models <- function(){
 #' @examples
 #'  \donttest{
 #'   create_dir()
-#'   write_model()
+#'   write_model("AutoArima")
 #'   model_template()
 #'  }
 #'
 #' @export
 #'
-write_model <- function(name = "AutoArima", covariates = FALSE,
-                        lag = NA, main = ".", quiet = FALSE, 
-                        overwrite = TRUE){
+write_model <- function(name = NULL, covariates = NULL,
+                        lag = NULL, main = ".", quiet = FALSE, 
+                        overwrite = TRUE, control = list()){
+  covariates <- ifnull(covariates, control$covariates)
+  lag <- ifnull(lag, control$lag)
+  name <- ifnull(name, control$name)
   return_if_null(name)
   if((is.null(covariates) & is.null(lag))){
     msg1 <- paste0("\n  *info for ", name, " is NULL*")
@@ -242,7 +251,7 @@ write_model <- function(name = "AutoArima", covariates = FALSE,
 #'
 #' @export
 #'
-model_template <- function(name = "AutoArima", covariates = FALSE,
+model_template <- function(name = NULL, covariates = FALSE,
                            lag = NULL, main = ".", quiet = FALSE){
   main_arg <- paste0(', main = "', main, '"')
   quiet_arg <- paste0(', quiet = ', quiet)

@@ -39,11 +39,17 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #' 
-#' @param raw_path \code{character} value indicating the file path
-#'  to the data within \code{raw}. A standard portalcasting directory 
-#'  downloads the raw data files into \code{"raw\PortalData"}, so 
-#'  \code{raw_path = "PortalData/Rodents/moon_dates.csv"} (as \code{"raw/"} 
-#'  is implied). 
+#' @param raw_path_data \code{character} value indicating the folder path
+#'  to the data within the \code{raw} subdirectory but above the files. A 
+#'  standard portalcasting directory downloads the raw data files into 
+#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
+#'  \code{"raw/"} is implied). 
+#'
+#' @param raw_moons_file \code{character} value indicating the path
+#'  to the moons data file within \code{raw_path_data}. A standard 
+#'  portalcasting directory downloads the raw data files into 
+#'  \code{"raw\PortalData"}, so 
+#'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
@@ -51,7 +57,8 @@
 #' @param save \code{logical} indicator controlling if the output should 
 #'   be saved out.
 #'
-#' @param filename \code{character} name of the file for saving the output.
+#' @param filename_moons \code{character} name of the file for saving the 
+#'  data output.
 #'
 #' @return All functions here return some version of a moons \code{data.frame}
 #'  \cr \cr. 
@@ -75,17 +82,19 @@
 #'
 #' @export
 #' 
-prep_moons <- function(lead_time = 12, cast_date = Sys.Date(), 
-                       raw_path = "PortalData/Rodents/moon_dates.csv", 
-                       main = ".", quiet = FALSE, overwrite = TRUE,
-                       save = TRUE, filename = "moon_dates.csv"){
-  paste0("raw/", raw_path) %>%
+prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(), 
+                       raw_path_data = "PortalData",
+                       raw_moons_file = "Rodents/moon_dates.csv",
+                       quiet = FALSE, save = TRUE, 
+                       overwrite = TRUE, filename_moons = "moon_dates.csv"){
+
+  paste0("raw/", raw_path_data, "/", raw_moons_file) %>%
   file_paths(main, .) %>%
   read.csv(stringsAsFactors = FALSE) %>%
   add_future_moons(lead_time, cast_date) %>%
-  add_past_moons_to_raw(main, raw_path, overwrite) %>%
+  add_past_moons_to_raw(main, ., raw_path_data, raw_moons_file, overwrite) %>%
   format_moons() %>%
-  data_out(main, save, filename, overwrite, quiet)
+  data_out(main, save, filename_moons, overwrite, quiet)
 }
 
 #' @rdname prep_moons
@@ -131,14 +140,154 @@ add_extra_future_moons <- function(moons, cast_date = Sys.Date()){
 #'
 #' @export
 #'
-add_past_moons_to_raw <- function(moons, main = ".", raw_path = 
-                                  "PortalData/Rodents/moon_dates.csv",
+add_past_moons_to_raw <- function(main = ".", moons, 
+                                  raw_path_data = "PortalData",
+                                  raw_moons_file = "Rodents/moon_dates.csv",
                                   overwrite = TRUE){
   if(overwrite){
-    fpath <- file_paths(main, paste0("raw/", raw_path)) 
+    lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
+    fpath <- file_paths(main, lpath) 
     included_moons <- moons$newmoondate < Sys.Date()
     new_raw <- moons[included_moons, ]
     write.csv(new_raw, fpath, row.names = FALSE)
   }
   moons
 }
+
+
+#' @title Trim a moons table based on target moons
+#'
+#' @description Some functions require that a data table of time (the moons)
+#'  table only includes specific time stamps (newmoon numbers). This function
+#'  is a simple utility to reduce the moons table to that as well as the 
+#'  columns.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param target_moons \code{integer}-conformable newmoon numbers, usually
+#'  made through \code{\link{target_newmoons}} of the moons to either 
+#'  drop or retain based on \code{retain_target_moons}. 
+#' 
+#' @param retain_target_moons \code{logical} value that dictates if 
+#'  \code{target_moons} are to be dropped (\code{retain_target_moons = FALSE}
+#'  or retained (\code{retain_target_moons = TRUE})
+#'
+#' @param target_cols \code{character} vector of columns to retain.
+#'
+#' @return \code{moons} and a \code{data.frame} but trimmed.
+#'
+#'
+#' @export
+#'
+trim_moons <- function(moons = NULL, target_moons = NULL, 
+                       retain_target_moons = TRUE,
+                       target_cols = c("newmoonnumber", "newmoondate", 
+                                       "period", "censusdate")){
+  return_if_null(moons)
+  moons <- moons[, target_cols]
+  new_moons <- moons
+  which_target_moons <- which(moons$newmoonnumber %in% target_moons)
+  ntarget_moons <- length(which_target_moons)
+  if (ntarget_moons > 0){
+    if(retain_target_moons){
+      new_moons <- new_moons[which_target_moons ]
+    } else{
+      new_moons <- new_moons[-which_target_moons, ]
+    }
+  }
+  new_moons
+}
+
+#' @title Add a newmoon number to a table that has the date
+#' 
+#' @description Add a newmoon number column to a table that has a 
+#'  \code{date} (as a \code{Date}) column.
+#' 
+#' @param x \code{data.frame} with column of newmoon \code{Date}s 
+#'  named \code{newmoondate}.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @return \code{data.frame} \code{x} with column of \code{newmoonnumber}s 
+#'  added.
+#'
+#' @export
+#'
+add_newmoons_from_date <- function(x, moons = NULL){
+  return_if_null(moons, x)
+  newmoon_number <- moons$newmoonnumber[-1]
+  newmoon_start <- as.Date(moons$newmoondate[-nrow(moons)])
+  newmoon_end <- as.Date(moons$newmoondate[-1])
+  newmoon_match_number <- NULL
+  newmoon_match_date <- NULL
+
+  for (i in seq(newmoon_number)) {
+    temp_dates <- seq.Date(newmoon_start[i] + 1, newmoon_end[i], 1)
+    temp_dates <- as.character(temp_dates)
+    temp_numbers <- rep(newmoon_number[i], length(temp_dates))
+    newmoon_match_date <- c(newmoon_match_date, temp_dates)
+    newmoon_match_number <- c(newmoon_match_number, temp_numbers)
+  }
+  newmoon_match_date <- as.Date(newmoon_match_date)
+  matches <- match(x$date, newmoon_match_date)
+  x$newmoonnumber <- newmoon_match_number[matches]
+  x
+}
+
+#' @title Determine which newmoon numbers fall into a range of times for 
+#'  casting
+#'
+#' @description Based on the forecast origin (using \code{cast_date} if
+#'  \code{cast_type = "forecast"} or \code{end_moon} if 
+#'  \code{cast_type = "hindcast"}) and the lead time, determine which moons
+#'  should be included.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param hist_cov \code{data.frame} of historic covariates from 
+#'  \code{\link{prep_hist_covariates}}.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param cast_type \code{character} value of the -cast type: 
+#'  \code{"forecasts"} or \code{"hindcasts"}.
+#'
+#' @return \code{numeric} vector of the newmoon numbers targeted by the date
+#'  window.
+#'
+#' @export
+#'
+target_newmoons <- function(main = ".", moons = prep_moons(main = main),
+                            end_moon = NULL, hist_cov = NULL, lead_time = 12, 
+                            cast_date = Sys.Date(), 
+                            cast_type = "forecast"){
+  if (cast_type == "forecast"){
+    which_prev_newmoon <- max(which(moons$newmoondate < cast_date))
+    prev_newmoon <- moons$newmoonnumber[which_prev_newmoon]
+  } else if (cast_type == "hindcast"){
+    prev_newmoon <- end_moon    
+  } else {
+    stop("cast_type can only be forecast or hindcast")
+  } 
+  if(is.null(hist_cov)){
+    first_cast_newmoon <- prev_newmoon + 1
+  } else {
+    prev_covar_newmoon <- tail(hist_cov, 1)$newmoonnumber
+    first_cast_newmoon <- prev_covar_newmoon + 1
+  }
+  last_cast_newmoon <- prev_newmoon + lead_time
+  first_cast_newmoon:last_cast_newmoon
+}
+

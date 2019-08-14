@@ -10,9 +10,7 @@ NMME_urls(start = Sys.Date(), end = Sys.Date(), model = "ENSMEAN",
   data = c("tasmin", "tasmean", "tasmax", "pr"))
 }
 \arguments{
-\item{start}{\code{Date} for the start of the forecast.}
-
-\item{end}{\code{Date} for the end of the forecast.}
+\item{start, end}{\code{Date} for the start and end of the cast.}
 
 \item{model}{\code{character} value of the model, one of \code{"ENSMEAN"},
 (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"}

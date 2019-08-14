@@ -1,19 +1,51 @@
 devtools::document()
-main = "~/testing"
-create_dir(main = "~/testing")
-fill_raw(main = "~/testing")
+main = "~/testing1"
+create_dir(main)
+
+fill_dir(main)
+
+
 moons <- prep_moons(main = "~/testing")
 rodents <- prep_rodents(main = "~/testing", moons = moons)
 prep_covariates(main = "~/testing")
 f_cov <- prep_fcast_covariates(hist_cov = hist_cov, main = "~/testing")
 head(hist_cov)
-
+cc <- cast_covariates(main)
 covs <- prep_covariates(main=main)
 
-# prep covariates is done!
-# just needs tidying, documentation, and testing, lolz
+# documenting in fill dir
+
+
+
+
+# i dont think prep_rodents is set up the best way yet
+# not sure if the start and end times are flexible?
+
+
+
+
+
 # then prep_metadata
 
+# can transpose_args be replaced now?????
+
+# I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
+# the col name is also updated to cast_newmoon
+
+needs test
+  forecast_covariates: all of cast_covariates
+  prep_covariates: summarize_daily_weather_by_newmoon
+  prepare_moons: trim_moons , add_newmoons_from_date, target_moons
+  utilities: forecast_window, add_date_from_components combine_hist_and_cast
+  prepare_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
+    prep_hist_covariates
+
+needs example
+  prep_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
+   prep_hist_covariates
+ utilities: combine_hist_and_cast
+  prepare_moons: trim_moons, add_newmoons_from_date, target_moons
+  forecast_covariates: all cast_covariates
 
 
 # figure out a way to make the pulling or updating of min_lag automated
@@ -42,11 +74,7 @@ end_step is now out of the controls list, because come on
 # basically, like the PD and PP, but just for tests
 
 
-# later capacity: 
-#  1. make it so download version numbers are retained to allow checking to
-#  prevent unneeded downloads
-#  2. github
-# 
+ 
 
 # important notes for news
 #  directory tree structure simplified
@@ -61,3 +89,15 @@ end_step is now out of the controls list, because come on
 # all the NMME options! :D
 # covariate forecasts are now saved in the raw folder for reference 
 #   rather than only ever loaded within R
+# (mostly) internal generalization to cast 
+#    (there were still lots of "fcast" names
+
+# future ideas
+#  a future nice thing will be making update_list work where you pass
+#  it a second list
+# maybe update_list <- function(orig_list, ..., new_list = NULL)
+# and if new_list isn't null then unwind it and use its elements
+# that way you dont have to pass in each argument as x = x if you're updating
+# a bunch of stuff!
+#
+# github download urls

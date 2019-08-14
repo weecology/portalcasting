@@ -1,3 +1,219 @@
+
+#' @title Combine a historical table and a cast table
+#'
+#' @description A simple utility for combining a table of historical data
+#'  and a table of cast data that might need to be assigned to either one
+#'  or the other.
+#'
+#' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns
+#'  includig a code{date} column of \code{Date}s, which is used to align them.
+#'
+#' @param winner \code{character} value either {"hist"} or \code{"cast"} to
+#'  decide who wins any ties. In the typical portalcasting space, this is 
+#'  kept at its default value throughout.
+#'
+#' @export
+#'
+combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
+                                  winner = "hist"){
+  return_if_null(hist_tab, cast_tab)
+  return_if_null(cast_tab, hist_tab)
+  
+  dupes <- which(cast_tab$date %in% hist_tab$date)
+  if(length(dupes) > 0){
+    if(winner == "hist"){
+      cast_tab <- cast_tab[-dupes, ]
+    } else if (winner == "cast"){
+      dupes <- which(hist_tab$date %in% cast_tab$date)
+      hist_tab <- hist_tab[-dupes, ]
+    } else {
+      stop("winner must be hist or cast")
+    }
+  }
+  bind_rows(hist_tab, cast_tab)
+}
+
+#' @title Add a date to a table that has the year month and day as components 
+#' 
+#' @description Add a date (as a \code{Date}) column to a table that has the 
+#'  year month and day as components.
+#' 
+#' @param x \code{data.frame} with columns named \code{year}, \code{month},
+#'  and \code{day}. 
+#'
+#' @return \code{data.frame} \code{x} with column of \code{Date}s 
+#'  named \code{date} added.
+#'
+#' @examples
+#'  df <- data.frame(year = 2010, month = 2, day = 1:10)
+#'  add_date_from_components(df)
+#'
+#' @export
+#'
+add_date_from_components <- function(x){
+  yrs <- x$year
+  mns <- x$month
+  dys <- x$day
+  x$date <- as.Date(paste(yrs, mns, dys, sep = "-"))
+  x
+}
+
+
+#' @title Determine the start and end calendar dates for a cast window
+#'
+#' @description Based on the cast origin (\code{cast_date}), lead time
+#'  (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
+#'  the dates bracketing the requested window.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @return Named \code{list} with elements \code{start} and \code{end},
+#'  which are both \code{Dates}.
+#'
+#' @examples
+#'  \donttest{
+#'  create_dir()
+#'  fill_raw()
+#'  cast_window()
+#'  }
+#'
+#' @export
+#'
+cast_window <- function(main = ".",
+                            moons = prep_moons(main = main), 
+                            
+                            cast_date = Sys.Date(),
+                            lead_time = 12, min_lag = 6){
+  lagged_lead <- lead_time - min_lag
+  moons0 <- moons[moons$newmoondate < cast_date, ]
+  last_moon <- tail(moons0, 1)
+  last_moon$newmoondate <- as.Date(last_moon$newmoondate)
+  future_moons <- get_future_moons(moons0, num_future_moons = lead_time)
+  start_day <- as.character(as.Date(last_moon$newmoondate) + 1)
+  end_day <- future_moons$newmoondate[lead_time]
+  list(start = start_day, end = end_day)
+}
+
+#' @title Transpose argument lists for use in do.call
+#'
+#' @description Arguments coming into functions, when captured using 
+#'  \code{\link[DesignLibrary]{match.call.defaults}}, require expansion and
+#'  transposition for use within other functions. 
+#'
+#' @details As an example, see the source code of 
+#'  \code{\link{rodents_controls}}.
+#'
+#' @param eval_args \code{character} vector (or \code{NULL} if not needed)
+#'  of any arguments in \code{in_args} need to be wrapped in 
+#'  \code{\link{eval}} for replication purposes. \cr \cr
+#'  This is generally needed if, for example, a function is used to pass
+#'  a list of values (e.g., \code{species} in 
+#'  \code{\link{rodents_controls}}.
+#'
+#' @param enquote_args \code{character} vector (or \code{NULL} if not needed)
+#'  of any arguments in \code{in_args} need to be wrapped in 
+#'  \code{\link{enquote}} for replication purposes. \cr \cr
+#'  This is generally needed if, for example, an argument's input is another
+#'  argument (e.g., \code{name} in 
+#'  \code{\link{rodents_controls}}.
+#'
+#' @param in_args \code{list} of arguments that can be of varying lengths,
+#'  which need to be combined into a \code{list} of argument values that can 
+#'  be easily input into \code{\link{do.call}}.
+#'
+#' @return \code{list} of argument values that can be easily input into 
+#'   \code{\link{do.call}} (each element is a \code{list} of arguments.
+#'
+#' @examples
+#'  in_args <- list(x = 1, y = 1:2, z = NULL)
+#'  transpose_args(in_args, NULL)
+#'
+#' @export
+#'
+transpose_args <- function(in_args = NULL, eval_args = NULL,
+                           enquote_args = NULL){
+
+  return_if_null(in_args)
+  if(!is.null(eval_args)){
+    neval_args <- length(eval_args)
+    for(i in 1:neval_args){
+      in_args[[eval_args[i]]] <- eval(in_args[[eval_args[i]]])
+    }
+  }
+  if(!is.null(enquote_args)){
+    nenquote_args <- length(enquote_args)
+    for(i in 1:nenquote_args){
+      in_args[[enquote_args[i]]] <- enquote(in_args[[enquote_args[i]]])
+    }
+  }
+
+
+  nargs <- length(in_args)
+  arg_names <- names(in_args)
+
+  nlevs <- rep(NA, nargs)
+  for(i in 1:nargs){
+    nlevs[i] <- length((in_args[[i]]))
+  }
+  enquoted <- names(in_args) %in% enquote_args
+  nlevs[which(enquoted)] <- 0
+  tot_levs <- prod(nlevs[nlevs > 0])
+  out <- vector("list", length = tot_levs)
+
+  arg_indexes <- vector("list", length = nargs)
+  for(i in 1:nargs){
+    if(nlevs[i] == 0){
+      if(enquoted[i]){
+        arg_indexes[[i]] <- 1
+      } else {
+        arg_indexes[[i]] <- 0
+      }
+    } else {
+      arg_indexes[[i]] <- 1:nlevs[i]
+    }
+  }
+  val_arg <- expand.grid(arg_indexes)
+  for(j in 1:tot_levs){
+    out[[j]] <- vector("list", length = nargs)
+    for(i in 1:nargs){
+      if (nlevs[i] == 0){
+        if(enquoted[i]){
+          evaled <- eval(in_args[[i]])
+          spec <- val_arg[j, which(arg_names == evaled)]
+          out[[j]][[i]] <- in_args[[evaled]][spec]
+        } else{
+          out[[j]][[i]] <- NULL
+        }
+      } else{
+        out[[j]][[i]] <- in_args[[i]][ val_arg[j,i] ]
+      }
+    }
+    if(length(out[[j]]) < nargs){
+      nmissing <- nargs - length(out[[j]])
+      outj <- vector("list", length = nargs)
+      for(i in 1:length(out[[j]])){
+        outj[[i]] <- out[[j]][[i]]
+      }
+      out[[j]] <- outj
+    }
+    names(out[[j]]) <- arg_names
+  }
+  out
+}
+
 #' @title Pass arguments from a parent to a child function and call the
 #'  child function
 #'

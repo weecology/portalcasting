@@ -8,10 +8,10 @@
 \alias{add_past_moons_to_raw}
 \title{Prepare lunar data for the portalcasting repository}
 \usage{
-prep_moons(lead_time = 12, cast_date = Sys.Date(),
-  raw_path = "PortalData/Rodents/moon_dates.csv", main = ".",
-  quiet = FALSE, overwrite = TRUE, save = TRUE,
-  filename = "moon_dates.csv")
+prep_moons(main = ".", lead_time = 12, cast_date = Sys.Date(),
+  raw_path_data = "PortalData",
+  raw_moons_file = "Rodents/moon_dates.csv", quiet = FALSE,
+  save = TRUE, overwrite = TRUE, filename_moons = "moon_dates.csv")
 
 format_moons(moons)
 
@@ -20,34 +20,41 @@ add_future_moons(moons = prep_moons(), lead_time = 12,
 
 add_extra_future_moons(moons, cast_date = Sys.Date())
 
-add_past_moons_to_raw(moons, main = ".",
-  raw_path = "PortalData/Rodents/moon_dates.csv", overwrite = TRUE)
+add_past_moons_to_raw(main = ".", moons, raw_path_data = "PortalData",
+  raw_moons_file = "Rodents/moon_dates.csv", overwrite = TRUE)
 }
 \arguments{
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
+
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}
 
 \item{cast_date}{\code{Date} from which future is defined, typically 
 today's date (set using \code{\link{Sys.Date}}).}
 
-\item{raw_path}{\code{character} value indicating the file path
-to the data within \code{raw}. A standard portalcasting directory 
-downloads the raw data files into \code{"raw\PortalData"}, so 
-\code{raw_path = "PortalData/Rodents/moon_dates.csv"} (as \code{"raw/"} 
-is implied).}
+\item{raw_path_data}{\code{character} value indicating the folder path
+to the data within the \code{raw} subdirectory but above the files. A 
+standard portalcasting directory downloads the raw data files into 
+\code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
+\code{"raw/"} is implied).}
 
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{raw_moons_file}{\code{character} value indicating the path
+to the moons data file within \code{raw_path_data}. A standard 
+portalcasting directory downloads the raw data files into 
+\code{"raw\PortalData"}, so 
+\code{raw_moons_file = "Rodents/moon_dates.csv"}.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
-
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}
 
-\item{filename}{\code{character} name of the file for saving the output.}
+\item{overwrite}{\code{logical} indicator of whether or not the existing
+files should be updated (most users should leave as \code{TRUE}).}
+
+\item{filename_moons}{\code{character} name of the file for saving the 
+data output.}
 
 \item{moons}{Moons \code{data.frame}.}
 }

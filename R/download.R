@@ -374,9 +374,7 @@ verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
 #'  frequency of data, and data type. Given the construction of the URL,
 #'  \strong{only \code{data} is vectorized}. See arguments for specifics.
 #'
-#' @param start \code{Date} for the start of the forecast.
-#'
-#' @param end \code{Date} for the end of the forecast. 
+#' @param start,end \code{Date} for the start and end of the cast.
 #'
 #' @param model \code{character} value of the model, one of \code{"ENSMEAN"},
 #'  (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"}

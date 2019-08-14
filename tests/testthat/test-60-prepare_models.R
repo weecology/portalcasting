@@ -26,14 +26,14 @@ test_that("model_names", {
 
 
 test_that("write_model", {
-  expect_message(write_model(main = "./testing"))
-  expect_message(write_model(main = "./testing", 
+  expect_message(write_model("AutoArima", main = "./testing"))
+  expect_message(write_model("AutoArima", main = "./testing", 
                              covariates = NULL, lag = NULL))
-  expect_message(write_model(main = "./testing", 
+  expect_message(write_model("AutoArima", main = "./testing", 
                              covariates = TRUE, lag = NULL))
-  expect_message(write_model(main = "./testing", 
+  expect_message(write_model("AutoArima", main = "./testing", 
                              covariates = NULL, lag = NA))
-  expect_message(write_model(main = "./testing", 
+  expect_message(write_model("AutoArimaX", main = "./testing", 
                              covariates = NULL, lag = 1))
 
 })
