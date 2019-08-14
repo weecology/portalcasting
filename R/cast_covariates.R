@@ -306,6 +306,7 @@ download_climate_casts <- function(main = ".",
   for(i in 1:length(control_cdl$data)){
     dl_name <- paste0(raw_path_cov_cast, "/", names(urls)[i], ".csv")
     download(dl_name, "url", urls[i], main = main)
+prind(dl_name)
   }
   urls
 }
@@ -339,6 +340,7 @@ read_climate_casts <- function(main = ".", raw_path_cov_cast = "cov_casts",
   for(i in 1:ndatas){
     loc_path <- paste0("raw/", raw_path_cov_cast, "/", names(urls)[i], ".csv")
     fpath <- file_paths(main, loc_path)
+print(fpath)
     dat_list[[i]] <- read.csv(fpath)
   }
   dat_tab <- dat_list[[1]]
