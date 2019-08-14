@@ -102,7 +102,6 @@ add_date_from_components <- function(x){
 #'
 cast_window <- function(main = ".",
                             moons = prep_moons(main = main), 
-                            
                             cast_date = Sys.Date(),
                             lead_time = 12, min_lag = 6){
   lagged_lead <- lead_time - min_lag
@@ -111,7 +110,7 @@ cast_window <- function(main = ".",
   last_moon$newmoondate <- as.Date(last_moon$newmoondate)
   future_moons <- get_future_moons(moons0, num_future_moons = lead_time)
   start_day <- as.character(as.Date(last_moon$newmoondate) + 1)
-  end_day <- future_moons$newmoondate[lead_time]
+  end_day <- as.character(as.Date(future_moons$newmoondate[lead_time]))
   list(start = start_day, end = end_day)
 }
 
