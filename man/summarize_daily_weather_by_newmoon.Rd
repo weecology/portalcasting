@@ -20,3 +20,18 @@ Summarizes a daily weather table by newmoons. Taking the
  max date, min of the min temperatures, max of the max temperatures,
  mean of the mean temperatures, and sum of the precipitation.
 }
+\examples{
+ \donttest{
+  create_dir()
+  fill_raw()
+  "\%>\%" <- dplyr::"\%>\%"
+  raw_path <- sub_paths(specific_subs = "raw")
+  moons <- prep_moons()
+  weather("daily", TRUE, raw_path) \%>\% 
+  add_date_from_components() \%>\%
+  dplyr::select(-c(year, month, day, battery_low, locally_measured))  \%>\%
+  add_newmoons_from_date(moons) \%>\%
+  summarize_daily_weather_by_newmoon()
+ }
+
+}

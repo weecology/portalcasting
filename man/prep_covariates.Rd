@@ -86,3 +86,11 @@ Combine the historical and forecast or hindcast covariate
  \code{\link{prep_cast_covariates}} for the historical and -casted
  covariate preparation details, respectively.
 }
+\examples{
+ \donttest{
+  create_dir()
+  fill_dir()
+  prep_covariates()
+ }
+ 
+}

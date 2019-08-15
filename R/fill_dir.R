@@ -240,8 +240,6 @@ fill_predictions <- function(main = ".", raw_path_predictions = NULL,
   NULL
 }
 
-
-
 #' @rdname fill_dir
 #'
 #' @export

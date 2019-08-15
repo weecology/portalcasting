@@ -25,8 +25,8 @@ prep_cast_covariates(main = ".", moons = prep_moons(main = main),
   append_cast_csv = TRUE, control_cdl = list(), quiet = FALSE,
   save = TRUE, overwrite = TRUE)
 
-cast_ndvi(hist_cov = NULL, moons = prep_moons(), lead_time = 12,
-  min_lag = 6)
+cast_ndvi(main = ".", moons = prep_moons(main = main),
+  hist_cov = NULL, lead_time = 12, min_lag = 6)
 
 cast_weather(main = ".", moons = prep_moons(main = main),
   hist_cov = NULL, end_moon = NULL, lead_time = 12, min_lag = 6,
@@ -129,4 +129,17 @@ If \code{cast_type = "forecast"}, weather is forecast using
  \code{\link{cast_ndvi}}. If \code{cast_type = "hindcast"}, the historical
  forecasted weather and NDVI data are retrieved from the file pointed to
  by \code{raw_cov_cast_file}.
+}
+\examples{
+ \donttest{
+  create_dir()
+  fill_dir()
+  hist_cov <- prep_hist_covariates()
+  prep_cast_covariates(hist_cov = hist_cov)
+  cast_cov <- cast_covariates(hist_cov = hist_cov)
+  save_cast_cov_csv(cast_cov = cast_cov)
+  cast_ndvi_data <- cast_ndvi(hist_cov = hist_cov)
+  cast_weather_data <- cast_weather(hist_cov = hist_cov)
+ }
+
 }

@@ -84,6 +84,18 @@
 #'  \code{save_cast_cov_csv}: \code{cast_cov} \code{data.frame} exactly as 
 #'   input. \cr \cr
 #'  
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_dir()
+#'   hist_cov <- prep_hist_covariates()
+#'   prep_cast_covariates(hist_cov = hist_cov)
+#'   cast_cov <- cast_covariates(hist_cov = hist_cov)
+#'   save_cast_cov_csv(cast_cov = cast_cov)
+#'   cast_ndvi_data <- cast_ndvi(hist_cov = hist_cov)
+#'   cast_weather_data <- cast_weather(hist_cov = hist_cov)
+#'  }
+#'
 #' @export
 #'
 cast_covariates <- function(main = ".", moons = prep_moons(main = main),
@@ -107,7 +119,14 @@ cast_covariates <- function(main = ".", moons = prep_moons(main = main),
     target_moons <- pass_and_call(target_newmoons)
     lpath <- paste0("raw/", raw_path_archive, "/", raw_cov_cast_file)
     pth <- file_paths(main, lpath)
-    cov_cast <- read.csv(pth, stringsAsFactors = FALSE)
+    if(!file.exists(pth)){
+      pth <- gsub("covariate_casts", "covariate_forecasts", pth)
+      cov_cast <- read.csv(pth, stringsAsFactors = FALSE)
+      which_old <- which(colnames(cov_cast) == "forecast_newmoon")
+      colnames(cov_cast)[which_old] <- "cast_newmoon"
+    } else{
+      cov_cast <- read.csv(pth, stringsAsFactors = FALSE)
+    }
     target_in <- cov_cast$newmoonnumber %in% target_moons
     origin_in <- cov_cast$forecast_newmoon %in% end_moon 
     out <- select(cov_cast[which(target_in & origin_in), ], -date_made)
@@ -145,8 +164,8 @@ prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-cast_ndvi <- function(hist_cov = NULL, moons = prep_moons(), lead_time = 12,
-                          min_lag = 6){
+cast_ndvi <- function(main = ".", moons = prep_moons(main = main), 
+                      hist_cov = NULL, lead_time = 12, min_lag = 6){
   lagged_lead <- lead_time - min_lag
   ndvi_data <- select(hist_cov, c("newmoonnumber", "ndvi"))
   fcast_ndvi(ndvi_data, "newmoon", lagged_lead, moons)

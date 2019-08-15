@@ -6,22 +6,7 @@ fill_dir(main)
 moons <-prep_moons(main)
 
 rodents <- prep_rodents(main)
-
-
-# to do
-
-needs test
-  forecast_covariates: all of cast_covariates
-  prepare_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
-    prep_hist_covariates
-
-# make sure the examples that are in dontrun all work
-
-
-needs example
-  prep_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
-   prep_hist_covariates
-  forecast_covariates: all cast_covariates
+  
 
 # fix up the path functions, they seem off the mark now
 # yeah some of the little utilities can get made nicer for sure
@@ -41,12 +26,6 @@ needs example
 
 
 
-
-#' 
-#' @examples
-#'  \donttest{
-#'   
-#'  }
 
 
 users adding models should permanently add code to model_script_controls()

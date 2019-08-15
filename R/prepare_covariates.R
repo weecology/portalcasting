@@ -69,6 +69,13 @@
 #' @return \code{data.frame} of historical and -casted covariates, combined
 #'  and saved out to \code{filename} if indicated by \code{save}.
 #'  
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_dir()
+#'   prep_covariates()
+#'  }
+#'  
 #' @export
 #'
 prep_covariates <- function(main = ".", moons = prep_moons(main = main),
@@ -126,6 +133,14 @@ prep_covariates <- function(main = ".", moons = prep_moons(main = main),
 #'   \code{data.frame}. \cr \cr
 #'  \code{prep_weather_data}: \code{data.frame} of historical weather data.
 #'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_raw()
+#'   prep_hist_covariates()
+#'   prep_weather_data()
+#'  }
+#'
 #' @export
 #'
 prep_hist_covariates <- function(main = ".", end_moon = NULL, 
@@ -165,6 +180,20 @@ prep_weather_data <- function(main = "."){
 #'
 #' @return \code{data.frame} of \code{x} summarized and arranged by
 #'  \code{x$newmoonnumber}.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_raw()
+#'   "%>%" <- dplyr::"%>%"
+#'   raw_path <- sub_paths(specific_subs = "raw")
+#'   moons <- prep_moons()
+#'   weather("daily", TRUE, raw_path) %>% 
+#'   add_date_from_components() %>%
+#'   dplyr::select(-c(year, month, day, battery_low, locally_measured))  %>%
+#'   add_newmoons_from_date(moons) %>%
+#'   summarize_daily_weather_by_newmoon()
+#'  }
 #'
 #' @export
 #'
