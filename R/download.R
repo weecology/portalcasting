@@ -89,7 +89,7 @@ download <- function(name = NULL, type = NULL, url = NULL,
                      cleanup = TRUE, NULLname = FALSE){
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
   name <- ifnull(name, record_name_from_url(source_url, NULLname))
-  destin <- download_destin(name, source_url, main, specific_sub)
+  destin <- download_destin(name, source_url, main, specific_sub, sep_char)
   resp <- GET(source_url)
   stop_for_status(resp)
   download_message(name, type, source_url, rec_version, quiet)
@@ -175,17 +175,9 @@ download_destin <- function(name = NULL, source_url, main = ".",
                             specific_sub = "raw", sep_char = "."){
   extension <- file_ext(source_url, sep_char)
   folder <- sub_paths(main, specific_sub)
-
   extension2 <- NULL
   if(!is.null(extension)){
-    if(extension == ""){
-      split_on_equals <- strsplit(source_url, "=")
-      if(length(split_on_equals) > 0){
-        extension <- split_on_equals[length(split_on_equals)]
-      }
-    } else {
-      extension2 <- paste0(".", extension)
-    }
+    extension2 <- paste0(".", extension)
   } 
   fname <- paste0(name, extension2)
   full <- file.path(folder, fname)
