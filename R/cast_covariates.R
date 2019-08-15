@@ -343,6 +343,7 @@ print("~~~~~~~~~~~~~~~~~~~~~")
     raw_path <- sub_paths(main, "raw")
     fpath <- normalizePath(paste0(raw_path, "/", csv_path), mustWork = FALSE)
 print(fpath)
+print(file.exists(fpath))
     dat_list[[i]] <- read.csv(fpath)
   }
   dat_tab <- dat_list[[1]]

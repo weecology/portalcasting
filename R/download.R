@@ -57,6 +57,9 @@
 #' @param source_url \code{character} value of the URL from which the download
 #'  should occur
 #'
+#' @param specific_sub \code{character} of the name of the subdirectory to
+#'  download to.
+#'
 #' @details If \code{type = NULL}, it is assumed to be a URL (\emph{i.e.}, 
 #'  \code{type = "url"}).
 #'
@@ -77,11 +80,11 @@
 download <- function(name = NULL, type = NULL, url = NULL, 
                      concept_rec_id = NULL, rec_version = "latest", 
                      rec_id = NULL, 
-                     main = ".", quiet = FALSE, cleanup = TRUE, 
-                     NULLname = FALSE){
+                     main = ".", specific_sub = "raw", quiet = FALSE, 
+                     cleanup = TRUE, NULLname = FALSE){
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
   name <- ifnull(name, record_name_from_url(source_url, NULLname))
-  destin <- download_destin(name, source_url, main)
+  destin <- download_destin(name, source_url, main, specific_sub)
   resp <- GET(source_url)
   stop_for_status(resp)
   download_message(name, type, source_url, rec_version, quiet)
@@ -165,16 +168,21 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
 #'
 #' @export
 #'
-download_destin <- function(name = NULL, source_url, main = "."){
+download_destin <- function(name = NULL, source_url, main = ".", 
+                            specific_sub = "raw"){
   extension <- file_ext(source_url)
-  if(extension == "zip"){
-    folder <- sub_paths(main, "tmp")
-  } else{
-    folder <- sub_paths(main, "raw")
-  }
+  folder <- sub_paths(main, specific_sub)
+
   extension2 <- NULL
   if(!is.null(extension)){
-    extension2 <- paste0(".", extension)
+    if(extension == ""){
+      split_on_equals <- strsplit(source_url, "=")
+      if(length(split_on_equals) > 0){
+        extension <- split_on_equals[length(split_on_equals)]
+      }
+    } else {
+      extension2 <- paste0(".", extension)
+    }
   } 
   fname <- paste0(name, extension2)
   full <- file.path(folder, fname)

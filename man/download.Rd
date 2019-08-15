@@ -11,7 +11,8 @@
 \usage{
 download(name = NULL, type = NULL, url = NULL,
   concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
-  main = ".", quiet = FALSE, cleanup = TRUE, NULLname = FALSE)
+  main = ".", specific_sub = "raw", quiet = FALSE, cleanup = TRUE,
+  NULLname = FALSE)
 
 unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE)
 
@@ -23,7 +24,8 @@ download_message(name = NULL, type = NULL, url = NULL,
 download_url(type = NULL, url = NULL, concept_rec_id = NULL,
   rec_version = "latest", rec_id = NULL)
 
-download_destin(name = NULL, source_url, main = ".")
+download_destin(name = NULL, source_url, main = ".",
+  specific_sub = "raw")
 }
 \arguments{
 \item{name}{\code{character} value of the component's name, used to create
@@ -55,6 +57,9 @@ corresponding to the Zenodo record. Used when \code{type = "zenodo"}.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{specific_sub}{\code{character} of the name of the subdirectory to
+download to.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
