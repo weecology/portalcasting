@@ -259,6 +259,7 @@ fill_raw <- function(main = ".",
     downloads[[i]]$cleanup <- ifnull(downloads[[i]]$cleanup, cleanup)
     downloads[[i]]$main <- ifnull(downloads[[i]]$main, main)
     downloads[[i]]$quiet <- ifnull(downloads[[i]]$quiet, quiet)
+    downloads[[i]]$specific_sub <- "raw"
     do.call(download, downloads[[i]])
   }
   NULL
