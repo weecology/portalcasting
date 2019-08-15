@@ -8,14 +8,8 @@ moons <-prep_moons(main)
 pc <- prep_covariates(main)
   
 
-# yeah some of the little utilities can get made nicer for sure
-# use verbose more (re downloads)
 
-# figure out a way to make the pulling or updating of min_lag automated
 
-# still work tidying up, in the rodents stuff in particular
-
-# can transpose_args be replaced?
 
 # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
 # the col name is also updated to cast_newmoon
@@ -75,3 +69,5 @@ end_step is now out of the controls list, because come on
 # a bunch of stuff!
 #
 # github download urls
+# use verbose more (re downloads)
+# figure out a way to make the pulling or updating of min_lag automated

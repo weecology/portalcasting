@@ -27,16 +27,18 @@ argument (e.g., \code{name} in
 }
 \value{
 \code{list} of argument values that can be easily input into 
-  \code{\link{do.call}} (each element is a \code{list} of arguments.
+  \code{\link{do.call}} (each element is a \code{list} of arguments).
 }
 \description{
-Arguments coming into functions, when captured using 
- \code{\link[DesignLibrary]{match.call.defaults}}, require expansion and
- transposition for use within other functions.
+Arguments of varying lengths coming into functions, when 
+ captured using \code{\link[DesignLibrary]{match.call.defaults}}, require 
+ expansion and transposition for use within other functions.
 }
 \details{
 As an example, see the source code of 
- \code{\link{rodents_controls}}.
+ \code{\link{rodents_controls}}, where some arguments are input as single
+ values (e.g., \code{species}) and others are input as vectors (e.g., 
+ \code{tmnt_type}).
 }
 \examples{
  in_args <- list(x = 1, y = 1:2, z = NULL)

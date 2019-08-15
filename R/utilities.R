@@ -116,12 +116,14 @@ cast_window <- function(main = ".",
 
 #' @title Transpose argument lists for use in do.call
 #'
-#' @description Arguments coming into functions, when captured using 
-#'  \code{\link[DesignLibrary]{match.call.defaults}}, require expansion and
-#'  transposition for use within other functions. 
+#' @description Arguments of varying lengths coming into functions, when 
+#'  captured using \code{\link[DesignLibrary]{match.call.defaults}}, require 
+#'  expansion and transposition for use within other functions. 
 #'
 #' @details As an example, see the source code of 
-#'  \code{\link{rodents_controls}}.
+#'  \code{\link{rodents_controls}}, where some arguments are input as single
+#'  values (e.g., \code{species}) and others are input as vectors (e.g., 
+#'  \code{tmnt_type}).
 #'
 #' @param eval_args \code{character} vector (or \code{NULL} if not needed)
 #'  of any arguments in \code{in_args} need to be wrapped in 
@@ -142,7 +144,7 @@ cast_window <- function(main = ".",
 #'  be easily input into \code{\link{do.call}}.
 #'
 #' @return \code{list} of argument values that can be easily input into 
-#'   \code{\link{do.call}} (each element is a \code{list} of arguments.
+#'   \code{\link{do.call}} (each element is a \code{list} of arguments).
 #'
 #' @examples
 #'  in_args <- list(x = 1, y = 1:2, z = NULL)
