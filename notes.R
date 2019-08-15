@@ -8,17 +8,6 @@ moons <-prep_moons(main)
 rodents <- prep_rodents(main)
 
 
-
-
-moons <- prep_moons(main = "~/testing")
-
-prep_covariates(main = "~/testing")
-f_cov <- prep_fcast_covariates(hist_cov = hist_cov, main = "~/testing")
-head(hist_cov)
-cc <- cast_covariates(main)
-covs <- prep_covariates(main=main)
-
-
 # to do
 
 needs test
@@ -26,13 +15,16 @@ needs test
   prepare_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
     prep_hist_covariates
 
+# make sure the examples that are in dontrun all work
+
+
 needs example
   prep_covariates: summarize_daily_weather_by_newmoon, prep_weather_data,
    prep_hist_covariates
   forecast_covariates: all cast_covariates
 
 # fix up the path functions, they seem off the mark now
-
+# yeah some of the little utilities can get made nicer for sure
 # use verbose more (re downloads)
 
 # figure out a way to make the pulling or updating of min_lag automated
@@ -40,6 +32,7 @@ needs example
 # still work tidying up, in the rodents stuff in particular
 
 # can transpose_args be replaced?
+
 
 # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
 # the col name is also updated to cast_newmoon
