@@ -146,7 +146,8 @@ prep_covariates <- function(main = ".", moons = prep_moons(main = main),
 prep_hist_covariates <- function(main = ".", end_moon = NULL, 
                                  quiet = FALSE){
   weather_data <- prep_weather_data(main)
-  ndvi_data <- ndvi("newmoon", TRUE, sub_paths(main, "raw"))
+  raw_path <- sub_paths(main, "raw")
+  ndvi_data <- ndvi("newmoon", TRUE, raw_path)
   out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
   out$source <- "hist"
   if (!is.null(end_moon)){
@@ -162,7 +163,8 @@ prep_hist_covariates <- function(main = ".", end_moon = NULL,
 prep_weather_data <- function(main = "."){
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
-  weather("newmoon", TRUE, sub_paths(main, "raw")) %>% 
+  raw_path <- sub_paths(main, "raw")
+  weather("newmoon", TRUE, raw_path) %>% 
   ungroup() %>%
   select(cols) %>%
   remove_incompletes("newmoonnumber")

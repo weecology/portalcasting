@@ -66,7 +66,8 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #' @export
 #'
 main_path <- function(main = "."){
-  normalizePath(file.path(main), mustWork = FALSE)
+  fpath <- file.path(main)
+  normalizePath(fpath, mustWork = FALSE)
 }
 
 #' @rdname main_path
@@ -80,7 +81,8 @@ sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs()){
   if (is.null(specific_subs)){
     specific_subs <- subs
   }
-  normalizePath(file.path(main, specific_subs), mustWork = FALSE)
+  fpath <- file.path(main, specific_subs)
+  normalizePath(fpath, mustWork = FALSE)
 }
 
 #' @title Determine the path for one or more models in the model sub directory
@@ -106,7 +108,8 @@ model_paths <- function(main = ".", models = NULL, extension = ".R"){
   return_if_null(models)
   sub <- "models"
   mod <- paste0(models, extension)
-  normalizePath(file.path(main, sub, mod), mustWork = FALSE)
+  fpath <- file.path(main, sub, mod)
+  normalizePath(fpath, mustWork = FALSE)
 }
 
 #' @title Determine the path for a file or files in the forecasting directory
@@ -130,5 +133,6 @@ model_paths <- function(main = ".", models = NULL, extension = ".R"){
 #'
 file_paths <- function(main = ".", local_paths = NULL){
   return_if_null(local_paths)
-  normalizePath(file.path(main, local_paths), mustWork = FALSE)
+  fpath <- file.path(main, local_paths)
+  normalizePath(fpath, mustWork = FALSE)
 }
