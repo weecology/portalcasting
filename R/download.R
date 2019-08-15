@@ -60,6 +60,11 @@
 #' @param specific_sub \code{character} of the name of the subdirectory to
 #'  download to.
 #'
+#' @param sep_char \code{character} value of the separator that delineates
+#'  the extension from the file path. Generally, this will be \code{"."},
+#'  but for some API URLs, the extension is actually a query component,
+#'  so the separator may sometimes need to be \code{"="}.
+#'
 #' @details If \code{type = NULL}, it is assumed to be a URL (\emph{i.e.}, 
 #'  \code{type = "url"}).
 #'
@@ -79,7 +84,7 @@
 #'
 download <- function(name = NULL, type = NULL, url = NULL, 
                      concept_rec_id = NULL, rec_version = "latest", 
-                     rec_id = NULL, 
+                     rec_id = NULL, sep_char = ".",
                      main = ".", specific_sub = "raw", quiet = FALSE, 
                      cleanup = TRUE, NULLname = FALSE){
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
@@ -89,7 +94,7 @@ download <- function(name = NULL, type = NULL, url = NULL,
   stop_for_status(resp)
   download_message(name, type, source_url, rec_version, quiet)
   download.file(source_url, destin, quiet = quiet, mode = "wb")
-  extension <- file_ext(source_url)
+  extension <- file_ext(source_url, sep_char)
   if(extension == "zip"){
     unzip_download(name, destin, main, cleanup)
   } 
@@ -167,8 +172,8 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
 #' @export
 #'
 download_destin <- function(name = NULL, source_url, main = ".", 
-                            specific_sub = "raw"){
-  extension <- file_ext(source_url)
+                            specific_sub = "raw", sep_char = "."){
+  extension <- file_ext(source_url, sep_char)
   folder <- sub_paths(main, specific_sub)
 
   extension2 <- NULL
@@ -276,6 +281,11 @@ zenodo_versions <- function(concept_rec_id){
 #' @param NULLname \code{logical} indicator of if the name should be kept as
 #'  \code{NULL}, rather than given a name based on the URL.
 #'
+#' @param sep_char \code{character} value of the separator that delineates
+#'  the extension from the file path. Generally, this will be \code{"."},
+#'  but for some API URLs, the extension is actually a query component,
+#'  so the separator may sometimes need to be \code{"="}.
+#'
 #' @return \code{character} value of the name or \code{NULL}.
 #'
 #' @examples
@@ -284,12 +294,12 @@ zenodo_versions <- function(concept_rec_id){
 #'
 #' @export
 #'
-record_name_from_url <- function(url, NULLname = FALSE){
+record_name_from_url <- function(url, NULLname = FALSE, sep_char = "."){
   if(NULLname){
     NULL
   } else{
     fname <- basename(url)
-    fname2 <- file_path_sans_ext(fname)
+    fname2 <- path_no_ext(fname, sep_char)
     strsplit(fname2, "-")[[1]][1]
   }
 }

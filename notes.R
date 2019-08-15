@@ -5,10 +5,9 @@ fill_dir(main)
 
 moons <-prep_moons(main)
 
-rodents <- prep_rodents(main)
+pc <- prep_covariates(main)
   
 
-# fix up the path functions, they seem off the mark now
 # yeah some of the little utilities can get made nicer for sure
 # use verbose more (re downloads)
 
@@ -17,7 +16,6 @@ rodents <- prep_rodents(main)
 # still work tidying up, in the rodents stuff in particular
 
 # can transpose_args be replaced?
-
 
 # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
 # the col name is also updated to cast_newmoon

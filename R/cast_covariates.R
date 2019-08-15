@@ -324,7 +324,7 @@ download_climate_casts <- function(main = ".",
   create(cov_cast_path, "covariate cast download")
   for(i in 1:length(control_cdl$data)){
     dl_name <- paste0(raw_path_cov_cast, "/", names(urls)[i], ".csv")
-    download(dl_name, "url", urls[i], main = main)
+    download(dl_name, "url", urls[i], main = main, sep_char = "=")
   }
   urls
 }

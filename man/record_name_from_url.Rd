@@ -4,13 +4,18 @@
 \alias{record_name_from_url}
 \title{Attempt to extract the record name from a URL}
 \usage{
-record_name_from_url(url, NULLname = FALSE)
+record_name_from_url(url, NULLname = FALSE, sep_char = ".")
 }
 \arguments{
 \item{url}{\code{character} value of the URL.}
 
 \item{NULLname}{\code{logical} indicator of if the name should be kept as
 \code{NULL}, rather than given a name based on the URL.}
+
+\item{sep_char}{\code{character} value of the separator that delineates
+the extension from the file path. Generally, this will be \code{"."},
+but for some API URLs, the extension is actually a query component,
+so the separator may sometimes need to be \code{"="}.}
 }
 \value{
 \code{character} value of the name or \code{NULL}.

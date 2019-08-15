@@ -1,6 +1,14 @@
 context("Test paths functions")
 
 
+test_that("file_ext", {
+  expect_equal(file_ext("home/folders.with.dots/stuff/ok.csv"), "csv")
+  expect_equal(path_no_ext("home/folders.with.dots/stuff/ok.csv"),
+                           "home/folders.with.dots/stuff/ok")
+  expect_equal(file_ext(NMME_urls()[[1]]), "")
+  expect_equal(file_ext(NMME_urls()[[1]], "="), "csv")
+})
+
 test_that("subdirs", {
   expect_is(subdirs(), "character")
   expect_equal(length(subdirs()), 5)

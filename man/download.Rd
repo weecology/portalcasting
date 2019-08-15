@@ -11,8 +11,8 @@
 \usage{
 download(name = NULL, type = NULL, url = NULL,
   concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
-  main = ".", specific_sub = "raw", quiet = FALSE, cleanup = TRUE,
-  NULLname = FALSE)
+  sep_char = ".", main = ".", specific_sub = "raw", quiet = FALSE,
+  cleanup = TRUE, NULLname = FALSE)
 
 unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE)
 
@@ -25,7 +25,7 @@ download_url(type = NULL, url = NULL, concept_rec_id = NULL,
   rec_version = "latest", rec_id = NULL)
 
 download_destin(name = NULL, source_url, main = ".",
-  specific_sub = "raw")
+  specific_sub = "raw", sep_char = ".")
 }
 \arguments{
 \item{name}{\code{character} value of the component's name, used to create
@@ -54,6 +54,11 @@ Used when \code{type = "zenodo"}.}
 
 \item{rec_id}{Optional input record identifier, a \code{character} value
 corresponding to the Zenodo record. Used when \code{type = "zenodo"}.}
+
+\item{sep_char}{\code{character} value of the separator that delineates
+the extension from the file path. Generally, this will be \code{"."},
+but for some API URLs, the extension is actually a query component,
+so the separator may sometimes need to be \code{"="}.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
