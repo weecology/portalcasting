@@ -257,18 +257,13 @@ add_newmoons_from_date <- function(x, moons = NULL){
 #' @title Determine which newmoon numbers fall into a range of times for 
 #'  casting
 #'
-#' @description Based on the forecast origin (using \code{cast_date} if
-#'  \code{cast_type = "forecast"} or \code{end_moon} if 
-#'  \code{cast_type = "hindcast"}) and the lead time, determine which moons
-#'  should be included.
+#' @description Based on the forecast origin and the lead time, determine 
+#'  which moons should be included.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @param hist_cov \code{data.frame} of historic covariates from 
-#'  \code{\link{prep_hist_covariates}}.
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
@@ -280,9 +275,6 @@ add_newmoons_from_date <- function(x, moons = NULL){
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
-#'
-#' @param cast_type \code{character} value of the -cast type: 
-#'  \code{"forecasts"} or \code{"hindcasts"}.
 #'
 #' @return \code{numeric} vector of the newmoon numbers targeted by the date
 #'  window.
@@ -297,24 +289,12 @@ add_newmoons_from_date <- function(x, moons = NULL){
 #' @export
 #'
 target_newmoons <- function(main = ".", moons = prep_moons(main = main),
-                            end_moon = NULL, hist_cov = NULL, lead_time = 12, 
-                            cast_date = Sys.Date(), 
-                            cast_type = "forecast"){
-  if (cast_type == "forecast"){
-    which_prev_newmoon <- max(which(moons$newmoondate < cast_date))
-    prev_newmoon <- moons$newmoonnumber[which_prev_newmoon]
-  } else if (cast_type == "hindcast"){
-    prev_newmoon <- end_moon    
-  } else {
-    stop("cast_type can only be forecast or hindcast")
-  } 
-  if(is.null(hist_cov)){
-    first_cast_newmoon <- prev_newmoon + 1
-  } else {
-    prev_covar_newmoon <- tail(hist_cov, 1)$newmoonnumber
-    first_cast_newmoon <- prev_covar_newmoon + 1
-  }
-  last_cast_newmoon <- prev_newmoon + lead_time
-  first_cast_newmoon:last_cast_newmoon
+                            end_moon = NULL, lead_time = 12, 
+                            cast_date = Sys.Date()){
+
+  which_last_moon <- max(which(moons$newmoondate < cast_date))
+  last_moon <- moons$newmoonnumber[which_last_moon]
+  end_moon <- ifnull(end_moon, last_moon)
+  (end_moon + 1):(end_moon + lead_time)
 }
 

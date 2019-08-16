@@ -12,7 +12,7 @@
 download(name = NULL, type = NULL, url = NULL,
   concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
   sep_char = ".", main = ".", specific_sub = "raw", quiet = FALSE,
-  cleanup = TRUE, NULLname = FALSE)
+  verbose = FALSE, cleanup = TRUE, NULLname = FALSE)
 
 unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE)
 
@@ -68,6 +68,9 @@ download to.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out
+all of the information or not (and thus just the tidy messages).}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}

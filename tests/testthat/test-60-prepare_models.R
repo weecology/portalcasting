@@ -1,6 +1,13 @@
 context("Test prepare_models functions")
 
 
+test_that("verify_models", {
+  create_dir(main = "./testing")
+  fill_models(main = "./testing")
+  expect_message(verify_models(main = "./testing"))
+  expect_error(verify_models(main = "./testing", models = "1234")) 
+  expect_error(verify_models(main = "./123"))
+})
 
 test_that("model_script_controls", {
   expect_is(model_script_controls(prefab_models()), "list")

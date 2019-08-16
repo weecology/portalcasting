@@ -34,9 +34,6 @@
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
 #'
-#' @param cast_type \code{character} value of the -cast type: 
-#'  \code{"forecasts"} or \code{"hindcasts"}.
-#'
 #' @param raw_path_archive \code{character} value of the path to the archive
 #'  within the raw sub folder.
 #' 
@@ -68,11 +65,11 @@
 #' @param save \code{logical} indicator controlling if the output should 
 #'   be saved out.
 #'
-#' @details If \code{cast_type = "forecast"}, weather is forecast using 
+#' @details If forecasting from the current newmoon, weather is forecast using 
 #'  \code{\link{cast_weather}} and NDVI is forecast using 
-#'  \code{\link{cast_ndvi}}. If \code{cast_type = "hindcast"}, the historical
-#'  forecasted weather and NDVI data are retrieved from the file pointed to
-#'  by \code{raw_cov_cast_file}.
+#'  \code{\link{cast_ndvi}}. If hindcasting from a previous newmoon, the
+#'  historical forecasted weather and NDVI data are retrieved from the file 
+#'  pointed to by \code{raw_cov_cast_file}.
 #'
 #' @return 
 #'  \code{cast_covariates}: \code{data.frame} of the covariates cast for the
@@ -101,22 +98,24 @@
 cast_covariates <- function(main = ".", moons = prep_moons(main = main),
                             hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                             min_lag = 6, cast_date = Sys.Date(), 
-                            cast_type = "forecast",
                             raw_path_archive = "portalPredictions",
                             raw_cov_cast_file = "data/covariate_casts.csv",
                             raw_path_cov_cast = "cov_casts", 
                             source_name = "current_archive",
                             control_cdl = list(), quiet = FALSE){
 
-  if(cast_type == "forecast"){
+  which_last_moon <- max(which(moons$newmoondate < cast_date))
+  last_moon <- moons$newmoonnumber[which_last_moon]
+  end_moon <- ifnull(end_moon, last_moon)
+  if(last_moon == end_moon){
     weather_cast <- pass_and_call(cast_weather)
     ndvi_cast <- pass_and_call(cast_ndvi)
     cov_cast <- right_join(weather_cast, ndvi_cast, by = "newmoonnumber")
     which_cast_newmoon <- max(which(moons$newmoondate < cast_date))
     cast_newmoon <- moons$newmoonnumber[which_cast_newmoon]
     out <- round(data.frame(cast_newmoon, cov_cast), 3)
-  } else if (cast_type == "hindcast"){
-    target_moons <- pass_and_call(target_newmoons)
+  } else {
+    target_moons <- pass_and_call(target_newmoons, end_moon = end_moon)
     lpath <- paste0("raw/", raw_path_archive, "/", raw_cov_cast_file)
     pth <- file_paths(main, lpath)
     if(!file.exists(pth)){
@@ -128,10 +127,16 @@ cast_covariates <- function(main = ".", moons = prep_moons(main = main),
       cov_cast <- read.csv(pth, stringsAsFactors = FALSE)
     }
     target_in <- cov_cast$newmoonnumber %in% target_moons
-    origin_in <- cov_cast$forecast_newmoon %in% end_moon 
-    out <- select(cov_cast[which(target_in & origin_in), ], -date_made)
-  } else {
-    stop("cast_type can only be forecast or hindcast")
+    origin_in <- cov_cast$cast_newmoon %in% end_moon 
+    cov_cast2 <- cov_cast[which(target_in & origin_in), ]
+
+    if(NROW(cov_cast2) == 0){
+      stop("covariates not available for requested end moon and lead time")
+    }
+    most_recent <- max(cov_cast2$date_made)
+    made_in <- cov_cast2$date_made == most_recent
+    out <- cov_cast2[which(made_in), ]
+    out <- select(out, -date_made)
   }
   out
 }
@@ -144,7 +149,6 @@ prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
                                  hist_cov = NULL, end_moon = NULL, 
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
-                                 cast_type = "forecast",
                                  raw_path_archive = "portalPredictions",
                                  raw_cov_cast_file = 
                                    "data/covariate_casts.csv",
@@ -178,7 +182,6 @@ cast_ndvi <- function(main = ".", moons = prep_moons(main = main),
 cast_weather <- function(main = ".", moons = prep_moons(main = main),
                          hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                          min_lag = 6, cast_date = Sys.Date(), 
-                         cast_type = "forecast",
                          raw_path_archive = "portalPredictions",
                          raw_cov_cast_file = "data/covariate_casts.csv",
                          raw_path_cov_cast = "cov_casts", 
@@ -204,15 +207,19 @@ cast_weather <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-save_cast_cov_csv <- function(main = ".",
-                              cast_cov = NULL, cast_type = "forecast",
-                              append_cast_csv = TRUE,
+save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
+                              end_moon = NULL, cast_date = Sys.Date(),
+                              cast_cov = NULL, append_cast_csv = TRUE,
                               raw_path_archive = "portalPredictions",
                               raw_cov_cast_file = "data/covariate_casts.csv",
                               source_name = "current_archive",
                               quiet = FALSE, save = TRUE, overwrite = TRUE){
   return_if_null(cast_cov)
-  if(!save | !append_cast_csv | !overwrite | cast_type == "hindcast"){
+  which_last_moon <- max(which(moons$newmoondate < cast_date))
+  last_moon <- moons$newmoonnumber[which_last_moon]
+  end_moon <- ifnull(end_moon, last_moon)
+
+  if(!save | !append_cast_csv | !overwrite | end_moon != last_moon){
     return(cast_cov)
   }
   new_cast <- cast_cov

@@ -24,9 +24,6 @@
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
 #'
-#' @param cast_type \code{character} value of the -cast type: 
-#'  \code{"forecasts"} or \code{"hindcasts"}.
-#'
 #' @param hist_covariates \code{logical} indicator of whether or not 
 #'  historical covariates are to be included.
 #'
@@ -80,7 +77,7 @@
 #'
 prep_covariates <- function(main = ".", moons = prep_moons(main = main),
                             end_moon = NULL, lead_time = 12, min_lag = 6, 
-                            cast_date = Sys.Date(), cast_type = "forecast",
+                            cast_date = Sys.Date(),
                             hist_covariates = TRUE, cast_covariates = TRUE,
                             raw_path_archive = "portalPredictions",
                             raw_cov_cast_file = "data/covariate_casts.csv",

@@ -1,20 +1,20 @@
 devtools::document()
-main = "~/testing1"
-create_dir(main)
-fill_dir(main)
+main = "~/testingX"
+setup_dir(main)
+fill_data(main)
 
-moons <-prep_moons(main)
-
-pc <- prep_covariates(main)
-  
+prep_covariates(main)
 
 
+# working in the portalcast functions
+# in particular in prep_data
 
 
-# I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
-# the col name is also updated to cast_newmoon
 
 # vignettes
+
+
+
 
 
 
@@ -23,26 +23,11 @@ pc <- prep_covariates(main)
 users adding models should permanently add code to model_script_controls()
 rather than write their own functions
 
-adding a new setup of the rodents data is possible now through direct
-arguments basically to the summarize rodents function
-users can set their own controls as they need
-but permanent additions can also be made by adding a tmnt_type to 
-rodents_control(s)
-
 make matching of forecast and Forecast and forecasts etc etc
 
 
-THE FORMALS MATCHING IN PREP_RODENTS MIGHT BE BETTER TO FUNCTION
-AND USE WITHIN FILL_DATA FOR EXAMPLE
-
-end_step is now out of the controls list, because come on
-
-
-# we also might want to create a simple repo for testing!
-# basically, like the PD and PP, but just for tests
-
-
- 
+ # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
+# the col name is also updated to cast_newmoon
 
 # important notes for news
 #  directory tree structure simplified
@@ -59,6 +44,16 @@ end_step is now out of the controls list, because come on
 #   rather than only ever loaded within R
 # (mostly) internal generalization to cast 
 #    (there were still lots of "fcast" names
+# adding a new setup of the rodents data is possible now through direct
+#   arguments basically to the summarize rodents function
+#   users can set their own controls as they need
+#   but permanent additions can also be made by adding a tmnt_type to 
+#   rodents_control(s)
+# cast_type has been removed as an input, it's auto determined now based on 
+#  end_moon and the last moon available (if they're equal it's a forecast, 
+#  if not, it's a hindcast)
+#
+
 
 # future ideas
 #  a future nice thing will be making update_list work where you pass
@@ -69,5 +64,4 @@ end_step is now out of the controls list, because come on
 # a bunch of stuff!
 #
 # github download urls
-# use verbose more (re downloads)
 # figure out a way to make the pulling or updating of min_lag automated

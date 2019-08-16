@@ -1,7 +1,7 @@
 #' @title Create and fill a forecasting directory
 #'
 #' @description Combines \code{\link{create_dir}} and \code{\link{fill_dir}}
-#'  to create a ready-to-run (via [INPUT FUNCTION LINK]) when
+#'  to create a ready-to-run (via \code{\link{portalcast}}) when
 #'  indicated. \cr \cr
 #'  \code{setup_production} creates a standard production directory. \cr \cr
 #'  \code{setup_sandbox} creates a sandboxing directory. \cr \cr
@@ -22,9 +22,6 @@
 #' @param cast_date \code{Date} from which future is defined (the origin of
 #'  the cast). In the recurring forecasting, is set to today's date
 #'  using \code{\link{Sys.Date}}.
-#'
-#' @param cast_type \code{character} value of the -cast type: 
-#'  \code{"forecasts"} or \code{"hindcasts"}.
 #'
 #' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the first sample to be included. Default value is \code{217}, 
@@ -139,7 +136,7 @@
 #'
 setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL, 
                      lead_time = 12, cast_date = Sys.Date(),
-                     cast_type = "forecast", start_moon = 217, 
+                     start_moon = 217, 
                      confidence_level = 0.9, 
                      hist_covariates = TRUE, cast_covariates = TRUE,
                      raw_path_archive = "portalPredictions",
@@ -159,9 +156,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                      filename_cov = "covariates.csv", 
                      filename_meta = "metadata.yaml", cleanup = TRUE){
 
-  version_number <- packageDescription("portalcasting", fields = "Version")
-  msg <- paste0("This is portalcasting v", version_number)
-  messageq(msg, quiet)
+  pass_and_call(portalcast_welcome)
   pass_and_call(create_dir)
   pass_and_call(fill_dir)
 }
@@ -174,7 +169,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #'
 setup_production <- function(main = ".", models = prefab_models(), 
                              end_moon = NULL, lead_time = 12, 
-                             cast_date = Sys.Date(), cast_type = "forecast", 
+                             cast_date = Sys.Date(), 
                              start_moon = 217, confidence_level = 0.9, 
                              hist_covariates = TRUE, cast_covariates = TRUE,
                              raw_path_archive = "portalPredictions",
@@ -205,7 +200,7 @@ setup_production <- function(main = ".", models = prefab_models(),
 #'
 setup_sandbox <- function(main = ".", models = prefab_models(), 
                           end_moon = NULL, lead_time = 12, 
-                          cast_date = Sys.Date(), cast_type = "forecast", 
+                          cast_date = Sys.Date(), 
                           start_moon = 217, confidence_level = 0.9, 
                           hist_covariates = TRUE, cast_covariates = TRUE,
                           raw_path_archive = "portalPredictions",
@@ -228,6 +223,29 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           filename_meta = "metadata.yaml", cleanup = TRUE){
   pass_and_call(setup_dir)
   pass_and_call(sandbox_welcome)
+}
+
+#' @title Directory welcome
+#'
+#' @description Create a welcome message for the directory based on the 
+#'  package version.
+#'
+#'
+#' @param quiet \code{logical} indicator if progress message should be
+#'   quieted.
+#' 
+#' @return \code{NULL}, as message is printed.
+#'
+#' @examples
+#'  portalcast_welcome()
+#'
+#' @export
+#' 
+portalcast_welcome <- function(quiet = FALSE){
+  msg1 <- "##########################################################"
+  version_number <- packageDescription("portalcasting", fields = "Version")
+  msg2 <- paste0("This is portalcasting v", version_number)
+  messageq(c(msg1, msg2), quiet)
 }
 
 #' @title Sandbox welcome

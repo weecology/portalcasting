@@ -271,3 +271,43 @@ save_forecast_output(f_a, f_c, "', name, '"', main_arg, ')'
   )
 
 }
+#' @title Verify that models requested to forecast or hindcast with exist
+#'
+#' @description Verify that models requested have scripts in the models 
+#'   subdirectory. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param models \code{character} vector of the names of models to verify. 
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_models()
+#'   verify_models()
+#'  }
+#'
+#' @export
+#'
+verify_models <- function(main = ".", models = prefab_models(), 
+                          quiet = FALSE){
+  messageq("Checking model availability", quiet)
+  model_dir <- sub_paths(main, "models")
+  if (!dir.exists(model_dir)){
+    stop("Models subidrectory does not exist")
+  }
+  available <- list.files(model_dir)
+  if (models[1] != "all"){
+    modelnames <- paste0(models, ".R")
+    torun <- (modelnames %in% available)  
+    if (any(torun == FALSE)){
+      missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
+      stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
+    }
+  }
+  messageq("All requested models available", quiet)
+}

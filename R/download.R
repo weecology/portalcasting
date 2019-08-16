@@ -45,6 +45,9 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or not (and thus just the tidy messages).
+#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #'
@@ -86,14 +89,14 @@ download <- function(name = NULL, type = NULL, url = NULL,
                      concept_rec_id = NULL, rec_version = "latest", 
                      rec_id = NULL, sep_char = ".",
                      main = ".", specific_sub = "raw", quiet = FALSE, 
-                     cleanup = TRUE, NULLname = FALSE){
+                     verbose = FALSE, cleanup = TRUE, NULLname = FALSE){
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
   name <- ifnull(name, record_name_from_url(source_url, NULLname))
   destin <- download_destin(name, source_url, main, specific_sub, sep_char)
   resp <- GET(source_url)
   stop_for_status(resp)
   download_message(name, type, source_url, rec_version, quiet)
-  download.file(source_url, destin, quiet = quiet, mode = "wb")
+  download.file(source_url, destin, quiet = !verbose, mode = "wb")
   extension <- file_ext(source_url, sep_char)
   if(extension == "zip"){
     unzip_download(name, destin, main, cleanup)

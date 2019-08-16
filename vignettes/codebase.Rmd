@@ -1,5 +1,5 @@
 ---
-title: "portalcasting Codebase"
+title: "portalcasting"
 output: rmarkdown::html_vignette
 author: "Juniper L. Simonis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -22,7 +22,7 @@ vers <- packageVersion("portalcasting")
 today <- Sys.Date()
 ```
 
-This vignette outlines the codebase for the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions production pipeline](https://github.com/weecology/portalPredictions). **portalcasting** has utilities for setting up local versions of the pipeline for developing and testing new models. 
+This vignette outlines the codebase and functionality of the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions production pipeline](https://github.com/weecology/portalPredictions). **portalcasting** has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.
 
 ## Installation
 
@@ -61,22 +61,34 @@ main
 
 ## Instantiating a Directory
 
-Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). These steps can be executed separately or in combination via a general `setup_dir()` function. These functions are general and flexible, allowing for customization through a variety of arguments. 
+Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). These steps can be executed separately or in combination via a general `setup_dir` function or via specialized versions of `setup_dir`: `setup_sandbox` (for creating a pipeline with defaults to facilitate sandboxing) and `setup_production` (for creating a production pipeline). These functions are general and flexible, allowing for customization through a variety of arguments, but are designed to work well under default settings.
 
 ### Creating 
 
-The directory is established using `create_dir()`, which takes `main` and `subs` as arguments and in sequence creates each of the levels' folders if they do not already exist. This occurs through calls to `create_main()` and `create_subs()`. A typical user is likely to want to change the `main` input (to locate the forecasting directory where they would like it), but general users should not need to alter the input to `subs`.
+The directory is established using `create_dir`, which takes `main` and `subs` as arguments and in sequence creates each of the levels' folders if they do not already exist. This occurs through calls to `create_main` and `create_subs`. A typical user is likely to want to change the `main` input (to locate the forecasting directory where they would like it), but general users should not need to alter the input to `subs`.
 
 ### Filling 
 
-The directory is filled (loaded with files for default forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir()` function:
+The directory is filled (loaded with files for default forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir` function:
 
-* `fill_raw()` downloads each of the raw components for the directory, such as the source data and previous forecasts.
-* `fill_predictions()` moves the existing predictions files from the `raw` subdirectory to the `predictions` subdirectory.
-* `fill_data()` prepares the forecasting data files from the raw downloaded data files and moves them into the `data` subdirectory.
-  * moons data
-  * rodents data
-  * covariates data 
-  * metadata
-* `fill_models()` writes the model scripts into the `models` subdirectory.
+* `fill_raw` downloads each of the raw components for the directory, such as the source data and previous forecasts.
+* `fill_predictions` moves the existing predictions files from the `raw` subdirectory to the `predictions` subdirectory.
+* `fill_models` writes the model scripts into the `models` subdirectory.
+* `fill_data` prepares the forecasting data files from the raw downloaded data files and moves them into the `data` subdirectory.
+  * `prep_moons` prepares and formats the temporal (lunar) data from the raw data.
+  * `prep_rodents` prepares multiple structures of the rodents data for analyses from the raw data.
+  * `prep_covariates` downloads and forecasts covariates data.
+  * `prep_metadata` creates and saves out a YAML metadata list for the forecasting. 
+
+
+
+## Important Utilities
+
+To facilitate tidy and easy-to-follow code, we introduce a few important utility functions, which are put to use throughout the codebase.
+
+### `pass_and_call`
+
+`pass_and_call` is a major function that helps connect functions within a pipeline maintain named arguments (so it's easier for an end-user to alter the specifics) that doesn't lead to extensive function code. Rather, `pass_and_call` combines `args_to_pass`, which aligns the argument of the parent (enclosing) function with the child (enclosed) function, and the base R function `do.call`. Importantly, `args_to_pass` leverages `match.call.default` from the DesignLibrary R package that extends the base R `match.call` allowing for expansion of all arguments, even those left as default values. In addition, `args_to_pass` uses the base `formals` function to determine which arguments are needed by the child function, creating a list of all required arguments for the child.
+
+If there is a disagreement in values between the parent and child functions, the parent's value is the selected one. `pass_and_call` does allow for updating of argument values via a `...` argument, which is used to override the definition of both the parent and the child, providing and easy way to port in updated values in the middle of a pipeline. However, `pass_and_call` is presently set up to evaluate all arguments in the environment where they were defined. This is to avoid issues where one argument's value is dependent upon another argument in the parent function which is stripped off before passing to the child function. 
 

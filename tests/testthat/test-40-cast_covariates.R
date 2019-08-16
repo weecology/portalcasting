@@ -10,16 +10,15 @@ test_that("cast_covariates", {
   expect_is(prep_cast_covariates(main = "./testing", hist_cov = hist_cov),
             "data.frame")
   expect_is(prep_cast_covariates(main = "./testing", hist_cov = hist_cov,
-                                 cast_type = "hindcast", end_moon = 400),
-            "data.frame")
+                                 end_moon = 450), "data.frame")
   expect_error(prep_cast_covariates(main = "./testing", hist_cov = hist_cov,
-                                    cast_type = "123"))
+                                    end_moon = 400))
 })
 
 
 test_that("download_climate_forecasts", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_is(download_climate_casts(main = "~/testing"), "character")
+  expect_is(download_climate_casts(main = "./testing"), "character")
 })
 
 

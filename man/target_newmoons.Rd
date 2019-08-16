@@ -6,8 +6,7 @@
  casting}
 \usage{
 target_newmoons(main = ".", moons = prep_moons(main = main),
-  end_moon = NULL, hist_cov = NULL, lead_time = 12,
-  cast_date = Sys.Date(), cast_type = "forecast")
+  end_moon = NULL, lead_time = 12, cast_date = Sys.Date())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -19,28 +18,20 @@ the directory tree.}
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
 
-\item{hist_cov}{\code{data.frame} of historic covariates from 
-\code{\link{prep_hist_covariates}}.}
-
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}
 
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
-
-\item{cast_type}{\code{character} value of the -cast type: 
-\code{"forecasts"} or \code{"hindcasts"}.}
 }
 \value{
 \code{numeric} vector of the newmoon numbers targeted by the date
  window.
 }
 \description{
-Based on the forecast origin (using \code{cast_date} if
- \code{cast_type = "forecast"} or \code{end_moon} if 
- \code{cast_type = "hindcast"}) and the lead time, determine which moons
- should be included.
+Based on the forecast origin and the lead time, determine 
+ which moons should be included.
 }
 \examples{
  \donttest{

@@ -6,9 +6,8 @@
 \usage{
 prep_covariates(main = ".", moons = prep_moons(main = main),
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), cast_type = "forecast",
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions",
+  cast_date = Sys.Date(), hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
   append_cast_csv = TRUE, control_cdl = list(), quiet = FALSE,
@@ -33,9 +32,6 @@ covariate lag time used in any model.}
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
-
-\item{cast_type}{\code{character} value of the -cast type: 
-\code{"forecasts"} or \code{"hindcasts"}.}
 
 \item{hist_covariates}{\code{logical} indicator of whether or not 
 historical covariates are to be included.}

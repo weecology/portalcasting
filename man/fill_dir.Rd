@@ -9,8 +9,8 @@
 \title{Fill a forecasting directory with basic components.}
 \usage{
 fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), cast_type = "forecast",
-  start_moon = 217, confidence_level = 0.9, hist_covariates = TRUE,
+  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
+  confidence_level = 0.9, hist_covariates = TRUE,
   cast_covariates = TRUE, raw_path_archive = "portalPredictions",
   raw_path_data = "PortalData",
   raw_path_predictions = "portalPredictions/predictions",
@@ -26,10 +26,9 @@ fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
   cleanup = TRUE)
 
 fill_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), cast_type = "forecast", start_moon = 217,
-  confidence_level = 0.9, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
@@ -66,9 +65,6 @@ number of timesteps forward a cast will cover.}
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
-
-\item{cast_type}{\code{character} value of the -cast type: 
-\code{"forecasts"} or \code{"hindcasts"}.}
 
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the first sample to be included. Default value is \code{217}, 

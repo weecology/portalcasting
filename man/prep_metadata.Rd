@@ -8,9 +8,8 @@ prep_metadata(main = ".", moons = prep_moons(main = main),
   rodents = prep_rodents(main = main),
   covariates = prep_covariates(main = main), end_moon = NULL,
   lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
-  cast_type = "forecast", start_moon = 217, confidence_level = 0.9,
-  quiet = FALSE, save = TRUE, overwrite = TRUE,
-  filename_meta = "metadata.yaml")
+  start_moon = 217, confidence_level = 0.9, quiet = FALSE,
+  save = TRUE, overwrite = TRUE, filename_meta = "metadata.yaml")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -36,9 +35,6 @@ covariate lag time used in any model.}
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
-
-\item{cast_type}{\code{character} value of the -cast type: 
-\code{"forecasts"} or \code{"hindcasts"}.}
 
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the first sample to be included. Default value is \code{217}, 

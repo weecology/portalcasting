@@ -29,9 +29,6 @@
 #'  the cast). In the recurring forecasting, is set to today's date
 #'  using \code{\link{Sys.Date}}.
 #'
-#' @param cast_type \code{character} value of the -cast type: 
-#'  \code{"forecasts"} or \code{"hindcasts"}.
-#'
 #' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the first sample to be included. Default value is \code{217}, 
 #'  corresponding to \code{1995-01-01}.
@@ -70,7 +67,6 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
                           covariates = prep_covariates(main = main),
                           end_moon = NULL, 
                           lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
-                          cast_type = "forecast", 
                           start_moon = 217,
                           confidence_level = 0.9, 
                           quiet = FALSE, save = TRUE,
@@ -78,12 +74,8 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
 
   messageq("Loading metadata file into data subdirectory", quiet)
 
-  if (cast_type == "forecast"){
-    which_last_newmoon <- max(which(moons$newmoondate < cast_date))
-    last_newmoon <- moons$newmoonnumber[which_last_newmoon]
-  } else if (cast_type == "hindcast"){
-    last_newmoon <- max(covariates$newmoonnumber[covariates$source == "hist"]) 
-  }
+  last_moon <- max(covariates$newmoonnumber[covariates$source == "hist"]) 
+  last_moon <- ifnull(end_moon, last_moon)
 
   ncontrols_r <- length(rodents)
   last_rodent_pd <- 0
@@ -98,7 +90,7 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
 
   first_cast_covar_newmoon <- last_covar_newmoon + 1
   first_cast_rodent_newmoon <- last_rodent_newmoon + 1
-  last_cast_newmoon <- last_newmoon + lead_time
+  last_cast_newmoon <- last_moon + lead_time
 
   rodent_cast_newmoons <- first_cast_rodent_newmoon:last_cast_newmoon
   which_r_nms <- which(moons$newmoonnumber %in% rodent_cast_newmoons)
@@ -111,6 +103,8 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
   covar_nm_dates <- moons$newmoondate[which_c_nms]
   covar_cast_months <- as.numeric(format(covar_nm_dates, "%m"))
   covar_cast_years <- as.numeric(format(covar_nm_dates, "%Y"))
+
+  cast_type <- ifelse(end_moon == last_moon, "forecast", "hindcast")
 
   list(cast_type = cast_type, lead_time = lead_time, 
        min_lag = min_lag, cast_date = as.character(cast_date), 
