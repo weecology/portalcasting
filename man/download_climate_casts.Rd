@@ -9,7 +9,7 @@
 download_climate_casts(main = ".", raw_path_cov_cast = "cov_casts",
   control_cdl = list())
 
-climate_dl_control(start = Sys.Date(), end = Sys.Date(),
+climate_dl_control(start = Sys.Date(), end = as.Date("2050-01-01"),
   model = "ENSMEAN", lat = 31.9555, lon = -109.0744,
   freq = "daily", data = c(mintemp = "tasmin", meantemp = "tasmean",
   maxtemp = "tasmax", precipitation = "pr"))
@@ -66,7 +66,7 @@ Named \code{character} vector of URLs, or \code{NULL} if
 Given the details specified in \code{control_cdl}, download
  climate forecasts from the
  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network}'s (NKN) at
- \code{https://bit.ly/2tCP8NX}{simple API} to the 
+ \href{https://bit.ly/2tCP8NX}{simple API} to the 
  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
  and them ready for analyese. \cr \cr
  \code{download_climate_casts}: downloads the files from the server.

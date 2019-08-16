@@ -253,7 +253,7 @@ save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
 #' @description Given the details specified in \code{control_cdl}, download
 #'  climate forecasts from the
 #'  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network}'s (NKN) at
-#'  \code{https://bit.ly/2tCP8NX}{simple API} to the 
+#'  \href{https://bit.ly/2tCP8NX}{simple API} to the 
 #'  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
 #'  and them ready for analyese. \cr \cr
 #'  \code{download_climate_casts}: downloads the files from the server.
@@ -340,13 +340,14 @@ download_climate_casts <- function(main = ".",
 #'
 #' @export
 #'
-climate_dl_control <- function(start = Sys.Date(), end = Sys.Date(),
-                                model = "ENSMEAN", lat = 31.9555, 
-                                lon = -109.0744, freq = "daily",
-                                data = c(mintemp = "tasmin", 
-                                         meantemp = "tasmean", 
-                                         maxtemp = "tasmax", 
-                                         precipitation = "pr")){
+climate_dl_control <- function(start = Sys.Date(), 
+                               end = as.Date("2050-01-01"),
+                               model = "ENSMEAN", lat = 31.9555, 
+                               lon = -109.0744, freq = "daily",
+                               data = c(mintemp = "tasmin", 
+                                        meantemp = "tasmean", 
+                                        maxtemp = "tasmax", 
+                                        precipitation = "pr")){
   list(start = start, end = end, model = model, lat = lat, lon = lon, 
        freq = freq, data = data)
 }

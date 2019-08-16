@@ -9,7 +9,7 @@ prep_covariates(main)
 # working in the portalcast functions
 # in particular in prep_data
 
-
+devtools::test()
 
 # vignettes
 
