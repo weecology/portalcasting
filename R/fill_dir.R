@@ -160,7 +160,8 @@ fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
   pass_and_call(fill_raw)
   pass_and_call(fill_predictions)
   pass_and_call(fill_models)
-  pass_and_call(fill_data, min_lag = 6)
+  min_lag <- pass_and_call(extract_min_lag)
+  pass_and_call(fill_data, min_lag = min_lag)
 }
 
 #' @rdname fill_dir

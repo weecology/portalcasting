@@ -1,4 +1,3 @@
-
 #' @title Produce the control lists for the model script writing
 #' 
 #' @description The model scripts are written using a generalized function
@@ -8,10 +7,12 @@
 #'  input by the user, with the default being \code{NULL}, which returns.
 #'  \code{NULL}. The prefab models (\code{\link{prefab_models}}) have their
 #'  control lists included already, but any user-created model needs to
-#'  have controls provided. See \code{Details}. \cr \cr
+#'  have controls provided. See \code{Details}. \cr 
 #'  \strong{Users adding models to the prefab set should add their
 #'  script-writing controls lists to the \code{prefab_controls} object in 
-#'  the source code of the function.}   
+#'  the source code of the function.} \cr \cr
+#'  \code{extract_min_lag} provides a simple function to extract the 
+#'  minimum non-0 lag time used across models from the controls lists.
 #'
 #' @details Any model that is part of the \code{prefab} set 
 #'  (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")})
@@ -45,9 +46,11 @@
 #'  \code{name} element. \cr 
 #'  See \code{Details} and \code{Examples}.  
 #'
-#' @return Named \code{list} of length equal to the number of elements in
-#'  \code{models} and with elements that are each \code{list}s of those
-#'  \code{models}'s script-writing controls. 
+#' @return \code{model_script_controls}: named \code{list} of length equal to
+#'  the number of elements in \code{models} and with elements that are each 
+#'  \code{list}s of those \code{models}'s script-writing controls. \cr \cr
+#'  \code{extract_min_lag}: \code{numeric} value of the minimum non-0 lag
+#'  from any included model or \code{NA} if no models have lags.
 #'
 #' @examples
 #'  model_script_controls(prefab_models())
@@ -55,6 +58,8 @@
 #'  model_script_controls("xx", controls)
 #'  model_script_controls(model_names("xx", "prefab"), controls)
 #'  model_script_controls(c("xx", "ESSS"), controls)
+#'  extract_min_lag()
+#'  extract_min_lag("AutoArima")
 #'
 #' @export
 #'
@@ -95,6 +100,21 @@ model_script_controls <- function(models = NULL, controls_m = NULL){
   controls_m[included_models]
 }
 
+#' @rdname model_script_controls
+#'
+#' @export
+#'
+extract_min_lag <- function(models = prefab_models(), controls_m = NULL){
+  controls <- pass_and_call(model_script_controls)
+  nmods <- length(controls)
+  lags <- rep(NA, nmods)
+  for(i in 1:nmods){
+    lag_i <- controls[[i]]$lag
+    lags[i] <- ifelse(is.na(lag_i), Inf, lag_i)
+  }
+  min_lag <- min(lags)
+  ifelse(min_lag == Inf, NA, min_lag)
+}
 
 #' @title Provide the names of models
 #'

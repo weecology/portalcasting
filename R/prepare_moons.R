@@ -140,14 +140,14 @@ add_extra_future_moons <- function(moons, cast_date = Sys.Date()){
 #'
 #' @export
 #'
-add_past_moons_to_raw <- function(main = ".", moons, 
+add_past_moons_to_raw <- function(main = ".", moons, cast_date = Sys.Date(),
                                   raw_path_data = "PortalData",
                                   raw_moons_file = "Rodents/moon_dates.csv",
                                   overwrite = TRUE){
   if(overwrite){
     lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
     fpath <- file_paths(main, lpath) 
-    included_moons <- moons$newmoondate < Sys.Date()
+    included_moons <- moons$newmoondate < cast_date
     new_raw <- moons[included_moons, ]
     write.csv(new_raw, fpath, row.names = FALSE)
   }

@@ -157,18 +157,21 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                        filename_meta = "metadata.yaml", cleanup = TRUE){
   pass_and_call(portalcast_welcome)
   pass_and_call(verify_models)
-#extract min_lag 
+  min_lag <- pass_and_call(extract_min_lag)
   nend_moons <- length(end_moons)
   if(nend_moons > 1){
     for(i in 1:nend_moons){
-      pass_and_call(prep_data, min_lag = 6, end_moon = end_moons[i])
+      pass_and_call(prep_data, min_lag = min_lag, end_moon = end_moons[i])
       #casts
     }
   } else{
-    pass_and_call(prep_data, min_lag = 6, end_moon = end_moons)
+    pass_and_call(prep_data, min_lag = min_lag, end_moon = end_moons)
     #casts
   }
+  pass_and_call(portalcast_goodbye)
 } 
+
+
 
 #' @title Prepare data subdirectory for a forecast or hindcast run(s)
 #'

@@ -2,9 +2,12 @@
 % Please edit documentation in R/prepare_models.R
 \name{model_script_controls}
 \alias{model_script_controls}
+\alias{extract_min_lag}
 \title{Produce the control lists for the model script writing}
 \usage{
 model_script_controls(models = NULL, controls_m = NULL)
+
+extract_min_lag(models = prefab_models(), controls_m = NULL)
 }
 \arguments{
 \item{models}{\code{character} vector of name(s) of model(s) whose 
@@ -30,9 +33,11 @@ element \code{list} must be named according to the model and the
 See \code{Details} and \code{Examples}.}
 }
 \value{
-Named \code{list} of length equal to the number of elements in
- \code{models} and with elements that are each \code{list}s of those
- \code{models}'s script-writing controls.
+\code{model_script_controls}: named \code{list} of length equal to
+ the number of elements in \code{models} and with elements that are each 
+ \code{list}s of those \code{models}'s script-writing controls. \cr \cr
+ \code{extract_min_lag}: \code{numeric} value of the minimum non-0 lag
+ from any included model or \code{NA} if no models have lags.
 }
 \description{
 The model scripts are written using a generalized function
@@ -42,10 +47,12 @@ The model scripts are written using a generalized function
  input by the user, with the default being \code{NULL}, which returns.
  \code{NULL}. The prefab models (\code{\link{prefab_models}}) have their
  control lists included already, but any user-created model needs to
- have controls provided. See \code{Details}. \cr \cr
+ have controls provided. See \code{Details}. \cr 
  \strong{Users adding models to the prefab set should add their
  script-writing controls lists to the \code{prefab_controls} object in 
- the source code of the function.}
+ the source code of the function.} \cr \cr
+ \code{extract_min_lag} provides a simple function to extract the 
+ minimum non-0 lag time used across models from the controls lists.
 }
 \details{
 Any model that is part of the \code{prefab} set 
@@ -64,5 +71,7 @@ Any model that is part of the \code{prefab} set
  model_script_controls("xx", controls)
  model_script_controls(model_names("xx", "prefab"), controls)
  model_script_controls(c("xx", "ESSS"), controls)
+ extract_min_lag()
+ extract_min_lag("AutoArima")
 
 }

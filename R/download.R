@@ -415,11 +415,10 @@ verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
 #'
 #' @examples
 #'   NMME_urls()
-#'   NMME_urls(end = Sys.Date() + 10)
 #'
 #' @export
 #'
-NMME_urls <- function(start = Sys.Date(), end = Sys.Date(),
+NMME_urls <- function(start = Sys.Date(), end = as.Date("2050-01-01"),
                       model = "ENSMEAN", lat = 31.9555, lon = -109.0744, 
                       freq = "daily",
                       data = c("tasmin", "tasmean", "tasmax", "pr")){

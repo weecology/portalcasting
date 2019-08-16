@@ -7,23 +7,16 @@ prep_covariates(main)
 
 
 # working in the portalcast functions
-# in particular in prep_data
-
-devtools::test()
-
-# vignettes
-
-
-
-
-
+#
+# now onto casts!
+#
+# also need to bring in model function scripts!
 
 
 
 users adding models should permanently add code to model_script_controls()
 rather than write their own functions
 
-make matching of forecast and Forecast and forecasts etc etc
 
 
  # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
@@ -56,12 +49,12 @@ make matching of forecast and Forecast and forecasts etc etc
 
 
 # future ideas
-#  a future nice thing will be making update_list work where you pass
-#  it a second list
-# maybe update_list <- function(orig_list, ..., new_list = NULL)
-# and if new_list isn't null then unwind it and use its elements
-# that way you dont have to pass in each argument as x = x if you're updating
-# a bunch of stuff!
+#  make update_list work where you pass it a second list
+#   maybe update_list <- function(orig_list, ..., new_list = NULL)
+#   and if new_list isn't null then unwind it and use its elements
+#   that way you dont have to pass in each argument as x = x if you're 
+#   updating a bunch of stuff!
 #
-# github download urls
-# figure out a way to make the pulling or updating of min_lag automated
+#  github download urls
+
+

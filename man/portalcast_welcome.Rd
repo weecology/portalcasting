@@ -2,22 +2,25 @@
 % Please edit documentation in R/setup_dir.R
 \name{portalcast_welcome}
 \alias{portalcast_welcome}
-\title{Directory welcome}
+\alias{portalcast_goodbye}
+\title{Directory welcome and goodbye messages}
 \usage{
 portalcast_welcome(quiet = FALSE)
+
+portalcast_goodbye(quiet = FALSE)
 }
 \arguments{
-\item{quiet}{\code{logical} indicator if progress message should be
-quieted.}
+\item{quiet}{\code{logical} indicator if message should be quieted.}
 }
 \value{
 \code{NULL}, as message is printed.
 }
 \description{
 Create a welcome message for the directory based on the 
- package version.
+ package version or a goodbye message for when models are done.
 }
 \examples{
  portalcast_welcome()
+ portalcast_goodbye()
 
 }

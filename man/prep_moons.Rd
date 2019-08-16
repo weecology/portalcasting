@@ -20,7 +20,8 @@ add_future_moons(moons = prep_moons(), lead_time = 12,
 
 add_extra_future_moons(moons, cast_date = Sys.Date())
 
-add_past_moons_to_raw(main = ".", moons, raw_path_data = "PortalData",
+add_past_moons_to_raw(main = ".", moons, cast_date = Sys.Date(),
+  raw_path_data = "PortalData",
   raw_moons_file = "Rodents/moon_dates.csv", overwrite = TRUE)
 }
 \arguments{

@@ -225,19 +225,18 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
   pass_and_call(sandbox_welcome)
 }
 
-#' @title Directory welcome
+#' @title Directory welcome and goodbye messages
 #'
 #' @description Create a welcome message for the directory based on the 
-#'  package version.
+#'  package version or a goodbye message for when models are done.
 #'
-#'
-#' @param quiet \code{logical} indicator if progress message should be
-#'   quieted.
+#' @param quiet \code{logical} indicator if message should be quieted.
 #' 
 #' @return \code{NULL}, as message is printed.
 #'
 #' @examples
 #'  portalcast_welcome()
+#'  portalcast_goodbye()
 #'
 #' @export
 #' 
@@ -247,6 +246,16 @@ portalcast_welcome <- function(quiet = FALSE){
   msg2 <- paste0("This is portalcasting v", version_number)
   messageq(c(msg1, msg2), quiet)
 }
+
+#' @rdname portalcast_welcome
+#'
+#' @export
+#'
+portalcast_goodbye <- function(quiet = FALSE){
+  msg1 <- "########################################################"
+  messageq(c(msg1, "Models done", msg1), quiet)
+}
+
 
 #' @title Sandbox welcome
 #'
