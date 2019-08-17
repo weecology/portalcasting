@@ -2,11 +2,14 @@
 % Please edit documentation in R/prepare_moons.R
 \name{target_newmoons}
 \alias{target_newmoons}
-\title{Determine which newmoon numbers fall into a range of times for 
- casting}
+\alias{last_newmoon}
+\title{Determine specific newmoon numbers}
 \usage{
 target_newmoons(main = ".", moons = prep_moons(main = main),
   end_moon = NULL, lead_time = 12, cast_date = Sys.Date())
+
+last_newmoon(main = ".", moons = prep_moons(main = main),
+  cast_date = Sys.Date())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -26,18 +29,22 @@ the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 }
 \value{
-\code{numeric} vector of the newmoon numbers targeted by the date
- window.
+\code{target_newmoons}: \code{numeric} vector of the newmoon numbers 
+ targeted by the date window.
+ \code{last_newmoon}:  \code{numeric} value of the last newmoon number.
 }
 \description{
-Based on the forecast origin and the lead time, determine 
- which moons should be included.
+\code{target_newmoons}: based on the forecast origin and the lead time, 
+ determines which moons should be included. \cr \cr
+ \code{last_newmoon}: based on the forecast origin date, determine its
+ newmoon number.
 }
 \examples{
  \donttest{
   create_dir()
   fill_dir()
   target_newmoons()
+  last_newmoon()
  }
 
 }

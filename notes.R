@@ -12,6 +12,13 @@ prep_covariates(main)
 #
 # also need to bring in model function scripts!
 
+devtools::load_all()
+for(i in 1:10){
+ if_skip(i == 3)
+  print(i)
+}
+
+
 
 
 users adding models should permanently add code to model_script_controls()

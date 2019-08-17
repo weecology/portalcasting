@@ -1,3 +1,47 @@
+#' @title Remove files from the tmp subdirectory
+#'
+#' @description Clear the files from the tmp subdirectory.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'
+#' @param cleanup \code{logical} indicator if any files put into the tmp
+#'  subdirectory should be removed at the end of the process. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @return \code{NULL}, with the tmp subdirectory's files removed.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   clear_tmp
+#'  }
+#'
+#' @export
+#'
+clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE){
+  tmp_path <- sub_paths(main, "tmp")
+  tmp_exist <- dir.exists(tmp_path)
+  tmp_files <- list.files(tmp_path)
+  ntmp_files <- length(tmp_files)
+  if(tmp_exist){
+    if(ntmp_files > 0){
+      tmp_files_full_paths <- file_paths(main, paste0("tmp/", tmp_files))
+      file.remove(tmp_files_full_paths)
+      msg <- "temporary files cleared from tmp subdirectory"
+    } else {
+      msg <- "tmp subdirectory already clear"
+    }
+  } else{
+    msg <- "tmp subdirectory not present for clearing"
+  }
+  messageq(msg, quiet)
+  NULL
+}
+
+
 
 #' @title Combine a historical table and a cast table
 #'

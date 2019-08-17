@@ -63,6 +63,12 @@
 #'  \code{"raw\PortalData"}, so 
 #'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
 #'
+#' @param raw_traps_file \code{character} value indicating the path
+#'  to the trapping data file within \code{raw_path_data}. A standard 
+#'  portalcasting directory downloads the raw data files into 
+#'  \code{"raw\PortalData"}, so 
+#'  \code{raw_traps_file = "Rodents/Portal_rodent_trapping.csv"}.
+#'
 #' @param source_name \code{character} value for the name to give the 
 #'   covariate forecast. Currently is \code{"current_archive"}. Previous to
 #'   \code{"current_archive"}, the data were retroactively filled in and are 
@@ -145,6 +151,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                        raw_cov_cast_file = "data/covariate_casts.csv",
                        raw_path_cov_cast = "cov_casts", 
                        raw_moons_file = "Rodents/moon_dates.csv",
+                       raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
                        source_name = "current_archive",
                        append_cast_csv = TRUE, controls_m = NULL,
                        controls_r = rodents_controls(),
@@ -158,19 +165,130 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
   pass_and_call(portalcast_welcome)
   pass_and_call(verify_models)
   min_lag <- pass_and_call(extract_min_lag)
+  last_moon <- pass_and_call(last_newmoon)
+  end_moons <- ifnull(end_moons, last_moon)
+  end_moons <- sort(end_moons, decreasing = TRUE)
   nend_moons <- length(end_moons)
-  if(nend_moons > 1){
-    for(i in 1:nend_moons){
-      pass_and_call(prep_data, min_lag = min_lag, end_moon = end_moons[i])
-      #casts
-    }
-  } else{
-    pass_and_call(prep_data, min_lag = min_lag, end_moon = end_moons)
-    #casts
+  for(i in 1:nend_moons){
+    pass_and_call(prep_data, min_lag = min_lag, end_moon = end_moons[i])
+    #pass_and_call(cast)
   }
   pass_and_call(portalcast_goodbye)
 } 
 
+
+
+cast <- function(main = ".", moons = prep_moons(main = main), 
+                          end_moon = NULL, raw_path_data = "PortalData",
+                          raw_traps_file = 
+                            "Rodents/Portal_rodent_trapping.csv",
+                          controls_r = rodents_controls()){
+  skips <- pass_and_call(check_to_skip)
+  if(skips){
+    return()
+  }
+#  pass_and_call(cast_models)
+#  pass_and_call(combine_forecasts)
+#  pass_and_call(add_ensemble)
+  messageq("########################################################", quiet)
+  clear_tmp(tree, quiet)
+}
+
+
+
+
+
+
+
+
+
+
+###############################
+
+
+#' @title Check if the newmoon should be skipped during a set of casts
+#' 
+#' @description Newmoons with incomplete surveys are skipped.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample.  
+#' 
+#' @param raw_path_data \code{character} value indicating the folder path
+#'  to the data within the \code{raw} subdirectory but above the files. A 
+#'  standard portalcasting directory downloads the raw data files into 
+#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
+#'  \code{"raw/"} is implied). 
+#' 
+#' @param raw_traps_file \code{character} value indicating the path
+#'  to the trapping data file within \code{raw_path_data}. A standard 
+#'  portalcasting directory downloads the raw data files into 
+#'  \code{"raw\PortalData"}, so 
+#'  \code{raw_traps_file = "Rodents/Portal_rodent_trapping.csv"}.
+#'
+#' @param controls_r Control \code{list} (from 
+#'  \code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+#'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
+#'  rodents tables. See \code{\link{rodents_control}} for details. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#' 
+#' @return \code{logical} indicator of if the moon should be skipped.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   check_to_skip()
+#'  }
+#'
+#' @export
+#'
+check_to_skip <- function(main = ".", moons = prep_moons(main = main), 
+                          end_moon = NULL, raw_path_data = "PortalData",
+                          raw_traps_file = 
+                            "Rodents/Portal_rodent_trapping.csv",
+                          controls_r = rodents_controls(), quiet = FALSE){
+  if(list_depth(controls_r) == 1){
+    controls_r <- list(controls_r)
+  }
+  ncontrols_r <- length(controls_r)
+  last_moon <- pass_and_call(last_newmoon)
+  end_moon <- ifnull(end_moon, last_moon)
+
+  lpath <- paste0("raw/", raw_path_data, "/", raw_traps_file)
+  trap_path <- file_paths(main, lpath) 
+  trap_tab <- read.csv(trap_path, stringsAsFactors = FALSE)
+
+  min_plots <- 1
+  min_traps <- 1
+  for(i in 1:ncontrols_r){
+    min_plots <- max(c(min_plots, controls_r[[i]]$min_plots))
+    min_traps <- max(c(min_traps, controls_r[[i]]$min_traps))
+  }
+  incs <- find_incomplete_censuses(trap_tab, min_plots, min_traps)
+
+  end_period <- moons$period[moons$newmoonnumber == end_moon]
+
+  out <- FALSE
+  if (is.na(end_period)){
+    out <- TRUE
+  } else if (end_period %in% incs$period){
+    out <- TRUE
+  }
+  if (out){
+    msg1 <- paste0("Newmoon ", end_moon, " not fully sampled; skipped")
+    msg2 <- "##########################################################"
+    messageq(c(msg1, msg2), quiet)
+  }
+  out
+
+}
 
 
 #' @title Prepare data subdirectory for a forecast or hindcast run(s)

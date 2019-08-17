@@ -94,7 +94,7 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
   moons <- pass_and_call(add_future_moons, moons = moons_in)
   pass_and_call(add_past_moons_to_raw, moons = moons_in)
   moons_out <- format_moons(moons)
-  pass_and_call(data_out, x = moons_out)
+  pass_and_call(data_out, x = moons_out, filename = filename_moons)
 }
 
 #' @rdname prep_moons
@@ -254,11 +254,13 @@ add_newmoons_from_date <- function(x, moons = NULL){
   x
 }
 
-#' @title Determine which newmoon numbers fall into a range of times for 
-#'  casting
+#' @title Determine specific newmoon numbers
 #'
-#' @description Based on the forecast origin and the lead time, determine 
-#'  which moons should be included.
+#' @description 
+#'  \code{target_newmoons}: based on the forecast origin and the lead time, 
+#'  determines which moons should be included. \cr \cr
+#'  \code{last_newmoon}: based on the forecast origin date, determine its
+#'  newmoon number.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -276,14 +278,17 @@ add_newmoons_from_date <- function(x, moons = NULL){
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
 #'
-#' @return \code{numeric} vector of the newmoon numbers targeted by the date
-#'  window.
+#' @return 
+#'  \code{target_newmoons}: \code{numeric} vector of the newmoon numbers 
+#'  targeted by the date window.
+#'  \code{last_newmoon}:  \code{numeric} value of the last newmoon number.
 #'
 #' @examples
 #'  \donttest{
 #'   create_dir()
 #'   fill_dir()
 #'   target_newmoons()
+#'   last_newmoon()
 #'  }
 #'
 #' @export
@@ -291,10 +296,18 @@ add_newmoons_from_date <- function(x, moons = NULL){
 target_newmoons <- function(main = ".", moons = prep_moons(main = main),
                             end_moon = NULL, lead_time = 12, 
                             cast_date = Sys.Date()){
-
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon <- moons$newmoonnumber[which_last_moon]
+  last_moon <- pass_and_call(last_newmoon)
   end_moon <- ifnull(end_moon, last_moon)
   (end_moon + 1):(end_moon + lead_time)
+}
+
+#' @rdname target_newmoons
+#'
+#' @export
+#'
+last_newmoon <- function(main = ".", moons = prep_moons(main = main),
+                           cast_date = Sys.Date()){
+  which_last_moon <- max(which(moons$newmoondate < cast_date))
+  moons$newmoonnumber[which_last_moon]
 }
 

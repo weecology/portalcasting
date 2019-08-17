@@ -4,8 +4,8 @@
 #'  one_of right_join select summarize ungroup
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
-#' @importFrom portalr fcast_ndvi get_future_moons ndvi summarize_rodent_data 
-#'  weather
+#' @importFrom portalr fcast_ndvi find_incomplete_censuses get_future_moons 
+#'  ndvi summarize_rodent_data weather
 #' @importFrom readr read_csv
 #' @importFrom rlang !! .data
 #' @importFrom stats rnorm

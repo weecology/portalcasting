@@ -13,6 +13,7 @@ portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
+  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
   controls_m = NULL, controls_r = rodents_controls(),
   control_cdl = list(), downloads = zenodo_downloads(c("1215988",
@@ -77,6 +78,12 @@ to the moons data file within \code{raw_path_data}. A standard
 portalcasting directory downloads the raw data files into 
 \code{"raw\PortalData"}, so 
 \code{raw_moons_file = "Rodents/moon_dates.csv"}.}
+
+\item{raw_traps_file}{\code{character} value indicating the path
+to the trapping data file within \code{raw_path_data}. A standard 
+portalcasting directory downloads the raw data files into 
+\code{"raw\PortalData"}, so 
+\code{raw_traps_file = "Rodents/Portal_rodent_trapping.csv"}.}
 
 \item{source_name}{\code{character} value for the name to give the 
 covariate forecast. Currently is \code{"current_archive"}. Previous to
