@@ -1,5 +1,5 @@
 devtools::document()
-main = "~/testingX"
+main = "~/testing2"
 setup_dir(main)
 fill_data(main)
 

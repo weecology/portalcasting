@@ -187,11 +187,17 @@ cast <- function(main = ".", moons = prep_moons(main = main),
   if(skips){
     return()
   }
-#  pass_and_call(cast_models)
+  last_moon <- pass_and_call(last_newmoon)
+  end_moon <- ifnull(end_moon, last_moon)
+  msg1 <- "##########################################################"
+  msg2 <- paste0("Running models for forecast origin newmoon ", end_moon)
+
+#  models_scripts <- pass_and_call(models_to_cast)
+#  sapply(models_scripts, source)
 #  pass_and_call(combine_forecasts)
 #  pass_and_call(add_ensemble)
   messageq("########################################################", quiet)
-  clear_tmp(tree, quiet)
+  pass_and_call(clear_tmp)
 }
 
 
@@ -282,9 +288,9 @@ check_to_skip <- function(main = ".", moons = prep_moons(main = main),
     out <- TRUE
   }
   if (out){
-    msg1 <- paste0("Newmoon ", end_moon, " not fully sampled; skipped")
-    msg2 <- "##########################################################"
-    messageq(c(msg1, msg2), quiet)
+    msg1 <- "##########################################################"
+    msg2 <- paste0("Newmoon ", end_moon, " not fully sampled; skipped")
+    messageq(c(msg1, msg2, msg1), quiet)
   }
   out
 
@@ -435,4 +441,37 @@ prep_data <- function(main = ".", end_moon = NULL,
   } else{
     messageq(" ...data already up-to-date", quiet)
   }
+}
+
+
+#' @title Determine the paths to the scripts for models to cast with
+#'
+#' @description Translate a \code{character} vector of model name(s) into a 
+#'  \code{character} vector of file path(s) corresponding to the model 
+#'  scripts. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param models \code{character} vector of name(s) of model(s) to 
+#'  include.
+#'
+#' @return \code{character} vector of the path(s) of the R script file(s) to 
+#'   be run.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_models()
+#'   models_to_cast()
+#'  }
+#'
+#' @export
+#'
+models_to_cast <- function(main = ".", models = prefab_models()){
+  models_path <- sub_paths(main, "models")
+  file_names <- paste0(models, ".R")
+  torun <- (list.files(models_path) %in% file_names)
+  torun_paths <- list.files(models_path, full.names = TRUE)[torun] 
+  normalizePath(torun_paths)
 }
