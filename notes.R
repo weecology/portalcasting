@@ -1,7 +1,7 @@
 devtools::document()
 main = "~/testing"
 
-portalcast(main)
+portalcast(main, c("AutoArima", "ESSS"))
 
 pevGARCH(main)
 
@@ -14,22 +14,19 @@ prep_covariates(main)
 
 
 
-# working in the portalcast functions
+# working in the figure functions
 #
-# ensemble building
 #
 
 funcitons to test
 lag_covariates (now in prepare_covariates)
 all the models (now in prefab_models
-foy, append_csv (utilities)
 covariate_models now in prep_models
 process casts functions
 
 need examples
 lag_covariates (now in prepare_covariates)
 process casts functions
-append_csv (utilities)
 
 users adding models should permanently add code to model_script_controls()
 rather than write their own functions

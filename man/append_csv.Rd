@@ -19,3 +19,11 @@ appended.}
 Appending a \code{.csv} without re-writing the header of the
  file. If the doesn't exist, it will be created.
 }
+\examples{
+ \donttest{
+  df <- data.frame(x = 1:10)
+  fpath <- file_paths(".", "xx.csv")
+  append_csv(df, fpath)
+ }
+
+}

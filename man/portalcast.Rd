@@ -2,6 +2,7 @@
 % Please edit documentation in R/portalcast.R
 \name{portalcast}
 \alias{portalcast}
+\alias{cast}
 \title{Forecast or hindcast Portal rodents models}
 \usage{
 portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
@@ -21,6 +22,12 @@ portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
   overwrite = TRUE, filename_moons = "moon_dates.csv",
   filename_cov = "covariates.csv", filename_meta = "metadata.yaml",
   cleanup = TRUE)
+
+cast(main = ".", models = prefab_models(), ensemble = TRUE,
+  cast_date = Sys.Date(), moons = prep_moons(main = main),
+  end_moon = NULL, raw_path_data = "PortalData",
+  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
+  controls_r = rodents_controls(), quiet = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -31,9 +38,11 @@ include.}
 
 \item{ensemble}{\code{logical} indicator if the ensemble should be added.}
 
-\item{end_moons}{\code{integer} (or integer \code{numeric}) newmoon numbers 
-of the last samples to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
+\item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) 
+newmoon number(s) of the last sample(s) to be included. Default value is 
+\code{NULL}, which equates to the most recently included sample. \cr
+\strong{\code{end_moons} allows for multiple moons, \code{end_moon}
+can only be one value}.}
 
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}
@@ -144,6 +153,8 @@ data output.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
+
+\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned.

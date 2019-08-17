@@ -15,9 +15,13 @@
 #'
 #' @param ensemble \code{logical} indicator if the ensemble should be added.
 #'
-#' @param end_moons \code{integer} (or integer \code{numeric}) newmoon numbers 
-#'  of the last samples to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
+#' @param end_moons,end_moon \code{integer} (or integer \code{numeric}) 
+#'  newmoon number(s) of the last sample(s) to be included. Default value is 
+#'  \code{NULL}, which equates to the most recently included sample. \cr
+#'  \strong{\code{end_moons} allows for multiple moons, \code{end_moon}
+#'  can only be one value}.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
@@ -176,14 +180,16 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
 } 
 
 
-
+#' @rdname portalcast
+#'
+#' @export
+#'
 cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
-                       cast_date = Sys.Date(),
+                 cast_date = Sys.Date(),
                  moons = prep_moons(main = main), 
-                          end_moon = NULL, raw_path_data = "PortalData",
-                          raw_traps_file = 
-                            "Rodents/Portal_rodent_trapping.csv",
-                          controls_r = rodents_controls(), quiet = FALSE){
+                 end_moon = NULL, raw_path_data = "PortalData",
+                 raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
+                 controls_r = rodents_controls(), quiet = FALSE){
   last_moon <- pass_and_call(last_newmoon)
   end_moon <- ifnull(end_moon, last_moon)
 
@@ -195,21 +201,12 @@ cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
   sapply(models_scripts, source)
   pass_and_call(combine_casts)
   if (ensemble){
-  #  pass_and_call(add_ensemble)
+    pass_and_call(add_ensemble)
   }
   messageq("########################################################", quiet)
   #pass_and_call(clear_tmp)
 }
 
-
-
-cast0 <- function(nmoons, colname = "pred"){
-  mean_0 <- rep(0, nmoons)
-  int_0 <- data.frame("lower" = rep(0, nmoons), "upper" = rep(0, nmoons))
-  out <- list(mean_0, interval = int_0)
-  names(out)[1] <- colname
-  out
-}
 
 
 

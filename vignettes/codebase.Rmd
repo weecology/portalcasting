@@ -81,6 +81,11 @@ The directory is filled (loaded with files for default forecasting) using a seri
   * `prep_metadata` creates and saves out a YAML metadata list for the forecasting. 
 
 
+## Running models
+
+Models are run using a function pipeline similar to the creation and filling function pipelines, with flexible controls but robust operation under default settings.
+
+
 
 ## Important Utilities
 

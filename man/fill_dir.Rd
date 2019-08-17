@@ -42,7 +42,8 @@ fill_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
 fill_models(main = ".", models = prefab_models(), controls_m = NULL,
   quiet = FALSE, overwrite = TRUE)
 
-fill_predictions(main = ".", raw_path_predictions = NULL,
+fill_predictions(main = ".",
+  raw_path_predictions = "portalPredictions/predictions",
   quiet = FALSE, verbose = FALSE, overwrite = TRUE)
 
 fill_raw(main = ".", downloads = zenodo_downloads(c("1215988",

@@ -1,3 +1,31 @@
+#' @title Zero-abundance cast
+#'
+#' @description Create a 0-abundance cast for fill-in usage when a model 
+#'   fails or there is no non-0 historical abundance.
+#'
+#' @param nmoons \code{integer} number of forecast newmoons.
+#'
+#' @param colname \code{character} name for the predictor column (to match
+#'   variable model output names).
+#'
+#' @return Two-element \code{list} of means and interval values for a 
+#'   0-abundance forecast to be used as a filler when a model fails or there 
+#'   is no non-0 historical abundance.
+#'
+#' @examples
+#'  cast0(12)
+#'
+#' @export
+#'
+cast0 <- function(nmoons = NULL, colname = "pred"){
+  return_if_null(nmoons)
+  mean_0 <- rep(0, nmoons)
+  int_0 <- data.frame("lower" = rep(0, nmoons), "upper" = rep(0, nmoons))
+  out <- list(mean_0, interval = int_0)
+  names(out)[1] <- colname
+  out
+}
+
 
 #' @title Save data out to a csv, appending the file if it already exists
 #'
@@ -10,6 +38,13 @@
 #'  appended.
 #'
 #' @return \code{NULL}.
+#'
+#' @examples
+#'  \donttest{
+#'   df <- data.frame(x = 1:10)
+#'   fpath <- file_paths(".", "xx.csv")
+#'   append_csv(df, fpath)
+#'  }
 #'
 #' @export
 #'

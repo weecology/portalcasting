@@ -1,5 +1,18 @@
 context("Test utility functions")
 
+test_that("cast0", {
+  expect_is(cast0(12), "list")
+})
+
+test_that("foy", {
+  expect_is(foy(Sys.Date()), "numeric")
+})
+
+test_that("append_csv",{
+  df <- data.frame(x = 1:10)
+  fpath <- file_paths(main = "./testing", "xx.csv")
+  expect_equal(append_csv(df, fpath), NULL)
+})
 
 test_that("cast_window", {
   skip_on_cran() # downloads take too long for cran checks

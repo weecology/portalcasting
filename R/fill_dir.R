@@ -223,7 +223,9 @@ fill_models <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #'
-fill_predictions <- function(main = ".", raw_path_predictions = NULL, 
+fill_predictions <- function(main = ".", 
+                             raw_path_predictions =
+                               "portalPredictions/predictions", 
                              quiet = FALSE, verbose = FALSE, 
                              overwrite = TRUE){
   messageq("filling predictions folder", quiet)

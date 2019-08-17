@@ -1,15 +1,15 @@
 #' @importFrom curl curl
 #' @importFrom DesignLibrary match.call.defaults
-#' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join mutate 
-#'  one_of right_join select summarize ungroup
+#' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join 
+#'  left_join mutate n one_of rename right_join select summarize ungroup
 #' @importFrom forecast auto.arima ets forecast na.interp
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
 #' @importFrom portalr fcast_ndvi find_incomplete_censuses get_future_moons 
 #'  ndvi summarize_rodent_data weather
 #' @importFrom readr read_csv
-#' @importFrom rlang !! .data
-#' @importFrom stats AIC predict rnorm
+#' @importFrom rlang !! !!! .data quo quos
+#' @importFrom stats AIC predict qnorm rnorm
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file packageDescription read.csv tail unzip
 #'  write.csv write.table
@@ -39,9 +39,14 @@ NULL
 # To quiet concerns of R CMD check re: variables used in non-standard eval
 if (getRversion() >= "2.15.1"){
   utils::globalVariables(
-    c(".", "battery_low", "cast_newmoon", "censusdate", "day", "date_made", 
-      "forecast_newmoon", "locally_measured", "main", "maxtemp", "meantemp", 
-      "mintemp", "newmoondate", "newmoonnumber", "precipitation")
+    c(".", "aic", "battery_low", "cast_newmoon", "castmonth", "castyear",
+      "censusdate", "currency", "day", "date_made", "delta_aic", 
+      "ensemble_estimate", "ensemble_var","estimate",
+      "fit_end_newmoon", "fit_start_newmoon",
+      "forecast_newmoon", "initial_newmoon", "level",
+      "locally_measured", "LowerPI", "main", "maxtemp", "meantemp", 
+      "mintemp", "model_var", "newmoondate", "newmoonnumber", "precipitation",
+      "species", "sum_weight", "UpperPI", "weight", "weighted_ss")
   )
 }
 
