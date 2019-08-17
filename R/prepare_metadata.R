@@ -75,7 +75,7 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
   messageq("Loading metadata file into data subdirectory", quiet)
 
   last_moon <- max(covariates$newmoonnumber[covariates$source == "hist"]) 
-  last_moon <- ifnull(end_moon, last_moon)
+  end_moon <- ifnull(end_moon, last_moon)
 
   ncontrols_r <- length(rodents)
   last_rodent_pd <- 0

@@ -206,3 +206,43 @@ summarize_daily_weather_by_newmoon <- function(x){
   arrange(newmoonnumber) %>% 
   select(newmoonnumber, mintemp, maxtemp, meantemp, precipitation)
 }
+
+
+
+#' @title Lag covariate data
+#'
+#' @description Lag the covariate data together based on the new moons
+#'
+#' @param covariates \code{data.frame} of covariate data to be lagged. 
+#'  
+#' @param lag \code{integer} lag between rodent census and covariate data, in
+#'  new moons.
+#'  
+#' @param tail \code{logical} indicator if the data lagged to the tail end 
+#'  should be retained.
+#'  
+#' @return \code{data.frame} with a \code{newmoonnumber} column reflecting
+#'  the lag.
+#'
+#' @export
+#'
+lag_covariates <- function(covariates, lag, tail = FALSE){
+  covariates$newmoonnumber_lag <- covariates$newmoonnumber + lag
+  
+  if(tail == FALSE){
+    oldest_included_newmoon <- covariates$newmoonnumber[1]
+    most_recent_newmoon <- covariates$newmoonnumber[nrow(covariates)]
+    hist_newmoons <- oldest_included_newmoon:most_recent_newmoon
+    hist_moons_table <- data.frame(newmoonnumber = hist_newmoons)
+    nm_match <- c("newmoonnumber_lag" = "newmoonnumber")
+    data <- right_join(covariates, hist_moons_table, by = nm_match) 
+    if (lag > 0){
+      covariates <- covariates[-(1:lag), ]
+    }
+  }
+  covariates <- select(covariates, -newmoonnumber)
+  cn_covariates <- colnames(covariates)
+  cn_nmn_l <- which(cn_covariates == "newmoonnumber_lag")
+  colnames(covariates)[cn_nmn_l] <- "newmoonnumber"
+  covariates
+}

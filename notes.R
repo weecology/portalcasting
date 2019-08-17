@@ -1,9 +1,13 @@
 devtools::document()
 main = "~/testing2"
+
+pevGARCH(main)
+
 setup_dir(main)
 fill_data(main)
 
 prep_covariates(main)
+
 
 
 # working in the portalcast functions
@@ -18,7 +22,14 @@ for(i in 1:10){
   print(i)
 }
 
+funcitons to test
+lag_covariates (now in prepare_covariates)
+all the models (now in prefab_models
+foy (utilities)
+covariate_models now in prep_models
 
+need examples
+lag_covariates (now in prepare_covariates)
 
 
 users adding models should permanently add code to model_script_controls()
@@ -63,5 +74,8 @@ rather than write their own functions
 #   updating a bunch of stuff!
 #
 #  github download urls
+#
+#  make the model script writing and forecast processing work for different
+#   treatment levels
 
 

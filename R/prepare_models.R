@@ -287,7 +287,7 @@ model_template <- function(name = NULL, covariates = FALSE,
 
   paste0('f_a <- ', name ,'(', args_a, ');
 f_c <- ', name ,'(', args_c, ');
-save_forecast_output(f_a, f_c, "', name, '"', main_arg, ')'
+save_cast_output(f_a, f_c, "', name, '"', main_arg, ')'
   )
 
 }
@@ -330,4 +330,38 @@ verify_models <- function(main = ".", models = prefab_models(),
     }
   }
   messageq("All requested models available", quiet)
+}
+
+
+#' @title Create a covariate model list
+#'
+#' @description Convenience function for creating covariate model 
+#'  \code{list}s.
+#'
+#' @param model \code{character} name for covariate models. Currently only 
+#'  \code{"pevGARCH"} is supported.
+#'
+#' @return \code{list} of covariate model structures.
+#'
+#' @examples
+#'  covariate_models()
+#'
+#' @export
+#'
+covariate_models <- function(model = "pevGARCH"){
+  out <- NULL
+  if (model == "pevGARCH"){
+    out <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),
+                c("maxtemp", "mintemp", "precipitation", "ndvi"),
+                c("mintemp", "maxtemp", "meantemp", "precipitation"),
+                c("precipitation", "ndvi"),
+                c("mintemp", "ndvi"),
+                c("mintemp"),
+                c("maxtemp"),
+                c("meantemp"),
+                c("precipitation"),
+                c("ndvi"),
+                c(NULL))
+  }
+  out
 }

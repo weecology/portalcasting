@@ -178,11 +178,12 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
 
 
 
-cast <- function(main = ".", moons = prep_moons(main = main), 
+cast <- function(main = ".", models = prefab_models(), 
+                 moons = prep_moons(main = main), 
                           end_moon = NULL, raw_path_data = "PortalData",
                           raw_traps_file = 
                             "Rodents/Portal_rodent_trapping.csv",
-                          controls_r = rodents_controls()){
+                          controls_r = rodents_controls(), quiet = FALSE){
   skips <- pass_and_call(check_to_skip)
   if(skips){
     return()
@@ -192,7 +193,7 @@ cast <- function(main = ".", moons = prep_moons(main = main),
   msg1 <- "##########################################################"
   msg2 <- paste0("Running models for forecast origin newmoon ", end_moon)
 
-#  models_scripts <- pass_and_call(models_to_cast)
+  models_scripts <- pass_and_call(models_to_cast)
 #  sapply(models_scripts, source)
 #  pass_and_call(combine_forecasts)
 #  pass_and_call(add_ensemble)
@@ -202,7 +203,13 @@ cast <- function(main = ".", moons = prep_moons(main = main),
 
 
 
-
+cast0 <- function(nmoons, colname = "pred"){
+  mean_0 <- rep(0, nmoons)
+  int_0 <- data.frame("lower" = rep(0, nmoons), "upper" = rep(0, nmoons))
+  out <- list(mean_0, interval = int_0)
+  names(out)[1] <- colname
+  out
+}
 
 
 

@@ -30,11 +30,13 @@ Imports:
   curl,
   DesignLibrary,
   dplyr,
+  forecast,
   httr,
   lubridate,
   portalr,
   readr,
   rlang,
+  tscount,
   yaml
 Suggests:
   knitr,

@@ -1,3 +1,28 @@
+#' @title Calculate the fraction of the year from a date
+#' 
+#' @description Based on the year in which the date occurred, determine the
+#'   fraction of the year (foy) for the date (in relation to New Year's Eve
+#'   in that year). 
+#'
+#' @param date \code{Date}(s) or \code{Date}-conformable value(s) to be 
+#'   converted to the fraction of the year.
+#'
+#' @return \code{numeric} value(s) of the fraction of the year.
+#'
+#' @examples
+#'  foy(Sys.Date())
+#'
+#' @export
+#'
+foy <- function(date = NULL){
+  return_if_null(date)
+  dates <- as.Date(date)
+  jday <- as.numeric(format(dates, "%j"))
+  nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
+  nyejday <- as.numeric(format(nye, "%j"))
+  round(jday / nyejday, 3)
+}
+
 #' @title Remove files from the tmp subdirectory
 #'
 #' @description Clear the files from the tmp subdirectory.
