@@ -1,9 +1,13 @@
 devtools::document()
-main = "~/testing2"
+main = "~/testing"
+
+portalcast(main)
 
 pevGARCH(main)
 
 setup_dir(main)
+
+
 fill_data(main)
 
 prep_covariates(main)
@@ -12,25 +16,20 @@ prep_covariates(main)
 
 # working in the portalcast functions
 #
-# now onto casts!
+# ensemble building
 #
-# also need to bring in model function scripts!
-
-devtools::load_all()
-for(i in 1:10){
- if_skip(i == 3)
-  print(i)
-}
 
 funcitons to test
 lag_covariates (now in prepare_covariates)
 all the models (now in prefab_models
-foy (utilities)
+foy, append_csv (utilities)
 covariate_models now in prep_models
+process casts functions
 
 need examples
 lag_covariates (now in prepare_covariates)
-
+process casts functions
+append_csv (utilities)
 
 users adding models should permanently add code to model_script_controls()
 rather than write their own functions
@@ -64,6 +63,7 @@ rather than write their own functions
 #  end_moon and the last moon available (if they're equal it's a forecast, 
 #  if not, it's a hindcast)
 #
+# hindcasts are now not skipping from incomplete/missed samples 
 
 
 # future ideas

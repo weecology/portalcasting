@@ -1,3 +1,24 @@
+
+#' @title Save data out to a csv, appending the file if it already exists
+#'
+#' @description Appending a \code{.csv} without re-writing the header of the
+#'  file. If the doesn't exist, it will be created.
+#'
+#' @param df \code{data.frame} table to be written out.
+#'
+#' @param filename \code{character} filename of existing \code{.csv} to be 
+#'  appended.
+#'
+#' @return \code{NULL}.
+#'
+#' @export
+#'
+append_csv <- function(df, filename){
+  write.table(df, filename, sep = ",", row.names = FALSE, 
+    col.names = !file.exists(filename), append = file.exists(filename))
+  NULL
+}
+
 #' @title Calculate the fraction of the year from a date
 #' 
 #' @description Based on the year in which the date occurred, determine the

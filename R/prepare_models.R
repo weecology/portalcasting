@@ -276,7 +276,7 @@ model_template <- function(name = NULL, covariates = FALSE,
   main_arg <- paste0(', main = "', main, '"')
   quiet_arg <- paste0(', quiet = ', quiet)
   if (covariates){
-    lag_arg <- paste0(', lag = ', lag, ', ')
+    lag_arg <- paste0(', lag = ', lag)
     args_a <- paste0('level = "All"', lag_arg, main_arg, quiet_arg)
     args_c <- paste0('level = "Controls"', lag_arg, main_arg, quiet_arg)
   } else{

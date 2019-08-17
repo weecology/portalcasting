@@ -12,7 +12,7 @@
 #' @importFrom stats AIC predict rnorm
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file packageDescription read.csv tail unzip
-#'  write.csv
+#'  write.csv write.table
 #' @importFrom yaml as.yaml yaml.load_file
 #'
 
