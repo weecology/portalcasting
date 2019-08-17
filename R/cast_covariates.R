@@ -170,6 +170,7 @@ prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
 #'
 cast_ndvi <- function(main = ".", moons = prep_moons(main = main), 
                       hist_cov = NULL, lead_time = 12, min_lag = 6){
+  min_lag <- ifna(min_lag, lead_time)
   lagged_lead <- lead_time - min_lag
   ndvi_data <- select(hist_cov, c("newmoonnumber", "ndvi"))
   fcast_ndvi(ndvi_data, "newmoon", lagged_lead, moons)

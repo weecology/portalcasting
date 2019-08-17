@@ -64,11 +64,16 @@ test_that("data_out", {
   expect_message(prep_moons(main = "./testing", overwrite = FALSE))
 })
 
-test_that("isnull", {
+test_that("ifnull", {
   expect_equal(ifnull(NULL, 123), 123)
   expect_equal(ifnull(TRUE, 123), TRUE)
 })
 
+test_that("ifna", {
+  expect_equal(ifna(NA, 123), 123)
+  expect_equal(ifna(FALSE, 123), FALSE)
+  expect_equal(ifna(NA, NA), NA)
+})
 test_that("messageq", {
   expect_silent(messageq("ok", TRUE))
   expect_message(messageq("ok"))

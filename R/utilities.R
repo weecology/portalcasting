@@ -576,6 +576,28 @@ ifnull <- function(x = NULL, alt = NULL){
   x
 }
 
+#' @title Replace if NA
+#'
+#' @description If the focal input is \code{NA}, replace it with 
+#'   alternative. 
+#'
+#' @param x Focal input.
+#'
+#' @param alt Alternative value.
+#'
+#' @return \code{x} if not \code{NA}, \code{alt} otherwise.
+#' 
+#' @examples
+#'  ifna(NA, 123)
+#'  ifna(FALSE, 123)
+#'  ifna(NA, NA)
+#'
+#' @export 
+#'
+ifna <- function(x = NULL, alt = NA){
+  ifelse(is.na(x), alt, x)
+}
+
 #' @title Optionally generate a message based on a logical input
 #'
 #' @description Given the input to \code{quiet}, generate the message(s) 
