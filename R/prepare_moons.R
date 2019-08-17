@@ -88,13 +88,13 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
                        quiet = FALSE, save = TRUE, 
                        overwrite = TRUE, filename_moons = "moon_dates.csv"){
 
-  paste0("raw/", raw_path_data, "/", raw_moons_file) %>%
-  file_paths(main, .) %>%
-  read.csv(stringsAsFactors = FALSE) %>%
-  add_future_moons(lead_time, cast_date) %>%
-  add_past_moons_to_raw(main, ., raw_path_data, raw_moons_file, overwrite) %>%
-  format_moons() %>%
-  data_out(main, save, filename_moons, overwrite, quiet)
+  lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
+  moon_path <- file_paths(main, lpath)
+  moons_in <- read.csv(moon_path, stringsAsFactors = FALSE)
+  moons <- pass_and_call(add_future_moons, moons = moons_in)
+  pass_and_call(add_past_moons_to_raw, moons = moons_in)
+  moons_out <- format_moons(moons)
+  pass_and_call(data_out, x = moons_out)
 }
 
 #' @rdname prep_moons

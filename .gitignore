@@ -5,3 +5,4 @@ doc
 .RData
 docs/*
 inst/doc
+tests/testthat/testing/*
