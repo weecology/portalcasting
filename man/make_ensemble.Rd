@@ -35,3 +35,20 @@ Uses the weighted mean and weighted sample variance to combine
   rounded to account for precision errors. Summed weights can also be 
   \code{NA} if there are not weights available for that ensemble.
 }
+\examples{
+ \donttest{
+  setup_dir()
+  temp_dir <- sub_paths(specific_subs = "tmp")
+  pred_dir <- sub_paths(specific_subs = "predictions")
+  filename_suffix <- "hindcast"
+  file_ptn <- paste(filename_suffix, ".csv", sep = "")
+  files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
+  cclass <- c("Date", "integer", "integer", "integer", "character", 
+              "character", "character", "character", "numeric",
+              "numeric", "numeric", "integer", "integer", "integer")
+  all_casts <- do.call(rbind, 
+          lapply(files, read.csv, na.strings = "", colClasses  = cclass))
+  make_ensemble(all_casts = all_casts) 
+ }
+  
+}

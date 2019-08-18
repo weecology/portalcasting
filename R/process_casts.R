@@ -22,6 +22,17 @@
 #'
 #' @return Forecast abundance table for the ensemble model.
 #' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   end_moon <- 520
+#'   prep_data(end_moon = end_moon)
+#'   models_scripts <- models_to_cast(models = c("ESSS", "AutoArima"))
+#'   sapply(models_scripts, source)
+#'   combine_casts(end_moon = end_moon)
+#'   add_ensemble(end_moon = end_moon)
+#'  }
+#'
 #' @export
 #'
 add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(), 
@@ -40,7 +51,6 @@ add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(),
               "numeric", "numeric", "integer", "integer", "integer")
   all_casts <- do.call(rbind, 
                lapply(files, read.csv, na.strings = "", colClasses  = cclass))
-
   ensemble <- pass_and_call(make_ensemble, all_casts = all_casts) 
   ensemble <- select(ensemble, colnames(all_casts))
   cast_date <- as.character(cast_date)
@@ -76,7 +86,23 @@ add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(),
 #'   summarizing model output. Must be between \code{0} and \code{1}.
 #' 
 #' @return Forecast abundance table for the ensemble model.
-#' 
+#'   
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   temp_dir <- sub_paths(specific_subs = "tmp")
+#'   pred_dir <- sub_paths(specific_subs = "predictions")
+#'   filename_suffix <- "hindcast"
+#'   file_ptn <- paste(filename_suffix, ".csv", sep = "")
+#'   files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
+#'   cclass <- c("Date", "integer", "integer", "integer", "character", 
+#'               "character", "character", "character", "numeric",
+#'               "numeric", "numeric", "integer", "integer", "integer")
+#'   all_casts <- do.call(rbind, 
+#'           lapply(files, read.csv, na.strings = "", colClasses  = cclass))
+#'   make_ensemble(all_casts = all_casts) 
+#'  }
+#'   
 #' @export
 #'
 make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
@@ -109,7 +135,6 @@ make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
                                   ensemble_var = !!ens_var,
                                   sum_weight = sum(weight)) %>% 
                         ungroup() 
-
   check_sum <- round(weighted_estimates$sum_weight, 10) == 1 
   check_na <- is.na(weighted_estimates$sum_weight)       
   if(!all(check_sum | check_na)){ 
@@ -137,6 +162,12 @@ make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
 #'  the directory tree.
 #'
 #' @return \code{data.frame} of model weights.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   compile_aic_weights()
+#'  }
 #' 
 #' @export
 #'
@@ -145,10 +176,9 @@ compile_aic_weights <- function(main = "."){
 
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]
-
   aics <- do.call(rbind, 
       lapply(aic_files, read.csv, na.strings = "", stringsAsFactors = FALSE))
- 
+
   grps <- quos(date, currency, level, species, fit_start_newmoon, 
             fit_end_newmoon, initial_newmoon)
  
@@ -184,6 +214,16 @@ compile_aic_weights <- function(main = "."){
 #'
 #' @return \code{list} of [1] \code{"casts"} (the casted abundances)
 #'  and [2] \code{"all_model_aic"} (the model AIC values).
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   end_moon <- 520
+#'   prep_data(end_moon = end_moon)
+#'   models_scripts <- models_to_cast(models = c("ESSS", "AutoArima"))
+#'   sapply(models_scripts, source)
+#'   combine_casts(end_moon = end_moon)
+#'  }
 #'
 #' @export
 #'
@@ -238,6 +278,14 @@ combine_casts <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   f_a <- AutoArima(level = "All")
+#'   f_c <- AutoArima(level = "Controls")
+#'   save_cast_output(f_a, f_c, "AutoArima")
+#'  }
 #'
 #' @export
 #'

@@ -1,17 +1,15 @@
 devtools::document()
 main = "~/testing"
 
-portalcast(main, c("AutoArima", "ESSS"))
+portalcast(main, end_moon = 520, c("ESSS", "AutoArima"))
 
 pevGARCH(main)
 
 setup_dir(main)
 
-
 fill_data(main)
 
 prep_covariates(main)
-
 
 
 # working in the figure functions
@@ -19,18 +17,7 @@ prep_covariates(main)
 #
 
 funcitons to test
-lag_covariates (now in prepare_covariates)
 all the models (now in prefab_models
-covariate_models now in prep_models
-process casts functions
-
-need examples
-lag_covariates (now in prepare_covariates)
-process casts functions
-
-users adding models should permanently add code to model_script_controls()
-rather than write their own functions
-
 
 
  # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE

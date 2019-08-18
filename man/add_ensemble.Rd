@@ -32,3 +32,15 @@ Forecast abundance table for the ensemble model.
 Add the predictions of an ensemble model to the forecasting 
   files.
 }
+\examples{
+ \donttest{
+  setup_dir()
+  end_moon <- 520
+  prep_data(end_moon = end_moon)
+  models_scripts <- models_to_cast(models = c("ESSS", "AutoArima"))
+  sapply(models_scripts, source)
+  combine_casts(end_moon = end_moon)
+  add_ensemble(end_moon = end_moon)
+ }
+
+}

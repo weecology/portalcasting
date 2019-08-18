@@ -3,6 +3,7 @@
 \name{portalcast}
 \alias{portalcast}
 \alias{cast}
+\alias{prep_data}
 \title{Forecast or hindcast Portal rodents models}
 \usage{
 portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
@@ -28,6 +29,20 @@ cast(main = ".", models = prefab_models(), ensemble = TRUE,
   end_moon = NULL, raw_path_data = "PortalData",
   raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
   controls_r = rodents_controls(), quiet = FALSE)
+
+prep_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
+  raw_cov_cast_file = "data/covariate_casts.csv",
+  raw_path_cov_cast = "cov_casts",
+  raw_moons_file = "Rodents/moon_dates.csv",
+  source_name = "current_archive", append_cast_csv = TRUE,
+  controls_r = rodents_controls(), control_cdl = list(),
+  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
+  verbose = FALSE, save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_meta = "metadata.yaml", cleanup = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -155,23 +170,37 @@ data output.}
 subdirectory should be removed at the end of the process.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
+
+\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
+covariate lag time used in any model.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned.
 }
 \description{
 Forecast or hindcast the Portal rodent population data using
- the data and models in a portalcasting directory.
+ the (updated if needed) data and models in a portalcasting directory. \cr
+ \code{portalcast} wraps around \code{cast} to allow multiple runs of 
+ multiple models, with data preparation as needed between runs occuring
+ via \code{prep_data}. \cr \cr
+ \code{prep_data} makes sure that the data subdirectory has the updated 
+ files for a casting run, using the \code{metadata.yaml} file to verify 
+ validity. If data are out of date, runs \code{\link{fill_data}}. \cr \cr
+ \code{cast} runs a single cast of multiple models, using the data as
+ prepared by \code{prep_data}.
 }
 \details{
 Multiple models can be run together on the same data and 
  multiple runs of a model (e.g., with a rolling origin) can be initiated
- together.
+ together using \code{portalcast} and \code{cast} runs the individual
+ instances.
 }
 \examples{
 \donttest{
  setup_dir()
  portalcast()
+ prep_data()
+ cast()
 }
 
 }

@@ -74,7 +74,7 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
 
   messageq("Loading metadata file into data subdirectory", quiet)
 
-  last_moon <- max(covariates$newmoonnumber[covariates$source == "hist"]) 
+  last_moon <- pass_and_call(last_newmoon)
   end_moon <- ifnull(end_moon, last_moon)
 
   ncontrols_r <- length(rodents)
@@ -105,7 +105,6 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
   covar_cast_years <- as.numeric(format(covar_nm_dates, "%Y"))
 
   cast_type <- ifelse(end_moon == last_moon, "forecast", "hindcast")
-
   list(cast_type = cast_type, lead_time = lead_time, 
        min_lag = min_lag, cast_date = as.character(cast_date), 
        covariate_cast_newmoons = covar_cast_newmoons, 

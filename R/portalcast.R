@@ -1,11 +1,20 @@
 #' @title Forecast or hindcast Portal rodents models
 #'
 #' @description Forecast or hindcast the Portal rodent population data using
-#'  the data and models in a portalcasting directory. 
+#'  the (updated if needed) data and models in a portalcasting directory. \cr
+#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of 
+#'  multiple models, with data preparation as needed between runs occuring
+#'  via \code{prep_data}. \cr \cr
+#'  \code{prep_data} makes sure that the data subdirectory has the updated 
+#'  files for a casting run, using the \code{metadata.yaml} file to verify 
+#'  validity. If data are out of date, runs \code{\link{fill_data}}. \cr \cr
+#'  \code{cast} runs a single cast of multiple models, using the data as
+#'  prepared by \code{prep_data}.
 #'
 #' @details Multiple models can be run together on the same data and 
 #'  multiple runs of a model (e.g., with a rolling origin) can be initiated
-#'  together. 
+#'  together using \code{portalcast} and \code{cast} runs the individual
+#'  instances.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -25,6 +34,9 @@
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
 #'
 #' @param cast_date \code{Date} from which future is defined (the origin of
 #'  the cast). In the recurring forecasting, is set to today's date
@@ -139,6 +151,8 @@
 #' \donttest{
 #'  setup_dir()
 #'  portalcast()
+#'  prep_data()
+#'  cast()
 #' }
 #'
 #' @export
@@ -174,7 +188,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
   nend_moons <- length(end_moons)
   for(i in 1:nend_moons){
     pass_and_call(prep_data, min_lag = min_lag, end_moon = end_moons[i])
-    pass_and_call(cast)
+    pass_and_call(cast, end_moon = end_moons[i])
   }
   pass_and_call(portalcast_goodbye)
 } 
@@ -190,6 +204,7 @@ cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                  end_moon = NULL, raw_path_data = "PortalData",
                  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
                  controls_r = rodents_controls(), quiet = FALSE){
+  pass_and_call(clear_tmp)
   last_moon <- pass_and_call(last_newmoon)
   end_moon <- ifnull(end_moon, last_moon)
 
@@ -204,126 +219,11 @@ cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
     pass_and_call(add_ensemble)
   }
   messageq("########################################################", quiet)
-  #pass_and_call(clear_tmp)
+  pass_and_call(clear_tmp)
 }
 
 
-
-
-
-
-
-###############################
-
-
-#' @title Prepare data subdirectory for a forecast or hindcast run(s)
-#'
-#' @description Make sure that the data subdirectory has the updated files
-#'  for a forecasting run or a set of hindcasting runs. Uses the 
-#'  \code{metadata.yaml} file to verify validity. \cr
-#'  If data are out of date, runs \code{\link{fill_data}}.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
-#'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample.  
-#'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
-#'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
-#'  covariate lag time used in any model.
-#'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
-#'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the first sample to be included. Default value is \code{217}, 
-#'  corresponding to \code{1995-01-01}.
-#'
-#' @param confidence_level \code{numeric} confidence level used in 
-#'   summarizing model output. Must be between \code{0} and \code{1}.
-#'
-#' @param hist_covariates \code{logical} indicator of whether or not 
-#'  historical covariates are to be included.
-#'
-#' @param cast_covariates \code{logical} indicator whether or not -casted 
-#'  covariates are to be included.
-#'
-#' @param raw_path_archive \code{character} value of the path to the archive
-#'  within the raw sub folder.
-#' 
-#' @param raw_path_data \code{character} value indicating the folder path
-#'  to the data within the \code{raw} subdirectory but above the files. A 
-#'  standard portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
-#'  \code{"raw/"} is implied). 
-#' 
-#' @param raw_cov_cast_file \code{character} value of the path to the
-#'  covariate cast file within \code{raw_path_archive}.
-#'
-#' @param raw_path_cov_cast \code{character} value of the path to the folder
-#'  that holds any downloaded covariate cast files within the raw sub folder.
-#'
-#' @param raw_moons_file \code{character} value indicating the path
-#'  to the moons data file within \code{raw_path_data}. A standard 
-#'  portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so 
-#'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
-#'
-#' @param source_name \code{character} value for the name to give the 
-#'   covariate forecast. Currently is \code{"current_archive"}. Previous to
-#'   \code{"current_archive"}, the data were retroactively filled in and are 
-#'   given the source name \code{"retroactive"}.
-#'
-#' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'   cast covariates should be appended to the historical casts for the
-#'   purposes of hindcasting later.
-#'
-#' @param controls_r Control \code{list} (from 
-#'  \code{\link{rodents_control}}) or \code{list} of control \code{list}s 
-#'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
-#'  rodents tables. See \code{\link{rodents_control}} for details. 
-#'
-#' @param control_cdl \code{list} of specifications for the download, which
-#'  are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-#'  \code{\link{climate_dl_control}}.
-#'
-#' @param downloads \code{list} of arguments to pass to \code{\link{download}}
-#'  for raw file downloading. 
-#'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out
-#'   all of the information or not (and thus just the tidy messages). 
-#'
-#' @param save \code{logical} indicator controlling if the output should 
-#'   be saved out.
-#'
-#' @param overwrite \code{logical} indicator of whether or not the existing
-#'  files should be updated (most users should leave as \code{TRUE}).
-#'
-#' @param filename_moons \code{character} name of the file for saving the 
-#'  data output.
-#'
-#' @param filename_cov \code{character} filename for saving the output.
-#'
-#' @param filename_meta \code{character} filename for saving the metadata.
-#'
-#' @param cleanup \code{logical} indicator if any files put into the tmp
-#'  subdirectory should be removed at the end of the process. 
-#' 
-#' @return Data files are updated if needed and \code{NULL} is returned.
-#'
-#' @examples
-#' \donttest{
-#'  setup_dir()
-#'  prep_data()
-#' }
+#' @rdname portalcast
 #'
 #' @export
 #'
@@ -354,7 +254,10 @@ prep_data <- function(main = ".", end_moon = NULL,
   date_current <- metadata$cast_date == Sys.Date()
   moon_match <- metadata$rodent_cast_newmoons[1] == (end_moon + 1)
   moon_match <- ifelse(length(moon_match) == 0, FALSE, moon_match)
-  if (!meta_exist | !date_current | !moon_match){
+  last_moon <- pass_and_call(last_newmoon)
+  end_moon <- ifnull(end_moon, last_moon)
+  hindcast <- !(end_moon == last_moon)
+  if (!meta_exist | !date_current | !moon_match | hindcast){
     pass_and_call(fill_data)
     messageq(" ...data updated", quiet)
   } else{

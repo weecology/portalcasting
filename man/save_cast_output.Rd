@@ -24,3 +24,12 @@ the directory tree.}
 Save out the cast abundances and AIC tables from a given 
   set of models.
 }
+\examples{
+ \donttest{
+  setup_dir()
+  f_a <- AutoArima(level = "All")
+  f_c <- AutoArima(level = "Controls")
+  save_cast_output(f_a, f_c, "AutoArima")
+ }
+
+}
