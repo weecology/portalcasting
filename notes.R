@@ -1,23 +1,19 @@
 devtools::document()
 main = "~/testing"
 
-portalcast(main, end_moon = 520, c("ESSS", "AutoArima"))
-
-pevGARCH(main)
-
-setup_dir(main)
-
-fill_data(main)
-
-prep_covariates(main)
-
-
-# working in the figure functions
-#
-#
+# to do
+# move in the figure functions
+# update vignettes
+# add morgans model
 
 funcitons to test
 all the models (now in prefab_models
+most_recent_census (process data)
+most_recent_cast (process casts)
+na_conformer (utilities)
+verify cast, cast is valid, column conformer, select casts
+  measure cast error append observed to cast (process casts)
+
 
 
  # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE

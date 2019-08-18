@@ -1,3 +1,37 @@
+#' @title Conform NA entries to "NA" entries
+#'
+#' @description Given the species abbreviation NA, when data are read in, 
+#'  there can be an \code{NA} when it should be an \code{"NA"}. This function
+#'  conforms the entries to be proper character values. 
+#'
+#' @param x Either [1] a \code{data.frame} containing \code{colname} as a 
+#'  column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
+#'  a vector with \code{NA}s that need to be conformed to \code{"NA"}s.
+#'
+#' @param colname \code{character} value of the column name in \code{tab} to 
+#'  conform the \code{NA}s to \code{"NA"}s.
+#'
+#' @return \code{x} with any \code{NA} in \code{colname} replaced with 
+#'  \code{"NA"}.
+#'
+#' @examples
+#'  na_conformer(c("a", "b", NA, "c"))
+#'
+#' @export
+#'
+na_conformer <- function(x, colname = "species"){
+  if (is.vector(x)){
+    naentries <- which(is.na(x))
+    x[naentries] <- "NA"
+  } else if (is.data.frame(x)){
+    nasppname <- which(is.na(x[ , colname]))
+    if (length(nasppname) > 0){
+      x[nasppname, colname] <- "NA"
+    }
+  } 
+  x
+}
+
 #' @title Zero-abundance cast
 #'
 #' @description Create a 0-abundance cast for fill-in usage when a model 

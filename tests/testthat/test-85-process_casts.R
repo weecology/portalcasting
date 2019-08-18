@@ -36,6 +36,7 @@ test_that("make_ensemble", {
 })
 
 test_that("compile_aic_weights", {
+  skip_on_cran() # downloads take too long for cran checks
   expect_is(compile_aic_weights(main = "./testing"), "data.frame")
 })
 

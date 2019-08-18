@@ -17,10 +17,3 @@ the directory tree.}
 Calculate AIC-based weights across the models for the full
   time series.
 }
-\examples{
- \donttest{
-  setup_dir()
-  compile_aic_weights()
- }
-
-}

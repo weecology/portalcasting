@@ -1,3 +1,27 @@
+#' @title Determine the most recent data collection
+#'
+#' @description Determine the most recent census.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @return \code{Date} of the most recent census.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   most_recent_census()
+#'  }
+#'
+#' @export
+#'
+most_recent_census <- function(main = "."){
+  all <- read_rodents(main, "all")
+  moons <- read_moons(main)
+  matched <- moons$newmoonnumber == max(all$newmoonnumber)
+  as.Date(as.character(moons$censusdate[matched]))
+}
+
 
 #' @title Interpolate missing rodent data
 #' 

@@ -1,3 +1,467 @@
+#' @title Append the observed values to a table of -casts
+#'
+#' @description Add a column of observed values and optionally raw error,
+#'  in-prediction-window logical indicator, and lead time columns. Additional
+#'  columns are added by default.
+#'
+#' @param casts \code{data.frame} of requested fore- or hindcasts to have 
+#'  observations added to.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'
+#' @param add_error \code{logical} indicator if the \code{error} column should
+#'  be added to the output as well. 
+#'
+#' @param add_in_window \code{logical} indicator if the \code{in_window} 
+#'  column should be added to the output as well. 
+#'
+#' @param add_lead \code{logical} indicator if the \code{lead} column should
+#'  be added to the output as well. 
+#'
+#' @return \code{casts} \code{data.frame} with additional columns.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   casts <- read_casts()
+#'   casts_a <- select_casts(casts, level = "All")
+#'   casts_a <- append_observed_to_cast(casts_a) 
+#'  }
+#'
+#' @export
+#'
+append_observed_to_cast <- function(casts, main = ".", add_error = TRUE,
+                                    add_in_window = TRUE, add_lead = TRUE){
+  level <- unique(casts$level)
+  if (length(level) != 1){
+    stop("`casts` must have (only) one type for `level` column")
+  }
+  obs <- read_rodents(main, tolower(level)) 
+  colnames(obs)[which(colnames(obs) == "NA.")] <- "NA"
+  casts$observed <- NA
+  for(i in 1:nrow(casts)){
+    nmmatch <- which(obs$newmoonnumber == casts$newmoonnumber[i])
+    sppmatch <- which(colnames(obs) == casts$species[i])
+    obsval <- obs[nmmatch, sppmatch]
+    if (length(obsval) == 1){
+      casts$observed[i] <- obsval
+    }
+  }
+  if (add_error){
+    casts$error <- casts$estimate - casts$observed
+  }
+  if (add_in_window){
+    above_lower <- casts$observed >= casts$LowerPI
+    below_upper <- casts$observed <= casts$UpperPI
+    casts$in_window <- above_lower & below_upper
+  }
+  if (add_lead){
+    casts$lead <- casts$newmoonnumber - casts$initial_newmoon
+  }
+  casts
+}
+
+#' @title Summarize a table of -casts to -cast-level errors
+#'
+#' @description Summarize error across all of the data points within each 
+#'  forecast or hindcast in a set of -casts. 
+#'
+#' @param casts \code{data.frame} of fore- or hindcasts with observed values 
+#'  and errors included.
+#'
+#' @param min_observed \code{integer} value for the minimum number of observed
+#'  values needed for a -cast to be retained in the output table. Default is
+#'  \code{1}, which returns all -casts with any observations. To include all
+#'  -casts (even those without any evaluations), set to \code{0}. 
+#'
+#' @return \code{data.frame} of errors summarized to the -cast-level. 
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'    casts <- read_casts()
+#'    casts_a <- select_casts(casts, level = "All")
+#'    casts_a <- append_observed_to_cast(casts_a)
+#'    measure_cast_error(casts_a)
+#' }
+#'
+#' @export
+#'
+measure_cast_error <- function(casts, min_observed = 1){
+  groupcols <- c("model", "species", "level", "date", "initial_newmoon")
+  cols <- which(colnames(casts) %in% groupcols)
+  castgroup <- apply(casts[ ,cols], 1, paste, collapse = "_")
+  ugroups <- unique(castgroup)
+  ngroups <- length(ugroups)
+  
+  RMSE <- rep(NA, ngroups)
+  coverage <- rep(NA, ngroups)
+  nsamples <- rep(NA, ngroups)
+  nsampleso <- rep(NA, ngroups)
+  tmodel <- rep(NA, ngroups) 
+  tspecies <- rep(NA, ngroups)
+  tlevel <- rep(NA, ngroups)
+  tdate <- rep(NA, ngroups)
+  tdate <- rep(NA, ngroups)
+  fit_start_newmoon <- rep(NA, ngroups)
+  fit_end_newmoon <- rep(NA, ngroups)
+  for(i in 1:ngroups){
+    incl <- which(castgroup == ugroups[i])
+    nsamples[i] <- length(incl)
+    nsampleso[i] <- length(na.omit(casts$observed[incl]))
+    splitname <- strsplit(ugroups[i], "_")[[1]]
+    tmodel[i] <- splitname[2]
+    tspecies[i] <- splitname[4] 
+    tlevel[i] <- splitname[3] 
+    tdate[i] <- splitname[1] 
+    errs <- na.omit(casts$error[incl])
+    RMSE[i] <- sqrt(mean(errs^2))
+    in_window <- na.omit(casts$in_window[incl])
+    coverage[i] <- sum(in_window)/length(in_window)
+    fit_start_newmoon[i] <- unique(casts$fit_start_newmoon[incl])
+    fit_end_newmoon[i] <- unique(casts$fit_end_newmoon[incl])
+  }
+  casttab <- data.frame(model = tmodel, species = tspecies, level = tlevel, 
+                        date = tdate, fit_start_newmoon = fit_start_newmoon,
+                        fit_end_newmoon = fit_end_newmoon, 
+                        nsamples = nsamples, nsamples_obs = nsampleso, 
+                        RMSE = RMSE, coverage = coverage)
+  no_obs <- which(nsampleso < min_observed)
+  if (length(no_obs) > 0){
+    casttab <- casttab[-no_obs, ]    
+  }
+  casttab
+}
+
+
+#' @title Select the specific fore- or hindcast from a casts table
+#'
+#' @description Given a \code{casts}-class \code{data.frame} of many models'
+#'  predictions, select a specific subset for use.
+#'
+#' @param casts \code{data.frame} of requested fore- or hindcasts to be 
+#'  selected from.
+#'
+#' @param species \code{character} value(s) of the species code(s) or
+#'  \code{"total"} for the total across species. If \code{NULL}, all species 
+#'  and "total" are returned. 
+#'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'  or \code{"Controls"}). If \code{NULL}, all levels are returned.
+#'
+#' @param models \code{character} value(s) of the name(s) (or 
+#'  \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
+#'  models are returned.
+#'
+#' @param newmoonnumbers \code{integer}-conformable value(s) of the 
+#'  newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.
+#'
+#' @return \code{data.frame} of trimmed fore- or hindcasts.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   casts <- read_casts()
+#'   scasts <- select_casts(casts)
+#'  }
+#'
+#' @export
+#'
+select_casts <- function(casts, species = NULL, level = NULL, models = NULL, 
+                         newmoonnumbers = NULL){
+  incl_species <- rep(TRUE, nrow(casts))
+  incl_level <- rep(TRUE, nrow(casts))
+  incl_model <- rep(TRUE, nrow(casts))
+  incl_nmm <- rep(TRUE, nrow(casts))
+
+  casts <- na_conformer(casts)
+  if (!is.null(species)){
+    incl_species <- casts[ , "species"] %in% species
+  }
+  if (!is.null(level)){
+    incl_level <- casts[ , "level"] %in% level
+  }
+  if (!is.null(models)){
+    incl_model <- casts[ , "model"] %in% models
+  }
+  if (!is.null(newmoonnumbers)){
+    incl_nmm <- casts[ , "newmoonnumber"] %in% newmoonnumbers
+  }
+  incl <- which(incl_species & incl_level & incl_model & incl_nmm)
+  casts[incl, ]
+}
+
+#' @title Read in a cast file or multiple cast files and set the class
+#'
+#' @description Read in a specified forecast or hindcast data file and ensure 
+#'  its class attribute is appropriate for usage within the portalcasting 
+#'  pipeline. Current not reliably coded for hindcasts. \cr \cr 
+#'  \code{read_cast} only allows for a single date and defaults to
+#'  the most recent. \cr \cr 
+#'  \code{read_casts} allows for multiple dates and defaults to all.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'  
+#' @param cast_type \code{character} value of the type of -cast of model. Used
+#'  to select the file in the predictions subdirectory. Currently only 
+#'  reliably coded for \code{"forecasts"}.
+#'
+#' @param cast_date \code{Date} the predictions were made. Used to select the
+#'  file in the predictions subdirectory. Can only be length 1 or \code{NULL}. 
+#'  If \code{NULL} (default), selects the most recent -casts.
+#'
+#' @param cast_dates \code{Date}s the predictions were made. Used to select 
+#'   the files in the predictions subdirectory. Can be length 1 or more and if 
+#'   \code{NULL} (default), selects all available -casts.
+#'
+#' @param verbose \code{logical} indicator if all validation errors should
+#'  be reported.
+#'  
+#' @return \code{data.frame} of requested fore- or hindcast(s).
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   read_cast()
+#'   read_casts()
+#'  }
+#'
+#' @export
+#'
+read_cast <- function(main = ".", cast_type = "forecast", 
+                       cast_date = NULL, verbose = FALSE){
+  if (is.null(cast_date)){
+    cast_date <- most_recent_cast(main, cast_type)
+  }
+  lpath1 <- paste0("predictions/", cast_date, cast_type, ".csv")
+  fpath1 <- file_paths(main, lpath1)
+  lpath2 <- paste0("predictions/", cast_date, cast_type, "s.csv")
+  fpath2 <- file_paths(main, lpath2)
+  if (file.exists(fpath1)){
+    read_in <- read.csv(fpath1, stringsAsFactors = FALSE)
+  } else if (file.exists(fpath2)){
+    read_in <- read.csv(fpath2, stringsAsFactors = FALSE)
+  } else{
+    stop(paste0(cast_type, " from ", cast_date, " not available"))
+  }
+  na_conformer(read_in) %>%
+  column_conformer() %>%
+  verify_cast(verbose)
+}
+
+#' @rdname read_cast 
+#'
+#' @export
+#'
+read_casts <- function(main = ".", cast_type = "forecast", 
+                       cast_dates = NULL, verbose = FALSE){
+  if (is.null(cast_dates)){
+    pfolderpath <- sub_paths(main, "predictions")
+    pfiles <- list.files(pfolderpath)
+    of_interest1 <- grepl(cast_type, pfiles)
+    of_interest2 <- grepl("aic", pfiles)
+    cast_text <- paste0(cast_type, ".csv")
+    cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
+    cast_dates <- as.Date(cast_dates)
+  }
+  ndates <- length(cast_dates)
+  all_casts <- data.frame()
+  for(i in 1:ndates){  
+    all_casts <- read_cast(main, cast_type, cast_dates[i], verbose) %>%
+                 bind_rows(all_casts, .)
+  }
+  all_casts
+}
+
+#' @title Verify that a read-in cast file is formatted appropriately
+#'
+#' @description Ensure that a -cast file that has been read in is formatted
+#'  according to \href{https://bit.ly/2H2z3Jb}{specifications.}
+#'
+#' @param cast \code{data.frame} -cast file read in.
+#'
+#' @param cast_to_check \code{data.frame} -cast file being checked within 
+#'  \code{cast_is_valid}.
+#'
+#' @param verbose \code{logical} indicator if all validation errors should
+#'  be reported.
+#'
+#' @return \code{verify_cast}: \code{cast} as read in (as long as it is 
+#'  valid). \cr \cr
+#'  \code{cast_is_valid}: \code{logical} of if the -cast is formatted 
+#'  properly.
+#' 
+#' @export
+#'
+verify_cast <- function(cast, verbose = FALSE){
+  if(cast_is_valid(cast, verbose)){
+    cast
+  }
+}
+
+#' @rdname verify_cast
+#'
+#' @export
+#'
+cast_is_valid <- function(cast_to_check, verbose = FALSE){
+  is_valid <- TRUE
+  violations <- c()
+  valid_columns1 <- c("date", "forecastmonth", "forecastyear", 
+                      "newmoonnumber", "model", "currency", "level", 
+                      "species", "estimate", "LowerPI", "UpperPI", 
+                      "fit_start_newmoon", "fit_end_newmoon",
+                      "initial_newmoon")
+  valid_columns2 <- valid_columns1
+  valid_columns2[2:3] <- c("castmonth", "castyear")
+  valid_currencies <- c("abundance", "richness", "biomass", "energy")
+  valid_levels <- c("All", "Controls", "FullExclosure", "KratExclosure",
+                     paste("Plot", 1:24, " ", sep = ""))
+  valid_species <- base_species(total = TRUE)
+
+  cols_valid1 <- all(colnames(cast_to_check) %in% valid_columns1) & 
+                 all(valid_columns1 %in% colnames(cast_to_check))
+  cols_valid2 <- all(colnames(cast_to_check) %in% valid_columns2) & 
+                 all(valid_columns2 %in% colnames(cast_to_check))
+
+  if(!cols_valid1 & !cols_valid2){
+    messageq("file column names invalid", !verbose)
+    return(FALSE)
+  }
+
+  cast_to_check$date <- as.Date(cast_to_check$date, "%Y-%m-%d")
+  if(any(is.na(cast_to_check$date))){
+    is_valid <- FALSE
+    violations <- c("date", violations) 
+  }
+  if(!all(unique(cast_to_check$currency) %in% valid_currencies)){
+    is_valid <- FALSE
+    violations <- c("currency", violations) 
+  }
+  if(!all(unique(cast_to_check$level) %in% valid_levels)){ 
+    is_valid <- FALSE
+    violations <- c("level", violations) 
+  }
+  if(!all(unique(cast_to_check$species) %in% valid_species)){ 
+    is_valid <- FALSE
+    violations <- c("species", violations) 
+  }
+  if(any(is.na(cast_to_check$estimate))) { 
+    is_valid <- FALSE
+    violations <- c("NA esimates", violations) 
+  }
+  if(any(is.na(cast_to_check$LowerPI))) { 
+    is_valid <- FALSE
+    violations <- c("NA LowerPI", violations) 
+  }
+  if(any(is.na(cast_to_check$UpperPI))) { 
+    is_valid <- FALSE
+    violations <- c("NA UpperPI", violations) 
+  }
+
+  if(!is.integer(cast_to_check$fit_start_newmoon)) {
+    is_valid <- FALSE
+    violations <- c("fit_start_newmoon not int", violations)
+  }
+  if(!is.integer(cast_to_check$fit_end_newmoon)) { 
+    is_valid <- FALSE
+    violations <- c("fit_end_newmoon not int", violations)
+  }
+  if(!is.integer(cast_to_check$initial_newmoon)) {
+    is_valid <- FALSE
+    violations <- c("initial_newmoon not int", violations)
+  }
+  if(any(is.na(cast_to_check$fit_start_newmoon))) {
+    is_valid <- FALSE
+    violations <- c("fit_start_newmoon contains NA", violations)
+  }
+  if(any(is.na(cast_to_check$fit_end_newmoon))) {
+    is_valid <- FALSE
+    violations <- c("fit_end_newmoon contains NA", violations)
+  }
+  if(any(is.na(cast_to_check$initial_newmoon))) {
+    is_valid <- FALSE
+    violations <- c("initial_newmoon contains NA", violations)
+  }
+  
+  if(length(violations) > 0){
+    violationses <- paste(violations, collapse = ", ")
+    messageq(paste0("Cast validation failed: ", violationses), !verbose)
+  }
+  is_valid
+}
+
+#' @title Conform column names for use internally
+#'
+#' @description Existing cast files may have column names using "forecast"
+#'  rather than the current generalized "cast". This function replaces the
+#'  old with the new for internal use.
+#'
+#' @param x \code{data.frame} to have column names converted if needed.
+#'
+#' @return \code{x} with column names converted if needed.
+#'
+#' @examples
+#'  df <- data.frame(xforecastx = 1:10, fore = 2:11)
+#'  column_conformer(df)
+#'
+#' @export
+#'
+column_conformer <- function(x = NULL){
+  return_if_null(x)
+  cnames <- colnames(x)
+  names(x) <- gsub("forecast", "cast", cnames)
+  x
+}
+
+#' @title Determine the most recent forecast or hindcast
+#'
+#' @description Determine the date of the most recently produced forecast or 
+#'   hindcast in a predictions folder.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'  
+#' @param cast_type \code{character} value of the type of -cast of model. Used
+#'   to select the file in the predictions subdirectory. 
+#'
+#' @param with_census \code{logical} toggle if the plot should include the
+#'   observed data collected during the predicted census.
+#'
+#' @return \code{Date} of the most recent cast.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   most_recent_cast()
+#'  }
+#'
+#' @export
+#'
+most_recent_cast <- function(main = ".", cast_type = "forecast",
+                             with_census = FALSE){
+  pfolderpath <- sub_paths(main, "predictions")
+  pfiles <- list.files(pfolderpath)
+  of_interest1 <- grepl(cast_type, pfiles)
+  of_interest2 <- grepl("aic", pfiles)
+  if (sum(of_interest1 & !of_interest2) < 1){
+    stop(paste0("no valid ", cast_type, " files in the predictions folder"))
+  }
+  cast_text <- paste0(cast_type, ".csv")
+  cast_dates <- gsub(cast_text, "", pfiles[of_interest1 & !of_interest2])
+  cast_dates <- as.Date(cast_dates)
+  prior_to <- Sys.Date() + 1
+  if (with_census){
+    prior_to <- most_recent_census(main)
+  }
+  max(cast_dates[cast_dates < prior_to])
+}
+
+
+
+
+
 #' @title Add ensemble model to forecasts
 #' 
 #' @description Add the predictions of an ensemble model to the forecasting 
@@ -22,17 +486,6 @@
 #'
 #' @return Forecast abundance table for the ensemble model.
 #' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   end_moon <- 520
-#'   prep_data(end_moon = end_moon)
-#'   models_scripts <- models_to_cast(models = c("ESSS", "AutoArima"))
-#'   sapply(models_scripts, source)
-#'   combine_casts(end_moon = end_moon)
-#'   add_ensemble(end_moon = end_moon)
-#'  }
-#'
 #' @export
 #'
 add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(), 
@@ -51,6 +504,7 @@ add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(),
               "numeric", "numeric", "integer", "integer", "integer")
   all_casts <- do.call(rbind, 
                lapply(files, read.csv, na.strings = "", colClasses  = cclass))
+
   ensemble <- pass_and_call(make_ensemble, all_casts = all_casts) 
   ensemble <- select(ensemble, colnames(all_casts))
   cast_date <- as.character(cast_date)
@@ -86,23 +540,7 @@ add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(),
 #'   summarizing model output. Must be between \code{0} and \code{1}.
 #' 
 #' @return Forecast abundance table for the ensemble model.
-#'   
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   temp_dir <- sub_paths(specific_subs = "tmp")
-#'   pred_dir <- sub_paths(specific_subs = "predictions")
-#'   filename_suffix <- "hindcast"
-#'   file_ptn <- paste(filename_suffix, ".csv", sep = "")
-#'   files <- list.files(temp_dir, pattern = file_ptn, full.names = TRUE)
-#'   cclass <- c("Date", "integer", "integer", "integer", "character", 
-#'               "character", "character", "character", "numeric",
-#'               "numeric", "numeric", "integer", "integer", "integer")
-#'   all_casts <- do.call(rbind, 
-#'           lapply(files, read.csv, na.strings = "", colClasses  = cclass))
-#'   make_ensemble(all_casts = all_casts) 
-#'  }
-#'   
+#' 
 #' @export
 #'
 make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
@@ -135,6 +573,7 @@ make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
                                   ensemble_var = !!ens_var,
                                   sum_weight = sum(weight)) %>% 
                         ungroup() 
+
   check_sum <- round(weighted_estimates$sum_weight, 10) == 1 
   check_na <- is.na(weighted_estimates$sum_weight)       
   if(!all(check_sum | check_na)){ 
@@ -162,12 +601,6 @@ make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
 #'  the directory tree.
 #'
 #' @return \code{data.frame} of model weights.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   compile_aic_weights()
-#'  }
 #' 
 #' @export
 #'
@@ -176,9 +609,10 @@ compile_aic_weights <- function(main = "."){
 
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
   aic_files <- aic_files[grepl("model_aic", aic_files)]
+
   aics <- do.call(rbind, 
       lapply(aic_files, read.csv, na.strings = "", stringsAsFactors = FALSE))
-
+ 
   grps <- quos(date, currency, level, species, fit_start_newmoon, 
             fit_end_newmoon, initial_newmoon)
  
@@ -214,16 +648,6 @@ compile_aic_weights <- function(main = "."){
 #'
 #' @return \code{list} of [1] \code{"casts"} (the casted abundances)
 #'  and [2] \code{"all_model_aic"} (the model AIC values).
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   end_moon <- 520
-#'   prep_data(end_moon = end_moon)
-#'   models_scripts <- models_to_cast(models = c("ESSS", "AutoArima"))
-#'   sapply(models_scripts, source)
-#'   combine_casts(end_moon = end_moon)
-#'  }
 #'
 #' @export
 #'
@@ -278,14 +702,6 @@ combine_casts <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   f_a <- AutoArima(level = "All")
-#'   f_c <- AutoArima(level = "Controls")
-#'   save_cast_output(f_a, f_c, "AutoArima")
-#'  }
 #'
 #' @export
 #'

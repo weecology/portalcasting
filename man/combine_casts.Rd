@@ -32,14 +32,3 @@ quieted.}
 Combine all new casts (from the tmp subdirectory) into
  and append the results to the existing files.
 }
-\examples{
- \donttest{
-  setup_dir()
-  end_moon <- 520
-  prep_data(end_moon = end_moon)
-  models_scripts <- models_to_cast(models = c("ESSS", "AutoArima"))
-  sapply(models_scripts, source)
-  combine_casts(end_moon = end_moon)
- }
-
-}
