@@ -3,7 +3,7 @@
 #' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join 
 #'  left_join mutate n one_of rename right_join select summarize ungroup
 #' @importFrom forecast auto.arima ets forecast na.interp
-#' @importFrom graphics abline axis mtext par plot points rect text
+#' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
@@ -11,7 +11,7 @@
 #'  ndvi summarize_rodent_data weather
 #' @importFrom readr read_csv
 #' @importFrom rlang !! !!! .data quo quos
-#' @importFrom stats AIC na.omit predict qnorm quantile rnorm runif
+#' @importFrom stats AIC lm na.omit predict qnorm quantile rnorm runif
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file packageDescription read.csv tail unzip
 #'  write.csv write.table

@@ -2,9 +2,10 @@ devtools::document()
 main = "~/testing"
 
 # to do
-# move in the figure functions
+# tests
 # update vignettes
 # add morgans model
+# check_arg and args
 
 funcitons to test
 all the models (now in prefab_models
@@ -13,7 +14,7 @@ most_recent_cast (process casts)
 na_conformer (utilities)
 verify cast, cast is valid, column conformer, select casts
   measure cast error append observed to cast (process casts)
-
+the figure functions
 
 
  # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
