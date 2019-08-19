@@ -16,6 +16,7 @@
 #' @export
 #'
 most_recent_census <- function(main = "."){
+  check_args()
   all <- read_rodents(main, "all")
   moons <- read_moons(main)
   matched <- moons$newmoonnumber == max(all$newmoonnumber)
@@ -30,7 +31,7 @@ most_recent_census <- function(main = "."){
 #'  linearly interpolated, then the total number of rodents is calculated 
 #'  from the sum of the individual species.
 #'
-#' @param rodents \code{data.frame} of rodents data with a 
+#' @param rodents_tab \code{data.frame} of rodents data with a 
 #'  \code{newmoonnumber} column. 
 #'
 #' @return \code{data.frame} data table of interpolation-inclusive counts
@@ -39,20 +40,21 @@ most_recent_census <- function(main = "."){
 #'
 #' @export
 #' 
-interpolate_abundance <- function(rodents){
-  newmoon <- (min(rodents$newmoonnumber)):(max(rodents$newmoonnumber))
+interpolate_abundance <- function(rodents_tab){
+  check_args()
+  newmoon <- (min(rodents_tab$newmoonnumber)):(max(rodents_tab$newmoonnumber))
   nmoons <- length(newmoon)
 
-  rodent_cols <- which(colnames(rodents) %in% base_species(nadot = TRUE))
-  species <- colnames(rodents)[rodent_cols]
-  nspecies <- length(species)
+  rodent_cols <- which(colnames(rodents_tab) %in% base_species(nadot = TRUE))
+  species <- colnames(rodents_tab)[rodent_cols]
+  nspecies <- length(species_tab)
 
   abunds <- matrix(NA, nrow = nmoons, ncol = nspecies)
 
   for(i in 1:nmoons){
     if(length(which(rodents$newmoonnumber == newmoon[i])) > 0){
-      temp <- rodents[which(rodents$newmoonnumber == newmoon[i]),
-                        which(colnames(rodents) %in% species)]
+      temp <- rodents_tab[which(rodents_tab$newmoonnumber == newmoon[i]),
+                        which(colnames(rodents_tab) %in% species)]
       abunds[i, ] <- as.numeric(temp)
     }
   }
@@ -114,6 +116,7 @@ interpolate_abundance <- function(rodents){
 #' @export
 #'
 read_data <- function(main = ".", data_name = NULL, level = "all"){
+  check_args()
   return_if_null(data_name)
   if (data_name == "rodents"){
     data <- read_rodents(main, level)
@@ -138,6 +141,7 @@ read_data <- function(main = ".", data_name = NULL, level = "all"){
 #' @export
 #'
 read_rodents <- function(main = ".", level = "all"){
+  check_args()
   lpath <- paste0("data/rodents_", level, ".csv") 
   fpath <- file_paths(main, lpath)
   read.csv(fpath, stringsAsFactors = FALSE) 
@@ -148,6 +152,7 @@ read_rodents <- function(main = ".", level = "all"){
 #' @export
 #'
 read_covariates <- function(main = "."){
+  check_args()
   fpath <- file_paths(main, "data/covariates.csv")
   read.csv(fpath, stringsAsFactors = FALSE) 
 }
@@ -157,6 +162,7 @@ read_covariates <- function(main = "."){
 #' @export
 #'
 read_covariate_casts <- function(main = "."){
+  check_args()
   fpath <- file_paths(main, "data/covariate_casts.csv")
   read.csv(fpath, stringsAsFactors = FALSE) 
 }
@@ -166,6 +172,7 @@ read_covariate_casts <- function(main = "."){
 #' @export
 #'
 read_moons <- function(main = "."){
+  check_args()
   fpath <- file_paths(main, "data/moon_dates.csv")
   read.csv(fpath, stringsAsFactors = FALSE)
 }
@@ -175,6 +182,7 @@ read_moons <- function(main = "."){
 #' @export
 #'
 read_metadata <- function(main = "."){
+  check_args()
   fpath <- file_paths(main, "data/metadata.yaml")
   yaml.load_file(fpath) 
 }

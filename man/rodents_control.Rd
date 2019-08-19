@@ -11,7 +11,7 @@ rodents_control(tmnt_type = NULL, name = tmnt_type,
   plots = "all", min_plots = 24, min_traps = 1,
   output = "abundance")
 
-rodents_controls(tmnt_type = c("all", "controls"), name = tmnt_type,
+rodents_controls(tmnt_type = c("all", "controls"), names = tmnt_type,
   species = base_species(), total = TRUE, filename = NULL,
   level = NULL, treatment = NULL, plots = NULL, min_plots = 24,
   min_traps = 1, output = "abundance")

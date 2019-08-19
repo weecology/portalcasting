@@ -35,10 +35,10 @@
 #'  script-writing controls. \cr 
 #'  Presently, each model's script writing controls
 #'  should include three elements: \code{name} (a \code{character} value of 
-#'  the model name), \code{covariates} (a \code{logical} indicator of if the 
+#'  the model name), \code{covariatesTF} (a \code{logical} indicator of if the 
 #'  model needs covariates), and \code{lag} (an \code{integer}-conformable 
 #'  value of the lag to use with the covariates or \code{NA} if 
-#'  \code{covariates = FALSE}). \cr 
+#'  \code{covariatesTF = FALSE}). \cr 
 #'  If only a single model is added, the name of 
 #'  the model from the element \code{name} will be used to name the model's
 #'  \code{list} in the larger \code{list}. If multiple models are added, each
@@ -54,7 +54,7 @@
 #'
 #' @examples
 #'  model_script_controls(prefab_models())
-#'  controls <- list(name = "xx", covariates = FALSE, lag = NA)
+#'  controls <- list(name = "xx", covariatesTF = FALSE, lag = NA)
 #'  model_script_controls("xx", controls)
 #'  model_script_controls(model_names("xx", "prefab"), controls)
 #'  model_script_controls(c("xx", "ESSS"), controls)
@@ -65,6 +65,7 @@
 #'
 model_script_controls <- function(models = NULL, controls_m = NULL){
   return_if_null(models)
+  check_args()
   if(list_depth(controls_m) == 1){
     controls_m <- list(controls_m)
     names(controls_m) <- controls_m[[1]]$name
@@ -72,11 +73,11 @@ model_script_controls <- function(models = NULL, controls_m = NULL){
   nadd <- length(controls_m)
 
   prefab_controls <- list(
-        AutoArima = list(name = "AutoArima", covariates = FALSE, lag = NA), 
-        ESSS = list(name = "ESSS", covariates = FALSE, lag = NA), 
-        nbGARCH = list(name = "nbGARCH", covariates = FALSE, lag = NA), 
-        nbsGARCH = list(name = "nbsGARCH", covariates = FALSE, lag = NA), 
-        pevGARCH = list(name = "pevGARCH", covariates = TRUE, lag = 6))
+        AutoArima = list(name = "AutoArima", covariatesTF = FALSE, lag = NA), 
+        ESSS = list(name = "ESSS", covariatesTF = FALSE, lag = NA), 
+        nbGARCH = list(name = "nbGARCH", covariatesTF = FALSE, lag = NA), 
+        nbsGARCH = list(name = "nbsGARCH", covariatesTF = FALSE, lag = NA), 
+        pevGARCH = list(name = "pevGARCH", covariatesTF = TRUE, lag = 6))
   nprefab <- length(prefab_controls)
   for(i in 1:nprefab){
     controls_m[nadd + i] <- list(prefab_controls[[i]])
@@ -105,6 +106,7 @@ model_script_controls <- function(models = NULL, controls_m = NULL){
 #' @export
 #'
 extract_min_lag <- function(models = prefab_models(), controls_m = NULL){
+  check_args()
   controls <- pass_and_call(model_script_controls)
   nmods <- length(controls)
   lags <- rep(NA, nmods)
@@ -148,6 +150,7 @@ extract_min_lag <- function(models = prefab_models(), controls_m = NULL){
 #'
 model_names <- function(models = NULL, set = NULL){
   return_if_null(set, models)
+  check_args()
   prefab <- c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")
   wEnsemble <- c(prefab, "Ensemble")
   out <- switch(set, "prefab" = prefab, "wEnsemble" = wEnsemble)
@@ -174,11 +177,11 @@ wEnsemble_models <- function(){
 #' @title Write the template for a model into model subdirectory
 #'
 #' @description 
-#'   \code{write_model} creates a template script (as written by 
-#'   \code{model_template}) for a given model. \cr \cr
-#'   \code{model_template} creates the \code{character}-valued
-#'   text for a model script to be housed in the model directory, as written
-#'   out by \code{write_model}. \cr \cr
+#'  \code{write_model} creates a template script (as written by 
+#'  \code{model_template}) for a given model. \cr \cr
+#'  \code{model_template} creates the \code{character}-valued
+#'  text for a model script to be housed in the model directory, as written
+#'  out by \code{write_model}. \cr \cr
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -187,17 +190,17 @@ wEnsemble_models <- function(){
 #'
 #' @param control \code{list} of model-level controls, including
 #'  \code{name}, a \code{character} value of the model's name;
-#'  \code{covariates}, a \code{logical} indicator for if the model requires 
+#'  \code{covariatesTF}, a \code{logical} indicator for if the model requires 
 #'  covariates; and \code{lag}, a \code{integer} (or integer \code{numeric}) 
 #'  lag time used for the covariates or \code{NA} if 
-#'  \code{covariates = FALSE}. Only used if the specific valued argument
+#'  \code{covariatesTF = FALSE}. Only used if the specific valued argument
 #'  is \code{NULL}.
 #'
-#' @param covariates \code{logical} indicator for if the model requires 
-#'   covariates.
+#' @param covariatesTF \code{logical} indicator for if the model requires 
+#'  covariates.
 #'
 #' @param lag \code{integer} (or integer \code{numeric}) lag time used for the
-#'   covariates or \code{NULL} if \code{covariates} is \code{FALSE}.
+#'   covariates or \code{NULL} if \code{covariatesTF} is \code{FALSE}.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -218,42 +221,43 @@ wEnsemble_models <- function(){
 #'
 #' @export
 #'
-write_model <- function(name = NULL, covariates = NULL,
+write_model <- function(name = NULL, covariatesTF = NULL,
                         lag = NULL, main = ".", quiet = FALSE, 
                         overwrite = TRUE, control = list()){
-  covariates <- ifnull(covariates, control$covariates)
+  check_args()
+  covariatesTF <- ifnull(covariatesTF, control$covariatesTF)
   lag <- ifnull(lag, control$lag)
   name <- ifnull(name, control$name)
   return_if_null(name)
-  if((is.null(covariates) & is.null(lag))){
+  if((is.null(covariatesTF) & is.null(lag))){
     msg1 <- paste0("\n  *info for ", name, " is NULL*")
-    msg2 <- "\n  *assuming covariates = FALSE, lag = 0*"
+    msg2 <- "\n  *assuming covariatesTF = FALSE, lag = 0*"
     msg3 <- paste0(msg1, msg2)
-    covariates <- FALSE
+    covariatesTF <- FALSE
     lag <- 0
-  } else if((!is.null(covariates) & covariates && is.null(lag))){
+  } else if((!is.null(covariatesTF) & covariatesTF && is.null(lag))){
     msg1 <- paste0("\n  *lag for ", name, " is NULL*")
     msg2 <- "\n  *assuming lag = 0*"
     msg3 <- paste0(msg1, msg2)
     lag <- 0
-  } else if((is.null(covariates) & !is.null(lag))){
+  } else if((is.null(covariatesTF) & !is.null(lag))){
     if (is.na(lag)){
-      msg1 <- paste0("\n  *covariates for ", name, " is NULL*")
-      msg2 <- "\n  *assuming covariates = FALSE*"
+      msg1 <- paste0("\n  *covariatesTF for ", name, " is NULL*")
+      msg2 <- "\n  *assuming covariatesTF = FALSE*"
       msg3 <- paste0(msg1, msg2)
-      covariates <- FALSE
+      covariatesTF <- FALSE
     } else if (is.numeric(lag)){
-      msg1 <- paste0("\n  *covariates for ", name, " is NULL*")
-      msg2 <- "\n  *assuming covariates = TRUE*"
+      msg1 <- paste0("\n  *covariatesTF for ", name, " is NULL*")
+      msg2 <- "\n  *assuming covariatesTF = TRUE*"
       msg3 <- paste0(msg1, msg2)
-      covariates <- TRUE
+      covariatesTF <- TRUE
     }
   } else{
     msg3 <- NULL
   }
 
   mod_path <- model_paths(main, models = name)
-  mod_template <- model_template(name, covariates, lag, main, quiet)
+  mod_template <- model_template(name, covariatesTF, lag, main, quiet)
   if (file.exists(mod_path) & overwrite){
     msg4 <- paste0(" updating ", name, " in models subdirectory")
     msg <- paste0(msg4, msg3)
@@ -271,11 +275,12 @@ write_model <- function(name = NULL, covariates = NULL,
 #'
 #' @export
 #'
-model_template <- function(name = NULL, covariates = FALSE,
+model_template <- function(name = NULL, covariatesTF = FALSE,
                            lag = NULL, main = ".", quiet = FALSE){
+  check_args()
   main_arg <- paste0(', main = "', main, '"')
   quiet_arg <- paste0(', quiet = ', quiet)
-  if (covariates){
+  if (covariatesTF){
     lag_arg <- paste0(', lag = ', lag)
     args_a <- paste0('level = "All"', lag_arg, main_arg, quiet_arg)
     args_c <- paste0('level = "Controls"', lag_arg, main_arg, quiet_arg)
@@ -315,6 +320,7 @@ save_cast_output(f_a, f_c, "', name, '"', main_arg, ')'
 #'
 verify_models <- function(main = ".", models = prefab_models(), 
                           quiet = FALSE){
+  check_args()
   messageq("Checking model availability", quiet)
   model_dir <- sub_paths(main, "models")
   if (!dir.exists(model_dir)){
@@ -349,6 +355,7 @@ verify_models <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 covariate_models <- function(model = "pevGARCH"){
+  check_args()
   out <- NULL
   if (model == "pevGARCH"){
     out <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),

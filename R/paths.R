@@ -5,7 +5,7 @@
 #'  the file extension and \code{path_no_ext} determines the file path without
 #'  the extension.
 #'
-#' @param x \code{character} value of the file path possibly with an
+#' @param path \code{character} value of the file path possibly with an
 #'  extension.
 #'
 #' @param sep_char \code{character} value of the separator that delineates
@@ -24,19 +24,21 @@
 #'
 #' @export
 #'
-file_ext <- function(x, sep_char = "."){
+file_ext <- function(path, sep_char = "."){
+  check_args()
   for_regexpr <- paste0("\\", sep_char, "([[:alnum:]]+)$")
-  pos <- regexpr(for_regexpr, x)
-  ifelse(pos > -1L, substring(x, pos + 1L), "")
+  pos <- regexpr(for_regexpr, path)
+  ifelse(pos > -1L, substring(path, pos + 1L), "")
 }
 
 #' @rdname file_ext
 #'
 #' @export
 #'
-path_no_ext <- function(x, sep_char = "."){
+path_no_ext <- function(path, sep_char = "."){
+  check_args()
   for_sub <- paste0("([^", sep_char, "]+)\\.[[:alnum:]]+$")
-  sub(for_sub, "\\1", x)
+  sub(for_sub, "\\1", path)
 }
 
 #' @title Define the names of the subdirectories in a forecasting directory
@@ -63,6 +65,7 @@ path_no_ext <- function(x, sep_char = "."){
 #' @export
 #'
 subdirs <- function(subs_names = NULL, subs_type = "prefab"){
+  check_args()
   if (!is.null(subs_type)){
     if (subs_type == "prefab"){
       pc_subs <- c("predictions", "models", "raw", "data", "tmp")
@@ -107,6 +110,7 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #' @export
 #'
 main_path <- function(main = "."){
+  check_args()
   fpath <- file.path(main)
   normalizePath(fpath, mustWork = FALSE)
 }
@@ -116,6 +120,7 @@ main_path <- function(main = "."){
 #' @export
 #'
 sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs()){
+  check_args()
   if (!is.null(specific_subs) && (!all(specific_subs %in% subs))){
     stop("some `specific_subs` not in `subs`")
   }
@@ -146,6 +151,7 @@ sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs()){
 #' @export
 #'
 model_paths <- function(main = ".", models = NULL, extension = ".R"){
+  check_args()
   return_if_null(models)
   sub <- "models"
   mod <- paste0(models, extension)
@@ -173,6 +179,8 @@ model_paths <- function(main = ".", models = NULL, extension = ".R"){
 #' @export
 #'
 file_paths <- function(main = ".", local_paths = NULL){
+  return_if_null(local_paths)
+  check_args()
   return_if_null(local_paths)
   fpath <- file.path(main, local_paths)
   normalizePath(fpath, mustWork = FALSE)

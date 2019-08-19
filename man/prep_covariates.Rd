@@ -10,8 +10,9 @@ prep_covariates(main = ".", moons = prep_moons(main = main),
   cast_covariates = TRUE, raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  append_cast_csv = TRUE, control_cdl = list(), quiet = FALSE,
-  save = TRUE, overwrite = TRUE, filename_cov = "covariates.csv")
+  append_cast_csv = TRUE, control_cdl = climate_dl_control(),
+  quiet = FALSE, save = TRUE, overwrite = TRUE,
+  filename_cov = "covariates.csv")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

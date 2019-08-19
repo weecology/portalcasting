@@ -4,10 +4,10 @@
 \alias{list_depth}
 \title{Determine the depth of a list}
 \usage{
-list_depth(x)
+list_depth(xlist)
 }
 \arguments{
-\item{x}{Focal input.}
+\item{xlist}{Focal input \code{list}.}
 }
 \value{
 \code{integer} value of the depth of the list.
@@ -16,8 +16,8 @@ list_depth(x)
 Evaluate an input for the depth of its nesting.
 }
 \details{
-If \code{x = list()}, then technically the input value is a list, 
- but is empty (of length \code{0}), so depth is returned as \code{0}.
+If \code{xlist = list()}, then technically the input value is a 
+ list, but is empty (of length \code{0}), so depth is returned as \code{0}.
 }
 \examples{
  list_depth("a")

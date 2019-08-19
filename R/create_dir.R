@@ -41,6 +41,7 @@
 #' @export
 #'
 create_dir <- function(main = ".", subs = subdirs(), quiet = FALSE){
+  check_args()
   create_main(main, quiet)
   create_subs(main, subs, quiet)
 }
@@ -52,6 +53,7 @@ create_dir <- function(main = ".", subs = subdirs(), quiet = FALSE){
 #' @export
 #'
 create_main <- function(main = ".", quiet = FALSE){
+  check_args()
   mainp <- main_path(main)
   create(mainp, "main", quiet)
 }
@@ -61,6 +63,7 @@ create_main <- function(main = ".", quiet = FALSE){
 #' @export
 #'
 create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE){
+  check_args()
   mainp <- main_path(main)
   subsp <- sub_paths(main, subs = subs)
   verify(mainp, "main")
@@ -74,7 +77,7 @@ create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE){
 #'
 #' @param path \code{character} vector of the folder paths.
 #'
-#' @param level \code{character} vector of the names of the levels in the
+#' @param dir_level \code{character} vector of the names of the levels in the
 #'  hierarchy at which the folders will exist or the folder names. For the
 #'  purposes of messaging and not inherently required to be non-\code{NULL}.
 #'
@@ -90,11 +93,12 @@ create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE){
 #'
 #' @export
 #'
-verify <- function(path = NULL, level = NULL){
+verify <- function(path = NULL, dir_level = NULL){
+  check_args()
   if(!is.null(path)){
     for(i in 1:length(path)){
       if (!dir.exists(path[i])){
-        msg <- paste0(level[i], " folder does not exist at ", path[i])
+        msg <- paste0(dir_level[i], " folder does not exist at ", path[i])
         stop(msg)
       }
     }
@@ -109,7 +113,7 @@ verify <- function(path = NULL, level = NULL){
 #'
 #' @param path \code{character} vector of the folder paths.
 #'
-#' @param level \code{character} vector of the names of the levels in the
+#' @param dir_level \code{character} vector of the names of the levels in the
 #'  hierarchy at which the folders will exist or the folder names. For the
 #'  purposes of messaging and not inherently required to be non-\code{NULL}.
 #'
@@ -125,11 +129,12 @@ verify <- function(path = NULL, level = NULL){
 #'
 #' @export
 #'
-create <- function(path = NULL, level = NULL, quiet = FALSE){
+create <- function(path = NULL, dir_level = NULL, quiet = FALSE){
+  check_args()
   if(!is.null(path)){
     for(i in 1:length(path)){
       if (!dir.exists(path[i])){
-        msg <- paste0("Creating ", level[i], " directory at ", path[i])
+        msg <- paste0("Creating ", dir_level[i], " directory at ", path[i])
         messageq(msg, quiet)
         dir.create(path[i])
       }

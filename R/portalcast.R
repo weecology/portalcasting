@@ -180,6 +180,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                        filename_moons = "moon_dates.csv",
                        filename_cov = "covariates.csv", 
                        filename_meta = "metadata.yaml", cleanup = TRUE){
+  check_args()
   pass_and_call(portalcast_welcome)
   pass_and_call(verify_models)
   min_lag <- pass_and_call(extract_min_lag)
@@ -204,6 +205,7 @@ cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                  end_moon = NULL, raw_path_data = "PortalData",
                  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
                  controls_r = rodents_controls(), quiet = FALSE){
+  check_args()
   pass_and_call(clear_tmp)
   last_moon <- pass_and_call(last_newmoon)
   end_moon <- ifnull(end_moon, last_moon)
@@ -247,6 +249,7 @@ prep_data <- function(main = ".", end_moon = NULL,
                       filename_moons = "moon_dates.csv",
                       filename_cov = "covariates.csv", 
                       filename_meta = "metadata.yaml", cleanup = TRUE){
+  check_args()
   messageq("Preparing data...", quiet)
   metadata_path <- file_paths(main, "data/metadata.yaml")
   meta_exist <- file.exists(metadata_path)
@@ -291,6 +294,7 @@ prep_data <- function(main = ".", end_moon = NULL,
 #' @export
 #'
 models_to_cast <- function(main = ".", models = prefab_models()){
+  check_args()
   models_path <- sub_paths(main, "models")
   file_names <- paste0(models, ".R")
   torun <- (list.files(models_path) %in% file_names)

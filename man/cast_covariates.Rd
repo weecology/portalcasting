@@ -13,15 +13,15 @@ cast_covariates(main = ".", moons = prep_moons(main = main),
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = list(), quiet = FALSE)
+  control_cdl = climate_dl_control(), quiet = FALSE)
 
 prep_cast_covariates(main = ".", moons = prep_moons(main = main),
   hist_cov = NULL, end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  append_cast_csv = TRUE, control_cdl = list(), quiet = FALSE,
-  save = TRUE, overwrite = TRUE)
+  append_cast_csv = TRUE, control_cdl = climate_dl_control(),
+  quiet = FALSE, save = TRUE, overwrite = TRUE)
 
 cast_ndvi(main = ".", moons = prep_moons(main = main),
   hist_cov = NULL, lead_time = 12, min_lag = 6)
@@ -31,7 +31,7 @@ cast_weather(main = ".", moons = prep_moons(main = main),
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = list(), quiet = FALSE)
+  control_cdl = climate_dl_control(), quiet = FALSE)
 
 save_cast_cov_csv(main = ".", moons = prep_moons(main = main),
   end_moon = NULL, cast_date = Sys.Date(), cast_cov = NULL,

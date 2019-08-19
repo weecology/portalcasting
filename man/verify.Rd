@@ -4,12 +4,12 @@
 \alias{verify}
 \title{Verify that a required folder exists}
 \usage{
-verify(path = NULL, level = NULL)
+verify(path = NULL, dir_level = NULL)
 }
 \arguments{
 \item{path}{\code{character} vector of the folder paths.}
 
-\item{level}{\code{character} vector of the names of the levels in the
+\item{dir_level}{\code{character} vector of the names of the levels in the
 hierarchy at which the folders will exist or the folder names. For the
 purposes of messaging and not inherently required to be non-\code{NULL}.}
 }

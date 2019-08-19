@@ -6,12 +6,12 @@
 \title{Determine a file's extension or remove the extension from the
  file path}
 \usage{
-file_ext(x, sep_char = ".")
+file_ext(path, sep_char = ".")
 
-path_no_ext(x, sep_char = ".")
+path_no_ext(path, sep_char = ".")
 }
 \arguments{
-\item{x}{\code{character} value of the file path possibly with an
+\item{path}{\code{character} value of the file path possibly with an
 extension.}
 
 \item{sep_char}{\code{character} value of the separator that delineates

@@ -4,10 +4,10 @@
 \alias{na_conformer}
 \title{Conform NA entries to "NA" entries}
 \usage{
-na_conformer(x, colname = "species")
+na_conformer(dfv, colname = "species")
 }
 \arguments{
-\item{x}{Either [1] a \code{data.frame} containing \code{colname} as a 
+\item{dfv}{Either [1] a \code{data.frame} containing \code{colname} as a 
 column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
 a vector with \code{NA}s that need to be conformed to \code{"NA"}s.}
 

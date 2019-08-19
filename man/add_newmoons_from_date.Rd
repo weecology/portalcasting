@@ -4,10 +4,10 @@
 \alias{add_newmoons_from_date}
 \title{Add a newmoon number to a table that has the date}
 \usage{
-add_newmoons_from_date(x, moons = NULL)
+add_newmoons_from_date(df, moons = NULL)
 }
 \arguments{
-\item{x}{\code{data.frame} with column of newmoon \code{Date}s 
+\item{df}{\code{data.frame} with column of newmoon \code{Date}s 
 named \code{date}.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}

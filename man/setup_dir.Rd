@@ -17,11 +17,11 @@ setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   raw_moons_file = "Rodents/moon_dates.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
   controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = list(), downloads = zenodo_downloads(c("1215988",
-  "833438")), quiet = FALSE, verbose = FALSE, subs = subdirs(),
-  save = TRUE, overwrite = TRUE, filename_moons = "moon_dates.csv",
-  filename_cov = "covariates.csv", filename_meta = "metadata.yaml",
-  cleanup = TRUE)
+  control_cdl = climate_dl_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
+  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_meta = "metadata.yaml", cleanup = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
   end_moon = NULL, lead_time = 12, cast_date = Sys.Date(),
@@ -34,11 +34,11 @@ setup_production(main = ".", models = prefab_models(),
   raw_moons_file = "Rodents/moon_dates.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
   controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = list(), downloads = zenodo_downloads(c("1215988",
-  "833438")), quiet = FALSE, verbose = FALSE, subs = subdirs(),
-  save = TRUE, overwrite = TRUE, filename_moons = "moon_dates.csv",
-  filename_cov = "covariates.csv", filename_meta = "metadata.yaml",
-  cleanup = TRUE)
+  control_cdl = climate_dl_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
+  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_meta = "metadata.yaml", cleanup = TRUE)
 
 setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
@@ -51,11 +51,11 @@ setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   raw_moons_file = "Rodents/moon_dates.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
   controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = list(), downloads = zenodo_downloads(c("1215988",
-  "833438")), quiet = FALSE, verbose = FALSE, subs = subdirs(),
-  save = TRUE, overwrite = TRUE, filename_moons = "moon_dates.csv",
-  filename_cov = "covariates.csv", filename_meta = "metadata.yaml",
-  cleanup = TRUE)
+  control_cdl = climate_dl_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
+  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_meta = "metadata.yaml", cleanup = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

@@ -16,16 +16,16 @@ prep_rodents_table(main = ".", moons = prep_moons(main = main),
   ref_species = all_species(), quiet = TRUE, save = TRUE,
   overwrite = TRUE, filename = "rodents_all.csv")
 
-trim_time(rodents, start_moon = NULL, end_moon = NULL)
+trim_time(rodents_tab, start_moon = NULL, end_moon = NULL)
 
-add_moons(rodents, moons = prep_moons())
+add_moons(rodents_tab, moons = prep_moons())
 
-add_total(rodents, total = TRUE)
+add_total(rodents_tab, total = TRUE)
 
-trim_species(rodents, species = base_species(),
+trim_species(rodents_tab, species = base_species(),
   ref_species = all_species())
 
-trim_treatment(rodents, level = "Site", treatment = NULL)
+trim_treatment(rodents_tab, level = "Site", treatment = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -88,7 +88,7 @@ files should be updated (most users should leave as \code{TRUE}).}
 
 \item{filename}{\code{character} name of the file for saving the output.}
 
-\item{rodents}{\code{data.frame} rodents table, with varying levels of 
+\item{rodents_tab}{\code{data.frame} rodents table, with varying levels of 
 editing.}
 }
 \value{

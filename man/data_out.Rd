@@ -4,11 +4,11 @@
 \alias{data_out}
 \title{Save data out to a file and return it}
 \usage{
-data_out(x = NULL, main = ".", save = TRUE, filename = "x.csv",
+data_out(dfl = NULL, main = ".", save = TRUE, filename = "x.csv",
   overwrite = TRUE, quiet = FALSE)
 }
 \arguments{
-\item{x}{\code{data.frame} table to be written out.}
+\item{dfl}{\code{data.frame} or YAML \code{list} to be written out.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
@@ -24,7 +24,7 @@ overwritten if it exists.}
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
 }
 \value{
-\code{x} as input.
+\code{dfl} as input.
 }
 \description{
 Save inputted data out to a data file if requested and 

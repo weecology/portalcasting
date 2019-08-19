@@ -33,6 +33,7 @@
 #'
 append_observed_to_cast <- function(casts, main = ".", add_error = TRUE,
                                     add_in_window = TRUE, add_lead = TRUE){
+  check_args()
   level <- unique(casts$level)
   if (length(level) != 1){
     stop("`casts` must have (only) one type for `level` column")
@@ -89,6 +90,7 @@ append_observed_to_cast <- function(casts, main = ".", add_error = TRUE,
 #' @export
 #'
 measure_cast_error <- function(casts, min_observed = 1){
+  check_args()
   groupcols <- c("model", "species", "level", "date", "initial_newmoon")
   cols <- which(colnames(casts) %in% groupcols)
   castgroup <- apply(casts[ ,cols], 1, paste, collapse = "_")
@@ -170,6 +172,7 @@ measure_cast_error <- function(casts, min_observed = 1){
 #'
 select_casts <- function(casts, species = NULL, level = NULL, models = NULL, 
                          newmoonnumbers = NULL){
+  check_args()
   incl_species <- rep(TRUE, nrow(casts))
   incl_level <- rep(TRUE, nrow(casts))
   incl_model <- rep(TRUE, nrow(casts))
@@ -296,6 +299,7 @@ read_casts <- function(main = ".", cast_type = "forecast",
 #' @export
 #'
 verify_cast <- function(cast, verbose = FALSE){
+  check_args()
   if(cast_is_valid(cast, verbose)){
     cast
   }
@@ -306,6 +310,7 @@ verify_cast <- function(cast, verbose = FALSE){
 #' @export
 #'
 cast_is_valid <- function(cast_to_check, verbose = FALSE){
+  check_args()
   is_valid <- TRUE
   violations <- c()
   valid_columns1 <- c("date", "forecastmonth", "forecastyear", 
@@ -398,9 +403,9 @@ cast_is_valid <- function(cast_to_check, verbose = FALSE){
 #'  rather than the current generalized "cast". This function replaces the
 #'  old with the new for internal use.
 #'
-#' @param x \code{data.frame} to have column names converted if needed.
+#' @param df \code{data.frame} to have column names converted if needed.
 #'
-#' @return \code{x} with column names converted if needed.
+#' @return \code{df} with column names converted if needed.
 #'
 #' @examples
 #'  df <- data.frame(xforecastx = 1:10, fore = 2:11)
@@ -408,11 +413,12 @@ cast_is_valid <- function(cast_to_check, verbose = FALSE){
 #'
 #' @export
 #'
-column_conformer <- function(x = NULL){
-  return_if_null(x)
-  cnames <- colnames(x)
-  names(x) <- gsub("forecast", "cast", cnames)
-  x
+column_conformer <- function(df = NULL){
+  return_if_null(df)
+  check_args()
+  cnames <- colnames(df)
+  names(df) <- gsub("forecast", "cast", cnames)
+  df
 }
 
 #' @title Determine the most recent forecast or hindcast
@@ -441,6 +447,7 @@ column_conformer <- function(x = NULL){
 #'
 most_recent_cast <- function(main = ".", cast_type = "forecast",
                              with_census = FALSE){
+  check_args()
   pfolderpath <- sub_paths(main, "predictions")
   pfiles <- list.files(pfolderpath)
   of_interest1 <- grepl(cast_type, pfiles)
@@ -490,7 +497,7 @@ most_recent_cast <- function(main = ".", cast_type = "forecast",
 #'
 add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(), 
                          confidence_level = 0.9, quiet = FALSE){
-
+  check_args()
   messageq("Creating ensemble model", quiet)
   temp_dir <- sub_paths(main, "tmp")
   pred_dir <- sub_paths(main, "predictions")
@@ -544,6 +551,7 @@ add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(),
 #' @export
 #'
 make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
+  check_args()
   if (length(unique(all_casts$model)) == 1){
     ensemble <- all_casts
     ensemble$model <- "Ensemble"
@@ -605,6 +613,7 @@ make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
 #' @export
 #'
 compile_aic_weights <- function(main = "."){
+  check_args()
   pred_dir <- sub_paths(main, "predictions")
 
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
@@ -654,7 +663,7 @@ compile_aic_weights <- function(main = "."){
 combine_casts <- function(main = ".", moons = prep_moons(main = main),
                           end_moon = NULL, 
                           cast_date = Sys.Date(), quiet = FALSE){
-
+  check_args()
   messageq("Compiling casts", quiet)
   temp_dir <- sub_paths(main, "tmp")
   pred_dir <- sub_paths(main, "predictions")
@@ -706,6 +715,7 @@ combine_casts <- function(main = ".", moons = prep_moons(main = main),
 #' @export
 #'
 save_cast_output <- function(all, controls, model, main){
+  check_args()
   metadata <- read_data(main, "metadata");
   temp_dir <- sub_paths(main, "tmp")
   casts <- rbind(all$cast, controls$cast)

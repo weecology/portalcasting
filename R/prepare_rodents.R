@@ -53,6 +53,7 @@ prep_rodents <- function(main = ".", moons = prep_moons(main = main),
                          controls_r = rodents_controls(),
                          ref_species = all_species(), quiet = FALSE,
                          save = TRUE, overwrite = TRUE){
+  check_args()
   if(list_depth(controls_r) == 1){
     controls_r <- list(controls_r)
   }
@@ -62,7 +63,6 @@ prep_rodents <- function(main = ".", moons = prep_moons(main = main),
   naddl_args <- length(addl_args) 
   ncontrols_r <- length(controls_r)
   table_args <- vector("list", length = ncontrols_r)
-
   for(i in 1:ncontrols_r){
     control_args <- controls_r[[i]]
     ncontrol_args <- length(control_args)
@@ -161,7 +161,7 @@ prep_rodents <- function(main = ".", moons = prep_moons(main = main),
 #'  \code{character} values: \code{"all"} plots or \code{"Longterm"} plots
 #'  (plots that have had the same treatment for the entire time series).
 #'
-#' @param rodents \code{data.frame} rodents table, with varying levels of 
+#' @param rodents_tab \code{data.frame} rodents table, with varying levels of 
 #'  editing.
 #'
 #' @param save \code{logical} indicator controlling if the output should 
@@ -206,6 +206,7 @@ prep_rodents_table <- function(main = ".", moons = prep_moons(main = main),
                                save = TRUE, overwrite = TRUE, 
                                filename = "rodents_all.csv"){
   return_if_null(species) 
+  check_args()
   nspecies <- length(species)
   total <- ifelse(nspecies == 1, FALSE, total)
   raw_path <- sub_paths(main, "raw")
@@ -214,7 +215,7 @@ prep_rodents_table <- function(main = ".", moons = prep_moons(main = main),
                         min_plots = min_plots, output = output,
                         quiet = quiet) %>%
   trim_species(species, ref_species) %>%
-  add_total(total) %>%
+  add_total(total)  %>%
   trim_treatment(level, treatment) %>%
   add_moons(moons) %>%
   trim_time(start_moon, end_moon) %>%
@@ -225,8 +226,9 @@ prep_rodents_table <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-trim_time <- function(rodents, start_moon = NULL, end_moon = NULL){
-  subset(rodents, newmoonnumber >= start_moon) %>%
+trim_time <- function(rodents_tab, start_moon = NULL, end_moon = NULL){
+  check_args()
+  subset(rodents_tab, newmoonnumber >= start_moon) %>%
   subset(newmoonnumber <= min(c(end_moon, max(newmoonnumber)))) %>%
   select(-newmoondate, -censusdate) 
 }
@@ -235,45 +237,49 @@ trim_time <- function(rodents, start_moon = NULL, end_moon = NULL){
 #'
 #' @export
 #'
-add_moons <- function(rodents, moons = prep_moons()){
-  inner_join(rodents, moons, by = c("period" = "period"))
+add_moons <- function(rodents_tab, moons = prep_moons()){
+  check_args()
+  inner_join(rodents_tab, moons, by = c("period" = "period"))
 }
 
 #' @rdname prep_rodents_table
 #'
 #' @export
 #'
-add_total <- function(rodents, total = TRUE){
+add_total <- function(rodents_tab, total = TRUE){
+  check_args()
   if(total){
-    total_count <- rowSums(rodents[ , is_sp_col(rodents)])
-    rodents <- mutate(rodents, total = total_count)
+    total_count <- rowSums(rodents_tab[ , is_sp_col(rodents_tab)])
+    rodents_tab <- mutate(rodents_tab, total = total_count)
   }
-  rodents
+  rodents_tab
 }
 
 #' @rdname prep_rodents_table
 #'
 #' @export
 #'
-trim_species <- function(rodents, species = base_species(), 
+trim_species <- function(rodents_tab, species = base_species(), 
                          ref_species = all_species()){
+  check_args()
   drop_species <- ref_species[which(ref_species %in% species == FALSE)]
   if(length(drop_species) > 0){
-    rodents <- select(rodents, -one_of(drop_species))
+    rodents_tab <- select(rodents_tab, -one_of(drop_species))
   }
-  rodents
+  rodents_tab
 }
 
 #' @rdname prep_rodents_table
 #'
 #' @export
 #'
-trim_treatment <- function(rodents, level = "Site", treatment = NULL){
+trim_treatment <- function(rodents_tab, level = "Site", treatment = NULL){
+  check_args()
   if(level == "Treatment"){
-    rodents <- filter(rodents, treatment == !!treatment)  %>%
-               select(-treatment)
+    rodents_tab <- filter(rodents_tab, treatment == !!treatment)  %>%
+                   select(-treatment)
   }
-  rodents
+  rodents_tab
 }
 
 #' @title Determine if columns in a table are species columns
@@ -281,9 +287,9 @@ trim_treatment <- function(rodents, level = "Site", treatment = NULL){
 #' @description Given a table, returns a \code{logical} vector indicating
 #'  if each column is a species' column or not.
 #'
-#' @param rodents \code{data.frame} of columns to be checked. 
+#' @param rodents_tab \code{data.frame} of columns to be checked. 
 #'
-#' @param species_names \code{character} vector indicating species names to 
+#' @param species \code{character} vector indicating species names to 
 #'  use in determining if columns are species columns. Defaults to
 #'  \code{\link{all_species}}.
 #'
@@ -294,14 +300,15 @@ trim_treatment <- function(rodents, level = "Site", treatment = NULL){
 #'  \donttest{
 #'   create_dir()
 #'   fill_raw()
-#'   rodents <- prep_rodents_table()
-#'   is_sp_col(rodents)
+#'   rodents_tab <- prep_rodents_table()
+#'   is_sp_col(rodents_tab)
 #'  }
 #'
 #' @export
 #'
-is_sp_col <- function(rodents, species_names = all_species()){
-  colnames(rodents) %in% species_names
+is_sp_col <- function(rodents_tab, species = all_species()){
+  check_args()
+  colnames(rodents_tab) %in% species
 }
 
 #' @title Rodent species abbreviations
@@ -341,6 +348,7 @@ is_sp_col <- function(rodents, species_names = all_species()){
 rodent_species <- function(species = NULL, set = NULL, nadot = FALSE, 
                            total = FALSE){
   return_if_null(c(species, set))
+  check_args()
   out <- NULL
   if(!is.null(set) && set == "all"){
     out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", 
@@ -457,6 +465,7 @@ rodents_control <- function(tmnt_type = NULL, name = tmnt_type,
                             filename = "rodents_all.csv", level = "Site", 
                             treatment = NULL, plots = "all", min_plots = 24, 
                             min_traps = 1, output = "abundance"){
+  check_args()
   if(!is.null(tmnt_type)){
     if (tmnt_type == "all"){
       species <- base_species()
@@ -493,17 +502,20 @@ rodents_control <- function(tmnt_type = NULL, name = tmnt_type,
 #' @export
 #'
 rodents_controls <- function(tmnt_type = c("all", "controls"),
-                             name = tmnt_type,
+                             names = tmnt_type,
                              species = base_species(), total = TRUE,
                              filename = NULL, level = NULL, treatment = NULL,
                              plots = NULL, min_plots = 24, min_traps = 1,
                              output = "abundance"){
+  check_args()
   in_args <- as.list(match.call.defaults())[-1]
-  out_args <- transpose_args(in_args, "tmnt_type", "name")
+  out_args <- transpose_args(in_args, "tmnt_type", "names")
   nout <- length(out_args)
   out <- vector("list", nout)
   for(i in 1:nout){
-    out[[i]] <- do.call(rodents_control, out_args[[i]])
+    out_args_i <- out_args[[i]]
+    names(out_args_i)[which(names(out_args_i) == "names")] <- "name"
+    out[[i]] <- do.call(rodents_control, out_args_i)
   }
   out
 }

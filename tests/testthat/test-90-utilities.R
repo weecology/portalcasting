@@ -1,5 +1,13 @@
 context("Test utility functions")
 
+test_that("na_conformer", {
+  expect_equal(na_conformer(c("a", "b", NA, "c"))[3], "NA")
+  xx <- data.frame(w = "a", n = as.character(c("d", NA, "a", "b", "c")),
+                   stringsAsFactors = FALSE)
+  expect_is(na_conformer(xx, "n"), "data.frame")
+  expect_equal(na_conformer(xx, "n")[2,2], "NA")
+})
+
 test_that("cast0", {
   expect_is(cast0(12), "list")
 })

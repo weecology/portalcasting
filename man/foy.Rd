@@ -4,10 +4,10 @@
 \alias{foy}
 \title{Calculate the fraction of the year from a date}
 \usage{
-foy(date = NULL)
+foy(dates = NULL)
 }
 \arguments{
-\item{date}{\code{Date}(s) or \code{Date}-conformable value(s) to be 
+\item{dates}{\code{Date}(s) or \code{Date}-conformable value(s) to be 
 converted to the fraction of the year.}
 }
 \value{

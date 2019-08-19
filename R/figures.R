@@ -57,6 +57,7 @@ plot_cast_ts <- function(main = ".", species = "total",
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type)
   }
+  check_args()
   obs <- read_rodents(main, tolower(level))
   pred <- read_cast(main, cast_type = cast_type, cast_date = cast_date) %>%
           select_casts(species = species, level = level, models = model) 
@@ -116,6 +117,7 @@ plot_cast_ts <- function(main = ".", species = "total",
 #' @export
 #'
 plot_cast_ts_xaxis <- function(main = ".", rangex){
+  check_args()
   moons <- read_data(main, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
@@ -144,6 +146,7 @@ plot_cast_ts_xaxis <- function(main = ".", rangex){
 #'
 plot_cast_ts_ylab <- function(main = ".", level = "Controls",
                               species = "total", model = "Ensemble"){
+  check_args()
   lab <- list(text = "", font = 1)
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
@@ -227,7 +230,7 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
   if (is.null(from_date) & cast_type == "forecast"){
     from_date <- cast_date
   }
-
+  check_args()
   moons <- read_data(main, "moons")
   casts <- read_cast(main, cast_type = cast_type, cast_date = cast_date)
 
@@ -303,6 +306,7 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
 #' @export
 #'
 plot_cast_point_yaxis <- function(main = ".", species = "total"){
+  check_args()
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")
@@ -365,7 +369,7 @@ plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast",
                                    species = rodent_species(set = "evalplot"),
                                    level = "Controls", ndates = 3,
                                    models = model_names(set = "wEnsemble")){
-
+  check_args()
   casts <- read_casts(main, cast_type = cast_type) %>%
            select_casts(species = species, level = level, models = models)
   if (NROW(casts) == 0){
@@ -547,11 +551,10 @@ plot_cov_RMSE_mod_spp <- function(main = ".", cast_type = "hindcast",
                                   level = "Controls", cast_dates = NULL, 
                                   min_observed = 1, 
                                   models = model_names(set = "wEnsemble")){
-
   if (is.null(cast_dates)){
     cast_dates <- most_recent_cast(main, cast_type)
   }
-
+  check_args()
   casts <- read_casts(main = main, cast_type = cast_type, 
                       cast_dates = cast_dates) %>%
            select_casts(species = species, level = level, models = models) 

@@ -4,12 +4,12 @@
 \alias{is_sp_col}
 \title{Determine if columns in a table are species columns}
 \usage{
-is_sp_col(rodents, species_names = all_species())
+is_sp_col(rodents_tab, species = all_species())
 }
 \arguments{
-\item{rodents}{\code{data.frame} of columns to be checked.}
+\item{rodents_tab}{\code{data.frame} of columns to be checked.}
 
-\item{species_names}{\code{character} vector indicating species names to 
+\item{species}{\code{character} vector indicating species names to 
 use in determining if columns are species columns. Defaults to
 \code{\link{all_species}}.}
 }
@@ -25,8 +25,8 @@ Given a table, returns a \code{logical} vector indicating
  \donttest{
   create_dir()
   fill_raw()
-  rodents <- prep_rodents_table()
-  is_sp_col(rodents)
+  rodents_tab <- prep_rodents_table()
+  is_sp_col(rodents_tab)
  }
 
 }

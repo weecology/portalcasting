@@ -5,20 +5,20 @@
 \alias{model_template}
 \title{Write the template for a model into model subdirectory}
 \usage{
-write_model(name = NULL, covariates = NULL, lag = NULL, main = ".",
-  quiet = FALSE, overwrite = TRUE, control = list())
+write_model(name = NULL, covariatesTF = NULL, lag = NULL,
+  main = ".", quiet = FALSE, overwrite = TRUE, control = list())
 
-model_template(name = NULL, covariates = FALSE, lag = NULL,
+model_template(name = NULL, covariatesTF = FALSE, lag = NULL,
   main = ".", quiet = FALSE)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}
 
-\item{covariates}{\code{logical} indicator for if the model requires 
+\item{covariatesTF}{\code{logical} indicator for if the model requires 
 covariates.}
 
 \item{lag}{\code{integer} (or integer \code{numeric}) lag time used for the
-covariates or \code{NULL} if \code{covariates} is \code{FALSE}.}
+covariates or \code{NULL} if \code{covariatesTF} is \code{FALSE}.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
@@ -30,10 +30,10 @@ script should be updated.}
 
 \item{control}{\code{list} of model-level controls, including
 \code{name}, a \code{character} value of the model's name;
-\code{covariates}, a \code{logical} indicator for if the model requires 
+\code{covariatesTF}, a \code{logical} indicator for if the model requires 
 covariates; and \code{lag}, a \code{integer} (or integer \code{numeric}) 
 lag time used for the covariates or \code{NA} if 
-\code{covariates = FALSE}. Only used if the specific valued argument
+\code{covariatesTF = FALSE}. Only used if the specific valued argument
 is \code{NULL}.}
 }
 \value{
@@ -44,10 +44,10 @@ is \code{NULL}.}
 }
 \description{
 \code{write_model} creates a template script (as written by 
-  \code{model_template}) for a given model. \cr \cr
-  \code{model_template} creates the \code{character}-valued
-  text for a model script to be housed in the model directory, as written
-  out by \code{write_model}. \cr \cr
+ \code{model_template}) for a given model. \cr \cr
+ \code{model_template} creates the \code{character}-valued
+ text for a model script to be housed in the model directory, as written
+ out by \code{write_model}. \cr \cr
 }
 \examples{
  \donttest{

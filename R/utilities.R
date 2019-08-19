@@ -1,277 +1,4 @@
-#' @title Conform NA entries to "NA" entries
-#'
-#' @description Given the species abbreviation NA, when data are read in, 
-#'  there can be an \code{NA} when it should be an \code{"NA"}. This function
-#'  conforms the entries to be proper character values. 
-#'
-#' @param x Either [1] a \code{data.frame} containing \code{colname} as a 
-#'  column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
-#'  a vector with \code{NA}s that need to be conformed to \code{"NA"}s.
-#'
-#' @param colname \code{character} value of the column name in \code{tab} to 
-#'  conform the \code{NA}s to \code{"NA"}s.
-#'
-#' @return \code{x} with any \code{NA} in \code{colname} replaced with 
-#'  \code{"NA"}.
-#'
-#' @examples
-#'  na_conformer(c("a", "b", NA, "c"))
-#'
-#' @export
-#'
-na_conformer <- function(x, colname = "species"){
-  if (is.vector(x)){
-    naentries <- which(is.na(x))
-    x[naentries] <- "NA"
-  } else if (is.data.frame(x)){
-    nasppname <- which(is.na(x[ , colname]))
-    if (length(nasppname) > 0){
-      x[nasppname, colname] <- "NA"
-    }
-  } 
-  x
-}
 
-#' @title Zero-abundance cast
-#'
-#' @description Create a 0-abundance cast for fill-in usage when a model 
-#'   fails or there is no non-0 historical abundance.
-#'
-#' @param nmoons \code{integer} number of forecast newmoons.
-#'
-#' @param colname \code{character} name for the predictor column (to match
-#'   variable model output names).
-#'
-#' @return Two-element \code{list} of means and interval values for a 
-#'   0-abundance forecast to be used as a filler when a model fails or there 
-#'   is no non-0 historical abundance.
-#'
-#' @examples
-#'  cast0(12)
-#'
-#' @export
-#'
-cast0 <- function(nmoons = NULL, colname = "pred"){
-  return_if_null(nmoons)
-  mean_0 <- rep(0, nmoons)
-  int_0 <- data.frame("lower" = rep(0, nmoons), "upper" = rep(0, nmoons))
-  out <- list(mean_0, interval = int_0)
-  names(out)[1] <- colname
-  out
-}
-
-
-#' @title Save data out to a csv, appending the file if it already exists
-#'
-#' @description Appending a \code{.csv} without re-writing the header of the
-#'  file. If the doesn't exist, it will be created.
-#'
-#' @param df \code{data.frame} table to be written out.
-#'
-#' @param filename \code{character} filename of existing \code{.csv} to be 
-#'  appended.
-#'
-#' @return \code{NULL}.
-#'
-#' @examples
-#'  \donttest{
-#'   df <- data.frame(x = 1:10)
-#'   fpath <- file_paths(".", "xx.csv")
-#'   append_csv(df, fpath)
-#'  }
-#'
-#' @export
-#'
-append_csv <- function(df, filename){
-  write.table(df, filename, sep = ",", row.names = FALSE, 
-    col.names = !file.exists(filename), append = file.exists(filename))
-  NULL
-}
-
-#' @title Calculate the fraction of the year from a date
-#' 
-#' @description Based on the year in which the date occurred, determine the
-#'   fraction of the year (foy) for the date (in relation to New Year's Eve
-#'   in that year). 
-#'
-#' @param date \code{Date}(s) or \code{Date}-conformable value(s) to be 
-#'   converted to the fraction of the year.
-#'
-#' @return \code{numeric} value(s) of the fraction of the year.
-#'
-#' @examples
-#'  foy(Sys.Date())
-#'
-#' @export
-#'
-foy <- function(date = NULL){
-  return_if_null(date)
-  dates <- as.Date(date)
-  jday <- as.numeric(format(dates, "%j"))
-  nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
-  nyejday <- as.numeric(format(nye, "%j"))
-  round(jday / nyejday, 3)
-}
-
-#' @title Remove files from the tmp subdirectory
-#'
-#' @description Clear the files from the tmp subdirectory.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#'
-#' @param cleanup \code{logical} indicator if any files put into the tmp
-#'  subdirectory should be removed at the end of the process. 
-#'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @return \code{NULL}, with the tmp subdirectory's files removed.
-#'
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   clear_tmp
-#'  }
-#'
-#' @export
-#'
-clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE){
-  tmp_path <- sub_paths(main, "tmp")
-  tmp_exist <- dir.exists(tmp_path)
-  tmp_files <- list.files(tmp_path)
-  ntmp_files <- length(tmp_files)
-  if(tmp_exist){
-    if(ntmp_files > 0){
-      tmp_files_full_paths <- file_paths(main, paste0("tmp/", tmp_files))
-      file.remove(tmp_files_full_paths)
-      msg <- "temporary files cleared from tmp subdirectory"
-    } else {
-      msg <- "tmp subdirectory already clear"
-    }
-  } else{
-    msg <- "tmp subdirectory not present for clearing"
-  }
-  messageq(msg, quiet)
-  NULL
-}
-
-
-
-#' @title Combine a historical table and a cast table
-#'
-#' @description A simple utility for combining a table of historical data
-#'  and a table of cast data that might need to be assigned to either one
-#'  or the other.
-#'
-#' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns
-#'  includig a code{date} column of \code{Date}s, which is used to align them.
-#'
-#' @param winner \code{character} value either {"hist"} or \code{"cast"} to
-#'  decide who wins any ties. In the typical portalcasting space, this is 
-#'  kept at its default value throughout.
-#'
-#' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
-#' 
-#' @examples
-#'  hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
-#'  cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
-#'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
-#'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
-#'
-#' @export
-#'
-combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
-                                  winner = "hist"){
-  return_if_null(hist_tab, cast_tab)
-  return_if_null(cast_tab, hist_tab)
-  
-  dupes <- which(cast_tab$date %in% hist_tab$date)
-  if(length(dupes) > 0){
-    if(winner == "hist"){
-      cast_tab <- cast_tab[-dupes, ]
-    } else if (winner == "cast"){
-      dupes <- which(hist_tab$date %in% cast_tab$date)
-      hist_tab <- hist_tab[-dupes, ]
-    } else {
-      stop("winner must be hist or cast")
-    }
-  }
-  bind_rows(hist_tab, cast_tab)
-}
-
-#' @title Add a date to a table that has the year month and day as components 
-#' 
-#' @description Add a date (as a \code{Date}) column to a table that has the 
-#'  year month and day as components.
-#' 
-#' @param x \code{data.frame} with columns named \code{year}, \code{month},
-#'  and \code{day}. 
-#'
-#' @return \code{data.frame} \code{x} with column of \code{Date}s 
-#'  named \code{date} added.
-#'
-#' @examples
-#'  df <- data.frame(year = 2010, month = 2, day = 1:10)
-#'  add_date_from_components(df)
-#'
-#' @export
-#'
-add_date_from_components <- function(x){
-  yrs <- x$year
-  mns <- x$month
-  dys <- x$day
-  x$date <- as.Date(paste(yrs, mns, dys, sep = "-"))
-  x
-}
-
-
-#' @title Determine the start and end calendar dates for a cast window
-#'
-#' @description Based on the cast origin (\code{cast_date}), lead time
-#'  (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
-#'  the dates bracketing the requested window.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
-#'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
-#'  covariate lag time used in any model.
-#'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
-#'
-#' @return Named \code{list} with elements \code{start} and \code{end},
-#'  which are both \code{Dates}.
-#'
-#' @examples
-#'  \donttest{
-#'  create_dir()
-#'  fill_raw()
-#'  cast_window()
-#'  }
-#'
-#' @export
-#'
-cast_window <- function(main = ".",
-                            moons = prep_moons(main = main), 
-                            cast_date = Sys.Date(),
-                            lead_time = 12, min_lag = 6){
-  lagged_lead <- lead_time - min_lag
-  moons0 <- moons[moons$newmoondate < cast_date, ]
-  last_moon <- tail(moons0, 1)
-  last_moon$newmoondate <- as.Date(last_moon$newmoondate)
-  future_moons <- get_future_moons(moons0, num_future_moons = lead_time)
-  start_day <- as.character(as.Date(last_moon$newmoondate) + 1)
-  end_day <- as.character(as.Date(future_moons$newmoondate[lead_time]))
-  list(start = start_day, end = end_day)
-}
 
 #' @title Transpose argument lists for use in do.call
 #'
@@ -313,7 +40,7 @@ cast_window <- function(main = ".",
 #'
 transpose_args <- function(in_args = NULL, eval_args = NULL,
                            enquote_args = NULL){
-
+  check_args()
   return_if_null(in_args)
   if(!is.null(eval_args)){
     neval_args <- length(eval_args)
@@ -560,6 +287,291 @@ update_list <- function(orig_list = list(), ...){
   update_list
 }
 
+
+
+#' @title Conform NA entries to "NA" entries
+#'
+#' @description Given the species abbreviation NA, when data are read in, 
+#'  there can be an \code{NA} when it should be an \code{"NA"}. This function
+#'  conforms the entries to be proper character values. 
+#'
+#' @param dfv Either [1] a \code{data.frame} containing \code{colname} as a 
+#'  column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
+#'  a vector with \code{NA}s that need to be conformed to \code{"NA"}s.
+#'
+#' @param colname \code{character} value of the column name in \code{tab} to 
+#'  conform the \code{NA}s to \code{"NA"}s.
+#'
+#' @return \code{x} with any \code{NA} in \code{colname} replaced with 
+#'  \code{"NA"}.
+#'
+#' @examples
+#'  na_conformer(c("a", "b", NA, "c"))
+#'
+#' @export
+#'
+na_conformer <- function(dfv, colname = "species"){
+  check_args()
+  if (is.vector(dfv)){
+    naentries <- which(is.na(dfv))
+    dfv[naentries] <- "NA"
+  } else if (is.data.frame(dfv)){
+    nasppname <- which(is.na(dfv[ , colname]))
+    if (length(nasppname) > 0){
+      dfv[nasppname, colname] <- "NA"
+    }
+  } 
+  dfv
+}
+
+#' @title Zero-abundance cast
+#'
+#' @description Create a 0-abundance cast for fill-in usage when a model 
+#'   fails or there is no non-0 historical abundance.
+#'
+#' @param nmoons \code{integer} number of forecast newmoons.
+#'
+#' @param colname \code{character} name for the predictor column (to match
+#'   variable model output names).
+#'
+#' @return Two-element \code{list} of means and interval values for a 
+#'   0-abundance forecast to be used as a filler when a model fails or there 
+#'   is no non-0 historical abundance.
+#'
+#' @examples
+#'  cast0(12)
+#'
+#' @export
+#'
+cast0 <- function(nmoons = NULL, colname = "pred"){
+  return_if_null(nmoons)
+  check_args()
+  mean_0 <- rep(0, nmoons)
+  int_0 <- data.frame("lower" = rep(0, nmoons), "upper" = rep(0, nmoons))
+  out <- list(mean_0, interval = int_0)
+  names(out)[1] <- colname
+  out
+}
+
+
+#' @title Save data out to a csv, appending the file if it already exists
+#'
+#' @description Appending a \code{.csv} without re-writing the header of the
+#'  file. If the doesn't exist, it will be created.
+#'
+#' @param df \code{data.frame} table to be written out.
+#'
+#' @param filename \code{character} filename of existing \code{.csv} to be 
+#'  appended.
+#'
+#' @return \code{NULL}.
+#'
+#' @examples
+#'  \donttest{
+#'   df <- data.frame(x = 1:10)
+#'   fpath <- file_paths(".", "xx.csv")
+#'   append_csv(df, fpath)
+#'  }
+#'
+#' @export
+#'
+append_csv <- function(df, filename){
+  check_args()
+  write.table(df, filename, sep = ",", row.names = FALSE, 
+    col.names = !file.exists(filename), append = file.exists(filename))
+  NULL
+}
+
+#' @title Calculate the fraction of the year from a date
+#' 
+#' @description Based on the year in which the date occurred, determine the
+#'   fraction of the year (foy) for the date (in relation to New Year's Eve
+#'   in that year). 
+#'
+#' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be 
+#'   converted to the fraction of the year.
+#'
+#' @return \code{numeric} value(s) of the fraction of the year.
+#'
+#' @examples
+#'  foy(Sys.Date())
+#'
+#' @export
+#'
+foy <- function(dates = NULL){
+  return_if_null(dates)
+  check_args()
+  dates <- as.Date(dates)
+  jday <- as.numeric(format(dates, "%j"))
+  nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
+  nyejday <- as.numeric(format(nye, "%j"))
+  round(jday / nyejday, 3)
+}
+
+#' @title Remove files from the tmp subdirectory
+#'
+#' @description Clear the files from the tmp subdirectory.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'
+#' @param cleanup \code{logical} indicator if any files put into the tmp
+#'  subdirectory should be removed at the end of the process. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @return \code{NULL}, with the tmp subdirectory's files removed.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   clear_tmp
+#'  }
+#'
+#' @export
+#'
+clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE){
+  check_args()
+  tmp_path <- sub_paths(main, "tmp")
+  tmp_exist <- dir.exists(tmp_path)
+  tmp_files <- list.files(tmp_path)
+  ntmp_files <- length(tmp_files)
+  if(tmp_exist){
+    if(ntmp_files > 0){
+      tmp_files_full_paths <- file_paths(main, paste0("tmp/", tmp_files))
+      file.remove(tmp_files_full_paths)
+      msg <- "temporary files cleared from tmp subdirectory"
+    } else {
+      msg <- "tmp subdirectory already clear"
+    }
+  } else{
+    msg <- "tmp subdirectory not present for clearing"
+  }
+  messageq(msg, quiet)
+  NULL
+}
+
+
+
+#' @title Combine a historical table and a cast table
+#'
+#' @description A simple utility for combining a table of historical data
+#'  and a table of cast data that might need to be assigned to either one
+#'  or the other.
+#'
+#' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns
+#'  includig a code{date} column of \code{Date}s, which is used to align them.
+#'
+#' @param winner \code{character} value either {"hist"} or \code{"cast"} to
+#'  decide who wins any ties. In the typical portalcasting space, this is 
+#'  kept at its default value throughout.
+#'
+#' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
+#' 
+#' @examples
+#'  hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
+#'  cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+#'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
+#'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
+#'
+#' @export
+#'
+combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
+                                  winner = "hist"){
+  check_args()
+  return_if_null(hist_tab, cast_tab)
+  return_if_null(cast_tab, hist_tab)
+  
+  dupes <- which(cast_tab$date %in% hist_tab$date)
+  if(length(dupes) > 0){
+    if(winner == "hist"){
+      cast_tab <- cast_tab[-dupes, ]
+    } else if (winner == "cast"){
+      dupes <- which(hist_tab$date %in% cast_tab$date)
+      hist_tab <- hist_tab[-dupes, ]
+    } else {
+      stop("winner must be hist or cast")
+    }
+  }
+  bind_rows(hist_tab, cast_tab)
+}
+
+#' @title Add a date to a table that has the year month and day as components 
+#' 
+#' @description Add a date (as a \code{Date}) column to a table that has the 
+#'  year month and day as components.
+#' 
+#' @param df \code{data.frame} with columns named \code{year}, \code{month},
+#'  and \code{day}. 
+#'
+#' @return \code{data.frame} \code{df} with column of \code{Date}s 
+#'  named \code{date} added.
+#'
+#' @examples
+#'  df <- data.frame(year = 2010, month = 2, day = 1:10)
+#'  add_date_from_components(df)
+#'
+#' @export
+#'
+add_date_from_components <- function(df){
+  check_args()
+  yrs <- df$year
+  mns <- df$month
+  dys <- df$day
+  df$date <- as.Date(paste(yrs, mns, dys, sep = "-"))
+  df
+}
+
+
+#' @title Determine the start and end calendar dates for a cast window
+#'
+#' @description Based on the cast origin (\code{cast_date}), lead time
+#'  (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
+#'  the dates bracketing the requested window.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @return Named \code{list} with elements \code{start} and \code{end},
+#'  which are both \code{Dates}.
+#'
+#' @examples
+#'  \donttest{
+#'  create_dir()
+#'  fill_raw()
+#'  cast_window()
+#'  }
+#'
+#' @export
+#'
+cast_window <- function(main = ".",
+                            moons = prep_moons(main = main), 
+                            cast_date = Sys.Date(),
+                            lead_time = 12, min_lag = 6){
+  check_args()
+  lagged_lead <- lead_time - min_lag
+  moons0 <- moons[moons$newmoondate < cast_date, ]
+  last_moon <- tail(moons0, 1)
+  last_moon$newmoondate <- as.Date(last_moon$newmoondate)
+  future_moons <- get_future_moons(moons0, num_future_moons = lead_time)
+  start_day <- as.character(as.Date(last_moon$newmoondate) + 1)
+  end_day <- as.character(as.Date(future_moons$newmoondate[lead_time]))
+  list(start = start_day, end = end_day)
+}
+
 #' @title Remove any specific incomplete entries as noted by an NA
 #'
 #' @description Remove any incomplete entries in a table, as determined by
@@ -580,6 +592,7 @@ update_list <- function(orig_list = list(), ...){
 #' @export
 #'
 remove_incompletes <- function(df, colname){
+  check_args()
   incompletes <- which(is.na(df[ , colname]))
   if (length(incompletes) > 0){
     df <- df[-incompletes, ]
@@ -592,7 +605,7 @@ remove_incompletes <- function(df, colname){
 #' @description Save inputted data out to a data file if requested and 
 #'  return it to the console.
 #'
-#' @param x \code{data.frame} table to be written out.
+#' @param dfl \code{data.frame} or YAML \code{list} to be written out.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -607,14 +620,15 @@ remove_incompletes <- function(df, colname){
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
-#' @return \code{x} as input.
+#' @return \code{dfl} as input.
 #'
 #'
 #' @export
 #'
-data_out <- function(x = NULL, main = ".", save = TRUE, filename = "x.csv", 
+data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = "x.csv", 
                      overwrite = TRUE, quiet = FALSE){
-  return_if_null(x)
+  return_if_null(dfl)
+  check_args()
   save_it <- FALSE
   if(save){
     fext <- file_ext(filename)
@@ -635,9 +649,9 @@ data_out <- function(x = NULL, main = ".", save = TRUE, filename = "x.csv",
     messageq(msg, quiet)
     if( save_it){
         if(fext == "csv"){
-          write.csv(x, full_path, row.names = FALSE)
+          write.csv(dfl, full_path, row.names = FALSE)
       } else if (fext == "yaml"){
-          yams <- as.yaml(x)
+          yams <- as.yaml(dfl)
           writeLines(yams, con = full_path)
       } else{
         stop("file type not supported")
@@ -645,7 +659,66 @@ data_out <- function(x = NULL, main = ".", save = TRUE, filename = "x.csv",
     }
    
   }
-  x
+  dfl
+}
+
+
+#' @title Optionally generate a message based on a logical input
+#'
+#' @description Given the input to \code{quiet}, generate the message(s) 
+#'   in \code{msg} or not.
+#'
+#' @param msg \code{character} vector of the message(s) to generate or 
+#'   \code{NULL}. If more than one element is contained in \code{msg}, they
+#'   are concatenated with a newline between.
+#'
+#' @param quiet \code{logical} indicator controlling if the message is
+#'   generated.
+#'
+#' @examples
+#'  messageq("Hello world", FALSE)
+#'  messageq("Hello world", TRUE)
+#'
+#' @export
+#'
+messageq <- function(msg = NULL, quiet = FALSE){
+  check_args()
+  if (!quiet){
+    msg2 <- paste(msg, collapse = "\n")
+    message(msg2)
+  }
+}
+
+
+#' @title Determine the depth of a list
+#'
+#' @description Evaluate an input for the depth of its nesting. 
+#'
+#' @details If \code{xlist = list()}, then technically the input value is a 
+#'  list, but is empty (of length \code{0}), so depth is returned as \code{0}.
+#'
+#' @param xlist Focal input \code{list}.
+#'
+#' @return \code{integer} value of the depth of the list.
+#' 
+#' @examples
+#'  list_depth("a")
+#'  list_depth(list())
+#'  list_depth(list("a"))
+#'  list_depth(list(list("a")))
+#'
+#' @export 
+#'
+list_depth <- function(xlist){
+  xx <- match.call()
+  xxx <- deparse(xx[[2]])
+  if(xxx == "list()"){
+    0L
+  } else if (is.list(xlist)){
+    1L + max(sapply(xlist, list_depth))
+  } else {
+    0L
+  }
 }
 
 #' @title If a value is NULL, trigger the parent function's return
@@ -679,36 +752,6 @@ return_if_null <- function(x, value = NULL){
   } 
 }
 
-#' @title Determine the depth of a list
-#'
-#' @description Evaluate an input for the depth of its nesting. 
-#'
-#' @details If \code{x = list()}, then technically the input value is a list, 
-#'  but is empty (of length \code{0}), so depth is returned as \code{0}.
-#'
-#' @param x Focal input.
-#'
-#' @return \code{integer} value of the depth of the list.
-#' 
-#' @examples
-#'  list_depth("a")
-#'  list_depth(list())
-#'  list_depth(list("a"))
-#'  list_depth(list(list("a")))
-#'
-#' @export 
-#'
-list_depth <- function(x){
-  xx <- match.call()
-  xxx <- deparse(xx[[2]])
-  if(xxx == "list()"){
-    0L
-  } else if (is.list(x)){
-    1L + max(sapply(x, list_depth))
-  } else {
-    0L
-  }
-}
 
 #' @title Replace if NULL
 #'
@@ -755,29 +798,4 @@ ifnull <- function(x = NULL, alt = NULL){
 #'
 ifna <- function(x = NULL, alt = NA){
   ifelse(is.na(x), alt, x)
-}
-
-#' @title Optionally generate a message based on a logical input
-#'
-#' @description Given the input to \code{quiet}, generate the message(s) 
-#'   in \code{msg} or not.
-#'
-#' @param msg \code{character} vector of the message(s) to generate or 
-#'   \code{NULL}. If more than one element is contained in \code{msg}, they
-#'   are concatenated with a newline between.
-#'
-#' @param quiet \code{logical} indicator controlling if the message is
-#'   generated.
-#'
-#' @examples
-#'  messageq("Hello world", FALSE)
-#'  messageq("Hello world", TRUE)
-#'
-#' @export
-#'
-messageq <- function(msg = NULL, quiet = FALSE){
-  if (!quiet){
-    msg2 <- paste(msg, collapse = "\n")
-    message(msg2)
-  }
 }

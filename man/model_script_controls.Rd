@@ -21,10 +21,10 @@ A \code{list} of a single model's script-writing controls or a
 script-writing controls. \cr 
 Presently, each model's script writing controls
 should include three elements: \code{name} (a \code{character} value of 
-the model name), \code{covariates} (a \code{logical} indicator of if the 
+the model name), \code{covariatesTF} (a \code{logical} indicator of if the 
 model needs covariates), and \code{lag} (an \code{integer}-conformable 
 value of the lag to use with the covariates or \code{NA} if 
-\code{covariates = FALSE}). \cr 
+\code{covariatesTF = FALSE}). \cr 
 If only a single model is added, the name of 
 the model from the element \code{name} will be used to name the model's
 \code{list} in the larger \code{list}. If multiple models are added, each
@@ -67,7 +67,7 @@ Any model that is part of the \code{prefab} set
 }
 \examples{
  model_script_controls(prefab_models())
- controls <- list(name = "xx", covariates = FALSE, lag = NA)
+ controls <- list(name = "xx", covariatesTF = FALSE, lag = NA)
  model_script_controls("xx", controls)
  model_script_controls(model_names("xx", "prefab"), controls)
  model_script_controls(c("xx", "ESSS"), controls)

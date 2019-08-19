@@ -84,10 +84,10 @@ prep_covariates <- function(main = ".", moons = prep_moons(main = main),
                             raw_path_cov_cast = "cov_casts", 
                             source_name = "current_archive",
                             append_cast_csv = TRUE, 
-                            control_cdl = list(), quiet = FALSE, 
+                            control_cdl = climate_dl_control(), quiet = FALSE, 
                             save = TRUE, overwrite = TRUE,
                             filename_cov = "covariates.csv"){
-
+  check_args()
   messageq("Loading covariate data files into data subdirectory", quiet)
   hist_cov <- pass_and_call(prep_hist_covariates)
   if (cast_covariates){
@@ -142,6 +142,7 @@ prep_covariates <- function(main = ".", moons = prep_moons(main = main),
 #'
 prep_hist_covariates <- function(main = ".", end_moon = NULL, 
                                  quiet = FALSE){
+  check_args()
   weather_data <- prep_weather_data(main)
   raw_path <- sub_paths(main, "raw")
   ndvi_data <- ndvi("newmoon", TRUE, raw_path)
@@ -158,6 +159,7 @@ prep_hist_covariates <- function(main = ".", end_moon = NULL,
 #' @export
 #'
 prep_weather_data <- function(main = "."){
+  check_args()
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
   raw_path <- sub_paths(main, "raw")
@@ -234,6 +236,7 @@ summarize_daily_weather_by_newmoon <- function(x){
 #' @export
 #'
 lag_covariates <- function(covariates, lag, tail = FALSE){
+  check_args()
   covariates$newmoonnumber_lag <- covariates$newmoonnumber + lag
   
   if(tail == FALSE){

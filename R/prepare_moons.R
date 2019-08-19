@@ -20,11 +20,10 @@
 #'  column formatted as a \code{\link{Date}}. 
 #'
 #' @details Sometimes the raw moon data table is not fully up-to-date. Because
-#'   the \code{portalr} functions \code{\link[portalr]{weather}} and 
-#'   \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table
-#'   needs to be updated to produce the correct current data table for 
-#'   casting. \code{add_past_moons_to_raw} updates the raw file accordingly 
-#'   \cr \cr
+#'  the \code{portalr} functions \code{\link[portalr]{weather}} and 
+#'  \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table
+#'  needs to be updated to produce the correct current data table for 
+#'  casting. \code{add_past_moons_to_raw} updates the raw file accordingly. 
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -87,14 +86,14 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
                        raw_moons_file = "Rodents/moon_dates.csv",
                        quiet = FALSE, save = TRUE, 
                        overwrite = TRUE, filename_moons = "moon_dates.csv"){
-
+  check_args()
   lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
   moon_path <- file_paths(main, lpath)
   moons_in <- read.csv(moon_path, stringsAsFactors = FALSE)
   moons <- pass_and_call(add_future_moons, moons = moons_in)
   pass_and_call(add_past_moons_to_raw, moons = moons_in)
   moons_out <- format_moons(moons)
-  pass_and_call(data_out, x = moons_out, filename = filename_moons)
+  pass_and_call(data_out, dfl = moons_out, filename = filename_moons)
 }
 
 #' @rdname prep_moons
@@ -102,6 +101,7 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
 #' @export
 #'
 format_moons <- function(moons){
+  check_args()
   moons$year <- year(moons$newmoondate)
   moons$month <- month(moons$newmoondate)
   moons$newmoondate <- as.Date(moons$newmoondate)
@@ -114,6 +114,7 @@ format_moons <- function(moons){
 #'
 add_future_moons <- function(moons = prep_moons(), lead_time = 12, 
                              cast_date = Sys.Date()){
+  check_args()
   if(lead_time == 0){
     return(moons)
   }
@@ -128,6 +129,7 @@ add_future_moons <- function(moons = prep_moons(), lead_time = 12,
 #' @export
 #'
 add_extra_future_moons <- function(moons, cast_date = Sys.Date()){
+  check_args()
   n_extra_future_moons <- length(which(moons$newmoondate < cast_date))
   if (n_extra_future_moons > 0){
     extra_moons <- get_future_moons(moons, n_extra_future_moons)
@@ -144,6 +146,7 @@ add_past_moons_to_raw <- function(main = ".", moons, cast_date = Sys.Date(),
                                   raw_path_data = "PortalData",
                                   raw_moons_file = "Rodents/moon_dates.csv",
                                   overwrite = TRUE){
+  check_args()
   if(overwrite){
     lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
     fpath <- file_paths(main, lpath) 
@@ -190,6 +193,7 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
                        retain_target_moons = TRUE,
                        target_cols = c("newmoonnumber", "newmoondate", 
                                        "period", "censusdate")){
+  check_args()
   return_if_null(moons)
   moons <- moons[, target_cols]
   new_moons <- moons
@@ -210,7 +214,7 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #' @description Add a newmoon number column to a table that has a 
 #'  \code{date} (as a \code{Date}) column.
 #' 
-#' @param x \code{data.frame} with column of newmoon \code{Date}s 
+#' @param df \code{data.frame} with column of newmoon \code{Date}s 
 #'  named \code{date}.
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
@@ -230,8 +234,9 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'
 #' @export
 #'
-add_newmoons_from_date <- function(x, moons = NULL){
-  return_if_null(moons, x)
+add_newmoons_from_date <- function(df, moons = NULL){
+  check_args()
+  return_if_null(moons, df)
   newmoon_number <- moons$newmoonnumber[-1]
   newmoon_start <- as.Date(moons$newmoondate[-nrow(moons)])
   newmoon_end <- as.Date(moons$newmoondate[-1])
@@ -246,12 +251,12 @@ add_newmoons_from_date <- function(x, moons = NULL){
     newmoon_match_number <- c(newmoon_match_number, temp_numbers)
   }
   newmoon_match_date <- as.Date(newmoon_match_date)
-  if (is.null(x$date)){
-    x <- add_date_from_components(x)
+  if (is.null(df$date)){
+    df <- add_date_from_components(x)
   }
-  matches <- match(x$date, newmoon_match_date)
-  x$newmoonnumber <- newmoon_match_number[matches]
-  x
+  matches <- match(df$date, newmoon_match_date)
+  df$newmoonnumber <- newmoon_match_number[matches]
+  df
 }
 
 #' @title Determine specific newmoon numbers
@@ -296,6 +301,7 @@ add_newmoons_from_date <- function(x, moons = NULL){
 target_newmoons <- function(main = ".", moons = prep_moons(main = main),
                             end_moon = NULL, lead_time = 12, 
                             cast_date = Sys.Date()){
+  check_args()
   last_moon <- pass_and_call(last_newmoon)
   end_moon <- ifnull(end_moon, last_moon)
   (end_moon + 1):(end_moon + lead_time)
@@ -307,6 +313,7 @@ target_newmoons <- function(main = ".", moons = prep_moons(main = main),
 #'
 last_newmoon <- function(main = ".", moons = prep_moons(main = main),
                            cast_date = Sys.Date()){
+  check_args()
   which_last_moon <- max(which(moons$newmoondate < cast_date))
   moons$newmoonnumber[which_last_moon]
 }

@@ -42,6 +42,7 @@
 #' @export
 #'
 AutoArima <- function(main = ".", level = "All", quiet = FALSE){
+  check_args()
   messageq(paste0("### Fitting AutoArima model for ", level, " ###"), quiet)
 
   abundances <- read_rodents(main, level = tolower(level))
@@ -140,6 +141,7 @@ AutoArima <- function(main = ".", level = "All", quiet = FALSE){
 #' @export
 #'
 ESSS <- function(main = ".", level = "All", quiet = FALSE){
+  check_args()
   messageq(paste0("### Fitting ESSS model for ", level, " ###"), quiet)
 
   abundances <- read_rodents(main, level = tolower(level))
@@ -240,7 +242,7 @@ ESSS <- function(main = ".", level = "All", quiet = FALSE){
 #' @export
 #'
 nbGARCH <- function(main = ".", level = "All", quiet = FALSE){
-
+  check_args()
   messageq(paste0("### Fitting nbGARCH model for ", level, " ###"), quiet)
   abundances <- read_rodents(main, level = tolower(level))
   metadata <- read_metadata(main)
@@ -353,7 +355,7 @@ nbGARCH <- function(main = ".", level = "All", quiet = FALSE){
 #' @export
 #'
 nbsGARCH <- function(main = ".", level = "All", quiet = FALSE){
-
+  check_args()
   messageq(paste0("### Fitting nbGARCH model for ", level, " ###"), quiet)
   abundances <- read_rodents(main, level = tolower(level))
   metadata <- read_metadata(main)
@@ -481,6 +483,7 @@ nbsGARCH <- function(main = ".", level = "All", quiet = FALSE){
 #' @export
 #'
 pevGARCH <- function(main = ".", level = "All", lag = 6, quiet = FALSE){
+  check_args()
   messageq(paste0("### Fitting pevGARCH model for ", level, " ###"), quiet)
 
   abundances <- read_rodents(main, level = tolower(level))

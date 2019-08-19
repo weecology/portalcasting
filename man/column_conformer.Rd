@@ -4,13 +4,13 @@
 \alias{column_conformer}
 \title{Conform column names for use internally}
 \usage{
-column_conformer(x = NULL)
+column_conformer(df = NULL)
 }
 \arguments{
-\item{x}{\code{data.frame} to have column names converted if needed.}
+\item{df}{\code{data.frame} to have column names converted if needed.}
 }
 \value{
-\code{x} with column names converted if needed.
+\code{df} with column names converted if needed.
 }
 \description{
 Existing cast files may have column names using "forecast"

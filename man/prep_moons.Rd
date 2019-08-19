@@ -90,11 +90,10 @@ A set of functions that get time information (calendar dates,
 }
 \details{
 Sometimes the raw moon data table is not fully up-to-date. Because
-  the \code{portalr} functions \code{\link[portalr]{weather}} and 
-  \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table
-  needs to be updated to produce the correct current data table for 
-  casting. \code{add_past_moons_to_raw} updates the raw file accordingly 
-  \cr \cr
+ the \code{portalr} functions \code{\link[portalr]{weather}} and 
+ \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table
+ needs to be updated to produce the correct current data table for 
+ casting. \code{add_past_moons_to_raw} updates the raw file accordingly.
 }
 \examples{
  \donttest{

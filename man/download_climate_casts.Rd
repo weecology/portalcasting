@@ -7,7 +7,7 @@
 \title{Download and read covariate casts (presently only the NMME)}
 \usage{
 download_climate_casts(main = ".", raw_path_cov_cast = "cov_casts",
-  control_cdl = list())
+  control_cdl = climate_dl_control())
 
 climate_dl_control(start = Sys.Date(), end = as.Date("2050-01-01"),
   model = "ENSMEAN", lat = 31.9555, lon = -109.0744,
@@ -15,7 +15,7 @@ climate_dl_control(start = Sys.Date(), end = as.Date("2050-01-01"),
   maxtemp = "tasmax", precipitation = "pr"))
 
 read_climate_casts(main = ".", raw_path_cov_cast = "cov_casts",
-  control_cdl = list())
+  control_cdl = climate_dl_control())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

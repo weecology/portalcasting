@@ -150,13 +150,13 @@ fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                      source_name = "current_archive",
                      append_cast_csv = TRUE, controls_m = NULL,
                      controls_r = rodents_controls(),
-                     control_cdl = list(),
+                     control_cdl = climate_dl_control(),
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, verbose = FALSE, save = TRUE,
                      overwrite = TRUE, filename_moons = "moon_dates.csv",
                      filename_cov = "covariates.csv", 
                      filename_meta = "metadata.yaml", cleanup = TRUE){
-
+  check_args()
   pass_and_call(fill_raw)
   pass_and_call(fill_predictions)
   pass_and_call(fill_models)
@@ -181,7 +181,7 @@ fill_data <- function(main = ".", end_moon = NULL,
                       source_name = "current_archive",
                       append_cast_csv = TRUE, 
                       controls_r = rodents_controls(),
-                      control_cdl = list(),
+                      control_cdl = climate_dl_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, save = TRUE,
                       overwrite = TRUE, 
@@ -189,7 +189,7 @@ fill_data <- function(main = ".", end_moon = NULL,
                       filename_cov = "covariates.csv",
                       filename_meta = "metadata.yaml",
                       cleanup = TRUE){
-
+  check_args()
   raw_data_present <- verify_raw_data(raw_path_data, main)
   if(!raw_data_present){
     fill_raw(downloads, main, quiet, cleanup)
@@ -199,7 +199,7 @@ fill_data <- function(main = ".", end_moon = NULL,
   d_r <-  pass_and_call(prep_rodents, moons = d_m)
   d_c <- pass_and_call(prep_covariates, moons = d_m)
   pass_and_call(prep_metadata, moons = d_m, rodents = d_r, covariates = d_c)
-  NULL
+  invisible(NULL)
 }
 
 #' @rdname fill_dir
@@ -210,13 +210,14 @@ fill_models <- function(main = ".", models = prefab_models(),
                         controls_m = NULL, quiet = FALSE, 
                         overwrite = TRUE){
   return_if_null(models)
+  check_args()
   controls_m <- model_script_controls(models, controls_m)
   messageq("Adding models to models subdirectory:", quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){
     pass_and_call(write_model, control = controls_m[[models[i]]])
   } 
-  NULL
+  invisible(NULL)
 }
 
 #' @rdname fill_dir
@@ -228,6 +229,7 @@ fill_predictions <- function(main = ".",
                                "portalPredictions/predictions", 
                              quiet = FALSE, verbose = FALSE, 
                              overwrite = TRUE){
+  check_args()
   messageq("filling predictions folder", quiet)
   local_raw_folder <- paste0("raw/", raw_path_predictions)
   raw_folder <- file_paths(main, local_paths = local_raw_folder)
@@ -237,7 +239,7 @@ fill_predictions <- function(main = ".",
   final_folder <- sub_paths(main, "predictions")
   fc <- file.copy(raw_files, final_folder, overwrite)
   messageq(fill_predictions_message(pfiles, fc, verbose))
-  NULL
+  invisible(NULL)
 }
 
 #' @rdname fill_dir
@@ -247,6 +249,7 @@ fill_predictions <- function(main = ".",
 fill_raw <- function(main = ".", 
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, cleanup = TRUE){
+  check_args()
   return_if_null(downloads)
   if(list_depth(downloads) == 1){
     downloads <- list(downloads)
@@ -260,7 +263,7 @@ fill_raw <- function(main = ".",
     downloads[[i]]$specific_sub <- "raw"
     do.call(download, downloads[[i]])
   }
-  NULL
+  invisible(NULL)
 }
 
 #' @title Create the final message for filling predictions
@@ -290,6 +293,7 @@ fill_raw <- function(main = ".",
 fill_predictions_message <- function(files = NULL, movedTF = NULL, 
                                      verbose = FALSE){
   return_if_null(files)
+  check_args()
   moved <- files[movedTF]
   not_moved <- files[!movedTF]
   n_moved <- length(moved)

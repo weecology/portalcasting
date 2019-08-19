@@ -148,14 +148,14 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                      source_name = "current_archive",
                      append_cast_csv = TRUE, controls_m = NULL,
                      controls_r = rodents_controls(),
-                     control_cdl = list(),
+                     control_cdl = climate_dl_control(),
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, verbose = FALSE, subs = subdirs(),
                      save = TRUE, overwrite = TRUE, 
                      filename_moons = "moon_dates.csv",
                      filename_cov = "covariates.csv", 
                      filename_meta = "metadata.yaml", cleanup = TRUE){
-
+  check_args()
   pass_and_call(portalcast_welcome)
   pass_and_call(create_dir)
   pass_and_call(fill_dir)
@@ -182,7 +182,7 @@ setup_production <- function(main = ".", models = prefab_models(),
                              source_name = "current_archive",
                              append_cast_csv = TRUE, controls_m = NULL,
                              controls_r = rodents_controls(),
-                             control_cdl = list(),
+                             control_cdl = climate_dl_control(),
                              downloads = 
                                zenodo_downloads(c("1215988", "833438")), 
                              quiet = FALSE, verbose = FALSE, subs = subdirs(),
@@ -190,6 +190,7 @@ setup_production <- function(main = ".", models = prefab_models(),
                              filename_moons = "moon_dates.csv",
                              filename_cov = "covariates.csv", 
                              filename_meta = "metadata.yaml", cleanup = TRUE){
+  check_args()
   pass_and_call(setup_dir)
 }
 
@@ -213,7 +214,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           source_name = "current_archive",
                           append_cast_csv = TRUE, controls_m = NULL,
                           controls_r = rodents_controls(),
-                          control_cdl = list(),
+                          control_cdl = climate_dl_control(),
                           downloads = 
                             zenodo_downloads(c("1215988", "833438")), 
                           quiet = FALSE, verbose = FALSE, subs = subdirs(),
@@ -221,6 +222,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           filename_moons = "moon_dates.csv",
                           filename_cov = "covariates.csv", 
                           filename_meta = "metadata.yaml", cleanup = TRUE){
+  check_args()
   pass_and_call(setup_dir)
   pass_and_call(sandbox_welcome)
 }
@@ -241,6 +243,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
 #' @export
 #' 
 portalcast_welcome <- function(quiet = FALSE){
+  check_args()
   msg1 <- "##########################################################"
   version_number <- packageDescription("portalcasting", fields = "Version")
   msg2 <- paste0("This is portalcasting v", version_number)
@@ -252,6 +255,7 @@ portalcast_welcome <- function(quiet = FALSE){
 #' @export
 #'
 portalcast_goodbye <- function(quiet = FALSE){
+  check_args()
   msg1 <- "########################################################"
   messageq(c(msg1, "Models done", msg1), quiet)
 }
@@ -275,6 +279,7 @@ portalcast_goodbye <- function(quiet = FALSE){
 #' @export
 #' 
 sandbox_welcome <-function(main = ".", quiet = FALSE){
+  check_args()
 
 main <- main_path(main)
 castle <- "

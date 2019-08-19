@@ -90,6 +90,7 @@ download <- function(name = NULL, type = NULL, url = NULL,
                      rec_id = NULL, sep_char = ".",
                      main = ".", specific_sub = "raw", quiet = FALSE, 
                      verbose = FALSE, cleanup = TRUE, NULLname = FALSE){
+  check_args()
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
   name <- ifnull(name, record_name_from_url(source_url, NULLname))
   destin <- download_destin(name, source_url, main, specific_sub, sep_char)
@@ -111,6 +112,7 @@ download <- function(name = NULL, type = NULL, url = NULL,
 #'
 unzip_download <- function(name = NULL, zip_destin, main = ".", 
                            cleanup = TRUE){
+  check_args()
   unzip_destins <- unzip_destins(name, zip_destin, main)
   unzip(zip_destin, exdir = unzip_destins$initial)
   file.rename(unzip_destins$with_archive, unzip_destins$final)
@@ -125,6 +127,7 @@ unzip_download <- function(name = NULL, zip_destin, main = ".",
 #' @export
 #'
 unzip_destins <- function(name = NULL, zip_destin, main = "."){
+  check_args()
   folder <- sub_paths(main, "tmp")
   full <- file.path(folder, name)
   initial <- normalizePath(full, mustWork = FALSE) 
@@ -143,6 +146,7 @@ unzip_destins <- function(name = NULL, zip_destin, main = "."){
 #'
 download_message <- function(name = NULL, type = NULL, url = NULL, 
                              rec_version = NULL, quiet = FALSE){
+  check_args()
   msg1 <- paste0("Downloading ", name)
   if(is.null(type) || type == "url"){
     msg2 <- paste0(" from ", url)
@@ -159,6 +163,7 @@ download_message <- function(name = NULL, type = NULL, url = NULL,
 #'
 download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL, 
                          rec_version = "latest", rec_id = NULL){
+  check_args()
   type <- ifnull(type, "url")
   type <- tolower(type)
   if(type == "url"){
@@ -176,6 +181,7 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
 #'
 download_destin <- function(name = NULL, source_url, main = ".", 
                             specific_sub = "raw", sep_char = "."){
+  check_args()
   extension <- file_ext(source_url, sep_char)
   folder <- sub_paths(main, specific_sub)
   extension2 <- NULL
@@ -224,6 +230,7 @@ download_destin <- function(name = NULL, source_url, main = ".",
 #'
 zenodo_url <- function(concept_rec_id = NULL, rec_version = "latest",
                             rec_id = NULL){
+  check_args()
   if(is.null(rec_id)){
     avail_versions <- zenodo_versions(concept_rec_id)
     if(rec_version == "latest"){
@@ -250,6 +257,7 @@ zenodo_url <- function(concept_rec_id = NULL, rec_version = "latest",
 #' @export
 #'
 zenodo_versions <- function(concept_rec_id){
+  check_args()
   url <- paste0("https://zenodo.org/api/records/?size=9999&",
                 "q=conceptrecid:", concept_rec_id, "&all_versions=True")
   res <- GET(url)
@@ -290,6 +298,7 @@ zenodo_versions <- function(concept_rec_id){
 #' @export
 #'
 record_name_from_url <- function(url, NULLname = FALSE, sep_char = "."){
+  check_args()
   if(NULLname){
     NULL
   } else{
@@ -322,6 +331,7 @@ record_name_from_url <- function(url, NULLname = FALSE, sep_char = "."){
 zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
                              rec_id = NULL){
   return_if_null(c(concept_rec_id, rec_id))
+  check_args()
   ndls <- max(c(length(concept_rec_id), length(rec_id)))
   out <- vector("list", length = ndls)
   if(!is.null(concept_rec_id)){
@@ -366,6 +376,7 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
 #' @export
 #'
 verify_raw_data <- function(raw_path_data = "PortalData", main = "."){
+  check_args()
   lpath <- paste0("raw/", raw_path_data)
   full <- file_paths(main, lpath) 
   file.exists(full)
@@ -425,18 +436,7 @@ NMME_urls <- function(start = Sys.Date(), end = as.Date("2050-01-01"),
   return_if_null(data)
   return_if_null(freq)
   return_if_null(model)
-  if(length(start) > 1 | length(end) > 1){
-    stop("can only take one input for each time argument")
-  }
-  if(length(lat) > 1 | length(lon) > 1){
-    stop("can only take one input for each location argument")
-  }
-  if(length(model) > 1){
-    stop("can only take one input for model")
-  }
-  if(length(freq) > 1){
-    stop("can only take one input for ferq")
-  }
+  check_args()
 
   mods <- c("ENSMEAN", "CMC1", "CMC2", "CFCSv2", "GFDL", "GFDL-FLOR", "NCAR")
   if(any(!(model %in% mods))){

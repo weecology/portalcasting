@@ -102,8 +102,9 @@ cast_covariates <- function(main = ".", moons = prep_moons(main = main),
                             raw_cov_cast_file = "data/covariate_casts.csv",
                             raw_path_cov_cast = "cov_casts", 
                             source_name = "current_archive",
-                            control_cdl = list(), quiet = FALSE){
-
+                            control_cdl = climate_dl_control(),
+                            quiet = FALSE){
+  check_args()
   which_last_moon <- max(which(moons$newmoondate < cast_date))
   last_moon <- moons$newmoonnumber[which_last_moon]
   end_moon <- ifnull(end_moon, last_moon)
@@ -155,9 +156,10 @@ prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
                                  raw_path_cov_cast = "cov_casts", 
                                  source_name = "current_archive",
                                  append_cast_csv = TRUE, 
-                                 control_cdl = list(),
+                                 control_cdl = climate_dl_control(),
                                  quiet = FALSE, save = TRUE, 
                                  overwrite = TRUE){
+  check_args()
   cast_cov <- pass_and_call(cast_covariates)
   pass_and_call(save_cast_cov_csv, cast_cov = cast_cov)
   select(cast_cov, -cast_newmoon) %>%
@@ -170,6 +172,7 @@ prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
 #'
 cast_ndvi <- function(main = ".", moons = prep_moons(main = main), 
                       hist_cov = NULL, lead_time = 12, min_lag = 6){
+  check_args()
   min_lag <- ifna(min_lag, lead_time)
   lagged_lead <- lead_time - min_lag
   ndvi_data <- select(hist_cov, c("newmoonnumber", "ndvi"))
@@ -187,11 +190,13 @@ cast_weather <- function(main = ".", moons = prep_moons(main = main),
                          raw_cov_cast_file = "data/covariate_casts.csv",
                          raw_path_cov_cast = "cov_casts", 
                          source_name = "current_archive",
-                         control_cdl = list(), quiet = FALSE){
+                         control_cdl = climate_dl_control(), quiet = FALSE){
+  check_args()
   target_moons <- pass_and_call(target_newmoons)
   moons0 <- trim_moons(moons, target_moons, retain_target_moons = FALSE)
   raw_path <- sub_paths(main, "raw")
   win <- pass_and_call(cast_window)
+  control_cdl <- do.call(climate_dl_control, control_cdl)
   control_cdl <- update_list(control_cdl, start = win$start, end = win$end)
   pass_and_call(download_climate_casts, control_cdl = control_cdl)
   weather_cast <- pass_and_call(read_climate_casts, control_cdl = control_cdl)
@@ -215,6 +220,7 @@ save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
                               raw_cov_cast_file = "data/covariate_casts.csv",
                               source_name = "current_archive",
                               quiet = FALSE, save = TRUE, overwrite = TRUE){
+  check_args()
   return_if_null(cast_cov)
   which_last_moon <- max(which(moons$newmoondate < cast_date))
   last_moon <- moons$newmoonnumber[which_last_moon]
@@ -322,8 +328,8 @@ save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
 #'
 download_climate_casts <- function(main = ".", 
                                    raw_path_cov_cast = "cov_casts",
-                                   control_cdl = list()){
-
+                                   control_cdl = climate_dl_control()){
+  check_args()
   control_cdl <- do.call(climate_dl_control, control_cdl)
   urls <- do.call(NMME_urls, control_cdl)
   return_if_null(urls)
@@ -349,6 +355,7 @@ climate_dl_control <- function(start = Sys.Date(),
                                         meantemp = "tasmean", 
                                         maxtemp = "tasmax", 
                                         precipitation = "pr")){
+  check_args()
   list(start = start, end = end, model = model, lat = lat, lon = lon, 
        freq = freq, data = data)
 }
@@ -358,7 +365,8 @@ climate_dl_control <- function(start = Sys.Date(),
 #' @export
 #'
 read_climate_casts <- function(main = ".", raw_path_cov_cast = "cov_casts",
-                               control_cdl = list()){
+                               control_cdl = climate_dl_control()){
+  check_args()
   control_cdl <- do.call(climate_dl_control, control_cdl)
   urls <- do.call(NMME_urls, control_cdl)
   return_if_null(urls)

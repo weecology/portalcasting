@@ -4,14 +4,14 @@
 \alias{add_date_from_components}
 \title{Add a date to a table that has the year month and day as components}
 \usage{
-add_date_from_components(x)
+add_date_from_components(df)
 }
 \arguments{
-\item{x}{\code{data.frame} with columns named \code{year}, \code{month},
+\item{df}{\code{data.frame} with columns named \code{year}, \code{month},
 and \code{day}.}
 }
 \value{
-\code{data.frame} \code{x} with column of \code{Date}s 
+\code{data.frame} \code{df} with column of \code{Date}s 
  named \code{date} added.
 }
 \description{
