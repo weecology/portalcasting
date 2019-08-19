@@ -156,7 +156,7 @@ measure_cast_error <- function(casts, min_observed = 1){
 #'  \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 #'  models are returned.
 #'
-#' @param newmoonnumbers \code{integer}-conformable value(s) of the 
+#' @param target_moons \code{integer}-conformable value(s) of the 
 #'  newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.
 #'
 #' @return \code{data.frame} of trimmed fore- or hindcasts.
@@ -171,7 +171,7 @@ measure_cast_error <- function(casts, min_observed = 1){
 #' @export
 #'
 select_casts <- function(casts, species = NULL, level = NULL, models = NULL, 
-                         newmoonnumbers = NULL){
+                         target_moons = NULL){
   check_args()
   incl_species <- rep(TRUE, nrow(casts))
   incl_level <- rep(TRUE, nrow(casts))
@@ -188,8 +188,8 @@ select_casts <- function(casts, species = NULL, level = NULL, models = NULL,
   if (!is.null(models)){
     incl_model <- casts[ , "model"] %in% models
   }
-  if (!is.null(newmoonnumbers)){
-    incl_nmm <- casts[ , "newmoonnumber"] %in% newmoonnumbers
+  if (!is.null(target_moons)){
+    incl_nmm <- casts[ , "newmoonnumber"] %in% target_moons
   }
   incl <- which(incl_species & incl_level & incl_model & incl_nmm)
   casts[incl, ]

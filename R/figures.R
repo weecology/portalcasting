@@ -10,8 +10,8 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param species \code{character} value of the species code or \code{"total"}
-#'  for the total across species.
+#' @param species_id \code{character} value of the species code or 
+#'  \code{"total"} for the total across species.
 #'
 #' @param level \code{character} value of the level of interest (\code{"All"} 
 #'  or \code{"Controls"}).
@@ -26,7 +26,7 @@
 #' @param model \code{character} value of the name (or \code{"Ensemble"}) of
 #'  the model to be plotted.
 #'
-#' @param start_newmoon \code{integer}-conformable newmoon number used as the
+#' @param start_moon \code{integer}-conformable newmoon number used as the
 #'  the minimum x value for the plot. 
 #'
 #' @param add_obs \code{logical} indicator if values observed during the 
@@ -50,17 +50,19 @@
 #'
 #' @export
 #'
-plot_cast_ts <- function(main = ".", species = "total", 
+plot_cast_ts <- function(main = ".", species_id = "total", 
                          level = "Controls", cast_type = "forecast", 
                          cast_date = NULL, model = "Ensemble", 
-                         start_newmoon = 300, add_obs = TRUE){
+                         start_moon = 300, add_obs = TRUE){
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type)
   }
   check_args()
   obs <- read_rodents(main, tolower(level))
   pred <- read_cast(main, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, models = model) 
+          select_casts(species = species_id, level = level, models = model) 
   if (NROW(pred) == 0){
     stop("no casts available for specified inputs")
   }  
@@ -72,8 +74,8 @@ plot_cast_ts <- function(main = ".", species = "total",
     obs <- obs[-which_obs_after_pred, ]
   }
 
-  species_o <- species
-  if (species == "NA"){
+  species_o <- species_id
+  if (species_id == "NA"){
     species_o <- "NA."
   }    
   obs_x <- obs[ , "newmoonnumber"]
@@ -89,9 +91,9 @@ plot_cast_ts <- function(main = ".", species = "total",
   pred_px <- c(obs_xf, pred_x, pred_x[length(pred_x):1], obs_xf)
   pred_py <- c(obs_yf, pred_yl, pred_yu[length(pred_x):1], obs_yf)
 
-  rangex <- c(max(c(start_newmoon, min(obs_x))), max(pred_x))
+  rangex <- c(max(c(start_moon, min(obs_x))), max(pred_x))
   rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
-  ylab <- plot_cast_ts_ylab(main, level, species, model)
+  ylab <- plot_cast_ts_ylab(main, level, species_id, model)
 
   par(mar = c(3, 4.5, 1, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
@@ -117,6 +119,8 @@ plot_cast_ts <- function(main = ".", species = "total",
 #' @export
 #'
 plot_cast_ts_xaxis <- function(main = ".", rangex){
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   check_args()
   moons <- read_data(main, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
@@ -145,17 +149,19 @@ plot_cast_ts_xaxis <- function(main = ".", rangex){
 #' @export
 #'
 plot_cast_ts_ylab <- function(main = ".", level = "Controls",
-                              species = "total", model = "Ensemble"){
+                              species_id = "total", model = "Ensemble"){
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   check_args()
   lab <- list(text = "", font = 1)
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")
-  if (species == "total"){
+  if (species_id == "total"){
     lab$text <- "Total Abundance"
     lab$font <- 1
   } else{
-    sppmatch <- which(sptab[ , "speciescode"] == species)
+    sppmatch <- which(sptab[ , "speciescode"] == species_id)
     lab$text <- sptab[sppmatch , "scientificname"]
     lab$font <- 3
   }
@@ -223,7 +229,8 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
                             cast_date = NULL, model = "Ensemble", 
                             lead = 1, from_date = NULL, 
                             with_census = FALSE){
-
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type, with_census)
   }
@@ -306,6 +313,8 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
 #' @export
 #'
 plot_cast_point_yaxis <- function(main = ".", species = "total"){
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   check_args()
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
@@ -369,6 +378,8 @@ plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast",
                                    species = rodent_species(set = "evalplot"),
                                    level = "Controls", ndates = 3,
                                    models = model_names(set = "wEnsemble")){
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   check_args()
   casts <- read_casts(main, cast_type = cast_type) %>%
            select_casts(species = species, level = level, models = models)
@@ -551,8 +562,10 @@ plot_cov_RMSE_mod_spp <- function(main = ".", cast_type = "hindcast",
                                   level = "Controls", cast_dates = NULL, 
                                   min_observed = 1, 
                                   models = model_names(set = "wEnsemble")){
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   if (is.null(cast_dates)){
-    cast_dates <- most_recent_cast(main, cast_type)
+    cast_dates <- most_recent_cast(main, cast_type, TRUE)
   }
   check_args()
   casts <- read_casts(main = main, cast_type = cast_type, 
@@ -563,7 +576,6 @@ plot_cov_RMSE_mod_spp <- function(main = ".", cast_type = "hindcast",
   }  
   errs <- append_observed_to_cast(casts, main) %>%
           measure_cast_error(min_observed = min_observed)
-
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")

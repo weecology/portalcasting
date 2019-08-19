@@ -6,21 +6,21 @@
 \alias{plot_cast_ts_ylab}
 \title{Visualize a forecast or hindcast}
 \usage{
-plot_cast_ts(main = ".", species = "total", level = "Controls",
+plot_cast_ts(main = ".", species_id = "total", level = "Controls",
   cast_type = "forecast", cast_date = NULL, model = "Ensemble",
-  start_newmoon = 300, add_obs = TRUE)
+  start_moon = 300, add_obs = TRUE)
 
 plot_cast_ts_xaxis(main = ".", rangex)
 
-plot_cast_ts_ylab(main = ".", level = "Controls", species = "total",
-  model = "Ensemble")
+plot_cast_ts_ylab(main = ".", level = "Controls",
+  species_id = "total", model = "Ensemble")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{species}{\code{character} value of the species code or \code{"total"}
-for the total across species.}
+\item{species_id}{\code{character} value of the species code or 
+\code{"total"} for the total across species.}
 
 \item{level}{\code{character} value of the level of interest (\code{"All"} 
 or \code{"Controls"}).}
@@ -35,7 +35,7 @@ file in the predictions subdirectory.}
 \item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
 the model to be plotted.}
 
-\item{start_newmoon}{\code{integer}-conformable newmoon number used as the
+\item{start_moon}{\code{integer}-conformable newmoon number used as the
 the minimum x value for the plot.}
 
 \item{add_obs}{\code{logical} indicator if values observed during the 

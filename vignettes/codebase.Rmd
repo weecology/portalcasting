@@ -93,7 +93,15 @@ To facilitate tidy and easy-to-follow code, we introduce a few important utility
 
 ### `pass_and_call`
 
-`pass_and_call` is a major function that helps connect functions within a pipeline maintain named arguments (so it's easier for an end-user to alter the specifics) that doesn't lead to extensive function code. Rather, `pass_and_call` combines `args_to_pass`, which aligns the argument of the parent (enclosing) function with the child (enclosed) function, and the base R function `do.call`. Importantly, `args_to_pass` leverages `match.call.default` from the DesignLibrary R package that extends the base R `match.call` allowing for expansion of all arguments, even those left as default values. In addition, `args_to_pass` uses the base `formals` function to determine which arguments are needed by the child function, creating a list of all required arguments for the child.
+`pass_and_call` helps connect functions within a pipeline maintain named arguments (so it's easier for an end-user to alter the specifics) that doesn't lead to extensive function code. Rather, `pass_and_call` combines `args_to_pass`, which aligns the argument of the parent (enclosing) function with the child (enclosed) function, and the base R function `do.call`. Importantly, `args_to_pass` leverages `match.call.default` from the DesignLibrary R package that extends the base R `match.call` allowing for expansion of all arguments, even those left as default values. In addition, `args_to_pass` uses the base `formals` function to determine which arguments are needed by the child function, creating a list of all required arguments for the child.
 
 If there is a disagreement in values between the parent and child functions, the parent's value is the selected one. `pass_and_call` does allow for updating of argument values via a `...` argument, which is used to override the definition of both the parent and the child, providing and easy way to port in updated values in the middle of a pipeline. However, `pass_and_call` is presently set up to evaluate all arguments in the environment where they were defined. This is to avoid issues where one argument's value is dependent upon another argument in the parent function which is stripped off before passing to the child function. 
+
+### `check_args`
+
+`check_args` facilitates checking of inputted values for arguments for validity, including the class, length, and values. It extracts the boolean checking code that would normally be within each function, placing it instead within `check_arg` which is called for each argument by `check_args`.
+
+A key aspect to the *portalcasting* pipeline's ability to connect pieces is tied directly to argument checking: argument names should not be re-used in different functions unless they are for the same type of object. 
+
+
 

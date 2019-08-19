@@ -5,7 +5,7 @@
 \title{Select the specific fore- or hindcast from a casts table}
 \usage{
 select_casts(casts, species = NULL, level = NULL, models = NULL,
-  newmoonnumbers = NULL)
+  target_moons = NULL)
 }
 \arguments{
 \item{casts}{\code{data.frame} of requested fore- or hindcasts to be 
@@ -22,7 +22,7 @@ or \code{"Controls"}). If \code{NULL}, all levels are returned.}
 \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 models are returned.}
 
-\item{newmoonnumbers}{\code{integer}-conformable value(s) of the 
+\item{target_moons}{\code{integer}-conformable value(s) of the 
 newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.}
 }
 \value{

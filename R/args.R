@@ -8,9 +8,10 @@
 #'  \code{character} vector of error messages associated 
 #'  with the specific situation (\code{<fun_name>(<arg_name> = arg_value)})
 #'  if the argument is invalid. \cr \cr
-#'  \code{check_args} should only be called within a function. \cr \cr
 #'  \code{check_arg_list_maker} produces a list of argument details for 
 #'  checking within \code{check_arg}. \cr  \cr 
+#'  \strong{\code{check_args} should only be called within a function.}
+#'  \cr \cr
 #'  See \code{Details} for argument-specific rules.
 #'
 #' @details Argument details used for checking are produced simply via
@@ -24,7 +25,185 @@
 #'  be or \code{NULL} if unrestricted), and \code{addl} if needed (an
 #'  unevaluated \code{expression} that can be evaluated and allows for 
 #'  simple evaluation of, e.g., element names of a \code{list}; see the 
-#'  source code). 
+#'  source code). \cr 
+#'
+#'  Usage rules for arguments are as follows: \cr
+#'
+#'  Must be length-1 \code{logical} values, can be \code{NULL}, but cannot be 
+#'  \code{NA}: 
+#'   \code{add_error},
+#'   \code{add_in_window}, 
+#'   \code{add_lead}, 
+#'   \code{add_obs}, 
+#'   \code{append_cast_csv}, 
+#'   \code{cast_covariates}, 
+#'   \code{cleanup},
+#'   \code{covariatesTF}, 
+#'   \code{ensemble}, 
+#'   \code{hist_covariates}, 
+#'   \code{movedTF}, 
+#'   \code{nadot}, 
+#'   \code{NULLname},
+#'   \code{overwrite}, 
+#'   \code{quiet}, 
+#'   \code{retain_target_moons},
+#'   \code{save}, 
+#'   \code{tail}, 
+#'   \code{total}, 
+#'   \code{verbose},
+#'   \code{with_census}. 
+#'
+#'  Must be length-1 \code{character} values, can be \code{NULL}, but cannot 
+#'  be \code{NA}:
+#'   \code{cast_type} (if not \code{NULL}, can only be of value 
+#'    \code{"forecast"}, \code{"forecasts"}, \code{"hindcast"}, 
+#'    or\code{"hindcasts"}), \code{colname}, \code{data_name}, 
+#'   \code{extension} (if not \code{NULL}, must have a \code{"."} character),
+#'   \code{filename}, 
+#'   \code{filename_cov}, 
+#'   \code{filename_meta},
+#'   \code{filename_moons}, 
+#'   \code{freq}  (ADDL), 
+#'   \code{main}, 
+#'   \code{level}, 
+#'   \code{model} (inputted values are checked via 
+#'    \code{\link{verify_models}}), 
+#'   \code{name}, 
+#'   \code{output} (if not \code{NULL}, must be \code{"abundances"}),
+#'   \code{plots} (if not \code{NULL}, must be \code{"all"} or 
+#'    \code{"longterm"}),
+#'   \code{raw_cov_cast_file}, 
+#'   \code{raw_moons_file}, 
+#'   \code{raw_path_archive}, 
+#'   \code{raw_path_cov_cast}, 
+#'   \code{raw_path_data}, 
+#'   \code{raw_path_predictions}, 
+#'   \code{raw_traps_file}, 
+#'   \code{sep_char}, 
+#'   \code{set},
+#'   \code{source_name},
+#'   \code{source_url}, 
+#'   \code{species_id} (if not \code{NULL}, must be within the species
+#'    produced by \code{rodent_spp("wtotal")}),
+#'   \code{specific_sub}, 
+#'   \code{subs_type} (if not \code{NULL}, must be \code{"prefab"}),
+#'   \code{type}, 
+#'   \code{url}, 
+#'   \code{winner} (if not \code{NULL}, must be \code{"hist"} or 
+#'    \code{"cast"}), 
+#'   \code{zip_destin}.
+#'
+#'  Must be \code{character} values, can be any length, can be \code{NULL}, 
+#'  but cannot be \code{NA}:
+#'   \code{concept_rec_id}, 
+#'   \code{data}, 
+#'   \code{dir_level},
+#'   \code{enquote_args}, 
+#'   \code{eval_args}, 
+#'   \code{files}, 
+#'   \code{local_paths},
+#'   \code{models} (inputted values are checked via 
+#'    \code{\link{verify_models}}), 
+#'   \code{msg}, 
+#'   \code{names},
+#'   \code{path}, 
+#'   \code{rec_id}, 
+#'   \code{rec_version}, 
+#'   \code{ref_species},
+#'   \code{species} (if not \code{NULL}, must be all within the species
+#'    produced by \code{rodent_spp("wtotal")}),
+#'   \code{specific_subs}, 
+#'   \code{subs}, 
+#'   \code{subs_names},
+#'   \code{target_cols}, 
+#'   \code{tmnt_type} (if not \code{NULL}, must be \code{"all"} or 
+#'    \code{"controls"}), 
+#'   \code{treatment} (if not \code{NULL}, must be \code{"control"})
+#'
+#'  Must be \code{data.frame}s, can be any length, can be \code{NULL}, 
+#'  but cannot be \code{NA}:
+#'   \code{all_casts}, 
+#'   \code{cast}, 
+#'   \code{cast_coc}, 
+#'   \code{cast_tab}, 
+#'   \code{cast_to_check}, 
+#'   \code{casts}, 
+#'   \code{covariates}, 
+#'   \code{df}, 
+#'   \code{hist_cov}, 
+#'   \code{hist_tab}, 
+#'   \code{moons}, 
+#'   \code{rodents_tab}.
+#'
+#'  Must be a \code{data.frame} or \code{vector} can be any length, can be 
+#'  \code{NULL}, but cannot be \code{NA}:
+#'   \code{dfv}.
+#'
+#'  Must be a \code{data.frame} or \code{list} can be any length, can be 
+#'  \code{NULL}, but cannot be \code{NA}:
+#'   \code{dfl}.
+#'
+#'  Must be \code{list}s, can be any length, can be \code{NULL}, but cannot 
+#'  be \code{NA}:
+#'   \code{control},
+#'   \code{control_cdl},
+#'   \code{controls_m},
+#'   \code{controls_r},
+#'   \code{downloads},
+#'   \code{in_args},
+#'   \code{rodents}.
+#'
+#'  Must be length-2 \code{list}s with elements named \code{"forecast"} 
+#'  and \code{"aic"}., can be \code{NULL}, but 
+#'  cannot be \code{NA}:
+#'   \code{all},
+#'   \code{controls}.
+#'
+#'  Must be length-1 \code{Date}-conformable values, can be \code{NULL}, 
+#'  but cannot be \code{NA}:
+#'   \code{cast_date},
+#'   \code{end},
+#'   \code{from_date},
+#'   \code{start}.
+#'
+#'  Must be \code{Date}-conformable values, can be any length, can be
+#'  \code{NULL}, but cannot be \code{NA}:
+#'   \code{cast_dates}.
+#'   \code{dates}.
+#'
+#'  Must be length-1 \code{numeric} values, can be \code{NULL}, but
+#'  cannot be \code{NA}:
+#'   \code{confidence_level} (must be between 0 and 1), 
+#'   \code{lat},
+#'   \code{lon}.
+#'
+#'  Must be length-1 \code{integer}-conformable values can be \code{NULL},
+#'  but cannot be \code{NA}:
+#'   \code{end_moon} (must be positive),
+#'   \code{lead} (must be positive),
+#'   \code{lead_time} (must be non-negative),
+#'   \code{lev},
+#'   \code{min_observed} (must be positive),
+#'   \code{min_plots} (must be positive),
+#'   \code{min_traps} (must be positive),
+#'   \code{ndates} (must be positive),
+#'   \code{newmoonnumber} (must be positive),
+#'   \code{nmoons} (must be non-negative),
+#'   \code{start_moon} (must be positive).
+#'
+#'  Must be length-1 \code{integer}-conformable values can be \code{NULL}, 
+#'  and can be \code{NA}:
+#'   \code{lag} (must be positive),
+#'   \code{min_lag} (must be non-negative).
+#'
+#'  Must be length-2 \code{integer}-conformable values can be \code{NULL}, 
+#'  but cannot be \code{NA}:
+#'   \code{rangex} (must be positive).
+#'
+#'  Must be \code{integer}-conformable values, can be any length, can be 
+#'  \code{NULL}, but cannot be \code{NA}:
+#'   \code{end_moons} (must be positive),
+#'   \code{target_moons} (must be positive).
 #'
 #' @param arg_name \code{character} value of the argument name.
 #'
@@ -35,7 +214,8 @@
 #' @return \code{check_arg}: \code{character} vector of error messages
 #'   associated with the specific situation 
 #'   (\code{<fun_name>(<arg_name> = arg_value)}).
-#'
+#'   \code{check_arg_list}: \code{list} of argument checking component 
+#'   \code{list}s.
 #'
 #' @examples
 #'  check_arg_list()
@@ -237,9 +417,10 @@ check_arg_list <- function(){
     cast_cov = arg_df(),
     cast_covariates = arg_logical(),
     cast_date = arg_date(),
+    cast_dates = arg_date(NULL),
     cast_tab = arg_df(),
     cast_to_check = arg_df(),
-    cast_type = arg_character(, addl = cast_types),
+    cast_type = arg_character(addl = cast_types),
     casts = arg_df(),
     cleanup = arg_logical(),
     colname = arg_character(),
@@ -264,8 +445,8 @@ check_arg_list <- function(){
     end_moon = arg_intnum(addl = pos),
     end_moons = arg_intnum(NULL, addl = pos),
     ensemble = arg_logical(),
-    enquote_args = arg_character(),
-    eval_args = arg_character(),
+    enquote_args = arg_character(NULL),
+    eval_args = arg_character(NULL),
     extension = arg_character(addl = extensions),
     filename = arg_character(),
     filename_cov = arg_character(),
@@ -282,7 +463,7 @@ check_arg_list <- function(){
     lat = arg_numeric(),
     lead = arg_intnum(addl = pos),
     lead_time  = arg_intnum(addl = nonneg),
-    lev = arg_numeric(addl = int),
+    lev = arg_intnum(),
     level = arg_character(),
     local_paths = arg_character(NULL),
     lon = arg_numeric(),
@@ -328,11 +509,11 @@ check_arg_list <- function(){
     source_name = arg_character(),
     source_url = arg_character(),
     species = arg_character(NULL, addl = specieses),
+    species_id = arg_character(addl = specieses),
     specific_sub = arg_character(),
     specific_subs = arg_character(NULL),
     start = arg_date(),
     start_moon = arg_intnum(addl = pos),
-    start_newmoon = arg_intnum(addl = pos),
     subs = arg_character(NULL),
     subs_names = arg_character(NULL),
     subs_type = arg_character(addl = subs_types),
@@ -341,7 +522,7 @@ check_arg_list <- function(){
     target_cols = arg_character(NULL),
     tmnt_type = arg_character(NULL, addl = tmnt_types),
     total = arg_logical(),
-    treatment = arg_character(null = TRUE, addl = tmnts),
+    treatment = arg_character(addl = tmnts),
     type = arg_character(),
     url = arg_character(),
     verbose = arg_logical(),
