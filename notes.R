@@ -1,69 +1,12 @@
-# working in the check_args implementation and tidying
-# directory set up functions are all clear
-casting functions looking good so far
-
-figure out if i can use check_args in the ... functions (utilities)
-
-  fun_call <- match.call.defaults(definition = sys.function(-1), 
-                                  call = sys.call(-1))
-  fun_class <- class(as.list(fun_call)[[1]])
-  if(fun_class == "name"){  
-    fun_name <- as.list(fun_call)[[1]]
-    arg_values <- as.list(fun_call)[-1]
-    arg_names <- names(arg_values)
-  } else if(fun_class == "function"){
-
-    fun_call2 <- match.call.defaults(definition = sys.function(-2), 
-                                     call = sys.call(-2))
-    fun_name <- as.list(fun_call2)[[1]]
-
-print(sys.function(-2))
-print(as.list(fun_call)[[1]])
-print(as.list(fun_call2)[-1][[1]])
-
-  arg_names <- names(as.list(fun_call)[-1])
-  names(arg_values) <- arg_names
-print(arg_values)
-
-
-
-nargs <- length(fun_call) - 2
-arg_values <- vector("list", length=nargs)
-for(i in 1:nargs){
-print(i)
-  arg_values[[i]] <- eval(as.list(fun_call)[-1][[i]], 
-                          envir = parent.frame(3L))
-
-}
-
-
-topx 
-most abundant spp?
-
-yup that needs to be added, it gets used in portalpredictions
 
 devtools::document()
 main = "~/testing"
-
-
-
-#' @details 
-
-
-some of the utilities cant use check_arg
-like list_depth is recursive
-
-make a species species argument for plot_cast_ts
-(plot_species)? something thats only length 1
 
 
 # to do
 # tests
 # update vignettes
 # add morgans model
-# check_arg and args
-
-create_dir(main)
 
 
 funcitons to test
@@ -120,5 +63,7 @@ start_newmoon is now start_moon
 #
 #  make the model script writing and forecast processing work for different
 #   treatment levels
+#
+# can i use check_args in the ... functions (utilities)
 
 

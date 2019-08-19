@@ -1,3 +1,75 @@
+#' @title Select the most abundant species from a forecast or hindcast
+#'
+#' @description Given a forecast or hindcast, determine the most abundant
+#'  species predicted. Currently only reliable for forecasts.
+#'
+#' @param topx \code{integer}-conformable numeric value for the top number of
+#'  species to select.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param species \code{character} vector of the species codes (or 
+#'  \code{"total"} for the total across species) to be selected from or 
+#'  \code{NULL} to include all species and the total.
+#'
+#' @param level \code{character} value of the level of interest (\code{"All"} 
+#'  or \code{"Controls"}).
+#'
+#' @param cast_type \code{character} value of the type of -cast of model. Used
+#'  to select the file in the predictions subdirectory. Currently only 
+#'  reliably coded for \code{"forecast"}.
+#'
+#' @param cast_date \code{Date} the predictions were made. Used to select the
+#'  file in the predictions subdirectory. If \code{NULL} (default), the
+#'  most recently made -cast is selected. 
+#'
+#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
+#'  the model to be plotted.
+#'
+#' @param lead \code{integer}-conformable lead of the newmoon number used to
+#'  select the data plotted. 
+#'
+#' @param from_date \code{Date} to be used as a reference of when to count
+#'  the \code{lead} from. If \code{NULL} (default), for 
+#'  \code{cast_type = "forecast"}, \code{from_date = cast_date} and 
+#'  \code{plot_cast_point} is not yet reliable for 
+#'  \code{cast_type = "hindcast"}.
+#'
+#' @return \code{character} vector of length \code{topx} of the species codes
+#'  (see \code{\link{rodent_spp}}) of the selected species.
+#'
+#' @export
+#'
+select_most_ab_spp <- function(topx = 3, main = ".",
+                               species = base_species(),
+                               level = "Controls", cast_type = "forecasts", 
+                               cast_date = NULL, model = "Ensemble", 
+                               lead = 1, from_date = NULL){
+  check_args()
+  if (is.null(cast_date)){
+    cast_date <- most_recent_cast(main, cast_type)
+  }
+  if (is.null(from_date)){
+    if(cast_type %in% c("forecast", "forecasts")){
+      from_date <- cast_date
+    }
+  }
+  metadata <- read_data(main, "metadata")
+  obs <- read_rodents(main, tolower(level))
+  moons <- read_data(main, "moons")
+  nmdates <- as.Date(as.character(moons$newmoondate))
+  most_recent_nm_spot <- max(which(nmdates <= from_date))
+  most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
+  cast_nms_io <- metadata$rodent_cast_newmoons > most_recent_nm_number
+  to_include <- which(cast_nms_io)[lead]
+  newmoonnumbers <- metadata$rodent_cast_newmoons[to_include]
+  pred <- read_cast(main, cast_type = cast_type, cast_date = cast_date) %>%
+          select_casts(species = species, level = level, models = model,
+                      target_moons = newmoonnumbers)  
+  pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
+}
+
 #' @title Append the observed values to a table of -casts
 #'
 #' @description Add a column of observed values and optionally raw error,

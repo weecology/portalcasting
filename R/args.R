@@ -189,7 +189,8 @@
 #'   \code{ndates} (must be positive),
 #'   \code{newmoonnumber} (must be positive),
 #'   \code{nmoons} (must be non-negative),
-#'   \code{start_moon} (must be positive).
+#'   \code{start_moon} (must be positive),
+#'   \code{topx} (must be non-negative).
 #'
 #'  Must be length-1 \code{integer}-conformable values can be \code{NULL}, 
 #'  and can be \code{NA}:
@@ -521,6 +522,7 @@ check_arg_list <- function(){
     target_moons = arg_intnum(NULL, addl = pos),
     target_cols = arg_character(NULL),
     tmnt_type = arg_character(NULL, addl = tmnt_types),
+    topx = arg_intnum(addl = nonneg),
     total = arg_logical(),
     treatment = arg_character(addl = tmnts),
     type = arg_character(),
