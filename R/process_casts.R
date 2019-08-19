@@ -37,7 +37,7 @@
 #'  \code{cast_type = "hindcast"}.
 #'
 #' @return \code{character} vector of length \code{topx} of the species codes
-#'  (see \code{\link{rodent_spp}}) of the selected species.
+#'  (see \code{\link{rodent_species}}) of the selected species.
 #'
 #' @export
 #'
