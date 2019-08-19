@@ -22,8 +22,9 @@ rodents_controls(tmnt_type = c("all", "controls"), names = tmnt_type,
 Default within \code{rodents_control} (\code{tmnt_type = NULL}) allows 
 easy full specification of user types.}
 
-\item{name}{\code{character} value used to name the output element.
-Default (\code{name = tmnt_type}) takes the name from \code{tmnt_type}.}
+\item{name, names}{\code{character} value(s) used to name the output 
+element(s). Default (\code{name = tmnt_type}) takes the name(s) from 
+\code{tmnt_type}.}
 
 \item{species}{\code{character}-valued vector of species names to include 
 in the forecasting data table. Defaults to all species but \code{"PI"}

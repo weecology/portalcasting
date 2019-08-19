@@ -63,6 +63,6 @@ Plot the point value with confidence interval for a step in
   setup_dir()
   plot_cast_point()
   plot_cast_point(with_census = TRUE)
-}
+ }
 
 }

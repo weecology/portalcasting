@@ -24,7 +24,17 @@
 #'  be or \code{NULL} if unrestricted), and \code{addl} if needed (an
 #'  unevaluated \code{expression} that can be evaluated and allows for 
 #'  simple evaluation of, e.g., element names of a \code{list}; see the 
-#'  source code). \cr \cr
+#'  source code). 
+#'
+#' @param arg_name \code{character} value of the argument name.
+#'
+#' @param arg_value Input value for the argument.
+#'
+#' @param fun_name \code{character} value of the function name or \code{NULL}.
+#'
+#' @return \code{check_arg}: \code{character} vector of error messages
+#'   associated with the specific situation 
+#'   (\code{<fun_name>(<arg_name> = arg_value)}).
 #'
 #'
 #' @examples
@@ -55,20 +65,16 @@ check_args <- function(){
     for(i in 1:nargs){
       arg_value <- tryCatch(
                      eval.parent(arg_values[[i]], 2),
-                     error = function(x){NA}
+                     error = function(x){NA},
+                     warning = function(x){x}
                    )
-      if(!is.null(arg_value) && is.na(arg_value)){
+      if(!all(is.null(arg_value)) && all(is.na(arg_value))){
         arg_value <- tryCatch(
                        eval.parent(arg_values[[i]], 1),
-                       error = function(x){NULL}
+                       error = function(x){NULL},
+                       warning = function(x){x}
                      )
       }
-
-         #changed from 2 to 1 there to handle assignment in function defs
-         # like with rodents control, not sure if this will have other 
-         # consequences, if so may need to only fall back to this via 
-         # try catch
-         # yeah looks like that's the issue?
       out <- c(out, check_arg(arg_names[i], arg_value, fun_name))
     }
   }
@@ -246,6 +252,7 @@ check_arg_list <- function(){
     controls_r = arg_list(),
     covariates = arg_df(),
     covariatesTF = arg_logical(),
+    data_name = arg_character(),
     data = arg_character(NULL),
     dates = arg_date(NULL),
     dir_level = arg_character(NULL),
@@ -280,7 +287,7 @@ check_arg_list <- function(){
     local_paths = arg_character(NULL),
     lon = arg_numeric(),
     main = arg_character(),
-    min_lag  = arg_intnum(addl = nonneg),
+    min_lag  = arg_intnum(na = TRUE, addl = nonneg),
     min_observed = arg_intnum(addl = pos),
     min_plots = arg_intnum(addl = pos),
     min_traps = arg_intnum(addl = pos),
@@ -308,7 +315,7 @@ check_arg_list <- function(){
     raw_path_cov_cast = arg_character(),
     raw_path_data = arg_character(),
     raw_path_predictions = arg_character(),
-    raw_trapping_file = arg_character(),
+    raw_traps_file = arg_character(),
     rec_id = arg_character(NULL),
     rec_version = arg_character(NULL),
     ref_species = arg_character(NULL),

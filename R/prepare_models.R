@@ -223,7 +223,7 @@ wEnsemble_models <- function(){
 #'
 write_model <- function(name = NULL, covariatesTF = NULL,
                         lag = NULL, main = ".", quiet = FALSE, 
-                        overwrite = TRUE, control = list()){
+                        overwrite = TRUE, control = NULL){
   check_args()
   covariatesTF <- ifnull(covariatesTF, control$covariatesTF)
   lag <- ifnull(lag, control$lag)

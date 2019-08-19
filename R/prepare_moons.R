@@ -252,7 +252,7 @@ add_newmoons_from_date <- function(df, moons = NULL){
   }
   newmoon_match_date <- as.Date(newmoon_match_date)
   if (is.null(df$date)){
-    df <- add_date_from_components(x)
+    df <- add_date_from_components(df)
   }
   matches <- match(df$date, newmoon_match_date)
   df$newmoonnumber <- newmoon_match_number[matches]
@@ -303,7 +303,7 @@ target_newmoons <- function(main = ".", moons = prep_moons(main = main),
                             cast_date = Sys.Date()){
   check_args()
   last_moon <- pass_and_call(last_newmoon)
-  end_moon <- ifnull(end_moon, last_moon)
+  end_moon <- ifnull(end_moon, 500)
   (end_moon + 1):(end_moon + lead_time)
 }
 

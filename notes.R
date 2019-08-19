@@ -1,5 +1,6 @@
 # working in the check_args implementation and tidying
 # directory set up functions are all clear
+casting functions looking good so far
 
 figure out if i can use check_args in the ... functions (utilities)
 

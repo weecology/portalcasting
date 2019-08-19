@@ -47,12 +47,12 @@ interpolate_abundance <- function(rodents_tab){
 
   rodent_cols <- which(colnames(rodents_tab) %in% base_species(nadot = TRUE))
   species <- colnames(rodents_tab)[rodent_cols]
-  nspecies <- length(species_tab)
+  nspecies <- length(species)
 
   abunds <- matrix(NA, nrow = nmoons, ncol = nspecies)
 
   for(i in 1:nmoons){
-    if(length(which(rodents$newmoonnumber == newmoon[i])) > 0){
+    if(length(which(rodents_tab$newmoonnumber == newmoon[i])) > 0){
       temp <- rodents_tab[which(rodents_tab$newmoonnumber == newmoon[i]),
                         which(colnames(rodents_tab) %in% species)]
       abunds[i, ] <- as.numeric(temp)

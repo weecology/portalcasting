@@ -148,12 +148,12 @@
 #' @return Results are saved to files, \code{NULL} is returned.
 #'
 #' @examples
-#' \donttest{
-#'  setup_dir()
-#'  portalcast()
-#'  prep_data()
-#'  cast()
-#' }
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast()
+#'   prep_data()
+#'   cast()
+#'  }
 #'
 #' @export
 #'
@@ -173,7 +173,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                        source_name = "current_archive",
                        append_cast_csv = TRUE, controls_m = NULL,
                        controls_r = rodents_controls(),
-                       control_cdl = list(),
+                       control_cdl = climate_dl_control(),
                        downloads = zenodo_downloads(c("1215988", "833438")), 
                        quiet = FALSE, verbose = FALSE, 
                        save = TRUE, overwrite = TRUE, 
@@ -242,7 +242,7 @@ prep_data <- function(main = ".", end_moon = NULL,
                       source_name = "current_archive",
                       append_cast_csv = TRUE, 
                       controls_r = rodents_controls(),
-                      control_cdl = list(),
+                      control_cdl = climate_dl_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, 
                       save = TRUE, overwrite = TRUE, 

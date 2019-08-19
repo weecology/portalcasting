@@ -18,11 +18,11 @@ portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
   raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
   controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = list(), downloads = zenodo_downloads(c("1215988",
-  "833438")), quiet = FALSE, verbose = FALSE, save = TRUE,
-  overwrite = TRUE, filename_moons = "moon_dates.csv",
-  filename_cov = "covariates.csv", filename_meta = "metadata.yaml",
-  cleanup = TRUE)
+  control_cdl = climate_dl_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
+  verbose = FALSE, save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_meta = "metadata.yaml", cleanup = TRUE)
 
 cast(main = ".", models = prefab_models(), ensemble = TRUE,
   cast_date = Sys.Date(), moons = prep_moons(main = main),
@@ -38,7 +38,7 @@ prep_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
-  controls_r = rodents_controls(), control_cdl = list(),
+  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
@@ -196,11 +196,11 @@ Multiple models can be run together on the same data and
  instances.
 }
 \examples{
-\donttest{
- setup_dir()
- portalcast()
- prep_data()
- cast()
-}
+ \donttest{
+  setup_dir()
+  portalcast()
+  prep_data()
+  cast()
+ }
 
 }

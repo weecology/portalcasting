@@ -292,8 +292,10 @@ zenodo_versions <- function(concept_rec_id){
 #' @return \code{character} value of the name or \code{NULL}.
 #'
 #' @examples
-#'  source_url <- zenodo_url(concept_rec_id = "1215988")
-#'  record_name_from_url(source_url)
+#'  \donttest{
+#'   source_url <- zenodo_url(concept_rec_id = "1215988")
+#'   record_name_from_url(source_url)
+#'  }
 #'
 #' @export
 #'
@@ -433,10 +435,10 @@ NMME_urls <- function(start = Sys.Date(), end = as.Date("2050-01-01"),
                       model = "ENSMEAN", lat = 31.9555, lon = -109.0744, 
                       freq = "daily",
                       data = c("tasmin", "tasmean", "tasmax", "pr")){
+  check_args()
   return_if_null(data)
   return_if_null(freq)
   return_if_null(model)
-  check_args()
 
   mods <- c("ENSMEAN", "CMC1", "CMC2", "CFCSv2", "GFDL", "GFDL-FLOR", "NCAR")
   if(any(!(model %in% mods))){

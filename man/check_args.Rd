@@ -12,6 +12,18 @@ check_arg(arg_name, arg_value, fun_name = NULL)
 
 check_arg_list()
 }
+\arguments{
+\item{arg_name}{\code{character} value of the argument name.}
+
+\item{arg_value}{Input value for the argument.}
+
+\item{fun_name}{\code{character} value of the function name or \code{NULL}.}
+}
+\value{
+\code{check_arg}: \code{character} vector of error messages
+  associated with the specific situation 
+  (\code{<fun_name>(<arg_name> = arg_value)}).
+}
 \description{
 \code{check_args} checks that all of the arguments to a given
  function have valid values within the pipeline to avoid naming collision
@@ -38,7 +50,7 @@ Argument details used for checking are produced simply via
  be or \code{NULL} if unrestricted), and \code{addl} if needed (an
  unevaluated \code{expression} that can be evaluated and allows for 
  simple evaluation of, e.g., element names of a \code{list}; see the 
- source code). \cr \cr
+ source code).
 }
 \examples{
  check_arg_list()

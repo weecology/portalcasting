@@ -26,7 +26,9 @@ The record name is often encoded in a URL, so in the case that
  unless told to keep the name as NULL (via \code{NULLname}).
 }
 \examples{
- source_url <- zenodo_url(concept_rec_id = "1215988")
- record_name_from_url(source_url)
+ \donttest{
+  source_url <- zenodo_url(concept_rec_id = "1215988")
+  record_name_from_url(source_url)
+ }
 
 }

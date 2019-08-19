@@ -319,9 +319,9 @@ save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @examples
 #'  \donttest{
-#'  create_dir()
-#'  download_climate_casts()
-#'  read_climate_casts()
+#'   create_dir()
+#'   download_climate_casts()
+#'   read_climate_casts()
 #'  }
 #'
 #' @export

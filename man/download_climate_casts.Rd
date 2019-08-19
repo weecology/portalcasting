@@ -81,9 +81,9 @@ Given the details specified in \code{control_cdl}, download
 }
 \examples{
  \donttest{
- create_dir()
- download_climate_casts()
- read_climate_casts()
+  create_dir()
+  download_climate_casts()
+  read_climate_casts()
  }
 
 }

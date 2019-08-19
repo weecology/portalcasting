@@ -214,7 +214,7 @@ plot_cast_ts_ylab <- function(main = ".", level = "Controls",
 #'   setup_dir()
 #'   plot_cast_point()
 #'   plot_cast_point(with_census = TRUE)
-#' }
+#'  }
 #'
 #' @export
 #'
