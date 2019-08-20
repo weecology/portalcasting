@@ -10,6 +10,11 @@ before_install:
 r_packages:
   - covr
 
+script: 
+  - |
+    R CMD build .
+    travis_wait 20 R CMD check portalcasting*tar.gz
+
 matrix:
   include:
   - r: devel

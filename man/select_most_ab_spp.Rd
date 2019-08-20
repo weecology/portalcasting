@@ -44,7 +44,7 @@ the \code{lead} from. If \code{NULL} (default), for
 }
 \value{
 \code{character} vector of length \code{topx} of the species codes
- (see \code{\link{rodent_spp}}) of the selected species.
+ (see \code{\link{rodent_species}}) of the selected species.
 }
 \description{
 Given a forecast or hindcast, determine the most abundant
