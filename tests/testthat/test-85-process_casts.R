@@ -97,5 +97,6 @@ test_that("column conformer", {
 
 
 test_that("most_recent_cast", {
+  skip_on_cran() # downloads take too long for cran checks
    expect_is(most_recent_cast("./testing"), "Date")
 })
