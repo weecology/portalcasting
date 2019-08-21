@@ -438,6 +438,9 @@ read_casts <- function(main = ".", cast_type = "forecast",
 #'
 verify_cast <- function(cast, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
+  if(!cast_is_valid(cast)){
+    stop("`cast` is not valid")
+  }
   cast
 }
 

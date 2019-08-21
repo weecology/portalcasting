@@ -1,5 +1,22 @@
 context("Test process_casts functions")
 
+bad_cast1 <- read.csv("tests/testthat/bad_cast1.csv", 
+                      stringsAsFactors = FALSE)
+bad_cast2 <- read.csv("tests/testthat/bad_cast2.csv", 
+                      stringsAsFactors = FALSE)
+
+test_that("verify_casts", {
+  expect_error(verify_cast(bad_cast1)
+  expect_error(verify_cast(na_conformer(bad_cast2)))
+})
+
+test_that("cast_is_valid", {
+  expect_equal(cast_is_valid(bad_cast1), FALSE)
+  expect_message(expect_equal(cast_is_valid(bad_cast1, TRUE), FALSE))
+  expect_equal(cast_is_valid(bad_cast2), FALSE)
+  expect_message(expect_equal(cast_is_valid(bad_cast2, TRUE), FALSE))
+})
+
 test_that("add_ensemble", {
   skip_on_cran() # downloads take too long for cran checks
   verify_models(main = "./testing", models = c("ESSS", "AutoArima"))

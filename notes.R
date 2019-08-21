@@ -38,12 +38,10 @@ devtools::test(filter = "90")
 devtools::test(filter = "92")
 
 # to do
-# tests
+
 # update vignettes
 # add morgans model
 
-funcitons to test
-cast is valid erify cast
 
 
 

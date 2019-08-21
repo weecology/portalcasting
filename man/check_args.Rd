@@ -154,7 +154,7 @@ Argument details used for checking are produced simply via
  Must be \code{data.frame}s, can be any length, can be \code{NULL}, 
  but cannot be \code{NA}:
   \code{all_casts}, 
-  \code{cast}, 
+  \code{cast} (must also conform to checks via \code{\link{verify_cast}}), 
   \code{cast_coc}, 
   \code{cast_tab}, 
   \code{cast_to_check}, 
