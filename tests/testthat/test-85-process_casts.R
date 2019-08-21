@@ -63,7 +63,7 @@ test_that("save_cast_output", {
 
 test_that("select_most_ab_spp", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_is(select_most_ab_spp(main = "~/testing", model = "AutoArima"), 
+  expect_is(select_most_ab_spp(main = "./testing", model = "AutoArima"), 
              "character")
 })
 
