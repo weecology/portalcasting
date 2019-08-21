@@ -66,9 +66,9 @@ test_that("nbsGARCH", {
 
 test_that("pevGARCH", {
   skip_on_cran() # downloads and casting take too long to run on cran
-  expect_message(f_a <- pevGARCH(main = "~/testing", lag = 6,
+  expect_message(f_a <- pevGARCH(main = "./testing", lag = 6,
                                   tmnt_type = "All", quiet = FALSE))
-  expect_message(f_c <- pevGARCH(main = "~/testing", lag = 6, 
+  expect_message(f_c <- pevGARCH(main = "./testing", lag = 6, 
                                   tmnt_type = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
   expect_is(f_c, "list")
