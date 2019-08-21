@@ -1,6 +1,6 @@
 devtools::document()
-setup_dir("~/testing")
-create_dir("~/testingw")
+setup_sandbox("~/sand")
+create_dir("~/testingww")
 fill_dir("~/testingw")
 
 portalcast("~/testing4", models = c("ESSS", "AutoArima"))
@@ -10,12 +10,12 @@ hist_cov <- prep_hist_covariates("~/testingw")
 prep_cast_covariates("~/testingpp", hist_cov = hist_cov)
 
 
-plot_cast_ts("~/testingw")
-plot_cov_RMSE_mod_spp("~/testingw")
-plot_err_lead_spp_mods("~/testingw")
+plot_cast_ts("~/sand")
+plot_cov_RMSE_mod_spp("~/sand")
+plot_err_lead_spp_mods("~/sand")
 
-plot_cast_point("~/testingw", with_census = TRUE)
-plot_cast_point("~/testingw")
+plot_cast_point("~/sand", with_census = TRUE)
+plot_cast_point("~/sand")
 
 
 
