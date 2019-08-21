@@ -123,7 +123,7 @@
 #'  Must be \code{data.frame}s, can be any length, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
 #'   \code{all_casts}, 
-#'   \code{cast}, 
+#'   \code{cast} (must also conform to checks via \code{\link{verify_cast}}), 
 #'   \code{cast_coc}, 
 #'   \code{cast_tab}, 
 #'   \code{cast_to_check}, 
@@ -321,6 +321,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       out2 <- paste0("`", arg_name, "` must be a data.frame")
       out <- c(out, out2)
     }
+  } else if (deets$class == "cast"){
+    if (!("data.frame" %in% class(arg_value))){
+      out2 <- paste0("`", arg_name, "` must be a data.frame")
+      out <- c(out, out2)
+    }
   } else if (deets$class == "dfv"){
     if (!("data.frame" %in% class(arg_value)) & !is.vector(arg_value)){
       out2 <- paste0("`", arg_name, "` must be a data.frame or vector")
@@ -448,6 +453,10 @@ check_arg_list <- function(){
     list(class = "df", null = null, na = na, length = length, 
          vals = vals)
   }
+  arg_cast <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "cast", null = null, na = na, length = length, 
+         vals = vals)
+  }
   arg_date <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
     list(class = "date", null = null, na = na, length = length, 
          vals = vals)
@@ -497,7 +506,7 @@ check_arg_list <- function(){
     all_casts = arg_df(),
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
-    cast = arg_df(),
+    cast = arg_cast(),
     cast_cov = arg_df(),
     cast_covariates = arg_logical(),
     cast_date = arg_date(),
