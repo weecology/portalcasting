@@ -266,7 +266,6 @@ read_metadata <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_paths(main, "data/metadata.yaml")
   if(!file.exists(fpath)){
-print(1)
     md <- prep_metadata(main)
     return(md)
   }

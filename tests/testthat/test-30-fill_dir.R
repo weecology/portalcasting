@@ -10,10 +10,10 @@ test_that("fill_raw", {
 
 test_that("fill_predictions", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_equal(fill_predictions("portalPredictions/predictions", "./testing"),
+  expect_equal(fill_predictions("./testing", "portalPredictions/predictions"),
                NULL)
-  expect_message(fill_predictions("portalPredictions/predictions",
-                 "./testing", verbose = TRUE))
+  expect_message(fill_predictions("./testing", "portalPredictions/predictions",
+                  verbose = TRUE))
 })
 
 test_that("fill_models", {

@@ -462,7 +462,7 @@ cast_is_valid <- function(cast_to_check, verbose = FALSE, arg_checks = TRUE){
   valid_currencies <- c("abundance", "richness", "biomass", "energy")
   valid_levels <- c("All", "Controls", "FullExclosure", "KratExclosure",
                      paste("Plot", 1:24, " ", sep = ""))
-  valid_species <- base_species(total = TRUE)
+  valid_species <- all_species(total = TRUE)
 
   cols_valid1 <- all(colnames(cast_to_check) %in% valid_columns1) & 
                  all(valid_columns1 %in% colnames(cast_to_check))
