@@ -1,9 +1,7 @@
 context("Test process_casts functions")
 
-bad_cast1 <- read.csv("tests/testthat/bad_cast1.csv", 
-                      stringsAsFactors = FALSE)
-bad_cast2 <- read.csv("tests/testthat/bad_cast2.csv", 
-                      stringsAsFactors = FALSE)
+bad_cast1 <- read.csv("bad_cast1.csv", stringsAsFactors = FALSE)
+bad_cast2 <- read.csv("bad_cast2.csv", stringsAsFactors = FALSE)
 
 test_that("verify_casts", {
   expect_error(verify_cast(bad_cast1))
