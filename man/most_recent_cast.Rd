@@ -5,7 +5,7 @@
 \title{Determine the most recent forecast or hindcast}
 \usage{
 most_recent_cast(main = ".", cast_type = "forecast",
-  with_census = FALSE)
+  with_census = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -16,6 +16,15 @@ to select the file in the predictions subdirectory.}
 
 \item{with_census}{\code{logical} toggle if the plot should include the
 observed data collected during the predicted census.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{Date} of the most recent cast.

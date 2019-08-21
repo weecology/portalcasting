@@ -6,10 +6,10 @@
 \title{Read in a cast file or multiple cast files and set the class}
 \usage{
 read_cast(main = ".", cast_type = "forecast", cast_date = NULL,
-  verbose = FALSE)
+  verbose = FALSE, arg_checks = TRUE)
 
 read_casts(main = ".", cast_type = "forecast", cast_dates = NULL,
-  verbose = FALSE)
+  verbose = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -25,6 +25,15 @@ If \code{NULL} (default), selects the most recent -casts.}
 
 \item{verbose}{\code{logical} indicator if all validation errors should
 be reported.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{cast_dates}{\code{Date}s the predictions were made. Used to select 
 the files in the predictions subdirectory. Can be length 1 or more and if 

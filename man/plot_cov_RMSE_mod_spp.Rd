@@ -5,9 +5,9 @@
 \title{Plot RMSE and coverage as a function of model for each species}
 \usage{
 plot_cov_RMSE_mod_spp(main = ".", cast_type = "hindcast",
-  species = rodent_species(set = "evalplot"), level = "Controls",
+  species = rodent_species(set = "evalplot"), tmnt_type = "Controls",
   cast_dates = NULL, min_observed = 1, models = model_names(set =
-  "wEnsemble"))
+  "wEnsemble"), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -23,7 +23,7 @@ reliably coded for \code{"hindcast"}.}
 \code{rodent_spp(set = "evalplot")}, the only setting for which the
 plot is reliably coded.}
 
-\item{level}{\code{character} value of the treatment type of interest 
+\item{tmnt_type}{\code{character} value of the treatment type of interest 
 (\code{"All"} or \code{"Controls"}).}
 
 \item{cast_dates}{\code{Date}s the predictions were made. Used to select 
@@ -38,6 +38,18 @@ values needed for a -cast to be retained in the output table. Default is
 \item{models}{\code{character} value(s) of the name(s) (or 
 \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 models with available -casts are returned.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+}
+\value{
+Creates the plot and returns \code{NULL}.
 }
 \description{
 Plot the RMSE and coverage by species matrix of cast error 

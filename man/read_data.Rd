@@ -2,6 +2,7 @@
 % Please edit documentation in R/process_data.R
 \name{read_data}
 \alias{read_data}
+\alias{read_rodents_table}
 \alias{read_rodents}
 \alias{read_covariates}
 \alias{read_covariate_casts}
@@ -9,52 +10,73 @@
 \alias{read_metadata}
 \title{Read in a data file and format it for specific class}
 \usage{
-read_data(main = ".", data_name = NULL, level = "all")
+read_data(main = ".", data_name = NULL, tmnt_type = "all",
+  tmnt_types = c("all", "controls"), arg_checks = TRUE)
 
-read_rodents(main = ".", level = "all")
+read_rodents_table(main = ".", tmnt_type = "all", arg_checks = TRUE)
 
-read_covariates(main = ".")
+read_rodents(main = ".", tmnt_types = c("all", "controls"),
+  arg_checks = TRUE)
 
-read_covariate_casts(main = ".")
+read_covariates(main = ".", arg_checks = TRUE)
 
-read_moons(main = ".")
+read_covariate_casts(main = ".", arg_checks = TRUE)
 
-read_metadata(main = ".")
+read_moons(main = ".", arg_checks = TRUE)
+
+read_metadata(main = ".", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
 \item{data_name}{\code{character} representation of the data needed.
-Current options include \code{"rodents"}, \code{"covariates"}, 
-\code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.}
+Current options include \code{"rodents"}, \code{"rodents_table"}, 
+\code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
+\code{"metadata"}.}
 
-\item{level}{\code{character} representation of the grouping name used to
-define the rodents. Standard options are \code{"all"} and 
-\code{"controls"}.}
+\item{tmnt_type, tmnt_types}{\code{character} representation of the grouping
+name(s) used to define the rodents. Standard options are \code{"all"} and 
+\code{"controls"}. \code{tmnt_type} can only be length 1, 
+\code{tmnt_types} is not restricted in length.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 Data requested.
 }
 \description{
 Read in a specified data file. \cr \cr
- Current options include \code{"rodents"}, \code{"covariates"},
+ Current options include \code{"rodents"} (produces a list), 
+ \code{"rodents_table"} (produces a rodents table), \code{"covariates"},
  \code{"covariate_casts"}, \code{"moons"}, and \code{"metadata"}, which
  are available as calls to \code{read_data} with a specified 
  \code{data_name} or as calls to the specific \code{read_<data_name>} 
- functions (like \code{read_moons}).
+ functions (like \code{read_moons}). \cr \cr
+ If the requested data do not exist, an effort is made to prepare them
+ using the associated \code{prep_<data_name>} functions (like
+ \code{prep_moons}).
 }
 \examples{
 \donttest{
  setup_dir()
  read_data(data_name = "rodents")
+ read_data(data_name = "rodents_table")
  read_data(data_name = "controls")
  read_data(data_name = "covariates")
  read_data(data_name = "covariate_casts")
  read_data(data_name = "moons")
  read_data(data_name = "metadata")
 
- read_rodents(level = "all")
+ read_rodents()
+ read_rodents_table()
  read_controls()
  read_covariates()
  read_covariate_casts()

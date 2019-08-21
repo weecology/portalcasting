@@ -4,8 +4,8 @@
 \alias{select_casts}
 \title{Select the specific fore- or hindcast from a casts table}
 \usage{
-select_casts(casts, species = NULL, level = NULL, models = NULL,
-  target_moons = NULL)
+select_casts(casts, species = NULL, tmnt_types = NULL, models = NULL,
+  target_moons = NULL, arg_checks = TRUE)
 }
 \arguments{
 \item{casts}{\code{data.frame} of requested fore- or hindcasts to be 
@@ -15,8 +15,9 @@ selected from.}
 \code{"total"} for the total across species. If \code{NULL}, all species 
 and "total" are returned.}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}). If \code{NULL}, all levels are returned.}
+\item{tmnt_types}{\code{character} value(s) of the level(s) of interest 
+(\code{"All"} or \code{"Controls"}). If \code{NULL}, all levels are 
+returned.}
 
 \item{models}{\code{character} value(s) of the name(s) (or 
 \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
@@ -24,6 +25,15 @@ models are returned.}
 
 \item{target_moons}{\code{integer}-conformable value(s) of the 
 newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{data.frame} of trimmed fore- or hindcasts.

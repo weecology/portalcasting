@@ -5,15 +5,24 @@
 \alias{cast_is_valid}
 \title{Verify that a read-in cast file is formatted appropriately}
 \usage{
-verify_cast(cast, verbose = FALSE)
+verify_cast(cast, verbose = FALSE, arg_checks = TRUE)
 
-cast_is_valid(cast_to_check, verbose = FALSE)
+cast_is_valid(cast_to_check, verbose = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{cast}{\code{data.frame} -cast file read in.}
 
 \item{verbose}{\code{logical} indicator if all validation errors should
 be reported.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{cast_to_check}{\code{data.frame} -cast file being checked within 
 \code{cast_is_valid}.}

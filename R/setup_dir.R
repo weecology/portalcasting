@@ -86,10 +86,9 @@
 #'  element \code{list} must be named according to the model and the
 #'  \code{name} element. \cr 
 #'
-#' @param controls_r Control \code{list} (from 
-#'  \code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+#' @param controls_r Control \code{list} or \code{list} of \code{list}s 
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
-#'  rodents tables. See \code{\link{rodents_control}} for details. 
+#'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
 #' @param control_cdl \code{list} of specifications for the download, which
 #'  are sent to \code{\link{NMME_urls}} to create the specific URLs. See
@@ -123,6 +122,15 @@
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{NULL}
 #'
 #' @examples
@@ -154,8 +162,9 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                      save = TRUE, overwrite = TRUE, 
                      filename_moons = "moon_dates.csv",
                      filename_cov = "covariates.csv", 
-                     filename_meta = "metadata.yaml", cleanup = TRUE){
-  check_args()
+                     filename_meta = "metadata.yaml", cleanup = TRUE,
+                     arg_checks = TRUE){
+  check_args(arg_checks)
   pass_and_call(portalcast_welcome)
   pass_and_call(create_dir)
   pass_and_call(fill_dir)
@@ -189,8 +198,9 @@ setup_production <- function(main = ".", models = prefab_models(),
                              save = TRUE, overwrite = TRUE, 
                              filename_moons = "moon_dates.csv",
                              filename_cov = "covariates.csv", 
-                             filename_meta = "metadata.yaml", cleanup = TRUE){
-  check_args()
+                             filename_meta = "metadata.yaml", cleanup = TRUE,
+                             arg_checks = TRUE){
+  check_args(arg_checks)
   pass_and_call(setup_dir)
 }
 
@@ -221,8 +231,9 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           save = TRUE, overwrite = TRUE, 
                           filename_moons = "moon_dates.csv",
                           filename_cov = "covariates.csv", 
-                          filename_meta = "metadata.yaml", cleanup = TRUE){
-  check_args()
+                          filename_meta = "metadata.yaml", cleanup = TRUE,
+                          arg_checks = TRUE){
+  check_args(arg_checks)
   pass_and_call(setup_dir)
   pass_and_call(sandbox_welcome)
 }
@@ -233,6 +244,15 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
 #'  package version or a goodbye message for when models are done.
 #'
 #' @param quiet \code{logical} indicator if message should be quieted.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #' 
 #' @return \code{NULL}, as message is printed.
 #'
@@ -242,8 +262,8 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #' 
-portalcast_welcome <- function(quiet = FALSE){
-  check_args()
+portalcast_welcome <- function(quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   msg1 <- "##########################################################"
   version_number <- packageDescription("portalcasting", fields = "Version")
   msg2 <- paste0("This is portalcasting v", version_number)
@@ -254,8 +274,8 @@ portalcast_welcome <- function(quiet = FALSE){
 #'
 #' @export
 #'
-portalcast_goodbye <- function(quiet = FALSE){
-  check_args()
+portalcast_goodbye <- function(quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   msg1 <- "########################################################"
   messageq(c(msg1, "Models done", msg1), quiet)
 }
@@ -270,6 +290,15 @@ portalcast_goodbye <- function(quiet = FALSE){
 #'
 #' @param quiet \code{logical} indicator if progress message should be
 #'   quieted.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #' 
 #' @return \code{NULL}, as message is printed.
 #'
@@ -278,8 +307,8 @@ portalcast_goodbye <- function(quiet = FALSE){
 #'
 #' @export
 #' 
-sandbox_welcome <-function(main = ".", quiet = FALSE){
-  check_args()
+sandbox_welcome <-function(main = ".", quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
 
 main <- main_path(main)
 castle <- "

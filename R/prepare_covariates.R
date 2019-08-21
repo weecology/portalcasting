@@ -63,6 +63,15 @@
 #'
 #' @param filename_cov \code{character} filename for saving the output.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{data.frame} of historical and -casted covariates, combined
 #'  and saved out to \code{filename} if indicated by \code{save}.
 #'  
@@ -75,7 +84,7 @@
 #'  
 #' @export
 #'
-prep_covariates <- function(main = ".", moons = prep_moons(main = main),
+prep_covariates <- function(main = ".", moons = NULL,
                             end_moon = NULL, lead_time = 12, min_lag = 6, 
                             cast_date = Sys.Date(),
                             hist_covariates = TRUE, cast_covariates = TRUE,
@@ -86,12 +95,15 @@ prep_covariates <- function(main = ".", moons = prep_moons(main = main),
                             append_cast_csv = TRUE, 
                             control_cdl = climate_dl_control(), quiet = FALSE, 
                             save = TRUE, overwrite = TRUE,
-                            filename_cov = "covariates.csv"){
-  check_args()
+                            filename_cov = "covariates.csv", 
+                            arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main))
+  check_args(arg_checks)
   messageq("Loading covariate data files into data subdirectory", quiet)
-  hist_cov <- pass_and_call(prep_hist_covariates)
+  hist_cov <- pass_and_call(prep_hist_covariates, moons = moons) 
   if (cast_covariates){
-    cast_cov <- pass_and_call(prep_cast_covariates, hist_cov = hist_cov)
+    cast_cov <- pass_and_call(prep_cast_covariates, hist_cov = hist_cov,
+                              moons = moons)
   }
   out <- hist_cov[-(1:nrow(hist_cov)), ]
   if (hist_covariates){
@@ -125,6 +137,15 @@ prep_covariates <- function(main = ".", moons = prep_moons(main = main),
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return 
 #'  \code{prep_hist_covariates}: historical covariate data table as a 
 #'   \code{data.frame}. \cr \cr
@@ -141,8 +162,8 @@ prep_covariates <- function(main = ".", moons = prep_moons(main = main),
 #' @export
 #'
 prep_hist_covariates <- function(main = ".", end_moon = NULL, 
-                                 quiet = FALSE){
-  check_args()
+                                 quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   weather_data <- prep_weather_data(main)
   raw_path <- sub_paths(main, "raw")
   ndvi_data <- ndvi("newmoon", TRUE, raw_path)
@@ -158,8 +179,8 @@ prep_hist_covariates <- function(main = ".", end_moon = NULL,
 #'
 #' @export
 #'
-prep_weather_data <- function(main = "."){
-  check_args()
+prep_weather_data <- function(main = ".", arg_checks = TRUE){
+  check_args(arg_checks)
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
   raw_path <- sub_paths(main, "raw")
@@ -222,6 +243,15 @@ summarize_daily_weather_by_newmoon <- function(x){
 #'  
 #' @param tail \code{logical} indicator if the data lagged to the tail end 
 #'  should be retained.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'  
 #' @return \code{data.frame} with a \code{newmoonnumber} column reflecting
 #'  the lag.
@@ -235,8 +265,9 @@ summarize_daily_weather_by_newmoon <- function(x){
 #'
 #' @export
 #'
-lag_covariates <- function(covariates, lag, tail = FALSE){
-  check_args()
+lag_covariates <- function(covariates, lag, tail = FALSE, 
+                           arg_checks = TRUE){
+  check_args(arg_checks)
   covariates$newmoonnumber_lag <- covariates$newmoonnumber + lag
   
   if(tail == FALSE){

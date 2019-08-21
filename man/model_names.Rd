@@ -6,7 +6,7 @@
 \alias{wEnsemble_models}
 \title{Provide the names of models}
 \usage{
-model_names(models = NULL, set = NULL)
+model_names(models = NULL, set = NULL, arg_checks = TRUE)
 
 prefab_models()
 
@@ -22,6 +22,15 @@ value is \code{NULL} which allows for full customization with
 only support for \code{"prefab"} (AutoArima, ESSS, nbGARCH, nbsGARCH,
 and pevGARCH) and \code{"wEnsemble"} (the prefab models plus the basic
 ensemble, a specialized case).}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{character} vector of model names.

@@ -18,10 +18,10 @@
 #'  (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")})
 #'  has its script-writing controls already included internally. Users only
 #'  need to include controls for non-prefab \code{models}. \cr \cr
-#'  Any user-defined \code{models} that are not included in \code{controls}
+#'  Any user-defined \code{models} that are not included in \code{controls_m}
 #'  will throw an error. \cr \cr 
-#'  If any user-defined \code{controls} duplicate any existing controls for
-#'  the prefab models or if \code{controls} contains any duplicate named
+#'  If any user-defined \code{controls_m} duplicate any existing controls for
+#'  the prefab models or if \code{controls_m} contains any duplicate named
 #'  elements, an error will be thrown. 
 #'
 #' @param models \code{character} vector of name(s) of model(s) whose 
@@ -33,18 +33,29 @@
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
 #'  script-writing controls. \cr 
-#'  Presently, each model's script writing controls
-#'  should include three elements: \code{name} (a \code{character} value of 
-#'  the model name), \code{covariatesTF} (a \code{logical} indicator of if the 
-#'  model needs covariates), and \code{lag} (an \code{integer}-conformable 
-#'  value of the lag to use with the covariates or \code{NA} if 
-#'  \code{covariatesTF = FALSE}). \cr 
-#'  If only a single model is added, the name of 
-#'  the model from the element \code{name} will be used to name the model's
-#'  \code{list} in the larger \code{list}. If multiple models are added, each
-#'  element \code{list} must be named according to the model and the
-#'  \code{name} element. \cr 
-#'  See \code{Details} and \code{Examples}.  
+#'  Presently, each model's script writing controls should include three 
+#'  elements: 
+#'  \itemize{
+#'   \item \code{name}: a \code{character} value of the model name.
+#'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
+#'    model needs covariates.
+#'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
+#'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
+#'  } 
+#'  If only a single model is added, the name of the model from the element
+#'  \code{name} will be used to name the model's \code{list} in the larger
+#'  \code{list}. If multiple models are added, each element \code{list} must
+#'  be named according to the model and the \code{name} element. \cr 
+#'  See \code{Details} and \code{Examples}. 
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}. 
 #'
 #' @return \code{model_script_controls}: named \code{list} of length equal to
 #'  the number of elements in \code{models} and with elements that are each 
@@ -63,9 +74,10 @@
 #'
 #' @export
 #'
-model_script_controls <- function(models = NULL, controls_m = NULL){
+model_script_controls <- function(models = NULL, controls_m = NULL, 
+                                  arg_checks = TRUE){
   return_if_null(models)
-  check_args()
+  check_args(arg_checks)
   if(list_depth(controls_m) == 1){
     controls_m <- list(controls_m)
     names(controls_m) <- controls_m[[1]]$name
@@ -105,8 +117,9 @@ model_script_controls <- function(models = NULL, controls_m = NULL){
 #'
 #' @export
 #'
-extract_min_lag <- function(models = prefab_models(), controls_m = NULL){
-  check_args()
+extract_min_lag <- function(models = prefab_models(), controls_m = NULL, 
+                            arg_checks = TRUE){
+  check_args(arg_checks)
   controls <- pass_and_call(model_script_controls)
   nmods <- length(controls)
   lags <- rep(NA, nmods)
@@ -138,6 +151,15 @@ extract_min_lag <- function(models = prefab_models(), controls_m = NULL){
 #'   and pevGARCH) and \code{"wEnsemble"} (the prefab models plus the basic
 #'   ensemble, a specialized case). 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{character} vector of model names.
 #'
 #' @examples
@@ -148,9 +170,9 @@ extract_min_lag <- function(models = prefab_models(), controls_m = NULL){
 #'
 #' @export
 #'
-model_names <- function(models = NULL, set = NULL){
+model_names <- function(models = NULL, set = NULL, arg_checks = TRUE){
   return_if_null(set, models)
-  check_args()
+  check_args(arg_checks)
   prefab <- c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")
   wEnsemble <- c(prefab, "Ensemble")
   out <- switch(set, "prefab" = prefab, "wEnsemble" = wEnsemble)
@@ -207,6 +229,15 @@ wEnsemble_models <- function(){
 #' @param overwrite \code{logical} indicator of whether or not the model
 #'   script should be updated.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr
 #'  \code{model_template}: \code{character}-valued text for a model script 
@@ -223,8 +254,9 @@ wEnsemble_models <- function(){
 #'
 write_model <- function(name = NULL, covariatesTF = NULL,
                         lag = NULL, main = ".", quiet = FALSE, 
-                        overwrite = TRUE, control = NULL){
-  check_args()
+                        overwrite = TRUE, control = NULL, 
+                        arg_checks = TRUE){
+  check_args(arg_checks)
   covariatesTF <- ifnull(covariatesTF, control$covariatesTF)
   lag <- ifnull(lag, control$lag)
   name <- ifnull(name, control$name)
@@ -276,17 +308,18 @@ write_model <- function(name = NULL, covariatesTF = NULL,
 #' @export
 #'
 model_template <- function(name = NULL, covariatesTF = FALSE,
-                           lag = NULL, main = ".", quiet = FALSE){
-  check_args()
+                           lag = NULL, main = ".", quiet = FALSE, 
+                           arg_checks = TRUE){
+  check_args(arg_checks)
   main_arg <- paste0(', main = "', main, '"')
   quiet_arg <- paste0(', quiet = ', quiet)
   if (covariatesTF){
     lag_arg <- paste0(', lag = ', lag)
-    args_a <- paste0('level = "All"', lag_arg, main_arg, quiet_arg)
-    args_c <- paste0('level = "Controls"', lag_arg, main_arg, quiet_arg)
+    args_a <- paste0('tmnt_type = "All"', lag_arg, main_arg, quiet_arg)
+    args_c <- paste0('tmnt_type = "Controls"', lag_arg, main_arg, quiet_arg)
   } else{
-    args_a <- paste0('level = "All"', main_arg, quiet_arg)
-    args_c <- paste0('level = "Controls"', main_arg, quiet_arg)
+    args_a <- paste0('tmnt_type = "All"', main_arg, quiet_arg)
+    args_c <- paste0('tmnt_type = "Controls"', main_arg, quiet_arg)
   }
 
 
@@ -309,6 +342,15 @@ save_cast_output(f_a, f_c, "', name, '"', main_arg, ')'
 #'
 #' @param models \code{character} vector of the names of models to verify. 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @examples
 #'  \donttest{
 #'   create_dir()
@@ -319,8 +361,8 @@ save_cast_output(f_a, f_c, "', name, '"', main_arg, ')'
 #' @export
 #'
 verify_models <- function(main = ".", models = prefab_models(), 
-                          quiet = FALSE){
-  check_args()
+                          quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   messageq("Checking model availability", quiet)
   model_dir <- sub_paths(main, "models")
   if (!dir.exists(model_dir)){
@@ -347,6 +389,15 @@ verify_models <- function(main = ".", models = prefab_models(),
 #' @param model \code{character} name for covariate models. Currently only 
 #'  \code{"pevGARCH"} is supported.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{list} of covariate model structures.
 #'
 #' @examples
@@ -354,8 +405,8 @@ verify_models <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #'
-covariate_models <- function(model = "pevGARCH"){
-  check_args()
+covariate_models <- function(model = "pevGARCH", arg_checks = TRUE){
+  check_args(arg_checks)
   out <- NULL
   if (model == "pevGARCH"){
     out <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),

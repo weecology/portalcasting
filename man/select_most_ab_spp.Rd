@@ -5,8 +5,9 @@
 \title{Select the most abundant species from a forecast or hindcast}
 \usage{
 select_most_ab_spp(topx = 3, main = ".", species = base_species(),
-  level = "Controls", cast_type = "forecasts", cast_date = NULL,
-  model = "Ensemble", lead = 1, from_date = NULL)
+  tmnt_type = "Controls", cast_type = "forecasts", cast_date = NULL,
+  model = "Ensemble", lead = 1, from_date = NULL,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{topx}{\code{integer}-conformable numeric value for the top number of
@@ -19,8 +20,8 @@ the directory tree.}
 \code{"total"} for the total across species) to be selected from or 
 \code{NULL} to include all species and the total.}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}).}
+\item{tmnt_type}{\code{character} value of the level of interest 
+(\code{"All"} or \code{"Controls"}).}
 
 \item{cast_type}{\code{character} value of the type of -cast of model. Used
 to select the file in the predictions subdirectory. Currently only 
@@ -41,6 +42,15 @@ the \code{lead} from. If \code{NULL} (default), for
 \code{cast_type = "forecast"}, \code{from_date = cast_date} and 
 \code{plot_cast_point} is not yet reliable for 
 \code{cast_type = "hindcast"}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{character} vector of length \code{topx} of the species codes

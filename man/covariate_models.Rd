@@ -4,11 +4,20 @@
 \alias{covariate_models}
 \title{Create a covariate model list}
 \usage{
-covariate_models(model = "pevGARCH")
+covariate_models(model = "pevGARCH", arg_checks = TRUE)
 }
 \arguments{
 \item{model}{\code{character} name for covariate models. Currently only 
 \code{"pevGARCH"} is supported.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{list} of covariate model structures.

@@ -7,7 +7,8 @@
 \usage{
 NMME_urls(start = Sys.Date(), end = as.Date("2050-01-01"),
   model = "ENSMEAN", lat = 31.9555, lon = -109.0744,
-  freq = "daily", data = c("tasmin", "tasmean", "tasmax", "pr"))
+  freq = "daily", data = c("tasmin", "tasmean", "tasmax", "pr"),
+  arg_checks = TRUE)
 }
 \arguments{
 \item{start, end}{\code{Date} for the start and end of the cast.}
@@ -32,6 +33,15 @@ Presently can only take one value.}
 (mean temperature), \code{"tasmax"} (mximum temperature), \code{"pr"}
 (precipitation), \code{"dps"} (dew point), \code{"rsds"}
 (shortwave radiation; sun intensity), \code{"was"} (wind speed).}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 Named \code{character} vector of URLs, or \code{NULL} if

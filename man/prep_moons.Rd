@@ -11,18 +11,21 @@
 prep_moons(main = ".", lead_time = 12, cast_date = Sys.Date(),
   raw_path_data = "PortalData",
   raw_moons_file = "Rodents/moon_dates.csv", quiet = FALSE,
-  save = TRUE, overwrite = TRUE, filename_moons = "moon_dates.csv")
+  save = TRUE, overwrite = TRUE, filename_moons = "moon_dates.csv",
+  arg_checks = TRUE)
 
-format_moons(moons)
+format_moons(moons, arg_checks = TRUE)
 
-add_future_moons(moons = prep_moons(), lead_time = 12,
-  cast_date = Sys.Date())
+add_future_moons(moons = NULL, lead_time = 12,
+  cast_date = Sys.Date(), arg_checks = TRUE)
 
-add_extra_future_moons(moons, cast_date = Sys.Date())
+add_extra_future_moons(moons, cast_date = Sys.Date(),
+  arg_checks = TRUE)
 
 add_past_moons_to_raw(main = ".", moons, cast_date = Sys.Date(),
   raw_path_data = "PortalData",
-  raw_moons_file = "Rodents/moon_dates.csv", overwrite = TRUE)
+  raw_moons_file = "Rodents/moon_dates.csv", overwrite = TRUE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -56,6 +59,15 @@ files should be updated (most users should leave as \code{TRUE}).}
 
 \item{filename_moons}{\code{character} name of the file for saving the 
 data output.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{moons}{Moons \code{data.frame}.}
 }

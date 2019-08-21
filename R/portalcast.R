@@ -111,10 +111,9 @@
 #'  element \code{list} must be named according to the model and the
 #'  \code{name} element. \cr 
 #'
-#' @param controls_r Control \code{list} (from 
-#'  \code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+#' @param controls_r Control \code{list} or \code{list} of \code{list}s 
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
-#'  rodents tables. See \code{\link{rodents_control}} for details. 
+#'  rodents tables. See \code{\link{rodents_controls}} for details.  
 #'
 #' @param control_cdl \code{list} of specifications for the download, which
 #'  are sent to \code{\link{NMME_urls}} to create the specific URLs. See
@@ -144,6 +143,15 @@
 #'
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #' 
 #' @return Results are saved to files, \code{NULL} is returned.
 #'
@@ -179,8 +187,9 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                        save = TRUE, overwrite = TRUE, 
                        filename_moons = "moon_dates.csv",
                        filename_cov = "covariates.csv", 
-                       filename_meta = "metadata.yaml", cleanup = TRUE){
-  check_args()
+                       filename_meta = "metadata.yaml", cleanup = TRUE, 
+                       arg_checks = TRUE){
+  check_args(arg_checks)
   pass_and_call(portalcast_welcome)
   pass_and_call(verify_models)
   min_lag <- pass_and_call(extract_min_lag)
@@ -201,13 +210,15 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
 #'
 cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                  cast_date = Sys.Date(),
-                 moons = prep_moons(main = main), 
+                 moons = NULL, 
                  end_moon = NULL, raw_path_data = "PortalData",
                  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
-                 controls_r = rodents_controls(), quiet = FALSE){
-  check_args()
+                 controls_r = rodents_controls(), quiet = FALSE, 
+                 arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main))
+  check_args(arg_checks)
   pass_and_call(clear_tmp)
-  last_moon <- pass_and_call(last_newmoon)
+  last_moon <- pass_and_call(last_newmoon, moons = moons)
   end_moon <- ifnull(end_moon, last_moon)
 
   msg1 <- "##########################################################"
@@ -216,7 +227,7 @@ cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
 
   models_scripts <- pass_and_call(models_to_cast)
   sapply(models_scripts, source)
-  pass_and_call(combine_casts)
+  pass_and_call(combine_casts, moons = moons)
   if (ensemble){
     pass_and_call(add_ensemble)
   }
@@ -248,8 +259,9 @@ prep_data <- function(main = ".", end_moon = NULL,
                       save = TRUE, overwrite = TRUE, 
                       filename_moons = "moon_dates.csv",
                       filename_cov = "covariates.csv", 
-                      filename_meta = "metadata.yaml", cleanup = TRUE){
-  check_args()
+                      filename_meta = "metadata.yaml", cleanup = TRUE, 
+                      arg_checks = TRUE){
+  check_args(arg_checks)
   messageq("Preparing data...", quiet)
   metadata_path <- file_paths(main, "data/metadata.yaml")
   meta_exist <- file.exists(metadata_path)
@@ -281,6 +293,15 @@ prep_data <- function(main = ".", end_moon = NULL,
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{character} vector of the path(s) of the R script file(s) to 
 #'   be run.
 #'
@@ -293,8 +314,9 @@ prep_data <- function(main = ".", end_moon = NULL,
 #'
 #' @export
 #'
-models_to_cast <- function(main = ".", models = prefab_models()){
-  check_args()
+models_to_cast <- function(main = ".", models = prefab_models(), 
+                           arg_checks = TRUE){
+  check_args(arg_checks)
   models_path <- sub_paths(main, "models")
   file_names <- paste0(models, ".R")
   torun <- (list.files(models_path) %in% file_names)

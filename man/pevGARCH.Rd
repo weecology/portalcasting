@@ -5,13 +5,13 @@
 \title{poisson environmental variable Generalized Auto-Regressive 
  Conditional Heteroscedasticity model for Portal Predictions}
 \usage{
-pevGARCH(main = ".", level = "All", lag = 6, quiet = FALSE)
+pevGARCH(main = ".", tmnt_type = "All", lag = 6, quiet = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{level}{\code{character} value name of the type of plots included 
+\item{tmnt_type}{\code{character} value name of the type of plots included 
 (\code{"All"} or \code{"Controls"}).}
 
 \item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to

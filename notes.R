@@ -1,6 +1,30 @@
+putting lots of tolowers in!
+
 
 devtools::document()
-main = "~/testing"
+setup_dir("~/testing4")
+create_dir("~/testing4")
+fill_dir("~/testing4")
+
+portalcast("~/testing4", models = c("ESSS", "AutoArima"))
+portalcast("~/testing4", models = c("ESSS", "AutoArima"), end_moons = 519:520)
+
+hist_cov <- prep_hist_covariates("~/testing4")
+prep_cast_covariates("~/testing4", hist_cov = hist_cov)
+
+
+plot_cast_ts("~/testing4")
+plot_cov_RMSE_mod_spp("~/testing4")
+plot_err_lead_spp_mods("~/testing4")
+
+plot_cast_point("~/testing4", with_census = TRUE)
+plot_cast_point("~/testing4")
+
+
+ok, so i like the idea, but the execution just isn't quite right
+i'm pulling the plug on pass and call for right now.
+work this out later
+
 
 
 # to do
@@ -8,6 +32,9 @@ main = "~/testing"
 # update vignettes
 # add morgans model
 
+casts should be saved out as tmnt_type = tmnt_type, rather than 
+level = tmnt_type
+will need to make the column name matching flexible
 
 funcitons to test
 all the models (now in prefab_models
@@ -50,6 +77,14 @@ start_newmoon is now start_moon
 #  if not, it's a hindcast)
 #
 # hindcasts are now not skipping from incomplete/missed samples 
+work to get the arg_checks arg passed through the code cleanly!
+
+some basic utilities and
+the prefab model functions dont have arg_checks capability, intentionally
+
+
+put in a toggle to turn off arg checking at the top level and down thru?
+
 
 
 # future ideas

@@ -42,15 +42,13 @@ This set of functions provides utility for passing named
   \code{\link{formals}} of \code{child}.
 }
 \details{
-Arguments are evaluated in the environment they were created to 
- so that depdencies which have been removed through passing down into
- \code{child} do not cause the evaluation to break. Evaluating the 
- arguments in a different (child) environment can be done through 
- running the code within a child function and passing the updated 
- arguments through \code{...}. \cr \cr
- Arguments can be set to \code{NULL}, even if that's not the default,
- and they will be retained as part of the named arguments \code{list} to
- ensure that they are, in fact, used as \code{NULL}. \cr \cr
+Arguments can be updated from the values input to the parents 
+ (when values change in the parent before the child is called) or added to
+ the parent arguments (when the argument is defined within the parent)
+ through \code{...}. \cr \cr
+ Arguments can be set to \code{NULL}, even if that's not the 
+ default, and they will be retained as part of the named arguments 
+ \code{list} to ensure that they are, in fact, used as \code{NULL}. \cr \cr
  Use of \code{\link[DesignLibrary]{match.call.defaults}} ensures that
  arguments left as defaults are passed along.
 }

@@ -4,7 +4,8 @@
 \alias{create}
 \title{Create a specific folder}
 \usage{
-create(path = NULL, dir_level = NULL, quiet = FALSE)
+create(path = NULL, dir_level = NULL, quiet = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{path}{\code{character} vector of the folder paths.}
@@ -14,6 +15,15 @@ hierarchy at which the folders will exist or the folder names. For the
 purposes of messaging and not inherently required to be non-\code{NULL}.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{NULL}.

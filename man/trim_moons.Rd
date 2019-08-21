@@ -6,7 +6,7 @@
 \usage{
 trim_moons(moons = NULL, target_moons = NULL,
   retain_target_moons = TRUE, target_cols = c("newmoonnumber",
-  "newmoondate", "period", "censusdate"))
+  "newmoondate", "period", "censusdate"), arg_checks = TRUE)
 }
 \arguments{
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
@@ -20,6 +20,15 @@ drop or retain based on \code{retain_target_moons}.}
 or retained (\code{retain_target_moons = TRUE})}
 
 \item{target_cols}{\code{character} vector of columns to retain.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{moons} and a \code{data.frame} but trimmed.

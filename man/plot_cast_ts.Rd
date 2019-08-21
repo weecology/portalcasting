@@ -6,14 +6,15 @@
 \alias{plot_cast_ts_ylab}
 \title{Visualize a forecast or hindcast}
 \usage{
-plot_cast_ts(main = ".", species_id = "total", level = "Controls",
-  cast_type = "forecast", cast_date = NULL, model = "Ensemble",
-  start_moon = 300, add_obs = TRUE)
+plot_cast_ts(main = ".", species_id = "total",
+  tmnt_type = "Controls", cast_type = "forecast", cast_date = NULL,
+  model = "Ensemble", start_moon = 300, add_obs = TRUE,
+  arg_checks = TRUE)
 
-plot_cast_ts_xaxis(main = ".", rangex)
+plot_cast_ts_xaxis(main = ".", rangex, arg_checks = TRUE)
 
-plot_cast_ts_ylab(main = ".", level = "Controls",
-  species_id = "total", model = "Ensemble")
+plot_cast_ts_ylab(main = ".", tmnt_type = "Controls",
+  species_id = "total", model = "Ensemble", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -22,8 +23,8 @@ the directory tree.}
 \item{species_id}{\code{character} value of the species code or 
 \code{"total"} for the total across species.}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}).}
+\item{tmnt_type}{\code{character} value of the level of interest 
+(\code{"All"} or \code{"Controls"}).}
 
 \item{cast_type}{\code{character} value of the type of -cast of model. Used
 to select the file in the predictions subdirectory. Currently only 
@@ -40,6 +41,15 @@ the minimum x value for the plot.}
 
 \item{add_obs}{\code{logical} indicator if values observed during the 
 -cast time should be added (default is \code{TRUE}).}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{rangex}{\code{integer}-conformable vector of two values corresponding
 to the minimum and maximum newmoonnumbers plotted.}

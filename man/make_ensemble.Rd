@@ -4,7 +4,8 @@
 \alias{make_ensemble}
 \title{Create the ensemble model from all other forecasts}
 \usage{
-make_ensemble(all_casts, main = ".", confidence_level = 0.9)
+make_ensemble(all_casts, main = ".", confidence_level = 0.9,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{all_casts}{\code{data.frame} of all of the forecasts to be 
@@ -15,6 +16,15 @@ the directory tree.}
 
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 Forecast abundance table for the ensemble model.

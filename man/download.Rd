@@ -12,20 +12,22 @@
 download(name = NULL, type = NULL, url = NULL,
   concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
   sep_char = ".", main = ".", specific_sub = "raw", quiet = FALSE,
-  verbose = FALSE, cleanup = TRUE, NULLname = FALSE)
+  verbose = FALSE, cleanup = TRUE, NULLname = FALSE,
+  arg_checks = TRUE)
 
-unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE)
+unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE,
+  arg_checks = TRUE)
 
-unzip_destins(name = NULL, zip_destin, main = ".")
+unzip_destins(name = NULL, zip_destin, main = ".", arg_checks = TRUE)
 
 download_message(name = NULL, type = NULL, url = NULL,
-  rec_version = NULL, quiet = FALSE)
+  rec_version = NULL, quiet = FALSE, arg_checks = TRUE)
 
 download_url(type = NULL, url = NULL, concept_rec_id = NULL,
-  rec_version = "latest", rec_id = NULL)
+  rec_version = "latest", rec_id = NULL, arg_checks = TRUE)
 
 download_destin(name = NULL, source_url, main = ".",
-  specific_sub = "raw", sep_char = ".")
+  specific_sub = "raw", sep_char = ".", arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the component's name, used to create
@@ -77,6 +79,15 @@ subdirectory should be removed at the end of the process.}
 
 \item{NULLname}{\code{logical} indicator if \code{name} should be kept as
 \code{NULL}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{zip_destin}{\code{character} value of the destination of the 
 download of the zip, which is to be unzipped.}

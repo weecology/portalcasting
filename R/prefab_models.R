@@ -18,7 +18,7 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param level \code{character} value name of the type of plots included 
+#' @param tmnt_type \code{character} value name of the type of plots included 
 #'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param quiet \code{logical} value indicating if the function should be 
@@ -41,11 +41,12 @@
 #' 
 #' @export
 #'
-AutoArima <- function(main = ".", level = "All", quiet = FALSE){
+AutoArima <- function(main = ".", tmnt_type = "All", quiet = FALSE){
   check_args()
-  messageq(paste0("### Fitting AutoArima model for ", level, " ###"), quiet)
+  msg <- paste0("### Fitting AutoArima model for ", tmnt_type, " ###")
+  messageq(msg, quiet)
 
-  abundances <- read_rodents(main, level = tolower(level))
+  abundances <- read_rodents_table(main, tmnt_type = tolower(tmnt_type))
   metadata <- read_metadata(main)
  
   nmoons <- length(metadata$rodent_cast_newmoons)
@@ -82,7 +83,7 @@ AutoArima <- function(main = ".", level = "All", quiet = FALSE){
                          castyear = metadata$rodent_cast_years, 
                          newmoonnumber = metadata$rodent_cast_newmoons,
                          currency = "abundance", model = "AutoArima", 
-                         level = level, species = ss, estimate = estimate, 
+                         level = tmnt_type, species = ss, estimate = estimate, 
                          LowerPI = LowerPI, UpperPI = UpperPI, 
                          fit_start_newmoon = min(abundances$newmoon),
                          fit_end_newmoon = max(abundances$newmoon),
@@ -90,7 +91,7 @@ AutoArima <- function(main = ".", level = "All", quiet = FALSE){
                          stringsAsFactors = FALSE)
 
     aic_s <- data.frame(date = metadata$cast_date, currency = "abundance", 
-                        model = "AutoArima", level = level, species = ss, 
+                        model = "AutoArima", level = tmnt_type, species = ss, 
                         aic = model_aic, 
                         fit_start_newmoon = min(abundances$newmoon),
                         fit_end_newmoon = max(abundances$newmoon),
@@ -117,7 +118,7 @@ AutoArima <- function(main = ".", level = "All", quiet = FALSE){
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param level \code{character} value name of the type of plots included 
+#' @param tmnt_type \code{character} value name of the type of plots included 
 #'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param quiet \code{logical} value indicating if the function should be 
@@ -140,11 +141,11 @@ AutoArima <- function(main = ".", level = "All", quiet = FALSE){
 #' 
 #' @export
 #'
-ESSS <- function(main = ".", level = "All", quiet = FALSE){
+ESSS <- function(main = ".", tmnt_type = "All", quiet = FALSE){
   check_args()
-  messageq(paste0("### Fitting ESSS model for ", level, " ###"), quiet)
+  messageq(paste0("### Fitting ESSS model for ", tmnt_type, " ###"), quiet)
 
-  abundances <- read_rodents(main, level = tolower(level))
+  abundances <- read_rodents_table(main, tmnt_type = tolower(tmnt_type))
   metadata <- read_metadata(main)
 
   nmoons <- length(metadata$rodent_cast_newmoons)
@@ -182,7 +183,7 @@ ESSS <- function(main = ".", level = "All", quiet = FALSE){
                          castyear = metadata$rodent_cast_years, 
                          newmoonnumber = metadata$rodent_cast_newmoons,
                          currency = "abundance", model = "ESSS", 
-                         level = level, species = ss, estimate = estimate, 
+                         level = tmnt_type, species = ss, estimate = estimate, 
                          LowerPI = LowerPI, UpperPI = UpperPI, 
                          fit_start_newmoon = min(abundances$newmoon),
                          fit_end_newmoon = max(abundances$newmoon),
@@ -190,7 +191,7 @@ ESSS <- function(main = ".", level = "All", quiet = FALSE){
                          stringsAsFactors = FALSE)
 
     aic_s <- data.frame(date = metadata$cast_date, currency = "abundance", 
-                        model = "ESSS", level = level, species = ss, 
+                        model = "ESSS", level = tmnt_type, species = ss, 
                         aic = model_aic, 
                         fit_start_newmoon = min(abundances$newmoon),
                         fit_end_newmoon = max(abundances$newmoon),
@@ -218,7 +219,7 @@ ESSS <- function(main = ".", level = "All", quiet = FALSE){
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param level \code{character} value name of the type of plots included 
+#' @param tmnt_type \code{character} value name of the type of plots included 
 #'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param quiet \code{logical} value indicating if the function should be 
@@ -241,10 +242,10 @@ ESSS <- function(main = ".", level = "All", quiet = FALSE){
 #'
 #' @export
 #'
-nbGARCH <- function(main = ".", level = "All", quiet = FALSE){
+nbGARCH <- function(main = ".", tmnt_type = "All", quiet = FALSE){
   check_args()
-  messageq(paste0("### Fitting nbGARCH model for ", level, " ###"), quiet)
-  abundances <- read_rodents(main, level = tolower(level))
+  messageq(paste0("### Fitting nbGARCH model for ", tmnt_type, " ###"), quiet)
+  abundances <- read_rodents_table(main, tmnt_type = tolower(tmnt_type))
   metadata <- read_metadata(main)
 
   nmoons <- length(metadata$rodent_cast_newmoons)
@@ -292,7 +293,7 @@ nbGARCH <- function(main = ".", level = "All", quiet = FALSE){
                          castyear = metadata$rodent_cast_years, 
                          newmoonnumber = metadata$rodent_cast_newmoons,
                          currency = "abundance", model = "nbGARCH", 
-                         level = level, species = ss, estimate = estimate, 
+                         level = tmnt_type, species = ss, estimate = estimate, 
                          LowerPI = LowerPI, UpperPI = UpperPI, 
                          fit_start_newmoon = min(abundances$newmoon),
                          fit_end_newmoon = max(abundances$newmoon),
@@ -300,7 +301,7 @@ nbGARCH <- function(main = ".", level = "All", quiet = FALSE){
                          stringsAsFactors = FALSE)
 
     aic_s <- data.frame(date = metadata$cast_date, currency = "abundance", 
-                        model = "nbGARCH", level = level, species = ss, 
+                        model = "nbGARCH", level = tmnt_type, species = ss, 
                         aic = model_aic, 
                         fit_start_newmoon = min(abundances$newmoon),
                         fit_end_newmoon = max(abundances$newmoon),
@@ -331,7 +332,7 @@ nbGARCH <- function(main = ".", level = "All", quiet = FALSE){
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param level \code{character} value name of the type of plots included 
+#' @param tmnt_type \code{character} value name of the type of plots included 
 #'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param quiet \code{logical} value indicating if the function should be 
@@ -354,10 +355,10 @@ nbGARCH <- function(main = ".", level = "All", quiet = FALSE){
 #'
 #' @export
 #'
-nbsGARCH <- function(main = ".", level = "All", quiet = FALSE){
+nbsGARCH <- function(main = ".", tmnt_type = "All", quiet = FALSE){
   check_args()
-  messageq(paste0("### Fitting nbGARCH model for ", level, " ###"), quiet)
-  abundances <- read_rodents(main, level = tolower(level))
+  messageq(paste0("### Fitting nbGARCH model for ", tmnt_type, " ###"), quiet)
+  abundances <- read_rodents_table(main, tmnt_type = tolower(tmnt_type))
   metadata <- read_metadata(main)
   moons <- read_moons(main)
   moon_foys <- foy(moons$newmoondate)
@@ -417,7 +418,7 @@ nbsGARCH <- function(main = ".", level = "All", quiet = FALSE){
                          castyear = metadata$rodent_cast_years, 
                          newmoonnumber = metadata$rodent_cast_newmoons,
                          currency = "abundance", model = "nbsGARCH", 
-                         level = level, species = ss, estimate = estimate, 
+                         level = tmnt_type, species = ss, estimate = estimate, 
                          LowerPI = LowerPI, UpperPI = UpperPI, 
                          fit_start_newmoon = min(abundances$newmoon),
                          fit_end_newmoon = max(abundances$newmoon),
@@ -425,7 +426,7 @@ nbsGARCH <- function(main = ".", level = "All", quiet = FALSE){
                          stringsAsFactors = FALSE)
 
     aic_s <- data.frame(date = metadata$cast_date, currency = "abundance", 
-                        model = "nbsGARCH", level = level, species = ss, 
+                        model = "nbsGARCH", level = tmnt_type, species = ss, 
                         aic = model_aic, 
                         fit_start_newmoon = min(abundances$newmoon),
                         fit_end_newmoon = max(abundances$newmoon),
@@ -456,7 +457,7 @@ nbsGARCH <- function(main = ".", level = "All", quiet = FALSE){
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param level \code{character} value name of the type of plots included 
+#' @param tmnt_type \code{character} value name of the type of plots included 
 #'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param lag \code{integer} (or integer \code{numeric}) of the lag time to
@@ -482,11 +483,13 @@ nbsGARCH <- function(main = ".", level = "All", quiet = FALSE){
 #' 
 #' @export
 #'
-pevGARCH <- function(main = ".", level = "All", lag = 6, quiet = FALSE){
+pevGARCH <- function(main = ".", tmnt_type = "All", lag = 6, quiet = FALSE){
   check_args()
-  messageq(paste0("### Fitting pevGARCH model for ", level, " ###"), quiet)
 
-  abundances <- read_rodents(main, level = tolower(level))
+  msg <- paste0("### Fitting pevGARCH model for ", tmnt_type, " ###")
+  messageq(msg, quiet)
+
+  abundances <- read_rodents_table(main, tmnt_type = tolower(tmnt_type))
   metadata <- read_metadata(main)
   covariates <- read_covariates(main)
 
@@ -586,7 +589,7 @@ pevGARCH <- function(main = ".", level = "All", lag = 6, quiet = FALSE){
                          castyear = metadata$rodent_cast_years, 
                          newmoonnumber = metadata$rodent_cast_newmoons,
                          currency = "abundance", model = "pevGARCH", 
-                         level = level, species = ss, estimate = estimate, 
+                         level = tmnt_type, species = ss, estimate = estimate, 
                          LowerPI = LowerPI, UpperPI = UpperPI, 
                          fit_start_newmoon = min(abundances$newmoon),
                          fit_end_newmoon = max(abundances$newmoon),
@@ -594,7 +597,7 @@ pevGARCH <- function(main = ".", level = "All", lag = 6, quiet = FALSE){
                          stringsAsFactors = FALSE)
 
     aic_s <- data.frame(date = metadata$cast_date, currency = "abundance", 
-                        model = "pevGARCH", level = level, species = ss, 
+                        model = "pevGARCH", level = tmnt_type, species = ss, 
                         aic = spec_aic, 
                         fit_start_newmoon = min(abundances$newmoon),
                         fit_end_newmoon = max(abundances$newmoon),

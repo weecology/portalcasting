@@ -4,13 +4,13 @@
 \alias{ESSS}
 \title{Exponential Smoothing State Space model for Portal Predictions}
 \usage{
-ESSS(main = ".", level = "All", quiet = FALSE)
+ESSS(main = ".", tmnt_type = "All", quiet = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{level}{\code{character} value name of the type of plots included 
+\item{tmnt_type}{\code{character} value name of the type of plots included 
 (\code{"All"} or \code{"Controls"}).}
 
 \item{quiet}{\code{logical} value indicating if the function should be 

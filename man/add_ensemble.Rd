@@ -5,7 +5,7 @@
 \title{Add ensemble model to forecasts}
 \usage{
 add_ensemble(main = ".", end_moon = NULL, cast_date = Sys.Date(),
-  confidence_level = 0.9, quiet = FALSE)
+  confidence_level = 0.9, quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -24,6 +24,15 @@ summarizing model output. Must be between \code{0} and \code{1}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 Forecast abundance table for the ensemble model.

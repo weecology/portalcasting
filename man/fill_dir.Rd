@@ -8,11 +8,11 @@
 \alias{fill_raw}
 \title{Fill a forecasting directory with basic components.}
 \usage{
-fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.9, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
+fill_dir(main = ".", models = prefab_models(), tmnt_types = c("all",
+  "controls"), end_moon = NULL, lead_time = 12,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
   raw_path_predictions = "portalPredictions/predictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
@@ -23,9 +23,10 @@ fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
-fill_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
+fill_data(main = ".", tmnt_types = c("all", "controls"),
+  end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
   hist_covariates = TRUE, cast_covariates = TRUE,
   raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
@@ -37,17 +38,18 @@ fill_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 fill_models(main = ".", models = prefab_models(), controls_m = NULL,
-  quiet = FALSE, overwrite = TRUE)
+  quiet = FALSE, overwrite = TRUE, arg_checks = TRUE)
 
 fill_predictions(main = ".",
   raw_path_predictions = "portalPredictions/predictions",
-  quiet = FALSE, verbose = FALSE, overwrite = TRUE)
+  quiet = FALSE, verbose = FALSE, overwrite = TRUE,
+  arg_checks = TRUE)
 
 fill_raw(main = ".", downloads = zenodo_downloads(c("1215988",
-  "833438")), quiet = FALSE, cleanup = TRUE)
+  "833438")), quiet = FALSE, cleanup = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -55,6 +57,9 @@ the directory tree.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to 
 include.}
+
+\item{tmnt_types}{\code{character} vector of name(s) of rodents 
+dataset(s) to include.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
@@ -130,10 +135,9 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
-\item{controls_r}{Control \code{list} (from 
-\code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+\item{controls_r}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_control}} for details.}
+rodents tables. See \code{\link{rodents_controls}} for details.}
 
 \item{control_cdl}{\code{list} of specifications for the download, which
 are sent to \code{\link{NMME_urls}} to create the specific URLs. See
@@ -163,6 +167,15 @@ data output.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
 covariate lag time used in any model.}

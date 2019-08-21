@@ -6,13 +6,16 @@
 \alias{check_arg_list}
 \title{Check a function's arguments' values for validity}
 \usage{
-check_args()
+check_args(arg_checks = TRUE)
 
 check_arg(arg_name, arg_value, fun_name = NULL)
 
 check_arg_list()
 }
 \arguments{
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked.}
+
 \item{arg_name}{\code{character} value of the argument name.}
 
 \item{arg_value}{Input value for the argument.}
@@ -178,7 +181,6 @@ Argument details used for checking are produced simply via
   \code{controls_m},
   \code{controls_r},
   \code{downloads},
-  \code{in_args},
   \code{rodents}.
 
  Must be length-2 \code{list}s with elements named \code{"forecast"} 

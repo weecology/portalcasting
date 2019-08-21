@@ -4,7 +4,7 @@
 \alias{verify}
 \title{Verify that a required folder exists}
 \usage{
-verify(path = NULL, dir_level = NULL)
+verify(path = NULL, dir_level = NULL, arg_checks = TRUE)
 }
 \arguments{
 \item{path}{\code{character} vector of the folder paths.}
@@ -12,6 +12,15 @@ verify(path = NULL, dir_level = NULL)
 \item{dir_level}{\code{character} vector of the names of the levels in the
 hierarchy at which the folders will exist or the folder names. For the
 purposes of messaging and not inherently required to be non-\code{NULL}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 Throws an error if any of the folders do not exist, otherwise

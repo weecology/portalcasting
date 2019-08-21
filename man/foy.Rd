@@ -4,11 +4,20 @@
 \alias{foy}
 \title{Calculate the fraction of the year from a date}
 \usage{
-foy(dates = NULL)
+foy(dates = NULL, arg_checks = TRUE)
 }
 \arguments{
 \item{dates}{\code{Date}(s) or \code{Date}-conformable value(s) to be 
 converted to the fraction of the year.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{numeric} value(s) of the fraction of the year.

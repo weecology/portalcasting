@@ -4,16 +4,20 @@
 \alias{prep_rodents}
 \title{Prepare a list of rodents data tables for forecasting}
 \usage{
-prep_rodents(main = ".", moons = prep_moons(main = main),
-  end_moon = NULL, start_moon = 217, controls_r = rodents_controls(),
+prep_rodents(main = ".", moons = NULL, tmnt_types = c("all",
+  "controls"), end_moon = NULL, start_moon = 217, controls_r = NULL,
   ref_species = all_species(), quiet = FALSE, save = TRUE,
-  overwrite = TRUE)
+  overwrite = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
+
+\item{tmnt_types}{\code{character} values of the treatment 
+types (currently \code{"all"} or \code{"controls"}) used to enforce 
+certain arguments in data creation (see \code{\link{prep_rodents_table}}).}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
@@ -23,10 +27,10 @@ equates to the most recently included sample.}
 of the first sample to be included. Default value is \code{217}, 
 corresponding to \code{1995-01-01}.}
 
-\item{controls_r}{Control \code{list} (from 
-\code{\link{rodents_control}}) or \code{list} of control \code{list}s 
-(from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_control}} for details.}
+\item{controls_r}{Control \code{list} or \code{list} of control 
+\code{list}s from \code{\link{rodents_controls}} specifying the 
+structuring of the rodents tables. See \code{\link{rodents_controls}} for 
+details.}
 
 \item{ref_species}{\code{character}-valued vector of all possible species 
 names that could be used should be set up via \code{\link{all_species}}.}
@@ -39,6 +43,15 @@ be saved out.}
 
 \item{overwrite}{\code{logical} indicator of whether or not the existing
 files should be updated (most users should leave as \code{TRUE}).}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{list} of \code{data.frame}s, one for each data subset

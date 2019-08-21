@@ -5,11 +5,11 @@
 \alias{last_newmoon}
 \title{Determine specific newmoon numbers}
 \usage{
-target_newmoons(main = ".", moons = prep_moons(main = main),
-  end_moon = NULL, lead_time = 12, cast_date = Sys.Date())
+target_newmoons(main = ".", moons = NULL, end_moon = NULL,
+  lead_time = 12, cast_date = Sys.Date(), arg_checks = TRUE)
 
-last_newmoon(main = ".", moons = prep_moons(main = main),
-  cast_date = Sys.Date())
+last_newmoon(main = ".", moons = NULL, cast_date = Sys.Date(),
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -27,6 +27,15 @@ number of timesteps forward a cast will cover.}
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{target_newmoons}: \code{numeric} vector of the newmoon numbers 

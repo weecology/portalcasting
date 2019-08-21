@@ -5,7 +5,7 @@
 \title{Combine a historical table and a cast table}
 \usage{
 combine_hist_and_cast(hist_tab = NULL, cast_tab = NULL,
-  winner = "hist")
+  winner = "hist", arg_checks = TRUE)
 }
 \arguments{
 \item{hist_tab, cast_tab}{A pair of \code{data.frame}s with the same columns
@@ -14,6 +14,15 @@ includig a code{date} column of \code{Date}s, which is used to align them.}
 \item{winner}{\code{character} value either {"hist"} or \code{"cast"} to
 decide who wins any ties. In the typical portalcasting space, this is 
 kept at its default value throughout.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.

@@ -4,7 +4,7 @@
 \alias{measure_cast_error}
 \title{Summarize a table of -casts to -cast-level errors}
 \usage{
-measure_cast_error(casts, min_observed = 1)
+measure_cast_error(casts, min_observed = 1, arg_checks = TRUE)
 }
 \arguments{
 \item{casts}{\code{data.frame} of fore- or hindcasts with observed values 
@@ -14,6 +14,15 @@ and errors included.}
 values needed for a -cast to be retained in the output table. Default is
 \code{1}, which returns all -casts with any observations. To include all
 -casts (even those without any evaluations), set to \code{0}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{data.frame} of errors summarized to the -cast-level.
@@ -26,7 +35,7 @@ Summarize error across all of the data points within each
  \donttest{
   setup_dir()
    casts <- read_casts()
-   casts_a <- select_casts(casts, level = "All")
+   casts_a <- select_casts(casts, tmnt_types = "All")
    casts_a <- append_observed_to_cast(casts_a)
    measure_cast_error(casts_a)
 }

@@ -8,37 +8,39 @@
 \alias{save_cast_cov_csv}
 \title{Cast the covariates}
 \usage{
-cast_covariates(main = ".", moons = prep_moons(main = main),
-  hist_cov = NULL, end_moon = NULL, lead_time = 12, min_lag = 6,
+cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
+  end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = climate_dl_control(), quiet = FALSE)
+  control_cdl = climate_dl_control(), quiet = FALSE,
+  arg_checks = TRUE)
 
-prep_cast_covariates(main = ".", moons = prep_moons(main = main),
-  hist_cov = NULL, end_moon = NULL, lead_time = 12, min_lag = 6,
+prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
+  end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
   append_cast_csv = TRUE, control_cdl = climate_dl_control(),
-  quiet = FALSE, save = TRUE, overwrite = TRUE)
+  quiet = FALSE, save = TRUE, overwrite = TRUE, arg_checks = TRUE)
 
-cast_ndvi(main = ".", moons = prep_moons(main = main),
-  hist_cov = NULL, lead_time = 12, min_lag = 6)
+cast_ndvi(main = ".", moons = NULL, hist_cov = NULL,
+  lead_time = 12, min_lag = 6, arg_checks = TRUE)
 
-cast_weather(main = ".", moons = prep_moons(main = main),
-  hist_cov = NULL, end_moon = NULL, lead_time = 12, min_lag = 6,
+cast_weather(main = ".", moons = NULL, hist_cov = NULL,
+  end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = climate_dl_control(), quiet = FALSE)
+  control_cdl = climate_dl_control(), quiet = FALSE,
+  arg_checks = TRUE)
 
-save_cast_cov_csv(main = ".", moons = prep_moons(main = main),
-  end_moon = NULL, cast_date = Sys.Date(), cast_cov = NULL,
-  append_cast_csv = TRUE, raw_path_archive = "portalPredictions",
+save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
+  cast_date = Sys.Date(), cast_cov = NULL, append_cast_csv = TRUE,
+  raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   source_name = "current_archive", quiet = FALSE, save = TRUE,
-  overwrite = TRUE)
+  overwrite = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -83,6 +85,15 @@ specific URLs. See \code{\link{climate_dl_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{append_cast_csv}{\code{logical} indicator controlling if the new 
 cast covariates should be appended to the historical casts for the

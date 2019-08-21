@@ -4,8 +4,9 @@
 \alias{cast_window}
 \title{Determine the start and end calendar dates for a cast window}
 \usage{
-cast_window(main = ".", moons = prep_moons(main = main),
-  cast_date = Sys.Date(), lead_time = 12, min_lag = 6)
+cast_window(main = ".", moons = read_moons(main = main),
+  cast_date = Sys.Date(), lead_time = 12, min_lag = 6,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -22,6 +23,15 @@ number of timesteps forward a cast will cover.}
 
 \item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
 covariate lag time used in any model.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 Named \code{list} with elements \code{start} and \code{end},

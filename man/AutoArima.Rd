@@ -5,13 +5,13 @@
 \title{Flexible Auto-Regressive Integrated Moving Average model for Portal 
  Predictions}
 \usage{
-AutoArima(main = ".", level = "All", quiet = FALSE)
+AutoArima(main = ".", tmnt_type = "All", quiet = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{level}{\code{character} value name of the type of plots included 
+\item{tmnt_type}{\code{character} value name of the type of plots included 
 (\code{"All"} or \code{"Controls"}).}
 
 \item{quiet}{\code{logical} value indicating if the function should be 

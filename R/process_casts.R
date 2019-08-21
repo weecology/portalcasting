@@ -13,8 +13,8 @@
 #'  \code{"total"} for the total across species) to be selected from or 
 #'  \code{NULL} to include all species and the total.
 #'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'  or \code{"Controls"}).
+#' @param tmnt_type \code{character} value of the level of interest 
+#'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param cast_type \code{character} value of the type of -cast of model. Used
 #'  to select the file in the predictions subdirectory. Currently only 
@@ -36,6 +36,15 @@
 #'  \code{plot_cast_point} is not yet reliable for 
 #'  \code{cast_type = "hindcast"}.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{character} vector of length \code{topx} of the species codes
 #'  (see \code{\link{rodent_species}}) of the selected species.
 #'
@@ -43,10 +52,11 @@
 #'
 select_most_ab_spp <- function(topx = 3, main = ".",
                                species = base_species(),
-                               level = "Controls", cast_type = "forecasts", 
+                               tmnt_type = "Controls", 
+                               cast_type = "forecasts", 
                                cast_date = NULL, model = "Ensemble", 
-                               lead = 1, from_date = NULL){
-  check_args()
+                               lead = 1, from_date = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type)
   }
@@ -56,7 +66,7 @@ select_most_ab_spp <- function(topx = 3, main = ".",
     }
   }
   metadata <- read_data(main, "metadata")
-  obs <- read_rodents(main, tolower(level))
+  obs <- read_rodents_table(main, tolower(tmnt_type))
   moons <- read_data(main, "moons")
   nmdates <- as.Date(as.character(moons$newmoondate))
   most_recent_nm_spot <- max(which(nmdates <= from_date))
@@ -65,8 +75,8 @@ select_most_ab_spp <- function(topx = 3, main = ".",
   to_include <- which(cast_nms_io)[lead]
   newmoonnumbers <- metadata$rodent_cast_newmoons[to_include]
   pred <- read_cast(main, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, models = model,
-                      target_moons = newmoonnumbers)  
+          select_casts(species = species, tmnt_types = tolower(tmnt_type), 
+                       models = model, target_moons = newmoonnumbers)  
   pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
 }
 
@@ -91,26 +101,36 @@ select_most_ab_spp <- function(topx = 3, main = ".",
 #' @param add_lead \code{logical} indicator if the \code{lead} column should
 #'  be added to the output as well. 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{casts} \code{data.frame} with additional columns.
 #' 
 #' @examples
 #'  \donttest{
 #'   setup_dir()
 #'   casts <- read_casts()
-#'   casts_a <- select_casts(casts, level = "All")
+#'   casts_a <- select_casts(casts, tmnt_types = "All")
 #'   casts_a <- append_observed_to_cast(casts_a) 
 #'  }
 #'
 #' @export
 #'
 append_observed_to_cast <- function(casts, main = ".", add_error = TRUE,
-                                    add_in_window = TRUE, add_lead = TRUE){
-  check_args()
+                                    add_in_window = TRUE, add_lead = TRUE, 
+                                    arg_checks = TRUE){
+  check_args(arg_checks)
   level <- unique(casts$level)
   if (length(level) != 1){
     stop("`casts` must have (only) one type for `level` column")
   }
-  obs <- read_rodents(main, tolower(level)) 
+  obs <- read_rodents_table(main, tolower(level)) 
   colnames(obs)[which(colnames(obs) == "NA.")] <- "NA"
   casts$observed <- NA
   for(i in 1:nrow(casts)){
@@ -148,21 +168,30 @@ append_observed_to_cast <- function(casts, main = ".", add_error = TRUE,
 #'  \code{1}, which returns all -casts with any observations. To include all
 #'  -casts (even those without any evaluations), set to \code{0}. 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{data.frame} of errors summarized to the -cast-level. 
 #' 
 #' @examples
 #'  \donttest{
 #'   setup_dir()
 #'    casts <- read_casts()
-#'    casts_a <- select_casts(casts, level = "All")
+#'    casts_a <- select_casts(casts, tmnt_types = "All")
 #'    casts_a <- append_observed_to_cast(casts_a)
 #'    measure_cast_error(casts_a)
 #' }
 #'
 #' @export
 #'
-measure_cast_error <- function(casts, min_observed = 1){
-  check_args()
+measure_cast_error <- function(casts, min_observed = 1, arg_checks = TRUE){
+  check_args(arg_checks)
   groupcols <- c("model", "species", "level", "date", "initial_newmoon")
   cols <- which(colnames(casts) %in% groupcols)
   castgroup <- apply(casts[ ,cols], 1, paste, collapse = "_")
@@ -221,8 +250,9 @@ measure_cast_error <- function(casts, min_observed = 1){
 #'  \code{"total"} for the total across species. If \code{NULL}, all species 
 #'  and "total" are returned. 
 #'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'  or \code{"Controls"}). If \code{NULL}, all levels are returned.
+#' @param tmnt_types \code{character} value(s) of the level(s) of interest 
+#'  (\code{"All"} or \code{"Controls"}). If \code{NULL}, all levels are 
+#'  returned.
 #'
 #' @param models \code{character} value(s) of the name(s) (or 
 #'  \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
@@ -230,6 +260,15 @@ measure_cast_error <- function(casts, min_observed = 1){
 #'
 #' @param target_moons \code{integer}-conformable value(s) of the 
 #'  newmoonnumber(s) of interest. If \code{NULL}, all newmoons are returned.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'
 #' @return \code{data.frame} of trimmed fore- or hindcasts.
 #' 
@@ -242,9 +281,10 @@ measure_cast_error <- function(casts, min_observed = 1){
 #'
 #' @export
 #'
-select_casts <- function(casts, species = NULL, level = NULL, models = NULL, 
-                         target_moons = NULL){
-  check_args()
+select_casts <- function(casts, species = NULL, tmnt_types = NULL, 
+                         models = NULL, target_moons = NULL, 
+                         arg_checks = TRUE){
+  check_args(arg_checks)
   incl_species <- rep(TRUE, nrow(casts))
   incl_level <- rep(TRUE, nrow(casts))
   incl_model <- rep(TRUE, nrow(casts))
@@ -254,8 +294,8 @@ select_casts <- function(casts, species = NULL, level = NULL, models = NULL,
   if (!is.null(species)){
     incl_species <- casts[ , "species"] %in% species
   }
-  if (!is.null(level)){
-    incl_level <- casts[ , "level"] %in% level
+  if (!is.null(tmnt_types)){
+    incl_level <- casts[ , "level"] %in% tmnt_types
   }
   if (!is.null(models)){
     incl_model <- casts[ , "model"] %in% models
@@ -293,6 +333,15 @@ select_casts <- function(casts, species = NULL, level = NULL, models = NULL,
 #'
 #' @param verbose \code{logical} indicator if all validation errors should
 #'  be reported.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'  
 #' @return \code{data.frame} of requested fore- or hindcast(s).
 #' 
@@ -306,7 +355,8 @@ select_casts <- function(casts, species = NULL, level = NULL, models = NULL,
 #' @export
 #'
 read_cast <- function(main = ".", cast_type = "forecast", 
-                       cast_date = NULL, verbose = FALSE){
+                      cast_date = NULL, verbose = FALSE, 
+                      arg_checks = TRUE){
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type)
   }
@@ -331,7 +381,8 @@ read_cast <- function(main = ".", cast_type = "forecast",
 #' @export
 #'
 read_casts <- function(main = ".", cast_type = "forecast", 
-                       cast_dates = NULL, verbose = FALSE){
+                       cast_dates = NULL, verbose = FALSE, 
+                       arg_checks = TRUE){
   if (is.null(cast_dates)){
     pfolderpath <- sub_paths(main, "predictions")
     pfiles <- list.files(pfolderpath)
@@ -363,6 +414,15 @@ read_casts <- function(main = ".", cast_type = "forecast",
 #' @param verbose \code{logical} indicator if all validation errors should
 #'  be reported.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{verify_cast}: \code{cast} as read in (as long as it is 
 #'  valid). \cr \cr
 #'  \code{cast_is_valid}: \code{logical} of if the -cast is formatted 
@@ -370,8 +430,8 @@ read_casts <- function(main = ".", cast_type = "forecast",
 #' 
 #' @export
 #'
-verify_cast <- function(cast, verbose = FALSE){
-  check_args()
+verify_cast <- function(cast, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   if(cast_is_valid(cast, verbose)){
     cast
   }
@@ -381,8 +441,8 @@ verify_cast <- function(cast, verbose = FALSE){
 #'
 #' @export
 #'
-cast_is_valid <- function(cast_to_check, verbose = FALSE){
-  check_args()
+cast_is_valid <- function(cast_to_check, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   is_valid <- TRUE
   violations <- c()
   valid_columns1 <- c("date", "forecastmonth", "forecastyear", 
@@ -477,6 +537,15 @@ cast_is_valid <- function(cast_to_check, verbose = FALSE){
 #'
 #' @param df \code{data.frame} to have column names converted if needed.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{df} with column names converted if needed.
 #'
 #' @examples
@@ -485,9 +554,9 @@ cast_is_valid <- function(cast_to_check, verbose = FALSE){
 #'
 #' @export
 #'
-column_conformer <- function(df = NULL){
+column_conformer <- function(df = NULL, arg_checks = TRUE){
   return_if_null(df)
-  check_args()
+  check_args(arg_checks)
   cnames <- colnames(df)
   names(df) <- gsub("forecast", "cast", cnames)
   df
@@ -507,6 +576,15 @@ column_conformer <- function(df = NULL){
 #' @param with_census \code{logical} toggle if the plot should include the
 #'   observed data collected during the predicted census.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{Date} of the most recent cast.
 #'
 #' @examples
@@ -518,8 +596,8 @@ column_conformer <- function(df = NULL){
 #' @export
 #'
 most_recent_cast <- function(main = ".", cast_type = "forecast",
-                             with_census = FALSE){
-  check_args()
+                             with_census = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   pfolderpath <- sub_paths(main, "predictions")
   pfiles <- list.files(pfolderpath)
   of_interest1 <- grepl(cast_type, pfiles)
@@ -563,13 +641,23 @@ most_recent_cast <- function(main = ".", cast_type = "forecast",
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return Forecast abundance table for the ensemble model.
 #' 
 #' @export
 #'
 add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(), 
-                         confidence_level = 0.9, quiet = FALSE){
-  check_args()
+                         confidence_level = 0.9, quiet = FALSE, 
+                         arg_checks = TRUE){
+  check_args(arg_checks)
   messageq("Creating ensemble model", quiet)
   temp_dir <- sub_paths(main, "tmp")
   pred_dir <- sub_paths(main, "predictions")
@@ -617,13 +705,23 @@ add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(),
 #'
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #' 
 #' @return Forecast abundance table for the ensemble model.
 #' 
 #' @export
 #'
-make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
-  check_args()
+make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9, 
+                          arg_checks = TRUE){
+  check_args(arg_checks)
   if (length(unique(all_casts$model)) == 1){
     ensemble <- all_casts
     ensemble$model <- "Ensemble"
@@ -680,12 +778,21 @@ make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9){
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{data.frame} of model weights.
 #' 
 #' @export
 #'
-compile_aic_weights <- function(main = "."){
-  check_args()
+compile_aic_weights <- function(main = ".", arg_checks = TRUE){
+  check_args(arg_checks)
   pred_dir <- sub_paths(main, "predictions")
 
   aic_files <- list.files(pred_dir, full.names = TRUE, recursive = TRUE)
@@ -727,15 +834,27 @@ compile_aic_weights <- function(main = "."){
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{list} of [1] \code{"casts"} (the casted abundances)
 #'  and [2] \code{"all_model_aic"} (the model AIC values).
 #'
 #' @export
 #'
-combine_casts <- function(main = ".", moons = prep_moons(main = main),
+combine_casts <- function(main = ".", moons = NULL,
                           end_moon = NULL, 
-                          cast_date = Sys.Date(), quiet = FALSE){
-  check_args()
+                          cast_date = Sys.Date(), quiet = FALSE, 
+                          arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main))
+
+  check_args(arg_checks)
   messageq("Compiling casts", quiet)
   temp_dir <- sub_paths(main, "tmp")
   pred_dir <- sub_paths(main, "predictions")
@@ -784,10 +903,20 @@ combine_casts <- function(main = ".", moons = prep_moons(main = main),
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @export
 #'
-save_cast_output <- function(all, controls, model, main){
-  check_args()
+save_cast_output <- function(all, controls, model, main, 
+                             arg_checks = TRUE){
+  check_args(arg_checks)
   metadata <- read_data(main, "metadata");
   temp_dir <- sub_paths(main, "tmp")
   casts <- rbind(all$cast, controls$cast)

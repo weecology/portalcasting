@@ -4,7 +4,7 @@
 \alias{save_cast_output}
 \title{Save cast output to files}
 \usage{
-save_cast_output(all, controls, model, main)
+save_cast_output(all, controls, model, main, arg_checks = TRUE)
 }
 \arguments{
 \item{all}{Output from a model function (e.g., 
@@ -19,6 +19,15 @@ save_cast_output(all, controls, model, main)
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \description{
 Save out the cast abundances and AIC tables from a given 

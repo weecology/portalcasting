@@ -4,13 +4,22 @@
 \alias{cast0}
 \title{Zero-abundance cast}
 \usage{
-cast0(nmoons = NULL, colname = "pred")
+cast0(nmoons = NULL, colname = "pred", arg_checks = TRUE)
 }
 \arguments{
 \item{nmoons}{\code{integer} number of forecast newmoons.}
 
 \item{colname}{\code{character} name for the predictor column (to match
 variable model output names).}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 Two-element \code{list} of means and interval values for a 

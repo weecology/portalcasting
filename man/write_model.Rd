@@ -6,10 +6,11 @@
 \title{Write the template for a model into model subdirectory}
 \usage{
 write_model(name = NULL, covariatesTF = NULL, lag = NULL,
-  main = ".", quiet = FALSE, overwrite = TRUE, control = NULL)
+  main = ".", quiet = FALSE, overwrite = TRUE, control = NULL,
+  arg_checks = TRUE)
 
 model_template(name = NULL, covariatesTF = FALSE, lag = NULL,
-  main = ".", quiet = FALSE)
+  main = ".", quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}
@@ -35,6 +36,15 @@ covariates; and \code{lag}, a \code{integer} (or integer \code{numeric})
 lag time used for the covariates or \code{NA} if 
 \code{covariatesTF = FALSE}. Only used if the specific valued argument
 is \code{NULL}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{write_mode} \code{\link{write}}s the model script out

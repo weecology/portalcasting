@@ -5,9 +5,10 @@
 \alias{prep_weather_data}
 \title{Prepare historical covariates data}
 \usage{
-prep_hist_covariates(main = ".", end_moon = NULL, quiet = FALSE)
+prep_hist_covariates(main = ".", end_moon = NULL, quiet = FALSE,
+  arg_checks = TRUE)
 
-prep_weather_data(main = ".")
+prep_weather_data(main = ".", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -19,6 +20,15 @@ equates to the most recently included sample.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{prep_hist_covariates}: historical covariate data table as a 

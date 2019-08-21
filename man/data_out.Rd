@@ -5,7 +5,7 @@
 \title{Save data out to a file and return it}
 \usage{
 data_out(dfl = NULL, main = ".", save = TRUE, filename = "x.csv",
-  overwrite = TRUE, quiet = FALSE)
+  overwrite = TRUE, quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{dfl}{\code{data.frame} or YAML \code{list} to be written out.}
@@ -22,6 +22,15 @@ be saved out.}
 overwritten if it exists.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{dfl} as input.

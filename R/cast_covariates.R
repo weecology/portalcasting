@@ -65,6 +65,15 @@
 #' @param save \code{logical} indicator controlling if the output should 
 #'   be saved out.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @details If forecasting from the current newmoon, weather is forecast using 
 #'  \code{\link{cast_weather}} and NDVI is forecast using 
 #'  \code{\link{cast_ndvi}}. If hindcasting from a previous newmoon, the
@@ -95,7 +104,7 @@
 #'
 #' @export
 #'
-cast_covariates <- function(main = ".", moons = prep_moons(main = main),
+cast_covariates <- function(main = ".", moons = NULL,
                             hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                             min_lag = 6, cast_date = Sys.Date(), 
                             raw_path_archive = "portalPredictions",
@@ -103,20 +112,22 @@ cast_covariates <- function(main = ".", moons = prep_moons(main = main),
                             raw_path_cov_cast = "cov_casts", 
                             source_name = "current_archive",
                             control_cdl = climate_dl_control(),
-                            quiet = FALSE){
-  check_args()
+                            quiet = FALSE, arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main))
+  check_args(arg_checks)
   which_last_moon <- max(which(moons$newmoondate < cast_date))
   last_moon <- moons$newmoonnumber[which_last_moon]
   end_moon <- ifnull(end_moon, last_moon)
   if(last_moon == end_moon){
-    weather_cast <- pass_and_call(cast_weather)
-    ndvi_cast <- pass_and_call(cast_ndvi)
+    weather_cast <- pass_and_call(cast_weather, moons = moons)
+    ndvi_cast <- pass_and_call(cast_ndvi, moons = moons)
     cov_cast <- right_join(weather_cast, ndvi_cast, by = "newmoonnumber")
     which_cast_newmoon <- max(which(moons$newmoondate < cast_date))
     cast_newmoon <- moons$newmoonnumber[which_cast_newmoon]
     out <- round(data.frame(cast_newmoon, cov_cast), 3)
   } else {
-    target_moons <- pass_and_call(target_newmoons, end_moon = end_moon)
+    target_moons <- pass_and_call(target_newmoons, moons = moons, 
+                                                   end_moon = end_moon)
     lpath <- paste0("raw/", raw_path_archive, "/", raw_cov_cast_file)
     pth <- file_paths(main, lpath)
     if(!file.exists(pth)){
@@ -146,7 +157,7 @@ cast_covariates <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
+prep_cast_covariates <- function(main = ".", moons = NULL,
                                  hist_cov = NULL, end_moon = NULL, 
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
@@ -158,10 +169,12 @@ prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
                                  append_cast_csv = TRUE, 
                                  control_cdl = climate_dl_control(),
                                  quiet = FALSE, save = TRUE, 
-                                 overwrite = TRUE){
-  check_args()
-  cast_cov <- pass_and_call(cast_covariates)
-  pass_and_call(save_cast_cov_csv, cast_cov = cast_cov)
+                                 overwrite = TRUE, arg_checks = TRUE){
+
+  check_args(arg_checks)
+  moons <- ifnull(moons, read_moons(main = main))
+  cast_cov <- pass_and_call(cast_covariates, moons = moons)
+  pass_and_call(save_cast_cov_csv, cast_cov = cast_cov, moons = moons)
   select(cast_cov, -cast_newmoon) %>%
   mutate("source" = "cast")
 }
@@ -170,9 +183,11 @@ prep_cast_covariates <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-cast_ndvi <- function(main = ".", moons = prep_moons(main = main), 
-                      hist_cov = NULL, lead_time = 12, min_lag = 6){
-  check_args()
+cast_ndvi <- function(main = ".", moons = NULL, 
+                      hist_cov = NULL, lead_time = 12, min_lag = 6,
+                      arg_checks = TRUE){
+  check_args(arg_checks)
+  moons <- ifnull(moons, read_moons(main = main))
   min_lag <- ifna(min_lag, lead_time)
   lagged_lead <- lead_time - min_lag
   ndvi_data <- select(hist_cov, c("newmoonnumber", "ndvi"))
@@ -183,16 +198,18 @@ cast_ndvi <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-cast_weather <- function(main = ".", moons = prep_moons(main = main),
+cast_weather <- function(main = ".", moons = NULL,
                          hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                          min_lag = 6, cast_date = Sys.Date(), 
                          raw_path_archive = "portalPredictions",
                          raw_cov_cast_file = "data/covariate_casts.csv",
                          raw_path_cov_cast = "cov_casts", 
                          source_name = "current_archive",
-                         control_cdl = climate_dl_control(), quiet = FALSE){
-  check_args()
-  target_moons <- pass_and_call(target_newmoons)
+                         control_cdl = climate_dl_control(), quiet = FALSE,
+                         arg_checks = TRUE){
+  check_args(arg_checks)
+  moons <- ifnull(moons, read_moons(main = main))
+  target_moons <- pass_and_call(target_newmoons, moons = moons)
   moons0 <- trim_moons(moons, target_moons, retain_target_moons = FALSE)
   raw_path <- sub_paths(main, "raw")
   win <- pass_and_call(cast_window)
@@ -213,14 +230,16 @@ cast_weather <- function(main = ".", moons = prep_moons(main = main),
 #'
 #' @export
 #'
-save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
+save_cast_cov_csv <- function(main = ".", moons = NULL,
                               end_moon = NULL, cast_date = Sys.Date(),
                               cast_cov = NULL, append_cast_csv = TRUE,
                               raw_path_archive = "portalPredictions",
                               raw_cov_cast_file = "data/covariate_casts.csv",
                               source_name = "current_archive",
-                              quiet = FALSE, save = TRUE, overwrite = TRUE){
-  check_args()
+                              quiet = FALSE, save = TRUE, overwrite = TRUE, 
+                              arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main))
+  check_args(arg_checks)
   return_if_null(cast_cov)
   which_last_moon <- max(which(moons$newmoondate < cast_date))
   last_moon <- moons$newmoonnumber[which_last_moon]
@@ -305,6 +324,15 @@ save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
 #'  (precipitation), \code{"dps"} (dew point), \code{"rsds"}
 #'  (shortwave radiation; sun intensity), \code{"was"} (wind speed).
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return Named \code{character} vector of URLs, or \code{NULL} if
 #'  \code{data}, \code{freq}, or \code{model} is \code{NULL}.
 #'
@@ -328,8 +356,9 @@ save_cast_cov_csv <- function(main = ".", moons = prep_moons(main = main),
 #'
 download_climate_casts <- function(main = ".", 
                                    raw_path_cov_cast = "cov_casts",
-                                   control_cdl = climate_dl_control()){
-  check_args()
+                                   control_cdl = climate_dl_control(), 
+                                   arg_checks = TRUE){
+  check_args(arg_checks)
   control_cdl <- do.call(climate_dl_control, control_cdl)
   urls <- do.call(NMME_urls, control_cdl)
   return_if_null(urls)
@@ -354,8 +383,9 @@ climate_dl_control <- function(start = Sys.Date(),
                                data = c(mintemp = "tasmin", 
                                         meantemp = "tasmean", 
                                         maxtemp = "tasmax", 
-                                        precipitation = "pr")){
-  check_args()
+                                        precipitation = "pr"), 
+                                arg_checks = TRUE){
+  check_args(arg_checks)
   list(start = start, end = end, model = model, lat = lat, lon = lon, 
        freq = freq, data = data)
 }
@@ -365,8 +395,9 @@ climate_dl_control <- function(start = Sys.Date(),
 #' @export
 #'
 read_climate_casts <- function(main = ".", raw_path_cov_cast = "cov_casts",
-                               control_cdl = climate_dl_control()){
-  check_args()
+                               control_cdl = climate_dl_control(), 
+                               arg_checks = TRUE){
+  check_args(arg_checks)
   control_cdl <- do.call(climate_dl_control, control_cdl)
   urls <- do.call(NMME_urls, control_cdl)
   return_if_null(urls)

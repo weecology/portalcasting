@@ -103,5 +103,6 @@ If there is a disagreement in values between the parent and child functions, the
 
 A key aspect to the *portalcasting* pipeline's ability to connect pieces is tied directly to argument checking: argument names should not be re-used in different functions unless they are for the same type of object. 
 
+Some base *portalcasting* utilities cannot use `check_args` however, and so have their own specific internal checking. For example, `list_depth`'s recursive nature prevents its use, and `check_arg` cannot use `check_args` itself. 
 
 

@@ -9,23 +9,25 @@
 \alias{trim_treatment}
 \title{Prepare a rodents data table for forecasting}
 \usage{
-prep_rodents_table(main = ".", moons = prep_moons(main = main),
-  end_moon = NULL, start_moon = 217, species = base_species(),
-  total = TRUE, level = "Site", treatment = NULL, plots = "all",
-  min_plots = 24, min_traps = 1, output = "abundance",
-  ref_species = all_species(), quiet = TRUE, save = TRUE,
-  overwrite = TRUE, filename = "rodents_all.csv")
+prep_rodents_table(main = ".", moons = NULL, end_moon = NULL,
+  start_moon = 217, species = base_species(), total = TRUE,
+  level = "Site", treatment = NULL, plots = "all", min_plots = 24,
+  min_traps = 1, output = "abundance", ref_species = all_species(),
+  quiet = TRUE, save = TRUE, overwrite = TRUE,
+  filename = "rodents_all.csv", arg_checks = TRUE)
 
-trim_time(rodents_tab, start_moon = NULL, end_moon = NULL)
+trim_time(rodents_tab, start_moon = NULL, end_moon = NULL,
+  arg_checks = TRUE)
 
-add_moons(rodents_tab, moons = prep_moons())
+add_moons(rodents_tab, moons = NULL, arg_checks = TRUE)
 
-add_total(rodents_tab, total = TRUE)
+add_total(rodents_tab, total = TRUE, arg_checks = TRUE)
 
 trim_species(rodents_tab, species = base_species(),
-  ref_species = all_species())
+  ref_species = all_species(), arg_checks = TRUE)
 
-trim_treatment(rodents_tab, level = "Site", treatment = NULL)
+trim_treatment(rodents_tab, level = "Site", treatment = NULL,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -87,6 +89,15 @@ be saved out.}
 files should be updated (most users should leave as \code{TRUE}).}
 
 \item{filename}{\code{character} name of the file for saving the output.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{rodents_tab}{\code{data.frame} rodents table, with varying levels of 
 editing.}

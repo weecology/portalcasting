@@ -5,9 +5,11 @@
 \alias{extract_min_lag}
 \title{Produce the control lists for the model script writing}
 \usage{
-model_script_controls(models = NULL, controls_m = NULL)
+model_script_controls(models = NULL, controls_m = NULL,
+  arg_checks = TRUE)
 
-extract_min_lag(models = prefab_models(), controls_m = NULL)
+extract_min_lag(models = prefab_models(), controls_m = NULL,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{models}{\code{character} vector of name(s) of model(s) whose 
@@ -19,18 +21,29 @@ to write the scripts.}
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
-Presently, each model's script writing controls
-should include three elements: \code{name} (a \code{character} value of 
-the model name), \code{covariatesTF} (a \code{logical} indicator of if the 
-model needs covariates), and \code{lag} (an \code{integer}-conformable 
-value of the lag to use with the covariates or \code{NA} if 
-\code{covariatesTF = FALSE}). \cr 
-If only a single model is added, the name of 
-the model from the element \code{name} will be used to name the model's
-\code{list} in the larger \code{list}. If multiple models are added, each
-element \code{list} must be named according to the model and the
-\code{name} element. \cr 
+Presently, each model's script writing controls should include three 
+elements: 
+\itemize{
+ \item \code{name}: a \code{character} value of the model name.
+ \item \code{covariatesTF}: a \code{logical} indicator of if the 
+  model needs covariates.
+ \item \code{lag}: an \code{integer}-conformable value of the lag to use 
+  with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
+} 
+If only a single model is added, the name of the model from the element
+\code{name} will be used to name the model's \code{list} in the larger
+\code{list}. If multiple models are added, each element \code{list} must
+be named according to the model and the \code{name} element. \cr 
 See \code{Details} and \code{Examples}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{model_script_controls}: named \code{list} of length equal to
@@ -59,10 +72,10 @@ Any model that is part of the \code{prefab} set
  (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")})
  has its script-writing controls already included internally. Users only
  need to include controls for non-prefab \code{models}. \cr \cr
- Any user-defined \code{models} that are not included in \code{controls}
+ Any user-defined \code{models} that are not included in \code{controls_m}
  will throw an error. \cr \cr 
- If any user-defined \code{controls} duplicate any existing controls for
- the prefab models or if \code{controls} contains any duplicate named
+ If any user-defined \code{controls_m} duplicate any existing controls for
+ the prefab models or if \code{controls_m} contains any duplicate named
  elements, an error will be thrown.
 }
 \examples{

@@ -7,11 +7,12 @@
  across multiple species.}
 \usage{
 plot_cast_point(main = ".", species = base_species(total = TRUE),
-  level = "Controls", cast_type = "forecast", cast_date = NULL,
+  tmnt_type = "Controls", cast_type = "forecast", cast_date = NULL,
   model = "Ensemble", lead = 1, from_date = NULL,
-  with_census = FALSE)
+  with_census = FALSE, arg_checks = TRUE)
 
-plot_cast_point_yaxis(main = ".", species = "total")
+plot_cast_point_yaxis(main = ".", species = "total",
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -20,8 +21,8 @@ the directory tree.}
 \item{species}{\code{character} vector of the species codes (or 
 \code{"total"} for the total across species) to be plotted.}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}).}
+\item{tmnt_type}{\code{character} value of the level of interest 
+(\code{"All"} or \code{"Controls"}).}
 
 \item{cast_type}{\code{character} value of the type of -cast of model. Used
 to select the file in the predictions subdirectory. Currently only 
@@ -46,6 +47,15 @@ the \code{lead} from. If \code{NULL} (default), for
 
 \item{with_census}{\code{logical} toggle if the plot should include the
 observed data collected during the predicted census.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{plot_cast_point}: creates the plot and returns \code{NULL}.

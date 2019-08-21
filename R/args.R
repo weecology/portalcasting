@@ -150,7 +150,6 @@
 #'   \code{controls_m},
 #'   \code{controls_r},
 #'   \code{downloads},
-#'   \code{in_args},
 #'   \code{rodents}.
 #'
 #'  Must be length-2 \code{list}s with elements named \code{"forecast"} 
@@ -206,6 +205,9 @@
 #'   \code{end_moons} (must be positive),
 #'   \code{target_moons} (must be positive).
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked.
+#'
 #' @param arg_name \code{character} value of the argument name.
 #'
 #' @param arg_value Input value for the argument.
@@ -223,7 +225,14 @@
 #'
 #' @export
 #'
-check_args <- function(){
+check_args <- function(arg_checks = TRUE){
+  if(length(arg_checks) !=1 | !is.logical(arg_checks)){
+    stop("`arg_checks` must be a single logical value")
+  }
+  if(!arg_checks){
+    return()
+  }
+
   fun_call <- match.call.defaults(definition = sys.function(-1), 
                                   call = sys.call(-1))
   fun_class <- class(as.list(fun_call)[[1]])
@@ -276,7 +285,6 @@ check_args <- function(){
 #'
 check_arg <- function(arg_name, arg_value, fun_name = NULL){
   out <- NULL
-
   arg_list <- check_arg_list()
   if(!(arg_name %in% names(arg_list))){
     msg <- paste0(arg_name, " not checked, consider adding to check_arg_list")
@@ -308,6 +316,11 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       out2 <- paste0("`", arg_name, "` must be a Date or date-conformable")
       out <- c(out, out2)
     }
+  } else if (deets$class == "df"){
+    if (!("data.frame" %in% class(arg_value))){
+      out2 <- paste0("`", arg_name, "` must be a data.frame")
+      out <- c(out, out2)
+    }
   } else if (deets$class == "dfv"){
     if (!("data.frame" %in% class(arg_value)) & !is.vector(arg_value)){
       out2 <- paste0("`", arg_name, "` must be a data.frame or vector")
@@ -320,14 +333,67 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       out <- c(out, out2)
     }
   } else if (deets$class == "intnum"){
-    if (!all(arg_value %% 1 == 0)){
-      out2 <- paste0("`", arg_name, "` must be integer-conformable")
+    if (!is.numeric(arg_value) || !all(arg_value %% 1 == 0)){
+      out2 <- paste0("`", arg_name, "` must be an integer-conformable number")
+      out <- c(out, out2)
+    }
+  } else if (deets$class == "nonnegintnum"){
+    if (!is.numeric(arg_value) || 
+       (!all(arg_value %% 1 == 0 & arg_value >= 0))){
+      out2 <- paste0("`", arg_name, 
+                     "` must be a non-negative integer-conformable number")
+      out <- c(out, out2)
+    }
+  } else if (deets$class == "posintnum"){
+    if (!is.numeric(arg_value) || 
+       (!all(arg_value %% 1 == 0 & arg_value > 0))){
+      out2 <- paste0("`", arg_name,
+                     "` must be a positive integer-conformable number")
+      out <- c(out, out2)
+    }
+  } else if (deets$class == "zeroone"){
+    if (!is.numeric(arg_value) || 
+       (!all(arg_value > 1e-5 & arg_value < (1 - 1e-5)))){
+      out2 <- paste0("`", arg_name, "` must be a number between 0 and 1")
+      out <- c(out, out2)
+    }
+  } else if (deets$class == "castlist"){
+    if(("list" %in% class(arg_value))){
+      if (!all(c("cast", "aic") %in% names(arg_value))){
+        out2 <- paste0("`", arg_name, 
+                       "` must a list with elements named cast and aic")
+        out <- c(out, out2)
+      }
+    } else{
+      out2 <- paste0("`", arg_name, "` must be a list")
+      out <- c(out, out2)
+    }
+  } else if (deets$class == "extension"){
+    if(("character" %in% class(arg_value))){
+      lext <- nchar(arg_value)
+      spot <- rep(NA, lext)
+      for(i in 1:lext){
+        spot[i] <- substr(arg_value, i, i) == "."
+      }
+      if (sum(spot) != 1){
+        out2 <- paste0("`", arg_name, "` must be an extension")
+        out <- c(out, out2)
+      } 
+    } else{
+      out2 <- paste0("`", arg_name, "` must be a character")
       out <- c(out, out2)
     }
   } else{
     if(!(deets$class %in% class(arg_value))){
       out2 <- paste0("`", arg_name, "` must be a ", deets$class)
       out <- c(out, out2)
+    }
+    if(deets$class == "character" & !is.null(deets$vals)){
+      if(!all(tolower(arg_value) %in% tolower(deets$vals))){  
+        opts <- paste(tolower(deets$vals), collapse = ", ")
+        out2 <- paste0("`", arg_name, "` must be one of ", opts)
+        out <- c(out, out2)    
+      }
     }
   } 
   
@@ -353,67 +419,84 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
 #'
 check_arg_list <- function(){
 
-  arg_element <- function(class, null, length, na = FALSE, addl = NULL){
-   list(class = class, null = null, na = na, length = length, addl = addl)
+  arg_logical <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "logical", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_logical <- function(length = 1, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "logical")
+  arg_character <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "character", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_character <- function(length = 1, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "character")
+  arg_numeric <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "numeric", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_numeric <- function(length = 1, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "numeric")
+  arg_zeroone <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "numeric", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_list <- function(length = NULL, null = TRUE, na = FALSE, addl = NULL){
-    pass_and_call(arg_element, class = "list")
+  arg_list <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "list", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_df <- function(length = NULL, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "data.frame")
+  arg_castlist <- function(length = NULL, null = TRUE, na = FALSE, 
+                           vals = NULL){
+    list(class = "castlist", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_date <- function(length = 1, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "date") 
+  arg_df <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "df", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_dfv <- function(length = NULL, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "dfv") 
+  arg_date <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "date", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_dfl <- function(length = NULL, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "dfl") 
+  arg_dfv <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "dfv", null = null, na = na, length = length, 
+         vals = vals)
   }
-  arg_intnum <- function(length = 1, null = TRUE, na = FALSE, addl = NULL){
-   pass_and_call(arg_element, class = "intnum") 
+  arg_dfl <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "dfl", null = null, na = na, length = length, 
+         vals = vals)
+  }
+  arg_intnum <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "intnum", null = null, na = na, length = length, 
+         vals = vals)
+  }
+  arg_posintnum <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "posintnum", null = null, na = na, length = length, 
+         vals = vals)
+  }
+  arg_nonnegintnum <- function(length = 1, null = TRUE, na = FALSE, 
+                               vals = NULL){
+    list(class = "nonnegintnum", null = null, na = na, length = length, 
+         vals = vals)
+  }
+  arg_extension <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "extension", null = null, na = na, length = length, 
+         vals = vals)
   }
 
-  cast_list <- expression(all(c("forecast", "aic") %in% names(arg_value)))
+
   avail_cast_types <- c("forecasts", "hindcasts", "forecast", "hindcast")
-  cast_types <- expression(all(arg_value %in% avail_cast_types))
-  zero_one <- expression(all(arg_value > 1e-5 & arg_value < (1 - 1e-5)))
-  avail_winner_types <- c("hist", "cast")
-  winners <- expression(all(arg_value %in% avail_winner_types))
-  int <- expression(all(arg_value %% 1 == 0))
-  pos <- expression(all(arg_value > 0))
-  nonneg <- expression(all(arg_value > -1))
-  extensions <- expression({lext <- nchar(arg_value)
-                            spot <- rep(NA, lext)
-                            for(i in 1:lext){
-                              spot[i] <- substr(arg_value, i, i) == "."
-                            }
-                            sum(spot) == 1})
-  outputs <- expression(arg_value == "abundance")
-  plotses <- expression(arg_value %in% c("all", "longterm"))
-  specieses <- expression(all(arg_value %in% rodent_spp("wtotal")))
-  subs_types <- expression(subs_type == "prefab")
-  tmnt_types <- expression(all(arg_value %in% c("all", "controls")))
-  tmnts <- expression(arg_value == "control")
+  avail_outputs <- c("abundance")
+  avail_plots <- c("all", "longterm")
+  avail_species <- rodent_species(total = TRUE)
+  avail_subs_types <- c("prefab")
+  avail_tmnt_types <- c("all", "controls")
+  avail_treatments <- c("control")
+  avail_winners <- c("hist", "cast")
 
   list(
     add_error = arg_logical(),
     add_in_window = arg_logical(), 
     add_lead = arg_logical(),
     add_obs = arg_logical(),
-    all = arg_list(length = 2, addl = cast_list),
+    all = arg_castlist(length = 2),
     all_casts = arg_df(),
     append_cast_csv = arg_logical(),
+    arg_checks = arg_logical(),
     cast = arg_df(),
     cast_cov = arg_df(),
     cast_covariates = arg_logical(),
@@ -421,16 +504,16 @@ check_arg_list <- function(){
     cast_dates = arg_date(NULL),
     cast_tab = arg_df(),
     cast_to_check = arg_df(),
-    cast_type = arg_character(addl = cast_types),
+    cast_type = arg_character(vals = avail_cast_types),
     casts = arg_df(),
     cleanup = arg_logical(),
     colname = arg_character(),
     concept_rec_id = arg_character(NULL),
-    confidence_level = arg_numeric(addl = zero_one),
+    confidence_level = arg_zeroone(),
     control = arg_list(),
     control_cdl = arg_list(),
     controls_m = arg_list(),
-    controls = arg_list(length = 2, addl = cast_list),
+    controls = arg_castlist(length = 2),
     controls_r = arg_list(),
     covariates = arg_df(),
     covariatesTF = arg_logical(),
@@ -443,12 +526,10 @@ check_arg_list <- function(){
     dfv = arg_dfv(),
     downloads = arg_list(),
     end = arg_date(),
-    end_moon = arg_intnum(addl = pos),
-    end_moons = arg_intnum(NULL, addl = pos),
+    end_moon = arg_posintnum(),
+    end_moons = arg_posintnum(NULL),
     ensemble = arg_logical(),
-    enquote_args = arg_character(NULL),
-    eval_args = arg_character(NULL),
-    extension = arg_character(addl = extensions),
+    extension = arg_extension(),
     filename = arg_character(),
     filename_cov = arg_character(),
     filename_meta = arg_character(),
@@ -460,19 +541,19 @@ check_arg_list <- function(){
     hist_covariates = arg_logical(),
     hist_tab = arg_df(),
     in_args = arg_list(),
-    lag = arg_intnum(na = TRUE, addl = pos),
+    lag = arg_nonnegintnum(null = TRUE, na = TRUE),
     lat = arg_numeric(),
-    lead = arg_intnum(addl = pos),
-    lead_time  = arg_intnum(addl = nonneg),
+    lead = arg_posintnum(),
+    lead_time  = arg_nonnegintnum(),
     lev = arg_intnum(),
     level = arg_character(),
     local_paths = arg_character(NULL),
     lon = arg_numeric(),
     main = arg_character(),
-    min_lag  = arg_intnum(na = TRUE, addl = nonneg),
-    min_observed = arg_intnum(addl = pos),
-    min_plots = arg_intnum(addl = pos),
-    min_traps = arg_intnum(addl = pos),
+    min_lag  = arg_nonnegintnum(na = TRUE),
+    min_observed = arg_posintnum(),
+    min_plots = arg_posintnum(),
+    min_traps = arg_posintnum(),
     model = arg_character(),
     models = arg_character(NULL),
     moons = arg_df(),
@@ -481,16 +562,16 @@ check_arg_list <- function(){
     nadot = arg_logical(),
     name = arg_character(),
     names = arg_character(NULL),
-    ndates = arg_intnum(addl = pos),
-    newmoonnumber = arg_intnum(addl = pos),
-    nmoons = arg_intnum(addl = nonneg),
+    ndates = arg_posintnum(),
+    newmoonnumber = arg_posintnum(),
+    nmoons = arg_nonnegintnum(),
     NULLname = arg_logical(),
-    output = arg_character(addl = outputs),
+    output = arg_character(vals = avail_outputs),
     overwrite = arg_logical(),
     path = arg_character(NULL),
-    plots = arg_character(addl = plotses),
+    plots = arg_character(vals = avail_plots),
     quiet = arg_logical(),
-    rangex = arg_intnum(2, addl = pos),
+    rangex = arg_posintnum(2),
     raw_cov_cast_file = arg_character(),
     raw_moons_file = arg_character(),
     raw_path_archive = arg_character(),
@@ -509,26 +590,27 @@ check_arg_list <- function(){
     set = arg_character(),
     source_name = arg_character(),
     source_url = arg_character(),
-    species = arg_character(NULL, addl = specieses),
-    species_id = arg_character(addl = specieses),
+    species = arg_character(NULL, vals = avail_species),
+    species_id = arg_character(vals = avail_species),
     specific_sub = arg_character(),
     specific_subs = arg_character(NULL),
     start = arg_date(),
-    start_moon = arg_intnum(addl = pos),
+    start_moon = arg_posintnum(),
     subs = arg_character(NULL),
     subs_names = arg_character(NULL),
-    subs_type = arg_character(addl = subs_types),
+    subs_type = arg_character(vals = avail_subs_types),
     tail = arg_logical(),
-    target_moons = arg_intnum(NULL, addl = pos),
+    target_moons = arg_posintnum(NULL),
     target_cols = arg_character(NULL),
-    tmnt_type = arg_character(NULL, addl = tmnt_types),
-    topx = arg_intnum(addl = nonneg),
+    tmnt_type = arg_character(vals = avail_tmnt_types),
+    tmnt_types = arg_character(NULL, vals = avail_tmnt_types),
+    topx = arg_nonnegintnum(),
     total = arg_logical(),
-    treatment = arg_character(addl = tmnts),
+    treatment = arg_character(vals = avail_treatments),
     type = arg_character(),
     url = arg_character(),
     verbose = arg_logical(),
-    winner = arg_character(addl = winners),
+    winner = arg_character(vals = avail_winners),
     with_census = arg_logical(),
     zip_destin = arg_character()
   )

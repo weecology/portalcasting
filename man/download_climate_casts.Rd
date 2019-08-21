@@ -7,15 +7,15 @@
 \title{Download and read covariate casts (presently only the NMME)}
 \usage{
 download_climate_casts(main = ".", raw_path_cov_cast = "cov_casts",
-  control_cdl = climate_dl_control())
+  control_cdl = climate_dl_control(), arg_checks = TRUE)
 
 climate_dl_control(start = Sys.Date(), end = as.Date("2050-01-01"),
   model = "ENSMEAN", lat = 31.9555, lon = -109.0744,
   freq = "daily", data = c(mintemp = "tasmin", meantemp = "tasmean",
-  maxtemp = "tasmax", precipitation = "pr"))
+  maxtemp = "tasmax", precipitation = "pr"), arg_checks = TRUE)
 
 read_climate_casts(main = ".", raw_path_cov_cast = "cov_casts",
-  control_cdl = climate_dl_control())
+  control_cdl = climate_dl_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -26,6 +26,15 @@ raw subdirectory to the folder where the downloads are saved.}
 
 \item{control_cdl}{\code{list} of specifications for the download, which
 are sent to \code{\link{NMME_urls}} to create the specific URLs.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{start, end}{\code{Date} for the start and end of the cast.}
 

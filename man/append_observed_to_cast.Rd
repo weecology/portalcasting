@@ -5,7 +5,7 @@
 \title{Append the observed values to a table of -casts}
 \usage{
 append_observed_to_cast(casts, main = ".", add_error = TRUE,
-  add_in_window = TRUE, add_lead = TRUE)
+  add_in_window = TRUE, add_lead = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{casts}{\code{data.frame} of requested fore- or hindcasts to have 
@@ -22,6 +22,15 @@ column should be added to the output as well.}
 
 \item{add_lead}{\code{logical} indicator if the \code{lead} column should
 be added to the output as well.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{casts} \code{data.frame} with additional columns.
@@ -35,7 +44,7 @@ Add a column of observed values and optionally raw error,
  \donttest{
   setup_dir()
   casts <- read_casts()
-  casts_a <- select_casts(casts, level = "All")
+  casts_a <- select_casts(casts, tmnt_types = "All")
   casts_a <- append_observed_to_cast(casts_a) 
  }
 

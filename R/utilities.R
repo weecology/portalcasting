@@ -1,114 +1,4 @@
 
-
-#' @title Transpose argument lists for use in do.call
-#'
-#' @description Arguments of varying lengths coming into functions, when 
-#'  captured using \code{\link[DesignLibrary]{match.call.defaults}}, require 
-#'  expansion and transposition for use within other functions. 
-#'
-#' @details As an example, see the source code of 
-#'  \code{\link{rodents_controls}}, where some arguments are input as single
-#'  values (e.g., \code{species}) and others are input as vectors (e.g., 
-#'  \code{tmnt_type}).
-#'
-#' @param eval_args \code{character} vector (or \code{NULL} if not needed)
-#'  of any arguments in \code{in_args} need to be wrapped in 
-#'  \code{\link{eval}} for replication purposes. \cr \cr
-#'  This is generally needed if, for example, a function is used to pass
-#'  a list of values (e.g., \code{species} in 
-#'  \code{\link{rodents_controls}}.
-#'
-#' @param enquote_args \code{character} vector (or \code{NULL} if not needed)
-#'  of any arguments in \code{in_args} need to be wrapped in 
-#'  \code{\link{enquote}} for replication purposes. \cr \cr
-#'  This is generally needed if, for example, an argument's input is another
-#'  argument (e.g., \code{name} in 
-#'  \code{\link{rodents_controls}}.
-#'
-#' @param in_args \code{list} of arguments that can be of varying lengths,
-#'  which need to be combined into a \code{list} of argument values that can 
-#'  be easily input into \code{\link{do.call}}.
-#'
-#' @return \code{list} of argument values that can be easily input into 
-#'   \code{\link{do.call}} (each element is a \code{list} of arguments).
-#'
-#' @examples
-#'  in_args <- list(x = 1, y = 1:2, z = NULL)
-#'  transpose_args(in_args, NULL)
-#'
-#' @export
-#'
-transpose_args <- function(in_args = NULL, eval_args = NULL,
-                           enquote_args = NULL){
-  check_args()
-  return_if_null(in_args)
-  if(!is.null(eval_args)){
-    neval_args <- length(eval_args)
-    for(i in 1:neval_args){
-      in_args[[eval_args[i]]] <- eval(in_args[[eval_args[i]]])
-    }
-  }
-  if(!is.null(enquote_args)){
-    nenquote_args <- length(enquote_args)
-    for(i in 1:nenquote_args){
-      in_args[[enquote_args[i]]] <- enquote(in_args[[enquote_args[i]]])
-    }
-  }
-
-
-  nargs <- length(in_args)
-  arg_names <- names(in_args)
-
-  nlevs <- rep(NA, nargs)
-  for(i in 1:nargs){
-    nlevs[i] <- length((in_args[[i]]))
-  }
-  enquoted <- names(in_args) %in% enquote_args
-  nlevs[which(enquoted)] <- 0
-  tot_levs <- prod(nlevs[nlevs > 0])
-  out <- vector("list", length = tot_levs)
-
-  arg_indexes <- vector("list", length = nargs)
-  for(i in 1:nargs){
-    if(nlevs[i] == 0){
-      if(enquoted[i]){
-        arg_indexes[[i]] <- 1
-      } else {
-        arg_indexes[[i]] <- 0
-      }
-    } else {
-      arg_indexes[[i]] <- 1:nlevs[i]
-    }
-  }
-  val_arg <- expand.grid(arg_indexes)
-  for(j in 1:tot_levs){
-    out[[j]] <- vector("list", length = nargs)
-    for(i in 1:nargs){
-      if (nlevs[i] == 0){
-        if(enquoted[i]){
-          evaled <- eval(in_args[[i]])
-          spec <- val_arg[j, which(arg_names == evaled)]
-          out[[j]][[i]] <- in_args[[evaled]][spec]
-        } else{
-          out[[j]][[i]] <- NULL
-        }
-      } else{
-        out[[j]][[i]] <- in_args[[i]][ val_arg[j,i] ]
-      }
-    }
-    if(length(out[[j]]) < nargs){
-      nmissing <- nargs - length(out[[j]])
-      outj <- vector("list", length = nargs)
-      for(i in 1:length(out[[j]])){
-        outj[[i]] <- out[[j]][[i]]
-      }
-      out[[j]] <- outj
-    }
-    names(out[[j]]) <- arg_names
-  }
-  out
-}
-
 #' @title Pass arguments from a parent to a child function and call the
 #'  child function
 #'
@@ -127,15 +17,13 @@ transpose_args <- function(in_args = NULL, eval_args = NULL,
 #'   \code{child}, which includes removing arguments not in the 
 #'   \code{\link{formals}} of \code{child}.
 #'
-#' @details Arguments are evaluated in the environment they were created to 
-#'  so that depdencies which have been removed through passing down into
-#'  \code{child} do not cause the evaluation to break. Evaluating the 
-#'  arguments in a different (child) environment can be done through 
-#'  running the code within a child function and passing the updated 
-#'  arguments through \code{...}. \cr \cr
-#'  Arguments can be set to \code{NULL}, even if that's not the default,
-#'  and they will be retained as part of the named arguments \code{list} to
-#'  ensure that they are, in fact, used as \code{NULL}. \cr \cr
+#' @details  Arguments can be updated from the values input to the parents 
+#'  (when values change in the parent before the child is called) or added to
+#'  the parent arguments (when the argument is defined within the parent)
+#'  through \code{...}. \cr \cr
+#'  Arguments can be set to \code{NULL}, even if that's not the 
+#'  default, and they will be retained as part of the named arguments 
+#'  \code{list} to ensure that they are, in fact, used as \code{NULL}. \cr \cr
 #'  Use of \code{\link[DesignLibrary]{match.call.defaults}} ensures that
 #'  arguments left as defaults are passed along.
 #'
@@ -193,20 +81,23 @@ args_to_pass <- function(child = NULL, lev = -1, ...){
   def <- sys.function(lev)
   parent_call <- match.call.defaults(definition = def, call = call)
   parent_args <- as.list(parent_call)[-1]
-
   update_parent_args <- update_list(parent_args, ...)
-
   names_update_parent_args <- names(update_parent_args)
-  needed <- names(formals(child))
-  which_needed <- which(names_update_parent_args %in% needed)
-  needed_args <- update_parent_args[which_needed]
-  nneeded_args <- length(needed_args)
-  for(i in 1:nneeded_args){ 
-    if(!is.null(needed_args[[i]])){
-      needed_args[[i]] <- eval(needed_args[[i]], envir = parent.frame(2L))
+  child_args <- as.list(formals(child))
+  names_child_args <- names(child_args)
+
+  nchild_args <- length(child_args)
+  for(i in 1:nchild_args){
+    in_parent_args <- names_child_args[i] %in% names_update_parent_args
+    if(in_parent_args){
+      spot <- which(names_update_parent_args == names_child_args[i])
+      if(!is.null(update_parent_args[[spot]])){
+        child_args[[i]] <- update_parent_args[[spot]]
+      }
     }
+
   }
-  needed_args
+  child_args
 }
 
 #' @title Error if a function's requestet is deeper than can be handled
@@ -302,6 +193,15 @@ update_list <- function(orig_list = list(), ...){
 #' @param colname \code{character} value of the column name in \code{tab} to 
 #'  conform the \code{NA}s to \code{"NA"}s.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{x} with any \code{NA} in \code{colname} replaced with 
 #'  \code{"NA"}.
 #'
@@ -310,8 +210,8 @@ update_list <- function(orig_list = list(), ...){
 #'
 #' @export
 #'
-na_conformer <- function(dfv, colname = "species"){
-  check_args()
+na_conformer <- function(dfv, colname = "species", arg_checks = TRUE){
+  check_args(arg_checks)
   if (is.vector(dfv)){
     naentries <- which(is.na(dfv))
     dfv[naentries] <- "NA"
@@ -334,6 +234,15 @@ na_conformer <- function(dfv, colname = "species"){
 #' @param colname \code{character} name for the predictor column (to match
 #'   variable model output names).
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return Two-element \code{list} of means and interval values for a 
 #'   0-abundance forecast to be used as a filler when a model fails or there 
 #'   is no non-0 historical abundance.
@@ -343,9 +252,9 @@ na_conformer <- function(dfv, colname = "species"){
 #'
 #' @export
 #'
-cast0 <- function(nmoons = NULL, colname = "pred"){
+cast0 <- function(nmoons = NULL, colname = "pred", arg_checks = TRUE){
   return_if_null(nmoons)
-  check_args()
+  check_args(arg_checks)
   mean_0 <- rep(0, nmoons)
   int_0 <- data.frame("lower" = rep(0, nmoons), "upper" = rep(0, nmoons))
   out <- list(mean_0, interval = int_0)
@@ -364,6 +273,15 @@ cast0 <- function(nmoons = NULL, colname = "pred"){
 #' @param filename \code{character} filename of existing \code{.csv} to be 
 #'  appended.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{NULL}.
 #'
 #' @examples
@@ -375,8 +293,8 @@ cast0 <- function(nmoons = NULL, colname = "pred"){
 #'
 #' @export
 #'
-append_csv <- function(df, filename){
-  check_args()
+append_csv <- function(df, filename, arg_checks = TRUE){
+  check_args(arg_checks)
   write.table(df, filename, sep = ",", row.names = FALSE, 
     col.names = !file.exists(filename), append = file.exists(filename))
   NULL
@@ -391,6 +309,15 @@ append_csv <- function(df, filename){
 #' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be 
 #'   converted to the fraction of the year.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{numeric} value(s) of the fraction of the year.
 #'
 #' @examples
@@ -398,9 +325,9 @@ append_csv <- function(df, filename){
 #'
 #' @export
 #'
-foy <- function(dates = NULL){
+foy <- function(dates = NULL, arg_checks = TRUE){
   return_if_null(dates)
-  check_args()
+  check_args(arg_checks)
   dates <- as.Date(dates)
   jday <- as.numeric(format(dates, "%j"))
   nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
@@ -421,6 +348,15 @@ foy <- function(dates = NULL){
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{NULL}, with the tmp subdirectory's files removed.
 #'
 #' @examples
@@ -431,8 +367,9 @@ foy <- function(dates = NULL){
 #'
 #' @export
 #'
-clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE){
-  check_args()
+clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE, 
+                      arg_checks = TRUE){
+  check_args(arg_checks)
   tmp_path <- sub_paths(main, "tmp")
   tmp_exist <- dir.exists(tmp_path)
   tmp_files <- list.files(tmp_path)
@@ -467,6 +404,15 @@ clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE){
 #'  decide who wins any ties. In the typical portalcasting space, this is 
 #'  kept at its default value throughout.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
 #' 
 #' @examples
@@ -478,8 +424,8 @@ clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE){
 #' @export
 #'
 combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
-                                  winner = "hist"){
-  check_args()
+                                  winner = "hist", arg_checks = TRUE){
+  check_args(arg_checks)
   return_if_null(hist_tab, cast_tab)
   return_if_null(cast_tab, hist_tab)
   
@@ -505,6 +451,15 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
 #' @param df \code{data.frame} with columns named \code{year}, \code{month},
 #'  and \code{day}. 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{data.frame} \code{df} with column of \code{Date}s 
 #'  named \code{date} added.
 #'
@@ -514,8 +469,8 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
 #'
 #' @export
 #'
-add_date_from_components <- function(df){
-  check_args()
+add_date_from_components <- function(df, arg_checks = TRUE){
+  check_args(arg_checks)
   yrs <- df$year
   mns <- df$month
   dys <- df$day
@@ -545,6 +500,15 @@ add_date_from_components <- function(df){
 #'  the cast). In the recurring forecasting, is set to today's date
 #'  using \code{\link{Sys.Date}}.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return Named \code{list} with elements \code{start} and \code{end},
 #'  which are both \code{Dates}.
 #'
@@ -557,11 +521,10 @@ add_date_from_components <- function(df){
 #'
 #' @export
 #'
-cast_window <- function(main = ".",
-                            moons = prep_moons(main = main), 
-                            cast_date = Sys.Date(),
-                            lead_time = 12, min_lag = 6){
-  check_args()
+cast_window <- function(main = ".", moons = read_moons(main = main), 
+                        cast_date = Sys.Date(),
+                        lead_time = 12, min_lag = 6, arg_checks = TRUE){
+  check_args(arg_checks)
   lagged_lead <- lead_time - min_lag
   moons0 <- moons[moons$newmoondate < cast_date, ]
   last_moon <- tail(moons0, 1)
@@ -583,6 +546,15 @@ cast_window <- function(main = ".",
 #' @param colname A single \code{character} value of the column to use
 #'   to remove incomplete entries. 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{df} without any incomplete entries. 
 #'
 #' @examples
@@ -591,8 +563,8 @@ cast_window <- function(main = ".",
 #'
 #' @export
 #'
-remove_incompletes <- function(df, colname){
-  check_args()
+remove_incompletes <- function(df, colname, arg_checks = TRUE){
+  check_args(arg_checks)
   incompletes <- which(is.na(df[ , colname]))
   if (length(incompletes) > 0){
     df <- df[-incompletes, ]
@@ -620,15 +592,24 @@ remove_incompletes <- function(df, colname){
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{dfl} as input.
 #'
 #'
 #' @export
 #'
 data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = "x.csv", 
-                     overwrite = TRUE, quiet = FALSE){
+                     overwrite = TRUE, quiet = FALSE, arg_checks = TRUE){
   return_if_null(dfl)
-  check_args()
+  check_args(arg_checks)
   save_it <- FALSE
   if(save){
     fext <- file_ext(filename)
@@ -675,14 +656,23 @@ data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = "x.csv",
 #' @param quiet \code{logical} indicator controlling if the message is
 #'   generated.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @examples
 #'  messageq("Hello world", FALSE)
 #'  messageq("Hello world", TRUE)
 #'
 #' @export
 #'
-messageq <- function(msg = NULL, quiet = FALSE){
-  check_args()
+messageq <- function(msg = NULL, quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
   if (!quiet){
     msg2 <- paste(msg, collapse = "\n")
     message(msg2)

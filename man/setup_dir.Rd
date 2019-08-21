@@ -21,7 +21,7 @@ setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
   end_moon = NULL, lead_time = 12, cast_date = Sys.Date(),
@@ -38,7 +38,7 @@ setup_production(main = ".", models = prefab_models(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
@@ -55,7 +55,7 @@ setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -138,10 +138,9 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
-\item{controls_r}{Control \code{list} (from 
-\code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+\item{controls_r}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_control}} for details.}
+rodents tables. See \code{\link{rodents_controls}} for details.}
 
 \item{control_cdl}{\code{list} of specifications for the download, which
 are sent to \code{\link{NMME_urls}} to create the specific URLs. See
@@ -174,6 +173,15 @@ data output.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{NULL}

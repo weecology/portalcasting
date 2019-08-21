@@ -4,12 +4,11 @@
 \alias{prep_metadata}
 \title{Prepare a metadata list}
 \usage{
-prep_metadata(main = ".", moons = prep_moons(main = main),
-  rodents = prep_rodents(main = main),
-  covariates = prep_covariates(main = main), end_moon = NULL,
-  lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
-  start_moon = 217, confidence_level = 0.9, quiet = FALSE,
-  save = TRUE, overwrite = TRUE, filename_meta = "metadata.yaml")
+prep_metadata(main = ".", moons = NULL, rodents = NULL,
+  covariates = NULL, end_moon = NULL, lead_time = 12, min_lag = 6,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
+  quiet = FALSE, save = TRUE, overwrite = TRUE,
+  filename_meta = "metadata.yaml", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -53,6 +52,15 @@ be saved out.}
 files should be updated (most users should leave as \code{TRUE}).}
 
 \item{filename_meta}{\code{character} filename for saving the metadata.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{list} of casting metadata, which is also saved out as a 

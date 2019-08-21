@@ -22,13 +22,13 @@ portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 cast(main = ".", models = prefab_models(), ensemble = TRUE,
-  cast_date = Sys.Date(), moons = prep_moons(main = main),
-  end_moon = NULL, raw_path_data = "PortalData",
+  cast_date = Sys.Date(), moons = NULL, end_moon = NULL,
+  raw_path_data = "PortalData",
   raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
-  controls_r = rodents_controls(), quiet = FALSE)
+  controls_r = rodents_controls(), quiet = FALSE, arg_checks = TRUE)
 
 prep_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
@@ -42,7 +42,7 @@ prep_data(main = ".", end_moon = NULL, lead_time = 12, min_lag = 6,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -135,10 +135,9 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
-\item{controls_r}{Control \code{list} (from 
-\code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+\item{controls_r}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_control}} for details.}
+rodents tables. See \code{\link{rodents_controls}} for details.}
 
 \item{control_cdl}{\code{list} of specifications for the download, which
 are sent to \code{\link{NMME_urls}} to create the specific URLs. See
@@ -168,6 +167,15 @@ data output.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 

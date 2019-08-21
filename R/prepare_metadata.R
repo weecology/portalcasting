@@ -47,6 +47,15 @@
 #'
 #' @param filename_meta \code{character} filename for saving the metadata.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{list} of casting metadata, which is also saved out as a 
 #'  YAML file (\code{.yaml}) if desired.
 #' 
@@ -62,21 +71,24 @@
 #' 
 #' @export
 #'
-prep_metadata <- function(main = ".", moons = prep_moons(main = main),
-                          rodents = prep_rodents(main = main),
-                          covariates = prep_covariates(main = main),
+prep_metadata <- function(main = ".", moons = NULL,
+                          rodents = NULL,
+                          covariates = NULL,
                           end_moon = NULL, 
                           lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
                           start_moon = 217,
                           confidence_level = 0.9, 
                           quiet = FALSE, save = TRUE,
-                          overwrite = TRUE, filename_meta = "metadata.yaml"){
+                          overwrite = TRUE, filename_meta = "metadata.yaml", 
+                          arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main))
+  rodents  <- ifnull(rodents, read_rodents(main = main))
+  covariates <- ifnull(covariates, read_covariates(main = main))
 
   messageq("Loading metadata file into data subdirectory", quiet)
-
-  last_moon <- pass_and_call(last_newmoon)
+  check_args(arg_checks)
+  last_moon <- pass_and_call(last_newmoon, moons = moons)
   end_moon <- ifnull(end_moon, last_moon)
-
   ncontrols_r <- length(rodents)
   last_rodent_pd <- 0
   for(i in 1:ncontrols_r){
@@ -94,13 +106,13 @@ prep_metadata <- function(main = ".", moons = prep_moons(main = main),
 
   rodent_cast_newmoons <- first_cast_rodent_newmoon:last_cast_newmoon
   which_r_nms <- which(moons$newmoonnumber %in% rodent_cast_newmoons)
-  rodent_nm_dates <- moons$newmoondate[which_r_nms]
+  rodent_nm_dates <- as.Date(moons$newmoondate[which_r_nms])
   rodent_cast_months <- as.numeric(format(rodent_nm_dates, "%m"))
   rodent_cast_years <- as.numeric(format(rodent_nm_dates, "%Y"))
 
   covar_cast_newmoons <- first_cast_covar_newmoon:last_cast_newmoon
   which_c_nms <- which(moons$newmoonnumber %in% covar_cast_newmoons)
-  covar_nm_dates <- moons$newmoondate[which_c_nms]
+  covar_nm_dates <- as.Date(moons$newmoondate[which_c_nms])
   covar_cast_months <- as.numeric(format(covar_nm_dates, "%m"))
   covar_cast_years <- as.numeric(format(covar_nm_dates, "%Y"))
 

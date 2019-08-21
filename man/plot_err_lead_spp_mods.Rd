@@ -6,8 +6,9 @@
  species and model}
 \usage{
 plot_err_lead_spp_mods(main = ".", cast_type = "forecast",
-  species = rodent_species(set = "evalplot"), level = "Controls",
-  ndates = 3, models = model_names(set = "wEnsemble"))
+  species = rodent_species(set = "evalplot"), tmnt_type = "Controls",
+  ndates = 3, models = model_names(set = "wEnsemble"),
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -23,14 +24,23 @@ reliably coded for \code{"forecast"}.}
 \code{rodent_spp(set = "evalplot")}, the only setting for which the
 plot is reliably coded/}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}).}
+\item{tmnt_type}{\code{character} value of the level of interest
+(\code{"All"} or \code{"Controls"}).}
 
 \item{ndates}{\code{integer} number of -cast issue dates to include.}
 
 \item{models}{\code{character} value(s) of the name(s) (or 
 \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 models with available -casts are returned.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \description{
 Plot the model-species matrix of error as a function of

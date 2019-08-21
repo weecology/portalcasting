@@ -13,8 +13,8 @@
 #' @param species_id \code{character} value of the species code or 
 #'  \code{"total"} for the total across species.
 #'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'  or \code{"Controls"}).
+#' @param tmnt_type \code{character} value of the level of interest 
+#'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param cast_type \code{character} value of the type of -cast of model. Used
 #'  to select the file in the predictions subdirectory. Currently only 
@@ -34,6 +34,15 @@
 #'
 #' @param rangex \code{integer}-conformable vector of two values corresponding
 #'   to the minimum and maximum newmoonnumbers plotted. 
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #' 
 #' @return 
 #'  \code{plot_cast_ts}: creates the plot and returns \code{NULL}. \cr \cr
@@ -51,18 +60,20 @@
 #' @export
 #'
 plot_cast_ts <- function(main = ".", species_id = "total", 
-                         level = "Controls", cast_type = "forecast", 
+                         tmnt_type = "Controls", cast_type = "forecast", 
                          cast_date = NULL, model = "Ensemble", 
-                         start_moon = 300, add_obs = TRUE){
+                         start_moon = 300, add_obs = TRUE, 
+                         arg_checks = TRUE){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type)
   }
-  check_args()
-  obs <- read_rodents(main, tolower(level))
+  check_args(arg_checks)
+  obs <- read_rodents_table(main, tolower(tmnt_type))
   pred <- read_cast(main, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species_id, level = level, models = model) 
+          select_casts(species = species_id, tmnt_types = tmnt_type,
+                       models = model) 
   if (NROW(pred) == 0){
     stop("no casts available for specified inputs")
   }  
@@ -93,7 +104,7 @@ plot_cast_ts <- function(main = ".", species_id = "total",
 
   rangex <- c(max(c(start_moon, min(obs_x))), max(pred_x))
   rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
-  ylab <- plot_cast_ts_ylab(main, level, species_id, model)
+  ylab <- plot_cast_ts_ylab(main, tmnt_type, species_id, model)
 
   par(mar = c(3, 4.5, 1, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
@@ -118,10 +129,10 @@ plot_cast_ts <- function(main = ".", species_id = "total",
 #'
 #' @export
 #'
-plot_cast_ts_xaxis <- function(main = ".", rangex){
+plot_cast_ts_xaxis <- function(main = ".", rangex, arg_checks = TRUE){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  check_args()
+  check_args(arg_checks)
   moons <- read_data(main, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
@@ -148,11 +159,12 @@ plot_cast_ts_xaxis <- function(main = ".", rangex){
 #'
 #' @export
 #'
-plot_cast_ts_ylab <- function(main = ".", level = "Controls",
-                              species_id = "total", model = "Ensemble"){
+plot_cast_ts_ylab <- function(main = ".", tmnt_type = "Controls",
+                              species_id = "total", model = "Ensemble", 
+                              arg_checks = TRUE){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  check_args()
+  check_args(arg_checks)
   lab <- list(text = "", font = 1)
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
@@ -184,8 +196,8 @@ plot_cast_ts_ylab <- function(main = ".", level = "Controls",
 #' @param species \code{character} vector of the species codes (or 
 #'  \code{"total"} for the total across species) to be plotted.
 #'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'  or \code{"Controls"}).
+#' @param tmnt_type \code{character} value of the level of interest 
+#'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param cast_type \code{character} value of the type of -cast of model. Used
 #'  to select the file in the predictions subdirectory. Currently only 
@@ -210,6 +222,15 @@ plot_cast_ts_ylab <- function(main = ".", level = "Controls",
 #'
 #' @param with_census \code{logical} toggle if the plot should include the
 #'  observed data collected during the predicted census.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #' 
 #' @return 
 #'  \code{plot_cast_point}: creates the plot and returns \code{NULL}.
@@ -225,10 +246,10 @@ plot_cast_ts_ylab <- function(main = ".", level = "Controls",
 #' @export
 #'
 plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
-                            level = "Controls", cast_type = "forecast", 
+                            tmnt_type = "Controls", cast_type = "forecast", 
                             cast_date = NULL, model = "Ensemble", 
                             lead = 1, from_date = NULL, 
-                            with_census = FALSE){
+                            with_census = FALSE, arg_checks = TRUE){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   if (is.null(cast_date)){
@@ -237,12 +258,12 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
   if (is.null(from_date) & cast_type == "forecast"){
     from_date <- cast_date
   }
-  check_args()
+  check_args(arg_checks)
   moons <- read_data(main, "moons")
   casts <- read_cast(main, cast_type = cast_type, cast_date = cast_date)
 
   if (with_census){
-    obs <- read_rodents(main, tolower(level))
+    obs <- read_rodents_table(main, tolower(tmnt_type))
     lead <- 1
     most_recent_c_date <- most_recent_census(main)
     cdates <- as.Date(as.character(moons$censusdate))
@@ -266,7 +287,7 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
     newmoonyear <- metadata$rodent_cast_years[to_plot]
   }
 
-  pred <- select_casts(casts, species, level, model, newmoonnumber)  
+  pred <- select_casts(casts, species, tmnt_type, model, newmoonnumber)  
   if (NROW(pred) == 0){
     stop("no casts available for specified inputs")
   }  
@@ -276,7 +297,7 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
   rangex <- c(0, max(pred$UpperPI))
 
   main_date <- paste(month(newmoonmonth, TRUE), newmoonyear, sep = " ")
-  mainlab <- paste0(main_date, ": " , level)
+  mainlab <- paste0(main_date, ": " , tmnt_type)
 
   par(mar = c(3.5, 9.5, 2, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", 
@@ -312,10 +333,11 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
 #'
 #' @export
 #'
-plot_cast_point_yaxis <- function(main = ".", species = "total"){
+plot_cast_point_yaxis <- function(main = ".", species = "total", 
+                                  arg_checks = TRUE){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  check_args()
+  check_args(arg_checks)
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")
@@ -353,8 +375,8 @@ plot_cast_point_yaxis <- function(main = ".", species = "total"){
 #'  \code{rodent_spp(set = "evalplot")}, the only setting for which the
 #'  plot is reliably coded/ 
 #'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'  or \code{"Controls"}).
+#' @param tmnt_type \code{character} value of the level of interest
+#'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param cast_type \code{character} value of the type of -cast of model. Used
 #'  to select the file in the predictions subdirectory. Currently only 
@@ -365,6 +387,15 @@ plot_cast_point_yaxis <- function(main = ".", species = "total"){
 #' @param models \code{character} value(s) of the name(s) (or 
 #'  \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 #'  models with available -casts are returned.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #' 
 #' @examples
 #'  \donttest{
@@ -376,13 +407,14 @@ plot_cast_point_yaxis <- function(main = ".", species = "total"){
 #'
 plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast", 
                                    species = rodent_species(set = "evalplot"),
-                                   level = "Controls", ndates = 3,
-                                   models = model_names(set = "wEnsemble")){
+                                   tmnt_type = "Controls", ndates = 3,
+                                   models = model_names(set = "wEnsemble"), 
+                                   arg_checks = TRUE){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  check_args()
+  check_args(arg_checks)
   casts <- read_casts(main, cast_type = cast_type) %>%
-           select_casts(species = species, level = level, models = models)
+           select_casts(species = species, tmnt_type, models = models)
   if (NROW(casts) == 0){
     stop("no casts available for specified inputs")
   } 
@@ -529,7 +561,7 @@ plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast",
 #'  \code{rodent_spp(set = "evalplot")}, the only setting for which the
 #'  plot is reliably coded. 
 #'
-#' @param level \code{character} value of the treatment type of interest 
+#' @param tmnt_type \code{character} value of the treatment type of interest 
 #'  (\code{"All"} or \code{"Controls"}).
 #'
 #' @param cast_type \code{character} value of the type of -cast of model. Used
@@ -548,6 +580,17 @@ plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast",
 #' @param models \code{character} value(s) of the name(s) (or 
 #'  \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
 #'  models with available -casts are returned.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
+#' @return Creates the plot and returns \code{NULL}.
 #' 
 #' @examples
 #'  \donttest{
@@ -559,18 +602,20 @@ plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast",
 #'
 plot_cov_RMSE_mod_spp <- function(main = ".", cast_type = "hindcast", 
                                   species = rodent_species(set = "evalplot"),
-                                  level = "Controls", cast_dates = NULL, 
+                                  tmnt_type = "Controls", cast_dates = NULL, 
                                   min_observed = 1, 
-                                  models = model_names(set = "wEnsemble")){
+                                  models = model_names(set = "wEnsemble"), 
+                                  arg_checks = TRUE){
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   if (is.null(cast_dates)){
     cast_dates <- most_recent_cast(main, cast_type, TRUE)
   }
-  check_args()
+  check_args(arg_checks)
   casts <- read_casts(main = main, cast_type = cast_type, 
                       cast_dates = cast_dates) %>%
-           select_casts(species = species, level = level, models = models) 
+           select_casts(species = species, tmnt_types = tmnt_type, 
+                        models = models) 
   if (NROW(casts) == 0){
     stop("no casts available for specified inputs")
   }  

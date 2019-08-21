@@ -4,11 +4,20 @@
 \alias{interpolate_abundance}
 \title{Interpolate missing rodent data}
 \usage{
-interpolate_abundance(rodents_tab)
+interpolate_abundance(rodents_tab, arg_checks = TRUE)
 }
 \arguments{
 \item{rodents_tab}{\code{data.frame} of rodents data with a 
 \code{newmoonnumber} column.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{data.frame} data table of interpolation-inclusive counts

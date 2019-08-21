@@ -13,6 +13,15 @@
 #'  but for some API URLs, the extension is actually a query component,
 #'  so the separator may sometimes need to be \code{"="}.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{character} value of the extension (\code{file_ext}) or the
 #'  path without the extension (\code{path_no_ext}.
 #' 
@@ -24,8 +33,8 @@
 #'
 #' @export
 #'
-file_ext <- function(path, sep_char = "."){
-  check_args()
+file_ext <- function(path, sep_char = ".", arg_checks = TRUE){
+  check_args(arg_checks)
   for_regexpr <- paste0("\\", sep_char, "([[:alnum:]]+)$")
   pos <- regexpr(for_regexpr, path)
   ifelse(pos > -1L, substring(path, pos + 1L), "")
@@ -35,8 +44,8 @@ file_ext <- function(path, sep_char = "."){
 #'
 #' @export
 #'
-path_no_ext <- function(path, sep_char = "."){
-  check_args()
+path_no_ext <- function(path, sep_char = ".", arg_checks = TRUE){
+  check_args(arg_checks)
   for_sub <- paste0("([^", sep_char, "]+)\\.[[:alnum:]]+$")
   sub(for_sub, "\\1", path)
 }
@@ -57,6 +66,15 @@ path_no_ext <- function(path, sep_char = "."){
 #'   vector. Presently only defined for \code{"prefab"}, or the setting
 #'   \code{NULL} which allows for complete customization.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{character} vector of subdirectory names.
 #'
 #' @examples
@@ -64,8 +82,9 @@ path_no_ext <- function(path, sep_char = "."){
 #'
 #' @export
 #'
-subdirs <- function(subs_names = NULL, subs_type = "prefab"){
-  check_args()
+subdirs <- function(subs_names = NULL, subs_type = "prefab", 
+                    arg_checks = TRUE){
+  check_args(arg_checks)
   if (!is.null(subs_type)){
     if (subs_type == "prefab"){
       pc_subs <- c("predictions", "models", "raw", "data", "tmp")
@@ -94,6 +113,15 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #'   subdirectory/subdirectories of interest, or \code{NULL} (default)
 #'   for all.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return \code{character} value normalized paths 
 #'   (see \code{\link{normalizePath}}) . \cr \cr
 #'   \code{main_path} normalized path of the \code{main} folder. \cr \cr
@@ -109,8 +137,8 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab"){
 #'
 #' @export
 #'
-main_path <- function(main = "."){
-  check_args()
+main_path <- function(main = ".", arg_checks = TRUE){
+  check_args(arg_checks)
   fpath <- file.path(main)
   normalizePath(fpath, mustWork = FALSE)
 }
@@ -119,8 +147,9 @@ main_path <- function(main = "."){
 #'
 #' @export
 #'
-sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs()){
-  check_args()
+sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs(), 
+                      arg_checks = TRUE){
+  check_args(arg_checks)
   if (!is.null(specific_subs) && (!all(specific_subs %in% subs))){
     stop("some `specific_subs` not in `subs`")
   }
@@ -142,6 +171,15 @@ sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs()){
 #'
 #' @param extension \code{character} file extension (including the period).
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return The normalized path of the specified model script (see 
 #'   \code{\link{normalizePath}}) or \code{NULL} if \code{models = NULL}. 
 #' 
@@ -150,8 +188,9 @@ sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs()){
 #'
 #' @export
 #'
-model_paths <- function(main = ".", models = NULL, extension = ".R"){
-  check_args()
+model_paths <- function(main = ".", models = NULL, extension = ".R", 
+                        arg_checks = TRUE){
+  check_args(arg_checks)
   return_if_null(models)
   sub <- "models"
   mod <- paste0(models, extension)
@@ -170,6 +209,15 @@ model_paths <- function(main = ".", models = NULL, extension = ".R"){
 #' @param local_paths \code{character} file path(s) within the \code{main}
 #'   level of the portalcasting directory.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return The normalized path(s) of the specified file(s) (see 
 #'   \code{\link{normalizePath}}) or \code{NULL} if \code{local_paths = NULL}. 
 #' 
@@ -178,9 +226,9 @@ model_paths <- function(main = ".", models = NULL, extension = ".R"){
 #'
 #' @export
 #'
-file_paths <- function(main = ".", local_paths = NULL){
+file_paths <- function(main = ".", local_paths = NULL, arg_checks = TRUE){
   return_if_null(local_paths)
-  check_args()
+  check_args(arg_checks)
   return_if_null(local_paths)
   fpath <- file.path(main, local_paths)
   normalizePath(fpath, mustWork = FALSE)

@@ -10,6 +10,9 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
+#
+#' @param tmnt_types \code{character} vector of name(s) of rodents 
+#'  dataset(s) to include.
 #'
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
@@ -88,10 +91,9 @@
 #'  element \code{list} must be named according to the model and the
 #'  \code{name} element. \cr 
 #'
-#' @param controls_r Control \code{list} (from 
-#'  \code{\link{rodents_control}}) or \code{list} of control \code{list}s 
+#' @param controls_r Control \code{list} or \code{list} of \code{list}s 
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
-#'  rodents tables. See \code{\link{rodents_control}} for details. 
+#'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
 #' @param control_cdl \code{list} of specifications for the download, which
 #'  are sent to \code{\link{NMME_urls}} to create the specific URLs. See
@@ -122,6 +124,15 @@
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return All \code{fill_} functions return \code{NULL}.
 #'
 #' @examples
@@ -136,7 +147,8 @@
 #'
 #' @export
 #'
-fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL, 
+fill_dir <- function(main = ".", models = prefab_models(), 
+                     tmnt_types = c("all", "controls"), end_moon = NULL, 
                      lead_time = 12, cast_date = Sys.Date(),
                      start_moon = 217, 
                      confidence_level = 0.9, 
@@ -155,8 +167,9 @@ fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                      quiet = FALSE, verbose = FALSE, save = TRUE,
                      overwrite = TRUE, filename_moons = "moon_dates.csv",
                      filename_cov = "covariates.csv", 
-                     filename_meta = "metadata.yaml", cleanup = TRUE){
-  check_args()
+                     filename_meta = "metadata.yaml", cleanup = TRUE, 
+                     arg_checks = TRUE){
+  check_args(arg_checks)
   pass_and_call(fill_raw)
   pass_and_call(fill_predictions)
   pass_and_call(fill_models)
@@ -168,9 +181,9 @@ fill_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #'
 #' @export
 #'
-fill_data <- function(main = ".", end_moon = NULL, 
-                      lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
-                      start_moon = 217, 
+fill_data <- function(main = ".", tmnt_types = c("all", "controls"),
+                      end_moon = NULL, lead_time = 12, min_lag = 6, 
+                      cast_date = Sys.Date(), start_moon = 217, 
                       confidence_level = 0.9, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
                       raw_path_archive = "portalPredictions",
@@ -188,8 +201,8 @@ fill_data <- function(main = ".", end_moon = NULL,
                       filename_moons = "moon_dates.csv",
                       filename_cov = "covariates.csv",
                       filename_meta = "metadata.yaml",
-                      cleanup = TRUE){
-  check_args()
+                      cleanup = TRUE, arg_checks = TRUE){
+  check_args(arg_checks)
   raw_data_present <- verify_raw_data(raw_path_data, main)
   if(!raw_data_present){
     fill_raw(downloads, main, quiet, cleanup)
@@ -208,9 +221,9 @@ fill_data <- function(main = ".", end_moon = NULL,
 #'
 fill_models <- function(main = ".", models = prefab_models(), 
                         controls_m = NULL, quiet = FALSE, 
-                        overwrite = TRUE){
+                        overwrite = TRUE, arg_checks = TRUE){
   return_if_null(models)
-  check_args()
+  check_args(arg_checks)
   controls_m <- model_script_controls(models, controls_m)
   messageq("Adding models to models subdirectory:", quiet)
   nmodels <- length(models)
@@ -228,8 +241,8 @@ fill_predictions <- function(main = ".",
                              raw_path_predictions =
                                "portalPredictions/predictions", 
                              quiet = FALSE, verbose = FALSE, 
-                             overwrite = TRUE){
-  check_args()
+                             overwrite = TRUE, arg_checks = TRUE){
+  check_args(arg_checks)
   messageq("filling predictions folder", quiet)
   local_raw_folder <- paste0("raw/", raw_path_predictions)
   raw_folder <- file_paths(main, local_paths = local_raw_folder)
@@ -248,8 +261,8 @@ fill_predictions <- function(main = ".",
 #'
 fill_raw <- function(main = ".", 
                      downloads = zenodo_downloads(c("1215988", "833438")), 
-                     quiet = FALSE, cleanup = TRUE){
-  check_args()
+                     quiet = FALSE, cleanup = TRUE, arg_checks = TRUE){
+  check_args(arg_checks)
   return_if_null(downloads)
   if(list_depth(downloads) == 1){
     downloads <- list(downloads)
@@ -281,6 +294,15 @@ fill_raw <- function(main = ".",
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the files and whether they were moved or not.
 #'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
 #' @return A \code{character} value of the message to be printed (if desired).
 #'
 #' @examples
@@ -291,9 +313,9 @@ fill_raw <- function(main = ".",
 #' @export
 #'
 fill_predictions_message <- function(files = NULL, movedTF = NULL, 
-                                     verbose = FALSE){
+                                     verbose = FALSE, arg_checks = TRUE){
   return_if_null(files)
-  check_args()
+  check_args(arg_checks)
   moved <- files[movedTF]
   not_moved <- files[!movedTF]
   n_moved <- length(moved)

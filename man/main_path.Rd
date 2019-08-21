@@ -5,13 +5,23 @@
 \alias{sub_paths}
 \title{Determine the path for a specific level of a forecasting directory}
 \usage{
-main_path(main = ".")
+main_path(main = ".", arg_checks = TRUE)
 
-sub_paths(main = ".", specific_subs = NULL, subs = subdirs())
+sub_paths(main = ".", specific_subs = NULL, subs = subdirs(),
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{specific_subs}{\code{character}-value name of the specific 
 subdirectory/subdirectories of interest, or \code{NULL} (default)

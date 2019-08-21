@@ -4,7 +4,8 @@
 \alias{record_name_from_url}
 \title{Attempt to extract the record name from a URL}
 \usage{
-record_name_from_url(url, NULLname = FALSE, sep_char = ".")
+record_name_from_url(url, NULLname = FALSE, sep_char = ".",
+  arg_checks = TRUE)
 }
 \arguments{
 \item{url}{\code{character} value of the URL.}
@@ -16,6 +17,15 @@ record_name_from_url(url, NULLname = FALSE, sep_char = ".")
 the extension from the file path. Generally, this will be \code{"."},
 but for some API URLs, the extension is actually a query component,
 so the separator may sometimes need to be \code{"="}.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{character} value of the name or \code{NULL}.
