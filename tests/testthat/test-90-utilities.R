@@ -24,7 +24,7 @@ test_that("append_csv",{
 
 test_that("cast_window", {
   skip_on_cran() # downloads take too long for cran checks
-  wind <- cast_window(main = "~/testing")
+  wind <- cast_window(main = "./testing")
   expect_is(wind, "list")
   expect_equal(names(wind), c("start", "end"))
 })
