@@ -6,41 +6,46 @@ fill_dir("~/testingw")
 portalcast("~/testing4", models = c("ESSS", "AutoArima"))
 portalcast("~/testing4", models = c("ESSS", "AutoArima"), end_moons = 519:520)
 
-hist_cov <- prep_hist_covariates("~/testingpp")
+hist_cov <- prep_hist_covariates("~/testingw")
 prep_cast_covariates("~/testingpp", hist_cov = hist_cov)
 
 
-plot_cast_ts("~/testingpp")
-plot_cov_RMSE_mod_spp("~/testingpp")
-plot_err_lead_spp_mods("~/testingpp")
+plot_cast_ts("~/testingw")
+plot_cov_RMSE_mod_spp("~/testingw")
+plot_err_lead_spp_mods("~/testingw")
 
-plot_cast_point("~/testingpp", with_census = TRUE)
-plot_cast_point("~/testingpp")
+plot_cast_point("~/testingw", with_census = TRUE)
+plot_cast_point("~/testingw")
 
 
 
-devtools::test()
+devtools::test(filter = "10")
+devtools::test(filter = "20")
+devtools::test(filter = "30")
+devtools::test(filter = "40")
+devtools::test(filter = "50")
+devtools::test(filter = "55")
+devtools::test(filter = "58")
+devtools::test(filter = "60")
+devtools::test(filter = "65")
+devtools::test(filter = "70")
+devtools::test(filter = "80")
+devtools::test(filter = "81")
+devtools::test(filter = "82")
+devtools::test(filter = "85")
+devtools::test(filter = "87")
+devtools::test(filter = "90")
+devtools::test(filter = "92")
 
 # to do
 # tests
 # update vignettes
 # add morgans model
 
-casts should be saved out as tmnt_type = tmnt_type, rather than 
-level = tmnt_type
-will need to make the column name matching flexible
-
 funcitons to test
-all the models (now in prefab_models
-most_recent_census (process data)
-most_recent_cast (process casts)
-na_conformer (utilities)
-verify cast, cast is valid, column conformer, select casts
-  measure cast error append observed to cast (process casts)
-the figure functions
+cast is valid erify cast
 
 
-start_newmoon is now start_moon
 
 
  # I WILL NEED TO MANAGE SOMETHING WITH THE ARCHIVED FILE NAME CHANGE
@@ -76,6 +81,7 @@ work to get the arg_checks arg passed through the code cleanly!
 some basic utilities and
 the prefab model functions dont have arg_checks capability, intentionally
 
+start_newmoon is now start_moon
 
 put in a toggle to turn off arg checking at the top level and down thru?
 
@@ -94,5 +100,9 @@ put in a toggle to turn off arg checking at the top level and down thru?
 #   treatment levels
 #
 # can i use check_args in the ... functions (utilities)
+# 
+casts should be saved out as tmnt_type = tmnt_type, rather than 
+level = tmnt_type
+will need to make the column name matching flexible
 
 

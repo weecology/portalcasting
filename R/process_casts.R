@@ -48,9 +48,15 @@
 #' @return \code{character} vector of length \code{topx} of the species codes
 #'  (see \code{\link{rodent_species}}) of the selected species.
 #'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   select_most_ab_spp()
+#'  }
+#'
 #' @export
 #'
-select_most_ab_spp <- function(topx = 3, main = ".",
+select_most_ab_spp <- function(main = ".", topx = 3, 
                                species = base_species(),
                                tmnt_type = "Controls", 
                                cast_type = "forecasts", 
@@ -75,7 +81,7 @@ select_most_ab_spp <- function(topx = 3, main = ".",
   to_include <- which(cast_nms_io)[lead]
   newmoonnumbers <- metadata$rodent_cast_newmoons[to_include]
   pred <- read_cast(main, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, tmnt_types = tolower(tmnt_type), 
+          select_casts(species = species, tmnt_types = tmnt_type, 
                        models = model, target_moons = newmoonnumbers)  
   pred$species[order(pred$estimate, decreasing = TRUE)[1:topx]]
 }

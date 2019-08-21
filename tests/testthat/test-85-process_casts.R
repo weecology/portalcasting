@@ -2,7 +2,6 @@ context("Test process_casts functions")
 
 test_that("add_ensemble", {
   skip_on_cran() # downloads take too long for cran checks
-
   verify_models(main = "./testing", models = c("ESSS", "AutoArima"))
   min_lag <- extract_min_lag(models = c("ESSS", "AutoArima"))
   last_moon <- last_newmoon(main = "./testing")
@@ -47,3 +46,41 @@ test_that("save_cast_output", {
   expect_silent(save_cast_output(f_a, f_c, "AutoArima", main = "./testing"))
 })
 
+test_that("select_most_ab_spp", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(select_most_ab_spp(main = "~/testing", model = "AutoArima"), 
+             "character")
+})
+
+
+test_that("append_observed_to_cast", {
+  skip_on_cran() # downloads take too long for cran checks
+  casts <- read_casts(main = "./testing")
+  casts_a <- select_casts(casts, tmnt_types = "All")
+  casts_a <- append_observed_to_cast(main = "./testing", casts_a) 
+  expect_is(casts_a, "data.frame")
+})
+
+test_that("measure_cast_error", {
+  skip_on_cran() # downloads take too long for cran checks
+  casts <- read_casts(main = "./testing") %>% 
+           select_casts(tmnt_types = "Controls") %>%
+           append_observed_to_cast(main = "./testing")
+  expect_silent(casttab <- measure_cast_error(casts)) 
+})
+
+test_that("read_cast", {
+  skip_on_cran() # downloads take too long for cran checks
+  casts <- read_cast(main = "./testing") 
+  expect_silent(casttab <- measure_cast_error(casts)) 
+})
+
+test_that("column conformer", {
+  df <- data.frame(xforecastx = 1:10, fore = 2:11)
+  expect_is(column_conformer(df), "data.frame")
+})
+
+
+test_that("most_recent_cast", {
+   expect_is(most_recent_cast("./testing"), "Date")
+})

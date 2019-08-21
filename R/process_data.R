@@ -56,6 +56,16 @@ most_recent_census <- function(main = ".", arg_checks = TRUE){
 #'  for each species and total and with the columns trimmed to just 
 #'  the species, total, and newmoonnumber (\code{newmoon}).
 #'
+#' @examples
+#'  \donttest{ 
+#'   setup_dir()
+#'   abundances <- read_rodents_table()
+#'   metadata <- read_metadata(main)
+#'   nmoons <- length(metadata$rodent_cast_newmoons)
+#'   CL <- metadata$confidence_level
+#'   abundances <- interpolate_abundance(abundances)
+#'  }
+#' 
 #' @export
 #' 
 interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){

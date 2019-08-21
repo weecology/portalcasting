@@ -1,5 +1,11 @@
 context("Test process_data functions")
 
+
+test_that("most_recent_census", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(most_recent_census(main = "./testing"), "Date")
+})
+
 test_that("lag_covariates", {
   skip_on_cran() # downloads take too long for cran checks
   covs <- read_covariates(main = "./testing")
@@ -17,7 +23,8 @@ test_that("read_data", {
   skip_on_cran() # downloads take too long for cran checks
   expect_silent(all <- read_data("./testing", "rodents_table", "all"))
   expect_is(all, "data.frame")
-  expect_silent(controls <- read_data("./testing", "rodents_table", "controls"))
+  expect_silent(controls <- read_data("./testing", "rodents_table", 
+                                      "controls"))
   expect_is(controls, "data.frame")
   expect_silent(controls <- read_data("./testing", "rodents", "controls"))
   expect_is(controls, "list")

@@ -565,7 +565,7 @@ pevGARCH <- function(main = ".", tmnt_type = "All", lag = 6, quiet = FALSE){
           best_model <- proposed_model
           best_aic <- proposed_aic
 
-          spec_forecast <- proposed_cast
+          spec_cast <- proposed_cast
           spec_aic <- proposed_aic
         }
 
@@ -574,15 +574,15 @@ pevGARCH <- function(main = ".", tmnt_type = "All", lag = 6, quiet = FALSE){
 
       fit_fails <- length(which(is.na(best_model) == TRUE))    
       if(fit_fails > 0){
-        spec_forecast <- cast0(nmoons)
+        spec_cast <- cast0(nmoons)
         spec_aic <- 1e6
       } 
 
     }
 
-    estimate <- as.numeric(spec_forecast$pred)
-    LowerPI <- as.numeric(spec_forecast$interval[, 1]) 
-    UpperPI <- as.numeric(spec_forecast$interval[, 2])
+    estimate <- as.numeric(spec_cast$pred)
+    LowerPI <- as.numeric(spec_cast$interval[, 1]) 
+    UpperPI <- as.numeric(spec_cast$interval[, 2])
 
     cast_s <- data.frame(date = metadata$cast_date, 
                          castmonth = metadata$rodent_cast_months,

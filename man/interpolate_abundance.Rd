@@ -30,3 +30,14 @@ Interpolation of missing data in the rodent abundance data
  linearly interpolated, then the total number of rodents is calculated 
  from the sum of the individual species.
 }
+\examples{
+ \donttest{ 
+  setup_dir()
+  abundances <- read_rodents_table()
+  metadata <- read_metadata(main)
+  nmoons <- length(metadata$rodent_cast_newmoons)
+  CL <- metadata$confidence_level
+  abundances <- interpolate_abundance(abundances)
+ }
+
+}

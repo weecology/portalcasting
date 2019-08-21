@@ -4,17 +4,17 @@
 \alias{select_most_ab_spp}
 \title{Select the most abundant species from a forecast or hindcast}
 \usage{
-select_most_ab_spp(topx = 3, main = ".", species = base_species(),
+select_most_ab_spp(main = ".", topx = 3, species = base_species(),
   tmnt_type = "Controls", cast_type = "forecasts", cast_date = NULL,
   model = "Ensemble", lead = 1, from_date = NULL,
   arg_checks = TRUE)
 }
 \arguments{
-\item{topx}{\code{integer}-conformable numeric value for the top number of
-species to select.}
-
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{topx}{\code{integer}-conformable numeric value for the top number of
+species to select.}
 
 \item{species}{\code{character} vector of the species codes (or 
 \code{"total"} for the total across species) to be selected from or 
@@ -59,4 +59,11 @@ many/most/all enclosed functions to not check any arguments using
 \description{
 Given a forecast or hindcast, determine the most abundant
  species predicted. Currently only reliable for forecasts.
+}
+\examples{
+ \donttest{
+  setup_dir()
+  select_most_ab_spp()
+ }
+
 }
