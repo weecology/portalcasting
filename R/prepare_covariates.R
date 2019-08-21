@@ -100,10 +100,23 @@ prep_covariates <- function(main = ".", moons = NULL,
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   messageq("Loading covariate data files into data subdirectory", quiet)
-  hist_cov <- pass_and_call(prep_hist_covariates, moons = moons) 
+  hist_cov <- prep_hist_covariates(main = main, end_moon = end_moon,
+                                   quiet = quiet, arg_checks = arg_checks)
   if (cast_covariates){
-    cast_cov <- pass_and_call(prep_cast_covariates, hist_cov = hist_cov,
-                              moons = moons)
+    cast_cov <- prep_cast_covariates(main = main, moons = moons, 
+                                     hist_cov = hist_cov,
+                                     end_moon = end_moon, 
+                                     lead_time = lead_time, min_lag = min_lag, 
+                                     cast_date = cast_date, 
+                                     raw_path_archive = raw_path_archive,
+                                     raw_cov_cast_file = raw_cov_cast_file,
+                                     raw_path_cov_cast = raw_path_cov_cast, 
+                                     source_name = source_name,
+                                     append_cast_csv = append_cast_csv, 
+                                     control_cdl = control_cdl,
+                                     quiet = quiet, save = save, 
+                                     overwrite = overwrite, 
+                                     arg_checks = arg_checks)
   }
   out <- hist_cov[-(1:nrow(hist_cov)), ]
   if (hist_covariates){

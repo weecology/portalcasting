@@ -91,18 +91,14 @@ Models are run using a function pipeline similar to the creation and filling fun
 
 To facilitate tidy and easy-to-follow code, we introduce a few important utility functions, which are put to use throughout the codebase.
 
-### `pass_and_call`
-
-`pass_and_call` helps connect functions within a pipeline maintain named arguments (so it's easier for an end-user to alter the specifics) that doesn't lead to extensive function code. Rather, `pass_and_call` combines `args_to_pass`, which aligns the argument of the parent (enclosing) function with the child (enclosed) function, and the base R function `do.call`. Importantly, `args_to_pass` leverages `match.call.default` from the DesignLibrary R package that extends the base R `match.call` allowing for expansion of all arguments, even those left as default values. In addition, `args_to_pass` uses the base `formals` function to determine which arguments are needed by the child function, creating a list of all required arguments for the child.
-
-If there is a disagreement in values between the parent and child functions, the parent's value is the selected one. `pass_and_call` does allow for updating of argument values via a `...` argument, which is used to override the definition of both the parent and the child, providing and easy way to port in updated values in the middle of a pipeline. However, `pass_and_call` is presently set up to evaluate all arguments in the environment where they were defined. This is to avoid issues where one argument's value is dependent upon another argument in the parent function which is stripped off before passing to the child function. 
-
 ### `check_args`
 
-`check_args` facilitates checking of inputted values for arguments for validity, including the class, length, and values. It extracts the boolean checking code that would normally be within each function, placing it instead within `check_arg` which is called for each argument by `check_args`.
+`check_args` checks the validity of inputted values for arguments, variably (depending on the argument) including the class, length, and values. It extracts the boolean checking code that would normally be within each function, placing it instead within `check_arg` which is called for each argument by `check_args`.
 
 A key aspect to the *portalcasting* pipeline's ability to connect pieces is tied directly to argument checking: argument names should not be re-used in different functions unless they are for the same type of object. 
 
 Some base *portalcasting* utilities cannot use `check_args` however, and so have their own specific internal checking. For example, `list_depth`'s recursive nature prevents its use, and `check_arg` cannot use `check_args` itself. 
+
+`check_args` provides important backstopping and error checking of a standard *portalcasting* production pipepline. However, it is likley that a user in development spaces (a.k.a. sandboxes) would like to deviate from the standard behavior to leverage, for example, the ability to construct novel rodent `tmnt_types` (groups of observations over time). To that end, we incldue an argument `arg_checks` that is in nearly every function throughtout the codebase, which flips a switch and turns off the vast majority of the *portalcasting*-generated errors. In this space, the user will be able to create a much broader array, but will likely be first informed of errors through more base functions. To that end, in default sandboxing mode, we set `arg_checks = FALSE` (minimal checking from *portalcasting*) and `verbose = TRUE` (maximum feedback from underlying functions).
 
 

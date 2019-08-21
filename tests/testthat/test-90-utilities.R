@@ -43,23 +43,6 @@ test_that("add_date_from_components", {
   expect_is(add_date_from_components(df), "data.frame")
 })
 
-test_that("pass_and_call", {
-
-  yy <- function(n = 1, z = sqrt(w), w = 40){
-           pass_and_call(rnorm, mean = z, sd  = w)
-         }
-
-  yyy <- function(d = 43){
-            pass_and_call(yy, n = d)
-          }
-  expect_is(yy(), "numeric")
-  expect_is(yy(w = 30), "numeric")
-  expect_is(yy(z = 0, w = 1), "numeric")
-  expect_equal(length(yyy()), 43)
-  expect_equal(length(yyy(d = 2)), 2)
-
-})
-
 test_that("error_if_deep", {
 
   expect_error(error_if_deep(-1e4))
@@ -115,4 +98,4 @@ test_that("return_if_null", {
   expect_equal(ff(), 1)
   expect_equal(ff(NULL), "hello")
 })
-unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)
+

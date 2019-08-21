@@ -7,7 +7,7 @@ test_that("add_ensemble", {
   min_lag <- extract_min_lag(models = c("ESSS", "AutoArima"))
   last_moon <- last_newmoon(main = "./testing")
   end_moon <- 520
-  clear_tmp(main = "./testing")
+  clear_tmp(main = "./testing") # not sure why this throws an error...
   prep_data(main = "./testing", min_lag = min_lag, end_moon = end_moon)
   models_scripts <- models_to_cast(main = "./testing", 
                                    models = c("ESSS", "AutoArima"))
@@ -42,8 +42,8 @@ test_that("compile_aic_weights", {
 
 test_that("save_cast_output", {
   skip_on_cran() # downloads take too long for cran checks
-  f_a <- AutoArima(level = "All", main = "./testing")
-  f_c <- AutoArima(level = "Controls", main = "./testing")
+  f_a <- AutoArima(tmnt_type = "All", main = "./testing")
+  f_c <- AutoArima(tmnt_type = "Controls", main = "./testing")
   expect_silent(save_cast_output(f_a, f_c, "AutoArima", main = "./testing"))
 })
 

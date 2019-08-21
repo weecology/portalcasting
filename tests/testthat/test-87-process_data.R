@@ -8,17 +8,19 @@ test_that("lag_covariates", {
 
 test_that("interpolate_abundance", {
   skip_on_cran() # downloads take too long for cran checks
-  rods <- read_rodents(main = "./testing", "all")
+  rods <- read_rodents_table(main = "./testing", "all")
   expect_silent(rods2 <- interpolate_abundance(rods))
   expect_is(rods2, "data.frame")
 })
 
 test_that("read_data", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_silent(all <- read_data("./testing", "rodents", "all"))
+  expect_silent(all <- read_data("./testing", "rodents_table", "all"))
   expect_is(all, "data.frame")
-  expect_silent(controls <- read_data("./testing", "rodents", "controls"))
+  expect_silent(controls <- read_data("./testing", "rodents_table", "controls"))
   expect_is(controls, "data.frame")
+  expect_silent(controls <- read_data("./testing", "rodents", "controls"))
+  expect_is(controls, "list")
   expect_silent(covariates <- read_data("./testing", "covariates"))
   expect_is(covariates , "data.frame")
   expect_silent(covariate_casts <- read_data("./testing", "covariate_casts"))

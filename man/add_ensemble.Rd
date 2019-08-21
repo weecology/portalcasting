@@ -4,12 +4,15 @@
 \alias{add_ensemble}
 \title{Add ensemble model to forecasts}
 \usage{
-add_ensemble(main = ".", end_moon = NULL, cast_date = Sys.Date(),
-  confidence_level = 0.9, quiet = FALSE, arg_checks = TRUE)
+add_ensemble(main = ".", moons = NULL, end_moon = NULL,
+  cast_date = Sys.Date(), confidence_level = 0.9, quiet = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 

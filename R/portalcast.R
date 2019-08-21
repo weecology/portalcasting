@@ -152,6 +152,10 @@
 #'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 #'  many/most/all enclosed functions to not check any arguments using 
 #'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#
+#' @param tmnt_types \code{character} values of the treatment 
+#'  types (currently \code{"all"} or \code{"controls"}) used to enforce 
+#'  certain arguments in data creation (see \code{\link{prep_rodents_table}}).
 #' 
 #' @return Results are saved to files, \code{NULL} is returned.
 #'
@@ -166,7 +170,7 @@
 #' @export
 #'
 portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
-                       end_moons = NULL, 
+                       tmnt_types = c("all", "controls"), end_moons = NULL, 
                        lead_time = 12, cast_date = Sys.Date(),
                        start_moon = 217, 
                        confidence_level = 0.9, 
@@ -190,17 +194,44 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
                        filename_meta = "metadata.yaml", cleanup = TRUE, 
                        arg_checks = TRUE){
   check_args(arg_checks)
-  pass_and_call(portalcast_welcome)
-  pass_and_call(verify_models)
-  min_lag <- pass_and_call(extract_min_lag)
-  last_moon <- pass_and_call(last_newmoon)
+  portalcast_welcome(quiet = quiet)
+  verify_models(main = main, models = models, quiet = quiet, 
+                arg_checks = arg_checks)
+  verify_raw_data(main = main, raw_path_data = raw_path_data, 
+                  arg_checks = arg_checks)
+  min_lag <- extract_min_lag(models = models, controls_m = controls_m,
+                             arg_checks = arg_checks)
+  moons <- read_moons(main = main, arg_checks = arg_checks)
+  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+                            arg_checks = arg_checks)
   end_moons <- ifnull(end_moons, last_moon)
   nend_moons <- length(end_moons)
   for(i in 1:nend_moons){
-    pass_and_call(prep_data, min_lag = min_lag, end_moon = end_moons[i])
-    pass_and_call(cast, end_moon = end_moons[i])
+    prep_data(main = main, tmnt_types = tmnt_types, end_moon = end_moons[i], 
+              lead_time = lead_time, 
+              min_lag = min_lag, cast_date = cast_date, 
+              start_moon = start_moon, confidence_level = confidence_level, 
+              hist_covariates = hist_covariates, 
+              cast_covariates = cast_covariates,
+              raw_path_archive = raw_path_archive,
+              raw_path_data = raw_path_data,
+              raw_cov_cast_file = raw_cov_cast_file,
+              raw_path_cov_cast = raw_path_cov_cast, 
+              raw_moons_file = raw_moons_file, source_name = source_name,
+              append_cast_csv = append_cast_csv, controls_r = controls_r,
+              control_cdl = control_cdl, downloads = downloads, 
+              quiet = quiet, verbose = verbose, save = save,
+              overwrite = overwrite, filename_moons = filename_moons,
+              filename_cov = filename_cov, filename_meta = filename_meta,
+              cleanup = cleanup, arg_checks = arg_checks)
+    cast(main = main, models = models, ensemble = ensemble,
+         cast_date = cast_date, moons = moons, 
+         end_moon = end_moons[i], raw_path_data = raw_path_data,
+         raw_traps_file = raw_traps_file, controls_r = controls_r, 
+         confidence_level = confidence_level, quiet = quiet, 
+         arg_checks = TRUE)
   }
-  pass_and_call(portalcast_goodbye)
+  portalcast_goodbye(quiet = quiet)
 } 
 
 
@@ -209,30 +240,36 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
 #' @export
 #'
 cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
-                 cast_date = Sys.Date(),
-                 moons = NULL, 
+                 cast_date = Sys.Date(), moons = NULL, 
                  end_moon = NULL, raw_path_data = "PortalData",
                  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
-                 controls_r = rodents_controls(), quiet = FALSE, 
-                 arg_checks = TRUE){
+                 controls_r = rodents_controls(), confidence_level = 0.9, 
+                 quiet = FALSE, cleanup = TRUE, arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
-  pass_and_call(clear_tmp)
-  last_moon <- pass_and_call(last_newmoon, moons = moons)
+  clear_tmp(main = main, quiet = quiet, cleanup = cleanup,
+            arg_checks = arg_checks)
+  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+                            arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
 
   msg1 <- "##########################################################"
   msg2 <- paste0("Running models for forecast origin newmoon ", end_moon)
   messageq(c(msg1, msg2), quiet)
 
-  models_scripts <- pass_and_call(models_to_cast)
+  models_scripts <- models_to_cast(main = main, models = models,
+                                   arg_checks = arg_checks)
   sapply(models_scripts, source)
-  pass_and_call(combine_casts, moons = moons)
+  combine_casts(main = main, moons = moons, end_moon = end_moon, 
+                cast_date = cast_date, quiet = quiet, arg_checks = arg_checks)
   if (ensemble){
-    pass_and_call(add_ensemble)
+    add_ensemble(main = main, moons = moons, end_moon = end_moon, 
+                 cast_date = cast_date, confidence_level = confidence_level, 
+                 quiet = quiet, arg_checks = arg_checks)
   }
   messageq("########################################################", quiet)
-  pass_and_call(clear_tmp)
+  clear_tmp(main = main, quiet = quiet, cleanup = cleanup,
+            arg_checks = arg_checks)
 }
 
 
@@ -241,6 +278,7 @@ cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
 #' @export
 #'
 prep_data <- function(main = ".", end_moon = NULL, 
+                      tmnt_types = c("all", "controls"),
                       lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
                       start_moon = 217, 
                       confidence_level = 0.9, 
@@ -263,17 +301,35 @@ prep_data <- function(main = ".", end_moon = NULL,
                       arg_checks = TRUE){
   check_args(arg_checks)
   messageq("Preparing data...", quiet)
+  moons <- read_moons(main = main, arg_checks = arg_checks)
   metadata_path <- file_paths(main, "data/metadata.yaml")
   meta_exist <- file.exists(metadata_path)
   metadata <- yaml.load_file(metadata_path)    
   date_current <- metadata$cast_date == Sys.Date()
   moon_match <- metadata$rodent_cast_newmoons[1] == (end_moon + 1)
   moon_match <- ifelse(length(moon_match) == 0, FALSE, moon_match)
-  last_moon <- pass_and_call(last_newmoon)
+  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+                            arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
   hindcast <- !(end_moon == last_moon)
   if (!meta_exist | !date_current | !moon_match | hindcast){
-    pass_and_call(fill_data)
+    fill_data(main = main, tmnt_types = tmnt_types,
+              end_moon = end_moon, lead_time = lead_time, min_lag = min_lag, 
+              cast_date = cast_date, start_moon = start_moon, 
+              confidence_level = confidence_level, 
+              hist_covariates = hist_covariates, 
+              cast_covariates = cast_covariates,
+              raw_path_archive = raw_path_archive,
+              raw_path_data = raw_path_data,
+              raw_cov_cast_file = raw_cov_cast_file,
+              raw_path_cov_cast = raw_path_cov_cast, 
+              raw_moons_file = raw_moons_file, source_name = source_name,
+              append_cast_csv = append_cast_csv, controls_r = controls_r,
+              control_cdl = control_cdl, downloads = downloads, 
+              quiet = quiet, verbose = verbose, save = save,
+              overwrite = overwrite, filename_moons = filename_moons,
+              filename_cov = filename_cov, filename_meta = filename_meta,
+              cleanup = cleanup, arg_checks = arg_checks)
     messageq(" ...data updated", quiet)
   } else{
     messageq(" ...data already up-to-date", quiet)

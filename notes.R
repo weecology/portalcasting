@@ -1,31 +1,25 @@
-putting lots of tolowers in!
-
-
 devtools::document()
-setup_dir("~/testing4")
-create_dir("~/testing4")
-fill_dir("~/testing4")
+setup_dir("~/testing")
+create_dir("~/testingw")
+fill_dir("~/testingw")
 
 portalcast("~/testing4", models = c("ESSS", "AutoArima"))
 portalcast("~/testing4", models = c("ESSS", "AutoArima"), end_moons = 519:520)
 
-hist_cov <- prep_hist_covariates("~/testing4")
-prep_cast_covariates("~/testing4", hist_cov = hist_cov)
+hist_cov <- prep_hist_covariates("~/testingpp")
+prep_cast_covariates("~/testingpp", hist_cov = hist_cov)
 
 
-plot_cast_ts("~/testing4")
-plot_cov_RMSE_mod_spp("~/testing4")
-plot_err_lead_spp_mods("~/testing4")
+plot_cast_ts("~/testingpp")
+plot_cov_RMSE_mod_spp("~/testingpp")
+plot_err_lead_spp_mods("~/testingpp")
 
-plot_cast_point("~/testing4", with_census = TRUE)
-plot_cast_point("~/testing4")
-
-
-ok, so i like the idea, but the execution just isn't quite right
-i'm pulling the plug on pass and call for right now.
-work this out later
+plot_cast_point("~/testingpp", with_census = TRUE)
+plot_cast_point("~/testingpp")
 
 
+
+devtools::test()
 
 # to do
 # tests

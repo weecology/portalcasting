@@ -11,6 +11,9 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
+#
+#' @param tmnt_types \code{character} vector of name(s) of rodents 
+#'  dataset(s) to include.
 #'
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
@@ -142,32 +145,51 @@
 #'
 #' @export
 #'
-setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL, 
-                     lead_time = 12, cast_date = Sys.Date(),
-                     start_moon = 217, 
-                     confidence_level = 0.9, 
-                     hist_covariates = TRUE, cast_covariates = TRUE,
-                     raw_path_archive = "portalPredictions",
-                     raw_path_data = "PortalData",
-                     raw_path_predictions = "portalPredictions/predictions",
-                     raw_cov_cast_file = "data/covariate_casts.csv",
-                     raw_path_cov_cast = "cov_casts", 
-                     raw_moons_file = "Rodents/moon_dates.csv",
-                     source_name = "current_archive",
-                     append_cast_csv = TRUE, controls_m = NULL,
-                     controls_r = rodents_controls(),
-                     control_cdl = climate_dl_control(),
-                     downloads = zenodo_downloads(c("1215988", "833438")), 
-                     quiet = FALSE, verbose = FALSE, subs = subdirs(),
-                     save = TRUE, overwrite = TRUE, 
-                     filename_moons = "moon_dates.csv",
-                     filename_cov = "covariates.csv", 
-                     filename_meta = "metadata.yaml", cleanup = TRUE,
-                     arg_checks = TRUE){
+setup_dir <- function(main = ".", models = prefab_models(), 
+                      tmnt_types = c("all", "controls"), end_moon = NULL, 
+                      lead_time = 12, cast_date = Sys.Date(),
+                      start_moon = 217, 
+                      confidence_level = 0.9, 
+                      hist_covariates = TRUE, cast_covariates = TRUE,
+                      raw_path_archive = "portalPredictions",
+                      raw_path_data = "PortalData",
+                      raw_path_predictions = "portalPredictions/predictions",
+                      raw_cov_cast_file = "data/covariate_casts.csv",
+                      raw_path_cov_cast = "cov_casts", 
+                      raw_moons_file = "Rodents/moon_dates.csv",
+                      source_name = "current_archive",
+                      append_cast_csv = TRUE, controls_m = NULL,
+                      controls_r = rodents_controls(),
+                      control_cdl = climate_dl_control(),
+                      downloads = zenodo_downloads(c("1215988", "833438")), 
+                      quiet = FALSE, verbose = FALSE, subs = subdirs(),
+                      save = TRUE, overwrite = TRUE, 
+                      filename_moons = "moon_dates.csv",
+                      filename_cov = "covariates.csv", 
+                      filename_meta = "metadata.yaml", cleanup = TRUE,
+                      arg_checks = TRUE){
   check_args(arg_checks)
-  pass_and_call(portalcast_welcome)
-  pass_and_call(create_dir)
-  pass_and_call(fill_dir)
+  portalcast_welcome(quiet = quiet)
+  create_dir(main = main, subs = subs, quiet = quiet, arg_checks = arg_checks)
+  fill_dir(main = main, models = models, tmnt_types = tmnt_types,
+           end_moon = end_moon, lead_time = lead_time, 
+           cast_date = cast_date, start_moon = start_moon, 
+           confidence_level = confidence_level, 
+           hist_covariates = hist_covariates, 
+           cast_covariates = cast_covariates,
+           raw_path_archive = raw_path_archive,
+           raw_path_data = raw_path_data,
+           raw_path_predictions = raw_path_predictions,
+           raw_cov_cast_file = raw_cov_cast_file,
+           raw_path_cov_cast = raw_path_cov_cast, 
+           raw_moons_file = raw_moons_file, source_name = source_name,
+           append_cast_csv = append_cast_csv, controls_m = controls_m, 
+           controls_r = controls_r, control_cdl = control_cdl, 
+           downloads = downloads, quiet = quiet, verbose = verbose, 
+           save = save, overwrite = overwrite, 
+           filename_moons = filename_moons, filename_cov = filename_cov, 
+           filename_meta = filename_meta, cleanup = cleanup, 
+           arg_checks = arg_checks)
 }
 
 
@@ -177,6 +199,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #' @export
 #'
 setup_production <- function(main = ".", models = prefab_models(), 
+                             tmnt_types = c("all", "controls"),
                              end_moon = NULL, lead_time = 12, 
                              cast_date = Sys.Date(), 
                              start_moon = 217, confidence_level = 0.9, 
@@ -201,7 +224,25 @@ setup_production <- function(main = ".", models = prefab_models(),
                              filename_meta = "metadata.yaml", cleanup = TRUE,
                              arg_checks = TRUE){
   check_args(arg_checks)
-  pass_and_call(setup_dir)
+  setup_dir(main = main, models = models, 
+            tmnt_types = tmnt_types, end_moon = end_moon, 
+            lead_time = lead_time, cast_date = cast_date, 
+            start_moon = start_moon, confidence_level = confidence_level, 
+            hist_covariates = hist_covariates, 
+            cast_covariates = cast_covariates,
+            raw_path_archive = raw_path_archive,
+            raw_path_data = raw_path_data,
+            raw_path_predictions = raw_path_predictions,
+            raw_cov_cast_file = raw_cov_cast_file,
+            raw_path_cov_cast = raw_path_cov_cast, 
+            raw_moons_file = raw_moons_file, source_name = source_name,
+            append_cast_csv = append_cast_csv, controls_m = controls_m, 
+            controls_r = controls_r, control_cdl = control_cdl, 
+            downloads = downloads, quiet = quiet, verbose = verbose, 
+            subs = subs, save = save, overwrite = overwrite, 
+            filename_moons = filename_moons, filename_cov = filename_cov, 
+            filename_meta = filename_meta, cleanup = cleanup, 
+            arg_checks = arg_checks)
 }
 
 
@@ -210,6 +251,7 @@ setup_production <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 setup_sandbox <- function(main = ".", models = prefab_models(), 
+                          tmnt_types = c("all", "controls"),
                           end_moon = NULL, lead_time = 12, 
                           cast_date = Sys.Date(), 
                           start_moon = 217, confidence_level = 0.9, 
@@ -227,15 +269,33 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           control_cdl = climate_dl_control(),
                           downloads = 
                             zenodo_downloads(c("1215988", "833438")), 
-                          quiet = FALSE, verbose = FALSE, subs = subdirs(),
+                          quiet = FALSE, verbose = TRUE, subs = subdirs(),
                           save = TRUE, overwrite = TRUE, 
                           filename_moons = "moon_dates.csv",
                           filename_cov = "covariates.csv", 
                           filename_meta = "metadata.yaml", cleanup = TRUE,
-                          arg_checks = TRUE){
+                          arg_checks = FALSE){
   check_args(arg_checks)
-  pass_and_call(setup_dir)
-  pass_and_call(sandbox_welcome)
+  setup_dir(main = main, models = models, 
+            tmnt_types = tmnt_types, end_moon = end_moon, 
+            lead_time = lead_time, cast_date = cast_date, 
+            start_moon = start_moon, confidence_level = confidence_level, 
+            hist_covariates = hist_covariates, 
+            cast_covariates = cast_covariates,
+            raw_path_archive = raw_path_archive,
+            raw_path_data = raw_path_data,
+            raw_path_predictions = raw_path_predictions,
+            raw_cov_cast_file = raw_cov_cast_file,
+            raw_path_cov_cast = raw_path_cov_cast, 
+            raw_moons_file = raw_moons_file, source_name = source_name,
+            append_cast_csv = append_cast_csv, controls_m = controls_m, 
+            controls_r = controls_r, control_cdl = control_cdl, 
+            downloads = downloads, quiet = quiet, verbose = verbose, 
+            subs = subs, save = save, overwrite = overwrite, 
+            filename_moons = filename_moons, filename_cov = filename_cov, 
+            filename_meta = filename_meta, cleanup = cleanup, 
+            arg_checks = arg_checks)
+  sandbox_welcome(main = main, quiet = quiet, arg_checks = arg_checks)
 }
 
 #' @title Directory welcome and goodbye messages

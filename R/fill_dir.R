@@ -170,11 +170,33 @@ fill_dir <- function(main = ".", models = prefab_models(),
                      filename_meta = "metadata.yaml", cleanup = TRUE, 
                      arg_checks = TRUE){
   check_args(arg_checks)
-  pass_and_call(fill_raw)
-  pass_and_call(fill_predictions)
-  pass_and_call(fill_models)
-  min_lag <- pass_and_call(extract_min_lag)
-  pass_and_call(fill_data, min_lag = min_lag)
+  fill_raw(main = main, downloads = downloads, quiet = quiet, 
+           cleanup = cleanup, arg_checks = arg_checks)
+  fill_predictions(main = main, raw_path_predictions = raw_path_predictions, 
+                   quiet = quiet, verbose = verbose, overwrite = overwrite,
+                   arg_checks = arg_checks)
+  fill_models(main = main, models = models, controls_m = controls_m, 
+                   quiet = quiet, overwrite = overwrite,
+                   arg_checks = arg_checks)
+  min_lag <- extract_min_lag(models = models, controls_m = controls_m, 
+                             arg_checks = arg_checks)
+  fill_data(main = main, tmnt_types = tmnt_types,
+            end_moon = end_moon, lead_time = lead_time, min_lag = min_lag, 
+            cast_date = cast_date, start_moon = start_moon, 
+            confidence_level = confidence_level, 
+            hist_covariates = hist_covariates, 
+            cast_covariates = cast_covariates,
+            raw_path_archive = raw_path_archive,
+            raw_path_data = raw_path_data,
+            raw_cov_cast_file = raw_cov_cast_file,
+            raw_path_cov_cast = raw_path_cov_cast, 
+            raw_moons_file = raw_moons_file, source_name = source_name,
+            append_cast_csv = append_cast_csv, controls_r = controls_r,
+            control_cdl = control_cdl, downloads = downloads, 
+            quiet = quiet, verbose = verbose, save = save,
+            overwrite = overwrite, filename_moons = filename_moons,
+            filename_cov = filename_cov, filename_meta = filename_meta,
+            cleanup = cleanup, arg_checks = arg_checks)
 }
 
 #' @rdname fill_dir
@@ -208,10 +230,41 @@ fill_data <- function(main = ".", tmnt_types = c("all", "controls"),
     fill_raw(downloads, main, quiet, cleanup)
   }
   messageq("Adding data files to data subdirectory", quiet)
-  d_m <- pass_and_call(prep_moons)  
-  d_r <-  pass_and_call(prep_rodents, moons = d_m)
-  d_c <- pass_and_call(prep_covariates, moons = d_m)
-  pass_and_call(prep_metadata, moons = d_m, rodents = d_r, covariates = d_c)
+  data_m <- prep_moons(main = main, lead_time = lead_time, 
+                       cast_date = cast_date, raw_path_data = raw_path_data,
+                       raw_moons_file = raw_moons_file,
+                       quiet = quiet, save = save, overwrite = overwrite, 
+                       filename_moons = filename_moons, 
+                       arg_checks = arg_checks)
+  data_r <- prep_rodents(main = main, moons = data_m, 
+                         tmnt_types = tmnt_types, end_moon = end_moon, 
+                         start_moon = start_moon, controls_r = controls_r,
+                         quiet = quiet, save = save, overwrite = overwrite, 
+                         arg_checks = arg_checks)
+
+  data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
+                            lead_time = lead_time, min_lag = min_lag, 
+                            cast_date = cast_date, 
+                            hist_covariates = hist_covariates, 
+                            cast_covariates = cast_covariates,
+                            raw_path_archive = raw_path_archive,
+                            raw_cov_cast_file = raw_cov_cast_file,
+                            raw_path_cov_cast = raw_path_cov_cast, 
+                            source_name = source_name,
+                            append_cast_csv = append_cast_csv, 
+                            control_cdl = control_cdl,
+                            quiet = quiet, save = save, overwrite = overwrite, 
+                            filename_cov = filename_cov,
+                            arg_checks = arg_checks)
+
+  prep_metadata(main = main, moons = data_m, rodents = data_r, 
+                covariates = data_c, end_moon = end_moon, 
+                lead_time = lead_time, min_lag = min_lag, 
+                cast_date = cast_date, start_moon = start_moon, 
+                confidence_level = confidence_level, quiet = quiet,
+                save = save, overwrite = overwrite, 
+                filename_meta = filename_meta, arg_checks = arg_checks)
+
   invisible(NULL)
 }
 
@@ -228,7 +281,8 @@ fill_models <- function(main = ".", models = prefab_models(),
   messageq("Adding models to models subdirectory:", quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){
-    pass_and_call(write_model, control = controls_m[[models[i]]])
+    write_model(main = main, quiet = quiet, overwrite = overwrite, 
+                control = controls_m[[models[i]]], arg_checks = arg_checks)
   } 
   invisible(NULL)
 }

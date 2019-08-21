@@ -627,6 +627,8 @@ most_recent_cast <- function(main = ".", cast_type = "forecast",
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -654,14 +656,16 @@ most_recent_cast <- function(main = ".", cast_type = "forecast",
 #' 
 #' @export
 #'
-add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(), 
-                         confidence_level = 0.9, quiet = FALSE, 
-                         arg_checks = TRUE){
+add_ensemble <- function(main = ".", moons = NULL, end_moon = NULL, 
+                         cast_date = Sys.Date(), confidence_level = 0.9, 
+                         quiet = FALSE, arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   messageq("Creating ensemble model", quiet)
   temp_dir <- sub_paths(main, "tmp")
   pred_dir <- sub_paths(main, "predictions")
-  last_moon <- pass_and_call(last_newmoon)
+  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+                            arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
   filename_suffix <- ifelse(end_moon == last_moon, "forecast", "hindcast")
   file_ptn <- paste(filename_suffix, ".csv", sep = "")
@@ -671,8 +675,9 @@ add_ensemble <- function(main = ".", end_moon = NULL, cast_date = Sys.Date(),
               "numeric", "numeric", "integer", "integer", "integer")
   all_casts <- do.call(rbind, 
                lapply(files, read.csv, na.strings = "", colClasses  = cclass))
-
-  ensemble <- pass_and_call(make_ensemble, all_casts = all_casts) 
+  ensemble <- make_ensemble(all_casts = all_casts, main = main,
+                            confidence_level = confidence_level,
+                            arg_checks = arg_checks) 
   ensemble <- select(ensemble, colnames(all_casts))
   cast_date <- as.character(cast_date)
   cast_fname <- paste0(cast_date, filename_suffix, ".csv")
@@ -858,7 +863,8 @@ combine_casts <- function(main = ".", moons = NULL,
   messageq("Compiling casts", quiet)
   temp_dir <- sub_paths(main, "tmp")
   pred_dir <- sub_paths(main, "predictions")
-  last_moon <- pass_and_call(last_newmoon)
+  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+                            arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
   filename_suffix <- ifelse(end_moon == last_moon, "forecast", "hindcast")
   file_ptn <- paste(filename_suffix, ".csv", sep = "")

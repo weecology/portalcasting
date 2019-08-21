@@ -96,16 +96,22 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
                        quiet = FALSE, save = TRUE, 
                        overwrite = TRUE, filename_moons = "moon_dates.csv",
                        arg_checks = TRUE){
-print(main)
   check_args(arg_checks)
   lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
   moon_path <- file_paths(main, lpath)
   moons_in <- read.csv(moon_path, stringsAsFactors = FALSE)
-  moons <- pass_and_call(add_future_moons, moons = moons_in)
-  pass_and_call(add_past_moons_to_raw, main = main, moons = moons_in)
+  moons <- add_future_moons(moons = moons_in, lead_time = lead_time, 
+                            cast_date = cast_date, arg_checks = arg_checks)
+  add_past_moons_to_raw(main = main, moons = moons_in,
+                        cast_date = cast_date, 
+                        raw_path_data = raw_path_data,
+                        raw_moons_file = raw_moons_file, 
+                        arg_checks = arg_checks)
+
   moons_out <- format_moons(moons)
-print(2)
-  pass_and_call(data_out, main = main, dfl = moons_out, filename = filename_moons)
+  data_out(main = main, dfl = moons_out, save = save, 
+           filename = filename_moons, overwrite = overwrite, quiet = quiet,
+           arg_checks = arg_checks)
 }
 
 #' @rdname prep_moons
@@ -345,7 +351,8 @@ target_newmoons <- function(main = ".", moons = NULL,
                             cast_date = Sys.Date(), arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
-  last_moon <- pass_and_call(last_newmoon)
+  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date, 
+                            arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, 500)
   (end_moon + 1):(end_moon + lead_time)
 }

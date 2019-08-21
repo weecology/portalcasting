@@ -120,7 +120,8 @@ model_script_controls <- function(models = NULL, controls_m = NULL,
 extract_min_lag <- function(models = prefab_models(), controls_m = NULL, 
                             arg_checks = TRUE){
   check_args(arg_checks)
-  controls <- pass_and_call(model_script_controls)
+  controls <- model_script_controls(models = models, controls_m = controls_m,
+                                    arg_checks = arg_checks)
   nmods <- length(controls)
   lags <- rep(NA, nmods)
   for(i in 1:nmods){

@@ -119,15 +119,29 @@ cast_covariates <- function(main = ".", moons = NULL,
   last_moon <- moons$newmoonnumber[which_last_moon]
   end_moon <- ifnull(end_moon, last_moon)
   if(last_moon == end_moon){
-    weather_cast <- pass_and_call(cast_weather, moons = moons)
-    ndvi_cast <- pass_and_call(cast_ndvi, moons = moons)
+    weather_cast <- cast_weather(main = main, moons = moons, 
+                                 hist_cov = hist_cov, end_moon = end_moon,
+                                 lead_time = lead_time, min_lag = min_lag,
+                                 cast_date = cast_date, 
+                                 raw_path_archive = raw_path_archive,
+                                 raw_cov_cast_file = raw_cov_cast_file,
+                                 raw_path_cov_cast = raw_path_cov_cast, 
+                                 source_name = source_name,
+                                 control_cdl = control_cdl, quiet = quiet,
+                                 arg_checks = TRUE)
+    ndvi_cast <- cast_ndvi(main = main, moons = moons, hist_cov = hist_cov,
+                           lead_time = lead_time, min_lag = min_lag,
+                           arg_checks = arg_checks)
     cov_cast <- right_join(weather_cast, ndvi_cast, by = "newmoonnumber")
     which_cast_newmoon <- max(which(moons$newmoondate < cast_date))
     cast_newmoon <- moons$newmoonnumber[which_cast_newmoon]
     out <- round(data.frame(cast_newmoon, cov_cast), 3)
   } else {
-    target_moons <- pass_and_call(target_newmoons, moons = moons, 
-                                                   end_moon = end_moon)
+    target_moons <- target_newmoons(main = main, moons = moons,
+                                    end_moon = end_moon, 
+                                    lead_time = lead_time, 
+                                    cast_date = cast_date,
+                                    arg_checks = arg_checks)
     lpath <- paste0("raw/", raw_path_archive, "/", raw_cov_cast_file)
     pth <- file_paths(main, lpath)
     if(!file.exists(pth)){
@@ -173,8 +187,23 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
 
   check_args(arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
-  cast_cov <- pass_and_call(cast_covariates, moons = moons)
-  pass_and_call(save_cast_cov_csv, cast_cov = cast_cov, moons = moons)
+  cast_cov <- cast_covariates(main = main, moons = moons,
+                              hist_cov = hist_cov, end_moon = end_moon, 
+                              lead_time = lead_time, min_lag = min_lag, 
+                              cast_date = cast_date, 
+                              raw_path_archive = raw_path_archive,
+                              raw_cov_cast_file = raw_cov_cast_file,
+                              raw_path_cov_cast = raw_path_cov_cast, 
+                              source_name = source_name,
+                              control_cdl = control_cdl,
+                              quiet = quiet, arg_checks = arg_checks)
+  save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
+                    cast_date = cast_date, cast_cov = cast_cov,
+                    append_cast_csv = append_cast_csv, 
+                    raw_path_archive = raw_path_archive,
+                    raw_cov_cast_file = raw_cov_cast_file,
+                    source_name = source_name, quiet = quiet, save = save,
+                    overwrite = overwrite, arg_checks = arg_checks)
   select(cast_cov, -cast_newmoon) %>%
   mutate("source" = "cast")
 }
@@ -209,14 +238,28 @@ cast_weather <- function(main = ".", moons = NULL,
                          arg_checks = TRUE){
   check_args(arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
-  target_moons <- pass_and_call(target_newmoons, moons = moons)
+  target_moons <- target_newmoons(main = main, moons = moons,
+                                  end_moon = end_moon, 
+                                  lead_time = lead_time, 
+                                  cast_date = cast_date,
+                                  arg_checks = arg_checks)
   moons0 <- trim_moons(moons, target_moons, retain_target_moons = FALSE)
   raw_path <- sub_paths(main, "raw")
-  win <- pass_and_call(cast_window)
+
+  win <- cast_window(main = main, moons = moons, cast_date = cast_date,
+                     lead_time = lead_time, min_lag = 6,                                
+                     arg_checks = arg_checks)
+
   control_cdl <- do.call(climate_dl_control, control_cdl)
   control_cdl <- update_list(control_cdl, start = win$start, end = win$end)
-  pass_and_call(download_climate_casts, control_cdl = control_cdl)
-  weather_cast <- pass_and_call(read_climate_casts, control_cdl = control_cdl)
+
+  download_climate_casts(main = main, raw_path_cov_cast = raw_path_cov_cast,
+                         control_cdl = control_cdl, arg_checks = arg_checks)
+
+  weather_cast <- read_climate_casts(main = main, 
+                                     raw_path_cov_cast = raw_path_cov_cast,
+                                     control_cdl = control_cdl, 
+                                     arg_checks = arg_checks)
 
   weather("daily", TRUE, raw_path) %>% 
   add_date_from_components() %>%
@@ -225,6 +268,7 @@ cast_weather <- function(main = ".", moons = NULL,
   add_newmoons_from_date(moons) %>%
   summarize_daily_weather_by_newmoon()
 }
+
 
 #' @rdname cast_covariates
 #'

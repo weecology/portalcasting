@@ -6,11 +6,11 @@
 \alias{setup_sandbox}
 \title{Create and fill a forecasting directory}
 \usage{
-setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.9, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
+setup_dir(main = ".", models = prefab_models(), tmnt_types = c("all",
+  "controls"), end_moon = NULL, lead_time = 12,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
   raw_path_predictions = "portalPredictions/predictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
@@ -24,10 +24,10 @@ setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
-  end_moon = NULL, lead_time = 12, cast_date = Sys.Date(),
-  start_moon = 217, confidence_level = 0.9, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
+  tmnt_types = c("all", "controls"), end_moon = NULL, lead_time = 12,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
   raw_path_predictions = "portalPredictions/predictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
@@ -40,11 +40,11 @@ setup_production(main = ".", models = prefab_models(),
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
-setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.9, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
+setup_sandbox(main = ".", models = prefab_models(),
+  tmnt_types = c("all", "controls"), end_moon = NULL, lead_time = 12,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
   raw_path_predictions = "portalPredictions/predictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
@@ -53,9 +53,10 @@ setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   controls_m = NULL, controls_r = rodents_controls(),
   control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
+  verbose = TRUE, subs = subdirs(), save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
+  filename_meta = "metadata.yaml", cleanup = TRUE,
+  arg_checks = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -63,6 +64,9 @@ the directory tree.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to 
 include.}
+
+\item{tmnt_types}{\code{character} vector of name(s) of rodents 
+dataset(s) to include.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 

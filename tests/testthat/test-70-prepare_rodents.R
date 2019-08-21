@@ -9,7 +9,7 @@ test_that("prep_rodents", {
   skip_on_cran() # downloads take too long for cran checks
   expect_is(prep_rodents(main = "./testing"), "list")
   expect_is(prep_rodents(main = "./testing", 
-                              controls = rodents_control()), "list")
+                              controls = rodents_controls()), "list")
 })
 
 

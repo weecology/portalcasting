@@ -87,7 +87,8 @@ prep_metadata <- function(main = ".", moons = NULL,
 
   messageq("Loading metadata file into data subdirectory", quiet)
   check_args(arg_checks)
-  last_moon <- pass_and_call(last_newmoon, moons = moons)
+  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+                            arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
   ncontrols_r <- length(rodents)
   last_rodent_pd <- 0
