@@ -13,6 +13,7 @@ test_that("add_future_moons", {
 })
 
 test_that("add_extra_future_moons", {
+  moons <- prep_moons(main = "./testing")
   max_moon <- max(moons$newmoondate) 
   max_plus <- max_moon + 100
   expect_is(add_extra_future_moons(moons, cast_date = max_plus), "data.frame")

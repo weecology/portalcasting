@@ -19,15 +19,15 @@ plot_cast_point("~/sand")
 
 
 
-devtools::test(filter = "1")
-devtools::test(filter = "2")
-devtools::test(filter = "3")
-devtools::test(filter = "4")
-devtools::test(filter = "5")
-devtools::test(filter = "6")
-devtools::test(filter = "7")
-devtools::test(filter = "8")
-devtools::test(filter = "9")
+devtools::test(filter = "01")
+devtools::test(filter = "02")
+devtools::test(filter = "03")
+devtools::test(filter = "04")
+devtools::test(filter = "05")
+devtools::test(filter = "06")
+devtools::test(filter = "07")
+devtools::test(filter = "08")
+devtools::test(filter = "09")
 devtools::test(filter = "10")
 devtools::test(filter = "11")
 devtools::test(filter = "12")
@@ -39,14 +39,14 @@ devtools::test(filter = "17")
 devtools::test(filter = "18")
 
 # clear the files/folders
-devtools::test(filter = "99")
+devtools::test(filter = "19")
 
 
 # to do
 # update vignettes
 # add morgans model
 # update pkgdown site
-
+# read through the code documentation again, esp run the examples
 
 
 
