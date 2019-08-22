@@ -15,7 +15,7 @@ matrix:
   - r: devel
   - r: release
     after_success:
-    - R CMD INSTALL .
+    - travis_wait 40 R CMD INSTALL .
     - Rscript -e 'pkgdown::build_site(examples = FALSE)'
     - travis_wait 40 Rscript -e 'library(covr); codecov()'
     deploy:
