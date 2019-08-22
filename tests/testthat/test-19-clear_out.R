@@ -6,3 +6,4 @@ test_that("placehold", {
 
 unlink(main_path(main = "./testing"), recursive = TRUE, force = TRUE)
 unlink(main_path(main = "./sand"), recursive = TRUE, force = TRUE)
+unlink(main_path(main = "./prod"), recursive = TRUE, force = TRUE)
