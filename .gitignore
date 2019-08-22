@@ -6,3 +6,5 @@ doc
 docs/*
 inst/doc
 tests/testthat/testing/*
+tests/testthat/prod/*
+tests/testthat/sand/*
