@@ -192,13 +192,13 @@ prep_rodents <- function(main = ".", moons = NULL,
 #'   create_dir()
 #'   fill_raw()
 #'   prep_rodents_table()
-#'   raw_path <- sub_paths(".", "raw")
+#'   raw_path <- sub_paths(specific_subs = "raw")
 #'   dat1 <- portalr::summarize_rodent_data(path = raw_path, clean = FALSE)
 #'   dat2 <- trim_species(dat1)
 #'   dat3 <- add_total(dat2)
 #'   dat4 <- trim_treatment(dat3)
 #'   dat5 <- add_moons(dat4)
-#'   dat6 <- trim_time(dat5, 217)
+#'   dat6 <- trim_time(dat5, start_moon = 217, end_moon = 500)
 #'  }
 #'
 #' @export
@@ -226,7 +226,7 @@ prep_rodents_table <- function(main = ".", moons = NULL,
   trim_species(species, ref_species) %>%
   add_total(total)  %>%
   trim_treatment(level, treatment) %>%
-  add_moons(moons) %>%
+  add_moons(moons, main) %>%
   trim_time(start_moon, end_moon) %>%
   data_out(main, save, filename, overwrite, quiet)
 }
@@ -237,7 +237,10 @@ prep_rodents_table <- function(main = ".", moons = NULL,
 #'
 trim_time <- function(rodents_tab, start_moon = NULL, end_moon = NULL,
                       arg_checks = TRUE){
+  return_if_null(c(start_moon, end_moon), rodents_tab)
   check_args(arg_checks)
+  start_moon <- ifnull(start_moon, min(rodents_tab$newmoonnumber))
+  end_moon <- ifnull(end_moon, max(rodents_tab$newmoonnumber))
   subset(rodents_tab, newmoonnumber >= start_moon) %>%
   subset(newmoonnumber <= min(c(end_moon, max(newmoonnumber)))) %>%
   select(-newmoondate, -censusdate) 
@@ -247,7 +250,8 @@ trim_time <- function(rodents_tab, start_moon = NULL, end_moon = NULL,
 #'
 #' @export
 #'
-add_moons <- function(rodents_tab, moons = NULL, arg_checks = TRUE){
+add_moons <- function(rodents_tab, moons = NULL, main = ".",
+                      arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   inner_join(rodents_tab, moons, by = c("period" = "period"))

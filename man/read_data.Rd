@@ -69,7 +69,7 @@ Read in a specified data file. \cr \cr
  setup_dir()
  read_data(data_name = "rodents")
  read_data(data_name = "rodents_table")
- read_data(data_name = "controls")
+ read_data(data_name = "rodents_table", "controls")
  read_data(data_name = "covariates")
  read_data(data_name = "covariate_casts")
  read_data(data_name = "moons")
@@ -77,7 +77,6 @@ Read in a specified data file. \cr \cr
 
  read_rodents()
  read_rodents_table()
- read_controls()
  read_covariates()
  read_covariate_casts()
  read_moons()

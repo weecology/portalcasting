@@ -214,7 +214,8 @@
 #'
 #' @param fun_name \code{character} value of the function name or \code{NULL}.
 #'
-#' @return \code{check_arg}: \code{character} vector of error messages
+#' @return \code{check_args}: throws an error or \code{NULL}. \cr \cr
+#'   \code{check_arg}: \code{character} vector of error messages
 #'   associated with the specific situation 
 #'   (\code{<fun_name>(<arg_name> = arg_value)}).
 #'   \code{check_arg_list}: \code{list} of argument checking component 
@@ -222,6 +223,8 @@
 #'
 #' @examples
 #'  check_arg_list()
+#'  check_arg("end_moon", 400)
+#'  check_arg("end_moon", 399.5)
 #'
 #' @export
 #'

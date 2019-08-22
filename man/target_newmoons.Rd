@@ -50,8 +50,7 @@ many/most/all enclosed functions to not check any arguments using
 }
 \examples{
  \donttest{
-  create_dir()
-  fill_dir()
+  setup_dir()
   target_newmoons()
   last_newmoon()
  }

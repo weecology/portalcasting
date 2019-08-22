@@ -92,8 +92,7 @@
 #'  
 #' @examples
 #'  \donttest{
-#'   create_dir()
-#'   fill_dir()
+#'   setup_dir()
 #'   hist_cov <- prep_hist_covariates()
 #'   prep_cast_covariates(hist_cov = hist_cov)
 #'   cast_cov <- cast_covariates(hist_cov = hist_cov)
@@ -391,7 +390,7 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 #'
 #' @examples
 #'  \donttest{
-#'   create_dir()
+#'   setup_dir()
 #'   download_climate_casts()
 #'   read_climate_casts()
 #'  }

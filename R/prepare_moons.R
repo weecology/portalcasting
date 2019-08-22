@@ -81,7 +81,7 @@
 #'   create_dir()
 #'   fill_raw()
 #'   prep_moons()
-#'   fpath <- file_paths(".", "raw/PortalData/Rodents/moon_dates.csv")
+#'   fpath <- file_paths("raw/PortalData/Rodents/moon_dates.csv")
 #'   moons <- read.csv(fpath, stringsAsFactors = FALSE)
 #'   moons <- add_future_moons(moons)
 #'   moons <- add_past_moons_to_raw(moons)
@@ -210,8 +210,7 @@ add_past_moons_to_raw <- function(main = ".", moons, cast_date = Sys.Date(),
 #' 
 #' @examples
 #'  \donttest{
-#'   create_dir()
-#'   fill_dir()
+#'   setup_dir()
 #'   moons <- prep_moons()
 #'   trim_moons(moons, 300:310)
 #'  }
@@ -338,8 +337,7 @@ add_newmoons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #'
 #' @examples
 #'  \donttest{
-#'   create_dir()
-#'   fill_dir()
+#'   setup_dir()
 #'   target_newmoons()
 #'   last_newmoon()
 #'  }

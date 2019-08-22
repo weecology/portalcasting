@@ -60,7 +60,7 @@ most_recent_census <- function(main = ".", arg_checks = TRUE){
 #'  \donttest{ 
 #'   setup_dir()
 #'   abundances <- read_rodents_table()
-#'   metadata <- read_metadata(main)
+#'   metadata <- read_metadata()
 #'   nmoons <- length(metadata$rodent_cast_newmoons)
 #'   CL <- metadata$confidence_level
 #'   abundances <- interpolate_abundance(abundances)
@@ -143,7 +143,7 @@ interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){
 #'  setup_dir()
 #'  read_data(data_name = "rodents")
 #'  read_data(data_name = "rodents_table")
-#'  read_data(data_name = "controls")
+#'  read_data(data_name = "rodents_table", "controls")
 #'  read_data(data_name = "covariates")
 #'  read_data(data_name = "covariate_casts")
 #'  read_data(data_name = "moons")
@@ -151,7 +151,6 @@ interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){
 #'
 #'  read_rodents()
 #'  read_rodents_table()
-#'  read_controls()
 #'  read_covariates()
 #'  read_covariate_casts()
 #'  read_moons()

@@ -41,8 +41,7 @@ Some functions require that a data table of time (the moons)
 }
 \examples{
  \donttest{
-  create_dir()
-  fill_dir()
+  setup_dir()
   moons <- prep_moons()
   trim_moons(moons, 300:310)
  }

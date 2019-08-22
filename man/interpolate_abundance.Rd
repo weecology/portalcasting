@@ -34,7 +34,7 @@ Interpolation of missing data in the rodent abundance data
  \donttest{ 
   setup_dir()
   abundances <- read_rodents_table()
-  metadata <- read_metadata(main)
+  metadata <- read_metadata()
   nmoons <- length(metadata$rodent_cast_newmoons)
   CL <- metadata$confidence_level
   abundances <- interpolate_abundance(abundances)

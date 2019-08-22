@@ -137,8 +137,7 @@ If forecasting from the current newmoon, weather is forecast using
 }
 \examples{
  \donttest{
-  create_dir()
-  fill_dir()
+  setup_dir()
   hist_cov <- prep_hist_covariates()
   prep_cast_covariates(hist_cov = hist_cov)
   cast_cov <- cast_covariates(hist_cov = hist_cov)

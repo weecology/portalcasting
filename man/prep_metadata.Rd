@@ -74,12 +74,11 @@ Sets up the metadata used for casting, in particular the
 }
 \examples{
  \donttest{
-  create_dir()
-  fill_dir()
-  moons <- prep_moons(main)
-  rodents <- prep_rodents(main, moons = moons)
-  covariates <- prep_covariates(main, moons = moons)
-  prep_metadata(main, moons, rodents, covariates)
+  setup_dir()
+  moons <- prep_moons()
+  rodents <- prep_rodents(moons = moons)
+  covariates <- prep_covariates(moons = moons)
+  prep_metadata(moons, rodents, covariates)
  }
 
 }

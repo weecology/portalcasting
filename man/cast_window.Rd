@@ -44,9 +44,9 @@ Based on the cast origin (\code{cast_date}), lead time
 }
 \examples{
  \donttest{
- create_dir()
- fill_raw()
- cast_window()
+   create_dir()
+   fill_raw()
+   cast_window()
  }
 
 }

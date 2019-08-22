@@ -23,7 +23,8 @@ checked.}
 \item{fun_name}{\code{character} value of the function name or \code{NULL}.}
 }
 \value{
-\code{check_arg}: \code{character} vector of error messages
+\code{check_args}: throws an error or \code{NULL}. \cr \cr
+  \code{check_arg}: \code{character} vector of error messages
   associated with the specific situation 
   (\code{<fun_name>(<arg_name> = arg_value)}).
   \code{check_arg_list}: \code{list} of argument checking component 
@@ -238,5 +239,7 @@ Argument details used for checking are produced simply via
 }
 \examples{
  check_arg_list()
+ check_arg("end_moon", 400)
+ check_arg("end_moon", 399.5)
 
 }

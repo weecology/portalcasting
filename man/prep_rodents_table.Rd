@@ -19,7 +19,7 @@ prep_rodents_table(main = ".", moons = NULL, end_moon = NULL,
 trim_time(rodents_tab, start_moon = NULL, end_moon = NULL,
   arg_checks = TRUE)
 
-add_moons(rodents_tab, moons = NULL, arg_checks = TRUE)
+add_moons(rodents_tab, moons = NULL, main = ".", arg_checks = TRUE)
 
 add_total(rodents_tab, total = TRUE, arg_checks = TRUE)
 
@@ -129,13 +129,13 @@ This set of functions provides a convenient wrapper on
   create_dir()
   fill_raw()
   prep_rodents_table()
-  raw_path <- sub_paths(".", "raw")
+  raw_path <- sub_paths(specific_subs = "raw")
   dat1 <- portalr::summarize_rodent_data(path = raw_path, clean = FALSE)
   dat2 <- trim_species(dat1)
   dat3 <- add_total(dat2)
   dat4 <- trim_treatment(dat3)
   dat5 <- add_moons(dat4)
-  dat6 <- trim_time(dat5, 217)
+  dat6 <- trim_time(dat5, start_moon = 217, end_moon = 500)
  }
 
 }

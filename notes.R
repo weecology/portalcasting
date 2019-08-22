@@ -1,42 +1,12 @@
 devtools::document()
-setup_sandbox("~/sand")
-create_dir("~/testingww")
-fill_dir("~/testingw")
 
-portalcast("~/testing4", models = c("ESSS", "AutoArima"))
-portalcast("~/testing4", models = c("ESSS", "AutoArima"), end_moons = 519:520)
+# run for example testing
 
-hist_cov <- prep_hist_covariates("~/testingw")
-prep_cast_covariates("~/testingpp", hist_cov = hist_cov)
-
-
-plot_cast_ts("~/sand")
-plot_cov_RMSE_mod_spp("~/sand")
-plot_err_lead_spp_mods("~/sand")
-
-plot_cast_point("~/sand", with_census = TRUE)
-plot_cast_point("~/sand")
 
 
 
 devtools::test(filter = "01")
-devtools::test(filter = "02")
-devtools::test(filter = "03")
-devtools::test(filter = "04")
-devtools::test(filter = "05")
-devtools::test(filter = "06")
-devtools::test(filter = "07")
-devtools::test(filter = "08")
-devtools::test(filter = "09")
-devtools::test(filter = "10")
-devtools::test(filter = "11")
-devtools::test(filter = "12")
-devtools::test(filter = "13")
-devtools::test(filter = "14")
-devtools::test(filter = "15")
-devtools::test(filter = "16")
-devtools::test(filter = "17")
-devtools::test(filter = "18")
+
 
 # clear the files/folders
 devtools::test(filter = "19")
@@ -46,7 +16,7 @@ devtools::test(filter = "19")
 # update vignettes
 # add morgans model
 # update pkgdown site
-# read through the code documentation again, esp run the examples
+# read through the code documentation again
 
 
 
@@ -85,7 +55,7 @@ the prefab model functions dont have arg_checks capability, intentionally
 
 start_newmoon is now start_moon
 
-put in a toggle to turn off arg checking at the top level and down thru?
+update ifnull like ifna
 
 
 
@@ -107,4 +77,4 @@ casts should be saved out as tmnt_type = tmnt_type, rather than
 level = tmnt_type
 will need to make the column name matching flexible
 
-
+add examples to process casts

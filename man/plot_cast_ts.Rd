@@ -71,7 +71,6 @@ Plot an observed timeseries and forecast or hindcast
 \examples{
  \donttest{
   setup_dir()
-  portalcast()
   plot_cast_ts()
  }
 

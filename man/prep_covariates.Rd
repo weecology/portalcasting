@@ -94,8 +94,7 @@ Combine the historical and forecast or hindcast covariate
 }
 \examples{
  \donttest{
-  create_dir()
-  fill_dir()
+  setup_dir()
   prep_covariates()
  }
  

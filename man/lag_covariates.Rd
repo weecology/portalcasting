@@ -34,7 +34,7 @@ Lag the covariate data together based on the new moons
 \examples{
  \donttest{
   setup_dir()
-  covariate_casts <- read_covariate_casts(main)
+  covariate_casts <- read_covariate_casts()
   covar_casts_lag <- lag_covariates(covariate_casts, lag = 2, tail = TRUE)
  }
 

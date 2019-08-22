@@ -1,8 +1,9 @@
 context("Test process_data functions")
 
-fill_data(main = "./testing")
+
 test_that("most_recent_census", {
   skip_on_cran() # downloads take too long for cran checks
+  fill_data(main = "./testing")
   expect_is(most_recent_census(main = "./testing"), "Date")
 })
 

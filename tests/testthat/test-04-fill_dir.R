@@ -9,6 +9,7 @@ test_that("fill_raw", {
 })
 
 test_that("fill_data", {
+  skip_on_cran() # downloads take too long for cran checks
 
 # remove raw to ensure that it can do it itself 
 

@@ -187,7 +187,7 @@ cast0 <- function(nmoons = NULL, colname = "pred", arg_checks = TRUE){
 #' @examples
 #'  \donttest{
 #'   df <- data.frame(x = 1:10)
-#'   fpath <- file_paths(".", "xx.csv")
+#'   fpath <- file_paths(local_paths = "xx.csv")
 #'   append_csv(df, fpath)
 #'  }
 #'
@@ -412,9 +412,9 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #'
 #' @examples
 #'  \donttest{
-#'  create_dir()
-#'  fill_raw()
-#'  cast_window()
+#'    create_dir()
+#'    fill_raw()
+#'    cast_window()
 #'  }
 #'
 #' @export

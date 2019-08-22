@@ -53,7 +53,6 @@
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   portalcast()
 #'   plot_cast_ts()
 #'  }
 #'

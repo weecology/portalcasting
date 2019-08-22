@@ -13,6 +13,7 @@ test_that("add_future_moons", {
 })
 
 test_that("add_extra_future_moons", {
+  skip_on_cran() # downloads take too long for cran checks
   moons <- prep_moons(main = "./testing")
   max_moon <- max(moons$newmoondate) 
   max_plus <- max_moon + 100
