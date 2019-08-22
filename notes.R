@@ -29,19 +29,24 @@ devtools::test(filter = "58")
 devtools::test(filter = "60")
 devtools::test(filter = "65")
 devtools::test(filter = "70")
-devtools::test(filter = "80")
+devtools::test(filter = "75")
+devtools::test(filter = "78")
 devtools::test(filter = "81")
-devtools::test(filter = "82")
+devtools::test(filter = "83")
 devtools::test(filter = "85")
 devtools::test(filter = "87")
 devtools::test(filter = "90")
-devtools::test(filter = "92")
+
+
+# clear the files/folders
+devtools::test(filter = "99")
+
 
 # to do
-
+# test coverage
 # update vignettes
 # add morgans model
-
+# update pkgdown site
 
 
 

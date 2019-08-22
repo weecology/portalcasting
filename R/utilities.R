@@ -336,9 +336,7 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
     } else if (winner == "cast"){
       dupes <- which(hist_tab$date %in% cast_tab$date)
       hist_tab <- hist_tab[-dupes, ]
-    } else {
-      stop("winner must be hist or cast")
-    }
+    } 
   }
   bind_rows(hist_tab, cast_tab)
 }

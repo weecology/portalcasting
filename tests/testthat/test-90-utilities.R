@@ -1,5 +1,9 @@
 context("Test utility functions")
 
+test_that("clear_tmp", {
+  expect_message(clear_tmp(""))
+})
+
 test_that("na_conformer", {
   expect_equal(na_conformer(c("a", "b", NA, "c"))[3], "NA")
   xx <- data.frame(w = "a", n = as.character(c("d", NA, "a", "b", "c")),
@@ -99,3 +103,7 @@ test_that("return_if_null", {
   expect_equal(ff(NULL), "hello")
 })
 
+
+test_that("data_out", {
+ expect_error(data_out(list(1), filename = "123.rtrr"))
+})

@@ -64,8 +64,6 @@ plot_cast_ts <- function(main = ".", species_id = "total",
                          cast_date = NULL, model = "Ensemble", 
                          start_moon = 300, add_obs = TRUE, 
                          arg_checks = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type)
   }
@@ -105,7 +103,8 @@ plot_cast_ts <- function(main = ".", species_id = "total",
   rangex <- c(max(c(start_moon, min(obs_x))), max(pred_x))
   rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
   ylab <- plot_cast_ts_ylab(main, tmnt_type, species_id, model)
-
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = c(3, 4.5, 1, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
@@ -130,8 +129,6 @@ plot_cast_ts <- function(main = ".", species_id = "total",
 #' @export
 #'
 plot_cast_ts_xaxis <- function(main = ".", rangex, arg_checks = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
   check_args(arg_checks)
   moons <- read_data(main, "moons")
   minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
@@ -162,8 +159,6 @@ plot_cast_ts_xaxis <- function(main = ".", rangex, arg_checks = TRUE){
 plot_cast_ts_ylab <- function(main = ".", tmnt_type = "Controls",
                               species_id = "total", model = "Ensemble", 
                               arg_checks = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
   check_args(arg_checks)
   lab <- list(text = "", font = 1)
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
@@ -250,8 +245,6 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
                             cast_date = NULL, model = "Ensemble", 
                             lead = 1, from_date = NULL, 
                             with_census = FALSE, arg_checks = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
   if (is.null(cast_date)){
     cast_date <- most_recent_cast(main, cast_type, with_census)
   }
@@ -298,7 +291,8 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
 
   main_date <- paste(month(newmoonmonth, TRUE), newmoonyear, sep = " ")
   mainlab <- paste0(main_date, ": " , tmnt_type)
-
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = c(3.5, 9.5, 2, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
@@ -335,8 +329,6 @@ plot_cast_point <- function(main = ".", species = base_species(total = TRUE),
 #'
 plot_cast_point_yaxis <- function(main = ".", species = "total", 
                                   arg_checks = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
   check_args(arg_checks)
   lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
@@ -410,8 +402,6 @@ plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast",
                                    tmnt_type = "Controls", ndates = 3,
                                    models = model_names(set = "wEnsemble"), 
                                    arg_checks = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
   check_args(arg_checks)
   casts <- read_casts(main, cast_type = cast_type) %>%
            select_casts(species = species, tmnt_type, models = models)
@@ -465,7 +455,8 @@ plot_err_lead_spp_mods <- function(main = ".", cast_type = "forecast",
 
   umodels <- unique(casts$model)
   nmodels <- length(umodels)
-
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n")
@@ -606,8 +597,6 @@ plot_cov_RMSE_mod_spp <- function(main = ".", cast_type = "hindcast",
                                   min_observed = 1, 
                                   models = model_names(set = "wEnsemble"), 
                                   arg_checks = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
   if (is.null(cast_dates)){
     cast_dates <- most_recent_cast(main, cast_type, TRUE)
   }
@@ -643,7 +632,8 @@ plot_cov_RMSE_mod_spp <- function(main = ".", cast_type = "hindcast",
   umodels <- c(nemodels, emodels)
   nmodels <- length(umodels)
 
-
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n")

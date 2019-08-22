@@ -90,8 +90,6 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab",
       pc_subs <- c("predictions", "models", "raw", "data", "tmp")
       subs_names <- c(subs_names, pc_subs)
       subs_names <- unique(subs_names)
-    } else{
-      stop("subs_type can only be `prefab` or `NULL`")
     }
   }
   subs_names

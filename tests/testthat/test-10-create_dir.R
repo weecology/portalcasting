@@ -6,7 +6,7 @@ test_that("create_dir", {
 })
 
 test_that("verify", {
-  expect_error(verify(main_path(test = "abcdefghijklmop")))
+  expect_error(verify(main_path("abcdefghijklmop")))
 })
 
 
