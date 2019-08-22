@@ -15,6 +15,12 @@ test_that("prep_rodents", {
 
 test_that("rodents_controls",{
   expect_is(rodents_controls(c("all", "controls")), "list")
+  controls_r <- rodents_controls("all")[[1]]
+  controls_r$tmnt_type <- "allX"
+  expect_is(rodents_controls("allX", controls_r = controls_r, FALSE), "list")
+  controls_r$tmnt_type <- "all"
+  expect_error(rodents_controls("all", controls_r = controls_r, FALSE))
+  expect_error(rodents_controls("allX", arg_checks = FALSE))
 })
 
 test_that("trim_treatment", {

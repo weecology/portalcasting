@@ -12,6 +12,11 @@ test_that("add_future_moons", {
   expect_is(add_future_moons(moons, lead_time = 0), "data.frame")
 })
 
+test_that("add_extra_future_moons", {
+  max_moon <- max(moons$newmoondate) 
+  max_plus <- max_moon + 100
+  expect_is(add_extra_future_moons(moons, cast_date = max_plus), "data.frame")
+})
 
 test_that("trim_moons", {
   skip_on_cran() # downloads take too long for cran checks

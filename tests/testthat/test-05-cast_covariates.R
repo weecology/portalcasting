@@ -10,6 +10,8 @@ test_that("cast_covariates", {
                                 hist_cov = hist_cov), "data.frame")
   expect_is(prep_cast_covariates("./testing", moons = moons, end_moon = 450,
                                 hist_cov = hist_cov), "data.frame")
+  expect_is(prep_cast_covariates("./testing", moons = moons, end_moon = 450,
+                                hist_cov = hist_cov), "data.frame")
   expect_error(prep_cast_covariates(main = "./testing", moons = moons, 
                                   hist_cov = hist_cov,
                                    end_moon = 400))

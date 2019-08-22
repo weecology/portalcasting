@@ -358,7 +358,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
   } else if (deets$class == "zeroone"){
     if (!is.numeric(arg_value) || 
-       (!all(arg_value > 1e-5 & arg_value < (1 - 1e-5)))){
+       (any(arg_value < 1e-5) | any(arg_value > (1 - 1e-5)))){
       out2 <- paste0("`", arg_name, "` must be a number between 0 and 1")
       out <- c(out, out2)
     }
@@ -437,7 +437,7 @@ check_arg_list <- function(){
          vals = vals)
   }
   arg_zeroone <- function(length = 1, null = TRUE, na = FALSE, vals = NULL){
-    list(class = "numeric", null = null, na = na, length = length, 
+    list(class = "zeroone", null = null, na = na, length = length, 
          vals = vals)
   }
   arg_list <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){

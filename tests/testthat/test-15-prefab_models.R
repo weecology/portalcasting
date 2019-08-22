@@ -1,5 +1,8 @@
 context("Test prefab model functions")
 
+# forecast
+
+fill_data(main = "./testing")
 test_that("AutoArima", {
   skip_on_cran() # downloads and casting take too long to run on cran
   keepers <- c("newmoonnumber", "BA", "DM", "DO")
@@ -76,4 +79,18 @@ test_that("pevGARCH", {
   expect_equal(names(f_c), c("cast", "aic"))
 })
 
+# hindcast (only needed for model functions that have a distinciton)
+
+fill_data(main = "./testing", end_moon = 520)
+test_that("pevGARCH", {
+  skip_on_cran() # downloads and casting take too long to run on cran
+  expect_message(f_a <- pevGARCH(main = "./testing", lag = 6,
+                                  tmnt_type = "All", quiet = FALSE))
+  expect_message(f_c <- pevGARCH(main = "./testing", lag = 6, 
+                                  tmnt_type = "Controls", quiet = FALSE))
+  expect_is(f_a, "list")
+  expect_is(f_c, "list")
+  expect_equal(names(f_a), c("cast", "aic"))
+  expect_equal(names(f_c), c("cast", "aic"))
+})
 
