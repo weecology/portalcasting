@@ -10,12 +10,17 @@ before_install:
 r_packages:
   - covr
 
+script: 
+  - |
+    R CMD build .
+    travis_wait 40 R CMD check portalcasting*tar.gz
+
 matrix:
   include:
   - r: devel
   - r: release
     after_success:
-    - travis_wait 40 R CMD INSTALL .
+    - R CMD INSTALL .
     - Rscript -e 'pkgdown::build_site(examples = FALSE)'
     - travis_wait 40 Rscript -e 'library(covr); codecov()'
     deploy:
