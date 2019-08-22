@@ -2,9 +2,9 @@ context("Test prefab model functions")
 
 # forecast
 
-fill_data(main = "./testing")
 test_that("AutoArima", {
   skip_on_cran() # downloads and casting take too long to run on cran
+  fill_data(main = "./testing")
   keepers <- c("newmoonnumber", "BA", "DM", "DO")
   all <- read_rodents_table(main = "./testing")
   rest_cols <- which(colnames(all) %in% keepers)
@@ -81,8 +81,27 @@ test_that("pevGARCH", {
 
 # hindcast (only needed for model functions that have a distinciton)
 
-fill_data(main = "./testing", end_moon = 520)
 test_that("pevGARCH", {
+  skip_on_cran() # downloads and casting take too long to run on cran
+  fill_data(main = "./testing", end_moon = 520)
+  keepers <- c("newmoonnumber", "DM", "DO")
+  all <- read_rodents_table(main = "./testing")
+  rest_cols <- which(colnames(all) %in% keepers)
+  all2 <- all[, rest_cols]
+  all2$BA <- 0
+  all2$DO <- c(rep(0, nrow(all2) - 1), 1)
+  write.csv(all2, file_paths(main = "./testing", "data/rodents_all.csv"), 
+             row.names = FALSE)
+
+  keepers <- c("newmoonnumber", "DM")
+  controls <- read_rodents_table(main = "./testing", "controls")
+  rest_cols <- which(colnames(controls) %in% keepers)
+  controls2 <- controls[, rest_cols]
+  write.csv(controls2, file_paths(main = "./testing", 
+                                 "data/rodents_controls.csv"), 
+            row.names = FALSE)
+
+
   skip_on_cran() # downloads and casting take too long to run on cran
   expect_message(f_a <- pevGARCH(main = "./testing", lag = 6,
                                   tmnt_type = "All", quiet = FALSE))
