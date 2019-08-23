@@ -143,7 +143,7 @@ interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){
 #'  setup_dir()
 #'  read_data(data_name = "rodents")
 #'  read_data(data_name = "rodents_table")
-#'  read_data(data_name = "rodents_table", "controls")
+#'  read_data(data_name = "rodents_table", tmnt_type = "controls")
 #'  read_data(data_name = "covariates")
 #'  read_data(data_name = "covariate_casts")
 #'  read_data(data_name = "moons")
