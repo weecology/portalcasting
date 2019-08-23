@@ -6,7 +6,7 @@
 \alias{prep_data}
 \title{Forecast or hindcast Portal rodents models}
 \usage{
-portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
+portalcast(main = ".", models = prefab_models(), ensemble = FALSE,
   tmnt_types = c("all", "controls"), end_moons = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
   confidence_level = 0.9, hist_covariates = TRUE,
@@ -25,7 +25,7 @@ portalcast(main = ".", models = prefab_models(), ensemble = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
-cast(main = ".", models = prefab_models(), ensemble = TRUE,
+cast(main = ".", models = prefab_models(), ensemble = FALSE,
   cast_date = Sys.Date(), moons = NULL, end_moon = NULL,
   raw_path_data = "PortalData",
   raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
