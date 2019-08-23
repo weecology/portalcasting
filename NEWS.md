@@ -2,9 +2,57 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.9.0
+# [portalcasting 0.9.0](https://github.com/weecology/portalcasting/pull/129)
 *Active Development*
 
+### Major API update: increase in explicit top-level arguments
+* Removal of the majority of the control lists, only retained in situations where necessary. 
+* Moved most arguments to focal top-level inputs, rather than nested within control options list. Allows full control, but with default settings working cleanly. [addresses](https://github.com/weecology/portalcasting/issues/123)
+* Openness for new `setup` functions, in particular `setup_sandbox`. [addresses](https://github.com/weecology/portalcasting/issues/125)
+* Simplification of model naming inputs. Just put the names in you need, only use the `model_names` functions when you need to (usually in coding inside of functions or for setting default argument levels). [addresses](https://github.com/weecology/portalcasting/issues/119)
+
+###  Directory tree structure simplified
+* `dirtree` was removed
+* `base` (both as a function and a concept) was removed. To make that structure use main = "./name"
+* "PortalData" has been removed as a sub and replaced with "raw", which includes all raw versions of files (post unzipping) downloaded: Portal Data and Portal Predictions and covariate forecasts (whose saving is also new here).
+
+
+
+### Download capacity generalized
+* Flexible interface to downloading capacity through a url, with generalized and flexible functions for generating Zenodo API urls (for retrieving the raw data and historical predictions) and NMME API urls (for retrieving weather forecasts) to port into the `download` function. [addresses](https://github.com/weecology/portalcasting/issues/121) and [addresses](https://github.com/weecology/portalcasting/issues/107) and [addresses](https://github.com/weecology/portalcasting/issues/53)
+
+### Changes for users adding their own models to the prefab set
+* Outlined in the updated [How to](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model](https://weecology.github.io/portalcasting/articles/adding_a_model.html) vignettes.
+* Users adding models to the suite should permanently add their model's control options to the source code in `model_script_controls` rather than write their own control functions.
+* Users adding models to the suite should permanently add their model's function code to the `prefab_models` script, rather than to its own script. 
+* Users should still add their model's name to the source code in `model_names`.
+
+### Changes for users interested in analyzing their own data sets not in the standard data set configuration
+* Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls") by giving the name in the `tmnt_types` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_r` argument. 
+* In order to actualize this, a user will need to flip off the argument checking (the default in a sandbox setting, if using a standard or production setting, set `arg_checks = FALSE` in the relevant function).
+* Users interested in permananently adding the treatment level to the available data sets should add the source code to the `rodents_controls` function, and the name to the `tmnt_type` argument inputs in function if the user wants to add it to the standard set (or better yet, the next person to add a set should make a function like `model_names` to tidy up the `tmnt_types` options).
+
+### Generalization of code terms
+* Throughout the codebase, terminology has been generalized from "fcast"/"forecast"/"hindcast" to "cast" except where a clear distinction is needed (here primarily due to where the covariate values used come from).
+* Nice benefits: highlights commonality between the two (see next section) and reduces code volume.
+* `start_newmoon` is now `start_moon` like `end_moon`
+
+### "Hindcasting" becomes more similar to "forecasting"
+* In the codebase now, "hindcasting" is functionally "forecasting" with a forecast origin (`end_moon`) that is not the most recently occurring moon.
+* Rather than the complex machinery used to iterate through multiple forecasts ("hindcasting") that involved working backwards and skipping certain moons (which didn't need to be skipped anymore due to updated code from a while back that allows us to forecast fine even without the most recent samples yet), a simple for loop is able to manage iterating. This is also facilitated by the downloading of the raw portalPredictions repository from Zenodo and critically its retention in the "raw" subdirectory, which allows quick re-calculation of historic predictions of covariates. [addresses](https://github.com/weecology/portalcasting/issues/11)
+* `cast_type` has been removed as an input, it's auto determined now based on `end_moon` and the last moon available (if they're equal it's a "forecast", if not it's a "hindcast").
+
+
+### Improved argument checking flow
+* Arg checking is now considerably tighter, code-wise. 
+* Each argument is either recognized and given a set of attributes (from an internally defined list) or unrecognized and stated to the user that it's not being checked (to help notify anyone building in the code that there's a new argument).
+* The argument's attributes define the logical checking flow through a series of pretty simple options. 
+* There is also now a `arg_checks` logical argument that goes into `check_args` to turn off all of the underlying code, enabling the user to go off the production restrictions that would otherwise through errors, even though they might technically work under the hood.
+
+### Additional things
+* `drop_spp` is now changed to `species` (so focus on inclusion, not exclusion). [addresses](https://github.com/weecology/portalcasting/issues/128)
+* Improved examples, also now as `\donttest{}`. [addresses](https://github.com/weecology/portalcasting/issues/127)
+* Tightened testing with `skip_on_cran` used judiciously. [addresses](https://github.com/weecology/portalcasting/issues/124)
 
 # [portalcasting 0.8.1](https://github.com/weecology/portalcasting/releases/tag/v0.8.1)
 *2019-07-11*
