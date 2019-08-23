@@ -1,6 +1,6 @@
 
 
-#' @title Error if a function's requestet is deeper than can be handled
+#' @title Error if a function's request is deeper than can be handled
 #'
 #' @description Produces an informative error message when a function 
 #'  that should only be called inside of other functions is called outside
@@ -298,7 +298,8 @@ clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE,
 #'  or the other.
 #'
 #' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns
-#'  includig a code{date} column of \code{Date}s, which is used to align them.
+#'  including a code{date} column of \code{Date}s, which is used to align 
+#'  them.
 #'
 #' @param winner \code{character} value either {"hist"} or \code{"cast"} to
 #'  decide who wins any ties. In the typical portalcasting space, this is 

@@ -9,7 +9,8 @@ combine_hist_and_cast(hist_tab = NULL, cast_tab = NULL,
 }
 \arguments{
 \item{hist_tab, cast_tab}{A pair of \code{data.frame}s with the same columns
-includig a code{date} column of \code{Date}s, which is used to align them.}
+including a code{date} column of \code{Date}s, which is used to align 
+them.}
 
 \item{winner}{\code{character} value either {"hist"} or \code{"cast"} to
 decide who wins any ties. In the typical portalcasting space, this is 

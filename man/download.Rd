@@ -105,7 +105,7 @@ This suite of functions manages the downloading and (if
  download type (see \code{Details}). \cr \cr
  \code{download_destin} determines the download destination. \cr \cr
  \code{unzip_download} unzips any compressed downloads. \cr \cr
- \code{unzip_destins} determins the unzipping destinations for any 
+ \code{unzip_destins} determines the unzipping destinations for any 
   compressed downloads.
 }
 \details{

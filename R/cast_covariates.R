@@ -363,7 +363,7 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 #'
 #' @param data \code{character} value of the type of data, one of 
 #'  \code{"tasmin"} (minimum temperature),  \code{"tasmean"}
-#'  (mean temperature), \code{"tasmax"} (mximum temperature), \code{"pr"}
+#'  (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"}
 #'  (precipitation), \code{"dps"} (dew point), \code{"rsds"}
 #'  (shortwave radiation; sun intensity), \code{"was"} (wind speed).
 #'

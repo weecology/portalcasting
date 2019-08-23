@@ -73,7 +73,7 @@
 #'  \code{prep_moons}, \code{format_moons}: fully appended and formatted 
 #'  \code{data.frame} (also saved out if \code{save = TRUE}). \cr \cr
 #'  \code{add_past_moons_to_raw}, \code{add_future_moons}, 
-#'  \code{add_extra_future_moons}: appropropriately appended moons
+#'  \code{add_extra_future_moons}: appropriately appended moons
 #'  \code{data.frame}.
 #'   
 #' @examples

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{error_if_deep}
 \alias{error_if_deep}
-\title{Error if a function's requestet is deeper than can be handled}
+\title{Error if a function's request is deeper than can be handled}
 \usage{
 error_if_deep(lev)
 }

@@ -196,7 +196,7 @@ Results are saved to files, \code{NULL} is returned.
 Forecast or hindcast the Portal rodent population data using
  the (updated if needed) data and models in a portalcasting directory. \cr
  \code{portalcast} wraps around \code{cast} to allow multiple runs of 
- multiple models, with data preparation as needed between runs occuring
+ multiple models, with data preparation as needed between runs occurring
  via \code{prep_data}. \cr \cr
  \code{prep_data} makes sure that the data subdirectory has the updated 
  files for a casting run, using the \code{metadata.yaml} file to verify 

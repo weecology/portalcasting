@@ -65,7 +65,7 @@
 #'   moons <- prep_moons()
 #'   rodents <- prep_rodents(moons = moons)
 #'   covariates <- prep_covariates(moons = moons)
-#'   prep_metadata(moons, rodents, covariates)
+#'   prep_metadata(moons = moons, rodents = rodents, covariates = covariates)
 #'  }
 #' 
 #' @export
