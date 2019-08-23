@@ -16,6 +16,7 @@ test_that("cast_is_valid", {
 })
 
 test_that("add_ensemble", {
+  skip("ens")
   skip_on_cran() # downloads take too long for cran checks
   verify_models(main = "./testing", models = c("ESSS", "AutoArima"))
   min_lag <- extract_min_lag(models = c("ESSS", "AutoArima"))
@@ -33,6 +34,7 @@ test_that("add_ensemble", {
 })
 
 test_that("make_ensemble", {
+  skip("ens")
   skip_on_cran() # downloads take too long for cran checks
   end_moon <- 520
   temp_dir <- sub_paths(main = "./testing", "tmp")

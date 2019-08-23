@@ -169,7 +169,7 @@
 #'
 #' @export
 #'
-portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
+portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                        tmnt_types = c("all", "controls"), end_moons = NULL, 
                        lead_time = 12, cast_date = Sys.Date(),
                        start_moon = 217, 
@@ -239,7 +239,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
 #'
 #' @export
 #'
-cast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
+cast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                  cast_date = Sys.Date(), moons = NULL, 
                  end_moon = NULL, raw_path_data = "PortalData",
                  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",

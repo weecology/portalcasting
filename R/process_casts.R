@@ -734,12 +734,13 @@ add_ensemble <- function(main = ".", moons = NULL, end_moon = NULL,
 make_ensemble <- function(all_casts, main = ".", confidence_level = 0.9, 
                           arg_checks = TRUE){
   check_args(arg_checks)
-  if (length(unique(all_casts$model)) == 1){
-    ensemble <- all_casts
-    ensemble$model <- "Ensemble"
-    ensemble$LowerPI <- ifelse(ensemble$LowerPI < 0, 0, ensemble$LowerPI)
+# ensembling is presently turned off!
+#  if (length(unique(all_casts$model)) == 1){
+#    ensemble <- all_casts
+#    ensemble$model <- "Ensemble"
+#    ensemble$LowerPI <- ifelse(ensemble$LowerPI < 0, 0, ensemble$LowerPI)
     return(ensemble)
-  }
+#  } 
   weights <- compile_aic_weights(main)
   weights$date <- as.Date(weights$date)
   CI_quantile <- qnorm((1 - confidence_level) / 2, lower.tail = FALSE)
