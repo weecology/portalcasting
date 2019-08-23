@@ -222,7 +222,7 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
 #'   "%>%" <- dplyr::"%>%"
 #'   raw_path <- sub_paths(specific_subs = "raw")
 #'   moons <- prep_moons()
-#'   weather("daily", TRUE, raw_path) %>% 
+#'   portalr::weather("daily", TRUE, raw_path) %>% 
 #'   add_date_from_components() %>%
 #'   dplyr::select(-c(year, month, day, battery_low, locally_measured))  %>%
 #'   add_newmoons_from_date(moons) %>%
