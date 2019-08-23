@@ -423,10 +423,12 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #'
 #' @export
 #'
-cast_window <- function(main = ".", moons = read_moons(main = main), 
+cast_window <- function(main = ".", moons = NULL, 
                         cast_date = Sys.Date(),
                         lead_time = 12, min_lag = 6, arg_checks = TRUE){
   check_args(arg_checks)
+  moons <- ifnull(moons, read_moons(main = main))
+
   lagged_lead <- lead_time - min_lag
   moons0 <- moons[moons$newmoondate < cast_date, ]
   last_moon <- tail(moons0, 1)
