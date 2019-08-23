@@ -13,7 +13,6 @@ devtools::test(filter = "19")
 
 
 # to do
-update ifnull like ifna
 add timestamp to forecast filenames
 soften model running errors 
 # update vignettes

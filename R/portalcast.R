@@ -229,7 +229,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = TRUE,
          end_moon = end_moons[i], raw_path_data = raw_path_data,
          raw_traps_file = raw_traps_file, controls_r = controls_r, 
          confidence_level = confidence_level, quiet = quiet, 
-         arg_checks = TRUE)
+         cleanup = cleanup, arg_checks = TRUE)
   }
   portalcast_goodbye(quiet = quiet)
 } 

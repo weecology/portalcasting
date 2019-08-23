@@ -274,6 +274,9 @@ clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE,
   tmp_exist <- dir.exists(tmp_path)
   tmp_files <- list.files(tmp_path)
   ntmp_files <- length(tmp_files)
+  if(!cleanup){
+    return()
+  }
   if(tmp_exist){
     if(ntmp_files > 0){
       tmp_files_full_paths <- file_paths(main, paste0("tmp/", tmp_files))
