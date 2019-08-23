@@ -508,9 +508,10 @@ remove_incompletes <- function(df, colname, arg_checks = TRUE){
 #'
 #' @export
 #'
-data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = "x.csv", 
+data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL, 
                      overwrite = TRUE, quiet = FALSE, arg_checks = TRUE){
   return_if_null(dfl)
+  return_if_null(filename)
   check_args(arg_checks)
   save_it <- FALSE
   if(save){

@@ -4,7 +4,7 @@
 \alias{data_out}
 \title{Save data out to a file and return it}
 \usage{
-data_out(dfl = NULL, main = ".", save = TRUE, filename = "x.csv",
+data_out(dfl = NULL, main = ".", save = TRUE, filename = NULL,
   overwrite = TRUE, quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
