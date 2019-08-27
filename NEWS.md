@@ -17,7 +17,6 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * "PortalData" has been removed as a sub and replaced with "raw", which includes all raw versions of files (post unzipping) downloaded: Portal Data and Portal Predictions and covariate forecasts (whose saving is also new here).
 
 
-
 ### Download capacity generalized
 * Flexible interface to downloading capacity through a url, with generalized and flexible functions for generating Zenodo API urls (for retrieving the raw data and historical predictions) and NMME API urls (for retrieving weather forecasts) to port into the `download` function. [addresses](https://github.com/weecology/portalcasting/issues/121) and [addresses](https://github.com/weecology/portalcasting/issues/107) and [addresses](https://github.com/weecology/portalcasting/issues/53)
 
@@ -31,6 +30,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls") by giving the name in the `tmnt_types` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_r` argument. 
 * In order to actualize this, a user will need to flip off the argument checking (the default in a sandbox setting, if using a standard or production setting, set `arg_checks = FALSE` in the relevant function).
 * Users interested in permanently adding the treatment level to the available data sets should add the source code to the `rodents_controls` function, and the name to the `tmnt_type` argument inputs in function if the user wants to add it to the standard set (or better yet, the next person to add a set should make a function like `model_names` to tidy up the `tmnt_types` options).
+
+### Application of specific models to specific data sets now facilitated
+*  `write_model` and `model_template` have a `data_sets` argument that is used to write the code out, replacing the hard code requirement of analyzing "all" and "controls" for every model. Now, users who wish to analyze a particular data component can easily add it to the analysis pipeline. 
 
 ### Generalization of code terms
 * Throughout the codebase, terminology has been generalized from "fcast"/"forecast"/"hindcast" to "cast" except where a clear distinction is needed (here primarily due to where the covariate values used come from).

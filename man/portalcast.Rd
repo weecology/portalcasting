@@ -7,12 +7,11 @@
 \title{Forecast or hindcast Portal rodents models}
 \usage{
 portalcast(main = ".", models = prefab_models(), ensemble = FALSE,
-  tmnt_types = c("all", "controls"), end_moons = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.9, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
-  raw_path_predictions = "portalPredictions/predictions",
+  data_sets = prefab_data_sets(), end_moons = NULL, lead_time = 12,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
+  raw_path_casts = "portalPredictions/casts",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
@@ -29,14 +28,15 @@ cast(main = ".", models = prefab_models(), ensemble = FALSE,
   cast_date = Sys.Date(), moons = NULL, end_moon = NULL,
   raw_path_data = "PortalData",
   raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
-  controls_r = rodents_controls(), confidence_level = 0.9,
-  quiet = FALSE, cleanup = TRUE, arg_checks = TRUE)
+  controls_r = rodents_controls(), confidence_level = 0.95,
+  quiet = FALSE, verbose = FALSE, cleanup = TRUE,
+  arg_checks = TRUE)
 
-prep_data(main = ".", end_moon = NULL, tmnt_types = c("all",
-  "controls"), lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
-  start_moon = 217, confidence_level = 0.9, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
+prep_data(main = ".", end_moon = NULL,
+  data_sets = prefab_data_sets(), lead_time = 12, min_lag = 6,
+  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
+  hist_covariates = TRUE, cast_covariates = TRUE,
+  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
@@ -56,9 +56,11 @@ include.}
 
 \item{ensemble}{\code{logical} indicator if the ensemble should be added.}
 
-\item{tmnt_types}{\code{character} values of the treatment 
-types (currently \code{"all"} or \code{"controls"}) used to enforce 
-certain arguments in data creation (see \code{\link{prep_rodents_table}}).}
+\item{data_sets}{\code{character} values of the rodent data sets that
+are needed, used to enforce certain arguments in data creation (see 
+\code{\link{prep_rodents_table}}). The prefab sets currently include 
+\code{"all"}, \code{"controls"}, \code{"all_interp"},
+and \code{"controls_interp"} (\code{\link{prefab_data_sets}}).}
 
 \item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) 
 newmoon number(s) of the last sample(s) to be included. Default value is 
@@ -95,8 +97,8 @@ standard portalcasting directory downloads the raw data files into
 \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 \code{"raw/"} is implied).}
 
-\item{raw_path_predictions}{\code{character} value of the path to the
-predictions folder within the raw sub folder (via the archive).}
+\item{raw_path_casts}{\code{character} value of the path to the
+casts folder within the raw sub folder (via the archive).}
 
 \item{raw_cov_cast_file}{\code{character} value of the path to the
 covariate cast file within \code{raw_path_archive}.}

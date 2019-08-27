@@ -8,14 +8,15 @@
 \alias{read_covariate_casts}
 \alias{read_moons}
 \alias{read_metadata}
+\alias{read_cast_metadata}
 \title{Read in a data file and format it for specific class}
 \usage{
-read_data(main = ".", data_name = NULL, tmnt_type = "all",
-  tmnt_types = c("all", "controls"), arg_checks = TRUE)
+read_data(main = ".", data_name = NULL, data_set = "all",
+  data_sets = c("all", "controls"), arg_checks = TRUE)
 
-read_rodents_table(main = ".", tmnt_type = "all", arg_checks = TRUE)
+read_rodents_table(main = ".", data_set = "all", arg_checks = TRUE)
 
-read_rodents(main = ".", tmnt_types = c("all", "controls"),
+read_rodents(main = ".", data_sets = c("all", "controls"),
   arg_checks = TRUE)
 
 read_covariates(main = ".", arg_checks = TRUE)
@@ -25,6 +26,8 @@ read_covariate_casts(main = ".", arg_checks = TRUE)
 read_moons(main = ".", arg_checks = TRUE)
 
 read_metadata(main = ".", arg_checks = TRUE)
+
+read_cast_metadata(main = ".", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -35,10 +38,10 @@ Current options include \code{"rodents"}, \code{"rodents_table"},
 \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
 \code{"metadata"}.}
 
-\item{tmnt_type, tmnt_types}{\code{character} representation of the grouping
+\item{data_set, data_sets}{\code{character} representation of the grouping
 name(s) used to define the rodents. Standard options are \code{"all"} and 
-\code{"controls"}. \code{tmnt_type} can only be length 1, 
-\code{tmnt_types} is not restricted in length.}
+\code{"controls"}. \code{data_set} can only be length 1, 
+\code{data_sets} is not restricted in length.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
@@ -69,11 +72,12 @@ Read in a specified data file. \cr \cr
  setup_dir()
  read_data(data_name = "rodents")
  read_data(data_name = "rodents_table")
- read_data(data_name = "rodents_table", tmnt_type = "controls")
+ read_data(data_name = "rodents_table", data_set = "controls")
  read_data(data_name = "covariates")
  read_data(data_name = "covariate_casts")
  read_data(data_name = "moons")
  read_data(data_name = "metadata")
+ read_data(data_name = "cast_metadata")
 
  read_rodents()
  read_rodents_table()
@@ -81,6 +85,7 @@ Read in a specified data file. \cr \cr
  read_covariate_casts()
  read_moons()
  read_metadata()
+ read_cast_metadata()
 }
 
 }

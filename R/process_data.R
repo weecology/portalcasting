@@ -8,11 +8,7 @@
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{Date} of the most recent census.
 #'
@@ -26,77 +22,8 @@
 #'
 most_recent_census <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
-  all <- read_rodents_table(main, "all")
   moons <- read_moons(main)
-  matched <- moons$newmoonnumber == max(all$newmoonnumber)
-  as.Date(as.character(moons$censusdate[matched]))
-}
-
-
-#' @title Interpolate missing rodent data
-#' 
-#' @description Interpolation of missing data in the rodent abundance data 
-#'  set using \code{\link[forecast]{na.interp}}. Each species is individually 
-#'  linearly interpolated, then the total number of rodents is calculated 
-#'  from the sum of the individual species.
-#'
-#' @param rodents_tab \code{data.frame} of rodents data with a 
-#'  \code{newmoonnumber} column. 
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return \code{data.frame} data table of interpolation-inclusive counts
-#'  for each species and total and with the columns trimmed to just 
-#'  the species, total, and newmoonnumber (\code{newmoon}).
-#'
-#' @examples
-#'  \donttest{ 
-#'   setup_dir()
-#'   abundances <- read_rodents_table()
-#'   metadata <- read_metadata()
-#'   nmoons <- length(metadata$rodent_cast_newmoons)
-#'   CL <- metadata$confidence_level
-#'   abundances <- interpolate_abundance(abundances)
-#'  }
-#' 
-#' @export
-#' 
-interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){
-  check_args(arg_checks)
-  newmoon <- (min(rodents_tab$newmoonnumber)):(max(rodents_tab$newmoonnumber))
-  nmoons <- length(newmoon)
-
-  rodent_cols <- which(colnames(rodents_tab) %in% base_species(nadot = TRUE))
-  species <- colnames(rodents_tab)[rodent_cols]
-  nspecies <- length(species)
-
-  abunds <- matrix(NA, nrow = nmoons, ncol = nspecies)
-
-  for(i in 1:nmoons){
-    if(length(which(rodents_tab$newmoonnumber == newmoon[i])) > 0){
-      temp <- rodents_tab[which(rodents_tab$newmoonnumber == newmoon[i]),
-                        which(colnames(rodents_tab) %in% species)]
-      abunds[i, ] <- as.numeric(temp)
-    }
-  }
-
-  interpolated_abunds <- abunds
-  colnames(interpolated_abunds) <- species
-
-  for(j in 1:nspecies){
-    interpolated_abunds[ , j] <- round(na.interp(abunds[ , j]))
-  }
-
-  interpolated_total <- apply(interpolated_abunds, 1, sum)
-
-  data.frame(newmoon, interpolated_abunds, total = interpolated_total)
+  as.Date(max(moons$censusdate, na.rm = TRUE))
 }
 
 
@@ -122,10 +49,10 @@ interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){
 #'  \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
 #'  \code{"metadata"}.
 #'
-#' @param tmnt_type,tmnt_types \code{character} representation of the grouping
+#' @param data_set,data_sets \code{character} representation of the grouping
 #'  name(s) used to define the rodents. Standard options are \code{"all"} and 
-#'  \code{"controls"}. \code{tmnt_type} can only be length 1, 
-#'  \code{tmnt_types} is not restricted in length.
+#'  \code{"controls"}. \code{data_set} can only be length 1, 
+#'  \code{data_sets} is not restricted in length.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -143,11 +70,12 @@ interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){
 #'  setup_dir()
 #'  read_data(data_name = "rodents")
 #'  read_data(data_name = "rodents_table")
-#'  read_data(data_name = "rodents_table", tmnt_type = "controls")
+#'  read_data(data_name = "rodents_table", data_set = "controls")
 #'  read_data(data_name = "covariates")
 #'  read_data(data_name = "covariate_casts")
 #'  read_data(data_name = "moons")
 #'  read_data(data_name = "metadata")
+#'  read_data(data_name = "cast_metadata")
 #'
 #'  read_rodents()
 #'  read_rodents_table()
@@ -155,31 +83,38 @@ interpolate_abundance <- function(rodents_tab, arg_checks = TRUE){
 #'  read_covariate_casts()
 #'  read_moons()
 #'  read_metadata()
+#'  read_cast_metadata()
 #' }
 #'
 #' @export
 #'
-read_data <- function(main = ".", data_name = NULL, tmnt_type = "all", 
-                      tmnt_types = c("all", "controls"), arg_checks = TRUE){
+read_data <- function(main = ".", data_name = NULL, data_set = "all", 
+                      data_sets = c("all", "controls"), arg_checks = TRUE){
   check_args(arg_checks)
   return_if_null(data_name)
+  data_name <- tolower(data_name)
+  data_set <- tolower(data_set)
+  data_sets <- tolower(data_sets)
   if (data_name == "rodents"){
-    data <- read_rodents(main, tmnt_types)
+    data <- read_rodents(main, data_sets, arg_checks)
   }
   if (data_name == "rodents_table"){
-    data <- read_rodents_table(main, tmnt_type)
+    data <- read_rodents_table(main, data_set, arg_checks)
   }
   if (data_name == "covariates"){
-    data <- read_covariates(main)
+    data <- read_covariates(main, arg_checks)
   }
   if (data_name == "covariate_casts"){
-    data <- read_covariate_casts(main)
+    data <- read_covariate_casts(main, arg_checks)
   }
   if (data_name == "moons"){
-    data <- read_moons(main)
+    data <- read_moons(main, arg_checks)
   }
   if (data_name == "metadata"){
-    data <- read_metadata(main)
+    data <- read_metadata(main, arg_checks)
+  }
+  if (data_name == "cast_metadata"){
+    data <- read_cast_metadata(main, arg_checks)
   }
   data
 }
@@ -188,13 +123,16 @@ read_data <- function(main = ".", data_name = NULL, tmnt_type = "all",
 #'
 #' @export
 #'
-read_rodents_table <- function(main = ".", tmnt_type = "all", 
+read_rodents_table <- function(main = ".", data_set = "all", 
                                arg_checks = TRUE){
   check_args(arg_checks)
-  lpath <- paste0("data/rodents_", tmnt_type, ".csv") 
+  data_set <- tolower(data_set)
+  lpath <- paste0("data/rodents_", data_set, ".csv") 
   fpath <- file_paths(main, lpath)
   if(!file.exists(fpath)){
-    rodents_tab <- prep_rodents(main, tmnt_types = tmnt_type)[[1]]
+    rodents <- prep_rodents(main = main, data_sets = data_set, 
+                            arg_checks = arg_checks)
+    rodents_tab <- rodents[[1]]
     return(rodents_tab)
   }
   read.csv(fpath, stringsAsFactors = FALSE) 
@@ -204,17 +142,19 @@ read_rodents_table <- function(main = ".", tmnt_type = "all",
 #'
 #' @export
 #'
-read_rodents <- function(main = ".", tmnt_types = c("all", "controls"), 
+read_rodents <- function(main = ".", data_sets = c("all", "controls"), 
                          arg_checks = TRUE){
   check_args(arg_checks)
-  return_if_null(tmnt_types)
-  ntmnt_types <- length(tmnt_types)
-  rodents_list <- vector("list", length = ntmnt_types)
-  for(i in 1:ntmnt_types){
-    rodents_list[[i]] <- read_rodents_table(main, tmnt_types[i])
+  return_if_null(data_sets)
+  data_sets <- tolower(data_sets)
+  ndata_sets <- length(data_sets)
+  rodents <- vector("list", length = ndata_sets)
+  for(i in 1:ndata_sets){
+    rodents[[i]] <- read_rodents_table(main = main, data_set = data_sets[i], 
+                                       arg_checks = arg_checks)
   }
-  names(rodents_list) <- tmnt_types
-  rodents_list
+  names(rodents) <- data_sets
+  rodents
 }
 
 
@@ -226,7 +166,7 @@ read_covariates <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_paths(main, "data/covariates.csv")
   if(!file.exists(fpath)){
-    return(prep_covariates(main))
+    return(prep_covariates(main = main, arg_checks = arg_checks))
   }
   read.csv(fpath, stringsAsFactors = FALSE) 
 }
@@ -239,7 +179,7 @@ read_covariate_casts <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_paths(main, "data/covariate_casts.csv")
   if(!file.exists(fpath)){
-    return(cast_covariates(main))
+    return(cast_covariates(main = main, arg_checks = arg_checks))
   }
   read.csv(fpath, stringsAsFactors = FALSE) 
 }
@@ -252,7 +192,7 @@ read_moons <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_paths(main, "data/moon_dates.csv")
   if(!file.exists(fpath)){
-    return(prep_moons(main))
+    return(prep_moons(main = main, arg_checks = arg_checks))
   }
   read.csv(fpath, stringsAsFactors = FALSE)
 }
@@ -265,8 +205,24 @@ read_metadata <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_paths(main, "data/metadata.yaml")
   if(!file.exists(fpath)){
-    md <- prep_metadata(main)
+    md <- prep_metadata(main = main, arg_checks = arg_checks)
     return(md)
   }
   yaml.load_file(fpath) 
 }
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_cast_metadata <- function(main = ".", arg_checks = TRUE){
+  check_args(arg_checks)
+  meta_path <- file_paths(main, "casts/cast_metadata.csv")
+  if(!file.exists(meta_path)){
+    return(prep_cast_metadata(main = main, arg_checks = arg_checks))
+  }
+  read.csv(meta_path, stringsAsFactors = FALSE)
+}
+  
+
+ 

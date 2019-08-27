@@ -11,7 +11,7 @@ prep_covariates(main = ".", moons = NULL, end_moon = NULL,
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
   append_cast_csv = TRUE, control_cdl = climate_dl_control(),
-  quiet = FALSE, save = TRUE, overwrite = TRUE,
+  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_cov = "covariates.csv", arg_checks = TRUE)
 }
 \arguments{
@@ -64,6 +64,9 @@ are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}

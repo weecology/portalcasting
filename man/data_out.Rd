@@ -5,7 +5,7 @@
 \title{Save data out to a file and return it}
 \usage{
 data_out(dfl = NULL, main = ".", save = TRUE, filename = NULL,
-  overwrite = TRUE, quiet = FALSE, arg_checks = TRUE)
+  overwrite = TRUE, quiet = FALSE, nindent = 4, arg_checks = TRUE)
 }
 \arguments{
 \item{dfl}{\code{data.frame} or YAML \code{list} to be written out.}
@@ -22,6 +22,9 @@ be saved out.}
 overwritten if it exists.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
+
+\item{nindent}{Number of indentation spaces to use. Must be non-negative
+and integer-conformable.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

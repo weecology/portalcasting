@@ -18,17 +18,17 @@ unlink(list.files(sub_paths(main = "./testing", "raw"), full.names = TRUE))
 
 })
 
-test_that("fill_predictions", {
+test_that("fill_casts", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_equal(fill_predictions("./testing", "portalPredictions/predictions"),
+  expect_equal(fill_casts("./testing", "portalPredictions/predictions"),
                NULL)
-  expect_message(fill_predictions("./testing", 
+  expect_message(fill_casts("./testing", 
                    "portalPredictions/predictions",
                    verbose = TRUE))
 })
 
-test_that("fill_predictions_message", {
-  expect_is(fill_predictions_message("x", FALSE, verbose = TRUE), "character")
+test_that("fill_casts_message", {
+  expect_is(fill_casts_message("x", FALSE, verbose = TRUE), "character")
 })
 
 

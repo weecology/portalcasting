@@ -15,9 +15,9 @@
 #'  minimum non-0 lag time used across models from the controls lists.
 #'
 #' @details Any model that is part of the \code{prefab} set 
-#'  (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")})
-#'  has its script-writing controls already included internally. Users only
-#'  need to include controls for non-prefab \code{models}. \cr \cr
+#'  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
+#'  "pevGARCH")}) has its script-writing controls already included internally.
+#'  Users only need to include controls for non-prefab \code{models}. \cr \cr
 #'  Any user-defined \code{models} that are not included in \code{controls_m}
 #'  will throw an error. \cr \cr 
 #'  If any user-defined \code{controls_m} duplicate any existing controls for
@@ -37,6 +37,10 @@
 #'  elements: 
 #'  \itemize{
 #'   \item \code{name}: a \code{character} value of the model name.
+#'   \item \code{data_sets}: a \code{character} vector of the data set names
+#'    that the model is applied to. 
+#'   \item \code{interpolate}: a \code{logical} indicator of if the 
+#'    model needs the rodent data to be interpolated.
 #'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
 #'    model needs covariates.
 #'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
@@ -65,9 +69,10 @@
 #'
 #' @examples
 #'  model_script_controls(prefab_models())
-#'  controls <- list(name = "xx", covariatesTF = FALSE, lag = NA)
+#'  controls <- list(name = "xx", data_sets = prefab_data_sets(), 
+#'                   interpolate = FALSE, covariatesTF = FALSE, lag = NA)
 #'  model_script_controls("xx", controls)
-#'  model_script_controls(model_names("xx", "prefab"), controls)
+#'  model_script_controls(prefab_models("xx"), controls)
 #'  model_script_controls(c("xx", "ESSS"), controls)
 #'  extract_min_lag()
 #'  extract_min_lag("AutoArima")
@@ -85,11 +90,22 @@ model_script_controls <- function(models = NULL, controls_m = NULL,
   nadd <- length(controls_m)
 
   prefab_controls <- list(
-        AutoArima = list(name = "AutoArima", covariatesTF = FALSE, lag = NA), 
-        ESSS = list(name = "ESSS", covariatesTF = FALSE, lag = NA), 
-        nbGARCH = list(name = "nbGARCH", covariatesTF = FALSE, lag = NA), 
-        nbsGARCH = list(name = "nbsGARCH", covariatesTF = FALSE, lag = NA), 
-        pevGARCH = list(name = "pevGARCH", covariatesTF = TRUE, lag = 6))
+        AutoArima = list(name = "AutoArima", data_sets = prefab_data_sets(),
+                         covariatesTF = FALSE, lag = NA), 
+        NaiveArima = list(name = "NaiveArima", data_sets = prefab_data_sets(),
+                         covariatesTF = FALSE, lag = NA), 
+        ESSS = list(name = "ESSS", 
+                    data_sets = prefab_data_sets(interpolate = TRUE),
+                    covariatesTF = FALSE, lag = NA), 
+        nbGARCH = list(name = "nbGARCH", 
+                       data_sets = prefab_data_sets(interpolate = TRUE),
+                       covariatesTF = FALSE, lag = NA), 
+        nbsGARCH = list(name = "nbsGARCH", 
+                        data_sets = prefab_data_sets(interpolate = TRUE),
+                        covariatesTF = FALSE, lag = NA), 
+        pevGARCH = list(name = "pevGARCH",  
+                        data_sets = prefab_data_sets(interpolate = TRUE),
+                        covariatesTF = TRUE, lag = 6))
   nprefab <- length(prefab_controls)
   for(i in 1:nprefab){
     controls_m[nadd + i] <- list(prefab_controls[[i]])
@@ -132,25 +148,32 @@ extract_min_lag <- function(models = prefab_models(), controls_m = NULL,
   ifelse(min_lag == Inf, NA, min_lag)
 }
 
-#' @title Provide the names of models
+#' @rdname model_script_controls
+#'
+#' @export
+#'
+extract_data_sets <- function(models = prefab_models(), controls_m = NULL, 
+                            arg_checks = TRUE){
+  check_args(arg_checks)
+  controls <- model_script_controls(models = models, controls_m = controls_m,
+                                    arg_checks = arg_checks)
+  nmods <- length(controls)
+  data_sets <- NULL
+  for(i in 1:nmods){
+    data_sets <- unique(c(data_sets, controls[[i]]$data_sets))
+  }
+  data_sets
+}
+
+#' @title Provide the names of the prefab models
 #'
 #' @description Create a \code{character} vector of the names of the models
-#'  to be included. \cr \cr
-#'  \code{prefab_models} provides the names for the base pre-loaded models
-#'  (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")}). 
-#'  \cr \cr
-#'  \code{wEnsemble_models} provides the names for the base pre-loaded models
-#'  plus the ensemble. 
+#'  to be included including the pre-fabricated (prefab) models
+#'  (\code{"AutoArima"}, \code{"NaiveArima"}, \code{"ESSS"}, \code{"nbGARCH"},
+#'  \code{"nbsGARCH"}, \code{"pevGARCH"}). 
 #'
 #' @param models \code{character} vector of name(s) of model(s) to add to the 
-#'   set created by \code{set}. 
-#'
-#' @param set \code{character} value of the model set(s) to include. Default
-#'   value is \code{NULL} which allows for full customization with 
-#'   \code{models}. Currently there is only support for the
-#'   only support for \code{"prefab"} (AutoArima, ESSS, nbGARCH, nbsGARCH,
-#'   and pevGARCH) and \code{"wEnsemble"} (the prefab models plus the basic
-#'   ensemble, a specialized case). 
+#'   prefab models.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -164,38 +187,17 @@ extract_min_lag <- function(models = prefab_models(), controls_m = NULL,
 #' @return \code{character} vector of model names.
 #'
 #' @examples
-#'  model_names(c("model1", "model2"))
-#'  model_names(c("model1", "model2"), "prefab")
 #'  prefab_models()
-#'  wEnsemble_models()
+#'  prefab_models("model1")
 #'
 #' @export
 #'
-model_names <- function(models = NULL, set = NULL, arg_checks = TRUE){
-  return_if_null(set, models)
+prefab_models <- function(models = NULL, arg_checks = TRUE){
   check_args(arg_checks)
-  prefab <- c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")
-  wEnsemble <- c(prefab, "Ensemble")
-  out <- switch(set, "prefab" = prefab, "wEnsemble" = wEnsemble)
-  unique(c(out, models))
+  prefab <- c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
+              "pevGARCH")
+  unique(c(prefab, models))
 }
-
-#' @rdname model_names
-#'
-#' @export
-#'
-prefab_models <- function(){
-  model_names(set = "prefab")
-}
-
-#' @rdname model_names
-#'
-#' @export
-#'
-wEnsemble_models <- function(){
-  model_names(set = "wEnsemble")
-}
-
 
 #' @title Write the template for a model into model subdirectory
 #'
@@ -253,82 +255,104 @@ wEnsemble_models <- function(){
 #'
 #' @export
 #'
-write_model <- function(name = NULL, covariatesTF = NULL,
-                        lag = NULL, main = ".", quiet = FALSE, 
-                        overwrite = TRUE, control = NULL, 
-                        arg_checks = TRUE){
+write_model <- function(name = NULL, data_sets = NULL, 
+                        covariatesTF = NULL, lag = NULL, main = ".", 
+                        quiet = FALSE, verbose = FALSE, overwrite = TRUE, 
+                        control = NULL, arg_checks = TRUE){
   check_args(arg_checks)
+  name <- ifnull(name, control$name)
+  prefab_control <- tryCatch(model_script_controls(name),
+                             error = function(x){NULL})
+  control <- ifnull(control, prefab_control[[name]])
   covariatesTF <- ifnull(covariatesTF, control$covariatesTF)
   lag <- ifnull(lag, control$lag)
-  name <- ifnull(name, control$name)
+  data_sets <- ifnull(data_sets, control$data_sets)
   return_if_null(name)
+  msg <- NULL
+  msg1 <- NULL
   if((is.null(covariatesTF) & is.null(lag))){
-    msg1 <- paste0("\n  *info for ", name, " is NULL*")
-    msg2 <- "\n  *assuming covariatesTF = FALSE, lag = 0*"
-    msg3 <- paste0(msg1, msg2)
+    msg1 <- paste0("*covariatesTF and lag = NULL for ", name, "*")
+    msg2 <- "*assuming covariatesTF = FALSE, lag = 0*"
+    msg <- c(msg, msg1, msg2)
     covariatesTF <- FALSE
     lag <- 0
-  } else if((!is.null(covariatesTF) & covariatesTF && is.null(lag))){
-    msg1 <- paste0("\n  *lag for ", name, " is NULL*")
-    msg2 <- "\n  *assuming lag = 0*"
-    msg3 <- paste0(msg1, msg2)
+  } 
+  if((!is.null(covariatesTF) & covariatesTF && is.null(lag))){
+    msg1 <- paste0("*lag = NULL for ", name, "*")
+    msg2 <- "*assuming lag = 0*"
+    msg <- c(msg, msg1, msg2)
     lag <- 0
-  } else if((is.null(covariatesTF) & !is.null(lag))){
+  } 
+  if((is.null(covariatesTF) & !is.null(lag))){
     if (is.na(lag)){
-      msg1 <- paste0("\n  *covariatesTF for ", name, " is NULL*")
-      msg2 <- "\n  *assuming covariatesTF = FALSE*"
-      msg3 <- paste0(msg1, msg2)
+      msg1 <- paste0("*covariatesTF = NULL for ", name, "*")
+      msg2 <- "*assuming covariatesTF = FALSE*"
+      msg <- c(msg, msg1, msg2)
       covariatesTF <- FALSE
     } else if (is.numeric(lag)){
-      msg1 <- paste0("\n  *covariatesTF for ", name, " is NULL*")
-      msg2 <- "\n  *assuming covariatesTF = TRUE*"
-      msg3 <- paste0(msg1, msg2)
+      msg1 <- paste0("*covariatesTF = NULL for ", name, " *")
+      msg2 <- "*assuming covariatesTF = TRUE*"
+      msg <- c(msg, msg1, msg2)
       covariatesTF <- TRUE
     }
-  } else{
-    msg3 <- NULL
   }
-
+  if(is.null(data_sets)){
+    msg1 <- paste0("*data_sets = NULL for ", name, "*")
+    msg2 <- "*assuming data_sets = prefab_data_sets()*"
+    msg <- c(msg, msg1, msg2)
+  }
   mod_path <- model_paths(main, models = name)
-  mod_template <- model_template(name, covariatesTF, lag, main, quiet)
+  mod_template <- model_template(name = name, data_sets = data_sets, 
+                                 covariatesTF = covariatesTF, lag = lag, 
+                                 main = main, quiet = quiet)
   if (file.exists(mod_path) & overwrite){
-    msg4 <- paste0(" updating ", name, " in models subdirectory")
-    msg <- paste0(msg4, msg3)
-    messageq(msg, quiet)
+    verb <- ifelse(verbose, "Updating ", "")
+    msgM <- paste0("  -", verb, name)
     write(mod_template, mod_path)
   } else if (!file.exists(mod_path)){
-    msg4 <- paste0(" adding ", name, " to models subdirectory")
-    msg <- paste0(msg4, msg3)
-    messageq(msg, quiet)
+    verb <- ifelse(verbose, "Adding ", "")
+    msgM <- paste0("  -", verb, name)
     write(mod_template, mod_path)
   } 
+  messageq(msgM, quiet)
+  if(!is.null(msg)){
+    messageq(msg, !verbose)
+  }
 }
 
 #' @rdname write_model
 #'
 #' @export
 #'
-model_template <- function(name = NULL, covariatesTF = FALSE,
-                           lag = NULL, main = ".", quiet = FALSE, 
-                           arg_checks = TRUE){
+model_template <- function(name = NULL, data_sets = prefab_data_sets(),
+                           covariatesTF = FALSE, lag = NULL, main = ".", 
+                           quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
+  return_if_null(name)
+  return_if_null(data_sets)
   main_arg <- paste0(', main = "', main, '"')
   quiet_arg <- paste0(', quiet = ', quiet)
+  arg_checks_arg <- paste0(', arg_checks = ', arg_checks)
+  lag_arg <- NULL
   if (covariatesTF){
     lag_arg <- paste0(', lag = ', lag)
-    args_a <- paste0('tmnt_type = "All"', lag_arg, main_arg, quiet_arg)
-    args_c <- paste0('tmnt_type = "Controls"', lag_arg, main_arg, quiet_arg)
-  } else{
-    args_a <- paste0('tmnt_type = "All"', main_arg, quiet_arg)
-    args_c <- paste0('tmnt_type = "Controls"', main_arg, quiet_arg)
   }
-
-
-  paste0('f_a <- ', name ,'(', args_a, ');
-f_c <- ', name ,'(', args_c, ');
-save_cast_output(f_a, f_c, "', name, '"', main_arg, ')'
-  )
-
+  ds_args <- paste0('data_set = "', data_sets, '"')
+  nds <- length(data_sets)
+  out <- NULL
+  for(i in 1:nds){
+    resp <- paste0('cast_', data_sets[i])
+    model_args <- paste0(ds_args[i], lag_arg, main_arg, quiet_arg, 
+                         arg_checks_arg) 
+    model_fun <- paste0(name, '(', model_args, ');')
+    model_line <- paste0(resp, ' <- ', model_fun)
+    save_args <- paste0(resp, main_arg, quiet_arg, arg_checks_arg)
+    save_fun <- paste0('save_cast_output(', save_args, ');')
+    save_line <- save_fun
+    newout <- c(model_line, save_line)
+    out <- c(out, newout)
+  }
+  out
 }
 #' @title Verify that models requested to forecast or hindcast with exist
 #'
@@ -379,6 +403,7 @@ verify_models <- function(main = ".", models = prefab_models(),
     }
   }
   messageq("All requested models available", quiet)
+  messageq("---------------------------------------------------------", quiet)
 }
 
 

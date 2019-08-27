@@ -7,7 +7,8 @@
 \title{Download and read covariate casts (presently only the NMME)}
 \usage{
 download_climate_casts(main = ".", raw_path_cov_cast = "cov_casts",
-  control_cdl = climate_dl_control(), arg_checks = TRUE)
+  control_cdl = climate_dl_control(), quiet = TRUE, verbose = FALSE,
+  arg_checks = TRUE)
 
 climate_dl_control(start = Sys.Date(), end = as.Date("2050-01-01"),
   model = "ENSMEAN", lat = 31.9555, lon = -109.0744,
@@ -26,6 +27,12 @@ raw subdirectory to the folder where the downloads are saved.}
 
 \item{control_cdl}{\code{list} of specifications for the download, which
 are sent to \code{\link{NMME_urls}} to create the specific URLs.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

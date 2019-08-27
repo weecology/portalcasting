@@ -4,8 +4,8 @@
 \alias{clear_tmp}
 \title{Remove files from the tmp subdirectory}
 \usage{
-clear_tmp(main = ".", quiet = FALSE, cleanup = TRUE,
-  arg_checks = TRUE)
+clear_tmp(main = ".", quiet = FALSE, verbose = FALSE,
+  cleanup = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -13,6 +13,9 @@ the directory tree.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out
+all of the information or just tidy messages.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}

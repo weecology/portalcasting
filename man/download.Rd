@@ -21,7 +21,8 @@ unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE,
 unzip_destins(name = NULL, zip_destin, main = ".", arg_checks = TRUE)
 
 download_message(name = NULL, type = NULL, url = NULL,
-  rec_version = NULL, quiet = FALSE, arg_checks = TRUE)
+  rec_version = NULL, quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 
 download_url(type = NULL, url = NULL, concept_rec_id = NULL,
   rec_version = "latest", rec_id = NULL, arg_checks = TRUE)

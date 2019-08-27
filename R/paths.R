@@ -52,19 +52,19 @@ path_no_ext <- function(path, sep_char = ".", arg_checks = TRUE){
 
 #' @title Define the names of the subdirectories in a forecasting directory
 #'
-#' @description Produces a vector of subdirectory names that is of class
-#'   \code{subdirs}, and which should generally contain the elements
-#'   \code{"predictions"}, \code{"models"}, \code{"PortalData"}, 
-#'   \code{"data"}, and \code{"tmp"}. It is generally not advised to change
-#'   the subdirectory structure at this time.
+#' @description Produces a vector of subdirectory names, which should 
+#'  generally contain the elements
+#'  \code{"casts"}, \code{"models"}, \code{"raw"}, 
+#'  \code{"data"}, and \code{"tmp"}. It is generally not advised to change
+#'  the subdirectory structure at this time.
 #'
 #' @param subs_names Either [1] names of additional subdirectories to add to
-#'   the vector set up by \code{type} or [2] an optional way to input all 
-#'   subdirectory names (requires \code{subs_type = NULL}). 
+#'  the vector set up by \code{type} or [2] an optional way to input all 
+#'  subdirectory names (requires \code{subs_type = NULL}). 
 #'
 #' @param subs_type \code{character} name for quick generation of subdirectory
-#'   vector. Presently only defined for \code{"prefab"}, or the setting
-#'   \code{NULL} which allows for complete customization.
+#'  vector. Presently only defined for \code{"prefab"}, or the setting
+#'  \code{NULL} which allows for complete customization.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -87,7 +87,7 @@ subdirs <- function(subs_names = NULL, subs_type = "prefab",
   check_args(arg_checks)
   if (!is.null(subs_type)){
     if (subs_type == "prefab"){
-      pc_subs <- c("predictions", "models", "raw", "data", "tmp")
+      pc_subs <- c("casts", "models", "raw", "data", "tmp")
       subs_names <- c(subs_names, pc_subs)
       subs_names <- unique(subs_names)
     }

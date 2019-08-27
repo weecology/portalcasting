@@ -51,6 +51,9 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'  shown.
+#'
 #' @param control_cdl \code{list} of specifications for the download, which
 #'  are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
@@ -92,13 +95,13 @@ prep_covariates <- function(main = ".", moons = NULL,
                             raw_path_cov_cast = "cov_casts", 
                             source_name = "current_archive",
                             append_cast_csv = TRUE, 
-                            control_cdl = climate_dl_control(), quiet = FALSE, 
-                            save = TRUE, overwrite = TRUE,
+                            control_cdl = climate_dl_control(), quiet = TRUE, 
+                            verbose = FALSE, save = TRUE, overwrite = TRUE,
                             filename_cov = "covariates.csv", 
                             arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
-  messageq("Loading covariate data files into data subdirectory", quiet)
+  messageq("  -covariate data files", quiet)
   hist_cov <- prep_hist_covariates(main = main, end_moon = end_moon,
                                    quiet = quiet, arg_checks = arg_checks)
   if (cast_covariates){
@@ -113,8 +116,8 @@ prep_covariates <- function(main = ".", moons = NULL,
                                      source_name = source_name,
                                      append_cast_csv = append_cast_csv, 
                                      control_cdl = control_cdl,
-                                     quiet = quiet, save = save, 
-                                     overwrite = overwrite, 
+                                     quiet = quiet, verbose = verbose, 
+                                     save = save, overwrite = overwrite, 
                                      arg_checks = arg_checks)
   }
   out <- hist_cov[-(1:nrow(hist_cov)), ]
@@ -124,7 +127,7 @@ prep_covariates <- function(main = ".", moons = NULL,
   if (cast_covariates){
     out <- bind_rows(out, cast_cov)
   }
-  data_out(out, main, save, filename_cov, overwrite, quiet)
+  data_out(out, main, save, filename_cov, overwrite, !verbose)
 }
 
 
@@ -164,7 +167,7 @@ prep_covariates <- function(main = ".", moons = NULL,
 #'  \code{prep_weather_data}: \code{data.frame} of historical weather data.
 #'
 #' @examples
-#'  \donttest{
+#'  \donttest{   
 #'   create_dir()
 #'   fill_raw()
 #'   prep_hist_covariates()
@@ -174,15 +177,16 @@ prep_covariates <- function(main = ".", moons = NULL,
 #' @export
 #'
 prep_hist_covariates <- function(main = ".", end_moon = NULL, 
-                                 quiet = FALSE, arg_checks = TRUE){
+                                 quiet = TRUE, arg_checks = TRUE){
   check_args(arg_checks)
   weather_data <- prep_weather_data(main)
   raw_path <- sub_paths(main, "raw")
   ndvi_data <- ndvi("newmoon", TRUE, raw_path)
   out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
   out$source <- "hist"
+  colnames(out)[which(colnames(out) == "newmoonnumber")] <- "moon"
   if (!is.null(end_moon)){
-    out <- out[which(out$newmoonnumber <= end_moon), ]
+    out <- out[which(out$moon <= end_moon), ]
   }
   data.frame(out)
 }
@@ -210,10 +214,10 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
 #'
 #' @param x \code{data.frame} of daily weather, with columns named
 #'  \code{"date"}, \code{"mintemp"}, \code{"maxtemp"}, \code{"meantemp"}, 
-#'  \code{"precipitation"}, and \code{"newmoonnumber"}.
+#'  \code{"precipitation"}, and \code{"moon"}.
 #'
 #' @return \code{data.frame} of \code{x} summarized and arranged by
-#'  \code{x$newmoonnumber}.
+#'  \code{x$moon}.
 #'
 #' @examples
 #'  \donttest{
@@ -231,15 +235,15 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
 #'
 #' @export
 #'
-summarize_daily_weather_by_newmoon <- function(x){
-  group_by(x, newmoonnumber) %>%
+summarize_daily_weather_by_moon <- function(x){
+  group_by(x, moon) %>%
   summarize(date = max(date, na.rm = TRUE), 
             mintemp = min(mintemp, na.rm = TRUE), 
             maxtemp = max(maxtemp, na.rm = TRUE), 
             meantemp = mean(meantemp, na.rm = TRUE), 
             precipitation = sum(precipitation, na.rm = TRUE)) %>% 
-  arrange(newmoonnumber) %>% 
-  select(newmoonnumber, mintemp, maxtemp, meantemp, precipitation)
+  arrange(moon) %>% 
+  select(moon, mintemp, maxtemp, meantemp, precipitation)
 }
 
 
@@ -280,22 +284,22 @@ summarize_daily_weather_by_newmoon <- function(x){
 lag_covariates <- function(covariates, lag, tail = FALSE, 
                            arg_checks = TRUE){
   check_args(arg_checks)
-  covariates$newmoonnumber_lag <- covariates$newmoonnumber + lag
+  covariates$moon_lag <- covariates$moon + lag
   
   if(tail == FALSE){
-    oldest_included_newmoon <- covariates$newmoonnumber[1]
-    most_recent_newmoon <- covariates$newmoonnumber[nrow(covariates)]
-    hist_newmoons <- oldest_included_newmoon:most_recent_newmoon
-    hist_moons_table <- data.frame(newmoonnumber = hist_newmoons)
-    nm_match <- c("newmoonnumber_lag" = "newmoonnumber")
+    oldest_included_moon <- covariates$moon[1]
+    most_recent_moon <- covariates$moon[nrow(covariates)]
+    hist_moons <- oldest_included_moon:most_recent_moon
+    hist_moons_table <- data.frame(moon = hist_moons)
+    nm_match <- c("moon_lag" = "moon")
     data <- right_join(covariates, hist_moons_table, by = nm_match) 
     if (lag > 0){
       covariates <- covariates[-(1:lag), ]
     }
   }
-  covariates <- select(covariates, -newmoonnumber)
+  covariates <- select(covariates, -moon)
   cn_covariates <- colnames(covariates)
-  cn_nmn_l <- which(cn_covariates == "newmoonnumber_lag")
-  colnames(covariates)[cn_nmn_l] <- "newmoonnumber"
+  cn_nmn_l <- which(cn_covariates == "moon_lag")
+  colnames(covariates)[cn_nmn_l] <- "moon"
   covariates
 }

@@ -1,5 +1,13 @@
 context("Test utility functions")
 
+test_that("named_null_list", {
+  expect_is(named_null_list(c("a", "b", "c")), "list")
+  expect_equal(length(named_null_list(c("a", "b", "c"))), 3)
+
+})
+
+
+
 test_that("clear_tmp", {
   expect_message(clear_tmp(""))
 })
@@ -68,8 +76,8 @@ test_that("remove_incompletes", {
 
 test_that("data_out", {
   skip_on_cran()
-  expect_message(prep_moons(main = "./testing"))
-  expect_message(prep_moons(main = "./testing", overwrite = FALSE))
+  expect_silent(prep_moons(main = "./testing"))
+  expect_silent(prep_moons(main = "./testing", overwrite = FALSE))
 })
 
 test_that("ifnull", {

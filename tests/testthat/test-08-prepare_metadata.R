@@ -5,7 +5,8 @@ test_that("prep_metadata", {
   moons <- prep_moons(main = "./testing")
   rodents <- prep_rodents(main = "./testing", moons = moons)
   covariates <- prep_covariates(main = "./testing", moons = moons)
-  expect_is(prep_metadata(main = "./testing", moons, rodents, covariates),
+  expect_is(prep_metadata(main = "./testing", moons = moons, rodents = rodents, 
+                          covariates = covariates),
             "list")
 
 })

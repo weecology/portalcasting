@@ -3,12 +3,16 @@
 \name{model_script_controls}
 \alias{model_script_controls}
 \alias{extract_min_lag}
+\alias{extract_data_sets}
 \title{Produce the control lists for the model script writing}
 \usage{
 model_script_controls(models = NULL, controls_m = NULL,
   arg_checks = TRUE)
 
 extract_min_lag(models = prefab_models(), controls_m = NULL,
+  arg_checks = TRUE)
+
+extract_data_sets(models = prefab_models(), controls_m = NULL,
   arg_checks = TRUE)
 }
 \arguments{
@@ -25,6 +29,10 @@ Presently, each model's script writing controls should include three
 elements: 
 \itemize{
  \item \code{name}: a \code{character} value of the model name.
+ \item \code{data_sets}: a \code{character} vector of the data set names
+  that the model is applied to. 
+ \item \code{interpolate}: a \code{logical} indicator of if the 
+  model needs the rodent data to be interpolated.
  \item \code{covariatesTF}: a \code{logical} indicator of if the 
   model needs covariates.
  \item \code{lag}: an \code{integer}-conformable value of the lag to use 
@@ -69,9 +77,9 @@ The model scripts are written using a generalized function
 }
 \details{
 Any model that is part of the \code{prefab} set 
- (\code{c("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")})
- has its script-writing controls already included internally. Users only
- need to include controls for non-prefab \code{models}. \cr \cr
+ (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
+ "pevGARCH")}) has its script-writing controls already included internally.
+ Users only need to include controls for non-prefab \code{models}. \cr \cr
  Any user-defined \code{models} that are not included in \code{controls_m}
  will throw an error. \cr \cr 
  If any user-defined \code{controls_m} duplicate any existing controls for
@@ -80,9 +88,10 @@ Any model that is part of the \code{prefab} set
 }
 \examples{
  model_script_controls(prefab_models())
- controls <- list(name = "xx", covariatesTF = FALSE, lag = NA)
+ controls <- list(name = "xx", data_sets = prefab_data_sets(), 
+                  interpolate = FALSE, covariatesTF = FALSE, lag = NA)
  model_script_controls("xx", controls)
- model_script_controls(model_names("xx", "prefab"), controls)
+ model_script_controls(prefab_models("xx"), controls)
  model_script_controls(c("xx", "ESSS"), controls)
  extract_min_lag()
  extract_min_lag("AutoArima")

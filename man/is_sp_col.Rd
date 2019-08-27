@@ -4,7 +4,8 @@
 \alias{is_sp_col}
 \title{Determine if columns in a table are species columns}
 \usage{
-is_sp_col(rodents_tab, species = all_species(), arg_checks = TRUE)
+is_sp_col(rodents_tab, species = NULL, total = FALSE, nadot = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{rodents_tab}{\code{data.frame} of columns to be checked.}
@@ -12,6 +13,8 @@ is_sp_col(rodents_tab, species = all_species(), arg_checks = TRUE)
 \item{species}{\code{character} vector indicating species names to 
 use in determining if columns are species columns. Defaults to
 \code{\link{all_species}}.}
+
+\item{total}{\code{logical} indicator if the total should be included.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

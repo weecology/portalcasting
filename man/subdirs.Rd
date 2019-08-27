@@ -28,11 +28,11 @@ many/most/all enclosed functions to not check any arguments using
 \code{character} vector of subdirectory names.
 }
 \description{
-Produces a vector of subdirectory names that is of class
-  \code{subdirs}, and which should generally contain the elements
-  \code{"predictions"}, \code{"models"}, \code{"PortalData"}, 
-  \code{"data"}, and \code{"tmp"}. It is generally not advised to change
-  the subdirectory structure at this time.
+Produces a vector of subdirectory names, which should 
+ generally contain the elements
+ \code{"casts"}, \code{"models"}, \code{"raw"}, 
+ \code{"data"}, and \code{"tmp"}. It is generally not advised to change
+ the subdirectory structure at this time.
 }
 \examples{
  subdirs()

@@ -18,6 +18,9 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or just tidy messages. 
+#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. Default value (\code{"."}) puts the forecasting
 #'  directory in the present locations. Nesting the forecasting directory
@@ -28,13 +31,9 @@
 #'  the directory tree. Generally shouldn't be changed.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not.
 #'
 #' @return All \code{create_} functions return \code{NULL}.
 #'
@@ -50,22 +49,23 @@
 #' @export
 #'
 create_dir <- function(main = ".", subs = subdirs(), quiet = FALSE, 
-                       arg_checks = TRUE){
+                       verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
-  create_main(main, quiet)
-  create_subs(main, subs, quiet)
+  messageq(paste0("Establishing portalcasting directory at ", main), quiet)
+  create_main(main, quiet, verbose, arg_checks)
+  create_subs(main, subs, quiet, verbose, arg_checks)
 }
-
 
 
 #' @rdname create_dir
 #'
 #' @export
 #'
-create_main <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
+create_main <- function(main = ".", quiet = FALSE, verbose = FALSE,
+                        arg_checks = TRUE){
   check_args(arg_checks)
-  mainp <- main_path(main)
-  create(mainp, "main", quiet)
+  mainp <- main_path(main, arg_checks)
+  create(mainp, "main", quiet, verbose, arg_checks)
 }
 
 #' @rdname create_dir
@@ -73,12 +73,12 @@ create_main <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
 #' @export
 #'
 create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE, 
-                        arg_checks = TRUE){
+                        verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   mainp <- main_path(main)
-  subsp <- sub_paths(main, subs = subs)
-  verify(mainp, "main")
-  create(subsp, basename(subsp), quiet)
+  subsp <- sub_paths(main = main, subs = subs, arg_checks = arg_checks)
+  verify(mainp, "main", arg_checks)
+  create(subsp, basename(subsp), quiet, verbose, arg_checks)
 }
 
 #' @title Verify that a required folder exists
@@ -93,13 +93,9 @@ create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE,
 #'  purposes of messaging and not inherently required to be non-\code{NULL}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return Throws an error if any of the folders do not exist, otherwise
 #'  \code{NULL}.
@@ -139,14 +135,13 @@ verify <- function(path = NULL, dir_level = NULL, arg_checks = TRUE){
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or not (and thus just the tidy messages). 
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
 #'
 #' @return \code{NULL}.
 #'
@@ -159,12 +154,19 @@ verify <- function(path = NULL, dir_level = NULL, arg_checks = TRUE){
 #' @export
 #'
 create <- function(path = NULL, dir_level = NULL, quiet = FALSE, 
-                   arg_checks = TRUE){
+                   verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   if(!is.null(path)){
     for(i in 1:length(path)){
       if (!dir.exists(path[i])){
-        msg <- paste0("Creating ", dir_level[i], " directory at ", path[i])
+        if(dir_level[i] == "main"){ 
+          msg <- paste0(" -", dir_level[i])
+        } else{
+          msg <- paste0("  -", dir_level[i])
+        }
+        if(verbose){
+          msg <- paste0(msg, " at ", path[i])
+        }
         messageq(msg, quiet)
         dir.create(path[i])
       }

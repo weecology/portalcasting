@@ -25,7 +25,7 @@ test_that("prep_covariates", {
   weather("daily", TRUE, raw_path) %>% 
   add_date_from_components() %>%
   select(-c(year, month, day, battery_low, locally_measured))  %>%
-  add_newmoons_from_date(moons) %>%
-  summarize_daily_weather_by_newmoon() -> x
+  add_moons_from_date(moons) %>%
+  summarize_daily_weather_by_moon() -> x
   expect_is(x, "data.frame")
 })

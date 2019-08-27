@@ -4,54 +4,82 @@
 \alias{rodents_controls}
 \title{Create control lists for generating rodents data tables}
 \usage{
-rodents_controls(tmnt_types = NULL, controls_r = NULL,
+rodents_controls(data_sets = NULL, controls_r = NULL,
   arg_checks = TRUE)
 }
 \arguments{
-\item{tmnt_types}{\code{character} value(s) of the treatment 
-type(s) (currently \code{"all"} or \code{"controls"}) used to enforce 
-certain arguments.}
+\item{data_sets}{\code{character} value(s) of the rodent data set name(s) 
+used to enforce certain arguments. Currently available prefab data
+sets are \code{"all"}, \code{"all_interp"}, \code{"controls"} and
+\code{"controls_interp"}.}
 
-\item{controls_r}{Additional controls for datasets not in the standard set. 
-\cr 
+\item{controls_r}{Additional controls for datasets not in the prefab set.
 A \code{list} of a single dataset's controls or a \code{list} of 
-\code{list}s, each of which is a single dataset's controls. \cr 
-Presently, each dataset's controls should include 10 elements: 
+\code{list}s, each of which is a single dataset's controls. \cr \cr
+Presently, each dataset's controls should include 18 elements, as 
+our \code{\link{rodents_control}} template shows:
 \itemize{
- \item \code{tmnt_type}: \code{character} value of the name,
+ \item \code{data_set}: \code{character} value of the name,
  \item \code{species}: \code{character}-valued vector of species names 
  to include.  
  \item \code{total}: \code{logical} value indicating if a total 
  (sum across species) should be added or not. Only available if more than 
  one species is included. 
+ \item \code{interpolate}: \code{logical} value indicating if the  
+ \code{NA} values should be interpolated.
+ \item \code{clean}: \code{logical} indicator of if only the rodent data
+  that passed QA/QC (\code{clean = TRUE}) or if all data 
+  (\code{clean = FALSE}) should be loaded.
+ \item \code{type}: \code{character} value of the rodent data set type, 
+  according to pre-existing definitions. An alternative toggle to 
+  \code{species}. \cr
+  Either all species 
+  (\code{type = "Rodents"}) or only granivoes 
+  (\code{type = "Granivores"}).
  \item \code{level}: \code{character} indicating the type of summary:
   \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 
-  directly to \code{\link[portalr]{summarize_rodent_data}}.
- \item \code{treatment}: \code{character} indicating the specific 
-  treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"},
-  \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"} 
- \item \code{output}: \code{character} indicating the type of data:
-  \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. Pipes 
-  directly to \code{\link[portalr]{summarize_rodent_data}}.
- \item \code{min_traps}: \code{integer} (or integer \code{numeric}) of the 
-  minimum number of traps collected for a plot to be used. Pipes directly
-  to \code{\link[portalr]{summarize_rodent_data}}.
- \item \code{min_plots}: \code{integer} (or integer \code{numeric}) of the 
-  minimum number of plots surveyed for a survey to be used. Pipes 
   directly to \code{\link[portalr]{summarize_rodent_data}}.
  \item \code{plots}: Specification of subset of plots. Can be a vector of 
   \code{numeric} plots indicators or specific sets indicated by
   \code{character} values: \code{"all"} plots or \code{"Longterm"} plots
   (plots that have had the same treatment for the entire time series).
+ \item \code{treatment}: \code{character} indicating the specific 
+  treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"},
+  \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"} 
+ \item \code{min_plots}: \code{integer} (or integer \code{numeric}) of the 
+  minimum number of plots surveyed for a survey to be used. Pipes 
+  directly to \code{\link[portalr]{summarize_rodent_data}}.
+ \item \code{min_traps}: \code{integer} (or integer \code{numeric}) of the 
+  minimum number of traps collected for a plot to be used. Pipes directly
+  to \code{\link[portalr]{summarize_rodent_data}}.
+ \item \code{output}: \code{character} indicating the type of data:
+  \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. Pipes 
+  directly to \code{\link[portalr]{summarize_rodent_data}}.
+ \item \code{fillweight}: \code{logical} specifier of whether to fill in
+  unknown weights with other records from that individual or species,
+  where possible.
+ \item \code{unknowns}: \code{logical} indicator to either remove all 
+  individuals not identified to species (\code{unknowns = FALSE}) or 
+  sum them in an additional column (\code{unknowns = TRUE}).
+ \item \code{time}: \code{character} value specifying the format of the 
+  time index in the output. Options are \code{"period"} (sequential 
+  Portal surveys), \code{"newmoon"} (lunar cycle numbering), and 
+  \code{"date"} (calendar date). \cr
+  The default \code{time = "newmoon"} produces an equispaced observation 
+  timestep, a common format format for discrete-time modeling. 
+ \item \code{na_drop}: \code{logical} indicator of if \code{NA} values 
+  (representing insufficient sampling) should be dropped.
+ \item \code{zero_drop}: \code{logical} indicator of if \code{0} values 
+  (representing sufficient sampling but no detection) should be dropped.
+ \item \code{effort}: \code{logical} indicator of if the effort columns 
+  should be included in the output.
  \item \code{filename}: \code{character} name of the file for saving the 
   output.
 }
 If only a single dataset is added, the name of the set from the element
-\code{tmnt_type} will be used to name the model's \code{list} in the 
+\code{data_set} will be used to name the model's \code{list} in the 
 larger \code{list}. If multiple models are added, each element \code{list} 
-must be named according to the dataset and the \code{tmnt_type} element.
-\cr 
-See \code{Details} and \code{Examples}.}
+must be named according to the dataset and the \code{data_set} element.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
@@ -64,22 +92,24 @@ many/most/all enclosed functions to not check any arguments using
 }
 \value{
 Named \code{list} of length equal to the number of elements in 
- \code{tmnt_types} and with elements that are each 
- \code{list}s of those \code{tmnt_type}'s data-generating controls, for
+ \code{data_sets} and with elements that are each 
+ \code{list}s of those \code{data_set}'s data-generating controls, for
  input as \code{controls_r} in \code{\link{prep_rodents}}.
 }
 \description{
 Given the number of arguments into 
+ \code{\link[portalr]{summarize_rodent_data}} via 
  \code{\link{prep_rodents_table}}, it helps to have a control \code{list}  
- to organize them. This function produce those \code{list}s for
- standard datasets ("all" and "controls") or user-defined sets.
+ to organize them. \cr \cr
+ \code{rodents_controls} produces the \code{list}s for any user-requested
+ datasets frp, tje prefab datasets (\code{\link{prefab_data_sets}}) and any 
+ user-defined sets. \code{\link{rodents_control}} provides a template
+ for the controls \code{list} which can be used to define the specific 
+ arguments for a user's novel data set.
 }
 \examples{
  rodents_controls(c("all", "controls"))
- all_PPonly <- list(tmnt_type = "all_PPonly", species = "PP", 
-                    total = FALSE, filename = "rodents_all_PPonly.csv", 
-                    level = "Site", treatment = NULL, plots = "all", 
-                    min_plots = 24, min_traps = 1, output = "abundance")
+ all_PPonly <- rodents_control("all_PPonly", species = "PP")
  rodents_controls("all_PPonly", all_PPonly, arg_checks = FALSE)
  rodents_controls(c("all", "all_PPonly"), all_PPonly, arg_checks = FALSE)
 

@@ -64,8 +64,8 @@
 #'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 #'  \code{"raw/"} is implied). 
 #' 
-#' @param raw_path_predictions \code{character} value of the path to the
-#'  predictions folder within the raw sub folder (via the archive).  
+#' @param raw_path_casts \code{character} value of the path to the
+#'  casts folder within the raw sub folder (via the archive).  
 #' 
 #' @param raw_cov_cast_file \code{character} value of the path to the
 #'  covariate cast file within \code{raw_path_archive}.
@@ -153,9 +153,12 @@
 #'  many/most/all enclosed functions to not check any arguments using 
 #'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #
-#' @param tmnt_types \code{character} values of the treatment 
-#'  types (currently \code{"all"} or \code{"controls"}) used to enforce 
-#'  certain arguments in data creation (see \code{\link{prep_rodents_table}}).
+#' @param data_sets \code{character} values of the rodent data sets that
+#'  are needed, used to enforce certain arguments in data creation (see 
+#'  \code{\link{prep_rodents_table}}). The prefab sets currently include 
+#'  \code{"all"}, \code{"controls"}, \code{"all_interp"},
+#'  and \code{"controls_interp"} (\code{\link{prefab_data_sets}}).
+#'  
 #' 
 #' @return Results are saved to files, \code{NULL} is returned.
 #'
@@ -170,14 +173,14 @@
 #' @export
 #'
 portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
-                       tmnt_types = c("all", "controls"), end_moons = NULL, 
+                       data_sets = prefab_data_sets(), end_moons = NULL, 
                        lead_time = 12, cast_date = Sys.Date(),
                        start_moon = 217, 
-                       confidence_level = 0.9, 
+                       confidence_level = 0.95, 
                        hist_covariates = TRUE, cast_covariates = TRUE,
                        raw_path_archive = "portalPredictions",
                        raw_path_data = "PortalData",
-                       raw_path_predictions = "portalPredictions/predictions",
+                       raw_path_casts = "portalPredictions/casts",
                        raw_cov_cast_file = "data/covariate_casts.csv",
                        raw_path_cov_cast = "cov_casts", 
                        raw_moons_file = "Rodents/moon_dates.csv",
@@ -195,6 +198,8 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                        arg_checks = TRUE){
   check_args(arg_checks)
   portalcast_welcome(quiet = quiet)
+  messageq("Preparing directory for casting", quiet)
+  messageq("---------------------------------------------------------", quiet)
   verify_models(main = main, models = models, quiet = quiet, 
                 arg_checks = arg_checks)
   verify_raw_data(main = main, raw_path_data = raw_path_data, 
@@ -202,12 +207,12 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
   min_lag <- extract_min_lag(models = models, controls_m = controls_m,
                              arg_checks = arg_checks)
   moons <- read_moons(main = main, arg_checks = arg_checks)
-  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
   end_moons <- ifnull(end_moons, last_moon)
   nend_moons <- length(end_moons)
   for(i in 1:nend_moons){
-    prep_data(main = main, tmnt_types = tmnt_types, end_moon = end_moons[i], 
+    prep_data(main = main, data_sets = data_sets, end_moon = end_moons[i], 
               lead_time = lead_time, 
               min_lag = min_lag, cast_date = cast_date, 
               start_moon = start_moon, confidence_level = confidence_level, 
@@ -229,7 +234,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
          end_moon = end_moons[i], raw_path_data = raw_path_data,
          raw_traps_file = raw_traps_file, controls_r = controls_r, 
          confidence_level = confidence_level, quiet = quiet, 
-         cleanup = cleanup, arg_checks = TRUE)
+         verbose = verbose, cleanup = cleanup, arg_checks = TRUE)
   }
   portalcast_goodbye(quiet = quiet)
 } 
@@ -243,32 +248,26 @@ cast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                  cast_date = Sys.Date(), moons = NULL, 
                  end_moon = NULL, raw_path_data = "PortalData",
                  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
-                 controls_r = rodents_controls(), confidence_level = 0.9, 
-                 quiet = FALSE, cleanup = TRUE, arg_checks = TRUE){
+                 controls_r = rodents_controls(), confidence_level = 0.95, 
+                 quiet = FALSE, verbose = FALSE, cleanup = TRUE, 
+                 arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   clear_tmp(main = main, quiet = quiet, cleanup = cleanup,
             arg_checks = arg_checks)
-  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
 
-  msg1 <- "##########################################################"
+  msg1 <- "---------------------------------------------------------"
   msg2 <- paste0("Running models for forecast origin newmoon ", end_moon)
   messageq(c(msg1, msg2), quiet)
 
   models_scripts <- models_to_cast(main = main, models = models,
                                    arg_checks = arg_checks)
   sapply(models_scripts, source)
-  combine_casts(main = main, moons = moons, end_moon = end_moon, 
-                cast_date = cast_date, quiet = quiet, arg_checks = arg_checks)
-  if (ensemble){
-    add_ensemble(main = main, moons = moons, end_moon = end_moon, 
-                 cast_date = cast_date, confidence_level = confidence_level, 
-                 quiet = quiet, arg_checks = arg_checks)
-  }
-  messageq("########################################################", quiet)
-  clear_tmp(main = main, quiet = quiet, cleanup = cleanup,
+  messageq("---------------------------------------------------------", quiet)
+  clear_tmp(main = main, quiet = quiet, verbose = verbose, cleanup = cleanup,
             arg_checks = arg_checks)
 }
 
@@ -278,10 +277,10 @@ cast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
 #' @export
 #'
 prep_data <- function(main = ".", end_moon = NULL, 
-                      tmnt_types = c("all", "controls"),
+                      data_sets = prefab_data_sets(),
                       lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
                       start_moon = 217, 
-                      confidence_level = 0.9, 
+                      confidence_level = 0.95, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
                       raw_path_archive = "portalPredictions",
                       raw_path_data = "PortalData",
@@ -300,21 +299,19 @@ prep_data <- function(main = ".", end_moon = NULL,
                       filename_meta = "metadata.yaml", cleanup = TRUE, 
                       arg_checks = TRUE){
   check_args(arg_checks)
-  messageq("Preparing data...", quiet)
+  messageq("Readying data", quiet)
+  metadata <- read_metadata(main = main, arg_checks = arg_checks)
   moons <- read_moons(main = main, arg_checks = arg_checks)
-  metadata_path <- file_paths(main, "data/metadata.yaml")
-  meta_exist <- file.exists(metadata_path)
-  metadata <- yaml.load_file(metadata_path)    
   date_current <- metadata$cast_date == Sys.Date()
-  moon_match <- metadata$rodent_cast_newmoons[1] == (end_moon + 1)
+  moon_match <- metadata$rodent_cast_moons[1] == (end_moon + 1)
   moon_match <- ifelse(length(moon_match) == 0, FALSE, moon_match)
-  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
   hindcast <- !(end_moon == last_moon)
-  if (!meta_exist | !date_current | !moon_match | hindcast){
-    fill_data(main = main, tmnt_types = tmnt_types,
-              end_moon = end_moon, lead_time = lead_time, min_lag = min_lag, 
+  if (!date_current | !moon_match | hindcast){
+    fill_data(main = main, 
+              end_moon = end_moon, lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 
               confidence_level = confidence_level, 
               hist_covariates = hist_covariates, 
@@ -330,10 +327,8 @@ prep_data <- function(main = ".", end_moon = NULL,
               overwrite = overwrite, filename_moons = filename_moons,
               filename_cov = filename_cov, filename_meta = filename_meta,
               cleanup = cleanup, arg_checks = arg_checks)
-    messageq(" ...data updated", quiet)
-  } else{
-    messageq(" ...data already up-to-date", quiet)
   }
+  messageq("---------------------------------------------------------", quiet)
 }
 
 

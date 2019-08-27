@@ -2,7 +2,7 @@
 #' @importFrom DesignLibrary match.call.defaults
 #' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join 
 #'  left_join mutate n one_of rename right_join select summarize ungroup
-#' @importFrom forecast auto.arima ets forecast na.interp
+#' @importFrom forecast Arima auto.arima ets forecast na.interp
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices rgb
 #' @importFrom httr content GET stop_for_status
@@ -42,13 +42,13 @@ NULL
 # To quiet concerns of R CMD check re: variables used in non-standard eval
 if (getRversion() >= "2.15.1"){
   utils::globalVariables(
-    c(".", "aic", "battery_low", "cast_newmoon", "castmonth", "castyear",
+    c(".", "aic", "battery_low", "cast_moon", "castmonth", "castyear",
       "censusdate", "currency", "day", "date_made", "delta_aic", 
-      "ensemble_estimate", "ensemble_var","estimate",
-      "fit_end_newmoon", "fit_start_newmoon",
-      "forecast_newmoon", "initial_newmoon", "level",
+      "ensemble_estimate", "ensemble_var", "estimate",
+      "fit_end_moon", "fit_start_moon",
+      "forecast_moon", "initial_moon", "level",
       "locally_measured", "LowerPI", "main", "maxtemp", "meantemp", 
-      "mintemp", "model_var", "newmoondate", "newmoonnumber", "precipitation",
+      "mintemp", "model_var", "moondate", "moon", "precipitation",
       "species", "sum_weight", "UpperPI", "weight", "weighted_ss")
   )
 }

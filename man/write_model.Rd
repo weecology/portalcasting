@@ -5,12 +5,13 @@
 \alias{model_template}
 \title{Write the template for a model into model subdirectory}
 \usage{
-write_model(name = NULL, covariatesTF = NULL, lag = NULL,
-  main = ".", quiet = FALSE, overwrite = TRUE, control = NULL,
-  arg_checks = TRUE)
+write_model(name = NULL, data_sets = NULL, covariatesTF = NULL,
+  lag = NULL, main = ".", quiet = FALSE, verbose = FALSE,
+  overwrite = TRUE, control = NULL, arg_checks = TRUE)
 
-model_template(name = NULL, covariatesTF = FALSE, lag = NULL,
-  main = ".", quiet = FALSE, arg_checks = TRUE)
+model_template(name = NULL, data_sets = prefab_data_sets(),
+  covariatesTF = FALSE, lag = NULL, main = ".", quiet = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}

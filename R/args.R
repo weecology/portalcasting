@@ -76,8 +76,8 @@
 #'   \code{raw_moons_file}, 
 #'   \code{raw_path_archive}, 
 #'   \code{raw_path_cov_cast}, 
+#'   \code{raw_path_casts}, 
 #'   \code{raw_path_data}, 
-#'   \code{raw_path_predictions}, 
 #'   \code{raw_traps_file}, 
 #'   \code{sep_char}, 
 #'   \code{set},
@@ -298,7 +298,6 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   can_be_null <- deets$null
   can_be_na <- deets$na
 
-
   if(is.null(arg_value)){
     if(!can_be_null){
       out <- paste0("`", arg_name, "` cannot be NULL")
@@ -325,8 +324,8 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       out <- c(out, out2)
     }
   } else if (deets$class == "cast"){
-    if (!("data.frame" %in% class(arg_value))){
-      out2 <- paste0("`", arg_name, "` must be a data.frame")
+    if (!("list" %in% class(arg_value))){
+      out2 <- paste0("`", arg_name, "` must be a data.frame or list")
       out <- c(out, out2)
     }
   } else if (deets$class == "dfv"){
@@ -404,7 +403,6 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       }
     }
   } 
-  
   length_arg <- length(arg_value)
   length_ok <- deets$length
   if(!is.null(length_ok)){
@@ -496,7 +494,6 @@ check_arg_list <- function(){
   avail_plots <- c("all", "longterm")
   avail_species <- rodent_species(total = TRUE)
   avail_subs_types <- c("prefab")
-  avail_tmnt_types <- c("all", "controls")
   avail_treatments <- c("control")
   avail_winners <- c("hist", "cast")
 
@@ -510,6 +507,7 @@ check_arg_list <- function(){
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
     cast = arg_cast(),
+    cast_id = arg_nonnegintnum(),
     cast_cov = arg_df(),
     cast_covariates = arg_logical(),
     cast_date = arg_date(),
@@ -518,6 +516,7 @@ check_arg_list <- function(){
     cast_to_check = arg_df(),
     cast_type = arg_character(vals = avail_cast_types),
     casts = arg_df(),
+    clean = arg_logical(),
     cleanup = arg_logical(),
     colname = arg_character(),
     concept_rec_id = arg_character(NULL),
@@ -531,12 +530,16 @@ check_arg_list <- function(){
     covariatesTF = arg_logical(),
     data_name = arg_character(),
     data = arg_character(NULL),
+    data_set = arg_character(),
+    data_sets = arg_character(NULL),
+    date = arg_date(),
     dates = arg_date(NULL),
     dir_level = arg_character(NULL),
     df = arg_df(),
     dfl = arg_dfl(),
     dfv = arg_dfv(),
     downloads = arg_list(),
+    effort = arg_logical(),
     end = arg_date(),
     end_moon = arg_posintnum(),
     end_moons = arg_posintnum(NULL),
@@ -547,12 +550,14 @@ check_arg_list <- function(){
     filename_meta = arg_character(),
     filename_moons = arg_character(),
     files = arg_character(NULL),  
+    fillweight = arg_logical(),
     freq = arg_character(),
     from_date = arg_date(),
     hist_cov = arg_df(),
     hist_covariates = arg_logical(),
     hist_tab = arg_df(),
     in_args = arg_list(),
+    interpolate = arg_logical(null = TRUE),
     lag = arg_nonnegintnum(null = TRUE, na = TRUE),
     lat = arg_numeric(),
     lead = arg_posintnum(),
@@ -568,14 +573,17 @@ check_arg_list <- function(){
     min_traps = arg_posintnum(),
     model = arg_character(),
     models = arg_character(NULL),
+    moon = arg_posintnum(),
     moons = arg_df(),
     movedTF = arg_logical(NULL),
     msg = arg_character(NULL),
+    na_drop = arg_logical(),
     nadot = arg_logical(),
     name = arg_character(),
     names = arg_character(NULL),
     ndates = arg_posintnum(),
     newmoonnumber = arg_posintnum(),
+    nindent = arg_nonnegintnum(),
     nmoons = arg_nonnegintnum(),
     NULLname = arg_logical(),
     output = arg_character(vals = avail_outputs),
@@ -588,8 +596,8 @@ check_arg_list <- function(){
     raw_moons_file = arg_character(),
     raw_path_archive = arg_character(),
     raw_path_cov_cast = arg_character(),
+    raw_path_casts = arg_character(),
     raw_path_data = arg_character(),
-    raw_path_predictions = arg_character(),
     raw_traps_file = arg_character(),
     rec_id = arg_character(NULL),
     rec_version = arg_character(NULL),
@@ -600,6 +608,7 @@ check_arg_list <- function(){
     save = arg_logical(),
     sep_char = arg_character(),
     set = arg_character(),
+    shape = arg_character(),
     source_name = arg_character(),
     source_url = arg_character(),
     species = arg_character(NULL, vals = avail_species),
@@ -614,16 +623,17 @@ check_arg_list <- function(){
     tail = arg_logical(),
     target_moons = arg_posintnum(NULL),
     target_cols = arg_character(NULL),
-    tmnt_type = arg_character(vals = avail_tmnt_types),
-    tmnt_types = arg_character(NULL, vals = avail_tmnt_types),
+    time = arg_character(),
     topx = arg_nonnegintnum(),
     total = arg_logical(),
     treatment = arg_character(vals = avail_treatments),
     type = arg_character(),
+    unknowns = arg_logical(),
     url = arg_character(),
     verbose = arg_logical(),
     winner = arg_character(vals = avail_winners),
     with_census = arg_logical(),
+    zero_drop = arg_logical(),
     zip_destin = arg_character()
   )
 }

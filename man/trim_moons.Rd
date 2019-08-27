@@ -5,14 +5,14 @@
 \title{Trim a moons table based on target moons}
 \usage{
 trim_moons(moons = NULL, target_moons = NULL,
-  retain_target_moons = TRUE, target_cols = c("newmoonnumber",
-  "newmoondate", "period", "censusdate"), arg_checks = TRUE)
+  retain_target_moons = TRUE, target_cols = c("moon", "moondate",
+  "period", "censusdate"), arg_checks = TRUE)
 }
 \arguments{
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
 \item{target_moons}{\code{integer}-conformable newmoon numbers, usually
-made through \code{\link{target_newmoons}} of the moons to either 
+made through \code{\link{target_moons}} of the moons to either 
 drop or retain based on \code{retain_target_moons}.}
 
 \item{retain_target_moons}{\code{logical} value that dictates if 

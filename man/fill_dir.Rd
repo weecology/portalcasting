@@ -4,16 +4,16 @@
 \alias{fill_dir}
 \alias{fill_data}
 \alias{fill_models}
-\alias{fill_predictions}
+\alias{fill_casts}
 \alias{fill_raw}
 \title{Fill a forecasting directory with basic components.}
 \usage{
-fill_dir(main = ".", models = prefab_models(), tmnt_types = c("all",
-  "controls"), end_moon = NULL, lead_time = 12,
-  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
-  raw_path_predictions = "portalPredictions/predictions",
+fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
+  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
+  confidence_level = 0.95, hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
+  raw_path_data = "PortalData",
+  raw_path_casts = "portalPredictions/casts",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
@@ -25,26 +25,27 @@ fill_dir(main = ".", models = prefab_models(), tmnt_types = c("all",
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
-fill_data(main = ".", tmnt_types = c("all", "controls"),
-  end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
+fill_data(main = ".", models = prefab_models(), end_moon = NULL,
+  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
+  confidence_level = 0.95, hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
+  raw_path_data = "PortalData",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
-  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
+  controls_r = rodents_controls(), controls_m = NULL,
+  control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 fill_models(main = ".", models = prefab_models(), controls_m = NULL,
-  quiet = FALSE, overwrite = TRUE, arg_checks = TRUE)
+  quiet = FALSE, verbose = FALSE, overwrite = TRUE,
+  arg_checks = TRUE)
 
-fill_predictions(main = ".",
-  raw_path_predictions = "portalPredictions/predictions",
+fill_casts(main = ".", raw_path_casts = "portalPredictions/casts",
   quiet = FALSE, verbose = FALSE, overwrite = TRUE,
   arg_checks = TRUE)
 
@@ -57,9 +58,6 @@ the directory tree.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to 
 include.}
-
-\item{tmnt_types}{\code{character} vector of name(s) of rodents 
-dataset(s) to include.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
@@ -94,8 +92,9 @@ standard portalcasting directory downloads the raw data files into
 \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 \code{"raw/"} is implied).}
 
-\item{raw_path_predictions}{\code{character} value of the path to the
-predictions folder within the raw sub folder (via the archive).}
+\item{raw_path_casts}{\code{character} value of the path to the
+casts folder within the raw sub folder (via the archive). Has internal
+capacity to check for old naming schemes.}
 
 \item{raw_cov_cast_file}{\code{character} value of the path to the
 covariate cast file within \code{raw_path_archive}.}
@@ -171,11 +170,7 @@ subdirectory should be removed at the end of the process.}
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 
 \item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
 covariate lag time used in any model.}
@@ -195,7 +190,7 @@ Arguments input directly here take precedence over those in the
   create_dir()
   fill_dir()
   fill_raw()
-  fill_predictions()
+  fill_casts()
   fill_models()
   fill_data()
  }

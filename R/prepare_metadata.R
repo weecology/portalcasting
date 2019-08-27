@@ -56,6 +56,31 @@
 #'  many/most/all enclosed functions to not check any arguments using 
 #'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'
+#' @param controls_r Control \code{list} or \code{list} of control 
+#'  \code{list}s from \code{\link{rodents_controls}} specifying the 
+#'  structuring of the rodents tables. See \code{\link{rodents_controls}} for 
+#'  details. 
+#'
+#' @param controls_m Additional controls for models not in the prefab set. 
+#'  \cr 
+#'  A \code{list} of a single model's script-writing controls or a
+#'  \code{list} of \code{list}s, each of which is a single model's 
+#'  script-writing controls. \cr 
+#'  Presently, each model's script writing controls
+#'  should include three elements: \code{name} (a \code{character} value of 
+#'  the model name), \code{covariates} (a \code{logical} indicator of if the 
+#'  model needs covariates), and \code{lag} (an \code{integer}-conformable 
+#'  value of the lag to use with the covariates or \code{NA} if 
+#'  \code{covariates = FALSE}). \cr 
+#'  If only a single model is added, the name of 
+#'  the model from the element \code{name} will be used to name the model's
+#'  \code{list} in the larger \code{list}. If multiple models are added, each
+#'  element \code{list} must be named according to the model and the
+#'  \code{name} element. \cr 
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'  shown.
+#'
 #' @return \code{list} of casting metadata, which is also saved out as a 
 #'  YAML file (\code{.yaml}) if desired.
 #' 
@@ -70,61 +95,82 @@
 #' 
 #' @export
 #'
-prep_metadata <- function(main = ".", moons = NULL,
-                          rodents = NULL,
+prep_metadata <- function(main = ".", models = prefab_models(),
+                          data_sets = NULL, 
+                          moons = NULL, rodents = NULL,
                           covariates = NULL,
                           end_moon = NULL, 
-                          lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
+                          lead_time = 12, min_lag = NULL, 
+                          cast_date = Sys.Date(),
                           start_moon = 217,
-                          confidence_level = 0.9, 
-                          quiet = FALSE, save = TRUE,
+                          confidence_level = 0.95, 
+                          controls_r = NULL,
+                          controls_m = NULL,
+                          quiet = TRUE, verbose = FALSE, save = TRUE, 
                           overwrite = TRUE, filename_meta = "metadata.yaml", 
                           arg_checks = TRUE){
-  moons <- ifnull(moons, read_moons(main = main))
-  rodents  <- ifnull(rodents, read_rodents(main = main))
-  covariates <- ifnull(covariates, read_covariates(main = main))
-
-  messageq("Loading metadata file into data subdirectory", quiet)
   check_args(arg_checks)
-  last_moon <- last_newmoon(main = main, moons = moons, cast_date = cast_date,
+
+  min_lag_e <- extract_min_lag(models = models, controls_m = controls_m, 
+                             arg_checks = arg_checks)
+  data_sets_e <- extract_data_sets(models = models, controls_m = controls_m, 
+                                 arg_checks = arg_checks)
+  min_lag <- ifnull(min_lag, min_lag_e)
+  data_sets <- ifnull(data_sets, data_sets_e)
+
+  moons <- ifnull(moons, read_moons(main = main))
+  rodents  <- ifnull(rodents, read_rodents(main = main, data_sets))
+  covariates <- ifnull(covariates, read_covariates(main = main))
+  controls_r <- rodents_controls(data_sets, controls_r)
+  messageq("  -metadata file", quiet)
+
+  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
   ncontrols_r <- length(rodents)
-  last_rodent_pd <- 0
+  last_rodent_moon <- 0
   for(i in 1:ncontrols_r){
-    rodent_pd_i <- rodents[[i]]$period
-    last_rodent_pd_i <- max(rodent_pd_i)
-    last_rodent_pd <- max(c(last_rodent_pd, last_rodent_pd_i))
+    rodent_moon_i <- rodents[[i]]$moon
+    last_rodent_moon_i <- max(rodent_moon_i[rodent_moon_i <= end_moon], 
+                              na.rm = TRUE)
+    last_rodent_moon <- max(c(last_rodent_moon, last_rodent_moon_i, 
+                            na.rm = TRUE))
   }
-  which_last_rodent_pd <- which(moons$period == last_rodent_pd)
-  last_rodent_newmoon <- moons$newmoonnumber[which_last_rodent_pd]
-  last_covar_newmoon <- tail(covariates, 1)$newmoonnumber
 
-  first_cast_covar_newmoon <- last_covar_newmoon + 1
-  first_cast_rodent_newmoon <- last_rodent_newmoon + 1
-  last_cast_newmoon <- last_moon + lead_time
-
-  rodent_cast_newmoons <- first_cast_rodent_newmoon:last_cast_newmoon
-  which_r_nms <- which(moons$newmoonnumber %in% rodent_cast_newmoons)
-  rodent_nm_dates <- as.Date(moons$newmoondate[which_r_nms])
+  last_covar_moon <- max(c(covariates$moon, covariates$moon),
+                         na.rm = TRUE)
+  first_cast_covar_moon <- last_covar_moon + 1
+  first_cast_rodent_moon <- last_rodent_moon + 1
+  last_cast_moon <- end_moon + lead_time
+  rodent_cast_moons <- first_cast_rodent_moon:last_cast_moon
+  which_r_nms <- which(moons$moon %in% rodent_cast_moons)
+  rodent_nm_dates <- as.Date(moons$moondate[which_r_nms])
   rodent_cast_months <- as.numeric(format(rodent_nm_dates, "%m"))
   rodent_cast_years <- as.numeric(format(rodent_nm_dates, "%Y"))
 
-  covar_cast_newmoons <- first_cast_covar_newmoon:last_cast_newmoon
-  which_c_nms <- which(moons$newmoonnumber %in% covar_cast_newmoons)
-  covar_nm_dates <- as.Date(moons$newmoondate[which_c_nms])
+  covar_cast_moons <- first_cast_covar_moon:last_cast_moon
+  which_c_nms <- which(moons$moon %in% covar_cast_moons)
+  covar_nm_dates <- as.Date(moons$moondate[which_c_nms])
   covar_cast_months <- as.numeric(format(covar_nm_dates, "%m"))
   covar_cast_years <- as.numeric(format(covar_nm_dates, "%Y"))
 
   cast_type <- ifelse(end_moon == last_moon, "forecast", "hindcast")
-  list(cast_type = cast_type, lead_time = lead_time, 
+  pc_version <- packageDescription("portalcasting", fields = "Version")
+
+  cast_meta <- read_cast_metadata(main = main, arg_checks = arg_checks)
+  cast_group <- max(cast_meta$cast_group) + 1
+  list(cast_group = cast_group, models = models, data_sets = data_sets, 
+       controls_r = controls_r,
+       portalcasting_version = pc_version,
+       cast_type = cast_type, start_moon = start_moon, end_moon = end_moon,
+       lead_time = lead_time, 
        min_lag = min_lag, cast_date = as.character(cast_date), 
-       covariate_cast_newmoons = covar_cast_newmoons, 
+       covariate_cast_moons = covar_cast_moons, 
        covariate_cast_months = covar_cast_months, 
        covariate_cast_years = covar_cast_years,
-       rodent_cast_newmoons = rodent_cast_newmoons, 
+       rodent_cast_moons = rodent_cast_moons, 
        rodent_cast_months = rodent_cast_months, 
        rodent_cast_years = rodent_cast_years,
        confidence_level = confidence_level) %>%
-  data_out(main, save, filename_meta, overwrite, quiet)
+  data_out(main, save, filename_meta, overwrite, !verbose)
 }

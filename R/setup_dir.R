@@ -11,9 +11,6 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
-#
-#' @param tmnt_types \code{character} vector of name(s) of rodents 
-#'  dataset(s) to include.
 #'
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
@@ -48,8 +45,8 @@
 #'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 #'  \code{"raw/"} is implied). 
 #' 
-#' @param raw_path_predictions \code{character} value of the path to the
-#'  predictions folder within the raw sub folder (via the archive).  
+#' @param raw_path_casts \code{character} value of the path to the
+#'  casts folder within the raw sub folder (via the archive).  
 #' 
 #' @param raw_cov_cast_file \code{character} value of the path to the
 #'  covariate cast file within \code{raw_path_archive}.
@@ -146,14 +143,14 @@
 #' @export
 #'
 setup_dir <- function(main = ".", models = prefab_models(), 
-                      tmnt_types = c("all", "controls"), end_moon = NULL, 
+                      end_moon = NULL, 
                       lead_time = 12, cast_date = Sys.Date(),
                       start_moon = 217, 
-                      confidence_level = 0.9, 
+                      confidence_level = 0.95, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
                       raw_path_archive = "portalPredictions",
                       raw_path_data = "PortalData",
-                      raw_path_predictions = "portalPredictions/predictions",
+                      raw_path_casts = "portalPredictions/casts",
                       raw_cov_cast_file = "data/covariate_casts.csv",
                       raw_path_cov_cast = "cov_casts", 
                       raw_moons_file = "Rodents/moon_dates.csv",
@@ -171,7 +168,8 @@ setup_dir <- function(main = ".", models = prefab_models(),
   check_args(arg_checks)
   portalcast_welcome(quiet = quiet)
   create_dir(main = main, subs = subs, quiet = quiet, arg_checks = arg_checks)
-  fill_dir(main = main, models = models, tmnt_types = tmnt_types,
+  messageq("---------------------------------------------------------", quiet)
+  fill_dir(main = main, models = models, 
            end_moon = end_moon, lead_time = lead_time, 
            cast_date = cast_date, start_moon = start_moon, 
            confidence_level = confidence_level, 
@@ -179,7 +177,7 @@ setup_dir <- function(main = ".", models = prefab_models(),
            cast_covariates = cast_covariates,
            raw_path_archive = raw_path_archive,
            raw_path_data = raw_path_data,
-           raw_path_predictions = raw_path_predictions,
+           raw_path_casts = raw_path_casts,
            raw_cov_cast_file = raw_cov_cast_file,
            raw_path_cov_cast = raw_path_cov_cast, 
            raw_moons_file = raw_moons_file, source_name = source_name,
@@ -190,6 +188,9 @@ setup_dir <- function(main = ".", models = prefab_models(),
            filename_moons = filename_moons, filename_cov = filename_cov, 
            filename_meta = filename_meta, cleanup = cleanup, 
            arg_checks = arg_checks)
+  messageq("---------------------------------------------------------", quiet)
+  messageq("Directory successfully instantiated", quiet)
+  messageq("---------------------------------------------------------", quiet)
 }
 
 
@@ -199,15 +200,13 @@ setup_dir <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 setup_production <- function(main = ".", models = prefab_models(), 
-                             tmnt_types = c("all", "controls"),
                              end_moon = NULL, lead_time = 12, 
                              cast_date = Sys.Date(), 
-                             start_moon = 217, confidence_level = 0.9, 
+                             start_moon = 217, confidence_level = 0.95, 
                              hist_covariates = TRUE, cast_covariates = TRUE,
                              raw_path_archive = "portalPredictions",
                              raw_path_data = "PortalData",
-                             raw_path_predictions =
-                               "portalPredictions/predictions",
+                             raw_path_casts = "portalPredictions/casts",
                              raw_cov_cast_file = "data/covariate_casts.csv",
                              raw_path_cov_cast = "cov_casts", 
                              raw_moons_file = "Rodents/moon_dates.csv",
@@ -217,7 +216,7 @@ setup_production <- function(main = ".", models = prefab_models(),
                              control_cdl = climate_dl_control(),
                              downloads = 
                                zenodo_downloads(c("1215988", "833438")), 
-                             quiet = FALSE, verbose = FALSE, subs = subdirs(),
+                             quiet = FALSE, verbose = TRUE, subs = subdirs(),
                              save = TRUE, overwrite = TRUE, 
                              filename_moons = "moon_dates.csv",
                              filename_cov = "covariates.csv", 
@@ -225,14 +224,14 @@ setup_production <- function(main = ".", models = prefab_models(),
                              arg_checks = TRUE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
-            tmnt_types = tmnt_types, end_moon = end_moon, 
+            end_moon = end_moon, 
             lead_time = lead_time, cast_date = cast_date, 
             start_moon = start_moon, confidence_level = confidence_level, 
             hist_covariates = hist_covariates, 
             cast_covariates = cast_covariates,
             raw_path_archive = raw_path_archive,
             raw_path_data = raw_path_data,
-            raw_path_predictions = raw_path_predictions,
+            raw_path_casts = raw_path_casts,
             raw_cov_cast_file = raw_cov_cast_file,
             raw_path_cov_cast = raw_path_cov_cast, 
             raw_moons_file = raw_moons_file, source_name = source_name,
@@ -251,15 +250,13 @@ setup_production <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 setup_sandbox <- function(main = ".", models = prefab_models(), 
-                          tmnt_types = c("all", "controls"),
                           end_moon = NULL, lead_time = 12, 
                           cast_date = Sys.Date(), 
-                          start_moon = 217, confidence_level = 0.9, 
+                          start_moon = 217, confidence_level = 0.95, 
                           hist_covariates = TRUE, cast_covariates = TRUE,
                           raw_path_archive = "portalPredictions",
                           raw_path_data = "PortalData",
-                          raw_path_predictions =
-                            "portalPredictions/predictions",
+                          raw_path_casts = "portalPredictions/casts",
                           raw_cov_cast_file = "data/covariate_casts.csv",
                           raw_path_cov_cast = "cov_casts", 
                           raw_moons_file = "Rodents/moon_dates.csv",
@@ -269,7 +266,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           control_cdl = climate_dl_control(),
                           downloads = 
                             zenodo_downloads(c("1215988", "833438")), 
-                          quiet = FALSE, verbose = TRUE, subs = subdirs(),
+                          quiet = FALSE, verbose = FALSE, subs = subdirs(),
                           save = TRUE, overwrite = TRUE, 
                           filename_moons = "moon_dates.csv",
                           filename_cov = "covariates.csv", 
@@ -277,14 +274,14 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           arg_checks = FALSE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
-            tmnt_types = tmnt_types, end_moon = end_moon, 
+            end_moon = end_moon, 
             lead_time = lead_time, cast_date = cast_date, 
             start_moon = start_moon, confidence_level = confidence_level, 
             hist_covariates = hist_covariates, 
             cast_covariates = cast_covariates,
             raw_path_archive = raw_path_archive,
             raw_path_data = raw_path_data,
-            raw_path_predictions = raw_path_predictions,
+            raw_path_casts = raw_path_casts,
             raw_cov_cast_file = raw_cov_cast_file,
             raw_path_cov_cast = raw_path_cov_cast, 
             raw_moons_file = raw_moons_file, source_name = source_name,
@@ -324,10 +321,10 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
 #' 
 portalcast_welcome <- function(quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
-  msg1 <- "##########################################################"
+  msg1 <- "---------------------------------------------------------"
   version_number <- packageDescription("portalcasting", fields = "Version")
   msg2 <- paste0("This is portalcasting v", version_number)
-  messageq(c(msg1, msg2), quiet)
+  messageq(c(msg1, msg2, msg1), quiet)
 }
 
 #' @rdname portalcast_welcome
@@ -336,7 +333,7 @@ portalcast_welcome <- function(quiet = FALSE, arg_checks = TRUE){
 #'
 portalcast_goodbye <- function(quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
-  msg1 <- "########################################################"
+  msg1 <- "---------------------------------------------------------"
   messageq(c(msg1, "Models done", msg1), quiet)
 }
 
@@ -372,7 +369,7 @@ sandbox_welcome <-function(main = ".", quiet = FALSE, arg_checks = TRUE){
 
 main <- main_path(main)
 castle <- "
-                                         ____
+                                          ____
              /\\                         / -- )   
             /  \\                       (____/
            /|  |\\                       / /  

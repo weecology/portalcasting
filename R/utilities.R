@@ -1,4 +1,25 @@
-
+#' @title Create a named empty list
+#'
+#' @description Produces a list with \code{NULL} for each element named 
+#'  according to \code{element_names}.
+#' 
+#' @param element_names \code{character} vector of names for the elements
+#'  in the list.
+#'
+#' @return \code{list} with names \code{element_names} and values \code{NULL}.
+#'
+#' @examples
+#'  named_null_list(c("a", "b", "c"))
+#'
+#' @export
+#'
+named_null_list <- function(element_names = NULL){
+  return_if_null(element_names)
+  nelements <- length(element_names)
+  out <- vector("list", nelements)
+  names(out) <- element_names
+  out
+}
 
 #' @title Error if a function's request is deeper than can be handled
 #'
@@ -248,6 +269,9 @@ foy <- function(dates = NULL, arg_checks = TRUE){
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or just tidy messages. 
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'   checked using standard protocols via \code{\link{check_args}}. The 
 #'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -267,9 +291,10 @@ foy <- function(dates = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE, 
-                      arg_checks = TRUE){
+clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE, 
+                      cleanup = TRUE, arg_checks = TRUE){
   check_args(arg_checks)
+  messageq("Clearing tmp subdirectory", quiet)
   tmp_path <- sub_paths(main, "tmp")
   tmp_exist <- dir.exists(tmp_path)
   tmp_files <- list.files(tmp_path)
@@ -281,14 +306,14 @@ clear_tmp <- function(main = ".", quiet = FALSE, cleanup = TRUE,
     if(ntmp_files > 0){
       tmp_files_full_paths <- file_paths(main, paste0("tmp/", tmp_files))
       file.remove(tmp_files_full_paths)
-      msg <- "temporary files cleared from tmp subdirectory"
+      msg <- "    *temporary files cleared from tmp subdirectory*"
     } else {
-      msg <- "tmp subdirectory already clear"
+      msg <- "    *tmp subdirectory already clear*"
     }
   } else{
-    msg <- "tmp subdirectory not present for clearing"
+    msg <- "    *tmp subdirectory not present for clearing*"
   }
-  messageq(msg, quiet)
+  messageq(msg, !verbose)
   NULL
 }
 
@@ -430,11 +455,14 @@ cast_window <- function(main = ".", moons = NULL,
   moons <- ifnull(moons, read_moons(main = main))
 
   lagged_lead <- lead_time - min_lag
-  moons0 <- moons[moons$newmoondate < cast_date, ]
+  moons0 <- moons[moons$moondate < cast_date, ]
   last_moon <- tail(moons0, 1)
-  last_moon$newmoondate <- as.Date(last_moon$newmoondate)
-  future_moons <- get_future_moons(moons0, num_future_moons = lead_time)
-  start_day <- as.character(as.Date(last_moon$newmoondate) + 1)
+  last_moon$moondate <- as.Date(last_moon$moondate)
+  moons0x <- moons0
+  colnames(moons0x)[which(colnames(moons0x) == "moon")] <- "newmoonnumber"
+  colnames(moons0x)[which(colnames(moons0x) == "moondate")] <- "newmoondate"
+  future_moons <- get_future_moons(moons0x, num_future_moons = lead_time)
+  start_day <- as.character(as.Date(last_moon$moondate) + 1)
   end_day <- as.character(as.Date(future_moons$newmoondate[lead_time]))
   list(start = start_day, end = end_day)
 }
@@ -491,6 +519,9 @@ remove_incompletes <- function(df, colname, arg_checks = TRUE){
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
 #'
+#' @param nindent Number of indentation spaces to use. Must be non-negative
+#'  and integer-conformable.
+#'
 #' @param overwrite \code{logical} indicator of if the file should be
 #'  overwritten if it exists.
 #'
@@ -511,7 +542,8 @@ remove_incompletes <- function(df, colname, arg_checks = TRUE){
 #' @export
 #'
 data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL, 
-                     overwrite = TRUE, quiet = FALSE, arg_checks = TRUE){
+                     overwrite = TRUE, quiet = FALSE, nindent = 4,
+                     arg_checks = TRUE){
   return_if_null(dfl)
   return_if_null(filename)
   check_args(arg_checks)
@@ -524,14 +556,17 @@ data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
     if(f_exists){
       if(overwrite){
         save_it <- TRUE
-        msg <- paste0(filename, " exists and overwrite = TRUE; file saved")
+        msg <- paste0("**", filename, 
+                      " exists and overwrite = TRUE; file saved**")
       } else {
-        msg <- paste0(filename, " exists and overwrite = FALSE; not saved") 
+        msg <- paste0("**", filename, 
+                      " exists and overwrite = FALSE; not saved***") 
       }
     } else{
       save_it <- TRUE
-      msg <- paste0(filename, " saved")
+      msg <- paste0("**", filename, " saved**")
     }
+    msg <- paste0(paste(rep(" ", nindent), collapse = ""), msg)
     messageq(msg, quiet)
     if( save_it){
         if(fext == "csv"){

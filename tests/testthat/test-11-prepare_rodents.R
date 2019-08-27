@@ -16,21 +16,11 @@ test_that("prep_rodents", {
 test_that("rodents_controls",{
   expect_is(rodents_controls(c("all", "controls")), "list")
   controls_r <- rodents_controls("all")[[1]]
-  controls_r$tmnt_type <- "allX"
+  controls_r$data_set <- "allX"
   expect_is(rodents_controls("allX", controls_r = controls_r, FALSE), "list")
-  controls_r$tmnt_type <- "all"
+  controls_r$data_set <- "all"
   expect_error(rodents_controls("all", controls_r = controls_r, FALSE))
   expect_error(rodents_controls("allX", arg_checks = FALSE))
-})
-
-test_that("trim_treatment", {
-  skip_on_cran() # downloads take too long for cran checks
-  raw_path <- sub_paths(main = "./testing", specific_subs = "raw")
-  dat1 <- summarize_rodent_data(path = raw_path, clean = FALSE,
-                                level = "Treatment")
-  dat2 <- trim_species(dat1)
-  dat3 <- add_total(dat2)
-  expect_is(trim_treatment(dat3, "Treatment", "control"), "data.frame")
 })
 
 test_that("rodents_species", {

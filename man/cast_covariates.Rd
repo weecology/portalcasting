@@ -2,6 +2,7 @@
 % Please edit documentation in R/cast_covariates.R
 \name{cast_covariates}
 \alias{cast_covariates}
+\alias{read_cov_casts}
 \alias{prep_cast_covariates}
 \alias{cast_ndvi}
 \alias{cast_weather}
@@ -13,8 +14,12 @@ cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = climate_dl_control(), quiet = FALSE,
+  control_cdl = climate_dl_control(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
+
+read_cov_casts(main = ".", raw_path_archive = "portalPredictions",
+  raw_cov_cast_file = "data/covariate_casts.csv",
+  raw_path_cov_cast = "cov_casts", quiet = FALSE, arg_checks = TRUE)
 
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
@@ -22,7 +27,8 @@ prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
   append_cast_csv = TRUE, control_cdl = climate_dl_control(),
-  quiet = FALSE, save = TRUE, overwrite = TRUE, arg_checks = TRUE)
+  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
+  arg_checks = TRUE)
 
 cast_ndvi(main = ".", moons = NULL, hist_cov = NULL,
   lead_time = 12, min_lag = 6, arg_checks = TRUE)
@@ -32,38 +38,37 @@ cast_weather(main = ".", moons = NULL, hist_cov = NULL,
   cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = climate_dl_control(), quiet = FALSE,
-  arg_checks = TRUE)
+  control_cdl = climate_dl_control(), quiet = TRUE,
+  verbose = verbose, arg_checks = TRUE)
 
 save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
   cast_date = Sys.Date(), cast_cov = NULL, append_cast_csv = TRUE,
   raw_path_archive = "portalPredictions",
   raw_cov_cast_file = "data/covariate_casts.csv",
-  source_name = "current_archive", quiet = FALSE, save = TRUE,
-  overwrite = TRUE, arg_checks = TRUE)
+  raw_path_cov_cast = "cov_casts", source_name = "current_archive",
+  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
+  nindent = 4, arg_checks = TRUE)
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} name of the main directory tree component.}
 
-\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
+\item{moons}{Lunar data \code{data.frame}. See \code{\link{prep_moons}}.}
 
-\item{hist_cov}{\code{data.frame} of historic covariates from 
+\item{hist_cov}{\code{data.frame} of historic covariates. See 
 \code{\link{prep_hist_covariates}}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
+\item{end_moon}{Forecast origin. \code{integer}-conformable newmoon number 
+or \code{NULL}, which equates to the most recently included census'
+newmoon number.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
+\item{lead_time}{\code{integer}-conformable number of timesteps forward 
+a cast will proceed.}
 
-\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
-covariate lag time used in any model.}
+\item{min_lag}{\code{integer}-conformable minimum non-0 covariate lag time 
+used in any model.}
 
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
+\item{cast_date}{\code{Date} on which the cast happens. Generally should
+be \code{\link{Sys.Date}}.}
 
 \item{raw_path_archive}{\code{character} value of the path to the archive
 within the raw sub folder.}
@@ -79,33 +84,32 @@ covariate forecast. Currently is \code{"current_archive"}. Previous to
 \code{"current_archive"}, the data were retroactively filled in and are 
 given the source name \code{"retroactive"}.}
 
-\item{control_cdl}{\code{list} of specifications for the 
-climate download, which are sent to \code{\link{NMME_urls}} to create the 
-specific URLs. See \code{\link{climate_dl_control}}.}
+\item{control_cdl}{\code{list} of specifications for the climate download.
+Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
+\code{\link{climate_dl_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
+
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 
 \item{append_cast_csv}{\code{logical} indicator controlling if the new 
 cast covariates should be appended to the historical casts for the
 purposes of hindcasting later.}
 
 \item{save}{\code{logical} indicator controlling if the output should 
-be saved out.}
+be saved.}
 
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
+\item{overwrite}{\code{logical} indicator of whether existing
+files should be updated if \code{save = TRUE} (most users should leave as}
 
-\item{cast_cov}{\code{data.frame} of cast covariates from 
+\item{cast_cov}{\code{data.frame} of cast covariates. See
 \code{\link{cast_covariates}}.}
 }
 \value{
@@ -117,6 +121,7 @@ files should be updated (most users should leave as \code{TRUE}).}
  \code{cast_weather}: \code{data.frame} of -casted weather values. \cr \cr
  \code{save_cast_cov_csv}: \code{cast_cov} \code{data.frame} exactly as 
   input. \cr \cr
+ \code{read_cov_casts}: \code{data.frame} of the covariate casts read in.
 }
 \description{
 Forecast or hindcast the covariates for a model run.
@@ -126,7 +131,10 @@ Forecast or hindcast the covariates for a model run.
  \code{prep_cast_covariates} provides a wrapper on \code{cast_covariates}
  that includes saving the cast data out via \code{save_cast_cov_csv}
  and tidying the data for use within the model (by removing the vestigial
- columns that are only needed for saving).
+ columns that are only needed for saving). \cr \cr
+ \code{read_cov_casts} reads in the current or (if no current version)
+ local archived version of the covariate casts, or downloads it, then
+ reads it in if it is missing.
 }
 \details{
 If forecasting from the current newmoon, weather is forecast using 
@@ -144,6 +152,7 @@ If forecasting from the current newmoon, weather is forecast using
   save_cast_cov_csv(cast_cov = cast_cov)
   cast_ndvi_data <- cast_ndvi(hist_cov = hist_cov)
   cast_weather_data <- cast_weather(hist_cov = hist_cov)
+  read_cov_casts()
  }
 
 }

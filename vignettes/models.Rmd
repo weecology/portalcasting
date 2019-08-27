@@ -18,9 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 
-We currently analyze and forecast rodent data at Portal using five models:
-ESSS, AutoArima, nbGARCH, nbsGARCH, and pevGARCH [@PortalPredictions]. Each 
-model has a function with its name (*e.g.*, `ESSS()`) and an associated R 
+We currently analyze and forecast rodent data at Portal using five models: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, and pevGARCH [@PortalPredictions]. Each model has a function with its name (*e.g.*, `ESSS()`) which is called from an associated R 
 script in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
 
 ### ESSS
@@ -64,6 +62,18 @@ models, the seasonality is hard-coded to be on the same period as the sampling,
 which is not the case for the Portal rodent surveys. As a result, no seasonal 
 models were evaluated. AutoArima is fit flexibly, such that the model 
 parameters can vary from fit to fit.
+
+
+### NaiveArima
+
+NaiveArima (Naive Auto-Regressive Integrated Moving Average) is a 
+fixed Auto-Regressive Integrated Moving Average (ARIMA) model of order (0,1,0)
+fit to the data at the composite (full site and just control plots) spatial level
+and both the composite (community) and the articulated (species) ecological
+levels. The model is selected and 
+fitted using the `Arima` and `forecast` functions in the **forecast**
+package [@Hyndman2013; @Hyndman2017] within the `AutoArima()` function.
+
 
 ### nbGARCH
 
@@ -160,13 +170,5 @@ environmental covariates:
   
 The final model is an intercept-only model. The single best model of the 11 is 
 selected based on AIC. 
-
-### Ensemble
-
-In addition to the base models, we include an ensemble, constructed using the
-base model AIC weights. The ensemble mean is calculated as the AIC-weighted
-mean of all model means. The ensemble variance is estimated as the sum of 
-the AIC-weighted mean of all model variances and the variance of the estimated
-AIC-weighted mean, calculated using the unbiased estimate of sample variances.
 
 ### References

@@ -69,13 +69,13 @@
 #'  so the separator may sometimes need to be \code{"="}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'
 #' @details If \code{type = NULL}, it is assumed to be a URL (\emph{i.e.}, 
 #'  \code{type = "url"}).
@@ -102,11 +102,15 @@ download <- function(name = NULL, type = NULL, url = NULL,
                      arg_checks = TRUE){
   check_args(arg_checks)
   source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
-  name <- ifnull(name, record_name_from_url(source_url, NULLname))
-  destin <- download_destin(name, source_url, main, specific_sub, sep_char)
   resp <- GET(source_url)
   stop_for_status(resp)
-  download_message(name, type, source_url, rec_version, quiet)
+  extension <- file_ext(source_url, sep_char)
+  name <- ifnull(name, record_name_from_url(source_url, NULLname))
+  if(extension == "zip"){
+    specific_sub <- "tmp"
+  }
+  destin <- download_destin(name, source_url, main, specific_sub, sep_char)
+  download_message(name, type, source_url, rec_version, quiet, verbose)
   download.file(source_url, destin, quiet = !verbose, mode = "wb")
   extension <- file_ext(source_url, sep_char)
   if(extension == "zip"){
@@ -157,15 +161,19 @@ unzip_destins <- function(name = NULL, zip_destin, main = ".",
 #'
 download_message <- function(name = NULL, type = NULL, url = NULL, 
                              rec_version = NULL, quiet = FALSE, 
-                             arg_checks = TRUE){
+                             verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
-  msg1 <- paste0("Downloading ", name)
+  msg1 <- paste0("  -", name)
   if(is.null(type) || type == "url"){
     msg2 <- paste0(" from ", url)
   } else if (type == "zenodo"){
     msg2 <- paste0(" (", rec_version, ") from zenodo (", url, ")")
   } 
-  msg <- paste0(msg1, msg2)
+  if(verbose){
+    msg <- paste0(msg1, msg2)
+  } else{
+    msg <- msg1
+  }
   messageq(msg, quiet)
 }
 
@@ -228,13 +236,9 @@ download_destin <- function(name = NULL, source_url, main = ".",
 #'  corresponding to the Zenodo record. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{zenodo_url}: \code{character} value of the URL for the zip 
 #'  to be downloaded. \cr \cr
@@ -313,13 +317,9 @@ zenodo_versions <- function(concept_rec_id, arg_checks = TRUE){
 #'  so the separator may sometimes need to be \code{"="}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{character} value of the name or \code{NULL}.
 #'
@@ -357,13 +357,9 @@ record_name_from_url <- function(url, NULLname = FALSE, sep_char = ".",
 #'  corresponding to the Zenodo record. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  efault (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{list} of \code{list}s of arguments to \code{\link{download}}.
 #'
@@ -408,13 +404,9 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
 #'  the directory tree. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{logical} indicator of whether or not the raw data folder
 #'  exists.
@@ -476,13 +468,9 @@ verify_raw_data <- function(raw_path_data = "PortalData", main = ".",
 #'  (shortwave radiation; sun intensity), \code{"was"} (wind speed).
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return Named \code{character} vector of URLs, or \code{NULL} if
 #'  \code{data}, \code{freq}, or \code{model} is \code{NULL}.

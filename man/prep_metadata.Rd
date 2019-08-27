@@ -4,11 +4,13 @@
 \alias{prep_metadata}
 \title{Prepare a metadata list}
 \usage{
-prep_metadata(main = ".", moons = NULL, rodents = NULL,
-  covariates = NULL, end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
-  quiet = FALSE, save = TRUE, overwrite = TRUE,
-  filename_meta = "metadata.yaml", arg_checks = TRUE)
+prep_metadata(main = ".", models = prefab_models(), data_sets = NULL,
+  moons = NULL, rodents = NULL, covariates = NULL, end_moon = NULL,
+  lead_time = 12, min_lag = NULL, cast_date = Sys.Date(),
+  start_moon = 217, confidence_level = 0.95, controls_r = NULL,
+  controls_m = NULL, quiet = TRUE, verbose = FALSE, save = TRUE,
+  overwrite = TRUE, filename_meta = "metadata.yaml",
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -42,8 +44,33 @@ corresponding to \code{1995-01-01}.}
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
 
+\item{controls_r}{Control \code{list} or \code{list} of control 
+\code{list}s from \code{\link{rodents_controls}} specifying the 
+structuring of the rodents tables. See \code{\link{rodents_controls}} for 
+details.}
+
+\item{controls_m}{Additional controls for models not in the prefab set. 
+\cr 
+A \code{list} of a single model's script-writing controls or a
+\code{list} of \code{list}s, each of which is a single model's 
+script-writing controls. \cr 
+Presently, each model's script writing controls
+should include three elements: \code{name} (a \code{character} value of 
+the model name), \code{covariates} (a \code{logical} indicator of if the 
+model needs covariates), and \code{lag} (an \code{integer}-conformable 
+value of the lag to use with the covariates or \code{NA} if 
+\code{covariates = FALSE}). \cr 
+If only a single model is added, the name of 
+the model from the element \code{name} will be used to name the model's
+\code{list} in the larger \code{list}. If multiple models are added, each
+element \code{list} must be named according to the model and the
+\code{name} element. \cr}
+
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}

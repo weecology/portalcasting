@@ -10,9 +10,9 @@
 \usage{
 prep_moons(main = ".", lead_time = 12, cast_date = Sys.Date(),
   raw_path_data = "PortalData",
-  raw_moons_file = "Rodents/moon_dates.csv", quiet = FALSE,
-  save = TRUE, overwrite = TRUE, filename_moons = "moon_dates.csv",
-  arg_checks = TRUE)
+  raw_moons_file = "Rodents/moon_dates.csv", quiet = TRUE,
+  save = TRUE, verbose = FALSE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv", arg_checks = TRUE)
 
 format_moons(moons, arg_checks = TRUE)
 
@@ -53,6 +53,9 @@ portalcasting directory downloads the raw data files into
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out
+all of the information or not (and thus just the tidy messages).}
 
 \item{overwrite}{\code{logical} indicator of whether or not the existing
 files should be updated (most users should leave as \code{TRUE}).}
@@ -97,7 +100,7 @@ A set of functions that get time information (calendar dates,
  recent moons, more rows than initially requested may need to be added to 
  the table for it to cover \code{lead_time} .\cr \cr
  \code{format_moons} formats the final output table with \code{year} and
- \code{month} columns formatted accordingly, and the \code{newmoondate}
+ \code{month} columns formatted accordingly, and the \code{moondate}
  column formatted as a \code{\link{Date}}.
 }
 \details{

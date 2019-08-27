@@ -6,12 +6,12 @@
 \alias{setup_sandbox}
 \title{Create and fill a forecasting directory}
 \usage{
-setup_dir(main = ".", models = prefab_models(), tmnt_types = c("all",
-  "controls"), end_moon = NULL, lead_time = 12,
-  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
-  raw_path_predictions = "portalPredictions/predictions",
+setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
+  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
+  confidence_level = 0.95, hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
+  raw_path_data = "PortalData",
+  raw_path_casts = "portalPredictions/casts",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
@@ -24,28 +24,11 @@ setup_dir(main = ".", models = prefab_models(), tmnt_types = c("all",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
-  tmnt_types = c("all", "controls"), end_moon = NULL, lead_time = 12,
-  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
-  raw_path_predictions = "portalPredictions/predictions",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts",
-  raw_moons_file = "Rodents/moon_dates.csv",
-  source_name = "current_archive", append_cast_csv = TRUE,
-  controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = climate_dl_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
-
-setup_sandbox(main = ".", models = prefab_models(),
-  tmnt_types = c("all", "controls"), end_moon = NULL, lead_time = 12,
-  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.9,
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
-  raw_path_predictions = "portalPredictions/predictions",
+  end_moon = NULL, lead_time = 12, cast_date = Sys.Date(),
+  start_moon = 217, confidence_level = 0.95, hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
+  raw_path_data = "PortalData",
+  raw_path_casts = "portalPredictions/casts",
   raw_cov_cast_file = "data/covariate_casts.csv",
   raw_path_cov_cast = "cov_casts",
   raw_moons_file = "Rodents/moon_dates.csv",
@@ -54,6 +37,23 @@ setup_sandbox(main = ".", models = prefab_models(),
   control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = TRUE, subs = subdirs(), save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
+
+setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
+  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
+  confidence_level = 0.95, hist_covariates = TRUE,
+  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
+  raw_path_data = "PortalData",
+  raw_path_casts = "portalPredictions/casts",
+  raw_cov_cast_file = "data/covariate_casts.csv",
+  raw_path_cov_cast = "cov_casts",
+  raw_moons_file = "Rodents/moon_dates.csv",
+  source_name = "current_archive", append_cast_csv = TRUE,
+  controls_m = NULL, controls_r = rodents_controls(),
+  control_cdl = climate_dl_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
+  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE,
   arg_checks = FALSE)
@@ -64,9 +64,6 @@ the directory tree.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to 
 include.}
-
-\item{tmnt_types}{\code{character} vector of name(s) of rodents 
-dataset(s) to include.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
@@ -101,8 +98,8 @@ standard portalcasting directory downloads the raw data files into
 \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 \code{"raw/"} is implied).}
 
-\item{raw_path_predictions}{\code{character} value of the path to the
-predictions folder within the raw sub folder (via the archive).}
+\item{raw_path_casts}{\code{character} value of the path to the
+casts folder within the raw sub folder (via the archive).}
 
 \item{raw_cov_cast_file}{\code{character} value of the path to the
 covariate cast file within \code{raw_path_archive}.}

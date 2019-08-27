@@ -4,21 +4,19 @@
 \alias{save_cast_output}
 \title{Save cast output to files}
 \usage{
-save_cast_output(all, controls, model, main, arg_checks = TRUE)
+save_cast_output(cast = NULL, main = ".", quiet = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
-\item{all}{Output from a model function (e.g., 
-\code{\link{AutoArima}}) run on the "all" data. Required to be a 
-\code{list} with two elements named \code{forecast} and \code{aic}.}
-
-\item{controls}{Output from a model function (e.g., 
-\code{\link{AutoArima}}) run on the "controls" data. Required to be a 
-\code{list} with two elements named \code{forecast} and \code{aic}.}
-
-\item{model}{\code{character} value of the name of the model.}
+\item{cast}{Output from a model function (e.g., 
+\code{\link{AutoArima}}) run on the rodents data. Required to be a 
+\code{list}.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
@@ -28,6 +26,8 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+
+\item{model}{\code{character} value of the name of the model.}
 }
 \description{
 Save out the cast abundances and AIC tables from a given 

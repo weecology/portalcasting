@@ -39,25 +39,22 @@ test_that("model_script_controls", {
   expect_error(model_script_controls("xx"))
 })
 
-test_that("model_names", {
-  expect_equal(length(model_names(c("model1", "model2"))),2)
-  expect_equal(length(model_names(c("model1", "model2"), "prefab")),7)
+test_that("prefab_models", {
   expect_equal(length(prefab_models()), 5)
-  expect_equal(length(wEnsemble_models()), 6)
-  expect_equal(model_names(), NULL)
+  expect_equal(length(prefab_models("xx")), 6)
 })
 
 
 test_that("write_model", {
   expect_message(write_model("AutoArima", main = "./testing"))
   expect_message(write_model("AutoArima", main = "./testing", 
-                             covariates = NULL, lag = NULL))
+                             covariatesTF = NULL, lag = NULL))
   expect_message(write_model("AutoArima", main = "./testing", 
-                             covariates = TRUE, lag = NULL))
+                             covariatesTF = TRUE, lag = NULL))
   expect_message(write_model("AutoArima", main = "./testing", 
-                             covariates = NULL, lag = NA))
+                             covariatesTF = NULL, lag = NA))
   expect_message(write_model("AutoArimaX", main = "./testing", 
-                             covariates = NULL, lag = 1))
+                             covariatesTF = NULL, lag = 1))
 
 })
 
@@ -66,10 +63,10 @@ test_that("model_template", {
 
   temp1 <- model_template("AutoArima", main = "./testing")
   expect_is(temp1, "character")
-  expect_equal(length(temp1), 1)
+  expect_equal(length(temp1), 4)
 
   temp2 <- model_template("pevGARCH", main = "./testing")
   expect_is(temp2, "character")
-  expect_equal(length(temp2), 1)
+  expect_equal(length(temp2), 4)
 
 })

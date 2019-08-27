@@ -10,9 +10,6 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
-#
-#' @param tmnt_types \code{character} vector of name(s) of rodents 
-#'  dataset(s) to include.
 #'
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
@@ -50,8 +47,9 @@
 #'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
 #'  \code{"raw/"} is implied). 
 #' 
-#' @param raw_path_predictions \code{character} value of the path to the
-#'  predictions folder within the raw sub folder (via the archive).  
+#' @param raw_path_casts \code{character} value of the path to the
+#'  casts folder within the raw sub folder (via the archive). Has internal
+#'  capacity to check for old naming schemes. 
 #' 
 #' @param raw_cov_cast_file \code{character} value of the path to the
 #'  covariate cast file within \code{raw_path_archive}.
@@ -66,13 +64,13 @@
 #'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
 #'
 #' @param source_name \code{character} value for the name to give the 
-#'   covariate forecast. Currently is \code{"current_archive"}. Previous to
-#'   \code{"current_archive"}, the data were retroactively filled in and are 
-#'   given the source name \code{"retroactive"}.
+#'  covariate forecast. Currently is \code{"current_archive"}. Previous to
+#'  \code{"current_archive"}, the data were retroactively filled in and are 
+#'  given the source name \code{"retroactive"}.
 #'
 #' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'   cast covariates should be appended to the historical casts for the
-#'   purposes of hindcasting later.
+#'  cast covariates should be appended to the historical casts for the
+#'  purposes of hindcasting later.
 #'
 #' @param controls_m Additional controls for models not in the prefab set. 
 #'  \cr 
@@ -106,10 +104,10 @@
 #'  quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
-#'   all of the information or not (and thus just the tidy messages). 
+#'  all of the information or not (and thus just the tidy messages). 
 #'
 #' @param save \code{logical} indicator controlling if the output should 
-#'   be saved out.
+#'  be saved out.
 #'
 #' @param overwrite \code{logical} indicator of whether or not the existing
 #'  files should be updated (most users should leave as \code{TRUE}).
@@ -127,11 +125,7 @@
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return All \code{fill_} functions return \code{NULL}.
 #'
@@ -140,7 +134,7 @@
 #'   create_dir()
 #'   fill_dir()
 #'   fill_raw()
-#'   fill_predictions()
+#'   fill_casts()
 #'   fill_models()
 #'   fill_data()
 #'  }
@@ -148,14 +142,14 @@
 #' @export
 #'
 fill_dir <- function(main = ".", models = prefab_models(), 
-                     tmnt_types = c("all", "controls"), end_moon = NULL, 
+                     end_moon = NULL, 
                      lead_time = 12, cast_date = Sys.Date(),
                      start_moon = 217, 
-                     confidence_level = 0.9, 
+                     confidence_level = 0.95, 
                      hist_covariates = TRUE, cast_covariates = TRUE,
                      raw_path_archive = "portalPredictions",
                      raw_path_data = "PortalData",
-                     raw_path_predictions = "portalPredictions/predictions",
+                     raw_path_casts = "portalPredictions/casts",
                      raw_cov_cast_file = "data/covariate_casts.csv",
                      raw_path_cov_cast = "cov_casts", 
                      raw_moons_file = "Rodents/moon_dates.csv",
@@ -170,18 +164,18 @@ fill_dir <- function(main = ".", models = prefab_models(),
                      filename_meta = "metadata.yaml", cleanup = TRUE, 
                      arg_checks = TRUE){
   check_args(arg_checks)
+  messageq(paste0("Filling directory with standard content"), quiet)
+
   fill_raw(main = main, downloads = downloads, quiet = quiet, 
            cleanup = cleanup, arg_checks = arg_checks)
-  fill_predictions(main = main, raw_path_predictions = raw_path_predictions, 
+  fill_casts(main = main, raw_path_casts = raw_path_casts, 
                    quiet = quiet, verbose = verbose, overwrite = overwrite,
                    arg_checks = arg_checks)
   fill_models(main = main, models = models, controls_m = controls_m, 
-                   quiet = quiet, overwrite = overwrite,
+                   quiet = quiet, verbose = verbose, overwrite = overwrite,
                    arg_checks = arg_checks)
-  min_lag <- extract_min_lag(models = models, controls_m = controls_m, 
-                             arg_checks = arg_checks)
-  fill_data(main = main, tmnt_types = tmnt_types,
-            end_moon = end_moon, lead_time = lead_time, min_lag = min_lag, 
+  fill_data(main = main, models = models, 
+            end_moon = end_moon, lead_time = lead_time, 
             cast_date = cast_date, start_moon = start_moon, 
             confidence_level = confidence_level, 
             hist_covariates = hist_covariates, 
@@ -192,7 +186,8 @@ fill_dir <- function(main = ".", models = prefab_models(),
             raw_path_cov_cast = raw_path_cov_cast, 
             raw_moons_file = raw_moons_file, source_name = source_name,
             append_cast_csv = append_cast_csv, controls_r = controls_r,
-            control_cdl = control_cdl, downloads = downloads, 
+            controls_m = controls_m, control_cdl = control_cdl, 
+            downloads = downloads, 
             quiet = quiet, verbose = verbose, save = save,
             overwrite = overwrite, filename_moons = filename_moons,
             filename_cov = filename_cov, filename_meta = filename_meta,
@@ -203,10 +198,10 @@ fill_dir <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #'
-fill_data <- function(main = ".", tmnt_types = c("all", "controls"),
-                      end_moon = NULL, lead_time = 12, min_lag = 6, 
+fill_data <- function(main = ".", models = prefab_models(),
+                      end_moon = NULL, lead_time = 12,
                       cast_date = Sys.Date(), start_moon = 217, 
-                      confidence_level = 0.9, 
+                      confidence_level = 0.95, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
                       raw_path_archive = "portalPredictions",
                       raw_path_data = "PortalData",
@@ -215,7 +210,8 @@ fill_data <- function(main = ".", tmnt_types = c("all", "controls"),
                       raw_moons_file = "Rodents/moon_dates.csv",
                       source_name = "current_archive",
                       append_cast_csv = TRUE, 
-                      controls_r = rodents_controls(),
+                      controls_r = rodents_controls(), 
+                      controls_m = NULL,
                       control_cdl = climate_dl_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, save = TRUE,
@@ -225,19 +221,25 @@ fill_data <- function(main = ".", tmnt_types = c("all", "controls"),
                       filename_meta = "metadata.yaml",
                       cleanup = TRUE, arg_checks = TRUE){
   check_args(arg_checks)
+  min_lag <- extract_min_lag(models = models, controls_m = controls_m, 
+                             arg_checks = arg_checks)
+  data_sets <- extract_data_sets(models = models, controls_m = controls_m, 
+                                 arg_checks = arg_checks)
+
   raw_data_present <- verify_raw_data(raw_path_data, main)
   if(!raw_data_present){
     fill_raw(downloads, main, quiet, cleanup)
   }
-  messageq("Adding data files to data subdirectory", quiet)
+  messageq(" -Adding data files to data subdirectory", quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
                        cast_date = cast_date, raw_path_data = raw_path_data,
                        raw_moons_file = raw_moons_file,
-                       quiet = quiet, save = save, overwrite = overwrite, 
+                       quiet = quiet, verbose = verbose,
+                       save = save, overwrite = overwrite, 
                        filename_moons = filename_moons, 
                        arg_checks = arg_checks)
   data_r <- prep_rodents(main = main, moons = data_m, 
-                         tmnt_types = tmnt_types, end_moon = end_moon, 
+                         data_sets = data_sets, end_moon = end_moon, 
                          start_moon = start_moon, controls_r = controls_r,
                          quiet = quiet, save = save, overwrite = overwrite, 
                          arg_checks = arg_checks)
@@ -256,14 +258,15 @@ fill_data <- function(main = ".", tmnt_types = c("all", "controls"),
                             quiet = quiet, save = save, overwrite = overwrite, 
                             filename_cov = filename_cov,
                             arg_checks = arg_checks)
-
-  prep_metadata(main = main, moons = data_m, rodents = data_r, 
-                covariates = data_c, end_moon = end_moon, 
+  prep_metadata(main = main, models = models,
+                data_sets = data_sets, moons = data_m, 
+                rodents = data_r, covariates = data_c, end_moon = end_moon, 
                 lead_time = lead_time, min_lag = min_lag, 
                 cast_date = cast_date, start_moon = start_moon, 
-                confidence_level = confidence_level, quiet = quiet,
-                save = save, overwrite = overwrite, 
-                filename_meta = filename_meta, arg_checks = arg_checks)
+                confidence_level = confidence_level, 
+                controls_r = controls_r, quiet = quiet, save = save, 
+                overwrite = overwrite, filename_meta = filename_meta, 
+                arg_checks = arg_checks)
 
   invisible(NULL)
 }
@@ -273,16 +276,17 @@ fill_data <- function(main = ".", tmnt_types = c("all", "controls"),
 #' @export
 #'
 fill_models <- function(main = ".", models = prefab_models(), 
-                        controls_m = NULL, quiet = FALSE, 
+                        controls_m = NULL, quiet = FALSE, verbose = FALSE, 
                         overwrite = TRUE, arg_checks = TRUE){
   return_if_null(models)
   check_args(arg_checks)
   controls_m <- model_script_controls(models, controls_m)
-  messageq("Adding models to models subdirectory:", quiet)
+  messageq(" -Writing model scripts", quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){
-    write_model(main = main, quiet = quiet, overwrite = overwrite, 
-                control = controls_m[[models[i]]], arg_checks = arg_checks)
+    write_model(main = main, quiet = quiet, verbose = verbose, 
+                overwrite = overwrite, control = controls_m[[models[i]]], 
+                arg_checks = arg_checks)
   } 
   invisible(NULL)
 }
@@ -291,21 +295,28 @@ fill_models <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #'
-fill_predictions <- function(main = ".", 
-                             raw_path_predictions =
-                               "portalPredictions/predictions", 
-                             quiet = FALSE, verbose = FALSE, 
-                             overwrite = TRUE, arg_checks = TRUE){
+fill_casts <- function(main = ".", raw_path_casts = "portalPredictions/casts",
+                       quiet = FALSE, verbose = FALSE, overwrite = TRUE, 
+                       arg_checks = TRUE){
   check_args(arg_checks)
-  messageq("filling predictions folder", quiet)
-  local_raw_folder <- paste0("raw/", raw_path_predictions)
+  messageq(" -Filling casts folder with files from archive", quiet)
+
+  local_raw_folder <- paste0("raw/", raw_path_casts)
   raw_folder <- file_paths(main, local_paths = local_raw_folder)
   pfiles <- list.files(raw_folder)
   raw_files_local <- paste0(local_raw_folder, "/", pfiles)
   raw_files <- file_paths(main, local_paths = raw_files_local)
-  final_folder <- sub_paths(main, "predictions")
+  if(length(pfiles) == 0){
+    local_raw_folder <- "raw/portalPredictions/predictions"
+    raw_folder <- file_paths(main, local_paths = local_raw_folder)
+    pfiles <- list.files(raw_folder)
+    raw_files_local <- paste0(local_raw_folder, "/", pfiles)
+    raw_files <- file_paths(main, local_paths = raw_files_local)
+  }
+  final_folder <- sub_paths(main, "casts")
   fc <- file.copy(raw_files, final_folder, overwrite)
-  messageq(fill_predictions_message(pfiles, fc, verbose))
+  messageq(fill_casts_message(pfiles, fc, verbose), !verbose)
+  cast_meta <- read_cast_metadata(main = main, arg_checks = arg_checks)
   invisible(NULL)
 }
 
@@ -321,7 +332,7 @@ fill_raw <- function(main = ".",
   if(list_depth(downloads) == 1){
     downloads <- list(downloads)
   }
-  messageq("Downloading raw files...", quiet)
+  messageq(" -Downloading raw files", quiet)
   ndl <- length(downloads)
   for(i in 1:ndl){
     downloads[[i]]$cleanup <- ifnull(downloads[[i]]$cleanup, cleanup)
@@ -333,10 +344,10 @@ fill_raw <- function(main = ".",
   invisible(NULL)
 }
 
-#' @title Create the final message for filling predictions
+#' @title Create the final message for filling casts
 #'
 #' @description Create the final message to be used in 
-#'  \code{\link{fill_predictions}} that relays the number, and optionally the
+#'  \code{\link{fill_casts}} that relays the number, and optionally the
 #'  specific names, of the files moved.
 #'
 #' @param files \code{character} vector of the base file names of the files
@@ -351,23 +362,19 @@ fill_raw <- function(main = ".",
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return A \code{character} value of the message to be printed (if desired).
 #'
 #' @examples
-#'  fill_predictions_message("xx.csv", TRUE)
-#'  fill_predictions_message(c("xx.csv", "yy.R"), c(TRUE, FALSE), 
+#'  fill_casts_message("xx.csv", TRUE)
+#'  fill_casts_message(c("xx.csv", "yy.R"), c(TRUE, FALSE), 
 #'                           verbose = TRUE)
 #'
 #' @export
 #'
-fill_predictions_message <- function(files = NULL, movedTF = NULL, 
-                                     verbose = FALSE, arg_checks = TRUE){
+fill_casts_message <- function(files = NULL, movedTF = NULL, verbose = FALSE, 
+                               arg_checks = TRUE){
   return_if_null(files)
   check_args(arg_checks)
   moved <- files[movedTF]
@@ -383,7 +390,7 @@ fill_predictions_message <- function(files = NULL, movedTF = NULL,
       msg <- c(msg, "not moved: ", not_moved)
     }  
   }
-  c(msg, paste0(n_moved, " predictions files moved, ", n_not_moved, " not"))
+  c(msg, paste0(n_moved, " casts files moved, ", n_not_moved, " not"))
 }
 
 
