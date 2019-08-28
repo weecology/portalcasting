@@ -303,7 +303,9 @@ write_model <- function(name = NULL, data_sets = NULL,
     msg1 <- paste0("   ~data_sets = NULL for ", name)
     msg2 <- "    **assuming data_sets = prefab_data_sets()**"
     msg <- c(msg, msg1, msg2)
+    data_sets <- prefab_data_sets()
   }
+
   model_file <- paste0(name, ".R")
   mod_path <- file_path(main = main, sub = "models", files = model_file,
                         arg_checks = arg_checks)
@@ -330,11 +332,14 @@ write_model <- function(name = NULL, data_sets = NULL,
 #'
 #' @export
 #'
-model_template <- function(name = NULL, data_sets = prefab_data_sets(),
+model_template <- function(name = NULL, data_sets = NULL,
                            covariatesTF = FALSE, lag = NULL, main = ".", 
                            quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(name)
+  data_sets <- ifnull(data_sets,  
+                      model_script_controls(models = name, 
+                        arg_checks = arg_checks)[[name]]$data_sets)
   return_if_null(data_sets)
   main_arg <- paste0(', main = "', main, '"')
   quiet_arg <- paste0(', quiet = ', quiet)
@@ -395,7 +400,7 @@ verify_models <- function(main = ".", models = prefab_models(),
                           quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   messageq("Checking model availability", quiet)
-  model_dir <- sub_paths(main, "models")
+  model_dir <- sub_path(main = main, subs = "models", arg_checks = arg_checks)
   if (!dir.exists(model_dir)){
     stop("Models subidrectory does not exist")
   }

@@ -1,12 +1,9 @@
-moons are out of whacks
-also the covariates_cast file is going to raw instead of data
+working through tests
+should be mostly up to date with funcitons that are integrated
+except the newest functions need to get added
 
 argument order alignment
-maybe condense filenames into a list?
 
-
-think about how to short-circuit the potential infinite recursion in 
-read_cov_cast
 
 to add a model permanently to prefab
 
@@ -14,8 +11,7 @@ add the controls to the \code{prefab_model_controls} non-exported function
 in the \code{prepare_models.R} script
 will automatically add the model to the prefab_models 
 
-we actually don't need "forecast" or "hindcast" in the metadata anymore
-just "end_moon" and "last_moon"
+
 
 sames for data sets
 
@@ -31,6 +27,11 @@ combine file path and model path duhhhh
 devtools::document()
 main <- "~/test_1"
 setup_dir(main)
+
+fill_data(main, end_moon = 520)
+
+AA<-AutoArima(main)
+
 
 main <- "~/test_2"
 setup_sandbox(main)

@@ -172,6 +172,7 @@ read_cov_casts <- function(main = ".", directory = "portalPredictions",
   arch_path <- file_path(main = main, sub = "raw", file = arch_path,
                          arg_checks = arg_checks)
   arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
+
   if(file.exists(curr_path)){
     cov_cast <- read.csv(curr_path, stringsAsFactors = FALSE)
   } else if (file.exists(curr_path2)){
@@ -204,8 +205,7 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
                                  directory = "portalPredictions",
-                                 filename_cov_casts = 
-                                   "data/covariate_casts.csv",
+                                 filename_cov_casts = "covariate_casts.csv",
                                  source_name = "current_archive",
                                  append_cast_csv = TRUE, 
                                  control_cdl = climate_dl_control(),
@@ -323,7 +323,7 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
                               quiet = quiet, verbose = verbose, 
                               arg_checks = arg_checks)
   out <- rbind(hist_cast, new_cast)
-  out_path <- file_path(main, sub = "raw", file = filename_cov_casts,
+  out_path <- file_path(main = main, sub = "data", file = filename_cov_casts,
                         arg_checks = arg_checks)
   msg <- "    **covariates_casts.csv saved**"
   messageq(msg, !verbose)

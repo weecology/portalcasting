@@ -10,41 +10,33 @@ portalcast(main = ".", models = prefab_models(), ensemble = FALSE,
   data_sets = prefab_data_sets(), end_moons = NULL, lead_time = 12,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
   hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
-  raw_path_casts = "portalPredictions/casts",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts",
-  raw_moons_file = "Rodents/moon_dates.csv",
-  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
+  directory = "portalPredictions", raw_data = "PortalData",
   source_name = "current_archive", append_cast_csv = TRUE,
   controls_m = NULL, controls_r = rodents_controls(),
   control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 cast(main = ".", models = prefab_models(), ensemble = FALSE,
   cast_date = Sys.Date(), moons = NULL, end_moon = NULL,
-  raw_path_data = "PortalData",
-  raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
-  controls_r = rodents_controls(), confidence_level = 0.95,
-  quiet = FALSE, verbose = FALSE, cleanup = TRUE,
-  arg_checks = TRUE)
+  raw_data = "PortalData", controls_r = rodents_controls(),
+  confidence_level = 0.95, quiet = FALSE, verbose = FALSE,
+  cleanup = TRUE, arg_checks = TRUE)
 
 prep_data(main = ".", end_moon = NULL,
   data_sets = prefab_data_sets(), lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
   hist_covariates = TRUE, cast_covariates = TRUE,
-  raw_path_archive = "portalPredictions", raw_path_data = "PortalData",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts",
-  raw_moons_file = "Rodents/moon_dates.csv",
+  directory = "portalPredictions", raw_data = "PortalData",
   source_name = "current_archive", append_cast_csv = TRUE,
   controls_r = rodents_controls(), control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 }
 \arguments{
@@ -88,35 +80,12 @@ historical covariates are to be included.}
 \item{cast_covariates}{\code{logical} indicator whether or not -casted 
 covariates are to be included.}
 
-\item{raw_path_archive}{\code{character} value of the path to the archive
-within the raw sub folder.}
+\item{directory}{\code{character} value of the directory name.}
 
-\item{raw_path_data}{\code{character} value indicating the folder path
-to the data within the \code{raw} subdirectory but above the files. A 
-standard portalcasting directory downloads the raw data files into 
-\code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
-\code{"raw/"} is implied).}
-
-\item{raw_path_casts}{\code{character} value of the path to the
-casts folder within the raw sub folder (via the archive).}
-
-\item{raw_cov_cast_file}{\code{character} value of the path to the
-covariate cast file within \code{raw_path_archive}.}
-
-\item{raw_path_cov_cast}{\code{character} value of the path to the folder
-that holds any downloaded covariate cast files within the raw sub folder.}
-
-\item{raw_moons_file}{\code{character} value indicating the path
-to the moons data file within \code{raw_path_data}. A standard 
-portalcasting directory downloads the raw data files into 
-\code{"raw\PortalData"}, so 
-\code{raw_moons_file = "Rodents/moon_dates.csv"}.}
-
-\item{raw_traps_file}{\code{character} value indicating the path
-to the trapping data file within \code{raw_path_data}. A standard 
-portalcasting directory downloads the raw data files into 
-\code{"raw\PortalData"}, so 
-\code{raw_traps_file = "Rodents/Portal_rodent_trapping.csv"}.}
+\item{raw_data}{\code{character} value indicating the name of the raw
+data directory. A standard portalcasting directory downloads the raw data
+files into from the PortalData repository, so 
+\code{raw_data = "PortalData"}.}
 
 \item{source_name}{\code{character} value for the name to give the 
 covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -170,6 +139,9 @@ files should be updated (most users should leave as \code{TRUE}).}
 data output.}
 
 \item{filename_cov}{\code{character} filename for saving the output.}
+
+\item{filename_cov_casts}{\code{character} filename for saving the 
+covariate casts output.}
 
 \item{filename_meta}{\code{character} filename for saving the metadata.}
 

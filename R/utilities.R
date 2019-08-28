@@ -295,7 +295,7 @@ clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE,
                       cleanup = TRUE, arg_checks = TRUE){
   check_args(arg_checks)
   messageq("Clearing tmp subdirectory", quiet)
-  tmp_path <- sub_paths(main, "tmp")
+  tmp_path <- tmp_path(main = main, arg_checks = arg_checks)
   tmp_exist <- dir.exists(tmp_path)
   tmp_files <- list.files(tmp_path)
   ntmp_files <- length(tmp_files)
@@ -304,7 +304,9 @@ clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE,
   }
   if(tmp_exist){
     if(ntmp_files > 0){
-      tmp_files_full_paths <- file_paths(main, paste0("tmp/", tmp_files))
+      tmp_files_full_paths <- file_path(main = main, sub = "tmp", 
+                                        files = tmp_files, 
+                                        arg_checks = arg_checks)
       file.remove(tmp_files_full_paths)
       msg <- "    *temporary files cleared from tmp subdirectory*"
     } else {

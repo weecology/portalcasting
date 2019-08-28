@@ -9,9 +9,8 @@ write_model(name = NULL, data_sets = NULL, covariatesTF = NULL,
   lag = NULL, main = ".", quiet = FALSE, verbose = TRUE,
   overwrite = TRUE, control = NULL, arg_checks = TRUE)
 
-model_template(name = NULL, data_sets = prefab_data_sets(),
-  covariatesTF = FALSE, lag = NULL, main = ".", quiet = FALSE,
-  arg_checks = TRUE)
+model_template(name = NULL, data_sets = NULL, covariatesTF = FALSE,
+  lag = NULL, main = ".", quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}

@@ -27,7 +27,7 @@ test_that("verify_models", {
 
 test_that("model_script_controls", {
   expect_is(model_script_controls(prefab_models()), "list")
-  expect_equal(length(model_script_controls(prefab_models())), 5)
+  expect_equal(length(model_script_controls(prefab_models())), 6)
   expect_is(model_script_controls(prefab_models(), 
                                      list(name = "xx", 
                                           covariates = FALSE, lag = NA)), 
@@ -40,8 +40,7 @@ test_that("model_script_controls", {
 })
 
 test_that("prefab_models", {
-  expect_equal(length(prefab_models()), 5)
-  expect_equal(length(prefab_models("xx")), 6)
+  expect_equal(length(prefab_models()), 6)
 })
 
 

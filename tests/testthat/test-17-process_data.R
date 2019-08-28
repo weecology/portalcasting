@@ -33,7 +33,7 @@ test_that("read_data", {
 
 # wipe the files, then read again to do the prep backup
 
-unlink(list.files(sub_paths(main = "./testing", "data"), full.names = TRUE))
+unlink(list.files(data_path(main = "./testing"), full.names = TRUE))
 
   expect_silent(moons <- read_moons("./testing"))
   expect_is(moons, "data.frame")

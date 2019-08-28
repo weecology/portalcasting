@@ -1,15 +1,16 @@
 context("Test prepare_covariates functions")
 
-
+main <- "./testing"
 
 test_that("prep_covariates", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_is(prep_covariates(main = "./testing"), "data.frame")
+  expect_is(prep_covariates(main = main), "data.frame")
 })
 
 test_that("process_covariates", {
   skip_on_cran() # downloads take too long for cran checks
-  covariate_casts <- read_covariate_casts(main = "./testing")
+  fill_data(main = main)
+  covariate_casts <- read_covariate_casts(main = main)
   covar_casts_lag <- lag_covariates(covariate_casts, lag = 2, tail = TRUE)
   expect_is(covar_casts_lag, "data.frame")
   covar_casts_lag <- lag_covariates(covariate_casts, lag = 2, tail = FALSE)
@@ -20,7 +21,7 @@ test_that("process_covariates", {
 
 test_that("prep_covariates", {
   skip_on_cran() # downloads take too long for cran checks
-  raw_path <- sub_paths(main = "./testing", specific_subs = "raw")
+  raw_path <- sub_path(main = "./testing", subs = "raw")
   moons <- prep_moons(main = "./testing")
   weather("daily", TRUE, raw_path) %>% 
   add_date_from_components() %>%

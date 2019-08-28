@@ -55,35 +55,12 @@
 #' @param cast_covariates \code{logical} indicator whether or not -casted 
 #'  covariates are to be included.
 #'
-#' @param raw_path_archive \code{character} value of the path to the archive
-#'  within the raw sub folder.
+#' @param directory \code{character} value of the directory name.
 #' 
-#' @param raw_path_data \code{character} value indicating the folder path
-#'  to the data within the \code{raw} subdirectory but above the files. A 
-#'  standard portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
-#'  \code{"raw/"} is implied). 
-#' 
-#' @param raw_path_casts \code{character} value of the path to the
-#'  casts folder within the raw sub folder (via the archive).  
-#' 
-#' @param raw_cov_cast_file \code{character} value of the path to the
-#'  covariate cast file within \code{raw_path_archive}.
-#'
-#' @param raw_path_cov_cast \code{character} value of the path to the folder
-#'  that holds any downloaded covariate cast files within the raw sub folder.
-#'
-#' @param raw_moons_file \code{character} value indicating the path
-#'  to the moons data file within \code{raw_path_data}. A standard 
-#'  portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so 
-#'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
-#'
-#' @param raw_traps_file \code{character} value indicating the path
-#'  to the trapping data file within \code{raw_path_data}. A standard 
-#'  portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so 
-#'  \code{raw_traps_file = "Rodents/Portal_rodent_trapping.csv"}.
+#' @param raw_data \code{character} value indicating the name of the raw
+#'  data directory. A standard portalcasting directory downloads the raw data
+#'  files into from the PortalData repository, so 
+#'  \code{raw_data = "PortalData"}.
 #'
 #' @param source_name \code{character} value for the name to give the 
 #'   covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -140,6 +117,9 @@
 #'
 #' @param filename_meta \code{character} filename for saving the metadata.
 #'
+#' @param filename_cov_casts \code{character} filename for saving the 
+#'  covariate casts output.
+#'
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
 #'
@@ -177,13 +157,8 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                        start_moon = 217, 
                        confidence_level = 0.95, 
                        hist_covariates = TRUE, cast_covariates = TRUE,
-                       raw_path_archive = "portalPredictions",
-                       raw_path_data = "PortalData",
-                       raw_path_casts = "portalPredictions/casts",
-                       raw_cov_cast_file = "data/covariate_casts.csv",
-                       raw_path_cov_cast = "cov_casts", 
-                       raw_moons_file = "Rodents/moon_dates.csv",
-                       raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
+                       directory = "portalPredictions",
+                       raw_data = "PortalData",
                        source_name = "current_archive",
                        append_cast_csv = TRUE, controls_m = NULL,
                        controls_r = rodents_controls(),
@@ -193,6 +168,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                        save = TRUE, overwrite = TRUE, 
                        filename_moons = "moon_dates.csv",
                        filename_cov = "covariates.csv", 
+                       filename_cov_casts = "covariate_casts.csv",
                        filename_meta = "metadata.yaml", cleanup = TRUE, 
                        arg_checks = TRUE){
   check_args(arg_checks)
@@ -201,7 +177,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
   messageq("---------------------------------------------------------", quiet)
   verify_models(main = main, models = models, quiet = quiet, 
                 arg_checks = arg_checks)
-  verify_raw_data(main = main, raw_path_data = raw_path_data, 
+  verify_raw_data(main = main, raw_data = raw_data, 
                   arg_checks = arg_checks)
   min_lag <- extract_min_lag(models = models, controls_m = controls_m,
                              arg_checks = arg_checks)
@@ -217,21 +193,19 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
               start_moon = start_moon, confidence_level = confidence_level, 
               hist_covariates = hist_covariates, 
               cast_covariates = cast_covariates,
-              raw_path_archive = raw_path_archive,
-              raw_path_data = raw_path_data,
-              raw_cov_cast_file = raw_cov_cast_file,
-              raw_path_cov_cast = raw_path_cov_cast, 
-              raw_moons_file = raw_moons_file, source_name = source_name,
+              directory = directory,
+              raw_data = raw_data,
               append_cast_csv = append_cast_csv, controls_r = controls_r,
               control_cdl = control_cdl, downloads = downloads, 
               quiet = quiet, verbose = verbose, save = save,
               overwrite = overwrite, filename_moons = filename_moons,
               filename_cov = filename_cov, filename_meta = filename_meta,
+              filename_cov_casts = filename_cov_casts,
               cleanup = cleanup, arg_checks = arg_checks)
     cast(main = main, models = models, ensemble = ensemble,
          cast_date = cast_date, moons = moons, 
-         end_moon = end_moons[i], raw_path_data = raw_path_data,
-         raw_traps_file = raw_traps_file, controls_r = controls_r, 
+         end_moon = end_moons[i], raw_data = raw_data,
+         controls_r = controls_r, 
          confidence_level = confidence_level, quiet = quiet, 
          verbose = verbose, cleanup = cleanup, arg_checks = TRUE)
   }
@@ -245,8 +219,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
 #'
 cast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                  cast_date = Sys.Date(), moons = NULL, 
-                 end_moon = NULL, raw_path_data = "PortalData",
-                 raw_traps_file = "Rodents/Portal_rodent_trapping.csv",
+                 end_moon = NULL, raw_data = "PortalData",
                  controls_r = rodents_controls(), confidence_level = 0.95, 
                  quiet = FALSE, verbose = FALSE, cleanup = TRUE, 
                  arg_checks = TRUE){
@@ -281,11 +254,8 @@ prep_data <- function(main = ".", end_moon = NULL,
                       start_moon = 217, 
                       confidence_level = 0.95, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
-                      raw_path_archive = "portalPredictions",
-                      raw_path_data = "PortalData",
-                      raw_cov_cast_file = "data/covariate_casts.csv",
-                      raw_path_cov_cast = "cov_casts", 
-                      raw_moons_file = "Rodents/moon_dates.csv",
+                      directory = "portalPredictions",
+                      raw_data = "PortalData",
                       source_name = "current_archive",
                       append_cast_csv = TRUE, 
                       controls_r = rodents_controls(),
@@ -295,6 +265,7 @@ prep_data <- function(main = ".", end_moon = NULL,
                       save = TRUE, overwrite = TRUE, 
                       filename_moons = "moon_dates.csv",
                       filename_cov = "covariates.csv", 
+                      filename_cov_casts = "covariate_casts.csv",
                       filename_meta = "metadata.yaml", cleanup = TRUE, 
                       arg_checks = TRUE){
   check_args(arg_checks)
@@ -309,23 +280,23 @@ prep_data <- function(main = ".", end_moon = NULL,
   end_moon <- ifnull(end_moon, last_moon)
   old_moon <- !(end_moon == last_moon)
   if (!date_current | !moon_match | old_moon){
-    fill_data(main = main, 
-              end_moon = end_moon, lead_time = lead_time, 
-              cast_date = cast_date, start_moon = start_moon, 
-              confidence_level = confidence_level, 
-              hist_covariates = hist_covariates, 
-              cast_covariates = cast_covariates,
-              raw_path_archive = raw_path_archive,
-              raw_path_data = raw_path_data,
-              raw_cov_cast_file = raw_cov_cast_file,
-              raw_path_cov_cast = raw_path_cov_cast, 
-              raw_moons_file = raw_moons_file, source_name = source_name,
-              append_cast_csv = append_cast_csv, controls_r = controls_r,
-              control_cdl = control_cdl, downloads = downloads, 
-              quiet = quiet, verbose = verbose, save = save,
-              overwrite = overwrite, filename_moons = filename_moons,
-              filename_cov = filename_cov, filename_meta = filename_meta,
-              cleanup = cleanup, arg_checks = arg_checks)
+    fill_dir(main = main, models = models, 
+             end_moon = end_moon, lead_time = lead_time, 
+             cast_date = cast_date, start_moon = start_moon, 
+             confidence_level = confidence_level, 
+             hist_covariates = hist_covariates, 
+             cast_covariates = cast_covariates,
+             directory = directory,
+             raw_data = raw_data,
+             append_cast_csv = append_cast_csv, controls_m = controls_m, 
+             controls_r = controls_r, control_cdl = control_cdl, 
+             downloads = downloads, quiet = quiet, verbose = verbose, 
+             save = save, overwrite = overwrite, 
+             filename_moons = filename_moons, filename_cov = filename_cov, 
+             filename_meta = filename_meta, cleanup = cleanup, 
+             filename_config = filename_config,
+             filename_cov_casts = filename_cov_casts,
+             arg_checks = arg_checks)
   }
   messageq("---------------------------------------------------------", quiet)
 }
@@ -367,7 +338,7 @@ prep_data <- function(main = ".", end_moon = NULL,
 models_to_cast <- function(main = ".", models = prefab_models(), 
                            arg_checks = TRUE){
   check_args(arg_checks)
-  models_path <- sub_paths(main, "models")
+  models_path <- models_path(main = main, arg_checks = arg_checks)
   file_names <- paste0(models, ".R")
   torun <- (list.files(models_path) %in% file_names)
   torun_paths <- list.files(models_path, full.names = TRUE)[torun] 

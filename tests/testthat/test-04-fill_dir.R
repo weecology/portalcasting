@@ -13,7 +13,7 @@ test_that("fill_data", {
 
 # remove raw to ensure that it can do it itself 
 
-unlink(list.files(sub_paths(main = "./testing", "raw"), full.names = TRUE))
+unlink(list.files(sub_path(main = "./testing", "raw"), full.names = TRUE))
   expect_equal(fill_data(main = "./testing"), NULL)
 
 })
@@ -28,7 +28,7 @@ test_that("fill_casts", {
 })
 
 test_that("fill_casts_message", {
-  expect_is(fill_casts_message("x", FALSE, verbose = TRUE), "character")
+  expect_message(fill_casts_message("x", FALSE, verbose = TRUE))
 })
 
 

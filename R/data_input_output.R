@@ -70,6 +70,7 @@ update_directory_config <- function(main = ".",
                                     downloads_versions = downloads_versions, 
                                     quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
+  config_path <- file_path(main = main, files = filename_config)
   config <- read_directory_config(main = main, 
                                  filename_config = filename_config,
                                  quiet = quiet, arg_checks = arg_checks)

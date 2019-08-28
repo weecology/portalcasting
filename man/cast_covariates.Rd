@@ -23,7 +23,7 @@ read_cov_casts(main = ".", directory = "portalPredictions",
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), directory = "portalPredictions",
-  filename_cov_casts = "data/covariate_casts.csv",
+  filename_cov_casts = "covariate_casts.csv",
   source_name = "current_archive", append_cast_csv = TRUE,
   control_cdl = climate_dl_control(), quiet = TRUE, verbose = FALSE,
   save = TRUE, overwrite = TRUE, arg_checks = TRUE)

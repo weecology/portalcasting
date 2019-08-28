@@ -30,7 +30,7 @@ test_that("foy", {
 
 test_that("append_csv",{
   df <- data.frame(x = 1:10)
-  fpath <- file_paths(main = "./testing", "xx.csv")
+  fpath <- file_path(main = "./testing", NULL, "xx.csv")
   expect_equal(append_csv(df, fpath), NULL)
 })
 

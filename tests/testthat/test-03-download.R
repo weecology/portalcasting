@@ -29,10 +29,10 @@ test_that("zenodo_url", {
   expect_error(zenodo_url("1215988", "12345"))
 })
 
-test_that("record_name_from_url", {
+test_that("name_from_url", {
   source_url <- zenodo_url(concept_rec_id = "1215988")
-  expect_null(record_name_from_url(source_url, TRUE))
-  expect_equal(record_name_from_url(source_url), "PortalData")
+  expect_null(name_from_url(source_url, TRUE))
+  expect_equal(name_from_url(source_url), "PortalData")
 })
 
 test_that("zenodo_downloads", {

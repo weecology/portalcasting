@@ -100,7 +100,6 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
   data_set_controls <- metadata$controls_r[[data_set]]
-
   mods <- named_null_list(species)
   casts <- named_null_list(species)
   cast_tab <- data.frame()
@@ -133,7 +132,9 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
   metadata <- update_metadata(metadata = metadata, model = "AutoArima",
-                              data_set = data_set)
+                              data_set = data_set,
+                              data_set_controls = data_set_controls,
+                              arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -196,8 +197,10 @@ NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "NaiveArima",
-                              data_set = data_set)
+  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+                              data_set = data_set,
+                              data_set_controls = data_set_controls,
+                              arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -260,8 +263,10 @@ ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "ESSS",
-                              data_set = data_set)
+  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+                              data_set = data_set,
+                              data_set_controls = data_set_controls,
+                              arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -339,8 +344,10 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "nbGARCH",
-                              data_set = data_set)
+  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+                              data_set = data_set,
+                              data_set_controls = data_set_controls,
+                              arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -428,8 +435,10 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "nbsGARCH",
-                              data_set = data_set)
+  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+                              data_set = data_set,
+                              data_set_controls = data_set_controls,
+                              arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -506,10 +515,14 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
       }
       mods_i[[j]] <- tryCatch(tsglm(abund_s, model = past, distr = "poisson",
                                     xreg = predictors, link = "log"), 
+                             warning = function(x){NA}, 
                               error = function(x) {NA})
-      casts_i[[j]] <-  tryCatch(predict(mods_i[[j]], nmoons, level = CL, 
-                                        newxreg = cast_predictors),
-                                error = function(x) {NA})
+      if(!all(is.na(mods_i[[j]]))){
+        casts_i[[j]] <-  tryCatch(predict(mods_i[[j]], nmoons, level = CL, 
+                                          newxreg = cast_predictors),
+                                 warning = function(x){NA}, 
+                                  error = function(x) {NA})
+      }
       AICs[j] <- tryCatch(AIC(mods_i[[j]]), 
                           error = function(x) {Inf})
     } 
@@ -542,8 +555,10 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "pevGARCH",
-                              data_set = data_set)
+  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+                              data_set = data_set,
+                              data_set_controls = data_set_controls,
+                              arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }

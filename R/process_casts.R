@@ -36,15 +36,18 @@ most_recent_cast <- function(main = ".", arg_checks = TRUE){
 #'
 save_cast_output <- function(cast = NULL, main = ".", 
                              quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  cast_meta <- read_cast_meta(main = main, quiet = quiet, 
-                              arg_checks = arg_check)
+  check_args(arg_checks = arg_checks)
+  cast_meta <- read_cast_metadata(main = main, quiet = quiet, 
+                              arg_checks = arg_checks)
   cast_ids <- cast_meta$cast_id
   if(all(is.na(cast_ids))){
     next_cast_id <- 1
   } else{
     next_cast_id <- max(cast_ids) + 1
   }
+
+  dir_config <- cast$metadata$directory_configuration
+  pc_version <- dir_config$setup_portalcasting_version
   new_cast_meta <- data.frame(cast_id = next_cast_id,
                               cast_group = cast$metadata$cast_group,
                               cast_date = cast$metadata$cast_date,
@@ -53,36 +56,40 @@ save_cast_output <- function(cast = NULL, main = ".",
                               end_moon = cast$metadata$end_moon,
                               start_moon = cast$metadata$start_moon,
                               lead_time = cast$metadata$lead_time,
-                              portalcasting_version = 
-                                 cast$metadata$portalcasting_version,
+                              portalcasting_version = pc_version,
                               QAQC = TRUE, notes = NA)
   cast_meta <- rbind(cast_meta, new_cast_meta)
+  meta_path <- file_path(main = main, sub = "casts", 
+                         file = "cast_metadata.csv", arg_checks = arg_checks)
   write.csv(cast_meta, meta_path, row.names = FALSE)
 
   if(!is.null(cast$metadata)){
-    meta_filename <- paste0("casts/cast_id_", 
-                            next_cast_id, "_metadata.yaml")
-    meta_path <- file_paths(main, meta_filename)
+    meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
+    meta_path <- file_path(main = main, sub = "casts", files = meta_filename,
+                           arg_checks = arg_checks)
     yams <- as.yaml(cast$metadata)
     writeLines(yams, con = meta_path)
   }
   if(!is.null(cast$cast_tab)){
-    cast_tab_filename <- paste0("casts/cast_id_", 
-                                next_cast_id, "_cast_tab.csv") 
-    cast_tab_path <- file_paths(main, cast_tab_filename)
+    cast_tab_filename <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
+    cast_tab_path <- file_path(main = main, sub = "casts", 
+                               files = cast_tab_filename,
+                               arg_checks = arg_checks)
     write.csv(cast$cast_tab, cast_tab_path, row.names = FALSE)
   }
   if(!is.null(cast$model_fits)){
-    model_fits_filename <- paste0("casts/cast_id_", 
-                                next_cast_id, "_model_fits.RData") 
-    model_fits_path <- file_paths(main, model_fits_filename)
+    model_fits_filename <- paste0("cast_id_", next_cast_id, 
+                                  "_model_fits.RData") 
+    model_fits_path <- file_path(main = main, sub = "casts", 
+                                 files = model_fits_filename,
+                                 arg_checks = arg_checks)
     model_fits <- cast$model_fits
     save(model_fits, file = model_fits_path)
   }
   if(!is.null(cast$casts)){
-    casts_filename <- paste0("casts/cast_id_", 
-                                next_cast_id, "_casts.RData") 
-    casts_path <- file_paths(main, casts_filename)
+    casts_filename <- paste0("cast_id_", next_cast_id, "_casts.RData") 
+    casts_path <- file_paths(main = main, sub = "casts", 
+                             files = casts_filename, arg_checks = arg_checks)
     casts <- cast$casts
     save(casts, file = casts_path)
   }

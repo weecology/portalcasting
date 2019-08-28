@@ -28,7 +28,7 @@ test_that("trim_moons", {
 
 test_that("add_moons_from_date", {
   skip_on_cran() # downloads take too long for cran checks
-  raw_path <- sub_paths(main = "./testing", specific_subs = "raw")
+  raw_path <- sub_path(main = "./testing", subs = "raw")
   weather <- portalr::weather("daily", TRUE, raw_path)
   moons <- prep_moons(main = "./testing")
   expect_is(add_moons_from_date(weather, moons), "data.frame") 
