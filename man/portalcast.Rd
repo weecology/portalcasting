@@ -38,7 +38,7 @@ prep_data(main = ".", end_moon = NULL, models = prefab_models(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_config = filename_config,
+  filename_config = "dir_config.yaml",
   filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 }
