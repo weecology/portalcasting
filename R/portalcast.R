@@ -287,7 +287,7 @@ prep_data <- function(main = ".", end_moon = NULL, models = prefab_models(),
   end_moon <- ifnull(end_moon, last_moon)
   old_moon <- !(end_moon == last_moon)
   if (!date_current | !moon_match | old_moon){
-    fill_dir(main = main, models = models, 
+    fill_data(main = main, models = models, 
              end_moon = end_moon, lead_time = lead_time, 
              cast_date = cast_date, start_moon = start_moon, 
              confidence_level = confidence_level, 
@@ -295,6 +295,7 @@ prep_data <- function(main = ".", end_moon = NULL, models = prefab_models(),
              cast_covariates = cast_covariates,
              directory = directory,
              raw_data = raw_data,
+             source_name = source_name,
              append_cast_csv = append_cast_csv, controls_m = controls_m, 
              controls_r = controls_r, control_cdl = control_cdl, 
              downloads = downloads, quiet = quiet, verbose = verbose, 
