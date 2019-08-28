@@ -28,18 +28,7 @@ test_that("foy", {
   expect_is(foy(Sys.Date()), "numeric")
 })
 
-test_that("append_csv",{
-  df <- data.frame(x = 1:10)
-  fpath <- file_path(main = "./testing", NULL, "xx.csv")
-  expect_equal(append_csv(df, fpath), NULL)
-})
 
-test_that("cast_window", {
-  skip_on_cran() # downloads take too long for cran checks
-  wind <- cast_window(main = "./testing")
-  expect_is(wind, "list")
-  expect_equal(names(wind), c("start", "end"))
-})
 
 
 test_that("combine_hist_and_cast", {
@@ -74,11 +63,6 @@ test_that("remove_incompletes", {
   expect_is(remove_incompletes(df, "c1"), "data.frame")
 })
 
-test_that("data_out", {
-  skip_on_cran()
-  expect_silent(prep_moons(main = "./testing"))
-  expect_silent(prep_moons(main = "./testing", overwrite = FALSE))
-})
 
 test_that("ifnull", {
   expect_equal(ifnull(NULL, 123), 123)
@@ -112,6 +96,6 @@ test_that("return_if_null", {
 })
 
 
-test_that("data_out", {
- expect_error(data_out(list(1), filename = "123.rtrr"))
+test_that("write_data", {
+ expect_error(write_data(list(1), filename = "123.rtrr"))
 })
