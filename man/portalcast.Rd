@@ -6,7 +6,7 @@
 \alias{prep_data}
 \title{Cast Portal rodents models}
 \usage{
-portalcast(main = ".", models = prefab_models(), ensemble = FALSE,
+portalcast(main = ".", models = prefab_models(),
   data_sets = prefab_data_sets(), end_moons = NULL, lead_time = 12,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
   hist_covariates = TRUE, cast_covariates = TRUE,
@@ -21,11 +21,11 @@ portalcast(main = ".", models = prefab_models(), ensemble = FALSE,
   filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
-cast(main = ".", models = prefab_models(), ensemble = FALSE,
-  cast_date = Sys.Date(), moons = NULL, end_moon = NULL,
-  raw_data = "PortalData", controls_r = rodents_controls(),
-  confidence_level = 0.95, quiet = FALSE, verbose = FALSE,
-  cleanup = TRUE, arg_checks = TRUE)
+cast(main = ".", models = prefab_models(), cast_date = Sys.Date(),
+  moons = NULL, end_moon = NULL, raw_data = "PortalData",
+  controls_r = rodents_controls(), confidence_level = 0.95,
+  quiet = FALSE, verbose = FALSE, cleanup = TRUE,
+  arg_checks = TRUE)
 
 prep_data(main = ".", end_moon = NULL, models = prefab_models(),
   data_sets = prefab_data_sets(), lead_time = 12, min_lag = 6,
@@ -48,8 +48,6 @@ the directory tree.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to 
 include.}
-
-\item{ensemble}{\code{logical} indicator if the ensemble should be added.}
 
 \item{data_sets}{\code{character} values of the rodent data sets that
 are needed, used to enforce certain arguments in data creation (see 

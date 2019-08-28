@@ -39,57 +39,71 @@
 #'   \code{add_lead}, 
 #'   \code{add_obs}, 
 #'   \code{append_cast_csv}, 
+#'   \code{arg_checks}, 
 #'   \code{cast_covariates}, 
+#'   \code{clean},
 #'   \code{cleanup},
 #'   \code{covariatesTF}, 
-#'   \code{ensemble}, 
+#'   \code{effort},
+#'   \code{fillweight}, 
 #'   \code{hist_covariates}, 
-#'   \code{movedTF}, 
+#'   \code{interpolate}, 
+#'   \code{na_drop}, 
 #'   \code{nadot}, 
 #'   \code{NULLname},
 #'   \code{overwrite}, 
 #'   \code{quiet}, 
 #'   \code{retain_target_moons},
+#'   \code{return_version},
 #'   \code{save}, 
 #'   \code{tail}, 
 #'   \code{total}, 
+#'   \code{unknowns}, 
 #'   \code{verbose},
-#'   \code{with_census}. 
+#'   \code{with_census},
+#'   \code{zero_drop}. 
+#'
+#'  Must be \code{logical} values, can be any length or \code{NULL}, but 
+#'  cannot be \code{NA}: 
+#'   \code{movedTF}, 
 #'
 #'  Must be length-1 \code{character} values, can be \code{NULL}, but cannot 
 #'  be \code{NA}:
 #'   \code{cast_type} (if not \code{NULL}, can only be of value 
 #'    \code{"forecast"}, \code{"forecasts"}, \code{"hindcast"}, 
-#'    or\code{"hindcasts"}), \code{colname}, \code{data_name}, 
+#'    or\code{"hindcasts"}), 
+#'   \code{colname}, 
+#'   \code{data_name}, 
+#'   \code{data_set}, 
+#'   \code{directory}, 
 #'   \code{extension} (if not \code{NULL}, must have a \code{"."} character),
 #'   \code{filename}, 
 #'   \code{filename_cov}, 
+#'   \code{filename_cov_casts}, 
+#'   \code{filename_config}, 
 #'   \code{filename_meta},
 #'   \code{filename_moons}, 
-#'   \code{freq}  (ADDL), 
-#'   \code{main}, 
+#'   \code{freq},  
 #'   \code{level}, 
+#'   \code{main}, 
 #'   \code{model} (inputted values are checked via 
 #'    \code{\link{verify_models}}), 
 #'   \code{name}, 
 #'   \code{output} (if not \code{NULL}, must be \code{"abundances"}),
+#'   \code{path},
 #'   \code{plots} (if not \code{NULL}, must be \code{"all"} or 
 #'    \code{"longterm"}),
-#'   \code{raw_cov_cast_file}, 
-#'   \code{raw_moons_file}, 
-#'   \code{raw_path_archive}, 
-#'   \code{raw_path_cov_cast}, 
-#'   \code{raw_path_casts}, 
-#'   \code{raw_path_data}, 
-#'   \code{raw_traps_file}, 
+#'   \code{raw_data}, 
 #'   \code{sep_char}, 
 #'   \code{set},
+#'   \code{shape},
 #'   \code{source_name},
 #'   \code{source_url}, 
 #'   \code{species_id} (if not \code{NULL}, must be within the species
 #'    produced by \code{rodent_spp("wtotal")}),
-#'   \code{specific_sub}, 
-#'   \code{subs_type} (if not \code{NULL}, must be \code{"prefab"}),
+#'   \code{sub} (must be one of the named sub directories: \code{"tmp"},
+#'    \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
+#'   \code{time}, 
 #'   \code{type}, 
 #'   \code{url}, 
 #'   \code{winner} (if not \code{NULL}, must be \code{"hist"} or 
@@ -100,7 +114,8 @@
 #'  but cannot be \code{NA}:
 #'   \code{concept_rec_id}, 
 #'   \code{data}, 
-#'   \code{dir_level},
+#'   \code{data_sets}, 
+#'   \code{downloads_versions},
 #'   \code{enquote_args}, 
 #'   \code{eval_args}, 
 #'   \code{files}, 
@@ -109,27 +124,23 @@
 #'    \code{\link{verify_models}}), 
 #'   \code{msg}, 
 #'   \code{names},
-#'   \code{path}, 
+#'   \code{paths}, 
 #'   \code{rec_id}, 
 #'   \code{rec_version}, 
 #'   \code{ref_species},
 #'   \code{species} (if not \code{NULL}, must be all within the species
-#'    produced by \code{rodent_spp("wtotal")}),
-#'   \code{specific_subs}, 
-#'   \code{subs}, 
-#'   \code{subs_names},
+#'    produced by \code{all_secies(total = TRUE)}),
+#'   \code{subs} (must all be one of the named sub directories: \code{"tmp"},
+#'    \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
 #'   \code{target_cols}, 
-#'   \code{tmnt_type} (if not \code{NULL}, must be \code{"all"} or 
-#'    \code{"controls"}), 
 #'   \code{treatment} (if not \code{NULL}, must be \code{"control"})
 #'
 #'  Must be \code{data.frame}s, can be any length, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
 #'   \code{all_casts}, 
-#'   \code{cast}, 
+#'   \code{casts}, 
 #'   \code{cast_coc}, 
 #'   \code{cast_tab}, 
-#'   \code{cast_to_check}, 
 #'   \code{casts}, 
 #'   \code{covariates}, 
 #'   \code{df}, 
@@ -152,18 +163,15 @@
 #'   \code{control_cdl},
 #'   \code{controls_m},
 #'   \code{controls_r},
+#'   \code{data_set_controls},
 #'   \code{downloads},
+#'   \code{metadata},
 #'   \code{rodents}.
-#'
-#'  Must be length-2 \code{list}s with elements named \code{"forecast"} 
-#'  and \code{"aic"}., can be \code{NULL}, but 
-#'  cannot be \code{NA}:
-#'   \code{all},
-#'   \code{controls}.
 #'
 #'  Must be length-1 \code{Date}-conformable values, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
 #'   \code{cast_date},
+#'   \code{date}
 #'   \code{end},
 #'   \code{from_date},
 #'   \code{start}.
@@ -181,6 +189,7 @@
 #'
 #'  Must be length-1 \code{integer}-conformable values can be \code{NULL},
 #'  but cannot be \code{NA}:
+#'   \code{cast_id} (must be non-negative),
 #'   \code{end_moon} (must be positive),
 #'   \code{lead} (must be positive),
 #'   \code{lead_time} (must be non-negative),
@@ -188,6 +197,7 @@
 #'   \code{min_observed} (must be positive),
 #'   \code{min_plots} (must be positive),
 #'   \code{min_traps} (must be positive),
+#'   \code{moon} (must be positive),
 #'   \code{ndates} (must be positive),
 #'   \code{newmoonnumber} (must be positive),
 #'   \code{nmoons} (must be non-negative),
@@ -198,10 +208,6 @@
 #'  and can be \code{NA}:
 #'   \code{lag} (must be positive),
 #'   \code{min_lag} (must be non-negative).
-#'
-#'  Must be length-2 \code{integer}-conformable values can be \code{NULL}, 
-#'  but cannot be \code{NA}:
-#'   \code{rangex} (must be positive).
 #'
 #'  Must be \code{integer}-conformable values, can be any length, can be 
 #'  \code{NULL}, but cannot be \code{NA}:
@@ -524,7 +530,6 @@ check_arg_list <- function(){
     cast_date = arg_date(),
     cast_dates = arg_date(NULL),
     cast_tab = arg_df(),
-    cast_to_check = arg_df(),
     cast_type = arg_character(vals = avail_cast_types),
     casts = arg_df(),
     clean = arg_logical(),
@@ -556,7 +561,6 @@ check_arg_list <- function(){
     end = arg_date(),
     end_moon = arg_posintnum(),
     end_moons = arg_posintnum(NULL),
-    ensemble = arg_logical(),
     extension = arg_extension(),
     filename = arg_character(),
     filename_config = arg_character(),
@@ -564,7 +568,6 @@ check_arg_list <- function(){
     filename_cov_casts = arg_character(),
     filename_meta = arg_character(),
     filename_moons = arg_character(),
-    filename_moon_dates = arg_character(),
     files = arg_character(NULL),  
     fillweight = arg_logical(),
     freq = arg_character(),
@@ -608,7 +611,6 @@ check_arg_list <- function(){
     paths = arg_character(NULL),
     plots = arg_character(vals = avail_plots),
     quiet = arg_logical(),
-    rangex = arg_posintnum(2),
     raw_data = arg_character(),
     rec_id = arg_character(NULL),
     rec_version = arg_character(NULL),
@@ -633,7 +635,6 @@ check_arg_list <- function(){
     target_moons = arg_posintnum(NULL),
     target_cols = arg_character(NULL),
     time = arg_character(),
-    topx = arg_nonnegintnum(),
     total = arg_logical(),
     treatment = arg_character(vals = avail_treatments),
     type = arg_character(),

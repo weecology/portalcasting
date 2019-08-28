@@ -1,5 +1,7 @@
 argument order alignment
+arguments im curious if are still being used: interpolate, cast_type
 
+move argument checking from NMME urls to arg check?
 
 to add a model permanently to prefab
 

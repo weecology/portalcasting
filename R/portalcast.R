@@ -22,8 +22,6 @@
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
 #'
-#' @param ensemble \code{logical} indicator if the ensemble should be added.
-#'
 #' @param end_moons,end_moon \code{integer} (or integer \code{numeric}) 
 #'  newmoon number(s) of the last sample(s) to be included. Default value is 
 #'  \code{NULL}, which equates to the most recently included sample. \cr
@@ -154,7 +152,7 @@
 #'
 #' @export
 #'
-portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
+portalcast <- function(main = ".", models = prefab_models(),
                        data_sets = prefab_data_sets(), end_moons = NULL, 
                        lead_time = 12, cast_date = Sys.Date(),
                        start_moon = 217, 
@@ -208,7 +206,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
               filename_config = filename_config,
               filename_cov_casts = filename_cov_casts,
               cleanup = cleanup, arg_checks = arg_checks)
-    cast(main = main, models = models, ensemble = ensemble,
+    cast(main = main, models = models,
          cast_date = cast_date, moons = moons, 
          end_moon = end_moons[i], raw_data = raw_data,
          controls_r = controls_r, 
@@ -223,7 +221,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
 #'
 #' @export
 #'
-cast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
+cast <- function(main = ".", models = prefab_models(), 
                  cast_date = Sys.Date(), moons = NULL, 
                  end_moon = NULL, raw_data = "PortalData",
                  controls_r = rodents_controls(), confidence_level = 0.95, 
