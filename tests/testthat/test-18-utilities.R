@@ -75,10 +75,6 @@ test_that("ifna", {
   expect_equal(ifna(NA, NA), NA)
 })
 
-test_that("messageq", {
-  expect_silent(messageq("ok", TRUE))
-  expect_message(messageq("ok"))
-})
 
 test_that("list_depth", {
   expect_equal(list_depth("a"), 0)
