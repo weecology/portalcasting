@@ -30,6 +30,7 @@ test_that("zenodo_url", {
 })
 
 test_that("name_from_url", {
+  skip_on_cran() # downloads take too long for cran checks
   source_url <- zenodo_url(concept_rec_id = "1215988")
   expect_null(name_from_url(source_url, TRUE))
   expect_equal(name_from_url(source_url), "PortalData")

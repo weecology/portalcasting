@@ -228,7 +228,7 @@ download_destin <- function(name = NULL, source_url, main = ".",
   check_args(arg_checks = arg_checks)
   extension <- file_ext(path = source_url, sep_char = sep_char,
                         arg_checks = arg_checks)
-  folder <- sub_path(main = main, sub = sub, arg_checks = arg_checks)
+  folder <- sub_path(main = main, subs = sub, arg_checks = arg_checks)
   extension2 <- NULL
   if(!is.null(extension)){
     extension2 <- paste0(".", extension)

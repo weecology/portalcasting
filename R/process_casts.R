@@ -1,7 +1,6 @@
 most_recent_cast <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
-  cast_meta <- read_cast_meta(main = main, arg_checks = arg_checks)
-  
+    
 }
 
 
@@ -66,7 +65,7 @@ save_cast_output <- function(cast = NULL, main = ".",
                               QAQC = TRUE, notes = NA)
   cast_meta <- rbind(cast_meta, new_cast_meta)
   meta_path <- file_path(main = main, sub = "casts", 
-                         file = "cast_metadata.csv", arg_checks = arg_checks)
+                         files = "cast_metadata.csv", arg_checks = arg_checks)
   write.csv(cast_meta, meta_path, row.names = FALSE)
 
   if(!is.null(cast$metadata)){
@@ -94,7 +93,7 @@ save_cast_output <- function(cast = NULL, main = ".",
   }
   if(!is.null(cast$casts)){
     casts_filename <- paste0("cast_id_", next_cast_id, "_casts.RData") 
-    casts_path <- file_paths(main = main, sub = "casts", 
+    casts_path <- file_path(main = main, sub = "casts", 
                              files = casts_filename, arg_checks = arg_checks)
     casts <- cast$casts
     save(casts, file = casts_path)

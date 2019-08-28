@@ -239,9 +239,6 @@ prefab_models <- function(){
 #'  
 #' @param data_sets \code{character} vector of the rodent data set names
 #'  that the model is applied to. 
-#'  
-#' @param data_sets \code{character} vector of the rodent data set names
-#'  that the model is applied to. 
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.

@@ -39,6 +39,11 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #' 
+#' @param raw_data \code{character} value indicating the name of the raw
+#'  data directory. A standard portalcasting directory downloads the raw data
+#'  files into from the PortalData repository, so 
+#'  \code{raw_data = "PortalData"}.
+#' 
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
@@ -220,19 +225,10 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #' 
-#' @param raw_data \code{character} value indicating the name of the raw
-#'  data directory. A standard portalcasting directory downloads the raw data
-#'  files into from the PortalData repository, so 
-#'  \code{raw_data = "PortalData"}.
-#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{data.frame} \code{x} with column of \code{newmoonnumber}s 
 #'  added.

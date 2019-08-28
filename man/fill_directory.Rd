@@ -140,8 +140,10 @@ moons data.}
 \item{filename_config}{\code{character} filename of the directory
 configuration YAML.}
 
-\item{filename_cov_casts}{\code{character} value of covariate casts
-file.}
+\item{filename_cov}{\code{character} filename for saving the output.}
+
+\item{filename_cov_casts}{\code{character} filename for saving the 
+covariate casts output.}
 
 \item{filename_meta}{\code{character} filename for saving the metadata.}
 
@@ -152,9 +154,6 @@ subdirectory should be removed at the end of the process.}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
-
-\item{filename_cov_casts}{\code{character} filename for saving the 
-covariate casts output.}
 }
 \value{
 All \code{fill_} functions return \code{NULL}.

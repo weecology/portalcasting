@@ -271,6 +271,7 @@ prep_data <- function(main = ".", end_moon = NULL, models = prefab_models(),
                       save = TRUE, overwrite = TRUE, 
                       filename_moons = "moon_dates.csv",
                       filename_cov = "covariates.csv", 
+                      filename_config = filename_config,
                       filename_cov_casts = "covariate_casts.csv",
                       filename_meta = "metadata.yaml", cleanup = TRUE, 
                       arg_checks = TRUE){

@@ -31,6 +31,11 @@ number of timesteps forward a cast will cover.}
 \item{cast_date}{\code{Date} from which future is defined, typically 
 today's date (set using \code{\link{Sys.Date}}).}
 
+\item{raw_data}{\code{character} value indicating the name of the raw
+data directory. A standard portalcasting directory downloads the raw data
+files into from the PortalData repository, so 
+\code{raw_data = "PortalData"}.}
+
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
 \item{save}{\code{logical} indicator controlling if the output should 

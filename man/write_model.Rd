@@ -47,9 +47,6 @@ is \code{NULL}.}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not. \cr}
-
-\item{data_sets}{\code{character} vector of the rodent data set names
-that the model is applied to.}
 }
 \value{
 \code{write_mode} \code{\link{write}}s the model script out

@@ -50,9 +50,6 @@
 #'  data directory. A standard portalcasting directory downloads the raw data
 #'  files into from the PortalData repository, so 
 #'  \code{raw_data = "PortalData"}.
-#' 
-#' @param filename_cov_casts \code{character} value of covariate casts
-#'  file.
 #'
 #' @param source_name \code{character} value for the name to give the 
 #'  covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -112,6 +109,8 @@
 #'
 #' @param filename_config \code{character} filename of the directory
 #'  configuration YAML.
+#'
+#' @param filename_cov \code{character} filename for saving the output.
 #'
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
