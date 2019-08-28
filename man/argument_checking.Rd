@@ -102,9 +102,6 @@ Argument details used for checking are produced simply via
 
  Must be length-1 \code{character} values, can be \code{NULL}, but cannot 
  be \code{NA}:
-  \code{cast_type} (if not \code{NULL}, can only be of value 
-   \code{"forecast"}, \code{"forecasts"}, \code{"hindcast"}, 
-   or\code{"hindcasts"}), 
   \code{colname}, 
   \code{data_name}, 
   \code{data_set}, 
@@ -152,7 +149,6 @@ Argument details used for checking are produced simply via
   \code{enquote_args}, 
   \code{eval_args}, 
   \code{files}, 
-  \code{local_paths},
   \code{models} (inputted values are checked via 
    \code{\link{verify_models}}), 
   \code{msg}, 
@@ -170,7 +166,6 @@ Argument details used for checking are produced simply via
 
  Must be \code{data.frame}s, can be any length, can be \code{NULL}, 
  but cannot be \code{NA}:
-  \code{all_casts}, 
   \code{casts}, 
   \code{cast_coc}, 
   \code{cast_tab}, 
@@ -232,7 +227,6 @@ Argument details used for checking are produced simply via
   \code{min_traps} (must be positive),
   \code{moon} (must be positive),
   \code{ndates} (must be positive),
-  \code{newmoonnumber} (must be positive),
   \code{nmoons} (must be non-negative),
   \code{start_moon} (must be positive),
   \code{topx} (must be non-negative).

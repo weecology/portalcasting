@@ -25,10 +25,20 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Flexible interface to downloading capacity through a url, with generalized and flexible functions for generating Zenodo API urls (for retrieving the raw data and historical predictions) and NMME API urls (for retrieving weather forecasts) to port into the `download` function. [addresses](https://github.com/weecology/portalcasting/issues/121) and [addresses](https://github.com/weecology/portalcasting/issues/107) and [addresses](https://github.com/weecology/portalcasting/issues/53)
 
 ### Changes for users adding their own models to the prefab set
-* Outlined in the updated [How to](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model](https://weecology.github.io/portalcasting/articles/adding_a_model.html) vignettes.
+* Outlined in the updated [How to](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignettes.
 * Users adding models to the suite should permanently add their model's control options to the source code in `model_script_controls` rather than write their own control functions.
 * Users adding models to the suite should permanently add their model's function code to the `prefab_models` script, rather than to its own script. 
 * Users should still add their model's name to the source code in `model_names`.
+
+### Relaxed model requirements
+* Models are no longer forced to use interpolated data.
+* Models are no longer required to output a rigidly formatted data-table. Presently, the requirement is just a list, but soon some specifications will be added to improve reliability.
+* Outlined in the updated [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignette. 
+
+### More organization via metadata
+* Generalized cast output is now tracked using a unique id in the file name associated with the cast, which is related to a row in a metadata table, newly included here.
+* Additional control information (like data set setup) is sent to the model metadata and saved out.
+* Directory setting up configuration information is now tracked in a `dir_config.yaml` file, which is pulled from to save information about what was used to create, setup, and run the particular casts.
 
 ### Changes for users interested in analyzing their own data sets not in the standard data set configuration
 * Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls") by giving the name in the `data_sets` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_r` argument. 
@@ -65,6 +75,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * `drop_spp` is now changed to `species` (so focus on inclusion, not exclusion). [addresses](https://github.com/weecology/portalcasting/issues/128)
 * Improved examples, also now as `\donttest{}`. [addresses](https://github.com/weecology/portalcasting/issues/127)
 * Tightened testing with `skip_on_cran` used judiciously. [addresses](https://github.com/weecology/portalcasting/issues/124)
+* No longer building the AIC-based ensemble.
+* Default confidence limit is now the more standard 0.95.
 
 # [portalcasting 0.8.1](https://github.com/weecology/portalcasting/releases/tag/v0.8.1)
 *2019-07-11*

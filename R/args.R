@@ -69,9 +69,6 @@
 #'
 #'  Must be length-1 \code{character} values, can be \code{NULL}, but cannot 
 #'  be \code{NA}:
-#'   \code{cast_type} (if not \code{NULL}, can only be of value 
-#'    \code{"forecast"}, \code{"forecasts"}, \code{"hindcast"}, 
-#'    or\code{"hindcasts"}), 
 #'   \code{colname}, 
 #'   \code{data_name}, 
 #'   \code{data_set}, 
@@ -119,7 +116,6 @@
 #'   \code{enquote_args}, 
 #'   \code{eval_args}, 
 #'   \code{files}, 
-#'   \code{local_paths},
 #'   \code{models} (inputted values are checked via 
 #'    \code{\link{verify_models}}), 
 #'   \code{msg}, 
@@ -137,7 +133,6 @@
 #'
 #'  Must be \code{data.frame}s, can be any length, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
-#'   \code{all_casts}, 
 #'   \code{casts}, 
 #'   \code{cast_coc}, 
 #'   \code{cast_tab}, 
@@ -199,7 +194,6 @@
 #'   \code{min_traps} (must be positive),
 #'   \code{moon} (must be positive),
 #'   \code{ndates} (must be positive),
-#'   \code{newmoonnumber} (must be positive),
 #'   \code{nmoons} (must be non-negative),
 #'   \code{start_moon} (must be positive),
 #'   \code{topx} (must be non-negative).
@@ -379,17 +373,6 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
       out2 <- paste0("`", arg_name, "` must be a number between 0 and 1")
       out <- c(out, out2)
     }
-  } else if (deets$class == "castlist"){
-    if(("list" %in% class(arg_value))){
-      if (!all(c("cast", "aic") %in% names(arg_value))){
-        out2 <- paste0("`", arg_name, 
-                       "` must a list with elements named cast and aic")
-        out <- c(out, out2)
-      }
-    } else{
-      out2 <- paste0("`", arg_name, "` must be a list")
-      out <- c(out, out2)
-    }
   } else if (deets$class == "extension"){
     if(("character" %in% class(arg_value))){
       lext <- nchar(arg_value)
@@ -460,11 +443,6 @@ check_arg_list <- function(){
     list(class = "list", null = null, na = na, length = length, 
          vals = vals)
   }
-  arg_castlist <- function(length = NULL, null = TRUE, na = FALSE, 
-                           vals = NULL){
-    list(class = "castlist", null = null, na = na, length = length, 
-         vals = vals)
-  }
   arg_df <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
     list(class = "df", null = null, na = na, length = length, 
          vals = vals)
@@ -504,7 +482,6 @@ check_arg_list <- function(){
   }
 
 
-  avail_cast_types <- c("forecasts", "hindcasts", "forecast", "hindcast")
   avail_outputs <- c("abundance")
   avail_plots <- c("all", "longterm")
   avail_species <- c("BA", "DM", "DO", "DS", "NA", "NA.", "OL", "OT", "PB", 
@@ -519,8 +496,6 @@ check_arg_list <- function(){
     add_in_window = arg_logical(), 
     add_lead = arg_logical(),
     add_obs = arg_logical(),
-    all = arg_castlist(length = 2),
-    all_casts = arg_df(),
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
     cast = arg_cast(),
@@ -530,7 +505,6 @@ check_arg_list <- function(){
     cast_date = arg_date(),
     cast_dates = arg_date(NULL),
     cast_tab = arg_df(),
-    cast_type = arg_character(vals = avail_cast_types),
     casts = arg_df(),
     clean = arg_logical(),
     cleanup = arg_logical(),
@@ -540,7 +514,6 @@ check_arg_list <- function(){
     control = arg_list(),
     control_cdl = arg_list(),
     controls_m = arg_list(),
-    controls = arg_castlist(length = 2),
     controls_r = arg_list(),
     covariates = arg_df(),
     covariatesTF = arg_logical(),
@@ -575,7 +548,6 @@ check_arg_list <- function(){
     hist_cov = arg_df(),
     hist_covariates = arg_logical(),
     hist_tab = arg_df(),
-    in_args = arg_list(),
     interpolate = arg_logical(null = TRUE),
     lag = arg_nonnegintnum(null = TRUE, na = TRUE),
     lat = arg_numeric(),
@@ -583,7 +555,6 @@ check_arg_list <- function(){
     lead_time  = arg_nonnegintnum(),
     lev = arg_intnum(),
     level = arg_character(),
-    local_paths = arg_character(NULL),
     lon = arg_numeric(),
     main = arg_character(),
     metadata = arg_list(),
@@ -602,7 +573,6 @@ check_arg_list <- function(){
     name = arg_character(),
     names = arg_character(NULL),
     ndates = arg_posintnum(),
-    newmoonnumber = arg_posintnum(),
     nmoons = arg_nonnegintnum(),
     NULLname = arg_logical(),
     output = arg_character(vals = avail_outputs),
