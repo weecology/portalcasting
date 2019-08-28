@@ -31,9 +31,13 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Users should still add their model's name to the source code in `model_names`.
 
 ### Changes for users interested in analyzing their own data sets not in the standard data set configuration
-* Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls") by giving the name in the `tmnt_types` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_r` argument. 
+* Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls") by giving the name in the `data_sets` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_r` argument. 
 * In order to actualize this, a user will need to flip off the argument checking (the default in a sandbox setting, if using a standard or production setting, set `arg_checks = FALSE` in the relevant function).
 * Users interested in permanently adding the treatment level to the available data sets should add the source code to the `rodents_controls` function, and the name to the `tmnt_type` argument inputs in function if the user wants to add it to the standard set (or better yet, the next person to add a set should make a function like `model_names` to tidy up the `tmnt_types` options).
+
+### Split of standard data sets 
+* The prefab `all` and `controls` were both default being interpolated for all models because of the use of AIC for model comparison and ensemble building. That forced all models to use interpolated data.
+* Starting in this version, the models are not required to have been fit in the same fashion (due to generalization of comparison and post-processing code), and so interpolation is not required if not needed, and we have split out the data to standard and interpolated versions.
 
 ### Application of specific models to specific data sets now facilitated
 *  `write_model` and `model_template` have a `data_sets` argument that is used to write the code out, replacing the hard code requirement of analyzing "all" and "controls" for every model. Now, users who wish to analyze a particular data component can easily add it to the analysis pipeline. 

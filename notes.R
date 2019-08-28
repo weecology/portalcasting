@@ -1,7 +1,3 @@
-working through tests
-should be mostly up to date with funcitons that are integrated
-except the newest functions need to get added
-
 argument order alignment
 
 

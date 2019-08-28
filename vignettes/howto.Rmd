@@ -27,173 +27,51 @@ Predictions](https://github.com/weecology/portalPredictions) directory.
 
 ### Create a Portal Predictions directory
 
-The `setup_dir()` function creates and populates a standard Portal Predictions
-directory within the present location (by default) that includes `data`,
-`models`, `PortalData`, `predictions` and `tmp` subdirectories. By default,
-`setup_dir()` downloads the most up-to-date version of the 
-[Portal Data from Zenodo](https://zenodo.org/record/2541170)
-into the `PortalData` subdirectory, prepares the moons, rodents, covariates,
-and metadata data files (and places them in the `data` subdirectory), copies 
-the historic covariate forecast data file available in the package 
-(`/inst/extdata/covariate_forecasts.csv`) into the `data` subdirectory, 
-downloads the most recent set of model forecasts into the `predictions` 
-subdirectory and populates the `models` subdirectory with scripts for the five
-existing models ("AutoArima", "ESSS", "nbGARCH", "nbsGARCH", and "pevGARCH").
+The `setup_dir()` function creates and populates a standard Portal Predictions directory within the present location (by default) that includes `tmp`, `raw`, `data`, `models`, and `casts` subdirectories. By default,
+`setup_dir()` downloads the most up-to-date version of the [Portal Data](https://doi.org/10.5281/zenodo.1215988) and [Portal Predictions](https://doi.org/10.5281/zenodo.833438) archives from Zenodo into the `raw` subdirectory, prepares the moons, rodents, covariates, covariate forecast, and metadata data files (and places them in the `data` subdirectory) and populates the `models` subdirectory with scripts for the six
+existing models ("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", and "pevGARCH").
+
+Specialized versions of `setup_dir` are tailored for local model exploration, development, and  testing ("`setup_sandbox`") and for use in the real-deal pipeline ("`setup_production`"). The settings are fairly similar, although `setup_sandbox` has extra rigid argument checking turned off and extra verbose messaging turned on. `setup_dir` provides a good starting point for a user interested in seeing what the package can do, with specific error checking and tidy messaging, so we use it here:
+
+There are many arguments available for the user to tailor the setup of the directory, which can be found on the help page (`?setup_dir`). Perhaps the most important argument is `main` which allows the user to point the directory to any particular location. The default is `main = "."`, which is basically "the present directory". A common implementation would be to create a directory in the home directory of a computer (indicated by `"~"`) and within a named folder, say "portalcast_directory", which would be done with `main = "~/portalcast_directory"`:
 
 ```{r, eval=FALSE}
-setup_dir()
+setup_dir(main = "~/portalcast_directory")
 ```
 
-### Run a "-cast" (forecast or hindcast)
+### Run a cast (forecast or hindcast)
 
-The `portalcast()` function controls the running of potentially multiple 
-models for either a forecast or a hindcast. It will prepare the data 
-(rodents, covariates, newmoons, metadata) as needed, verify that the requested
-models are available to run, run the models, compile the output, and
-generate an ensemble (if desired). Presently, the preloaded model set includes
-[four models](https://weecology.github.io/portalcasting/articles/models.html):
-ESSS, AutoArima, nbGARCH, and pevGARCH. 
+The `portalcast()` function controls the running of potentially multiple models across different data sets for multiple time steps. They can involve what we have classically called "forecasts" (from the present time step) and "hindcast" (from a time step before the current one). It will prepare the data (rodents, covariates, newmoons, metadata) as needed, verify that the requested models are available to run, run the models and compile the output. 
+
+Presently, the preloaded model set includes [six models](https://weecology.github.io/portalcasting/articles/models.html): ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, and pevGARCH. The GARCH models all take a bit longer to run (nbGARCH less time than nbsGARCH less time than pevGARCH), so for the purposes of illustration, we will only run ESS, AutoArima, and NaiveArima models, which we indicate through input to the `models` argument: 
 
 ```{r, eval=FALSE}
-portalcast()
+portalcast(main = "~/portalcast_directory", models = c("ESSS", "AutoArima", "NaiveArima"))
 ```
 
-### Tidy up the temporary files
-
-The `cleanup_dir()` function simply removes the temporary files and folders
-from the directory.
-
-```{r, eval=FALSE}
-cleanup_dir()
-```
-
-### Options
-
-All required inputs to `setup_dir()`, `portalcast()`, and `cleanup_dir()`
-are encompassed within the singular argument `options_all`, which is a 
-hierarchical list of control arguments, defined through the options-setting 
-function `all_options()` and the default values are appropriate for basic 
-forecast usage. There are many options available for the user to control and a full 
-list can be found by running `?all_options`, to return the help file for 
-the functions that generate the hierarchical options list. 
-
-### Loading the model output into an R session
-
-Once the models have finished running, you can read the results back into R
-using `read_cast()`, which loads the most recent model forecast or hindcast,
-or `read_casts()`, which loads all forecasts or hindcasts:
-
-```{r, eval=FALSE}
-cast <- read_cast()
-casts <- read_casts()
-```
-
-Both functions have simple controls for forecasts or hindcasts and which files
-to load based on their date.
-
-### Selecting a subset of model output
-
-The model output that has been loaded can be subset using `select_casts()`,
-which has arguments to allow filtering based on `species`, `level`,
-`model`, and `newmoonnumber`, with the default being to return all values:
-
-```{r, eval=FALSE}
-cast_set <- select_casts(casts, species = "total", model = "Ensemble", level = "All")
-```
-
-### Visualizing the model output
-
-Basic plotting of a single-species forecast can be executed using 
-`plot_cast_ts()`, which defaults to plotting the total abundance for the 
-control plots under the ensemble model, but has arguments to allow full 
-flexibility.
-
-```{r, eval=FALSE}
-plot_cast_ts()
-```
-![Time series plot of the total rodents forecast on the 
-control plots](imgs/plot1.png){width=600px}  
-
-<br>
-
-Similarly, the point-in-time forecasts for multiple species can be compared
-using `plot_cast_point`, which defaults to all species and the total 
-abundance one step ahead for the control plots under the ensemble model,
-but has arguments to allow full flexibility.
-
-```{r, eval=FALSE}
-plot_cast_point()
-```
-![Point-in-time forecast (mean with 90% CI) for all species and total rodents 
-on the control plots](imgs/plot2.png){width=600px}
-  
-<br>
-
-
-It is possible to compare the point-in-time forecasts with observed data
-by setting `with_census = TRUE`: 
-
-```{r, eval=FALSE}
-plot_cast_point(with_census = TRUE)
-```
-![Point-in-time forecast (mean with 90% CI) with observed value (blue) for all 
-species and total rodents on the control plots](imgs/plot3.png){width=600px}
-
-### Visualizing model evaluation
-
-The models are evaluated using a variety of error metrics, which can be plotted
-using `plot_err_lead_spp_mods()` and `plot_cov_RMSE_mod_spp()`. 
-
-`plot_err_lead_spp_mods()` shows the raw forecast error as a function of lead time
-across the combination of species and models:
-
-```{r, eval=FALSE}
-plot_err_lead_spp_mods()
-```
-![Forecast error as a function of lead time for six representative species and total 
-rodents (rows) using four models and the ensemble (columns) produced on three 
-forecast dates (lines)](imgs/plot4.png){width=600px}
-  
-<br>
-  
-The arguments are set up by default to plot a set of recent forecasts for a set 
-of common species in the control plots, but they allow for flexibility.
-
-<br>
-
-Similarly, `plot_cov_RMSE_mod_spp()` displays the coverage and root mean squared 
-error (RMSE) of each model across species:
-
-```{r, eval=FALSE}
-plot_cov_RMSE_mod_spp()
-```
-![Coverage (left column) and root mean squared error (RMSE, right column) for six 
-representative species and total rodents (rows) using four models and the ensemble 
-(x-axis) produced on all available hindcasts (lines)](imgs/plot5.png){width=600px}
-  
-<br>
-
-By default, the function produces a figure using the most recent set of hindcasts for a 
-set of common species in the control plots, but the arguments allow for flexibility,
-including the combination of hindcasts across multiple `cast_dates`.
+If the user does not specify the models, all of the prefab models are run. Note that we need to point `portalcast` to the directory of interest via the `main` argument. This allows us to go between different directories from the same R session with relative ease, but it does mean that `main` is a key argument in nearly all functions. 
 
 ### Reading in data to the R console from the directory
 
-A series of `read_<name>` functions are available for simple loading of the data
-sets into R from the directory. A generalized `read_data` function includes an 
-argument for which data set to load ("all", "controls", "covariates", "moons", 
-or "metadata"), and each of those data sets also has a specific function, such
-as `read_all`.
+A series of `read_<name>` functions are available for simple loading of the data sets into R from the directory. A generalized `read_data` function includes an  argument for which data set to load ("rodents" [and then which specific data set], "covariates", "covariate_casts", "moons", "metadata", or "cast_metadata"), and each of those data sets also has a specific function, such as `read_moons`.
 ```{r, eval=FALSE}
-read_data(data_name = "all")
-read_data(data_name = "controls")
-read_data(data_name = "covariates")
-read_data(data_name = "moons")
-read_data(data_name = "metadata")
+main <- "~/portalcast_directory"
+read_data(main = main, data_name = "rodents")
+read_data(main = main, data_name = "rodents_table", data_set = "all")
+read_data(main = main, data_name = "rodents_table", data_set = "controls")
+read_data(main = main, data_name = "rodents_table", data_set = "all_interp")
+read_data(main = main, data_name = "rodents_table", data_set = "controls_interp")
+read_data(main = main, data_name = "covariates")
+read_data(main = main, data_name = "covariate_casts")
+read_data(main = main, data_name = "moons")
+read_data(main = main, data_name = "metadata")
+read_data(main = main, data_name = "cast_metadata")
 
-read_all()
-read_controls()
-read_covariates()
-read_moons()
-read_metadata()
+read_rodents(main = main)
+read_rodents_table(main = main)
+read_covariates(main = main)
+read_covariate_casts(main = main)
+read_moons(main = main)
+read_metadata(main = main)
+read_cast_metadata(main = main)
 ```

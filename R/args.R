@@ -11,14 +11,14 @@
 #'  \code{character} vector of error messages associated 
 #'  with the specific situation (\code{<fun_name>(<arg_name> = arg_value)})
 #'  if the argument is invalid. \cr \cr
-#'  \code{check_arg_list_maker} produces a list of argument details for 
+#'  \code{check_arg_list} produces a list of argument details for 
 #'  checking within \code{check_arg}. \cr  \cr 
 #'  \strong{\code{check_args} should only be called within a function.}
 #'  \cr \cr
 #'  See \code{Details} for argument-specific rules.
 #'
 #' @details Argument details used for checking are produced simply via
-#'  \code{check_arg_list_maker}. If you are adding to the codebase and use
+#'  \code{check_arg_list}. If you are adding to the codebase and use
 #'  novel arguments, add them to that function's production. \cr
 #'  Each argument should have its own element that is a list with the 
 #'  following elements: \code{class} (\code{character} value of its class), 
