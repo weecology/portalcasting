@@ -1,7 +1,7 @@
-#' @title Download raw components of a forecasting directory
+#' @title Download raw components of a portalcasting directory
 #'
 #' @description This suite of functions manages the downloading and (if 
-#'  needed) unzipping of raw files associated with the forecasting directory.
+#'  needed) unzipping of raw files associated with the directory. \cr \cr
 #'  \code{download} downloads a file from a from a website into the 
 #'  directory, unzipping and cleaning up as needed. \cr \cr
 #'  \code{download_message} creates a customized download message. \cr \cr
@@ -14,7 +14,7 @@
 #'
 #' @param name \code{character} value of the component's name, used to create
 #'  the folder within the raw subdirectory. If left as \code{NULL},
-#'  \code{\link{record_name_from_url}} tries to obtain a name from the URL,
+#'  \code{\link{name_from_url}} tries to obtain a name from the URL,
 #'  unless \code{NULLname} is set to \code{TRUE}.
 #'
 #' @param type \code{character} value representing the type of input. 
@@ -48,6 +48,9 @@
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages).
 #'
+#' @param return_version \code{logical} indicator of whether or not to
+#'  return the version name from the download URL. 
+#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #'
@@ -60,7 +63,7 @@
 #' @param source_url \code{character} value of the URL from which the download
 #'  should occur
 #'
-#' @param specific_sub \code{character} of the name of the subdirectory to
+#' @param sub \code{character} of the name of the subdirectory to
 #'  download to.
 #'
 #' @param sep_char \code{character} value of the separator that delineates
@@ -80,6 +83,9 @@
 #' @details If \code{type = NULL}, it is assumed to be a URL (\emph{i.e.}, 
 #'  \code{type = "url"}).
 #'
+#' @return \code{download}: \code{character} of the name-version of the
+#'  downloads if \code{return_version = TRUE}.
+#'
 #' @examples
 #'  \donttest{
 #'   create_dir()
@@ -96,26 +102,41 @@
 #'
 download <- function(name = NULL, type = NULL, url = NULL, 
                      concept_rec_id = NULL, rec_version = "latest", 
-                     rec_id = NULL, sep_char = ".",
-                     main = ".", specific_sub = "raw", quiet = FALSE, 
+                     rec_id = NULL, sep_char = ".",return_version = TRUE, 
+                     main = ".", sub = "raw", quiet = FALSE, 
                      verbose = FALSE, cleanup = TRUE, NULLname = FALSE, 
                      arg_checks = TRUE){
-  check_args(arg_checks)
-  source_url <- download_url(type, url, concept_rec_id, rec_version, rec_id)
+  check_args(arg_checks = arg_checks)
+  source_url <- download_url(type = type, url = url, 
+                             concept_rec_id = concept_rec_id,
+                             rec_version = rec_version, rec_id = rec_id)
   resp <- GET(source_url)
   stop_for_status(resp)
-  extension <- file_ext(source_url, sep_char)
-  name <- ifnull(name, record_name_from_url(source_url, NULLname))
+  extension <- file_ext(path = source_url, sep_char = sep_char,
+                        arg_checks = arg_checks)
+  name_alt <- name_from_url(url = source_url, NULLname = NULLname,
+                           sep_char = sep_char, arg_checks = arg_checks)
+  name <- ifnull(name, name_alt)
   if(extension == "zip"){
-    specific_sub <- "tmp"
+    sub <- "tmp"
   }
-  destin <- download_destin(name, source_url, main, specific_sub, sep_char)
-  download_message(name, type, source_url, rec_version, quiet, verbose)
+  destin <- download_destin(name = name, source_url = source_url, 
+                            main = main, sub = sub, sep_char = sep_char,
+                            arg_checks = arg_checks)
+  download_message(name = name, type = type, url = source_url, 
+                   rec_version = rec_version, quiet = quiet, 
+                   verbose = verbose, arg_checks = arg_checks)
   download.file(source_url, destin, quiet = !verbose, mode = "wb")
-  extension <- file_ext(source_url, sep_char)
+  extension <- file_ext(path = source_url, sep_char = sep_char,
+                         arg_checks = arg_checks)
   if(extension == "zip"){
-    unzip_download(name, destin, main, cleanup)
+    unzip_download(name = name, zip_destin = destin, main = main, 
+                   cleanup = cleanup, arg_checks = arg_checks)
   } 
+  if(return_version){ 
+    basename(source_url) %>%
+    path_no_ext()
+  }
 }
 
 
@@ -126,8 +147,9 @@ download <- function(name = NULL, type = NULL, url = NULL,
 #'
 unzip_download <- function(name = NULL, zip_destin, main = ".", 
                            cleanup = TRUE, arg_checks = TRUE){
-  check_args(arg_checks)
-  unzip_destins <- unzip_destins(name, zip_destin, main)
+  check_args(arg_checks = arg_checks)
+  unzip_destins <- unzip_destins(name = name, zip_destin = zip_destin, 
+                                 main = main, arg_checks = arg_checks)
   unzip(zip_destin, exdir = unzip_destins$initial)
   file.rename(unzip_destins$with_archive, unzip_destins$final)
   if(cleanup){
@@ -142,14 +164,14 @@ unzip_download <- function(name = NULL, zip_destin, main = ".",
 #'
 unzip_destins <- function(name = NULL, zip_destin, main = ".", 
                           arg_checks = TRUE){
-  check_args(arg_checks)
-  folder <- sub_paths(main, "tmp")
+  check_args(arg_checks = arg_checks)
+  folder <- tmp_path(main = main, arg_checks = arg_checks)
   full <- file.path(folder, name)
   initial <- normalizePath(full, mustWork = FALSE) 
   add_lev <- unzip(zip_destin, list = TRUE)$Name[1]
   full <- file.path(initial, add_lev)
   with_archive <- normalizePath(full, mustWork = FALSE)
-  folder <- sub_paths(main, "raw")
+  folder <- sub_path(main, "raw")
   full <- file.path(folder, name)
   final <- normalizePath(full, mustWork = FALSE)
   list(initial = initial, with_archive = with_archive, final = final)
@@ -162,7 +184,7 @@ unzip_destins <- function(name = NULL, zip_destin, main = ".",
 download_message <- function(name = NULL, type = NULL, url = NULL, 
                              rec_version = NULL, quiet = FALSE, 
                              verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   msg1 <- paste0("  -", name)
   if(is.null(type) || type == "url"){
     msg2 <- paste0(" from ", url)
@@ -184,7 +206,7 @@ download_message <- function(name = NULL, type = NULL, url = NULL,
 download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL, 
                          rec_version = "latest", rec_id = NULL, 
                          arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   type <- ifnull(type, "url")
   type <- tolower(type)
   if(type == "url"){
@@ -201,11 +223,12 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
 #' @export
 #'
 download_destin <- function(name = NULL, source_url, main = ".", 
-                            specific_sub = "raw", sep_char = ".", 
+                            sub = "raw", sep_char = ".", 
                             arg_checks = TRUE){
-  check_args(arg_checks)
-  extension <- file_ext(source_url, sep_char)
-  folder <- sub_paths(main, specific_sub)
+  check_args(arg_checks = arg_checks)
+  extension <- file_ext(path = source_url, sep_char = sep_char,
+                        arg_checks = arg_checks)
+  folder <- sub_path(main = main, sub = sub, arg_checks = arg_checks)
   extension2 <- NULL
   if(!is.null(extension)){
     extension2 <- paste0(".", extension)
@@ -257,9 +280,10 @@ download_destin <- function(name = NULL, source_url, main = ".",
 #'
 zenodo_url <- function(concept_rec_id = NULL, rec_version = "latest",
                             rec_id = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   if(is.null(rec_id)){
-    avail_versions <- zenodo_versions(concept_rec_id)
+    avail_versions <- zenodo_versions(concept_rec_id = concept_rec_id,
+                                      arg_checks = arg_checks)
     if(rec_version == "latest"){
       rec_id <- concept_rec_id
     } else{
@@ -284,7 +308,7 @@ zenodo_url <- function(concept_rec_id = NULL, rec_version = "latest",
 #' @export
 #'
 zenodo_versions <- function(concept_rec_id, arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   url <- paste0("https://zenodo.org/api/records/?size=9999&",
                 "q=conceptrecid:", concept_rec_id, "&all_versions=True")
   res <- GET(url)
@@ -326,19 +350,20 @@ zenodo_versions <- function(concept_rec_id, arg_checks = TRUE){
 #' @examples
 #'  \donttest{
 #'   source_url <- zenodo_url(concept_rec_id = "1215988")
-#'   record_name_from_url(source_url)
+#'   name_from_url(source_url)
 #'  }
 #'
 #' @export
 #'
-record_name_from_url <- function(url, NULLname = FALSE, sep_char = ".", 
+name_from_url <- function(url, NULLname = FALSE, sep_char = ".", 
                                  arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   if(NULLname){
     NULL
   } else{
     fname <- basename(url)
-    fname2 <- path_no_ext(fname, sep_char)
+    fname2 <- path_no_ext(path = fname, sep_char = sep_char, 
+                          arg_checks = arg_checks)
     strsplit(fname2, "-")[[1]][1]
   }
 }
@@ -371,7 +396,7 @@ record_name_from_url <- function(url, NULLname = FALSE, sep_char = ".",
 zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
                              rec_id = NULL, arg_checks = TRUE){
   return_if_null(c(concept_rec_id, rec_id))
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   ndls <- max(c(length(concept_rec_id), length(rec_id)))
   out <- vector("list", length = ndls)
   if(!is.null(concept_rec_id)){
@@ -392,13 +417,12 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
 
 #' @title Verify that the raw data folder exists 
 #'
-#' @description Check that the raw data folder exists.
+#' @description Check that the raw data folder exists
 #'
-#' @param raw_path_data \code{character} value indicating the folder path
-#'  to the data within the \code{raw} subdirectory but above the files where
-#'  the raw data \emph{should} exist. For example, a standard portalcasting 
-#'  directory downloads the raw data files into \code{"raw\PortalData"}, 
-#'  so \code{raw_location_data = "PortalData"} (as \code{"raw/"} is implied). 
+#' @param raw_data \code{character} value indicating the name of the raw
+#'  data directory. A standard portalcasting directory downloads the raw data
+#'  files into from the PortalData repository, so 
+#'  \code{raw_data = "PortalData"}.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -420,11 +444,11 @@ zenodo_downloads <- function(concept_rec_id = NULL, rec_version = "latest",
 #'
 #' @export
 #'
-verify_raw_data <- function(raw_path_data = "PortalData", main = ".", 
+verify_raw_data <- function(main = ".", raw_data = "PortalData", 
                             arg_checks = TRUE){
-  check_args(arg_checks)
-  lpath <- paste0("raw/", raw_path_data)
-  full <- file_paths(main, lpath) 
+  check_args(arg_checks = arg_checks)
+  full <- file_path(main = main, sub = "raw", files = raw_data, 
+                    arg_checks = arg_checks) 
   file.exists(full)
 }
 
@@ -485,7 +509,7 @@ NMME_urls <- function(start = Sys.Date(), end = as.Date("2050-01-01"),
                       freq = "daily",
                       data = c("tasmin", "tasmean", "tasmax", "pr"), 
                       arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   return_if_null(data)
   return_if_null(freq)
   return_if_null(model)

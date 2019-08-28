@@ -4,7 +4,7 @@
 \alias{portalcast}
 \alias{cast}
 \alias{prep_data}
-\title{Forecast or hindcast Portal rodents models}
+\title{Cast Portal rodents models}
 \usage{
 portalcast(main = ".", models = prefab_models(), ensemble = FALSE,
   data_sets = prefab_data_sets(), end_moons = NULL, lead_time = 12,
@@ -124,8 +124,7 @@ covariate forecast. Currently is \code{"current_archive"}. Previous to
 given the source name \code{"retroactive"}.}
 
 \item{append_cast_csv}{\code{logical} indicator controlling if the new 
-cast covariates should be appended to the historical casts for the
-purposes of hindcasting later.}
+cast covariates should be appended to the historical casts for later use.}
 
 \item{controls_m}{Additional controls for models not in the prefab set. 
 \cr 
@@ -195,8 +194,8 @@ covariate lag time used in any model.}
 Results are saved to files, \code{NULL} is returned.
 }
 \description{
-Forecast or hindcast the Portal rodent population data using
- the (updated if needed) data and models in a portalcasting directory. \cr
+Cast the Portal rodent population data using the (updated if 
+ needed) data and models in a portalcasting directory. \cr
  \code{portalcast} wraps around \code{cast} to allow multiple runs of 
  multiple models, with data preparation as needed between runs occurring
  via \code{prep_data}. \cr \cr

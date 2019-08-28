@@ -7,12 +7,12 @@
 \alias{download_message}
 \alias{download_url}
 \alias{download_destin}
-\title{Download raw components of a forecasting directory}
+\title{Download raw components of a portalcasting directory}
 \usage{
 download(name = NULL, type = NULL, url = NULL,
   concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
-  sep_char = ".", main = ".", specific_sub = "raw", quiet = FALSE,
-  verbose = FALSE, cleanup = TRUE, NULLname = FALSE,
+  sep_char = ".", return_version = TRUE, main = ".", sub = "raw",
+  quiet = FALSE, verbose = FALSE, cleanup = TRUE, NULLname = FALSE,
   arg_checks = TRUE)
 
 unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE,
@@ -27,13 +27,13 @@ download_message(name = NULL, type = NULL, url = NULL,
 download_url(type = NULL, url = NULL, concept_rec_id = NULL,
   rec_version = "latest", rec_id = NULL, arg_checks = TRUE)
 
-download_destin(name = NULL, source_url, main = ".",
-  specific_sub = "raw", sep_char = ".", arg_checks = TRUE)
+download_destin(name = NULL, source_url, main = ".", sub = "raw",
+  sep_char = ".", arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the component's name, used to create
 the folder within the raw subdirectory. If left as \code{NULL},
-\code{\link{record_name_from_url}} tries to obtain a name from the URL,
+\code{\link{name_from_url}} tries to obtain a name from the URL,
 unless \code{NULLname} is set to \code{TRUE}.}
 
 \item{type}{\code{character} value representing the type of input. 
@@ -63,10 +63,13 @@ the extension from the file path. Generally, this will be \code{"."},
 but for some API URLs, the extension is actually a query component,
 so the separator may sometimes need to be \code{"="}.}
 
+\item{return_version}{\code{logical} indicator of whether or not to
+return the version name from the download URL.}
+
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{specific_sub}{\code{character} of the name of the subdirectory to
+\item{sub}{\code{character} of the name of the subdirectory to
 download to.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
@@ -96,9 +99,13 @@ download of the zip, which is to be unzipped.}
 \item{source_url}{\code{character} value of the URL from which the download
 should occur}
 }
+\value{
+\code{download}: \code{character} of the name-version of the
+ downloads if \code{return_version = TRUE}.
+}
 \description{
 This suite of functions manages the downloading and (if 
- needed) unzipping of raw files associated with the forecasting directory.
+ needed) unzipping of raw files associated with the directory. \cr \cr
  \code{download} downloads a file from a from a website into the 
  directory, unzipping and cleaning up as needed. \cr \cr
  \code{download_message} creates a customized download message. \cr \cr

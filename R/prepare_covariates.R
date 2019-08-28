@@ -1,7 +1,7 @@
 #' @title Prepare covariate data for casting
 #'
-#' @description Combine the historical and forecast or hindcast covariate 
-#'  data for a model run. See \code{link{prep_hist_covariates}} and
+#' @description Combine the historical and cast covariate data for a model
+#'  run. See \code{link{prep_hist_covariates}} and
 #'  \code{\link{prep_cast_covariates}} for the historical and -casted
 #'  covariate preparation details, respectively.
 #'
@@ -30,14 +30,10 @@
 #' @param cast_covariates \code{logical} indicator whether or not -casted 
 #'   covariates are to be included.
 #'
-#' @param raw_path_archive \code{character} value of the path to the archive
-#'  within the raw sub folder.
+#' @param directory \code{character} value of the directory name.
 #' 
-#' @param raw_cov_cast_file \code{character} value of the path to the
-#'  covariate cast file within \code{raw_path_archive}.
-#'
-#' @param raw_path_cov_cast \code{character} value of the path to the folder
-#'  that holds any downloaded covariate cast files within the raw sub folder.
+#' @param filename_cov_casts \code{character} filename for saving the 
+#'  covariate casts output.
 #'
 #' @param source_name \code{character} value for the name to give the 
 #'   covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -45,8 +41,7 @@
 #'   given the source name \code{"retroactive"}.
 #'
 #' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'   cast covariates should be appended to the historical casts for the
-#'   purposes of hindcasting later.
+#'   cast covariates should be appended to the historical casts later use.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -69,11 +64,7 @@
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not.
 #'
 #' @return \code{data.frame} of historical and -casted covariates, combined
 #'  and saved out to \code{filename} if indicated by \code{save}.
@@ -90,17 +81,16 @@ prep_covariates <- function(main = ".", moons = NULL,
                             end_moon = NULL, lead_time = 12, min_lag = 6, 
                             cast_date = Sys.Date(),
                             hist_covariates = TRUE, cast_covariates = TRUE,
-                            raw_path_archive = "portalPredictions",
-                            raw_cov_cast_file = "data/covariate_casts.csv",
-                            raw_path_cov_cast = "cov_casts", 
+                            directory = "portalPredictions",
                             source_name = "current_archive",
                             append_cast_csv = TRUE, 
                             control_cdl = climate_dl_control(), quiet = TRUE, 
                             verbose = FALSE, save = TRUE, overwrite = TRUE,
                             filename_cov = "covariates.csv", 
+                            filename_cov_casts = "covariate_casts.csv",
                             arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
-  check_args(arg_checks)
   messageq("  -covariate data files", quiet)
   hist_cov <- prep_hist_covariates(main = main, end_moon = end_moon,
                                    quiet = quiet, arg_checks = arg_checks)
@@ -110,9 +100,8 @@ prep_covariates <- function(main = ".", moons = NULL,
                                      end_moon = end_moon, 
                                      lead_time = lead_time, min_lag = min_lag, 
                                      cast_date = cast_date, 
-                                     raw_path_archive = raw_path_archive,
-                                     raw_cov_cast_file = raw_cov_cast_file,
-                                     raw_path_cov_cast = raw_path_cov_cast, 
+                                     directory = directory,
+                                     filename_cov_casts = filename_cov_casts,
                                      source_name = source_name,
                                      append_cast_csv = append_cast_csv, 
                                      control_cdl = control_cdl,
@@ -127,7 +116,8 @@ prep_covariates <- function(main = ".", moons = NULL,
   if (cast_covariates){
     out <- bind_rows(out, cast_cov)
   }
-  data_out(out, main, save, filename_cov, overwrite, !verbose)
+  write_data(dfl = out, main = main, save = save, filename = filename_cov, 
+             overwrite = overwrite, quiet = !verbose, arg_checks = arg_checks)
 }
 
 
@@ -174,14 +164,20 @@ prep_covariates <- function(main = ".", moons = NULL,
 #'   prep_weather_data()
 #'  }
 #'
+#' @name prepare_historical_covariates
+#'
+NULL
+
+#' @rdname prepare_historical_covariates
+#'
 #' @export
 #'
 prep_hist_covariates <- function(main = ".", end_moon = NULL, 
                                  quiet = TRUE, arg_checks = TRUE){
-  check_args(arg_checks)
-  weather_data <- prep_weather_data(main)
-  raw_path <- sub_paths(main, "raw")
-  ndvi_data <- ndvi("newmoon", TRUE, raw_path)
+  check_args(arg_checks = arg_checks)
+  weather_data <- prep_weather_data(main = main, arg_checks = arg_checks)
+  raw_path <- raw_path(main = main, arg_checks = arg_checks)
+  ndvi_data <- ndvi(level = "newmoon", fill = TRUE, path = raw_path)
   out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
   out$source <- "hist"
   colnames(out)[which(colnames(out) == "newmoonnumber")] <- "moon"
@@ -191,15 +187,15 @@ prep_hist_covariates <- function(main = ".", end_moon = NULL,
   data.frame(out)
 }
 
-#' @rdname prep_hist_covariates
+#' @rdname prepare_historical_covariates
 #'
 #' @export
 #'
 prep_weather_data <- function(main = ".", arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
-  raw_path <- sub_paths(main, "raw")
+  raw_path <- raw_path(main = main, arg_checks = arg_checks)
   weather("newmoon", TRUE, raw_path) %>% 
   ungroup() %>%
   select(cols) %>%
@@ -283,7 +279,7 @@ summarize_daily_weather_by_moon <- function(x){
 #'
 lag_covariates <- function(covariates, lag, tail = FALSE, 
                            arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   covariates$moon_lag <- covariates$moon + lag
   
   if(tail == FALSE){

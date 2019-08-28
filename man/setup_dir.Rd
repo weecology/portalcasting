@@ -9,52 +9,43 @@
 setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
   confidence_level = 0.95, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
-  raw_path_casts = "portalPredictions/casts",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts",
-  raw_moons_file = "Rodents/moon_dates.csv",
-  source_name = "current_archive", append_cast_csv = TRUE,
-  controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = climate_dl_control(),
+  cast_covariates = TRUE, directory = "portalPredictions",
+  raw_data = "PortalData", source_name = "current_archive",
+  append_cast_csv = TRUE, controls_m = NULL,
+  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  verbose = FALSE, save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv",
+  filename_config = "dir_config.yaml", filename_cov = "covariates.csv",
+  filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
   end_moon = NULL, lead_time = 12, cast_date = Sys.Date(),
   start_moon = 217, confidence_level = 0.95, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
-  raw_path_casts = "portalPredictions/casts",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts",
-  raw_moons_file = "Rodents/moon_dates.csv",
-  source_name = "current_archive", append_cast_csv = TRUE,
-  controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = climate_dl_control(),
+  cast_covariates = TRUE, directory = "portalPredictions",
+  raw_data = "PortalData", source_name = "current_archive",
+  append_cast_csv = TRUE, controls_m = NULL,
+  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = TRUE, subs = subdirs(), save = TRUE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  verbose = FALSE, save = TRUE, overwrite = TRUE,
+  filename_moons = "moon_dates.csv",
+  filename_config = "dir_config.yaml", filename_cov = "covariates.csv",
+  filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
 setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
   confidence_level = 0.95, hist_covariates = TRUE,
-  cast_covariates = TRUE, raw_path_archive = "portalPredictions",
-  raw_path_data = "PortalData",
-  raw_path_casts = "portalPredictions/casts",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts",
-  raw_moons_file = "Rodents/moon_dates.csv",
-  source_name = "current_archive", append_cast_csv = TRUE,
-  controls_m = NULL, controls_r = rodents_controls(),
-  control_cdl = climate_dl_control(),
+  cast_covariates = TRUE, directory = "portalPredictions",
+  raw_data = "PortalData", source_name = "current_archive",
+  append_cast_csv = TRUE, controls_m = NULL,
+  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, subs = subdirs(), save = TRUE, overwrite = TRUE,
+  verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_config = "dir_config.yaml",
+  filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE,
   arg_checks = FALSE)
 }
@@ -89,29 +80,12 @@ historical covariates are to be included.}
 \item{cast_covariates}{\code{logical} indicator whether or not -casted 
 covariates are to be included.}
 
-\item{raw_path_archive}{\code{character} value of the path to the archive
-within the raw sub folder.}
+\item{directory}{\code{character} value of the directory name.}
 
-\item{raw_path_data}{\code{character} value indicating the folder path
-to the data within the \code{raw} subdirectory but above the files. A 
-standard portalcasting directory downloads the raw data files into 
-\code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
-\code{"raw/"} is implied).}
-
-\item{raw_path_casts}{\code{character} value of the path to the
-casts folder within the raw sub folder (via the archive).}
-
-\item{raw_cov_cast_file}{\code{character} value of the path to the
-covariate cast file within \code{raw_path_archive}.}
-
-\item{raw_path_cov_cast}{\code{character} value of the path to the folder
-that holds any downloaded covariate cast files within the raw sub folder.}
-
-\item{raw_moons_file}{\code{character} value indicating the path
-to the moons data file within \code{raw_path_data}. A standard 
-portalcasting directory downloads the raw data files into 
-\code{"raw\PortalData"}, so 
-\code{raw_moons_file = "Rodents/moon_dates.csv"}.}
+\item{raw_data}{\code{character} value indicating the name of the raw
+data directory. A standard portalcasting directory downloads the raw data
+files into from the PortalData repository, so 
+\code{raw_data = "PortalData"}.}
 
 \item{source_name}{\code{character} value for the name to give the 
 covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -119,8 +93,7 @@ covariate forecast. Currently is \code{"current_archive"}. Previous to
 given the source name \code{"retroactive"}.}
 
 \item{append_cast_csv}{\code{logical} indicator controlling if the new 
-cast covariates should be appended to the historical casts for the
-purposes of hindcasting later.}
+cast covariates should be appended to the historical casts later use.}
 
 \item{controls_m}{Additional controls for models not in the prefab set. 
 \cr 
@@ -156,9 +129,6 @@ quieted.}
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
 
-\item{subs}{\code{character} vector of the names of the sub components of
-the directory tree. Generally shouldn't be changed.}
-
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}
 
@@ -168,7 +138,13 @@ files should be updated (most users should leave as \code{TRUE}).}
 \item{filename_moons}{\code{character} name of the file for saving the 
 data output.}
 
+\item{filename_config}{\code{character} filename of the directory
+configuration YAML.}
+
 \item{filename_cov}{\code{character} filename for saving the output.}
+
+\item{filename_cov_casts}{\code{character} value of covariate casts
+file.}
 
 \item{filename_meta}{\code{character} filename for saving the metadata.}
 

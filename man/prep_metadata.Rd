@@ -2,15 +2,15 @@
 % Please edit documentation in R/prepare_metadata.R
 \name{prep_metadata}
 \alias{prep_metadata}
-\title{Prepare a metadata list}
+\title{Prepare a model-running metadata list}
 \usage{
 prep_metadata(main = ".", models = prefab_models(), data_sets = NULL,
   moons = NULL, rodents = NULL, covariates = NULL, end_moon = NULL,
   lead_time = 12, min_lag = NULL, cast_date = Sys.Date(),
   start_moon = 217, confidence_level = 0.95, controls_r = NULL,
-  controls_m = NULL, quiet = TRUE, verbose = FALSE, save = TRUE,
-  overwrite = TRUE, filename_meta = "metadata.yaml",
-  arg_checks = TRUE)
+  controls_m = NULL, filename_config = "dir_config.yaml",
+  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
+  filename_meta = "metadata.yaml", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -65,6 +65,9 @@ the model from the element \code{name} will be used to name the model's
 \code{list} in the larger \code{list}. If multiple models are added, each
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
+
+\item{filename_config}{\code{character} value of the path to the directory
+config YAML.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

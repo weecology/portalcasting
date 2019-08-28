@@ -4,32 +4,20 @@
 \alias{prefab_models}
 \title{Provide the names of the prefab models}
 \usage{
-prefab_models(models = NULL, arg_checks = TRUE)
-}
-\arguments{
-\item{models}{\code{character} vector of name(s) of model(s) to add to the 
-prefab models.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+prefab_models()
 }
 \value{
 \code{character} vector of model names.
 }
 \description{
 Create a \code{character} vector of the names of the models
- to be included including the pre-fabricated (prefab) models
- (\code{"AutoArima"}, \code{"NaiveArima"}, \code{"ESSS"}, \code{"nbGARCH"},
- \code{"nbsGARCH"}, \code{"pevGARCH"}).
+ to be included including the pre-fabricated (prefab) models, extracting
+ them from the \code{prefab_model_controls} internal function. \cr \cr
+ The currently prefabricated models include \code{"AutoArima"}, 
+ \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, \code{"nbsGARCH"}, 
+ \code{"pevGARCH"}.
 }
 \examples{
  prefab_models()
- prefab_models("model1")
 
 }

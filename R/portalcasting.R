@@ -7,8 +7,8 @@
 #' @importFrom grDevices rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
-#' @importFrom portalr fcast_ndvi find_incomplete_censuses get_future_moons 
-#'  ndvi summarize_rodent_data weather
+#' @importFrom portalr find_incomplete_censuses get_future_moons 
+#'  load_trapping_data ndvi summarize_rodent_data weather
 #' @importFrom readr read_csv
 #' @importFrom rlang !! !!! .data quo quos
 #' @importFrom stats AIC lm na.omit predict qnorm quantile rnorm runif

@@ -102,10 +102,25 @@ Given the number of arguments into
  \code{\link{prep_rodents_table}}, it helps to have a control \code{list}  
  to organize them. \cr \cr
  \code{rodents_controls} produces the \code{list}s for any user-requested
- datasets frp, tje prefab datasets (\code{\link{prefab_data_sets}}) and any 
+ datasets from the prefab datasets (\code{\link{prefab_data_sets}}) and any 
  user-defined sets. \code{\link{rodents_control}} provides a template
  for the controls \code{list} which can be used to define the specific 
  arguments for a user's novel data set.
+}
+\details{
+Any data set that is part of the \code{prefab} rodents data sets 
+ (\code{c("all", "controls", "all_interp", "controls_interp")}) has its 
+ controls already included internally via the non-exported function
+ \code{prefab_rodents_controls}. Users only need to include controls for
+ non-prefab \code{data_sets}. \cr \cr
+ Any user-defined \code{data_sets} that are not included in 
+ \code{controls_r} will throw an error. \cr \cr 
+ If any user-defined \code{controls_r} duplicate any existing controls for
+ the prefab data sets or if \code{controls_r} contains any duplicate named
+ elements, an error will be thrown. \cr \cr
+ Users interested in adding data sets to the prefab rodent data sets
+ should add the controls to the \code{prefab_rodents_controls} 
+ non-exported function found in the \code{prepare_rodents.R} script.
 }
 \examples{
  rodents_controls(c("all", "controls"))

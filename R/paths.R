@@ -50,184 +50,119 @@ path_no_ext <- function(path, sep_char = ".", arg_checks = TRUE){
   sub(for_sub, "\\1", path)
 }
 
-#' @title Define the names of the subdirectories in a forecasting directory
-#'
-#' @description Produces a vector of subdirectory names, which should 
-#'  generally contain the elements
-#'  \code{"casts"}, \code{"models"}, \code{"raw"}, 
-#'  \code{"data"}, and \code{"tmp"}. It is generally not advised to change
-#'  the subdirectory structure at this time.
-#'
-#' @param subs_names Either [1] names of additional subdirectories to add to
-#'  the vector set up by \code{type} or [2] an optional way to input all 
-#'  subdirectory names (requires \code{subs_type = NULL}). 
-#'
-#' @param subs_type \code{character} name for quick generation of subdirectory
-#'  vector. Presently only defined for \code{"prefab"}, or the setting
-#'  \code{NULL} which allows for complete customization.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return \code{character} vector of subdirectory names.
-#'
-#' @examples
-#'  subdirs()
-#'
-#' @export
-#'
-subdirs <- function(subs_names = NULL, subs_type = "prefab", 
-                    arg_checks = TRUE){
-  check_args(arg_checks)
-  if (!is.null(subs_type)){
-    if (subs_type == "prefab"){
-      pc_subs <- c("casts", "models", "raw", "data", "tmp")
-      subs_names <- c(subs_names, pc_subs)
-      subs_names <- unique(subs_names)
-    }
-  }
-  subs_names
-}
 
 #' @title Determine the path for a specific level of a forecasting directory
 #'
 #' @description Produce paths for a forecasting directory. \cr \cr
-#'   \code{main_path} returns the path for the \code{main} folder. \cr \cr
-#'   \code{sub_paths} returns the path for the \code{subs} folders. \cr \cr
+#'  \code{main_path} returns the path for the \code{main} folder. \cr \cr
+#'  \code{sub_path} returns the path(s) for the \code{sub} folder(s). \cr \cr
+#'  \code{file_path} returns the path(s) for the \code{files}. \cr \cr
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #'
-#' @param subs \code{character} vector of the names of the sub components of
-#'  the directory tree. 
+#' @param sub,subs \code{character} of the name(s) of the sub component(s) of
+#'  the directory tree to get the path of. \code{sub} can only take a single
+#'  value, \code{subs} can take a vector of multiple values.
 #'
-#' @param specific_subs \code{character}-value name of the specific 
-#'   subdirectory/subdirectories of interest, or \code{NULL} (default)
-#'   for all.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return \code{character} value normalized paths 
-#'   (see \code{\link{normalizePath}}) . \cr \cr
-#'   \code{main_path} normalized path of the \code{main} folder. \cr \cr
-#'   \code{subs_paths} normalized paths of the \code{subs} folders. \cr \cr
-#' 
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   main_path()
-#'   sub_paths()
-#'   sub_paths(specific_subs = "models")
-#'  }
-#'
-#' @export
-#'
-main_path <- function(main = ".", arg_checks = TRUE){
-  check_args(arg_checks)
-  fpath <- file.path(main)
-  normalizePath(fpath, mustWork = FALSE)
-}
-
-#' @rdname main_path
-#'
-#' @export
-#'
-sub_paths <- function(main = ".", specific_subs = NULL, subs = subdirs(), 
-                      arg_checks = TRUE){
-  check_args(arg_checks)
-  if (!is.null(specific_subs) && (!all(specific_subs %in% subs))){
-    stop("some `specific_subs` not in `subs`")
-  }
-  if (is.null(specific_subs)){
-    specific_subs <- subs
-  }
-  fpath <- file.path(main, specific_subs)
-  normalizePath(fpath, mustWork = FALSE)
-}
-
-#' @title Determine the path for one or more models in the model sub directory
-#'
-#' @description Return the normalized path(s) for a specific model or models.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#'
-#' @param models \code{character} name of the specific model(s).
-#'
-#' @param extension \code{character} file extension (including the period).
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return The normalized path of the specified model script (see 
-#'   \code{\link{normalizePath}}) or \code{NULL} if \code{models = NULL}. 
-#' 
-#' @examples
-#'  model_paths(models = "AutoArima")
-#'
-#' @export
-#'
-model_paths <- function(main = ".", models = NULL, extension = ".R", 
-                        arg_checks = TRUE){
-  check_args(arg_checks)
-  return_if_null(models)
-  sub <- "models"
-  mod <- paste0(models, extension)
-  fpath <- file.path(main, sub, mod)
-  normalizePath(fpath, mustWork = FALSE)
-}
-
-#' @title Determine the path for a file or files in the forecasting directory
-#'
-#' @description Return the normalized path for a specific file or files 
-#'   within the directory. 
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#'
-#' @param local_paths \code{character} file path(s) within the \code{main}
+#' @param files \code{character} file path(s) within the \code{main}
 #'   level of the portalcasting directory.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not.
 #'
-#' @return The normalized path(s) of the specified file(s) (see 
-#'   \code{\link{normalizePath}}) or \code{NULL} if \code{local_paths = NULL}. 
+#' @return \code{character} value normalized paths 
+#'  (see \code{\link{normalizePath}}) . \cr \cr
+#'  \code{main_path} normalized path of the \code{main} folder. \cr \cr
+#'  \code{subs_path} normalized paths of the \code{sub} folder(s). \cr \cr
+#'  \code{file_path} normalized paths of the \code{files}. 
 #' 
 #' @examples
-#'  file_paths(local_paths = "PortalData/Rodents/Portal_rodent_species.csv")
+#'  \donttest{
+#'   create_dir()
+#'   main_path()
+#'   sub_path()
+#'   sub_path(subs = "models")
+#'   file_path(".", "raw", "PortalData/Rodents/Portal_rodent_species.csv")
+#'  }
+#'
+#' @name paths
+#'
+NULL
+
+#' @rdname paths
 #'
 #' @export
 #'
-file_paths <- function(main = ".", local_paths = NULL, arg_checks = TRUE){
-  return_if_null(local_paths)
+main_path <- function(main = ".", arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  fpath <- file.path(main)
+  normalizePath(fpath, mustWork = FALSE)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+sub_path <- function(main = ".", subs = NULL, arg_checks = TRUE){
   check_args(arg_checks)
-  return_if_null(local_paths)
-  fpath <- file.path(main, local_paths)
+  return_if_null(subs)
+  fpath <- file.path(main, subs)
+  normalizePath(fpath, mustWork = FALSE)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+raw_path <- function(main = ".", arg_checks = TRUE){
+  sub_path(main = main, sub = "raw", arg_checks = arg_checks)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+casts_path <- function(main = ".", arg_checks = TRUE){
+  sub_path(main = main, sub = "casts", arg_checks = arg_checks)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+data_path <- function(main = ".", arg_checks = TRUE){
+  sub_path(main = main, sub = "data", arg_checks = arg_checks)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+models_path <- function(main = ".", arg_checks = TRUE){
+  sub_path(main = main, sub = "models", arg_checks = arg_checks)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+tmp_path <- function(main = ".", arg_checks = TRUE){
+  sub_path(main = main, sub = "tmp", arg_checks = arg_checks)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+file_path <- function(main = ".", sub = NULL, files = NULL, 
+                       arg_checks = TRUE){
+  check_args(arg_checks)
+  return_if_null(files)
+  sub <- ifnull(sub, "")
+  fpath <- file.path(main, sub, files)
+
   normalizePath(fpath, mustWork = FALSE)
 }

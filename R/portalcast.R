@@ -1,7 +1,7 @@
-#' @title Forecast or hindcast Portal rodents models
+#' @title Cast Portal rodents models
 #'
-#' @description Forecast or hindcast the Portal rodent population data using
-#'  the (updated if needed) data and models in a portalcasting directory. \cr
+#' @description Cast the Portal rodent population data using the (updated if 
+#'  needed) data and models in a portalcasting directory. \cr
 #'  \code{portalcast} wraps around \code{cast} to allow multiple runs of 
 #'  multiple models, with data preparation as needed between runs occurring
 #'  via \code{prep_data}. \cr \cr
@@ -91,8 +91,7 @@
 #'   given the source name \code{"retroactive"}.
 #'
 #' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'   cast covariates should be appended to the historical casts for the
-#'   purposes of hindcasting later.
+#'   cast covariates should be appended to the historical casts for later use.
 #'
 #' @param controls_m Additional controls for models not in the prefab set. 
 #'  \cr 
@@ -308,8 +307,8 @@ prep_data <- function(main = ".", end_moon = NULL,
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
-  hindcast <- !(end_moon == last_moon)
-  if (!date_current | !moon_match | hindcast){
+  old_moon <- !(end_moon == last_moon)
+  if (!date_current | !moon_match | old_moon){
     fill_data(main = main, 
               end_moon = end_moon, lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 

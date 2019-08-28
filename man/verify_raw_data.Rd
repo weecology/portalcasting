@@ -4,18 +4,17 @@
 \alias{verify_raw_data}
 \title{Verify that the raw data folder exists}
 \usage{
-verify_raw_data(raw_path_data = "PortalData", main = ".",
+verify_raw_data(main = ".", raw_data = "PortalData",
   arg_checks = TRUE)
 }
 \arguments{
-\item{raw_path_data}{\code{character} value indicating the folder path
-to the data within the \code{raw} subdirectory but above the files where
-the raw data \emph{should} exist. For example, a standard portalcasting 
-directory downloads the raw data files into \code{"raw\PortalData"}, 
-so \code{raw_location_data = "PortalData"} (as \code{"raw/"} is implied).}
-
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{raw_data}{\code{character} value indicating the name of the raw
+data directory. A standard portalcasting directory downloads the raw data
+files into from the PortalData repository, so 
+\code{raw_data = "PortalData"}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
@@ -27,7 +26,7 @@ formatted correctly and provides directed error messages if not.}
  exists.
 }
 \description{
-Check that the raw data folder exists.
+Check that the raw data folder exists
 }
 \examples{
  \donttest{

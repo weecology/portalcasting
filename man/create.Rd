@@ -2,40 +2,71 @@
 % Please edit documentation in R/create_dir.R
 \name{create}
 \alias{create}
-\title{Create a specific folder}
+\alias{create_dir}
+\alias{create_main}
+\alias{create_subs}
+\title{Create the structure of a forecasting directory}
 \usage{
-create(path = NULL, dir_level = NULL, quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+create_dir(main = ".", filename_config = "dir_config.yaml",
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+
+create_main(main = ".", quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
+
+create_subs(main = ".", quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
-\item{path}{\code{character} vector of the folder paths.}
+\item{main}{\code{character} value of the name of the main component of
+the directory tree. Default value (\code{"."}) puts the forecasting
+directory in the present locations. Nesting the forecasting directory
+in a folder can be done by simply adding to the \code{main} input (see
+\code{Examples}).}
 
-\item{dir_level}{\code{character} vector of the names of the levels in the
-hierarchy at which the folders will exist or the folder names. For the
-purposes of messaging and not inherently required to be non-\code{NULL}.}
+\item{filename_config}{\code{character} value of the path to the directory
+config YAML.}
 
-\item{quiet}{\code{logical} indicator if messages should be quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or not (and thus just the tidy messages).}
+all of the information or just tidy messages.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr}
+formatted correctly and provides directed error messages if not.}
 }
 \value{
-\code{NULL}.
+All \code{create_} functions return \code{NULL}.
 }
 \description{
-If folders (specified by \code{path} and named by
- \code{level}) do not exist, they are created, with a message or not as
- indicated by \code{quiet}.
+This suite of functions creates the necessary folder structure
+ for a forecasting directory as well as a YAML file that tracks the
+ setup configurations. At each level of the hierarchy, the more
+ basal folders are required to be present (verified using 
+ \code{\link{verify}}) and the relevant folders at that level are created 
+ if not present (using \code{\link{create}}). \cr \cr
+ \code{create_dir} creates a full directory or any missing parts
+ and writes the configuration file at \code{filename_config} using
+ \code{\link{write_directory_config}}. \cr \cr
+ \code{create_main} creates the main folder of the directory.\cr \cr
+ \code{create_subs} creates the sub folders of the directory 
+ (\code{tmp}, \code{raw}, \code{data}, \code{models}, and \code{casts}).
+}
+\details{
+Folder paths are created internally using  
+ \code{\link{main_path}} and \code{\link{sub_paths}}, such that the user 
+ only needs to input the main folder's standard \code{main} name input. \cr
+ The subdirectories are presently hardcoded.
 }
 \examples{
  \donttest{
-  main <- main_path()
-  create(main, "main")
+  create_dir()
+  create_dir(main = "./main_folder")
+  create_dir(main = ".\\\\main_folder")
+  create_main()
+  create_subs()
  }
 
 }

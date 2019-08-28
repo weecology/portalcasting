@@ -16,10 +16,9 @@ the directory tree.}
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
 \item{data_sets}{\code{character} values of the treatment 
-types (currently defaults to 
-\code{prefab_data_sets = c("all", "all_interp", "controls", 
-  "controls_interp"}).
-Used to set arguments in for \code{\link{prep_rodents_table}}.}
+types. If left as \code{NULL} (default), it is replaced with
+the output from \code{\link{prefab_data_sets}}. \cr
+Used to set arguments for \code{\link{prep_rodents_table}}.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 

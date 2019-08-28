@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_models.R
 \name{verify_models}
 \alias{verify_models}
-\title{Verify that models requested to forecast or hindcast with exist}
+\title{Verify that models requested to cast with exist}
 \usage{
 verify_models(main = ".", models = prefab_models(), quiet = FALSE,
   arg_checks = TRUE)

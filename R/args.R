@@ -1,6 +1,9 @@
 #' @title Check a function's arguments' values for validity
 #'
-#' @description \code{check_args} checks that all of the arguments to a given
+#' @description Provides toggle-able argument checking for nearly all 
+#'  functions in the codebase (save a few utilities), that can be turned off
+#'  to facilitate sandboxing or kept on to support reliability. \cr \cr
+#'  \code{check_args} checks that all of the arguments to a given
 #'  function have valid values within the pipeline to avoid naming collision
 #'  and improper formatting, by wrapping around \code{check_arg} for each
 #'  argument. \cr \cr
@@ -226,6 +229,12 @@
 #'  check_arg("end_moon", 400)
 #'  check_arg("end_moon", 399.5)
 #'
+#' @name argument_checking
+#'
+NULL
+
+#' @rdname argument_checking
+#'
 #' @export
 #'
 check_args <- function(arg_checks = TRUE){
@@ -282,7 +291,7 @@ check_args <- function(arg_checks = TRUE){
   }
 }
 
-#' @rdname check_args
+#' @rdname argument_checking
 #'
 #' @export
 #'
@@ -419,7 +428,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
 
 
 
-#' @rdname check_args
+#' @rdname argument_checking
 #'
 #' @export
 #'
@@ -492,8 +501,10 @@ check_arg_list <- function(){
   avail_cast_types <- c("forecasts", "hindcasts", "forecast", "hindcast")
   avail_outputs <- c("abundance")
   avail_plots <- c("all", "longterm")
-  avail_species <- rodent_species(total = TRUE)
-  avail_subs_types <- c("prefab")
+  avail_species <- c("BA", "DM", "DO", "DS", "NA", "NA.", "OL", "OT", "PB", 
+                     "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", 
+                     "RO", "SF", "SH", "SO", "total")
+  avail_subs <- c("casts", "models", "raw", "data", "tmp")
   avail_treatments <- c("control")
   avail_winners <- c("hist", "cast")
 
@@ -534,11 +545,12 @@ check_arg_list <- function(){
     data_sets = arg_character(NULL),
     date = arg_date(),
     dates = arg_date(NULL),
-    dir_level = arg_character(NULL),
     df = arg_df(),
     dfl = arg_dfl(),
     dfv = arg_dfv(),
+    directory = arg_character(),
     downloads = arg_list(),
+    downloads_versions = arg_character(NULL),
     effort = arg_logical(),
     end = arg_date(),
     end_moon = arg_posintnum(),
@@ -546,9 +558,12 @@ check_arg_list <- function(){
     ensemble = arg_logical(),
     extension = arg_extension(),
     filename = arg_character(),
+    filename_config = arg_character(),
     filename_cov = arg_character(),
+    filename_cov_casts = arg_character(),
     filename_meta = arg_character(),
     filename_moons = arg_character(),
+    filename_moon_dates = arg_character(),
     files = arg_character(NULL),  
     fillweight = arg_logical(),
     freq = arg_character(),
@@ -583,26 +598,21 @@ check_arg_list <- function(){
     names = arg_character(NULL),
     ndates = arg_posintnum(),
     newmoonnumber = arg_posintnum(),
-    nindent = arg_nonnegintnum(),
     nmoons = arg_nonnegintnum(),
     NULLname = arg_logical(),
     output = arg_character(vals = avail_outputs),
     overwrite = arg_logical(),
-    path = arg_character(NULL),
+    path = arg_character(),
+    paths = arg_character(NULL),
     plots = arg_character(vals = avail_plots),
     quiet = arg_logical(),
     rangex = arg_posintnum(2),
-    raw_cov_cast_file = arg_character(),
-    raw_moons_file = arg_character(),
-    raw_path_archive = arg_character(),
-    raw_path_cov_cast = arg_character(),
-    raw_path_casts = arg_character(),
-    raw_path_data = arg_character(),
-    raw_traps_file = arg_character(),
+    raw_data = arg_character(),
     rec_id = arg_character(NULL),
     rec_version = arg_character(NULL),
     ref_species = arg_character(NULL),
     retain_target_moons = arg_logical(),
+    return_version = arg_logical(),
     rodents = arg_list(),
     rodents_tab = arg_df(),
     save = arg_logical(),
@@ -613,13 +623,10 @@ check_arg_list <- function(){
     source_url = arg_character(),
     species = arg_character(NULL, vals = avail_species),
     species_id = arg_character(vals = avail_species),
-    specific_sub = arg_character(),
-    specific_subs = arg_character(NULL),
     start = arg_date(),
     start_moon = arg_posintnum(),
-    subs = arg_character(NULL),
-    subs_names = arg_character(NULL),
-    subs_type = arg_character(vals = avail_subs_types),
+    sub = arg_character(vals = avail_subs),
+    subs = arg_character(NULL, vals = avail_subs),
     tail = arg_logical(),
     target_moons = arg_posintnum(NULL),
     target_cols = arg_character(NULL),

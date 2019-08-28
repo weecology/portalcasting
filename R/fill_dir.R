@@ -1,6 +1,15 @@
 #' @title Fill a forecasting directory with basic components.
 #'
-#' @description Fill the forecasting directory with basic components.
+#' @description Fill the directory with foundational components. \cr \cr
+#'  \code{fill_dir} combines \code{fill_raw}, \code{fill_casts},
+#'   \code{fill_models}, and \code{fill_data}.
+#'  \code{fill_raw} downloads the raw data and archive and updates the 
+#'   directory configuration metadata accordingly. \cr \cr
+#'  \code{fill_casts} moves the historic casts from the archive into the 
+#'   current directory. \cr \cr
+#'  \code{fill_models} writes out the model scripts to the models
+#'   subdirectory. \cr \cr
+#'  \code{fill_data} prepares model-ready data from the raw data.
 #'
 #' @details Arguments input directly here take precedence over those in the 
 #'  \code{downloads} \code{list}.
@@ -38,30 +47,18 @@
 #' @param cast_covariates \code{logical} indicator whether or not -casted 
 #'  covariates are to be included.
 #'
-#' @param raw_path_archive \code{character} value of the path to the archive
-#'  within the raw sub folder.
+#' @param directory \code{character} value of the directory name.
 #' 
-#' @param raw_path_data \code{character} value indicating the folder path
-#'  to the data within the \code{raw} subdirectory but above the files. A 
-#'  standard portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
-#'  \code{"raw/"} is implied). 
+#' @param raw_data \code{character} value indicating the name of the raw
+#'  data directory. A standard portalcasting directory downloads the raw data
+#'  files into from the PortalData repository, so 
+#'  \code{raw_data = "PortalData"}.
 #' 
-#' @param raw_path_casts \code{character} value of the path to the
-#'  casts folder within the raw sub folder (via the archive). Has internal
-#'  capacity to check for old naming schemes. 
-#' 
-#' @param raw_cov_cast_file \code{character} value of the path to the
-#'  covariate cast file within \code{raw_path_archive}.
+#' @param filename_cov_casts \code{character} value of covariate casts
+#'  file.
 #'
-#' @param raw_path_cov_cast \code{character} value of the path to the folder
-#'  that holds any downloaded covariate cast files within the raw sub folder.
-#'
-#' @param raw_moons_file \code{character} value indicating the path
-#'  to the moons data file within \code{raw_path_data}. A standard 
-#'  portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so 
-#'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
+#' @param filename_config \code{character} filename of the directory
+#'  configuration YAML.
 #'
 #' @param source_name \code{character} value for the name to give the 
 #'  covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -69,8 +66,7 @@
 #'  given the source name \code{"retroactive"}.
 #'
 #' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'  cast covariates should be appended to the historical casts for the
-#'  purposes of hindcasting later.
+#'  cast covariates should be appended to the historical casts later use.
 #'
 #' @param controls_m Additional controls for models not in the prefab set. 
 #'  \cr 
@@ -100,6 +96,10 @@
 #' @param downloads \code{list} of arguments to pass to \code{\link{download}}
 #'  for raw file downloading. 
 #'
+#' @param downloads_versions \code{character} vector returned from 
+#'  \code{fill_raw} of the successfully downloaded versions of
+#'  \code{downloads}.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -113,11 +113,18 @@
 #'  files should be updated (most users should leave as \code{TRUE}).
 #'
 #' @param filename_moons \code{character} name of the file for saving the 
-#'  data output.
+#'  moons data.
 #'
-#' @param filename_cov \code{character} filename for saving the output.
+#' @param filename_cov \code{character} filename for saving the covariates
+#'  used in the modeling.
+#'
+#' @param filename_cov_casts \code{character} filename for saving the 
+#'  covariate casts output.
 #'
 #' @param filename_meta \code{character} filename for saving the metadata.
+#'
+#' @param filename_config \code{character} filename of the directory
+#'  configuration YAML.
 #'
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
@@ -127,7 +134,7 @@
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
-#' @return All \code{fill_} functions return \code{NULL}.
+#' @return All \code{fill_} functions return \code{NULL}. 
 #'
 #' @examples
 #'  \donttest{
@@ -139,6 +146,12 @@
 #'   fill_data()
 #'  }
 #'
+#' @name fill_directory
+#'
+NULL
+
+#' @rdname fill_directory
+#'
 #' @export
 #'
 fill_dir <- function(main = ".", models = prefab_models(), 
@@ -147,12 +160,8 @@ fill_dir <- function(main = ".", models = prefab_models(),
                      start_moon = 217, 
                      confidence_level = 0.95, 
                      hist_covariates = TRUE, cast_covariates = TRUE,
-                     raw_path_archive = "portalPredictions",
-                     raw_path_data = "PortalData",
-                     raw_path_casts = "portalPredictions/casts",
-                     raw_cov_cast_file = "data/covariate_casts.csv",
-                     raw_path_cov_cast = "cov_casts", 
-                     raw_moons_file = "Rodents/moon_dates.csv",
+                     directory = "portalPredictions",
+                     raw_data = "PortalData",
                      source_name = "current_archive",
                      append_cast_csv = TRUE, controls_m = NULL,
                      controls_r = rodents_controls(),
@@ -160,41 +169,45 @@ fill_dir <- function(main = ".", models = prefab_models(),
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, verbose = FALSE, save = TRUE,
                      overwrite = TRUE, filename_moons = "moon_dates.csv",
+                     filename_config = "dir_config.yaml", 
                      filename_cov = "covariates.csv", 
-                     filename_meta = "metadata.yaml", cleanup = TRUE, 
+                     filename_cov_casts = "covariate_casts.csv",
+                     filename_meta = "metadata.yaml", 
+                     cleanup = TRUE, 
                      arg_checks = TRUE){
   check_args(arg_checks)
-  messageq(paste0("Filling directory with standard content"), quiet)
-
+  messageq("Filling directory with standard content", quiet)
   fill_raw(main = main, downloads = downloads, quiet = quiet, 
            cleanup = cleanup, arg_checks = arg_checks)
-  fill_casts(main = main, raw_path_casts = raw_path_casts, 
-                   quiet = quiet, verbose = verbose, overwrite = overwrite,
-                   arg_checks = arg_checks)
+  fill_casts(main = main, directory = directory, quiet = quiet,  
+             verbose = verbose, overwrite = overwrite,
+             arg_checks = arg_checks)
   fill_models(main = main, models = models, controls_m = controls_m, 
-                   quiet = quiet, verbose = verbose, overwrite = overwrite,
-                   arg_checks = arg_checks)
+              quiet = quiet, verbose = verbose, overwrite = overwrite,
+              arg_checks = arg_checks)
   fill_data(main = main, models = models, 
             end_moon = end_moon, lead_time = lead_time, 
             cast_date = cast_date, start_moon = start_moon, 
             confidence_level = confidence_level, 
             hist_covariates = hist_covariates, 
             cast_covariates = cast_covariates,
-            raw_path_archive = raw_path_archive,
-            raw_path_data = raw_path_data,
-            raw_cov_cast_file = raw_cov_cast_file,
-            raw_path_cov_cast = raw_path_cov_cast, 
-            raw_moons_file = raw_moons_file, source_name = source_name,
+            directory = directory,
+            raw_data = raw_data,
+            source_name = source_name,
             append_cast_csv = append_cast_csv, controls_r = controls_r,
             controls_m = controls_m, control_cdl = control_cdl, 
             downloads = downloads, 
             quiet = quiet, verbose = verbose, save = save,
             overwrite = overwrite, filename_moons = filename_moons,
             filename_cov = filename_cov, filename_meta = filename_meta,
+            filename_cov_casts = filename_cov_casts, 
+            filename_config = filename_config,
             cleanup = cleanup, arg_checks = arg_checks)
 }
 
-#' @rdname fill_dir
+
+
+#' @rdname fill_directory
 #'
 #' @export
 #'
@@ -203,11 +216,8 @@ fill_data <- function(main = ".", models = prefab_models(),
                       cast_date = Sys.Date(), start_moon = 217, 
                       confidence_level = 0.95, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
-                      raw_path_archive = "portalPredictions",
-                      raw_path_data = "PortalData",
-                      raw_cov_cast_file = "data/covariate_casts.csv",
-                      raw_path_cov_cast = "cov_casts", 
-                      raw_moons_file = "Rodents/moon_dates.csv",
+                      directory = "portalPredictions",
+                      raw_data = "PortalData",
                       source_name = "current_archive",
                       append_cast_csv = TRUE, 
                       controls_r = rodents_controls(), 
@@ -218,22 +228,25 @@ fill_data <- function(main = ".", models = prefab_models(),
                       overwrite = TRUE, 
                       filename_moons = "moon_dates.csv",
                       filename_cov = "covariates.csv",
+                      filename_cov_casts = "covariate_casts.csv",
                       filename_meta = "metadata.yaml",
+                      filename_config = "dir_config.yaml", 
                       cleanup = TRUE, arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   min_lag <- extract_min_lag(models = models, controls_m = controls_m, 
                              arg_checks = arg_checks)
   data_sets <- extract_data_sets(models = models, controls_m = controls_m, 
                                  arg_checks = arg_checks)
 
-  raw_data_present <- verify_raw_data(raw_path_data, main)
+  raw_data_present <- verify_raw_data(main = main, raw_data = raw_data, 
+                                      arg_checks = arg_checks)
   if(!raw_data_present){
-    fill_raw(downloads, main, quiet, cleanup)
+    fill_raw(main = main, downloads = downloads, quiet = quiet, 
+             cleanup = cleanup, arg_checks = arg_checks)
   }
   messageq(" -Adding data files to data subdirectory", quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
-                       cast_date = cast_date, raw_path_data = raw_path_data,
-                       raw_moons_file = raw_moons_file,
+                       cast_date = cast_date, raw_data = raw_data,
                        quiet = quiet, verbose = verbose,
                        save = save, overwrite = overwrite, 
                        filename_moons = filename_moons, 
@@ -241,17 +254,14 @@ fill_data <- function(main = ".", models = prefab_models(),
   data_r <- prep_rodents(main = main, moons = data_m, 
                          data_sets = data_sets, end_moon = end_moon, 
                          start_moon = start_moon, controls_r = controls_r,
-                         quiet = quiet, save = save, overwrite = overwrite, 
-                         arg_checks = arg_checks)
-
+                         quiet = quiet, verbose = verbose, save = save, 
+                         overwrite = overwrite, arg_checks = arg_checks)
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
                             lead_time = lead_time, min_lag = min_lag, 
                             cast_date = cast_date, 
                             hist_covariates = hist_covariates, 
                             cast_covariates = cast_covariates,
-                            raw_path_archive = raw_path_archive,
-                            raw_cov_cast_file = raw_cov_cast_file,
-                            raw_path_cov_cast = raw_path_cov_cast, 
+                            directory = directory,
                             source_name = source_name,
                             append_cast_csv = append_cast_csv, 
                             control_cdl = control_cdl,
@@ -264,22 +274,24 @@ fill_data <- function(main = ".", models = prefab_models(),
                 lead_time = lead_time, min_lag = min_lag, 
                 cast_date = cast_date, start_moon = start_moon, 
                 confidence_level = confidence_level, 
-                controls_r = controls_r, quiet = quiet, save = save, 
+                controls_r = controls_r,  
+                quiet = quiet, save = save, 
                 overwrite = overwrite, filename_meta = filename_meta, 
+                filename_config = filename_config,
                 arg_checks = arg_checks)
 
   invisible(NULL)
 }
 
-#' @rdname fill_dir
+#' @rdname fill_directory
 #'
 #' @export
 #'
 fill_models <- function(main = ".", models = prefab_models(), 
                         controls_m = NULL, quiet = FALSE, verbose = FALSE, 
                         overwrite = TRUE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
   return_if_null(models)
-  check_args(arg_checks)
   controls_m <- model_script_controls(models, controls_m)
   messageq(" -Writing model scripts", quiet)
   nmodels <- length(models)
@@ -291,107 +303,58 @@ fill_models <- function(main = ".", models = prefab_models(),
   invisible(NULL)
 }
 
-#' @rdname fill_dir
+#' @rdname fill_directory
 #'
 #' @export
 #'
-fill_casts <- function(main = ".", raw_path_casts = "portalPredictions/casts",
+fill_casts <- function(main = ".", directory = "portalPredictions",
                        quiet = FALSE, verbose = FALSE, overwrite = TRUE, 
                        arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   messageq(" -Filling casts folder with files from archive", quiet)
-
-  local_raw_folder <- paste0("raw/", raw_path_casts)
-  raw_folder <- file_paths(main, local_paths = local_raw_folder)
-  pfiles <- list.files(raw_folder)
-  raw_files_local <- paste0(local_raw_folder, "/", pfiles)
-  raw_files <- file_paths(main, local_paths = raw_files_local)
-  if(length(pfiles) == 0){
-    local_raw_folder <- "raw/portalPredictions/predictions"
-    raw_folder <- file_paths(main, local_paths = local_raw_folder)
-    pfiles <- list.files(raw_folder)
-    raw_files_local <- paste0(local_raw_folder, "/", pfiles)
-    raw_files <- file_paths(main, local_paths = raw_files_local)
+  path_casts <- paste0(directory, "/casts")
+  archive <- file_path(main = main, sub = "raw", files = path_casts,
+                       arg_checks = arg_checks)
+  arch_files <- list.files(archive, full.names = TRUE)
+  if(length(arch_files) == 0){
+    path_casts <- paste0(directory, "/predictions")
+    archive <- file_path(main = main, sub = "raw", files = path_casts,
+                         arg_checks = arg_checks)
+    arch_files <- list.files(archive, full.names = TRUE)
   }
-  final_folder <- sub_paths(main, "casts")
-  fc <- file.copy(raw_files, final_folder, overwrite)
-  messageq(fill_casts_message(pfiles, fc, verbose), !verbose)
-  cast_meta <- read_cast_metadata(main = main, arg_checks = arg_checks)
+  arch_files_local <- paste0(path_casts, arch_files)
+  casts_folder <- casts_path(main = main, arg_checks = arg_checks)
+  fc <- file.copy(arch_files, casts_folder, overwrite)
+  cast_meta <- read_cast_metadata(main = main, quiet = quiet, 
+                                  arg_checks = arg_checks)
+  fill_casts_message(files = arch_files, movedTF = fc, quiet = !verbose,
+                     verbose = verbose, arg_checks = arg_checks)
   invisible(NULL)
 }
 
-#' @rdname fill_dir
+#' @rdname fill_directory
 #'
 #' @export
 #'
 fill_raw <- function(main = ".", 
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, cleanup = TRUE, arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   return_if_null(downloads)
   if(list_depth(downloads) == 1){
     downloads <- list(downloads)
   }
   messageq(" -Downloading raw files", quiet)
   ndl <- length(downloads)
+  dl_vers <- rep(NA, ndl)
   for(i in 1:ndl){
     downloads[[i]]$cleanup <- ifnull(downloads[[i]]$cleanup, cleanup)
     downloads[[i]]$main <- ifnull(downloads[[i]]$main, main)
     downloads[[i]]$quiet <- ifnull(downloads[[i]]$quiet, quiet)
-    downloads[[i]]$specific_sub <- "raw"
-    do.call(download, downloads[[i]])
+    downloads[[i]]$sub <- "raw"
+    dl_vers[i] <- do.call(download, downloads[[i]])
   }
+  update_directory_config(main = main, downloads_versions = dl_vers,
+                          quiet = quiet, arg_checks = arg_checks)
   invisible(NULL)
 }
-
-#' @title Create the final message for filling casts
-#'
-#' @description Create the final message to be used in 
-#'  \code{\link{fill_casts}} that relays the number, and optionally the
-#'  specific names, of the files moved.
-#'
-#' @param files \code{character} vector of the base file names of the files
-#'  that may or may not have been moved.
-#'
-#' @param movedTF \code{logical} vector indicating if each of the files in 
-#'  \code{files} has been moved or not.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out
-#'   all of the files and whether they were moved or not.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
-#' @return A \code{character} value of the message to be printed (if desired).
-#'
-#' @examples
-#'  fill_casts_message("xx.csv", TRUE)
-#'  fill_casts_message(c("xx.csv", "yy.R"), c(TRUE, FALSE), 
-#'                           verbose = TRUE)
-#'
-#' @export
-#'
-fill_casts_message <- function(files = NULL, movedTF = NULL, verbose = FALSE, 
-                               arg_checks = TRUE){
-  return_if_null(files)
-  check_args(arg_checks)
-  moved <- files[movedTF]
-  not_moved <- files[!movedTF]
-  n_moved <- length(moved)
-  n_not_moved <- length(not_moved)
-  msg <- NULL
-  if(verbose){
-    if(n_moved > 0){
-      msg <- c(msg, "moved:", moved)
-    }
-    if(n_not_moved > 0){
-      msg <- c(msg, "not moved: ", not_moved)
-    }  
-  }
-  c(msg, paste0(n_moved, " casts files moved, ", n_not_moved, " not"))
-}
-
-
-

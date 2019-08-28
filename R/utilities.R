@@ -334,13 +334,9 @@ clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE,
 #'  kept at its default value throughout.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
 #' 
@@ -428,13 +424,9 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #'  using \code{\link{Sys.Date}}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return Named \code{list} with elements \code{start} and \code{end},
 #'  which are both \code{Dates}.
@@ -448,8 +440,7 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #'
 #' @export
 #'
-cast_window <- function(main = ".", moons = NULL, 
-                        cast_date = Sys.Date(),
+cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
                         lead_time = 12, min_lag = 6, arg_checks = TRUE){
   check_args(arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
@@ -470,22 +461,18 @@ cast_window <- function(main = ".", moons = NULL,
 #' @title Remove any specific incomplete entries as noted by an NA
 #'
 #' @description Remove any incomplete entries in a table, as determined by
-#'   the presence of an \code{NA} entry in a specific column 
-#'   (\code{colname}).
+#'  the presence of an \code{NA} entry in a specific column 
+#'  (\code{colname}).
 #'
 #' @param df \code{data.frame} table to be written out.
 #'
 #' @param colname A single \code{character} value of the column to use
-#'   to remove incomplete entries. 
+#'  to remove incomplete entries. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{df} without any incomplete entries. 
 #'
@@ -503,122 +490,6 @@ remove_incompletes <- function(df, colname, arg_checks = TRUE){
   }
   df
 }
-
-#' @title Save data out to a file and return it	
-#'
-#' @description Save inputted data out to a data file if requested and 
-#'  return it to the console.
-#'
-#' @param dfl \code{data.frame} or YAML \code{list} to be written out.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#'
-#' @param save \code{logical} indicator controlling if \code{x} should 
-#'   be saved out.
-#'
-#' @param filename \code{character} name of the file for saving \code{x}.
-#'
-#' @param nindent Number of indentation spaces to use. Must be non-negative
-#'  and integer-conformable.
-#'
-#' @param overwrite \code{logical} indicator of if the file should be
-#'  overwritten if it exists.
-#'
-#' @param quiet \code{logical} indicator if messages should be quieted.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return \code{dfl} as input.
-#'
-#'
-#' @export
-#'
-data_out <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL, 
-                     overwrite = TRUE, quiet = FALSE, nindent = 4,
-                     arg_checks = TRUE){
-  return_if_null(dfl)
-  return_if_null(filename)
-  check_args(arg_checks)
-  save_it <- FALSE
-  if(save){
-    fext <- file_ext(filename)
-    local_path <- paste0("data/", filename)
-    full_path <- file_paths(main, local_path)
-    f_exists <- file.exists(full_path)
-    if(f_exists){
-      if(overwrite){
-        save_it <- TRUE
-        msg <- paste0("**", filename, 
-                      " exists and overwrite = TRUE; file saved**")
-      } else {
-        msg <- paste0("**", filename, 
-                      " exists and overwrite = FALSE; not saved***") 
-      }
-    } else{
-      save_it <- TRUE
-      msg <- paste0("**", filename, " saved**")
-    }
-    msg <- paste0(paste(rep(" ", nindent), collapse = ""), msg)
-    messageq(msg, quiet)
-    if( save_it){
-        if(fext == "csv"){
-          write.csv(dfl, full_path, row.names = FALSE)
-      } else if (fext == "yaml"){
-          yams <- as.yaml(dfl)
-          writeLines(yams, con = full_path)
-      } else{
-        stop("file type not supported")
-      }
-    }
-   
-  }
-  dfl
-}
-
-
-#' @title Optionally generate a message based on a logical input
-#'
-#' @description Given the input to \code{quiet}, generate the message(s) 
-#'   in \code{msg} or not.
-#'
-#' @param msg \code{character} vector of the message(s) to generate or 
-#'   \code{NULL}. If more than one element is contained in \code{msg}, they
-#'   are concatenated with a newline between.
-#'
-#' @param quiet \code{logical} indicator controlling if the message is
-#'   generated.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @examples
-#'  messageq("Hello world", FALSE)
-#'  messageq("Hello world", TRUE)
-#'
-#' @export
-#'
-messageq <- function(msg = NULL, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  if (!quiet){
-    msg2 <- paste(msg, collapse = "\n")
-    message(msg2)
-  }
-}
-
 
 #' @title Determine the depth of a list
 #'
@@ -683,21 +554,35 @@ return_if_null <- function(x, value = NULL){
 }
 
 
-#' @title Replace if NULL
+#' @title Replace a value with an alternative if it is NULL or if it is NA
 #'
-#' @description If the focal input is \code{NULL}, replace it with 
-#'   alternative. 
+#' @description 
+#'  \code{ifnull} replaces the focal input with the alternative value if it
+#'   is \code{NULL}. \cr \cr
+#'  \code{ifna} replaces the focal input with the alternative value if it
+#'   is \code{NA}.
 #'
 #' @param x Focal input.
 #'
 #' @param alt Alternative value.
 #'
-#' @return \code{x} if not \code{NULL}, \code{alt} otherwise.
+#' @return 
+#'  \code{ifnull}: \code{x} if not \code{NULL}, \code{alt} otherwise. \cr \cr
+#'  \code{ifna}:  \code{x} if not \code{NA}, \code{alt} otherwise. 
 #' 
 #' @examples
 #'  ifnull(NULL, 123)
 #'  ifnull(TRUE, 123)
 #'  ifnull(FALSE, 123)
+#'  ifna(NA, 123)
+#'  ifna(FALSE, 123)
+#'  ifna(NA, NA)
+#'
+#' @name alternative_values
+#'
+NULL
+
+#' @rdname alternative_values
 #'
 #' @export 
 #'
@@ -708,21 +593,7 @@ ifnull <- function(x = NULL, alt = NULL){
   x
 }
 
-#' @title Replace if NA
-#'
-#' @description If the focal input is \code{NA}, replace it with 
-#'   alternative. 
-#'
-#' @param x Focal input.
-#'
-#' @param alt Alternative value.
-#'
-#' @return \code{x} if not \code{NA}, \code{alt} otherwise.
-#' 
-#' @examples
-#'  ifna(NA, 123)
-#'  ifna(FALSE, 123)
-#'  ifna(NA, NA)
+#' @rdname alternative_values
 #'
 #' @export 
 #'

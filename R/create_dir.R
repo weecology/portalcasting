@@ -1,19 +1,22 @@
 #' @title Create the structure of a forecasting directory
 #'
 #' @description This suite of functions creates the necessary folder structure
-#'  for a forecasting directory. At each level of the hierarchy, the more
+#'  for a forecasting directory as well as a YAML file that tracks the
+#'  setup configurations. At each level of the hierarchy, the more
 #'  basal folders are required to be present (verified using 
 #'  \code{\link{verify}}) and the relevant folders at that level are created 
 #'  if not present (using \code{\link{create}}). \cr \cr
-#'  \code{create_dir} creates a full directory or any missing parts. \cr \cr
+#'  \code{create_dir} creates a full directory or any missing parts
+#'  and writes the configuration file at \code{filename_config} using
+#'  \code{\link{write_directory_config}}. \cr \cr
 #'  \code{create_main} creates the main folder of the directory.\cr \cr
-#'  \code{create_subs} creates the sub folders of the directory.
+#'  \code{create_subs} creates the sub folders of the directory 
+#'  (\code{tmp}, \code{raw}, \code{data}, \code{models}, and \code{casts}).
 #'
 #' @details Folder paths are created internally using  
 #'  \code{\link{main_path}} and \code{\link{sub_paths}}, such that the user 
-#'  only needs to input folder locations as names within the respective level 
-#'  of the directory tree structure, not as pre-formatted file paths. See 
-#'  \code{Examples}.
+#'  only needs to input the main folder's standard \code{main} name input. \cr
+#'  The subdirectories are presently hardcoded. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -27,8 +30,8 @@
 #'  in a folder can be done by simply adding to the \code{main} input (see
 #'  \code{Examples}).
 #'
-#' @param subs \code{character} vector of the names of the sub components of
-#'  the directory tree. Generally shouldn't be changed.
+#' @param filename_config \code{character} value of the path to the directory
+#'  config YAML.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -46,90 +49,65 @@
 #'   create_subs()
 #'  }
 #'
+#' @name create
+#'
+NULL
+
+#' @rdname create
+#'
 #' @export
 #'
-create_dir <- function(main = ".", subs = subdirs(), quiet = FALSE, 
-                       verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  messageq(paste0("Establishing portalcasting directory at ", main), quiet)
-  create_main(main, quiet, verbose, arg_checks)
-  create_subs(main, subs, quiet, verbose, arg_checks)
+create_dir <- function(main = ".", filename_config = "dir_config.yaml", 
+                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  main_path <- main_path(main = main, arg_checks = arg_checks)
+  msg <- paste0("Establishing portalcasting directory at ", main_path)
+  messageq(msg = msg, quiet = quiet)
+  create_main(main = main, quiet = quiet, verbose = verbose, 
+              arg_checks = arg_checks)
+  create_subs(main = main, quiet = quiet, verbose = verbose, 
+              arg_checks = arg_checks)
+  write_directory_config(main = main, filename_config = filename_config, 
+                         quiet = quiet, arg_checks = arg_checks)
 }
 
-
-#' @rdname create_dir
+#' @rdname create
 #'
 #' @export
 #'
 create_main <- function(main = ".", quiet = FALSE, verbose = FALSE,
                         arg_checks = TRUE){
-  check_args(arg_checks)
-  mainp <- main_path(main, arg_checks)
-  create(mainp, "main", quiet, verbose, arg_checks)
+  check_args(arg_checks = arg_checks)
+  mainp <- main_path(main = main, arg_checks = arg_checks)
+  create(paths = mainp, names = "main", quiet = quiet, verbose = verbose, 
+         arg_checks = arg_checks)
 }
 
-#' @rdname create_dir
+#' @rdname create
 #'
 #' @export
 #'
-create_subs <- function(main = ".", subs = subdirs(), quiet = FALSE, 
+create_subs <- function(main = ".", quiet = FALSE, 
                         verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  mainp <- main_path(main)
-  subsp <- sub_paths(main = main, subs = subs, arg_checks = arg_checks)
-  verify(mainp, "main", arg_checks)
-  create(subsp, basename(subsp), quiet, verbose, arg_checks)
+  check_args(arg_checks = arg_checks)
+  subs <- c("casts", "models", "raw", "data", "tmp")
+  mainp <- main_path(main = main, arg_checks = arg_checks)
+  subsp <- sub_path(main = main, subs = subs, arg_checks = arg_checks)
+  verify(paths = mainp, names = "main", arg_checks = arg_checks)
+  create(paths = subsp, names = basename(subsp), quiet = quiet,
+         verbose = verbose, arg_checks = arg_checks)
 }
 
-#' @title Verify that a required folder exists
+#' @title Verify that folders exist and create folders 
 #'
-#' @description If any of the folders (specified by \code{path} and named by
-#'  \code{level}) do not exist, the operation throws an error.
+#' @description 
+#'  \code{verify} throws an error if any of the folders (specified by 
+#'  \code{path} and named by \code{level}) do not exist. \cr \cr
+#'  \code{create} creates a requested folder if it does not already exist.
 #'
-#' @param path \code{character} vector of the folder paths.
+#' @param paths \code{character} vector of the folder paths.
 #'
-#' @param dir_level \code{character} vector of the names of the levels in the
-#'  hierarchy at which the folders will exist or the folder names. For the
-#'  purposes of messaging and not inherently required to be non-\code{NULL}.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
-#' @return Throws an error if any of the folders do not exist, otherwise
-#'  \code{NULL}.
-#'
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   main <- main_path()
-#'   verify(main, "main")
-#'  }
-#'
-#' @export
-#'
-verify <- function(path = NULL, dir_level = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
-  if(!is.null(path)){
-    for(i in 1:length(path)){
-      if (!dir.exists(path[i])){
-        msg <- paste0(dir_level[i], " folder does not exist at ", path[i])
-        stop(msg)
-      }
-    }
-  }
-}
-
-#' @title Create a specific folder
-#'
-#' @description If folders (specified by \code{path} and named by
-#'  \code{level}) do not exist, they are created, with a message or not as
-#'  indicated by \code{quiet}.
-#'
-#' @param path \code{character} vector of the folder paths.
-#'
-#' @param dir_level \code{character} vector of the names of the levels in the
+#' @param names \code{character} vector of the names of the levels in the
 #'  hierarchy at which the folders will exist or the folder names. For the
 #'  purposes of messaging and not inherently required to be non-\code{NULL}.
 #'
@@ -141,35 +119,59 @@ verify <- function(path = NULL, dir_level = NULL, arg_checks = TRUE){
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
+#'  formatted correctly and provides directed error messages if not. 
 #'
-#' @return \code{NULL}.
+#' @return 
+#'  \code{verify}: throws an error if any of the folders do not exist, 
+#'  otherwise \code{NULL}.
+#'  \code{create}: \code{NULL}.
 #'
 #' @examples
 #'  \donttest{
 #'   main <- main_path()
 #'   create(main, "main")
+#'   verify(main, "main")
 #'  }
+#'
+#' @name verify_and_create
+#'
+NULL
+
+#' @rdname verify_and_create
 #'
 #' @export
 #'
-create <- function(path = NULL, dir_level = NULL, quiet = FALSE, 
-                   verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  if(!is.null(path)){
-    for(i in 1:length(path)){
-      if (!dir.exists(path[i])){
-        if(dir_level[i] == "main"){ 
-          msg <- paste0(" -", dir_level[i])
-        } else{
-          msg <- paste0("  -", dir_level[i])
-        }
-        if(verbose){
-          msg <- paste0(msg, " at ", path[i])
-        }
-        messageq(msg, quiet)
-        dir.create(path[i])
+verify <- function(paths = NULL, names = NULL, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(paths)
+  for(i in 1:length(paths)){
+    if (!dir.exists(paths[i])){
+      msg <- paste0(names[i], " folder does not exist at ", paths[i])
+      stop(msg)
+    }
+  }
+}
+
+#' @rdname verify_and_create
+#'
+#' @export
+#'
+create <- function(paths = NULL, names = NULL, quiet = FALSE, verbose = FALSE, 
+                   arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(paths)
+  for(i in 1:length(paths)){
+    if (!dir.exists(paths[i])){
+      if(names[i] == "main"){ 
+        msg <- paste0(" -", names[i])
+      } else{
+        msg <- paste0("  -", names[i])
       }
+      if(verbose){
+        msg <- paste0(msg, " at ", paths[i])
+      }
+      messageq(msg, quiet)
+      dir.create(paths[i])
     }
   }
 }

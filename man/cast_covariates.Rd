@@ -11,43 +11,39 @@
 \usage{
 cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = climate_dl_control(), quiet = TRUE, verbose = FALSE,
-  arg_checks = TRUE)
+  cast_date = Sys.Date(), directory = "portalPredictions",
+  filename_cov_casts = "covariate_casts.csv",
+  source_name = "current_archive", control_cdl = climate_dl_control(),
+  quiet = TRUE, verbose = FALSE, arg_checks = TRUE)
 
-read_cov_casts(main = ".", raw_path_archive = "portalPredictions",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts", quiet = FALSE, arg_checks = TRUE)
+read_cov_casts(main = ".", directory = "portalPredictions",
+  filename_cov_casts = "covariate_casts.csv", quiet = FALSE,
+  verbose = FALSE, arg_checks = TRUE)
 
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  append_cast_csv = TRUE, control_cdl = climate_dl_control(),
-  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
-  arg_checks = TRUE)
+  cast_date = Sys.Date(), directory = "portalPredictions",
+  filename_cov_casts = "data/covariate_casts.csv",
+  source_name = "current_archive", append_cast_csv = TRUE,
+  control_cdl = climate_dl_control(), quiet = TRUE, verbose = FALSE,
+  save = TRUE, overwrite = TRUE, arg_checks = TRUE)
 
-cast_ndvi(main = ".", moons = NULL, hist_cov = NULL,
-  lead_time = 12, min_lag = 6, arg_checks = TRUE)
+cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
+  arg_checks = TRUE)
 
 cast_weather(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), raw_path_archive = "portalPredictions",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  control_cdl = climate_dl_control(), quiet = TRUE,
-  verbose = verbose, arg_checks = TRUE)
+  cast_date = Sys.Date(), directory = directory,
+  filename_cov_casts = filename_cov_casts,
+  source_name = "current_archive", control_cdl = climate_dl_control(),
+  quiet = TRUE, verbose = verbose, arg_checks = TRUE)
 
 save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
   cast_date = Sys.Date(), cast_cov = NULL, append_cast_csv = TRUE,
-  raw_path_archive = "portalPredictions",
-  raw_cov_cast_file = "data/covariate_casts.csv",
-  raw_path_cov_cast = "cov_casts", source_name = "current_archive",
-  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
-  nindent = 4, arg_checks = TRUE)
+  directory = "portalPredictions", source_name = "current_archive",
+  filename_cov_casts = "covariate_casts.csv", quiet = TRUE,
+  verbose = FALSE, save = TRUE, overwrite = TRUE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} name of the main directory tree component.}
@@ -70,14 +66,10 @@ used in any model.}
 \item{cast_date}{\code{Date} on which the cast happens. Generally should
 be \code{\link{Sys.Date}}.}
 
-\item{raw_path_archive}{\code{character} value of the path to the archive
-within the raw sub folder.}
+\item{directory}{\code{character} value of the directory name.}
 
-\item{raw_cov_cast_file}{\code{character} value of the path to the
-covariate cast file within \code{raw_path_archive}.}
-
-\item{raw_path_cov_cast}{\code{character} value of the path to the folder
-that holds any downloaded covariate cast files within the raw sub folder.}
+\item{filename_cov_casts}{\code{character} filename for saving the 
+covariate casts output.}
 
 \item{source_name}{\code{character} value for the name to give the 
 covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -100,8 +92,7 @@ default (\code{arg_checks = TRUE}) ensures that all inputs are
 formatted correctly and provides directed error messages if not.}
 
 \item{append_cast_csv}{\code{logical} indicator controlling if the new 
-cast covariates should be appended to the historical casts for the
-purposes of hindcasting later.}
+cast covariates should be appended to the historical casts for later use.}
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved.}
@@ -124,10 +115,10 @@ files should be updated if \code{save = TRUE} (most users should leave as}
  \code{read_cov_casts}: \code{data.frame} of the covariate casts read in.
 }
 \description{
-Forecast or hindcast the covariates for a model run.
+Cast the covariates for a model run. \cr \cr
  \code{cast_covariates} is the primary function, which produces the 
  coavariates (min, mean, and max temperature; precipitation; and NDVI) 
- required for a model to be forecast or hindcast. \cr \cr
+ required for a model to be cast. \cr \cr
  \code{prep_cast_covariates} provides a wrapper on \code{cast_covariates}
  that includes saving the cast data out via \code{save_cast_cov_csv}
  and tidying the data for use within the model (by removing the vestigial
@@ -139,9 +130,9 @@ Forecast or hindcast the covariates for a model run.
 \details{
 If forecasting from the current newmoon, weather is forecast using 
  \code{\link{cast_weather}} and NDVI is forecast using 
- \code{\link{cast_ndvi}}. If hindcasting from a previous newmoon, the
+ \code{\link{cast_ndvi}}. If casting from a previous newmoon, the
  historical forecasted weather and NDVI data are retrieved from the file 
- pointed to by \code{raw_cov_cast_file}.
+ pointed to by \code{filename_cov_casts}.
 }
 \examples{
  \donttest{

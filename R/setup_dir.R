@@ -36,29 +36,15 @@
 #' @param cast_covariates \code{logical} indicator whether or not -casted 
 #'  covariates are to be included.
 #'
-#' @param raw_path_archive \code{character} value of the path to the archive
-#'  within the raw sub folder.
+#' @param directory \code{character} value of the directory name.
 #' 
-#' @param raw_path_data \code{character} value indicating the folder path
-#'  to the data within the \code{raw} subdirectory but above the files. A 
-#'  standard portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
-#'  \code{"raw/"} is implied). 
+#' @param raw_data \code{character} value indicating the name of the raw
+#'  data directory. A standard portalcasting directory downloads the raw data
+#'  files into from the PortalData repository, so 
+#'  \code{raw_data = "PortalData"}.
 #' 
-#' @param raw_path_casts \code{character} value of the path to the
-#'  casts folder within the raw sub folder (via the archive).  
-#' 
-#' @param raw_cov_cast_file \code{character} value of the path to the
-#'  covariate cast file within \code{raw_path_archive}.
-#'
-#' @param raw_path_cov_cast \code{character} value of the path to the folder
-#'  that holds any downloaded covariate cast files within the raw sub folder.
-#'
-#' @param raw_moons_file \code{character} value indicating the path
-#'  to the moons data file within \code{raw_path_data}. A standard 
-#'  portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so 
-#'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
+#' @param filename_cov_casts \code{character} value of covariate casts
+#'  file.
 #'
 #' @param source_name \code{character} value for the name to give the 
 #'   covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -66,8 +52,7 @@
 #'   given the source name \code{"retroactive"}.
 #'
 #' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'   cast covariates should be appended to the historical casts for the
-#'   purposes of hindcasting later.
+#'   cast covariates should be appended to the historical casts later use.
 #'
 #' @param controls_m Additional controls for models not in the prefab set. 
 #'  \cr 
@@ -103,9 +88,6 @@
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages). 
 #'
-#' @param subs \code{character} vector of the names of the sub components of
-#'  the directory tree. Generally shouldn't be changed.
-#'
 #' @param save \code{logical} indicator controlling if the output should 
 #'   be saved out.
 #'
@@ -121,6 +103,10 @@
 #'
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
+#'
+#'
+#' @param filename_config \code{character} filename of the directory
+#'  configuration YAML.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -148,26 +134,25 @@ setup_dir <- function(main = ".", models = prefab_models(),
                       start_moon = 217, 
                       confidence_level = 0.95, 
                       hist_covariates = TRUE, cast_covariates = TRUE,
-                      raw_path_archive = "portalPredictions",
-                      raw_path_data = "PortalData",
-                      raw_path_casts = "portalPredictions/casts",
-                      raw_cov_cast_file = "data/covariate_casts.csv",
-                      raw_path_cov_cast = "cov_casts", 
-                      raw_moons_file = "Rodents/moon_dates.csv",
+                      directory = "portalPredictions",
+                      raw_data = "PortalData",
                       source_name = "current_archive",
                       append_cast_csv = TRUE, controls_m = NULL,
                       controls_r = rodents_controls(),
                       control_cdl = climate_dl_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
-                      quiet = FALSE, verbose = FALSE, subs = subdirs(),
+                      quiet = FALSE, verbose = FALSE, 
                       save = TRUE, overwrite = TRUE, 
                       filename_moons = "moon_dates.csv",
+                      filename_config = "dir_config.yaml", 
                       filename_cov = "covariates.csv", 
+                      filename_cov_casts = "covariate_casts.csv",
                       filename_meta = "metadata.yaml", cleanup = TRUE,
                       arg_checks = TRUE){
   check_args(arg_checks)
   portalcast_welcome(quiet = quiet)
-  create_dir(main = main, subs = subs, quiet = quiet, arg_checks = arg_checks)
+  create_dir(main = main, filename_config = filename_config,
+             quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   messageq("---------------------------------------------------------", quiet)
   fill_dir(main = main, models = models, 
            end_moon = end_moon, lead_time = lead_time, 
@@ -175,18 +160,16 @@ setup_dir <- function(main = ".", models = prefab_models(),
            confidence_level = confidence_level, 
            hist_covariates = hist_covariates, 
            cast_covariates = cast_covariates,
-           raw_path_archive = raw_path_archive,
-           raw_path_data = raw_path_data,
-           raw_path_casts = raw_path_casts,
-           raw_cov_cast_file = raw_cov_cast_file,
-           raw_path_cov_cast = raw_path_cov_cast, 
-           raw_moons_file = raw_moons_file, source_name = source_name,
+           directory = directory,
+           raw_data = raw_data,
            append_cast_csv = append_cast_csv, controls_m = controls_m, 
            controls_r = controls_r, control_cdl = control_cdl, 
            downloads = downloads, quiet = quiet, verbose = verbose, 
            save = save, overwrite = overwrite, 
            filename_moons = filename_moons, filename_cov = filename_cov, 
            filename_meta = filename_meta, cleanup = cleanup, 
+           filename_config = filename_config,
+           filename_cov_casts = filename_cov_casts,
            arg_checks = arg_checks)
   messageq("---------------------------------------------------------", quiet)
   messageq("Directory successfully instantiated", quiet)
@@ -200,47 +183,43 @@ setup_dir <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 setup_production <- function(main = ".", models = prefab_models(), 
-                             end_moon = NULL, lead_time = 12, 
-                             cast_date = Sys.Date(), 
-                             start_moon = 217, confidence_level = 0.95, 
-                             hist_covariates = TRUE, cast_covariates = TRUE,
-                             raw_path_archive = "portalPredictions",
-                             raw_path_data = "PortalData",
-                             raw_path_casts = "portalPredictions/casts",
-                             raw_cov_cast_file = "data/covariate_casts.csv",
-                             raw_path_cov_cast = "cov_casts", 
-                             raw_moons_file = "Rodents/moon_dates.csv",
-                             source_name = "current_archive",
-                             append_cast_csv = TRUE, controls_m = NULL,
-                             controls_r = rodents_controls(),
-                             control_cdl = climate_dl_control(),
-                             downloads = 
-                               zenodo_downloads(c("1215988", "833438")), 
-                             quiet = FALSE, verbose = TRUE, subs = subdirs(),
-                             save = TRUE, overwrite = TRUE, 
-                             filename_moons = "moon_dates.csv",
-                             filename_cov = "covariates.csv", 
-                             filename_meta = "metadata.yaml", cleanup = TRUE,
-                             arg_checks = TRUE){
+                      end_moon = NULL, 
+                      lead_time = 12, cast_date = Sys.Date(),
+                      start_moon = 217, 
+                      confidence_level = 0.95, 
+                      hist_covariates = TRUE, cast_covariates = TRUE,
+                      directory = "portalPredictions",
+                      raw_data = "PortalData",
+                      source_name = "current_archive",
+                      append_cast_csv = TRUE, controls_m = NULL,
+                      controls_r = rodents_controls(),
+                      control_cdl = climate_dl_control(),
+                      downloads = zenodo_downloads(c("1215988", "833438")), 
+                      quiet = FALSE, verbose = FALSE, 
+                      save = TRUE, overwrite = TRUE, 
+                      filename_moons = "moon_dates.csv",
+                      filename_config = "dir_config.yaml", 
+                      filename_cov = "covariates.csv", 
+                      filename_cov_casts = "covariate_casts.csv",
+                      filename_meta = "metadata.yaml", cleanup = TRUE,
+                      arg_checks = TRUE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
-            end_moon = end_moon, 
-            lead_time = lead_time, cast_date = cast_date, 
-            start_moon = start_moon, confidence_level = confidence_level, 
+            end_moon = end_moon, lead_time = lead_time, 
+            cast_date = cast_date, start_moon = start_moon, 
+            confidence_level = confidence_level, 
             hist_covariates = hist_covariates, 
             cast_covariates = cast_covariates,
-            raw_path_archive = raw_path_archive,
-            raw_path_data = raw_path_data,
-            raw_path_casts = raw_path_casts,
-            raw_cov_cast_file = raw_cov_cast_file,
-            raw_path_cov_cast = raw_path_cov_cast, 
-            raw_moons_file = raw_moons_file, source_name = source_name,
+            directory = directory,
+            raw_data = raw_data,
             append_cast_csv = append_cast_csv, controls_m = controls_m, 
             controls_r = controls_r, control_cdl = control_cdl, 
             downloads = downloads, quiet = quiet, verbose = verbose, 
-            subs = subs, save = save, overwrite = overwrite, 
+            save = save, overwrite = overwrite, 
             filename_moons = filename_moons, filename_cov = filename_cov, 
             filename_meta = filename_meta, cleanup = cleanup, 
+            filename_config = filename_config,
+            filename_cov_casts = filename_cov_casts,
             arg_checks = arg_checks)
 }
 
@@ -254,138 +233,40 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           cast_date = Sys.Date(), 
                           start_moon = 217, confidence_level = 0.95, 
                           hist_covariates = TRUE, cast_covariates = TRUE,
-                          raw_path_archive = "portalPredictions",
-                          raw_path_data = "PortalData",
-                          raw_path_casts = "portalPredictions/casts",
-                          raw_cov_cast_file = "data/covariate_casts.csv",
-                          raw_path_cov_cast = "cov_casts", 
-                          raw_moons_file = "Rodents/moon_dates.csv",
+                          directory = "portalPredictions",
+                          raw_data = "PortalData",
                           source_name = "current_archive",
                           append_cast_csv = TRUE, controls_m = NULL,
                           controls_r = rodents_controls(),
                           control_cdl = climate_dl_control(),
                           downloads = 
                             zenodo_downloads(c("1215988", "833438")), 
-                          quiet = FALSE, verbose = FALSE, subs = subdirs(),
+                          quiet = FALSE, verbose = FALSE,
                           save = TRUE, overwrite = TRUE, 
                           filename_moons = "moon_dates.csv",
                           filename_cov = "covariates.csv", 
+                          filename_config = "dir_config.yaml", 
+                          filename_cov_casts = "covariate_casts.csv",
                           filename_meta = "metadata.yaml", cleanup = TRUE,
                           arg_checks = FALSE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
-            end_moon = end_moon, 
-            lead_time = lead_time, cast_date = cast_date, 
-            start_moon = start_moon, confidence_level = confidence_level, 
-            hist_covariates = hist_covariates, 
-            cast_covariates = cast_covariates,
-            raw_path_archive = raw_path_archive,
-            raw_path_data = raw_path_data,
-            raw_path_casts = raw_path_casts,
-            raw_cov_cast_file = raw_cov_cast_file,
-            raw_path_cov_cast = raw_path_cov_cast, 
-            raw_moons_file = raw_moons_file, source_name = source_name,
-            append_cast_csv = append_cast_csv, controls_m = controls_m, 
-            controls_r = controls_r, control_cdl = control_cdl, 
-            downloads = downloads, quiet = quiet, verbose = verbose, 
-            subs = subs, save = save, overwrite = overwrite, 
-            filename_moons = filename_moons, filename_cov = filename_cov, 
-            filename_meta = filename_meta, cleanup = cleanup, 
-            arg_checks = arg_checks)
+             end_moon = end_moon, lead_time = lead_time, 
+             cast_date = cast_date, start_moon = start_moon, 
+             confidence_level = confidence_level, 
+             hist_covariates = hist_covariates, 
+             cast_covariates = cast_covariates,
+             directory = directory,
+             raw_data = raw_data,
+             append_cast_csv = append_cast_csv, controls_m = controls_m, 
+             controls_r = controls_r, control_cdl = control_cdl, 
+             downloads = downloads, quiet = quiet, verbose = verbose, 
+             save = save, overwrite = overwrite, 
+             filename_moons = filename_moons, filename_cov = filename_cov, 
+             filename_meta = filename_meta, cleanup = cleanup, 
+             filename_config = filename_config,
+             filename_cov_casts = filename_cov_casts,
+             arg_checks = arg_checks)
   sandbox_welcome(main = main, quiet = quiet, arg_checks = arg_checks)
 }
 
-#' @title Directory welcome and goodbye messages
-#'
-#' @description Create a welcome message for the directory based on the 
-#'  package version or a goodbye message for when models are done.
-#'
-#' @param quiet \code{logical} indicator if message should be quieted.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#' 
-#' @return \code{NULL}, as message is printed.
-#'
-#' @examples
-#'  portalcast_welcome()
-#'  portalcast_goodbye()
-#'
-#' @export
-#' 
-portalcast_welcome <- function(quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  msg1 <- "---------------------------------------------------------"
-  version_number <- packageDescription("portalcasting", fields = "Version")
-  msg2 <- paste0("This is portalcasting v", version_number)
-  messageq(c(msg1, msg2, msg1), quiet)
-}
-
-#' @rdname portalcast_welcome
-#'
-#' @export
-#'
-portalcast_goodbye <- function(quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  msg1 <- "---------------------------------------------------------"
-  messageq(c(msg1, "Models done", msg1), quiet)
-}
-
-
-#' @title Sandbox welcome
-#'
-#' @description Create a welcome message for the sandbox
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#'
-#' @param quiet \code{logical} indicator if progress message should be
-#'   quieted.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#' 
-#' @return \code{NULL}, as message is printed.
-#'
-#' @examples
-#'  sandbox_welcome()
-#'
-#' @export
-#' 
-sandbox_welcome <-function(main = ".", quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-
-main <- main_path(main)
-castle <- "
-                                          ____
-             /\\                         / -- )   
-            /  \\                       (____/
-           /|  |\\                       / /  
-          /_|__|_\\                     / / 
-          |      |                    / /
- __    __ |      | __    __          / / 
-[  ]__[  ].      .[  ]__[  ]        / /  
-|__         ____         __|  ____ / /__ 
-   |      .|    |.      |    / .------  )
-   |      |      |      |   / /      / / 
-   |      |      |      |  / /      / /  
-~~~~~~~~~~~~~~~~~~~~~~~~~~------------~~~~~~~~~~~~~~
-"
-succ <- "sanbox directory successfully set up at \n"
-happy <- "\nhappy portalcasting!"
-msg <- paste0(castle, succ, main, happy)
-
-messageq(msg, quiet)
-}

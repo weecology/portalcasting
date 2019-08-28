@@ -16,6 +16,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * `base` (both as a function and a concept) was removed. To make that structure use main = "./name"
 * "PortalData" has been removed as a sub and replaced with "raw", which includes all raw versions of files (post unzipping) downloaded: Portal Data and Portal Predictions and covariate forecasts (whose saving is also new here).
 
+### Tightened messaging
+* Expanded use of `quiet` and `verbose` connected throughout the pipeline.
+* Additional messaging functions to reduce code clutter.
+* Formatting of messages to reduce clutter and highlight the outline structure.
 
 ### Download capacity generalized
 * Flexible interface to downloading capacity through a url, with generalized and flexible functions for generating Zenodo API urls (for retrieving the raw data and historical predictions) and NMME API urls (for retrieving weather forecasts) to port into the `download` function. [addresses](https://github.com/weecology/portalcasting/issues/121) and [addresses](https://github.com/weecology/portalcasting/issues/107) and [addresses](https://github.com/weecology/portalcasting/issues/53)
@@ -41,6 +45,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### "Hindcasting" becomes more similar to "forecasting"
 * In the codebase now, "hindcasting" is functionally "forecasting" with a forecast origin (`end_moon`) that is not the most recently occurring moon.
+* Indeed, "hindcast" is nearly entirely removed from the codebase and "forecast" is nearly exclusively retained in documentation (and barely in the code itself), with both functionally being replaced with the generalized (and shorter) "cast". 
+* `cast_type` is retained in the metadata file for posterity, but functionality is more generally checked by considering `end_moon` and `last_moon` in combination, where `end_moon` is the forecast origin and `last_moon` is the most recent 
 * Rather than the complex machinery used to iterate through multiple forecasts ("hindcasting") that involved working backwards and skipping certain moons (which didn't need to be skipped anymore due to updated code from a while back that allows us to forecast fine even without the most recent samples yet), a simple for loop is able to manage iterating. This is also facilitated by the downloading of the raw portalPredictions repository from Zenodo and critically its retention in the "raw" subdirectory, which allows quick re-calculation of historic predictions of covariates. [addresses](https://github.com/weecology/portalcasting/issues/11)
 * `cast_type` has been removed as an input, it's auto determined now based on `end_moon` and the last moon available (if they're equal it's a "forecast", if not it's a "hindcast").
 

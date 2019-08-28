@@ -31,8 +31,6 @@ elements:
  \item \code{name}: a \code{character} value of the model name.
  \item \code{data_sets}: a \code{character} vector of the data set names
   that the model is applied to. 
- \item \code{interpolate}: a \code{logical} indicator of if the 
-  model needs the rodent data to be interpolated.
  \item \code{covariatesTF}: a \code{logical} indicator of if the 
   model needs covariates.
  \item \code{lag}: an \code{integer}-conformable value of the lag to use 
@@ -78,13 +76,17 @@ The model scripts are written using a generalized function
 \details{
 Any model that is part of the \code{prefab} set 
  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
- "pevGARCH")}) has its script-writing controls already included internally.
- Users only need to include controls for non-prefab \code{models}. \cr \cr
+ "pevGARCH")}) has its script-writing controls already included internally
+ via the non-exported function \code{prefab_model_controls}. Users 
+ only need to include controls for non-prefab \code{models}. \cr \cr
  Any user-defined \code{models} that are not included in \code{controls_m}
  will throw an error. \cr \cr 
  If any user-defined \code{controls_m} duplicate any existing controls for
  the prefab models or if \code{controls_m} contains any duplicate named
- elements, an error will be thrown.
+ elements, an error will be thrown. \cr \cr
+ Users interested in adding models to the prefab set should add the
+ controls to the \code{prefab_model_controls} non-exported function
+ found in the \code{prepare_models.R} script.
 }
 \examples{
  model_script_controls(prefab_models())

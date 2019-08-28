@@ -6,7 +6,7 @@
 \title{Write the template for a model into model subdirectory}
 \usage{
 write_model(name = NULL, data_sets = NULL, covariatesTF = NULL,
-  lag = NULL, main = ".", quiet = FALSE, verbose = FALSE,
+  lag = NULL, main = ".", quiet = FALSE, verbose = TRUE,
   overwrite = TRUE, control = NULL, arg_checks = TRUE)
 
 model_template(name = NULL, data_sets = prefab_data_sets(),

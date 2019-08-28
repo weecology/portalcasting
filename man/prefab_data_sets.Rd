@@ -4,39 +4,20 @@
 \alias{prefab_data_sets}
 \title{Provide the names of the prefab data sets}
 \usage{
-prefab_data_sets(data_sets = NULL, interpolate = FALSE,
-  arg_checks = TRUE)
-}
-\arguments{
-\item{data_sets}{\code{character} vector of name(s) of data set(s) to add
-to the prefab sets.}
-
-\item{interpolate}{\code{logical} value indicating if the model set
-has interpolated values. Results in an \code{"_interp"} being appended
-tp the data set names.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+prefab_data_sets()
 }
 \value{
 \code{character} vector of data set names.
 }
 \description{
-Create a \code{character} vector of the names of the data 
- set to be included with the pre-fabricated (prefab) sets
- (\code{"all"}, \code{"controls"}, \code{"all_interp"}, and
-  \code{"controls_interp"}).
+Create a \code{character} vector of the names of the rodents
+ data sets to be included including the pre-fabricated (prefab) data sets,
+ extracting them from the \code{prefab_rodents_controls} internal 
+ function. \cr \cr
+ The currently prefabricated options include (\code{"all"}, 
+ \code{"controls"}, \code{"all_interp"}, and \code{"controls_interp"}).
 }
 \examples{
  prefab_data_sets()
- prefab_data_sets(interpolate = TRUE)
- prefab_data_sets("data_set1")
- prefab_data_sets("data_set1", interpolate = TRUE)
 
 }

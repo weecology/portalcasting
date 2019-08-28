@@ -6,21 +6,6 @@ most_recent_cast <- function(main = ".", arg_checks = TRUE){
 
 }
 
-prep_cast_metadata <- function(main = ".", quiet = TRUE, arg_checks = TRUE){
-  check_args(arg_checks)
-  meta_path <- file_paths(main, "casts/cast_metadata.csv")
-  if(!file.exists(meta_path)){
-    messageq("  **creating cast_metadata.csv**", quiet)
-    cast_meta <- data.frame(cast_id = 0, cast_group = 0, 
-                            cast_date = NA, start_moon = NA, end_moon = NA,
-                            lead_time = NA, model = NA, data_set = NA,
-                            portalcasting_version = NA,
-                            QAQC = FALSE, notes = NA)
-    write.csv(cast_meta, meta_path, row.names = FALSE)
-  }
-  read.csv(meta_path, stringsAsFactors = FALSE)
-}
-
 #' @title Save cast output to files
 #'
 #' @description Save out the cast abundances and AIC tables from a given 
@@ -52,9 +37,8 @@ prep_cast_metadata <- function(main = ".", quiet = TRUE, arg_checks = TRUE){
 save_cast_output <- function(cast = NULL, main = ".", 
                              quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
-  raw_final_meta_local <- paste0("casts/cast_metadata.csv") 
-  meta_path <- file_paths(main, raw_final_meta_local)
-  cast_meta <- read.csv(meta_path, stringsAsFactors = FALSE)
+  cast_meta <- read_cast_meta(main = main, quiet = quiet, 
+                              arg_checks = arg_check)
   cast_ids <- cast_meta$cast_id
   if(all(is.na(cast_ids))){
     next_cast_id <- 1

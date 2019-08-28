@@ -1,4 +1,4 @@
-#' @title Prepare a metadata list
+#' @title Prepare a model-running metadata list
 #'
 #' @description Sets up the metadata used for casting, in particular the 
 #'  matching of time period across the data sets. This should always be run
@@ -81,6 +81,9 @@
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
+#' @param filename_config \code{character} value of the path to the directory
+#'  config YAML.
+#'
 #' @return \code{list} of casting metadata, which is also saved out as a 
 #'  YAML file (\code{.yaml}) if desired.
 #' 
@@ -105,27 +108,31 @@ prep_metadata <- function(main = ".", models = prefab_models(),
                           start_moon = 217,
                           confidence_level = 0.95, 
                           controls_r = NULL,
-                          controls_m = NULL,
+                          controls_m = NULL, 
+                          filename_config = "dir_config.yaml", 
                           quiet = TRUE, verbose = FALSE, save = TRUE, 
                           overwrite = TRUE, filename_meta = "metadata.yaml", 
                           arg_checks = TRUE){
   check_args(arg_checks)
-
   min_lag_e <- extract_min_lag(models = models, controls_m = controls_m, 
-                             arg_checks = arg_checks)
+                               arg_checks = arg_checks)
   data_sets_e <- extract_data_sets(models = models, controls_m = controls_m, 
-                                 arg_checks = arg_checks)
+                                   arg_checks = arg_checks)
+
   min_lag <- ifnull(min_lag, min_lag_e)
   data_sets <- ifnull(data_sets, data_sets_e)
 
-  moons <- ifnull(moons, read_moons(main = main))
-  rodents  <- ifnull(rodents, read_rodents(main = main, data_sets))
+  moons <- ifnull(moons, read_moons(main = main, arg_checks = arg_checks))
+  rodents  <- ifnull(rodents, read_rodents(main = main, 
+                                           data_sets = data_sets, 
+                                           arg_checks = arg_checks))
   covariates <- ifnull(covariates, read_covariates(main = main))
-  controls_r <- rodents_controls(data_sets, controls_r)
+  controls_r <- rodents_controls(data_sets = data_sets, 
+                                 controls_r = controls_r, 
+                                 arg_checks = arg_checks)
   messageq("  -metadata file", quiet)
-
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
-                            arg_checks = arg_checks)
+                         arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
   ncontrols_r <- length(rodents)
   last_rodent_moon <- 0
@@ -155,15 +162,21 @@ prep_metadata <- function(main = ".", models = prefab_models(),
   covar_cast_years <- as.numeric(format(covar_nm_dates, "%Y"))
 
   cast_type <- ifelse(end_moon == last_moon, "forecast", "hindcast")
-  pc_version <- packageDescription("portalcasting", fields = "Version")
 
-  cast_meta <- read_cast_metadata(main = main, arg_checks = arg_checks)
+  cast_meta <- read_cast_metadata(main = main, quiet = quiet,
+                                  arg_checks = arg_checks)
   cast_group <- max(cast_meta$cast_group) + 1
+
+  config <- read_directory_config(main = main, 
+                                  filename_config = filename_config,
+                                  quiet = quiet, arg_checks = arg_checks)
+
+
   list(cast_group = cast_group, models = models, data_sets = data_sets, 
+       directory_configuration = config,
        controls_r = controls_r,
-       portalcasting_version = pc_version,
        cast_type = cast_type, start_moon = start_moon, end_moon = end_moon,
-       lead_time = lead_time, 
+       last_moon = last_moon, lead_time = lead_time, 
        min_lag = min_lag, cast_date = as.character(cast_date), 
        covariate_cast_moons = covar_cast_moons, 
        covariate_cast_months = covar_cast_months, 
@@ -172,5 +185,6 @@ prep_metadata <- function(main = ".", models = prefab_models(),
        rodent_cast_months = rodent_cast_months, 
        rodent_cast_years = rodent_cast_years,
        confidence_level = confidence_level) %>%
-  data_out(main, save, filename_meta, overwrite, !verbose)
+  write_data(main = main, save = save, filename = filename_meta, 
+             overwrite = overwrite, quiet = !verbose, arg_checks = arg_checks)
 }

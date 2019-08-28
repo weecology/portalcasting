@@ -5,8 +5,6 @@
 #'  (achieved and missed) based on a lunar survey schedule. If needed, 
 #'  additional moons will be added to both the in-use and raw versions of 
 #'  the data table. \cr \cr
-#'  \code{add_past_moons_to_raw} appends missing past moon dates to the
-#'  raw data file. (See \code{Details}.) \cr \cr
 #'  \code{add_future_moons} adds future moon dates to the moon table, counting 
 #'  forward from \code{cast_date}. Because the \code{moons} table might not 
 #'  have the most recent moons, more rows than \code{lead_time} may need to 
@@ -23,7 +21,7 @@
 #'  the \code{portalr} functions \code{\link[portalr]{weather}} and 
 #'  \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table
 #'  needs to be updated to produce the correct current data table for 
-#'  casting. \code{add_past_moons_to_raw} updates the raw file accordingly. 
+#'  casting. 
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -41,14 +39,11 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #' 
-#' @param raw_path_data \code{character} value indicating the folder path
-#'  to the data within the \code{raw} subdirectory but above the files. A 
-#'  standard portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so \code{raw_path_data = "PortalData"} (as
-#'  \code{"raw/"} is implied). 
+#' @param filename_moons \code{character} name of the path to the file of the 
+#'  raw moons dates data, within \code{raw_data} folder.
 #'
 #' @param raw_moons_file \code{character} value indicating the path
-#'  to the moons data file within \code{raw_path_data}. A standard 
+#'  to the moons data file within \code{raw_data}. A standard 
 #'  portalcasting directory downloads the raw data files into 
 #'  \code{"raw\PortalData"}, so 
 #'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
@@ -75,8 +70,8 @@
 #'  \cr \cr. 
 #'  \code{prep_moons}, \code{format_moons}: fully appended and formatted 
 #'  \code{data.frame} (also saved out if \code{save = TRUE}). \cr \cr
-#'  \code{add_past_moons_to_raw}, \code{add_future_moons}, 
-#'  \code{add_extra_future_moons}: appropriately appended moons
+#'  \code{add_future_moons} and \code{add_extra_future_moons}: appropriately 
+#'  appended moons
 #'  \code{data.frame}.
 #'   
 #' @examples
@@ -84,40 +79,40 @@
 #'   create_dir()
 #'   fill_raw()
 #'   prep_moons()
-#'   pth <- file_paths(local_paths = "raw/PortalData/Rodents/moon_dates.csv")
+#'   pth <- file_path(files = "raw/PortalData/Rodents/moon_dates.csv")
 #'   moons <- read.csv(pth, stringsAsFactors = FALSE)
 #'   moons <- add_future_moons(moons)
-#'   moons <- add_past_moons_to_raw(moons = moons)
 #'   format_moons(moons)
 #'  }
+#'
+#' @name prepare_moons
+#'
+NULL
+
+#' @rdname prepare_moons
 #'
 #' @export
 #' 
 prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(), 
-                       raw_path_data = "PortalData",
-                       raw_moons_file = "Rodents/moon_dates.csv",
+                       raw_data = "PortalData",
                        quiet = TRUE, save = TRUE, verbose = FALSE,
                        overwrite = TRUE, filename_moons = "moon_dates.csv",
                        arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   messageq("  -lunar data file", quiet)
-  lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
-  moon_path <- file_paths(main, lpath)
-  moons_in <- read.csv(moon_path, stringsAsFactors = FALSE)
+  raw_path <- raw_path(main = main, arg_checks = arg_checks)
+  traps_in <- load_trapping_data(path = raw_path, download_if_missing = FALSE,
+                                 clean = FALSE, quiet = !verbose)
+  moons_in <- traps_in[["newmoons_table"]]
   moons <- add_future_moons(moons = moons_in, lead_time = lead_time, 
                             cast_date = cast_date, arg_checks = arg_checks)
-  add_past_moons_to_raw(main = main, moons = moons_in,
-                        cast_date = cast_date, 
-                        raw_path_data = raw_path_data,
-                        raw_moons_file = raw_moons_file, 
-                        arg_checks = arg_checks)
   moons_out <- format_moons(moons)
-  data_out(main = main, dfl = moons_out, save = save, 
-           filename = filename_moons, overwrite = overwrite, quiet = !verbose,
-           arg_checks = arg_checks)
-}
+  write_data(dfl = moons_out, main = main, save = save, 
+             filename = filename_moons, overwrite = overwrite, 
+             quiet = !verbose, arg_checks = arg_checks)
+} 
 
-#' @rdname prep_moons
+#' @rdname prepare_moons
 #'
 #' @export
 #'
@@ -132,7 +127,7 @@ format_moons <- function(moons, arg_checks = TRUE){
   moons
 }
 
-#' @rdname prep_moons
+#' @rdname prepare_moons
 #'
 #' @export
 #'
@@ -149,7 +144,7 @@ add_future_moons <- function(moons = NULL, lead_time = 12,
   bind_rows(moons, .)
 }
 
-#' @rdname prep_moons
+#' @rdname prepare_moons
 #'
 #' @export
 #'
@@ -163,26 +158,6 @@ add_extra_future_moons <- function(moons, cast_date = Sys.Date(),
   } 
   moons
 }
-
-#' @rdname prep_moons
-#'
-#' @export
-#'
-add_past_moons_to_raw <- function(main = ".", moons, cast_date = Sys.Date(),
-                                  raw_path_data = "PortalData",
-                                  raw_moons_file = "Rodents/moon_dates.csv",
-                                  overwrite = TRUE, arg_checks = TRUE){
-  check_args(arg_checks)
-  if(overwrite){
-    lpath <- paste0("raw/", raw_path_data, "/", raw_moons_file)
-    fpath <- file_paths(main, lpath) 
-    included_moons <- moons$newmoondate < cast_date
-    new_raw <- moons[included_moons, ]
-    write.csv(new_raw, fpath, row.names = FALSE)
-  }
-  moons
-}
-
 
 #' @title Trim a moons table based on target moons
 #'
