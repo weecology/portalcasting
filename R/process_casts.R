@@ -2,9 +2,21 @@ most_recent_cast <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
   cast_meta <- read_cast_meta(main = main, arg_checks = arg_checks)
   
+}
 
+
+read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  return_if_null(cast_id)
+  lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
+  cpath <- file_path(main, "casts", lpath, arg_checks)
+  if(!file.exists(cpath)){
+    stop("cast_id does not have a cast_table")
+  }
+  read.csv(cpath, stringsAsFactors = FALSE) 
 
 }
+
 
 #' @title Save cast output to files
 #'
@@ -15,8 +27,6 @@ most_recent_cast <- function(main = ".", arg_checks = TRUE){
 #'   \code{\link{AutoArima}}) run on the rodents data. Required to be a 
 #'   \code{list}.
 #'
-#' @param model \code{character} value of the name of the model.
-#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
@@ -26,11 +36,7 @@ most_recent_cast <- function(main = ".", arg_checks = TRUE){
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not.
 #'
 #' @export
 #'

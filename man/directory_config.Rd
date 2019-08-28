@@ -32,6 +32,10 @@ quieted.}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
+
+\item{downloads_versions}{\code{character} vector returned from 
+\code{fill_raw} of the successfully downloaded versions of
+\code{downloads}.}
 }
 \value{
 \code{write_directory_config} and \code{update_directory_config}

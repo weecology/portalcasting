@@ -15,6 +15,9 @@ model_template(name = NULL, data_sets = NULL, covariatesTF = FALSE,
 \arguments{
 \item{name}{\code{character} value of the name of the model.}
 
+\item{data_sets}{\code{character} vector of the rodent data set names
+that the model is applied to.}
+
 \item{covariatesTF}{\code{logical} indicator for if the model requires 
 covariates.}
 
@@ -25,6 +28,9 @@ covariates or \code{NULL} if \code{covariatesTF} is \code{FALSE}.}
 the directory tree.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
 
 \item{overwrite}{\code{logical} indicator of whether or not the model
 script should be updated.}
@@ -40,11 +46,10 @@ is \code{NULL}.}
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not. \cr}
+
+\item{data_sets}{\code{character} vector of the rodent data set names
+that the model is applied to.}
 }
 \value{
 \code{write_mode} \code{\link{write}}s the model script out

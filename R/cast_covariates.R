@@ -164,12 +164,13 @@ read_cov_casts <- function(main = ".", directory = "portalPredictions",
                            filename_cov_casts = "covariate_casts.csv",
                            quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  curr_path <- file_path(main = main, sub = "data", file = filename_cov_casts, 
+  curr_path <- file_path(main = main, sub = "data", 
+                         files = filename_cov_casts, 
                          arg_checks = arg_checks)
   curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
 
   arch_path <- paste0(directory, "/data/", filename_cov_casts)
-  arch_path <- file_path(main = main, sub = "raw", file = arch_path,
+  arch_path <- file_path(main = main, sub = "raw", files = arch_path,
                          arg_checks = arg_checks)
   arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
 
@@ -323,7 +324,7 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
                               quiet = quiet, verbose = verbose, 
                               arg_checks = arg_checks)
   out <- rbind(hist_cast, new_cast)
-  out_path <- file_path(main = main, sub = "data", file = filename_cov_casts,
+  out_path <- file_path(main = main, sub = "data", files = filename_cov_casts,
                         arg_checks = arg_checks)
   msg <- "    **covariates_casts.csv saved**"
   messageq(msg, !verbose)

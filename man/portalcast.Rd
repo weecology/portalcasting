@@ -16,7 +16,8 @@ portalcast(main = ".", models = prefab_models(), ensemble = FALSE,
   control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
+  filename_moons = "moon_dates.csv",
+  filename_config = "dir_config.yaml", filename_cov = "covariates.csv",
   filename_cov_casts = "covariate_casts.csv",
   filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
 
@@ -26,13 +27,14 @@ cast(main = ".", models = prefab_models(), ensemble = FALSE,
   confidence_level = 0.95, quiet = FALSE, verbose = FALSE,
   cleanup = TRUE, arg_checks = TRUE)
 
-prep_data(main = ".", end_moon = NULL,
+prep_data(main = ".", end_moon = NULL, models = prefab_models(),
   data_sets = prefab_data_sets(), lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
   hist_covariates = TRUE, cast_covariates = TRUE,
   directory = "portalPredictions", raw_data = "PortalData",
   source_name = "current_archive", append_cast_csv = TRUE,
-  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
+  controls_r = rodents_controls(), controls_m = NULL,
+  control_cdl = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, save = TRUE, overwrite = TRUE,
   filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
@@ -137,6 +139,9 @@ files should be updated (most users should leave as \code{TRUE}).}
 
 \item{filename_moons}{\code{character} name of the file for saving the 
 data output.}
+
+\item{filename_config}{\code{character} filename of the directory
+configuration YAML.}
 
 \item{filename_cov}{\code{character} filename for saving the output.}
 

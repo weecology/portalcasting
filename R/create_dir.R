@@ -14,7 +14,7 @@
 #'  (\code{tmp}, \code{raw}, \code{data}, \code{models}, and \code{casts}).
 #'
 #' @details Folder paths are created internally using  
-#'  \code{\link{main_path}} and \code{\link{sub_paths}}, such that the user 
+#'  \code{\link{main_path}} and \code{\link{sub_path}}, such that the user 
 #'  only needs to input the main folder's standard \code{main} name input. \cr
 #'  The subdirectories are presently hardcoded. 
 #'
@@ -49,11 +49,11 @@
 #'   create_subs()
 #'  }
 #'
-#' @name create
+#' @name directory_creation
 #'
 NULL
 
-#' @rdname create
+#' @rdname directory_creation
 #'
 #' @export
 #'
@@ -71,7 +71,7 @@ create_dir <- function(main = ".", filename_config = "dir_config.yaml",
                          quiet = quiet, arg_checks = arg_checks)
 }
 
-#' @rdname create
+#' @rdname directory_creation
 #'
 #' @export
 #'
@@ -83,7 +83,7 @@ create_main <- function(main = ".", quiet = FALSE, verbose = FALSE,
          arg_checks = arg_checks)
 }
 
-#' @rdname create
+#' @rdname directory_creation
 #'
 #' @export
 #'

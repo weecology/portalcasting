@@ -103,7 +103,7 @@ prefab_model_controls <- function(){
 #'  controls <- list(name = "xx", data_sets = prefab_data_sets(), 
 #'                   interpolate = FALSE, covariatesTF = FALSE, lag = NA)
 #'  model_script_controls("xx", controls)
-#'  model_script_controls(prefab_models("xx"), controls)
+#'  model_script_controls(c(prefab_models(), "xx"), controls)
 #'  model_script_controls(c("xx", "ESSS"), controls)
 #'  extract_min_lag()
 #'  extract_min_lag("AutoArima")
@@ -236,10 +236,15 @@ prefab_models <- function(){
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  
+#' @param data_sets \code{character} vector of the rodent data set names
+#'  that the model is applied to. 
+#'  
+#' @param data_sets \code{character} vector of the rodent data set names
+#'  that the model is applied to. 
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'  shown.
 #'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr

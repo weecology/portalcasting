@@ -27,9 +27,6 @@
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
-#'  covariate lag time used in any model.
-#'
 #' @param cast_date \code{Date} from which future is defined (the origin of
 #'  the cast). In the recurring forecasting, is set to today's date
 #'  using \code{\link{Sys.Date}}.
@@ -56,9 +53,6 @@
 #' 
 #' @param filename_cov_casts \code{character} value of covariate casts
 #'  file.
-#'
-#' @param filename_config \code{character} filename of the directory
-#'  configuration YAML.
 #'
 #' @param source_name \code{character} value for the name to give the 
 #'  covariate forecast. Currently is \code{"current_archive"}. Previous to
@@ -96,10 +90,6 @@
 #' @param downloads \code{list} of arguments to pass to \code{\link{download}}
 #'  for raw file downloading. 
 #'
-#' @param downloads_versions \code{character} vector returned from 
-#'  \code{fill_raw} of the successfully downloaded versions of
-#'  \code{downloads}.
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -114,9 +104,6 @@
 #'
 #' @param filename_moons \code{character} name of the file for saving the 
 #'  moons data.
-#'
-#' @param filename_cov \code{character} filename for saving the covariates
-#'  used in the modeling.
 #'
 #' @param filename_cov_casts \code{character} filename for saving the 
 #'  covariate casts output.

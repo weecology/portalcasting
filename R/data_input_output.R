@@ -28,6 +28,10 @@
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not.
 #'
+#' @param downloads_versions \code{character} vector returned from 
+#'  \code{fill_raw} of the successfully downloaded versions of
+#'  \code{downloads}.
+#'
 #' @return \code{write_directory_config} and \code{update_directory_config}
 #'  both write out the \code{dir_config.yaml} file and return \code{NULL}. 
 #'  \cr \cr
@@ -35,7 +39,7 @@
 #'
 #' @name directory_config
 #'
-
+NULL
 
 #' @rdname directory_config
 #'
@@ -90,7 +94,7 @@ read_directory_config <- function(main = ".",
                                   filename_config = "dir_config.yaml",
                                   quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  config_path <- file_path(main = main, file = filename_config,
+  config_path <- file_path(main = main, files = filename_config,
                            arg_checks = arg_checks)
   if(!file.exists(config_path)){
     warning("dir_config.yaml file is missing, consider re-creating directory")
@@ -112,9 +116,6 @@ read_directory_config <- function(main = ".",
 #'   be saved out.
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
-#'
-#' @param nindent Number of indentation spaces to use. Must be non-negative
-#'  and integer-conformable.
 #'
 #' @param overwrite \code{logical} indicator of if the file should be
 #'  overwritten if it exists.
@@ -205,14 +206,13 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  \code{"controls"}. \code{data_set} can only be length 1, 
 #'  \code{data_sets} is not restricted in length.
 #'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not.
 #'  
 #' @return Data requested.
 #' 
@@ -279,7 +279,7 @@ read_rodents_table <- function(main = ".", data_set = "all",
   check_args(arg_checks)
   data_set <- tolower(data_set)
   lpath <- paste0("rodents_", data_set, ".csv") 
-  fpath <- file_path(main = main, sub = "data", file = lpath, 
+  fpath <- file_path(main = main, sub = "data", files = lpath, 
                      arg_checks = arg_checks)
   if(!file.exists(fpath)){
     rodents <- prep_rodents(main = main, data_sets = data_set, 
@@ -316,7 +316,7 @@ read_rodents <- function(main = ".", data_sets = c("all", "controls"),
 #'
 read_covariates <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
-  fpath <- file_path(main = main, sub = "data", file = "covariates.csv", 
+  fpath <- file_path(main = main, sub = "data", files = "covariates.csv", 
                      arg_checks = arg_checks)
   if(!file.exists(fpath)){
     return(prep_covariates(main = main, arg_checks = arg_checks))
@@ -330,7 +330,7 @@ read_covariates <- function(main = ".", arg_checks = TRUE){
 #'
 read_covariate_casts <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
-  fpath <- file_path(main = main, sub = "data", file = "covariate_casts.csv", 
+  fpath <- file_path(main = main, sub = "data", files = "covariate_casts.csv", 
                      arg_checks = arg_checks)
   if(!file.exists(fpath)){
     return(cast_covariates(main = main, arg_checks = arg_checks))
@@ -372,7 +372,7 @@ read_metadata <- function(main = ".", arg_checks = TRUE){
 read_cast_metadata <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   meta_path <- file_path(main = main, sub = "casts", 
-                         file = "cast_metadata.csv", arg_checks = arg_checks)
+                         files = "cast_metadata.csv", arg_checks = arg_checks)
   if(!file.exists(meta_path)){
     messageq("  **creating cast_metadata.csv**", quiet)
     cast_meta <- data.frame(cast_id = 0, cast_group = 0, 

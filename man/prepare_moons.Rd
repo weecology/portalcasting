@@ -42,8 +42,8 @@ all of the information or not (and thus just the tidy messages).}
 \item{overwrite}{\code{logical} indicator of whether or not the existing
 files should be updated (most users should leave as \code{TRUE}).}
 
-\item{filename_moons}{\code{character} name of the path to the file of the 
-raw moons dates data, within \code{raw_data} folder.}
+\item{filename_moons}{\code{character} name of the file for saving the 
+data output.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
@@ -55,15 +55,6 @@ many/most/all enclosed functions to not check any arguments using
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{moons}{Moons \code{data.frame}.}
-
-\item{raw_moons_file}{\code{character} value indicating the path
-to the moons data file within \code{raw_data}. A standard 
-portalcasting directory downloads the raw data files into 
-\code{"raw\PortalData"}, so 
-\code{raw_moons_file = "Rodents/moon_dates.csv"}.}
-
-\item{filename_moons}{\code{character} name of the file for saving the 
-data output.}
 }
 \value{
 All functions here return some version of a moons \code{data.frame}

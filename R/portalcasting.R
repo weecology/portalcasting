@@ -13,8 +13,8 @@
 #' @importFrom rlang !! !!! .data quo quos
 #' @importFrom stats AIC lm na.omit predict qnorm quantile rnorm runif
 #' @importFrom tscount tsglm
-#' @importFrom utils download.file packageDescription read.csv tail unzip
-#'  write.csv write.table
+#' @importFrom utils download.file packageDescription read.csv sessionInfo
+#'  tail unzip write.csv write.table
 #' @importFrom viridis viridis
 #' @importFrom yaml as.yaml yaml.load_file
 #'
@@ -48,8 +48,9 @@ if (getRversion() >= "2.15.1"){
       "fit_end_moon", "fit_start_moon",
       "forecast_moon", "initial_moon", "level",
       "locally_measured", "LowerPI", "main", "maxtemp", "meantemp", 
-      "mintemp", "model_var", "moondate", "moon", "precipitation",
-      "species", "sum_weight", "UpperPI", "weight", "weighted_ss")
+      "mintemp", "model_var", "moondate", "moon", "newmoondate", 
+      "precipitation", "species", "sum_weight", "UpperPI", "weight", 
+      "weighted_ss")
   )
 }
 

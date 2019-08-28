@@ -104,7 +104,6 @@
 #' @param cleanup \code{logical} indicator if any files put into the tmp
 #'  subdirectory should be removed at the end of the process. 
 #'
-#'
 #' @param filename_config \code{character} filename of the directory
 #'  configuration YAML.
 #'

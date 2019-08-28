@@ -93,7 +93,7 @@ Any model that is part of the \code{prefab} set
  controls <- list(name = "xx", data_sets = prefab_data_sets(), 
                   interpolate = FALSE, covariatesTF = FALSE, lag = NA)
  model_script_controls("xx", controls)
- model_script_controls(prefab_models("xx"), controls)
+ model_script_controls(c(prefab_models(), "xx"), controls)
  model_script_controls(c("xx", "ESSS"), controls)
  extract_min_lag()
  extract_min_lag("AutoArima")

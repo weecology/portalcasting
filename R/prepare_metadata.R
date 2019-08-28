@@ -8,9 +8,15 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
+#' @param models \code{character} vector of name(s) of model(s) to 
+#'  include.
+#'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
 #' @param rodents Rodents \code{list}. See \code{\link{prep_rodents}},
+#'  
+#' @param data_sets \code{character} vector of the rodent data set names
+#'  that the model is applied to. 
 #'
 #' @param covariates Covariates \code{data.frame}. See 
 #'  \code{\link{prep_covariates}}.

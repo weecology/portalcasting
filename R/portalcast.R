@@ -117,6 +117,9 @@
 #'
 #' @param filename_meta \code{character} filename for saving the metadata.
 #'
+#' @param filename_config \code{character} filename of the directory
+#'  configuration YAML.
+#'
 #' @param filename_cov_casts \code{character} filename for saving the 
 #'  covariate casts output.
 #'
@@ -167,6 +170,7 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
                        quiet = FALSE, verbose = FALSE, 
                        save = TRUE, overwrite = TRUE, 
                        filename_moons = "moon_dates.csv",
+                       filename_config = "dir_config.yaml", 
                        filename_cov = "covariates.csv", 
                        filename_cov_casts = "covariate_casts.csv",
                        filename_meta = "metadata.yaml", cleanup = TRUE, 
@@ -196,10 +200,12 @@ portalcast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
               directory = directory,
               raw_data = raw_data,
               append_cast_csv = append_cast_csv, controls_r = controls_r,
+              controls_m = controls_m, 
               control_cdl = control_cdl, downloads = downloads, 
               quiet = quiet, verbose = verbose, save = save,
               overwrite = overwrite, filename_moons = filename_moons,
               filename_cov = filename_cov, filename_meta = filename_meta,
+              filename_config = filename_config,
               filename_cov_casts = filename_cov_casts,
               cleanup = cleanup, arg_checks = arg_checks)
     cast(main = main, models = models, ensemble = ensemble,
@@ -248,7 +254,7 @@ cast <- function(main = ".", models = prefab_models(), ensemble = FALSE,
 #'
 #' @export
 #'
-prep_data <- function(main = ".", end_moon = NULL, 
+prep_data <- function(main = ".", end_moon = NULL, models = prefab_models(), 
                       data_sets = prefab_data_sets(),
                       lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
                       start_moon = 217, 
@@ -258,7 +264,7 @@ prep_data <- function(main = ".", end_moon = NULL,
                       raw_data = "PortalData",
                       source_name = "current_archive",
                       append_cast_csv = TRUE, 
-                      controls_r = rodents_controls(),
+                      controls_r = rodents_controls(), controls_m = NULL, 
                       control_cdl = climate_dl_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, 

@@ -43,7 +43,7 @@ plot_cast_ts <- function(main = ".", species = NULL, cast_id = NULL,
   axis(1, at = loc, labels = FALSE, tck = -0.005)  
 
   lab <- list(text = "", font = 1)
-  lp <- file_paths(main, "raw/PortalData/Rodents/Portal_rodent_species.csv")
+  lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")
   if (species == "total"){
@@ -87,14 +87,3 @@ plot_cast_ts <- function(main = ".", species = NULL, cast_id = NULL,
 
 
 
-read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
-  return_if_null(cast_id)
-  lpath <- paste0("casts/cast_id_", cast_id, "_cast_tab.csv")
-  cpath <- file_paths(main, lpath, arg_checks)
-  if(!file.exists(cpath)){
-    stop("cast_id does not have a cast_table")
-  }
-  read.csv(cpath, stringsAsFactors = FALSE) 
-
-}

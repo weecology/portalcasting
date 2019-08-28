@@ -118,7 +118,7 @@ sub_path <- function(main = ".", subs = NULL, arg_checks = TRUE){
 #' @export
 #'
 raw_path <- function(main = ".", arg_checks = TRUE){
-  sub_path(main = main, sub = "raw", arg_checks = arg_checks)
+  sub_path(main = main, subs = "raw", arg_checks = arg_checks)
 }
 
 #' @rdname paths
@@ -126,7 +126,7 @@ raw_path <- function(main = ".", arg_checks = TRUE){
 #' @export
 #'
 casts_path <- function(main = ".", arg_checks = TRUE){
-  sub_path(main = main, sub = "casts", arg_checks = arg_checks)
+  sub_path(main = main, subs = "casts", arg_checks = arg_checks)
 }
 
 #' @rdname paths
@@ -134,7 +134,7 @@ casts_path <- function(main = ".", arg_checks = TRUE){
 #' @export
 #'
 data_path <- function(main = ".", arg_checks = TRUE){
-  sub_path(main = main, sub = "data", arg_checks = arg_checks)
+  sub_path(main = main, subs = "data", arg_checks = arg_checks)
 }
 
 #' @rdname paths
@@ -142,7 +142,7 @@ data_path <- function(main = ".", arg_checks = TRUE){
 #' @export
 #'
 models_path <- function(main = ".", arg_checks = TRUE){
-  sub_path(main = main, sub = "models", arg_checks = arg_checks)
+  sub_path(main = main, subs = "models", arg_checks = arg_checks)
 }
 
 #' @rdname paths
@@ -150,7 +150,7 @@ models_path <- function(main = ".", arg_checks = TRUE){
 #' @export
 #'
 tmp_path <- function(main = ".", arg_checks = TRUE){
-  sub_path(main = main, sub = "tmp", arg_checks = arg_checks)
+  sub_path(main = main, subs = "tmp", arg_checks = arg_checks)
 }
 
 #' @rdname paths

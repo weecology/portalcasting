@@ -31,9 +31,6 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
-
-\item{nindent}{Number of indentation spaces to use. Must be non-negative
-and integer-conformable.}
 }
 \value{
 \code{dfl} as input.

@@ -140,9 +140,6 @@ moons data.}
 \item{filename_config}{\code{character} filename of the directory
 configuration YAML.}
 
-\item{filename_cov}{\code{character} filename for saving the covariates
-used in the modeling.}
-
 \item{filename_cov_casts}{\code{character} value of covariate casts
 file.}
 
@@ -156,18 +153,8 @@ checked using standard protocols via \code{\link{check_args}}. The
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
 
-\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
-covariate lag time used in any model.}
-
-\item{downloads_versions}{\code{character} vector returned from 
-\code{fill_raw} of the successfully downloaded versions of
-\code{downloads}.}
-
 \item{filename_cov_casts}{\code{character} filename for saving the 
 covariate casts output.}
-
-\item{filename_config}{\code{character} filename of the directory
-configuration YAML.}
 }
 \value{
 All \code{fill_} functions return \code{NULL}.

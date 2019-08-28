@@ -39,15 +39,6 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #' 
-#' @param filename_moons \code{character} name of the path to the file of the 
-#'  raw moons dates data, within \code{raw_data} folder.
-#'
-#' @param raw_moons_file \code{character} value indicating the path
-#'  to the moons data file within \code{raw_data}. A standard 
-#'  portalcasting directory downloads the raw data files into 
-#'  \code{"raw\PortalData"}, so 
-#'  \code{raw_moons_file = "Rodents/moon_dates.csv"}.
-#'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
@@ -228,6 +219,11 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'  named \code{date}.
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#' 
+#' @param raw_data \code{character} value indicating the name of the raw
+#'  data directory. A standard portalcasting directory downloads the raw data
+#'  files into from the PortalData repository, so 
+#'  \code{raw_data = "PortalData"}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -291,9 +287,6 @@ add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
-#' @param window_width \code{integer} (or integer \code{numeric}) value for
-#'  the number of timesteps the window covers.
-#'
 #' @param date \code{Date} used for defining a window (starting with moons
 #'  subsequent to the date) or a previous moon (before or on the date).
 #'
@@ -304,11 +297,10 @@ add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
 #'
 #' @return 
 #'  \code{target_moons}: \code{numeric} vector of the moon numbers 

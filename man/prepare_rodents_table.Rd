@@ -84,6 +84,9 @@ to \code{\link[portalr]{summarize_rodent_data}}.}
 \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. Pipes 
 directly to \code{\link[portalr]{summarize_rodent_data}}.}
 
+\item{shape}{\code{character} value indicating a "crosstab" or "flat" 
+output.}
+
 \item{fillweight}{\code{logical} specifier of whether to fill in unknown 
 weights with other records from that individual or species, where 
 possible.}
@@ -105,11 +108,17 @@ timestep, a common format format for discrete-time modeling.}
 \item{zero_drop}{\code{logical} indicator of if \code{0} values 
 (representing sufficient sampling but no detection) should be dropped.}
 
+\item{ref_species}{\code{character} vector of the reference speces. Sets
+a boundary outside of the species included in the model.}
+
 \item{effort}{\code{logical} indicator of if the effort columns should
 be included in the output.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}
@@ -130,6 +139,8 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+
+\item{rodents_tab}{Rodents \code{data.frame} data table.}
 }
 \value{
 \code{data.frame} for the specified data set.

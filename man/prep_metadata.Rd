@@ -16,6 +16,12 @@ prep_metadata(main = ".", models = prefab_models(), data_sets = NULL,
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
+\item{models}{\code{character} vector of name(s) of model(s) to 
+include.}
+
+\item{data_sets}{\code{character} vector of the rodent data set names
+that the model is applied to.}
+
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
 \item{rodents}{Rodents \code{list}. See \code{\link{prep_rodents}},}

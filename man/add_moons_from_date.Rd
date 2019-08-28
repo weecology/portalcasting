@@ -20,6 +20,11 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+
+\item{raw_data}{\code{character} value indicating the name of the raw
+data directory. A standard portalcasting directory downloads the raw data
+files into from the PortalData repository, so 
+\code{raw_data = "PortalData"}.}
 }
 \value{
 \code{data.frame} \code{x} with column of \code{newmoonnumber}s 

@@ -229,29 +229,29 @@ rodents_controls <- function(data_sets = NULL, controls_r = NULL,
 #'  (\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}). 
 #'
 #' @param level \code{character} indicating the type of summary:
-#'    \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 
-#'    directly to \code{\link[portalr]{summarize_rodent_data}}.
+#'  \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 
+#'  directly to \code{\link[portalr]{summarize_rodent_data}}.
 #'
 #' @param plots Specification of subset of plots. Can be a vector of 
-#'    \code{numeric} plots indicators or specific sets indicated by
-#'    \code{character} values: \code{"all"} plots or \code{"Longterm"} plots
-#'    (plots that have had the same treatment for the entire time series).
+#'  \code{numeric} plots indicators or specific sets indicated by
+#'  \code{character} values: \code{"all"} plots or \code{"Longterm"} plots
+#'  (plots that have had the same treatment for the entire time series).
 #'
 #' @param treatment \code{character} indicating the specific 
-#'    treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"},
-#'    \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"} 
+#'  treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"},
+#'  \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"} 
 #'
 #' @param min_plots \code{integer} (or integer \code{numeric}) of the 
-#'    minimum number of plots surveyed for a survey to be used. Pipes 
-#'    directly to \code{\link[portalr]{summarize_rodent_data}}.
+#'  minimum number of plots surveyed for a survey to be used. Pipes 
+#'  directly to \code{\link[portalr]{summarize_rodent_data}}.
 #'
 #' @param min_traps \code{integer} (or integer \code{numeric}) of the 
-#'    minimum number of traps collected for a plot to be used. Pipes directly
-#'    to \code{\link[portalr]{summarize_rodent_data}}.
+#'  minimum number of traps collected for a plot to be used. Pipes directly
+#'  to \code{\link[portalr]{summarize_rodent_data}}.
 #'
 #' @param output \code{character} indicating the type of data:
-#'    \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. Pipes 
-#'    directly to \code{\link[portalr]{summarize_rodent_data}}.
+#'  \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. Pipes 
+#'  directly to \code{\link[portalr]{summarize_rodent_data}}.
 #'
 #' @param fillweight \code{logical} specifier of whether to fill in unknown 
 #'  weights with other records from that individual or species, where 
@@ -278,18 +278,14 @@ rodents_controls <- function(data_sets = NULL, controls_r = NULL,
 #'  be included in the output.
 #'
 #' @param filename \code{character} name of the file for saving the 
-#'   output. The extension of the filename may be used for identifying
-#'   object requirements (for example, if the extension of \code{filename} is
-#'   \code{".csv"}, it will trigger use of \code{\link[utils]{write.csv}}). 
+#'  output. The extension of the filename may be used for identifying
+#'  object requirements (for example, if the extension of \code{filename} is
+#'  \code{".csv"}, it will trigger use of \code{\link[utils]{write.csv}}). 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return Named \code{list} of \code{data_set}'s data-generating controls, 
 #'  for input as part of \code{controls_r} in \code{\link{prep_rodents}}.
@@ -520,6 +516,13 @@ prep_rodents <- function(main = ".", moons = NULL,
 #'  weights with other records from that individual or species, where 
 #'  possible.
 #'
+#' @param shape \code{character} value indicating a "crosstab" or "flat" 
+#'  output. 
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'  shown.
+
+#'
 #' @param unknowns \code{logical} indicator to either remove all 
 #'  individuals not identified to species (\code{unknowns = FALSE}) or 
 #'  sum them in an additional column (\code{unknowns = TRUE}.
@@ -548,6 +551,11 @@ prep_rodents <- function(main = ".", moons = NULL,
 #'
 #' @param save \code{logical} indicator controlling if the output should 
 #'  be saved out.
+#'
+#' @param ref_species \code{character} vector of the reference speces. Sets
+#'  a boundary outside of the species included in the model.
+#'
+#' @param rodents_tab Rodents \code{data.frame} data table.
 #'
 #' @param filename \code{character} name of the file for saving the 
 #'  output. The extension of the filename may be used for identifying
