@@ -20,9 +20,6 @@ test_that("check_arg", {
   expect_is(check_arg("lead_time", -1), "character")
   expect_is(check_arg("lev", 0.2), "character")
   expect_is(check_arg("confidence_level", 1.1), "character")
-  expect_is(check_arg("all", matrix(123)), "character")
-  expect_is(check_arg("all", list(a = 1)), "character")
-
   expect_is(check_arg("extension", 1), "character")
   expect_is(check_arg("extension", "ab"), "character")
 })
