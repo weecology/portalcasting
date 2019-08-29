@@ -36,7 +36,7 @@ test_that("model_script_controls", {
   expect_error(model_script_controls(prefab_models(), 
                                      list(name = "AutoArima", 
                                           covariates = FALSE, lag = NA)))
-  expect_error(model_script_controls("xx"))
+  expect_messages(model_script_controls("xx"))
 })
 
 test_that("prefab_models", {

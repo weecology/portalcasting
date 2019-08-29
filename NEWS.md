@@ -25,6 +25,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Flexible interface to downloading capacity through a url, with generalized and flexible functions for generating Zenodo API urls (for retrieving the raw data and historical predictions) and NMME API urls (for retrieving weather forecasts) to port into the `download` function. [addresses](https://github.com/weecology/portalcasting/issues/121) and [addresses](https://github.com/weecology/portalcasting/issues/107) and [addresses](https://github.com/weecology/portalcasting/issues/53)
 
 ### Changes for users adding their own models to the prefab set
+* Substantial reduction in effort for users who wish to add models (i.e. anyone who is sandboxing). You can even just plunk your own R script (which could be a single line calling out to an external program if desired) without having to add any model script writing controls, and just add the name of the model to the models argument in `portalcast` and it will run it with everything else.
 * Outlined in the updated [How to](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignettes.
 * Users adding models to the suite should permanently add their model's control options to the source code in `model_script_controls` rather than write their own control functions.
 * Users adding models to the suite should permanently add their model's function code to the `prefab_models` script, rather than to its own script. 
