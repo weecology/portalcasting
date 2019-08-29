@@ -92,6 +92,9 @@ prefab_model_controls <- function(){
 #'  many/most/all enclosed functions to not check any arguments using 
 #'  \code{\link{check_args}}, and as such, \emph{caveat emptor}. 
 #'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
 #' @return \code{model_script_controls}: named \code{list} of length equal to
 #'  the number of elements in \code{models} and with elements that are each 
 #'  \code{list}s of those \code{models}'s script-writing controls. \cr \cr
@@ -111,7 +114,7 @@ prefab_model_controls <- function(){
 #' @export
 #'
 model_script_controls <- function(models = NULL, controls_m = NULL, 
-                                  arg_checks = TRUE){
+                                  quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(models)
   if(list_depth(controls_m) == 1){
@@ -125,21 +128,32 @@ model_script_controls <- function(models = NULL, controls_m = NULL,
     controls_m[nadd + i] <- list(prefab_controls[[i]])
     names(controls_m)[nadd + i] <- names(prefab_controls)[i]
   }
-  included_models <- which(names(controls_m) %in% models)
-  missing_controls <- which((models %in% names(controls_m)) == FALSE)
-  replicates <- table(names(controls_m))
-  if(length(missing_controls) > 0){
+  missing_controls <- !(models %in% names(controls_m))
+  which_missing_controls <- which(missing_controls == TRUE)
+  nmissing_controls <- length(which_missing_controls) 
+  if(nmissing_controls > 0){
     which_missing <- models[missing_controls]
     all_missing <- paste(which_missing, collapse = ", ")
-    msg <- paste0("missing controls for model(s): ", all_missing)
-    stop(msg)
+    msg <- paste0("  ~no controls input for ", all_missing)
+    msg <- c(msg, "  **assuming controls follow `model_script_control()`**")  
+    messageq(msg, quiet)
+    nadd <- length(controls_m)
+    for(i in 1:nmissing_controls){
+      mod_name <- models[which_missing_controls[i]]
+
+      controls_m[[nadd + i]] <- model_script_control(name = mod_name,
+                                                   arg_checks = arg_checks)
+      names(controls_m)[nadd + i] <- mod_name
+    }
   }
+  replicates <- table(names(controls_m))
   if(any(replicates > 1)){
     which_conflicting <- names(replicates)[which(replicates > 1)]
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of model(s): ", all_conflicting)
     stop(msg)
   }
+  included_models <- which(names(controls_m) %in% models)
   controls_m[included_models]
 }
 
@@ -148,10 +162,10 @@ model_script_controls <- function(models = NULL, controls_m = NULL,
 #' @export
 #'
 extract_min_lag <- function(models = prefab_models(), controls_m = NULL, 
-                            arg_checks = TRUE){
+                              quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   controls <- model_script_controls(models = models, controls_m = controls_m,
-                                    arg_checks = arg_checks)
+                                    quiet = quiet, arg_checks = arg_checks)
   nmods <- length(controls)
   lags <- rep(NA, nmods)
   for(i in 1:nmods){
@@ -167,10 +181,10 @@ extract_min_lag <- function(models = prefab_models(), controls_m = NULL,
 #' @export
 #'
 extract_data_sets <- function(models = prefab_models(), controls_m = NULL, 
-                            arg_checks = TRUE){
+                              quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   controls <- model_script_controls(models = models, controls_m = controls_m,
-                                    arg_checks = arg_checks)
+                                    quiet = quiet, arg_checks = arg_checks)
   nmods <- length(controls)
   data_sets <- NULL
   for(i in 1:nmods){
@@ -367,6 +381,48 @@ model_template <- function(name = NULL, data_sets = NULL,
   }
   out
 }
+
+
+#' @title Create a control lists for generating a model script
+#'
+#' @description Given the number of arguments into 
+#'  \code{\link{model_template}} via \code{\link{write_model}}
+#'  it helps to have a control \code{list}  
+#'  to organize them. \code{model_script_control} provides a template for the 
+#'  controls \code{list} used to define the specific arguments for a user's
+#'  novel data set, setting the formal arguments to the basic default 
+#'  values.
+#
+#' @param name \code{character} value of the name of the model.
+#'
+#' @param data_sets \code{character} vector of the rodent data set names
+#'  that the model is applied to. 
+#'
+#' @param covariatesTF \code{logical} indicator for if the model requires 
+#'  covariates.
+#'
+#' @param lag \code{integer} (or integer \code{numeric}) lag time used for the
+#'   covariates or \code{NULL} if \code{covariatesTF} is \code{FALSE}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return Named \code{list} of model's script-generating controls, 
+#'  for input as part of \code{controls_m} in \code{\link{write_model}}.
+#'
+#' @export
+#'
+model_script_control <- function(name = "model", 
+                                  data_sets = prefab_data_sets(),
+                                  covariatesTF = FALSE, lag = NA,
+                                  arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  list(name = name, data_sets = data_sets, covariatesTF = covariatesTF, 
+      lag = lag)
+}
+
 #' @title Verify that models requested to cast with exist
 #'
 #' @description Verify that models requested have scripts in the models 

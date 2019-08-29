@@ -7,13 +7,13 @@
 \title{Produce the control lists for the model script writing}
 \usage{
 model_script_controls(models = NULL, controls_m = NULL,
-  arg_checks = TRUE)
+  quiet = FALSE, arg_checks = TRUE)
 
 extract_min_lag(models = prefab_models(), controls_m = NULL,
-  arg_checks = TRUE)
+  quiet = FALSE, arg_checks = TRUE)
 
 extract_data_sets(models = prefab_models(), controls_m = NULL,
-  arg_checks = TRUE)
+  quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{models}{\code{character} vector of name(s) of model(s) whose 
@@ -41,6 +41,9 @@ If only a single model is added, the name of the model from the element
 \code{list}. If multiple models are added, each element \code{list} must
 be named according to the model and the \code{name} element. \cr 
 See \code{Details} and \code{Examples}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

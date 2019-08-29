@@ -182,7 +182,7 @@ portalcast <- function(main = ".", models = prefab_models(),
   verify_raw_data(main = main, raw_data = raw_data, 
                   arg_checks = arg_checks)
   min_lag <- extract_min_lag(models = models, controls_m = controls_m,
-                             arg_checks = arg_checks)
+                             arg_checks = arg_checks, quiet = !verbose)
   moons <- read_moons(main = main, arg_checks = arg_checks)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)

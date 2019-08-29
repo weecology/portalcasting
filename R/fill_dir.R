@@ -220,9 +220,9 @@ fill_data <- function(main = ".", models = prefab_models(),
                       cleanup = TRUE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   min_lag <- extract_min_lag(models = models, controls_m = controls_m, 
-                             arg_checks = arg_checks)
+                             quiet = quiet, arg_checks = arg_checks)
   data_sets <- extract_data_sets(models = models, controls_m = controls_m, 
-                                 arg_checks = arg_checks)
+                                 quiet = quiet, arg_checks = arg_checks)
 
   raw_data_present <- verify_raw_data(main = main, raw_data = raw_data, 
                                       arg_checks = arg_checks)
@@ -278,7 +278,9 @@ fill_models <- function(main = ".", models = prefab_models(),
                         overwrite = TRUE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(models)
-  controls_m <- model_script_controls(models, controls_m)
+  controls_m <- model_script_controls(models = models, 
+                                      controls_m = controls_m,
+                                      quiet = quiet, arg_checks = arg_checks)
   messageq(" -Writing model scripts", quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){
