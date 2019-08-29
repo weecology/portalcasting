@@ -241,7 +241,22 @@ cast <- function(main = ".", models = prefab_models(),
 
   models_scripts <- models_to_cast(main = main, models = models,
                                    arg_checks = arg_checks)
-  sapply(models_scripts, source)
+  nmodels <- length(models)
+  for(i in 1:nmodels){
+    modelname <- path_no_ext(basename(models_scripts)[i])
+    messageq(paste0(" Running ", modelname, "\n"), quiet)
+
+    run_status <- tryCatch(
+                     source(models_scripts[i]),
+                     error = function(x){NA}
+                  )
+    if(all(is.na(run_status))){
+      msg <- paste0("  ||--|| ", modelname, " failed ||--||\n")
+    } else{
+      msg <- paste0("\n  ||++|| ", modelname, " successful ||++||\n")
+    }
+    messageq(msg, quiet)
+  }
   messageq("---------------------------------------------------------", quiet)
   clear_tmp(main = main, quiet = quiet, verbose = verbose, cleanup = cleanup,
             arg_checks = arg_checks)

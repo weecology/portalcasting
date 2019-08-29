@@ -65,6 +65,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Rather than the complex machinery used to iterate through multiple forecasts ("hindcasting") that involved working backwards and skipping certain moons (which didn't need to be skipped anymore due to updated code from a while back that allows us to forecast fine even without the most recent samples yet), a simple for loop is able to manage iterating. This is also facilitated by the downloading of the raw portalPredictions repository from Zenodo and critically its retention in the "raw" subdirectory, which allows quick re-calculation of historic predictions of covariates. [addresses](https://github.com/weecology/portalcasting/issues/11)
 * `cast_type` has been removed as an input, it's auto determined now based on `end_moon` and the last moon available (if they're equal it's a "forecast", if not it's a "hindcast").
 
+### Softer handling of model failure
+* Within `cast`, the model scripts are now sourced within a for-loop (rather than sapply) to allow for simple error catching of each script. 
 
 ### Improved argument checking flow
 * Arg checking is now considerably tighter, code-wise. 

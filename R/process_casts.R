@@ -1,9 +1,3 @@
-most_recent_cast <- function(main = ".", arg_checks = TRUE){
-  check_args(arg_checks)
-    
-}
-
-
 read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   check_args(arg_checks)
   return_if_null(cast_id)

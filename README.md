@@ -1,4 +1,4 @@
-# Supporting [automated iterative forecasting](https://github.com/weecology/portalPredictions) of [Portal rodent populations](https://portal.weecology.org/)
+# Supporting [automated forecasting](https://github.com/weecology/portalPredictions) of [rodent populations](https://portal.weecology.org/)
 [![Build Status](https://travis-ci.org/weecology/portalcasting.svg?branch=master)](https://travis-ci.org/weecology/portalcasting)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
@@ -13,7 +13,7 @@ analysis and forecasting of [Portal rodent populations](https://portal.weecology
 [output website](http://portal.naturecast.org/),
 [Zenodo archive](https://zenodo.org/record/2543733)).
 
-`portalcasting`'s functions are also designed to be portable, allowing
+`portalcasting`'s functions are also portable, allowing
 users to set up a fully-functional replica repository on a local or 
 remote machine. This facilitates development and testing of new models
 via a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(software_development))

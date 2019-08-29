@@ -20,9 +20,6 @@ test_that("na_conformer", {
   expect_equal(na_conformer(xx, "n")[2,2], "NA")
 })
 
-test_that("cast0", {
-  expect_is(cast0(12), "list")
-})
 
 test_that("foy", {
   expect_is(foy(Sys.Date()), "numeric")

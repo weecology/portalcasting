@@ -1,0 +1,196 @@
+url: https://weecology.github.io/portalcasting
+development:
+  mode: auto
+navbar:
+  title: "portalcasting"
+  structure:
+    left: [home, articles, reference, news]
+    right: [twitter, github] 
+  components: 
+    articles:
+      text: "Vignettes"
+    reference: 
+      text: "Functions"
+    news: 
+      text: "News"
+    twitter:
+      icon: fa-twitter
+      href: https://twitter.com/weecology
+
+reference:
+  - title: "Directory creation"
+    desc: "Functions that instantiate a portalcasting directory"
+    contents:
+      - create_dir
+      - create_main
+      - create_subs
+      - create
+      - verify
+  - title: "Directory filling"
+    desc: "Functions that add the files to each of the component subdirectories"
+    contents:
+      - fill_dir
+      - fill_raw
+      - fill_casts
+      - fill_models
+      - fill_data
+      - extract_min_lag
+      - extract_data_sets
+  - title: "Metadata management"
+    desc: "Functions for managing metadata"
+    contents:
+      - prep_metadata
+      - read_directory_config
+      - write_directory_config
+      - update_directory_config
+  - title: "Covariate data management"
+    desc: "Functions for preparing covariate data"
+    contents:
+      - prep_covariates
+      - cast_covariates
+      - cast_ndvi
+      - cast_weather
+      - prep_cast_covariates
+      - prep_hist_covariates
+      - prep_weather_data
+      - summarize_daily_weather_by_newmoon
+  - title: "Directory setup"
+    desc: "Functions that combine directory creation and filling"
+    contents:
+      - setup_dir
+      - setup_sandbox
+      - setup_production
+  - title: "Utility functions"
+    desc: "Range of functionalities"
+    contents:
+      - check_args
+      - check_arg
+      - check_arg_list
+      - error_if_deep
+      - ifnull
+      - ifna
+      - list_depth
+      - return_if_null
+      - named_null_list
+      - clear_tmp
+      - update_list
+      - append_csv
+      - combine_hist_and_cast
+  - title: "Messenger functions"
+    desc: "Functions that provide messages to the user"
+    contents:
+      - download_message
+      - fill_casts_message
+      - messageq
+      - portalcast_welcome
+      - sandbox_welcome
+      - portalcast_goodbye
+  - title: "Date formatting"
+    desc: "Functions to format dates and date components"
+    contents:
+      - foy
+      - add_date_from_components
+      - cast_window
+  - title: "Rodent data functions"
+    desc: "Functions that facilitate use of the Portal rodents data"
+    contents:
+      - prep_rodents
+      - prep_rodents_table
+      - process_rodent_data
+      - most_recent_census
+      - prefab_data_sets
+      - rodent_species
+      - evalplot_species
+      - all_species
+      - base_species
+      - is_sp_col
+      - na_conformer
+      - rodents_control
+      - rodents_controls
+      - remove_incompletes
+  - title: "Casting functions"
+    desc: "Functions for fitting models and making predictions into the future"
+    contents:
+      - portalcast
+      - cast
+      - verify_models
+      - verify_raw_data
+      - models_to_cast
+      - prep_data
+  - title: "Model generating functions"
+    desc: "Functions for formatting model-running scripts"
+    contents:
+      - model_script_control
+      - model_script_controls
+      - write_model
+      - model_template
+      - prefab_models
+  - title: "Lundar data functions"
+    desc: "Functions for managing the lunar temporal data"
+    contents:
+      - prep_moons
+      - last_moon
+      - format_moons
+      - add_future_moons
+      - add_extra_future_moons
+      - add_moons_from_date
+      - trim_moons
+      - target_moons
+  - title: "Path management"
+    desc: "Utilities for quickly retrieving and generally formatting folder and file paths"
+    contents:
+      - main_path
+      - sub_path
+      - file_path
+      - raw_path
+      - data_path
+      - casts_path
+      - tmp_path
+      - models_path
+      - file_ext
+      - path_no_ext
+  - title: "Download functions"
+    desc: "Functions for creating API URLs, retrieving, and managing downloaded components"
+    contents:
+      - download
+      - download_url
+      - download_climate_casts
+      - download_destin
+      - unzip_destins
+      - unzip_download
+      - name_from_url
+      - NMME_urls
+      - zenodo_downloads
+      - zenodo_url
+      - zenodo_versions
+      - climate_dl_control
+  - title: "Prefabricated models"
+    desc: "Functions used to run the prefab models"
+    contents:
+      - AutoArima
+      - ESSS
+      - nbGARCH
+      - nbsGARCH
+      - NaiveArima
+      - pevGARCH
+  - title: "Model helpers"
+    desc: "Functions that help reduce code within model functions"
+    contents:
+      - covariate_models
+      - lag_covariates
+      - save_cast_output
+  - title: "Data IO"
+    desc: "Functions for reading and writing data"
+    contents:
+      - read_cast_metadata
+      - read_climate_casts
+      - read_cov_casts
+      - read_covariate_casts
+      - read_covariates
+      - read_data
+      - read_metadata
+      - read_moons
+      - read_rodents
+      - read_rodents_table
+      - write_data
+      - save_cast_cov_csv

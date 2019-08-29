@@ -145,44 +145,6 @@ na_conformer <- function(dfv, colname = "species", arg_checks = TRUE){
   dfv
 }
 
-#' @title Zero-abundance cast
-#'
-#' @description Create a 0-abundance cast for fill-in usage when a model 
-#'   fails or there is no non-0 historical abundance.
-#'
-#' @param nmoons \code{integer} number of forecast newmoons.
-#'
-#' @param colname \code{character} name for the predictor column (to match
-#'   variable model output names).
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return Two-element \code{list} of means and interval values for a 
-#'   0-abundance forecast to be used as a filler when a model fails or there 
-#'   is no non-0 historical abundance.
-#'
-#' @examples
-#'  cast0(12)
-#'
-#' @export
-#'
-cast0 <- function(nmoons = NULL, colname = "pred", arg_checks = TRUE){
-  return_if_null(nmoons)
-  check_args(arg_checks)
-  mean_0 <- rep(0, nmoons)
-  int_0 <- data.frame("lower" = rep(0, nmoons), "upper" = rep(0, nmoons))
-  out <- list(mean_0, interval = int_0)
-  names(out)[1] <- colname
-  out
-}
-
 
 #' @title Save data out to a csv, appending the file if it already exists
 #'
