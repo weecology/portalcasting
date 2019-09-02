@@ -1,5 +1,9 @@
 context("Test prepare_rodents functions")
 
+test_that("rodents_control", 
+  expect_is(rodents_control("all_PPonly", species = "PP"), "list"))
+})
+
 test_that("prep_rodents_table", {
   skip_on_cran() # downloads take too long for cran checks
   expect_is(prep_rodents_table(main = "./testing"), "data.frame")
