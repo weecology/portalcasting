@@ -256,7 +256,6 @@ foy <- function(dates = NULL, arg_checks = TRUE){
 clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE, 
                       cleanup = TRUE, arg_checks = TRUE){
   check_args(arg_checks)
-  messageq("Clearing tmp subdirectory", quiet)
   tmp_path <- tmp_path(main = main, arg_checks = arg_checks)
   tmp_exist <- dir.exists(tmp_path)
   tmp_files <- list.files(tmp_path)
@@ -264,6 +263,8 @@ clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE,
   if(!cleanup){
     return()
   }
+  messageq("Clearing tmp subdirectory", quiet)
+print(tmp_exist)
   if(tmp_exist){
     if(ntmp_files > 0){
       tmp_files_full_paths <- file_path(main = main, sub = "tmp", 
