@@ -1,14 +1,10 @@
 context("Test process_data functions")
 
 
-test_that("most_recent_census", {
-  skip_on_cran() # downloads take too long for cran checks
-  fill_data(main = "./testing")
-  expect_is(most_recent_census(main = "./testing"), "Date")
-})
 
 test_that("lag_covariates", {
   skip_on_cran() # downloads take too long for cran checks
+  fill_data(main = "./testing")
   covs <- read_covariates(main = "./testing")
   expect_is(lag_covariates(covs, 2), "data.frame")
 })

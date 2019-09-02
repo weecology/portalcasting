@@ -12,6 +12,10 @@ test_that("prep_rodents", {
                               controls = rodents_controls()), "list")
 })
 
+test_that("last_census", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(last_census(main = "./testing"), "Date")
+})
 
 test_that("rodents_controls",{
   expect_is(rodents_controls(c("all", "controls")), "list")

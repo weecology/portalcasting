@@ -84,7 +84,7 @@ Read in a specified data file. \cr \cr
  read_covariate_casts()
  read_moons()
  read_metadata()
- read_cast_metadata()
+ read_casts_metadata()
 }
 
 }

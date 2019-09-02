@@ -276,6 +276,9 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
     which_max <- which.max(casts_meta$cast_id)
     casts_meta <- casts_meta[which_max, ]
   }
+  if(NROW(casts_meta) == 0){
+    stop("no casts available for requested plot")
+  }
 
   obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
                             arg_checks = arg_checks)
