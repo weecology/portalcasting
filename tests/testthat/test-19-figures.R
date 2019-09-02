@@ -1,6 +1,6 @@
 context("Figures")
 
-main <- "./sand"
+main <- "./testing"
 
 test_that("plot_cast_point", {
   skip_on_cran() # downloads and casting take too long to run on cran
