@@ -1,6 +1,6 @@
 context("Test prepare_rodents functions")
 
-test_that("rodents_control", 
+test_that("rodents_control", {
   expect_is(rodents_control("all_PPonly", species = "PP"), "list")
 })
 
