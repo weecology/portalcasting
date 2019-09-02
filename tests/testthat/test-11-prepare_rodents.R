@@ -1,7 +1,7 @@
 context("Test prepare_rodents functions")
 
 test_that("rodents_control", 
-  expect_is(rodents_control("all_PPonly", species = "PP"), "list"))
+  expect_is(rodents_control("all_PPonly", species = "PP"), "list")
 })
 
 test_that("prep_rodents_table", {
