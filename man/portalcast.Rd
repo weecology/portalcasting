@@ -28,7 +28,7 @@ cast(main = ".", models = prefab_models(), cast_date = Sys.Date(),
   arg_checks = TRUE)
 
 prep_data(main = ".", end_moon = NULL, models = prefab_models(),
-  data_sets = prefab_data_sets(), lead_time = 12, min_lag = 6,
+  data_sets = prefab_data_sets(), lead_time = 12,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
   hist_covariates = TRUE, cast_covariates = TRUE,
   directory = "portalPredictions", raw_data = "PortalData",
@@ -162,9 +162,6 @@ many/most/all enclosed functions to not check any arguments using
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
-
-\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
-covariate lag time used in any model.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned.

@@ -33,9 +33,6 @@
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
-#'  covariate lag time used in any model.
-#'
 #' @param cast_date \code{Date} from which future is defined (the origin of
 #'  the cast). In the recurring forecasting, is set to today's date
 #'  using \code{\link{Sys.Date}}.
@@ -181,8 +178,6 @@ portalcast <- function(main = ".", models = prefab_models(),
                 arg_checks = arg_checks)
   verify_raw_data(main = main, raw_data = raw_data, 
                   arg_checks = arg_checks)
-  min_lag <- extract_min_lag(models = models, controls_m = controls_m,
-                             arg_checks = arg_checks, quiet = !verbose)
   moons <- read_moons(main = main, arg_checks = arg_checks)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
@@ -191,7 +186,7 @@ portalcast <- function(main = ".", models = prefab_models(),
   for(i in 1:nend_moons){
     prep_data(main = main, data_sets = data_sets, end_moon = end_moons[i], 
               lead_time = lead_time, 
-              min_lag = min_lag, cast_date = cast_date, 
+              cast_date = cast_date, 
               start_moon = start_moon, confidence_level = confidence_level, 
               hist_covariates = hist_covariates, 
               cast_covariates = cast_covariates,
@@ -215,7 +210,7 @@ portalcast <- function(main = ".", models = prefab_models(),
   }
 
   fill_data(main = main, models = models, 
-            end_moon = end_moon, lead_time = lead_time, 
+            end_moon = NULL, lead_time = lead_time, 
             cast_date = cast_date, start_moon = start_moon, 
             confidence_level = confidence_level, 
             hist_covariates = hist_covariates, 
@@ -290,7 +285,7 @@ cast <- function(main = ".", models = prefab_models(),
 #'
 prep_data <- function(main = ".", end_moon = NULL, models = prefab_models(), 
                       data_sets = prefab_data_sets(),
-                      lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
+                      lead_time = 12, cast_date = Sys.Date(),
                       start_moon = 217, 
                       confidence_level = 0.95, 
                       hist_covariates = TRUE, cast_covariates = TRUE,

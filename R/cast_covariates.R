@@ -115,6 +115,7 @@ cast_covariates <- function(main = ".", moons = NULL,
   last_moon <- last_moon(main = main, moons = moons, date = cast_date, 
                          arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
+  min_lag <- ifna(min_lag, 0)
   hist_cov <- ifnull(hist_cov, prep_hist_covariates(main = main,
                                                     end_moon = end_moon,
                                                     quiet = quiet,
