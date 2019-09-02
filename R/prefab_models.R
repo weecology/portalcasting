@@ -131,9 +131,9 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_list(metadata, model = "AutoArima",
-                              data_set = data_set,
-                              data_set_controls = data_set_controls,
+  metadata <- update_list(metadata, models = "AutoArima",
+                              data_sets = data_set,
+                              controls_r = data_set_controls,
                               arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
@@ -197,9 +197,9 @@ NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_list(metadata, model = "NaiveArima",
-                              data_set = data_set,
-                              data_set_controls = data_set_controls,
+  metadata <- update_list(metadata, models = "NaiveArima",
+                              data_sets = data_set,
+                              controls_r = data_set_controls,
                               arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
@@ -263,9 +263,9 @@ ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_list(metadata, model = "ESSS",
-                              data_set = data_set,
-                              data_set_controls = data_set_controls,
+  metadata <- update_list(metadata, models = "ESSS",
+                              data_sets = data_set,
+                              controls_r = data_set_controls,
                               arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
@@ -344,9 +344,9 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_list(metadata, model = "nbGARCH",
-                              data_set = data_set,
-                              data_set_controls = data_set_controls,
+  metadata <- update_list(metadata, models = "nbGARCH",
+                              data_sets = data_set,
+                              controls_r = data_set_controls,
                               arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
@@ -435,9 +435,9 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_list(metadata, model = "nbsGARCH",
-                              data_set = data_set,
-                              data_set_controls = data_set_controls,
+  metadata <- update_list(metadata, models = "nbsGARCH",
+                              data_sets = data_set,
+                              controls_r = data_set_controls,
                               arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
@@ -555,9 +555,9 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_list(metadata, model = "pevGARCH",
-                              data_set = data_set,
-                              data_set_controls = data_set_controls,
+  metadata <- update_list(metadata, models = "pevGARCH",
+                              data_sets = data_set,
+                              controls_r = data_set_controls,
                               arg_checks = arg_checks)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)

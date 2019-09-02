@@ -213,6 +213,26 @@ portalcast <- function(main = ".", models = prefab_models(),
          confidence_level = confidence_level, quiet = quiet, 
          verbose = verbose, cleanup = cleanup, arg_checks = TRUE)
   }
+
+  fill_data(main = main, models = models, 
+            end_moon = end_moon, lead_time = lead_time, 
+            cast_date = cast_date, start_moon = start_moon, 
+            confidence_level = confidence_level, 
+            hist_covariates = hist_covariates, 
+            cast_covariates = cast_covariates,
+            directory = directory,
+            raw_data = raw_data,
+            source_name = source_name,
+            append_cast_csv = append_cast_csv, controls_m = controls_m, 
+            controls_r = controls_r, control_cdl = control_cdl, 
+            downloads = downloads, quiet = quiet, verbose = verbose, 
+            save = save, overwrite = overwrite, 
+            filename_moons = filename_moons, filename_cov = filename_cov, 
+            filename_meta = filename_meta, cleanup = cleanup, 
+            filename_config = filename_config,
+            filename_cov_casts = filename_cov_casts,
+            arg_checks = arg_checks)
+
   portalcast_goodbye(quiet = quiet)
 } 
 
@@ -241,6 +261,7 @@ cast <- function(main = ".", models = prefab_models(),
 
   models_scripts <- models_to_cast(main = main, models = models,
                                    arg_checks = arg_checks)
+
   nmodels <- length(models)
   for(i in 1:nmodels){
     modelname <- path_no_ext(basename(models_scripts)[i])

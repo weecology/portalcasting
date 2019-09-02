@@ -1,5 +1,7 @@
 context("Test prepare_models functions")
 
+main <- "./testing"
+
 test_that("covariate_models", {
   ref <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),
               c("maxtemp", "mintemp", "precipitation", "ndvi"),
@@ -45,14 +47,14 @@ test_that("prefab_models", {
 
 
 test_that("write_model", {
-  expect_message(write_model("AutoArima", main = "./testing"))
-  expect_message(write_model("AutoArima", main = "./testing", 
+  expect_message(write_model("AutoArima", main = main))
+  expect_message(write_model("AutoArima", main = main, 
                              covariatesTF = NULL, lag = NULL))
-  expect_message(write_model("AutoArima", main = "./testing", 
+  expect_message(write_model("AutoArima", main = main, 
                              covariatesTF = TRUE, lag = NULL))
-  expect_message(write_model("AutoArima", main = "./testing", 
+  expect_message(write_model("AutoArima", main = main, 
                              covariatesTF = NULL, lag = NA))
-  expect_message(write_model("AutoArimaX", main = "./testing", 
+  expect_message(write_model("AutoArimaX", main = main,
                              covariatesTF = NULL, lag = 1))
 
 })
