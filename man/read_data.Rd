@@ -8,7 +8,7 @@
 \alias{read_covariate_casts}
 \alias{read_moons}
 \alias{read_metadata}
-\alias{read_cast_metadata}
+\alias{read_casts_metadata}
 \title{Read in a data file and format it for specific class}
 \usage{
 read_data(main = ".", data_name = NULL, data_set = "all",
@@ -27,7 +27,7 @@ read_moons(main = ".", arg_checks = TRUE)
 
 read_metadata(main = ".", arg_checks = TRUE)
 
-read_cast_metadata(main = ".", quiet = FALSE, arg_checks = TRUE)
+read_casts_metadata(main = ".", quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

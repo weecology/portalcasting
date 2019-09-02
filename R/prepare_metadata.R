@@ -169,8 +169,8 @@ prep_metadata <- function(main = ".", models = prefab_models(),
 
   cast_type <- ifelse(end_moon == last_moon, "forecast", "hindcast")
 
-  cast_meta <- read_cast_metadata(main = main, quiet = quiet,
-                                  arg_checks = arg_checks)
+  cast_meta <- read_casts_metadata(main = main, quiet = quiet,
+                                   arg_checks = arg_checks)
   cast_group <- max(cast_meta$cast_group) + 1
 
   config <- read_directory_config(main = main, 

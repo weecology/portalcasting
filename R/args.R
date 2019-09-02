@@ -101,6 +101,7 @@
 #'   \code{sub} (must be one of the named sub directories: \code{"tmp"},
 #'    \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
 #'   \code{time}, 
+#'   \code{title}, 
 #'   \code{type}, 
 #'   \code{url}, 
 #'   \code{winner} (if not \code{NULL}, must be \code{"hist"} or 
@@ -109,6 +110,7 @@
 #'
 #'  Must be \code{character} values, can be any length, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
+#'   \code{colnames},
 #'   \code{concept_rec_id}, 
 #'   \code{data}, 
 #'   \code{data_sets}, 
@@ -142,6 +144,8 @@
 #'   \code{hist_cov}, 
 #'   \code{hist_tab}, 
 #'   \code{moons}, 
+#'   \code{obs}, 
+#'   \code{preds}, 
 #'   \code{rodents_tab}.
 #'
 #'  Must be a \code{data.frame} or \code{vector} can be any length, can be 
@@ -205,6 +209,7 @@
 #'
 #'  Must be \code{integer}-conformable values, can be any length, can be 
 #'  \code{NULL}, but cannot be \code{NA}:
+#'   \code{cast_ids} (must be non-negative),
 #'   \code{end_moons} (must be positive),
 #'   \code{target_moons} (must be positive).
 #'
@@ -220,7 +225,7 @@
 #' @return \code{check_args}: throws an error or \code{NULL}. \cr \cr
 #'   \code{check_arg}: \code{character} vector of error messages
 #'   associated with the specific situation 
-#'   (\code{<fun_name>(<arg_name> = arg_value)}).
+#'   (\code{<fun_name>(<arg_name> = arg_value)}). \cr \cr
 #'   \code{check_arg_list}: \code{list} of argument checking component 
 #'   \code{list}s.
 #'
@@ -499,6 +504,7 @@ check_arg_list <- function(){
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
     cast = arg_cast(),
+    cast_ids = arg_nonnegintnum(NULL),
     cast_id = arg_nonnegintnum(),
     cast_cov = arg_df(),
     cast_covariates = arg_logical(),
@@ -509,6 +515,7 @@ check_arg_list <- function(){
     clean = arg_logical(),
     cleanup = arg_logical(),
     colname = arg_character(),
+    colnames = arg_character(NULL),
     concept_rec_id = arg_character(NULL),
     confidence_level = arg_zeroone(),
     control = arg_list(),
@@ -575,11 +582,13 @@ check_arg_list <- function(){
     ndates = arg_posintnum(),
     nmoons = arg_nonnegintnum(),
     NULLname = arg_logical(),
+    obs = arg_df(),
     output = arg_character(vals = avail_outputs),
     overwrite = arg_logical(),
     path = arg_character(),
     paths = arg_character(NULL),
     plots = arg_character(vals = avail_plots),
+    preds = arg_df(),
     quiet = arg_logical(),
     raw_data = arg_character(),
     rec_id = arg_character(NULL),
@@ -605,6 +614,7 @@ check_arg_list <- function(){
     target_moons = arg_posintnum(NULL),
     target_cols = arg_character(NULL),
     time = arg_character(),
+    title = arg_character(),
     total = arg_logical(),
     treatment = arg_character(vals = avail_treatments),
     type = arg_character(),

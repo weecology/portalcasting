@@ -1,0 +1,77 @@
+---
+title: "Adding a Model or Data"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Juniper L. Simonis and Glenda M. Yenni"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{adding_a_model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+The **portalcasting** package provides the ability to add functions both to a local copy of the repository for testing as well as to contribute to the base set of models provided within the package (and thus executed in the
+main repository). Similarly, users may often want or need to analyze the data in a slightly different configuration than what is already available. Here, we walk through the steps to add user-defined models and data sets to the directory for local use or for integration within the production pipeline.
+
+For the purposes here, consider that you are interested in adding a model named "newmod" to the forecasting suite. While "newmod" can work on the existing data, you are are really interested in a slightly different configuration (perhaps only the long-term kangaroo rat exclosures) of the data you call "newdata".  
+
+Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the [Getting Started](https://weecology.github.io/portalcasting/articles/howto.html) vignette.
+
+## Set up the directory
+
+To allow for a more flexible environment, here we use the `setup_sandbox()` function to make and fill our directory, which we house at `"~/sandbox_1"`:
+
+```{r, eval=FALSE}
+library(portalcasting)
+main <- "~/sandbox_1"
+setup_sandbox(main = main)
+```
+
+![The sandbox's main folder](imgs/sandbox_1_main.jpg){width=400px} 
+
+
+The standard, prefabricated ("prefab") models that come with the **portalcasting** package are automatically added to the directory's `models` sub folder. 
+
+
+![The sandbox's models prefab sub folder](imgs/sandbox_1_models.jpg){width=400px} 
+
+
+These model scripts take advantage of having main functions that contain the majority of the code, such as `AutoArima()`, which returns a `list` with output components that are passed into `save_cast_output`, which adds the results from the model run to the `casts` sub folder. 
+
+
+![AutoArima.R](imgs/sandbox_1_AutoArima.jpg){width=600px} 
+
+
+You do not need to use a model function like `AutoArima()` in your script, however. The pipeline will work with basically any code that will run in R. The whole script is run using `source()` and it is wrapped (within `cast()`) in a `tryCatch()` call, which softens any errors at the whole-script level. This means that you can work within the script in the `models` sub folder directly, save the script, and run the code using the standard `portalcast()` calls, with the name of the model included. (Moving your model to the production pipeline will, however, require encapsulating that code within a function, which we will address later in this vignette).
+
+You may be interested in one or both of two levels of model/data-adding. At one level, you might be interested in just working "locally" (although maybe on a remote machine or server, just not *the* server that runs the production pipeline), perhaps to do some basic exploration, actively engage in research and development, or spin off another project using the same infrastructure. For the present vignette, we'll call that the "development space". At another level, you might be interested in adding to the stuff that's run as part of the existing main project's production pipeline (). Here, we'll call that the "production space". It's likely that you might use the "development space" on the way to the "production space" or that the "development space" is sufficient in and of itself for your needs. We'll detail adding models and data in each of these spaces in the subsequent sections.
+
+## Adding in a development space
+
+
+
+
+
+#
+
+
+## Adding a model
+
+
+to add a model permanently to prefab
+
+add the controls to the \code{prefab_model_controls} non-exported function
+in the \code{prepare_models.R} script
+will automatically add the model to the prefab_models 
+
+## Adding a data set
+
+sames for data sets

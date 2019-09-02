@@ -131,7 +131,7 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+  metadata <- update_list(metadata, model = "AutoArima",
                               data_set = data_set,
                               data_set_controls = data_set_controls,
                               arg_checks = arg_checks)
@@ -197,7 +197,7 @@ NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+  metadata <- update_list(metadata, model = "NaiveArima",
                               data_set = data_set,
                               data_set_controls = data_set_controls,
                               arg_checks = arg_checks)
@@ -263,7 +263,7 @@ ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                              stringsAsFactors = FALSE)
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+  metadata <- update_list(metadata, model = "ESSS",
                               data_set = data_set,
                               data_set_controls = data_set_controls,
                               arg_checks = arg_checks)
@@ -333,7 +333,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
                              currency = data_set_controls$output,
-                             model = "nbCARCH", data_set = data_set, 
+                             model = "nbGARCH", data_set = data_set, 
                              species = ss, 
                              estimate = estimate, 
                              lower_pi = lower_pi, 
@@ -344,7 +344,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+  metadata <- update_list(metadata, model = "nbGARCH",
                               data_set = data_set,
                               data_set_controls = data_set_controls,
                               arg_checks = arg_checks)
@@ -424,7 +424,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
                              currency = data_set_controls$output,
-                             model = "nbsCARCH", data_set = data_set, 
+                             model = "nbsGARCH", data_set = data_set, 
                              species = ss, 
                              estimate = estimate, 
                              lower_pi = lower_pi, 
@@ -435,7 +435,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+  metadata <- update_list(metadata, model = "nbsGARCH",
                               data_set = data_set,
                               data_set_controls = data_set_controls,
                               arg_checks = arg_checks)
@@ -544,7 +544,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
                              currency = data_set_controls$output,
-                             model = "nbsCARCH", data_set = data_set, 
+                             model = "pevGARCH", data_set = data_set, 
                              species = ss, 
                              estimate = estimate, 
                              lower_pi = lower_pi, 
@@ -555,7 +555,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
-  metadata <- update_metadata(metadata = metadata, model = "AutoArima",
+  metadata <- update_list(metadata, model = "pevGARCH",
                               data_set = data_set,
                               data_set_controls = data_set_controls,
                               arg_checks = arg_checks)

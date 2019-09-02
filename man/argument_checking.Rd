@@ -27,7 +27,7 @@ checked.}
 \code{check_args}: throws an error or \code{NULL}. \cr \cr
   \code{check_arg}: \code{character} vector of error messages
   associated with the specific situation 
-  (\code{<fun_name>(<arg_name> = arg_value)}).
+  (\code{<fun_name>(<arg_name> = arg_value)}). \cr \cr
   \code{check_arg_list}: \code{list} of argument checking component 
   \code{list}s.
 }
@@ -134,6 +134,7 @@ Argument details used for checking are produced simply via
   \code{sub} (must be one of the named sub directories: \code{"tmp"},
    \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
   \code{time}, 
+  \code{title}, 
   \code{type}, 
   \code{url}, 
   \code{winner} (if not \code{NULL}, must be \code{"hist"} or 
@@ -142,6 +143,7 @@ Argument details used for checking are produced simply via
 
  Must be \code{character} values, can be any length, can be \code{NULL}, 
  but cannot be \code{NA}:
+  \code{colnames},
   \code{concept_rec_id}, 
   \code{data}, 
   \code{data_sets}, 
@@ -175,6 +177,8 @@ Argument details used for checking are produced simply via
   \code{hist_cov}, 
   \code{hist_tab}, 
   \code{moons}, 
+  \code{obs}, 
+  \code{preds}, 
   \code{rodents_tab}.
 
  Must be a \code{data.frame} or \code{vector} can be any length, can be 
@@ -238,6 +242,7 @@ Argument details used for checking are produced simply via
 
  Must be \code{integer}-conformable values, can be any length, can be 
  \code{NULL}, but cannot be \code{NA}:
+  \code{cast_ids} (must be non-negative),
   \code{end_moons} (must be positive),
   \code{target_moons} (must be positive).
 }

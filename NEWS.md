@@ -26,7 +26,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### Changes for users adding their own models to the prefab set
 * Substantial reduction in effort for users who wish to add models (i.e. anyone who is sandboxing). You can even just plunk your own R script (which could be a single line calling out to an external program if desired) without having to add any model script writing controls, and just add the name of the model to the models argument in `portalcast` and it will run it with everything else.
-* Outlined in the updated [How to](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignettes.
+* Outlined in the updated [Getting Started](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignettes.
 * Users adding models to the suite should permanently add their model's control options to the source code in `model_script_controls` rather than write their own control functions.
 * Users adding models to the suite should permanently add their model's function code to the `prefab_models` script, rather than to its own script. 
 * Users should still add their model's name to the source code in `model_names`.
@@ -37,7 +37,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Outlined in the updated [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignette. 
 
 ### More organization via metadata
-* Generalized cast output is now tracked using a unique id in the file name associated with the cast, which is related to a row in a metadata table, newly included here.
+* Generalized cast output is now tracked using a unique id in the file name associated with the cast, which is related to a row in a metadata table, newly included here. [addresses](https://github.com/weecology/portalcasting/issues/105) and [addresses](https://github.com/weecology/portalcasting/issues/106) and [addresses](https://github.com/weecology/portalPredictions/issues/316)
 * Additional control information (like data set setup) is sent to the model metadata and saved out.
 * Directory setting up configuration information is now tracked in a `dir_config.yaml` file, which is pulled from to save information about what was used to create, setup, and run the particular casts.
 
@@ -45,6 +45,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls") by giving the name in the `data_sets` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_r` argument. 
 * In order to actualize this, a user will need to flip off the argument checking (the default in a sandbox setting, if using a standard or production setting, set `arg_checks = FALSE` in the relevant function).
 * Users interested in permanently adding the treatment level to the available data sets should add the source code to the `rodents_controls` function, and the name to the `tmnt_type` argument inputs in function if the user wants to add it to the standard set (or better yet, the next person to add a set should make a function like `model_names` to tidy up the `tmnt_types` options).
+* [addresses](https://github.com/weecology/portalcasting/issues/133)
 
 ### Split of standard data sets 
 * The prefab `all` and `controls` were both default being interpolated for all models because of the use of AIC for model comparison and ensemble building. That forced all models to use interpolated data.
@@ -57,6 +58,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Throughout the codebase, terminology has been generalized from "fcast"/"forecast"/"hindcast" to "cast" except where a clear distinction is needed (here primarily due to where the covariate values used come from).
 * Nice benefits: highlights commonality between the two (see next section) and reduces code volume.
 * `start_newmoon` is now `start_moon` like `end_moon`
+* [addresses](https://github.com/weecology/portalcasting/issues/134)
 
 ### "Hindcasting" becomes more similar to "forecasting"
 * In the codebase now, "hindcasting" is functionally "forecasting" with a forecast origin (`end_moon`) that is not the most recently occurring moon.
@@ -66,7 +68,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * `cast_type` has been removed as an input, it's auto determined now based on `end_moon` and the last moon available (if they're equal it's a "forecast", if not it's a "hindcast").
 
 ### Softer handling of model failure
-* Within `cast`, the model scripts are now sourced within a for-loop (rather than sapply) to allow for simple error catching of each script. 
+* Within `cast`, the model scripts are now sourced within a for-loop (rather than sapply) to allow for simple error catching of each script. [addresses](https://github.com/weecology/portalcasting/issues/22)
 
 ### Improved argument checking flow
 * Arg checking is now considerably tighter, code-wise. 
@@ -78,7 +80,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * `drop_spp` is now changed to `species` (so focus on inclusion, not exclusion). [addresses](https://github.com/weecology/portalcasting/issues/128)
 * Improved examples, also now as `\donttest{}`. [addresses](https://github.com/weecology/portalcasting/issues/127)
 * Tightened testing with `skip_on_cran` used judiciously. [addresses](https://github.com/weecology/portalcasting/issues/124)
-* No longer building the AIC-based ensemble.
+* No longer building the AIC-based ensemble. [addresses](https://github.com/weecology/portalcasting/issues/102)
 * Default confidence limit is now the more standard 0.95.
 
 # [portalcasting 0.8.1](https://github.com/weecology/portalcasting/releases/tag/v0.8.1)

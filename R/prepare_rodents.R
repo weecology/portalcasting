@@ -521,7 +521,6 @@ prep_rodents <- function(main = ".", moons = NULL,
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
-
 #'
 #' @param unknowns \code{logical} indicator to either remove all 
 #'  individuals not identified to species (\code{unknowns = FALSE}) or 
@@ -727,8 +726,12 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
 #' @param nadot \code{logical} indicator if the dot should be added to the 
 #'   \code{"NA"} species name. Defaults to \code{FALSE}.
 #'
-#' @return \code{logical} vector indicating if each column is a species' 
-#'  column or not.
+#' @return 
+#'  \code{is_sp_col}: \code{logical} vector indicating if each column is a 
+#'  species' column or not. \cr \cr
+#'  \code{species_from_table}: \code{character} vector of species names from
+#'  the column names in the \code{rodents_tab} data table. 
+#'  
 #'
 #' @examples
 #'  \donttest{
@@ -736,7 +739,13 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
 #'   fill_raw()
 #'   rodents_tab <- prep_rodents_table()
 #'   is_sp_col(rodents_tab)
+#'   species_from_table(rodents_tab)
 #'  }
+#'
+#' @name species_in_tables
+#'
+
+#' @rdname species_in_tables
 #'
 #' @export
 #'
@@ -745,6 +754,17 @@ is_sp_col <- function(rodents_tab, species = NULL, total = FALSE,
   check_args(arg_checks)
   species <- ifnull(species, all_species(total = total, nadot = nadot))
   colnames(rodents_tab) %in% species
+}
+
+#' @rdname species_in_tables
+#'
+#' @export
+#'
+species_from_table <- function(rodents_tab = NULL, total = NULL, nadot = NULL,
+                               arg_checks = arg_checks){
+  sp_col <- is_sp_col(rodents_tab = rodents_tab, total = total, nadot = nadot,
+                      arg_checks = arg_checks)
+  colnames(rodents_tab)[sp_col]
 }
 
 #' @title Rodent species abbreviations
@@ -877,17 +897,17 @@ prefab_data_sets <- function(){
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
-#' @return \code{Date} of the most recent census.
+#' @return \code{Date} of the last census.
 #'
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   most_recent_census()
+#'   last_census()
 #'  }
 #'
 #' @export
 #'
-most_recent_census <- function(main = ".", arg_checks = TRUE){
+last_census <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks)
   moons <- read_moons(main)
   as.Date(max(moons$censusdate, na.rm = TRUE))

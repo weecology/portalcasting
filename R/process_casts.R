@@ -1,3 +1,34 @@
+
+#' @title Read in the cast tab output from a given cast
+#'
+#' @description Retrieve the \code{cast_tab} of a cast in the casts 
+#'  sub directory. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param cast_id \code{integer} (or integer \code{numeric}) value 
+#'  representing the cast of interest, as indexed within the directory in
+#'  the \code{casts} sub folder. See the casts metadata file 
+#'  (\code{casts_metadata.csv}) for summary information. If \code{NULL} (tjhe
+#'  default), no \code{cast_tab} is read in. 
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return \code{data.frame} of the \code{cast_tab}.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   read_cast_tab(cast_id = 1)
+#' }
+#'
+#' @export
+#'
 read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   check_args(arg_checks)
   return_if_null(cast_id)
@@ -7,18 +38,118 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
     stop("cast_id does not have a cast_table")
   }
   read.csv(cpath, stringsAsFactors = FALSE) 
-
 }
+
+#' @title Find casts that fit specifications
+#'
+#' @description Determines the casts that match user specifications. \cr
+#'  Functionally, a wrapper on \code{\link{read_casts_metadata}} with 
+#'  filtering for specifications that provides a simple user interface to
+#'  the large set of available casts via the metadata. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param cast_ids \code{integer} (or integer \code{numeric}) values 
+#'  representing the casts of interest, as indexed within the directory in
+#'  the \code{casts} sub folder. See the casts metadata file 
+#'  (\code{casts_metadata.csv}) for summary information.
+#'
+#' @param end_moons \code{integer} (or integer \code{numeric}) 
+#'  newmoon numbers of the forecast origin. Default value is 
+#'  \code{NULL}, which equates to no selection with respect to 
+#'  \code{end_moon}.
+#'
+#' @param models \code{character} values of the names of the models to 
+#'  include. Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{model}.
+#'
+#' @param data_sets \code{character} values of the rodent data sets to include
+#'  Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{data_set}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not.
+#'
+#' @return \code{data.frame} of the \code{cast_tab}.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   select_casts(models = "AutoArima")
+#' }
+#'
+#' @export
+#'
+select_casts <- function(main = ".", cast_ids = NULL,
+                        end_moons = NULL, models = NULL, data_sets = NULL,
+                        quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  casts_metadata <- read_casts_metadata(main = main, quiet = quiet, 
+                                        arg_checks = arg_checks)
+
+  ucast_ids <- unique(casts_metadata$cast_id)
+  cast_ids <- ifnull(cast_ids, ucast_ids)
+  match_id <- casts_metadata$cast_id %in% cast_ids
+
+  uend_moons <- unique(casts_metadata$end_moon)
+  end_moons <- ifnull(end_moons, uend_moons)
+  match_end_moon <- casts_metadata$end_moon %in% end_moons
+
+  umodels <- unique(casts_metadata$model)
+  models <- ifnull(models, umodels)
+  match_model <- casts_metadata$model %in% models
+  
+  udata_sets <- unique(casts_metadata$data_set)
+  data_sets <- ifnull(data_sets, udata_sets)
+  match_data_set <- casts_metadata$data_set %in% data_sets
+  
+  QAQC <- casts_metadata$QAQC
+
+  match_all <- match_id & match_end_moon & match_model & match_data_set & QAQC
+  casts_metadata[match_all, ]
+}
+
 
 
 #' @title Save cast output to files
 #'
-#' @description Save out the cast abundances and AIC tables from a given 
-#'   set of models.
+#' @description Save out any output from a cast of a model for a data set and
+#'  update the cast metadata file accordingly to track the saved output. \cr
+#'  Most users will want to at least save out model metadata and a table of
+#'  predictions.
 #'
 #' @param cast Output from a model function (e.g., 
-#'   \code{\link{AutoArima}}) run on the rodents data. Required to be a 
-#'   \code{list}.
+#'  \code{\link{AutoArima}}) run on any rodents data set. Required to be a 
+#'  \code{list}, but otherwise has minimal strict requirements. \cr
+#'  Names of the elements of the list (such as \code{"metadat"}) indicate the 
+#'  specific saving procedures that happens to each of them. 
+#'  See \code{Details} section for specifics. 
+#'
+#' @details Currently, four generalized output components are recognized and
+#'  indicated by the names of the elements of \code{cast}. 
+#'  \itemize{
+#'   \item \code{"metadata"}: saved out with \code{\link[yaml]{as.yaml}}. Will
+#'    typically be the model-specific metadata from the 
+#'    \code{data/metadata.yaml} file, but can more generally be any 
+#'    appropriate object (typically a \code{list}).  
+#'   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
+#'    assumed to be a table such as a \code{matrix} or \code{data.frame} 
+#'    or coerceable to one. Used to summarizes the output across instances
+#'    of the model (across multiple species, for example). 
+#'   \item \code{"model_fits"}: saved out via \code{\link{save}}, so quite
+#'    flexible with respect to object structure. Is used to save actual model
+#'    fit/return objects so that models do not need to be refit later.
+#'   \item \code{"casts"}: saved with \code{\link{save}}, so quite
+#'    flexible with respect to object structure. Is used to save \code{list}s
+#'    of predictions across multiple instances of the model.
+#'  }
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -31,13 +162,23 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not.
 #'
+#' @return Relevant elements are saved to external files, and \code{NULL} is
+#'  returned.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir() 
+#'   out <- AutoArima()
+#'   save_cast_output(out)
+#'  }
+#'
 #' @export
 #'
 save_cast_output <- function(cast = NULL, main = ".", 
                              quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  cast_meta <- read_cast_metadata(main = main, quiet = quiet, 
-                              arg_checks = arg_checks)
+  cast_meta <- read_casts_metadata(main = main, quiet = quiet, 
+                                   arg_checks = arg_checks)
   cast_ids <- cast_meta$cast_id
   if(all(is.na(cast_ids))){
     next_cast_id <- 1
@@ -59,7 +200,8 @@ save_cast_output <- function(cast = NULL, main = ".",
                               QAQC = TRUE, notes = NA)
   cast_meta <- rbind(cast_meta, new_cast_meta)
   meta_path <- file_path(main = main, sub = "casts", 
-                         files = "cast_metadata.csv", arg_checks = arg_checks)
+                         files = "casts_metadata.csv", 
+                         arg_checks = arg_checks)
   write.csv(cast_meta, meta_path, row.names = FALSE)
 
   if(!is.null(cast$metadata)){

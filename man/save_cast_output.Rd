@@ -9,8 +9,11 @@ save_cast_output(cast = NULL, main = ".", quiet = FALSE,
 }
 \arguments{
 \item{cast}{Output from a model function (e.g., 
-\code{\link{AutoArima}}) run on the rodents data. Required to be a 
-\code{list}.}
+\code{\link{AutoArima}}) run on any rodents data set. Required to be a 
+\code{list}, but otherwise has minimal strict requirements. \cr
+Names of the elements of the list (such as \code{"metadat"}) indicate the 
+specific saving procedures that happens to each of them. 
+See \code{Details} section for specifics.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
@@ -23,7 +26,41 @@ checked using standard protocols via \code{\link{check_args}}. The
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
 }
+\value{
+Relevant elements are saved to external files, and \code{NULL} is
+ returned.
+}
 \description{
-Save out the cast abundances and AIC tables from a given 
-  set of models.
+Save out any output from a cast of a model for a data set and
+ update the cast metadata file accordingly to track the saved output. \cr
+ Most users will want to at least save out model metadata and a table of
+ predictions.
+}
+\details{
+Currently, four generalized output components are recognized and
+ indicated by the names of the elements of \code{cast}. 
+ \itemize{
+  \item \code{"metadata"}: saved out with \code{\link[yaml]{as.yaml}}. Will
+   typically be the model-specific metadata from the 
+   \code{data/metadata.yaml} file, but can more generally be any 
+   appropriate object (typically a \code{list}).  
+  \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
+   assumed to be a table such as a \code{matrix} or \code{data.frame} 
+   or coerceable to one. Used to summarizes the output across instances
+   of the model (across multiple species, for example). 
+  \item \code{"model_fits"}: saved out via \code{\link{save}}, so quite
+   flexible with respect to object structure. Is used to save actual model
+   fit/return objects so that models do not need to be refit later.
+  \item \code{"casts"}: saved with \code{\link{save}}, so quite
+   flexible with respect to object structure. Is used to save \code{list}s
+   of predictions across multiple instances of the model.
+ }
+}
+\examples{
+ \donttest{
+  setup_dir() 
+  out <- AutoArima()
+  save_cast_output(out)
+ }
+
 }

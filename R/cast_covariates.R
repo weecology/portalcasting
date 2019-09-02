@@ -115,6 +115,10 @@ cast_covariates <- function(main = ".", moons = NULL,
   last_moon <- last_moon(main = main, moons = moons, date = cast_date, 
                          arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
+  hist_cov <- ifnull(hist_cov, prep_hist_covariates(main = main,
+                                                    end_moon = end_moon,
+                                                    quiet = quiet,
+                                                    arg_checks = arg_checks)) 
   if(last_moon == end_moon){
     weather_cast <- cast_weather(main = main, moons = moons, 
                                  hist_cov = hist_cov, end_moon = end_moon,
@@ -129,9 +133,10 @@ cast_covariates <- function(main = ".", moons = NULL,
                            lead_time = lead_time, min_lag = min_lag,
                            arg_checks = arg_checks)
     cov_cast <- right_join(weather_cast, ndvi_cast, by = "moon")
-    which_cast_moon <- max(which(moons$moon < cast_date))
-    cast_moon <- moons$moon[which_cast_moon]
-    out <- round(data.frame(cast_moon, cov_cast), 3)
+    cast_moon <- end_moon
+    covariates_tab <- round(data.frame(cast_moon, cov_cast), 3)
+    lagged_lead <- lead_time - min_lag
+    out <- covariates_tab[1:lagged_lead, ]
   } else {
     target_moons <- target_moons(main = main, moons = moons,
                                  end_moon = end_moon, lead_time = lead_time, 

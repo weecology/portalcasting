@@ -234,7 +234,7 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  read_covariate_casts()
 #'  read_moons()
 #'  read_metadata()
-#'  read_cast_metadata()
+#'  read_casts_metadata()
 #' }
 #'
 #' @export
@@ -265,7 +265,7 @@ read_data <- function(main = ".", data_name = NULL, data_set = "all",
     data <- read_metadata(main, arg_checks)
   }
   if (data_name == "cast_metadata"){
-    data <- read_cast_metadata(main, arg_checks)
+    data <- read_casts_metadata(main, arg_checks)
   }
   data
 }
@@ -369,18 +369,19 @@ read_metadata <- function(main = ".", arg_checks = TRUE){
 #'
 #' @export
 #'
-read_cast_metadata <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
+read_casts_metadata <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   meta_path <- file_path(main = main, sub = "casts", 
-                         files = "cast_metadata.csv", arg_checks = arg_checks)
+                         files = "casts_metadata.csv",
+                         arg_checks = arg_checks)
   if(!file.exists(meta_path)){
     messageq("  **creating cast_metadata.csv**", quiet)
-    cast_meta <- data.frame(cast_id = 0, cast_group = 0, 
-                            cast_date = NA, start_moon = NA, end_moon = NA,
-                            lead_time = NA, model = NA, data_set = NA,
-                            portalcasting_version = NA,
-                            QAQC = FALSE, notes = NA)
-    write.csv(cast_meta, meta_path, row.names = FALSE)
+    casts_meta <- data.frame(cast_id = 0, cast_group = 0, 
+                             cast_date = NA, start_moon = NA, end_moon = NA,
+                             lead_time = NA, model = NA, data_set = NA,
+                             portalcasting_version = NA,
+                             QAQC = FALSE, notes = NA)
+    write.csv(casts_meta, meta_path, row.names = FALSE)
   }
   read.csv(meta_path, stringsAsFactors = FALSE)
 }

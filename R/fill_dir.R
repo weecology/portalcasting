@@ -313,8 +313,8 @@ fill_casts <- function(main = ".", directory = "portalPredictions",
   arch_files_local <- paste0(path_casts, arch_files)
   casts_folder <- casts_path(main = main, arg_checks = arg_checks)
   fc <- file.copy(arch_files, casts_folder, overwrite)
-  cast_meta <- read_cast_metadata(main = main, quiet = quiet, 
-                                  arg_checks = arg_checks)
+  casts_meta <- read_casts_metadata(main = main, quiet = quiet, 
+                                    arg_checks = arg_checks)
   fill_casts_message(files = arch_files, movedTF = fc, quiet = !verbose,
                      verbose = verbose, arg_checks = arg_checks)
   invisible(NULL)

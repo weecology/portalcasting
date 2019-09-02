@@ -1,5 +1,6 @@
 ---
-title: "Set Up and Use a Portal Predictions Directory"
+title: "Getting Started"
+subtitle: "Set Up and Use a Portal Predictions Directory"
 output: rmarkdown::html_vignette
 author: "Juniper L. Simonis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -25,7 +26,17 @@ today <- Sys.Date()
 This vignette shows how to set up and run your own [Portal 
 Predictions](https://github.com/weecology/portalPredictions) directory.
 
-### Create a Portal Predictions directory
+## Installation
+
+First things first, make sure you have the current version of `portalcasting` installed from GitHub:
+
+```r
+install.packages("devtools")
+devtools::install_github("weecology/portalcasting")
+library(portalcasting)
+```
+
+## Create a Portal Predictions directory
 
 The `setup_dir()` function creates and populates a standard Portal Predictions directory within the present location (by default) that includes `tmp`, `raw`, `data`, `models`, and `casts` subdirectories. By default,
 `setup_dir()` downloads the most up-to-date version of the [Portal Data](https://doi.org/10.5281/zenodo.1215988) and [Portal Predictions](https://doi.org/10.5281/zenodo.833438) archives from Zenodo into the `raw` subdirectory, prepares the moons, rodents, covariates, covariate forecast, and metadata data files (and places them in the `data` subdirectory) and populates the `models` subdirectory with scripts for the six
@@ -39,7 +50,7 @@ There are many arguments available for the user to tailor the setup of the direc
 setup_dir(main = "~/portalcast_directory")
 ```
 
-### Run a cast (forecast or hindcast)
+## Run a cast (forecast or hindcast)
 
 The `portalcast()` function controls the running of potentially multiple models across different data sets for multiple time steps. They can involve what we have classically called "forecasts" (from the present time step) and "hindcast" (from a time step before the current one). It will prepare the data (rodents, covariates, newmoons, metadata) as needed, verify that the requested models are available to run, run the models and compile the output. 
 
@@ -51,7 +62,7 @@ portalcast(main = "~/portalcast_directory", models = c("ESSS", "AutoArima", "Nai
 
 If the user does not specify the models, all of the prefab models are run. Note that we need to point `portalcast` to the directory of interest via the `main` argument. This allows us to go between different directories from the same R session with relative ease, but it does mean that `main` is a key argument in nearly all functions. 
 
-### Reading in data to the R console from the directory
+## Reading in data to the R console from the directory
 
 A series of `read_<name>` functions are available for simple loading of the data sets into R from the directory. A generalized `read_data` function includes an  argument for which data set to load ("rodents" [and then which specific data set], "covariates", "covariate_casts", "moons", "metadata", or "cast_metadata"), and each of those data sets also has a specific function, such as `read_moons`.
 ```{r, eval=FALSE}
