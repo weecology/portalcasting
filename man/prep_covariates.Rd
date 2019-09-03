@@ -6,12 +6,8 @@
 \usage{
 prep_covariates(main = ".", moons = NULL, end_moon = NULL,
   lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
-  hist_covariates = TRUE, cast_covariates = TRUE,
-  directory = "portalPredictions", source_name = "current_archive",
-  append_cast_csv = TRUE, control_cdl = climate_dl_control(),
-  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
-  filename_cov = "covariates.csv",
-  filename_cov_casts = "covariate_casts.csv", arg_checks = TRUE)
+  control_climate = climate_dl_control(), quiet = TRUE,
+  verbose = FALSE, control_save = save_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -33,24 +29,8 @@ covariate lag time used in any model.}
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 
-\item{hist_covariates}{\code{logical} indicator of whether or not 
-historical covariates are to be included.}
-
-\item{cast_covariates}{\code{logical} indicator whether or not -casted 
-covariates are to be included.}
-
-\item{directory}{\code{character} value of the directory name.}
-
-\item{source_name}{\code{character} value for the name to give the 
-covariate forecast. Currently is \code{"current_archive"}. Previous to
-\code{"current_archive"}, the data were retroactively filled in and are 
-given the source name \code{"retroactive"}.}
-
-\item{append_cast_csv}{\code{logical} indicator controlling if the new 
-cast covariates should be appended to the historical casts later use.}
-
-\item{control_cdl}{\code{list} of specifications for the download, which
-are sent to \code{\link{NMME_urls}} to create the specific URLs. See
+\item{control_climate}{\code{list} of specifications for the download, 
+which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
@@ -59,16 +39,9 @@ quieted.}
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
 
-\item{save}{\code{logical} indicator controlling if the output should 
-be saved out.}
-
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
-
-\item{filename_cov}{\code{character} filename for saving the output.}
-
-\item{filename_cov_casts}{\code{character} filename for saving the 
-covariate casts output.}
+\item{control_save}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{save_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

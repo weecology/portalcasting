@@ -33,34 +33,20 @@
 #'
 #' @param moons Moons \code{data.frame}.
 #'
-#' @param overwrite \code{logical} indicator of whether or not the existing
-#'  files should be updated (most users should leave as \code{TRUE}).
-#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
-#' 
-#' @param raw_data \code{character} value indicating the name of the raw
-#'  data directory. A standard portalcasting directory downloads the raw data
-#'  files into from the PortalData repository, so 
-#'  \code{raw_data = "PortalData"}.
 #' 
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
-#' @param save \code{logical} indicator controlling if the output should 
-#'   be saved out.
-#'
-#' @param filename_moons \code{character} name of the file for saving the 
-#'  data output.
+#' @param control_save \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return All functions here return some version of a moons \code{data.frame}
 #'  \cr \cr. 
@@ -90,10 +76,8 @@ NULL
 #' @export
 #' 
 prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(), 
-                       raw_data = "PortalData",
-                       quiet = TRUE, save = TRUE, verbose = FALSE,
-                       overwrite = TRUE, filename_moons = "moon_dates.csv",
-                       arg_checks = TRUE){
+                       quiet = TRUE, verbose = FALSE, 
+                       control_save = save_control(), arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   messageq("  -lunar data file", quiet)
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
@@ -103,8 +87,9 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
   moons <- add_future_moons(moons = moons_in, lead_time = lead_time, 
                             cast_date = cast_date, arg_checks = arg_checks)
   moons_out <- format_moons(moons)
-  write_data(dfl = moons_out, main = main, save = save, 
-             filename = filename_moons, overwrite = overwrite, 
+  write_data(dfl = moons_out, main = main, save = control_save$save, 
+             filename = control_save$filename_moons, 
+             overwrite = control_save$overwrite, 
              quiet = !verbose, arg_checks = arg_checks)
 } 
 

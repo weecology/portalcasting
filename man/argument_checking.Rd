@@ -73,13 +73,11 @@ Argument details used for checking are produced simply via
   \code{add_obs}, 
   \code{append_cast_csv}, 
   \code{arg_checks}, 
-  \code{cast_covariates}, 
   \code{clean},
   \code{cleanup},
   \code{covariatesTF}, 
   \code{effort},
   \code{fillweight}, 
-  \code{hist_covariates}, 
   \code{interpolate}, 
   \code{na_drop}, 
   \code{nadot}, 
@@ -169,7 +167,7 @@ Argument details used for checking are produced simply via
  Must be \code{data.frame}s, can be any length, can be \code{NULL}, 
  but cannot be \code{NA}:
   \code{casts}, 
-  \code{cast_coc}, 
+  \code{cast_cov}, 
   \code{cast_tab}, 
   \code{casts}, 
   \code{covariates}, 
@@ -192,11 +190,13 @@ Argument details used for checking are produced simply via
  Must be \code{list}s, can be any length, can be \code{NULL}, but cannot 
  be \code{NA}:
   \code{control},
-  \code{control_cdl},
-  \code{controls_m},
-  \code{controls_r},
+  \code{control_climate},
+  \code{controls_models},
+  \code{controls_rodents},
+  \code{control_save},
   \code{data_set_controls},
   \code{downloads},
+  \code{filenames},
   \code{metadata},
   \code{rodents}.
 

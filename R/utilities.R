@@ -264,7 +264,7 @@ clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE,
     return()
   }
   messageq("Clearing tmp subdirectory", quiet)
-print(tmp_exist)
+
   if(tmp_exist){
     if(ntmp_files > 0){
       tmp_files_full_paths <- file_path(main = main, sub = "tmp", 

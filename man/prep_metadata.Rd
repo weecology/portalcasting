@@ -7,10 +7,9 @@
 prep_metadata(main = ".", models = prefab_models(), data_sets = NULL,
   moons = NULL, rodents = NULL, covariates = NULL, end_moon = NULL,
   lead_time = 12, min_lag = NULL, cast_date = Sys.Date(),
-  start_moon = 217, confidence_level = 0.95, controls_r = NULL,
-  controls_m = NULL, filename_config = "dir_config.yaml",
-  quiet = TRUE, verbose = FALSE, save = TRUE, overwrite = TRUE,
-  filename_meta = "metadata.yaml", arg_checks = TRUE)
+  start_moon = 217, confidence_level = 0.95, controls_rodents = NULL,
+  controls_models = NULL, quiet = TRUE, verbose = FALSE,
+  control_save = save_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -50,13 +49,13 @@ corresponding to \code{1995-01-01}.}
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
 
-\item{controls_r}{Control \code{list} or \code{list} of control 
+\item{controls_rodents}{Control \code{list} or \code{list} of control 
 \code{list}s from \code{\link{rodents_controls}} specifying the 
 structuring of the rodents tables. See \code{\link{rodents_controls}} for 
 details.}
 
-\item{controls_m}{Additional controls for models not in the prefab set. 
-\cr 
+\item{controls_models}{Additional controls for models not in the prefab
+set. \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
@@ -72,31 +71,20 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
-\item{filename_config}{\code{character} value of the path to the directory
-config YAML.}
-
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
 
-\item{save}{\code{logical} indicator controlling if the output should 
-be saved out.}
-
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
-
-\item{filename_meta}{\code{character} filename for saving the metadata.}
+\item{control_save}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{save_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{list} of casting metadata, which is also saved out as a 

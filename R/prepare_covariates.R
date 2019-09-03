@@ -24,42 +24,19 @@
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
 #'
-#' @param hist_covariates \code{logical} indicator of whether or not 
-#'  historical covariates are to be included.
-#'
-#' @param cast_covariates \code{logical} indicator whether or not -casted 
-#'   covariates are to be included.
-#'
-#' @param directory \code{character} value of the directory name.
-#' 
-#' @param filename_cov_casts \code{character} filename for saving the 
-#'  covariate casts output.
-#'
-#' @param source_name \code{character} value for the name to give the 
-#'   covariate forecast. Currently is \code{"current_archive"}. Previous to
-#'   \code{"current_archive"}, the data were retroactively filled in and are 
-#'   given the source name \code{"retroactive"}.
-#'
-#' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'   cast covariates should be appended to the historical casts later use.
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
-#' @param control_cdl \code{list} of specifications for the download, which
-#'  are sent to \code{\link{NMME_urls}} to create the specific URLs. See
+#' @param control_climate \code{list} of specifications for the download, 
+#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
-#' @param overwrite \code{logical} indicator of whether or not the existing
-#'  files should be updated (most users should leave as \code{TRUE}).
-#'
-#' @param save \code{logical} indicator controlling if the output should 
-#'   be saved out.
-#'
-#' @param filename_cov \code{character} filename for saving the output.
+#' @param control_save \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -80,44 +57,30 @@
 prep_covariates <- function(main = ".", moons = NULL,
                             end_moon = NULL, lead_time = 12, min_lag = 6, 
                             cast_date = Sys.Date(),
-                            hist_covariates = TRUE, cast_covariates = TRUE,
-                            directory = "portalPredictions",
-                            source_name = "current_archive",
-                            append_cast_csv = TRUE, 
-                            control_cdl = climate_dl_control(), quiet = TRUE, 
-                            verbose = FALSE, save = TRUE, overwrite = TRUE,
-                            filename_cov = "covariates.csv", 
-                            filename_cov_casts = "covariate_casts.csv",
+                            control_climate = climate_dl_control(), 
+                            quiet = TRUE, 
+                            verbose = FALSE, control_save = save_control(),
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
   messageq("  -covariate data files", quiet)
   hist_cov <- prep_hist_covariates(main = main, end_moon = end_moon,
                                    quiet = quiet, arg_checks = arg_checks)
-  if (cast_covariates){
-    cast_cov <- prep_cast_covariates(main = main, moons = moons, 
+  cast_cov <- prep_cast_covariates(main = main, moons = moons, 
                                      hist_cov = hist_cov,
                                      end_moon = end_moon, 
                                      lead_time = lead_time, min_lag = min_lag, 
                                      cast_date = cast_date, 
-                                     directory = directory,
-                                     filename_cov_casts = filename_cov_casts,
-                                     source_name = source_name,
-                                     append_cast_csv = append_cast_csv, 
-                                     control_cdl = control_cdl,
+                                     control_save = control_save,
+                                     control_climate = control_climate,
                                      quiet = quiet, verbose = verbose, 
-                                     save = save, overwrite = overwrite, 
                                      arg_checks = arg_checks)
-  }
-  out <- hist_cov[-(1:nrow(hist_cov)), ]
-  if (hist_covariates){
-    out <- bind_rows(out, hist_cov)
-  }
-  if (cast_covariates){
-    out <- bind_rows(out, cast_cov)
-  }
-  write_data(dfl = out, main = main, save = save, filename = filename_cov, 
-             overwrite = overwrite, quiet = !verbose, arg_checks = arg_checks)
+  out <- bind_rows(hist_cov, cast_cov)
+
+  write_data(dfl = out, main = main, save = control_save$save, 
+             filename = control_save$filename_cov, 
+             overwrite = control_save$overwrite, 
+             quiet = !verbose, arg_checks = arg_checks)
 }
 
 

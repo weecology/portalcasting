@@ -7,47 +7,28 @@
 \title{Create and fill a forecasting directory}
 \usage{
 setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.95, hist_covariates = TRUE,
-  cast_covariates = TRUE, directory = "portalPredictions",
-  raw_data = "PortalData", source_name = "current_archive",
-  append_cast_csv = TRUE, controls_m = NULL,
-  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
+  start_moon = 217, lead_time = 12, confidence_level = 0.95,
+  cast_date = Sys.Date(), controls_models = NULL,
+  controls_rodents = rodents_controls(),
+  control_climate = climate_dl_control(),
+  control_save = save_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, save = TRUE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv",
-  filename_config = "dir_config.yaml", filename_cov = "covariates.csv",
-  filename_cov_casts = "covariate_casts.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
+  verbose = FALSE, arg_checks = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
   end_moon = NULL, lead_time = 12, cast_date = Sys.Date(),
-  start_moon = 217, confidence_level = 0.95, hist_covariates = TRUE,
-  cast_covariates = TRUE, directory = "portalPredictions",
-  raw_data = "PortalData", source_name = "current_archive",
-  append_cast_csv = TRUE, controls_m = NULL,
-  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
+  start_moon = 217, confidence_level = 0.95, controls_models = NULL,
+  controls_rodents = rodents_controls(),
+  control_climate = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, save = TRUE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv",
-  filename_config = "dir_config.yaml", filename_cov = "covariates.csv",
-  filename_cov_casts = "covariate_casts.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE, arg_checks = TRUE)
+  verbose = FALSE, control_save = save_control(), arg_checks = TRUE)
 
 setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.95, hist_covariates = TRUE,
-  cast_covariates = TRUE, directory = "portalPredictions",
-  raw_data = "PortalData", source_name = "current_archive",
-  append_cast_csv = TRUE, controls_m = NULL,
-  controls_r = rodents_controls(), control_cdl = climate_dl_control(),
+  confidence_level = 0.95, controls_rodents = rodents_controls(),
+  control_climate = climate_dl_control(), controls_models = NULL,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, save = TRUE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv", filename_cov = "covariates.csv",
-  filename_config = "dir_config.yaml",
-  filename_cov_casts = "covariate_casts.csv",
-  filename_meta = "metadata.yaml", cleanup = TRUE,
-  arg_checks = FALSE)
+  verbose = FALSE, control_save = save_control(), arg_checks = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -60,43 +41,22 @@ include.}
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
 
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the first sample to be included. Default value is \code{217}, 
+corresponding to \code{1995-01-01}.}
+
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}
+
+\item{confidence_level}{\code{numeric} confidence level used in 
+summarizing model output. Must be between \code{0} and \code{1}.}
 
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
-
-\item{confidence_level}{\code{numeric} confidence level used in 
-summarizing model output. Must be between \code{0} and \code{1}.}
-
-\item{hist_covariates}{\code{logical} indicator of whether or not 
-historical covariates are to be included.}
-
-\item{cast_covariates}{\code{logical} indicator whether or not -casted 
-covariates are to be included.}
-
-\item{directory}{\code{character} value of the directory name.}
-
-\item{raw_data}{\code{character} value indicating the name of the raw
-data directory. A standard portalcasting directory downloads the raw data
-files into from the PortalData repository, so 
-\code{raw_data = "PortalData"}.}
-
-\item{source_name}{\code{character} value for the name to give the 
-covariate forecast. Currently is \code{"current_archive"}. Previous to
-\code{"current_archive"}, the data were retroactively filled in and are 
-given the source name \code{"retroactive"}.}
-
-\item{append_cast_csv}{\code{logical} indicator controlling if the new 
-cast covariates should be appended to the historical casts later use.}
-
-\item{controls_m}{Additional controls for models not in the prefab set. 
-\cr 
+\item{controls_models}{Additional controls for models not in the prefab
+set. \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
@@ -112,13 +72,17 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
-\item{controls_r}{Control \code{list} or \code{list} of \code{list}s 
+\item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
 
-\item{control_cdl}{\code{list} of specifications for the download, which
-are sent to \code{\link{NMME_urls}} to create the specific URLs. See
+\item{control_climate}{\code{list} of specifications for the download, 
+which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
+
+\item{control_save}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{save_control}}.}
 
 \item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
 for raw file downloading.}
@@ -128,28 +92,6 @@ quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
-
-\item{save}{\code{logical} indicator controlling if the output should 
-be saved out.}
-
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
-
-\item{filename_moons}{\code{character} name of the file for saving the 
-data output.}
-
-\item{filename_config}{\code{character} filename of the directory
-configuration YAML.}
-
-\item{filename_cov}{\code{character} filename for saving the output.}
-
-\item{filename_cov_casts}{\code{character} value of covariate casts
-file.}
-
-\item{filename_meta}{\code{character} filename for saving the metadata.}
-
-\item{cleanup}{\code{logical} indicator if any files put into the tmp
-subdirectory should be removed at the end of the process.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

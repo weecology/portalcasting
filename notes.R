@@ -3,13 +3,21 @@
 # read through the code documentation again
 #   donttest examples
 #   argument order alignment
-# additional test coverage/new functions getting tested
 
 
+# tidying control lists now to portalcast functions
+# then argument order
+# and doc read thru and examps
 
-devtools::load_all()
-main <- "~/checks"
+devtools::document()
+main <- "~/test"
 setup_dir(main)
+
+
+plot_cast_ts(main)
+
+
+
 ESSS(main=main)
 portalcast(main=main, models="ESSS")
 

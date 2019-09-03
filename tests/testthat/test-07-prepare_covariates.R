@@ -2,6 +2,7 @@ context("Test prepare_covariates functions")
 
 main <- "./testing"
 
+
 test_that("prep_covariates", {
   skip_on_cran() # downloads take too long for cran checks
   expect_is(prep_covariates(main = main), "data.frame")
@@ -17,6 +18,12 @@ test_that("process_covariates", {
   expect_is(covar_casts_lag, "data.frame")
 })
 
+
+test_that("lag_covariates", {
+  skip_on_cran() # downloads take too long for cran checks
+  covs <- read_covariates(main = "./testing")
+  expect_is(lag_covariates(covs, 2), "data.frame")
+})
 
 
 test_that("prep_covariates", {

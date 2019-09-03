@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_models.R
 \name{model_script_control}
 \alias{model_script_control}
-\title{Create a control lists for generating a model script}
+\title{Create a control list for generating a model script}
 \usage{
 model_script_control(name = "model", data_sets = prefab_data_sets(),
   covariatesTF = FALSE, lag = NA, arg_checks = TRUE)

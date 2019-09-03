@@ -9,9 +9,8 @@
 \title{Prepare lunar data for the portalcasting repository}
 \usage{
 prep_moons(main = ".", lead_time = 12, cast_date = Sys.Date(),
-  raw_data = "PortalData", quiet = TRUE, save = TRUE,
-  verbose = FALSE, overwrite = TRUE,
-  filename_moons = "moon_dates.csv", arg_checks = TRUE)
+  quiet = TRUE, verbose = FALSE, control_save = save_control(),
+  arg_checks = TRUE)
 
 format_moons(moons, arg_checks = TRUE)
 
@@ -31,33 +30,19 @@ number of timesteps forward a cast will cover.}
 \item{cast_date}{\code{Date} from which future is defined, typically 
 today's date (set using \code{\link{Sys.Date}}).}
 
-\item{raw_data}{\code{character} value indicating the name of the raw
-data directory. A standard portalcasting directory downloads the raw data
-files into from the PortalData repository, so 
-\code{raw_data = "PortalData"}.}
-
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
-
-\item{save}{\code{logical} indicator controlling if the output should 
-be saved out.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
 
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
-
-\item{filename_moons}{\code{character} name of the file for saving the 
-data output.}
+\item{control_save}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{save_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 
 \item{moons}{Moons \code{data.frame}.}
 }

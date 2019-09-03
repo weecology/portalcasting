@@ -35,32 +35,16 @@
 #'  or \code{NULL}, which equates to the most recently included census'
 #'  newmoon number. 
 #'
-#' @param directory \code{character} value of the directory name.
-#' 
-#' @param filename_cov_casts \code{character} filename for saving the 
-#'  covariate casts output.
-#'
-#' @param source_name \code{character} value for the name to give the 
-#'  covariate forecast. Currently is \code{"current_archive"}. Previous to
-#'  \code{"current_archive"}, the data were retroactively filled in and are 
-#'  given the source name \code{"retroactive"}.
-#'
-#' @param append_cast_csv \code{logical} indicator controlling if the new 
-#'  cast covariates should be appended to the historical casts for later use.
+#' @param control_save \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param control_cdl \code{list} of specifications for the climate download.
-#'  Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
+#' @param control_climate \code{list} of specifications for the climate 
+#'  download. Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
 #'  \code{\link{climate_dl_control}}.
-#'
-#' @param overwrite \code{logical} indicator of whether existing
-#'  files should be updated if \code{save = TRUE} (most users should leave as 
-#"  \code{TRUE}).
-#'
-#' @param save \code{logical} indicator controlling if the output should 
-#'  be saved.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -104,10 +88,8 @@
 cast_covariates <- function(main = ".", moons = NULL,
                             hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                             min_lag = 6, cast_date = Sys.Date(), 
-                            directory = "portalPredictions",
-                            filename_cov_casts = "covariate_casts.csv",
-                            source_name = "current_archive",
-                            control_cdl = climate_dl_control(),
+                            control_save = save_control(),
+                            control_climate = climate_dl_control(),
                             quiet = TRUE, verbose = FALSE, 
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -125,10 +107,8 @@ cast_covariates <- function(main = ".", moons = NULL,
                                  hist_cov = hist_cov, end_moon = end_moon,
                                  lead_time = lead_time, min_lag = min_lag,
                                  cast_date = cast_date, 
-                                 directory = directory,
-                                 filename_cov_casts = filename_cov_casts, 
-                                 source_name = source_name,
-                                 control_cdl = control_cdl, quiet = quiet,
+                                 control_climate = control_climate, 
+                                 quiet = quiet,
                                  verbose = verbose, arg_checks = TRUE)
     ndvi_cast <- cast_ndvi(main = main, hist_cov = hist_cov,
                            lead_time = lead_time, min_lag = min_lag,
@@ -142,8 +122,7 @@ cast_covariates <- function(main = ".", moons = NULL,
     target_moons <- target_moons(main = main, moons = moons,
                                  end_moon = end_moon, lead_time = lead_time, 
                                  date = cast_date, arg_checks = arg_checks)
-    cov_cast <- read_cov_casts(main = main, directory = directory,
-                               filename_cov_casts = filename_cov_casts,
+    cov_cast <- read_cov_casts(main = main, control_save = control_save,
                                quiet = quiet, verbose = verbose,
                                arg_checks = arg_checks)
 
@@ -166,16 +145,16 @@ cast_covariates <- function(main = ".", moons = NULL,
 #'
 #' @export
 #'
-read_cov_casts <- function(main = ".", directory = "portalPredictions",
-                           filename_cov_casts = "covariate_casts.csv",
+read_cov_casts <- function(main = ".", control_save = save_control(),
                            quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   curr_path <- file_path(main = main, sub = "data", 
-                         files = filename_cov_casts, 
+                         files = control_save$filename_cov_casts, 
                          arg_checks = arg_checks)
   curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
 
-  arch_path <- paste0(directory, "/data/", filename_cov_casts)
+  arch_path <- paste0(control_save$directory, "/data/", 
+                      control_save$filename_cov_casts)
   arch_path <- file_path(main = main, sub = "raw", files = arch_path,
                          arg_checks = arg_checks)
   arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
@@ -211,30 +190,23 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  hist_cov = NULL, end_moon = NULL, 
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
-                                 directory = "portalPredictions",
-                                 filename_cov_casts = "covariate_casts.csv",
-                                 source_name = "current_archive",
-                                 append_cast_csv = TRUE, 
-                                 control_cdl = climate_dl_control(),
-                                 quiet = TRUE, verbose = FALSE, save = TRUE, 
-                                 overwrite = TRUE, arg_checks = TRUE){
+                                 control_climate = climate_dl_control(),
+                                 quiet = TRUE, verbose = FALSE, 
+                                 control_save = save_control(), 
+                                 arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   cast_covariates(main = main, moons = moons, hist_cov = hist_cov, 
                   end_moon = end_moon, lead_time = lead_time, 
                   min_lag = min_lag, cast_date = cast_date, 
-                  directory = directory,
-                  filename_cov_casts = filename_cov_casts,
-                  source_name = source_name, control_cdl = control_cdl,
+                  control_save = control_save,
+                  control_climate = control_climate,
                   quiet = quiet, verbose = verbose,
                   arg_checks = arg_checks) %>%
   save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
                     cast_date = cast_date, .,
-                    append_cast_csv = append_cast_csv, 
-                    directory = directory,
-                    filename_cov_casts = filename_cov_casts,
-                    source_name = source_name, quiet = quiet, 
-                    verbose = verbose, save = save,
-                    overwrite = overwrite, arg_checks = arg_checks) %>%
+                    control_save = control_save,
+                    quiet = quiet, verbose = verbose,
+                    arg_checks = arg_checks) %>%
   select(-cast_moon) %>%
   mutate("source" = "cast")
 }
@@ -261,10 +233,7 @@ cast_ndvi <- function(main = ".", hist_cov = NULL, lead_time = 12,
 cast_weather <- function(main = ".", moons = NULL,
                          hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                          min_lag = 6, cast_date = Sys.Date(), 
-                         directory = directory,
-                         filename_cov_casts = filename_cov_casts,
-                         source_name = "current_archive",
-                         control_cdl = climate_dl_control(), quiet = TRUE,
+                         control_climate = climate_dl_control(), quiet = TRUE,
                          verbose = verbose, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
@@ -278,14 +247,16 @@ cast_weather <- function(main = ".", moons = NULL,
   win <- cast_window(main = main, moons = moons, cast_date = cast_date,
                      lead_time = lead_time, min_lag = 6,                                
                      arg_checks = arg_checks)
-  control_cdl <- do.call(climate_dl_control, control_cdl)
-  control_cdl <- update_list(control_cdl, start = win$start, end = win$end)
+  control_climate <- do.call(climate_dl_control, control_climate)
+  control_climate <- update_list(control_climate, start = win$start, 
+                                 end = win$end)
 
-  download_climate_casts(main = main, control_cdl = control_cdl, 
+  download_climate_casts(main = main, control_climate = control_climate, 
                          quiet = quiet, verbose = verbose, 
                          arg_checks = arg_checks)
 
-  weather_cast <- read_climate_casts(main = main, control_cdl = control_cdl, 
+  weather_cast <- read_climate_casts(main = main, 
+                                     control_climate = control_climate, 
                                      arg_checks = arg_checks)
 
   weather("daily", TRUE, raw_path) %>% 
@@ -303,12 +274,8 @@ cast_weather <- function(main = ".", moons = NULL,
 #'
 save_cast_cov_csv <- function(main = ".", moons = NULL,
                               end_moon = NULL, cast_date = Sys.Date(),
-                              cast_cov = NULL, append_cast_csv = TRUE,
-                              directory = "portalPredictions",
-                              source_name = "current_archive",
-                              filename_cov_casts = "covariate_casts.csv",
-                              quiet = TRUE, verbose = FALSE, save = TRUE, 
-                              overwrite = TRUE, 
+                              cast_cov = NULL, control_save = save_control(),
+                              quiet = TRUE, verbose = FALSE, 
                               arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
@@ -316,21 +283,22 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                          arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
-  if(!save | !append_cast_csv | !overwrite | end_moon != last_moon){
+  if(!control_save$save | !control_save$append_cast_csv | 
+     !control_save$overwrite | end_moon != last_moon){
     return(cast_cov)
   }
   new_cast <- cast_cov
-  new_cast$source <- source_name
+  new_cast$source <- control_save$source_name
   date_made <- Sys.time()
   tz <- format(date_made, "%Z")
   new_cast$date_made <- paste0(date_made, " ", tz)
 
-  hist_cast <- read_cov_casts(main = main, directory = directory,
-                              filename_cov_casts = filename_cov_casts,
+  hist_cast <- read_cov_casts(main = main, control_save = control_save,
                               quiet = quiet, verbose = verbose, 
                               arg_checks = arg_checks)
   out <- rbind(hist_cast, new_cast)
-  out_path <- file_path(main = main, sub = "data", files = filename_cov_casts,
+  out_path <- file_path(main = main, sub = "data", 
+                        files = control_save$filename_cov_casts,
                         arg_checks = arg_checks)
   msg <- "    **covariates_casts.csv saved**"
   messageq(msg, !verbose)
@@ -359,8 +327,8 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #'
-#' @param control_cdl \code{list} of specifications for the download, which
-#'  are sent to \code{\link{NMME_urls}} to create the specific URLs.
+#' @param control_climate \code{list} of specifications for the download, 
+#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs.
 #'
 #' @param start,end \code{Date} for the start and end of the cast.
 #'
@@ -418,18 +386,18 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 #' @export
 #'
 download_climate_casts <- function(main = ".", 
-                                   control_cdl = climate_dl_control(), 
+                                   control_climate = climate_dl_control(), 
                                    quiet = TRUE, verbose = FALSE,
                                    arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  control_cdl <- do.call(climate_dl_control, control_cdl)
-  urls <- do.call(NMME_urls, control_cdl)
+  control_climate <- do.call(climate_dl_control, control_climate)
+  urls <- do.call(NMME_urls, control_climate)
   return_if_null(urls)
   cov_cast_path <- file_path(main = main, sub = "raw", files = "cov_casts",
                              arg_checks = arg_checks)
   create(cov_cast_path, "covariate cast download", quiet = quiet)
 
-  for(i in 1:length(control_cdl$data)){
+  for(i in 1:length(control_climate$data)){
     dl_name <- paste0("cov_casts/", names(urls)[i])
     download(name = dl_name, type = "url", url = urls[i], main = main, 
              sep_char = "=", quiet = !verbose, return_version = FALSE,
@@ -460,15 +428,16 @@ climate_dl_control <- function(start = Sys.Date(),
 #'
 #' @export
 #'
-read_climate_casts <- function(main = ".", control_cdl = climate_dl_control(), 
+read_climate_casts <- function(main = ".", 
+                               control_climate = climate_dl_control(), 
                                arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  control_cdl <- do.call(climate_dl_control, control_cdl)
-  urls <- do.call(NMME_urls, control_cdl)
+  control_climate <- do.call(climate_dl_control, control_climate)
+  urls <- do.call(NMME_urls, control_climate)
   return_if_null(urls)
 
-  dat_list <- vector("list", length(control_cdl$data))
-  ndatas <- length(control_cdl$data)
+  dat_list <- vector("list", length(control_climate$data))
+  ndatas <- length(control_climate$data)
   for(i in 1:ndatas){
     csv_path <- paste0("cov_casts/",  names(urls)[i], ".csv")
     fpath <- file_path(main = main, sub = "raw", files = csv_path, 
@@ -476,7 +445,7 @@ read_climate_casts <- function(main = ".", control_cdl = climate_dl_control(),
     dat_list[[i]] <- read.csv(fpath)
   }
   dat_tab <- dat_list[[1]]
-  colnames(dat_tab)[ncol(dat_tab)] <- names(control_cdl$data)[1]
+  colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate$data)[1]
   colnames(dat_tab)[1] <- "date"
   dat_tab[,1] <- as.Date(dat_tab[,1])
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
@@ -486,7 +455,7 @@ read_climate_casts <- function(main = ".", control_cdl = climate_dl_control(),
       dat_tab_i <- dat_list[[i]]
       x <- dat_tab_i[ , ncol(dat_tab_i)]
       dat_tab <- data.frame(dat_tab, x)
-      colnames(dat_tab)[ncol(dat_tab)] <- names(control_cdl$data)[i]
+      colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate$data)[i]
     }
   }
   for(i in 2:ncol(dat_tab)){

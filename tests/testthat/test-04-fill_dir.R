@@ -20,11 +20,8 @@ unlink(list.files(sub_path(main = "./testing", "raw"), full.names = TRUE))
 
 test_that("fill_casts", {
   skip_on_cran() # downloads take too long for cran checks
-  expect_equal(fill_casts("./testing", "portalPredictions/predictions"),
-               NULL)
-  expect_message(fill_casts("./testing", 
-                   "portalPredictions/predictions",
-                   verbose = TRUE))
+  expect_equal(fill_casts("./testing"), NULL)
+  expect_message(fill_casts("./testing", verbose = TRUE))
 })
 
 test_that("fill_casts_message", {

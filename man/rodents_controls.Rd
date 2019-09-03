@@ -4,7 +4,7 @@
 \alias{rodents_controls}
 \title{Create control lists for generating rodents data tables}
 \usage{
-rodents_controls(data_sets = NULL, controls_r = NULL,
+rodents_controls(data_sets = NULL, controls_rodents = NULL,
   arg_checks = TRUE)
 }
 \arguments{
@@ -13,7 +13,8 @@ used to enforce certain arguments. Currently available prefab data
 sets are \code{"all"}, \code{"all_interp"}, \code{"controls"} and
 \code{"controls_interp"}.}
 
-\item{controls_r}{Additional controls for datasets not in the prefab set.
+\item{controls_rodents}{Additional controls for datasets not in the 
+prefab set. \cr
 A \code{list} of a single dataset's controls or a \code{list} of 
 \code{list}s, each of which is a single dataset's controls. \cr \cr
 Presently, each dataset's controls should include 18 elements, as 

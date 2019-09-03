@@ -25,9 +25,10 @@ test_that("rodents_controls",{
   expect_is(rodents_controls(c("all", "controls")), "list")
   controls_r <- rodents_controls("all")[[1]]
   controls_r$data_set <- "allX"
-  expect_is(rodents_controls("allX", controls_r = controls_r, FALSE), "list")
+  expect_is(rodents_controls("allX", controls_rodents = controls_r),
+                             "list")
   controls_r$data_set <- "all"
-  expect_error(rodents_controls("all", controls_r = controls_r, FALSE))
+  expect_error(rodents_controls("all", controls_rodents = controls_r))
   expect_error(rodents_controls("allX", arg_checks = FALSE))
 })
 

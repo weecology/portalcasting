@@ -11,38 +11,30 @@
 \usage{
 cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), directory = "portalPredictions",
-  filename_cov_casts = "covariate_casts.csv",
-  source_name = "current_archive", control_cdl = climate_dl_control(),
-  quiet = TRUE, verbose = FALSE, arg_checks = TRUE)
-
-read_cov_casts(main = ".", directory = "portalPredictions",
-  filename_cov_casts = "covariate_casts.csv", quiet = FALSE,
+  cast_date = Sys.Date(), control_save = save_control(),
+  control_climate = climate_dl_control(), quiet = TRUE,
   verbose = FALSE, arg_checks = TRUE)
+
+read_cov_casts(main = ".", control_save = save_control(),
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), directory = "portalPredictions",
-  filename_cov_casts = "covariate_casts.csv",
-  source_name = "current_archive", append_cast_csv = TRUE,
-  control_cdl = climate_dl_control(), quiet = TRUE, verbose = FALSE,
-  save = TRUE, overwrite = TRUE, arg_checks = TRUE)
+  cast_date = Sys.Date(), control_climate = climate_dl_control(),
+  quiet = TRUE, verbose = FALSE, control_save = save_control(),
+  arg_checks = TRUE)
 
 cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
   arg_checks = TRUE)
 
 cast_weather(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), directory = directory,
-  filename_cov_casts = filename_cov_casts,
-  source_name = "current_archive", control_cdl = climate_dl_control(),
+  cast_date = Sys.Date(), control_climate = climate_dl_control(),
   quiet = TRUE, verbose = verbose, arg_checks = TRUE)
 
 save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
-  cast_date = Sys.Date(), cast_cov = NULL, append_cast_csv = TRUE,
-  directory = "portalPredictions", source_name = "current_archive",
-  filename_cov_casts = "covariate_casts.csv", quiet = TRUE,
-  verbose = FALSE, save = TRUE, overwrite = TRUE,
+  cast_date = Sys.Date(), cast_cov = NULL,
+  control_save = save_control(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
 }
 \arguments{
@@ -66,18 +58,12 @@ used in any model.}
 \item{cast_date}{\code{Date} on which the cast happens. Generally should
 be \code{\link{Sys.Date}}.}
 
-\item{directory}{\code{character} value of the directory name.}
+\item{control_save}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{save_control}}.}
 
-\item{filename_cov_casts}{\code{character} filename for saving the 
-covariate casts output.}
-
-\item{source_name}{\code{character} value for the name to give the 
-covariate forecast. Currently is \code{"current_archive"}. Previous to
-\code{"current_archive"}, the data were retroactively filled in and are 
-given the source name \code{"retroactive"}.}
-
-\item{control_cdl}{\code{list} of specifications for the climate download.
-Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
+\item{control_climate}{\code{list} of specifications for the climate 
+download. Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
 \code{\link{climate_dl_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
@@ -90,15 +76,6 @@ shown.}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
-
-\item{append_cast_csv}{\code{logical} indicator controlling if the new 
-cast covariates should be appended to the historical casts for later use.}
-
-\item{save}{\code{logical} indicator controlling if the output should 
-be saved.}
-
-\item{overwrite}{\code{logical} indicator of whether existing
-files should be updated if \code{save = TRUE} (most users should leave as}
 
 \item{cast_cov}{\code{data.frame} of cast covariates. See
 \code{\link{cast_covariates}}.}

@@ -5,9 +5,9 @@
 \title{Prepare a list of rodents data tables for forecasting}
 \usage{
 prep_rodents(main = ".", moons = NULL, data_sets = NULL,
-  end_moon = NULL, start_moon = 217, controls_r = NULL,
+  end_moon = NULL, start_moon = 217, controls_rodents = NULL,
   ref_species = all_species(), quiet = TRUE, verbose = FALSE,
-  save = TRUE, overwrite = TRUE, arg_checks = TRUE)
+  control_save = save_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -28,7 +28,7 @@ equates to the most recently included sample.}
 of the first sample to be included. Default value is \code{217}, 
 corresponding to \code{1995-01-01}.}
 
-\item{controls_r}{Control \code{list} or \code{list} of control 
+\item{controls_rodents}{Control \code{list} or \code{list} of control 
 \code{list}s from \code{\link{rodents_controls}} specifying the 
 structuring of the rodents tables. See \code{\link{rodents_controls}}.}
 
@@ -41,20 +41,14 @@ quieted.}
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
 
-\item{save}{\code{logical} indicator controlling if the output should 
-be saved out.}
-
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as \code{TRUE}).}
+\item{control_save}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{save_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{list} of \code{data.frame}s, one for each data subset

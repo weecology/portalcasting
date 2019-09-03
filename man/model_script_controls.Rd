@@ -6,13 +6,13 @@
 \alias{extract_data_sets}
 \title{Produce the control lists for the model script writing}
 \usage{
-model_script_controls(models = NULL, controls_m = NULL,
+model_script_controls(models = NULL, controls_models = NULL,
   quiet = FALSE, arg_checks = TRUE)
 
-extract_min_lag(models = prefab_models(), controls_m = NULL,
+extract_min_lag(models = prefab_models(), controls_models = NULL,
   quiet = FALSE, arg_checks = TRUE)
 
-extract_data_sets(models = prefab_models(), controls_m = NULL,
+extract_data_sets(models = prefab_models(), controls_models = NULL,
   quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
@@ -20,8 +20,8 @@ extract_data_sets(models = prefab_models(), controls_m = NULL,
 script-writing controls need to be included in the \code{list} used
 to write the scripts.}
 
-\item{controls_m}{Additional controls for models not in the prefab set. 
-\cr 
+\item{controls_models}{Additional controls for models not in the prefab 
+set. \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
@@ -48,11 +48,7 @@ quieted.}
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{model_script_controls}: named \code{list} of length equal to

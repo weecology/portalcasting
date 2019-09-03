@@ -45,30 +45,18 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param save \code{logical} indicator controlling if the output should 
-#'   be saved out.
-#'
-#' @param overwrite \code{logical} indicator of whether or not the existing
-#'  files should be updated (most users should leave as \code{TRUE}).
-#'
-#' @param filename_meta \code{character} filename for saving the metadata.
-#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  formatted correctly and provides directed error messages if not. 
 #'
-#' @param controls_r Control \code{list} or \code{list} of control 
+#' @param controls_rodents Control \code{list} or \code{list} of control 
 #'  \code{list}s from \code{\link{rodents_controls}} specifying the 
 #'  structuring of the rodents tables. See \code{\link{rodents_controls}} for 
 #'  details. 
 #'
-#' @param controls_m Additional controls for models not in the prefab set. 
-#'  \cr 
+#' @param controls_models Additional controls for models not in the prefab
+#'  set. \cr 
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
 #'  script-writing controls. \cr 
@@ -87,8 +75,9 @@
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
-#' @param filename_config \code{character} value of the path to the directory
-#'  config YAML.
+#' @param control_save \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
 #'
 #' @return \code{list} of casting metadata, which is also saved out as a 
 #'  YAML file (\code{.yaml}) if desired.
@@ -113,16 +102,18 @@ prep_metadata <- function(main = ".", models = prefab_models(),
                           cast_date = Sys.Date(),
                           start_moon = 217,
                           confidence_level = 0.95, 
-                          controls_r = NULL,
-                          controls_m = NULL, 
-                          filename_config = "dir_config.yaml", 
-                          quiet = TRUE, verbose = FALSE, save = TRUE, 
-                          overwrite = TRUE, filename_meta = "metadata.yaml", 
-                          arg_checks = TRUE){
+                          controls_rodents = NULL,
+                          controls_models = NULL, 
+                          quiet = TRUE, verbose = FALSE, 
+                          control_save = save_control(), arg_checks = TRUE){
   check_args(arg_checks)
-  min_lag_e <- extract_min_lag(models = models, controls_m = controls_m, 
+  filename_config <- control_save$filename_config
+  filename_meta <- control_save$filename_meta
+  min_lag_e <- extract_min_lag(models = models,
+                               controls_models = controls_models, 
                                arg_checks = arg_checks)
-  data_sets_e <- extract_data_sets(models = models, controls_m = controls_m, 
+  data_sets_e <- extract_data_sets(models = models, 
+                                   controls_models = controls_models, 
                                    arg_checks = arg_checks)
 
   min_lag <- ifnull(min_lag, min_lag_e)
@@ -134,7 +125,7 @@ prep_metadata <- function(main = ".", models = prefab_models(),
                                            arg_checks = arg_checks))
   covariates <- ifnull(covariates, read_covariates(main = main))
   controls_r <- rodents_controls(data_sets = data_sets, 
-                                 controls_r = controls_r, 
+                                 controls_rodents = controls_rodents, 
                                  arg_checks = arg_checks)
   messageq("  -metadata file", quiet)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
@@ -174,7 +165,8 @@ prep_metadata <- function(main = ".", models = prefab_models(),
   cast_group <- max(cast_meta$cast_group) + 1
 
   config <- read_directory_config(main = main, 
-                                  filename_config = filename_config,
+                                  filename_config = 
+                                    control_save$filename_config,
                                   quiet = quiet, arg_checks = arg_checks)
 
 
@@ -191,6 +183,8 @@ prep_metadata <- function(main = ".", models = prefab_models(),
        rodent_cast_months = rodent_cast_months, 
        rodent_cast_years = rodent_cast_years,
        confidence_level = confidence_level) %>%
-  write_data(main = main, save = save, filename = filename_meta, 
-             overwrite = overwrite, quiet = !verbose, arg_checks = arg_checks)
+  write_data(main = main, save = control_save$save, 
+             filename = control_save$filename_meta, 
+             overwrite = control_save$overwrite, quiet = !verbose, 
+             arg_checks = arg_checks)
 }
