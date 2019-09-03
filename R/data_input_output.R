@@ -187,7 +187,9 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  functions (like \code{read_moons}). \cr \cr
 #'  If the requested data do not exist, an effort is made to prepare them
 #'  using the associated \code{prep_<data_name>} functions (like
-#'  \code{prep_moons}).
+#'  \code{prep_moons}).\cr \cr
+#'  \code{read_cov_casts} reads in the current or (if no current version)
+#'  local archived version of the covariate casts.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -331,14 +333,40 @@ read_covariates <- function(main = ".", control_files = files_control(),
 #' @export
 #'
 read_covariate_casts <- function(main = ".", control_files = files_control(),
-                                 arg_checks = TRUE){
-  check_args(arg_checks)
-  fpath <- file_path(main = main, sub = "data", files = "covariate_casts.csv", 
-                     arg_checks = arg_checks)
-  if(!file.exists(fpath)){
-    return(cast_covariates(main = main, arg_checks = arg_checks))
+                           quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  curr_path <- file_path(main = main, sub = "data", 
+                         files = control_files$filename_cov_casts, 
+                         arg_checks = arg_checks)
+  curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
+
+  arch_path <- paste0(control_files$directory, "/data/", 
+                      control_files$filename_cov_casts)
+  arch_path <- file_path(main = main, sub = "raw", files = arch_path,
+                         arg_checks = arg_checks)
+  arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
+
+  if(file.exists(curr_path)){
+    cov_cast <- read.csv(curr_path, stringsAsFactors = FALSE)
+  } else if (file.exists(curr_path2)){
+    cov_cast <- read.csv(curr_path2, stringsAsFactors = FALSE)
+  } else {
+    if(file.exists(arch_path)){
+      cov_cast <- read.csv(arch_path, stringsAsFactors = FALSE)
+    } else if (file.exists(arch_path2)){
+      cov_cast <- read.csv(arch_path2, stringsAsFactors = FALSE)
+    } else {
+      stop("current and archive versions missing, run `fill_raw`")
+    }
   }
-  read.csv(fpath, stringsAsFactors = FALSE) 
+  if(any(grepl("forecast_newmoon", colnames(cov_cast)))){
+    colnames(cov_cast) <- gsub("forecast_newmoon", "cast_moon", 
+                                colnames(cov_cast))
+  }
+  if(any(grepl("newmoonnumber", colnames(cov_cast)))){
+    colnames(cov_cast) <- gsub("newmoonnumber", "moon", colnames(cov_cast))
+  } 
+  cov_cast
 }
 
 #' @rdname read_data

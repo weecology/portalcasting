@@ -2,7 +2,6 @@
 % Please edit documentation in R/cast_covariates.R
 \name{cast_covariates}
 \alias{cast_covariates}
-\alias{read_cov_casts}
 \alias{prep_cast_covariates}
 \alias{cast_ndvi}
 \alias{cast_weather}
@@ -14,9 +13,6 @@ cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   cast_date = Sys.Date(), control_files = files_control(),
   control_climate_dl = climate_dl_control(), quiet = TRUE,
   verbose = FALSE, arg_checks = TRUE)
-
-read_cov_casts(main = ".", control_files = files_control(),
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
@@ -89,8 +85,7 @@ formatted correctly and provides directed error messages if not.}
  \code{cast_ndvi}: \code{data.frame} of -casted NDVI values. \cr \cr
  \code{cast_weather}: \code{data.frame} of -casted weather values. \cr \cr
  \code{save_cast_cov_csv}: \code{cast_cov} \code{data.frame} exactly as 
-  input. \cr \cr
- \code{read_cov_casts}: \code{data.frame} of the covariate casts read in.
+  input.
 }
 \description{
 Cast the covariates for a model run. \cr \cr
@@ -100,10 +95,7 @@ Cast the covariates for a model run. \cr \cr
  \code{prep_cast_covariates} provides a wrapper on \code{cast_covariates}
  that includes saving the cast data out via \code{save_cast_cov_csv}
  and tidying the data for use within the model (by removing the vestigial
- columns that are only needed for saving). \cr \cr
- \code{read_cov_casts} reads in the current or (if no current version)
- local archived version of the covariate casts, or downloads it, then
- reads it in if it is missing.
+ columns that are only needed for saving).
 }
 \details{
 If forecasting from the current newmoon, weather is forecast using 
@@ -121,7 +113,6 @@ If forecasting from the current newmoon, weather is forecast using
   save_cast_cov_csv(cast_cov = cast_cov)
   cast_ndvi_data <- cast_ndvi(hist_cov = hist_cov)
   cast_weather_data <- cast_weather(hist_cov = hist_cov)
-  read_cov_casts()
  }
 
 }

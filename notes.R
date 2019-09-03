@@ -5,8 +5,7 @@
 
 connect read to filenames duh
 
-move read_cov_casts to data_i_o
-diff between read_cov_casts and read_covariate_casts?????
+
 casts_metadata
 
 

@@ -473,7 +473,8 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   if (metadata$end_moon == metadata$last_moon){
     covar_cast <- covar_lag[for_cast, ]
   } else {
-    covariate_casts <- read_covariate_casts(main)
+    covariate_casts <- read_covariate_casts(main = main, 
+                                            arg_checks = arg_checks)
     covar_casts_lag <- lag_covariates(covariate_casts, lag, tail = TRUE)
     last_cov_nm <- max(covar_hist$moon) - lag
     nm_in <- covar_casts_lag$cast_moon == last_cov_nm

@@ -23,7 +23,7 @@ read_covariates(main = ".", control_files = files_control(),
   arg_checks = TRUE)
 
 read_covariate_casts(main = ".", control_files = files_control(),
-  arg_checks = TRUE)
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
 read_moons(main = ".", control_files = files_control(),
   arg_checks = TRUE)
@@ -70,7 +70,9 @@ Read in a specified data file. \cr \cr
  functions (like \code{read_moons}). \cr \cr
  If the requested data do not exist, an effort is made to prepare them
  using the associated \code{prep_<data_name>} functions (like
- \code{prep_moons}).
+ \code{prep_moons}).\cr \cr
+ \code{read_cov_casts} reads in the current or (if no current version)
+ local archived version of the covariate casts.
 }
 \examples{
 \donttest{

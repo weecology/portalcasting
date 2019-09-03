@@ -7,10 +7,7 @@
 #'  \code{prep_cast_covariates} provides a wrapper on \code{cast_covariates}
 #'  that includes saving the cast data out via \code{save_cast_cov_csv}
 #'  and tidying the data for use within the model (by removing the vestigial
-#'  columns that are only needed for saving). \cr \cr
-#'  \code{read_cov_casts} reads in the current or (if no current version)
-#'  local archived version of the covariate casts, or downloads it, then
-#'  reads it in if it is missing.
+#'  columns that are only needed for saving). 
 #'
 #' @param main \code{character} name of the main directory tree component.
 #'
@@ -68,8 +65,7 @@
 #'  \code{cast_ndvi}: \code{data.frame} of -casted NDVI values. \cr \cr
 #'  \code{cast_weather}: \code{data.frame} of -casted weather values. \cr \cr
 #'  \code{save_cast_cov_csv}: \code{cast_cov} \code{data.frame} exactly as 
-#'   input. \cr \cr
-#'  \code{read_cov_casts}: \code{data.frame} of the covariate casts read in.
+#'   input. 
 #'  
 #' @examples
 #'  \donttest{
@@ -80,7 +76,6 @@
 #'   save_cast_cov_csv(cast_cov = cast_cov)
 #'   cast_ndvi_data <- cast_ndvi(hist_cov = hist_cov)
 #'   cast_weather_data <- cast_weather(hist_cov = hist_cov)
-#'   read_cov_casts()
 #'  }
 #'
 #' @export
@@ -125,9 +120,10 @@ cast_covariates <- function(main = ".", moons = NULL,
     target_moons <- target_moons(main = main, moons = moons,
                                  end_moon = end_moon, lead_time = lead_time, 
                                  date = cast_date, arg_checks = arg_checks)
-    cov_cast <- read_cov_casts(main = main, control_files = control_files,
-                               quiet = quiet, verbose = verbose,
-                               arg_checks = arg_checks)
+    cov_cast <- read_covariate_casts(main = main, 
+                                     control_files = control_files,
+                                     quiet = quiet, verbose = verbose,
+                                     arg_checks = arg_checks)
 
     target_in <- cov_cast$moon %in% target_moons
     origin_in <- cov_cast$cast_moon %in% end_moon 
@@ -144,46 +140,6 @@ cast_covariates <- function(main = ".", moons = NULL,
   out
 }
 
-#' @rdname cast_covariates
-#'
-#' @export
-#'
-read_cov_casts <- function(main = ".", control_files = files_control(),
-                           quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  curr_path <- file_path(main = main, sub = "data", 
-                         files = control_files$filename_cov_casts, 
-                         arg_checks = arg_checks)
-  curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
-
-  arch_path <- paste0(control_files$directory, "/data/", 
-                      control_files$filename_cov_casts)
-  arch_path <- file_path(main = main, sub = "raw", files = arch_path,
-                         arg_checks = arg_checks)
-  arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
-
-  if(file.exists(curr_path)){
-    cov_cast <- read.csv(curr_path, stringsAsFactors = FALSE)
-  } else if (file.exists(curr_path2)){
-    cov_cast <- read.csv(curr_path2, stringsAsFactors = FALSE)
-  } else {
-    if(file.exists(arch_path)){
-      cov_cast <- read.csv(arch_path, stringsAsFactors = FALSE)
-    } else if (file.exists(arch_path2)){
-      cov_cast <- read.csv(arch_path2, stringsAsFactors = FALSE)
-    } else {
-      stop("current and archive versions missing, run `fill_raw`")
-    }
-  }
-  if(any(grepl("forecast_newmoon", colnames(cov_cast)))){
-    colnames(cov_cast) <- gsub("forecast_newmoon", "cast_moon", 
-                                colnames(cov_cast))
-  }
-  if(any(grepl("newmoonnumber", colnames(cov_cast)))){
-    colnames(cov_cast) <- gsub("newmoonnumber", "moon", colnames(cov_cast))
-  } 
-  cov_cast
-}
 
 #' @rdname cast_covariates
 #'
@@ -302,9 +258,10 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
   tz <- format(date_made, "%Z")
   new_cast$date_made <- paste0(date_made, " ", tz)
 
-  hist_cast <- read_cov_casts(main = main, control_files = control_files,
-                              quiet = quiet, verbose = verbose, 
-                              arg_checks = arg_checks)
+  hist_cast <- read_covariate_casts(main = main, 
+                                    control_files = control_files,
+                                    quiet = quiet, verbose = verbose, 
+                                    arg_checks = arg_checks)
   out <- rbind(hist_cast, new_cast)
   out_path <- file_path(main = main, sub = "data", 
                         files = control_files$filename_cov_casts,
