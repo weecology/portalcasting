@@ -55,7 +55,7 @@
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
-#' @param control_climate \code{list} of specifications for the download, 
+#' @param control_climate_dl \code{list} of specifications for the download, 
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
@@ -93,7 +93,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       confidence_level = 0.95, cast_date = Sys.Date(),
                       controls_models = NULL, 
                       controls_rodents = rodents_controls(),
-                      control_climate = climate_dl_control(),
+                      control_climate_dl = climate_dl_control(),
                       control_files = files_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
@@ -108,7 +108,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            confidence_level = confidence_level, 
            controls_models = controls_models, 
            controls_rodents = controls_rodents, 
-           control_climate = control_climate, 
+           control_climate_dl = control_climate_dl, 
            downloads = downloads, quiet = quiet, verbose = verbose, 
            control_files = control_files, arg_checks = arg_checks)
   messageq("---------------------------------------------------------", quiet)
@@ -123,15 +123,16 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #' @export
 #'
 setup_production <- function(main = ".", models = prefab_models(), 
-                      end_moon = NULL, 
-                      lead_time = 12, cast_date = Sys.Date(),
-                      start_moon = 217, 
-                      confidence_level = 0.95, controls_models = NULL,
-                      controls_rodents = rodents_controls(),
-                      control_climate = climate_dl_control(),
-                      downloads = zenodo_downloads(c("1215988", "833438")), 
-                      quiet = FALSE, verbose = FALSE, 
-                      control_files = files_control(), arg_checks = TRUE){
+                             end_moon = NULL, start_moon = 217, 
+                             lead_time = 12, cast_date = Sys.Date(),
+                             confidence_level = 0.95, controls_models = NULL,
+                             controls_rodents = rodents_controls(),
+                             control_climate_dl = climate_dl_control(),
+                             control_files = files_control(), 
+                             downloads = 
+                               zenodo_downloads(c("1215988", "833438")), 
+                             quiet = FALSE, verbose = FALSE, 
+                             arg_checks = TRUE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
             end_moon = end_moon, lead_time = lead_time, 
@@ -139,7 +140,7 @@ setup_production <- function(main = ".", models = prefab_models(),
             confidence_level = confidence_level, 
             controls_models = controls_models, 
             controls_rodents = controls_rodents, 
-            control_climate = control_climate, 
+            control_climate_dl = control_climate_dl, 
             downloads = downloads, quiet = quiet, verbose = verbose, 
             control_files = control_files, arg_checks = arg_checks)
 }
@@ -150,16 +151,15 @@ setup_production <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 setup_sandbox <- function(main = ".", models = prefab_models(), 
-                          end_moon = NULL, lead_time = 12, 
-                          cast_date = Sys.Date(), 
-                          start_moon = 217, confidence_level = 0.95, 
-                          controls_rodents = rodents_controls(),
-                          control_climate = climate_dl_control(),
+                          end_moon = NULL, start_moon = 217, lead_time = 12, 
+                          confidence_level = 0.95, cast_date = Sys.Date(), 
                           controls_models = NULL,
+                          controls_rodents = rodents_controls(),
+                          control_climate_dl = climate_dl_control(),
+                          control_files = files_control(),
                           downloads = 
                             zenodo_downloads(c("1215988", "833438")), 
-                          quiet = FALSE, verbose = FALSE,
-                          control_files = files_control(), 
+                          quiet = FALSE, verbose = FALSE, 
                           arg_checks = FALSE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
@@ -168,7 +168,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
             confidence_level = confidence_level, 
             controls_models = controls_models, 
             controls_rodents = controls_rodents, 
-            control_climate = control_climate, 
+            control_climate_dl = control_climate_dl, 
             downloads = downloads, quiet = quiet, verbose = verbose, 
             control_files = control_files, arg_checks = arg_checks)
   sandbox_welcome(main = main, quiet = quiet, arg_checks = arg_checks)

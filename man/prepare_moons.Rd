@@ -9,7 +9,7 @@
 \title{Prepare lunar data for the portalcasting repository}
 \usage{
 prep_moons(main = ".", lead_time = 12, cast_date = Sys.Date(),
-  quiet = TRUE, verbose = FALSE, control_files = files_control(),
+  control_files = files_control(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
 
 format_moons(moons, arg_checks = TRUE)
@@ -30,14 +30,14 @@ number of timesteps forward a cast will cover.}
 \item{cast_date}{\code{Date} from which future is defined, typically 
 today's date (set using \code{\link{Sys.Date}}).}
 
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

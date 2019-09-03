@@ -190,7 +190,7 @@ Argument details used for checking are produced simply via
  Must be \code{list}s, can be any length, can be \code{NULL}, but cannot 
  be \code{NA}:
   \code{control},
-  \code{control_climate},
+  \code{control_climate_dl},
   \code{controls_models},
   \code{controls_rodents},
   \code{control_files},

@@ -10,31 +10,32 @@
 \title{Fill a forecasting directory with basic components.}
 \usage{
 fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.95, controls_models = NULL,
+  start_moon = 217, lead_time = 12, confidence_level = 0.95,
+  cast_date = Sys.Date(), controls_models = NULL,
   controls_rodents = rodents_controls(),
-  control_climate = climate_dl_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
+  verbose = FALSE, arg_checks = TRUE)
 
 fill_data(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.95, controls_rodents = rodents_controls(),
-  controls_models = NULL, control_climate = climate_dl_control(),
+  start_moon = 217, lead_time = 12, confidence_level = 0.95,
+  cast_date = Sys.Date(), controls_models = NULL,
+  controls_rodents = rodents_controls(),
+  control_climate_dl = climate_dl_control(),
   control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, arg_checks = TRUE)
 
 fill_models(main = ".", models = prefab_models(),
-  controls_models = NULL, quiet = FALSE, verbose = FALSE,
-  control_files = files_control(), arg_checks = TRUE)
+  controls_models = NULL, control_files = files_control(),
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
-fill_casts(main = ".", quiet = FALSE, verbose = FALSE,
-  control_files = files_control(), arg_checks = TRUE)
+fill_casts(main = ".", control_files = files_control(),
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
 fill_raw(main = ".", downloads = zenodo_downloads(c("1215988",
-  "833438")), quiet = FALSE, control_files = files_control(),
+  "833438")), control_files = files_control(), quiet = FALSE,
   arg_checks = TRUE)
 }
 \arguments{
@@ -48,19 +49,19 @@ include.}
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
-
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
-
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the first sample to be included. Default value is \code{217}, 
 corresponding to \code{1995-01-01}.}
 
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
+number of timesteps forward a cast will cover.}
+
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
+
+\item{cast_date}{\code{Date} from which future is defined (the origin of
+the cast). In the recurring forecasting, is set to today's date
+using \code{\link{Sys.Date}}.}
 
 \item{controls_models}{Additional controls for models not in the prefab 
 set. \cr 
@@ -83,16 +84,16 @@ element \code{list} must be named according to the model and the
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
 
-\item{control_climate}{\code{list} of specifications for the download, 
+\item{control_climate_dl}{\code{list} of specifications for the download, 
 which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
-
-\item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
-for raw file downloading.}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
+for raw file downloading.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

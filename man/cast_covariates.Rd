@@ -12,7 +12,7 @@
 cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), control_files = files_control(),
-  control_climate = climate_dl_control(), quiet = TRUE,
+  control_climate_dl = climate_dl_control(), quiet = TRUE,
   verbose = FALSE, arg_checks = TRUE)
 
 read_cov_casts(main = ".", control_files = files_control(),
@@ -20,7 +20,7 @@ read_cov_casts(main = ".", control_files = files_control(),
 
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), control_climate = climate_dl_control(),
+  cast_date = Sys.Date(), control_climate_dl = climate_dl_control(),
   quiet = TRUE, verbose = FALSE, control_files = files_control(),
   arg_checks = TRUE)
 
@@ -29,7 +29,7 @@ cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
 
 cast_weather(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), control_climate = climate_dl_control(),
+  cast_date = Sys.Date(), control_climate_dl = climate_dl_control(),
   quiet = TRUE, verbose = verbose, arg_checks = TRUE)
 
 save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
@@ -62,7 +62,7 @@ be \code{\link{Sys.Date}}.}
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
-\item{control_climate}{\code{list} of specifications for the climate 
+\item{control_climate_dl}{\code{list} of specifications for the climate 
 download. Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
 \code{\link{climate_dl_control}}.}
 

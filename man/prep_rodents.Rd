@@ -6,8 +6,8 @@
 \usage{
 prep_rodents(main = ".", moons = NULL, data_sets = NULL,
   end_moon = NULL, start_moon = 217, controls_rodents = NULL,
-  ref_species = all_species(), quiet = TRUE, verbose = FALSE,
-  control_files = files_control(), arg_checks = TRUE)
+  control_files = files_control(), ref_species = all_species(),
+  quiet = TRUE, verbose = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -32,6 +32,10 @@ corresponding to \code{1995-01-01}.}
 \code{list}s from \code{\link{rodents_controls}} specifying the 
 structuring of the rodents tables. See \code{\link{rodents_controls}}.}
 
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
 \item{ref_species}{\code{character}-valued vector of all possible species 
 names that could be used should be set up via \code{\link{all_species}}.}
 
@@ -40,10 +44,6 @@ quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

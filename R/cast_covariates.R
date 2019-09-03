@@ -42,7 +42,7 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param control_climate \code{list} of specifications for the climate 
+#' @param control_climate_dl \code{list} of specifications for the climate 
 #'  download. Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
 #'  \code{\link{climate_dl_control}}.
 #'
@@ -89,7 +89,7 @@ cast_covariates <- function(main = ".", moons = NULL,
                             hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                             min_lag = 6, cast_date = Sys.Date(), 
                             control_files = files_control(),
-                            control_climate = climate_dl_control(),
+                            control_climate_dl = climate_dl_control(),
                             quiet = TRUE, verbose = FALSE, 
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -107,7 +107,7 @@ cast_covariates <- function(main = ".", moons = NULL,
                                  hist_cov = hist_cov, end_moon = end_moon,
                                  lead_time = lead_time, min_lag = min_lag,
                                  cast_date = cast_date, 
-                                 control_climate = control_climate, 
+                                 control_climate_dl = control_climate_dl, 
                                  quiet = quiet,
                                  verbose = verbose, arg_checks = TRUE)
     ndvi_cast <- cast_ndvi(main = main, hist_cov = hist_cov,
@@ -190,7 +190,7 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  hist_cov = NULL, end_moon = NULL, 
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
-                                 control_climate = climate_dl_control(),
+                                 control_climate_dl = climate_dl_control(),
                                  quiet = TRUE, verbose = FALSE, 
                                  control_files = files_control(), 
                                  arg_checks = TRUE){
@@ -199,7 +199,7 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                   end_moon = end_moon, lead_time = lead_time, 
                   min_lag = min_lag, cast_date = cast_date, 
                   control_files = control_files,
-                  control_climate = control_climate,
+                  control_climate_dl = control_climate_dl,
                   quiet = quiet, verbose = verbose,
                   arg_checks = arg_checks) %>%
   save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
@@ -233,7 +233,8 @@ cast_ndvi <- function(main = ".", hist_cov = NULL, lead_time = 12,
 cast_weather <- function(main = ".", moons = NULL,
                          hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                          min_lag = 6, cast_date = Sys.Date(), 
-                         control_climate = climate_dl_control(), quiet = TRUE,
+                         control_climate_dl = climate_dl_control(),
+                         quiet = TRUE,
                          verbose = verbose, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
@@ -247,16 +248,16 @@ cast_weather <- function(main = ".", moons = NULL,
   win <- cast_window(main = main, moons = moons, cast_date = cast_date,
                      lead_time = lead_time, min_lag = 6,                                
                      arg_checks = arg_checks)
-  control_climate <- do.call(climate_dl_control, control_climate)
-  control_climate <- update_list(control_climate, start = win$start, 
+  control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
+  control_climate_dl <- update_list(control_climate_dl, start = win$start, 
                                  end = win$end)
 
-  download_climate_casts(main = main, control_climate = control_climate, 
+  download_climate_casts(main = main, control_climate_dl = control_climate_dl, 
                          quiet = quiet, verbose = verbose, 
                          arg_checks = arg_checks)
 
   weather_cast <- read_climate_casts(main = main, 
-                                     control_climate = control_climate, 
+                                     control_climate_dl = control_climate_dl, 
                                      arg_checks = arg_checks)
 
   weather("daily", TRUE, raw_path) %>% 
@@ -328,7 +329,7 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
 #'
-#' @param control_climate \code{list} of specifications for the download, 
+#' @param control_climate_dl \code{list} of specifications for the download, 
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs.
 #'
 #' @param start,end \code{Date} for the start and end of the cast.
@@ -387,18 +388,18 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 #' @export
 #'
 download_climate_casts <- function(main = ".", 
-                                   control_climate = climate_dl_control(), 
+                                   control_climate_dl = climate_dl_control(), 
                                    quiet = TRUE, verbose = FALSE,
                                    arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  control_climate <- do.call(climate_dl_control, control_climate)
-  urls <- do.call(NMME_urls, control_climate)
+  control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
+  urls <- do.call(NMME_urls, control_climate_dl)
   return_if_null(urls)
   cov_cast_path <- file_path(main = main, sub = "raw", files = "cov_casts",
                              arg_checks = arg_checks)
   create(cov_cast_path, "covariate cast download", quiet = quiet)
 
-  for(i in 1:length(control_climate$data)){
+  for(i in 1:length(control_climate_dl$data)){
     dl_name <- paste0("cov_casts/", names(urls)[i])
     download(name = dl_name, type = "url", url = urls[i], main = main, 
              sep_char = "=", quiet = !verbose, return_version = FALSE,
@@ -430,15 +431,15 @@ climate_dl_control <- function(start = Sys.Date(),
 #' @export
 #'
 read_climate_casts <- function(main = ".", 
-                               control_climate = climate_dl_control(), 
+                               control_climate_dl = climate_dl_control(), 
                                arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  control_climate <- do.call(climate_dl_control, control_climate)
-  urls <- do.call(NMME_urls, control_climate)
+  control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
+  urls <- do.call(NMME_urls, control_climate_dl)
   return_if_null(urls)
 
-  dat_list <- vector("list", length(control_climate$data))
-  ndatas <- length(control_climate$data)
+  dat_list <- vector("list", length(control_climate_dl$data))
+  ndatas <- length(control_climate_dl$data)
   for(i in 1:ndatas){
     csv_path <- paste0("cov_casts/",  names(urls)[i], ".csv")
     fpath <- file_path(main = main, sub = "raw", files = csv_path, 
@@ -446,7 +447,7 @@ read_climate_casts <- function(main = ".",
     dat_list[[i]] <- read.csv(fpath)
   }
   dat_tab <- dat_list[[1]]
-  colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate$data)[1]
+  colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate_dl$data)[1]
   colnames(dat_tab)[1] <- "date"
   dat_tab[,1] <- as.Date(dat_tab[,1])
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
@@ -456,7 +457,7 @@ read_climate_casts <- function(main = ".",
       dat_tab_i <- dat_list[[i]]
       x <- dat_tab_i[ , ncol(dat_tab_i)]
       dat_tab <- data.frame(dat_tab, x)
-      colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate$data)[i]
+      colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate_dl$data)[i]
     }
   }
   for(i in 2:ncol(dat_tab)){

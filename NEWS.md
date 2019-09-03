@@ -6,8 +6,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 *Active Development*
 
 ### Major API update: increase in explicit top-level arguments
-* Removal of the majority of the control lists, only retained in situations where necessary. 
-* Moved most arguments to focal top-level inputs, rather than nested within control options list. Allows full control, but with default settings working cleanly. [addresses](https://github.com/weecology/portalcasting/issues/123)
+* Moved key arguments to focal top-level inputs, rather than nested within control options list. Allows full control, but with default settings working cleanly. [addresses](https://github.com/weecology/portalcasting/issues/123)
+* Restructuring of the controls lists, only retained usage in situations where necessary.
 * Openness for new `setup` functions, in particular `setup_sandbox`. [addresses](https://github.com/weecology/portalcasting/issues/125)
 * Simplification of model naming inputs. Just put the names in you need, only use the `model_names` functions when you need to (usually in coding inside of functions or for setting default argument levels). [addresses](https://github.com/weecology/portalcasting/issues/119)
 

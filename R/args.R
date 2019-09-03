@@ -157,7 +157,7 @@
 #'  Must be \code{list}s, can be any length, can be \code{NULL}, but cannot 
 #'  be \code{NA}:
 #'   \code{control},
-#'   \code{control_climate},
+#'   \code{control_climate_dl},
 #'   \code{controls_models},
 #'   \code{controls_rodents},
 #'   \code{control_files},
@@ -518,7 +518,7 @@ check_arg_list <- function(){
     concept_rec_id = arg_character(NULL),
     confidence_level = arg_zeroone(),
     control = arg_list(),
-    control_climate = arg_list(),
+    control_climate_dl = arg_list(),
     controls_models = arg_list(),
     controls_rodents = arg_list(),
     control_files = arg_list(),

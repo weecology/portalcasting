@@ -76,8 +76,8 @@ NULL
 #' @export
 #' 
 prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(), 
-                       quiet = TRUE, verbose = FALSE, 
-                       control_files = files_control(), arg_checks = TRUE){
+                       control_files = files_control(), 
+                       quiet = TRUE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   messageq("  -lunar data file", quiet)
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
@@ -297,9 +297,9 @@ add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-target_moons <- function(main = ".", moons = NULL,
-                            end_moon = NULL, lead_time = 12, 
-                            date = Sys.Date(), arg_checks = TRUE){
+target_moons <- function(main = ".", moons = NULL, end_moon = NULL, 
+                         lead_time = 12, date = Sys.Date(), 
+                         arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   last_moon <- last_moon(main = main, moons = moons, date = date, 
@@ -312,8 +312,8 @@ target_moons <- function(main = ".", moons = NULL,
 #'
 #' @export
 #'
-last_moon <- function(main = ".", moons = NULL,
-                           date = Sys.Date(), arg_checks = TRUE){
+last_moon <- function(main = ".", moons = NULL, date = Sys.Date(), 
+                      arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   which_last_moon <- max(which(moons$moondate < date))

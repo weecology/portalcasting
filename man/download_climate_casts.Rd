@@ -7,7 +7,7 @@
 \title{Download and read covariate casts (presently only the NMME)}
 \usage{
 download_climate_casts(main = ".",
-  control_climate = climate_dl_control(), quiet = TRUE,
+  control_climate_dl = climate_dl_control(), quiet = TRUE,
   verbose = FALSE, arg_checks = TRUE)
 
 climate_dl_control(start = Sys.Date(), end = as.Date("2050-01-01"),
@@ -15,14 +15,14 @@ climate_dl_control(start = Sys.Date(), end = as.Date("2050-01-01"),
   freq = "daily", data = c(mintemp = "tasmin", meantemp = "tasmean",
   maxtemp = "tasmax", precipitation = "pr"), arg_checks = TRUE)
 
-read_climate_casts(main = ".", control_climate = climate_dl_control(),
-  arg_checks = TRUE)
+read_climate_casts(main = ".",
+  control_climate_dl = climate_dl_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{control_climate}{\code{list} of specifications for the download, 
+\item{control_climate_dl}{\code{list} of specifications for the download, 
 which are sent to \code{\link{NMME_urls}} to create the specific URLs.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be

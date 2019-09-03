@@ -66,7 +66,7 @@
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details.  
 #'
-#' @param control_climate \code{list} of specifications for the download, 
+#' @param control_climate_dl \code{list} of specifications for the download, 
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
@@ -107,13 +107,12 @@
 #'
 portalcast <- function(main = ".", models = prefab_models(),
                        data_sets = prefab_data_sets(), end_moons = NULL, 
-                       lead_time = 12, cast_date = Sys.Date(),
-                       start_moon = 217, 
-                       confidence_level = 0.95, 
+                       start_moon = 217, lead_time = 12, 
+                       confidence_level = 0.95, cast_date = Sys.Date(),
                        controls_models = NULL, 
-                       control_files = files_control(),
                        controls_rodents = rodents_controls(),
-                       control_climate = climate_dl_control(),
+                       control_climate_dl = climate_dl_control(),
+                       control_files = files_control(),
                        downloads = zenodo_downloads(c("1215988", "833438")), 
                        quiet = FALSE, verbose = FALSE, 
                        arg_checks = TRUE){
@@ -143,7 +142,7 @@ portalcast <- function(main = ".", models = prefab_models(),
               confidence_level = confidence_level, 
               controls_rodents = controls_rodents,
               controls_models = controls_models, 
-              control_climate = control_climate, 
+              control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
               quiet = quiet, verbose = verbose, arg_checks = arg_checks)
     cast(main = main, models = models,
@@ -160,7 +159,7 @@ portalcast <- function(main = ".", models = prefab_models(),
               confidence_level = confidence_level, 
               controls_rodents = controls_rodents,
               controls_models = controls_models, 
-              control_climate = control_climate, 
+              control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
               quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   }
@@ -172,13 +171,12 @@ portalcast <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #'
-cast <- function(main = ".", models = prefab_models(), 
-                 cast_date = Sys.Date(), moons = NULL, 
+cast <- function(main = ".", models = prefab_models(), moons = NULL, 
                  end_moon = NULL, confidence_level = 0.95, 
+                 cast_date = Sys.Date(), 
                  controls_rodents = rodents_controls(), 
-                 quiet = FALSE, verbose = FALSE, 
                  control_files = files_control(),
-                 arg_checks = TRUE){
+                 quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   messageq("---------------------------------------------------------", quiet)

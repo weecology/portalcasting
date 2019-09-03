@@ -94,18 +94,14 @@
 #' @export
 #'
 prep_metadata <- function(main = ".", models = prefab_models(),
-                          data_sets = NULL, 
-                          moons = NULL, rodents = NULL,
-                          covariates = NULL,
-                          end_moon = NULL, 
-                          lead_time = 12, min_lag = NULL, 
-                          cast_date = Sys.Date(),
-                          start_moon = 217,
-                          confidence_level = 0.95, 
-                          controls_rodents = NULL,
+                          data_sets = NULL, moons = NULL, rodents = NULL,
+                          covariates = NULL, end_moon = NULL, 
+                          start_moon = 217, lead_time = 12, min_lag = NULL, 
+                          cast_date = Sys.Date(), confidence_level = 0.95, 
                           controls_models = NULL, 
-                          quiet = TRUE, verbose = FALSE, 
-                          control_files = files_control(), arg_checks = TRUE){
+                          controls_rodents = NULL,
+                          control_files = files_control(),
+                          quiet = TRUE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   filename_config <- control_files$filename_config
   filename_meta <- control_files$filename_meta

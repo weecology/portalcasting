@@ -2,10 +2,8 @@
 # update vignettes
 # read through the code documentation again
 #   donttest examples
-#   argument order alignment
 
 
-# tidying control lists now to portalcast functions
 # then argument order
 # and doc read thru and examps
 

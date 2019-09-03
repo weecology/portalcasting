@@ -6,8 +6,8 @@
 \usage{
 prep_covariates(main = ".", moons = NULL, end_moon = NULL,
   lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
-  control_climate = climate_dl_control(), quiet = TRUE,
-  verbose = FALSE, control_files = files_control(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
 }
 \arguments{
@@ -30,19 +30,19 @@ covariate lag time used in any model.}
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 
-\item{control_climate}{\code{list} of specifications for the download, 
+\item{control_climate_dl}{\code{list} of specifications for the download, 
 which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

@@ -10,27 +10,28 @@ setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   start_moon = 217, lead_time = 12, confidence_level = 0.95,
   cast_date = Sys.Date(), controls_models = NULL,
   controls_rodents = rodents_controls(),
-  control_climate = climate_dl_control(),
+  control_climate_dl = climate_dl_control(),
   control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, arg_checks = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
-  end_moon = NULL, lead_time = 12, cast_date = Sys.Date(),
-  start_moon = 217, confidence_level = 0.95, controls_models = NULL,
-  controls_rodents = rodents_controls(),
-  control_climate = climate_dl_control(),
+  end_moon = NULL, start_moon = 217, lead_time = 12,
+  cast_date = Sys.Date(), confidence_level = 0.95,
+  controls_models = NULL, controls_rodents = rodents_controls(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, control_files = files_control(),
-  arg_checks = TRUE)
+  verbose = FALSE, arg_checks = TRUE)
 
 setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
-  lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
-  confidence_level = 0.95, controls_rodents = rodents_controls(),
-  control_climate = climate_dl_control(), controls_models = NULL,
+  start_moon = 217, lead_time = 12, confidence_level = 0.95,
+  cast_date = Sys.Date(), controls_models = NULL,
+  controls_rodents = rodents_controls(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, control_files = files_control(),
-  arg_checks = FALSE)
+  verbose = FALSE, arg_checks = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -78,7 +79,7 @@ element \code{list} must be named according to the model and the
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
 
-\item{control_climate}{\code{list} of specifications for the download, 
+\item{control_climate_dl}{\code{list} of specifications for the download, 
 which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
 

@@ -30,7 +30,7 @@
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
-#' @param control_climate \code{list} of specifications for the download, 
+#' @param control_climate_dl \code{list} of specifications for the download, 
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
@@ -54,12 +54,12 @@
 #'  
 #' @export
 #'
-prep_covariates <- function(main = ".", moons = NULL,
-                            end_moon = NULL, lead_time = 12, min_lag = 6, 
+prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL, 
+                            lead_time = 12, min_lag = 6, 
                             cast_date = Sys.Date(),
-                            control_climate = climate_dl_control(), 
-                            quiet = TRUE, 
-                            verbose = FALSE, control_files = files_control(),
+                            control_climate_dl = climate_dl_control(), 
+                            control_files = files_control(),
+                            quiet = TRUE, verbose = FALSE, 
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
@@ -67,14 +67,14 @@ prep_covariates <- function(main = ".", moons = NULL,
   hist_cov <- prep_hist_covariates(main = main, end_moon = end_moon,
                                    quiet = quiet, arg_checks = arg_checks)
   cast_cov <- prep_cast_covariates(main = main, moons = moons, 
-                                     hist_cov = hist_cov,
-                                     end_moon = end_moon, 
-                                     lead_time = lead_time, min_lag = min_lag, 
-                                     cast_date = cast_date, 
-                                     control_files = control_files,
-                                     control_climate = control_climate,
-                                     quiet = quiet, verbose = verbose, 
-                                     arg_checks = arg_checks)
+                                   hist_cov = hist_cov,
+                                   end_moon = end_moon, 
+                                   lead_time = lead_time, min_lag = min_lag, 
+                                   cast_date = cast_date, 
+                                   control_files = control_files,
+                                   control_climate_dl = control_climate_dl,
+                                   quiet = quiet, verbose = verbose, 
+                                   arg_checks = arg_checks)
   out <- bind_rows(hist_cov, cast_cov)
 
   write_data(dfl = out, main = main, save = control_files$save, 

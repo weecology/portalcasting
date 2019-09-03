@@ -6,18 +6,18 @@
 \title{Cast Portal rodents models}
 \usage{
 portalcast(main = ".", models = prefab_models(),
-  data_sets = prefab_data_sets(), end_moons = NULL, lead_time = 12,
-  cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
-  controls_models = NULL, control_files = files_control(),
-  controls_rodents = rodents_controls(),
-  control_climate = climate_dl_control(),
+  data_sets = prefab_data_sets(), end_moons = NULL, start_moon = 217,
+  lead_time = 12, confidence_level = 0.95, cast_date = Sys.Date(),
+  controls_models = NULL, controls_rodents = rodents_controls(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, arg_checks = TRUE)
 
-cast(main = ".", models = prefab_models(), cast_date = Sys.Date(),
-  moons = NULL, end_moon = NULL, confidence_level = 0.95,
-  controls_rodents = rodents_controls(), quiet = FALSE,
-  verbose = FALSE, control_files = files_control(),
+cast(main = ".", models = prefab_models(), moons = NULL,
+  end_moon = NULL, confidence_level = 0.95, cast_date = Sys.Date(),
+  controls_rodents = rodents_controls(),
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
   arg_checks = TRUE)
 }
 \arguments{
@@ -39,19 +39,19 @@ newmoon number(s) of the last sample(s) to be included. Default value is
 \strong{\code{end_moons} allows for multiple moons, \code{end_moon}
 can only be one value}.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
-
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
-
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the first sample to be included. Default value is \code{217}, 
 corresponding to \code{1995-01-01}.}
 
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
+number of timesteps forward a cast will cover.}
+
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
+
+\item{cast_date}{\code{Date} from which future is defined (the origin of
+the cast). In the recurring forecasting, is set to today's date
+using \code{\link{Sys.Date}}.}
 
 \item{controls_models}{Additional controls for models not in the prefab 
 set. \cr 
@@ -70,17 +70,17 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
 \item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
 
-\item{control_climate}{\code{list} of specifications for the download, 
+\item{control_climate_dl}{\code{list} of specifications for the download, 
 which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
 for raw file downloading.}

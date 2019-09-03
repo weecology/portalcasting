@@ -59,7 +59,7 @@
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
-#' @param control_climate \code{list} of specifications for the download, 
+#' @param control_climate_dl \code{list} of specifications for the download, 
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
@@ -102,14 +102,13 @@ NULL
 #' @export
 #'
 fill_dir <- function(main = ".", models = prefab_models(), 
-                     end_moon = NULL, 
-                     lead_time = 12, cast_date = Sys.Date(),
-                     start_moon = 217, 
-                     confidence_level = 0.95, controls_models = NULL,
+                     end_moon = NULL, start_moon = 217,
+                     lead_time = 12, confidence_level = 0.95, 
+                     cast_date = Sys.Date(), controls_models = NULL,
                      controls_rodents = rodents_controls(),
-                     control_climate = climate_dl_control(),
-                     downloads = zenodo_downloads(c("1215988", "833438")), 
+                     control_climate_dl = climate_dl_control(),
                      control_files = files_control(),
+                     downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   messageq("Filling directory with standard content", quiet)
@@ -126,7 +125,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
             confidence_level = confidence_level, 
             controls_rodents = controls_rodents,
             controls_models = controls_models, 
-            control_climate = control_climate, 
+            control_climate_dl = control_climate_dl, 
             downloads = downloads, control_files = control_files,
             quiet = quiet, verbose = verbose, arg_checks = arg_checks)
 }
@@ -138,12 +137,11 @@ fill_dir <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 fill_data <- function(main = ".", models = prefab_models(),
-                      end_moon = NULL, lead_time = 12,
-                      cast_date = Sys.Date(), start_moon = 217, 
-                      confidence_level = 0.95, 
-                      controls_rodents = rodents_controls(), 
+                      end_moon = NULL,start_moon = 217, lead_time = 12,
+                      confidence_level = 0.95, cast_date = Sys.Date(), 
                       controls_models = NULL,
-                      control_climate = climate_dl_control(),
+                      controls_rodents = rodents_controls(), 
+                      control_climate_dl = climate_dl_control(),
                       control_files = files_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
@@ -179,7 +177,7 @@ fill_data <- function(main = ".", models = prefab_models(),
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
                             lead_time = lead_time, min_lag = min_lag, 
                             cast_date = cast_date, 
-                            control_climate = control_climate,
+                            control_climate_dl = control_climate_dl,
                             quiet = quiet, control_files = control_files,
                             arg_checks = arg_checks)
   prep_metadata(main = main, models = models,
@@ -199,9 +197,9 @@ fill_data <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 fill_models <- function(main = ".", models = prefab_models(), 
-                        controls_models = NULL, quiet = FALSE, 
-                        verbose = FALSE, 
-                        control_files = files_control(), arg_checks = TRUE){
+                        controls_models = NULL, 
+                        control_files = files_control(), quiet = FALSE, 
+                        verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(models)
   controls_models <- model_script_controls(models = models, 
@@ -223,8 +221,8 @@ fill_models <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #'
-fill_casts <- function(main = ".", quiet = FALSE, verbose = FALSE,
-                       control_files = files_control(), arg_checks = TRUE){
+fill_casts <- function(main = ".", control_files = files_control(),
+                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   directory <- control_files$directory
   messageq(" -Filling casts folder with files from archive", quiet)
@@ -254,7 +252,7 @@ fill_casts <- function(main = ".", quiet = FALSE, verbose = FALSE,
 #'
 fill_raw <- function(main = ".", 
                      downloads = zenodo_downloads(c("1215988", "833438")), 
-                     quiet = FALSE, control_files = files_control(), 
+                     control_files = files_control(), quiet = FALSE, 
                      arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(downloads)

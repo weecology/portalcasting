@@ -388,13 +388,12 @@ rodents_control <- function(data_set = NULL, species = base_species(),
 #'
 #' @export
 #'
-prep_rodents <- function(main = ".", moons = NULL, 
-                         data_sets = NULL,
+prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
                          end_moon = NULL, start_moon = 217,
-                         controls_rodents = NULL,
+                         controls_rodents = NULL, 
+                         control_files = files_control(), 
                          ref_species = all_species(), quiet = TRUE,
-                         verbose = FALSE,  
-                         control_files = files_control(), arg_checks = TRUE){
+                         verbose = FALSE,  arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_sets <- ifnull(data_sets, prefab_data_sets())
   messageq("  -rodents data files", quiet)

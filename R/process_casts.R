@@ -88,8 +88,8 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #' @export
 #'
 select_casts <- function(main = ".", cast_ids = NULL,
-                        end_moons = NULL, models = NULL, data_sets = NULL,
-                        quiet = FALSE, arg_checks = TRUE){
+                         end_moons = NULL, models = NULL, data_sets = NULL,
+                         quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   casts_metadata <- read_casts_metadata(main = main, quiet = quiet, 
                                         arg_checks = arg_checks)
