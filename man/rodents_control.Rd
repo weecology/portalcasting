@@ -101,7 +101,8 @@ formatted correctly and provides directed error messages if not.}
 }
 \value{
 Named \code{list} of \code{data_set}'s data-generating controls, 
- for input as part of \code{controls_r} in \code{\link{prep_rodents}}.
+ for input as part of \code{controls_rodents} in 
+ \code{\link{prep_rodents}}.
 }
 \description{
 Given the number of arguments into 

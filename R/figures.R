@@ -79,9 +79,8 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
                             control_files = files_control(), quiet = FALSE,
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+  moons <- read_moons(main = main, control_files = control_files,
+                      arg_checks = arg_checks)
   last_census_date <- last_census(main = main, arg_checks = arg_checks)
   which_last_census_moon <- which(moons$censusdate == last_census_date)
   last_census_moon <- moons$moon[which_last_census_moon]
@@ -317,9 +316,8 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
 
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+  moons <- read_moons(main = main, control_files = control_files,
+                      arg_checks = arg_checks)
   minx <- as.character(moons$moondate[moons$moon == rangex[1]])
   maxx <- as.character(moons$moondate[moons$moon == rangex[2]])
   minx_yr <- as.numeric(format(as.Date(minx), "%Y"))

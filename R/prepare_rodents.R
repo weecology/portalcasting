@@ -289,7 +289,8 @@ rodents_controls <- function(data_sets = NULL, controls_rodents = NULL,
 #'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return Named \code{list} of \code{data_set}'s data-generating controls, 
-#'  for input as part of \code{controls_r} in \code{\link{prep_rodents}}.
+#'  for input as part of \code{controls_rodents} in 
+#'  \code{\link{prep_rodents}}.
 #'
 #' @examples
 #'  rodents_controls(c("all", "controls"))
@@ -918,9 +919,8 @@ prefab_data_sets <- function(){
 last_census <- function(main = ".", 
                         control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks)
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+  moons <- read_moons(main = main, control_files = control_files,
+                      arg_checks = arg_checks)
   as.Date(max(moons$censusdate, na.rm = TRUE))
 }
 

@@ -226,7 +226,7 @@ prefab_models <- function(){
 #'
 #' @param name \code{character} value of the name of the model.
 #'
-#' @param control \code{list} of model-level controls, including
+#' @param control_model \code{list} of model-level controls, including
 #'  \code{name}, a \code{character} value of the model's name;
 #'  \code{covariatesTF}, a \code{logical} indicator for if the model requires 
 #'  covariates; and \code{lag}, a \code{integer} (or integer \code{numeric}) 
@@ -256,6 +256,10 @@ prefab_models <- function(){
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr
 #'  \code{model_template}: \code{character}-valued text for a model script 
@@ -272,16 +276,17 @@ prefab_models <- function(){
 #'
 write_model <- function(name = NULL, data_sets = NULL, 
                         covariatesTF = NULL, lag = NULL, main = ".", 
-                        quiet = FALSE, verbose = TRUE, overwrite = TRUE, 
-                        control = NULL, arg_checks = TRUE){
+                        control_model = NULL, control_files = files_control(),
+                        quiet = FALSE, verbose = TRUE, 
+                        arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  name <- ifnull(name, control$name)
+  name <- ifnull(name, control_model$name)
   prefab_control <- tryCatch(prefab_model_controls()[[name]],
                              error = function(x){NULL})
-  control <- ifnull(control, prefab_control[[name]])
-  covariatesTF <- ifnull(covariatesTF, control$covariatesTF)
-  lag <- ifnull(lag, control$lag)
-  data_sets <- ifnull(data_sets, control$data_sets)
+  control_model <- ifnull(control_model, prefab_control[[name]])
+  covariatesTF <- ifnull(covariatesTF, control_model$covariatesTF)
+  lag <- ifnull(lag, control_model$lag)
+  data_sets <- ifnull(data_sets, control_model$data_sets)
   return_if_null(name)
   if(verbose){
     message(" -Writing model scripts")
@@ -326,10 +331,10 @@ write_model <- function(name = NULL, data_sets = NULL,
                         arg_checks = arg_checks)
   mod_template <- model_template(name = name, data_sets = data_sets, 
                                  covariatesTF = covariatesTF, lag = lag, 
-                                 main = main, quiet = quiet, 
-                                 verbose = verbose,
+                                 main = main, control_files = control_files,
+                                 quiet = quiet, verbose = verbose,
                                  arg_checks = arg_checks)
-  if (file.exists(mod_path) & overwrite){
+  if (file.exists(mod_path) & control_files$overwrite){
     verb <- ifelse(verbose, "Updating ", "")
     msgM <- paste0("  -", verb, name)
     write(mod_template, mod_path)
@@ -350,6 +355,7 @@ write_model <- function(name = NULL, data_sets = NULL,
 #'
 model_template <- function(name = NULL, data_sets = NULL,
                            covariatesTF = FALSE, lag = NULL, main = ".", 
+                           control_files = files_control(),
                            quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(name)
@@ -358,6 +364,7 @@ model_template <- function(name = NULL, data_sets = NULL,
                         arg_checks = arg_checks)[[name]]$data_sets)
   return_if_null(data_sets)
   main_arg <- paste0(', main = "', main, '"')
+  control_files_arg <- paste0(', control_files = ', control_files)
   quiet_arg <- paste0(', quiet = ', quiet)
   verbose_arg <- paste0(', verbose = ', verbose)
   arg_checks_arg <- paste0(', arg_checks = ', arg_checks)
@@ -370,8 +377,8 @@ model_template <- function(name = NULL, data_sets = NULL,
   out <- NULL
   for(i in 1:nds){
     resp <- paste0('cast_', data_sets[i])
-    model_args <- paste0(ds_args[i], lag_arg, main_arg, quiet_arg, 
-                         verbose_arg, arg_checks_arg) 
+    model_args <- paste0(ds_args[i], lag_arg, main_arg,
+                         quiet_arg, verbose_arg, arg_checks_arg) 
     model_fun <- paste0(name, '(', model_args, ');')
     model_line <- paste0(resp, ' <- ', model_fun)
     save_args <- paste0(resp, main_arg, quiet_arg, arg_checks_arg)

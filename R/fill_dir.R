@@ -210,8 +210,8 @@ fill_models <- function(main = ".", models = prefab_models(),
   nmodels <- length(models)
   for(i in 1:nmodels){
     write_model(main = main, quiet = quiet, verbose = verbose, 
-                overwrite = control_files$overwrite, 
-                control = controls_models[[models[i]]], 
+                control_files = control_files, 
+                control_model = controls_models[[models[i]]], 
                 arg_checks = arg_checks)
   } 
   invisible(NULL)
