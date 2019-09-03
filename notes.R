@@ -9,7 +9,7 @@ connect read to filenames duh
 casts_metadata
 
 
-get into the models: verbose, filenames control list
+get into the models:  filenames control list
 
   moons <- ifnull(moons, read_moons(main = main, 
                                     control_files = control_files,

@@ -45,6 +45,9 @@
 #' @param lag \code{integer} (or integer \code{numeric}) of the lag time to
 #'  use for the covariates.
 #'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or not (and thus just the tidy messages).
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. 
 #'
@@ -83,7 +86,7 @@ NULL
 #' @export
 #'
 AutoArima <- function(main = ".", data_set = "all", quiet = FALSE, 
-                      arg_checks = TRUE){
+                      verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   data_set <- tolower(data_set)
 
@@ -107,7 +110,7 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), quiet)
+    messageq(paste0("   -", ss), !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -148,7 +151,7 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
 #' @export
 #'
 NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE, 
-                      arg_checks = TRUE){
+                       verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
 
@@ -173,7 +176,7 @@ NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE,
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), quiet)
+    messageq(paste0("   -", ss), !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -213,7 +216,7 @@ NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE,
 #' @export
 #'
 ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
-                 arg_checks = TRUE){
+                 verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
   messageq(paste0("  -ESSS for ", data_set), quiet)
@@ -237,7 +240,7 @@ ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), quiet)
+    messageq(paste0("   -", ss), !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -277,7 +280,7 @@ ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 #' @export
 #'
 nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
-                    arg_checks = TRUE){
+                    verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
   messageq(paste0("  -nbGARCH for ", data_set), quiet)
@@ -301,7 +304,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), quiet)
+    messageq(paste0("   -", ss), !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -357,7 +360,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 #' @export
 #'
 nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
-                    arg_checks = TRUE){
+                     verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
   messageq(paste0("  -nbsGARCH for ", data_set), quiet)
@@ -390,7 +393,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), quiet)
+    messageq(paste0("   -", ss), !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -449,7 +452,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 #' @export
 #'
 pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6, 
-                     quiet = FALSE, arg_checks = TRUE){
+                     verbose = FALSE, quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   data_set <- tolower(data_set)
   messageq(paste0("  -pevGARCH for ", data_set), quiet)
@@ -492,7 +495,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), quiet)
+    messageq(paste0("   -", ss), !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -507,7 +510,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
       m <- models[j]
       model_name <- paste(m[[1]], collapse = ", ")
       model_name <- ifnull(model_name, "<intercept only>")
-      messageq(paste0("    -", j, ": ", model_name), quiet)
+      messageq(paste0("    -", j, ": ", model_name), !verbose)
       predictors <- NULL
       cast_predictors <- NULL
       if (!(is.null(unlist(m)))){

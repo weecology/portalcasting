@@ -11,22 +11,22 @@
 \title{Functions for the prefab portalcasting models}
 \usage{
 AutoArima(main = ".", data_set = "all", quiet = FALSE,
-  arg_checks = TRUE)
+  verbose = FALSE, arg_checks = TRUE)
 
 NaiveArima(main = ".", data_set = "all", quiet = FALSE,
-  arg_checks = TRUE)
+  verbose = FALSE, arg_checks = TRUE)
 
 ESSS(main = ".", data_set = "all_interp", quiet = FALSE,
-  arg_checks = TRUE)
+  verbose = FALSE, arg_checks = TRUE)
 
 nbGARCH(main = ".", data_set = "all_interp", quiet = FALSE,
-  arg_checks = TRUE)
+  verbose = FALSE, arg_checks = TRUE)
 
 nbsGARCH(main = ".", data_set = "all_interp", quiet = FALSE,
-  arg_checks = TRUE)
+  verbose = FALSE, arg_checks = TRUE)
 
 pevGARCH(main = ".", data_set = "all_interp", lag = 6,
-  quiet = FALSE, arg_checks = TRUE)
+  verbose = FALSE, quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -37,6 +37,9 @@ the directory tree.}
 
 \item{quiet}{\code{logical} value indicating if the function should be 
 quiet.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out
+all of the information or not (and thus just the tidy messages).}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}.}

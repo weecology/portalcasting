@@ -129,9 +129,8 @@ portalcast <- function(main = ".", models = prefab_models(),
     fill_raw(main = main, downloads = downloads, quiet = quiet, 
              control_files = control_files, arg_checks = arg_checks)
   }
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+  moons <- read_moons(main = main, control_files = control_files,
+                      arg_checks = arg_checks)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
   end_moons <- ifnull(end_moons, last_moon)
