@@ -10,6 +10,7 @@ test_that("download", {
 
 test_that("download_message", {
   expect_message(download_message("ok"))
+  expect_message(download_message("ok", verbose = TRUE))
 })
 
 test_that("download_url", {

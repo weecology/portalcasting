@@ -158,7 +158,7 @@ model_script_controls <- function(models = NULL, controls_models = NULL,
 #' @export
 #'
 extract_min_lag <- function(models = prefab_models(), controls_models = NULL, 
-                              quiet = FALSE, arg_checks = TRUE){
+                            quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   controls <- model_script_controls(models = models,
                                     controls_models = controls_models,

@@ -3,7 +3,6 @@ context("Test arg functions")
 test_that("check_args", {
   expect_error(check_args("a"))
   expect_error(check_args(c(TRUE, TRUE)))
-
 })
 
 test_that("check_arg", {
@@ -22,5 +21,7 @@ test_that("check_arg", {
   expect_is(check_arg("confidence_level", 1.1), "character")
   expect_is(check_arg("extension", 1), "character")
   expect_is(check_arg("extension", "ab"), "character")
+
+  expect_is(check_arg("cleanup", "ok"), "character")
 })
 

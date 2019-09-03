@@ -15,6 +15,7 @@ test_that("append_csv", {
 test_that("clear_tmp", {
   expect_equal(clear_tmp("", cleanup = FALSE), NULL)
   expect_message(clear_tmp(""))
+  expect_message(clear_tmp("", verbose = TRUE))
 })
 
 test_that("na_conformer", {

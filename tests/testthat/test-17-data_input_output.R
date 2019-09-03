@@ -1,5 +1,15 @@
 context("Test data_input_output functions")
 
+test_that("dir_config", {
+  expect_error(read_directory_config())
+})
+
+test_that("read_data", {
+  expect_silent(controls <- read_data("./testing", "rodents", "controls"))
+  expect_message(write_data(controls, "./testing", save = TRUE, 
+                            filename = "rodents_controls.csv",
+                            overwrite = FALSE))
+})  
 
 test_that("read_data", {
   skip_on_cran() # downloads take too long for cran checks

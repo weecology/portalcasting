@@ -286,11 +286,7 @@ check_args <- function(arg_checks = TRUE){
     }
   }
   if (!is.null(out)){
-    if (length(out) > 1){
-      out2 <- paste(out, collapse = "; ")
-    } else{
-      out2 <- out
-    }
+    out2 <- paste(out, collapse = "; ")
     out3 <- paste0("in ", toString(fun_name), ": ", out2)
     stop(out3, call. = FALSE)
   }

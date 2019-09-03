@@ -97,7 +97,7 @@ read_directory_config <- function(main = ".",
   config_path <- file_path(main = main, files = filename_config,
                            arg_checks = arg_checks)
   if(!file.exists(config_path)){
-    warning("dir_config.yaml file is missing, consider re-creating directory")
+    stop("dir_config.yaml file is missing, consider re-creating directory")
   }
   yaml.load_file(config_path)  
 }
@@ -137,8 +137,7 @@ read_directory_config <- function(main = ".",
 #' @export
 #'
 write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL, 
-                       overwrite = TRUE, quiet = FALSE, 
-                       arg_checks = TRUE){
+                       overwrite = TRUE, quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(dfl)
   return_if_null(filename)
@@ -176,9 +175,6 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
   }
   dfl
 }
-
-
-
 
 #' @title Read in a data file and format it for specific class
 #'
@@ -226,7 +222,6 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  read_data(data_name = "covariate_casts")
 #'  read_data(data_name = "moons")
 #'  read_data(data_name = "metadata")
-#'  read_data(data_name = "cast_metadata")
 #'
 #'  read_rodents()
 #'  read_rodents_table()
@@ -234,7 +229,6 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  read_covariate_casts()
 #'  read_moons()
 #'  read_metadata()
-#'  read_casts_metadata()
 #' }
 #'
 #' @export
@@ -263,9 +257,6 @@ read_data <- function(main = ".", data_name = NULL, data_set = "all",
   }
   if (data_name == "metadata"){
     data <- read_metadata(main, arg_checks)
-  }
-  if (data_name == "cast_metadata"){
-    data <- read_casts_metadata(main, arg_checks)
   }
   data
 }
@@ -365,7 +356,31 @@ read_metadata <- function(main = ".", arg_checks = TRUE){
   yaml.load_file(fpath) 
 }
 
-#' @rdname read_data
+
+  
+#' @title Read in the casts metadata file
+#'
+#' @description Read in the casts metadata file. If the data file does not
+#'  exist, an effort is made to create the file.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not.
+#'  
+#' @return Data requested.
+#' 
+#' @examples
+#'  \donttest
+#'   setup_dir()
+#'   read_casts_metadata()
+#'  }
 #'
 #' @export
 #'
@@ -385,4 +400,3 @@ read_casts_metadata <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
   }
   read.csv(meta_path, stringsAsFactors = FALSE)
 }
-  

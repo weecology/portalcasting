@@ -70,7 +70,7 @@
 #' @export
 #'
 plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL, 
-                            model = NULL, species = NULL, end_moon = NULL, 
+                            model = NULL, end_moon = NULL, species = NULL, 
                             moon = NULL, with_census = TRUE, quiet = FALSE,
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -263,9 +263,8 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #' @export
 #'
 plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL, 
-                         model = NULL, end_moon = NULL,
-                         species = "total", start_moon = 300, quiet = FALSE,
-                         arg_checks = TRUE){
+                         model = NULL, end_moon = NULL, species = "total",
+                         start_moon = 300, quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
 
   casts_meta <- select_casts(main = main, cast_ids = cast_id,

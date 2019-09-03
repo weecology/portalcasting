@@ -5,7 +5,7 @@
 \title{Plot predictions for a given point in time across multiple species}
 \usage{
 plot_cast_point(main = ".", cast_id = NULL, data_set = NULL,
-  model = NULL, species = NULL, end_moon = NULL, moon = NULL,
+  model = NULL, end_moon = NULL, species = NULL, moon = NULL,
   with_census = TRUE, quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
@@ -25,14 +25,14 @@ respect to \code{data_set}.}
 include. Default value is \code{NULL}, which equates to no selection with 
 respect to \code{model}.}
 
-\item{species}{\code{character} vector of the species codes (or 
-\code{"total"} for the total across species) to be plotted or 
-\code{NULL} (default) to plot all species in \code{data_set}.}
-
 \item{end_moon}{\code{integer} (or integer \code{numeric}) 
 newmoon number of the forecast origin. Default value is 
 \code{NULL}, which equates to no selection with respect to 
 \code{end_moon}.}
+
+\item{species}{\code{character} vector of the species codes (or 
+\code{"total"} for the total across species) to be plotted or 
+\code{NULL} (default) to plot all species in \code{data_set}.}
 
 \item{moon}{\code{integer} (or integer \code{numeric}) newmoon number for
 the plot.}

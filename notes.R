@@ -3,9 +3,8 @@
 # read through the code documentation again
 #   donttest examples
 
+connect read to filenames duh
 
-# then argument order
-# and doc read thru and examps
 
 devtools::document()
 main <- "~/test"
