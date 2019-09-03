@@ -9,6 +9,7 @@ test_that("named_null_list", {
 test_that("append_csv", {
  df <- data.frame(x = 1:10, y = 11:20)
  expect_silent(append_csv(df, "ok.csv"))
+ unlink("ok.csv")
 })
 
 test_that("clear_tmp", {

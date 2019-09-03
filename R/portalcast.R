@@ -182,7 +182,7 @@ cast <- function(main = ".", models = prefab_models(),
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)
   messageq("---------------------------------------------------------", quiet)
-  clear_tmp(main = main, quiet = quiet, cleanup = cleanup,
+  clear_tmp(main = main, quiet = quiet, cleanup = control_files$cleanup,
             arg_checks = arg_checks)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                             arg_checks = arg_checks)
@@ -212,8 +212,8 @@ cast <- function(main = ".", models = prefab_models(),
     messageq(msg, quiet)
   }
   messageq("---------------------------------------------------------", quiet)
-  clear_tmp(main = main, quiet = quiet, verbose = verbose, cleanup = cleanup,
-            arg_checks = arg_checks)
+  clear_tmp(main = main, quiet = quiet, verbose = verbose, 
+            cleanup = control_files$cleanup, arg_checks = arg_checks)
 }
 
 
