@@ -181,7 +181,7 @@ cast <- function(main = ".", models = prefab_models(), moons = NULL,
   moons <- ifnull(moons, read_moons(main = main, 
                                     control_files = control_files,
                                     arg_checks = arg_checks))
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   messageq("---------------------------------------------------------", quiet)
   clear_tmp(main = main, quiet = quiet, cleanup = control_files$cleanup,
             arg_checks = arg_checks)
@@ -202,7 +202,7 @@ cast <- function(main = ".", models = prefab_models(), moons = NULL,
     messageq(paste0(" -Running ", modelname), quiet)
 
     run_status <- tryCatch(
-                     source(models_scripts[i]),
+                     source(models_scripts[i], local = TRUE),
                      error = function(x){NA}
                   )
     if(all(is.na(run_status))){

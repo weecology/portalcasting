@@ -7,7 +7,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### Major API update: increase in explicit top-level arguments
 * Moved key arguments to focal top-level inputs, rather than nested within control options list. Allows full control, but with default settings working cleanly. [addresses](https://github.com/weecology/portalcasting/issues/123)
-* Restructuring of the controls lists, only retained usage in situations where necessary.
+* Restructuring of the controls lists, retained usage in situations where necessary: model construction, data set construction, file naming, climate data downloading.
 * Openness for new `setup` functions, in particular `setup_sandbox`. [addresses](https://github.com/weecology/portalcasting/issues/125)
 * Simplification of model naming inputs. Just put the names in you need, only use the `model_names` functions when you need to (usually in coding inside of functions or for setting default argument levels). [addresses](https://github.com/weecology/portalcasting/issues/119)
 
@@ -46,6 +46,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * In order to actualize this, a user will need to flip off the argument checking (the default in a sandbox setting, if using a standard or production setting, set `arg_checks = FALSE` in the relevant function).
 * Users interested in permanently adding the treatment level to the available data sets should add the source code to the `rodents_controls` function, and the name to the `tmnt_type` argument inputs in function if the user wants to add it to the standard set (or better yet, the next person to add a set should make a function like `model_names` to tidy up the `tmnt_types` options).
 * [addresses](https://github.com/weecology/portalcasting/issues/133)
+* Internal code points the pipeline to the files named via the data set inputs. The other data files are pointed to using the `control_files` (see `file_controls`) input list, which allows for some general flexibility.
 
 ### Split of standard data sets 
 * The prefab `all` and `controls` were both default being interpolated for all models because of the use of AIC for model comparison and ensemble building. That forced all models to use interpolated data.

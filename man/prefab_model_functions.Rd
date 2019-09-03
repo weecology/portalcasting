@@ -10,23 +10,29 @@
 \alias{pevGARCH}
 \title{Functions for the prefab portalcasting models}
 \usage{
-AutoArima(main = ".", data_set = "all", quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+AutoArima(main = ".", data_set = "all",
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 
-NaiveArima(main = ".", data_set = "all", quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+NaiveArima(main = ".", data_set = "all",
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 
-ESSS(main = ".", data_set = "all_interp", quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+ESSS(main = ".", data_set = "all_interp",
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 
-nbGARCH(main = ".", data_set = "all_interp", quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+nbGARCH(main = ".", data_set = "all_interp",
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 
-nbsGARCH(main = ".", data_set = "all_interp", quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+nbsGARCH(main = ".", data_set = "all_interp",
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 
 pevGARCH(main = ".", data_set = "all_interp", lag = 6,
-  verbose = FALSE, quiet = FALSE, arg_checks = TRUE)
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -34,6 +40,10 @@ the directory tree.}
 
 \item{data_set}{\code{character} value name of the rodent data set, such as 
 (\code{"all"} or \code{"controls"}).}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} value indicating if the function should be 
 quiet.}

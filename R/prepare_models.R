@@ -361,7 +361,7 @@ model_template <- function(name = NULL, data_sets = NULL,
                         arg_checks = arg_checks)[[name]]$data_sets)
   return_if_null(data_sets)
   main_arg <- paste0(', main = "', main, '"')
-  control_files_arg <- paste0(', control_files = ', control_files)
+  control_files_arg <- paste0(', control_files = control_files')
   quiet_arg <- paste0(', quiet = ', quiet)
   verbose_arg <- paste0(', verbose = ', verbose)
   arg_checks_arg <- paste0(', arg_checks = ', arg_checks)
@@ -374,7 +374,7 @@ model_template <- function(name = NULL, data_sets = NULL,
   out <- NULL
   for(i in 1:nds){
     resp <- paste0('cast_', data_sets[i])
-    model_args <- paste0(ds_args[i], lag_arg, main_arg,
+    model_args <- paste0(ds_args[i], lag_arg, main_arg, control_files_arg,
                          quiet_arg, verbose_arg, arg_checks_arg) 
     model_fun <- paste0(name, '(', model_args, ');')
     model_line <- paste0(resp, ' <- ', model_fun)

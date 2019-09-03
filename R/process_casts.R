@@ -239,3 +239,46 @@ save_cast_output <- function(cast = NULL, main = ".",
   invisible(NULL)
 }
 
+#' @title Read in the casts metadata file
+#'
+#' @description Read in the casts metadata file. If the data file does not
+#'  exist, an effort is made to create the file.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not.
+#'  
+#' @return Data requested.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   read_casts_metadata()
+#'  }
+#'
+#' @export
+#'
+read_casts_metadata <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks)
+  meta_path <- file_path(main = main, sub = "casts", 
+                         files = "casts_metadata.csv",
+                         arg_checks = arg_checks)
+  if(!file.exists(meta_path)){
+    messageq("  **creating cast_metadata.csv**", quiet)
+    casts_meta <- data.frame(cast_id = 0, cast_group = 0, 
+                             cast_date = NA, start_moon = NA, end_moon = NA,
+                             lead_time = NA, model = NA, data_set = NA,
+                             portalcasting_version = NA,
+                             QAQC = FALSE, notes = NA)
+    write.csv(casts_meta, meta_path, row.names = FALSE)
+  }
+  read.csv(meta_path, stringsAsFactors = FALSE)
+}
+

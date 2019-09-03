@@ -6,21 +6,16 @@
 casts_metadata
 
 
-get into the models:  filenames control list
 devtools::document()
+
 main <- "~/test"
 setup_dir(main)
 
-
-plot_cast_ts(main)
-
-
-
-ESSS(main=main)
-portalcast(main=main, models="ESSS")
+portalcast(main)
+, end_moons = 512:521)
 
 
-portalcast(main, end_moons = 512:521)
+
 
 devtools::test(filter="01")
 devtools::test(filter="02")

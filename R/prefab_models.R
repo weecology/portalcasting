@@ -48,6 +48,10 @@
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages).
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. 
 #'
@@ -85,7 +89,8 @@ NULL
 #'
 #' @export
 #'
-AutoArima <- function(main = ".", data_set = "all", quiet = FALSE, 
+AutoArima <- function(main = ".", data_set = "all",  
+                      control_files = files_control(), quiet = FALSE, 
                       verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   data_set <- tolower(data_set)
@@ -98,7 +103,8 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
                                 nadot = TRUE, arg_checks = arg_checks)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -150,7 +156,8 @@ AutoArima <- function(main = ".", data_set = "all", quiet = FALSE,
 #'
 #' @export
 #'
-NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE, 
+NaiveArima <- function(main = ".", data_set = "all",  
+                       control_files = files_control(), quiet = FALSE, 
                        verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
@@ -163,7 +170,8 @@ NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE,
                                 nadot = TRUE, arg_checks = arg_checks)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -215,7 +223,8 @@ NaiveArima <- function(main = ".", data_set = "all", quiet = FALSE,
 #' 
 #' @export
 #'
-ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
+ESSS <- function(main = ".", data_set = "all_interp", 
+                 control_files = files_control(), quiet = FALSE,
                  verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
@@ -227,7 +236,8 @@ ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                                 nadot = TRUE, arg_checks = arg_checks)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -279,7 +289,8 @@ ESSS <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 #'
 #' @export
 #'
-nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
+nbGARCH <- function(main = ".", data_set = "all_interp",  
+                    control_files = files_control(), quiet = FALSE,
                     verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
@@ -291,7 +302,8 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                                 nadot = TRUE, arg_checks = arg_checks)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -359,7 +371,8 @@ nbGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 #'
 #' @export
 #'
-nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
+nbsGARCH <- function(main = ".", data_set = "all_interp",  
+                     control_files = files_control(), quiet = FALSE,
                      verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
@@ -370,8 +383,10 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
                                 nadot = TRUE, arg_checks = arg_checks)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, arg_checks = arg_checks)
-  moons <- read_moons(main = main, arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
+  moons <- read_moons(main = main, control_files = control_files,
+                      arg_checks = arg_checks)
   moon_foys <- foy(dates = moons$moondate, arg_checks = arg_checks)
   sin2pifoy <- sin(2 * pi * moon_foys)
   cos2pifoy <- cos(2 * pi * moon_foys)
@@ -451,8 +466,9 @@ nbsGARCH <- function(main = ".", data_set = "all_interp", quiet = FALSE,
 #' 
 #' @export
 #'
-pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6, 
-                     verbose = FALSE, quiet = FALSE, arg_checks = TRUE){
+pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,  
+                     control_files = files_control(), quiet = FALSE, 
+                     verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   data_set <- tolower(data_set)
   messageq(paste0("  -pevGARCH for ", data_set), quiet)
@@ -463,12 +479,14 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
                                 nadot = TRUE, arg_checks = arg_checks)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
 
-  covariates <- read_covariates(main = main, arg_checks = arg_checks)
+  covariates <- read_covariates(main = main, control_files = control_files,
+                                arg_checks = arg_checks)
   covar_lag <- lag_covariates(covariates, lag, tail = TRUE)
   for_hist <- which(covar_lag$moon %in% rodents_table$moon)
   for_cast <- which(covar_lag$moon %in% cast_moons) 
@@ -477,6 +495,8 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
     covar_cast <- covar_lag[for_cast, ]
   } else {
     covariate_casts <- read_covariate_casts(main = main, 
+                                            control_files = control_files,
+                                            quiet = quiet, verbose = verbose,
                                             arg_checks = arg_checks)
     covar_casts_lag <- lag_covariates(covariate_casts, lag, tail = TRUE)
     last_cov_nm <- max(covar_hist$moon) - lag
