@@ -5,6 +5,8 @@
 [![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/master.svg)](https://codecov.io/github/weecology/portalcasting/branch/master)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3332973.svg)](https://doi.org/10.5281/zenodo.3332973)
 
+<img src="man/figures/portalcasting.png" width="200px">
+
 ## Overview
 
 The `portalcasting` package contains the functions used for continuous
