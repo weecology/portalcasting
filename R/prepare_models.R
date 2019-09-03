@@ -242,9 +242,6 @@ prefab_models <- function(){
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
-#' @param overwrite \code{logical} indicator of whether or not the model
-#'   script should be updated.
-#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 

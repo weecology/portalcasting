@@ -50,9 +50,6 @@ shown.}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not. \cr}
-
-\item{overwrite}{\code{logical} indicator of whether or not the model
-script should be updated.}
 }
 \value{
 \code{write_mode} \code{\link{write}}s the model script out

@@ -56,6 +56,9 @@ formatted correctly and provides directed error messages if not.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out
+all of the information or just tidy messages.}
 }
 \value{
 Data requested.

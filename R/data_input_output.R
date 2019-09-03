@@ -215,6 +215,9 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or just tidy messages. 
 #'  
 #' @return Data requested.
 #' 
