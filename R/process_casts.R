@@ -227,12 +227,14 @@ save_cast_output <- function(cast = NULL, main = ".",
     model_fits <- cast$model_fits
     save(model_fits, file = model_fits_path)
   }
-  if(!is.null(cast$casts)){
-    casts_filename <- paste0("cast_id_", next_cast_id, "_casts.RData") 
-    casts_path <- file_path(main = main, sub = "casts", 
-                             files = casts_filename, arg_checks = arg_checks)
-    casts <- cast$casts
-    save(casts, file = casts_path)
+  if(!is.null(cast$model_casts)){
+    model_casts_filename <- paste0("cast_id_", next_cast_id, 
+                                   "_model_casts.RData") 
+    model_casts_path <- file_path(main = main, sub = "casts", 
+                                  files = model_casts_filename, 
+                                  arg_checks = arg_checks)
+    model_casts <- cast$model_casts
+    save(model_casts, file = model_casts_path)
   }
   invisible(NULL)
 }
