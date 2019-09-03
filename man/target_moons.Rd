@@ -6,10 +6,11 @@
 \title{Determine specific newmoon numbers}
 \usage{
 target_moons(main = ".", moons = NULL, end_moon = NULL,
-  lead_time = 12, date = Sys.Date(), arg_checks = TRUE)
+  lead_time = 12, date = Sys.Date(), control_files = files_control(),
+  arg_checks = TRUE)
 
 last_moon(main = ".", moons = NULL, date = Sys.Date(),
-  arg_checks = TRUE)
+  control_files = files_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -26,6 +27,10 @@ number of timesteps forward a cast will cover.}
 
 \item{date}{\code{Date} used for defining a window (starting with moons
 subsequent to the date) or a previous moon (before or on the date).}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

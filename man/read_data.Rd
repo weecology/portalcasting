@@ -11,20 +11,25 @@
 \title{Read in a data file and format it for specific class}
 \usage{
 read_data(main = ".", data_name = NULL, data_set = "all",
-  data_sets = c("all", "controls"), arg_checks = TRUE)
+  data_sets = c("all", "controls"), control_files = files_control(),
+  arg_checks = TRUE)
 
 read_rodents_table(main = ".", data_set = "all", arg_checks = TRUE)
 
 read_rodents(main = ".", data_sets = c("all", "controls"),
   arg_checks = TRUE)
 
-read_covariates(main = ".", arg_checks = TRUE)
+read_covariates(main = ".", control_files = files_control(),
+  arg_checks = TRUE)
 
-read_covariate_casts(main = ".", arg_checks = TRUE)
+read_covariate_casts(main = ".", control_files = files_control(),
+  arg_checks = TRUE)
 
-read_moons(main = ".", arg_checks = TRUE)
+read_moons(main = ".", control_files = files_control(),
+  arg_checks = TRUE)
 
-read_metadata(main = ".", arg_checks = TRUE)
+read_metadata(main = ".", control_files = files_control(),
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -39,6 +44,10 @@ Current options include \code{"rodents"}, \code{"rodents_table"},
 name(s) used to define the rodents. Standard options are \code{"all"} and 
 \code{"controls"}. \code{data_set} can only be length 1, 
 \code{data_sets} is not restricted in length.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

@@ -25,3 +25,10 @@ Data requested.
 Read in the casts metadata file. If the data file does not
  exist, an effort is made to create the file.
 }
+\examples{
+ \donttest{
+  setup_dir()
+  read_casts_metadata()
+ }
+
+}

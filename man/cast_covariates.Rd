@@ -21,7 +21,7 @@ read_cov_casts(main = ".", control_files = files_control(),
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), control_climate_dl = climate_dl_control(),
-  quiet = TRUE, verbose = FALSE, control_files = files_control(),
+  control_files = files_control(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
 
 cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
@@ -30,7 +30,8 @@ cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
 cast_weather(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), control_climate_dl = climate_dl_control(),
-  quiet = TRUE, verbose = verbose, arg_checks = TRUE)
+  control_files = files_control(), quiet = TRUE, verbose = verbose,
+  arg_checks = TRUE)
 
 save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
   cast_date = Sys.Date(), cast_cov = NULL,

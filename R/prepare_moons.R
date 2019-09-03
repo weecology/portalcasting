@@ -113,8 +113,12 @@ format_moons <- function(moons, arg_checks = TRUE){
 #' @export
 #'
 add_future_moons <- function(moons = NULL, lead_time = 12, 
-                             cast_date = Sys.Date(), arg_checks = TRUE){
-  moons <- ifnull(moons, read_moons(main = main))
+                             cast_date = Sys.Date(), 
+                             control_files = files_control(),
+                             arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   check_args(arg_checks)
   if(lead_time == 0){
     return(moons)
@@ -283,6 +287,10 @@ add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @return 
 #'  \code{target_moons}: \code{numeric} vector of the moon numbers 
 #'  targeted by the date window.
@@ -299,8 +307,11 @@ add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #'
 target_moons <- function(main = ".", moons = NULL, end_moon = NULL, 
                          lead_time = 12, date = Sys.Date(), 
+                         control_files = files_control(),
                          arg_checks = TRUE){
-  moons <- ifnull(moons, read_moons(main = main))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   check_args(arg_checks)
   last_moon <- last_moon(main = main, moons = moons, date = date, 
                             arg_checks = arg_checks)
@@ -313,8 +324,10 @@ target_moons <- function(main = ".", moons = NULL, end_moon = NULL,
 #' @export
 #'
 last_moon <- function(main = ".", moons = NULL, date = Sys.Date(), 
-                      arg_checks = TRUE){
-  moons <- ifnull(moons, read_moons(main = main))
+                      control_files = files_control(), arg_checks = TRUE){
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   check_args(arg_checks)
   which_last_moon <- max(which(moons$moondate < date))
   moons$moon[which_last_moon]

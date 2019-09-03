@@ -15,7 +15,8 @@ prep_moons(main = ".", lead_time = 12, cast_date = Sys.Date(),
 format_moons(moons, arg_checks = TRUE)
 
 add_future_moons(moons = NULL, lead_time = 12,
-  cast_date = Sys.Date(), arg_checks = TRUE)
+  cast_date = Sys.Date(), control_files = files_control(),
+  arg_checks = TRUE)
 
 add_extra_future_moons(moons, cast_date = Sys.Date(),
   arg_checks = TRUE)

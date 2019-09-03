@@ -115,11 +115,15 @@ prep_metadata <- function(main = ".", models = prefab_models(),
   min_lag <- ifnull(min_lag, min_lag_e)
   data_sets <- ifnull(data_sets, data_sets_e)
 
-  moons <- ifnull(moons, read_moons(main = main, arg_checks = arg_checks))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   rodents  <- ifnull(rodents, read_rodents(main = main, 
                                            data_sets = data_sets, 
                                            arg_checks = arg_checks))
-  covariates <- ifnull(covariates, read_covariates(main = main))
+  covariates <- ifnull(covariates, read_covariates(main = main, 
+                                               control_files = control_files,
+                                               arg_checks = arg_checks))
   controls_r <- rodents_controls(data_sets = data_sets, 
                                  controls_rodents = controls_rodents, 
                                  arg_checks = arg_checks)

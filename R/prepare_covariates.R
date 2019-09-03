@@ -62,7 +62,9 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
                             quiet = TRUE, verbose = FALSE, 
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  moons <- ifnull(moons, read_moons(main = main))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   messageq("  -covariate data files", quiet)
   hist_cov <- prep_hist_covariates(main = main, end_moon = end_moon,
                                    quiet = quiet, arg_checks = arg_checks)

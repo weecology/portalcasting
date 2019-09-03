@@ -6,7 +6,8 @@
 \usage{
 plot_cast_point(main = ".", cast_id = NULL, data_set = NULL,
   model = NULL, end_moon = NULL, species = NULL, moon = NULL,
-  with_census = TRUE, quiet = FALSE, arg_checks = TRUE)
+  with_census = TRUE, control_files = files_control(), quiet = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -39,6 +40,10 @@ the plot.}
 
 \item{with_census}{\code{logical} toggle if the plot should include the
 observed data collected during the predicted census.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

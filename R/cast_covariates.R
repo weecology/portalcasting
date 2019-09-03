@@ -93,7 +93,9 @@ cast_covariates <- function(main = ".", moons = NULL,
                             quiet = TRUE, verbose = FALSE, 
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  moons <- ifnull(moons, read_moons(main = main))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   last_moon <- last_moon(main = main, moons = moons, date = cast_date, 
                          arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
@@ -107,7 +109,8 @@ cast_covariates <- function(main = ".", moons = NULL,
                                  hist_cov = hist_cov, end_moon = end_moon,
                                  lead_time = lead_time, min_lag = min_lag,
                                  cast_date = cast_date, 
-                                 control_climate_dl = control_climate_dl, 
+                                 control_climate_dl = control_climate_dl,
+                                 control_files = control_files, 
                                  quiet = quiet,
                                  verbose = verbose, arg_checks = TRUE)
     ndvi_cast <- cast_ndvi(main = main, hist_cov = hist_cov,
@@ -191,8 +194,8 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
                                  control_climate_dl = climate_dl_control(),
+                                 control_files = files_control(),
                                  quiet = TRUE, verbose = FALSE, 
-                                 control_files = files_control(), 
                                  arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   cast_covariates(main = main, moons = moons, hist_cov = hist_cov, 
@@ -234,10 +237,12 @@ cast_weather <- function(main = ".", moons = NULL,
                          hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                          min_lag = 6, cast_date = Sys.Date(), 
                          control_climate_dl = climate_dl_control(),
-                         quiet = TRUE,
-                         verbose = verbose, arg_checks = TRUE){
+                         control_files = files_control(),
+                         quiet = TRUE, verbose = verbose, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  moons <- ifnull(moons, read_moons(main = main))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   target_moons <- target_moons(main = main, moons = moons,
                               end_moon = end_moon, lead_time = lead_time, 
                               date = cast_date, arg_checks = arg_checks)
@@ -280,7 +285,9 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
                               quiet = TRUE, verbose = FALSE, 
                               arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  moons <- ifnull(moons, read_moons(main = main))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   return_if_null(cast_cov)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                          arg_checks = arg_checks)

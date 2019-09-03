@@ -15,8 +15,8 @@ prep_rodents_table(main = ".", moons = NULL, end_moon = NULL,
   time = "newmoon", na_drop = FALSE,
   zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site
   = TRUE), ref_species = all_species(), effort = FALSE, quiet = TRUE,
-  verbose = FALSE, save = TRUE, overwrite = TRUE,
-  filename = "rodents_all.csv", arg_checks = TRUE)
+  verbose = FALSE, control_files = files_control(), save = TRUE,
+  overwrite = TRUE, filename = "rodents_all.csv", arg_checks = TRUE)
 
 process_rodent_data(rodents_tab, main = ".", moons = NULL,
   end_moon = NULL, start_moon = 217, species = base_species(),
@@ -119,6 +119,11 @@ quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}. 
+Only used here to point to the moons data.}
 
 \item{save}{\code{logical} indicator controlling if the output should 
 be saved out.}

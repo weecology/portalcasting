@@ -205,6 +205,10 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -234,29 +238,35 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #' @export
 #'
 read_data <- function(main = ".", data_name = NULL, data_set = "all", 
-                      data_sets = c("all", "controls"), arg_checks = TRUE){
+                      data_sets = c("all", "controls"), 
+                      control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks)
   return_if_null(data_name)
   data_name <- tolower(data_name)
   data_set <- tolower(data_set)
   data_sets <- tolower(data_sets)
   if (data_name == "rodents"){
-    data <- read_rodents(main, data_sets, arg_checks)
+    data <- read_rodents(main = main, data_sets = data_sets, 
+                         arg_checks = arg_checks)
   }
   if (data_name == "rodents_table"){
-    data <- read_rodents_table(main, data_set, arg_checks)
+    data <- read_rodents_table(main = main, data_set, arg_checks = arg_checks)
   }
   if (data_name == "covariates"){
-    data <- read_covariates(main, arg_checks)
+    data <- read_covariates(main = main, control_files = control_files, 
+                            arg_checks = arg_checks)
   }
   if (data_name == "covariate_casts"){
-    data <- read_covariate_casts(main, arg_checks)
+    data <- read_covariate_casts(main = main, control_files = control_files, 
+                                 arg_checks = arg_checks)
   }
   if (data_name == "moons"){
-    data <- read_moons(main, arg_checks)
+    data <- read_moons(main = main, control_files = control_files, 
+                       arg_checks = arg_checks)
   }
   if (data_name == "metadata"){
-    data <- read_metadata(main, arg_checks)
+    data <- read_metadata(main = main, control_files = control_files, 
+                          arg_checks = arg_checks)
   }
   data
 }
@@ -305,7 +315,8 @@ read_rodents <- function(main = ".", data_sets = c("all", "controls"),
 #'
 #' @export
 #'
-read_covariates <- function(main = ".", arg_checks = TRUE){
+read_covariates <- function(main = ".", control_files = files_control(),
+                            arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_path(main = main, sub = "data", files = "covariates.csv", 
                      arg_checks = arg_checks)
@@ -319,7 +330,8 @@ read_covariates <- function(main = ".", arg_checks = TRUE){
 #'
 #' @export
 #'
-read_covariate_casts <- function(main = ".", arg_checks = TRUE){
+read_covariate_casts <- function(main = ".", control_files = files_control(),
+                                 arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_path(main = main, sub = "data", files = "covariate_casts.csv", 
                      arg_checks = arg_checks)
@@ -333,7 +345,8 @@ read_covariate_casts <- function(main = ".", arg_checks = TRUE){
 #'
 #' @export
 #'
-read_moons <- function(main = ".", arg_checks = TRUE){
+read_moons <- function(main = ".", control_files = files_control(),
+                       arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   fpath <- file_path(main, "data", "moon_dates.csv")
   if(!file.exists(fpath)){
@@ -346,7 +359,8 @@ read_moons <- function(main = ".", arg_checks = TRUE){
 #'
 #' @export
 #'
-read_metadata <- function(main = ".", arg_checks = TRUE){
+read_metadata <- function(main = ".", control_files = files_control(),
+                          arg_checks = TRUE){
   check_args(arg_checks)
   fpath <- file_path(main, "data", "metadata.yaml")
   if(!file.exists(fpath)){
@@ -377,7 +391,7 @@ read_metadata <- function(main = ".", arg_checks = TRUE){
 #' @return Data requested.
 #' 
 #' @examples
-#'  \donttest
+#'  \donttest{
 #'   setup_dir()
 #'   read_casts_metadata()
 #'  }

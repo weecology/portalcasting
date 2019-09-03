@@ -5,6 +5,24 @@
 
 connect read to filenames duh
 
+move read_cov_casts to data_i_o
+diff between read_cov_casts and read_covariate_casts?????
+casts_metadata
+
+
+get into the models: verbose, filenames control list
+
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
+
+
+                            control_files = files_control(),
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+
 
 devtools::document()
 main <- "~/test"

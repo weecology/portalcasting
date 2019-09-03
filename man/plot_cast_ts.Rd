@@ -6,7 +6,8 @@
 \usage{
 plot_cast_ts(main = ".", cast_id = NULL, data_set = NULL,
   model = NULL, end_moon = NULL, species = "total",
-  start_moon = 300, quiet = FALSE, arg_checks = TRUE)
+  start_moon = 300, control_files = files_control(), quiet = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -37,6 +38,10 @@ newmoon number of the forecast origin. Default value is
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon 
 number for the beginning of the x-axis of the plot. \cr
 Does not influence the fit of the models, just the presentation.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

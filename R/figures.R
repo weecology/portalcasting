@@ -58,6 +58,10 @@
 #' @param with_census \code{logical} toggle if the plot should include the
 #'  observed data collected during the predicted census.
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @return \code{NULL}. Plot is generated.
 #' 
 #' @examples
@@ -71,10 +75,13 @@
 #'
 plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL, 
                             model = NULL, end_moon = NULL, species = NULL, 
-                            moon = NULL, with_census = TRUE, quiet = FALSE,
+                            moon = NULL, with_census = TRUE, 
+                            control_files = files_control(), quiet = FALSE,
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  moons <- read_moons(main = main, arg_checks = arg_checks)
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   last_census_date <- last_census(main = main, arg_checks = arg_checks)
   which_last_census_moon <- which(moons$censusdate == last_census_date)
   last_census_moon <- moons$moon[which_last_census_moon]
@@ -251,6 +258,10 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @return \code{NULL}. Plot is generated.
 #' 
 #' @examples
@@ -264,7 +275,8 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #'
 plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL, 
                          model = NULL, end_moon = NULL, species = "total",
-                         start_moon = 300, quiet = FALSE, arg_checks = TRUE){
+                         start_moon = 300, control_files = files_control(), 
+                         quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
 
   casts_meta <- select_casts(main = main, cast_ids = cast_id,
@@ -305,7 +317,9 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
 
-  moons <- read_moons(main, arg_checks)
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   minx <- as.character(moons$moondate[moons$moon == rangex[1]])
   maxx <- as.character(moons$moondate[moons$moon == rangex[2]])
   minx_yr <- as.numeric(format(as.Date(minx), "%Y"))

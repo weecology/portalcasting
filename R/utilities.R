@@ -393,6 +393,10 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @return Named \code{list} with elements \code{start} and \code{end},
 #'  which are both \code{Dates}.
 #'
@@ -406,10 +410,12 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #' @export
 #'
 cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
-                        lead_time = 12, min_lag = 6, arg_checks = TRUE){
+                        lead_time = 12, min_lag = 6,
+                        control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks)
-  moons <- ifnull(moons, read_moons(main = main))
-
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   lagged_lead <- lead_time - min_lag
   moons0 <- moons[moons$moondate < cast_date, ]
   last_moon <- tail(moons0, 1)

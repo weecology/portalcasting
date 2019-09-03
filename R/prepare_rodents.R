@@ -397,7 +397,9 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
   check_args(arg_checks = arg_checks)
   data_sets <- ifnull(data_sets, prefab_data_sets())
   messageq("  -rodents data files", quiet)
-  moons <- ifnull(moons, read_moons(main = main))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   controls_rodents <- rodents_controls(data_sets = data_sets, 
                                  controls_rodents = controls_rodents, 
                                  arg_checks = arg_checks)
@@ -555,6 +557,11 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
 #'  object requirements (for example, if the extension of \code{filename} is
 #'  \code{".csv"}, it will trigger use of \code{\link[utils]{write.csv}}).
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}. 
+#'  Only used here to point to the moons data.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -600,12 +607,15 @@ prep_rodents_table <- function(main = ".", moons = NULL,
                                ref_species = all_species(),
                                effort = FALSE,  quiet = TRUE, 
                                verbose = FALSE,
+                               control_files = files_control(),
                                save = TRUE, overwrite = TRUE, 
                                filename = "rodents_all.csv", 
                                arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(species) 
-  moons <- ifnull(moons, read_moons(main = main))
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
   summarize_rodent_data(path = raw_path, clean = clean, level = level,
                         type = type, plots = plots, unknowns = unknowns,
@@ -886,6 +896,10 @@ prefab_data_sets <- function(){
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -901,9 +915,12 @@ prefab_data_sets <- function(){
 #'
 #' @export
 #'
-last_census <- function(main = ".", arg_checks = TRUE){
+last_census <- function(main = ".", 
+                        control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks)
-  moons <- read_moons(main)
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   as.Date(max(moons$censusdate, na.rm = TRUE))
 }
 
