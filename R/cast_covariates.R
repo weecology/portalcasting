@@ -35,9 +35,9 @@
 #'  or \code{NULL}, which equates to the most recently included census'
 #'  newmoon number. 
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -88,7 +88,7 @@
 cast_covariates <- function(main = ".", moons = NULL,
                             hist_cov = NULL, end_moon = NULL, lead_time = 12, 
                             min_lag = 6, cast_date = Sys.Date(), 
-                            control_save = save_control(),
+                            control_files = files_control(),
                             control_climate = climate_dl_control(),
                             quiet = TRUE, verbose = FALSE, 
                             arg_checks = TRUE){
@@ -122,7 +122,7 @@ cast_covariates <- function(main = ".", moons = NULL,
     target_moons <- target_moons(main = main, moons = moons,
                                  end_moon = end_moon, lead_time = lead_time, 
                                  date = cast_date, arg_checks = arg_checks)
-    cov_cast <- read_cov_casts(main = main, control_save = control_save,
+    cov_cast <- read_cov_casts(main = main, control_files = control_files,
                                quiet = quiet, verbose = verbose,
                                arg_checks = arg_checks)
 
@@ -145,16 +145,16 @@ cast_covariates <- function(main = ".", moons = NULL,
 #'
 #' @export
 #'
-read_cov_casts <- function(main = ".", control_save = save_control(),
+read_cov_casts <- function(main = ".", control_files = files_control(),
                            quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   curr_path <- file_path(main = main, sub = "data", 
-                         files = control_save$filename_cov_casts, 
+                         files = control_files$filename_cov_casts, 
                          arg_checks = arg_checks)
   curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
 
-  arch_path <- paste0(control_save$directory, "/data/", 
-                      control_save$filename_cov_casts)
+  arch_path <- paste0(control_files$directory, "/data/", 
+                      control_files$filename_cov_casts)
   arch_path <- file_path(main = main, sub = "raw", files = arch_path,
                          arg_checks = arg_checks)
   arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
@@ -192,19 +192,19 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  cast_date = Sys.Date(), 
                                  control_climate = climate_dl_control(),
                                  quiet = TRUE, verbose = FALSE, 
-                                 control_save = save_control(), 
+                                 control_files = files_control(), 
                                  arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   cast_covariates(main = main, moons = moons, hist_cov = hist_cov, 
                   end_moon = end_moon, lead_time = lead_time, 
                   min_lag = min_lag, cast_date = cast_date, 
-                  control_save = control_save,
+                  control_files = control_files,
                   control_climate = control_climate,
                   quiet = quiet, verbose = verbose,
                   arg_checks = arg_checks) %>%
   save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
                     cast_date = cast_date, .,
-                    control_save = control_save,
+                    control_files = control_files,
                     quiet = quiet, verbose = verbose,
                     arg_checks = arg_checks) %>%
   select(-cast_moon) %>%
@@ -274,7 +274,8 @@ cast_weather <- function(main = ".", moons = NULL,
 #'
 save_cast_cov_csv <- function(main = ".", moons = NULL,
                               end_moon = NULL, cast_date = Sys.Date(),
-                              cast_cov = NULL, control_save = save_control(),
+                              cast_cov = NULL, 
+                              control_files = files_control(),
                               quiet = TRUE, verbose = FALSE, 
                               arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -283,22 +284,22 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                          arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)
-  if(!control_save$save | !control_save$append_cast_csv | 
-     !control_save$overwrite | end_moon != last_moon){
+  if(!control_files$save | !control_files$append_cast_csv | 
+     !control_files$overwrite | end_moon != last_moon){
     return(cast_cov)
   }
   new_cast <- cast_cov
-  new_cast$source <- control_save$source_name
+  new_cast$source <- control_files$source_name
   date_made <- Sys.time()
   tz <- format(date_made, "%Z")
   new_cast$date_made <- paste0(date_made, " ", tz)
 
-  hist_cast <- read_cov_casts(main = main, control_save = control_save,
+  hist_cast <- read_cov_casts(main = main, control_files = control_files,
                               quiet = quiet, verbose = verbose, 
                               arg_checks = arg_checks)
   out <- rbind(hist_cast, new_cast)
   out_path <- file_path(main = main, sub = "data", 
-                        files = control_save$filename_cov_casts,
+                        files = control_files$filename_cov_casts,
                         arg_checks = arg_checks)
   msg <- "    **covariates_casts.csv saved**"
   messageq(msg, !verbose)

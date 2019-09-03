@@ -75,9 +75,9 @@
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @return \code{list} of casting metadata, which is also saved out as a 
 #'  YAML file (\code{.yaml}) if desired.
@@ -105,10 +105,10 @@ prep_metadata <- function(main = ".", models = prefab_models(),
                           controls_rodents = NULL,
                           controls_models = NULL, 
                           quiet = TRUE, verbose = FALSE, 
-                          control_save = save_control(), arg_checks = TRUE){
+                          control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks)
-  filename_config <- control_save$filename_config
-  filename_meta <- control_save$filename_meta
+  filename_config <- control_files$filename_config
+  filename_meta <- control_files$filename_meta
   min_lag_e <- extract_min_lag(models = models,
                                controls_models = controls_models, 
                                arg_checks = arg_checks)
@@ -166,7 +166,7 @@ prep_metadata <- function(main = ".", models = prefab_models(),
 
   config <- read_directory_config(main = main, 
                                   filename_config = 
-                                    control_save$filename_config,
+                                    control_files$filename_config,
                                   quiet = quiet, arg_checks = arg_checks)
 
 
@@ -183,8 +183,8 @@ prep_metadata <- function(main = ".", models = prefab_models(),
        rodent_cast_months = rodent_cast_months, 
        rodent_cast_years = rodent_cast_years,
        confidence_level = confidence_level) %>%
-  write_data(main = main, save = control_save$save, 
-             filename = control_save$filename_meta, 
-             overwrite = control_save$overwrite, quiet = !verbose, 
+  write_data(main = main, save = control_files$save, 
+             filename = control_files$filename_meta, 
+             overwrite = control_files$overwrite, quiet = !verbose, 
              arg_checks = arg_checks)
 }

@@ -63,9 +63,9 @@
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param downloads \code{list} of arguments to pass to \code{\link{download}}
 #'  for raw file downloading. 
@@ -109,16 +109,16 @@ fill_dir <- function(main = ".", models = prefab_models(),
                      controls_rodents = rodents_controls(),
                      control_climate = climate_dl_control(),
                      downloads = zenodo_downloads(c("1215988", "833438")), 
-                     control_save = save_control(),
+                     control_files = files_control(),
                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   messageq("Filling directory with standard content", quiet)
   fill_raw(main = main, downloads = downloads, quiet = quiet, 
-           control_save = control_save, arg_checks = arg_checks)
+           control_files = control_files, arg_checks = arg_checks)
   fill_casts(main = main, quiet = quiet, verbose = verbose, 
-             control_save = control_save, arg_checks = arg_checks)
+             control_files = control_files, arg_checks = arg_checks)
   fill_models(main = main, models = models, controls_models = controls_models, 
-              quiet = quiet, verbose = verbose, control_save = control_save,
+              quiet = quiet, verbose = verbose, control_files = control_files,
               arg_checks = arg_checks)
   fill_data(main = main, models = models, 
             end_moon = end_moon, lead_time = lead_time, 
@@ -127,7 +127,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
             controls_rodents = controls_rodents,
             controls_models = controls_models, 
             control_climate = control_climate, 
-            downloads = downloads, control_save = control_save,
+            downloads = downloads, control_files = control_files,
             quiet = quiet, verbose = verbose, arg_checks = arg_checks)
 }
 
@@ -144,7 +144,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                       controls_rodents = rodents_controls(), 
                       controls_models = NULL,
                       control_climate = climate_dl_control(),
-                      control_save = save_control(),
+                      control_files = files_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -157,29 +157,30 @@ fill_data <- function(main = ".", models = prefab_models(),
                                  quiet = quiet, arg_checks = arg_checks)
 
   raw_data_present <- verify_raw_data(main = main, 
-                                      raw_data = control_save$raw_data, 
+                                      raw_data = control_files$raw_data, 
                                       arg_checks = arg_checks)
   if(!raw_data_present){
     fill_raw(main = main, downloads = downloads, quiet = quiet, 
-             control_save = control_save, arg_checks = arg_checks)
+             control_files = control_files, arg_checks = arg_checks)
   }
   messageq(" -Adding data files to data subdirectory", quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
                        cast_date = cast_date, 
                        quiet = quiet, verbose = verbose,
-                       control_save = control_save, 
+                       control_files = control_files, 
                        arg_checks = arg_checks)
   data_r <- prep_rodents(main = main, moons = data_m, 
                          data_sets = data_sets, end_moon = end_moon, 
                          start_moon = start_moon, 
                          controls_rodents = controls_rodents,
                          quiet = quiet, verbose = verbose, 
-                         control_save = control_save, arg_checks = arg_checks)
+                         control_files = control_files, 
+                         arg_checks = arg_checks)
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
                             lead_time = lead_time, min_lag = min_lag, 
                             cast_date = cast_date, 
                             control_climate = control_climate,
-                            quiet = quiet, control_save = control_save,
+                            quiet = quiet, control_files = control_files,
                             arg_checks = arg_checks)
   prep_metadata(main = main, models = models,
                 data_sets = data_sets, moons = data_m, 
@@ -188,7 +189,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                 cast_date = cast_date, start_moon = start_moon, 
                 confidence_level = confidence_level, 
                 controls_rodents = controls_rodents, quiet = quiet, 
-                control_save = control_save, arg_checks = arg_checks)
+                control_files = control_files, arg_checks = arg_checks)
 
   invisible(NULL)
 }
@@ -200,7 +201,7 @@ fill_data <- function(main = ".", models = prefab_models(),
 fill_models <- function(main = ".", models = prefab_models(), 
                         controls_models = NULL, quiet = FALSE, 
                         verbose = FALSE, 
-                        control_save = save_control(), arg_checks = TRUE){
+                        control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(models)
   controls_models <- model_script_controls(models = models, 
@@ -211,7 +212,7 @@ fill_models <- function(main = ".", models = prefab_models(),
   nmodels <- length(models)
   for(i in 1:nmodels){
     write_model(main = main, quiet = quiet, verbose = verbose, 
-                overwrite = control_save$overwrite, 
+                overwrite = control_files$overwrite, 
                 control = controls_models[[models[i]]], 
                 arg_checks = arg_checks)
   } 
@@ -223,9 +224,9 @@ fill_models <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 fill_casts <- function(main = ".", quiet = FALSE, verbose = FALSE,
-                       control_save = save_control(), arg_checks = TRUE){
+                       control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  directory <- control_save$directory
+  directory <- control_files$directory
   messageq(" -Filling casts folder with files from archive", quiet)
   path_casts <- paste0(directory, "/casts")
   archive <- file_path(main = main, sub = "raw", files = path_casts,
@@ -239,7 +240,7 @@ fill_casts <- function(main = ".", quiet = FALSE, verbose = FALSE,
   }
   arch_files_local <- paste0(path_casts, arch_files)
   casts_folder <- casts_path(main = main, arg_checks = arg_checks)
-  fc <- file.copy(arch_files, casts_folder, control_save$overwrite)
+  fc <- file.copy(arch_files, casts_folder, control_files$overwrite)
   casts_meta <- read_casts_metadata(main = main, quiet = quiet, 
                                     arg_checks = arg_checks)
   fill_casts_message(files = arch_files, movedTF = fc, quiet = !verbose,
@@ -253,7 +254,7 @@ fill_casts <- function(main = ".", quiet = FALSE, verbose = FALSE,
 #'
 fill_raw <- function(main = ".", 
                      downloads = zenodo_downloads(c("1215988", "833438")), 
-                     quiet = FALSE, control_save = save_control(), 
+                     quiet = FALSE, control_files = files_control(), 
                      arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(downloads)
@@ -265,7 +266,7 @@ fill_raw <- function(main = ".",
   dl_vers <- rep(NA, ndl)
   for(i in 1:ndl){
     downloads[[i]]$cleanup <- ifnull(downloads[[i]]$cleanup, 
-                                     control_save$cleanup)
+                                     control_files$cleanup)
     downloads[[i]]$main <- ifnull(downloads[[i]]$main, main)
     downloads[[i]]$quiet <- ifnull(downloads[[i]]$quiet, quiet)
     downloads[[i]]$sub <- "raw"

@@ -39,9 +39,9 @@
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -77,7 +77,7 @@ NULL
 #' 
 prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(), 
                        quiet = TRUE, verbose = FALSE, 
-                       control_save = save_control(), arg_checks = TRUE){
+                       control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   messageq("  -lunar data file", quiet)
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
@@ -87,9 +87,9 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
   moons <- add_future_moons(moons = moons_in, lead_time = lead_time, 
                             cast_date = cast_date, arg_checks = arg_checks)
   moons_out <- format_moons(moons)
-  write_data(dfl = moons_out, main = main, save = control_save$save, 
-             filename = control_save$filename_moons, 
-             overwrite = control_save$overwrite, 
+  write_data(dfl = moons_out, main = main, save = control_files$save, 
+             filename = control_files$filename_moons, 
+             overwrite = control_files$overwrite, 
              quiet = !verbose, arg_checks = arg_checks)
 } 
 

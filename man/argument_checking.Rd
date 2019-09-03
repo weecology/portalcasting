@@ -193,7 +193,7 @@ Argument details used for checking are produced simply via
   \code{control_climate},
   \code{controls_models},
   \code{controls_rodents},
-  \code{control_save},
+  \code{control_files},
   \code{data_set_controls},
   \code{downloads},
   \code{filenames},

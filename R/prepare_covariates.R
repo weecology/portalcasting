@@ -34,9 +34,9 @@
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -59,7 +59,7 @@ prep_covariates <- function(main = ".", moons = NULL,
                             cast_date = Sys.Date(),
                             control_climate = climate_dl_control(), 
                             quiet = TRUE, 
-                            verbose = FALSE, control_save = save_control(),
+                            verbose = FALSE, control_files = files_control(),
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main))
@@ -71,15 +71,15 @@ prep_covariates <- function(main = ".", moons = NULL,
                                      end_moon = end_moon, 
                                      lead_time = lead_time, min_lag = min_lag, 
                                      cast_date = cast_date, 
-                                     control_save = control_save,
+                                     control_files = control_files,
                                      control_climate = control_climate,
                                      quiet = quiet, verbose = verbose, 
                                      arg_checks = arg_checks)
   out <- bind_rows(hist_cov, cast_cov)
 
-  write_data(dfl = out, main = main, save = control_save$save, 
-             filename = control_save$filename_cov, 
-             overwrite = control_save$overwrite, 
+  write_data(dfl = out, main = main, save = control_files$save, 
+             filename = control_files$filename_cov, 
+             overwrite = control_files$overwrite, 
              quiet = !verbose, arg_checks = arg_checks)
 }
 

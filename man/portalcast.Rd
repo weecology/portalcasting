@@ -8,7 +8,7 @@
 portalcast(main = ".", models = prefab_models(),
   data_sets = prefab_data_sets(), end_moons = NULL, lead_time = 12,
   cast_date = Sys.Date(), start_moon = 217, confidence_level = 0.95,
-  controls_models = NULL, control_save = save_control(),
+  controls_models = NULL, control_files = files_control(),
   controls_rodents = rodents_controls(),
   control_climate = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
@@ -17,7 +17,8 @@ portalcast(main = ".", models = prefab_models(),
 cast(main = ".", models = prefab_models(), cast_date = Sys.Date(),
   moons = NULL, end_moon = NULL, confidence_level = 0.95,
   controls_rodents = rodents_controls(), quiet = FALSE,
-  verbose = FALSE, cleanup = TRUE, arg_checks = TRUE)
+  verbose = FALSE, control_files = files_control(),
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -69,9 +70,9 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
-\item{control_save}{\code{list} of names of the folders and files within
+\item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{save_control}}.}
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 

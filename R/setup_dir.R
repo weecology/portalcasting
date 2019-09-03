@@ -30,9 +30,9 @@
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param controls_models Additional controls for models not in the prefab
 #'  set. \cr 
@@ -94,12 +94,12 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       controls_models = NULL, 
                       controls_rodents = rodents_controls(),
                       control_climate = climate_dl_control(),
-                      control_save = save_control(),
+                      control_files = files_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
   portalcast_welcome(quiet = quiet)
-  create_dir(main = main, filename_config = control_save$filename_config,
+  create_dir(main = main, filename_config = control_files$filename_config,
              quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   messageq("---------------------------------------------------------", quiet)
   fill_dir(main = main, models = models, 
@@ -110,7 +110,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            controls_rodents = controls_rodents, 
            control_climate = control_climate, 
            downloads = downloads, quiet = quiet, verbose = verbose, 
-           control_save = control_save, arg_checks = arg_checks)
+           control_files = control_files, arg_checks = arg_checks)
   messageq("---------------------------------------------------------", quiet)
   messageq("Directory successfully instantiated", quiet)
   messageq("---------------------------------------------------------", quiet)
@@ -131,7 +131,7 @@ setup_production <- function(main = ".", models = prefab_models(),
                       control_climate = climate_dl_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
                       quiet = FALSE, verbose = FALSE, 
-                      control_save = save_control(), arg_checks = TRUE){
+                      control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
             end_moon = end_moon, lead_time = lead_time, 
@@ -141,7 +141,7 @@ setup_production <- function(main = ".", models = prefab_models(),
             controls_rodents = controls_rodents, 
             control_climate = control_climate, 
             downloads = downloads, quiet = quiet, verbose = verbose, 
-            control_save = control_save, arg_checks = arg_checks)
+            control_files = control_files, arg_checks = arg_checks)
 }
 
 
@@ -159,7 +159,8 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           downloads = 
                             zenodo_downloads(c("1215988", "833438")), 
                           quiet = FALSE, verbose = FALSE,
-                          control_save = save_control(), arg_checks = FALSE){
+                          control_files = files_control(), 
+                          arg_checks = FALSE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
             end_moon = end_moon, lead_time = lead_time, 
@@ -169,7 +170,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
             controls_rodents = controls_rodents, 
             control_climate = control_climate, 
             downloads = downloads, quiet = quiet, verbose = verbose, 
-            control_save = control_save, arg_checks = arg_checks)
+            control_files = control_files, arg_checks = arg_checks)
   sandbox_welcome(main = main, quiet = quiet, arg_checks = arg_checks)
 }
 

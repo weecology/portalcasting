@@ -41,9 +41,9 @@
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param controls_models Additional controls for models not in the prefab 
 #'  set. \cr 
@@ -110,7 +110,8 @@ portalcast <- function(main = ".", models = prefab_models(),
                        lead_time = 12, cast_date = Sys.Date(),
                        start_moon = 217, 
                        confidence_level = 0.95, 
-                       controls_models = NULL, control_save = save_control(),
+                       controls_models = NULL, 
+                       control_files = files_control(),
                        controls_rodents = rodents_controls(),
                        control_climate = climate_dl_control(),
                        downloads = zenodo_downloads(c("1215988", "833438")), 
@@ -123,11 +124,11 @@ portalcast <- function(main = ".", models = prefab_models(),
   verify_models(main = main, models = models, quiet = quiet, 
                 arg_checks = arg_checks)
   raw_data_present <- verify_raw_data(main = main, 
-                                      raw_data = control_save$raw_data, 
+                                      raw_data = control_files$raw_data, 
                                       arg_checks = arg_checks)
   if(!raw_data_present){
     fill_raw(main = main, downloads = downloads, quiet = quiet, 
-             control_save = control_save, arg_checks = arg_checks)
+             control_files = control_files, arg_checks = arg_checks)
   }
   moons <- read_moons(main = main, arg_checks = arg_checks)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
@@ -143,12 +144,12 @@ portalcast <- function(main = ".", models = prefab_models(),
               controls_rodents = controls_rodents,
               controls_models = controls_models, 
               control_climate = control_climate, 
-              downloads = downloads, control_save = control_save,
+              downloads = downloads, control_files = control_files,
               quiet = quiet, verbose = verbose, arg_checks = arg_checks)
     cast(main = main, models = models,
          cast_date = cast_date, moons = moons, 
          end_moon = end_moons[i], 
-         controls_rodents = controls_rodents, control_save = control_save,
+         controls_rodents = controls_rodents, control_files = control_files,
          confidence_level = confidence_level, quiet = quiet, 
          verbose = verbose, arg_checks = TRUE)
   }
@@ -160,7 +161,7 @@ portalcast <- function(main = ".", models = prefab_models(),
               controls_rodents = controls_rodents,
               controls_models = controls_models, 
               control_climate = control_climate, 
-              downloads = downloads, control_save = control_save,
+              downloads = downloads, control_files = control_files,
               quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   }
   portalcast_goodbye(quiet = quiet)
@@ -176,7 +177,7 @@ cast <- function(main = ".", models = prefab_models(),
                  end_moon = NULL, confidence_level = 0.95, 
                  controls_rodents = rodents_controls(), 
                  quiet = FALSE, verbose = FALSE, 
-                 control_save = save_control(),
+                 control_files = files_control(),
                  arg_checks = TRUE){
   moons <- ifnull(moons, read_moons(main = main))
   check_args(arg_checks)

@@ -15,26 +15,26 @@ fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
   controls_rodents = rodents_controls(),
   control_climate = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")),
-  control_save = save_control(), quiet = FALSE, verbose = FALSE,
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
   arg_checks = TRUE)
 
 fill_data(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
   confidence_level = 0.95, controls_rodents = rodents_controls(),
   controls_models = NULL, control_climate = climate_dl_control(),
-  control_save = save_control(),
+  control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, arg_checks = TRUE)
 
 fill_models(main = ".", models = prefab_models(),
   controls_models = NULL, quiet = FALSE, verbose = FALSE,
-  control_save = save_control(), arg_checks = TRUE)
+  control_files = files_control(), arg_checks = TRUE)
 
 fill_casts(main = ".", quiet = FALSE, verbose = FALSE,
-  control_save = save_control(), arg_checks = TRUE)
+  control_files = files_control(), arg_checks = TRUE)
 
 fill_raw(main = ".", downloads = zenodo_downloads(c("1215988",
-  "833438")), quiet = FALSE, control_save = save_control(),
+  "833438")), quiet = FALSE, control_files = files_control(),
   arg_checks = TRUE)
 }
 \arguments{
@@ -90,9 +90,9 @@ which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
 for raw file downloading.}
 
-\item{control_save}{\code{list} of names of the folders and files within
+\item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{save_control}}.}
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

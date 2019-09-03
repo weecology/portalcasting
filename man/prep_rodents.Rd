@@ -7,7 +7,7 @@
 prep_rodents(main = ".", moons = NULL, data_sets = NULL,
   end_moon = NULL, start_moon = 217, controls_rodents = NULL,
   ref_species = all_species(), quiet = TRUE, verbose = FALSE,
-  control_save = save_control(), arg_checks = TRUE)
+  control_files = files_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -41,9 +41,9 @@ quieted.}
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
 
-\item{control_save}{\code{list} of names of the folders and files within
+\item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{save_control}}.}
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

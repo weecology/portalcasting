@@ -363,9 +363,9 @@ rodents_control <- function(data_set = NULL, species = base_species(),
 #'  of the first sample to be included. Default value is \code{217}, 
 #'  corresponding to \code{1995-01-01}.
 #'
-#' @param control_save \code{list} of names of the folders and files within
+#' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{save_control}}.
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
@@ -394,7 +394,7 @@ prep_rodents <- function(main = ".", moons = NULL,
                          controls_rodents = NULL,
                          ref_species = all_species(), quiet = TRUE,
                          verbose = FALSE,  
-                         control_save = save_control(), arg_checks = TRUE){
+                         control_files = files_control(), arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_sets <- ifnull(data_sets, prefab_data_sets())
   messageq("  -rodents data files", quiet)
@@ -433,8 +433,8 @@ prep_rodents <- function(main = ".", moons = NULL,
                                        effort = ctrl_r_i[["effort"]],
                                        quiet = quiet,
                                        verbose = verbose,
-                                       save = control_save$save,
-                                       overwrite = control_save$overwrite,
+                                       save = control_files$save,
+                                       overwrite = control_files$overwrite,
                                        filename = ctrl_r_i[["filename"]],
                                        arg_checks = arg_checks)
   }

@@ -11,7 +11,7 @@ setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   cast_date = Sys.Date(), controls_models = NULL,
   controls_rodents = rodents_controls(),
   control_climate = climate_dl_control(),
-  control_save = save_control(),
+  control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
   verbose = FALSE, arg_checks = TRUE)
 
@@ -21,14 +21,16 @@ setup_production(main = ".", models = prefab_models(),
   controls_rodents = rodents_controls(),
   control_climate = climate_dl_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, control_save = save_control(), arg_checks = TRUE)
+  verbose = FALSE, control_files = files_control(),
+  arg_checks = TRUE)
 
 setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   lead_time = 12, cast_date = Sys.Date(), start_moon = 217,
   confidence_level = 0.95, controls_rodents = rodents_controls(),
   control_climate = climate_dl_control(), controls_models = NULL,
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, control_save = save_control(), arg_checks = FALSE)
+  verbose = FALSE, control_files = files_control(),
+  arg_checks = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -80,9 +82,9 @@ rodents tables. See \code{\link{rodents_controls}} for details.}
 which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
 
-\item{control_save}{\code{list} of names of the folders and files within
+\item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{save_control}}.}
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
 for raw file downloading.}

@@ -11,17 +11,17 @@
 \usage{
 cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), control_save = save_control(),
+  cast_date = Sys.Date(), control_files = files_control(),
   control_climate = climate_dl_control(), quiet = TRUE,
   verbose = FALSE, arg_checks = TRUE)
 
-read_cov_casts(main = ".", control_save = save_control(),
+read_cov_casts(main = ".", control_files = files_control(),
   quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
 prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), control_climate = climate_dl_control(),
-  quiet = TRUE, verbose = FALSE, control_save = save_control(),
+  quiet = TRUE, verbose = FALSE, control_files = files_control(),
   arg_checks = TRUE)
 
 cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
@@ -34,7 +34,7 @@ cast_weather(main = ".", moons = NULL, hist_cov = NULL,
 
 save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
   cast_date = Sys.Date(), cast_cov = NULL,
-  control_save = save_control(), quiet = TRUE, verbose = FALSE,
+  control_files = files_control(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
 }
 \arguments{
@@ -58,9 +58,9 @@ used in any model.}
 \item{cast_date}{\code{Date} on which the cast happens. Generally should
 be \code{\link{Sys.Date}}.}
 
-\item{control_save}{\code{list} of names of the folders and files within
+\item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{save_control}}.}
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{control_climate}{\code{list} of specifications for the climate 
 download. Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
