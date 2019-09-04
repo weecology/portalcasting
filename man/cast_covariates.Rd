@@ -26,7 +26,7 @@ cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
 cast_weather(main = ".", moons = NULL, hist_cov = NULL,
   end_moon = NULL, lead_time = 12, min_lag = 6,
   cast_date = Sys.Date(), control_climate_dl = climate_dl_control(),
-  control_files = files_control(), quiet = TRUE, verbose = verbose,
+  control_files = files_control(), quiet = TRUE, verbose = TRUE,
   arg_checks = TRUE)
 
 save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,

@@ -194,7 +194,7 @@ cast_weather <- function(main = ".", moons = NULL,
                          min_lag = 6, cast_date = Sys.Date(), 
                          control_climate_dl = climate_dl_control(),
                          control_files = files_control(),
-                         quiet = TRUE, verbose = verbose, arg_checks = TRUE){
+                         quiet = TRUE, verbose = TRUE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main, 
                                     control_files = control_files,

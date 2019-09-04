@@ -170,7 +170,7 @@ na_conformer <- function(dfv, colname = "species", arg_checks = TRUE){
 #' @examples
 #'  \donttest{
 #'   df <- data.frame(x = 1:10)
-#'   fpath <- file_paths(local_paths = "xx.csv")
+#'   fpath <- file_path(files = "xx.csv")
 #'   append_csv(df, fpath)
 #'  }
 #'
