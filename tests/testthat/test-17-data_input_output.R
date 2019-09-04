@@ -4,7 +4,8 @@ test_that("dir_config", {
   expect_error(read_directory_config())
 })
 
-test_that("read_data", {
+test_that("write_data", {
+  skip_on_cran() # downloads take too long for cran checks
   expect_silent(controls <- read_data("./testing", "rodents", "controls"))
   expect_message(write_data(controls, "./testing", save = TRUE, 
                             filename = "rodents_controls.csv",
