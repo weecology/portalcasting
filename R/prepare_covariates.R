@@ -185,7 +185,7 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
 #'   create_dir()
 #'   fill_raw()
 #'   "%>%" <- dplyr::"%>%"
-#'   raw_path <- sub_paths(specific_subs = "raw")
+#'   raw_path <- raw_path()
 #'   moons <- prep_moons()
 #'   portalr::weather("daily", TRUE, raw_path) %>% 
 #'   add_date_from_components() %>%
