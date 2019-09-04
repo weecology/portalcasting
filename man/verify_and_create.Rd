@@ -40,9 +40,9 @@ all of the information or not (and thus just the tidy messages).}
 }
 \examples{
  \donttest{
-  main <- main_path()
-  create(main, "main")
-  verify(main, "main")
+  mainp <- main_path()
+  create(mainp, "main")
+  verify(mainp, "main")
  }
 
 }

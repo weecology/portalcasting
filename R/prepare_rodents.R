@@ -742,7 +742,7 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
 #'  \donttest{
 #'   create_dir()
 #'   fill_raw()
-#'   rodents_tab <- prep_rodents_table(main=main)
+#'   rodents_tab <- prep_rodents_table()
 #'   is_sp_col(rodents_tab)
 #'   species_from_table(rodents_tab)
 #'  }

@@ -30,8 +30,8 @@ Summarizes a daily weather table by newmoons. Taking the
   portalr::weather("daily", TRUE, raw_path) \%>\% 
   add_date_from_components() \%>\%
   dplyr::select(-c(year, month, day, battery_low, locally_measured))  \%>\%
-  add_newmoons_from_date(moons) \%>\%
-  summarize_daily_weather_by_newmoon()
+  add_moons_from_date(moons) \%>\%
+  summarize_daily_weather_by_moon()
  }
 
 }

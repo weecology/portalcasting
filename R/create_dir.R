@@ -128,9 +128,9 @@ create_subs <- function(main = ".", quiet = FALSE,
 #'
 #' @examples
 #'  \donttest{
-#'   main <- main_path()
-#'   create(main, "main")
-#'   verify(main, "main")
+#'   mainp <- main_path()
+#'   create(mainp, "main")
+#'   verify(mainp, "main")
 #'  }
 #'
 #' @name verify_and_create
