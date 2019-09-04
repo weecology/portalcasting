@@ -108,7 +108,7 @@ timestep, a common format format for discrete-time modeling.}
 \item{zero_drop}{\code{logical} indicator of if \code{0} values 
 (representing sufficient sampling but no detection) should be dropped.}
 
-\item{ref_species}{\code{character} vector of the reference speces. Sets
+\item{ref_species}{\code{character} vector of the reference species. Sets
 a boundary outside of the species included in the model.}
 
 \item{effort}{\code{logical} indicator of if the effort columns should

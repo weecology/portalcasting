@@ -222,7 +222,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #'  from a model. \cr
 #'  As of \code{portalcasting v0.9.0}, 
 #'  this represents the mean and the 95\% prediction interval. \cr
-#'  Observations that occured after the cast are shown connected directly
+#'  Observations that occurred after the cast are shown connected directly
 #'  to the pre-cast observation data (as the black solid line).
 #'
 #' @param main \code{character} value of the name of the main component of

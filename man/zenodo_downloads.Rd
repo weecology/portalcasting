@@ -19,7 +19,7 @@ corresponding to the Zenodo record.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
-efault (\code{arg_checks = TRUE}) ensures that all inputs are 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
 }
 \value{

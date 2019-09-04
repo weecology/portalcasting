@@ -544,7 +544,7 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
 #' @param save \code{logical} indicator controlling if the output should 
 #'  be saved out.
 #'
-#' @param ref_species \code{character} vector of the reference speces. Sets
+#' @param ref_species \code{character} vector of the reference species. Sets
 #'  a boundary outside of the species included in the model.
 #'
 #' @param rodents_tab Rodents \code{data.frame} data table.

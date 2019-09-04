@@ -90,7 +90,7 @@ formatted correctly and provides directed error messages if not.}
 \description{
 Cast the covariates for a model run. \cr \cr
  \code{cast_covariates} is the primary function, which produces the 
- coavariates (min, mean, and max temperature; precipitation; and NDVI) 
+ covariates (min, mean, and max temperature; precipitation; and NDVI) 
  required for a model to be cast. \cr \cr
  \code{prep_cast_covariates} provides a wrapper on \code{cast_covariates}
  that includes saving the cast data out via \code{save_cast_cov_csv}

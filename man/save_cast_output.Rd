@@ -46,7 +46,7 @@ Currently, four generalized output components are recognized and
    appropriate object (typically a \code{list}).  
   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
    assumed to be a table such as a \code{matrix} or \code{data.frame} 
-   or coerceable to one. Used to summarizes the output across instances
+   or coercible to one. Used to summarizes the output across instances
    of the model (across multiple species, for example). 
   \item \code{"model_fits"}: saved out via \code{\link{save}}, so quite
    flexible with respect to object structure. Is used to save actual model

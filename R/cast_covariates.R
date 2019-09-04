@@ -2,7 +2,7 @@
 #'
 #' @description Cast the covariates for a model run. \cr \cr
 #'  \code{cast_covariates} is the primary function, which produces the 
-#'  coavariates (min, mean, and max temperature; precipitation; and NDVI) 
+#'  covariates (min, mean, and max temperature; precipitation; and NDVI) 
 #'  required for a model to be cast. \cr \cr
 #'  \code{prep_cast_covariates} provides a wrapper on \code{cast_covariates}
 #'  that includes saving the cast data out via \code{save_cast_cov_csv}
@@ -279,7 +279,7 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 #'  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network}'s (NKN) at
 #'  \href{https://bit.ly/2tCP8NX}{simple API} to the 
 #'  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
-#'  and them ready for analyese. \cr \cr
+#'  and them ready for analyses. \cr \cr
 #'  \code{download_climate_casts}: downloads the files from the server.
 #'  \cr \cr
 #'  \code{read_climate_casts}: reads the downloaded files into R and does

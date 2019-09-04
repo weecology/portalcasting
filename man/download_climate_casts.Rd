@@ -77,7 +77,7 @@ Given the details specified in \code{control_cdl}, download
  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network}'s (NKN) at
  \href{https://bit.ly/2tCP8NX}{simple API} to the 
  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
- and them ready for analyese. \cr \cr
+ and them ready for analyses. \cr \cr
  \code{download_climate_casts}: downloads the files from the server.
  \cr \cr
  \code{read_climate_casts}: reads the downloaded files into R and does

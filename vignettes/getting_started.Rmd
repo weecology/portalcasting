@@ -94,7 +94,7 @@ Because the output from this run of `portalcast` is most recent, the plot functi
 plot_cast_ts(main = main)
 ```
 
-![Time series plot of the total rodents forecast (mean with 95% CI) on the control plots with obervations after the forecast origin](imgs/getting_started_fig3.jpg){width=600px} 
+![Time series plot of the total rodents forecast (mean with 95% CI) on the control plots with observations after the forecast origin](imgs/getting_started_fig3.jpg){width=600px} 
 
 ```{r, eval=FALSE}
 plot_cast_point(main = main, with_census = TRUE)

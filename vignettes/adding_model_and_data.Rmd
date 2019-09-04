@@ -131,13 +131,13 @@ plot_cast_point(main = main)
 
 ![Next-step-ahead prediction from a trivial newmod](imgs/sandbox_1_newmod_cast_point.jpg){width=600px} 
 
-Reading the cast's predictions into the R consolse is done using `read_cast_tab`, which also defaults to the most recently generated output:
+Reading the cast's predictions into the R console is done using `read_cast_tab`, which also defaults to the most recently generated output:
 
 ```{r, eval=FALSE}
 read_cast_tab(main = main)
 ```
 
-To choose a non-default ouput, use `select_casts` to read in the cast metadata with any desired filters on `end_moon`, `model`, or `data_set` and then locate the `cast_id` of interest:
+To choose a non-default output, use `select_casts` to read in the cast metadata with any desired filters on `end_moon`, `model`, or `data_set` and then locate the `cast_id` of interest:
 
 ```{r, eval=FALSE}
 select_casts(main = main)
@@ -159,7 +159,7 @@ select_casts(main = main)
 
 ## Adding in a production space
 
-
+Once you've worked out all of the kinks in your model and are interested in adding it to the prefabricated (prefab)
 
 ### Adding a model
 

@@ -383,7 +383,7 @@ name_from_url <- function(url, NULLname = FALSE, sep_char = ".",
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  efault (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{list} of \code{list}s of arguments to \code{\link{download}}.
@@ -487,7 +487,7 @@ verify_raw_data <- function(main = ".", raw_data = "PortalData",
 #'
 #' @param data \code{character} value of the type of data, one of 
 #'  \code{"tasmin"} (minimum temperature),  \code{"tasmean"}
-#'  (mean temperature), \code{"tasmax"} (mximum temperature), \code{"pr"}
+#'  (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"}
 #'  (precipitation), \code{"dps"} (dew point), \code{"rsds"}
 #'  (shortwave radiation; sun intensity), \code{"was"} (wind speed).
 #'
