@@ -45,7 +45,7 @@
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param controls_models Additional controls for models not in the prefab 
+#' @param controls_model Additional controls for models not in the prefab 
 #'  set. \cr 
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
@@ -102,7 +102,7 @@
 portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL, 
                        start_moon = 217, lead_time = 12, 
                        confidence_level = 0.95, cast_date = Sys.Date(),
-                       controls_models = NULL, 
+                       controls_model = NULL, 
                        controls_rodents = rodents_controls(),
                        control_climate_dl = climate_dl_control(),
                        control_files = files_control(),
@@ -136,7 +136,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
               cast_date = cast_date, start_moon = start_moon, 
               confidence_level = confidence_level, 
               controls_rodents = controls_rodents,
-              controls_models = controls_models, 
+              controls_model = controls_model, 
               control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
               quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
@@ -156,7 +156,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
               cast_date = cast_date, start_moon = start_moon, 
               confidence_level = confidence_level, 
               controls_rodents = controls_rodents,
-              controls_models = controls_models, 
+              controls_model = controls_model, 
               control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
               quiet = !verbose, verbose = verbose, arg_checks = arg_checks)

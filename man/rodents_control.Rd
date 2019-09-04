@@ -4,7 +4,7 @@
 \alias{rodents_control}
 \title{Create a control lists for generating a rodents data table}
 \usage{
-rodents_control(data_set = NULL, species = base_species(),
+rodents_control(name = "name", species = base_species(),
   total = TRUE, interpolate = FALSE, clean = FALSE,
   type = "Rodents", level = "Site", plots = "all",
   treatment = NULL, min_plots = 24, min_traps = 1,
@@ -15,8 +15,8 @@ rodents_control(data_set = NULL, species = base_species(),
   ".csv"), arg_checks = TRUE)
 }
 \arguments{
-\item{data_set}{\code{character} value of the rodent data set name
-used to enforce certain arguments. Currently available prefab data
+\item{name}{\code{character} value of the rodent data set name
+used to enforce certain arguments. Currently used prefab data
 sets are \code{"all"}, \code{"all_interp"}, \code{"controls"}, 
 and \code{"controls_interp"}.}
 

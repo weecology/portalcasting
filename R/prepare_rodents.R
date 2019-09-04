@@ -1,13 +1,13 @@
 prefab_rodents_controls <- function(){
   list(
-    "all" = list(data_set = "all", species = base_species(), total = TRUE,
+    "all" = list(name = "all", species = base_species(), total = TRUE,
                  interpolate = FALSE, clean = FALSE, type = "Rodents", 
                  level = "Site", plots = "all", treatment = NULL, 
                  min_plots = 24, min_traps = 1, output = "abundance", 
                  fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
                  na_drop = FALSE, zero_drop = TRUE, effort = FALSE,
                  filename = "rodents_all.csv"),
-    "all_interp" = list(data_set = "all_interp", species = base_species(), 
+    "all_interp" = list(name = "all_interp", species = base_species(), 
                         total = TRUE, interpolate = TRUE, clean = FALSE, 
                         type = "Rodents", level = "Site", plots = "all", 
                         treatment = NULL, min_plots = 24, min_traps = 1,
@@ -15,7 +15,7 @@ prefab_rodents_controls <- function(){
                         unknowns = FALSE, time = "newmoon", na_drop = FALSE, 
                         zero_drop = TRUE, effort = FALSE, 
                         filename = "rodents_all_interp.csv"),
-    "controls" = list(data_set = "controls", species = base_species(), 
+    "controls" = list(name = "controls", species = base_species(), 
                       total = TRUE, interpolate = FALSE, clean = FALSE, 
                       type = "Rodents", level = "Treatment", 
                       plots = "Longterm", treatment = "control", 
@@ -23,7 +23,7 @@ prefab_rodents_controls <- function(){
                       fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
                       na_drop = FALSE, zero_drop = TRUE, effort = FALSE, 
                       filename = "rodents_controls.csv"),
-    "controls_interp" = list(data_set = "controls_interp", 
+    "controls_interp" = list(name = "controls_interp", 
                              species = base_species(), 
                              total = TRUE, interpolate = TRUE, clean = FALSE, 
                              type = "Rodents", level = "Treatment", 
@@ -75,7 +75,7 @@ prefab_rodents_controls <- function(){
 #'  Presently, each dataset's controls should include 18 elements, as 
 #'  our \code{\link{rodents_control}} template shows:
 #'  \itemize{
-#'   \item \code{data_set}: \code{character} value of the name,
+#'   \item \code{name}: \code{character} value of the data set's name,
 #'   \item \code{species}: \code{character}-valued vector of species names 
 #'   to include.  
 #'   \item \code{total}: \code{logical} value indicating if a total 
@@ -161,7 +161,7 @@ rodents_controls <- function(data_sets = NULL, controls_rodents = NULL,
   return_if_null(data_sets)
   if(list_depth(controls_rodents) == 1){
     controls_rodents <- list(controls_rodents)
-    names(controls_rodents) <- controls_rodents[[1]]$data_set
+    names(controls_rodents) <- controls_rodents[[1]]$name
   }
   nadd <- length(controls_rodents)
 
@@ -200,17 +200,17 @@ rodents_controls <- function(data_sets = NULL, controls_rodents = NULL,
 #'  novel data set, setting the formal arguments to the basic default 
 #'  values
 #
-#' @param data_set \code{character} value of the rodent data set name
-#'  used to enforce certain arguments. Currently available prefab data
+#' @param name \code{character} value of the rodent data set name
+#'  used to enforce certain arguments. Currently used prefab data
 #'  sets are \code{"all"}, \code{"all_interp"}, \code{"controls"}, 
 #'  and \code{"controls_interp"}. 
 #'
 #' @param species \code{character}-valued vector of species names 
-#'   to include.  
+#'  to include.  
 #'
 #' @param total \code{logical} value indicating if a total 
-#'   (sum across species) should be added or not. Only available if more than 
-#'   one species is included. 
+#'  (sum across species) should be added or not. Only available if more than 
+#'  one species is included. 
 #'
 #' @param interpolate \code{logical} value indicating if the data should be
 #'  interpolated to fill in \code{NA} values (using 
@@ -296,7 +296,7 @@ rodents_controls <- function(data_sets = NULL, controls_rodents = NULL,
 #'
 #' @export
 #'
-rodents_control <- function(data_set = NULL, species = base_species(), 
+rodents_control <- function(name = "name", species = base_species(), 
                             total = TRUE, interpolate = FALSE,
                             clean = FALSE, type = "Rodents", 
                             level = "Site", plots = "all", treatment = NULL, 
@@ -313,8 +313,8 @@ rodents_control <- function(data_set = NULL, species = base_species(),
                             filename = paste0("rodents_", data_set, ".csv"),
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  return_if_null(data_set)
-  list(data_set = data_set, species = species, total = total, 
+  return_if_null(name)
+  list(name = name, species = species, total = total, 
        interpolate = interpolate, clean = clean, type = type, level = level, 
        plots = plots, treatment = treatment, min_plots = min_plots, 
        min_traps = min_traps, output = output, fillweight = fillweight, 
@@ -453,7 +453,7 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
 #' @param species \code{character}-valued vector of species names 
-#'   to include. 
+#'  to include. 
 #'
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
@@ -814,7 +814,6 @@ species_from_table <- function(rodents_tab = NULL, total = FALSE,
 #'
 rodent_species <- function(species = NULL, set = NULL, nadot = FALSE, 
                            total = FALSE, arg_checks = TRUE){
-  #check_args(arg_checks = arg_checks)
   return_if_null(c(species, set))
   out <- NULL
   if(!is.null(set) && set == "all"){

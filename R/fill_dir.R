@@ -38,7 +38,7 @@
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
 #'
-#' @param controls_models Additional controls for models not in the prefab 
+#' @param controls_model Additional controls for models not in the prefab 
 #'  set. \cr 
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
@@ -104,7 +104,7 @@ NULL
 fill_dir <- function(main = ".", models = prefab_models(), 
                      end_moon = NULL, start_moon = 217,
                      lead_time = 12, confidence_level = 0.95, 
-                     cast_date = Sys.Date(), controls_models = NULL,
+                     cast_date = Sys.Date(), controls_model = NULL,
                      controls_rodents = rodents_controls(),
                      control_climate_dl = climate_dl_control(),
                      control_files = files_control(),
@@ -116,7 +116,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
            control_files = control_files, arg_checks = arg_checks)
   fill_casts(main = main, quiet = quiet, verbose = verbose, 
              control_files = control_files, arg_checks = arg_checks)
-  fill_models(main = main, models = models, controls_models = controls_models, 
+  fill_models(main = main, models = models, controls_model = controls_model, 
               quiet = quiet, verbose = verbose, control_files = control_files,
               arg_checks = arg_checks)
   fill_data(main = main, models = models, 
@@ -124,7 +124,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
             cast_date = cast_date, start_moon = start_moon, 
             confidence_level = confidence_level, 
             controls_rodents = controls_rodents,
-            controls_models = controls_models, 
+            controls_model = controls_model, 
             control_climate_dl = control_climate_dl, 
             downloads = downloads, control_files = control_files,
             quiet = quiet, verbose = verbose, arg_checks = arg_checks)
@@ -139,7 +139,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
 fill_data <- function(main = ".", models = prefab_models(),
                       end_moon = NULL,start_moon = 217, lead_time = 12,
                       confidence_level = 0.95, cast_date = Sys.Date(), 
-                      controls_models = NULL,
+                      controls_model = NULL,
                       controls_rodents = rodents_controls(), 
                       control_climate_dl = climate_dl_control(),
                       control_files = files_control(),
@@ -148,10 +148,10 @@ fill_data <- function(main = ".", models = prefab_models(),
   check_args(arg_checks = arg_checks)
 
   min_lag <- extract_min_lag(models = models, 
-                             controls_models = controls_models, 
+                             controls_model = controls_model, 
                              quiet = quiet, arg_checks = arg_checks)
   data_sets <- extract_data_sets(models = models, 
-                                 controls_models = controls_models, 
+                                 controls_model = controls_model, 
                                  quiet = quiet, arg_checks = arg_checks)
 
   raw_data_present <- verify_raw_data(main = main, 
@@ -186,7 +186,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                 lead_time = lead_time, min_lag = min_lag, 
                 cast_date = cast_date, start_moon = start_moon, 
                 confidence_level = confidence_level, 
-                controls_models = controls_models,
+                controls_model = controls_model,
                 controls_rodents = controls_rodents, quiet = quiet, 
                 control_files = control_files, arg_checks = arg_checks)
 
@@ -198,21 +198,20 @@ fill_data <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 fill_models <- function(main = ".", models = prefab_models(), 
-                        controls_models = NULL, 
+                        controls_model = NULL, 
                         control_files = files_control(), quiet = FALSE, 
                         verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(models)
-  controls_models <- model_script_controls(models = models, 
-                                           controls_models = controls_models,
-                                           quiet = quiet, 
-                                           arg_checks = arg_checks)
+  controls_model <- model_controls(models = models, 
+                                    controls_model = controls_model,
+                                    quiet = quiet, arg_checks = arg_checks)
   messageq(" -Writing model scripts", quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){
     write_model(main = main, quiet = quiet, verbose = verbose, 
                 control_files = control_files, 
-                control_model = controls_models[[models[i]]], 
+                control_model = controls_model[[models[i]]], 
                 arg_checks = arg_checks)
   } 
   invisible(NULL)

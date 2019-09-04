@@ -61,7 +61,7 @@ prefab_model_controls <- function(){
 #'  script-writing controls need to be included in the \code{list} used
 #'  to write the scripts. 
 #'
-#' @param controls_models Additional controls for models not in the prefab 
+#' @param controls_model Additional controls for models not in the prefab 
 #'  set. \cr 
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
@@ -91,78 +91,78 @@ prefab_model_controls <- function(){
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @return \code{model_script_controls}: named \code{list} of length equal to
+#' @return \code{model_controls}: named \code{list} of length equal to
 #'  the number of elements in \code{models} and with elements that are each 
 #'  \code{list}s of those \code{models}'s script-writing controls. \cr \cr
 #'  \code{extract_min_lag}: \code{numeric} value of the minimum non-0 lag
 #'  from any included model or \code{NA} if no models have lags.
 #'
 #' @examples
-#'  model_script_controls(prefab_models())
+#'  model_controls(prefab_models())
 #'  controls <- list(name = "xx", data_sets = prefab_data_sets(), 
 #'                   interpolate = FALSE, covariatesTF = FALSE, lag = NA)
-#'  model_script_controls("xx", controls)
-#'  model_script_controls(c(prefab_models(), "xx"), controls)
-#'  model_script_controls(c("xx", "ESSS"), controls)
+#'  model_controls("xx", controls)
+#'  model_controls(c(prefab_models(), "xx"), controls)
+#'  model_controls(c("xx", "ESSS"), controls)
 #'  extract_min_lag()
 #'  extract_min_lag("AutoArima")
 #'
 #' @export
 #'
-model_script_controls <- function(models = NULL, controls_models = NULL, 
-                                  quiet = FALSE, arg_checks = TRUE){
+model_controls <- function(models = NULL, controls_model = NULL, 
+                           quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(models)
-  if(list_depth(controls_models) == 1){
-    controls_models <- list(controls_models)
-    names(controls_models) <- controls_models[[1]]$name
+  if(list_depth(controls_model) == 1){
+    controls_model <- list(controls_model)
+    names(controls_model) <- controls_model[[1]]$name
   }
-  nadd <- length(controls_models)
+  nadd <- length(controls_model)
   prefab_controls <- prefab_model_controls()
   nprefab <- length(prefab_controls)
   for(i in 1:nprefab){
-    controls_models[nadd + i] <- list(prefab_controls[[i]])
-    names(controls_models)[nadd + i] <- names(prefab_controls)[i]
+    controls_model[nadd + i] <- list(prefab_controls[[i]])
+    names(controls_model)[nadd + i] <- names(prefab_controls)[i]
   }
-  missing_controls <- !(models %in% names(controls_models))
+  missing_controls <- !(models %in% names(controls_model))
   which_missing_controls <- which(missing_controls == TRUE)
   nmissing_controls <- length(which_missing_controls) 
   if(nmissing_controls > 0){
     which_missing <- models[missing_controls]
     all_missing <- paste(which_missing, collapse = ", ")
     msg <- paste0("  ~no controls input for ", all_missing)
-    msg <- c(msg, "  **assuming controls follow `model_script_control()`**")  
+    msg <- c(msg, "  **assuming controls follow `model_control()`**")  
     messageq(msg, quiet)
-    nadd <- length(controls_models)
+    nadd <- length(controls_model)
     for(i in 1:nmissing_controls){
       mod_name <- models[which_missing_controls[i]]
 
-      controls_models[[nadd + i]] <- model_script_control(name = mod_name,
+      controls_model[[nadd + i]] <- model_control(name = mod_name,
                                                    arg_checks = arg_checks)
-      names(controls_models)[nadd + i] <- mod_name
+      names(controls_model)[nadd + i] <- mod_name
     }
   }
-  replicates <- table(names(controls_models))
+  replicates <- table(names(controls_model))
   if(any(replicates > 1)){
     which_conflicting <- names(replicates)[which(replicates > 1)]
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of model(s): ", all_conflicting)
     stop(msg)
   }
-  included_models <- which(names(controls_models) %in% models)
-  controls_models[included_models]
+  included_models <- which(names(controls_model) %in% models)
+  controls_model[included_models]
 }
 
-#' @rdname model_script_controls
+#' @rdname model_controls
 #'
 #' @export
 #'
-extract_min_lag <- function(models = prefab_models(), controls_models = NULL, 
+extract_min_lag <- function(models = prefab_models(), controls_model = NULL, 
                             quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  controls <- model_script_controls(models = models,
-                                    controls_models = controls_models,
-                                    quiet = quiet, arg_checks = arg_checks)
+  controls <- model_controls(models = models,
+                             controls_model = controls_model,
+                             quiet = quiet, arg_checks = arg_checks)
   nmods <- length(controls)
   lags <- rep(NA, nmods)
   for(i in 1:nmods){
@@ -173,17 +173,17 @@ extract_min_lag <- function(models = prefab_models(), controls_models = NULL,
   ifelse(min_lag == Inf, NA, min_lag)
 }
 
-#' @rdname model_script_controls
+#' @rdname model_controls
 #'
 #' @export
 #'
 extract_data_sets <- function(models = prefab_models(), 
-                              controls_models = NULL, 
+                              controls_model = NULL, 
                               quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  controls <- model_script_controls(models = models, 
-                                    controls_models = controls_models,
-                                    quiet = quiet, arg_checks = arg_checks)
+  controls <- model_controls(models = models, 
+                             controls_model = controls_model,
+                             quiet = quiet, arg_checks = arg_checks)
   nmods <- length(controls)
   data_sets <- NULL
   for(i in 1:nmods){
@@ -357,8 +357,8 @@ model_template <- function(name = NULL, data_sets = NULL,
   check_args(arg_checks = arg_checks)
   return_if_null(name)
   data_sets <- ifnull(data_sets,  
-                      model_script_controls(models = name, 
-                        arg_checks = arg_checks)[[name]]$data_sets)
+                      model_controls(models = name, 
+                              arg_checks = arg_checks)[[name]]$data_sets)
   return_if_null(data_sets)
   main_arg <- paste0(', main = "', main, '"')
   control_files_arg <- paste0(', control_files = control_files')
@@ -393,7 +393,7 @@ model_template <- function(name = NULL, data_sets = NULL,
 #' @description Given the number of arguments into 
 #'  \code{\link{model_template}} via \code{\link{write_model}}
 #'  it helps to have a control \code{list}  
-#'  to organize them. \code{model_script_control} provides a template for the 
+#'  to organize them. \code{model_control} provides a template for the 
 #'  controls \code{list} used to define the specific arguments for a user's
 #'  novel data set, setting the formal arguments to the basic default 
 #'  values.
@@ -419,10 +419,8 @@ model_template <- function(name = NULL, data_sets = NULL,
 #'
 #' @export
 #'
-model_script_control <- function(name = "model", 
-                                  data_sets = prefab_data_sets(),
-                                  covariatesTF = FALSE, lag = NA,
-                                  arg_checks = TRUE){
+model_control <- function(name = "model", data_sets = prefab_data_sets(),
+                          covariatesTF = FALSE, lag = NA, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   list(name = name, data_sets = data_sets, covariatesTF = covariatesTF, 
       lag = lag)

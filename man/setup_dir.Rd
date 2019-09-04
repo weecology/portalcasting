@@ -8,7 +8,7 @@
 \usage{
 setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_models = NULL,
+  cast_date = Sys.Date(), controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
@@ -18,7 +18,7 @@ setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
 setup_production(main = ".", models = prefab_models(),
   end_moon = NULL, start_moon = 217, lead_time = 12,
   cast_date = Sys.Date(), confidence_level = 0.95,
-  controls_models = NULL, controls_rodents = rodents_controls(),
+  controls_model = NULL, controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
@@ -26,7 +26,7 @@ setup_production(main = ".", models = prefab_models(),
 
 setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
   start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_models = NULL,
+  cast_date = Sys.Date(), controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
@@ -58,7 +58,7 @@ summarizing model output. Must be between \code{0} and \code{1}.}
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 
-\item{controls_models}{Additional controls for models not in the prefab
+\item{controls_model}{Additional controls for models not in the prefab
 set. \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 

@@ -515,7 +515,7 @@ check_arg_list <- function(){
     confidence_level = arg_zeroone(),
     control_model = arg_list(),
     control_climate_dl = arg_list(),
-    controls_models = arg_list(),
+    controls_model = arg_list(),
     controls_rodents = arg_list(),
     control_files = arg_list(),
     covariates = arg_df(),

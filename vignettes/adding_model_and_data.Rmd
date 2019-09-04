@@ -81,10 +81,10 @@ If you would like your output to be archived with the other cast output, your co
 
 To add "newdata" to the available data set, it is important to recognize that the rodent preparation functions point directly to the [**portalr** `summarize_rodent_data` function](https://weecology.github.io/portalr/reference/summarize_rodent_data.html), which allows for flexible data customization. 
 
-**portalcasting** turns the arguments in `summarize_rodent_data` into arguments in `rodent_control()`, which sets default values for most arguments, but does require an input for `data_set`, which names the data set, otherwise it will return `NULL`. Here, we create the data control list and call it `ndc`, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the `prep_rodents()` function, which returns the data set to the console and saves it in the `data` sub-directory (Note that we **must** set `arg_checks = FALSE` to allow for the creation and use of the non-standard rodents data configuration.)
+**portalcasting** turns the arguments in `summarize_rodent_data` into arguments in `rodent_control()`, which sets default values for most arguments, but does require an input for `name`, which names the data set, otherwise it will return `NULL`. Here, we create the data control list and call it `ndc`, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the `prep_rodents()` function, which returns the data set to the console and saves it in the `data` sub-directory (Note that we **must** set `arg_checks = FALSE` to allow for the creation and use of the non-standard rodents data configuration.)
 
 ```{r, eval=FALSE}
-newdata_controls <- rodents_control(data_set = "newdata", level = "Treatment", treatment = "removal", arg_checks = FALSE)
+newdata_controls <- rodents_control(name = "newdata", level = "Treatment", treatment = "removal", arg_checks = FALSE)
 
 newdat <- prep_rodents(main = main, data_sets = "newdata", controls_rodents = newdata_controls, arg_checks = FALSE)
 ```
@@ -103,7 +103,7 @@ newdat <- read_rodents(main = main, data_set = "newdata")
 To run the model with the pipeline, you then simply use `portalcast` with a few additional arguments to specify the model and data components. However, you will notice that there is no `data_sets` argument in `portalcast`... so how do you tell the function what data sets the models will need? Well, the function automatically grabs the data sets that are required by the models named in the `models` argument, so how do you tell the function what newmod needs? You do that by creating a model control list:
 
 ```{r, eval=FALSE}
-newmod_controls <-  model_script_control(name = "newmod", data_sets = "newdata", covariatesTF = TRUE, lag = 0, arg_checks = TRUE)
+newmod_controls <-  model_control(name = "newmod", data_sets = "newdata", covariatesTF = TRUE, lag = 0, arg_checks = TRUE)
 ```
 
 And then you can run the `portalcast` function with the arguments specified as needed:
@@ -116,7 +116,7 @@ portalcast(main = main, models = "newmod", controls_models = newmod_controls, co
 
 1. Create script for "newmod" (`~/sandbox_1/main/newmod.R`).
 2. Fill script with model code.
-    + Create a model control list called `controls_newmod` using `model_script_control`
+    + Create a model control list called `controls_newmod` using `model_control`
 3. Add "newdata"
     + Create a data control list called `controls_newdata` using `rodents_control`
 4. Run model script using `portalcast`

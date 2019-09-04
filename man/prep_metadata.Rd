@@ -8,7 +8,7 @@ prep_metadata(main = ".", models = prefab_models(), data_sets = NULL,
   moons = NULL, rodents = NULL, covariates = NULL, end_moon = NULL,
   start_moon = 217, lead_time = 12, min_lag = NULL,
   cast_date = Sys.Date(), confidence_level = 0.95,
-  controls_models = NULL, controls_rodents = NULL,
+  controls_model = NULL, controls_rodents = NULL,
   control_files = files_control(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
 }
@@ -50,7 +50,7 @@ using \code{\link{Sys.Date}}.}
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
 
-\item{controls_models}{Additional controls for models not in the prefab
+\item{controls_model}{Additional controls for models not in the prefab
 set. \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 

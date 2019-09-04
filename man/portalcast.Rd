@@ -7,7 +7,7 @@
 \usage{
 portalcast(main = ".", models = prefab_models(), end_moons = NULL,
   start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_models = NULL,
+  cast_date = Sys.Date(), controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
@@ -47,7 +47,7 @@ summarizing model output. Must be between \code{0} and \code{1}.}
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 
-\item{controls_models}{Additional controls for models not in the prefab 
+\item{controls_model}{Additional controls for models not in the prefab 
 set. \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 

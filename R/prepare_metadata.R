@@ -55,7 +55,7 @@
 #'  structuring of the rodents tables. See \code{\link{rodents_controls}} for 
 #'  details. 
 #'
-#' @param controls_models Additional controls for models not in the prefab
+#' @param controls_model Additional controls for models not in the prefab
 #'  set. \cr 
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
@@ -98,7 +98,7 @@ prep_metadata <- function(main = ".", models = prefab_models(),
                           covariates = NULL, end_moon = NULL, 
                           start_moon = 217, lead_time = 12, min_lag = NULL, 
                           cast_date = Sys.Date(), confidence_level = 0.95, 
-                          controls_models = NULL, 
+                          controls_model = NULL, 
                           controls_rodents = NULL,
                           control_files = files_control(),
                           quiet = TRUE, verbose = FALSE, arg_checks = TRUE){
@@ -106,10 +106,10 @@ prep_metadata <- function(main = ".", models = prefab_models(),
   filename_config <- control_files$filename_config
   filename_meta <- control_files$filename_meta
   min_lag_e <- extract_min_lag(models = models,
-                               controls_models = controls_models, 
+                               controls_model = controls_model, 
                                arg_checks = arg_checks)
   data_sets_e <- extract_data_sets(models = models, 
-                                   controls_models = controls_models, 
+                                   controls_model = controls_model, 
                                    arg_checks = arg_checks)
 
   min_lag <- ifnull(min_lag, min_lag_e)

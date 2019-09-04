@@ -20,7 +20,7 @@ A \code{list} of a single dataset's controls or a \code{list} of
 Presently, each dataset's controls should include 18 elements, as 
 our \code{\link{rodents_control}} template shows:
 \itemize{
- \item \code{data_set}: \code{character} value of the name,
+ \item \code{name}: \code{character} value of the data set's name,
  \item \code{species}: \code{character}-valued vector of species names 
  to include.  
  \item \code{total}: \code{logical} value indicating if a total 

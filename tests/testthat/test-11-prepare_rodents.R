@@ -24,7 +24,7 @@ test_that("last_census", {
 test_that("rodents_controls",{
   expect_is(rodents_controls(c("all", "controls")), "list")
   controls_r <- rodents_controls("all")[[1]]
-  controls_r$data_set <- "allX"
+  controls_r$name <- "allX"
   expect_is(rodents_controls("allX", controls_rodents = controls_r),
                              "list")
   controls_r$data_set <- "all"
