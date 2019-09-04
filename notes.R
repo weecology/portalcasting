@@ -3,6 +3,7 @@
 #   donttest examples
 # evaluation (do in next iteration?)
 
+
 devtools::document()
 
 main <- "~/test"

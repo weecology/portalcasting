@@ -75,7 +75,7 @@
 #'
 plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL, 
                             model = NULL, end_moon = NULL, species = NULL, 
-                            moon = NULL, with_census = TRUE, 
+                            moon = NULL, with_census = FALSE, 
                             control_files = files_control(), quiet = FALSE,
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -108,18 +108,23 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
     stop("no casts available for requested plot")
   }
 
-  obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
-                            arg_checks = arg_checks)
-  sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
-  species <- ifnull(species, colnames(obs)[sp_col])
-  moon <- ifnull(moon, unique(obs$moon))
-  obs <- obs[obs$moon %in% moon, species]
-  if(NROW(obs) == 0){
-    stop("no observations available for requested plot") 
-  } 
+  max_obs <- 0
+  if(with_census){
+    obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
+                              arg_checks = arg_checks)
+    sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
+    species <- ifnull(species, colnames(obs)[sp_col])
+    moon <- ifnull(moon, unique(obs$moon))
+    obs <- obs[obs$moon %in% moon, species]
+    if(NROW(obs) == 0){
+      stop("no observations available for requested plot") 
+    } 
+    max_obs <- max(as.numeric(obs), na.rm = TRUE)
+  }
 
   preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
                          arg_checks = arg_checks)
+  preds <- na_conformer(preds, "species")
   species <- ifnull(species, unique(preds$species))
   match_sp <- (preds$species %in% species)
   moon <- ifnull(moon, unique(preds$moon))
@@ -140,7 +145,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
   species <- preds$species
   nspp <- length(species)
   rangey <- c(nspp + 0.25, 0.75)
-  rangex <- c(0, max(c(preds$upper_pi, as.numeric(obs))))
+  rangex <- c(0, max(c(preds$upper_pi, max_obs)))
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))

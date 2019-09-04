@@ -155,6 +155,8 @@ portalcast <- function(main = ".", models = prefab_models(),
          verbose = verbose, arg_checks = TRUE)
   }
   if(end_moons[nend_moons] != last_moon){
+    messageq("---------------------------------------------------------", 
+             quiet)
     messageq("Resetting data to the most up-to-date versions", quiet)
     fill_data(main = main, models = models, 
               end_moon = NULL, lead_time = lead_time, 
@@ -165,8 +167,6 @@ portalcast <- function(main = ".", models = prefab_models(),
               control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
               quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
-    messageq("---------------------------------------------------------", 
-             quiet)
 
   }
   portalcast_goodbye(quiet = quiet)

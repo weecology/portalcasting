@@ -6,8 +6,8 @@
 \usage{
 plot_cast_point(main = ".", cast_id = NULL, data_set = NULL,
   model = NULL, end_moon = NULL, species = NULL, moon = NULL,
-  with_census = TRUE, control_files = files_control(), quiet = FALSE,
-  arg_checks = TRUE)
+  with_census = FALSE, control_files = files_control(),
+  quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
