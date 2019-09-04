@@ -476,7 +476,7 @@ verify_models <- function(main = ".", models = prefab_models(),
       stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
     }
   }
-  messageq("All requested models available", quiet)
+  messageq(" *All requested models available*", quiet)
   messageq("---------------------------------------------------------", quiet)
 }
 

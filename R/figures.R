@@ -274,7 +274,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #'
 plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL, 
                          model = NULL, end_moon = NULL, species = "total",
-                         start_moon = 300, control_files = files_control(), 
+                         start_moon = 217, control_files = files_control(), 
                          quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
 
@@ -312,7 +312,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  par(mar = c(3, 4.5, 1, 1))
+  par(mar = c(3, 4.5, 2, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
 
@@ -379,7 +379,12 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
   points(o_x_2, o_y_2, type = "l", lwd = 2)
 
   model_name <- casts_meta$model
-  text(model_name, x = start_moon, y = maxy, adj = 0, cex = 1.5)
+  data_set_name <- casts_meta$data_set
+  data_set_name <- gsub("_interp", " (interpolated)", data_set_name)
+  model_name <- casts_meta$model
+  title <- paste0(model_name, ", ", data_set_name)
+  mtext(title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
+
 }
 
 

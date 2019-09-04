@@ -6,7 +6,7 @@
 \usage{
 plot_cast_ts(main = ".", cast_id = NULL, data_set = NULL,
   model = NULL, end_moon = NULL, species = "total",
-  start_moon = 300, control_files = files_control(), quiet = FALSE,
+  start_moon = 217, control_files = files_control(), quiet = FALSE,
   arg_checks = TRUE)
 }
 \arguments{

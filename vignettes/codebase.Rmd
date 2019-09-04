@@ -55,7 +55,7 @@ main
 │   <data used for a specific run of models>
 └──casts
 │   <previous and current model output>
-
+└──dir_config.yaml
 ```
 
 (**Note**: Previous versions of **portalcasting** had an explicitly named `base` level more basal than `main`, but that has been removed as of v0.9.0 due to its redundancy. To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "~/project_folder"`.)
@@ -68,13 +68,13 @@ Setting up a fully functional directory for a production or sandbox pipeline con
 
 The directory is established using `create_dir`, which takes `main` as an argument and in sequence creates each of the levels' folders if they do not already exist. This occurs through calls to `create_main` and `create_subs`. A typical user is likely to want to change the `main` input (to locate the forecasting directory where they would like it), but general users should not alter the `subs` structure, and so that option is not available through the `create` functions.
 
-`create_dir` also initializes the `dir_config.yaml` file, which is held within `main` and contains directory setting up metadata.
+`create_dir` also initializes the `dir_config.yaml` file, which is held within `main` and contains metadata about the directory setting up process.
 
 ### Filling 
 
-The directory is filled (loaded with files for default forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir` function:
+The directory is filled (loaded with files for forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir` function:
 
-* `fill_raw` downloads each of the raw components for the directory, such as the source data and previous forecasts. Upon completion of the downloads, `fill_raw` updates `dir_config.yaml` with download versions.
+* `fill_raw` downloads each of the raw components for the directory, which presently include the source data and previous forecasts' archive. Upon completion of the downloads, `fill_raw` updates `dir_config.yaml` with download versions.
 * `fill_casts` moves the existing model output files from the `raw` subdirectory to the `casts` subdirectory.
 * `fill_models` writes the model scripts into the `models` subdirectory.
 * `fill_data` prepares the forecasting data files from the raw downloaded data files and moves them into the `data` subdirectory.
@@ -83,7 +83,7 @@ The directory is filled (loaded with files for default forecasting) using a seri
   * `prep_covariates` downloads and forecasts covariates data.
   * `prep_metadata` creates and saves out a YAML metadata list for the forecasting. 
 
-Each of these components can be run individually, as well.
+Each of these components can be run individually, as well. In particular, `fill_data` is used to set up the complete set of data for a given model run, and to reset the data to the most up-to-date version after model completion
 
 ## Running models
 

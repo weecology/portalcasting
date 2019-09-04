@@ -136,7 +136,8 @@ portalcast <- function(main = ".", models = prefab_models(),
   end_moons <- ifnull(end_moons, last_moon)
   nend_moons <- length(end_moons)
   for(i in 1:nend_moons){
-    messageq("Readying data", quiet)
+    msg <- paste0("Readying data for forecast origin newmoon ", end_moons[i])
+    messageq(msg, quiet)
     fill_data(main = main, models = models, 
               end_moon = end_moons[i], lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 
@@ -145,7 +146,7 @@ portalcast <- function(main = ".", models = prefab_models(),
               controls_models = controls_models, 
               control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
-              quiet = quiet, verbose = verbose, arg_checks = arg_checks)
+              quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
     cast(main = main, models = models,
          cast_date = cast_date, moons = moons, 
          end_moon = end_moons[i], 
@@ -154,6 +155,7 @@ portalcast <- function(main = ".", models = prefab_models(),
          verbose = verbose, arg_checks = TRUE)
   }
   if(end_moons[nend_moons] != last_moon){
+    messageq("Resetting data to the most up-to-date versions", quiet)
     fill_data(main = main, models = models, 
               end_moon = NULL, lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 
@@ -162,7 +164,10 @@ portalcast <- function(main = ".", models = prefab_models(),
               controls_models = controls_models, 
               control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
-              quiet = quiet, verbose = verbose, arg_checks = arg_checks)
+              quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
+    messageq("---------------------------------------------------------", 
+             quiet)
+
   }
   portalcast_goodbye(quiet = quiet)
 } 
@@ -215,6 +220,7 @@ cast <- function(main = ".", models = prefab_models(), moons = NULL,
   messageq("---------------------------------------------------------", quiet)
   clear_tmp(main = main, quiet = quiet, verbose = verbose, 
             cleanup = control_files$cleanup, arg_checks = arg_checks)
+
 }
 
 
