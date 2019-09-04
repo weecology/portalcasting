@@ -131,7 +131,7 @@ setup_production <- function(main = ".", models = prefab_models(),
                              control_files = files_control(), 
                              downloads = 
                                zenodo_downloads(c("1215988", "833438")), 
-                             quiet = FALSE, verbose = FALSE, 
+                             quiet = FALSE, verbose = TRUE, 
                              arg_checks = TRUE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
@@ -159,7 +159,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           control_files = files_control(),
                           downloads = 
                             zenodo_downloads(c("1215988", "833438")), 
-                          quiet = FALSE, verbose = FALSE, 
+                          quiet = FALSE, verbose = TRUE, 
                           arg_checks = FALSE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 

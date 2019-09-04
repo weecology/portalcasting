@@ -83,21 +83,19 @@ The directory is filled (loaded with files for forecasting) using a series of su
   * `prep_covariates` downloads and forecasts covariates data.
   * `prep_metadata` creates and saves out a YAML metadata list for the forecasting. 
 
-Each of these components can be run individually, as well. In particular, `fill_data` is used to set up the complete set of data for a given model run, and to reset the data to the most up-to-date version after model completion
+Each of these components can be run individually, as well. In particular, `fill_data` is used to set up the complete set of data for a given model run, and to reset the data to the most up-to-date version after model completion.
 
 ## Running models
 
 Models are run using a function pipeline similar to the creation and filling function pipelines, with flexible controls through a variety of arguments, but robust operation under default settings. 
 
-* `portalcast` is the overarching function that controls -casting of the Portal data
+* `portalcast` is the overarching function that controls casting of the Portal data
   * `verify_models` ensures that all of the models requested have scripts present in the `models` subdirectory.
   * `verify_raw_data` ensures that the base Portal data are present in the `raw` subdirectory
   * `extract_min_lag` determines the minimum non-0 lag used with covariate data across the models, for input into `prep_data`
   * `read_moons` brings the lunar data in to the function and `last_newmoon` determines the most recently passed newmoon, which is used to set the forecast origin (`end_moons`, note that here the plural in `end_moons` indicates that multiple forecast origins can be input to `portalcast`) if it wasn't set by the user.
   * For each `end_moons` value, `portalcast` runs:
-    * `prep_data` which ensures that the data files in the `data` subdirectory are up-to-date for the specifics requested. 
-      * The metadata file is read in and the dates and moons are checked for being up to date.
-      * If the metadata file doesn't exist, the date of the data is old, the newmoons aren't aligned, or a hindcast is being done (the `end_moon` is lower than the `last_moon`), the data are updated using `fill_data`.
+    * `fill_data` which ensures that the data files in the `data` subdirectory are up-to-date for the specifics requested. 
     * `cast` runs ("casts") each of the requested models for the data
       * `clear_tmp` clears the files in the `tmp` folder.
       * `models_to_cast` collects the file paths to the scripts in the `models` subdirectory, which are then run using `source`.
@@ -119,7 +117,7 @@ Given the reliance of files located in a variety of subdirectories that could be
 
 ### Data IO
 
-*portalcasting* has a generalized `read_data` function that allows for toggling among `read_rodents`, `read_rodents_table`, `read_covariates`, `read_covariate_casts`, `read_moons`, and `read_metadata`, which each have specific loading procedures in place and, in the case that the requested file does not exist, an attempt is made (through the corresponding `prep_` function) to create the data file. Similar to the `read_data` functions, `read_casts` provides a simple user interface for reading the cast files into the R session.
+**portalcasting** has a generalized `read_data` function that allows for toggling among `read_rodents`, `read_rodents_table`, `read_covariates`, `read_covariate_casts`, `read_moons`, and `read_metadata`, which each have specific loading procedures in place and, in the case that the requested file does not exist, an attempt is made (through the corresponding `prep_` function) to create the data file. Similar to the `read_data` functions, `read_casts` provides a simple user interface for reading the cast files into the R session.
 
 For saving out, `write_data` provides a simple means for interfacing with potentially pre-existing data files, with logical inputs for saving generally and overwriting a pre-existing file specifically, and flexible file naming. The type of data saved out is currently restricted to `.csv` and `.yaml`, which is extracted from the filename given. 
 
@@ -127,13 +125,13 @@ The directory configuration file is a special file, and has its own IO functions
 
 ### Argument checking
 
-*portalcasting* provides tidy and toggle-able argument checking via `check_arg`, `check_args`, and `check_arg_list`. They check the validity of inputted values for arguments, variably (depending on the argument) including the class, length, and values. It extracts the boolean checking code that would normally be within each function, placing it instead within `check_arg` which is called for each argument by `check_args`.
+**portalcasting** provides tidy and toggle-able argument checking via `check_arg`, `check_args`, and `check_arg_list`. They check the validity of inputted values for arguments, variably (depending on the argument) including the class, length, and values. It extracts the boolean checking code that would normally be within each function, placing it instead within `check_arg` which is called for each argument by `check_args`.
 
-A key aspect to the *portalcasting* pipeline's ability to connect pieces is tied directly to argument checking: argument names should not be re-used in different functions unless they are for the same type of object with the same value options.
+A key aspect to the **portalcasting** pipeline's ability to connect pieces is tied directly to argument checking: argument names should not be re-used in different functions unless they are for the same type of object with the same value options.
 
-Some base *portalcasting* utilities cannot use `check_args` however, and so have their own specific internal checking. For example, `list_depth`'s recursive nature prevents its use, and `check_arg` cannot use `check_args` itself. 
+Some base **portalcasting** utilities cannot use `check_args` however, and so have their own specific internal checking. For example, `list_depth`'s recursive nature prevents its use, and `check_arg` cannot use `check_args` itself. 
 
-`check_args` provides important backstopping and error checking of a standard *portalcasting* production pipepline. However, it is likely that a user in development spaces (a.k.a. sandboxes) would like to deviate from the standard behavior to leverage, for example, the ability to construct novel rodent data sets. To that end, we include an argument `arg_checks` that is in nearly every function throughout the codebase, which flips a switch and turns off the vast majority of the *portalcasting*-generated errors. In this space, the user will be able to create a much broader array of directory components and actions, but will likely be first informed of errors through more base (and thus obtuse) functions. To that end, in default sandboxing mode, we set `arg_checks = FALSE` (minimal checking from *portalcasting*) and `verbose = TRUE` (maximum feedback from underlying functions).
+`check_args` provides important backstopping and error checking of a standard **portalcasting** production pipepline. However, it is likely that a user in development spaces (a.k.a. sandboxes) would like to deviate from the standard behavior to leverage, for example, the ability to construct novel rodent data sets. To that end, we include an argument `arg_checks` that is in nearly every function throughout the codebase, which flips a switch and turns off the vast majority of the **portalcasting**-generated errors. In this space, the user will be able to create a much broader array of directory components and actions, but will likely be first informed of errors through more base (and thus obtuse) functions. To that end, in default sandboxing mode, we set `arg_checks = FALSE` (minimal checking from **portalcasting**) and `verbose = TRUE` (maximum feedback from underlying functions).
 
 ### `messageq`
 

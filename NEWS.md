@@ -27,8 +27,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Changes for users adding their own models to the prefab set
 * Substantial reduction in effort for users who wish to add models (i.e. anyone who is sandboxing). You can even just plunk your own R script (which could be a single line calling out to an external program if desired) without having to add any model script writing controls, and just add the name of the model to the models argument in `portalcast` and it will run it with everything else.
 * Outlined in the updated [Getting Started](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignettes.
-* Users adding models to the suite should permanently add their model's control options to the source code in `model_script_controls` rather than write their own control functions.
-* Users adding models to the suite should permanently add their model's function code to the `prefab_models` script, rather than to its own script. 
+* Users adding models to the prefab suite should now permanently add their model's control options to the source code in `model_script_controls` rather than write their own control functions.
+* Users adding models to the prefab suite should permanently add their model's function code to the `prefab_models` script (reusing and adding to the documentation in `prefab_model_functions`), rather than to its own script. 
 * Users should still add their model's name to the source code in `model_names`.
 
 ### Relaxed model requirements
@@ -42,11 +42,11 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Directory setting up configuration information is now tracked in a `dir_config.yaml` file, which is pulled from to save information about what was used to create, setup, and run the particular casts.
 
 ### Changes for users interested in analyzing their own data sets not in the standard data set configuration
-* Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls") by giving the name in the `data_sets` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_r` argument. 
+* Users are now able to define rodent observation data sets that are not part of the standard data set ("all" and "controls", each also with interpolation of missing data) by giving the name in the `data_sets` argument and the controls defining the data set (used by portalr's `summarize_rodent_data` function) in the `controls_rodents` argument. 
 * In order to actualize this, a user will need to flip off the argument checking (the default in a sandbox setting, if using a standard or production setting, set `arg_checks = FALSE` in the relevant function).
-* Users interested in permanently adding the treatment level to the available data sets should add the source code to the `rodents_controls` function, and the name to the `tmnt_type` argument inputs in function if the user wants to add it to the standard set (or better yet, the next person to add a set should make a function like `model_names` to tidy up the `tmnt_types` options).
+* Users interested in permanently adding the treatment level to the available data sets should add the source code to the `rodents_controls` function, just like with the models.
 * [addresses](https://github.com/weecology/portalcasting/issues/133)
-* Internal code points the pipeline to the files named via the data set inputs. The other data files are pointed to using the `control_files` (see `file_controls`) input list, which allows for some general flexibility.
+* Internal code points the pipeline to the files named via the data set inputs. The other data files are pointed to using the `control_files` (see `file_controls`) input list, which allows for some general flexibility with respect to what files the pipeline is reading in from the `data` subdirectory.
 
 ### Split of standard data sets 
 * The prefab `all` and `controls` were both default being interpolated for all models because of the use of AIC for model comparison and ensemble building. That forced all models to use interpolated data.

@@ -83,6 +83,7 @@
 #'  }
 #'
 #' @name prefab_model_functions
+#'
 NULL
 
 #' @rdname prefab_model_functions
