@@ -90,7 +90,7 @@ To add "newdata" to the available data set, it is important to recognize that th
 ```{r, eval=FALSE}
 newdata_controls <- rodents_control(name = "newdata", level = "Treatment", treatment = "removal", arg_checks = FALSE)
 
-newdat <- prep_rodents(main = main, data_sets = "newdata", controls_rodents = newdata_controls, arg_checks = FALSE)
+newdata <- prep_rodents(main = main, data_sets = "newdata", controls_rodents = newdata_controls, arg_checks = FALSE)
 ```
 
 ![The sandbox's models data folder with newdata added](imgs/sandbox_1_data_added.jpg){width=400px} 
@@ -146,37 +146,120 @@ select_casts(main = main)
 
 ### Checklist
 
-1. Create script for "newmod" (`~/sandbox_1/main/newmod.R`).
-2. Fill script with model code.
-    + Create a model control list called `controls_newmod` using `model_control`
+1. Create script for "newmod" at `~/sandbox_1/main/newmod.R`
+    + Fill script with model code
+2. Create a model control list called `newmod_controls` using `model_control`
 3. Add "newdata"
-    + Create a data control list called `controls_newdata` using `rodents_control`
+    + Create a data control list called `newdata_controls` using `rodents_control`
 4. Run model script using `portalcast`
     + Include `models = "newmod"` to tell the function to use the new model
-    + Include `controls_models = controls_newmod` to tell the function what the model needs
-    + Include `controls_rodents = controls_newdata` to tell the function how to configure the new data set
+    + Include `controls_models = newmod_controls` to tell the function what the model needs
+    + Include `controls_rodents = newdata_controls` to tell the function how to configure the new data set
     + Include `arg_checks = FALSE` to allow the function to use non-standard inputs
 
 ## Adding in a production space
 
-Once you've worked out all of the kinks in your model and are interested in adding it to the prefabricated (prefab)
+Once you've worked out all of the kinks in your model and are interested in adding it to the prefabricated (prefab) set, some additional steps will be required. 
+
+First create a branch from the master branch on the **portalcasting** [GitHub repo](https://github.com/weecology/portalcasting). This allows you to work within the package environment. 
 
 ### Adding a model
 
- (Moving your model to the production pipeline will, however, require encapsulating that code within a function, which we will address later in this vignette)
+Moving your model to the production pipeline requires encapsulating that code within a function (with the same name as the model, so here `newmod()`), similar to how the other prefab models are (for example `AutoArima()`). Notably, each function works on a single data set (for example "all" or "controls") at a time. Models that work on multiple data sets (such as `AutoArima()` on both "all" and "controls") have that indicated in their control lists.
 
-to add a model permanently to prefab
+The prefab model functions have a shared set of arguments and documentation, highlighting their similarity in structure.
 
-add the controls to the \code{prefab_model_controls} non-exported function
-in the \code{prepare_models.R} script
-will automatically add the model to the prefab_models 
+Each function takes the following arguments:
+  * `main` (points to the directory)
+  * `data_set` (indicates which version of the data a particular run of the model will cover)
+  * `control_files` (is a control list with file names)
+  * `quiet` and `verbose` (deal with message printing)
+  * `arg_checks` (handles argument checking)
+and if the model uses covariates, it will also take:
+  * `lag` (indicates the number of steps for lagging the covariates)
+
+Each function also returns a list with elements named `metadata`, `cast_tab`, `model_fits`, and `model_casts`, as was discussed earlier. This is more important here, as each prefab model has its output automatically saved using `save_cast_output()`.
+
+Based off of the other prefab models, here is an example of how to encapsulate `newmod()`:
+
+![Adding to the args options](imgs/sandbox_1_newmod_function.jpg){width=400px} 
+
+Once you have the model encapsulated in a function, add that function to the `prefab_model_functions` object within `prefab_models.R` script and add the relevant text to the documentation.
+
+You then need to permanently add the controls for the model (the control list called `newmod_controls`) into the (non-exported) function `prefab_model_controls`, which is at the top of the `prepare_models.R` script. This function houses the controls for models that are loaded by default and is also used to extract the names of the models. 
+
+![newmod added to the prefab model controls](imgs/sandbox_1_newmod_to_prefab.jpg){width=400px} 
+
 
 ### Adding a data set
 
-sames for data sets
+Similarly to with adding the model, you then need to permanently add the controls for the data (the control list called `newdata_controls`) into the (non-exported) function `prefab_rodents_controls`, which is at the top of the `prepare_rodents.R` script. This function houses the controls for data sets that are loaded by default and is also used to extract the names of the data sets. 
+
+![newdata added to the prefab data controls](imgs/sandbox_1_newdata_to_prefab.jpg){width=400px} 
+
+Notably here, as mentioned earlier, the input for `treatment` (`"removal"`) was not previously allowed (so you needed to set `arg_checks = FALSE`). To permanently allow it, you'll need to add it to the available treatment options within the `check_arg_list()` function in the `args.R` script. This is true of any level that needs to be added to the available options.
+
+![Adding to the args options](imgs/sandbox_1_add_to_args.jpg){width=400px} 
 
 
+### Running the model with the data set
 
+Running the model is now then nearly as easy as using `portalcast()` with base arguments. First make sure you can build the package:
 
+```{r, eval=FALSE}
+devtools::load_all()
+```
+
+Then, verify that the proper version of the model scripts are in the `models` subdirectory:
+
+```{r, eval=FALSE}
+fill_models(main = main)
+```
+
+This will create the `newmod.R` script akin to the other prefab models. 
+
+And either run newmod by itself
+
+```{r, eval=FALSE}
+portalcast(main = main, models = "newmod")
+```
+
+or with all of the other models
+
+```{r, eval=FALSE}
+portalcast(main = main)
+```
+
+Model output can then be read in, visualized, and processed as before with the hand-done script.
+
+### Verification
+
+Having added your code to the package, it is imperative that you add unit tests for the model to the tests in the package already (within the package, in the `tests/testthat/test-15-prefab_models.R` script). Tests should be added for each of the data sets used. 
+
+![Adding to the tests](imgs/sandbox_1_newmod_test.jpg){width=400px} 
+
+Note that because of the length of time taken downloading data and running models, the majority of tests are not implemented on CRAN, which should be followed here, as none of the necessary components will be available for use. Because newmod only applies to the total rodent counts, there was no need to thin the data set, but models that apply across all of the species and the total can take a long time to run. Presently, we therefore thin the controls, all, controls_interp, and all_interp data sets for use. It is highly recommended that you do this for additional data sets you add, and the code implemented within that testing script provides working examples. 
+
+With the tests added, you should then verify that the package will still pass through the following set of calls to package-building functions in **devtools**:
+
+```{r, eval=FALSE}
+devtools::document()
+devtools::check()
+devtools::test()
+```
+
+Once you are all ready to go, submit the code on your branch as a [pull request](https://github.com/weecology/portalcasting/pulls) and tag @juniperlsimonis.
+
+### Checklist
+
+1. Create a branch from the master on the [GitHub repo](https://github.com/weecology/portalcasting)
+2. Turn the script for "newmod" into a function called `newmod`
+3. Add that function to the `prefab_model_functions` object in the `prefab_models.R` script 
+    + Be sure to include the model in the documentation
+4. Put the `newmod_controls` list into the `prefab_model_controls` in the `prepare_models.R` script
+5. Put the `newdata_controls` list into the `prefab_rodents_controls` in the `prepare_rodents.R` script
+6. Add tests
+7. Run tests and checks    
+8. Submit the code as a  on GitHub
 
 

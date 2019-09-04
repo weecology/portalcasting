@@ -1,6 +1,7 @@
 Abatzoglou
 Acknowledgements
 Arg
+args
 AutoArima
 autoregresive
 Bergmeir
@@ -21,6 +22,7 @@ config
 crosstab
 csv
 dataset's
+devtools
 differencing
 DOI
 downscaled
@@ -45,6 +47,7 @@ hindcasting
 Hindcasting
 https
 Hyndman
+interp
 json
 Liboschik
 Lifecycle
