@@ -11,8 +11,8 @@ rodents_control(name = "name", species = base_species(),
   output = "abundance", fillweight = (output != "abundance"),
   unknowns = FALSE, time = "newmoon", na_drop = FALSE,
   zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site
-  = TRUE), effort = FALSE, filename = paste0("rodents_", data_set,
-  ".csv"), arg_checks = TRUE)
+  = TRUE), effort = FALSE, filename = paste0("rodents_", name, ".csv"),
+  arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the rodent data set name

@@ -310,7 +310,7 @@ rodents_control <- function(name = "name", species = base_species(),
                                                     treatment = TRUE,
                                                     site = TRUE),
                             effort = FALSE,
-                            filename = paste0("rodents_", data_set, ".csv"),
+                            filename = paste0("rodents_", name, ".csv"),
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(name)
