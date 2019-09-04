@@ -13,8 +13,8 @@ the directory tree.}
 \item{cast_id}{\code{integer} (or integer \code{numeric}) value 
 representing the cast of interest, as indexed within the directory in
 the \code{casts} sub folder. See the casts metadata file 
-(\code{casts_metadata.csv}) for summary information. If \code{NULL} (tjhe
-default), no \code{cast_tab} is read in.}
+(\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
+default), the most recent generated \code{cast_tab} is read in.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

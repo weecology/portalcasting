@@ -176,7 +176,7 @@ NaiveArima <- function(main = ".", data_set = "all",
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_r[[data_set]]
+  data_set_controls <- metadata$controls_rodents[[data_set]]
 
   mods <- named_null_list(species)
   casts <- named_null_list(species)
@@ -242,7 +242,7 @@ ESSS <- function(main = ".", data_set = "all_interp",
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_r[[data_set]]
+  data_set_controls <- metadata$controls_rodents[[data_set]]
 
   mods <- named_null_list(species)
   casts <- named_null_list(species)
@@ -308,7 +308,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_r[[data_set]]
+  data_set_controls <- metadata$controls_rodents[[data_set]]
 
   mods <- named_null_list(species)
   casts <- named_null_list(species)
@@ -395,7 +395,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_r[[data_set]]
+  data_set_controls <- metadata$controls_rodents[[data_set]]
 
   for_hist <- which(moons$moon %in% rodents_table$moon)
   for_cast <- which(moons$moon %in% cast_moons) 
@@ -509,7 +509,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   mods <- named_null_list(species)
   casts <- named_null_list(species)
   cast_tab <- data.frame()
-  data_set_controls <- metadata$controls_r[[data_set]]      
+  data_set_controls <- metadata$controls_rodents[[data_set]]      
   models <- covariate_models("pevGARCH")
   nmodels <- length(models)
 

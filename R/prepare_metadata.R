@@ -172,7 +172,7 @@ prep_metadata <- function(main = ".", models = prefab_models(),
 
   list(cast_group = cast_group, models = models, data_sets = data_sets, 
        directory_configuration = config,
-       controls_r = controls_r,
+       controls_rodents = controls_r,
        cast_type = cast_type, start_moon = start_moon, end_moon = end_moon,
        last_moon = last_moon, lead_time = lead_time, 
        min_lag = min_lag, cast_date = as.character(cast_date), 

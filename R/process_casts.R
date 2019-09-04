@@ -10,8 +10,8 @@
 #' @param cast_id \code{integer} (or integer \code{numeric}) value 
 #'  representing the cast of interest, as indexed within the directory in
 #'  the \code{casts} sub folder. See the casts metadata file 
-#'  (\code{casts_metadata.csv}) for summary information. If \code{NULL} (tjhe
-#'  default), no \code{cast_tab} is read in. 
+#'  (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
+#'  default), the most recent generated \code{cast_tab} is read in. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -31,7 +31,10 @@
 #'
 read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   check_args(arg_checks)
-  return_if_null(cast_id)
+  if(is.null(cast_id)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_id <- max(casts_meta$cast_id)
+  }
   lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
   cpath <- file_path(main, "casts", lpath, arg_checks)
   if(!file.exists(cpath)){

@@ -1,5 +1,5 @@
 ---
-title: "Adding a Model or Data"
+title: "Adding a Model and Data"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: "Juniper L. Simonis and Glenda M. Yenni"
 output: rmarkdown::html_vignette
@@ -75,7 +75,11 @@ Obviously, you'll need to add some code to the `newmod.R` script, but as stated 
 
 If you would like your output to be archived with the other cast output, your code must produce a `list` object and you must pass it to `save_cast_output()` in your script. If the list contains elements named `metadata`, `cast_tab`, `model_fits`, or `model_casts`, they are saved out. See `save_cast_output()` for processing specs and the models in `prefab_model_functions` for execution.
 
+As an example here, I have filled out the model script for newmod with a very basic model. It uses a linear regression with no autocorrelation and only analyzes the total rodent counts. The forecast is simply the linear model's prediction over the future moons. 
 
+![A trivial newmod](imgs/sandbox_1_newmod.jpg){width=400px} 
+
+As you can see, the model metadata contains a lot of key information used to fit the models, such as the forecast horizon (which for Portal may not necessarily be equal to the theoretical lead time, as some surveys are missed and there is a lag to entering data, so sometimes additional surveys need to be cast)
 
 ### Adding a data set
 
@@ -103,14 +107,42 @@ newdat <- read_rodents(main = main, data_set = "newdata")
 To run the model with the pipeline, you then simply use `portalcast` with a few additional arguments to specify the model and data components. However, you will notice that there is no `data_sets` argument in `portalcast`... so how do you tell the function what data sets the models will need? Well, the function automatically grabs the data sets that are required by the models named in the `models` argument, so how do you tell the function what newmod needs? You do that by creating a model control list:
 
 ```{r, eval=FALSE}
-newmod_controls <-  model_control(name = "newmod", data_sets = "newdata", covariatesTF = TRUE, lag = 0, arg_checks = TRUE)
+newmod_controls <-  model_control(name = "newmod", data_sets = "newdata")
 ```
 
 And then you can run the `portalcast` function with the arguments specified as needed:
 
 ```{r, eval=FALSE}
-portalcast(main = main, models = "newmod", controls_models = newmod_controls, controls_rodents = newdata_controls, arg_checks = FALSE)
+portalcast(main = main, models = "newmod", controls_model = newmod_controls, controls_rodents = newdata_controls, arg_checks = FALSE)
 ```
+
+To visualize the output, simply run `plot_cast_ts` and `plot_cast_point`:
+
+```{r, eval=FALSE}
+plot_cast_ts(main = main)
+```
+
+![Prediction time series from a trivial newmod](imgs/sandbox_1_newmod_cast_ts.jpg){width=600px} 
+
+
+```{r, eval=FALSE}
+plot_cast_point(main = main)
+```
+
+![Next-step-ahead prediction from a trivial newmod](imgs/sandbox_1_newmod_cast_point.jpg){width=600px} 
+
+Reading the cast's predictions into the R consolse is done using `read_cast_tab`, which also defaults to the most recently generated output:
+
+```{r, eval=FALSE}
+read_cast_tab(main = main)
+```
+
+To choose a non-default ouput, use `select_casts` to read in the cast metadata with any desired filters on `end_moon`, `model`, or `data_set` and then locate the `cast_id` of interest:
+
+```{r, eval=FALSE}
+select_casts(main = main)
+```
+
 
 ### Checklist
 
