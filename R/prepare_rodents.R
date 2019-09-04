@@ -742,7 +742,7 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
 #'  \donttest{
 #'   create_dir()
 #'   fill_raw()
-#'   rodents_tab <- prep_rodents_table()
+#'   rodents_tab <- prep_rodents_table(main=main)
 #'   is_sp_col(rodents_tab)
 #'   species_from_table(rodents_tab)
 #'  }
@@ -756,7 +756,7 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
 #'
 is_sp_col <- function(rodents_tab, species = NULL, total = FALSE, 
                       nadot = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   species <- ifnull(species, all_species(total = total, nadot = nadot))
   colnames(rodents_tab) %in% species
 }
@@ -765,8 +765,9 @@ is_sp_col <- function(rodents_tab, species = NULL, total = FALSE,
 #'
 #' @export
 #'
-species_from_table <- function(rodents_tab = NULL, total = NULL, nadot = NULL,
-                               arg_checks = arg_checks){
+species_from_table <- function(rodents_tab = NULL, total = FALSE, 
+                               nadot = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
   sp_col <- is_sp_col(rodents_tab = rodents_tab, total = total, nadot = nadot,
                       arg_checks = arg_checks)
   colnames(rodents_tab)[sp_col]

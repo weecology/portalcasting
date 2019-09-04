@@ -9,8 +9,8 @@
 is_sp_col(rodents_tab, species = NULL, total = FALSE, nadot = FALSE,
   arg_checks = TRUE)
 
-species_from_table(rodents_tab = NULL, total = NULL, nadot = NULL,
-  arg_checks = arg_checks)
+species_from_table(rodents_tab = NULL, total = FALSE, nadot = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{rodents_tab}{\code{data.frame} of columns to be checked.}
@@ -43,7 +43,7 @@ Given a table, returns a \code{logical} vector indicating
  \donttest{
   create_dir()
   fill_raw()
-  rodents_tab <- prep_rodents_table()
+  rodents_tab <- prep_rodents_table(main=main)
   is_sp_col(rodents_tab)
   species_from_table(rodents_tab)
  }

@@ -1,10 +1,7 @@
 # to do
 # update vignettes
-# read through the code documentation again
 #   donttest examples
-
-casts_metadata
-
+# evaluation (do in next iteration?)
 
 devtools::document()
 
@@ -12,10 +9,6 @@ main <- "~/test"
 setup_dir(main)
 
 portalcast(main)
-, end_moons = 512:521)
-
-
-
 
 devtools::test(filter="01")
 devtools::test(filter="02")
