@@ -43,6 +43,7 @@ reference:
       - read_directory_config
       - write_directory_config
       - update_directory_config
+      - read_casts_metadata
   - title: "Covariate data management"
     desc: "Functions for preparing covariate data"
     contents:
@@ -97,7 +98,6 @@ reference:
       - prep_rodents
       - prep_rodents_table
       - process_rodent_data
-      - most_recent_census
       - prefab_data_sets
       - rodent_species
       - evalplot_species
@@ -108,6 +108,8 @@ reference:
       - rodents_control
       - rodents_controls
       - remove_incompletes
+      - last_census
+      - species_from_table
   - title: "Casting functions"
     desc: "Functions for fitting models and making predictions into the future"
     contents:
@@ -116,7 +118,8 @@ reference:
       - verify_models
       - verify_raw_data
       - models_to_cast
-      - prep_data
+      - read_cast_tab
+      - select_casts
   - title: "Model generating functions"
     desc: "Functions for formatting model-running scripts"
     contents:
@@ -137,7 +140,7 @@ reference:
       - trim_moons
       - target_moons
   - title: "Path management"
-    desc: "Utilities for quickly retrieving and generally formatting folder and file paths"
+    desc: "Utilities for quickly retrieving and generally formatting folder and file paths and saving conditions"
     contents:
       - main_path
       - sub_path
@@ -149,6 +152,7 @@ reference:
       - models_path
       - file_ext
       - path_no_ext
+      - files_control
   - title: "Download functions"
     desc: "Functions for creating API URLs, retrieving, and managing downloaded components"
     contents:
@@ -179,12 +183,16 @@ reference:
       - covariate_models
       - lag_covariates
       - save_cast_output
+  - title: "Figures"
+    desc: "Functions to make standard figures"
+    contents:
+      - plot_cast_point
+      - plot_cast_ts
   - title: "Data IO"
     desc: "Functions for reading and writing data"
     contents:
-      - read_cast_metadata
+      - read_casts_metadata
       - read_climate_casts
-      - read_cov_casts
       - read_covariate_casts
       - read_covariates
       - read_data
