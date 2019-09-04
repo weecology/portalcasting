@@ -77,6 +77,11 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * The argument's attributes define the logical checking flow through a series of pretty simple options. 
 * There is also now a `arg_checks` logical argument that goes into `check_args` to turn off all of the underlying code, enabling the user to go off the production restrictions that would otherwise through errors, even though they might technically work under the hood.
 
+### Substantial re-writes of the vignettes
+* Done in general to update with the present version of the codebase.
+* Broke the `adding a model or data` vignette into "working locally" and "adding to the pipeline", also added checklists and screen shots. [addresses](https://github.com/weecology/portalcasting/issues/113)
+* Reorganized the `getting started` vignette to an order that makes sense. [addresses](https://github.com/weecology/portalcasting/issues/120)
+
 ### Additional things
 * `drop_spp` is now changed to `species` (so focus on inclusion, not exclusion). [addresses](https://github.com/weecology/portalcasting/issues/128)
 * Improved examples, also now as `\donttest{}`. [addresses](https://github.com/weecology/portalcasting/issues/127)
