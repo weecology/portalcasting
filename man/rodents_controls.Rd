@@ -85,17 +85,13 @@ must be named according to the dataset and the \code{data_set} element.}
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 }
 \value{
 Named \code{list} of length equal to the number of elements in 
  \code{data_sets} and with elements that are each 
  \code{list}s of those \code{data_set}'s data-generating controls, for
- input as \code{controls_r} in \code{\link{prep_rodents}}.
+ input as \code{controls_rodents} in \code{\link{prep_rodents}}.
 }
 \description{
 Given the number of arguments into 
@@ -115,10 +111,10 @@ Any data set that is part of the \code{prefab} rodents data sets
  \code{prefab_rodents_controls}. Users only need to include controls for
  non-prefab \code{data_sets}. \cr \cr
  Any user-defined \code{data_sets} that are not included in 
- \code{controls_r} will throw an error. \cr \cr 
- If any user-defined \code{controls_r} duplicate any existing controls for
- the prefab data sets or if \code{controls_r} contains any duplicate named
- elements, an error will be thrown. \cr \cr
+ \code{controls_rodents} will throw an error. \cr \cr 
+ If any user-defined \code{controls_rodents} duplicate any existing 
+ controls for the prefab data sets or if \code{controls_r} contains any 
+ duplicate named elements, an error will be thrown. \cr \cr
  Users interested in adding data sets to the prefab rodent data sets
  should add the controls to the \code{prefab_rodents_controls} 
  non-exported function found in the \code{prepare_rodents.R} script.

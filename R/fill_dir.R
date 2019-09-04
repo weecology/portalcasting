@@ -186,6 +186,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                 lead_time = lead_time, min_lag = min_lag, 
                 cast_date = cast_date, start_moon = start_moon, 
                 confidence_level = confidence_level, 
+                controls_models = controls_models,
                 controls_rodents = controls_rodents, quiet = quiet, 
                 control_files = control_files, arg_checks = arg_checks)
 

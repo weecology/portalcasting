@@ -5,10 +5,10 @@
 \alias{cast}
 \title{Cast Portal rodents models}
 \usage{
-portalcast(main = ".", models = prefab_models(),
-  data_sets = prefab_data_sets(), end_moons = NULL, start_moon = 217,
-  lead_time = 12, confidence_level = 0.95, cast_date = Sys.Date(),
-  controls_models = NULL, controls_rodents = rodents_controls(),
+portalcast(main = ".", models = prefab_models(), end_moons = NULL,
+  start_moon = 217, lead_time = 12, confidence_level = 0.95,
+  cast_date = Sys.Date(), controls_models = NULL,
+  controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
@@ -26,12 +26,6 @@ the directory tree.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to 
 include.}
-
-\item{data_sets}{\code{character} values of the rodent data sets that
-are needed, used to enforce certain arguments in data creation (see 
-\code{\link{prep_rodents_table}}). The prefab sets currently include 
-\code{"all"}, \code{"controls"}, \code{"all_interp"},
-and \code{"controls_interp"} (\code{\link{prefab_data_sets}}).}
 
 \item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) 
 newmoon number(s) of the last sample(s) to be included. Default value is 

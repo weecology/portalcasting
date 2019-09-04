@@ -1,9 +1,24 @@
 # to do
 # update vignettes
-#   donttest examples
 # evaluation (do in next iteration?)
 
+remove "script" from model script controls
+change data_set to name in rodent controls
+standardize control, controls, etc
 
+why still getting no controls for newmon
+
+ndc <- rodents_control("newdata", level = "Treatment", treatment = "removal",
+                arg_checks = FALSE)
+
+prep_rodents(main = main, data_sets = "newdata", controls_rodents = ndc,
+                arg_checks = FALSE)
+
+
+ model_script_control(name = "newmod", 
+                                  data_sets = "newdata",
+                                  covariatesTF = TRUE, lag = 0,
+                                  arg_checks = TRUE)
 devtools::document()
 
 main <- "~/test"

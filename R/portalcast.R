@@ -87,12 +87,6 @@
 #'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 #'  many/most/all enclosed functions to not check any arguments using 
 #'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#
-#' @param data_sets \code{character} values of the rodent data sets that
-#'  are needed, used to enforce certain arguments in data creation (see 
-#'  \code{\link{prep_rodents_table}}). The prefab sets currently include 
-#'  \code{"all"}, \code{"controls"}, \code{"all_interp"},
-#'  and \code{"controls_interp"} (\code{\link{prefab_data_sets}}).
 #' 
 #' @return Results are saved to files, \code{NULL} is returned.
 #'
@@ -105,8 +99,7 @@
 #'
 #' @export
 #'
-portalcast <- function(main = ".", models = prefab_models(),
-                       data_sets = prefab_data_sets(), end_moons = NULL, 
+portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL, 
                        start_moon = 217, lead_time = 12, 
                        confidence_level = 0.95, cast_date = Sys.Date(),
                        controls_models = NULL, 
