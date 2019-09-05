@@ -28,8 +28,8 @@ the directory tree.}
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}
 
-\item{cast_date}{\code{Date} from which future is defined, typically 
-today's date (set using \code{\link{Sys.Date}}).}
+\item{cast_date}{\code{Date} of the cast, typically today's date (set 
+using \code{\link{Sys.Date}}).}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).

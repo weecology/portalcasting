@@ -55,7 +55,7 @@ formatted correctly and provides directed error messages if not.}
 }
 \description{
 Combine the historical and cast covariate data for a model
- run. See \code{link{prep_hist_covariates}} and
+ run. \cr \cr See \code{\link{prep_hist_covariates}} and
  \code{\link{prep_cast_covariates}} for the historical and -casted
  covariate preparation details, respectively.
 }

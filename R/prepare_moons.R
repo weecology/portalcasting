@@ -26,10 +26,10 @@
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
-#'   all of the information or not (and thus just the tidy messages). 
+#'  all of the information or not (and thus just the tidy messages). 
 #'
-#' @param cast_date \code{Date} from which future is defined, typically 
-#'   today's date (set using \code{\link{Sys.Date}}).
+#' @param cast_date \code{Date} of the cast, typically today's date (set 
+#'  using \code{\link{Sys.Date}}).
 #'
 #' @param moons Moons \code{data.frame}.
 #'

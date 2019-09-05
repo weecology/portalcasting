@@ -37,7 +37,7 @@ the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{ref_species}{\code{character}-valued vector of all possible species 
-names that could be used should be set up via \code{\link{all_species}}.}
+names that could be used. Should be set up via \code{\link{all_species}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

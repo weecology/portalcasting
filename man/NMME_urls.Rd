@@ -47,7 +47,7 @@ Named \code{character} vector of URLs, or \code{NULL} if
 The 
  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at
  at the University of Idaho provides a 
- \code{https://bit.ly/2tCP8NX}{simple API} to download downscaled
+ \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled
  climate forecasts using the 
  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
  set. This function generates the URL for specific request based on all

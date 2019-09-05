@@ -354,7 +354,7 @@ rodents_control <- function(name = "name", species = base_species(),
 #'  Used to set arguments for \code{\link{prep_rodents_table}}.
 #'
 #' @param ref_species \code{character}-valued vector of all possible species 
-#'  names that could be used should be set up via \code{\link{all_species}}.
+#'  names that could be used. Should be set up via \code{\link{all_species}}.
 #'
 #' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the first sample to be included. Default value is \code{217}, 
