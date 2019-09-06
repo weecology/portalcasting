@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Juniper L. Simonis" />
+
+
+<title>Current Models</title>
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Current Models</h1>
+<h4 class="author">Juniper L. Simonis</h4>
+<h4 class="date">04 September, 2019</h4>
+
+
+
+<p>We currently analyze and forecast rodent data at Portal using six models: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, and pevGARCH <span class="citation">(WeecologyLab 2019)</span>. Each model has a function with its name (<em>e.g.</em>, <code>ESSS()</code>) which is called from an associated R script in the <code>models</code> subdirectory with its name (<em>e.g.</em>, <code>ESSS.R</code>)</p>
+<div id="esss" class="section level3">
+<h3>ESSS</h3>
+<p>ESSS (Exponential Smoothing State Space) is a flexible exponential smoothing state space model <span class="citation">(Hyndman et al. 2008)</span> fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model is selected and fitted using the <code>ets</code> and <code>forecast</code> functions in the <strong>forecast</strong> package <span class="citation">(Hyndman 2017)</span> with the <code>allow.multiplicative.trend</code> argument set to <code>TRUE</code> within the <code>ESSS()</code> function. Models fit using <code>ets</code> implement what is known as the “innovations” approach to state space modeling, which assumes a single source of noise that is equivalent for the process and observation errors <span class="citation">(Hyndman et al. 2008)</span>.</p>
+<p>In general, ESSS models are defined according to three model structure parameters: error type, trend type, and seasonality type <span class="citation">(Hyndman et al. 2008)</span>. Each of the parameters can be an N (none), A (additive), or M (multiplicative) state <span class="citation">(Hyndman et al. 2008)</span>. However, because of the difference in period between seasonality and sampling of the Portal rodents combined with the hard-coded single period of the <code>ets</code> function, we could not include the seasonal components to the ESSS model. ESSS is fit flexibly, such that the model parameters can vary from fit to fit.</p>
+</div>
+<div id="autoarima" class="section level3">
+<h3>AutoArima</h3>
+<p>AutoArima (Automatic Auto-Regressive Integrated Moving Average) is a flexible Auto-Regressive Integrated Moving Average (ARIMA) model fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model is selected and fitted using the <code>auto.arima</code> and <code>forecast</code> functions in the <strong>forecast</strong> package <span class="citation">(Hyndman and Athanasopoulos 2013; Hyndman 2017)</span> within the <code>AutoArima()</code> function.</p>
+<p>Generally, ARIMA models are defined according to three model structure parameters: the number of autoregressive terms (p), the degree of differencing (d), and the order of the moving average (q), and are represented as ARIMA(p, d, q) <span class="citation">(Box and Jenkins 1970)</span>. While the <code>auto.arima</code> function allows for seasonal models, the seasonality is hard-coded to be on the same period as the sampling, which is not the case for the Portal rodent surveys. As a result, no seasonal models were evaluated. AutoArima is fit flexibly, such that the model parameters can vary from fit to fit.</p>
+</div>
+<div id="naivearima" class="section level3">
+<h3>NaiveArima</h3>
+<p>NaiveArima (Naive Auto-Regressive Integrated Moving Average) is a fixed Auto-Regressive Integrated Moving Average (ARIMA) model of order (0,1,0) fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model is selected and fitted using the <code>Arima</code> and <code>forecast</code> functions in the <strong>forecast</strong> package <span class="citation">(Hyndman and Athanasopoulos 2013; Hyndman 2017)</span> within the <code>AutoArima()</code> function.</p>
+</div>
+<div id="nbgarch" class="section level3">
+<h3>nbGARCH</h3>
+<p>nbGARCH (Negative Binomial Auto-Regressive Conditional Heteroskedasticity) is a generalized autoregressive conditional heteroskedasticity (GARCH) model with overdispersion (<em>i.e.</em>, a negative binomial response) fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model for each species and the community total is selected and fitted using the <code>tsglm</code> function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span> within the <code>nbGARCH()</code> function.</p>
+<p>GARCH models are generalized ARMA models and are defined according to their link function, response distribution, and two model structure parameters: the number of autoregressive terms (p) and the order of the moving average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik et al. 2017)</span>. The nbGARCH model is fit using the log link and a negative binomial response (modeled as an over-dispersed Poisson), as well as with p = 1 (first-order autoregression) and q = 12 (approximately yearly moving average).</p>
+<p>The <code>tsglm</code> function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span> uses a (conditional) quasi-likelihood based approach to inference and models the overdispersion as an additional parameter in a two-step approach. This two-stage approach has only been minimally evaluated, although preliminary simulation-based studies are promising <span class="citation">(Liboschik, Fokianos, and Fried 2017)</span>.</p>
+</div>
+<div id="nbsgarch" class="section level3">
+<h3>nbsGARCH</h3>
+<p>nbsGARCH (Negative Binomial Seasonal Auto-Regressive Conditional Heteroskedasticity) is a generalized autoregressive conditional heteroskedasticity (GARCH) model with overdispersion (<em>i.e.</em>, a negative binomial response) with seasonal predictors modeled using two Fourier series terms (sin and cos of the fraction of the year) fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model for each species and the community total is selected and fitted using the <code>tsglm</code> function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span> within the <code>nbsGARCH()</code> function.</p>
+<p>GARCH models are generalized ARMA models and are defined according to their link function, response distribution, and two model structure parameters: the number of autoregressive terms (p) and the order of the moving average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik et al. 2017)</span>. The nbsGARCH model is fit using the log link and a negative binomial response (modeled as an over-dispersed Poisson), as well as with p = 1 (first-order autoregression) and q = 12 (approximately yearly moving average).</p>
+<p>The <code>tsglm</code> function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span> uses a (conditional) quasi-likelihood based approach to inference and models the overdispersion as an additional parameter in a two-step approach. This two-stage approach has only been minimally evaluated, although preliminary simulation-based studies are promising <span class="citation">(Liboschik, Fokianos, and Fried 2017)</span>.</p>
+</div>
+<div id="pevgarch" class="section level3">
+<h3>pevGARCH</h3>
+<p>pevGARCH (Poisson Environmental Variable Auto-Regressive Conditional Heteroskedasticity) is a generalized autoregressive conditional heteroskedasticity (GARCH) model fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The response variable is Poisson, and a variety of environmental variables are considered as covariates. The model for each species is selected and fitted using the <code>tsglm</code> function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span> within the <code>pevGARCH()</code> function.</p>
+<p>GARCH models are generalized ARMA models and are defined according to their link function, response distribution, and two model structure parameters: the number of autoregressive terms (p) and the order of the moving average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik et al. 2017)</span>. The pevGARCH model is fit using the log link and a Poisson response, as well as with p = 1 (first-order autoregression) and q = 12 (yearly moving average). The environmental variables potentially included in the model are min, mean, and max temperatures, precipitation, and NDVI.</p>
+<p>The <code>tsglm</code> function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span> uses a (conditional) quasi-likelihood based approach to inference. This approach has only been minimally evaluated for models with covariates, although preliminary simulation-based studies are promising <span class="citation">(Liboschik, Fokianos, and Fried 2017)</span>.</p>
+<p>Each species is fit using the following (nonexhaustive) sets of the environmental covariates: * max temp, mean temp, precipitation, NDVI * max temp, min temp, precipitation, NDVI * max temp, mean temp, min temp, precipitation * precipitation, NDVI * min temp, NDVI * min temp * max temp * mean temp * precipitation * NDVI * -none-</p>
+<p>The final model is an intercept-only model. The single best model of the 11 is selected based on AIC.</p>
+</div>
+<div id="references" class="section level3 unnumbered">
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Box1970">
+<p>Box, G., and G. Jenkins. 1970. <em>Time Series Analysis: Forecasting and Control</em>. Holden-Day.</p>
+</div>
+<div id="ref-Hyndman2017">
+<p>Hyndman, R. J. 2017. “<strong>forecast</strong>: Forecasting Functions for Time Series and Linear Models.” 2017. <a href="http://pkg.robjhyndman.com/forecast" class="uri">http://pkg.robjhyndman.com/forecast</a>.</p>
+</div>
+<div id="ref-Hyndman2013">
+<p>Hyndman, R. J., and G. Athanasopoulos. 2013. <em>Forecasting: Principles and Practice</em>. OTexts.</p>
+</div>
+<div id="ref-Hyndman2008">
+<p>Hyndman, R. J., A. b. Koehler, J. K. Ord, and R. D. Snyder. 2008. <em>Forecasting with Exponential Smoothing: The State Space Approach</em>. Springer-Verlag.</p>
+</div>
+<div id="ref-Liboschik2017b">
+<p>Liboschik, T., K. Fokianos, and R. Fried. 2017. “<strong>tscount</strong>: An R Package for Analysis of Count Time Series Following Generalized Linear Models.” <em>Journal of Statistical Software</em> 82:1–51. <a href="https://www.jstatsoft.org/article/view/v082i05" class="uri">https://www.jstatsoft.org/article/view/v082i05</a>.</p>
+</div>
+<div id="ref-Liboschik2017a">
+<p>Liboschik, T., R. Fried, K. Fokianos, and P. Probst. 2017. “<strong>tscount</strong>: Analysis of Count Time Series.” 2017. <a href="https://CRAN.R-project.org/package=tscount" class="uri">https://CRAN.R-project.org/package=tscount</a>.</p>
+</div>
+<div id="ref-PortalPredictions">
+<p>WeecologyLab. 2019. “Portal Forecasting.” 2019. <a href="https://github.com/weecology/portalPredictions/" class="uri">https://github.com/weecology/portalPredictions/</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -2,31 +2,67 @@
 % Please edit documentation in R/prepare_covariates.R
 \name{prep_covariates}
 \alias{prep_covariates}
-\title{Prepare covariate data table}
+\title{Prepare covariate data for casting}
 \usage{
-prep_covariates(moons = prep_moons(),
-  options_covariates = covariates_options())
+prep_covariates(main = ".", moons = NULL, end_moon = NULL,
+  lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(), quiet = TRUE, verbose = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
-\item{moons}{Class-\code{moons} \code{data.frame} containing the historic 
-and future newmoons, as produced by \code{\link{prep_moons}}.}
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
 
-\item{options_covariates}{A class-\code{covariates_options} \code{list} of 
-settings controlling the covariates data creation.}
+\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
+
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the last sample to be included. Default value is \code{NULL}, which 
+equates to the most recently included sample.}
+
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
+number of timesteps forward a cast will cover.}
+
+\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
+covariate lag time used in any model.}
+
+\item{cast_date}{\code{Date} from which future is defined (the origin of
+the cast). In the recurring forecasting, is set to today's date
+using \code{\link{Sys.Date}}.}
+
+\item{control_climate_dl}{\code{list} of specifications for the download, 
+which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
+\code{\link{climate_dl_control}}.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not.}
 }
 \value{
-Covariate data table as a code{covariates}-class \code{data.frame}.
+\code{data.frame} of historical and -casted covariates, combined
+ and saved out to \code{filename} if indicated by \code{save}.
 }
 \description{
-Prepare covariate data for forecasting or hindcasting, 
-  including saving out the data and appending the new forecasts of 
-  covariates to the existing covariate forecast table.
+Combine the historical and cast covariate data for a model
+ run. \cr \cr See \code{\link{prep_hist_covariates}} and
+ \code{\link{prep_cast_covariates}} for the historical and -casted
+ covariate preparation details, respectively.
 }
 \examples{
-\dontrun{
-
-setup_dir()
-prep_covariates()
-}
-
+ \donttest{
+  setup_dir()
+  prep_covariates()
+ }
+ 
 }

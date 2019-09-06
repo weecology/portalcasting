@@ -4,22 +4,35 @@
 \alias{na_conformer}
 \title{Conform NA entries to "NA" entries}
 \usage{
-na_conformer(x, colname = "species")
+na_conformer(dfv, colname = "species", arg_checks = TRUE)
 }
 \arguments{
-\item{x}{Either [1] a \code{data.frame} containing \code{colname} as a 
+\item{dfv}{Either [1] a \code{data.frame} containing \code{colname} as a 
 column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
-a vector with \code{NA}s that need to be conformed to \code{"NA"}s}
+a vector with \code{NA}s that need to be conformed to \code{"NA"}s.}
 
 \item{colname}{\code{character} value of the column name in \code{tab} to 
 conform the \code{NA}s to \code{"NA"}s.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+many/most/all enclosed functions to not check any arguments using 
+\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{x} with any \code{NA} in \code{colname} replaced with 
-  \code{"NA"}.
+ \code{"NA"}.
 }
 \description{
 Given the species abbreviation NA, when data are read in, 
-  there can be an \code{NA} when it should be an \code{"NA"}. This function
-  conforms the entries to be proper character values.
+ there can be an \code{NA} when it should be an \code{"NA"}. This function
+ conforms the entries to be proper character values.
+}
+\examples{
+ na_conformer(c("a", "b", NA, "c"))
+
 }

@@ -1,195 +1,460 @@
-#' @title Optionally generate a message based on a logical input
+#' @title Create a named empty list
 #'
-#' @description Given the input to \code{quiet}, generate the message(s) 
-#'   in \code{msg} or not.
+#' @description Produces a list with \code{NULL} for each element named 
+#'  according to \code{element_names}.
+#' 
+#' @param element_names \code{character} vector of names for the elements
+#'  in the list.
 #'
-#' @param msg \code{character} vector of the message(s) to generate or 
-#'   \code{NULL}. If more than one element is contained in \code{msg}, they
-#'   are concatenated with a newline between.
+#' @return \code{list} with names \code{element_names} and values \code{NULL}.
 #'
-#' @param quiet \code{logical} indicator controlling if the message is
-#'   generated.
+#' @examples
+#'  named_null_list(c("a", "b", "c"))
 #'
 #' @export
 #'
-messageq <- function(msg = NULL, quiet = FALSE){
-  check_args()
-  if (!quiet){
-    msg2 <- paste(msg, collapse = "\n")
-    message(msg2)
-  }
+named_null_list <- function(element_names = NULL){
+  return_if_null(element_names)
+  nelements <- length(element_names)
+  out <- vector("list", nelements)
+  names(out) <- element_names
+  out
 }
+
+#' @title Error if a function's request is deeper than can be handled
+#'
+#' @description Produces an informative error message when a function 
+#'  that should only be called inside of other functions is called outside
+#'  of a function (hence the request to the function is too deep for
+#'  what it can handle).
+#' 
+#' @param lev The number of frames back in the stack where the request needs
+#'  to be able to be evaluated.
+#'
+#' @return Throws an error if the function is called in a place where it 
+#'  cannot operate and returns \code{NULL} otherwise.
+#'
+#' @examples
+#'  \dontrun{
+#'  # will error:
+#'  # error_if_deep(-10)
+#'  }
+#'  error_if_deep(0)
+#'
+#' @export
+#'
+error_if_deep <- function(lev){
+  lev2 <- lev - 1
+  too_deep <- tryCatch(sys.call(lev2), error = function(x){NA})
+  if(!is.null(too_deep) && !is.call(too_deep) && is.na(too_deep)){
+    msg <- "too deep; function should only be called inside other functions"
+    stop(msg, call. = FALSE)
+  } 
+}
+
+
+
+#' @title Update a list's elements
+#'
+#' @description Update a list with new values for elements
+#'
+#' @param orig_list \code{list} to be updated with \code{...}. 
+#'
+#' @param ... Named elements to update in \code{orig_list}
+#'
+#' @return Updated \code{list}.
+#'
+#' @examples
+#'  orig_list <- list(a = 1, b = 3, c = 4)
+#'  update_list(orig_list)
+#'  update_list(orig_list, a = "a")
+#'  update_list(orig_list, a = 10, b = NULL)
+#'
+#' @export
+#'
+update_list <- function(orig_list = list(), ...){
+  if(!is.list(orig_list)){
+    stop("orig_list must be a list")
+  } 
+  update_elems <- list(...)
+  nupdate_elems <- length(update_elems)
+  norig_elems <- length(orig_list)
+  update_list <- vector("list", length = norig_elems)
+  names(update_list) <- names(orig_list)
+  if(norig_elems > 0){
+    for(i in 1:norig_elems){
+      if(!is.null(orig_list[[i]])){
+        update_list[[i]] <- orig_list[[i]]
+      }
+    }
+  }
+  if(nupdate_elems > 0){
+    names_update_elems <- names(update_elems)
+    for(i in 1:nupdate_elems){
+      if(!is.null(update_elems[[i]])){
+        update_list[[names_update_elems[i]]] <- update_elems[[i]]
+      }
+    }
+  }
+  update_list
+}
+
 
 
 #' @title Conform NA entries to "NA" entries
 #'
 #' @description Given the species abbreviation NA, when data are read in, 
-#'   there can be an \code{NA} when it should be an \code{"NA"}. This function
-#'   conforms the entries to be proper character values. 
+#'  there can be an \code{NA} when it should be an \code{"NA"}. This function
+#'  conforms the entries to be proper character values. 
 #'
-#' @param x Either [1] a \code{data.frame} containing \code{colname} as a 
-#'   column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
-#'   a vector with \code{NA}s that need to be conformed to \code{"NA"}s
+#' @param dfv Either [1] a \code{data.frame} containing \code{colname} as a 
+#'  column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
+#'  a vector with \code{NA}s that need to be conformed to \code{"NA"}s.
 #'
 #' @param colname \code{character} value of the column name in \code{tab} to 
-#'   conform the \code{NA}s to \code{"NA"}s.
+#'  conform the \code{NA}s to \code{"NA"}s.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'
 #' @return \code{x} with any \code{NA} in \code{colname} replaced with 
-#'   \code{"NA"}.
+#'  \code{"NA"}.
+#'
+#' @examples
+#'  na_conformer(c("a", "b", NA, "c"))
 #'
 #' @export
 #'
-na_conformer <- function(x, colname = "species"){
-  check_args()
-  if (is.vector(x)){
-    naentries <- which(is.na(x))
-    x[naentries] <- "NA"
-  } else if (is.data.frame(x)){
-    nasppname <- which(is.na(x[ , colname]))
+na_conformer <- function(dfv, colname = "species", arg_checks = TRUE){
+  check_args(arg_checks)
+  if (is.vector(dfv)){
+    naentries <- which(is.na(dfv))
+    dfv[naentries] <- "NA"
+  } else if (is.data.frame(dfv)){
+    nasppname <- which(is.na(dfv[ , colname]))
     if (length(nasppname) > 0){
-      x[nasppname, colname] <- "NA"
+      dfv[nasppname, colname] <- "NA"
     }
   } 
-  x
+  dfv
 }
 
-#' @title Save data out to a file and return it	
-#'
-#' @description Save inputted data out to a data file if requested via an 
-#'   options list (request is handled by the \code{save} element and the file
-#'   name to use is handled by the \code{filename} element) and return it 
-#'   to the console.
-#'
-#' @param df \code{data.frame} table to be written out.
-#'
-#' @param options_out an options \code{list} that includes a save element and 
-#'   a filename element, and potentially a class element.
-#'
-#' @return df (as input)
-#'
-#' @export
-#'
-dataout <- function(df, options_out = moons_options()){
-  check_args()
-  if (!is.null(options_out$save)){
-    if (options_out$save){
-      file_paths(options_out$tree, paste0("data/", options_out$filename)) %>%
-      write.csv(df, ., row.names = FALSE)
-    }
-  }
-  if (!is.null(options_out$class)){
-    class(df) <- unique(c(options_out$class, class(df)))
-  }
-  df
-}
 
 #' @title Save data out to a csv, appending the file if it already exists
 #'
 #' @description Appending a \code{.csv} without re-writing the header of the
-#'   file. If the doesn't exist, it will be created.
+#'  file. If the doesn't exist, it will be created.
 #'
 #' @param df \code{data.frame} table to be written out.
 #'
 #' @param filename \code{character} filename of existing \code{.csv} to be 
-#'   appended.
+#'  appended.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
+#' @return \code{NULL}.
+#'
+#' @examples
+#'  \donttest{
+#'   df <- data.frame(x = 1:10)
+#'   fpath <- file_path(files = "xx.csv")
+#'   append_csv(df, fpath)
+#'  }
 #'
 #' @export
 #'
-append_csv <- function(df, filename){
-  check_args()
+append_csv <- function(df, filename, arg_checks = TRUE){
+  check_args(arg_checks)
   write.table(df, filename, sep = ",", row.names = FALSE, 
     col.names = !file.exists(filename), append = file.exists(filename))
+  NULL
 }
 
-#' @title Zero-abundance forecast
+#' @title Calculate the fraction of the year from a date
+#' 
+#' @description Based on the year in which the date occurred, determine the
+#'   fraction of the year (foy) for the date (in relation to New Year's Eve
+#'   in that year). 
 #'
-#' @description Create a 0-abundance forecast for fill-in usage when a model 
-#'   fails or there is no non-0 historical abundance.
+#' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be 
+#'   converted to the fraction of the year.
 #'
-#' @param nfcnm \code{integer} number of forecast newmoons.
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'
-#' @param colname \code{character} name for the predictor column (to match
-#'   variable model output names).
+#' @return \code{numeric} value(s) of the fraction of the year.
 #'
-#' @return Two-element \code{list} of means and interval values for a 
-#'   0-abundance forecast to be used as a filler when a model fails or there 
-#'   is no non-0 historical abundance.
+#' @examples
+#'  foy(Sys.Date())
 #'
 #' @export
 #'
-fcast0 <- function(nfcnm, colname = "pred"){
-  check_args()
-  mean_0 <- rep(0, nfcnm)
-  int_0 <- data.frame("lower" = rep(0, nfcnm), "upper" = rep(0, nfcnm))
-  out <- list(mean_0, interval = int_0)
-  names(out)[1] <- colname
-  out
+foy <- function(dates = NULL, arg_checks = TRUE){
+  return_if_null(dates)
+  check_args(arg_checks)
+  dates <- as.Date(dates)
+  jday <- as.numeric(format(dates, "%j"))
+  nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
+  nyejday <- as.numeric(format(nye, "%j"))
+  round(jday / nyejday, 3)
 }
 
-#' @title Today's date (potentially with time)
+#' @title Remove files from the tmp subdirectory
 #'
-#' @description Provide the current date (and optionally time) of the system.
+#' @description Clear the files from the tmp subdirectory.
 #'
-#' @param time \code{logical} indicator of whether the output should include
-#'   a timestamp as well as date.
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
 #'
-#' @return Today's date, as a \code{Date} or date and time as a 
-#'   \code{POSIXct}.
+#' @param cleanup \code{logical} indicator if any files put into the tmp
+#'  subdirectory should be removed at the end of the process. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or just tidy messages. 
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
+#' @return \code{NULL}, with the tmp subdirectory's files removed.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   clear_tmp
+#'  }
+#'
+#' @export
+#'
+clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE, 
+                      cleanup = TRUE, arg_checks = TRUE){
+  check_args(arg_checks)
+  tmp_path <- tmp_path(main = main, arg_checks = arg_checks)
+  tmp_exist <- dir.exists(tmp_path)
+  tmp_files <- list.files(tmp_path)
+  ntmp_files <- length(tmp_files)
+  if(!cleanup){
+    return()
+  }
+  messageq("Clearing tmp subdirectory", quiet)
+
+  if(tmp_exist){
+    if(ntmp_files > 0){
+      tmp_files_full_paths <- file_path(main = main, sub = "tmp", 
+                                        files = tmp_files, 
+                                        arg_checks = arg_checks)
+      file.remove(tmp_files_full_paths)
+      msg <- "    *temporary files cleared from tmp subdirectory*"
+    } else {
+      msg <- "    *tmp subdirectory already clear*"
+    }
+  } else{
+    msg <- "    *tmp subdirectory not present for clearing*"
+  }
+  messageq(msg, !verbose)
+  NULL
+}
+
+
+
+#' @title Combine a historical table and a cast table
+#'
+#' @description A simple utility for combining a table of historical data
+#'  and a table of cast data that might need to be assigned to either one
+#'  or the other.
+#'
+#' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns
+#'  including a code{date} column of \code{Date}s, which is used to align 
+#'  them.
+#'
+#' @param winner \code{character} value either {"hist"} or \code{"cast"} to
+#'  decide who wins any ties. In the typical portalcasting space, this is 
+#'  kept at its default value throughout.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
 #' 
 #' @examples
-#' \dontrun{
-#' 
-#' today()
-#' today(time = TRUE)
-#' }
+#'  hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
+#'  cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+#'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
+#'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
 #'
 #' @export
 #'
-today <- function(time = FALSE){
-  check_args()
-  if (time){
-    Sys.time()
-  } else{
-    Sys.Date()
+combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
+                                  winner = "hist", arg_checks = TRUE){
+  check_args(arg_checks)
+  return_if_null(hist_tab, cast_tab)
+  return_if_null(cast_tab, hist_tab)
+  
+  dupes <- which(cast_tab$date %in% hist_tab$date)
+  if(length(dupes) > 0){
+    if(winner == "hist"){
+      cast_tab <- cast_tab[-dupes, ]
+    } else if (winner == "cast"){
+      dupes <- which(hist_tab$date %in% cast_tab$date)
+      hist_tab <- hist_tab[-dupes, ]
+    } 
   }
+  bind_rows(hist_tab, cast_tab)
 }
 
-#' @title Set the class(es) of an object
+#' @title Add a date to a table that has the year month and day as components 
+#' 
+#' @description Add a date (as a \code{Date}) column to a table that has the 
+#'  year month and day as components.
+#' 
+#' @param df \code{data.frame} with columns named \code{year}, \code{month},
+#'  and \code{day}. 
 #'
-#' @description For inclusion in a simple pipeline, set the class of an object
-#'   and return it. 
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'   checked using standard protocols via \code{\link{check_args}}. The 
+#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'   formatted correctly and provides directed error messages if not. \cr
+#'   However, in sandboxing, it is often desirable to be able to deviate from 
+#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'   many/most/all enclosed functions to not check any arguments using 
+#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'
-#' @param x The object to get the \code{class}(es).
+#' @return \code{data.frame} \code{df} with column of \code{Date}s 
+#'  named \code{date} added.
 #'
-#' @param class The \code{class}(es) to apply to \code{x}.
-#'
-#' @return \code{x} with class(es) of \code{class}.
+#' @examples
+#'  df <- data.frame(year = 2010, month = 2, day = 1:10)
+#'  add_date_from_components(df)
 #'
 #' @export
 #'
-classy <- function(x, class = NULL){
-  check_args()
-  class(x) <- class
-  x
+add_date_from_components <- function(df, arg_checks = TRUE){
+  check_args(arg_checks)
+  yrs <- df$year
+  mns <- df$month
+  dys <- df$day
+  df$date <- as.Date(paste(yrs, mns, dys, sep = "-"))
+  df
+}
+
+
+#' @title Determine the start and end calendar dates for a cast window
+#'
+#' @description Based on the cast origin (\code{cast_date}), lead time
+#'  (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
+#'  the dates bracketing the requested window.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @return Named \code{list} with elements \code{start} and \code{end},
+#'  which are both \code{Dates}.
+#'
+#' @examples
+#'  \donttest{
+#'    create_dir()
+#'    fill_raw()
+#'    cast_window()
+#'  }
+#'
+#' @export
+#'
+cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
+                        lead_time = 12, min_lag = 6,
+                        control_files = files_control(), arg_checks = TRUE){
+  check_args(arg_checks)
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
+  lagged_lead <- lead_time - min_lag
+  moons0 <- moons[moons$moondate < cast_date, ]
+  last_moon <- tail(moons0, 1)
+  last_moon$moondate <- as.Date(last_moon$moondate)
+  moons0x <- moons0
+  colnames(moons0x)[which(colnames(moons0x) == "moon")] <- "newmoonnumber"
+  colnames(moons0x)[which(colnames(moons0x) == "moondate")] <- "newmoondate"
+  future_moons <- get_future_moons(moons0x, num_future_moons = lead_time)
+  start_day <- as.character(as.Date(last_moon$moondate) + 1)
+  end_day <- as.character(as.Date(future_moons$newmoondate[lead_time]))
+  list(start = start_day, end = end_day)
 }
 
 #' @title Remove any specific incomplete entries as noted by an NA
 #'
 #' @description Remove any incomplete entries in a table, as determined by
-#'   the presence of an \code{NA} entry in a specific column 
-#'   (\code{col_to_check}).
+#'  the presence of an \code{NA} entry in a specific column 
+#'  (\code{colname}).
 #'
 #' @param df \code{data.frame} table to be written out.
 #'
 #' @param colname A single \code{character} value of the column to use
-#'   to remove incomplete entries. 
+#'  to remove incomplete entries. 
 #'
-#' @return df without any incomplete entries. 
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return \code{df} without any incomplete entries. 
+#'
+#' @examples
+#'  df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)
+#'  remove_incompletes(df, "c1")
 #'
 #' @export
 #'
-remove_incompletes <- function(df, colname){
-  check_args()
+remove_incompletes <- function(df, colname, arg_checks = TRUE){
+  check_args(arg_checks)
   incompletes <- which(is.na(df[ , colname]))
   if (length(incompletes) > 0){
     df <- df[-incompletes, ]
@@ -197,1453 +462,112 @@ remove_incompletes <- function(df, colname){
   df
 }
 
-#' @title Check a function's arguments' values for validity
+#' @title Determine the depth of a list
 #'
-#' @description \code{check_args} checks that all of the arguments to a given
-#'   function have valid values within the pipeline to avoid naming collision
-#'   and improper formatting, by wrapping around \code{check_arg} for each
-#'   argument. \cr \cr
-#'   \code{check_arg} produces (returns) a \code{NULL} if the 
-#'   argument is valid or \code{character} vector of error messages associated 
-#'   with the specific situation (\code{<fun_name>(<arg_name> = arg_value)})
-#'   if the argument is invalid. \cr \cr
-#'   \code{check_args} should only be called within a function. \cr \cr
-#'   See \code{Details} for argument-specific rules.
+#' @description Evaluate an input for the depth of its nesting. 
 #'
-#' @export
+#' @details If \code{xlist = list()}, then technically the input value is a 
+#'  list, but is empty (of length \code{0}), so depth is returned as \code{0}.
 #'
-check_args <- function(){
-  fun_call <- match.call.defaults(definition = sys.function(-1), 
-                                  call = sys.call(-1))
-  fun_name <- toString(fun_call[[1]])
-  arg_values <- fun_call[-1]
-  arg_names <- names(arg_values)
-  nargs <- length(arg_names)
-  out <- NULL
-  if(nargs > 0){
-    for(i in 1:nargs){
-      arg_value <- eval.parent(arg_values[[i]], 2)
-      out <- c(out, check_arg(arg_names[i], arg_value, fun_name))
-    }
-  }
-  if (!is.null(out)){
-    if (length(out) > 1){
-      out2 <- paste(out, collapse = "; ")
-    } else{
-      out2 <- out
-    }
-    out3 <- paste0("in ", fun_name, ": ", out2)
-    stop(out3)
+#' @param xlist Focal input \code{list}.
+#'
+#' @return \code{integer} value of the depth of the list.
+#' 
+#' @examples
+#'  list_depth("a")
+#'  list_depth(list())
+#'  list_depth(list("a"))
+#'  list_depth(list(list("a")))
+#'
+#' @export 
+#'
+list_depth <- function(xlist){
+  xx <- match.call()
+  xxx <- deparse(xx[[2]])
+  if(xxx == "list()"){
+    0L
+  } else if (is.list(xlist)){
+    1L + max(sapply(xlist, list_depth))
+  } else {
+    0L
   }
 }
 
-#' @rdname check_args
+#' @title If a value is NULL, trigger the parent function's return
 #'
-#' @param arg_name \code{character} value of the argument name.
+#' @description If the focal input is \code{NULL}, return \code{value} from
+#'  the parent function. Should only be used within a function.
 #'
-#' @param arg_value Input value for the argument.
+#' @param x Focal input.
 #'
-#' @param fun_name \code{character} value of the function name or \code{NULL}.
+#' @param value If \code{x} is \code{NULL}, \code{\link{return}} this input
+#'  from the parent function. 
 #'
-#' @return \code{check_arg}: \code{character} vector of error messages
-#'   associated with the specific situation 
-#'   (\code{<fun_name>(<arg_name> = arg_value)}).
+#' @return If \code{x} is not \code{NULL}, \code{NULL} is returned. If 
+#'  \code{x} is \code{NULL}, the result of \code{\link{return}} with 
+#'  \code{value} as its input evaluated within the parent function's 
+#'  environment is returned.
+#' 
+#' @examples
+#'  ff <- function(x = 1, null_return = "hello"){
+#'    return_if_null(x, null_return)
+#'    x
+#'  }
+#'  ff()
+#'  ff(NULL)
 #'
-#' @details Usage and rules for arguments are as follows: \cr \cr
-#'   \code{add}: must be \code{NULL} or a \code{character} vector in
-#'     \code{\link{model_names}}. \cr \cr
-#'   \code{add_error}: must be a length-1 \code{logical} vector in
-#'     \code{\link{append_observed_to_cast}}. \cr \cr
-#'   \code{add_in_window}: must be a length-1 \code{logical} vector in
-#'     \code{\link{append_observed_to_cast}}. \cr \cr
-#'   \code{add_lead}: must be a length-1 \code{logical} vector in
-#'     \code{\link{append_observed_to_cast}}. \cr \cr
-#'   \code{add_obs}: must be a length-1 \code{logical} vector in
-#'     \code{\link{plot_cast_ts}}. \cr \cr
-#'   \code{all}: must be a \code{list} with elements named \code{forecast} 
-#'     and \code{aic} in \code{\link{save_forecast_output}} \cr \cr
-#'   \code{all_forecasts}: must be a \code{data.frame} in
-#'     \code{\link{make_ensemble}}. \cr \cr
-#'   \code{append_fcast_csv}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{covariates_options}}, and 
-#'       \code{\link{data_options}}. \cr \cr
-#'   \code{append_missing_to_raw}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{moons_options}}. \cr \cr
-#'   \code{base} must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{cast_options}},
-#'     \code{\link{data_options}}, \code{\link{dirtree}}, 
-#'     \code{\link{dir_options}}, \code{\link{models_options}}, 
-#'     \code{\link{PortalData_options}}, and
-#'     \code{\link{predictions_options}}. \cr \cr
-#'   \code{cast}: must be a valid -cast \code{data.frame} as checked by
-#'     \code{\link{cast_is_valid}} in \code{\link{verify_cast}}. \cr \cr
-#'   \code{casts}: must be of class \code{casts} in
-#'     \code{\link{append_observed_to_cast}} and 
-#'     \code{\link{measure_cast_error}}. \cr \cr
-#'   \code{cast_date}: must be \code{NULL} or a length-1 \code{Date} or 
-#'     \code{Date}-conformable vector in \code{\link{add_addl_future_moons}},
-#'     \code{\link{all_options}}, \code{\link{cast_options}}, 
-#'     \code{\link{covariates_options}}, \code{\link{data_options}},
-#'     \code{\link{metadata_options}}, \code{\link{moons_options}}, 
-#'     \code{\link{plot_cast_point}}, \code{\link{plot_cast_ts}}, and 
-#'     \code{\link{read_cast}}. \cr \cr
-#'   \code{cast_dates}: must be \code{NULL} or a \code{Date} or 
-#'     \code{Date}-conformable vector in \code{\link{plot_cov_RMSE_mod_spp}}, 
-#'     \code{\link{read_casts}}, and \code{\link{select_most_ab_spp}}. \cr \cr
-#'   \code{cast_to_check}: must be a \code{data.frame} in 
-#'     \code{\link{cast_is_valid}}. \cr \cr
-#'   \code{cast_type}: must be a length-1 \code{character} vector in
-#'     \code{\link{most_recent_cast}}, \code{\link{plot_cast_point}},
-#'     \code{\link{plot_cast_ts}}, \code{\link{plot_cov_RMSE_mod_spp}}, 
-#'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{read_cast}}, 
-#'     \code{\link{read_casts}}, and \code{\link{select_most_ab_spp}}. \cr \cr
-#'   \code{class}: must be \code{NULL} or a \code{character} vector in
-#'     \code{\link{classy}}. \cr \cr
-#'   \code{colname}: must be a length-1 \code{character} vector in
-#'     \code{\link{fcast0}}, \code{\link{na_conformer}}, and
-#'     \code{\link{remove_incompletes}}. \cr \cr
-#'   \code{confidence_level}: must be a length-1 \code{numeric} value between
-#'     0 and 1 in \code{\link{all_options}}, \code{\link{data_options}}, 
-#'     \code{\link{make_ensemble}}, and \code{\link{metadata_options}}. 
-#'     \cr \cr
-#'   \code{controls}: must be a \code{list} with elements named 
-#'     \code{forecast} and \code{aic} in \code{\link{save_forecast_output}}. 
-#'     \cr \cr
-#'   \code{covariates}: must be a \code{data.frame} of class \code{covariates}
-#'     in \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
-#'     and \code{\link{prep_metadata}}. \cr \cr
-#'   \code{covariate_source}: must be \code{NULL} or a length-1 
-#'     \code{character} vector of \code{"current_archive"} or 
-#'     \code{"retroactive"} in \code{\link{all_options}}, 
-#'     \code{\link{data_options}}, \code{\link{metadata_options}}. \cr \cr
-#'   \code{covariate_date_made}: must be \code{NULL} or a length-1 
-#'     \code{character} vector corresponding to the \code{date_made} column 
-#'     in the covariate_forecasts data table in \code{\link{all_options}}, 
-#'     \code{\link{data_options}}, \code{\link{metadata_options}}. \cr \cr
-#'   \code{cov_fcast}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{covariates_options}}, and
-#'     \code{\link{data_options}}. \cr \cr
-#'   \code{cov_hist}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{covariates_options}}, and
-#'     \code{\link{data_options}}. \cr \cr
-#'   \code{c_filename}: must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{covariates_options}}, and 
-#'     \code{\link{data_options}}. \cr \cr
-#'   \code{c_save}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{covariates_options}}, and 
-#'     \code{\link{data_options}}. \cr \cr
-#'   \code{data_name}: must be a length-1 \code{character} vector of value 
-#'     \code{"all"}, \code{"controls"}, \code{"covariates"}, 
-#'     \code{"covariate_forecasts"}, \code{"moons"},
-#'     or \code{"metadata"} in \code{\link{read_data}}. \cr \cr
-#'   \code{dates}: must be \code{NULL} or a \code{Date} or 
-#'     \code{Date}-conformable vector in \code{\link{foy}}. \cr \cr
-#'   \code{df}: must be a \code{data.frame} in 
-#'     \code{\link{append_csv}}, \code{\link{dataout}}, and
-#'     \code{\link{remove_incompletes}}. \cr \cr
-#'   \code{download}: must be a length-1 \code{logical} vector in
-#'     \code{\link{download_predictions}}. \cr \cr 
-#'   \code{download_existing_predictions}: must be a length-1 \code{logical} 
-#'     vector in \code{\link{all_options}} and  
-#'     \code{\link{predictions_options}}. \cr \cr
-#'   \code{drop_spp}: must be a \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}},
-#'     \code{\link{remove_spp}}, and \code{\link{rodents_options}}. \cr \cr
-#'   \code{end}: must be \code{NULL} or a positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}},
-#'     \code{\link{cast_options}}, \code{\link{covariates_options}}, 
-#'     \code{\link{data_options}}, and \code{\link{rodents_options}}.
-#'     \cr \cr
-#'   \code{ensemble}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}} and \code{\link{cast_options}}. \cr \cr
-#'   \code{extension}: must be a length-1 \code{character} vector with
-#'     a single period in \code{\link{model_paths}}. \cr \cr
-#'   \code{fcast_nms}: must be \code{NULL} or a non-negative \code{integer} or
-#'     \code{integer}-conformable vector in \code{\link{all_options}},
-#'     \code{\link{covariates_options}}, and \code{\link{data_options}} 
-#'     \cr \cr
-#'   \code{filename}: must be a length-1 \code{character} vector in
-#'     \code{\link{append_csv}} and \code{\link{verify_PortalData}}. \cr \cr
-#'   \code{from_date}: must be \code{NULL} or a length-1 \code{Date} or 
-#'     \code{Date}-conformable vector in \code{\link{plot_cast_point}} and
-#'     \code{\link{select_most_ab_spp}}. \cr \cr
-#'   \code{from_zenodo}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}} and \code{\link{PortalData_options}}. 
-#'     \cr \cr
-#'   \code{future_moons}: must be a \code{data.frame} of class \code{moons} 
-#'     in \code{\link{add_addl_future_moons}}. \cr \cr
-#'   \code{hind_step}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}},
-#'     \code{\link{cast_options}}, \code{\link{covariates_options}}, 
-#'     \code{\link{data_options}}, and \code{\link{rodents_options}}. \cr \cr
-#'   \code{hist_cov}: must be a \code{data.frame} of class \code{covariates} 
-#'     in \code{\link{prep_fcast_covariates}} and
-#'     \code{\link{update_covfcast_options}}. \cr \cr
-#'   \code{hist_fcast_file}: must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{covariates_options}}, and
-#'     \code{\link{data_options}}. \cr \cr
-#'   \code{lag}: must be \code{NULL} or a length-1 non-negative \code{integer}
-#'     or \code{integer}-conformable vector in \code{\link{lag_covariates}}, 
-#'     \code{\link{model_options}}, and \code{\link{pevGARCH}}. \cr \cr
-#'   \code{lead}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{plot_cast_point}} and
-#'     \code{\link{select_most_ab_spp}}. \cr \cr
-#'   \code{lead_time}: must be a length-1 non-negative \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}}, 
-#'     \code{\link{covariates_options}}, \code{\link{data_options}}, and
-#'     \code{\link{metadata_options}}. \cr \cr
-#'   \code{level}: must be \code{NULL} or a length-1 \code{character} vector 
-#'     of value \code{"All"} or \code{"Controls"} in 
-#'     \code{\link{plot_cast_point}},
-#'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}},
-#'     \code{\link{plot_cov_RMSE_mod_spp}}, 
-#'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{select_most_ab_spp}}, 
-#'     and \code{\link{select_casts}} or a length-1 \code{character} vector 
-#'     of value \code{"Site"} or \code{"Treatment"} in 
-#'     \code{\link{AutoArima}}, \code{\link{all_options}}, 
-#'     \code{\link{data_options}}, \code{\link{ESSS}}, 
-#'     \code{\link{metadata_options}}, \code{\link{nbGARCH}},
-#'     \code{\link{nbsGARCH}},
-#'     \code{\link{pevGARCH}}, and \code{\link{rodents_options}}. \cr \cr
-#'   \code{local_paths}: must be a \code{character} 
-#'     vector in \code{\link{file_paths}}. \cr \cr 
-#'   \code{main} must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{cast_options}},
-#'     \code{\link{data_options}}, \code{\link{dirtree}}, 
-#'     \code{\link{dir_options}}, \code{\link{PortalData_options}},  
-#'     \code{\link{models_options}}, and \code{\link{predictions_options}}.
-#'     \cr \cr
-#'   \code{metadata}: must be of class \code{metadata} in
-#'     \code{\link{save_forecast_output}}. \cr \cr
-#'   \code{meta_filename}: must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{metadata_options}}. \cr \cr
-#'   \code{meta_save}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{metadata_options}}. \cr \cr
-#'   \code{min_lag}: must be a length-1 non-negative \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}},
-#'     \code{\link{covariates_options}}, and \code{\link{data_options}}. 
-#'     \cr \cr
-#'   \code{min_observed}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in 
-#'     \code{\link{measure_cast_error}} and 
-#'     \code{\link{plot_cov_RMSE_mod_spp}}. \cr \cr
-#'   \code{min_plots}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}}, 
-#'     \code{\link{cast_options}}, \code{\link{data_options}}, and
-#'     \code{\link{rodents_options}}. \cr \cr
-#'   \code{min_traps}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}}, 
-#'     \code{\link{cast_options}}, \code{\link{data_options}}, and
-#'     \code{\link{rodents_options}}. \cr \cr
-#'   \code{model}: must be a length-1 \code{character} vector in
-#'     \code{\link{model_options}}, \code{\link{plot_cast_point}}, 
-#'     \code{\link{plot_cast_ts}}, \code{\link{plot_cast_ts_ylab}},
-#'     \code{\link{save_forecast_output}}, and
-#'     \code{\link{select_most_ab_spp}}. \cr \cr
-#'   \code{models}: must be \code{NULL} or a \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{cast_options}}, 
-#'     \code{\link{models_options}}, \code{\link{model_paths}}, and 
-#'     \code{\link{select_casts}}, \code{\link{plot_cov_RMSE_mod_spp}}, and
-#'     \code{\link{plot_err_lead_spp_mods}}. \cr \cr
-#'   \code{model_set}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector with value \code{"prefab"} or \code{"wEnsemble"} in 
-#'     \code{\link{model_names}}. \cr \cr
-#'   \code{mod_covariates}: must be a length-1 \code{logical} vector in 
-#'     \code{\link{model_options}}. \cr \cr
-#'   \code{mod_type}: must be \code{"pevGARCH"} in
-#'     \code{\link{covariate_models}} . \cr \cr
-#'   \code{moons}: must be a \code{data.frame} of class \code{moons} in
-#'     \code{\link{add_future_moons}}, \code{\link{append_past_moons_to_raw}},
-#'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
-#'     \code{\link{forecast_weather}}, \code{\link{format_moons}},
-#'     \code{\link{get_climate_forecasts}}, 
-#'     \code{\link{prep_covariates}}, \code{\link{prep_fcast_covariates}},
-#'     \code{\link{prep_metadata}}, \code{\link{prep_rodents}}, 
-#'     \code{\link{prep_rodents_list}}, \code{\link{trim_moons_fcast}},
-#'     \code{\link{update_covariates}}, and
-#'     \code{\link{update_covfcast_options}}. \cr \cr
-#'   \code{msg}: must be \code{NULL} or a \code{character} vector in
-#'     \code{\link{messageq}}. \cr \cr
-#'   \code{m_filename}: must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{moons_options}}. \cr \cr
-#'   \code{m_save}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{moons_options}}. \cr \cr
-#'   \code{nadot}: must be a length-1 \code{logical} vector in
-#'     \code{\link{rodent_spp}}. \cr \cr
-#'   \code{ndates}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in 
-#'     \code{\link{plot_err_lead_spp_mods}}. \cr \cr
-#'   \code{newmoonnumbers}: must be \code{NULL} or a length-1 non-negative 
-#'     \code{integer} or \code{integer}-conformable vector in 
-#'     \code{\link{select_casts}}. \cr \cr
-#'   \code{new_forecast_covariates}: must be a \code{data.frame} of class 
-#'     \code{covariates} in \code{\link{append_cov_fcast_csv}}. \cr \cr
-#'   \code{nfcnm}: must be a length-1 non-negative \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}},
-#'     \code{\link{covariates_options}}, and \code{\link{data_options}}. 
-#'     \cr \cr
-#'   \code{n_future_moons}: must be a length-1 non-negative \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{moons_options}}.
-#'     \cr \cr
-#'   \code{options_all}: must be of class \code{all_options} in
-#'     \code{\link{casts}}, \code{\link{cleanup_dir}}, 
-#'     \code{\link{fill_dir}}, \code{\link{portalcast}},
-#'     \code{\link{setup_dir}}, \code{\link{step_casts}},and 
-#'     \code{\link{step_hind_forward}}. \cr \cr
-#'   \code{options_cast}: must be of class \code{cast_options} in
-#'     \code{\link{add_ensemble}}, \code{\link{cast}},
-#'     \code{\link{cast_models}}, \code{\link{check_to_skip}}, 
-#'     \code{\link{combine_forecasts}}, \code{\link{models_to_cast}}, and
-#'     \code{\link{verify_models}}. \cr \cr
-#'   \code{options_covariates}: must be of class \code{covariates_options} in
-#'     \code{\link{append_cov_fcast_csv}}, 
-#'     \code{\link{forecast_covariates}}, \code{\link{forecast_ndvi}},
-#'     \code{\link{forecast_weather}}, \code{\link{get_climate_forecasts}}, 
-#'     \code{\link{prep_covariates}}, \code{\link{prep_fcast_covariates}},
-#'     \code{\link{prep_hist_covariates}}, \code{\link{trim_moons_fcast}}, 
-#'     \code{\link{update_covariates}}, and
-#'     \code{\link{update_covfcast_options}}. \cr \cr
-#'   \code{options_data}: must be of class \code{data_options} in
-#'     \code{\link{fill_data}}, \code{\link{prep_data}},
-#'     \code{\link{transfer_hist_covariate_forecasts}},
-#'     \code{\link{transfer_trapping_table}}, and 
-#'     \code{\link{update_data}}. \cr \cr
-#'   \code{options_dir}: must be of class \code{dir_options} in
-#'     \code{\link{create_dir}}, \code{\link{create_main_dir}}, and
-#'     \code{\link{create_sub_dirs}}. \cr \cr
-#'   \code{options_metadata}: must be of class \code{metadata_options} in
-#'     \code{\link{prep_metadata}}. \cr \cr
-#'   \code{options_model}: must be of class \code{model_options} in
-#'     \code{\link{model_template}} and \code{\link{write_model}}. \cr \cr
-#'   \code{options_models}: must be of class \code{models_options} in
-#'     \code{\link{fill_models}}. \cr \cr
-#'   \code{options_moons}: must be of class \code{moons_options} in
-#'     \code{\link{add_future_moons}}, \code{\link{append_past_moons_to_raw}},
-#'     and \code{\link{prep_moons}}. \cr \cr
-#'   \code{options_out}: must be an options \code{list} in
-#'     \code{\link{dataout}}. \cr \cr
-#'   \code{options_PortalData}: must be of class \code{PortalData_options} in
-#'     \code{\link{fill_PortalData}}. \cr \cr
-#'   \code{options_predictions}: must be of class \code{predictions_options}
-#'     in \code{\link{fill_predictions}}. \cr \cr
-#'   \code{options_rodents}: must be of class \code{rodents_options} in
-#'     \code{\link{enforce_rodents_options}}, \code{\link{prep_rodents}}, 
-#'     \code{\link{prep_rodents_list}}, \code{\link{trim_treatment}}, and
-#'     \code{\link{update_rodents_list}}. \cr \cr
-#'   \code{output}: must be \code{"abundance"} in \code{\link{all_options}}, 
-#'     \code{\link{data_options}}, and \code{\link{rodents_options}}. \cr \cr
-#'   \code{plots}: must be a length-1 \code{character} vector of value
-#'     \code{"all"} or \code{"longerm"} in \code{\link{all_options}},
-#'     \code{\link{data_options}}, and \code{\link{rodents_options}}. \cr \cr
-#'   \code{pred_dir}: must be a length-1 \code{character} vector in
-#'     \code{\link{compile_aic_weights}} and \code{\link{make_ensemble}}. 
-#'     \cr \cr
-#'   \code{quiet}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{AutoArima}}, 
-#'     \code{\link{cast_options}}, \code{\link{covariates_options}},
-#'     \code{\link{create_sub_dir}}, \code{\link{data_options}},
-#'     \code{\link{download_predictions}}, \code{\link{dir_options}}, 
-#'     \code{\link{ESSS}}, \code{\link{metadata_options}},
-#'     \code{\link{models_options}}, \code{\link{model_options}},  
-#'     \code{\link{predictions_options}}, \code{\link{PortalData_options}}, 
-#'     \code{\link{moons_options}}, \code{\link{messageq}},
-#'     \code{\link{nbGARCH}}, \code{\link{nbsGARCH}}, \code{\link{pevGARCH}},
-#'     \code{\link{rodents_options}}, and \code{\link{verify_PortalData}}.
-#'     \cr \cr 
-#'   \code{rangex}: must be a length-2 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{plot_cast_ts_xaxis}}.  
-#'     \cr \cr
-#'   \code{rodents}: must be a \code{data.table} of class \code{rodents} in 
-#'     \code{\link{interpolate_abundance}}, \code{\link{is.spcol}},  
-#'     \code{\link{remove_spp}}, and \code{\link{trim_treatment}}. \cr \cr 
-#'   \code{rodents_list}: must be of class \code{rodents_list} in 
-#'     \code{\link{prep_metadata}}. \cr \cr 
-#'   \code{r_filename}: must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{rodents_options}}. \cr \cr
-#'   \code{r_save}: must be a length-1 \code{logical} vector in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{rodents_options}}. \cr \cr
-#'   \code{save}: must be a length-1 \code{logical} vector in
-#'     \code{\link{covariates_options}}, \code{\link{metadata_options}},
-#'     \code{\link{moons_options}}, and \code{\link{rodents_options}}. \cr \cr
-#'   \code{source_name}: must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{covariates_options}},
-#'     and \code{\link{data_options}}. \cr \cr
-#'   \code{species}: must be \code{NULL} or a \code{character} vector in
-#'     \code{\link{plot_cast_point}}, \code{\link{plot_cast_point_yaxis}},
-#'     \code{\link{plot_cov_RMSE_mod_spp}}, 
-#'     \code{\link{plot_err_lead_spp_mods}}, 
-#'     \code{\link{select_casts}}, and \code{\link{select_most_ab_spp}};
-#'     specifically length-1 in
-#'     \code{\link{plot_cast_ts}} and \code{\link{plot_cast_ts_ylab}}. \cr \cr
-#'   \code{species_set}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector of value \code{"base"}, \code{"wtotal"}, or \code{"evalplot"} in 
-#'     \code{\link{rodent_spp}}. \cr \cr
-#'   \code{specific_subs}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector in \code{\link{sub_paths}}. \cr \cr 
-#'   \code{spp_names}: must be a \code{character} vector in
-#'     \code{\link{is.spcol}}. \cr \cr
-#'   \code{start}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{all_options}},
-#'     \code{\link{cast_options}}, \code{\link{covariates_options}}, 
-#'     \code{\link{data_options}}, and \code{\link{rodents_options}}. \cr \cr
-#'   \code{start_newmoon}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{plot_cast_ts}}.  
-#'     \cr \cr
-#'   \code{subs} must be a class-\code{character} vector in
-#'     \code{\link{all_options}}, \code{\link{cast_options}}, 
-#'     \code{\link{data_options}}, \code{\link{dirtree}}, 
-#'     \code{\link{dir_options}}, \code{\link{models_options}}, 
-#'     \code{\link{PortalData_options}}, and 
-#'     \code{\link{predictions_options}}. \cr \cr
-#'   \code{subs_names}: must be \code{NULL} or a \code{character} 
-#'     vector in \code{\link{subdirs}}. \cr \cr
-#'   \code{subs_type}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector in \code{\link{subdirs}}. \cr \cr
-#'   \code{sub_path}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector in \code{\link{create_sub_dir}}. \cr \cr
-#'   \code{tail}: must be a length-1 \code{logical} vector in
-#'     \code{\link{lag_covariates}}. \cr \cr
-#'   \code{temp_dir}: must be a length-1 \code{character} vector in
-#'     \code{\link{save_forecast_output}}. \cr \cr
-#'   \code{time}: must be a length-1 \code{logical} vector in
-#'     \code{\link{today}}. \cr \cr
-#'   \code{tmnt_type}: must be \code{NULL} or a length-1 \code{character} 
-#'     vector of value \code{"all"} or \code{"controls"} in 
-#'     \code{\link{all_options}}, \code{\link{data_options}}, 
-#'     \code{\link{enforce_rodents_options}}, and
-#'     \code{\link{rodents_options}}. \cr \cr
-#'   \code{to_cleanup}: must be \code{NULL} or a \code{character} vector in
-#'     \code{\link{all_options}} and \code{\link{dir_options}}. \cr \cr
-#'   \code{topx}: must be a length-1 positive \code{integer} or 
-#'     \code{integer}-conformable vector in \code{\link{select_most_ab_spp}}.
-#'     \cr \cr
-#'   \code{treatment}: must be \code{NULL} or \code{"control"} in
-#'     \code{\link{all_options}}, \code{\link{data_options}}, and
-#'     \code{\link{rodents_options}}. \cr \cr
-#'   \code{tree}: must be of class \code{dirtree} in
-#'     \code{\link{append_observed_to_cast}}, \code{\link{AutoArima}}, 
-#'     \code{\link{base_path}}, \code{\link{clear_tmp}},
-#'     \code{\link{covariates_options}}, \code{\link{create_tmp}}, 
-#'     \code{\link{download_predictions}}, \code{\link{ESSS}}, 
-#'     \code{\link{file_paths}}, \code{\link{main_path}}, 
-#'     \code{\link{metadata_options}}, \code{\link{model_options}},
-#'     \code{\link{model_paths}}, \code{\link{model_scripts}}, 
-#'     \code{\link{moons_options}}, \code{\link{most_recent_cast}}, 
-#'     \code{\link{most_recent_census}}, \code{\link{nbGARCH}}, 
-#'     \code{\link{nbsGARCH}},
-#'     \code{\link{pevGARCH}}, \code{\link{plot_cast_point}},
-#'     \code{\link{plot_cast_point_yaxis}}, \code{\link{plot_cast_ts}},
-#'     \code{\link{plot_cast_ts_xaxis}}, \code{\link{plot_cast_ts_ylab}},
-#'     \code{\link{plot_cov_RMSE_mod_spp}},
-#'     \code{\link{plot_err_lead_spp_mods}}, \code{\link{prep_weather_data}},
-#'     \code{\link{read_all}}, \code{\link{read_cast}}, 
-#'     \code{\link{read_casts}}, \code{\link{read_controls}},
-#'     \code{\link{read_covariates}}, \code{\link{read_covariate_forecasts}}, 
-#'     \code{\link{read_data}}, \code{\link{read_metadata}}, 
-#'     \code{\link{read_moons}}, \code{\link{rodents_options}}, 
-#'     \code{\link{select_most_ab_spp}}, \code{\link{sub_paths}}, and 
-#'     \code{\link{verify_PortalData}}. \cr \cr
-#'   \code{verbose}: must be a length-1 \code{logical} vector in
-#'     \code{\link{cast_is_valid}}. \cr \cr
-#'   \code{version}: must be a length-1 \code{character} vector in
-#'     \code{\link{all_options}} and \code{\link{PortalData_options}}. \cr \cr
-#'   \code{with_census}: must be a length-1 \code{logical} vector in
-#'     \code{\link{most_recent_cast}} and \code{\link{plot_cast_point}}. 
-#'     \cr \cr
-#'   \code{x}: must be a \code{data.frame} or \code{vector} in
-#'     \code{\link{na_conformer}} and must simply exist as an object that can
-#'      have a class attribute in \code{\link{classy}}. \cr \cr
-#'   \code{yr}: must be a length-1 \code{integer} or 
-#'     \code{integer}-conformable value after 1970 in 
-#'     \code{\link{all_options}}, \code{\link{covariates_options}}, 
-#'     and \code{\link{data_options}}. \cr \cr
+#' @export 
 #'
-#' @export
-#'
-check_arg <- function(arg_name, arg_value, fun_name = NULL){
-  out <- NULL
-  if (arg_name == "add"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`add` is not a character")
-      }
-    }
-  }
-  if (arg_name == "add_error"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`add_error` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`add_error` can only be of length = 1")
-    }
-  }
-  if (arg_name == "add_in_window"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`add_in_window` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`add_in_window` can only be of length = 1")
-    }
-  }
-  if (arg_name == "add_lead"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`add_lead` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`add_lead` can only be of length = 1")
-    }
-  }
-  if (arg_name == "add_obs"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`add_obs` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`add_obs` can only be of length = 1")
-    }
-  }
-  if (arg_name == "all"){
-    if (!("list" %in% class(arg_value))){
-      out <- c(out, "`all` is not a list")
-    }
-    if (!all(c("forecast", "aic") %in% names(arg_value))){
-      out <- c(out, "`all` does not have elements named `forecast` and `aic`")
-    }
-  }
-  if (arg_name == "all_forecasts"){
-    if (!("data.frame" %in% class(arg_value))){
-      out <- c(out, "`all_forecasts` is not a data frame")
-    }
-  }
-  if (arg_name == "append_fcast_csv"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`append_fcast_csv` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`append_fcast_csv` can only be of length = 1")
-    }
-  }
-  if (arg_name == "append_missing_to_raw"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`append_missing_to_raw` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`append_missing_to_raw` can only be of length = 1")
-    }
-  }
-  if (arg_name == "base"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`base` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`base` can only be of length = 1")
-    }
-  }
-  if (arg_name == "cast"){
-    if (!("data.frame" %in% class(arg_value))){
-      out <- c(out, "`cast` is not a data frame")
-    }
-    if(!cast_is_valid(arg_value)){
-      out <- c(out, "`cast` is not valid")
-    }
-  }
-  if (arg_name == "casts"){
-    if (!("casts" %in% class(arg_value))){
-      out <- c(out, "`casts` is not of class casts")
-    }
-  }
-  if (arg_name == "cast_date"){
-    if (!is.null(arg_value)){
-      if (length(arg_value) != 1){
-        out <- c(out, "`cast_date` can only be of length = 1")
-      }
-      cast_date2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
-      if (any(is.na(cast_date2))){
-        out <- c(out, "`cast_date` is not a Date")
-      }
-    }
-  }
-  if (arg_name == "cast_dates"){
-    if (!is.null(arg_value)){
-      cast_dates2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
-      if (any(is.na(cast_dates2))){
-        out <- c(out, "`cast_dates` is not a Date")
-      }
-    }
-  }
-  if (arg_name == "cast_to_check"){
-    if (!("data.frame" %in% class(arg_value))){
-      out <- c(out, "`cast_to_check` is not a data frame")
-    }
-  }
-  if (arg_name == "cast_type"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`cast_type` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`cast_type` can only be of length = 1")
-    }
-    if (!(all(arg_value %in% c("forecasts", "hindcasts")))){
-      out <- c(out, "`cast_type` can only be `forecasts` or `hindcasts`")
-    }
-  }
-  if (arg_name == "class"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`class` is not a character")
-      }
-    }
-  }
-  if (arg_name == "colname"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`colname` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`colname` can only be of length = 1")
-    }
-  }
-  if (arg_name == "confidence_level"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`confidence_level` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`confidence_level` is not numeric")
-    } else if (any(arg_value < 0.001 | arg_value > 0.999)){
-      out <- c(out, "`confidence_level` is not between 0.001 and 0.999")
-    }
-  }
-  if (arg_name == "controls"){
-    if (!("list" %in% class(arg_value))){
-      out <- c(out, "`controls` is not a list")
-    }
-    if (!all(c("forecast", "aic") %in% names(arg_value))){
-      msg <- "`controls` does not have elements named `forecast` and `aic`"
-      out <- c(out, msg)
-    }
-  }
-  if (arg_name == "covariates"){
-    if (!("covariates" %in% class(arg_value))){
-      out <- c(out, "`covariates` is not a covariates table")
-    }
-  }
-  if (arg_name == "covariate_source"){
-    if (!is.null(arg_value)){
-      valid_names <- c("current_archive", "retroactive")
-      if (!is.character(arg_value)){
-        out <- c(out, "`covariate_source` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`covariate_source` can only be of length = 1")
-      }
-      if (!(all(arg_value %in% valid_names))){
-        out <- c(out, "`covariate_source` is not valid option")
-      }
-    }
-  }
-  if (arg_name == "covariate_date_made"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`covariate_date_made` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`covariate_date_made` can only be of length = 1")
-      }
-    }
-  }
-  if (arg_name == "cov_fcast"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`cov_fcast` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`cov_fcast` can only be of length = 1")
-    }
-  }
-  if (arg_name == "cov_hist"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`cov_hist` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`cov_hist` can only be of length = 1")
-    }
-  }
-  if (arg_name == "c_filename"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`c_filename` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`c_filename` can only be of length = 1")
-    }
-  }
-  if (arg_name == "c_save"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`c_save` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`c_save` can only be of length = 1")
-    }
-  }
-  if (arg_name == "data_name"){
-    valid_names <- c("all", "controls", "covariates", "covariate_forecasts",
-                     "moons", "metadata")
-    if (!is.character(arg_value)){
-      out <- c(out, "`data_name` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`data_name` can only be of length = 1")
-    }
-    if (!(all(arg_value %in% valid_names))){
-      out <- c(out, "`data_name` is not valid option")
-    }
-  }
-  if (arg_name == "dates"){
-    if (!is.null(arg_value)){
-      cast_dates2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
-      if (any(is.na(cast_dates2))){
-        out <- c(out, "`dates` is not a Date")
-      }
-    }
-  }
-  if (arg_name == "df"){
-    if (!("data.frame" %in% class(arg_value))){
-      out <- c(out, "`df` not a data.frame")
-    }
-  }
-  if (arg_name == "download"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`download` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`download` can only be of length = 1")
-    }
-  }
-  if (arg_name == "download_existing_predictions"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`download_existing_predictions` is not logical")
-    }
-    if (length(arg_value) != 1){
-      msg <- "`download_existing_predictions` can only be of length = 1"
-      out <- c(out, msg)
-    }
-  }
-  if (arg_name == "drop_spp"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`drop_spp` is not a character")
-      }
-    }
-  }
-  if (arg_name == "end"){
-    if (!is.null(arg_value)){
-      if (!is.numeric(arg_value)){
-        out <- c(out, "`end` is not numeric")
-      } else if (any(arg_value < 1 )| any(arg_value %% 1 != 0)){
-        out <- c(out, "`end` is not a positive integer")
-      }
-    }
-  }
-  if (arg_name == "ensemble"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`ensemble` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`ensemble` can only be of length = 1")
-    }
-  }
-  if (arg_name == "extension"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`extension` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`extension` can only be of length = 1")
-      }
-      lext <- nchar(arg_value)
-      spot <- rep(NA, lext)
-      for(i in 1:lext){
-        spot[i] <- substr(arg_value, i, i) == "."
-      }
-      if (sum(spot) != 1){
-        out <- c(out, "`extension` is not an extension")
-      }
-    }
-  }
-  if (arg_name == "fcast_nms"){
-    if (!is.null(arg_value)){
-      if (!is.numeric(arg_value)){
-        out <- c(out, "`fcast_nms` is not numeric")
-      } else if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
-        out <- c(out, "`fcast_nms` is not a non-negative integer")
-      }
-    }
-  }
-  if (arg_name == "filename"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`filename` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`filename` can only be of length = 1")
-    }
-  }
-  if (arg_name == "from_date"){
-    if (!is.null(arg_value)){
-      if (length(arg_value) != 1){
-        out <- c(out, "`from_date` can only be of length = 1")
-      }
-      from_date2 <- tryCatch(as.Date(arg_value), error = function(x){NA})
-      if (any(is.na(from_date2))){
-        out <- c(out, "`from_date` is not a Date")
-      }
-    }
-  }
-  if (arg_name == "from_zenodo"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`from_zenodo` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`from_zenodo` can only be of length = 1")
-    }
-  }
-  if (arg_name == "future_moons"){
-    if (!("moons" %in% class(arg_value))){
-      out <- c(out, "`future_moons` is not an moons table")
-    }
-  }
-  if (arg_name == "hind_step"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`hind_step` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`hind_step` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`hind_step` is not a positive integer")
-    }
-  }
-  if (arg_name == "hist_cov"){
-    if (!("covariates" %in% class(arg_value))){
-      out <- c(out, "`hist_cov` is not a covariates table")
-    }
-  }
-  if (arg_name == "hist_fcast_file"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`hist_fcast_file` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`hist_fcast_file` can only be of length = 1")
-    }
-  }
-  if (arg_name == "lag"){
-    if(!is.null(arg_value)){
-      if (length(arg_value) != 1){
-        out <- c(out, "`lag` can only be of length = 1")
-      }
-      if (!is.numeric(arg_value)){
-        out <- c(out, "`lag` is not numeric")
-      } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
-        out <- c(out, "`lag` is not a non-negative integer")
-      }
-    }
-  }
-  if (arg_name == "lead"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`lead` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`lead` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`lead` is not a positive integer")
-    }
-  }
-  if (arg_name == "lead_time"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`lead_time` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`lead_time` is not numeric")
-    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
-      out <- c(out, "`lead_time` is not a non-negative integer")
-    }
-  }
-  if (arg_name == "level"){
-    if (!is.null(arg_value)){    
-      if (!is.character(arg_value)){
-        out <- c(out, "`level` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`level` can only be of length = 1")
-      }
-      AC_funs <- c("plot_cov_RMSE_mod_spp", "plot_err_lead_spp_mods",
-                   "plot_cast_point", "select_most_ab_spp", "select_casts",
-                   "AutoArima", "ESSS", "nbGARCH", "nbsGARCH", "pevGARCH")
-      ST_funs <- c("all_options")
-      if (fun_name %in% AC_funs){
-        if (!(all(arg_value %in% c("All", "Controls")))){
-          out <- c(out, "`level` must be 'All' or 'Controls'")
-        }
-      }
-      if (fun_name %in% ST_funs){
-        if (!(arg_value %in% c("Site", "Treatment"))){
-          out <- c(out, "`level` must be 'Site' or 'Treatment'")
-        }
-      }
-    }
-  }
-  if (arg_name == "local_paths"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`local_path` is not a character")
-    }
-  }
-  if (arg_name == "main"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`main` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`main` can only be of length = 1")
-    }
-  }
-  if (arg_name == "metadata"){
-    if (!("metadata" %in% class(arg_value))){
-      out <- c(out, "`metadata` is not a metadata list")
-    }
-  }
-  if (arg_name == "meta_filename"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`meta_filename` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`meta_filename` can only be of length = 1")
-    }
-  }
-  if (arg_name == "meta_save"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`meta_save` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`meta_save` can only be of length = 1")
-    }
-  }
-  if (arg_name == "min_lag"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`min_lag` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`min_lag` is not numeric")
-    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
-      out <- c(out, "`min_lag` is not a non-negative integer")
-    }
-  }
-  if (arg_name == "min_observed"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`min_observed` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`min_observed` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`min_observed` is not a positive integer")
-    }
-  }
-  if (arg_name == "min_plots"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`min_plots` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`min_plots` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`min_plots` is not a positive integer")
-    }
-  }
-  if (arg_name == "min_traps"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`min_traps` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`min_traps` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`min_traps` is not a positive integer")
-    }
-  }
-  if (arg_name == "model"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`model` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`model` can only be of length = 1")
-      }
-    }
-  }
-  if (arg_name == "models"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`models` is not a character")
-      }
-    }
-  }
-  if (arg_name == "model_set"){
-    if (!is.null(arg_value)){
-      if (!is.character(arg_value)){
-        out <- c(out, "`model_set` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`model_set` can only be of length = 1")
-      }
-      if (!(all(arg_value %in% c("prefab", "wEnsemble")))){
-        out <- c(out, "`model_set` must be 'prefab' or 'wEnsemble'")
-      }
-    }
-  }
-  if (arg_name == "mod_covariates"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`mod_covariates` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`mod_covariates` can only be of length = 1")
-    }
-  }
-  if (arg_name == "mod_type"){
-    if (arg_value != "pevGARCH"){
-      out <- c(out, "only `pevGARCH` supported for `mod_type`")
-    }
-  }
-  if (arg_name == "moons"){
-    if (!("moons" %in% class(arg_value))){
-      out <- c(out, "`moons` is not an moons table")
-    }
-  }
-  if (arg_name == "msg"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`msg` is not a character")
-      }
-    }
-  }
-  if (arg_name == "m_filename"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`m_filename` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`m_filename` can only be of length = 1")
-    }
-  }
-  if (arg_name == "m_save"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`m_save` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`m_save` can only be of length = 1")
-    }
-  }
-  if (arg_name == "nadot"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`nadot` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`nadot` can only be of length = 1")
-    }
-  }
-  if (arg_name == "ndates"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`ndates` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`ndates` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`ndates` is not a positive integer")
-    }
-  }
-  if (arg_name == "newmoonnumbers"){
-    if (!is.null(arg_value)){
-      if (!is.numeric(arg_value)){
-        out <- c(out, "`newmoonnumbers` is not numeric")
-      } else if (any(arg_value < 0) | any(arg_value %% 1 != 0)){
-        out <- c(out, "`newmoonnumbers` is not a non-negative integer")
-      }
-    }
-  }
-  if (arg_name == "new_forecast_covariates"){
-    if (!("covariates" %in% class(arg_value))){
-      out <- c(out, "`new_forecast_covariates` is not a covariates table")
-    }
-  }
-  if (arg_name == "nfcnm"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`nfcnm` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`nfcnm` is not numeric")
-    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
-      out <- c(out, "`nfcnm` is not a non-negative integer")
-    }
-  }
-  if (arg_name == "n_future_moons"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`n_future_moons` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`n_future_moons` is not numeric")
-    } else if (any(arg_value < 0 | arg_value %% 1 != 0)){
-      out <- c(out, "`n_future_moons` is not a non-negative integer")
-    }
-  }
-  if (arg_name == "options_all"){
-    if (!("all_options" %in% class(arg_value))){
-      out <- c(out, "`options_all` is not an all_options list")
-    }
-  }
-  if (arg_name == "options_cast"){
-    if (!("cast_options" %in% class(arg_value))){
-      out <- c(out, "`options_cast` is not a cast_options list")
-    }
-  }
-  if (arg_name == "options_covariates"){
-    if (!("covariates_options" %in% class(arg_value))){
-      out <- c(out, "`options_covariates` is not a covariates_options list")
-    }
-  }
-  if (arg_name == "options_data"){
-    if (!("data_options" %in% class(arg_value))){
-      out <- c(out, "`options_data` is not a data_options list")
-    }
-  }
-  if (arg_name == "options_dir"){
-    if (!("dir_options" %in% class(arg_value))){
-      out <- c(out, "`options_dir` is not a dir_options list")
-    }
-  }
-  if (arg_name == "options_metadata"){
-    if (!("metadata_options" %in% class(arg_value))){
-      out <- c(out, "`options_metadata` is not a metadata_options list")
-    }
-  }
-  if (arg_name == "options_model"){
-    if (!("model_options" %in% class(arg_value))){
-      out <- c(out, "`options_model` is not a model_options list")
-    }
-  }
-  if (arg_name == "options_models"){
-    if (!("models_options" %in% class(arg_value))){
-      out <- c(out, "`options_models` is not a models_options list")
-    }
-  }
-  if (arg_name == "options_moons"){
-    if (!("moons_options" %in% class(arg_value))){
-      out <- c(out, "`options_moons` is not a moons_options list")
-    }
-  }
-  if (arg_name == "options_out"){
-    if (!any(grepl("options", class(arg_value)))){
-      out <- c(out, "`options_out` is not an options list")
-    }
-  }
-  if (arg_name == "options_PortalData"){
-    if (!("PortalData_options" %in% class(arg_value))){
-      out <- c(out, "`options_PortalData` is not a PortalData_options list")
-    }
-  }
-  if (arg_name == "options_predictions"){
-    if (!("predictions_options" %in% class(arg_value))){
-      out <- c(out, "`options_predictions` is not a predictions_options list")
-    }
-  }
-  if (arg_name == "options_rodents"){
-    if (!("rodents_options" %in% class(arg_value))){
-      out <- c(out, "`options_rodents` is not a rodents_options list")
-    }
-  }
-  if (arg_name == "output"){
-    if (arg_value != "abundance"){
-      out <- c(out, "only `abundance` supported for `output`")
-    }
-  }
-  if (arg_name == "plots"){
-    if (!is.character(arg_value)){
-      out <- c(out, "`plots` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`plots` can only be of length = 1")
-    }
-    if (!(all(arg_value %in% c("all", "longterm")))){
-      out <- c(out, "`plots` must be 'all' or 'longterm'")
-    }
-  }
-  if (arg_name == "pred_dir"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`pred_dir` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`pred_dir` can only be of length = 1")
-    }
-  }
-  if (arg_name == "quiet"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`quiet` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`quiet` can only be of length = 1")
-    }
-  }
-  if (arg_name == "rangex"){
-    if (length(arg_value) != 2){
-      out <- c(out, "`rangex` can only be of length = 2")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`rangex` is not numeric")
-    } else if (any(arg_value < 1) | any(arg_value %% 1 != 0)){
-      out <- c(out, "`rangex` is not a positive integer")
-    }
-  }
-  if (arg_name == "rodents"){
-    if (!("rodents" %in% class(arg_value))){
-      out <- c(out, "`rodents` is not of class rodents")
-    }
-  }
-  if (arg_name == "rodents_list"){
-    if (!("rodents_list" %in% class(arg_value))){
-      out <- c(out, "`rodents_list` is not a rodents_list list")
-    }
-  }
-  if (arg_name == "r_filename"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`r_filename` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`r_filename` can only be of length = 1")
-    }
-  }
-  if (arg_name == "r_save"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`r_save` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`r_save` can only be of length = 1")
-    }
-  }
-  if (arg_name == "save"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`save` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`save` can only be of length = 1")
-    }
-  }
-
-  if (arg_name == "source_name"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`source_name` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`source_name` can only be of length = 1")
-    }
-  }
-  if (arg_name == "species"){
-    if(!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`species` is not a character")
-      }
-      if (!all(arg_value %in% rodent_spp("wtotal"))){
-        out <- c(out, "invalid entry in `species`")
-      } 
-      sp_funs <- c("plot_cast_ts", "plot_cast_ts_ylab")
-      if (fun_name %in% sp_funs){
-        if (length(arg_value) != 1){
-          out <- c(out, "`species` can only be of length = 1")
-        }
-      }
-    }
-  }
-  if (arg_name == "species_set"){
-    if (!is.null(arg_value)){
-      if (!is.character(arg_value)){
-        out <- c(out, "`species_set` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`species_set` can only be of length = 1")
-      }
-      if (!(all(arg_value %in% c("base", "wtotal", "evalplot")))){
-        out <- c(out, "`species_set` must be 'base', 'wtotal', or 'evalplot'")
-      }
-    }
-  }
-  if (arg_name == "specific_subs"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`specific_subs` is not a character")
-      }
-    }
-  }
-  if (arg_name == "spp_names"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`spp_names` is not a character")
-    }
-  }
-  if (arg_name == "start"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`start` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`start` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`start` is not a positive integer")
-    }
-  }
-  if (arg_name == "start_newmoon"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`start_newmoon` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`start_newmoon` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`start_newmoon` is not a positive integer")
-    }
-  }
-  if (arg_name == "subs"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`subs` is not a character vector")
-    }
-  }
-  if (arg_name == "subs_names"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`subs_names` is not a character")
-      }
-    }
-  }
-  if (arg_name == "subs_type"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`subs_type` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`subs_type` can only be of length = 1")
-      }
-      if (!(all(arg_value %in% c("portalcasting")))){
-        out <- c(out, "`subs_type` is not recognized ")
-      }
-    }
-  }
-  if (arg_name == "sub_path"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`sub_path` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`sub_path` can only be of length = 1")
-      }
-    }
-  }
-  if (arg_name == "tail"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`tail` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`tail` can only be of length = 1")
-    }
-  }
-  if (arg_name == "temp_dir"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`temp_dir` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`temp_dir` can only be of length = 1")
-    }
-  }
-  if (arg_name == "time"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`time` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`time` can only be of length = 1")
-    }
-  }
-  if (arg_name == "tmnt_type"){
-    if (!is.null(arg_value)){
-      if (!is.character(arg_value)){
-        out <- c(out, "`tmnt_type` is not a character")
-      }
-      if (length(arg_value) != 1){
-        out <- c(out, "`tmnt_type` can only be of length = 1")
-      }
-      if (!(all(arg_value %in% c("all", "controls")))){
-        out <- c(out, "`tmnt_type` must be 'all' or 'controls'")
-      }
-    }
-  }
-  if (arg_name == "to_cleanup"){
-    if (!is.null(arg_value)){
-      if (!("character" %in% class(arg_value))){
-        out <- c(out, "`to_cleanup` is not a character")
-      }
-    }
-  }
-  if (arg_name == "topx"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`topx` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`topx` is not numeric")
-    } else if (any(arg_value < 1 | arg_value %% 1 != 0)){
-      out <- c(out, "`topx` is not a positive integer")
-    }
-  }
-  if (arg_name == "treatment"){
-    if (!(is.null(arg_value)) && arg_value != "control"){
-      out <- c(out, "`treatment` must be `NULL` or 'control'")
-    }
-  }
-  if (arg_name == "tree"){
-    if (!("dirtree" %in% class(arg_value))){
-      out <- c(out, "`tree` is not a dirtree list")
-    }
-  }
-  if (arg_name == "verbose"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`verbose` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`verbose` can only be of length = 1")
-    }
-  }
-  if (arg_name == "version"){
-    if (!("character" %in% class(arg_value))){
-      out <- c(out, "`version` is not a character")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`version` can only be of length = 1")
-    }
-  }
-  if (arg_name == "with_census"){
-    if (!("logical" %in% class(arg_value))){
-      out <- c(out, "`with_census` is not logical")
-    }
-    if (length(arg_value) != 1){
-      out <- c(out, "`with_census` can only be of length = 1")
-    }
-  }
-  if (arg_name == "x"){
-    if (fun_name == "na_conformer"){
-      if (!(is.data.frame(arg_value) | is.vector(arg_value))){
-        out <- c(out, "`x` is not a data.frame or vector")
-      }
-    }
-    if (fun_name == "classy"){
-    }
-  }
-  if (arg_name == "yr"){
-    if (length(arg_value) != 1){
-      out <- c(out, "`yr` can only be of length = 1")
-    }
-    if (!is.numeric(arg_value)){
-      out <- c(out, "`yr` is not numeric")
-    } else if (any(arg_value < 1970 | arg_value %% 1 != 0)){
-      out <- c(out, "`yr` is not an integer after 1970")
-    }
-  }
-  out
+return_if_null <- function(x, value = NULL){
+  if(is.null(x)){
+    do.call(return, list(value), envir = sys.frame(-1))
+  } 
 }
 
 
+#' @title Replace a value with an alternative if it is NULL or if it is NA
+#'
+#' @description 
+#'  \code{ifnull} replaces the focal input with the alternative value if it
+#'   is \code{NULL}. \cr \cr
+#'  \code{ifna} replaces the focal input with the alternative value if it
+#'   is \code{NA}.
+#'
+#' @param x Focal input.
+#'
+#' @param alt Alternative value.
+#'
+#' @return 
+#'  \code{ifnull}: \code{x} if not \code{NULL}, \code{alt} otherwise. \cr \cr
+#'  \code{ifna}:  \code{x} if not \code{NA}, \code{alt} otherwise. 
+#' 
+#' @examples
+#'  ifnull(NULL, 123)
+#'  ifnull(TRUE, 123)
+#'  ifnull(FALSE, 123)
+#'  ifna(NA, 123)
+#'  ifna(FALSE, 123)
+#'  ifna(NA, NA)
+#'
+#' @name alternative_values
+#'
+NULL
+
+#' @rdname alternative_values
+#'
+#' @export 
+#'
+ifnull <- function(x = NULL, alt = NULL){
+  if(is.null(x)){
+    x <- alt
+  }
+  x
+}
+
+#' @rdname alternative_values
+#'
+#' @export 
+#'
+ifna <- function(x = NULL, alt = NA){
+  ifelse(is.na(x), alt, x)
+}

@@ -1,520 +1,167 @@
-#' @title Plot RMSE and coverage as a function of model for each species
+
+#' @title Plot predictions for a given point in time across multiple species
 #'
-#' @description Plot the RMSE and coverage by species matrix of cast error 
-#'   as a function of model.
+#' @description Plot the point value with confidence interval for a time point
+#'  across multiple species. Casts can be selected either by supplying a 
+#'  \code{cast_id} number or any combination of \code{data_set},
+#'  \code{model}, and \code{end_moon}, which filter the available casts in
+#'  unison. This plot type can only handle output from a single cast, so
+#'  if multiple casts still remain, the one with the highest number is 
+#'  selected. To be more certain about cast selection, use the \code{cast_id}
+#'  input.
 #'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
+#' @details The resulting plot shows predictions as points (open white
+#'  circles) with error, where the point represents the \code{estimate} and
+#'  the bounds of the error are \code{lower_pi} and \code{upper_pi} in the
+#'  \code{cast_table} saved output from a model. \cr
+#'  As of \code{portalcasting v0.9.0}, 
+#'  this represents the mean and the 95\% prediction interval. If
+#'  \code{with_census = TRUE}, the observations from the associated moon
+#'  are plotted as blue filled squares. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) 
+#'  newmoon number of the forecast origin. Default value is 
+#'  \code{NULL}, which equates to no selection with respect to 
+#'  \code{end_moon}.
+#'
+#' @param model \code{character} value of the name of the model to 
+#'  include. Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{model}.
+#'
+#' @param data_set \code{character} value of the rodent data set to include
+#'  Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{data_set}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param moon \code{integer} (or integer \code{numeric}) newmoon number for
+#'  the plot. 
+#'
+#' @param cast_id \code{integer} (or integer \code{numeric}) value 
+#'  representing the cast of interest, as indexed within the directory in
+#'  the \code{casts} sub folder. See the casts metadata file 
+#'  (\code{casts_metadata.csv}) for summary information.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @param species \code{character} vector of the species codes (or 
-#'   \code{"total"} for the total across species) to be selected from or 
-#'   \code{NULL} to include all species and the total. Default set to 
-#'   \code{rodent_spp(set = "evalplot")}, the only setting for which the
-#'   plot is reliably coded/ 
-#'
-#' @param level \code{character} value of the treatment type of interest 
-#'   (\code{"All"} or \code{"Controls"}).
-#'
-#' @param cast_type \code{character} value of the type of -cast of model. Used
-#'   to select the file in the predictions subdirectory. Currently only 
-#'   reliably coded for \code{"hindcasts"}.
-#'
-#' @param cast_dates \code{Date}s the predictions were made. Used to select 
-#'   the files in the predictions subdirectory. Can be length 1 or more and if 
-#'   \code{NULL} (default), selects the most recent -casts.
-#'
-#' @param min_observed \code{integer} value for the minimum number of observed
-#'   values needed for a -cast to be retained in the output table. Default is
-#'   \code{1}, which returns all -casts with any observations. To include all
-#'   -casts (even those without any evaluations), set to \code{0}. 
-#'
-#' @param models \code{character} value(s) of the name(s) (or 
-#'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
-#'   models with available -casts are returned.
-#' 
-#' @examples
-#' \dontrun{
-#' 
-#' setup_dir(all_options(download_existing_predictions = TRUE))
-#' plot_cov_RMSE_mod_spp()
-#' }
-#'
-#' @export
-#'
-plot_cov_RMSE_mod_spp <- function(tree = dirtree(), cast_type = "hindcasts", 
-                               species = rodent_spp(species_set = "evalplot"),
-                               level = "Controls", cast_dates = NULL, 
-                               min_observed = 1, 
-                               models = model_names("wEnsemble")){
-  check_args()
-  if (is.null(cast_dates)){
-    cast_dates <- most_recent_cast(tree, cast_type)
-  }
-
-  casts <- read_casts(tree = tree, cast_type = cast_type, 
-                     cast_dates = cast_dates) %>%
-          select_casts(species = species, level = level, models = models) 
-  if (NROW(casts) == 0){
-    stop("no casts available for specified inputs")
-  }  
-  errs <- append_observed_to_cast(casts, tree) %>%
-          measure_cast_error(min_observed = min_observed)
-
-  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
-  sptab <- na_conformer(sptab, "speciescode")
-
-  uspecies <- as.character(unique(errs$species))
-  ntspecies <- uspecies[!grepl("total", uspecies)]
-  ntspeciesm <- sptab[ , "speciescode"] %in% ntspecies
-  ntspeciesn <- sort(sptab[ntspeciesm , "scientificname"], decreasing = TRUE)
-  ntspeciesm2 <- rep(NA, length(ntspeciesn))
-  for(i in 1:length(ntspeciesm2)){
-    ntspeciesm2[i] <- which(sptab[ , "scientificname"] == ntspeciesn[i])
-  }
-  ntspecies <- sptab[ntspeciesm2, "speciescode"]
-  tspecies <- sort(uspecies[grepl("total", uspecies)])
-  uspecies <- c(tspecies, ntspecies)
-  nspecies <- length(uspecies)
-  umodels <- as.character(unique(errs$model))
-  nemodels <- sort(umodels[!grepl("Ensemble", umodels)])
-  emodels <- sort(umodels[grepl("Ensemble", umodels)])
-  umodels <- c(nemodels, emodels)
-  nmodels <- length(umodels)
-
-
-  par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
-  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
-       bty = "n")
-
-  x1 <- 0
-  x2 <- 0.48
-  y1 <- 0.0
-  y2 <- 0.05
-  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
-  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
-       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = umodels, cex = 0.7, 
-       xpd = TRUE, srt = 45, adj = 1)
-  x1 <- 0.49
-  x2 <- 0.97
-  y1 <- 0.0
-  y2 <- 0.05
-  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
-  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
-       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = umodels, cex = 0.7, 
-       xpd = TRUE, srt = 45, adj = 1)
-
-  for(i in 1:nspecies){
-
-    x1 <- 0
-    x2 <- 0.48
-    y1 <- 0.05 + (i - 1) * 0.95 * (1/nspecies)
-    y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
-    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", 
-         xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0,1), bty = "L")
-    axis(2, at = seq(0, 1, 0.2), cex.axis = 0.6, las = 1, line = -0.5, 
-         lwd = 0)
-    axis(2, at = seq(0, 1, 0.2), labels = FALSE, tck = -0.025)
-    mtext(side = 2, "Coverage", line = 1.5, cex = 0.75)
-    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
-    for(j in 1:nmodels){
-      in_ij <- which(errs$species == uspecies[i] & errs$model == umodels[j])
-
-      ys <- errs$coverage[in_ij]
-      ys2 <- runif(length(ys), ys - 0.005, ys + 0.005)
-      xs <- runif(length(ys), j - 0.05, j + 0.05)
-      quants <- quantile(ys, seq(0, 1, 0.25))
-      points(rep(j, 2), quants[c(1, 5)], type = "l")
-      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l")
-      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l")
-      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
-      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
-      points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
-    }
-    
-    abline(h = 0.90, lwd = 2, lty = 3)
-
-    in_i <- which(errs$species == uspecies[i])
-    errs_i <- errs[in_i, ]
-    ymax <- max(max(errs_i$RMSE, na.rm = TRUE))
-    x1 <- 0.49
-    x2 <- 0.97
-    y1 <- 0.05 + (i - 1) * 0.95 * (1/nspecies)
-    y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
-    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", bty = "L",
-         xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0, ymax))
-    axis(2, cex.axis = 0.6, las = 1, line = -0.5, lwd = 0)
-    axis(2, labels = FALSE, tck = -0.025)
-    mtext(side = 2, "RMSE", line = 1.625, cex = 0.75)
-    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
-    for(j in 1:nmodels){
-      in_ij <- which(errs$species == uspecies[i] & errs$model == umodels[j])
-
-      ys <- errs$RMSE[in_ij]
-      ys2 <- runif(length(ys), ys - 0.005, ys + 0.005)
-      xs <- runif(length(ys), j - 0.05, j + 0.05)
-      quants <- quantile(ys, seq(0, 1, 0.25))
-      points(rep(j, 2), quants[c(1, 5)], type = "l")
-      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l")
-      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l")
-      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
-      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
-      points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
-    }
-    par(mar = c(0, 0, 0, 0), fig = c(0.97, 1, y1, y2), new = TRUE)   
-    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
-         bty = "n") 
-    if (uspecies[i] == "total"){
-      spt <- "Total Rodents"
-      spf <- 2
-    } else{
-      spptextmatch <- which(sptab[ , "speciescode"] == uspecies[i])
-      spt <- sptab[spptextmatch, "scientificname"]
-      spf <- 4
-    }  
-    text(0.9, 1, spt, font = spf, cex = 0.8, xpd = TRUE, srt = 270)
-  }
-
-
-}
-
-
-#' @title Plot error as a function of lead time for each of a combination of
-#'   species and model
-#'
-#' @description Plot the model-species matrix of error as a function of
-#'   lead time.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
-#'
-#' @param species \code{character} vector of the species codes (or 
-#'   \code{"total"} for the total across species) to be selected from or 
-#'   \code{NULL} to include all species and the total. Default set to 
-#'   \code{rodent_spp(set = "evalplot")}, the only setting for which the
-#'   plot is reliably coded/ 
-#'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'   or \code{"Controls"}).
-#'
-#' @param cast_type \code{character} value of the type of -cast of model. Used
-#'   to select the file in the predictions subdirectory. Currently only 
-#'   reliably coded for \code{"forecasts"}.
-#'
-#' @param ndates \code{integer} number of -cast issue dates to include.
-#'
-#' @param models \code{character} value(s) of the name(s) (or 
-#'   \code{"Ensemble"}) of the model(s) of interest. If \code{NULL}, all
-#'   models with available -casts are returned.
-#' 
-#' @examples
-#' \dontrun{
-#' 
-#' setup_dir(all_options(download_existing_predictions = TRUE))
-#' plot_err_lead_spp_mods()
-#' }
-#'
-#' @export
-#'
-plot_err_lead_spp_mods <- function(tree = dirtree(), cast_type = "forecasts", 
-                               species = rodent_spp(species_set = "evalplot"),
-                               level = "Controls", ndates = 3,
-                               models = model_names("wEnsemble")){
-  check_args()
-  casts <- read_casts(tree, cast_type = cast_type) %>%
-           select_casts(species = species, level = level, models = models)
-  if (NROW(casts) == 0){
-    stop("no casts available for specified inputs")
-  } 
-  casts <- append_observed_to_cast(casts, tree)
- 
-  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
-  sptab <- na_conformer(sptab, "speciescode")
-
-  uspecies <- as.character(unique(casts$species))
-  ntspecies <- uspecies[!grepl("total", uspecies)]
-  ntspeciesm <- sptab[ , "speciescode"] %in% ntspecies
-  ntspeciesn <- sort(sptab[ntspeciesm , "scientificname"], decreasing = TRUE)
-  ntspeciesm2 <- rep(NA, length(ntspeciesn))
-  for(i in 1:length(ntspeciesm2)){
-    ntspeciesm2[i] <- which(sptab[ , "scientificname"] == ntspeciesn[i])
-  }
-  ntspecies <- sptab[ntspeciesm2, "speciescode"]
-  tspecies <- sort(uspecies[grepl("total", uspecies)])
-  uspecies <- c(tspecies, ntspecies)
-  nspecies <- length(uspecies)
-  umodels <- unique(casts$model)
-  nemodels <- sort(umodels[!grepl("Ensemble", umodels)])
-  emodels <- sort(umodels[grepl("Ensemble", umodels)])
-  umodels <- c(nemodels, emodels)
-  nmodels <- length(umodels)
-  if(is.null(ndates)){
-    udates <- unique(casts$date)
-  } else{
-    posdates <- unique(casts$date)
-    nposdates <- length(posdates)
-    nleads <- rep(NA, nposdates)
-    for(i in 1:nposdates){
-      incl <- casts$date == posdates[i] & is.na(casts$error) == FALSE
-      nleads[i] <- length(unique(casts$lead[incl]))
-    }
-    posdates2 <- sort(posdates[nleads > 2], decreasing = TRUE)
-    udates <- posdates2[c(1, 12, 24, 48, 72)[1:ndates]]
-  }
-  nudates <- length(udates)
-  cols <- viridis(nudates, 1, 0, 0.75)
-
-  incl <- which(casts$species %in% uspecies & casts$model %in% umodels &
-                casts$date %in% udates)
-  casts <- casts[incl, ]
-  leads <- casts$lead[which(is.na(casts$error) == FALSE)]
-  xrange <- c(max(leads) + 1, 0)
-
-  umodels <- unique(casts$model)
-  nmodels <- length(umodels)
-
-  par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
-  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
-       bty = "n")
-  mtext(side = 1, "Lead time (new moons)", line = -0.75)
-  mtext(side = 2, "Forecast error", line = -1)
-  text(1.39, 1.11, "Forecast Issue ", xpd = TRUE, cex = 0.75)
-  text(1.39, 1.095, "Date", xpd = TRUE, cex = 0.75)
-  ys <- seq(1.08, by = -0.013, length.out = nudates)
-  text(1.39, ys, udates, xpd = TRUE, cex = 0.75, col = cols)
-
-  rowc <- 1 
-  for(i in 1:nspecies){
-    colc <- 0
-    in_i <- which(casts$species == uspecies[i])
-    casts_i <- casts[in_i, ]
-    ymin <- min(c(0, min(casts_i$error, na.rm = TRUE)))
-    ymax <- max(c(0, max(casts_i$error, na.rm = TRUE)))
-    ymin <- ymin - 0.05 * (ymax - ymin)
-    ymax <- ymax + 0.05 * (ymax - ymin)
-    yrange <- c(ymin, ymax)
-    for(j in 1:nmodels){
-      in_ij <- which(casts$species == uspecies[i] & casts$model == umodels[j])
-      casts_ij <- casts[in_ij, ]
-      x1 <- 0.07 + (j - 1) * 0.8 * (1/nmodels)
-      x2 <- x1 + 0.8 * (1/nmodels)
-      y1 <- 0.04 + (i - 1) * 0.92 * (1/nspecies)
-      y2 <- y1 + 0.92 * (1/nspecies)
-      par(mar = c(0.5, 0, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
-      nnonna <- length(which(is.na(casts_ij$error) == FALSE))
-      if (nnonna == 0){
-        plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
-             bty = "n")
-      }else{
-        colc <- colc + 1
-        plot(casts_ij$lead, casts_ij$error, xaxt = "n", yaxt = "n", ylab = "", 
-             xlab = "", type = "n", xlim = xrange, ylim = yrange, bty = "L")
-        abline(h = 0, lwd = 2)
-        axis(1, tck = -0.03, labels = FALSE)
-        axis(2, tck = -0.03, labels = FALSE)
-        if(rowc == 1){
-          axis(1, las = 1, cex.axis = 0.65, lwd = 0, line = -1)
-        }
-        if(colc == 1){
-          axis(2, las = 1, cex.axis = 0.65, lwd = 0, line = -0.625)
-        }
-        for(k in 1:nudates){
-          casts_ijk <- casts_ij[which(casts_ij$date == udates[k]), ]
-          plotx <- casts_ijk$lead[order(casts_ijk$lead)]
-          ploty <- casts_ijk$error[order(casts_ijk$lead)]
-          plotx <- plotx[-which(is.na(ploty))]
-          ploty <- ploty[-which(is.na(ploty))]
-          points(plotx, ploty, type = "o", pch = 16, col = cols[k], 
-                 cex = 0.75)
-
-        }
-      }
-      if (rowc == nspecies){
-        mtext(side = 3, umodels[j], cex = 0.75, font = 2, line = 0.5) 
-      }
-      if(j == nmodels){
-        par(mar = c(0, 0, 0, 0), fig = c(x2, 0.9, y1, y2), new = TRUE)   
-        plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
-             bty = "n")   
-        if (uspecies[i] == "total"){
-          spt <- "Total Rodents"
-          spf <- 2
-        } else{
-          spptextmatch <- which(sptab[ , "speciescode"] == uspecies[i])
-          spt <- sptab[spptextmatch, "scientificname"]
-          spf <- 4
-        }  
-        text(0.75, 1, spt, font = spf, cex = 0.55, xpd = TRUE, srt = 270)
-      }
-    }
-    rowc <- rowc + 1
-  }
-
-}
-
-
-#' @title Plot forecast or hindcast predictions for a given point in time 
-#'   across multiple species.
-#'
-#' @description Plot the point value with confidence interval for a step in
-#'   a forecast or hindcast across multiple species. Currently only reliable
-#'   for forecasts.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
-#'
-#' @param species \code{character} vector of the species codes (or 
-#'   \code{"total"} for the total across species) to be plotted or 
-#'   \code{NULL} (default) to plot all species and the total.
-#'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'   or \code{"Controls"}).
-#'
-#' @param cast_type \code{character} value of the type of -cast of model. Used
-#'   to select the file in the predictions subdirectory. Currently only 
-#'   reliably coded for \code{"forecasts"}.
-#'
-#' @param cast_date \code{Date} the predictions were made. Used to select the
-#'   file in the predictions subdirectory. If \code{NULL} (default), selects
-#'   the most recent -casts (if \code{with_census = FALSE}) or the most 
-#'   recent -casts with a subsequent census (if \code{with_census = TRUE}).
-#'
-#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
-#'   the model to be plotted.
-#'
-#' @param lead \code{integer}-conformable lead of the newmoon number used to
-#'   select the data plotted. 
-#'
-#' @param from_date \code{Date} to be used as a reference of when to count
-#'   the \code{lead} from. If \code{NULL} (default), for 
-#'   \code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
-#'   \code{plot_cast_point} is not yet reliable for 
-#'   \code{cast_type = "hindcasts"}.
+#'  \code{"total"} for the total across species) to be plotted or 
+#'  \code{NULL} (default) to plot all species in \code{data_set}.
 #'
 #' @param with_census \code{logical} toggle if the plot should include the
-#'   observed data collected during the predicted census.
+#'  observed data collected during the predicted census.
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @return \code{NULL}. Plot is generated.
 #' 
 #' @examples
-#' \dontrun{
-#' 
-#' setup_dir(all_options(download_existing_predictions = TRUE))
-#' plot_cast_point()
-#' plot_cast_point(with_census = TRUE)
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   plot_cast_point()
 #' }
 #'
 #' @export
 #'
-plot_cast_point <- function(tree = dirtree(), species = NULL,
-                               level = "Controls", cast_type = "forecasts", 
-                               cast_date = NULL, model = "Ensemble", 
-                               lead = 1, from_date = NULL, 
-                               with_census = FALSE){
-  check_args()
-  if (is.null(cast_date)){
-    cast_date <- most_recent_cast(tree, cast_type, with_census)
-  }
-  if (is.null(from_date) & cast_type == "forecasts"){
-    from_date <- cast_date
-  }
+plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL, 
+                            model = NULL, end_moon = NULL, species = NULL, 
+                            moon = NULL, with_census = FALSE, 
+                            control_files = files_control(), quiet = FALSE,
+                            arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  moons <- read_moons(main = main, control_files = control_files,
+                      arg_checks = arg_checks)
+  last_census_date <- last_census(main = main, arg_checks = arg_checks)
+  which_last_census_moon <- which(moons$censusdate == last_census_date)
+  last_census_moon <- moons$moon[which_last_census_moon]
+  last_moon <- last_moon(main = main, moons = moons, arg_checks = arg_checks)
+  alt_moon <- ifelse(with_census, last_census_moon, last_moon + 1)
+  moon <- ifnull(moon, alt_moon)
 
-  moons <- read_data(tree, "moons")
-  casts <- read_cast(tree, cast_type = cast_type, cast_date = cast_date)
+  casts_meta <- select_casts(main = main, cast_ids = cast_id,
+                             end_moons = end_moon, models = model, 
+                             data_sets = data_set, 
+                             quiet = quiet, arg_checks = arg_checks)
 
-  if (with_census){
-    obs <- read_data(tree, tolower(level))
-    lead <- 1
-    most_recent_c_date <- most_recent_census(tree)
-    cdates <- as.Date(as.character(moons$censusdate))
-    most_recent_c_spot <- which(cdates == most_recent_c_date) 
-    newmoonnumber <- moons$newmoonnumber[most_recent_c_spot]
-    nmdate <- as.Date(as.character(moons$newmoondate[most_recent_c_spot]))
-    newmoonmonth <- as.numeric(format(nmdate, "%m"))
-    newmoonyear <- as.numeric(format(nmdate, "%Y"))
-    if (length(which(casts$newmoonnumber == newmoonnumber)) == 0){
-      stop("census not available for requested date")
-    }
-  } else{
-    nmdates <- as.Date(as.character(moons$newmoondate))
-    most_recent_nm_spot <- max(which(nmdates <= from_date))
-    most_recent_nm_number <- moons$newmoonnumber[most_recent_nm_spot]
-    metadata <- read_data(tree, "metadata")
-    cast_nms_io <- metadata$rodent_forecast_newmoons > most_recent_nm_number
-    to_plot <- which(cast_nms_io)[lead]
-    newmoonnumber <- metadata$rodent_forecast_newmoons[to_plot]
-    newmoonmonth <- metadata$rodent_forecast_months[to_plot]
-    newmoonyear <- metadata$rodent_forecast_years[to_plot]
+  if(with_census){
+    casts_meta_moon1 <- casts_meta$end_moon + 1
+    casts_meta_moon2 <- casts_meta$end_moon + casts_meta$lead_time
+    casts_last_census <- last_census_moon >= casts_meta_moon1 &
+                         last_census_moon <= casts_meta_moon2 
+    casts_meta <- casts_meta[casts_last_census, ]
+  }
+  if(NROW(casts_meta) > 1){
+    which_max <- which.max(casts_meta$cast_id)
+    casts_meta <- casts_meta[which_max, ]
+  }
+  if(NROW(casts_meta) == 0){
+    stop("no casts available for requested plot")
   }
 
-  pred <- select_casts(casts, species, level, model, newmoonnumber)  
-  if (NROW(pred) == 0){
-    stop("no casts available for specified inputs")
-  }  
-  pred <- pred[order(pred$estimate, decreasing = TRUE), ]
-  nspp <- nrow(pred)
+  max_obs <- 0
+  if(with_census){
+    obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
+                              arg_checks = arg_checks)
+    sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
+    species <- ifnull(species, colnames(obs)[sp_col])
+    moon <- ifnull(moon, unique(obs$moon))
+    obs <- obs[obs$moon %in% moon, species]
+    if(NROW(obs) == 0){
+      stop("no observations available for requested plot") 
+    } 
+    max_obs <- max(as.numeric(obs), na.rm = TRUE)
+  }
+
+  preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
+                         arg_checks = arg_checks)
+  preds <- na_conformer(preds, "species")
+  species <- ifnull(species, unique(preds$species))
+  match_sp <- (preds$species %in% species)
+  moon <- ifnull(moon, unique(preds$moon))
+  match_moon <- (preds$moon %in% moon)
+  colnames <- c("moon", "species", "estimate", "lower_pi", "upper_pi")
+  match_col <- (colnames(preds) %in% colnames)
+  preds <- preds[match_sp & match_moon, match_col]
+
+  moon_month <- moons$month[moons$moon == moon]
+  moon_year <- moons$year[moons$moon == moon]
+  title_date <- paste(month(moon_month, TRUE), moon_year, sep = " ")
+  data_set_name <- casts_meta$data_set
+  data_set_name <- gsub("_interp", " (interpolated)", data_set_name)
+  model_name <- casts_meta$model
+  title <- paste0(title_date, ", " , model_name, ", ", data_set_name)
+
+  preds <- preds[order(preds$estimate, decreasing = TRUE), ]
+  species <- preds$species
+  nspp <- length(species)
   rangey <- c(nspp + 0.25, 0.75)
-  rangex <- c(0, max(pred$UpperPI))
+  rangex <- c(0, max(c(preds$upper_pi, max_obs)))
 
-  main_date <- paste(month(newmoonmonth, TRUE), newmoonyear, sep = " ")
-  main <- paste0(main_date, ": " , level)
-
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(mar = c(3.5, 9.5, 2, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
   mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
-  plot_cast_point_yaxis(tree = tree, species = pred$species)
-  mtext(main, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
-  
-  for(i in 1:nspp){
-    low <- pred$LowerPI[i]
-    up <- pred$UpperPI[i]
-    est <- pred$estimate[i]
-    vbars <- i + (0.015 * nspp * c(-1, 1))
-    points(c(low, up), rep(i, 2), type = "l", lwd = 2)
-    points(rep(low, 2), vbars, type = "l", lwd = 2)
-    points(rep(up, 2), vbars, type = "l", lwd = 2)
-    points(est, i, pch = 16, col = "white", cex = 1.25)
-    points(est, i, lwd = 2, cex = 1.25)
+  mtext(title, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
 
-    if (with_census){
-      nmmatch <- which(obs$newmoonnumber == newmoonnumber)
-      spmatch <- pred$species[i]
-      spmatch[spmatch == "NA"] <- "NA."
-      obsi <- obs[nmmatch, spmatch]
-      points(obsi, i, pch = 16, col = rgb(0, 0.4, 0.9, 0.8), cex = 1.25)
-      points(obsi, i, pch = 1, col = rgb(0.2, 0.2, 0.2, 0.8), cex = 1.25)
-    }
-  }
-}
-
-#' @title Expand the names with formatting for a multi-species -cast plot y 
-#'   axis
-#'
-#' @description Add the y-axis of formatted species names to a 
-#'   \code{\link{plot_cast_point}}.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}. Used to access the species list.
-#'
-#' @param species \code{character} vector of the species codes (or 
-#'   \code{"total"} for the total across species) being plotted.
-#'
-#' @return \code{list} of \code{text} and \code{font} elements. 
-#'
-#' @export
-#'
-plot_cast_point_yaxis <- function(tree = dirtree(), species = "total"){
-
-  check_args()
-  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file_path(main = main, sub = "raw",  
+                     files = "PortalData/Rodents/Portal_rodent_species.csv",
+                     arg_checks = arg_checks)
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
-  nspp <- length(species)
+
   for(i in 1:nspp){
     if (species[i] == "total"){
       lab_text <- "Total"
@@ -529,129 +176,155 @@ plot_cast_point_yaxis <- function(tree = dirtree(), species = "total"){
     axis(2, at = i, labels = FALSE, las = 1, 
          cex.axis = 0.65, tck = -0.01)
   }
+
+  for(i in 1:nspp){
+    low <- max(c(preds$lower_pi[i], 0))
+    up <- preds$upper_pi[i]
+    est <- preds$estimate[i]
+    vbars <- i + (0.015 * nspp * c(-1, 1))
+    points(c(low, up), rep(i, 2), type = "l", lwd = 2)
+    points(rep(low, 2), vbars, type = "l", lwd = 2)
+    points(rep(up, 2), vbars, type = "l", lwd = 2)
+    points(est, i, pch = 16, col = "white", cex = 1.25)
+    points(est, i, lwd = 2, cex = 1.25)
+
+   if (with_census){
+      spmatch <- preds$species[i]
+      spmatch[spmatch == "NA"] <- "NA."
+      obsi <- obs[ , spmatch]
+      points(obsi, i, pch = 15, col = rgb(0, 0.4, 0.9, 0.8), cex = 1.25)
+      points(obsi, i, pch = 0, col = rgb(0.2, 0.2, 0.2, 0.8), cex = 1.25)
+    }   
+  }
+
+
+  invisible(NULL)
 }
 
 
-#' @title Visualize a forecast or hindcast
+
+#' @title Visualize a time series cast of a species
 #'
-#' @description Plot an observed timeseries and forecast or hindcast 
-#'   timeseries with a prediction interval. Currently only reliable for 
-#'   forecasts.
+#' @description Plot an observed timeseries and cast timeseries with a 
+#'  prediction interval. \cr
+#'  Casts can be selected either by supplying a 
+#'  \code{cast_id} number or any combination of \code{data_set},
+#'  \code{model}, and \code{end_moon}, which filter the available casts in
+#'  unison. This plot type can only handle output from a single cast, so
+#'  if multiple casts still remain, the one with the highest number is 
+#'  selected. To be more certain about cast selection, use the \code{cast_id}
+#'  input.
 #'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
+#' @details The resulting plot shows observations as a solid black line 
+#'  and predictions as a blue polygon with the bounds represent the error
+#'  given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line
+#'  representing the \code{estimate} in the \code{cast_table} saved output 
+#'  from a model. \cr
+#'  As of \code{portalcasting v0.9.0}, 
+#'  this represents the mean and the 95\% prediction interval. \cr
+#'  Observations that occurred after the cast are shown connected directly
+#'  to the pre-cast observation data (as the black solid line).
 #'
-#' @param species \code{character} value of the species code or \code{"total"}
-#'   for the total across species.
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
 #'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'   or \code{"Controls"}).
+#' @param end_moon \code{integer} (or integer \code{numeric}) 
+#'  newmoon number of the forecast origin. Default value is 
+#'  \code{NULL}, which equates to no selection with respect to 
+#'  \code{end_moon}.
 #'
-#' @param cast_type \code{character} value of the type of -cast of model. Used
-#'   to select the file in the predictions subdirectory. Currently only 
-#'   reliably coded for \code{"forecasts"}.
+#' @param model \code{character} value of the name of the model to 
+#'  include. Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{model}.
 #'
-#' @param cast_date \code{Date} the predictions were made. Used to select the
-#'   file in the predictions subdirectory. 
+#' @param data_set \code{character} value of the rodent data set to include
+#'  Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{data_set}.
 #'
-#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
-#'   the model to be plotted.
+#' @param cast_id \code{integer} (or integer \code{numeric}) value 
+#'  representing the cast of interest, as indexed within the directory in
+#'  the \code{casts} sub folder. See the casts metadata file 
+#'  (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param start_newmoon \code{integer}-conformable newmoon number used as the
-#'   the minimum x value for the plot. 
+#' @param species \code{character} value of the species codes (or 
+#'  \code{"total"} for the total across species) to be plotted. 
+#'  \code{NULL} (default) also gives the total.
 #'
-#' @param add_obs \code{logical} indicator if values observed during the 
-#'   -cast time should be added (default is \code{TRUE}).
+#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon 
+#'  number for the beginning of the x-axis of the plot. \cr
+#'  Does not influence the fit of the models, just the presentation.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @return \code{NULL}. Plot is generated.
 #' 
 #' @examples
-#' \dontrun{
-#' 
-#' setup_dir()
-#' portalcast()
-#' plot_cast_ts()
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   plot_cast_ts()
 #' }
 #'
 #' @export
 #'
-plot_cast_ts <- function(tree = dirtree(), species = "total", 
-                         level = "Controls", cast_type = "forecasts", 
-                         cast_date = NULL, model = "Ensemble", 
-                         start_newmoon = 300, add_obs = TRUE){
-  check_args()
-  if (is.null(cast_date)){
-    cast_date <- most_recent_cast(tree, cast_type)
+plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL, 
+                         model = NULL, end_moon = NULL, species = "total",
+                         start_moon = 217, control_files = files_control(), 
+                         quiet = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+
+  casts_meta <- select_casts(main = main, cast_ids = cast_id,
+                             end_moons = end_moon, models = model, 
+                             data_sets = data_set, quiet = quiet, 
+                             arg_checks = arg_checks)
+  if(NROW(casts_meta) > 1){
+    which_max <- which.max(casts_meta$cast_id)
+    casts_meta <- casts_meta[which_max, ]
   }
-  obs <- read_data(tree, tolower(level))
-  pred <- read_cast(tree, cast_type = cast_type, cast_date = cast_date) %>%
-          select_casts(species = species, level = level, models = model) 
-  if (NROW(pred) == 0){
-    stop("no casts available for specified inputs")
-  }  
-  first_pred <- min(pred$newmoonnumber)
-  which_obs_after_pred <- which(obs$newmoonnumber >= first_pred)
-  nwhich_obs_after_pred <- length(which_obs_after_pred)
-  if (nwhich_obs_after_pred > 0){
-    obs_after_pred <- obs[which_obs_after_pred, ]
-    obs <- obs[-which_obs_after_pred, ]
+  if(NROW(casts_meta) == 0){
+    stop("no casts available for requested plot")
   }
 
-  species_o <- species
-  if (species == "NA"){
-    species_o <- "NA."
-  }    
-  obs_x <- obs[ , "newmoonnumber"]
-  obs_y <- obs[ , species_o]
-  obs_xf <- obs_x[length(obs_x)]
-  obs_yf <- obs_y[length(obs_y)]
-  pred_x <- pred[ , "newmoonnumber"]
-  pred_ym <- pred[ , "estimate"]
-  pred_x2 <- c(obs_xf, pred_x)
-  pred_ym2 <- c(obs_yf, pred_ym)
-  pred_yl <- pred[ , "LowerPI"] 
-  pred_yu <- pred[ , "UpperPI"]
-  pred_px <- c(obs_xf, pred_x, pred_x[length(pred_x):1], obs_xf)
-  pred_py <- c(obs_yf, pred_yl, pred_yu[length(pred_x):1], obs_yf)
+  obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
+                            arg_checks = arg_checks)
+  sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
+  species <- ifnull(species, colnames(obs)[sp_col])
+  obs <- obs[ , c("moon", species)]
+  preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
+                         arg_checks = arg_checks)
+  species <- ifnull(species, unique(preds$species))
+  match_sp <- (preds$species %in% species)
+  colnames <- c("moon", "estimate", "lower_pi", "upper_pi")
+  match_col <- (colnames(preds) %in% colnames)
+  preds <- preds[match_sp, match_col]
 
-  rangex <- c(max(c(start_newmoon, min(obs_x))), max(pred_x))
-  rangey <- c(min(c(obs_y, pred_yl)), max(c(obs_y, pred_yu)))
-  ylab <- plot_cast_ts_ylab(tree, level, species, model)
+  max_moon <- max(preds$moon)
+  rangex <- c(start_moon, max_moon)
+  obs_sp <- obs[ , species]
+  obs_nm <- obs[ , "moon"]
+  maxy <- max(c(preds$UpperPI, obs_sp), na.rm = TRUE)
+  rangey <- c(0, maxy)
 
-  par(mar = c(3, 4.5, 1, 1))
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  par(mar = c(3, 4.5, 2, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
-  mtext(ylab$text, side = 2, font = ylab$font, cex = 1.5, line = 3)
-  plot_cast_ts_xaxis(tree, rangex)
 
-  points(obs_x, obs_y, type = "l")
-  polygon(pred_px, pred_py, col = rgb(0.6757, 0.8438, 0.8984), border = NA)
-  points(pred_x2, pred_ym2, type = "l", col = rgb(0, 0, 1), lty = 2)
-  if (add_obs && nwhich_obs_after_pred > 0){
-    obs_after_pred_x <- obs_after_pred[ , "newmoonnumber"]
-    obs_after_pred_y <- obs_after_pred[ , species_o]
-    obs_oap_x <- c(obs_xf, obs_after_pred_x)
-    obs_oap_y <- c(obs_yf, obs_after_pred_y)
-    points(obs_oap_x, obs_oap_y, type = "l", lty = 1)
-  }
-}
-
-
-#' @title Add a -cast plot x-axis
-#'
-#' @description Add the x-axis in \code{\link{plot_cast_ts}}.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}. Used to access the species list.
-#'
-#' @param rangex \code{integer}-conformable vector of two values corresponding
-#'   to the minimum and maximum newmoonnumbers plotted. 
-#'
-#' @export
-#'
-plot_cast_ts_xaxis <- function(tree, rangex){
-  check_args()
-  moons <- read_data(tree, "moons")
-  minx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
-  maxx <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
+  moons <- read_moons(main = main, control_files = control_files,
+                      arg_checks = arg_checks)
+  minx <- as.character(moons$moondate[moons$moon == rangex[1]])
+  maxx <- as.character(moons$moondate[moons$moon == rangex[2]])
   minx_yr <- as.numeric(format(as.Date(minx), "%Y"))
   maxx_yr <- as.numeric(format(as.Date(maxx), "%Y"))
   minx_yr2 <- ceiling(minx_yr/ 5) * 5
@@ -659,46 +332,20 @@ plot_cast_ts_xaxis <- function(tree, rangex){
   yrs <- seq(minx_yr2, maxx_yr2, 5)
   txt <- yrs
   nyd <- paste0(yrs, "-01-01")
-  dx <- as.Date(as.character(moons$newmoondate))
-  dy <- moons$newmoonnumber
+  dx <- as.Date(as.character(moons$moondate))
+  dy <- moons$moon
   dmod <- lm(dy ~ dx)
   loc <- predict(dmod, newdata = list(dx = as.Date(nyd)))
   axis(1, at = loc, labels = txt)
-
   yrs <- seq(minx_yr, maxx_yr, 1)
   nyd <- paste0(yrs, "-01-01")
   loc <- predict(dmod, newdata = list(dx = as.Date(nyd)))
-  axis(1, at = loc, labels = FALSE, tck = -0.005)
-}
+  axis(1, at = loc, labels = FALSE, tck = -0.005)  
 
-#' @title Expand the name with formatting for a -cast plot y label
-#'
-#' @description Produce a list with \code{text} and \code{font} elements to
-#'   control the y-axis label in \code{\link{plot_cast_ts}}.
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}. Used to access the species list.
-#'
-#' @param species \code{character} value of the species code or \code{"total"}
-#'   for the total across species.
-#'
-#' @param level \code{character} value of the level of interest (\code{"All"} 
-#'   or \code{"Controls"}).
-#'
-#' @param model \code{character} value of the name (or \code{"Ensemble"}) of
-#'   the model to be plotted.
-#'
-#' @return \code{list} of \code{text} and \code{font} elements. 
-#'
-#' @export
-#'
-plot_cast_ts_ylab <- function(tree = dirtree(), level = "Controls",
-                              species = "total", model = "Ensemble"){
-  check_args()
   lab <- list(text = "", font = 1)
-  lpath <- file_paths(tree, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
-  sptab <- na_conformer(sptab, "speciescode")
+  lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
+           na_conformer("speciescode")
   if (species == "total"){
     lab$text <- "Total Abundance"
     lab$font <- 1
@@ -707,5 +354,43 @@ plot_cast_ts_ylab <- function(tree = dirtree(), level = "Controls",
     lab$text <- sptab[sppmatch , "scientificname"]
     lab$font <- 3
   }
-  lab
+  mtext(lab$text, side = 2, font = lab$font, cex = 1.5, line = 3)
+
+  o_x <- obs_nm
+  o_y <- obs_sp
+  p_y_m <- preds[ , "estimate"]
+  p_y_l <- preds[ , "lower_pi"]
+  p_y_u <- preds[ , "upper_pi"]
+  p_x <- preds[ , "moon"]
+  for(i in 1:length(p_y_l)){
+    p_y_l[i] <- max(c(0, p_y_l[i]))
+  }
+  first_pred <- min(p_x)
+  last_o_x <- max(o_x[!is.na(o_y) & o_x < first_pred])
+  last_o_y <- o_y[o_x == last_o_x]
+
+  poly_x <- c(last_o_x, p_x, p_x[length(p_x):1], last_o_x)
+  poly_y <- c(last_o_y, p_y_l, p_y_u[length(p_y_u):1], last_o_y)
+  polygon(poly_x, poly_y, col = rgb(0.6757, 0.8438, 0.8984), border = NA)
+  points(c(last_o_x, p_x), c(last_o_y, p_y_m), type = "l", lwd = 2, lty = 1,
+         col = rgb(0.2, 0.5, 0.9))
+
+  o_x_1 <- o_x[!is.na(o_y) & o_x < first_pred]
+  o_y_1 <- o_y[!is.na(o_y) & o_x < first_pred]
+  n_o_1 <- length(o_x_1)
+  o_x_2 <- c(o_x_1[n_o_1], o_x[!is.na(o_y) & o_x >= first_pred])
+  o_y_2 <- c(o_y_1[n_o_1], o_y[!is.na(o_y) & o_x >= first_pred])
+  points(o_x_1, o_y_1, type = "l", lwd = 2)
+  points(o_x_2, o_y_2, type = "l", lwd = 2)
+
+  model_name <- casts_meta$model
+  data_set_name <- casts_meta$data_set
+  data_set_name <- gsub("_interp", " (interpolated)", data_set_name)
+  model_name <- casts_meta$model
+  title <- paste0(model_name, ", ", data_set_name)
+  mtext(title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
+
 }
+
+
+

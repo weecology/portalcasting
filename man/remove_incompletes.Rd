@@ -4,19 +4,29 @@
 \alias{remove_incompletes}
 \title{Remove any specific incomplete entries as noted by an NA}
 \usage{
-remove_incompletes(df, colname)
+remove_incompletes(df, colname, arg_checks = TRUE)
 }
 \arguments{
 \item{df}{\code{data.frame} table to be written out.}
 
 \item{colname}{A single \code{character} value of the column to use
 to remove incomplete entries.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not.}
 }
 \value{
-df without any incomplete entries.
+\code{df} without any incomplete entries.
 }
 \description{
 Remove any incomplete entries in a table, as determined by
-  the presence of an \code{NA} entry in a specific column 
-  (\code{col_to_check}).
+ the presence of an \code{NA} entry in a specific column 
+ (\code{colname}).
+}
+\examples{
+ df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)
+ remove_incompletes(df, "c1")
+
 }

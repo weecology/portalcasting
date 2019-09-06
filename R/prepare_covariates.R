@@ -1,197 +1,266 @@
-#' @title Prepare covariate data table
+#' @title Prepare covariate data for casting
 #'
-#' @description Prepare covariate data for forecasting or hindcasting, 
-#'   including saving out the data and appending the new forecasts of 
-#'   covariates to the existing covariate forecast table.
+#' @description Combine the historical and cast covariate data for a model
+#'  run. \cr \cr See \code{\link{prep_hist_covariates}} and
+#'  \code{\link{prep_cast_covariates}} for the historical and -casted
+#'  covariate preparation details, respectively.
 #'
-#' @param moons Class-\code{moons} \code{data.frame} containing the historic 
-#'   and future newmoons, as produced by \code{\link{prep_moons}}.
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
 #'
-#' @param options_covariates A class-\code{covariates_options} \code{list} of 
-#'   settings controlling the covariates data creation.
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
-#' @return Covariate data table as a code{covariates}-class \code{data.frame}.
-#' 
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'  shown.
+#'
+#' @param control_climate_dl \code{list} of specifications for the download, 
+#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
+#'  \code{\link{climate_dl_control}}.
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not.
+#'
+#' @return \code{data.frame} of historical and -casted covariates, combined
+#'  and saved out to \code{filename} if indicated by \code{save}.
+#'  
 #' @examples
-#' \dontrun{
-#' 
-#' setup_dir()
-#' prep_covariates()
-#' }
-#'
+#'  \donttest{
+#'   setup_dir()
+#'   prep_covariates()
+#'  }
+#'  
 #' @export
 #'
-prep_covariates <- function(moons = prep_moons(),
-                            options_covariates = covariates_options()){
-  check_args()
-  msg <- "Loading covariate data files into data subdirectory"
-  messageq(msg, options_covariates$quiet)
-  hist_cov <- prep_hist_covariates(options_covariates)
+prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL, 
+                            lead_time = 12, min_lag = 6, 
+                            cast_date = Sys.Date(),
+                            control_climate_dl = climate_dl_control(), 
+                            control_files = files_control(),
+                            quiet = TRUE, verbose = FALSE, 
+                            arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
+  messageq("  -covariate data files", quiet)
+  hist_cov <- prep_hist_covariates(main = main, end_moon = end_moon,
+                                   quiet = quiet, arg_checks = arg_checks)
+  cast_cov <- prep_cast_covariates(main = main, moons = moons, 
+                                   hist_cov = hist_cov,
+                                   end_moon = end_moon, 
+                                   lead_time = lead_time, min_lag = min_lag, 
+                                   cast_date = cast_date, 
+                                   control_files = control_files,
+                                   control_climate_dl = control_climate_dl,
+                                   quiet = quiet, verbose = verbose, 
+                                   arg_checks = arg_checks)
+  out <- bind_rows(hist_cov, cast_cov)
 
-  if (options_covariates$cov_fcast){
-    fcast_cov <- prep_fcast_covariates(hist_cov, moons, options_covariates)
-  }
-  out <- hist_cov[-(1:nrow(hist_cov)), ]
-  if (options_covariates$cov_hist){
-    out <- bind_rows(out, hist_cov)
-  }
-  if (options_covariates$cov_fcast){
-    out <- bind_rows(out, fcast_cov)
-  }
-  dataout(out, options_covariates)
+  write_data(dfl = out, main = main, save = control_files$save, 
+             filename = control_files$filename_cov, 
+             overwrite = control_files$overwrite, 
+             quiet = !verbose, arg_checks = arg_checks)
 }
 
-#' @title Transfer the historical covariate data forecasts to the data folder
-#'
-#' @description Currently, the historical covariate covariate forecasts are 
-#'   held in the \code{extdata} folder in the package directory, and the
-#'   transfer is hard-wired to come from there. This will be relaxed in the 
-#'   future.
-#'
-#' @param options_data Class-\code{data_options} \code{list} of control 
-#'   options \code{list}s for setting up the data structures.
-#'
-#' @export
-#'
-transfer_hist_covariate_forecasts <- function(options_data = data_options()){
-  check_args()
-  path_to <- file_paths(options_data$tree, "data/covariate_forecasts.csv")
-
-  fname <- "extdata/covariate_forecasts.csv"
-  path_from <- system.file(fname, package = "portalcasting")
-  if (!file.exists(path_from)){
-    stop("Historical covariate forecast data not found.")
-  }
-  temp <- read.csv(path_from, stringsAsFactors = FALSE)
-
-  if (!file.exists(path_to)){
-    msg <- "Loading historical covariate forecasts into data subdirectory"
-    messageq(msg, options_data$quiet)
-    write.csv(temp, path_to, row.names = FALSE)    
-  } else{
-    exists <- read.csv(path_to, stringsAsFactors = FALSE) 
-    if (max(temp$date_made) > max(exists$date_made)){
-      msg <- "Updating historical covariate forecasts"
-      message(msg, options_data$quiet)
-      write.csv(temp, path_to, row.names = FALSE)
-    }
-  }
-}
 
 #' @title Prepare historical covariates data
 #'
-#' @description Create a data table of historical weather and NDVI data.
+#' @description 
+#'  \code{prep_hist_covariates} creates a \code{data.frame} of historical 
+#'  weather and NDVI data. Automatically goes all the way back to the 
+#'  beginning of the available data, as the table is automatically trimmed 
+#'  later. \cr \cr
+#'  \code{prep_weather_data} creates a \code{data.frame} of historical 
+#'   weather data using \code{\link[portalr]{weather}}. \cr \cr
+#'  NDVI data are generated by \code{\link[portalr]{ndvi}}.
 #'
-#' @param options_covariates A class-\code{covariates_options} \code{list} of 
-#'   settings controlling the covariates data creation.
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
 #'
-#' @return Historical covariate data table as a code{covariates}-class 
-#'   \code{data.frame}.
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
+#' @return 
+#'  \code{prep_hist_covariates}: historical covariate data table as a 
+#'   \code{data.frame}. \cr \cr
+#'  \code{prep_weather_data}: \code{data.frame} of historical weather data.
+#'
+#' @examples
+#'  \donttest{   
+#'   create_dir()
+#'   fill_raw()
+#'   prep_hist_covariates()
+#'   prep_weather_data()
+#'  }
+#'
+#' @name prepare_historical_covariates
+#'
+NULL
+
+#' @rdname prepare_historical_covariates
 #'
 #' @export
 #'
-prep_hist_covariates <- function(options_covariates = covariates_options()){
-  check_args()
-  tree <- options_covariates$tree
-  weather_data <- prep_weather_data(tree = tree)
-  ndvi_data <- ndvi("newmoon", fill = TRUE, path = main_path(tree))
+prep_hist_covariates <- function(main = ".", end_moon = NULL, 
+                                 quiet = TRUE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  weather_data <- prep_weather_data(main = main, arg_checks = arg_checks)
+  raw_path <- raw_path(main = main, arg_checks = arg_checks)
+  ndvi_data <- ndvi(level = "newmoon", fill = TRUE, path = raw_path)
   out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
   out$source <- "hist"
-  if (!is.null(options_covariates$end)){
-    end_step <- options_covariates$end[options_covariates$hind_step]
-    out <- out[which(out$newmoonnumber <= end_step), ]
+  colnames(out)[which(colnames(out) == "newmoonnumber")] <- "moon"
+  if (!is.null(end_moon)){
+    out <- out[which(out$moon <= end_moon), ]
   }
-  classy(out, c("covariates", "data.frame"))
+  data.frame(out)
 }
 
-#' @title Prepare forecast covariate data table
-#'
-#' @description Prepare forecasts of covariate data as needed for rodent
-#'   forecasting, including appending the new forecasts of covariates to the
-#'   existing covariate forecast table
-#'
-#' @param hist_cov Historical covariate data table as a code{covariates}-class 
-#'   \code{data.frame}, returned from \code{\link{prep_hist_covariates}}.
-#'
-#' @param moons Class-\code{moons} \code{data.frame} containing the historic 
-#'   and future newmoons, as produced by \code{\link{prep_moons}}.
-#'
-#' @param options_covariates A class-\code{covariates_options} \code{list} of 
-#'   settings controlling the covariates data creation.
-#'
-#' @return Covariate data table as a code{covariates}-class \code{data.frame}
-#'   ready for casting.
+#' @rdname prepare_historical_covariates
 #'
 #' @export
 #'
-prep_fcast_covariates <- function(hist_cov = prep_hist_covariates(),
-                                  moons = prep_moons(),
-                                  options_covariates = covariates_options()){
-  check_args()
-  update_covfcast_options(options_covariates, hist_cov, moons) %>%
-  forecast_covariates(hist_cov, moons, .) %>%
-  append_cov_fcast_csv(options_covariates) %>%
-  select(-forecast_newmoon) %>%
-  mutate("source" = "fcast") %>%
-  classy(class = c("covariates", "data.frame"))
-}
-
-#' @title Prepare historical weather data
-#'
-#' @description Create a data table of historical weather data using 
-#'   \code{\link[portalr]{weather}}. 
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
-#'
-#' @return \code{data.frame} of historical weather data.
-#'
-#' @export
-#'
-prep_weather_data <- function(tree = dirtree()){
-  check_args()
+prep_weather_data <- function(main = ".", arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
-  weather("newmoon", fill = TRUE, path = main_path(tree)) %>% 
+  raw_path <- raw_path(main = main, arg_checks = arg_checks)
+  weather("newmoon", TRUE, raw_path) %>% 
   ungroup() %>%
   select(cols) %>%
   remove_incompletes("newmoonnumber")
 }
 
-
-#' @title Update the data options for covariate forecasts based on existing 
-#'   data
+#' @title Summarize a daily weather table by newmoons
 #'
-#' @description Update the covariate data control options based on the 
-#'   historical covariate data and moon data.
+#' @description Summarizes a daily weather table by newmoons. Taking the 
+#'  max date, min of the min temperatures, max of the max temperatures,
+#'  mean of the mean temperatures, and sum of the precipitation.
 #'
-#' @param hist_cov Historical covariate data table as a code{covariates}-class 
-#'   \code{data.frame}, returned from \code{\link{prep_hist_covariates}}.
+#' @param x \code{data.frame} of daily weather, with columns named
+#'  \code{"date"}, \code{"mintemp"}, \code{"maxtemp"}, \code{"meantemp"}, 
+#'  \code{"precipitation"}, and \code{"moon"}.
 #'
-#' @param moons Class-\code{moons} \code{data.frame} containing the historic 
-#'   and future newmoons, as produced by \code{\link{prep_moons}}.
+#' @return \code{data.frame} of \code{x} summarized and arranged by
+#'  \code{x$moon}.
 #'
-#' @param options_covariates A class-\code{covariates_options} \code{list} of 
-#'   settings controlling the covariates data creation.
-#'
-#' @return An updated \code{covariates_options} \code{list} of control options 
-#'   for covariates.
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_raw()
+#'   "%>%" <- dplyr::"%>%"
+#'   raw_path <- raw_path()
+#'   moons <- prep_moons()
+#'   portalr::weather("daily", TRUE, raw_path) %>% 
+#'   add_date_from_components() %>%
+#'   dplyr::select(-c(year, month, day, battery_low, locally_measured))  %>%
+#'   add_moons_from_date(moons) %>%
+#'   summarize_daily_weather_by_moon()
+#'  }
 #'
 #' @export
 #'
-update_covfcast_options <- function(options_covariates, hist_cov, moons){
-  check_args()
-  prev_newmoon <- max(which(moons$newmoondate < options_covariates$cast_date))
-  prev_newmoon <- moons$newmoonnumber[prev_newmoon]
-  if (options_covariates$cast_type == "hindcasts"){
-    prev_newmoon <- options_covariates$end[options_covariates$hind_step]    
-  }
-  prev_covar_newmoon <- tail(hist_cov, 1)$newmoonnumber
-  first_fcast_newmoon <- prev_covar_newmoon + 1
-  last_fcast_newmoon <- prev_newmoon + options_covariates$lead_time
-  options_covariates$fcast_nms <- first_fcast_newmoon:last_fcast_newmoon
-  options_covariates$nfcnm <- length(options_covariates$fcast_nms)
-  options_covariates
+summarize_daily_weather_by_moon <- function(x){
+  group_by(x, moon) %>%
+  summarize(date = max(date, na.rm = TRUE), 
+            mintemp = min(mintemp, na.rm = TRUE), 
+            maxtemp = max(maxtemp, na.rm = TRUE), 
+            meantemp = mean(meantemp, na.rm = TRUE), 
+            precipitation = sum(precipitation, na.rm = TRUE)) %>% 
+  arrange(moon) %>% 
+  select(moon, mintemp, maxtemp, meantemp, precipitation)
 }
 
 
+
+#' @title Lag covariate data
+#'
+#' @description Lag the covariate data together based on the new moons
+#'
+#' @param covariates \code{data.frame} of covariate data to be lagged. 
+#'  
+#' @param lag \code{integer} lag between rodent census and covariate data, in
+#'  new moons.
+#'  
+#' @param tail \code{logical} indicator if the data lagged to the tail end 
+#'  should be retained.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. \cr
+#'  However, in sandboxing, it is often desirable to be able to deviate from 
+#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
+#'  many/most/all enclosed functions to not check any arguments using 
+#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  
+#' @return \code{data.frame} with a \code{newmoonnumber} column reflecting
+#'  the lag.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   covariate_casts <- read_covariate_casts()
+#'   covar_casts_lag <- lag_covariates(covariate_casts, lag = 2, tail = TRUE)
+#'  }
+#'
+#' @export
+#'
+lag_covariates <- function(covariates, lag, tail = FALSE, 
+                           arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  covariates$moon_lag <- covariates$moon + lag
+  
+  if(tail == FALSE){
+    oldest_included_moon <- covariates$moon[1]
+    most_recent_moon <- covariates$moon[nrow(covariates)]
+    hist_moons <- oldest_included_moon:most_recent_moon
+    hist_moons_table <- data.frame(moon = hist_moons)
+    nm_match <- c("moon_lag" = "moon")
+    data <- right_join(covariates, hist_moons_table, by = nm_match) 
+    if (lag > 0){
+      covariates <- covariates[-(1:lag), ]
+    }
+  }
+  covariates <- select(covariates, -moon)
+  cn_covariates <- colnames(covariates)
+  cn_nmn_l <- which(cn_covariates == "moon_lag")
+  colnames(covariates)[cn_nmn_l] <- "moon"
+  covariates
+}

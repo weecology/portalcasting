@@ -3,13 +3,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-^models$
-^package_outline.txt$
-^in_dev.R$
 ^CONTRIBUTING\.md$
 ^CODE_OF_CONDUCT\.md$
 ^_pkgdown\.yml$
 ^LICENSE\.md$
-^cran-comments\.md$
 ^\.zenodo\.json$
 ^inst/WORDLIST$
+^notes.R$

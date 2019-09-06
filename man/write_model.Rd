@@ -5,24 +5,70 @@
 \alias{model_template}
 \title{Write the template for a model into model subdirectory}
 \usage{
-write_model(options_model = model_options())
+write_model(name = NULL, data_sets = NULL, covariatesTF = NULL,
+  lag = NULL, main = ".", control_model = NULL,
+  control_files = files_control(), quiet = FALSE, verbose = TRUE,
+  arg_checks = TRUE)
 
-model_template(options_model = model_options())
+model_template(name = NULL, data_sets = NULL, covariatesTF = FALSE,
+  lag = NULL, main = ".", control_files = files_control(),
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 }
 \arguments{
-\item{options_model}{A class-\code{model_options} \code{list} of
-options used to set up a general model script. See 
-\code{\link{model_options}}.}
+\item{name}{\code{character} value of the name of the model.}
+
+\item{data_sets}{\code{character} vector of the rodent data set names
+that the model is applied to.}
+
+\item{covariatesTF}{\code{logical} indicator for if the model requires 
+covariates.}
+
+\item{lag}{\code{integer} (or integer \code{numeric}) lag time used for the
+covariates or \code{NULL} if \code{covariatesTF} is \code{FALSE}.}
+
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
+
+\item{control_model}{\code{list} of model-level controls, including
+\code{name}, a \code{character} value of the model's name;
+\code{covariatesTF}, a \code{logical} indicator for if the model requires 
+covariates; and \code{lag}, a \code{integer} (or integer \code{numeric}) 
+lag time used for the covariates or \code{NA} if 
+\code{covariatesTF = FALSE}. Only used if the specific valued argument
+is \code{NULL}.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{quiet}{\code{logical} indicator controlling if messages are printed.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+shown.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. \cr}
 }
 \value{
-\code{model_template}: model script text as a single 
-  \code{character} value.
+\code{write_mode} \code{\link{write}}s the model script out
+ and returns \code{NULL}. \cr \cr
+ \code{model_template}: \code{character}-valued text for a model script 
+ to be housed in the model directory
 }
 \description{
-\code{write_model}: Create template script (as written by 
-  \code{model_template}) for a given model
+\code{write_model} creates a template script (as written by 
+ \code{model_template}) for a given model. \cr \cr
+ \code{model_template} creates the \code{character}-valued
+ text for a model script to be housed in the model directory, as written
+ out by \code{write_model}. \cr \cr
+}
+\examples{
+ \donttest{
+  create_dir()
+  write_model("AutoArima")
+  model_template()
+ }
 
-\code{model_template}: create the \code{character}-valued
-  text for a model script to be housed in the model directory, as written
-  out by \code{write_model}.
 }

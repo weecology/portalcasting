@@ -2,49 +2,85 @@
 % Please edit documentation in R/figures.R
 \name{plot_cast_ts}
 \alias{plot_cast_ts}
-\title{Visualize a forecast or hindcast}
+\title{Visualize a time series cast of a species}
 \usage{
-plot_cast_ts(tree = dirtree(), species = "total", level = "Controls",
-  cast_type = "forecasts", cast_date = NULL, model = "Ensemble",
-  start_newmoon = 300, add_obs = TRUE)
+plot_cast_ts(main = ".", cast_id = NULL, data_set = NULL,
+  model = NULL, end_moon = NULL, species = "total",
+  start_moon = 217, control_files = files_control(), quiet = FALSE,
+  arg_checks = TRUE)
 }
 \arguments{
-\item{tree}{\code{dirtree}-class directory tree list. See 
-\code{\link{dirtree}}.}
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
 
-\item{species}{\code{character} value of the species code or \code{"total"}
-for the total across species.}
+\item{cast_id}{\code{integer} (or integer \code{numeric}) value 
+representing the cast of interest, as indexed within the directory in
+the \code{casts} sub folder. See the casts metadata file 
+(\code{casts_metadata.csv}) for summary information.}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}).}
+\item{data_set}{\code{character} value of the rodent data set to include
+Default value is \code{NULL}, which equates to no selection with 
+respect to \code{data_set}.}
 
-\item{cast_type}{\code{character} value of the type of -cast of model. Used
-to select the file in the predictions subdirectory. Currently only 
-reliably coded for \code{"forecasts"}.}
+\item{model}{\code{character} value of the name of the model to 
+include. Default value is \code{NULL}, which equates to no selection with 
+respect to \code{model}.}
 
-\item{cast_date}{\code{Date} the predictions were made. Used to select the
-file in the predictions subdirectory.}
+\item{end_moon}{\code{integer} (or integer \code{numeric}) 
+newmoon number of the forecast origin. Default value is 
+\code{NULL}, which equates to no selection with respect to 
+\code{end_moon}.}
 
-\item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
-the model to be plotted.}
+\item{species}{\code{character} value of the species codes (or 
+\code{"total"} for the total across species) to be plotted. 
+\code{NULL} (default) also gives the total.}
 
-\item{start_newmoon}{\code{integer}-conformable newmoon number used as the
-the minimum x value for the plot.}
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon 
+number for the beginning of the x-axis of the plot. \cr
+Does not influence the fit of the models, just the presentation.}
 
-\item{add_obs}{\code{logical} indicator if values observed during the 
--cast time should be added (default is \code{TRUE}).}
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not.}
+}
+\value{
+\code{NULL}. Plot is generated.
 }
 \description{
-Plot an observed timeseries and forecast or hindcast 
-  timeseries with a prediction interval. Currently only reliable for 
-  forecasts.
+Plot an observed timeseries and cast timeseries with a 
+ prediction interval. \cr
+ Casts can be selected either by supplying a 
+ \code{cast_id} number or any combination of \code{data_set},
+ \code{model}, and \code{end_moon}, which filter the available casts in
+ unison. This plot type can only handle output from a single cast, so
+ if multiple casts still remain, the one with the highest number is 
+ selected. To be more certain about cast selection, use the \code{cast_id}
+ input.
+}
+\details{
+The resulting plot shows observations as a solid black line 
+ and predictions as a blue polygon with the bounds represent the error
+ given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line
+ representing the \code{estimate} in the \code{cast_table} saved output 
+ from a model. \cr
+ As of \code{portalcasting v0.9.0}, 
+ this represents the mean and the 95\% prediction interval. \cr
+ Observations that occurred after the cast are shown connected directly
+ to the pre-cast observation data (as the black solid line).
 }
 \examples{
-\dontrun{
-
-setup_dir()
-portalcast()
-plot_cast_ts()
+ \donttest{
+  setup_dir()
+  portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+  plot_cast_ts()
 }
 
 }

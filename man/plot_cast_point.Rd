@@ -2,59 +2,85 @@
 % Please edit documentation in R/figures.R
 \name{plot_cast_point}
 \alias{plot_cast_point}
-\title{Plot forecast or hindcast predictions for a given point in time 
-  across multiple species.}
+\title{Plot predictions for a given point in time across multiple species}
 \usage{
-plot_cast_point(tree = dirtree(), species = NULL, level = "Controls",
-  cast_type = "forecasts", cast_date = NULL, model = "Ensemble",
-  lead = 1, from_date = NULL, with_census = FALSE)
+plot_cast_point(main = ".", cast_id = NULL, data_set = NULL,
+  model = NULL, end_moon = NULL, species = NULL, moon = NULL,
+  with_census = FALSE, control_files = files_control(),
+  quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
-\item{tree}{\code{dirtree}-class directory tree list. See 
-\code{\link{dirtree}}.}
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
+
+\item{cast_id}{\code{integer} (or integer \code{numeric}) value 
+representing the cast of interest, as indexed within the directory in
+the \code{casts} sub folder. See the casts metadata file 
+(\code{casts_metadata.csv}) for summary information.}
+
+\item{data_set}{\code{character} value of the rodent data set to include
+Default value is \code{NULL}, which equates to no selection with 
+respect to \code{data_set}.}
+
+\item{model}{\code{character} value of the name of the model to 
+include. Default value is \code{NULL}, which equates to no selection with 
+respect to \code{model}.}
+
+\item{end_moon}{\code{integer} (or integer \code{numeric}) 
+newmoon number of the forecast origin. Default value is 
+\code{NULL}, which equates to no selection with respect to 
+\code{end_moon}.}
 
 \item{species}{\code{character} vector of the species codes (or 
 \code{"total"} for the total across species) to be plotted or 
-\code{NULL} (default) to plot all species and the total.}
+\code{NULL} (default) to plot all species in \code{data_set}.}
 
-\item{level}{\code{character} value of the level of interest (\code{"All"} 
-or \code{"Controls"}).}
-
-\item{cast_type}{\code{character} value of the type of -cast of model. Used
-to select the file in the predictions subdirectory. Currently only 
-reliably coded for \code{"forecasts"}.}
-
-\item{cast_date}{\code{Date} the predictions were made. Used to select the
-file in the predictions subdirectory. If \code{NULL} (default), selects
-the most recent -casts (if \code{with_census = FALSE}) or the most 
-recent -casts with a subsequent census (if \code{with_census = TRUE}).}
-
-\item{model}{\code{character} value of the name (or \code{"Ensemble"}) of
-the model to be plotted.}
-
-\item{lead}{\code{integer}-conformable lead of the newmoon number used to
-select the data plotted.}
-
-\item{from_date}{\code{Date} to be used as a reference of when to count
-the \code{lead} from. If \code{NULL} (default), for 
-\code{cast_type = "forecasts"}, \code{from_date = cast_date} and 
-\code{plot_cast_point} is not yet reliable for 
-\code{cast_type = "hindcasts"}.}
+\item{moon}{\code{integer} (or integer \code{numeric}) newmoon number for
+the plot.}
 
 \item{with_census}{\code{logical} toggle if the plot should include the
 observed data collected during the predicted census.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
+
+\item{arg_checks}{\code{logical} value of if the arguments should be
+checked using standard protocols via \code{\link{check_args}}. The 
+default (\code{arg_checks = TRUE}) ensures that all inputs are 
+formatted correctly and provides directed error messages if not.}
+}
+\value{
+\code{NULL}. Plot is generated.
 }
 \description{
-Plot the point value with confidence interval for a step in
-  a forecast or hindcast across multiple species. Currently only reliable
-  for forecasts.
+Plot the point value with confidence interval for a time point
+ across multiple species. Casts can be selected either by supplying a 
+ \code{cast_id} number or any combination of \code{data_set},
+ \code{model}, and \code{end_moon}, which filter the available casts in
+ unison. This plot type can only handle output from a single cast, so
+ if multiple casts still remain, the one with the highest number is 
+ selected. To be more certain about cast selection, use the \code{cast_id}
+ input.
+}
+\details{
+The resulting plot shows predictions as points (open white
+ circles) with error, where the point represents the \code{estimate} and
+ the bounds of the error are \code{lower_pi} and \code{upper_pi} in the
+ \code{cast_table} saved output from a model. \cr
+ As of \code{portalcasting v0.9.0}, 
+ this represents the mean and the 95\% prediction interval. If
+ \code{with_census = TRUE}, the observations from the associated moon
+ are plotted as blue filled squares.
 }
 \examples{
-\dontrun{
-
-setup_dir(all_options(download_existing_predictions = TRUE))
-plot_cast_point()
-plot_cast_point(with_census = TRUE)
+ \donttest{
+  setup_dir()
+  portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+  plot_cast_point()
 }
 
 }

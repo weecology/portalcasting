@@ -2,6 +2,9 @@
 # creating the historical covariate forecasts from before we started saving
 #  our covariate forecasts as well
 #
+#
+# this is legacy code retained here for posterity
+# the package currently contains the updated saved version of this dataset
 
 library(portalcasting); library(portalr); library(dplyr)
 moons <- prep_moons()
