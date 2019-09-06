@@ -2,8 +2,8 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# [portalcasting 0.9.0](https://github.com/weecology/portalcasting/pull/129)
-*Active Development*
+# [portalcasting 0.9.0](https://github.com/weecology/portalcasting/releases/tag/v0.9.0)
+*2019-09-06*
 
 ### Major API update: increase in explicit top-level arguments
 * Moved key arguments to focal top-level inputs, rather than nested within control options list. Allows full control, but with default settings working cleanly. [addresses](https://github.com/weecology/portalcasting/issues/123)
