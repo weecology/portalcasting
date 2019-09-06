@@ -6,23 +6,27 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set up a full forecasting directory — setup_dir • portalcasting</title>
+<title>Create and fill a forecasting directory — setup_dir • portalcasting</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,13 +34,15 @@
 
 
 
-<meta property="og:title" content="Set up a full forecasting directory — setup_dir" />
 
-<meta property="og:description" content="Create (via create_dir) and populate (via 
-  fill_dir) a full portalcasting directory. Presently, this
-  function overwrites any existing components of the directory. Future
-  iterations will allow for updating, overwriting, or neither." />
+<meta property="og:title" content="Create and fill a forecasting directory — setup_dir" />
+<meta property="og:description" content="Combines create_dir and fill_dir
+ to create a ready-to-run (via portalcast) when
+ indicated.  
+ setup_production creates a standard production directory.  
+ setup_sandbox creates a sandboxing directory.  " />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -48,6 +54,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -66,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -74,43 +81,24 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/adding_a_model.html">Adding a Model</a>
-    </li>
-    <li>
-      <a href="../articles/codebase.html">portalcasting Codebase</a>
-    </li>
-    <li>
-      <a href="../articles/howto.html">Set Up and Use a Portal Predictions Directory</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Current Models</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="dropdown-header">Vignettes</li>
+<li class="dropdown-header">Functions</li>
+<li class="dropdown-header">News</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="https://twitter.com/weecology">
+    <span class="fa fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
   <a href="https://github.com/weecology/portalcasting">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -121,55 +109,180 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set up a full forecasting directory</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/directory.R'><code>R/directory.R</code></a></small>
+    <h1>Create and fill a forecasting directory</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/setup_dir.R'><code>R/setup_dir.R</code></a></small>
     <div class="hidden name"><code>setup_dir.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Create (via <code><a href='create_dir.html'>create_dir</a></code>) and populate (via 
-  <code><a href='fill_dir.html'>fill_dir</a></code>) a full portalcasting directory. Presently, this
-  function overwrites any existing components of the directory. Future
-  iterations will allow for updating, overwriting, or neither.</p>
-    
+    <p>Combines <code><a href='directory_creation.html'>create_dir</a></code> and <code><a href='fill_directory.html'>fill_dir</a></code>
+ to create a ready-to-run (via <code><a href='portalcast.html'>portalcast</a></code>) when
+ indicated. <br /> <br />
+ <code>setup_production</code> creates a standard production directory. <br /> <br />
+ <code>setup_sandbox</code> creates a sandboxing directory. <br /> <br /></p>
     </div>
 
-    <pre class="usage"><span class='fu'>setup_dir</span>(<span class='kw'>options_all</span> <span class='kw'>=</span> <span class='fu'><a href='all_options.html'>all_options</a></span>())</pre>
-    
+    <pre class="usage"><span class='fu'>setup_dir</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(), <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start_moon</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(), <span class='kw'>controls_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>controls_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='rodents_controls.html'>rodents_controls</a></span>(),
+  <span class='kw'>control_climate_dl</span> <span class='kw'>=</span> <span class='fu'><a href='download_climate_casts.html'>climate_dl_control</a></span>(),
+  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
+  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>setup_production</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(),
+  <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start_moon</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(), <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>controls_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>controls_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='rodents_controls.html'>rodents_controls</a></span>(),
+  <span class='kw'>control_climate_dl</span> <span class='kw'>=</span> <span class='fu'><a href='download_climate_casts.html'>climate_dl_control</a></span>(),
+  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
+  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>setup_sandbox</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(), <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start_moon</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(), <span class='kw'>controls_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>controls_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='rodents_controls.html'>rodents_controls</a></span>(),
+  <span class='kw'>control_climate_dl</span> <span class='kw'>=</span> <span class='fu'><a href='download_climate_casts.html'>climate_dl_control</a></span>(),
+  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
+  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>options_all</th>
-      <td><p>Class-<code>all_options</code> list containing all options 
-available for controlling the set up and population of the directory (see 
-<code><a href='all_options.html'>all_options</a></code>).</p></td>
+      <th>main</th>
+      <td><p><code>character</code> value of the name of the main component of
+the directory tree.</p></td>
+    </tr>
+    <tr>
+      <th>models</th>
+      <td><p><code>character</code> vector of name(s) of model(s) to 
+include.</p></td>
+    </tr>
+    <tr>
+      <th>end_moon</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) newmoon number 
+of the last sample to be included. Default value is <code>NULL</code>, which 
+equates to the most recently included sample.</p></td>
+    </tr>
+    <tr>
+      <th>start_moon</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) newmoon number 
+of the first sample to be included. Default value is <code>217</code>, 
+corresponding to <code>1995-01-01</code>.</p></td>
+    </tr>
+    <tr>
+      <th>lead_time</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) value for the
+number of timesteps forward a cast will cover.</p></td>
+    </tr>
+    <tr>
+      <th>confidence_level</th>
+      <td><p><code>numeric</code> confidence level used in 
+summarizing model output. Must be between <code>0</code> and <code>1</code>.</p></td>
+    </tr>
+    <tr>
+      <th>cast_date</th>
+      <td><p><code>Date</code> from which future is defined (the origin of
+the cast). In the recurring forecasting, is set to today's date
+using <code><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>controls_model</th>
+      <td><p>Additional controls for models not in the prefab
+set. <br /> 
+A <code>list</code> of a single model's script-writing controls or a
+<code>list</code> of <code>list</code>s, each of which is a single model's 
+script-writing controls. <br /> 
+Presently, each model's script writing controls
+should include three elements: <code>name</code> (a <code>character</code> value of 
+the model name), <code>covariates</code> (a <code>logical</code> indicator of if the 
+model needs covariates), and <code>lag</code> (an <code>integer</code>-conformable 
+value of the lag to use with the covariates or <code>NA</code> if 
+<code>covariates = FALSE</code>). <br /> 
+If only a single model is added, the name of 
+the model from the element <code>name</code> will be used to name the model's
+<code>list</code> in the larger <code>list</code>. If multiple models are added, each
+element <code>list</code> must be named according to the model and the
+<code>name</code> element. <br /></p></td>
+    </tr>
+    <tr>
+      <th>controls_rodents</th>
+      <td><p>Control <code>list</code> or <code>list</code> of <code>list</code>s 
+(from <code><a href='rodents_controls.html'>rodents_controls</a></code>) specifying the structuring of the 
+rodents tables. See <code><a href='rodents_controls.html'>rodents_controls</a></code> for details.</p></td>
+    </tr>
+    <tr>
+      <th>control_climate_dl</th>
+      <td><p><code>list</code> of specifications for the download, 
+which are sent to <code><a href='NMME_urls.html'>NMME_urls</a></code> to create the specific URLs. See
+<code><a href='download_climate_casts.html'>climate_dl_control</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>control_files</th>
+      <td><p><code>list</code> of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See <code><a href='files_control.html'>files_control</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>downloads</th>
+      <td><p><code>list</code> of arguments to pass to <code><a href='download.html'>download</a></code>
+for raw file downloading.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p><code>logical</code> indicator if progress messages should be
+quieted.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p><code>logical</code> indicator of whether or not to print out
+all of the information or not (and thus just the tidy messages).</p></td>
+    </tr>
+    <tr>
+      <th>arg_checks</th>
+      <td><p><code>logical</code> value of if the arguments should be
+checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
+default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
+formatted correctly and provides directed error messages if not. <br />
+However, in sandboxing, it is often desirable to be able to deviate from 
+strict argument expectations. Setting <code>arg_checks = FALSE</code> triggers
+many/most/all enclosed functions to not check any arguments using 
+<code><a href='argument_checking.html'>check_args</a></code>, and as such, <em>caveat emptor</em>.</p></td>
     </tr>
     </table>
-    
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>NULL</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>setup_dir</span>()
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='co'># \donttest{</span>
+ <span class='fu'>setup_dir</span>()
+ <span class='fu'>setup_sandbox</span>()
+ <span class='fu'>setup_production</span>()
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -177,13 +290,16 @@ available for controlling the set up and population of the directory (see
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

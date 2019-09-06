@@ -8,21 +8,25 @@
 
 <title>Changelog • portalcasting</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,7 +34,9 @@
 
 
 
+
 <meta property="og:title" content="Changelog" />
+
 
 
 
@@ -42,6 +48,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -60,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -68,43 +75,24 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/adding_a_model.html">Adding a Model</a>
-    </li>
-    <li>
-      <a href="../articles/codebase.html">portalcasting Codebase</a>
-    </li>
-    <li>
-      <a href="../articles/howto.html">Set Up and Use a Portal Predictions Directory</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Current Models</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="dropdown-header">Vignettes</li>
+<li class="dropdown-header">Functions</li>
+<li class="dropdown-header">News</li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="https://twitter.com/weecology">
+    <span class="fa fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
   <a href="https://github.com/weecology/portalcasting">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -115,6 +103,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -124,6 +113,186 @@
       <small>Source: <a href='https://github.com/weecology/portalcasting/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="portalcasting-development-version" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-development-version" class="anchor"></a>portalcasting (development version)</h1>
+<p>Version numbers follow <a href="https://semver.org/">Semantic Versioning</a>.</p>
+</div>
+    <div id="portalcasting-0-9-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-9-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.9.0">portalcasting 0.9.0</a>
+</h1>
+<p><em>2019-09-06</em></p>
+<div id="major-api-update-increase-in-explicit-top-level-arguments" class="section level3">
+<h3 class="hasAnchor">
+<a href="#major-api-update-increase-in-explicit-top-level-arguments" class="anchor"></a>Major API update: increase in explicit top-level arguments</h3>
+<ul>
+<li>Moved key arguments to focal top-level inputs, rather than nested within control options list. Allows full control, but with default settings working cleanly. <a href="https://github.com/weecology/portalcasting/issues/123">addresses</a>
+</li>
+<li>Restructuring of the controls lists, retained usage in situations where necessary: model construction, data set construction, file naming, climate data downloading.</li>
+<li>Openness for new <code>setup</code> functions, in particular <code>setup_sandbox</code>. <a href="https://github.com/weecology/portalcasting/issues/125">addresses</a>
+</li>
+<li>Simplification of model naming inputs. Just put the names in you need, only use the <code>model_names</code> functions when you need to (usually in coding inside of functions or for setting default argument levels). <a href="https://github.com/weecology/portalcasting/issues/119">addresses</a>
+</li>
+</ul>
+</div>
+<div id="directory-tree-structure-simplified" class="section level3">
+<h3 class="hasAnchor">
+<a href="#directory-tree-structure-simplified" class="anchor"></a>Directory tree structure simplified</h3>
+<ul>
+<li>
+<code>dirtree</code> was removed</li>
+<li>
+<code>base</code> (both as a function and a concept) was removed. To make that structure use main = “./name”</li>
+<li>“PortalData” has been removed as a sub and replaced with “raw”, which includes all raw versions of files (post unzipping) downloaded: Portal Data and Portal Predictions and covariate forecasts (whose saving is also new here).</li>
+</ul>
+</div>
+<div id="tightened-messaging" class="section level3">
+<h3 class="hasAnchor">
+<a href="#tightened-messaging" class="anchor"></a>Tightened messaging</h3>
+<ul>
+<li>Expanded use of <code>quiet</code> and <code>verbose</code> connected throughout the pipeline.</li>
+<li>Additional messaging functions to reduce code clutter.</li>
+<li>Formatting of messages to reduce clutter and highlight the outline structure.</li>
+</ul>
+</div>
+<div id="download-capacity-generalized" class="section level3">
+<h3 class="hasAnchor">
+<a href="#download-capacity-generalized" class="anchor"></a>Download capacity generalized</h3>
+<ul>
+<li>Flexible interface to downloading capacity through a url, with generalized and flexible functions for generating Zenodo API urls (for retrieving the raw data and historical predictions) and NMME API urls (for retrieving weather forecasts) to port into the <code>download</code> function. <a href="https://github.com/weecology/portalcasting/issues/121">addresses</a> and <a href="https://github.com/weecology/portalcasting/issues/107">addresses</a> and <a href="https://github.com/weecology/portalcasting/issues/53">addresses</a>
+</li>
+</ul>
+</div>
+<div id="changes-for-users-adding-their-own-models-to-the-prefab-set" class="section level3">
+<h3 class="hasAnchor">
+<a href="#changes-for-users-adding-their-own-models-to-the-prefab-set" class="anchor"></a>Changes for users adding their own models to the prefab set</h3>
+<ul>
+<li>Substantial reduction in effort for users who wish to add models (i.e. anyone who is sandboxing). You can even just plunk your own R script (which could be a single line calling out to an external program if desired) without having to add any model script writing controls, and just add the name of the model to the models argument in <code>portalcast</code> and it will run it with everything else.</li>
+<li>Outlined in the updated <a href="https://weecology.github.io/portalcasting/articles/howto.html">Getting Started</a> and <a href="https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html">Adding a Model/Data</a> vignettes.</li>
+<li>Users adding models to the prefab suite should now permanently add their model’s control options to the source code in <code>model_script_controls</code> rather than write their own control functions.</li>
+<li>Users adding models to the prefab suite should permanently add their model’s function code to the <code>prefab_models</code> script (reusing and adding to the documentation in <code>prefab_model_functions</code>), rather than to its own script.</li>
+<li>Users should still add their model’s name to the source code in <code>model_names</code>.</li>
+</ul>
+</div>
+<div id="relaxed-model-requirements" class="section level3">
+<h3 class="hasAnchor">
+<a href="#relaxed-model-requirements" class="anchor"></a>Relaxed model requirements</h3>
+<ul>
+<li>Models are no longer forced to use interpolated data.</li>
+<li>Models are no longer required to output a rigidly formatted data-table. Presently, the requirement is just a list, but soon some specifications will be added to improve reliability.</li>
+<li>Outlined in the updated <a href="https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html">Adding a Model/Data</a> vignette.</li>
+</ul>
+</div>
+<div id="more-organization-via-metadata" class="section level3">
+<h3 class="hasAnchor">
+<a href="#more-organization-via-metadata" class="anchor"></a>More organization via metadata</h3>
+<ul>
+<li>Generalized cast output is now tracked using a unique id in the file name associated with the cast, which is related to a row in a metadata table, newly included here. <a href="https://github.com/weecology/portalcasting/issues/105">addresses</a> and <a href="https://github.com/weecology/portalcasting/issues/106">addresses</a> and <a href="https://github.com/weecology/portalPredictions/issues/316">addresses</a>
+</li>
+<li>Additional control information (like data set setup) is sent to the model metadata and saved out.</li>
+<li>Directory setting up configuration information is now tracked in a <code>dir_config.yaml</code> file, which is pulled from to save information about what was used to create, setup, and run the particular casts.</li>
+</ul>
+</div>
+<div id="changes-for-users-interested-in-analyzing-their-own-data-sets-not-in-the-standard-data-set-configuration" class="section level3">
+<h3 class="hasAnchor">
+<a href="#changes-for-users-interested-in-analyzing-their-own-data-sets-not-in-the-standard-data-set-configuration" class="anchor"></a>Changes for users interested in analyzing their own data sets not in the standard data set configuration</h3>
+<ul>
+<li>Users are now able to define rodent observation data sets that are not part of the standard data set (“all” and “controls”, each also with interpolation of missing data) by giving the name in the <code>data_sets</code> argument and the controls defining the data set (used by portalr’s <code>summarize_rodent_data</code> function) in the <code>controls_rodents</code> argument.</li>
+<li>In order to actualize this, a user will need to flip off the argument checking (the default in a sandbox setting, if using a standard or production setting, set <code>arg_checks = FALSE</code> in the relevant function).</li>
+<li>Users interested in permanently adding the treatment level to the available data sets should add the source code to the <code>rodents_controls</code> function, just like with the models.</li>
+<li><a href="https://github.com/weecology/portalcasting/issues/133">addresses</a></li>
+<li>Internal code points the pipeline to the files named via the data set inputs. The other data files are pointed to using the <code>control_files</code> (see <code>file_controls</code>) input list, which allows for some general flexibility with respect to what files the pipeline is reading in from the <code>data</code> subdirectory.</li>
+</ul>
+</div>
+<div id="split-of-standard-data-sets" class="section level3">
+<h3 class="hasAnchor">
+<a href="#split-of-standard-data-sets" class="anchor"></a>Split of standard data sets</h3>
+<ul>
+<li>The prefab <code>all</code> and <code>controls</code> were both default being interpolated for all models because of the use of AIC for model comparison and ensemble building. That forced all models to use interpolated data.</li>
+<li>Starting in this version, the models are not required to have been fit in the same fashion (due to generalization of comparison and post-processing code), and so interpolation is not required if not needed, and we have split out the data to standard and interpolated versions.</li>
+</ul>
+</div>
+<div id="application-of-specific-models-to-specific-data-sets-now-facilitated" class="section level3">
+<h3 class="hasAnchor">
+<a href="#application-of-specific-models-to-specific-data-sets-now-facilitated" class="anchor"></a>Application of specific models to specific data sets now facilitated</h3>
+<ul>
+<li>
+<code>write_model</code> and <code>model_template</code> have a <code>data_sets</code> argument that is used to write the code out, replacing the hard code requirement of analyzing “all” and “controls” for every model. Now, users who wish to analyze a particular data component can easily add it to the analysis pipeline.</li>
+</ul>
+</div>
+<div id="generalization-of-code-terms" class="section level3">
+<h3 class="hasAnchor">
+<a href="#generalization-of-code-terms" class="anchor"></a>Generalization of code terms</h3>
+<ul>
+<li>Throughout the codebase, terminology has been generalized from “fcast”/“forecast”/“hindcast” to “cast” except where a clear distinction is needed (here primarily due to where the covariate values used come from).</li>
+<li>Nice benefits: highlights commonality between the two (see next section) and reduces code volume.</li>
+<li>
+<code>start_newmoon</code> is now <code>start_moon</code> like <code>end_moon</code>
+</li>
+<li><a href="https://github.com/weecology/portalcasting/issues/134">addresses</a></li>
+</ul>
+</div>
+<div id="hindcasting-becomes-more-similar-to-forecasting" class="section level3">
+<h3 class="hasAnchor">
+<a href="#hindcasting-becomes-more-similar-to-forecasting" class="anchor"></a>“Hindcasting” becomes more similar to “forecasting”</h3>
+<ul>
+<li>In the codebase now, “hindcasting” is functionally “forecasting” with a forecast origin (<code>end_moon</code>) that is not the most recently occurring moon.</li>
+<li>Indeed, “hindcast” is nearly entirely removed from the codebase and “forecast” is nearly exclusively retained in documentation (and barely in the code itself), with both functionally being replaced with the generalized (and shorter) “cast”.</li>
+<li>
+<code>cast_type</code> is retained in the metadata file for posterity, but functionality is more generally checked by considering <code>end_moon</code> and <code>last_moon</code> in combination, where <code>end_moon</code> is the forecast origin and <code>last_moon</code> is the most recent</li>
+<li>Rather than the complex machinery used to iterate through multiple forecasts (“hindcasting”) that involved working backwards and skipping certain moons (which didn’t need to be skipped anymore due to updated code from a while back that allows us to forecast fine even without the most recent samples yet), a simple for loop is able to manage iterating. This is also facilitated by the downloading of the raw portalPredictions repository from Zenodo and critically its retention in the “raw” subdirectory, which allows quick re-calculation of historic predictions of covariates. <a href="https://github.com/weecology/portalcasting/issues/11">addresses</a>
+</li>
+<li>
+<code>cast_type</code> has been removed as an input, it’s auto determined now based on <code>end_moon</code> and the last moon available (if they’re equal it’s a “forecast”, if not it’s a “hindcast”).</li>
+</ul>
+</div>
+<div id="softer-handling-of-model-failure" class="section level3">
+<h3 class="hasAnchor">
+<a href="#softer-handling-of-model-failure" class="anchor"></a>Softer handling of model failure</h3>
+<ul>
+<li>Within <code>cast</code>, the model scripts are now sourced within a for-loop (rather than sapply) to allow for simple error catching of each script. <a href="https://github.com/weecology/portalcasting/issues/22">addresses</a>
+</li>
+</ul>
+</div>
+<div id="improved-argument-checking-flow" class="section level3">
+<h3 class="hasAnchor">
+<a href="#improved-argument-checking-flow" class="anchor"></a>Improved argument checking flow</h3>
+<ul>
+<li>Arg checking is now considerably tighter, code-wise.</li>
+<li>Each argument is either recognized and given a set of attributes (from an internally defined list) or unrecognized and stated to the user that it’s not being checked (to help notify anyone building in the code that there’s a new argument).</li>
+<li>The argument’s attributes define the logical checking flow through a series of pretty simple options.</li>
+<li>There is also now a <code>arg_checks</code> logical argument that goes into <code>check_args</code> to turn off all of the underlying code, enabling the user to go off the production restrictions that would otherwise through errors, even though they might technically work under the hood.</li>
+</ul>
+</div>
+<div id="substantial-re-writes-of-the-vignettes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#substantial-re-writes-of-the-vignettes" class="anchor"></a>Substantial re-writes of the vignettes</h3>
+<ul>
+<li>Done in general to update with the present version of the codebase.</li>
+<li>Broke the <code>adding a model or data</code> vignette into “working locally” and “adding to the pipeline”, also added checklists and screen shots. <a href="https://github.com/weecology/portalcasting/issues/113">addresses</a>
+</li>
+<li>Reorganized the <code>getting started</code> vignette to an order that makes sense. <a href="https://github.com/weecology/portalcasting/issues/120">addresses</a>
+</li>
+</ul>
+</div>
+<div id="additional-things" class="section level3">
+<h3 class="hasAnchor">
+<a href="#additional-things" class="anchor"></a>Additional things</h3>
+<ul>
+<li>
+<code>drop_spp</code> is now changed to <code>species</code> (so focus on inclusion, not exclusion). <a href="https://github.com/weecology/portalcasting/issues/128">addresses</a>
+</li>
+<li>Improved examples, also now as <code>\donttest{}</code>. <a href="https://github.com/weecology/portalcasting/issues/127">addresses</a>
+</li>
+<li>Tightened testing with <code>skip_on_cran</code> used judiciously. <a href="https://github.com/weecology/portalcasting/issues/124">addresses</a>
+</li>
+<li>No longer building the AIC-based ensemble. <a href="https://github.com/weecology/portalcasting/issues/102">addresses</a>
+</li>
+<li>Default confidence limit is now the more standard 0.95.</li>
+</ul>
+</div>
+</div>
     <div id="portalcasting-0-8-1" class="section level1">
 <h1 class="page-header">
 <a href="#portalcasting-0-8-1" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.8.1">portalcasting 0.8.1</a>
@@ -193,7 +362,7 @@
 <a href="#addressing-covariate-forecasts-in-pevgarch-under-hindcasting" class="anchor"></a>Addressing covariate forecasts in <code>pevGARCH</code> under hindcasting</h3>
 <ul>
 <li>
-<code><a href="../reference/pevgarch.html">pevGARCH()</a></code> was not set up to leverage the <code>covariate_forecasts</code> file.</li>
+<code><a href="../reference/prefab_model_functions.html">pevGARCH()</a></code> was not set up to leverage the <code>covariate_forecasts</code> file.</li>
 <li>It’s now set up with a toggle based on the <code>cast_type</code> in the metadata list (which has replaced the formerly named <code>filename_suffix</code> element) to load the <code>covariate_forecasts</code> file (using a new <code>read_covariate_forecasts</code> function) and then select the specific hindcast based on the <code>source</code> and <code>date_made</code> columns as selected by new elements in the metadata list (<code>covariate_source</code> and <code>covariate_date_made</code>).</li>
 </ul>
 </div>
@@ -355,7 +524,7 @@
 <p><em>2019-03-12</em></p>
 <div id="bug-fix-in-plot_cast_ts" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fix-in-plot_cast_ts" class="anchor"></a>Bug fix in <code><a href="../reference/plot_cast_ts.html">plot_cast_ts()</a></code>
+<a href="#bug-fix-in-plot_cast_ts" class="anchor"></a>Bug fix in <code>plot_cast_ts()</code>
 </h3>
 <ul>
 <li>
@@ -499,7 +668,7 @@
 <ul>
 <li>All of the code is now tested via <a href="https://github.com/weecology/portalcasting/tree/master/tests"><code>testthat</code></a>.</li>
 <li>Test coverage is tracked via <a href="https://codecov.io/gh/weecology/portalcasting">Codecov</a>.</li>
-<li>The only functionality not covered in testing on Codecov is associated with <code><a href="../reference/download_predictions.html">download_predictions()</a></code>, which intermittently hangs on Travis. Testing is available, but requires manual toggling of the <code>test_location</code> value to <code>"local"</code> in the relevant test scripts (02-directory and 12-prepare_predictions).</li>
+<li>The only functionality not covered in testing on Codecov is associated with <code>download_predictions()</code>, which intermittently hangs on Travis. Testing is available, but requires manual toggling of the <code>test_location</code> value to <code>"local"</code> in the relevant test scripts (02-directory and 12-prepare_predictions).</li>
 </ul>
 </div>
 <div id="enforcement-of-inputs" class="section level3">
@@ -545,7 +714,7 @@
 <a href="#added-functions" class="anchor"></a>Added functions</h3>
 <ul>
 <li>
-<code><a href="../reference/classy.html">classy()</a></code> allows for easy application of classes to objects in a <code>%&gt;%</code> pipeline</li>
+<code>classy()</code> allows for easy application of classes to objects in a <code>%&gt;%</code> pipeline</li>
 <li>
 <code><a href="../reference/read_data.html">read_data()</a></code> provides simple interface for loading and applying classes to model-ready data files.</li>
 <li>
@@ -610,7 +779,7 @@
 <a href="#addressing-portal-data-download" class="anchor"></a>Addressing Portal Data download</h3>
 <ul>
 <li>Setting default back to the Zenodo link via updated portalr function.</li>
-<li>Updated <code><a href="../reference/fill_dir.html">fill_PortalData()</a></code> and new <code><a href="../reference/all_options.html">PortalData_options()</a></code> allow for control over download source.</li>
+<li>Updated <code>fill_PortalData()</code> and new <code>PortalData_options()</code> allow for control over download source.</li>
 </ul>
 </div>
 </div>
@@ -660,6 +829,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#portalcasting-development-version">development version</a></li>
+        <li><a href="#portalcasting-0-9-0">0.9.0</a></li>
         <li><a href="#portalcasting-0-8-1">0.8.1</a></li>
         <li><a href="#portalcasting-0-8-0">0.8.0</a></li>
         <li><a href="#portalcasting-0-7-0">0.7.0</a></li>
@@ -680,19 +851,23 @@
 
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
