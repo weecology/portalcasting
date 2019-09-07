@@ -318,7 +318,8 @@ read_rodents <- function(main = ".", data_sets = c("all", "controls"),
 read_covariates <- function(main = ".", control_files = files_control(),
                             arg_checks = TRUE){
   check_args(arg_checks)
-  fpath <- file_path(main = main, sub = "data", files = "covariates.csv", 
+  fpath <- file_path(main = main, sub = "data", 
+                     files = control_files$filename_cov, 
                      arg_checks = arg_checks)
   if(!file.exists(fpath)){
     return(prep_covariates(main = main, arg_checks = arg_checks))
@@ -374,7 +375,9 @@ read_covariate_casts <- function(main = ".", control_files = files_control(),
 read_moons <- function(main = ".", control_files = files_control(),
                        arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  fpath <- file_path(main, "data", "moon_dates.csv")
+  fpath <- file_path(main = main, sub = "data", 
+                     files = control_files$filename_moons, 
+                     arg_checks = arg_checks)
   if(!file.exists(fpath)){
     return(prep_moons(main = main, arg_checks = arg_checks))
   }
@@ -388,7 +391,9 @@ read_moons <- function(main = ".", control_files = files_control(),
 read_metadata <- function(main = ".", control_files = files_control(),
                           arg_checks = TRUE){
   check_args(arg_checks)
-  fpath <- file_path(main, "data", "metadata.yaml")
+  fpath <- file_path(main = main, sub = "data", 
+                     files = control_files$filename_meta, 
+                     arg_checks = arg_checks)
   if(!file.exists(fpath)){
     md <- prep_metadata(main = main, arg_checks = arg_checks)
     return(md)

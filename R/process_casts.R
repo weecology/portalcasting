@@ -1,4 +1,49 @@
 
+add_obs_to_cast_tab <- function(main = ".", cast_id = NULL, 
+                                arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_id)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_id <- max(casts_meta$cast_id)
+  }
+  cast_tab <- read_cast_tab(main = main, cast_id = cast_id)
+  cast_tab <- na_conformer(cast_tab)
+  cast_data_set <- unique(cast_tab$data_set)
+  cast_data_set <- gsub("_interp", "", cast_data_set)
+  obs <- read_rodents_table(main = main, data_set = cast_data_set,
+                           arg_checks = arg_checks)
+  obs <- na.omit(obs)
+  species <- "total"
+  spec_cast <- cast_tab[cast_tab$species == species, ]
+  moon_match <- obs$moon %in% spec_cast$moon
+  species_match <- colnames(obs) == species
+  spec_obs <- obs[moon_match, species_match]
+  spec_moon <- obs[moon_match, "moon"]
+
+  out <- spec_cast[spec_cast$moon %in% spec_moon, ]
+  out$obs <- spec_obs
+  out
+}
+
+
+# should probably be added to the documentation for read_cast_tab
+# generalize to read_cast_output or something
+
+read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_id)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_id <- max(casts_meta$cast_id)
+  }
+  lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
+  cpath <- file_path(main, "casts", lpath, arg_checks)
+  if(!file.exists(cpath)){
+    stop("cast_id does not have a cast_metadata file")
+  }
+  yaml.load_file(cpath) 
+}
+
+
 #' @title Read in the cast tab output from a given cast
 #'
 #' @description Retrieve the \code{cast_tab} of a cast in the casts 
