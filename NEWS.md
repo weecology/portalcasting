@@ -13,7 +13,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ###  Directory tree structure simplified
 * `dirtree` was removed
-* `base` (both as a function and a concept) was removed. To make that structure use main = "./name"
+* `base` (both as a function and a concept) was removed. To make that structure use `main = "./name"`.
 * "PortalData" has been removed as a sub and replaced with "raw", which includes all raw versions of files (post unzipping) downloaded: Portal Data and Portal Predictions and covariate forecasts (whose saving is also new here).
 
 ### Tightened messaging

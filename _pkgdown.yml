@@ -54,7 +54,7 @@ reference:
       - prep_cast_covariates
       - prep_hist_covariates
       - prep_weather_data
-      - summarize_daily_weather_by_newmoon
+      - summarize_daily_weather_by_moon
   - title: "Directory setup"
     desc: "Functions that combine directory creation and filling"
     contents:
@@ -123,8 +123,8 @@ reference:
   - title: "Model generating functions"
     desc: "Functions for formatting model-running scripts"
     contents:
-      - model_script_control
-      - model_script_controls
+      - model_control
+      - model_controls
       - write_model
       - model_template
       - prefab_models
