@@ -1,6 +1,35 @@
 url: https://weecology.github.io/portalcasting
 development:
   mode: auto
+navbar:
+  title: "portalcasting"
+  structure:
+    left: [home, articles, reference, news]
+    right: [twitter, github] 
+  components: 
+    articles:
+      text: "Vignettes"
+      menu:
+       - text: "Getting started"
+         href: articles/getting_started.html
+       - text: "Current models"
+         href: articles/current_models.html
+       - text: "Adding a model and data"
+         href: articles/adding_model_and_data.html
+       - text: "portalcasting codebase"
+         href: articles/codebase.html
+    reference: 
+      text: "Functions"
+      href: reference/index.html
+    news: 
+      text: "News"
+      href: news/index.html
+    twitter:
+      icon: fa-twitter
+      href: https://twitter.com/weecology
+    github:
+      icon: fa-github
+      href: https://github.com/weecology
 reference:
   - title: "Directory creation"
     desc: "Functions that instantiate a portalcasting directory"
