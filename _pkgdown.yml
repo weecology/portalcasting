@@ -1,22 +1,6 @@
 url: https://weecology.github.io/portalcasting
 development:
   mode: auto
-navbar:
-  title: "portalcasting"
-  structure:
-    left: [home, articles, reference, news]
-    right: [twitter, github] 
-  components: 
-    articles:
-      text: "Vignettes"
-    reference: 
-      text: "Functions"
-    news: 
-      text: "News"
-    twitter:
-      icon: fa-twitter
-      href: https://twitter.com/weecology
-
 reference:
   - title: "Directory creation"
     desc: "Functions that instantiate a portalcasting directory"
