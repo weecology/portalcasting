@@ -8,6 +8,12 @@ test_that("read_cast_tab", {
   expect_error(read_cast_tab(main = main, cast_id = 1e10))
 })
 
+test_that("read_cast_tabs", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(read_cast_tabs(main = main, cast_ids = NULL), "data.frame")
+  expect_is(read_cast_tabs(main = main, cast_ids = 1:2), "data.frame")
+})
+
 test_that("read_cast_metadata", {
   skip_on_cran() # downloads take too long for cran checks
   expect_is(read_cast_metadata(main = main, cast_id = NULL), "list")

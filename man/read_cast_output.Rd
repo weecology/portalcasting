@@ -17,16 +17,18 @@ read_cast_metadata(main = ".", cast_id = NULL, arg_checks = TRUE)
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{cast_id}{\code{integer} (or integer \code{numeric}) value 
-representing the cast of interest, as indexed within the directory in
-the \code{casts} sub folder. See the casts metadata file 
-(\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
-default), the most recently generated cast's output is read in.}
-
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
+
+\item{cast_ids, cast_id}{\code{integer} (or integer \code{numeric}) value(s) 
+representing the cast(s) of interest, as indexed within the directory in
+the \code{casts} sub folder. See the casts metadata file 
+(\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
+default), the most recently generated cast's output is read in. \cr
+\code{cast_ids} can be NULL, one value, or more than one values,
+\code{cast_id} can only be NULL or one value.}
 }
 \value{
 \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}.
