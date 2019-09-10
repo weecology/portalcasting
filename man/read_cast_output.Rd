@@ -3,10 +3,13 @@
 \name{read_cast_output}
 \alias{read_cast_output}
 \alias{read_cast_tab}
+\alias{read_cast_tabs}
 \alias{read_cast_metadata}
 \title{Read in cast output from a given cast}
 \usage{
 read_cast_tab(main = ".", cast_id = NULL, arg_checks = TRUE)
+
+read_cast_tabs(main = ".", cast_ids = NULL, arg_checks = TRUE)
 
 read_cast_metadata(main = ".", cast_id = NULL, arg_checks = TRUE)
 }
@@ -27,12 +30,14 @@ formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}.
+ \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s.
  \code{read_cast_metadata}: \code{list} of the \code{cast_metadata}.
 }
 \description{
-Read in the various output files of a cast in the casts 
- sub directory. \cr \cr
+Read in the various output files of a cast or casts in the 
+ casts sub directory. \cr \cr
  \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
+ \code{read_cast_tabs} combines one or more \code{cast_tab}s. \cr \cr
  \code{read_cast_tab} retrieves the \code{cast_metdata}
 }
 \examples{
@@ -40,6 +45,7 @@ Read in the various output files of a cast in the casts
   setup_dir()
   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
   read_cast_tab(cast_id = 1)
+  read_cast_tabs(cast_ids = 1:2)
   read_cast_metadata(cast_id = 1)
 }
 

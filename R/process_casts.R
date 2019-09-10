@@ -97,16 +97,22 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
   check_args(arg_checks = arg_checks)
   return_if_null(cast_tab)
   cast_tab <- na_conformer(cast_tab)
-  cast_data_set <- unique(cast_tab$data_set)
-  cast_data_set <- gsub("_interp", "", cast_data_set)
-  obs <- read_rodents_table(main = main, data_set = cast_data_set,
-                           arg_checks = arg_checks)
   cast_tab$obs <- NA
-  for(i in 1:NROW(cast_tab)){
-    obs_moon <- which(obs$moon == cast_tab$moon[i])
-    obs_species <- which(colnames(obs) == cast_tab$species[i])
-    if(length(obs_moon) == 1 & length(obs_species) == 1){
-      cast_tab$obs[i] <- obs[obs_moon, obs_species]
+  cast_data_set <- gsub("_interp", "", cast_tab$data_set)
+  ucast_data_set <- unique(cast_data_set)
+  ncast_data_sets <- length(ucast_data_set)
+  for(j in 1:ncast_data_sets){
+    obs <- read_rodents_table(main = main, data_set = ucast_data_set[j],
+                             arg_checks = arg_checks)
+    matches <- which(cast_data_set == ucast_data_set[j])
+    nmatches <- length(matches)
+    for(i in 1:nmatches){
+      spot <- matches[i]
+      obs_moon <- which(obs$moon == cast_tab$moon[spot])
+      obs_species <- which(colnames(obs) == cast_tab$species[spot])
+      if(length(obs_moon) == 1 & length(obs_species) == 1){
+        cast_tab$obs[spot] <- obs[obs_moon, obs_species]
+      }
     }
   }
   cast_tab 
@@ -116,9 +122,10 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 
 #' @title Read in cast output from a given cast
 #'
-#' @description Read in the various output files of a cast in the casts 
-#'  sub directory. \cr \cr
+#' @description Read in the various output files of a cast or casts in the 
+#'  casts sub directory. \cr \cr
 #'  \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
+#'  \code{read_cast_tabs} combines one or more \code{cast_tab}s. \cr \cr
 #'  \code{read_cast_tab} retrieves the \code{cast_metdata}
 #'
 #' @param main \code{character} value of the name of the main component of
@@ -137,6 +144,7 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'
 #' @return 
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}.
+#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s.
 #'  \code{read_cast_metadata}: \code{list} of the \code{cast_metadata}.
 #' 
 #' @examples
@@ -144,6 +152,7 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'   setup_dir()
 #'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
 #'   read_cast_tab(cast_id = 1)
+#'   read_cast_tabs(cast_ids = 1:2)
 #'   read_cast_metadata(cast_id = 1)
 #' }
 #'
@@ -167,6 +176,29 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
     stop("cast_id does not have a cast_table")
   }
   read.csv(cpath, stringsAsFactors = FALSE) 
+}
+
+#' @rdname read_cast_output
+#'
+#' @export
+#'
+read_cast_tabs <- function(main = ".", cast_ids = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_ids)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_ids <- max(casts_meta$cast_id)
+  }
+  cast_tab <- read_cast_tab(main = main, cast_id = cast_ids[1],
+                            arg_checks = arg_checks)
+  ncasts <- length(cast_ids)
+  if(ncasts > 1){
+    for(i in 2:ncasts){
+      cast_tab_i <- read_cast_tab(main = main, cast_id = cast_ids[i],
+                                  arg_checks = arg_checks)
+      cast_tab <- rbind(cast_tab, cast_tab_i)
+    }
+  }
+  cast_tab
 }
 
 #' @rdname read_cast_output
