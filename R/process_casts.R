@@ -1,53 +1,61 @@
-
-add_obs_to_cast_tab <- function(main = ".", cast_id = NULL, 
+#' @title Add the associated observations to a cast tab
+#' 
+#' @description Append a column of observations to a cast table. \cr
+#'  If an interpolated data set is used to fit a model, the true data
+#'  are appended here (so that model predictions are all compared to the
+#'  same data). 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#' 
+#' @param cast_tab A \code{data.frame} of a cast's output. See 
+#'  \code{\link{read_cast_tab}}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return \code{data.frame} of \code{cast_tab} with an \code{obs} column. 
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   cast_tab <- read_cast_tab(cast_id = 1)
+#'   add_obs_to_cast_tab(cast_tab = cast_tab)
+#' }
+#'
+#' @export
+#'
+add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL, 
                                 arg_checks = TRUE){
   check_args(arg_checks)
-  if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
-    cast_id <- max(casts_meta$cast_id)
-  }
-  cast_tab <- read_cast_tab(main = main, cast_id = cast_id)
+  return_if_null(cast_tab)
   cast_tab <- na_conformer(cast_tab)
   cast_data_set <- unique(cast_tab$data_set)
   cast_data_set <- gsub("_interp", "", cast_data_set)
   obs <- read_rodents_table(main = main, data_set = cast_data_set,
                            arg_checks = arg_checks)
-  obs <- na.omit(obs)
-  species <- "total"
-  spec_cast <- cast_tab[cast_tab$species == species, ]
-  moon_match <- obs$moon %in% spec_cast$moon
-  species_match <- colnames(obs) == species
-  spec_obs <- obs[moon_match, species_match]
-  spec_moon <- obs[moon_match, "moon"]
-
-  out <- spec_cast[spec_cast$moon %in% spec_moon, ]
-  out$obs <- spec_obs
-  out
+  cast_tab$obs <- NA
+  for(i in 1:NROW(cast_tab)){
+    obs_moon <- which(obs$moon == cast_tab$moon[i])
+    obs_species <- which(colnames(obs) == cast_tab$species[i])
+    if(length(obs_moon) == 1 & length(obs_species) == 1){
+      cast_tab$obs[i] <- obs[obs_moon, obs_species]
+    }
+  }
+  cast_tab 
 }
 
 
-# should probably be added to the documentation for read_cast_tab
-# generalize to read_cast_output or something
 
-read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
-  if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
-    cast_id <- max(casts_meta$cast_id)
-  }
-  lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
-  cpath <- file_path(main, "casts", lpath, arg_checks)
-  if(!file.exists(cpath)){
-    stop("cast_id does not have a cast_metadata file")
-  }
-  yaml.load_file(cpath) 
-}
-
-
-#' @title Read in the cast tab output from a given cast
+#' @title Read in cast output from a given cast
 #'
-#' @description Retrieve the \code{cast_tab} of a cast in the casts 
-#'  sub directory. 
+#' @description Read in the various output files of a cast in the casts 
+#'  sub directory. \cr \cr
+#'  \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
+#'  \code{read_cast_tab} retrieves the \code{cast_metdata}
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -56,21 +64,30 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'  representing the cast of interest, as indexed within the directory in
 #'  the \code{casts} sub folder. See the casts metadata file 
 #'  (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
-#'  default), the most recent generated \code{cast_tab} is read in. 
+#'  default), the most recently generated cast's output is read in. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
-#' @return \code{data.frame} of the \code{cast_tab}.
+#' @return 
+#'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}.
+#'  \code{read_cast_metadata}: \code{list} of the \code{cast_metadata}.
 #' 
 #' @examples
 #'  \donttest{
 #'   setup_dir()
 #'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
 #'   read_cast_tab(cast_id = 1)
+#'   read_cast_metadata(cast_id = 1)
 #' }
+#'
+#' @name read_cast_output
+#'
+NULL
+
+#' @rdname read_cast_output
 #'
 #' @export
 #'
@@ -87,6 +104,25 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   }
   read.csv(cpath, stringsAsFactors = FALSE) 
 }
+
+#' @rdname read_cast_output
+#'
+#' @export
+#'
+read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_id)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_id <- max(casts_meta$cast_id)
+  }
+  lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
+  cpath <- file_path(main, "casts", lpath, arg_checks)
+  if(!file.exists(cpath)){
+    stop("cast_id does not have a cast_metadata file")
+  }
+  yaml.load_file(cpath) 
+}
+
 
 #' @title Find casts that fit specifications
 #'
