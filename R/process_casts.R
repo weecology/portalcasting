@@ -1,9 +1,63 @@
-#' @title Add the associated observations to a cast tab
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_lead_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_err_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  if(is.null(cast_tab$obs)){
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                  arg_checks = arg_checks)
+  }
+  cast_tab$error <- cast_tab$estimate - cast_tab$obs
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                    arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  if(is.null(cast_tab$obs)){
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                  arg_checks = arg_checks)
+  }
+  cast_tab$covered <- cast_tab$estimate >= cast_tab$lower_pi & 
+                      cast_tab$estimate <= cast_tab$upper_pi 
+  cast_tab$covered[is.na(cast_tab$obs)] <- NA
+  cast_tab
+}
+
+#' @title Add the associated values to a cast tab
 #' 
-#' @description Append a column of observations to a cast table. \cr
-#'  If an interpolated data set is used to fit a model, the true data
-#'  are appended here (so that model predictions are all compared to the
-#'  same data). 
+#' @description Add values to a cast's cast tab. If necessary components are
+#'  missing (such as no observations added yet and the user requests errors),
+#'  the missing components are added. \cr \cr
+#'  \code{add_lead_to_cast_tab} adds a column of lead times. \cr \cr
+#'  \code{add_obs_to_cast_tab} appends a column of observations. \cr \cr
+#'  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
+#'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating
+#'  if the observation was within the prediction interval. 
+#'
+#' @details If an interpolated data set is used to fit a model, 
+#'  \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations
+#'  so that model predictions are all compared to the same data.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -16,21 +70,31 @@
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
-#' @return \code{data.frame} of \code{cast_tab} with an \code{obs} column. 
+#' @return \code{data.frame} of \code{cast_tab} with an additional column or
+#'  columns if needed. 
 #' 
 #' @examples
 #'  \donttest{
 #'   setup_dir()
 #'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
 #'   cast_tab <- read_cast_tab(cast_id = 1)
+#'   add_lead_to_cast_tab(cast_tab = cast_tab)
 #'   add_obs_to_cast_tab(cast_tab = cast_tab)
+#'   add_err_to_cast_tab(cast_tab = cast_tab)
+#'   add_covered_to_cast_tab(cast_tab = cast_tab)
 #' }
+#'
+#' @name add_to_cast_tab
+#'
+NULL
+
+#' @rdname add_to_cast_tab
 #'
 #' @export
 #'
 add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL, 
                                 arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   return_if_null(cast_tab)
   cast_tab <- na_conformer(cast_tab)
   cast_data_set <- unique(cast_tab$data_set)
