@@ -20,5 +20,8 @@ select_casts(main)
 # we likely want to pull in the model's metadata so we can use the PIs
 
 
+cast_tab <- read_cast_tab(main = main, cast_id = 1)
+
+
 add_obs_to_cast_tab(main = main, cast_id = 1)
 

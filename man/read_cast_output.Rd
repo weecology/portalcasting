@@ -31,8 +31,9 @@ default), the most recently generated cast's output is read in. \cr
 \code{cast_id} can only be NULL or one value.}
 }
 \value{
-\code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}.
- \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s.
+\code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
+ \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with
+ a \code{cast_id} column added to distinguish among casts. \cr \cr
  \code{read_cast_metadata}: \code{list} of the \code{cast_metadata}.
 }
 \description{

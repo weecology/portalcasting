@@ -1,3 +1,140 @@
+#' @title Plot predictions for a given point in time across multiple species
+#'
+#' @description Plot the raw error (estimate - observation) as a function
+#'  of lead time for a given model focused on a specific species (or total)
+#'  within a data set, but across multiple model runs from different 
+#'  forecast origins (\code{end_moons}). \cr
+#'  A pre-loaded table of casts can be input, but if not (default), the
+#'  table will be efficiently (as defined by the inputs) loaded and trimmed.
+#'  \cr 
+#'  The casts can be trimmed specifically using the \code{cast_ids} input,
+#'  otherwise, all relevant casts will be plotted. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param cast_ids \code{integer} (or integer \code{numeric}) values 
+#'  representing the casts of interest for restricting plotting, as indexed
+#'  within the directory in the \code{casts} sub folder. 
+#'  See the casts metadata file (\code{casts_metadata.csv}) for summary
+#'  information.
+#'
+#' @param end_moons \code{integer} (or integer \code{numeric}) 
+#'  newmoon numbers of the forecast origin. Default value is 
+#'  \code{NULL}, which equates to no selection with respect to 
+#'  \code{end_moon}.
+#'
+#' @param model \code{character} value of the name of the model to 
+#'  include. Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{model}.
+#'
+#' @param data_set \code{character} value of the rodent data set to include
+#'  Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{data_set}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param species \code{character} vector of the species codes (or 
+#'  \code{"total"} for the total across species) to be plotted or 
+#'  \code{NULL} (default) to plot all species in \code{data_set}.
+#'
+#' @return \code{NULL}. Plot is generated.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = "AutoArima", end_moons = 515:520)
+#'   plot_casts_err_lead()
+#' }
+#'
+#' @export
+#'
+plot_casts_err_lead <- function(main = ".", cast_ids = NULL, 
+                                cast_tab = NULL, end_moons = NULL, 
+                                model = NULL, data_set = NULL, 
+                                species = NULL, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+
+  if(is.null(cast_tab)){
+    cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
+                                 model = model, end_moons = end_moons, 
+                                 data_set = data_set, arg_checks = arg_checks)
+    if(NROW(cast_choices) == 0){
+      stop("no casts available for requested plot")
+    }else{
+      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
+                                 arg_checks = arg_checks)
+      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                      arg_checks = arg_checks)
+      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab,
+                                      arg_checks = arg_checks)
+      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab,
+                                       arg_checks = arg_checks)
+    }
+  }
+  cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
+  model <- ifnull(model, unique(cast_tab$model)[1])
+  data_set <- ifnull(data_set, unique(cast_tab$data_set)[1])
+  species <- ifnull(species, unique(cast_tab$species)[1]) 
+  end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
+  cast_id_in <- cast_tab$cast_id %in% cast_ids
+  model_in <- cast_tab$model == model
+  data_set_in <- cast_tab$data_set == data_set
+  species_in <- cast_tab$species == species
+  end_moon_in <- cast_tab$end_moon %in% end_moons
+  all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
+  if(sum(all_in) == 0){
+    stop("no casts available for requested plot")
+  }
+  pcast_tab <- cast_tab[all_in, ]
+  yy <- round(pcast_tab$error, 3)
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  par(bty = "L", mar = c(4, 4.5, 2.5, 1.5))
+  yrange <- range(yy, na.rm = TRUE)
+  xrange <- c(max(pcast_tab$lead) + 0.25, 0.75)
+  plot(1, 1, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n",
+       ylim = yrange, xlim = xrange)
+  abline(h = 0, lty = 3, lwd = 2, col = grey(0.6))
+  ucast_ids <- unique(pcast_tab$cast_id)
+  ncast_ids <- length(ucast_ids)
+  cols <- viridis(ncast_ids, 1, 0, 0.75)
+  for(i in 1:ncast_ids){
+    matches <- which(pcast_tab$cast_id == ucast_ids[i])
+    x <- pcast_tab$lead[matches]
+    y <- pcast_tab$error[matches]
+    x <- x[!is.na(y)]
+    y <- y[!is.na(y)]
+    points(x, y, type = "o", pch = 16, col = cols[i])
+  }
+
+  axis(1, cex.axis = 1.25)
+  axis(1, at = seq(1, xrange[1] - 0.25, 1), tck = -0.01, labels = FALSE)
+  axis(2, cex.axis = 1.25, las = 1)
+  mtext(side = 1, line = 2.5, "Lead time (newmoons)", cex = 1.5)
+  mtext(side = 2, line = 3, "Error (individuals)", cex = 1.75)
+  lab <- list(text = "", font = 1)
+  lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
+           na_conformer("speciescode")
+  if (species == "total"){
+    spp <- "total abundance"
+    title <- paste0(model, ", ", data_set, ", ", spp)
+  } else{
+    sppmatch <- which(sptab[ , "speciescode"] == species)
+    spp <- sptab[sppmatch , "scientificname"]
+    title <- eval(
+        substitute(
+          expression(paste(model, ", ", data_set, ", ", italic(spp))), 
+          env = list(spp = spp, data_set = data_set, model = model)))
+  }
+  mtext(title, side = 3, cex = 1.25, line = 0.5, at = xrange[1], adj = 0)
+}
+
+
 
 #' @title Plot predictions for a given point in time across multiple species
 #'

@@ -1,3 +1,6 @@
+
+
+
 #' @rdname add_to_cast_tab
 #'
 #' @export
@@ -145,8 +148,9 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return 
-#'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}.
-#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s.
+#'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
+#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with
+#'  a \code{cast_id} column added to distinguish among casts. \cr \cr
 #'  \code{read_cast_metadata}: \code{list} of the \code{cast_metadata}.
 #' 
 #' @examples
@@ -192,11 +196,13 @@ read_cast_tabs <- function(main = ".", cast_ids = NULL, arg_checks = TRUE){
   }
   cast_tab <- read_cast_tab(main = main, cast_id = cast_ids[1],
                             arg_checks = arg_checks)
+  cast_tab$cast_id <- cast_ids[1]
   ncasts <- length(cast_ids)
   if(ncasts > 1){
     for(i in 2:ncasts){
       cast_tab_i <- read_cast_tab(main = main, cast_id = cast_ids[i],
                                   arg_checks = arg_checks)
+      cast_tab_i$cast_id <- cast_ids[i]
       cast_tab <- rbind(cast_tab, cast_tab_i)
     }
   }

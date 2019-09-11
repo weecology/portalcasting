@@ -20,3 +20,12 @@ test_that("plot_cast_ts", {
   expect_error(plot_cast_ts(main = main, cast_id = 1e10))
 
 })
+
+
+test_that("plot_casts_err_lead", {
+  skip_on_cran() # downloads and casting take too long to run on cran
+  expect_silent(plot_casts_err_lead(main = main))
+  expect_silent(plot_casts_err_lead(main = main, model = "AutoArima", 
+                                   species = "total", data_set = "all"))
+  expect_error(plot_casts_err_lead(main = main, cast_id = 1e10))
+})
