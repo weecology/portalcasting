@@ -2,8 +2,10 @@ evaluations
 
 devtools::document()
 main <- "~/hindcasting"
-plot_cast_point(main)
 
+tiff("1.tiff", width = 10, height = 10, units = "in", res = 400)
+plot_casts_err_lead(main)
+dev.off()
 
 select_casts(main)
 

@@ -18,6 +18,9 @@ within the directory in the \code{casts} sub folder.
 See the casts metadata file (\code{casts_metadata.csv}) for summary
 information.}
 
+\item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not
+input, will be loaded.}
+
 \item{end_moons}{\code{integer} (or integer \code{numeric}) 
 newmoon numbers of the forecast origin. Default value is 
 \code{NULL}, which equates to no selection with respect to 

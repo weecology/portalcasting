@@ -27,5 +27,7 @@ test_that("plot_casts_err_lead", {
   expect_silent(plot_casts_err_lead(main = main))
   expect_silent(plot_casts_err_lead(main = main, model = "AutoArima", 
                                    species = "total", data_set = "all"))
+  expect_silent(plot_casts_err_lead(main = main, model = "AutoArima", 
+                                   species = "BA", data_set = "all"))
   expect_error(plot_casts_err_lead(main = main, cast_id = 1e10))
 })

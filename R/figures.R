@@ -25,6 +25,9 @@
 #'  \code{NULL}, which equates to no selection with respect to 
 #'  \code{end_moon}.
 #'
+#' @param cast_tab Optional \code{data.frame} of cast table outputs. If not
+#'  input, will be loaded.
+#'
 #' @param models \code{character} value(s) of the name of the model to 
 #'  include. Default value is \code{NULL}, which equates to no selection with 
 #'  respect to \code{model}. \code{NULL} translates to all \code{models}
@@ -103,12 +106,6 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 
   if(nmodels == 1 & nspecies == 1){
 
-    model_in <- cast_tab$model %in% models
-    species_in <- cast_tab$species %in% species
-    all_in <- model_in & species_in
-    if(sum(all_in) == 0){
-      stop("no casts available for requested plot")
-    }
     pcast_tab <- cast_tab[all_in, ]
     yy <- round(pcast_tab$error, 3)
     yrange <- range(c(0, yy), na.rm = TRUE)
@@ -157,13 +154,13 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
     par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
          bty = "n")
-    mtext(side = 1, "Lead time (new moons)", line = -0.65)
-    mtext(side = 2, "Forecast error", line = -0.85)
+    mtext(side = 1, "Lead time (new moons)", cex = 1.25, line = -0.5)
+    mtext(side = 2, "Forecast error", cex = 1.25, line = -1)
 
-    x1 <- seq(0.05, 0.95 - 0.9/nmodels, 0.9/nmodels)
-    x2 <- seq(0.05 + 0.9/nmodels, 0.95, 0.9/nmodels)
-    y1 <- seq(0.05, 0.95 - 0.9/nspecies, 0.9/nspecies)
-    y2 <- seq(0.05 + 0.9/nspecies, 0.95, 0.9/nspecies)
+    x1 <- seq(0.04, 0.96 - 0.92/nmodels, 0.92/nmodels)
+    x2 <- seq(0.04 + 0.92/nmodels, 0.96, 0.92/nmodels)
+    y1 <- seq(0.04, 0.96 - 0.92/nspecies, 0.92/nspecies)
+    y2 <- seq(0.04 + 0.92/nspecies, 0.96, 0.92/nspecies)
 
     for(j in 1:nspecies){
 
@@ -178,7 +175,8 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 
         model_in <- cast_tab$model %in% models[i]
         species_in <- cast_tab$species %in% species[j]
-        all_in <- model_in & species_in
+        all_in <- cast_id_in & model_in & data_set_in & species_in & 
+                  end_moon_in
         if(sum(all_in) == 0){
           stop("no casts available for requested plot")
         }
@@ -203,19 +201,19 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
           points(x, y, type = "o", pch = 16, col = cols[k], cex = 0.5)
         }
         xaxl <- ifelse(j == 1, TRUE, FALSE)
-        xat <- seq(0, max(pcast_tab$lead), 4)
-        axis(1, tck = -0.07, labels = FALSE, at = xat)
-        axis(1, tck = -0.07, labels = xaxl, at = xat, cex.axis = 0.6, 
+        xat <- seq(0, max(pcast_tab$lead), 2)
+        axis(1, tck = -0.06, labels = FALSE, at = xat)
+        axis(1, tck = -0.06, labels = xaxl, at = xat, cex.axis = 0.6, 
              line = -0.9, lwd = 0)
         xat <- seq(0, max(pcast_tab$lead), 1)
         axis(1, tck = -0.04, labels = FALSE, at = xat)
 
         yaxl <- ifelse(i == 1, TRUE, FALSE)
-        axis(2, tck = -0.06, labels = FALSE)
-        axis(2, tck = -0.06, labels = yaxl, cex.axis = 0.6, las = 1, 
+        axis(2, tck = -0.05, labels = FALSE)
+        axis(2, tck = -0.05, labels = yaxl, cex.axis = 0.6, las = 1, 
              line = -0.55, lwd = 0)
         if(j == nspecies){
-          mtext(side = 3, models[i], cex = 0.75, font = 2, line = 0.5) 
+          mtext(side = 3, models[i], cex = 0.85, font = 2, line = 0.5) 
         }
         if(i == nmodels){
           par(mar = c(0, 0, 0, 0), fig = c(x2[i], 1, y1[j], y2[j]),

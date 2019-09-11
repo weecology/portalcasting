@@ -4,7 +4,7 @@
 #'  left_join mutate n one_of rename right_join select summarize ungroup
 #' @importFrom forecast Arima auto.arima ets forecast na.interp
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
-#' @importFrom grDevices rgb
+#' @importFrom grDevices grey rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
 #' @importFrom portalr find_incomplete_censuses get_future_moons 
