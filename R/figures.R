@@ -165,9 +165,6 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
     for(j in 1:nspecies){
 
       species_in <- cast_tab$species %in% species[j]
-      if(sum(species_in) == 0){
-        stop("no casts available for requested plot")
-      }
       yy <- round(cast_tab$error[species_in], 3)
       yrange <- range(c(0, yy), na.rm = TRUE)
 
@@ -177,9 +174,6 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
         species_in <- cast_tab$species %in% species[j]
         all_in <- cast_id_in & model_in & data_set_in & species_in & 
                   end_moon_in
-        if(sum(all_in) == 0){
-          stop("no casts available for requested plot")
-        }
         pcast_tab <- cast_tab[all_in, ]
 
         par(bty = "L", mar = c(0.5, 0.5, 0.25, 0.25), 
