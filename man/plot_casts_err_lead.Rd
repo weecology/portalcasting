@@ -2,10 +2,10 @@
 % Please edit documentation in R/figures.R
 \name{plot_casts_err_lead}
 \alias{plot_casts_err_lead}
-\title{Plot predictions for a given point in time across multiple species}
+\title{Plot the forecast error as a function of lead time}
 \usage{
 plot_casts_err_lead(main = ".", cast_ids = NULL, cast_tab = NULL,
-  end_moons = NULL, model = NULL, data_set = NULL, species = NULL,
+  end_moons = NULL, models = NULL, data_set = NULL, species = NULL,
   arg_checks = TRUE)
 }
 \arguments{
@@ -23,17 +23,19 @@ newmoon numbers of the forecast origin. Default value is
 \code{NULL}, which equates to no selection with respect to 
 \code{end_moon}.}
 
-\item{model}{\code{character} value of the name of the model to 
+\item{models}{\code{character} value(s) of the name of the model to 
 include. Default value is \code{NULL}, which equates to no selection with 
-respect to \code{model}.}
+respect to \code{model}. \code{NULL} translates to all \code{models}
+in the table.}
 
 \item{data_set}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to no selection with 
 respect to \code{data_set}.}
 
-\item{species}{\code{character} vector of the species codes (or 
-\code{"total"} for the total across species) to be plotted or 
-\code{NULL} (default) to plot all species in \code{data_set}.}
+\item{species}{\code{character} vector of the species code(s) 
+or \code{"total"} for the total across species) to be plotted 
+\code{NULL} translates to the species defined by  
+\code{evalplot_species}.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
@@ -45,12 +47,14 @@ formatted correctly and provides directed error messages if not.}
 }
 \description{
 Plot the raw error (estimate - observation) as a function
- of lead time for a given model focused on a specific species (or total)
- within a data set, but across multiple model runs from different 
- forecast origins (\code{end_moons}). \cr
- A pre-loaded table of casts can be input, but if not (default), the
- table will be efficiently (as defined by the inputs) loaded and trimmed.
- \cr 
+ of lead time across model runs from different forecast origins 
+ (\code{end_moons}) for multiple models and multiple species (or total) 
+ within a data set.
+}
+\details{
+A pre-loaded table of casts can be input, but if not (default), 
+ the table will be efficiently (as defined by the inputs) loaded and 
+ trimmed. \cr 
  The casts can be trimmed specifically using the \code{cast_ids} input,
  otherwise, all relevant casts will be plotted.
 }

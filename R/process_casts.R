@@ -1,52 +1,3 @@
-
-
-
-#' @rdname add_to_cast_tab
-#'
-#' @export
-#'
-add_lead_to_cast_tab <- function(main = ".", cast_tab = NULL,
-                                arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  return_if_null(cast_tab)
-  cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
-  cast_tab
-}
-
-#' @rdname add_to_cast_tab
-#'
-#' @export
-#'
-add_err_to_cast_tab <- function(main = ".", cast_tab = NULL,
-                                arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  return_if_null(cast_tab)
-  if(is.null(cast_tab$obs)){
-  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
-                                  arg_checks = arg_checks)
-  }
-  cast_tab$error <- cast_tab$estimate - cast_tab$obs
-  cast_tab
-}
-
-#' @rdname add_to_cast_tab
-#'
-#' @export
-#'
-add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL,
-                                    arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  return_if_null(cast_tab)
-  if(is.null(cast_tab$obs)){
-  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
-                                  arg_checks = arg_checks)
-  }
-  cast_tab$covered <- cast_tab$estimate >= cast_tab$lower_pi & 
-                      cast_tab$estimate <= cast_tab$upper_pi 
-  cast_tab$covered[is.na(cast_tab$obs)] <- NA
-  cast_tab
-}
-
 #' @title Add the associated values to a cast tab
 #' 
 #' @description Add values to a cast's cast tab. If necessary components are
@@ -95,11 +46,56 @@ NULL
 #'
 #' @export
 #'
+add_lead_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_err_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  if(is.null(cast_tab$obs)){
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                  arg_checks = arg_checks)
+  }
+  cast_tab$error <- cast_tab$estimate - cast_tab$obs
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                    arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  if(is.null(cast_tab$obs)){
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                  arg_checks = arg_checks)
+  }
+  cast_tab$covered <- cast_tab$estimate >= cast_tab$lower_pi & 
+                      cast_tab$estimate <= cast_tab$upper_pi 
+  cast_tab$covered[is.na(cast_tab$obs)] <- NA
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
 add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL, 
                                 arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(cast_tab)
-  cast_tab <- na_conformer(cast_tab)
   cast_tab$obs <- NA
   cast_data_set <- gsub("_interp", "", cast_tab$data_set)
   ucast_data_set <- unique(cast_data_set)
@@ -109,10 +105,11 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
                              arg_checks = arg_checks)
     matches <- which(cast_data_set == ucast_data_set[j])
     nmatches <- length(matches)
+    obs_cols <- gsub("NA.", "NA", colnames(obs))
     for(i in 1:nmatches){
       spot <- matches[i]
       obs_moon <- which(obs$moon == cast_tab$moon[spot])
-      obs_species <- which(colnames(obs) == cast_tab$species[spot])
+      obs_species <- which(obs_cols == cast_tab$species[spot])
       if(length(obs_moon) == 1 & length(obs_species) == 1){
         cast_tab$obs[spot] <- obs[obs_moon, obs_species]
       }
@@ -181,7 +178,8 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   if(!file.exists(cpath)){
     stop("cast_id does not have a cast_table")
   }
-  read.csv(cpath, stringsAsFactors = FALSE) 
+  out <- read.csv(cpath, stringsAsFactors = FALSE) 
+  na_conformer(out, arg_checks = arg_checks)
 }
 
 #' @rdname read_cast_output

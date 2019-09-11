@@ -1,12 +1,13 @@
-#' @title Plot predictions for a given point in time across multiple species
+#' @title Plot the forecast error as a function of lead time 
 #'
 #' @description Plot the raw error (estimate - observation) as a function
-#'  of lead time for a given model focused on a specific species (or total)
-#'  within a data set, but across multiple model runs from different 
-#'  forecast origins (\code{end_moons}). \cr
-#'  A pre-loaded table of casts can be input, but if not (default), the
-#'  table will be efficiently (as defined by the inputs) loaded and trimmed.
-#'  \cr 
+#'  of lead time across model runs from different forecast origins 
+#'  (\code{end_moons}) for multiple models and multiple species (or total) 
+#'  within a data set.
+#'
+#' @details A pre-loaded table of casts can be input, but if not (default), 
+#'  the table will be efficiently (as defined by the inputs) loaded and 
+#'  trimmed. \cr 
 #'  The casts can be trimmed specifically using the \code{cast_ids} input,
 #'  otherwise, all relevant casts will be plotted. 
 #'
@@ -24,9 +25,10 @@
 #'  \code{NULL}, which equates to no selection with respect to 
 #'  \code{end_moon}.
 #'
-#' @param model \code{character} value of the name of the model to 
+#' @param models \code{character} value(s) of the name of the model to 
 #'  include. Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{model}.
+#'  respect to \code{model}. \code{NULL} translates to all \code{models}
+#'  in the table.
 #'
 #' @param data_set \code{character} value of the rodent data set to include
 #'  Default value is \code{NULL}, which equates to no selection with 
@@ -37,9 +39,10 @@
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
-#' @param species \code{character} vector of the species codes (or 
-#'  \code{"total"} for the total across species) to be plotted or 
-#'  \code{NULL} (default) to plot all species in \code{data_set}.
+#' @param species \code{character} vector of the species code(s) 
+#'  or \code{"total"} for the total across species) to be plotted 
+#'  \code{NULL} translates to the species defined by  
+#'  \code{evalplot_species}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 
@@ -54,14 +57,14 @@
 #'
 plot_casts_err_lead <- function(main = ".", cast_ids = NULL, 
                                 cast_tab = NULL, end_moons = NULL, 
-                                model = NULL, data_set = NULL, 
+                                models = NULL, data_set = NULL, 
                                 species = NULL, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
-                                 model = model, end_moons = end_moons, 
-                                 data_set = data_set, arg_checks = arg_checks)
+                                 models = models, end_moons = end_moons, 
+                                 data_sets = data_set, 
+                                 arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
       stop("no casts available for requested plot")
     }else{
@@ -75,64 +78,167 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
                                        arg_checks = arg_checks)
     }
   }
+  cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
   cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  model <- ifnull(model, unique(cast_tab$model)[1])
+  models <- ifnull(models, unique(cast_tab$model))
   data_set <- ifnull(data_set, unique(cast_tab$data_set)[1])
-  species <- ifnull(species, unique(cast_tab$species)[1]) 
+  species <- ifnull(species, evalplot_species(arg_checks = arg_checks)) 
   end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in <- cast_tab$cast_id %in% cast_ids
-  model_in <- cast_tab$model == model
+  model_in <- cast_tab$model %in% models
   data_set_in <- cast_tab$data_set == data_set
-  species_in <- cast_tab$species == species
+  species_in <- cast_tab$species %in% species
   end_moon_in <- cast_tab$end_moon %in% end_moons
   all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
   if(sum(all_in) == 0){
     stop("no casts available for requested plot")
   }
-  pcast_tab <- cast_tab[all_in, ]
-  yy <- round(pcast_tab$error, 3)
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
-  par(bty = "L", mar = c(4, 4.5, 2.5, 1.5))
-  yrange <- range(yy, na.rm = TRUE)
-  xrange <- c(max(pcast_tab$lead) + 0.25, 0.75)
-  plot(1, 1, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n",
-       ylim = yrange, xlim = xrange)
-  abline(h = 0, lty = 3, lwd = 2, col = grey(0.6))
-  ucast_ids <- unique(pcast_tab$cast_id)
-  ncast_ids <- length(ucast_ids)
-  cols <- viridis(ncast_ids, 1, 0, 0.75)
-  for(i in 1:ncast_ids){
-    matches <- which(pcast_tab$cast_id == ucast_ids[i])
-    x <- pcast_tab$lead[matches]
-    y <- pcast_tab$error[matches]
-    x <- x[!is.na(y)]
-    y <- y[!is.na(y)]
-    points(x, y, type = "o", pch = 16, col = cols[i])
-  }
 
-  axis(1, cex.axis = 1.25)
-  axis(1, at = seq(1, xrange[1] - 0.25, 1), tck = -0.01, labels = FALSE)
-  axis(2, cex.axis = 1.25, las = 1)
-  mtext(side = 1, line = 2.5, "Lead time (newmoons)", cex = 1.5)
-  mtext(side = 2, line = 3, "Error (individuals)", cex = 1.75)
-  lab <- list(text = "", font = 1)
   lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")
-  if (species == "total"){
-    spp <- "total abundance"
-    title <- paste0(model, ", ", data_set, ", ", spp)
-  } else{
-    sppmatch <- which(sptab[ , "speciescode"] == species)
-    spp <- sptab[sppmatch , "scientificname"]
-    title <- eval(
-        substitute(
-          expression(paste(model, ", ", data_set, ", ", italic(spp))), 
-          env = list(spp = spp, data_set = data_set, model = model)))
-  }
-  mtext(title, side = 3, cex = 1.25, line = 0.5, at = xrange[1], adj = 0)
+
+  nmodels <- length(models)
+  nspecies <- length(species)
+
+  if(nmodels == 1 & nspecies == 1){
+
+    model_in <- cast_tab$model %in% models
+    species_in <- cast_tab$species %in% species
+    all_in <- model_in & species_in
+    if(sum(all_in) == 0){
+      stop("no casts available for requested plot")
+    }
+    pcast_tab <- cast_tab[all_in, ]
+    yy <- round(pcast_tab$error, 3)
+    yrange <- range(c(0, yy), na.rm = TRUE)
+    xrange <- c(max(pcast_tab$lead) + 0.25, 0)
+
+    oldpar <- par(no.readonly = TRUE)
+    on.exit(par(oldpar))
+    par(bty = "L", mar = c(4, 4.5, 3, 1))
+
+    plot(1, 1, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n",
+         ylim = yrange, xlim = xrange)
+    abline(h = 0, lty = 3, lwd = 2, col = grey(0.6))
+    ucast_ids <- unique(pcast_tab$cast_id)
+    ncast_ids <- length(ucast_ids)
+    cols <- viridis(ncast_ids, 0.8, 0, 0.75)
+    for(k in 1:ncast_ids){
+      matches <- which(pcast_tab$cast_id == ucast_ids[k])
+      x <- pcast_tab$lead[matches]
+      y <- pcast_tab$error[matches]
+      x <- x[!is.na(y)]
+      y <- y[!is.na(y)]
+      points(x, y, type = "o", pch = 16, col = cols[k], cex = 1)
+    }
+    axis(1, cex.axis = 1.25)
+    axis(2, cex.axis = 1.25, las = 1)
+    mtext(side = 1, "Lead time (new moons)", cex = 1.5, line = 2.75)
+    mtext(side = 2, "Forecast error", cex = 1.75, line = 3)
+    if (species == "total"){
+      spp <- "total abundance"
+      title <- paste0(models, ", ", data_set, ", ", spp)
+    } else{
+      sppmatch <- which(sptab[ , "speciescode"] == species)
+      spp <- sptab[sppmatch , "scientificname"]
+      title <- eval(substitute(
+                      expression(
+                        paste(models_i, ", ", data_set, ", ", italic(spp))), 
+                      env = list(spp = spp, data_set = data_set,  
+                                 models_i = models)))
+    }
+    mtext(title, side = 3, cex = 1.25, line = 0.5, at = xrange[1], adj = 0)
+
+  }else{
+
+    oldpar <- par(no.readonly = TRUE)
+    on.exit(par(oldpar))
+    par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
+    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+         bty = "n")
+    mtext(side = 1, "Lead time (new moons)", line = -0.65)
+    mtext(side = 2, "Forecast error", line = -0.85)
+
+    x1 <- seq(0.05, 0.95 - 0.9/nmodels, 0.9/nmodels)
+    x2 <- seq(0.05 + 0.9/nmodels, 0.95, 0.9/nmodels)
+    y1 <- seq(0.05, 0.95 - 0.9/nspecies, 0.9/nspecies)
+    y2 <- seq(0.05 + 0.9/nspecies, 0.95, 0.9/nspecies)
+
+    for(j in 1:nspecies){
+
+      species_in <- cast_tab$species %in% species[j]
+      if(sum(species_in) == 0){
+        stop("no casts available for requested plot")
+      }
+      yy <- round(cast_tab$error[species_in], 3)
+      yrange <- range(c(0, yy), na.rm = TRUE)
+
+      for(i in 1:nmodels){
+
+        model_in <- cast_tab$model %in% models[i]
+        species_in <- cast_tab$species %in% species[j]
+        all_in <- model_in & species_in
+        if(sum(all_in) == 0){
+          stop("no casts available for requested plot")
+        }
+        pcast_tab <- cast_tab[all_in, ]
+
+        par(bty = "L", mar = c(0.5, 0.5, 0.25, 0.25), 
+            fig = c(x1[i], x2[i], y1[j], y2[j]), new = TRUE)
+
+        xrange <- c(max(pcast_tab$lead) + 0.25, 0)
+        plot(1, 1, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n",
+             ylim = yrange, xlim = xrange)
+        abline(h = 0, lty = 3, lwd = 2, col = grey(0.6))
+        ucast_ids <- unique(pcast_tab$cast_id)
+        ncast_ids <- length(ucast_ids)
+        cols <- viridis(ncast_ids, 0.8, 0, 0.75)
+        for(k in 1:ncast_ids){
+          matches <- which(pcast_tab$cast_id == ucast_ids[k])
+          x <- pcast_tab$lead[matches]
+          y <- pcast_tab$error[matches]
+          x <- x[!is.na(y)]
+          y <- y[!is.na(y)]
+          points(x, y, type = "o", pch = 16, col = cols[k], cex = 0.5)
+        }
+        xaxl <- ifelse(j == 1, TRUE, FALSE)
+        xat <- seq(0, max(pcast_tab$lead), 4)
+        axis(1, tck = -0.07, labels = FALSE, at = xat)
+        axis(1, tck = -0.07, labels = xaxl, at = xat, cex.axis = 0.6, 
+             line = -0.9, lwd = 0)
+        xat <- seq(0, max(pcast_tab$lead), 1)
+        axis(1, tck = -0.04, labels = FALSE, at = xat)
+
+        yaxl <- ifelse(i == 1, TRUE, FALSE)
+        axis(2, tck = -0.06, labels = FALSE)
+        axis(2, tck = -0.06, labels = yaxl, cex.axis = 0.6, las = 1, 
+             line = -0.55, lwd = 0)
+        if(j == nspecies){
+          mtext(side = 3, models[i], cex = 0.75, font = 2, line = 0.5) 
+        }
+        if(i == nmodels){
+          par(mar = c(0, 0, 0, 0), fig = c(x2[i], 1, y1[j], y2[j]),
+              new = TRUE)   
+          plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
+               bty = "n")   
+          if (species[j] == "total"){
+            spt <- "Total Abundance"
+            spf <- 2
+          } else{
+            spptextmatch <- which(sptab[ , "speciescode"] == species[j])
+            spt <- sptab[spptextmatch, "scientificname"]
+            spf <- 4
+          }  
+          text(0.75, 1, spt, font = spf, cex = 0.55, xpd = TRUE, srt = 270)
+        }
+
+      }
+    }
+  }  
 }
+
+
 
 
 
