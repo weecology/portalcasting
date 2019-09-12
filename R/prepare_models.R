@@ -125,15 +125,6 @@ model_controls <- function(models = NULL, controls_model = NULL,
     controls_model <- list(controls_model)
     names(controls_model) <- controls_model[[1]]$name
   }
-
-  replicates <- table(names(controls_model))
-  if(any(replicates > 1)){
-    which_conflicting <- names(replicates)[which(replicates > 1)]
-    all_conflicting <- paste(which_conflicting, collapse = ", ")
-    msg <- paste0("conflicting copies of model(s): ", all_conflicting)
-    stop(msg)
-  }
-
   nadd <- length(controls_model)
   prefab_controls <- prefab_model_controls()
   nprefab <- length(prefab_controls)

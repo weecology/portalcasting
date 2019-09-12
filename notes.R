@@ -1,7 +1,9 @@
 evaluations
 
 devtools::document()
-main <- "~/hindcasting"
+main <- "~/xx"
+setup_dir(main)
+
 
 tiff("1.tiff", width = 10, height = 10, units = "in", res = 400)
 plot_casts_err_lead(main)
