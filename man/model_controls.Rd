@@ -4,7 +4,7 @@
 \alias{model_controls}
 \alias{extract_min_lag}
 \alias{extract_data_sets}
-\title{Produce the control lists for the model script writing}
+\title{Produce the control lists for models}
 \usage{
 model_controls(models = NULL, controls_model = NULL, quiet = FALSE,
   arg_checks = TRUE)
@@ -55,11 +55,13 @@ formatted correctly and provides directed error messages if not.}
  the number of elements in \code{models} and with elements that are each 
  \code{list}s of those \code{models}'s script-writing controls. \cr \cr
  \code{extract_min_lag}: \code{numeric} value of the minimum non-0 lag
- from any included model or \code{NA} if no models have lags.
+ from any included model or \code{NA} if no models have lags. \cr \cr
+ \code{extract_data_sets}: \code{character} vector of the data set names
+ from all included models.
 }
 \description{
-The model scripts are written using a generalized function
- that takes a few arguments that vary among models, and so this function
+The models are written and managed using generalized functions
+ that take a few arguments that vary among models, and so this function
  produces the appropriate \code{list} of \code{list}s of model
  script-writing control arguments. The specific \code{models} must be
  input by the user, with the default being \code{NULL}, which returns.
@@ -80,9 +82,13 @@ Any model that is part of the \code{prefab} set
  only need to include controls for non-prefab \code{models}. \cr \cr
  Any user-defined \code{models} that are not included in \code{controls_m}
  will throw an error. \cr \cr 
- If any user-defined \code{controls_m} duplicate any existing controls for
- the prefab models or if \code{controls_m} contains any duplicate named
- elements, an error will be thrown. \cr \cr
+ If any user-defined \code{controls_model} duplicate any existing controls
+ for the prefab models or if \code{controls_model} contains any duplicate 
+ named elements, an error will be thrown unless \code{arg_checks = FALSE},
+ in which case, the first user-input element for any and all conflicting 
+ copies is selected. This is override allowers users to test an existing
+ prefab model with different configurations, such as on a new data set, 
+ without requiring a new model. \cr \cr
  Users interested in adding models to the prefab set should add the
  controls to the \code{prefab_model_controls} non-exported function
  found in the \code{prepare_models.R} script.
@@ -96,5 +102,7 @@ Any model that is part of the \code{prefab} set
  model_controls(c("xx", "ESSS"), controls)
  extract_min_lag()
  extract_min_lag("AutoArima")
+ extract_data_sets()
+ extract_data_sets("AutoArima")
 
 }

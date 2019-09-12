@@ -77,7 +77,7 @@ If you would like your output to be archived with the other cast output, your co
 
 As an example here, I have filled out the model script for newmod with a very basic model. It uses a linear regression with no autocorrelation and only analyzes the total rodent counts. The forecast is simply the linear model's prediction over the future moons. 
 
-![A trivial newmod](imgs/sandbox_1_newmod.jpg){width=400px} 
+![A trivial newmod](imgs/sandbox_1_newmod.jpg){width=600px} 
 
 As you can see, the model metadata contains a lot of key information used to fit the models, such as the forecast horizon (which for Portal may not necessarily be equal to the theoretical lead time, as some surveys are missed and there is a lag to entering data, so sometimes additional surveys need to be cast)
 
@@ -85,7 +85,7 @@ As you can see, the model metadata contains a lot of key information used to fit
 
 To add "newdata" to the available data set, it is important to recognize that the rodent preparation functions point directly to the [**portalr** `summarize_rodent_data` function](https://weecology.github.io/portalr/reference/summarize_rodent_data.html), which allows for flexible data customization. 
 
-**portalcasting** turns the arguments in `summarize_rodent_data` into arguments in `rodent_control()`, which sets default values for most arguments, but does require an input for `name`, which names the data set, otherwise it will return `NULL`. Here, we create the data control list and call it `ndc`, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the `prep_rodents()` function, which returns the data set to the console and saves it in the `data` sub-directory (Note that we **must** set `arg_checks = FALSE` to allow for the creation and use of the non-standard rodents data configuration.)
+**portalcasting** turns the arguments in `summarize_rodent_data` into arguments in `rodents_control()`, which sets default values for most arguments, but does require an input for `name`, which names the data set, otherwise it will return `NULL`. Here, we create the data control list and call it `newdata_controls`, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the `prep_rodents()` function, which returns the data set to the console and saves it in the `data` sub-directory (Note that we **must** set `arg_checks = FALSE` to allow for the creation and use of the non-standard rodents data configuration.)
 
 ```{r, eval=FALSE}
 newdata_controls <- rodents_control(name = "newdata", level = "Treatment", treatment = "removal", arg_checks = FALSE)

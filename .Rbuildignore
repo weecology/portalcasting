@@ -10,3 +10,4 @@
 ^\.zenodo\.json$
 ^inst/WORDLIST$
 ^notes.R$
+^docs$

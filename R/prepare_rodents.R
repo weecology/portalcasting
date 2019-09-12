@@ -745,6 +745,7 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
 #'
 #' @name species_in_tables
 #'
+NULL 
 
 #' @rdname species_in_tables
 #'
@@ -874,6 +875,11 @@ evalplot_species <- function(species = NULL, nadot = FALSE, total = TRUE,
 #'  The currently prefabricated options include (\code{"all"}, 
 #'  \code{"controls"}, \code{"all_interp"}, and \code{"controls_interp"}). 
 #'
+#' @param interpolate \code{logical} value indicating if the interpolated data
+#'  only should be listed (\code{interpolate = TRUE}), if the non-interpolated
+#'  data only should be listed (\code{interpolate = FALSE}), or if both
+#'  should be listed (\code{interpolate = NULL}, default).  
+#'
 #' @return \code{character} vector of data set names.
 #'
 #' @examples
@@ -881,8 +887,15 @@ evalplot_species <- function(species = NULL, nadot = FALSE, total = TRUE,
 #'
 #' @export
 #'
-prefab_data_sets <- function(){
-  names(prefab_rodents_controls())
+prefab_data_sets <- function(interpolate = NULL){
+  dsnames <- names(prefab_rodents_controls())
+  return_if_null(interpolate, dsnames)
+  if(interpolate){
+    dsnames <- dsnames[grepl("_interp", dsnames)]
+  }else{
+    dsnames <- dsnames[!grepl("_interp", dsnames)]
+  }
+  dsnames
 }
 
 

@@ -2,6 +2,20 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.10.0
+*Active development*
+
+### Model evaluation and ensembling added back in
+* Were removed with the updated version from 0.8.1 to 0.9.0 to allow time to develop the code with the new infrastructure. 
+* Model evaluation happens within the cast tab output as before.
+
+### Temporarily removed figures returned
+* Associated with the evaluation and ensembling.
+* Plotting of error as a function of lead time for multiple species and multiple models. Now has a fall-back arrangement that works for a single species-model combination.
+
+### Flexing model controls to allow user-defined lists for prefab models
+* For sandboxing with existing models, it is useful to be able to change a parameter in the model's controls, such as the data sets. Previously, that would require a lot of hacking around. Now, it's as simple as inputting the desired controls and flipping `arg_checks = FALSE`. 
+
 # [portalcasting 0.9.0](https://github.com/weecology/portalcasting/releases/tag/v0.9.0)
 *2019-09-06*
 

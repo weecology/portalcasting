@@ -27,10 +27,10 @@ prefab_model_controls <- function(){
 }
 
 
-#' @title Produce the control lists for the model script writing
+#' @title Produce the control lists for models
 #' 
-#' @description The model scripts are written using a generalized function
-#'  that takes a few arguments that vary among models, and so this function
+#' @description The models are written and managed using generalized functions
+#'  that take a few arguments that vary among models, and so this function
 #'  produces the appropriate \code{list} of \code{list}s of model
 #'  script-writing control arguments. The specific \code{models} must be
 #'  input by the user, with the default being \code{NULL}, which returns.
@@ -50,9 +50,13 @@ prefab_model_controls <- function(){
 #'  only need to include controls for non-prefab \code{models}. \cr \cr
 #'  Any user-defined \code{models} that are not included in \code{controls_m}
 #'  will throw an error. \cr \cr 
-#'  If any user-defined \code{controls_m} duplicate any existing controls for
-#'  the prefab models or if \code{controls_m} contains any duplicate named
-#'  elements, an error will be thrown. \cr \cr
+#'  If any user-defined \code{controls_model} duplicate any existing controls
+#'  for the prefab models or if \code{controls_model} contains any duplicate 
+#'  named elements, an error will be thrown unless \code{arg_checks = FALSE},
+#'  in which case, the first user-input element for any and all conflicting 
+#'  copies is selected. This is override allowers users to test an existing
+#'  prefab model with different configurations, such as on a new data set, 
+#'  without requiring a new model. \cr \cr
 #'  Users interested in adding models to the prefab set should add the
 #'  controls to the \code{prefab_model_controls} non-exported function
 #'  found in the \code{prepare_models.R} script.
@@ -95,7 +99,9 @@ prefab_model_controls <- function(){
 #'  the number of elements in \code{models} and with elements that are each 
 #'  \code{list}s of those \code{models}'s script-writing controls. \cr \cr
 #'  \code{extract_min_lag}: \code{numeric} value of the minimum non-0 lag
-#'  from any included model or \code{NA} if no models have lags.
+#'  from any included model or \code{NA} if no models have lags. \cr \cr
+#'  \code{extract_data_sets}: \code{character} vector of the data set names
+#'  from all included models.
 #'
 #' @examples
 #'  model_controls(prefab_models())
@@ -106,6 +112,8 @@ prefab_model_controls <- function(){
 #'  model_controls(c("xx", "ESSS"), controls)
 #'  extract_min_lag()
 #'  extract_min_lag("AutoArima")
+#'  extract_data_sets()
+#'  extract_data_sets("AutoArima")
 #'
 #' @export
 #'
@@ -117,6 +125,15 @@ model_controls <- function(models = NULL, controls_model = NULL,
     controls_model <- list(controls_model)
     names(controls_model) <- controls_model[[1]]$name
   }
+
+  replicates <- table(names(controls_model))
+  if(any(replicates > 1)){
+    which_conflicting <- names(replicates)[which(replicates > 1)]
+    all_conflicting <- paste(which_conflicting, collapse = ", ")
+    msg <- paste0("conflicting copies of model(s): ", all_conflicting)
+    stop(msg)
+  }
+
   nadd <- length(controls_model)
   prefab_controls <- prefab_model_controls()
   nprefab <- length(prefab_controls)
@@ -143,12 +160,30 @@ model_controls <- function(models = NULL, controls_model = NULL,
     }
   }
   replicates <- table(names(controls_model))
-  if(any(replicates > 1)){
+  if(any(replicates > 1) & arg_checks){
     which_conflicting <- names(replicates)[which(replicates > 1)]
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of model(s): ", all_conflicting)
-    stop(msg)
+    msg2 <- paste0(msg, "\n   to override, set `arg_checks = FALSE`")
+    stop(msg2)
   }
+  if(any(replicates > 1) & !arg_checks){
+    which_conflicting <- names(replicates)[which(replicates > 1)]
+    all_conflicting <- paste(which_conflicting, collapse = ", ")
+    msg <- paste0("conflicting copies of model(s): ", all_conflicting)
+    msg2 <- c(msg, " using first user-defined input for each")
+    messageq(msg2, quiet)
+    umods <- unique(names(controls_model))
+    nmods <- length(umods)
+    controls_model2 <- vector("list", length = nmods)
+    for(i in 1:nmods){
+      choice <- which(names(controls_model) == umods[i])[1]
+      controls_model2[[i]] <- controls_model[[choice]]
+    }
+    names(controls_model2) <- umods
+    controls_model <- controls_model2
+  }
+
   included_models <- which(names(controls_model) %in% models)
   controls_model[included_models]
 }
@@ -388,20 +423,17 @@ model_template <- function(name = NULL, data_sets = NULL,
 }
 
 
-#' @title Create a control list for generating a model script
+#' @title Create a control list for a model
 #'
-#' @description Given the number of arguments into 
-#'  \code{\link{model_template}} via \code{\link{write_model}}
-#'  it helps to have a control \code{list}  
-#'  to organize them. \code{model_control} provides a template for the 
+#' @description Provides a ready-to-use template for the 
 #'  controls \code{list} used to define the specific arguments for a user's
-#'  novel data set, setting the formal arguments to the basic default 
+#'  novel model, setting the formal arguments to the basic default 
 #'  values.
 #
 #' @param name \code{character} value of the name of the model.
 #'
 #' @param data_sets \code{character} vector of the rodent data set names
-#'  that the model is applied to. 
+#'  that the model is applied to. Defaults to all non-interpolated data sets.
 #'
 #' @param covariatesTF \code{logical} indicator for if the model requires 
 #'  covariates.
@@ -419,7 +451,8 @@ model_template <- function(name = NULL, data_sets = NULL,
 #'
 #' @export
 #'
-model_control <- function(name = "model", data_sets = prefab_data_sets(),
+model_control <- function(name = "model", 
+                          data_sets = prefab_data_sets(interpolate = FALSE),
                           covariatesTF = FALSE, lag = NA, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   list(name = name, data_sets = data_sets, covariatesTF = covariatesTF, 
