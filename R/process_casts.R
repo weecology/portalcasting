@@ -54,8 +54,10 @@ measure_cast_level_error <- function(cast_tab = NULL, arg_checks = TRUE){
       if(!is.null(covered)){
         coverage[counter] <- mean(covered, na.rm = TRUE)            
       }
-    model[counter] <- unique(cast_tab_ij$model)
-    counter <- counter + 1
+      if(length(cast_tab_ij$model) > 0){
+        model[counter] <- unique(cast_tab_ij$model)
+      }
+      counter <- counter + 1
     }
   }
   ids <- rep(ucast_ids, each = nspecies)
