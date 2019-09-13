@@ -16,7 +16,7 @@ default (\code{arg_checks = TRUE}) ensures that all inputs are
 formatted correctly and provides directed error messages if not.}
 }
 \value{
-\code{data.frame} of metrics for each \code{cast_id}.
+\code{data.frame} of metrics for each cast for each species.
 }
 \description{
 Summarize the cast-level errors or fits to the observations. 

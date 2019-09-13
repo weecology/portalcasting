@@ -1,3 +1,62 @@
+
+#' @title Plot the forecast coverage and RMSE 
+#'
+#' @description Plot the coverage (fraction of predictions within the CI) and
+#'  RMSE (root mean squared error) of each model among multiple species.
+#'
+#' @details A pre-loaded table of casts can be input, but if not (default), 
+#'  the table will be efficiently (as defined by the inputs) loaded and 
+#'  trimmed. \cr 
+#'  The casts can be trimmed specifically using the \code{cast_ids} input,
+#'  otherwise, all relevant casts will be plotted. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param cast_ids \code{integer} (or integer \code{numeric}) values 
+#'  representing the casts of interest for restricting plotting, as indexed
+#'  within the directory in the \code{casts} sub folder. 
+#'  See the casts metadata file (\code{casts_metadata.csv}) for summary
+#'  information.
+#'
+#' @param end_moons \code{integer} (or integer \code{numeric}) 
+#'  newmoon numbers of the forecast origin. Default value is 
+#'  \code{NULL}, which equates to no selection with respect to 
+#'  \code{end_moon}.
+#'
+#' @param cast_tab Optional \code{data.frame} of cast table outputs. If not
+#'  input, will be loaded.
+#'
+#' @param models \code{character} value(s) of the name of the model to 
+#'  include. Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{model}. \code{NULL} translates to all \code{models}
+#'  in the table.
+#'
+#' @param data_set \code{character} value of the rodent data set to include
+#'  Default value is \code{NULL}, which equates to no selection with 
+#'  respect to \code{data_set}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param species \code{character} vector of the species code(s) 
+#'  or \code{"total"} for the total across species) to be plotted 
+#'  \code{NULL} translates to the species defined by  
+#'  \code{evalplot_species}.
+#'
+#' @return \code{NULL}. Plot is generated.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = "AutoArima", end_moons = 515:520)
+#'   plot_casts_cov_RMSE()
+#' }
+#'
+#' @export
+#'
 plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL, 
                                 cast_tab = NULL, end_moons = NULL, 
                                 models = NULL, data_set = NULL, 
@@ -52,6 +111,105 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
   nspecies <- length(species)
 
 
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
+  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+       bty = "n")
+
+  x1 <- 0
+  x2 <- 0.48
+  y1 <- 0.0
+  y2 <- 0.05
+  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
+       xpd = TRUE, srt = 45, adj = 1)
+  x1 <- 0.49
+  x2 <- 0.97
+  y1 <- 0.0
+  y2 <- 0.05
+  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
+       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
+       xpd = TRUE, srt = 45, adj = 1)
+
+  for (i in 1:nspecies){
+
+    x1 <- 0
+    x2 <- 0.48
+    y1 <- 0.05 + (i - 1) * 0.95 * (1/nspecies)
+    y2 <- y1 + 0.94 * (1/nspecies)
+    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", 
+         xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0,1), bty = "L")
+    axis(2, at = seq(0, 1, 0.2), cex.axis = 0.6, las = 1, line = -0.5, 
+         lwd = 0)
+    axis(2, at = seq(0, 1, 0.2), labels = FALSE, tck = -0.025)
+    mtext(side = 2, "Coverage", line = 1.5, cex = 0.75)
+    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    for(j in 1:nmodels){
+      in_ij <- which(cast_level_errs$species == species[i] & 
+                     cast_level_errs$model == models[j])
+
+      ys <- na.omit(cast_level_errs$coverage[in_ij])
+      ys2 <- runif(length(ys), ys - 0.005, ys + 0.005)
+      xs <- runif(length(ys), j - 0.05, j + 0.05)
+      quants <- quantile(ys, seq(0, 1, 0.25))
+      points(rep(j, 2), quants[c(1, 5)], type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l")
+      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
+      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
+      points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+    }
+    
+    abline(h = 0.95, lwd = 2, lty = 3)
+
+    in_i <- which(cast_level_errs$species == species[i])
+    cast_level_errs_i <- cast_level_errs[in_i, ]
+    ymax <- max(max(cast_level_errs_i$RMSE, na.rm = TRUE))
+    x1 <- 0.49
+    x2 <- 0.97
+    y1 <- 0.05 + (i - 1) * 0.95 * (1/nspecies)
+    y2 <- y1 + 0.94 * (1/nspecies)
+    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", bty = "L",
+         xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0, ymax))
+    axis(2, cex.axis = 0.6, las = 1, line = -0.5, lwd = 0)
+    axis(2, labels = FALSE, tck = -0.025)
+    mtext(side = 2, "RMSE", line = 1.625, cex = 0.75)
+    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    for(j in 1:nmodels){
+      in_ij <- which(cast_level_errs$species == species[i] & 
+                     cast_level_errs$model == models[j])
+
+      ys <- na.omit(cast_level_errs$RMSE[in_ij])
+      ys2 <- runif(length(ys), ys - 0.005, ys + 0.005)
+      xs <- runif(length(ys), j - 0.05, j + 0.05)
+      quants <- quantile(ys, seq(0, 1, 0.25))
+      points(rep(j, 2), quants[c(1, 5)], type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l")
+      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l")
+      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
+      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
+      points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+    }
+    par(mar = c(0, 0, 0, 0), fig = c(0.97, 1, y1, y2), new = TRUE)   
+    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
+         bty = "n") 
+    if (uspecies[i] == "total"){
+      spt <- "Total Rodents"
+      spf <- 2
+    } else{
+      spptextmatch <- which(sptab[ , "speciescode"] == species[i])
+      spt <- sptab[spptextmatch, "scientificname"]
+      spf <- 4
+    }  
+    text(0.9, 1, spt, font = spf, cex = 0.8, xpd = TRUE, srt = 270)
+  }
 
 
 }

@@ -14,7 +14,7 @@
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
-#' @return \code{data.frame} of metrics for each \code{cast_id}. 
+#' @return \code{data.frame} of metrics for each cast for each species. 
 #' 
 #' @examples
 #'  \donttest{
@@ -36,20 +36,32 @@ measure_cast_level_error <- function(cast_tab = NULL, arg_checks = TRUE){
 
   ucast_ids <- unique(cast_tab$cast_id)
   ncast_ids <- length(ucast_ids)
-  RMSE <- rep(NA, ncast_ids)
-  coverage <- rep(NA, ncast_ids)
+  uspecies <- unique(cast_tab$species)
+  nspecies <- length(uspecies)
+  RMSE <- rep(NA, ncast_ids * nspecies)
+  coverage <- rep(NA, ncast_ids * nspecies)
+  model <- rep(NA, ncast_ids * nspecies)
+  counter <- 1
   for(i in 1:ncast_ids){
-    cast_tab_i <- cast_tab[cast_tab$cast_id == ucast_ids[i], ]
-    err <- cast_tab_i$err
-    if(!is.null(err)){
-      RMSE[i] <- sqrt(mean(err^2, na.rm = TRUE))
-    }
-    covered <- cast_tab_i$covered
-    if(!is.null(covered)){
-      coverage[i] <- mean(covered, na.rm = TRUE)            
+    for(j in 1:nspecies){
+      ij <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
+      cast_tab_ij <- cast_tab[ij, ]
+      err <- cast_tab_ij$err
+      if(!is.null(err)){
+        RMSE[counter] <- sqrt(mean(err^2, na.rm = TRUE))
+      }
+      covered <- cast_tab_ij$covered
+      if(!is.null(covered)){
+        coverage[counter] <- mean(covered, na.rm = TRUE)            
+      }
+    model[counter] <- unique(cast_tab_ij$model)
+    counter <- counter + 1
     }
   }
-  data.frame(cast_id = ucast_ids, RMSE = RMSE, coverage = coverage)
+  ids <- rep(ucast_ids, each = nspecies)
+  spp <- rep(uspecies, ncast_ids)
+  data.frame(cast_id = ids, species = spp, model = model, 
+             RMSE = RMSE, coverage = coverage)
 }
 
 #' @title Add the associated values to a cast tab
