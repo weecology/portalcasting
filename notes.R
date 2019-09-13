@@ -1,12 +1,12 @@
 evaluations
 
 devtools::document()
-main <- "~/xx"
+main <- "~/hindcasting"
 setup_dir(main)
 
 
-tiff("1.tiff", width = 10, height = 10, units = "in", res = 400)
-plot_casts_err_lead(main)
+tiff("1.tiff", width = 9, height = 15, units = "in", res = 400)
+plot_casts_cov_RMSE(main)
 dev.off()
 
 select_casts(main)

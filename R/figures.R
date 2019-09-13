@@ -1,3 +1,62 @@
+plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL, 
+                                cast_tab = NULL, end_moons = NULL, 
+                                models = NULL, data_set = NULL, 
+                                species = NULL, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  if(is.null(cast_tab)){
+    cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
+                                 models = models, end_moons = end_moons, 
+                                 data_sets = data_set, 
+                                 arg_checks = arg_checks)
+    if(NROW(cast_choices) == 0){
+      stop("no casts available for requested plot")
+    }else{
+      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
+                                 arg_checks = arg_checks)
+      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                      arg_checks = arg_checks)
+      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab,
+                                      arg_checks = arg_checks)
+      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab,
+                                       arg_checks = arg_checks)
+      cast_tab <- add_covered_to_cast_tab(main = main, cast_tab = cast_tab,
+                                          arg_checks = arg_checks)
+    }
+  }
+
+  cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
+  cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
+  models <- ifnull(models, unique(cast_tab$model))
+  data_set <- ifnull(data_set, unique(cast_tab$data_set)[1])
+  species <- ifnull(species, evalplot_species(arg_checks = arg_checks)) 
+  end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
+  cast_id_in <- cast_tab$cast_id %in% cast_ids
+  model_in <- cast_tab$model %in% models
+  data_set_in <- cast_tab$data_set == data_set
+  species_in <- cast_tab$species %in% species
+  end_moon_in <- cast_tab$end_moon %in% end_moons
+  all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
+  if(sum(all_in) == 0){
+    stop("no casts available for requested plot")
+  }
+  cast_tab <- cast_tab[all_in, ]
+  cast_level_errs <- measure_cast_level_error(cast_tab = cast_tab,
+                                              arg_checks = arg_checks)
+
+
+  lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
+           na_conformer("speciescode")
+
+  nmodels <- length(models)
+  nspecies <- length(species)
+
+
+
+
+}
+
+
 #' @title Plot the forecast error as a function of lead time 
 #'
 #' @description Plot the raw error (estimate - observation) as a function

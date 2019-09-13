@@ -1,3 +1,57 @@
+
+
+#' @title Measure error/fit metrics for forecasts
+#' 
+#' @description Summarize the cast-level errors or fits to the observations. 
+#'  \cr 
+#'  Presently included are root mean square error and coverage.
+#' 
+#' @param cast_tab A \code{data.frame} of a cast's output. See 
+#'  \code{\link{read_cast_tab}}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return \code{data.frame} of metrics for each \code{cast_id}. 
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   cast_tab <- read_cast_tab(cast_id = 1)
+#'   cast_tab <- add_lead_to_cast_tab(cast_tab = cast_tab)
+#'   cast_tab <- add_obs_to_cast_tab(cast_tab = cast_tab)
+#'   cast_tab <- add_err_to_cast_tab(cast_tab = cast_tab)
+#'   cast_tab <- add_covered_to_cast_tab(cast_tab = cast_tab)
+#'   measure_cast_level_error(cast_tab = cast_tab)
+#' }
+#'
+#' @export
+#'
+measure_cast_level_error <- function(cast_tab = NULL, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+
+  ucast_ids <- unique(cast_tab$cast_id)
+  ncast_ids <- length(ucast_ids)
+  RMSE <- rep(NA, ncast_ids)
+  coverage <- rep(NA, ncast_ids)
+  for(i in 1:ncast_ids){
+    cast_tab_i <- cast_tab[cast_tab$cast_id == ucast_ids[i], ]
+    err <- cast_tab_i$err
+    if(!is.null(err)){
+      RMSE[i] <- sqrt(mean(err^2, na.rm = TRUE))
+    }
+    covered <- cast_tab_i$covered
+    if(!is.null(covered)){
+      coverage[i] <- mean(covered, na.rm = TRUE)            
+    }
+  }
+  data.frame(cast_id = ucast_ids, RMSE = RMSE, coverage = coverage)
+}
+
 #' @title Add the associated values to a cast tab
 #' 
 #' @description Add values to a cast's cast tab. If necessary components are
@@ -82,8 +136,8 @@ add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL,
   cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
                                   arg_checks = arg_checks)
   }
-  cast_tab$covered <- cast_tab$estimate >= cast_tab$lower_pi & 
-                      cast_tab$estimate <= cast_tab$upper_pi 
+  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & 
+                      cast_tab$obs <= cast_tab$upper_pi 
   cast_tab$covered[is.na(cast_tab$obs)] <- NA
   cast_tab
 }

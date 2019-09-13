@@ -32,3 +32,14 @@ test_that("add_to_cast_tab", {
    expect_is(add_covered_to_cast_tab(main = main, cast_tab = cast_tab), 
              "data.frame")
 })
+
+test_that("measure_cast_level_error", {
+  skip_on_cran() # downloads take too long for cran checks
+  cast_choices <- select_casts(main = main)
+  cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id)
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
+  cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab)
+  cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab)
+  cast_tab <- add_covered_to_cast_tab(main = main, cast_tab = cast_tab)
+  expect_is(measure_cast_level_error(cast_tab), "data.frame")
+})
