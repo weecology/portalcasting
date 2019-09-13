@@ -200,7 +200,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
     par(mar = c(0, 0, 0, 0), fig = c(0.97, 1, y1, y2), new = TRUE)   
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
          bty = "n") 
-    if (uspecies[i] == "total"){
+    if (species[i] == "total"){
       spt <- "Total Rodents"
       spf <- 2
     } else{
