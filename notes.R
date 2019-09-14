@@ -13,6 +13,7 @@ plot_cast_ts(main=main)
 plot_cast_point(main=main)
 plot_cast_point(main=main,with_census=T)
 plot_casts_err_lead(main)
+plot_casts_cov_RMSE(main)
 
 
 devtools::test(filter="01")

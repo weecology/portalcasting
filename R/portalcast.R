@@ -129,6 +129,10 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
   end_moons <- ifnull(end_moons, last_moon)
   nend_moons <- length(end_moons)
   for(i in 1:nend_moons){
+    if(i>1){
+      messageq("---------------------------------------------------------", 
+             quiet)
+    }
     msg <- paste0("Readying data for forecast origin newmoon ", end_moons[i])
     messageq(msg, quiet)
     fill_data(main = main, models = models, 

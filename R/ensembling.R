@@ -132,7 +132,7 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   species_id <- rep(NA, nspecies * nmoons)
   moon_id <- rep(NA, nspecies * nmoons)
   covered <- rep(NA, nspecies * nmoons)
-
+  nmodels <- length(models)
   counter <- 1
   for(i in 1:nspecies){
     for(j in 1:nmoons){
@@ -147,7 +147,11 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
                   (na.omit(pcast_tab$confidence_level))) ^2
         estimate[counter] <- sum(estimates * weight)
         wt_ss <- sum(weight * (estimates - estimate[counter]) ^ 2)
-        mvar[counter] <- sum((mvars * weight) + (wt_ss / (nmodels - 1)))
+        if(nmodels > 1){
+          mvar[counter] <- sum((mvars * weight) + (wt_ss / (nmodels - 1)))
+        }else{
+          mvar[counter] <- mvars
+        }
         CL <- unique(na.omit(pcast_tab$confidence_level))
         u_pi[counter] <- estimate[counter] + sqrt(mvar[counter] * CL)
         l_pi[counter] <- estimate[counter] - sqrt(mvar[counter] * CL)

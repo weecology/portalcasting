@@ -364,7 +364,8 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
                                         species = species, 
                                         arg_checks = arg_checks))
     }
-    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
+    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) %in% 
+                                     c("var", "covered"))]
     models <- c(models, as.character(unique(ecast_tab$model)))
     cast_tab <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
     cast_tab <- rbind(cast_tab, ecast_tab)
