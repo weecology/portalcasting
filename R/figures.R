@@ -354,9 +354,9 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 
   if(nmodels == 1 & nspecies == 1){
 
-    yy <- round(pcast_tab$error, 3)
+    yy <- round(cast_tab$error, 3)
     yrange <- range(c(0, yy), na.rm = TRUE)
-    xrange <- c(max(pcast_tab$lead) + 0.25, 0)
+    xrange <- c(max(cast_tab$lead) + 0.25, 0)
 
     oldpar <- par(no.readonly = TRUE)
     on.exit(par(oldpar))
@@ -365,13 +365,13 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
     plot(1, 1, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n",
          ylim = yrange, xlim = xrange)
     abline(h = 0, lty = 3, lwd = 2, col = grey(0.6))
-    ucast_ids <- unique(pcast_tab$cast_id)
+    ucast_ids <- unique(cast_tab$cast_id)
     ncast_ids <- length(ucast_ids)
     cols <- viridis(ncast_ids, 0.8, 0, 0.75)
     for(k in 1:ncast_ids){
-      matches <- which(pcast_tab$cast_id == ucast_ids[k])
-      x <- pcast_tab$lead[matches]
-      y <- pcast_tab$error[matches]
+      matches <- which(cast_tab$cast_id == ucast_ids[k])
+      x <- cast_tab$lead[matches]
+      y <- cast_tab$error[matches]
       x <- x[!is.na(y)]
       y <- y[!is.na(y)]
       points(x, y, type = "o", pch = 16, col = cols[k], cex = 1)
