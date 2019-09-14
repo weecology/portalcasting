@@ -81,10 +81,11 @@
 #'   \code{freq},  
 #'   \code{level}, 
 #'   \code{main}, 
+#'   \code{method} (if not \code{NULL}, must be \code{"unwtavg"}),
 #'   \code{model} (inputted values are checked via 
 #'    \code{\link{verify_models}}), 
 #'   \code{name}, 
-#'   \code{output} (if not \code{NULL}, must be \code{"abundances"}),
+#'   \code{output} (if not \code{NULL}, must be \code{"abundance"}),
 #'   \code{path},
 #'   \code{plots} (if not \code{NULL}, must be \code{"all"} or 
 #'    \code{"longterm"}),
@@ -209,6 +210,7 @@
 #'
 #'  Must be \code{integer}-conformable values, can be any length, can be 
 #'  \code{NULL}, but cannot be \code{NA}:
+#'   \code{cast_groups} (must be non-negative),
 #'   \code{cast_ids} (must be non-negative),
 #'   \code{end_moons} (must be positive),
 #'   \code{target_moons} (must be positive).
@@ -483,6 +485,7 @@ check_arg_list <- function(){
   }
 
 
+  avail_methods <- c("unwtavg")
   avail_outputs <- c("abundance")
   avail_plots <- c("all", "longterm")
   avail_species <- c("BA", "DM", "DO", "DS", "NA", "NA.", "OL", "OT", "PB", 
@@ -500,6 +503,7 @@ check_arg_list <- function(){
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
     cast = arg_cast(),
+    cast_groups = arg_nonnegintnum(NULL),
     cast_ids = arg_nonnegintnum(NULL),
     cast_id = arg_nonnegintnum(),
     cast_cov = arg_df(),
@@ -561,6 +565,7 @@ check_arg_list <- function(){
     lon = arg_numeric(),
     main = arg_character(),
     metadata = arg_list(),
+    method = arg_character(vals = avail_methods),
     min_lag  = arg_nonnegintnum(na = TRUE),
     min_observed = arg_posintnum(),
     min_plots = arg_posintnum(),

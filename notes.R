@@ -1,5 +1,8 @@
 devtools::load_all()
 main <- "~/hindcasting"
-setup_dir(main)
 
 
+select_casts(main)
+
+portalcast(main = main,models = c("AutoArima", "ESSS", "NaiveArima"), 
+           end_moons = 512)

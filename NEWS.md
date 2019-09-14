@@ -2,6 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+
+# portalcasting 0.11.0
+*Active development*
+
+### Ensembling reintroduced
+* Associated with the reconfiguration of portalcasting from v0.8.1 to 0.9.0, ensembling was removed temporarily.
+* A basic ensemble is reintroduced, now as an unweighted average across all selected models, allowing us to have an ensemble but not have it be tied to AIC weighting (because AIC weighting is no longer possible with the split between interpolated and non-interpolated data for model fitting).
+
+
 # [portalcasting 0.10.0](https://github.com/weecology/portalcasting/releases/tag/v0.10.0)
 *2019-09-13*
 

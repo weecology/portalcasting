@@ -262,13 +262,11 @@ read_cast_tabs <- function(main = ".", cast_ids = NULL, arg_checks = TRUE){
   }
   cast_tab <- read_cast_tab(main = main, cast_id = cast_ids[1],
                             arg_checks = arg_checks)
-  cast_tab$cast_id <- cast_ids[1]
   ncasts <- length(cast_ids)
   if(ncasts > 1){
     for(i in 2:ncasts){
       cast_tab_i <- read_cast_tab(main = main, cast_id = cast_ids[i],
                                   arg_checks = arg_checks)
-      cast_tab_i$cast_id <- cast_ids[i]
       cast_tab <- rbind(cast_tab, cast_tab_i)
     }
   }
@@ -470,7 +468,11 @@ save_cast_output <- function(cast = NULL, main = ".",
     cast_tab_path <- file_path(main = main, sub = "casts", 
                                files = cast_tab_filename,
                                arg_checks = arg_checks)
-    write.csv(cast$cast_tab, cast_tab_path, row.names = FALSE)
+    cast_tab <- cast$cast_tab
+    cast_tab$cast_id <- next_cast_id
+    cast_tab$cast_group <- cast$metadata$cast_group
+    cast_tab$confidence_level <- cast$metadata$confidence_level
+    write.csv(cast_tab, cast_tab_path, row.names = FALSE)
   }
   if(!is.null(cast$model_fits)){
     model_fits_filename <- paste0("cast_id_", next_cast_id, 
