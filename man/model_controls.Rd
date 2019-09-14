@@ -86,7 +86,7 @@ Any model that is part of the \code{prefab} set
  for the prefab models or if \code{controls_model} contains any duplicate 
  named elements, an error will be thrown unless \code{arg_checks = FALSE},
  in which case, the first user-input element for any and all conflicting 
- copies is selected. This is override allowers users to test an existing
+ copies is selected. This override allows users to test an existing
  prefab model with different configurations, such as on a new data set, 
  without requiring a new model. \cr \cr
  Users interested in adding models to the prefab set should add the
