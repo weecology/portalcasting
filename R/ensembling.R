@@ -131,6 +131,7 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   ecast_id <- rep(NA, nspecies * nmoons)
   species_id <- rep(NA, nspecies * nmoons)
   moon_id <- rep(NA, nspecies * nmoons)
+  covered <- rep(NA, nspecies * nmoons)
 
   counter <- 1
   for(i in 1:nspecies){
@@ -156,6 +157,8 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
         ecast_id[counter] <- as.numeric(paste0(9999, min(pcast_tab$cast_id)))
         moon_id[counter] <- moons[j]
         species_id[counter] <- species[i]
+        covered[counter] <- estimate[counter] >= l_pi[counter] &
+                            estimate[counter] <= u_pi[counter]
       }
       counter <- counter + 1
       
@@ -169,5 +172,5 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
              estimate = estimate, var = mvar, lower_pi = l_pi, 
              upper_pi = u_pi, obs = obs, error = error, 
              end_moon = end_moon_id, lead = lead, data_set = data_set,
-             cast_id = ecast_id, stringsAsFactors = FALSE) 
+             cast_id = ecast_id, covered = covered, stringsAsFactors = FALSE) 
 }

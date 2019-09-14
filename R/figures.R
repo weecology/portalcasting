@@ -40,6 +40,9 @@
 #'  included. Presently only the unweighted average. See 
 #'  \code{\link{ensemble_casts}}.
 #'
+#' @param include_interp \code{logical} indicator of if the models fit using
+#'  interpolated data should be included with the models that did not.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -64,13 +67,14 @@
 plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL, 
                                 cast_tab = NULL, end_moons = NULL, 
                                 models = NULL, ensemble = TRUE, 
-                                data_set = NULL, 
+                                data_set = NULL, include_interp = TRUE,
                                 species = NULL, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moons, 
                                  data_sets = data_set, 
+                                 include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
       stop("no casts available for requested plot")
@@ -104,14 +108,30 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
     stop("no casts available for requested plot")
   }
   cast_tab <- cast_tab[all_in, ]
-  cast_level_errs <- measure_cast_level_error(cast_tab = cast_tab,
-                                              arg_checks = arg_checks)
+
 
 
   lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")
 
+  if(ensemble){
+    ecast_tab <- data.frame()
+    for(i in 1:length(end_moons)){
+      ecast_tab <- rbind(ecast_tab, 
+                         ensemble_casts(main = main, cast_tab = cast_tab,
+                                        end_moon = end_moons[i],
+                                        models = models, data_set = data_set,
+                                        species = species, 
+                                        arg_checks = arg_checks))
+    }
+    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
+    models <- c(models, as.character(unique(ecast_tab$model)))
+    cast_tab <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
+    cast_tab <- rbind(cast_tab, ecast_tab)
+  }
+  cast_level_errs <- measure_cast_level_error(cast_tab = cast_tab,
+                                              arg_checks = arg_checks)
   nmodels <- length(models)
   nspecies <- length(species)
 
@@ -121,7 +141,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
   par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n")
-
+  models2 <- gsub("ensemble_unwtavg", "Ensemble", models)
   x1 <- 0
   x2 <- 0.48
   y1 <- 0.0
@@ -129,7 +149,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models2, cex = 0.7, 
        xpd = TRUE, srt = 45, adj = 1)
   x1 <- 0.49
   x2 <- 0.97
@@ -138,7 +158,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models2, cex = 0.7, 
        xpd = TRUE, srt = 45, adj = 1)
 
   for (i in 1:nspecies){

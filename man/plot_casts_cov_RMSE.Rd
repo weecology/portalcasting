@@ -6,7 +6,8 @@
 \usage{
 plot_casts_cov_RMSE(main = ".", cast_ids = NULL, cast_tab = NULL,
   end_moons = NULL, models = NULL, ensemble = TRUE,
-  data_set = NULL, species = NULL, arg_checks = TRUE)
+  data_set = NULL, include_interp = TRUE, species = NULL,
+  arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -38,6 +39,9 @@ included. Presently only the unweighted average. See
 \item{data_set}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to no selection with 
 respect to \code{data_set}.}
+
+\item{include_interp}{\code{logical} indicator of if the models fit using
+interpolated data should be included with the models that did not.}
 
 \item{species}{\code{character} vector of the species code(s) 
 or \code{"total"} for the total across species) to be plotted 
