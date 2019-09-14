@@ -36,6 +36,10 @@
 #'  Default value is \code{NULL}, which equates to no selection with 
 #'  respect to \code{data_set}.
 #'
+#' @param ensemble \code{logical} indicator of if an ensemble should be
+#'  included. Presently only the unweighted average. See 
+#'  \code{\link{ensemble_casts}}.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -59,7 +63,8 @@
 #'
 plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL, 
                                 cast_tab = NULL, end_moons = NULL, 
-                                models = NULL, data_set = NULL, 
+                                models = NULL, ensemble = TRUE, 
+                                data_set = NULL, 
                                 species = NULL, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   if(is.null(cast_tab)){
@@ -259,6 +264,13 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
+#' @param ensemble \code{logical} indicator of if an ensemble should be
+#'  included. Presently only the unweighted average. See 
+#'  \code{\link{ensemble_casts}}.
+#'
+#' @param include_interp \code{logical} indicator of if the models fit using
+#'  interpolated data should be included with the models that did not.
+#'
 #' @param species \code{character} vector of the species code(s) 
 #'  or \code{"total"} for the total across species) to be plotted 
 #'  \code{NULL} translates to the species defined by  
@@ -277,13 +289,15 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
 #'
 plot_casts_err_lead <- function(main = ".", cast_ids = NULL, 
                                 cast_tab = NULL, end_moons = NULL, 
-                                models = NULL, data_set = NULL, 
+                                models = NULL, ensemble = TRUE, 
+                                data_set = "controls", include_interp = TRUE,
                                 species = NULL, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moons, 
                                  data_sets = data_set, 
+                                 include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
       stop("no casts available for requested plot")
@@ -314,16 +328,32 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
     stop("no casts available for requested plot")
   }
 
+
+  cast_tab <- cast_tab[all_in, ]
   lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
            na_conformer("speciescode")
 
-  nmodels <- length(models)
+  if(ensemble){
+    ecast_tab <- data.frame()
+    for(i in 1:length(end_moons)){
+      ecast_tab <- rbind(ecast_tab, 
+                         ensemble_casts(main = main, cast_tab = cast_tab,
+                                        end_moon = end_moons[i],
+                                        models = models, data_set = data_set,
+                                        species = species, 
+                                        arg_checks = arg_checks))
+    }
+    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
+    models <- c(models, as.character(unique(ecast_tab$model)))
+    cast_tab <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
+    cast_tab <- rbind(cast_tab, ecast_tab)
+  }
+  nmodels <- length(models) 
   nspecies <- length(species)
 
   if(nmodels == 1 & nspecies == 1){
 
-    pcast_tab <- cast_tab[all_in, ]
     yy <- round(pcast_tab$error, 3)
     yrange <- range(c(0, yy), na.rm = TRUE)
     xrange <- c(max(pcast_tab$lead) + 0.25, 0)
@@ -350,6 +380,8 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
     axis(2, cex.axis = 1.25, las = 1)
     mtext(side = 1, "Lead time (new moons)", cex = 1.5, line = 2.75)
     mtext(side = 2, "Forecast error", cex = 1.75, line = 3)
+    models <- gsub("ensemble_unwtavg", "Ensemble", models)
+
     if (species == "total"){
       spp <- "total abundance"
       title <- paste0(models, ", ", data_set, ", ", spp)
@@ -387,12 +419,20 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 
       for(i in 1:nmodels){
 
+        if(tolower(models[i]) == "ensemble_unwtavg"){
+          cast_id_in <- cast_tab$cast_id %in% 
+                        as.numeric(paste0(9999, cast_ids))
+        } else{
+          cast_id_in <- cast_tab$cast_id %in% cast_ids
+        }
+        data_set_in <- cast_tab$data_set == data_set
         model_in <- cast_tab$model %in% models[i]
         species_in <- cast_tab$species %in% species[j]
+        end_moon_in <- cast_tab$end_moon %in% end_moons
+
         all_in <- cast_id_in & model_in & data_set_in & species_in & 
                   end_moon_in
         pcast_tab <- cast_tab[all_in, ]
-
         par(bty = "L", mar = c(0.5, 0.5, 0.25, 0.25), 
             fig = c(x1[i], x2[i], y1[j], y2[j]), new = TRUE)
 
@@ -424,7 +464,9 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
         axis(2, tck = -0.05, labels = yaxl, cex.axis = 0.6, las = 1, 
              line = -0.55, lwd = 0)
         if(j == nspecies){
-          mtext(side = 3, models[i], cex = 0.85, font = 2, line = 0.5) 
+          mod_name <- models[i]
+          mod_name <- gsub("ensemble_unwtavg", "Ensemble", mod_name)
+          mtext(side = 3, mod_name, cex = 0.85, font = 2, line = 0.5) 
         }
         if(i == nmodels){
           par(mar = c(0, 0, 0, 0), fig = c(x2[i], 1, y1[j], y2[j]),
@@ -508,6 +550,10 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'  \code{"total"} for the total across species) to be plotted or 
 #'  \code{NULL} (default) to plot all species in \code{data_set}.
 #'
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value
+#'  of the cast group to combine with an ensemble. If \code{NULL} (default),
+#'  the most recent cast group is ensembled. 
+#'
 #' @param with_census \code{logical} toggle if the plot should include the
 #'  observed data collected during the predicted census.
 #'
@@ -526,9 +572,9 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'
 #' @export
 #'
-plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL, 
-                            model = NULL, end_moon = NULL, species = NULL, 
-                            moon = NULL, with_census = FALSE, 
+plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
+                            data_set = NULL, model = NULL, end_moon = NULL, 
+                            species = NULL, moon = NULL, with_census = FALSE, 
                             control_files = files_control(), quiet = FALSE,
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -580,10 +626,10 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
   }
 
   if(!is.null(model) && tolower(model) == "ensemble"){
-    preds <- ensemble_casts(main = main, end_moons = casts_meta$end_moon, 
+    preds <- ensemble_casts(main = main, cast_groups = cast_groups,
+                            end_moon = casts_meta$end_moon, 
                             data_set = casts_meta$data_set, species = species,
                             arg_checks = arg_checks)
-    preds <- na.omit(preds)
   } else{
     preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
                            arg_checks = arg_checks)
@@ -660,8 +706,6 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
       points(obsi, i, pch = 0, col = rgb(0.2, 0.2, 0.2, 0.8), cex = 1.25)
     }   
   }
-
-
   invisible(NULL)
 }
 
@@ -698,9 +742,9 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #'  \code{end_moon}.
 #'
 #' @param model \code{character} value of the name of the model to 
-#'  include. Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{model}. Also available is \code{"Ensemble"}, which
-#'  combines the models via \code{\link{ensemble_casts}}. 
+#'  include. Default value is \code{NULL}, which equates to \code{"Ensemble"}
+#'  or an unweighted combination of the most recent cast group's models via 
+#'  \code{\link{ensemble_casts}}. 
 #'
 #' @param data_set \code{character} value of the rodent data set to include
 #'  Default value is \code{NULL}, which equates to no selection with 
@@ -718,6 +762,10 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #' @param start_moon \code{integer} (or integer \code{numeric}) newmoon 
 #'  number for the beginning of the x-axis of the plot. \cr
 #'  Does not influence the fit of the models, just the presentation.
+#'
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value
+#'  of the cast group to combine with an ensemble. If \code{NULL} (default),
+#'  the most recent cast group is ensembled. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -742,9 +790,10 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #'
 #' @export
 #'
-plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL, 
-                         model = NULL, end_moon = NULL, species = "total",
-                         start_moon = 217, control_files = files_control(), 
+plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
+                         data_set = NULL, model = NULL, end_moon = NULL, 
+                         species = "total", start_moon = 217, 
+                         control_files = files_control(), 
                          quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   model <- ifnull(model, "Ensemble")
@@ -771,7 +820,8 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
   obs <- obs[ , c("moon", species)]
 
   if(!is.null(model) && tolower(model) == "ensemble"){
-    preds <- ensemble_casts(main = main, end_moons = casts_meta$end_moon, 
+    preds <- ensemble_casts(main = main, cast_groups = cast_groups,
+                            end_moon = casts_meta$end_moon, 
                             data_set = casts_meta$data_set, species = species,
                             arg_checks = arg_checks)
   } else{

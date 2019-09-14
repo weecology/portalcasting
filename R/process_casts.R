@@ -312,6 +312,10 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'  \code{NULL}, which equates to no selection with respect to 
 #'  \code{end_moon}.
 #'
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value
+#'  of the cast group to combine with an ensemble. If \code{NULL} (default),
+#'  the most recent cast group is ensembled. 
+#'
 #' @param models \code{character} values of the names of the models to 
 #'  include. Default value is \code{NULL}, which equates to no selection with 
 #'  respect to \code{model}.
@@ -322,6 +326,9 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
+#'
+#' @param include_interp \code{logical} indicator of if the basic data set
+#'  names should also be inclusive of the asssociated interpolated data sets.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -339,9 +346,10 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-select_casts <- function(main = ".", cast_ids = NULL,
+select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
                          end_moons = NULL, models = NULL, data_sets = NULL,
-                         quiet = FALSE, arg_checks = TRUE){
+                         quiet = FALSE, include_interp = FALSE,
+                         arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   casts_metadata <- read_casts_metadata(main = main, quiet = quiet, 
                                         arg_checks = arg_checks)
@@ -349,6 +357,10 @@ select_casts <- function(main = ".", cast_ids = NULL,
   ucast_ids <- unique(casts_metadata$cast_id)
   cast_ids <- ifnull(cast_ids, ucast_ids)
   match_id <- casts_metadata$cast_id %in% cast_ids
+
+  ucast_groups <- unique(casts_metadata$cast_group)
+  cast_groups <- ifnull(cast_groups, ucast_groups)
+  match_group <- casts_metadata$cast_group %in% cast_groups
 
   uend_moons <- unique(casts_metadata$end_moon)
   end_moons <- ifnull(end_moons, uend_moons)
@@ -360,6 +372,9 @@ select_casts <- function(main = ".", cast_ids = NULL,
   
   udata_sets <- unique(casts_metadata$data_set)
   data_sets <- ifnull(data_sets, udata_sets)
+  if(include_interp){
+    data_sets <- unique(c(data_sets, paste0(data_sets, "_interp")))
+  }
   match_data_set <- casts_metadata$data_set %in% data_sets
   
   QAQC <- casts_metadata$QAQC

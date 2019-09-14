@@ -26,8 +26,8 @@
 #'  See the casts metadata file (\code{casts_metadata.csv}) for summary
 #'  information.
 #'
-#' @param end_moons \code{integer} (or integer \code{numeric}) 
-#'  newmoon numbers of the forecast origin. Default value is 
+#' @param end_moon \code{integer} (or integer \code{numeric}) 
+#'  newmoon number of the forecast origin. Default value is 
 #'  \code{NULL}, which equates to no selection with respect to 
 #'  \code{end_moon}.
 #'
@@ -42,6 +42,9 @@
 #' @param data_set \code{character} value of the rodent data set to include
 #'  Default value is \code{NULL}, which equates to the first data set 
 #'  encountered.
+#'
+#' @param include_interp \code{logical} indicator of if the basic data set
+#'  names should also be inclusive of the asssociated interpolated data sets.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -66,15 +69,17 @@
 #'
 ensemble_casts <- function(main = ".", method = "unwtavg", 
                            cast_groups = NULL, cast_ids = NULL, 
-                           cast_tab = NULL, end_moons = NULL, 
+                           cast_tab = NULL, end_moon = NULL, 
                            models = NULL, data_set = NULL, 
+                           include_interp = TRUE,
                            species = NULL, arg_checks = TRUE){
 
   check_args(arg_checks = arg_checks)
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
-                                 models = models, end_moons = end_moons, 
+                                 models = models, end_moons = end_moon, 
                                  data_sets = data_set, 
+                                 include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
       stop("no casts available for requested plot")
@@ -94,23 +99,23 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
   cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models <- ifnull(models, unique(cast_tab$model))
-  data_set <- ifnull(data_set, unique(cast_tab$data_set)[1])
+  data_set <- ifnull(data_set, "controls")
   species <- ifnull(species, 
                     base_species(total = TRUE, arg_checks = arg_checks)) 
-  end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
-  cast_groups <- ifnull(cast_groups, max(cast_tab$cast_group))
+  end_moon <- ifnull(end_moon, max(unique(cast_tab$end_moon))) 
+  cast_groups <- ifnull(cast_groups, unique(cast_tab$cast_group))
   cast_id_in <- cast_tab$cast_id %in% cast_ids
   model_in <- cast_tab$model %in% models
   data_set_in <- cast_tab$data_set == data_set
   species_in <- cast_tab$species %in% species
-  end_moon_in <- cast_tab$end_moon %in% end_moons
+  end_moon_in <- cast_tab$end_moon %in% end_moon
   cast_group_in <- cast_tab$cast_group %in% cast_groups
   all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in &
             cast_group_in
   if(sum(all_in) == 0){
     stop("no casts available for requested plot")
   }
-
+  cast_tab <- cast_tab[all_in, ]
   nspecies <- length(species)
   moons <- unique(cast_tab$moon)
   nmoons <- length(moons)
@@ -120,13 +125,19 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   mvar <- rep(NA, nspecies * nmoons)
   l_pi <- rep(NA, nspecies * nmoons)
   u_pi <- rep(NA, nspecies * nmoons)
+  obs <- rep(NA, nspecies * nmoons)
+  error <- rep(NA, nspecies * nmoons)
+  end_moon_id <- rep(NA, nspecies * nmoons)
+  ecast_id <- rep(NA, nspecies * nmoons)
+  species_id <- rep(NA, nspecies * nmoons)
+  moon_id <- rep(NA, nspecies * nmoons)
+
   counter <- 1
   for(i in 1:nspecies){
     for(j in 1:nmoons){
       species_in <- cast_tab$species %in% species[i]
       moon_in <- cast_tab$moon %in% moons[j]
-      all_in <- cast_id_in & model_in & data_set_in & species_in & 
-                end_moon_in & moon_in
+      all_in <- species_in & moon_in
       pcast_tab <- cast_tab[all_in, ]
   
       estimates <- na.omit(pcast_tab$estimate)
@@ -139,6 +150,12 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
         CL <- unique(na.omit(pcast_tab$confidence_level))
         u_pi[counter] <- estimate[counter] + sqrt(mvar[counter] * CL)
         l_pi[counter] <- estimate[counter] - sqrt(mvar[counter] * CL)
+        obs[counter] <- unique(pcast_tab$obs)
+        error[counter] <- estimate[counter] - obs[counter]
+        end_moon_id[counter] <- unique(pcast_tab$end_moon)
+        ecast_id[counter] <- as.numeric(paste0(9999, min(pcast_tab$cast_id)))
+        moon_id[counter] <- moons[j]
+        species_id[counter] <- species[i]
       }
       counter <- counter + 1
       
@@ -146,9 +163,11 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   }
 
   ensemble_name <- paste0("ensemble_", method)
-  moon <- rep(moons, nspecies)
-  species_id <- rep(species, each = nmoons)
-  data.frame(model = ensemble_name, moon = moon, species = species_id,
+
+  lead <- moon_id - end_moon_id
+  data.frame(model = ensemble_name, moon = moon_id, species = species_id,
              estimate = estimate, var = mvar, lower_pi = l_pi, 
-             upper_pi = u_pi) 
+             upper_pi = u_pi, obs = obs, error = error, 
+             end_moon = end_moon_id, lead = lead, data_set = data_set,
+             cast_id = ecast_id, stringsAsFactors = FALSE) 
 }

@@ -80,6 +80,7 @@ Argument details used for checking are produced simply via
   \code{ensemble},
   \code{fillweight}, 
   \code{interpolate}, 
+  \code{include_interp}, 
   \code{na_drop}, 
   \code{nadot}, 
   \code{NULLname},

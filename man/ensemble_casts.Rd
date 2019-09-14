@@ -5,8 +5,8 @@
 \title{Combine (ensemble) casts}
 \usage{
 ensemble_casts(main = ".", method = "unwtavg", cast_groups = NULL,
-  cast_ids = NULL, cast_tab = NULL, end_moons = NULL,
-  models = NULL, data_set = NULL, species = NULL,
+  cast_ids = NULL, cast_tab = NULL, end_moon = NULL, models = NULL,
+  data_set = NULL, include_interp = TRUE, species = NULL,
   arg_checks = TRUE)
 }
 \arguments{
@@ -29,8 +29,8 @@ information.}
 \item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not
 input, will be loaded.}
 
-\item{end_moons}{\code{integer} (or integer \code{numeric}) 
-newmoon numbers of the forecast origin. Default value is 
+\item{end_moon}{\code{integer} (or integer \code{numeric}) 
+newmoon number of the forecast origin. Default value is 
 \code{NULL}, which equates to no selection with respect to 
 \code{end_moon}.}
 
@@ -42,6 +42,9 @@ in the table.}
 \item{data_set}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to the first data set 
 encountered.}
+
+\item{include_interp}{\code{logical} indicator of if the basic data set
+names should also be inclusive of the asssociated interpolated data sets.}
 
 \item{species}{\code{character} vector of the species code(s) 
 or \code{"total"} for the total across species) to be plotted 

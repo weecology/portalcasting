@@ -5,8 +5,8 @@
 \title{Plot the forecast coverage and RMSE}
 \usage{
 plot_casts_cov_RMSE(main = ".", cast_ids = NULL, cast_tab = NULL,
-  end_moons = NULL, models = NULL, data_set = NULL, species = NULL,
-  arg_checks = TRUE)
+  end_moons = NULL, models = NULL, ensemble = TRUE,
+  data_set = NULL, species = NULL, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -30,6 +30,10 @@ newmoon numbers of the forecast origin. Default value is
 include. Default value is \code{NULL}, which equates to no selection with 
 respect to \code{model}. \code{NULL} translates to all \code{models}
 in the table.}
+
+\item{ensemble}{\code{logical} indicator of if an ensemble should be
+included. Presently only the unweighted average. See 
+\code{\link{ensemble_casts}}.}
 
 \item{data_set}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to no selection with 
