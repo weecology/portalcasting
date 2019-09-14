@@ -203,7 +203,7 @@
 #'   \code{ndates} (must be positive),
 #'   \code{nmoons} (must be non-negative),
 #'   \code{start_moon} (must be positive),
-#'   \code{topx} (must be non-negative).
+#'   \code{topx} (must be positive).
 #'
 #'  Must be length-1 \code{integer}-conformable values can be \code{NULL}, 
 #'  and can be \code{NA}:
@@ -620,6 +620,7 @@ check_arg_list <- function(){
     target_cols = arg_character(NULL),
     time = arg_character(),
     title = arg_character(),
+    topx = arg_posintnum(),
     total = arg_logical(),
     treatment = arg_character(vals = avail_treatments),
     type = arg_character(),

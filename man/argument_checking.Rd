@@ -236,7 +236,7 @@ Argument details used for checking are produced simply via
   \code{ndates} (must be positive),
   \code{nmoons} (must be non-negative),
   \code{start_moon} (must be positive),
-  \code{topx} (must be non-negative).
+  \code{topx} (must be positive).
 
  Must be length-1 \code{integer}-conformable values can be \code{NULL}, 
  and can be \code{NA}:

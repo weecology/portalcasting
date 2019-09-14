@@ -12,6 +12,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * In a major departure from v0.8.1 and earlier, the ensemble's output is not saved like the actual models'. Rather, it is only calculated when needed on the fly.
 * In plotting, it is now the default to use the ensemble for `plot_cast_ts` and `plot_cast_point` and for the ensemble to be included in `plot_casts_err_lead` and `plot_casts_cov_RMSE`.
 
+### Return of `most_abundant_species`
+* Function used to select the most common species.
+* Now uses the actual data and not the casts to determine the species.
+
 # [portalcasting 0.10.0](https://github.com/weecology/portalcasting/releases/tag/v0.10.0)
 *2019-09-13*
 

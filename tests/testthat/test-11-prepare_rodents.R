@@ -1,5 +1,5 @@
 context("Test prepare_rodents functions")
-
+main <- "./testing"
 test_that("rodents_control", {
   expect_is(rodents_control("all_PPonly", species = "PP"), "list")
 })
@@ -63,3 +63,7 @@ test_that("rodents_species", {
   expect_equal(length(x9), 7)
 })
 
+test_that("most_abundant_species", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(most_abundant_species(main = main), "character")
+})
