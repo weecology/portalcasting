@@ -481,7 +481,8 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'
 #' @param model \code{character} value of the name of the model to 
 #'  include. Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{model}.
+#'  respect to \code{model}. Also available is \code{"Ensemble"}, which
+#'  combines the models via \code{\link{ensemble_casts}}. 
 #'
 #' @param data_set \code{character} value of the rodent data set to include
 #'  Default value is \code{NULL}, which equates to no selection with 
@@ -539,9 +540,13 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
   last_moon <- last_moon(main = main, moons = moons, arg_checks = arg_checks)
   alt_moon <- ifelse(with_census, last_census_moon, last_moon + 1)
   moon <- ifnull(moon, alt_moon)
-
+  model <- ifnull(model, "Ensemble")
+  model2 <- model
+  if(!is.null(model) && tolower(model) == "ensemble"){
+    model2 <- NULL
+  }
   casts_meta <- select_casts(main = main, cast_ids = cast_id,
-                             end_moons = end_moon, models = model, 
+                             end_moons = end_moon, models = model2, 
                              data_sets = data_set, 
                              quiet = quiet, arg_checks = arg_checks)
 
@@ -574,8 +579,15 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
     max_obs <- max(as.numeric(obs), na.rm = TRUE)
   }
 
-  preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
-                         arg_checks = arg_checks)
+  if(!is.null(model) && tolower(model) == "ensemble"){
+    preds <- ensemble_casts(main = main, end_moons = casts_meta$end_moon, 
+                            data_set = casts_meta$data_set, species = species,
+                            arg_checks = arg_checks)
+    preds <- na.omit(preds)
+  } else{
+    preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
+                           arg_checks = arg_checks)
+  }
   preds <- na_conformer(preds, "species")
   species <- ifnull(species, unique(preds$species))
   match_sp <- (preds$species %in% species)
@@ -590,14 +602,14 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
   title_date <- paste(month(moon_month, TRUE), moon_year, sep = " ")
   data_set_name <- casts_meta$data_set
   data_set_name <- gsub("_interp", " (interpolated)", data_set_name)
-  model_name <- casts_meta$model
+  model_name <- ifnull(model, casts_meta$model)
   title <- paste0(title_date, ", " , model_name, ", ", data_set_name)
 
   preds <- preds[order(preds$estimate, decreasing = TRUE), ]
   species <- preds$species
   nspp <- length(species)
   rangey <- c(nspp + 0.25, 0.75)
-  rangex <- c(0, max(c(preds$upper_pi, max_obs)))
+  rangex <- c(0, max(c(preds$upper_pi, max_obs), na.rm = TRUE))
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
@@ -687,7 +699,8 @@ plot_cast_point <- function(main = ".", cast_id = NULL, data_set = NULL,
 #'
 #' @param model \code{character} value of the name of the model to 
 #'  include. Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{model}.
+#'  respect to \code{model}. Also available is \code{"Ensemble"}, which
+#'  combines the models via \code{\link{ensemble_casts}}. 
 #'
 #' @param data_set \code{character} value of the rodent data set to include
 #'  Default value is \code{NULL}, which equates to no selection with 
@@ -734,9 +747,13 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
                          start_moon = 217, control_files = files_control(), 
                          quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-
+  model <- ifnull(model, "Ensemble")
+  model2 <- model
+  if(!is.null(model) && tolower(model) == "ensemble"){
+    model2 <- NULL
+  }
   casts_meta <- select_casts(main = main, cast_ids = cast_id,
-                             end_moons = end_moon, models = model, 
+                             end_moons = end_moon, models = model2, 
                              data_sets = data_set, quiet = quiet, 
                              arg_checks = arg_checks)
   if(NROW(casts_meta) > 1){
@@ -752,8 +769,15 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
   sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
   species <- ifnull(species, colnames(obs)[sp_col])
   obs <- obs[ , c("moon", species)]
-  preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
-                         arg_checks = arg_checks)
+
+  if(!is.null(model) && tolower(model) == "ensemble"){
+    preds <- ensemble_casts(main = main, end_moons = casts_meta$end_moon, 
+                            data_set = casts_meta$data_set, species = species,
+                            arg_checks = arg_checks)
+  } else{
+    preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
+                           arg_checks = arg_checks)
+  }
   species <- ifnull(species, unique(preds$species))
   match_sp <- (preds$species %in% species)
   colnames <- c("moon", "estimate", "lower_pi", "upper_pi")
@@ -835,10 +859,9 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, data_set = NULL,
   points(o_x_1, o_y_1, type = "l", lwd = 2)
   points(o_x_2, o_y_2, type = "l", lwd = 2)
 
-  model_name <- casts_meta$model
+  model_name <- ifnull(model, casts_meta$model)
   data_set_name <- casts_meta$data_set
   data_set_name <- gsub("_interp", " (interpolated)", data_set_name)
-  model_name <- casts_meta$model
   title <- paste0(model_name, ", ", data_set_name)
   mtext(title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
 

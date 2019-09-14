@@ -77,6 +77,7 @@ Argument details used for checking are produced simply via
   \code{cleanup},
   \code{covariatesTF}, 
   \code{effort},
+  \code{ensemble},
   \code{fillweight}, 
   \code{interpolate}, 
   \code{na_drop}, 

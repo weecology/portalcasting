@@ -91,7 +91,6 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
                                           arg_checks = arg_checks)
     }
   }
-
   cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
   cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models <- ifnull(models, unique(cast_tab$model))

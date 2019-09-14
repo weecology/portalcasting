@@ -24,7 +24,8 @@ respect to \code{data_set}.}
 
 \item{model}{\code{character} value of the name of the model to 
 include. Default value is \code{NULL}, which equates to no selection with 
-respect to \code{model}.}
+respect to \code{model}. Also available is \code{"Ensemble"}, which
+combines the models via \code{\link{ensemble_casts}}.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) 
 newmoon number of the forecast origin. Default value is 
