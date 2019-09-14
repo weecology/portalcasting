@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read in the cast tab output from a given cast — read_cast_tab • portalcasting</title>
+<title>Measure error/fit metrics for forecasts — measure_cast_level_error • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,10 @@
 
 
 
-<meta property="og:title" content="Read in the cast tab output from a given cast — read_cast_tab" />
-<meta property="og:description" content="Retrieve the cast_tab of a cast in the casts 
- sub directory." />
+<meta property="og:title" content="Measure error/fit metrics for forecasts — measure_cast_level_error" />
+<meta property="og:description" content="Summarize the cast-level errors or fits to the observations. 
+  
+ Presently included are root mean square error and coverage." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -136,33 +137,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read in the cast tab output from a given cast</h1>
+    <h1>Measure error/fit metrics for forecasts</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_casts.R'><code>R/process_casts.R</code></a></small>
-    <div class="hidden name"><code>read_cast_tab.Rd</code></div>
+    <div class="hidden name"><code>measure_cast_level_error.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retrieve the <code>cast_tab</code> of a cast in the casts 
- sub directory.</p>
+    <p>Summarize the cast-level errors or fits to the observations. 
+ <br /> 
+ Presently included are root mean square error and coverage.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_cast_tab</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>measure_cast_level_error</span>(<span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>main</th>
-      <td><p><code>character</code> value of the name of the main component of
-the directory tree.</p></td>
-    </tr>
-    <tr>
-      <th>cast_id</th>
-      <td><p><code>integer</code> (or integer <code>numeric</code>) value 
-representing the cast of interest, as indexed within the directory in
-the <code>casts</code> sub folder. See the casts metadata file 
-(<code>casts_metadata.csv</code>) for summary information. If <code>NULL</code> (the
-default), the most recent generated <code>cast_tab</code> is read in.</p></td>
+      <th>cast_tab</th>
+      <td><p>A <code>data.frame</code> of a cast's output. See 
+<code><a href='read_cast_output.html'>read_cast_tab</a></code>.</p></td>
     </tr>
     <tr>
       <th>arg_checks</th>
@@ -175,13 +169,18 @@ formatted correctly and provides directed error messages if not.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>data.frame</code> of the <code>cast_tab</code>.</p>
+    <p><code>data.frame</code> of metrics for each cast for each species.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='co'># \donttest{</span>
   <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
   <span class='fu'><a href='portalcast.html'>portalcast</a></span>(<span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"AutoArima"</span>, <span class='st'>"NaiveArima"</span>), <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='fl'>515</span>:<span class='fl'>520</span>)
-  <span class='fu'>read_cast_tab</span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='no'>cast_tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_cast_output.html'>read_cast_tab</a></span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='no'>cast_tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='add_to_cast_tab.html'>add_lead_to_cast_tab</a></span>(<span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='no'>cast_tab</span>)
+  <span class='no'>cast_tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='add_to_cast_tab.html'>add_obs_to_cast_tab</a></span>(<span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='no'>cast_tab</span>)
+  <span class='no'>cast_tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='add_to_cast_tab.html'>add_err_to_cast_tab</a></span>(<span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='no'>cast_tab</span>)
+  <span class='no'>cast_tab</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='add_to_cast_tab.html'>add_covered_to_cast_tab</a></span>(<span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='no'>cast_tab</span>)
+  <span class='fu'>measure_cast_level_error</span>(<span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='no'>cast_tab</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

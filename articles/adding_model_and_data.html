@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Adding a Model and Data</h1>
                         <h4 class="author">Juniper L. Simonis and Glenda M. Yenni</h4>
             
-            <h4 class="date">09 September, 2019</h4>
+            <h4 class="date">14 September, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/adding_model_and_data.Rmd"><code>vignettes/adding_model_and_data.Rmd</code></a></small>
       <div class="hidden name"><code>adding_model_and_data.Rmd</code></div>
@@ -160,7 +160,7 @@
 <p>If you would like your output to be archived with the other cast output, your code must produce a <code>list</code> object and you must pass it to <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> in your script. If the list contains elements named <code>metadata</code>, <code>cast_tab</code>, <code>model_fits</code>, or <code>model_casts</code>, they are saved out. See <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> for processing specs and the models in <code>prefab_model_functions</code> for execution.</p>
 <p>As an example here, I have filled out the model script for newmod with a very basic model. It uses a linear regression with no autocorrelation and only analyzes the total rodent counts. The forecast is simply the linear model’s prediction over the future moons.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_newmod.jpg" alt="A trivial newmod" width="400"><p class="caption">A trivial newmod</p>
+<img src="imgs/sandbox_1_newmod.jpg" alt="A trivial newmod" width="600"><p class="caption">A trivial newmod</p>
 </div>
 <p>As you can see, the model metadata contains a lot of key information used to fit the models, such as the forecast horizon (which for Portal may not necessarily be equal to the theoretical lead time, as some surveys are missed and there is a lag to entering data, so sometimes additional surveys need to be cast)</p>
 </div>
@@ -168,7 +168,7 @@
 <h3 class="hasAnchor">
 <a href="#adding-a-data-set" class="anchor"></a>Adding a data set</h3>
 <p>To add “newdata” to the available data set, it is important to recognize that the rodent preparation functions point directly to the <a href="https://weecology.github.io/portalr/reference/summarize_rodent_data.html"><strong>portalr</strong> <code>summarize_rodent_data</code> function</a>, which allows for flexible data customization.</p>
-<p><strong>portalcasting</strong> turns the arguments in <code>summarize_rodent_data</code> into arguments in <code>rodent_control()</code>, which sets default values for most arguments, but does require an input for <code>name</code>, which names the data set, otherwise it will return <code>NULL</code>. Here, we create the data control list and call it <code>ndc</code>, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the <code><a href="../reference/prep_rodents.html">prep_rodents()</a></code> function, which returns the data set to the console and saves it in the <code>data</code> sub-directory (Note that we <strong>must</strong> set <code>arg_checks = FALSE</code> to allow for the creation and use of the non-standard rodents data configuration.)</p>
+<p><strong>portalcasting</strong> turns the arguments in <code>summarize_rodent_data</code> into arguments in <code><a href="../reference/rodents_control.html">rodents_control()</a></code>, which sets default values for most arguments, but does require an input for <code>name</code>, which names the data set, otherwise it will return <code>NULL</code>. Here, we create the data control list and call it <code>newdata_controls</code>, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the <code><a href="../reference/prep_rodents.html">prep_rodents()</a></code> function, which returns the data set to the console and saves it in the <code>data</code> sub-directory (Note that we <strong>must</strong> set <code>arg_checks = FALSE</code> to allow for the creation and use of the non-standard rodents data configuration.)</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">newdata_controls &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rodents_control.html">rodents_control</a></span>(<span class="dt">name =</span> <span class="st">"newdata"</span>, <span class="dt">level =</span> <span class="st">"Treatment"</span>, <span class="dt">treatment =</span> <span class="st">"removal"</span>, <span class="dt">arg_checks =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">newdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prep_rodents.html">prep_rodents</a></span>(<span class="dt">main =</span> main, <span class="dt">data_sets =</span> <span class="st">"newdata"</span>, <span class="dt">controls_rodents =</span> newdata_controls, <span class="dt">arg_checks =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
@@ -195,7 +195,7 @@
 <img src="imgs/sandbox_1_newmod_cast_point.jpg" alt="Next-step-ahead prediction from a trivial newmod" width="600"><p class="caption">Next-step-ahead prediction from a trivial newmod</p>
 </div>
 <p>Reading the cast’s predictions into the R console is done using <code>read_cast_tab</code>, which also defaults to the most recently generated output:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/read_cast_tab.html">read_cast_tab</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/read_cast_output.html">read_cast_tab</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
 <p>To choose a non-default output, use <code>select_casts</code> to read in the cast metadata with any desired filters on <code>end_moon</code>, <code>model</code>, or <code>data_set</code> and then locate the <code>cast_id</code> of interest:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/select_casts.html">select_casts</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
 </div>

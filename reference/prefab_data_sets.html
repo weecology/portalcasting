@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -154,8 +154,19 @@
  <code>"controls"</code>, <code>"all_interp"</code>, and <code>"controls_interp"</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prefab_data_sets</span>()</pre>
+    <pre class="usage"><span class='fu'>prefab_data_sets</span>(<span class='kw'>interpolate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>interpolate</th>
+      <td><p><code>logical</code> value indicating if the interpolated data
+only should be listed (<code>interpolate = TRUE</code>), if the non-interpolated
+data only should be listed (<code>interpolate = FALSE</code>), or if both
+should be listed (<code>interpolate = NULL</code>, default).</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -167,6 +178,7 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

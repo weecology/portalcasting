@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
             <h3 class="subtitle">Set Up and Use a Portal Predictions Directory</h3>
                         <h4 class="author">Juniper L. Simonis</h4>
             
-            <h4 class="date">09 September, 2019</h4>
+            <h4 class="date">14 September, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/getting_started.Rmd"><code>vignettes/getting_started.Rmd</code></a></small>
       <div class="hidden name"><code>getting_started.Rmd</code></div>
@@ -187,7 +187,7 @@
 <a class="sourceLine" id="cb9-15" data-line-number="15"><span class="kw"><a href="../reference/read_data.html">read_covariate_casts</a></span>(<span class="dt">main =</span> main)</a>
 <a class="sourceLine" id="cb9-16" data-line-number="16"><span class="kw"><a href="../reference/read_data.html">read_moons</a></span>(<span class="dt">main =</span> main)</a>
 <a class="sourceLine" id="cb9-17" data-line-number="17"><span class="kw"><a href="../reference/read_data.html">read_metadata</a></span>(<span class="dt">main =</span> main)</a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="kw">read_cast_metadata</span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="kw"><a href="../reference/read_cast_output.html">read_cast_metadata</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
 </div>
 <div id="reading-in-cast-output-to-the-r-console-from-the-directory" class="section level2">
 <h2 class="hasAnchor">
@@ -196,7 +196,7 @@
 <p><code>select_casts</code> provides a simple interface to the cast metadata file with quick filtering:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/select_casts.html">select_casts</a></span>(<span class="dt">main =</span> main, <span class="dt">models =</span> <span class="st">"AutoArima"</span>)</a></code></pre></div>
 <p>And <code>read_cast_tab</code> reads in the cast_tab output from a given cast, as indicated by its cast_id, which is displayed in the output from <code>select_casts</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/read_cast_tab.html">read_cast_tab</a></span>(<span class="dt">main =</span> main, <span class="dt">cast_id =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/read_cast_output.html">read_cast_tab</a></span>(<span class="dt">main =</span> main, <span class="dt">cast_id =</span> <span class="dv">1</span>)</a></code></pre></div>
 </div>
   </div>
 

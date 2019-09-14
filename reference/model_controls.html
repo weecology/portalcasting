@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Produce the control lists for the model script writing — model_controls • portalcasting</title>
+<title>Produce the control lists for models — model_controls • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Produce the control lists for the model script writing — model_controls" />
-<meta property="og:description" content="The model scripts are written using a generalized function
- that takes a few arguments that vary among models, and so this function
+<meta property="og:title" content="Produce the control lists for models — model_controls" />
+<meta property="og:description" content="The models are written and managed using generalized functions
+ that take a few arguments that vary among models, and so this function
  produces the appropriate list of lists of model
  script-writing control arguments. The specific models must be
  input by the user, with the default being NULL, which returns.
@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -147,14 +147,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Produce the control lists for the model script writing</h1>
+    <h1>Produce the control lists for models</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_models.R'><code>R/prepare_models.R</code></a></small>
     <div class="hidden name"><code>model_controls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The model scripts are written using a generalized function
- that takes a few arguments that vary among models, and so this function
+    <p>The models are written and managed using generalized functions
+ that take a few arguments that vary among models, and so this function
  produces the appropriate <code>list</code> of <code>list</code>s of model
  script-writing control arguments. The specific <code>models</code> must be
  input by the user, with the default being <code>NULL</code>, which returns.
@@ -228,7 +228,9 @@ formatted correctly and provides directed error messages if not.</p></td>
  the number of elements in <code>models</code> and with elements that are each 
  <code>list</code>s of those <code>models</code>'s script-writing controls. <br /> <br />
  <code>extract_min_lag</code>: <code>numeric</code> value of the minimum non-0 lag
- from any included model or <code>NA</code> if no models have lags.</p>
+ from any included model or <code>NA</code> if no models have lags. <br /> <br />
+ <code>extract_data_sets</code>: <code>character</code> vector of the data set names
+ from all included models.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Any model that is part of the <code>prefab</code> set 
@@ -238,9 +240,13 @@ formatted correctly and provides directed error messages if not.</p></td>
  only need to include controls for non-prefab <code>models</code>. <br /> <br />
  Any user-defined <code>models</code> that are not included in <code>controls_m</code>
  will throw an error. <br /> <br /> 
- If any user-defined <code>controls_m</code> duplicate any existing controls for
- the prefab models or if <code>controls_m</code> contains any duplicate named
- elements, an error will be thrown. <br /> <br />
+ If any user-defined <code>controls_model</code> duplicate any existing controls
+ for the prefab models or if <code>controls_model</code> contains any duplicate 
+ named elements, an error will be thrown unless <code>arg_checks = FALSE</code>,
+ in which case, the first user-input element for any and all conflicting 
+ copies is selected. This override allows users to test an existing
+ prefab model with different configurations, such as on a new data set, 
+ without requiring a new model. <br /> <br />
  Users interested in adding models to the prefab set should add the
  controls to the <code>prefab_model_controls</code> non-exported function
  found in the <code>prepare_models.R</code> script.</p>
@@ -253,7 +259,9 @@ formatted correctly and provides directed error messages if not.</p></td>
  <span class='fu'>model_controls</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(), <span class='st'>"xx"</span>), <span class='no'>controls</span>)
  <span class='fu'>model_controls</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"xx"</span>, <span class='st'>"ESSS"</span>), <span class='no'>controls</span>)
  <span class='fu'>extract_min_lag</span>()
- <span class='fu'>extract_min_lag</span>(<span class='st'>"AutoArima"</span>)</pre>
+ <span class='fu'>extract_min_lag</span>(<span class='st'>"AutoArima"</span>)
+ <span class='fu'>extract_data_sets</span>()
+ <span class='fu'>extract_data_sets</span>(<span class='st'>"AutoArima"</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

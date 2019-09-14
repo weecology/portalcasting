@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a control list for generating a model script — model_control • portalcasting</title>
+<title>Create a control list for a model — model_control • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,13 +35,10 @@
 
 
 
-<meta property="og:title" content="Create a control list for generating a model script — model_control" />
-<meta property="og:description" content="Given the number of arguments into 
- model_template via write_model
- it helps to have a control list  
- to organize them. model_control provides a template for the 
+<meta property="og:title" content="Create a control list for a model — model_control" />
+<meta property="og:description" content="Provides a ready-to-use template for the 
  controls list used to define the specific arguments for a user's
- novel data set, setting the formal arguments to the basic default 
+ novel model, setting the formal arguments to the basic default 
  values." />
 <meta name="twitter:card" content="summary" />
 
@@ -75,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -141,23 +138,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a control list for generating a model script</h1>
+    <h1>Create a control list for a model</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_models.R'><code>R/prepare_models.R</code></a></small>
     <div class="hidden name"><code>model_control.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Given the number of arguments into 
- <code><a href='write_model.html'>model_template</a></code> via <code><a href='write_model.html'>write_model</a></code>
- it helps to have a control <code>list</code>  
- to organize them. <code>model_control</code> provides a template for the 
+    <p>Provides a ready-to-use template for the 
  controls <code>list</code> used to define the specific arguments for a user's
- novel data set, setting the formal arguments to the basic default 
+ novel model, setting the formal arguments to the basic default 
  values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>model_control</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"model"</span>, <span class='kw'>data_sets</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_data_sets.html'>prefab_data_sets</a></span>(),
-  <span class='kw'>covariatesTF</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>model_control</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"model"</span>, <span class='kw'>data_sets</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_data_sets.html'>prefab_data_sets</a></span>(<span class='kw'>interpolate</span>
+  <span class='kw'>=</span> <span class='fl'>FALSE</span>), <span class='kw'>covariatesTF</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,7 +163,7 @@
     <tr>
       <th>data_sets</th>
       <td><p><code>character</code> vector of the rodent data set names
-that the model is applied to.</p></td>
+that the model is applied to. Defaults to all non-interpolated data sets.</p></td>
     </tr>
     <tr>
       <th>covariatesTF</th>

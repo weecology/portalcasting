@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>If a value is NULL, trigger the parent function's return — return_if_null • portalcasting</title>
+<title>Plot the forecast coverage and RMSE — plot_casts_cov_RMSE • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="If a value is NULL, trigger the parent function's return — return_if_null" />
-<meta property="og:description" content="If the focal input is NULL, return value from
- the parent function. Should only be used within a function." />
+<meta property="og:title" content="Plot the forecast coverage and RMSE — plot_casts_cov_RMSE" />
+<meta property="og:description" content="Plot the coverage (fraction of predictions within the CI) and
+ RMSE (root mean squared error) of each model among multiple species." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -136,52 +136,101 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>If a value is NULL, trigger the parent function's return</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
-    <div class="hidden name"><code>return_if_null.Rd</code></div>
+    <h1>Plot the forecast coverage and RMSE</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/figures.R'><code>R/figures.R</code></a></small>
+    <div class="hidden name"><code>plot_casts_cov_RMSE.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>If the focal input is <code>NULL</code>, return <code>value</code> from
- the parent function. Should only be used within a function.</p>
+    <p>Plot the coverage (fraction of predictions within the CI) and
+ RMSE (root mean squared error) of each model among multiple species.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>return_if_null</span>(<span class='no'>x</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_casts_cov_RMSE</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Focal input.</p></td>
+      <th>main</th>
+      <td><p><code>character</code> value of the name of the main component of
+the directory tree.</p></td>
     </tr>
     <tr>
-      <th>value</th>
-      <td><p>If <code>x</code> is <code>NULL</code>, <code><a href='https://rdrr.io/r/base/function.html'>return</a></code> this input
-from the parent function.</p></td>
+      <th>cast_ids</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) values 
+representing the casts of interest for restricting plotting, as indexed
+within the directory in the <code>casts</code> sub folder. 
+See the casts metadata file (<code>casts_metadata.csv</code>) for summary
+information.</p></td>
+    </tr>
+    <tr>
+      <th>cast_tab</th>
+      <td><p>Optional <code>data.frame</code> of cast table outputs. If not
+input, will be loaded.</p></td>
+    </tr>
+    <tr>
+      <th>end_moons</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) 
+newmoon numbers of the forecast origin. Default value is 
+<code>NULL</code>, which equates to no selection with respect to 
+<code>end_moon</code>.</p></td>
+    </tr>
+    <tr>
+      <th>models</th>
+      <td><p><code>character</code> value(s) of the name of the model to 
+include. Default value is <code>NULL</code>, which equates to no selection with 
+respect to <code>model</code>. <code>NULL</code> translates to all <code>models</code>
+in the table.</p></td>
+    </tr>
+    <tr>
+      <th>data_set</th>
+      <td><p><code>character</code> value of the rodent data set to include
+Default value is <code>NULL</code>, which equates to no selection with 
+respect to <code>data_set</code>.</p></td>
+    </tr>
+    <tr>
+      <th>species</th>
+      <td><p><code>character</code> vector of the species code(s) 
+or <code>"total"</code> for the total across species) to be plotted 
+<code>NULL</code> translates to the species defined by  
+<code>evalplot_species</code>.</p></td>
+    </tr>
+    <tr>
+      <th>arg_checks</th>
+      <td><p><code>logical</code> value of if the arguments should be
+checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
+default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
+formatted correctly and provides directed error messages if not.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>x</code> is not <code>NULL</code>, <code>NULL</code> is returned. If 
- <code>x</code> is <code>NULL</code>, the result of <code><a href='https://rdrr.io/r/base/function.html'>return</a></code> with 
- <code>value</code> as its input evaluated within the parent function's 
- environment is returned.</p>
+    <p><code>NULL</code>. Plot is generated.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>A pre-loaded table of casts can be input, but if not (default), 
+ the table will be efficiently (as defined by the inputs) loaded and 
+ trimmed. <br /> 
+ The casts can be trimmed specifically using the <code>cast_ids</code> input,
+ otherwise, all relevant casts will be plotted.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"> <span class='no'>ff</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>null_return</span> <span class='kw'>=</span> <span class='st'>"hello"</span>){
-   <span class='fu'>return_if_null</span>(<span class='no'>x</span>, <span class='no'>null_return</span>)
-   <span class='no'>x</span>
- }
- <span class='fu'>ff</span>()
- <span class='fu'>ff</span>(<span class='kw'>NULL</span>)</pre>
+    <pre class="examples"> <span class='co'># \donttest{</span>
+  <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
+  <span class='fu'><a href='portalcast.html'>portalcast</a></span>(<span class='kw'>models</span> <span class='kw'>=</span> <span class='st'>"AutoArima"</span>, <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='fl'>515</span>:<span class='fl'>520</span>)
+  <span class='fu'>plot_casts_cov_RMSE</span>()
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

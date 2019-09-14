@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>If a value is NULL, trigger the parent function's return — return_if_null • portalcasting</title>
+<title>Read in cast output from a given cast — read_cast_output • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,12 @@
 
 
 
-<meta property="og:title" content="If a value is NULL, trigger the parent function's return — return_if_null" />
-<meta property="og:description" content="If the focal input is NULL, return value from
- the parent function. Should only be used within a function." />
+<meta property="og:title" content="Read in cast output from a given cast — read_cast_output" />
+<meta property="og:description" content="Read in the various output files of a cast or casts in the 
+ casts sub directory.  
+ read_cast_tab retrieves the cast_tab.  
+ read_cast_tabs combines one or more cast_tabs.  
+ read_cast_tab retrieves the cast_metdata" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -136,46 +139,67 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>If a value is NULL, trigger the parent function's return</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
-    <div class="hidden name"><code>return_if_null.Rd</code></div>
+    <h1>Read in cast output from a given cast</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_casts.R'><code>R/process_casts.R</code></a></small>
+    <div class="hidden name"><code>read_cast_output.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>If the focal input is <code>NULL</code>, return <code>value</code> from
- the parent function. Should only be used within a function.</p>
+    <p>Read in the various output files of a cast or casts in the 
+ casts sub directory. <br /> <br />
+ <code>read_cast_tab</code> retrieves the <code>cast_tab</code>. <br /> <br />
+ <code>read_cast_tabs</code> combines one or more <code>cast_tab</code>s. <br /> <br />
+ <code>read_cast_tab</code> retrieves the <code>cast_metdata</code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>return_if_null</span>(<span class='no'>x</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>read_cast_tab</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>read_cast_tabs</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>read_cast_metadata</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Focal input.</p></td>
+      <th>main</th>
+      <td><p><code>character</code> value of the name of the main component of
+the directory tree.</p></td>
     </tr>
     <tr>
-      <th>value</th>
-      <td><p>If <code>x</code> is <code>NULL</code>, <code><a href='https://rdrr.io/r/base/function.html'>return</a></code> this input
-from the parent function.</p></td>
+      <th>arg_checks</th>
+      <td><p><code>logical</code> value of if the arguments should be
+checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
+default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
+formatted correctly and provides directed error messages if not.</p></td>
+    </tr>
+    <tr>
+      <th>cast_ids, cast_id</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) value(s) 
+representing the cast(s) of interest, as indexed within the directory in
+the <code>casts</code> sub folder. See the casts metadata file 
+(<code>casts_metadata.csv</code>) for summary information. If <code>NULL</code> (the
+default), the most recently generated cast's output is read in. <br />
+<code>cast_ids</code> can be NULL, one value, or more than one values,
+<code>cast_id</code> can only be NULL or one value.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>x</code> is not <code>NULL</code>, <code>NULL</code> is returned. If 
- <code>x</code> is <code>NULL</code>, the result of <code><a href='https://rdrr.io/r/base/function.html'>return</a></code> with 
- <code>value</code> as its input evaluated within the parent function's 
- environment is returned.</p>
+    <p><code>read_cast_tab</code>: <code>data.frame</code> of the <code>cast_tab</code>. <br /> <br />
+ <code>read_cast_tabs</code>: <code>data.frame</code> of the <code>cast_tab</code>s with
+ a <code>cast_id</code> column added to distinguish among casts. <br /> <br />
+ <code>read_cast_metadata</code>: <code>list</code> of the <code>cast_metadata</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"> <span class='no'>ff</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>null_return</span> <span class='kw'>=</span> <span class='st'>"hello"</span>){
-   <span class='fu'>return_if_null</span>(<span class='no'>x</span>, <span class='no'>null_return</span>)
-   <span class='no'>x</span>
- }
- <span class='fu'>ff</span>()
- <span class='fu'>ff</span>(<span class='kw'>NULL</span>)</pre>
+    <pre class="examples"> <span class='co'># \donttest{</span>
+  <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
+  <span class='fu'><a href='portalcast.html'>portalcast</a></span>(<span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"AutoArima"</span>, <span class='st'>"NaiveArima"</span>), <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='fl'>515</span>:<span class='fl'>520</span>)
+  <span class='fu'>read_cast_tab</span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='fu'>read_cast_tabs</span>(<span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)
+  <span class='fu'>read_cast_metadata</span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
