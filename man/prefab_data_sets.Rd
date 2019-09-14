@@ -4,7 +4,13 @@
 \alias{prefab_data_sets}
 \title{Provide the names of the prefab data sets}
 \usage{
-prefab_data_sets()
+prefab_data_sets(interpolate = NULL)
+}
+\arguments{
+\item{interpolate}{\code{logical} value indicating if the interpolated data
+only should be listed (\code{interpolate = TRUE}), if the non-interpolated
+data only should be listed (\code{interpolate = FALSE}), or if both
+should be listed (\code{interpolate = NULL}, default).}
 }
 \value{
 \code{character} vector of data set names.

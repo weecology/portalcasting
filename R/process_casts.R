@@ -1,31 +1,237 @@
 
-#' @title Read in the cast tab output from a given cast
-#'
-#' @description Retrieve the \code{cast_tab} of a cast in the casts 
-#'  sub directory. 
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
-#'
-#' @param cast_id \code{integer} (or integer \code{numeric}) value 
-#'  representing the cast of interest, as indexed within the directory in
-#'  the \code{casts} sub folder. See the casts metadata file 
-#'  (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
-#'  default), the most recent generated \code{cast_tab} is read in. 
+
+#' @title Measure error/fit metrics for forecasts
+#' 
+#' @description Summarize the cast-level errors or fits to the observations. 
+#'  \cr 
+#'  Presently included are root mean square error and coverage.
+#' 
+#' @param cast_tab A \code{data.frame} of a cast's output. See 
+#'  \code{\link{read_cast_tab}}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
 #'  formatted correctly and provides directed error messages if not. 
 #'
-#' @return \code{data.frame} of the \code{cast_tab}.
+#' @return \code{data.frame} of metrics for each cast for each species. 
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   cast_tab <- read_cast_tab(cast_id = 1)
+#'   cast_tab <- add_lead_to_cast_tab(cast_tab = cast_tab)
+#'   cast_tab <- add_obs_to_cast_tab(cast_tab = cast_tab)
+#'   cast_tab <- add_err_to_cast_tab(cast_tab = cast_tab)
+#'   cast_tab <- add_covered_to_cast_tab(cast_tab = cast_tab)
+#'   measure_cast_level_error(cast_tab = cast_tab)
+#' }
+#'
+#' @export
+#'
+measure_cast_level_error <- function(cast_tab = NULL, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+
+  ucast_ids <- unique(cast_tab$cast_id)
+  ncast_ids <- length(ucast_ids)
+  uspecies <- unique(cast_tab$species)
+  nspecies <- length(uspecies)
+  RMSE <- rep(NA, ncast_ids * nspecies)
+  coverage <- rep(NA, ncast_ids * nspecies)
+  model <- rep(NA, ncast_ids * nspecies)
+  counter <- 1
+  for(i in 1:ncast_ids){
+    for(j in 1:nspecies){
+      ij <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
+      cast_tab_ij <- cast_tab[ij, ]
+      err <- cast_tab_ij$err
+      if(!is.null(err)){
+        RMSE[counter] <- sqrt(mean(err^2, na.rm = TRUE))
+      }
+      covered <- cast_tab_ij$covered
+      if(!is.null(covered)){
+        coverage[counter] <- mean(covered, na.rm = TRUE)            
+      }
+      if(length(cast_tab_ij$model) > 0){
+        model[counter] <- unique(cast_tab_ij$model)
+      }
+      counter <- counter + 1
+    }
+  }
+  ids <- rep(ucast_ids, each = nspecies)
+  spp <- rep(uspecies, ncast_ids)
+  data.frame(cast_id = ids, species = spp, model = model, 
+             RMSE = RMSE, coverage = coverage)
+}
+
+#' @title Add the associated values to a cast tab
+#' 
+#' @description Add values to a cast's cast tab. If necessary components are
+#'  missing (such as no observations added yet and the user requests errors),
+#'  the missing components are added. \cr \cr
+#'  \code{add_lead_to_cast_tab} adds a column of lead times. \cr \cr
+#'  \code{add_obs_to_cast_tab} appends a column of observations. \cr \cr
+#'  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
+#'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating
+#'  if the observation was within the prediction interval. 
+#'
+#' @details If an interpolated data set is used to fit a model, 
+#'  \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations
+#'  so that model predictions are all compared to the same data.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#' 
+#' @param cast_tab A \code{data.frame} of a cast's output. See 
+#'  \code{\link{read_cast_tab}}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return \code{data.frame} of \code{cast_tab} with an additional column or
+#'  columns if needed. 
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   cast_tab <- read_cast_tab(cast_id = 1)
+#'   add_lead_to_cast_tab(cast_tab = cast_tab)
+#'   add_obs_to_cast_tab(cast_tab = cast_tab)
+#'   add_err_to_cast_tab(cast_tab = cast_tab)
+#'   add_covered_to_cast_tab(cast_tab = cast_tab)
+#' }
+#'
+#' @name add_to_cast_tab
+#'
+NULL
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_lead_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_err_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  if(is.null(cast_tab$obs)){
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                  arg_checks = arg_checks)
+  }
+  cast_tab$error <- cast_tab$estimate - cast_tab$obs
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL,
+                                    arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  if(is.null(cast_tab$obs)){
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
+                                  arg_checks = arg_checks)
+  }
+  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & 
+                      cast_tab$obs <= cast_tab$upper_pi 
+  cast_tab$covered[is.na(cast_tab$obs)] <- NA
+  cast_tab
+}
+
+#' @rdname add_to_cast_tab
+#'
+#' @export
+#'
+add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL, 
+                                arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(cast_tab)
+  cast_tab$obs <- NA
+  cast_data_set <- gsub("_interp", "", cast_tab$data_set)
+  ucast_data_set <- unique(cast_data_set)
+  ncast_data_sets <- length(ucast_data_set)
+  for(j in 1:ncast_data_sets){
+    obs <- read_rodents_table(main = main, data_set = ucast_data_set[j],
+                             arg_checks = arg_checks)
+    matches <- which(cast_data_set == ucast_data_set[j])
+    nmatches <- length(matches)
+    obs_cols <- gsub("NA.", "NA", colnames(obs))
+    for(i in 1:nmatches){
+      spot <- matches[i]
+      obs_moon <- which(obs$moon == cast_tab$moon[spot])
+      obs_species <- which(obs_cols == cast_tab$species[spot])
+      if(length(obs_moon) == 1 & length(obs_species) == 1){
+        cast_tab$obs[spot] <- obs[obs_moon, obs_species]
+      }
+    }
+  }
+  cast_tab 
+}
+
+
+
+#' @title Read in cast output from a given cast
+#'
+#' @description Read in the various output files of a cast or casts in the 
+#'  casts sub directory. \cr \cr
+#'  \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
+#'  \code{read_cast_tabs} combines one or more \code{cast_tab}s. \cr \cr
+#'  \code{read_cast_tab} retrieves the \code{cast_metdata}
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param cast_ids,cast_id \code{integer} (or integer \code{numeric}) value(s) 
+#'  representing the cast(s) of interest, as indexed within the directory in
+#'  the \code{casts} sub folder. See the casts metadata file 
+#'  (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
+#'  default), the most recently generated cast's output is read in. \cr
+#'  \code{cast_ids} can be NULL, one value, or more than one values,
+#'  \code{cast_id} can only be NULL or one value.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @return 
+#'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
+#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with
+#'  a \code{cast_id} column added to distinguish among casts. \cr \cr
+#'  \code{read_cast_metadata}: \code{list} of the \code{cast_metadata}.
 #' 
 #' @examples
 #'  \donttest{
 #'   setup_dir()
 #'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
 #'   read_cast_tab(cast_id = 1)
+#'   read_cast_tabs(cast_ids = 1:2)
+#'   read_cast_metadata(cast_id = 1)
 #' }
+#'
+#' @name read_cast_output
+#'
+NULL
+
+#' @rdname read_cast_output
 #'
 #' @export
 #'
@@ -40,8 +246,53 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   if(!file.exists(cpath)){
     stop("cast_id does not have a cast_table")
   }
-  read.csv(cpath, stringsAsFactors = FALSE) 
+  out <- read.csv(cpath, stringsAsFactors = FALSE) 
+  na_conformer(out, arg_checks = arg_checks)
 }
+
+#' @rdname read_cast_output
+#'
+#' @export
+#'
+read_cast_tabs <- function(main = ".", cast_ids = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_ids)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_ids <- max(casts_meta$cast_id)
+  }
+  cast_tab <- read_cast_tab(main = main, cast_id = cast_ids[1],
+                            arg_checks = arg_checks)
+  cast_tab$cast_id <- cast_ids[1]
+  ncasts <- length(cast_ids)
+  if(ncasts > 1){
+    for(i in 2:ncasts){
+      cast_tab_i <- read_cast_tab(main = main, cast_id = cast_ids[i],
+                                  arg_checks = arg_checks)
+      cast_tab_i$cast_id <- cast_ids[i]
+      cast_tab <- rbind(cast_tab, cast_tab_i)
+    }
+  }
+  cast_tab
+}
+
+#' @rdname read_cast_output
+#'
+#' @export
+#'
+read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_id)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_id <- max(casts_meta$cast_id)
+  }
+  lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
+  cpath <- file_path(main, "casts", lpath, arg_checks)
+  if(!file.exists(cpath)){
+    stop("cast_id does not have a cast_metadata file")
+  }
+  yaml.load_file(cpath) 
+}
+
 
 #' @title Find casts that fit specifications
 #'

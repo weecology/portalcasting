@@ -2,16 +2,16 @@
 % Please edit documentation in R/prepare_models.R
 \name{model_control}
 \alias{model_control}
-\title{Create a control list for generating a model script}
+\title{Create a control list for a model}
 \usage{
-model_control(name = "model", data_sets = prefab_data_sets(),
-  covariatesTF = FALSE, lag = NA, arg_checks = TRUE)
+model_control(name = "model", data_sets = prefab_data_sets(interpolate
+  = FALSE), covariatesTF = FALSE, lag = NA, arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}
 
 \item{data_sets}{\code{character} vector of the rodent data set names
-that the model is applied to.}
+that the model is applied to. Defaults to all non-interpolated data sets.}
 
 \item{covariatesTF}{\code{logical} indicator for if the model requires 
 covariates.}
@@ -29,11 +29,8 @@ Named \code{list} of model's script-generating controls,
  for input as part of \code{controls_m} in \code{\link{write_model}}.
 }
 \description{
-Given the number of arguments into 
- \code{\link{model_template}} via \code{\link{write_model}}
- it helps to have a control \code{list}  
- to organize them. \code{model_control} provides a template for the 
+Provides a ready-to-use template for the 
  controls \code{list} used to define the specific arguments for a user's
- novel data set, setting the formal arguments to the basic default 
+ novel model, setting the formal arguments to the basic default 
  values.
 }
