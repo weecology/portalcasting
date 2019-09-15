@@ -3,8 +3,8 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
-# portalcasting 0.11.0
-*Active development*
+# [portalcasting 0.11.0](https://github.com/weecology/portalcasting/releases/tag/v0.11.0)
+*2019-09-14*
 
 ### Ensembling reintroduced
 * Associated with the reconfiguration of portalcasting from v0.8.1 to 0.9.0, ensembling was removed temporarily.
