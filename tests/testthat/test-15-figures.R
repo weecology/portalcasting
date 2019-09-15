@@ -7,14 +7,19 @@ test_that("plot_cast_point", {
   portalcast(main = main, 
              models = c("AutoArima", "NaiveArima"), end_moons = 515:516)
   expect_silent(plot_cast_point(main = main))
+  expect_silent(plot_cast_point(main = main, model = "AutoArima"))
   expect_silent(plot_cast_point(main = main, with_census = TRUE))
   expect_error(plot_cast_point(main = main, cast_id = 1e10))
-
+  portalcast(main = main, models = c("AutoArima", "NaiveArima"))
+  expect_error(
+plot_cast_point(main = main, cast_id = 55,
+                               with_census = TRUE)
 })
 
 test_that("plot_cast_ts", {
   skip_on_cran() # downloads and casting take too long to run on cran
   expect_silent(plot_cast_ts(main = main))
+  expect_silent(plot_cast_ts(main = main, model = "AutoArima"))
   expect_silent(plot_cast_ts(main = main, species = "DM"))
   expect_error(plot_cast_ts(main = main, cast_id = 1e10))
 
