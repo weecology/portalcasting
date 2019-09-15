@@ -945,10 +945,6 @@ last_census <- function(main = ".",
 #'  name used to define the rodents. Standard options are \code{"all"} and 
 #'  \code{"controls"}.
 #'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
-#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 

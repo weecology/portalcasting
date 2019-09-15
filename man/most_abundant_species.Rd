@@ -22,10 +22,6 @@ value of how many species to include.}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 }
 \value{
 \code{character} vector of the species identifiers.
