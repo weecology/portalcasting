@@ -16,6 +16,8 @@ test_that("fill_data", {
 unlink(list.files(sub_path(main = "./testing", "raw"), full.names = TRUE))
   expect_equal(fill_data(main = "./testing"), NULL)
 
+  create_dir(main = "./test")
+  expect_equal(fill_data(main = "./test"), NULL)
 })
 
 test_that("fill_casts", {
