@@ -102,7 +102,7 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   data_set <- ifnull(data_set, "controls")
   species <- ifnull(species, 
                     base_species(total = TRUE, arg_checks = arg_checks)) 
-  end_moon <- ifnull(end_moon, max(unique(cast_tab$end_moon))) 
+  end_moon <- ifnull(end_moon, max(unique(na.omit(cast_tab)$end_moon))) 
   cast_groups <- ifnull(cast_groups, unique(cast_tab$cast_group))
   cast_id_in <- cast_tab$cast_id %in% cast_ids
   model_in <- cast_tab$model %in% models
