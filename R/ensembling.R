@@ -44,7 +44,7 @@
 #'  encountered.
 #'
 #' @param include_interp \code{logical} indicator of if the basic data set
-#'  names should also be inclusive of the asssociated interpolated data sets.
+#'  names should also be inclusive of the associated interpolated data sets.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -82,7 +82,7 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
                                  include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
-      stop("no casts available for requested plot")
+      stop("no casts available for request")
     }else{
       cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
                                  arg_checks = arg_checks)
@@ -113,7 +113,7 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in &
             cast_group_in
   if(sum(all_in) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested")
   }
   cast_tab <- cast_tab[all_in, ]
   nspecies <- length(species)

@@ -44,7 +44,7 @@ Default value is \code{NULL}, which equates to the first data set
 encountered.}
 
 \item{include_interp}{\code{logical} indicator of if the basic data set
-names should also be inclusive of the asssociated interpolated data sets.}
+names should also be inclusive of the associated interpolated data sets.}
 
 \item{species}{\code{character} vector of the species code(s) 
 or \code{"total"} for the total across species) to be plotted 

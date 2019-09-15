@@ -38,7 +38,7 @@ respect to \code{data_set}.}
 quieted.}
 
 \item{include_interp}{\code{logical} indicator of if the basic data set
-names should also be inclusive of the asssociated interpolated data sets.}
+names should also be inclusive of the associated interpolated data sets.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

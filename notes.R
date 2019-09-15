@@ -7,27 +7,9 @@ setup_dir(main)
 
 portalcast(main = main,models = c("AutoArima", "ESSS", "NaiveArima"), 
            end_moons = 515:518)
-
-
 plot_cast_ts(main=main)
 plot_cast_point(main=main)
 plot_cast_point(main=main,with_census=T)
 plot_casts_err_lead(main)
 plot_casts_cov_RMSE(main)
 
-
-devtools::test(filter="01")
-devtools::test(filter="02")
-devtools::test(filter="03")
-devtools::test(filter="04")
-devtools::test(filter="05")
-devtools::test(filter="06")
-devtools::test(filter="07")
-devtools::test(filter="08")
-devtools::test(filter="09")
-devtools::test(filter="10")
-devtools::test(filter="11")
-devtools::test(filter="12")
-devtools::test(filter="13")
-devtools::test(filter="14")
-devtools::test(filter="15")

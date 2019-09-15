@@ -328,7 +328,7 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'  quieted.
 #'
 #' @param include_interp \code{logical} indicator of if the basic data set
-#'  names should also be inclusive of the asssociated interpolated data sets.
+#'  names should also be inclusive of the associated interpolated data sets.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
