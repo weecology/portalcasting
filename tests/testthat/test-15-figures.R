@@ -33,6 +33,7 @@ test_that("plot_casts_err_lead", {
   cast_tab <- read_cast_tabs(main = main)
   expect_error(plot_casts_err_lead(main = main, cast_tab = cast_tab,
                                    cast_id = 1e10))
+  expect_error(plot_casts_err_lead(main = main, cast_id = 1e10))
 })
 
 
@@ -42,4 +43,5 @@ test_that("plot_casts_cov_RMSE", {
   cast_tab <- read_cast_tabs(main = main)
   expect_error(plot_casts_cov_RMSE(main = main, cast_tab = cast_tab,
                                    cast_id = 1e10))
+  expect_error(plot_casts_cov_RMSE(main = main, cast_id = 1e10))
 })
