@@ -11,9 +11,6 @@ test_that("plot_cast_point", {
   expect_silent(plot_cast_point(main = main, with_census = TRUE))
   expect_error(plot_cast_point(main = main, cast_id = 1e10))
   portalcast(main = main, models = c("AutoArima", "NaiveArima"))
-  expect_error(
-plot_cast_point(main = main, cast_id = 55,
-                               with_census = TRUE)
 })
 
 test_that("plot_cast_ts", {
