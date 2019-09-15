@@ -67,3 +67,10 @@ test_that("most_abundant_species", {
   skip_on_cran() # downloads take too long for cran checks
   expect_is(most_abundant_species(main = main), "character")
 })
+
+
+test_that("prefab_data_sets", {
+  expect_is(prefab_data(), "character")
+  expect_is(prefab_data(TRUE), "character")
+  expect_is(prefab_data(FALSE), "character")
+})
