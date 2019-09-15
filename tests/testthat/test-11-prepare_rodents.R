@@ -70,7 +70,7 @@ test_that("most_abundant_species", {
 
 
 test_that("prefab_data_sets", {
-  expect_is(prefab_data(), "character")
-  expect_is(prefab_data(TRUE), "character")
-  expect_is(prefab_data(FALSE), "character")
+  expect_is(prefab_data_sets(), "character")
+  expect_is(prefab_data_sets(TRUE), "character")
+  expect_is(prefab_data_sets(FALSE), "character")
 })
