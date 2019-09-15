@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine specific newmoon numbers — target_moons • portalcasting</title>
+<title>Combine (ensemble) casts — ensemble_casts • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,11 +35,9 @@
 
 
 
-<meta property="og:title" content="Determine specific newmoon numbers — target_moons" />
-<meta property="og:description" content="target_moons determines which moons are in a window, based on a
- date and window width.  
- last_moon determines the most recently passed newmoon, based on
- a date." />
+<meta property="og:title" content="Combine (ensemble) casts — ensemble_casts" />
+<meta property="og:description" content="Combine multiple casts' output into a single ensemble. 
+ Presently, only a general average ensemble is available." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,24 +136,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Determine specific newmoon numbers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_moons.R'><code>R/prepare_moons.R</code></a></small>
-    <div class="hidden name"><code>target_moons.Rd</code></div>
+    <h1>Combine (ensemble) casts</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/ensembling.R'><code>R/ensembling.R</code></a></small>
+    <div class="hidden name"><code>ensemble_casts.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>target_moons</code> determines which moons are in a window, based on a
- date and window width. <br /> <br />
- <code>last_moon</code> determines the most recently passed newmoon, based on
- a date.</p>
+    <p>Combine multiple casts' output into a single ensemble. 
+ Presently, only a general average ensemble is available.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>target_moons</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>moons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(), <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
-  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>last_moon</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>moons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(),
-  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>ensemble_casts</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"unwtavg"</span>, <span class='kw'>cast_groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cast_tab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>include_interp</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>species</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,30 +160,60 @@
 the directory tree.</p></td>
     </tr>
     <tr>
-      <th>moons</th>
-      <td><p>Moons <code>data.frame</code>. See <code><a href='prepare_moons.html'>prep_moons</a></code>.</p></td>
+      <th>method</th>
+      <td><p><code>character</code> value of the name of the ensemble method
+to use. Presently, only <code>"unwtavg"</code> (unweighted average) is allowed.</p></td>
+    </tr>
+    <tr>
+      <th>cast_groups</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) value
+of the cast group to combine with an ensemble. If <code>NULL</code> (default),
+the most recent cast group is ensembled.</p></td>
+    </tr>
+    <tr>
+      <th>cast_ids</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) values 
+representing the casts of interest for restricting ensembling, as indexed
+within the directory in the <code>casts</code> sub folder. 
+See the casts metadata file (<code>casts_metadata.csv</code>) for summary
+information.</p></td>
+    </tr>
+    <tr>
+      <th>cast_tab</th>
+      <td><p>Optional <code>data.frame</code> of cast table outputs. If not
+input, will be loaded.</p></td>
     </tr>
     <tr>
       <th>end_moon</th>
-      <td><p><code>integer</code> (or integer <code>numeric</code>) newmoon number 
-of the last sample to be included. Default value is <code>NULL</code>, which 
-equates to the most recently included sample.</p></td>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) 
+newmoon number of the forecast origin. Default value is 
+<code>NULL</code>, which equates to no selection with respect to 
+<code>end_moon</code>.</p></td>
     </tr>
     <tr>
-      <th>lead_time</th>
-      <td><p><code>integer</code> (or integer <code>numeric</code>) value for the
-number of timesteps forward a cast will cover.</p></td>
+      <th>models</th>
+      <td><p><code>character</code> value(s) of the name of the model to 
+include. Default value is <code>NULL</code>, which equates to no selection with 
+respect to <code>model</code>. <code>NULL</code> translates to all <code>models</code>
+in the table.</p></td>
     </tr>
     <tr>
-      <th>date</th>
-      <td><p><code>Date</code> used for defining a window (starting with moons
-subsequent to the date) or a previous moon (before or on the date).</p></td>
+      <th>data_set</th>
+      <td><p><code>character</code> value of the rodent data set to include
+Default value is <code>NULL</code>, which equates to the first data set 
+encountered.</p></td>
     </tr>
     <tr>
-      <th>control_files</th>
-      <td><p><code>list</code> of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See <code><a href='files_control.html'>files_control</a></code>.</p></td>
+      <th>include_interp</th>
+      <td><p><code>logical</code> indicator of if the basic data set
+names should also be inclusive of the associated interpolated data sets.</p></td>
+    </tr>
+    <tr>
+      <th>species</th>
+      <td><p><code>character</code> vector of the species code(s) 
+or <code>"total"</code> for the total across species) to be plotted 
+<code>NULL</code> translates to the species defined by  
+<code>evalplot_species</code>.</p></td>
     </tr>
     <tr>
       <th>arg_checks</th>
@@ -202,22 +226,29 @@ formatted correctly and provides directed error messages if not.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>target_moons</code>: <code>numeric</code> vector of the moon numbers 
- targeted by the date window.
- <code>last_newmoon</code>:  <code>numeric</code> value of the last moon number.</p>
+    <p><code>NULL</code>. Plot is generated.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>A pre-loaded table of casts can be input, but if not (default), 
+ the table will be efficiently (as defined by the inputs) loaded and 
+ trimmed. <br /> 
+ The casts can be trimmed specifically using the <code>cast_ids</code> input,
+ otherwise, all relevant casts from the stated <code>cast_groups</code>
+ will be included.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='co'># \donttest{</span>
   <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
-  <span class='fu'>target_moons</span>()
-  <span class='fu'>last_moon</span>()
- <span class='co'># }</span></pre>
+  <span class='fu'><a href='portalcast.html'>portalcast</a></span>(<span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"AutoArima"</span>, <span class='st'>"ESSS"</span>), <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='fl'>515</span>)
+  <span class='fu'>ensemble_casts</span>()
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

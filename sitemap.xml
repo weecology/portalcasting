@@ -52,6 +52,9 @@
     <loc>https://weecology.github.io/portalcasting/reference/download_climate_casts.html</loc>
   </url>
   <url>
+    <loc>https://weecology.github.io/portalcasting/reference/ensemble_casts.html</loc>
+  </url>
+  <url>
     <loc>https://weecology.github.io/portalcasting/reference/error_if_deep.html</loc>
   </url>
   <url>
@@ -92,6 +95,9 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/models_to_cast.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/most_abundant_species.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/na_conformer.html</loc>

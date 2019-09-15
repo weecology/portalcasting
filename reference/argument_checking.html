@@ -84,7 +84,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
       </span>
     </div>
 
@@ -237,8 +237,10 @@ checked.</p></td>
   <code>cleanup</code>,
   <code>covariatesTF</code>, 
   <code>effort</code>,
+  <code>ensemble</code>,
   <code>fillweight</code>, 
   <code>interpolate</code>, 
+  <code>include_interp</code>, 
   <code>na_drop</code>, 
   <code>nadot</code>, 
   <code>NULLname</code>,
@@ -272,10 +274,11 @@ checked.</p></td>
   <code>freq</code>,  
   <code>level</code>, 
   <code>main</code>, 
+  <code>method</code> (if not <code>NULL</code>, must be <code>"unwtavg"</code>),
   <code>model</code> (inputted values are checked via 
    <code><a href='verify_models.html'>verify_models</a></code>), 
   <code>name</code>, 
-  <code>output</code> (if not <code>NULL</code>, must be <code>"abundances"</code>),
+  <code>output</code> (if not <code>NULL</code>, must be <code>"abundance"</code>),
   <code>path</code>,
   <code>plots</code> (if not <code>NULL</code>, must be <code>"all"</code> or 
    <code>"longterm"</code>),
@@ -382,13 +385,14 @@ checked.</p></td>
   <code>ndates</code> (must be positive),
   <code>nmoons</code> (must be non-negative),
   <code>start_moon</code> (must be positive),
-  <code>topx</code> (must be non-negative).</p>
+  <code>topx</code> (must be positive).</p>
 <p>Must be length-1 <code>integer</code>-conformable values can be <code>NULL</code>, 
  and can be <code>NA</code>:
   <code>lag</code> (must be positive),
   <code>min_lag</code> (must be non-negative).</p>
 <p>Must be <code>integer</code>-conformable values, can be any length, can be 
  <code>NULL</code>, but cannot be <code>NA</code>:
+  <code>cast_groups</code> (must be non-negative),
   <code>cast_ids</code> (must be non-negative),
   <code>end_moons</code> (must be positive),
   <code>target_moons</code> (must be positive).</p>
@@ -417,7 +421,7 @@ checked.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

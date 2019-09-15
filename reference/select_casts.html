@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
       </span>
     </div>
 
@@ -150,9 +150,9 @@
  the large set of available casts via the metadata.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>select_casts</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data_sets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>select_casts</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cast_groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data_sets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>include_interp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,6 +168,12 @@ the directory tree.</p></td>
 representing the casts of interest, as indexed within the directory in
 the <code>casts</code> sub folder. See the casts metadata file 
 (<code>casts_metadata.csv</code>) for summary information.</p></td>
+    </tr>
+    <tr>
+      <th>cast_groups</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) value
+of the cast group to combine with an ensemble. If <code>NULL</code> (default),
+the most recent cast group is ensembled.</p></td>
     </tr>
     <tr>
       <th>end_moons</th>
@@ -192,6 +198,11 @@ respect to <code>data_set</code>.</p></td>
       <th>quiet</th>
       <td><p><code>logical</code> indicator if progress messages should be
 quieted.</p></td>
+    </tr>
+    <tr>
+      <th>include_interp</th>
+      <td><p><code>logical</code> indicator of if the basic data set
+names should also be inclusive of the associated interpolated data sets.</p></td>
     </tr>
     <tr>
       <th>arg_checks</th>
@@ -231,7 +242,7 @@ formatted correctly and provides directed error messages if not.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

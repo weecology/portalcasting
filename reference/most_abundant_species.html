@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authors • portalcasting</title>
+<title>Select the most abundant species from a data set — most_abundant_species • portalcasting</title>
 
 
 <!-- jquery -->
@@ -29,13 +29,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Authors" />
+<meta property="og:title" content="Select the most abundant species from a data set — most_abundant_species" />
+<meta property="og:description" content="Not including the total, determine the most abundant 
+ rodent species within a data set." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +57,7 @@
   </head>
 
   <body>
-    <div class="container template-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -66,7 +69,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">portalcasting</a>
+        <a class="navbar-link" href="../index.html">portalcasting</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
       </span>
     </div>
@@ -74,7 +77,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
@@ -87,24 +90,24 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/getting_started.html">Getting started</a>
+      <a href="../articles/getting_started.html">Getting started</a>
     </li>
     <li>
-      <a href="articles/current_models.html">Current models</a>
+      <a href="../articles/current_models.html">Current models</a>
     </li>
     <li>
-      <a href="articles/adding_model_and_data.html">Adding a model and data</a>
+      <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
     </li>
     <li>
-      <a href="articles/codebase.html">portalcasting codebase</a>
+      <a href="../articles/codebase.html">portalcasting codebase</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="reference/index.html">Functions</a>
+  <a href="../reference/index.html">Functions</a>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -131,46 +134,69 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Authors</h1>
+    <h1>Select the most abundant species from a data set</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prepare_rodents.R'><code>R/prepare_rodents.R</code></a></small>
+    <div class="hidden name"><code>most_abundant_species.Rd</code></div>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong>Juniper L. Simonis</strong>. Author, maintainer. <a href='https://orcid.org/0000-0001-9798-0460' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' alt='ORCID'></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Glenda M. Yenni</strong>. Author. <a href='https://orcid.org/0000-0001-6969-1848' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' alt='ORCID'></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Ellen K. Bledsoe</strong>. Author. <a href='https://orcid.org/0000-0002-3629-7235' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' alt='ORCID'></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Erica M. Christensen</strong>. Author. <a href='https://orcid.org/0000-0002-5635-2502' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' alt='ORCID'></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Hao Ye</strong>. Author. <a href='https://orcid.org/0000-0002-8630-1458' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' alt='ORCID'></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Ethan P. White</strong>. Author. <a href='https://orcid.org/0000-0001-6728-7745' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' alt='ORCID'></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>S.K. Morgan Ernest</strong>. Author. <a href='https://orcid.org/0000-0002-6026-8530' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' alt='ORCID'></a>
-        </p>
-      </li>
+    <div class="ref-description">
+    <p>Not including the total, determine the most abundant 
+ rodent species within a data set.</p>
+    </div>
+
+    <pre class="usage"><span class='fu'>most_abundant_species</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>topx</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>main</th>
+      <td><p><code>character</code> value of the name of the main component of
+the directory tree.</p></td>
+    </tr>
+    <tr>
+      <th>data_set</th>
+      <td><p><code>character</code> representation of the grouping
+name used to define the rodents. Standard options are <code>"all"</code> and 
+<code>"controls"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>topx</th>
+      <td><p>Positive <code>integer</code> (or <code>integer</code>-conformable) 
+value of how many species to include.</p></td>
+    </tr>
+    <tr>
+      <th>arg_checks</th>
+      <td><p><code>logical</code> value of if the arguments should be
+checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
+default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
+formatted correctly and provides directed error messages if not.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>character</code> vector of the species identifiers.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># \donttest{</span>
+ <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
+ <span class='fu'>most_abundant_species</span>()
+<span class='co'># }</span></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
-
 </div>
-
 
 
       <footer>
