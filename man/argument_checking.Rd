@@ -77,8 +77,10 @@ Argument details used for checking are produced simply via
   \code{cleanup},
   \code{covariatesTF}, 
   \code{effort},
+  \code{ensemble},
   \code{fillweight}, 
   \code{interpolate}, 
+  \code{include_interp}, 
   \code{na_drop}, 
   \code{nadot}, 
   \code{NULLname},
@@ -114,10 +116,11 @@ Argument details used for checking are produced simply via
   \code{freq},  
   \code{level}, 
   \code{main}, 
+  \code{method} (if not \code{NULL}, must be \code{"unwtavg"}),
   \code{model} (inputted values are checked via 
    \code{\link{verify_models}}), 
   \code{name}, 
-  \code{output} (if not \code{NULL}, must be \code{"abundances"}),
+  \code{output} (if not \code{NULL}, must be \code{"abundance"}),
   \code{path},
   \code{plots} (if not \code{NULL}, must be \code{"all"} or 
    \code{"longterm"}),
@@ -233,7 +236,7 @@ Argument details used for checking are produced simply via
   \code{ndates} (must be positive),
   \code{nmoons} (must be non-negative),
   \code{start_moon} (must be positive),
-  \code{topx} (must be non-negative).
+  \code{topx} (must be positive).
 
  Must be length-1 \code{integer}-conformable values can be \code{NULL}, 
  and can be \code{NA}:
@@ -242,6 +245,7 @@ Argument details used for checking are produced simply via
 
  Must be \code{integer}-conformable values, can be any length, can be 
  \code{NULL}, but cannot be \code{NA}:
+  \code{cast_groups} (must be non-negative),
   \code{cast_ids} (must be non-negative),
   \code{end_moons} (must be positive),
   \code{target_moons} (must be positive).

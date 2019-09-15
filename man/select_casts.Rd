@@ -4,9 +4,9 @@
 \alias{select_casts}
 \title{Find casts that fit specifications}
 \usage{
-select_casts(main = ".", cast_ids = NULL, end_moons = NULL,
-  models = NULL, data_sets = NULL, quiet = FALSE,
-  arg_checks = TRUE)
+select_casts(main = ".", cast_ids = NULL, cast_groups = NULL,
+  end_moons = NULL, models = NULL, data_sets = NULL, quiet = FALSE,
+  include_interp = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -16,6 +16,10 @@ the directory tree.}
 representing the casts of interest, as indexed within the directory in
 the \code{casts} sub folder. See the casts metadata file 
 (\code{casts_metadata.csv}) for summary information.}
+
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value
+of the cast group to combine with an ensemble. If \code{NULL} (default),
+the most recent cast group is ensembled.}
 
 \item{end_moons}{\code{integer} (or integer \code{numeric}) 
 newmoon numbers of the forecast origin. Default value is 
@@ -32,6 +36,9 @@ respect to \code{data_set}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{include_interp}{\code{logical} indicator of if the basic data set
+names should also be inclusive of the associated interpolated data sets.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

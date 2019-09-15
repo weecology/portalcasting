@@ -260,6 +260,6 @@ Once you are all ready to go, submit the code on your branch as a [pull request]
 5. Put the `newdata_controls` list into the `prefab_rodents_controls` in the `prepare_rodents.R` script
 6. Add tests
 7. Run tests and checks    
-8. Submit the code as a  on GitHub
+8. Submit the code as a pull request on GitHub
 
 

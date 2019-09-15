@@ -933,8 +933,46 @@ last_census <- function(main = ".",
   as.Date(max(moons$censusdate, na.rm = TRUE))
 }
 
-
-
- 
-
+#' @title Select the most abundant species from a data set
+#'
+#' @description Not including the total, determine the most abundant 
+#'  rodent species within a data set.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param data_set \code{character} representation of the grouping
+#'  name used to define the rodents. Standard options are \code{"all"} and 
+#'  \code{"controls"}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not.
+#'
+#' @param topx Positive \code{integer} (or \code{integer}-conformable) 
+#'  value of how many species to include.
+#'  
+#' @return \code{character} vector of the species identifiers.
+#' 
+#' @examples
+#' \donttest{
+#'  setup_dir()
+#'  most_abundant_species()
+#' }
+#'
+#' @export
+#'
+most_abundant_species <- function(main = ".", data_set = "all", topx = 3,
+                                  arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  rodents_tab <- read_rodents_table(main = main, data_set = data_set, 
+                                    arg_checks = arg_checks)
+  col_drop <- which(colnames(rodents_tab) %in% c("moon", "total"))
+  rodents_tab <- rodents_tab[ , -col_drop]
+  tots <- apply(rodents_tab, 2, sum, na.rm = TRUE)
+  tots_order <- order(tots)
+  names(tots) <- colnames(rodents_tab)
+  names(sort(tots, decreasing = TRUE)[1:topx])
+}
 

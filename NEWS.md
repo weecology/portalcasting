@@ -2,6 +2,20 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+
+# [portalcasting 0.11.0](https://github.com/weecology/portalcasting/releases/tag/v0.11.0)
+*2019-09-14*
+
+### Ensembling reintroduced
+* Associated with the reconfiguration of portalcasting from v0.8.1 to 0.9.0, ensembling was removed temporarily.
+* A basic ensemble is reintroduced, now as an unweighted average across all selected models, allowing us to have an ensemble but not have it be tied to AIC weighting (because AIC weighting is no longer possible with the split between interpolated and non-interpolated data for model fitting).
+* In a major departure from v0.8.1 and earlier, the ensemble's output is not saved like the actual models'. Rather, it is only calculated when needed on the fly.
+* In plotting, it is now the default to use the ensemble for `plot_cast_ts` and `plot_cast_point` and for the ensemble to be included in `plot_casts_err_lead` and `plot_casts_cov_RMSE`.
+
+### Return of `most_abundant_species`
+* Function used to select the most common species.
+* Now uses the actual data and not the casts to determine the species.
+
 # [portalcasting 0.10.0](https://github.com/weecology/portalcasting/releases/tag/v0.10.0)
 *2019-09-13*
 

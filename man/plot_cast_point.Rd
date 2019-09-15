@@ -4,9 +4,9 @@
 \alias{plot_cast_point}
 \title{Plot predictions for a given point in time across multiple species}
 \usage{
-plot_cast_point(main = ".", cast_id = NULL, data_set = NULL,
-  model = NULL, end_moon = NULL, species = NULL, moon = NULL,
-  with_census = FALSE, control_files = files_control(),
+plot_cast_point(main = ".", cast_id = NULL, cast_groups = NULL,
+  data_set = NULL, model = NULL, end_moon = NULL, species = NULL,
+  moon = NULL, with_census = FALSE, control_files = files_control(),
   quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
@@ -18,13 +18,18 @@ representing the cast of interest, as indexed within the directory in
 the \code{casts} sub folder. See the casts metadata file 
 (\code{casts_metadata.csv}) for summary information.}
 
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value
+of the cast group to combine with an ensemble. If \code{NULL} (default),
+the most recent cast group is ensembled.}
+
 \item{data_set}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to no selection with 
 respect to \code{data_set}.}
 
 \item{model}{\code{character} value of the name of the model to 
 include. Default value is \code{NULL}, which equates to no selection with 
-respect to \code{model}.}
+respect to \code{model}. Also available is \code{"Ensemble"}, which
+combines the models via \code{\link{ensemble_casts}}.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) 
 newmoon number of the forecast origin. Default value is 

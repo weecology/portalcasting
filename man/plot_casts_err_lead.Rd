@@ -5,7 +5,8 @@
 \title{Plot the forecast error as a function of lead time}
 \usage{
 plot_casts_err_lead(main = ".", cast_ids = NULL, cast_tab = NULL,
-  end_moons = NULL, models = NULL, data_set = NULL, species = NULL,
+  end_moons = NULL, models = NULL, ensemble = TRUE,
+  data_set = "controls", include_interp = TRUE, species = NULL,
   arg_checks = TRUE)
 }
 \arguments{
@@ -31,9 +32,16 @@ include. Default value is \code{NULL}, which equates to no selection with
 respect to \code{model}. \code{NULL} translates to all \code{models}
 in the table.}
 
+\item{ensemble}{\code{logical} indicator of if an ensemble should be
+included. Presently only the unweighted average. See 
+\code{\link{ensemble_casts}}.}
+
 \item{data_set}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to no selection with 
 respect to \code{data_set}.}
+
+\item{include_interp}{\code{logical} indicator of if the models fit using
+interpolated data should be included with the models that did not.}
 
 \item{species}{\code{character} vector of the species code(s) 
 or \code{"total"} for the total across species) to be plotted 
