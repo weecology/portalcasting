@@ -3,6 +3,12 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# portalcasting 0.12.0\
+*Active development*
+
+### Patching data set bug in plotting
+* There was a bug with matching the interpolated to the non interpolated data sets within the ensembling, which has been fixed. [addresses](https://github.com/weecology/portalcasting/issues/140)
+
 # [portalcasting 0.11.0](https://github.com/weecology/portalcasting/releases/tag/v0.11.0)
 *2019-09-14*
 
