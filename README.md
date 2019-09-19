@@ -79,7 +79,7 @@ Get started with the ["how to set up a Portal Predictions directory"
 vignette](https://weecology.github.io/portalcasting/articles/getting_started.html)
 
 If you are interested in adding a model to the preloaded [set of 
-models](https://weecology.github.io/portalcasting/articles/models.html),
+models](https://weecology.github.io/portalcasting/articles/current_models.html),
 see the ["adding a model"
 vignette](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html). 
 
