@@ -25,7 +25,7 @@ prefab_model_controls <- function(){
                     covariatesTF = TRUE, lag = 6), 
     simplexEDM = list(name = "simplexEDM", 
                       data_sets = c("all_interp", "controls_interp"), 
-                      covariatesTF = FALSE, lag = NA)
+                      covariatesTF = FALSE, lag = NA, max_E = 7)
   )
 }
 

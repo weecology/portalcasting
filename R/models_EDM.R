@@ -6,6 +6,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
                        control_files = files_control(), 
                        quiet = FALSE, 
                        verbose = FALSE, 
+                       max_E = 7, 
                        arg_checks = TRUE)
 {
   check_args(arg_checks)
@@ -16,7 +17,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   
   #### determine args and settings for making forecasts
   metadata <- read_metadata(main)
-  E_range <- 1:7
+  E_range <- seq(from = 1, to = max_E)
   data_set_controls <- metadata$controls_rodents[[data_set]]
   moons_to_cast <- metadata$rodent_cast_moons
   num_moons <- length(moons_to_cast)
@@ -58,7 +59,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
                         upper_pi = numeric(num_moons))
     preds$species <- species_name
     to_add <- data.frame(moons_to_cast, NA)
-    colnames(to_add) <- c("moon", species_name)
+    colnames(to_add) <- c("moon", s)
     pred_data <- rbind(abund_s, to_add)
     
     # make forecasts

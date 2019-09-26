@@ -12,8 +12,8 @@
 \title{Functions for the prefab portalcasting models}
 \usage{
 simplexEDM(main = ".", data_set = "all_interp",
-  controL_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  max_E = 7, arg_checks = TRUE)
 
 AutoArima(main = ".", data_set = "all",
   control_files = files_control(), quiet = FALSE, verbose = FALSE,
@@ -46,18 +46,22 @@ the directory tree.}
 \item{data_set}{\code{character} value name of the rodent data set, such as 
 (\code{"all"} or \code{"controls"}).}
 
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
 \item{quiet}{\code{logical} value indicating if the function should be 
 quiet.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
 
+\item{max_E}{\code{integer} (or integer \code{numeric}) for the maximum 
+embedding dimension to search amongst for EDM models. See 
+\code{link[rEDM]{simplex}} for more information.}
+
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to
 use for the covariates.}

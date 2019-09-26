@@ -19,7 +19,9 @@
 #'  \code{pevGARCH} fits a set of generalized autoregressive conditional
 #'  heteroscedasticity models with Poisson response variables and 
 #'  environmental covariates (max temp, mean temp, min temp, precipitation,
-#'  and NDVI) using \code{\link[tscount]{tsglm}}.
+#'  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
+#'  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
+#'  using \code{\link[rEDM]{simplex}}.
 #'
 #' @details 
 #'  \code{AutoArima} \cr
@@ -44,6 +46,10 @@
 #'
 #' @param lag \code{integer} (or integer \code{numeric}) of the lag time to
 #'  use for the covariates.
+#'  
+#' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
+#'  embedding dimension to search amongst for EDM models. See 
+#'  \code{link[rEDM]{simplex}} for more information.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages).
@@ -70,6 +76,12 @@
 #'  Analysis of Count Time Series Following Generalized Linear Models. 
 #'  \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
 #'  \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
+#'  
+#'  Ye, H., Clark, A., Deyle, E., Munch, S., Cai, J., Cowles, J., Daon, Y., 
+#'  Edwards, A., Keyes, O., Stagge, J., Ushio, M., White, E., and Sugihara G. 
+#'  2018. rEDM: Applications of Empirical Dynamic Modeling from Time Series. 
+#'  Zenodo. \href{http://doi.org/10.5281/zenodo.1935847}{R package version0.7.4}.
+#'  
 #'
 #' @examples
 #'  \donttest{
@@ -80,6 +92,7 @@
 #'   nbGARCH()
 #'   nbsGARCH()
 #'   pevGARCH()
+#'   simplexEDM()
 #'  }
 #'
 #' @name prefab_model_functions
