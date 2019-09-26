@@ -28,18 +28,19 @@ Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
-  curl,
-  DesignLibrary,
-  dplyr,
-  forecast,
-  httr,
-  lubridate,
-  portalr,
-  readr,
-  rlang,
-  tscount,
-  viridis,
-  yaml
+    curl,
+    DesignLibrary,
+    dplyr,
+    forecast,
+    httr,
+    lubridate,
+    portalr,
+    readr,
+    rlang,
+    tscount,
+    viridis,
+    yaml,
+    rEDM (>= 0.7.4)
 Suggests:
   knitr,
   pkgdown,
@@ -48,3 +49,5 @@ Suggests:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
+Remotes:  
+    ha0ye/rEDM

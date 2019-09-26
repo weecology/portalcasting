@@ -1,44 +1,22 @@
-library(rEDM)
-
-#' @title Empirical Dynamical Model for Portal Predictions
-#'
-#' @description Fit an EDM model in the portalcasting pipeline.
-#'
-#' @details Model "EDM" is a...
-#'
-#' @param tree \code{dirtree}-class directory tree list. See 
-#'   \code{\link{dirtree}}.
-#'
-#' @param quiet \code{logical} value indicating if the function should be 
-#'   quiet.
-#'
-#' @return \code{list} of [1] \code{"forecast"} (the forecasted abundances)
-#'   and [2] \code{"all_model_aic"} (the model AIC values).
-#'
-#' @inheritParams read_rodents_table
-#'
-#' @references 
-#'  Sugihara et al. 20XX
-#'
-#' @examples
-#' \dontrun{
-#' 
-#' setup_dir()
-#' EDM()
-#' }
+#' @rdname prefab_model_functions
 #' 
 #' @export
 #'
-EDM <- function(main = here::here(), data_set = "all_interp", quiet = FALSE, 
-                E_range = 1:7, save_output = TRUE)
+simplexEDM <- function(main = ".", data_set = "all_interp", 
+                       control_files = files_control(), 
+                       quiet = FALSE, 
+                       verbose = FALSE, 
+                       arg_checks = TRUE)
 {
-  messageq(paste0("### Fitting EDM model for ", data_set, " ###"), quiet)
+  check_args(arg_checks)
+  data_set <- tolower(data_set)
+  model_name <- "simplexEDM"
+  
+  messageq(paste0("  -", model_name, " model for ", data_set), quiet)
   
   #### determine args and settings for making forecasts
-  check_args()
-  
-  model_name <- "EDM-simplex"
   metadata <- read_metadata(main)
+  E_range <- 1:7
   data_set_controls <- metadata$controls_rodents[[data_set]]
   moons_to_cast <- metadata$rodent_cast_moons
   num_moons <- length(moons_to_cast)
@@ -49,27 +27,28 @@ EDM <- function(main = here::here(), data_set = "all_interp", quiet = FALSE,
   pr_for_CL <- 0.5 + CL/2
   
   #### get the data
-  abundances <- read_rodents_table(main = main, data_set = data_set)
-  species <- setdiff(colnames(abundances), "moon")
-  
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
+                                nadot = TRUE, arg_checks = arg_checks)
+
   cast_tab <- data.frame()
-  aic <- data.frame()
+  #  aic <- data.frame()
   model_casts <- data.frame()
   
-  #species = c("DO")
+  # species = c("DO")
   for (s in species)
   {
-    formatted_species_code <- gsub("NA.", "NA", s)
-    messageq(paste0("Fitting ", model_name, " model for ", formatted_species_code), quiet)
+    species_name <- gsub("NA.", "NA", s)
+    messageq(paste0("    -fitting ", model_name, " model for ", species_name), quiet)
     
-    abund_s <- abundances[, c("moon", s)]
+    abund_s <- rodents_table[, c("moon", s)]
     
     n <- nrow(abund_s)
-    models <- simplex(abund_s, 
-                      lib = c(1, n), 
-                      pred = c(1, n), 
-                      E = E_range, 
-                      stats_only = FALSE, silent = TRUE)
+    models <- rEDM::simplex(abund_s, 
+                            lib = c(1, n), 
+                            pred = c(1, n), 
+                            E = E_range, 
+                            stats_only = FALSE, silent = TRUE)
     best_e <- models$E[which.min(models$mae)]
     
     # set up data structures to hold forecasts
@@ -77,20 +56,20 @@ EDM <- function(main = here::here(), data_set = "all_interp", quiet = FALSE,
                         estimate = numeric(num_moons), 
                         lower_pi = numeric(num_moons), 
                         upper_pi = numeric(num_moons))
-    preds$species <- formatted_species_code
+    preds$species <- species_name
     to_add <- data.frame(moons_to_cast, NA)
-    colnames(to_add) <- c("moon", s)
+    colnames(to_add) <- c("moon", species_name)
     pred_data <- rbind(abund_s, to_add)
     
     # make forecasts
     for (i in seq_along(moons_to_cast))
     {
-      model <- simplex(pred_data,
-                       lib = c(1, n),
-                       pred = c(n + i - best_e, n + i),
-                       E = best_e,
-                       stats_only = FALSE,
-                       silent = TRUE)
+      model <- rEDM::simplex(pred_data,
+                             lib = c(1, n),
+                             pred = c(n + i - best_e, n + i),
+                             E = best_e,
+                             stats_only = FALSE,
+                             silent = TRUE)
       pred_row <- model$model_out[[1]][best_e, ]
       pt_est <- pred_row$pred
       preds$estimate[i] <- pt_est
@@ -107,7 +86,7 @@ EDM <- function(main = here::here(), data_set = "all_interp", quiet = FALSE,
                              currency = data_set_controls$output, 
                              model = model_name, 
                              data_set = data_set, 
-                             species = formatted_species_code, 
+                             species = species_name, 
                              estimate = preds$estimate, 
                              lower_pi = preds$lower_pi, upper_pi = preds$upper_pi, 
                              start_moon = metadata$start_moon, 
@@ -133,17 +112,8 @@ EDM <- function(main = here::here(), data_set = "all_interp", quiet = FALSE,
                           models = model_name, 
                           data_sets = data_set, 
                           controls_rodents = data_set_controls)
-  cast_out <- list(metadata = metadata, cast_tab = cast_tab, 
-                   model_fits = model)
-  
-  if (save_output)
-  {
-    save_cast_output(cast = cast_out, main = main)
-  }
-  #  output <- list("forecast" = fcast, "aic" = aic)
-  return(cast_out)
+  cast_out <- list(metadata = metadata, 
+                   cast_tab = cast_tab, 
+                   model_fits = NULL, 
+                   model_casts = model_casts)
 }
-
-main <- here::here()
-EDM(main = main, data_set = "all_interp", quiet = FALSE)
-EDM(main = main, data_set = "controls_interp", quiet = FALSE)
