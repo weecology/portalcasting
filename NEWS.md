@@ -9,9 +9,18 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### `portalcast` updates model scripts according to `controls_model`
 * Previously, if you changed any controls of a prefab model, you had to manually re-write the models using `fill_models` before running `portalcast`.
 * Using `fill_models` would result in hand-made scripts being overwritted, so a specific function for updating the models was created. 
+* [addresses](https://github.com/weecology/portalcasting/issues/147)
 
 ### Patching data set bug in plotting
 * There was a bug with matching the interpolated to the non interpolated data sets within the ensembling, which has been fixed. [addresses](https://github.com/weecology/portalcasting/issues/140)
+
+### Updated messaging 
+* Moved most of the messaging into tidied functions.
+
+### Fixed codecov targets
+* Previous targets were restrictively high due to earlier near-perfect coverage.
+* A codecov.yml file is now included in the repo (and ignored for the R build) which sets the target arbitrarily at the still-quite-high-but-not-restrively-so 95%. 
+* It can be changed if needed in the future.
 
 # [portalcasting 0.11.0](https://github.com/weecology/portalcasting/releases/tag/v0.11.0)
 *2019-09-14*

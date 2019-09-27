@@ -9,5 +9,6 @@
 ^LICENSE\.md$
 ^\.zenodo\.json$
 ^inst/WORDLIST$
+^codecov\.yml$
 ^notes.R$
 ^docs$

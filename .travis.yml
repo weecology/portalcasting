@@ -23,7 +23,7 @@ matrix:
     after_success:
     - R CMD INSTALL .
     - Rscript -e 'pkgdown::build_site(examples = FALSE)'
-    - travis_wait 40 Rscript -e 'library(covr); codecov()'
+    - travis_wait 40 Rscript -e 'library(covr)::codecov()'
     deploy:
       provider: pages
       skip-cleanup: true

@@ -1,0 +1,15 @@
+coverage:
+  precision: 2
+  round: down
+  status:
+    patch:
+      default:
+        target: 95%
+    project:
+      default:
+        target: 95%
+    changes:
+      default:
+        target: 95%
+
+comment: false
