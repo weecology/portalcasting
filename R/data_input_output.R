@@ -97,7 +97,7 @@ read_directory_config <- function(main = ".",
   config_path <- file_path(main = main, files = filename_config,
                            arg_checks = arg_checks)
   if(!file.exists(config_path)){
-    stop("dir_config.yaml file is missing, consider re-creating directory")
+    stop("dir_config.yaml file is missing, recreate directory", call. = FALSE)
   }
   yaml.load_file(config_path)  
 }
@@ -163,7 +163,7 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
           yams <- as.yaml(dfl)
           writeLines(yams, con = full_path)
       } else{
-        stop("file type not supported")
+        stop("file type not supported", call. = FALSE)
       }
     }
    
@@ -355,7 +355,8 @@ read_covariate_casts <- function(main = ".", control_files = files_control(),
     } else if (file.exists(arch_path2)){
       cov_cast <- read.csv(arch_path2, stringsAsFactors = FALSE)
     } else {
-      stop("current and archive versions missing, run `fill_raw`")
+      msg <- "current and archive versions missing, run `fill_raw`"
+      stop(msg, call. = FALSE)
     }
   }
   if(any(grepl("forecast_newmoon", colnames(cov_cast)))){

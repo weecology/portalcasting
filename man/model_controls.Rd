@@ -25,7 +25,7 @@ set. \cr
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
-Presently, each model's script writing controls should include three 
+Presently, each model's script writing controls should include four 
 elements: 
 \itemize{
  \item \code{name}: a \code{character} value of the model name.

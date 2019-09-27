@@ -77,7 +77,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
                                  include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
-      stop("no casts available for requested plot")
+      stop("no casts available for requested plot", call. = FALSE)
     }else{
       cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
                                  arg_checks = arg_checks)
@@ -105,7 +105,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
   end_moon_in <- cast_tab$end_moon %in% end_moons
   all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
   if(sum(all_in) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
   cast_tab <- cast_tab[all_in, ]
 
@@ -320,7 +320,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
                                  include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
-      stop("no casts available for requested plot")
+      stop("no casts available for requested plot", call. = FALSE)
     }else{
       cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
                                  arg_checks = arg_checks)
@@ -345,7 +345,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
   end_moon_in <- cast_tab$end_moon %in% end_moons
   all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
   if(sum(all_in) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
 
 
@@ -629,7 +629,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     casts_meta <- casts_meta[which_max, ]
   }
   if(NROW(casts_meta) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
 
   max_obs <- 0
@@ -641,7 +641,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     moon <- ifnull(moon, unique(obs$moon))
     obs <- obs[obs$moon %in% moon, species]
     if(NROW(obs) == 0){
-      stop("no observations available for requested plot") 
+      stop("no observations available for requested plot", call. = FALSE) 
     } 
     max_obs <- max(as.numeric(obs), na.rm = TRUE)
   }
@@ -832,7 +832,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     casts_meta <- casts_meta[which_max, ]
   }
   if(NROW(casts_meta) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
 
   obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 

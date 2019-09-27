@@ -1,9 +1,21 @@
+working on a few things:
+the logistic build
+the whole "updating models" thingy
+messaging
+
 devtools::document()
 devtools::load_all()
-main <- "~/xx"
-
-
+#main <- "c:/users/dappe/dropbox/uf/logistic_build"
+main <- "c:/users/uf/dropbox/uf/logistic_build"
+#main <- "~/logistic_build"
 setup_dir(main)
+
+
+devtools::check()
+
+portalcast(main = main, models = c("logistic"))
+
+
 
 portalcast(main = main,models = c("nbsGARCH"), 
            end_moons = 512)

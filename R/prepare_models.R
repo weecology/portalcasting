@@ -70,7 +70,7 @@ prefab_model_controls <- function(){
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
 #'  script-writing controls. \cr 
-#'  Presently, each model's script writing controls should include three 
+#'  Presently, each model's script writing controls should include four 
 #'  elements: 
 #'  \itemize{
 #'   \item \code{name}: a \code{character} value of the model name.
@@ -156,7 +156,7 @@ model_controls <- function(models = NULL, controls_model = NULL,
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of model(s): ", all_conflicting)
     msg2 <- paste0(msg, "\n   to override, set `arg_checks = FALSE`")
-    stop(msg2)
+    stop(msg2, call. = FALSE)
   }
   if(any(replicates > 1) & !arg_checks){
     which_conflicting <- names(replicates)[which(replicates > 1)]
@@ -485,7 +485,7 @@ verify_models <- function(main = ".", models = prefab_models(),
   messageq("Checking model availability", quiet)
   model_dir <- sub_path(main = main, subs = "models", arg_checks = arg_checks)
   if (!dir.exists(model_dir)){
-    stop("Models subidrectory does not exist")
+    stop("Models subidrectory does not exist", call. = FALSE)
   }
   available <- list.files(model_dir)
   if (models[1] != "all"){
@@ -493,11 +493,102 @@ verify_models <- function(main = ".", models = prefab_models(),
     torun <- (modelnames %in% available)  
     if (any(torun == FALSE)){
       missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
-      stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
+      msg <- paste0("Requested model(s) ", missmod, " not in directory \n")
+      stop(msg, call. = FALSE)
     }
   }
   messageq(" *All requested models available*", quiet)
-  messageq("---------------------------------------------------------", quiet)
+  messageq_break(quiet = quiet, arg_checks = arg_checks)
+  invisible(NULL)
+}
+
+
+#' @title Update models based on user input controls
+#'
+#' @description Update model scripts based on the user-defined model control
+#'  inputs. This allows users to define their own models or re-define prefab
+#'  models within the \code{\link{portalcast}} pipeline.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param models \code{character} vector of name(s) of model(s), used to 
+#'  restrict the models to update from \code{controls_model}. The default
+#'  (\code{NULL}) translates to all models in the \code{controls_model} list,
+#'  which is recommended for general usage and is enforced within the main
+#'  \code{\link{portalcast}} pipeline. 
+#'
+#' @param controls_model Controls for models not in the prefab set or for 
+#'  overriding those in the prefab set. \cr 
+#'  A \code{list} of a single model's script-writing controls or a
+#'  \code{list} of \code{list}s, each of which is a single model's 
+#'  script-writing controls. \cr 
+#'  Presently, each model's script writing controls should include four 
+#'  elements: 
+#'  \itemize{
+#'   \item \code{name}: a \code{character} value of the model name.
+#'   \item \code{data_sets}: a \code{character} vector of the data set names
+#'    that the model is applied to. 
+#'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
+#'    model needs covariates.
+#'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
+#'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
+#'  } 
+#'  If only a single model is added, the name of 
+#'  the model from the element \code{name} will be used to name the model's
+#'  \code{list} in the larger \code{list}. If multiple models are added, each
+#'  element \code{list} must be named according to the model and the
+#'  \code{name} element. \cr 
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'  all of the information or not (and thus just the tidy messages). 
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param bline \code{logical} indicator if horizontal break lines should be
+#'  included in messaging.
+#'
+#' @return \code{NULL}. 
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   cm <- model_control(name = "AutoArima", data_sets = "all")
+#'   update_models(controls_model = cm)
+#'  }
+#'
+#' @export
+#'
+update_models <- function(main = ".", models = NULL,
+                          controls_model = NULL, 
+                          control_files = files_control(), bline = FALSE,
+                          quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(controls_model)
+  if(list_depth(controls_model) == 1){
+    controls_model <- list(controls_model)
+    names(controls_model) <- controls_model[[1]]$name
+  }
+  models <- ifnull(models, names(controls_model))
+  messageq("Updating model scripts", quiet)
+  nmodels <- length(models)
+  for(i in 1:nmodels){
+    write_model(main = main, quiet = quiet, verbose = verbose, 
+                control_files = control_files, 
+                control_model = controls_model[[models[i]]], 
+                arg_checks = arg_checks)
+  }
+  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks) 
   invisible(NULL)
 }
 

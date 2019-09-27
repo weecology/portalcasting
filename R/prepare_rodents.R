@@ -178,13 +178,13 @@ rodents_controls <- function(data_sets = NULL, controls_rodents = NULL,
     which_missing <- data_sets[missing_controls]
     all_missing <- paste(which_missing, collapse = ", ")
     msg <- paste0("missing controls for dataset(s): ", all_missing)
-    stop(msg)
+    stop(msg, call. = FALSE)
   }
   if(any(replicates > 1)){
     which_conflicting <- names(replicates)[which(replicates > 1)]
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of dataset(s): ", all_conflicting)
-    stop(msg)
+    stop(msg, call. = FALSE)
   }
   controls_rodents[included_data]
 

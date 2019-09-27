@@ -130,7 +130,8 @@ cast_covariates <- function(main = ".", moons = NULL,
     cov_cast2 <- cov_cast[which(target_in & origin_in), ]
 
     if(NROW(cov_cast2) == 0){
-      stop("covariates not available for requested end moon and lead time")
+      stop("covariates not available for requested end moon and lead time",
+           call. = FALSE)
     }
     most_recent <- max(cov_cast2$date_made)
     made_in <- cov_cast2$date_made == most_recent
@@ -361,7 +362,7 @@ download_climate_casts <- function(main = ".",
   return_if_null(urls)
   cov_cast_path <- file_path(main = main, sub = "raw", files = "cov_casts",
                              arg_checks = arg_checks)
-  create(cov_cast_path, "covariate cast download", quiet = quiet)
+  create(paths = cov_cast_path, arg_checks = arg_checks)
 
   for(i in 1:length(control_climate_dl$data)){
     dl_name <- paste0("cov_casts/", names(urls)[i])

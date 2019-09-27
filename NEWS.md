@@ -3,8 +3,12 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
-# portalcasting 0.12.0\
+# portalcasting 0.12.0
 *Active development*
+
+### `portalcast` updates model scripts according to `controls_model`
+* Previously, if you changed any controls of a prefab model, you had to manually re-write the models using `fill_models` before running `portalcast`.
+* Using `fill_models` would result in hand-made scripts being overwritted, so a specific function for updating the models was created. 
 
 ### Patching data set bug in plotting
 * There was a bug with matching the interpolated to the non interpolated data sets within the ensembling, which has been fixed. [addresses](https://github.com/weecology/portalcasting/issues/140)

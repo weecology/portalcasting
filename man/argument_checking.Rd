@@ -65,6 +65,11 @@ Argument details used for checking are produced simply via
 
  Usage rules for arguments are as follows: \cr
 
+ Must be length-1 \code{logical} values, cannot be \code{NULL} or
+ \code{NA}: 
+  \code{bline}
+  \code{only_if_missing}.
+
  Must be length-1 \code{logical} values, can be \code{NULL}, but cannot be 
  \code{NA}: 
   \code{add_error},
@@ -202,6 +207,9 @@ Argument details used for checking are produced simply via
   \code{filenames},
   \code{metadata},
   \code{rodents}.
+
+ Must be \code{list}s, can be any length, can be \code{NULL} or \code{NA}:
+  \code{run_status}.
 
  Must be length-1 \code{Date}-conformable values, can be \code{NULL}, 
  but cannot be \code{NA}:

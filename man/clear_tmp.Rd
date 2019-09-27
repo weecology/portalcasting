@@ -4,12 +4,16 @@
 \alias{clear_tmp}
 \title{Remove files from the tmp subdirectory}
 \usage{
-clear_tmp(main = ".", quiet = FALSE, verbose = FALSE,
+clear_tmp(main = ".", bline = TRUE, quiet = FALSE, verbose = FALSE,
   cleanup = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{bline}{\code{logical} indicator if horizontal break lines should be
+made or not. For toggling separately from the more general \code{quiet}
+argument.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
@@ -23,11 +27,7 @@ subdirectory should be removed at the end of the process.}
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{NULL}, with the tmp subdirectory's files removed.
