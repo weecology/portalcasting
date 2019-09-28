@@ -8,8 +8,5 @@ coverage:
     project:
       default:
         target: 95%
-    changes:
-      default:
-        target: 95%
 
 comment: false
