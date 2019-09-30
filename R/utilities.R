@@ -74,7 +74,7 @@ error_if_deep <- function(lev){
 #'
 update_list <- function(orig_list = list(), ...){
   if(!is.list(orig_list)){
-    stop("orig_list must be a list")
+    stop("orig_list must be a list", call. = FALSE)
   } 
   update_elems <- list(...)
   nupdate_elems <- length(update_elems)
@@ -234,14 +234,14 @@ foy <- function(dates = NULL, arg_checks = TRUE){
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or just tidy messages. 
 #'
+#' @param bline \code{logical} indicator if horizontal break lines should be
+#'  made or not. For toggling separately from the more general \code{quiet}
+#'  argument. 
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{NULL}, with the tmp subdirectory's files removed.
 #'
@@ -253,8 +253,8 @@ foy <- function(dates = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE, 
-                      cleanup = TRUE, arg_checks = TRUE){
+clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE, 
+                      verbose = FALSE, cleanup = TRUE, arg_checks = TRUE){
   check_args(arg_checks)
   tmp_path <- tmp_path(main = main, arg_checks = arg_checks)
   tmp_exist <- dir.exists(tmp_path)
@@ -263,6 +263,7 @@ clear_tmp <- function(main = ".", quiet = FALSE, verbose = FALSE,
   if(!cleanup){
     return()
   }
+  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
   messageq("Clearing tmp subdirectory", quiet)
 
   if(tmp_exist){

@@ -244,7 +244,7 @@ read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
   cpath <- file_path(main, "casts", lpath, arg_checks)
   if(!file.exists(cpath)){
-    stop("cast_id does not have a cast_table")
+    stop("cast_id does not have a cast_table", call. = FALSE)
   }
   out <- read.csv(cpath, stringsAsFactors = FALSE) 
   na_conformer(out, arg_checks = arg_checks)
@@ -286,7 +286,7 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
   cpath <- file_path(main, "casts", lpath, arg_checks)
   if(!file.exists(cpath)){
-    stop("cast_id does not have a cast_metadata file")
+    stop("cast_id does not have a cast_metadata file", call. = FALSE)
   }
   yaml.load_file(cpath) 
 }

@@ -11,14 +11,17 @@ portalcast(main = ".", models = prefab_models(), end_moons = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")), bline = TRUE,
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
-cast(main = ".", models = prefab_models(), moons = NULL,
-  end_moon = NULL, confidence_level = 0.95, cast_date = Sys.Date(),
+cast(main = ".", models = prefab_models(), end_moon = NULL,
+  start_moon = 217, lead_time = 12, confidence_level = 0.95,
+  cast_date = Sys.Date(), controls_model = NULL,
   controls_rodents = rodents_controls(),
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")), bline = TRUE,
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -48,17 +51,23 @@ the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 
 \item{controls_model}{Additional controls for models not in the prefab 
-set. \cr 
+set or for overriding controls of a prefab model (for example when 
+applying a model to a new data set). \cr 
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
-Presently, each model's script writing controls
-should include three elements: \code{name} (a \code{character} value of 
-the model name), \code{covariates} (a \code{logical} indicator of if the 
-model needs covariates), and \code{lag} (an \code{integer}-conformable 
-value of the lag to use with the covariates or \code{NA} if 
-\code{covariates = FALSE}). \cr 
-If only a single model is added, the name of 
+Presently, each model's script writing controls should include four 
+elements: 
+\itemize{
+ \item \code{name}: a \code{character} value of the model name.
+ \item \code{data_sets}: a \code{character} vector of the data set names
+  that the model is applied to. 
+ \item \code{covariatesTF}: a \code{logical} indicator of if the 
+  model needs covariates.
+ \item \code{lag}: an \code{integer}-conformable value of the lag to use 
+  with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
+}
+If only a single model's controls are included, the name of 
 the model from the element \code{name} will be used to name the model's
 \code{list} in the larger \code{list}. If multiple models are added, each
 element \code{list} must be named according to the model and the
@@ -79,6 +88,10 @@ Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 \item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
 for raw file downloading.}
 
+\item{bline}{\code{logical} indicator if horizontal break lines should be
+made or not. For toggling separately from the more general \code{quiet}
+argument.}
+
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 
@@ -93,8 +106,6 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
-
-\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned.
@@ -105,14 +116,14 @@ Cast the Portal rodent population data using the (updated if
  \code{portalcast} wraps around \code{cast} to allow multiple runs of 
  multiple models, with data preparation as needed between runs occurring
  via \code{prep_data}. \cr \cr
- \code{cast} runs a single cast of multiple models, using the data as
- prepared by \code{prep_data}.
+ \code{cast} runs a single cast of multiple models across data sets.
 }
 \details{
-Multiple models can be run together on the same data and 
- multiple runs of a model (e.g., with a rolling origin) can be initiated
- together using \code{portalcast} and \code{cast} runs the individual
- instances.
+Multiple models can be run together on the multiple, varying 
+ data sets for a single new moon using \code{cast}. \code{portalcast}
+ wraps around \code{cast}, providing updating, verification, and resetting
+ utilities as well as facilitating multiple runs of \code{cast} across 
+ new moons (e.g., when using a rolling origin).
 }
 \examples{
  \donttest{

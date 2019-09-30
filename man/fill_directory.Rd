@@ -35,8 +35,8 @@ fill_casts(main = ".", control_files = files_control(),
   quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
 fill_raw(main = ".", downloads = zenodo_downloads(c("1215988",
-  "833438")), control_files = files_control(), quiet = FALSE,
-  arg_checks = TRUE)
+  "833438")), only_if_missing = FALSE, control_files = files_control(),
+  quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -68,12 +68,17 @@ set. \cr
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
-Presently, each model's script writing controls
-should include three elements: \code{name} (a \code{character} value of 
-the model name), \code{covariates} (a \code{logical} indicator of if the 
-model needs covariates), and \code{lag} (an \code{integer}-conformable 
-value of the lag to use with the covariates or \code{NA} if 
-\code{covariates = FALSE}). \cr 
+Presently, each model's script writing controls should include four 
+elements: 
+\itemize{
+ \item \code{name}: a \code{character} value of the model name.
+ \item \code{data_sets}: a \code{character} vector of the data set names
+  that the model is applied to. 
+ \item \code{covariatesTF}: a \code{logical} indicator of if the 
+  model needs covariates.
+ \item \code{lag}: an \code{integer}-conformable value of the lag to use 
+  with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
+} 
 If only a single model is added, the name of 
 the model from the element \code{name} will be used to name the model's
 \code{list} in the larger \code{list}. If multiple models are added, each
@@ -105,6 +110,13 @@ all of the information or not (and thus just the tidy messages).}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
+
+\item{only_if_missing}{\code{logical} indicator if the content should
+be filled only if it is missing. Only used in \code{fill_raw}, where
+missingness is determined by \code{\link{verify_raw_data}}. Default
+is \code{FALSE}, which allows for control via \code{link{files_control}}'s
+\code{overwrite} argument. Only accessed and changed to \code{FALSE} 
+within \code{\link{portalcast}}.}
 }
 \value{
 All \code{fill_} functions return \code{NULL}.

@@ -1,13 +1,27 @@
+working on a few things:
+the logistic build
+the whole "updating models" thingy
+messaging
+
 devtools::document()
 devtools::load_all()
-main <- "~/hindcasting"
-
-
+#main <- "c:/users/dappe/dropbox/uf/logistic_build"
+main <- "c:/users/uf/dropbox/uf/logistic_build"
+#main <- "~/logistic_build"
 setup_dir(main)
 
-portalcast(main = main,models = c("AutoArima", "ESSS", "NaiveArima"), 
-           end_moons = 515:518)
+
+devtools::check()
+
+portalcast(main = main, models = c("logistic"))
+
+
+
+portalcast(main = main,models = c("nbsGARCH"), 
+           end_moons = 512)
 plot_cast_ts(main=main)
+
+
 plot_cast_point(main=main)
 plot_cast_point(main=main,with_census=T)
 plot_casts_err_lead(main)

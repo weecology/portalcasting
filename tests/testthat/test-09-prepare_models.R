@@ -65,6 +65,10 @@ test_that("write_model", {
 
 })
 
+test_that("update_models", {
+   cm <- model_control(name = "AutoArima", data_sets = c("all", "controls"))
+   update_models(main = main, controls_model = cm)
+})
 
 test_that("model_template", {
 

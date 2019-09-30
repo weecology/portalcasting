@@ -12,8 +12,8 @@ setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")), bline = TRUE,
+  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 
 setup_production(main = ".", models = prefab_models(),
   end_moon = NULL, start_moon = 217, lead_time = 12,
@@ -89,6 +89,9 @@ Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
 for raw file downloading.}
+
+\item{bline}{\code{logical} indicator if a horizontal break lines should be
+included in messages.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

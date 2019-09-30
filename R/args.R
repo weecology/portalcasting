@@ -32,6 +32,11 @@
 #'
 #'  Usage rules for arguments are as follows: \cr
 #'
+#'  Must be length-1 \code{logical} values, cannot be \code{NULL} or
+#'  \code{NA}: 
+#'   \code{bline}
+#'   \code{only_if_missing}.
+#'
 #'  Must be length-1 \code{logical} values, can be \code{NULL}, but cannot be 
 #'  \code{NA}: 
 #'   \code{add_error},
@@ -170,6 +175,9 @@
 #'   \code{metadata},
 #'   \code{rodents}.
 #'
+#'  Must be \code{list}s, can be any length, can be \code{NULL} or \code{NA}:
+#'   \code{run_status}.
+#'
 #'  Must be length-1 \code{Date}-conformable values, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
 #'   \code{cast_date},
@@ -248,7 +256,7 @@ NULL
 #'
 check_args <- function(arg_checks = TRUE){
   if(length(arg_checks) !=1 | !is.logical(arg_checks)){
-    stop("`arg_checks` must be a single logical value")
+    stop("`arg_checks` must be a single logical value", call. = FALSE)
   }
   if(!arg_checks){
     return()
@@ -266,7 +274,8 @@ check_args <- function(arg_checks = TRUE){
     fun_name <- as.list(fun_call2)[[1]]
 
   } else{
-    stop("unrecognized class for function reference in check_args")
+    stop("unrecognized class for function reference in check_args", 
+         call. = FALSE)
   }
   arg_values <- as.list(fun_call)[-1]
   arg_names <- names(arg_values)
@@ -505,19 +514,19 @@ check_arg_list <- function(){
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
     cast = arg_cast(),
-    cast_groups = arg_nonnegintnum(NULL),
-    cast_ids = arg_nonnegintnum(NULL),
+    cast_groups = arg_nonnegintnum(length = NULL),
+    cast_ids = arg_nonnegintnum(length = NULL),
     cast_id = arg_nonnegintnum(),
     cast_cov = arg_df(),
     cast_date = arg_date(),
-    cast_dates = arg_date(NULL),
+    cast_dates = arg_date(length = NULL),
     cast_tab = arg_df(),
     casts = arg_df(),
     clean = arg_logical(),
     cleanup = arg_logical(),
     colname = arg_character(),
-    colnames = arg_character(NULL),
-    concept_rec_id = arg_character(NULL),
+    colnames = arg_character(length = NULL),
+    concept_rec_id = arg_character(length = NULL),
     confidence_level = arg_zeroone(),
     control_model = arg_list(),
     control_climate_dl = arg_list(),
@@ -527,23 +536,23 @@ check_arg_list <- function(){
     covariates = arg_df(),
     covariatesTF = arg_logical(),
     data_name = arg_character(),
-    data = arg_character(NULL),
+    data = arg_character(length = NULL),
     data_set = arg_character(),
     data_set_controls = arg_list(),
-    data_sets = arg_character(NULL),
+    data_sets = arg_character(length = NULL),
     date = arg_date(),
-    dates = arg_date(NULL),
+    dates = arg_date(length = NULL),
     df = arg_df(),
     dfl = arg_dfl(),
     dfv = arg_dfv(),
     directory = arg_character(),
     downloads = arg_list(),
-    downloads_versions = arg_character(NULL),
+    downloads_versions = arg_character(length = NULL),
     effort = arg_logical(),
     ensemble = arg_logical(),
     end = arg_date(),
     end_moon = arg_posintnum(),
-    end_moons = arg_posintnum(NULL),
+    end_moons = arg_posintnum(length = NULL),
     extension = arg_extension(),
     filename = arg_character(),
     filenames = arg_list(),
@@ -552,15 +561,16 @@ check_arg_list <- function(){
     filename_cov_casts = arg_character(),
     filename_meta = arg_character(),
     filename_moons = arg_character(),
-    files = arg_character(NULL),  
+    files = arg_character(length = NULL),  
     fillweight = arg_logical(),
     freq = arg_character(),
     from_date = arg_date(),
     hist_cov = arg_df(),
     hist_tab = arg_df(),
-    interpolate = arg_logical(null = TRUE),
-    include_interp = arg_logical(null = TRUE),
-    lag = arg_nonnegintnum(null = TRUE, na = TRUE),
+    bline = arg_logical(null = FALSE),
+    interpolate = arg_logical(),
+    include_interp = arg_logical(),
+    lag = arg_nonnegintnum(na = TRUE),
     lat = arg_numeric(),
     lead = arg_posintnum(),
     lead_time  = arg_nonnegintnum(),
@@ -575,49 +585,51 @@ check_arg_list <- function(){
     min_plots = arg_posintnum(),
     min_traps = arg_posintnum(),
     model = arg_character(),
-    models = arg_character(NULL),
+    models = arg_character(length = NULL),
     moon = arg_posintnum(),
     moons = arg_df(),
-    movedTF = arg_logical(NULL),
-    msg = arg_character(NULL),
+    movedTF = arg_logical(length = NULL),
+    msg = arg_character(length = NULL),
     na_drop = arg_logical(),
     nadot = arg_logical(),
     name = arg_character(),
-    names = arg_character(NULL),
+    names = arg_character(length = NULL),
     ndates = arg_posintnum(),
     nmoons = arg_nonnegintnum(),
     NULLname = arg_logical(),
     obs = arg_df(),
+    only_if_missing = arg_logical(null = FALSE),
     output = arg_character(vals = avail_outputs),
     overwrite = arg_logical(),
     path = arg_character(),
-    paths = arg_character(NULL),
+    paths = arg_character(length = NULL),
     plots = arg_character(vals = avail_plots),
     preds = arg_df(),
     quiet = arg_logical(),
     raw_data = arg_character(),
-    rec_id = arg_character(NULL),
-    rec_version = arg_character(NULL),
-    ref_species = arg_character(NULL),
+    rec_id = arg_character(length = NULL),
+    rec_version = arg_character(length = NULL),
+    ref_species = arg_character(length = NULL),
     retain_target_moons = arg_logical(),
     return_version = arg_logical(),
     rodents = arg_list(),
     rodents_tab = arg_df(),
+    run_status = arg_list(na = TRUE),
     save = arg_logical(),
     sep_char = arg_character(),
     set = arg_character(),
     shape = arg_character(),
     source_name = arg_character(),
     source_url = arg_character(),
-    species = arg_character(NULL, vals = avail_species),
+    species = arg_character(length = NULL, vals = avail_species),
     species_id = arg_character(vals = avail_species),
     start = arg_date(),
     start_moon = arg_posintnum(),
     sub = arg_character(vals = avail_subs),
-    subs = arg_character(NULL, vals = avail_subs),
+    subs = arg_character(length = NULL, vals = avail_subs),
     tail = arg_logical(),
-    target_moons = arg_posintnum(NULL),
-    target_cols = arg_character(NULL),
+    target_moons = arg_posintnum(length = NULL),
+    target_cols = arg_character(length = NULL),
     time = arg_character(),
     title = arg_character(),
     topx = arg_posintnum(),
