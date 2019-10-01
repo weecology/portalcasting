@@ -17,6 +17,12 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Updated messaging 
 * Moved most of the messaging into tidied functions.
 
+### Changed behavior of `prep_rodents_table` and `prep_rodents` 
+* Now there is no `start_moon` argument, and all of the data prior to `end_moon` are returned.
+* This aligns the rodents prep functions with the other (moons, covariates) prep functions.
+* Facilitates use of data prior to `start_moon` in forecasting models (e.g., for distributions of starting state variables).
+* Requires that model functions now explicitly trim the rodents table being used. This has been added to all prefab models. 
+
 ### Fixed codecov targets
 * Previous targets were restrictively high due to earlier near-perfect coverage.
 * A codecov.yml file is now included in the repo (and ignored for the R build) which sets the target arbitrarily at the still-quite-high-but-not-restrively-so 95%. 

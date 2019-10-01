@@ -179,7 +179,7 @@ portalcast_welcome <- function(bline = TRUE, quiet = FALSE,
 portalcast_goodbye <- function(bline = TRUE, quiet = FALSE,
                                arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  msg <- "Cating complete"
+  msg <- "Casting complete"
   messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
   messageq(msg, quiet)
   messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)

@@ -106,6 +106,10 @@ AutoArima <- function(main = ".", data_set = "all",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -173,6 +177,10 @@ NaiveArima <- function(main = ".", data_set = "all",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -239,6 +247,10 @@ ESSS <- function(main = ".", data_set = "all_interp",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -305,6 +317,10 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -386,6 +402,10 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   moons <- read_moons(main = main, control_files = control_files,
                       arg_checks = arg_checks)
   moon_foys <- foy(dates = moons$moondate, arg_checks = arg_checks)
@@ -482,6 +502,10 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level

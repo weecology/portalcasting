@@ -5,7 +5,7 @@
 \title{Prepare a list of rodents data tables for forecasting}
 \usage{
 prep_rodents(main = ".", moons = NULL, data_sets = NULL,
-  end_moon = NULL, start_moon = 217, controls_rodents = NULL,
+  end_moon = NULL, controls_rodents = NULL,
   control_files = files_control(), ref_species = all_species(),
   quiet = TRUE, verbose = FALSE, arg_checks = TRUE)
 }
@@ -23,10 +23,6 @@ Used to set arguments for \code{\link{prep_rodents_table}}.}
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
 
 \item{controls_rodents}{Control \code{list} or \code{list} of control 
 \code{list}s from \code{\link{rodents_controls}} specifying the 

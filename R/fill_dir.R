@@ -181,7 +181,6 @@ fill_data <- function(main = ".", models = prefab_models(),
                        arg_checks = arg_checks)
   data_r <- prep_rodents(main = main, moons = data_m, 
                          data_sets = data_sets, end_moon = end_moon, 
-                         start_moon = start_moon, 
                          controls_rodents = controls_rodents,
                          quiet = quiet, verbose = verbose, 
                          control_files = control_files, 
