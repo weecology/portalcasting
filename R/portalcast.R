@@ -137,7 +137,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
          controls_model = controls_model, controls_rodents = controls_rodents, 
          control_climate_dl = control_climate_dl, 
          control_files = control_files, downloads = downloads, 
-         quiet = quiet, verbose = verbose, arg_checks = TRUE)
+         quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   }
   if(end_moons[nend_moons] != last){
     data_resetting_message(bline = bline, quiet = quiet, 
