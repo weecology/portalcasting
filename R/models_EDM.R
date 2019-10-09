@@ -16,7 +16,9 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   messageq(paste0("  -", model_name, " model for ", data_set), quiet)
   
   #### determine args and settings for making forecasts
-  metadata <- read_metadata(main)
+  metadata <- read_metadata(main = main, 
+                            control_files = control_files, 
+                            arg_checks = arg_checks)
   E_range <- seq(from = 1, to = max_E)
   data_set_controls <- metadata$controls_rodents[[data_set]]
   moons_to_cast <- metadata$rodent_cast_moons
@@ -29,6 +31,11 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   
   #### get the data
   rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & 
+    rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE, arg_checks = arg_checks)
 
@@ -40,8 +47,8 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   for (s in species)
   {
     species_name <- gsub("NA.", "NA", s)
-    messageq(paste0("    -fitting ", model_name, " model for ", species_name), quiet)
-    
+    messageq(paste0("   -", species_name), !verbose)
+
     abund_s <- rodents_table[, c("moon", s)]
     
     n <- nrow(abund_s)
@@ -112,7 +119,8 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   metadata <- update_list(metadata, 
                           models = model_name, 
                           data_sets = data_set, 
-                          controls_rodents = data_set_controls)
+                          controls_rodents = data_set_controls, 
+                          arg_checks = arg_checks)
   cast_out <- list(metadata = metadata, 
                    cast_tab = cast_tab, 
                    model_fits = NULL, 
