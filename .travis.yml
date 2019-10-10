@@ -8,8 +8,10 @@ before_install:
   - sudo apt-get install texlive-latex-base
   - sudo apt-get install gsl-bin libgsl0-dev
 
-r_packages:
+r_binary_packages:
   - runjags
+
+r_packages:
   - covr
 
 script: 
