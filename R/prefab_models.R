@@ -21,7 +21,7 @@
 #'  environmental covariates (max temp, mean temp, min temp, precipitation,
 #'  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
 #'  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
-#'  using \code{\link[rEDM]{simplex}}.
+#'  using \code{\link[rEDM]{simplex}}. \cr \cr
 #'
 #' @details 
 #'  \code{AutoArima} \cr
@@ -49,7 +49,7 @@
 #'  
 #' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
 #'  embedding dimension to search amongst for EDM models. See 
-#'  \code{link[rEDM]{simplex}} for more information.
+#'  \code{\link[rEDM]{simplex}} for more information.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages).
@@ -77,6 +77,11 @@
 #'  \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
 #'  \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
 #'  
+#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical 
+#'  models using Gibbs Sampling. Proceedings of the 3rd International 
+#.  Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X.
+#'  \href{https://bit.ly/33aQ37Y}{URL}.
+#'
 #'  Ye, H., Clark, A., Deyle, E., Munch, S., Cai, J., Cowles, J., Daon, Y., 
 #'  Edwards, A., Keyes, O., Stagge, J., Ushio, M., White, E., and Sugihara G. 
 #'  2018. rEDM: Applications of Empirical Dynamic Modeling from Time Series. 

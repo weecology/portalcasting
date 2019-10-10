@@ -84,7 +84,7 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param update_model_scripts \code{logical} indicator if all of the models'
+#' @param update_prefab_models \code{logical} indicator if all of the models'
 #'  scripts should be updated, even if they do not have an explicit change
 #'  to their model options via \code{controls_model}. Default is
 #'  \code{FALSE}, which leads to only the models in \code{controls_model}

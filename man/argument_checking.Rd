@@ -79,6 +79,7 @@ Argument details used for checking are produced simply via
   \code{add_obs}, 
   \code{append_cast_csv}, 
   \code{arg_checks}, 
+  \code{cast_obs},
   \code{clean},
   \code{cleanup},
   \code{covariatesTF}, 
@@ -95,6 +96,7 @@ Argument details used for checking are produced simply via
   \code{retain_target_moons},
   \code{return_version},
   \code{save}, 
+  \code{silent_jags},
   \code{tail}, 
   \code{total}, 
   \code{unknowns}, 
@@ -119,7 +121,8 @@ Argument details used for checking are produced simply via
   \code{filename_config}, 
   \code{filename_meta},
   \code{filename_moons}, 
-  \code{freq},  
+  \code{freq}, 
+  \code{jags_model},  
   \code{level}, 
   \code{main}, 
   \code{method} (if not \code{NULL}, must be \code{"unwtavg"}),
@@ -157,9 +160,12 @@ Argument details used for checking are produced simply via
   \code{downloads_versions},
   \code{enquote_args}, 
   \code{eval_args}, 
+  \code{factories},
   \code{files}, 
   \code{models} (inputted values are checked via 
    \code{\link{verify_models}}), 
+  \code{modules},
+  \code{monitor},
   \code{msg}, 
   \code{names},
   \code{paths}, 
@@ -201,6 +207,7 @@ Argument details used for checking are produced simply via
   \code{control_climate_dl},
   \code{control_files},
   \code{control_model},
+  \code{control_runjags},
   \code{controls_models},
   \code{controls_rodents},
   \code{data_set_controls},
@@ -233,6 +240,8 @@ Argument details used for checking are produced simply via
 
  Must be length-1 \code{integer}-conformable values can be \code{NULL},
  but cannot be \code{NA}:
+  \code{adapt} (must be positive),
+  \code{burnin} (must be positive),
   \code{cast_id} (must be non-negative),
   \code{end_moon} (must be positive),
   \code{lead} (must be positive),
@@ -242,9 +251,12 @@ Argument details used for checking are produced simply via
   \code{min_plots} (must be positive),
   \code{min_traps} (must be positive),
   \code{moon} (must be positive),
+  \code{nchains} (must be positive),
   \code{ndates} (must be positive),
   \code{nmoons} (must be non-negative),
+  \code{sample} (must be positive),
   \code{start_moon} (must be positive),
+  \code{thin} (must be positive),
   \code{topx} (must be positive).
 
  Must be length-1 \code{integer}-conformable values can be \code{NULL}, 
@@ -258,6 +270,13 @@ Argument details used for checking are produced simply via
   \code{cast_ids} (must be non-negative),
   \code{end_moons} (must be positive),
   \code{target_moons} (must be positive).
+
+ Must be a \code{list} or \code{function}; can be \code{NULL} or \code{NA}:
+  \code{mutate}. 
+
+ Must be a \code{character} vector (any length), \code{list}, or
+ \code{function}; can be \code{NULL} but not \code{NA}:
+  \code{inits}.
 }
 \examples{
  check_arg_list()

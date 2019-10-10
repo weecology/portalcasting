@@ -1,20 +1,30 @@
 #working on a few things:
 #the general jags build
 # USE THE DATA TO INFORM THE STATES
-# components and such
 #messaging 
 #  soften specified path not found errors
 #  pull errors through portalcast from the run_status
 
 
+for when jags_RW is ready
+
+#'  \code{jags_RW} fits a simple random walk using the JAGS (Just Another 
+#'  Gibbs Sampler; Plummer 2003) infrastructure. 
+
+#'
+#' @param control_runjags \code{list} of arguments passed to 
+#'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}
+#'   jags_RW()
+
+#' @rdname prefab_model_functions
+#'
+#' @export
+#'
+
+
 devtools::document()
 devtools::load_all()
 
-
-main <- "~/eff_test"
-setup_dir(main)
-
-xx<-ESSS(main)
 
 
 
@@ -27,26 +37,6 @@ main <- "c:/users/dappe/dropbox/uf/jags_build"
 
 portalcast(main = main, models = c("ESSS"))
 
-
-
-
-
-
-
-devtools::check()
-
-fill_data(main)
-
-
-
-cj_controls <- rodents_control(name = "controls_jags", effort = TRUE, 
-                               level = "Treatment", plots = "Longterm", 
-                               treatment = "control", arg_checks = FALSE)
-controls_jags <- prep_rodents(main = main, data_sets = "controls_jags", 
-                              controls_rodents = cj_controls, 
-                              arg_checks = FALSE)
-
-jags_controls <- model_control(name = "jags", data_sets = "all_jags")
 
 
 

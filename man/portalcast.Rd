@@ -89,6 +89,16 @@ Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 \item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
 for raw file downloading.}
 
+\item{update_prefab_models}{\code{logical} indicator if all of the models'
+scripts should be updated, even if they do not have an explicit change
+to their model options via \code{controls_model}. Default is
+\code{FALSE}, which leads to only the models in \code{controls_model}
+having their scripts re-written. Switching to \code{TRUE} results in the
+models listed in \code{models} having their scripts re-written. \cr \cr
+This is particularly helpful when one is changing the global (with respect
+to the models) options \code{main}, \code{quiet}, \code{verbose}, or
+\code{control_files}.}
+
 \item{bline}{\code{logical} indicator if horizontal break lines should be
 made or not. For toggling separately from the more general \code{quiet}
 argument.}
@@ -107,16 +117,6 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
-
-\item{update_model_scripts}{\code{logical} indicator if all of the models'
-scripts should be updated, even if they do not have an explicit change
-to their model options via \code{controls_model}. Default is
-\code{FALSE}, which leads to only the models in \code{controls_model}
-having their scripts re-written. Switching to \code{TRUE} results in the
-models listed in \code{models} having their scripts re-written. \cr \cr
-This is particularly helpful when one is changing the global (with respect
-to the models) options \code{main}, \code{quiet}, \code{verbose}, or
-\code{control_files}.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned.

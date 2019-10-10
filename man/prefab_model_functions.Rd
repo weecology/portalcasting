@@ -58,7 +58,7 @@ all of the information or not (and thus just the tidy messages).}
 
 \item{max_E}{\code{integer} (or integer \code{numeric}) for the maximum 
 embedding dimension to search amongst for EDM models. See 
-\code{link[rEDM]{simplex}} for more information.}
+\code{\link[rEDM]{simplex}} for more information.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}.}
@@ -94,7 +94,7 @@ Functions used for fitting the prefab models. For detailed
  environmental covariates (max temp, mean temp, min temp, precipitation,
  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
- using \code{\link[rEDM]{simplex}}.
+ using \code{\link[rEDM]{simplex}}. \cr \cr
 }
 \details{
 \code{AutoArima} \cr
@@ -132,6 +132,10 @@ Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
  \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
  \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
  
+ Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical 
+ models using Gibbs Sampling. Proceedings of the 3rd International 
+ \href{https://bit.ly/33aQ37Y}{URL}.
+
  Ye, H., Clark, A., Deyle, E., Munch, S., Cai, J., Cowles, J., Daon, Y., 
  Edwards, A., Keyes, O., Stagge, J., Ushio, M., White, E., and Sugihara G. 
  2018. rEDM: Applications of Empirical Dynamic Modeling from Time Series. 
