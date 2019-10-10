@@ -34,7 +34,8 @@
 #'
 #'  Must be length-1 \code{logical} values, cannot be \code{NULL} or
 #'  \code{NA}: 
-#'   \code{bline}
+#'   \code{bline},
+#'   \code{force_model_updates},
 #'   \code{only_if_missing}.
 #'
 #'  Must be length-1 \code{logical} values, can be \code{NULL}, but cannot be 
@@ -513,6 +514,7 @@ check_arg_list <- function(){
     add_obs = arg_logical(),
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
+    bline = arg_logical(null = FALSE),
     cast = arg_cast(),
     cast_groups = arg_nonnegintnum(length = NULL),
     cast_ids = arg_nonnegintnum(length = NULL),
@@ -563,11 +565,11 @@ check_arg_list <- function(){
     filename_moons = arg_character(),
     files = arg_character(length = NULL),  
     fillweight = arg_logical(),
+    force_model_updates = arg_logical(null = FALSE),
     freq = arg_character(),
     from_date = arg_date(),
     hist_cov = arg_df(),
     hist_tab = arg_df(),
-    bline = arg_logical(null = FALSE),
     interpolate = arg_logical(),
     include_interp = arg_logical(),
     lag = arg_nonnegintnum(na = TRUE),

@@ -2,7 +2,7 @@
 #'
 #' @description This suite of functions manages the downloading and (if 
 #'  needed) unzipping of raw files associated with the directory. \cr \cr
-#'  \code{download} downloads a file from a from a website into the 
+#'  \code{download} downloads a file from a website into the 
 #'  directory, unzipping and cleaning up as needed. \cr \cr
 #'  \code{download_message} creates a customized download message. \cr \cr
 #'  \code{download_url} prepares the URL from the inputs, depending on the

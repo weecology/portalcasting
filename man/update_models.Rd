@@ -5,8 +5,8 @@
 \title{Update models based on user input controls}
 \usage{
 update_models(main = ".", models = NULL, controls_model = NULL,
-  control_files = files_control(), bline = FALSE, quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  update_prefab_models = FALSE, control_files = files_control(),
+  bline = FALSE, quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -40,6 +40,16 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
+\item{update_prefab_models}{\code{logical} indicator if all of the models'
+scripts should be updated, even if they do not have an explicit change
+to their model options via \code{controls_model}. Default is
+\code{FALSE}, which leads to only the models in \code{controls_model}
+having their scripts re-written. Switching to \code{TRUE} results in the
+models listed in \code{models} having their scripts re-written. \cr \cr
+This is particularly helpful when one is changing the global (with respect
+to the models) options \code{main}, \code{quiet}, \code{verbose}, or
+\code{control_files}.}
+
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
@@ -70,7 +80,7 @@ Update model scripts based on the user-defined model control
  \donttest{
   setup_dir()
   cm <- model_control(name = "AutoArima", data_sets = "all")
-  update_models(controls_model = cm)
+  update_prefab_models(controls_model = cm)
  }
 
 }

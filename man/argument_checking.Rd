@@ -67,7 +67,8 @@ Argument details used for checking are produced simply via
 
  Must be length-1 \code{logical} values, cannot be \code{NULL} or
  \code{NA}: 
-  \code{bline}
+  \code{bline},
+  \code{force_model_updates},
   \code{only_if_missing}.
 
  Must be length-1 \code{logical} values, can be \code{NULL}, but cannot be 

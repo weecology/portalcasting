@@ -1,19 +1,54 @@
-working on a few things:
-the logistic build
-the whole "updating models" thingy
-messaging
+#working on a few things:
+#the general jags build
+# USE THE DATA TO INFORM THE STATES
+# components and such
+#messaging 
+#  soften specified path not found errors
+#  pull errors through portalcast from the run_status
+
 
 devtools::document()
 devtools::load_all()
-#main <- "c:/users/dappe/dropbox/uf/logistic_build"
-main <- "c:/users/uf/dropbox/uf/logistic_build"
-#main <- "~/logistic_build"
+
+
+main <- "~/eff_test"
 setup_dir(main)
+
+xx<-ESSS(main)
+
+
+
+main <- "c:/users/dappe/dropbox/uf/jags_build"
+#main <- "c:/users/uf/dropbox/uf/jags_build"
+#main <- "~/logistic_build"
+#setup_dir(main)
+
+
+
+portalcast(main = main, models = c("ESSS"))
+
+
+
+
+
 
 
 devtools::check()
 
-portalcast(main = main, models = c("logistic"))
+fill_data(main)
+
+
+
+cj_controls <- rodents_control(name = "controls_jags", effort = TRUE, 
+                               level = "Treatment", plots = "Longterm", 
+                               treatment = "control", arg_checks = FALSE)
+controls_jags <- prep_rodents(main = main, data_sets = "controls_jags", 
+                              controls_rodents = cj_controls, 
+                              arg_checks = FALSE)
+
+jags_controls <- model_control(name = "jags", data_sets = "all_jags")
+
+
 
 
 

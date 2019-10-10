@@ -69,8 +69,8 @@
 #' @references 
 #'  Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
 #'  F., Razbash S., Wang E., and Yasmeen F. 2018. forecast: Forecasting 
-#'  functions for time series and linear models. 
-#'  \href{http://pkg.robjhyndman.com/forecast}{R package version 8.3}. 
+#'  functions for time series and linear models. R package version 8.3. 
+#'  \href{http://pkg.robjhyndman.com/forecast}{URL}. 
 #'
 #'  Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
 #'  Analysis of Count Time Series Following Generalized Linear Models. 
@@ -80,7 +80,8 @@
 #'  Ye, H., Clark, A., Deyle, E., Munch, S., Cai, J., Cowles, J., Daon, Y., 
 #'  Edwards, A., Keyes, O., Stagge, J., Ushio, M., White, E., and Sugihara G. 
 #'  2018. rEDM: Applications of Empirical Dynamic Modeling from Time Series. 
-#'  Zenodo. \href{http://doi.org/10.5281/zenodo.1935847}{R package version0.7.4}.
+#'  Zenodo. R package version0.7.4 
+#'  \href{http://doi.org/10.5281/zenodo.1935847}{URL}.
 #'  
 #'
 #' @examples

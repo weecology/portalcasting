@@ -28,6 +28,13 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * A codecov.yml file is now included in the repo (and ignored for the R build) which sets the target arbitrarily at the still-quite-high-but-not-restrively-so 95%. 
 * It can be changed if needed in the future.
 
+### Simple EDM model added
+* [addresses](https://github.com/weecology/portalcasting/issues/115)
+
+### Prepared rodents table includes more content
+* Expanded back in time to the start.
+* Added effort columns (all default options in `prefab_rodents_controls` have `effort = TRUE`).
+
 # [portalcasting 0.11.0](https://github.com/weecology/portalcasting/releases/tag/v0.11.0)
 *2019-09-14*
 

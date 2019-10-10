@@ -562,6 +562,16 @@ verify_models <- function(main = ".", models = prefab_models(),
 #' @param bline \code{logical} indicator if horizontal break lines should be
 #'  included in messaging.
 #'
+#' @param update_prefab_models \code{logical} indicator if all of the models'
+#'  scripts should be updated, even if they do not have an explicit change
+#'  to their model options via \code{controls_model}. Default is
+#'  \code{FALSE}, which leads to only the models in \code{controls_model}
+#'  having their scripts re-written. Switching to \code{TRUE} results in the
+#'  models listed in \code{models} having their scripts re-written. \cr \cr
+#'  This is particularly helpful when one is changing the global (with respect
+#'  to the models) options \code{main}, \code{quiet}, \code{verbose}, or
+#'  \code{control_files}.
+#'
 #' @return \code{NULL}. 
 #'
 #' @examples
@@ -574,16 +584,23 @@ verify_models <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 update_models <- function(main = ".", models = NULL,
-                          controls_model = NULL, 
+                          controls_model = NULL, update_prefab_models = FALSE, 
                           control_files = files_control(), bline = FALSE,
                           quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  return_if_null(controls_model)
   if(list_depth(controls_model) == 1){
     controls_model <- list(controls_model)
     names(controls_model) <- controls_model[[1]]$name
   }
-  models <- ifnull(models, names(controls_model))
+  if(update_prefab_models){
+    controls_model <- model_controls(models = models, 
+                                     controls_model = controls_model, 
+                                     quiet = quiet, arg_checks = arg_checks)
+  } else{
+    models <- NULL
+  }
+  return_if_null(c(controls_model, models))
+  models <- unique(c(models, names(controls_model)))
   messageq("Updating model scripts", quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){

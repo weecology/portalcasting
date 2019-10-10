@@ -84,6 +84,16 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param update_model_scripts \code{logical} indicator if all of the models'
+#'  scripts should be updated, even if they do not have an explicit change
+#'  to their model options via \code{controls_model}. Default is
+#'  \code{FALSE}, which leads to only the models in \code{controls_model}
+#'  having their scripts re-written. Switching to \code{TRUE} results in the
+#'  models listed in \code{models} having their scripts re-written. \cr \cr
+#'  This is particularly helpful when one is changing the global (with respect
+#'  to the models) options \code{main}, \code{quiet}, \code{verbose}, or
+#'  \code{control_files}.
+#'
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages). 
 #'
@@ -115,13 +125,15 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                        control_climate_dl = climate_dl_control(),
                        control_files = files_control(),
                        downloads = zenodo_downloads(c("1215988", "833438")), 
-                       bline = TRUE, quiet = FALSE, verbose = FALSE, 
-                       arg_checks = TRUE){
+                       update_prefab_models = FALSE, bline = TRUE, 
+                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
+  return_if_null(models)
   portalcast_welcome(quiet = quiet, arg_checks = arg_checks)
-  update_models(main = main, models = NULL, controls_model = controls_model, 
-                quiet = quiet, verbose = verbose, 
-                control_files = control_files, arg_checks = arg_checks)
+  update_models(main = main, models = models, controls_model = controls_model, 
+                update_prefab_models = update_prefab_models, quiet = quiet,
+                verbose = verbose, control_files = control_files, 
+                arg_checks = arg_checks)
   verify_models(main = main, models = models, quiet = quiet, 
                 arg_checks = arg_checks)
   fill_raw(main = main, downloads = downloads, only_if_missing = TRUE, 

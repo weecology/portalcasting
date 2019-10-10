@@ -11,6 +11,7 @@
 #'  load_trapping_data ndvi summarize_rodent_data weather
 #' @importFrom readr read_csv
 #' @importFrom rlang !! !!! .data quo quos
+#' @importFrom runjags run.jags runjags.options
 #' @importFrom stats AIC lm na.omit predict qnorm quantile rnorm runif
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file packageDescription read.csv sessionInfo
