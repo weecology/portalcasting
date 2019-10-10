@@ -80,7 +80,7 @@ Update model scripts based on the user-defined model control
  \donttest{
   setup_dir()
   cm <- model_control(name = "AutoArima", data_sets = "all")
-  update_prefab_models(controls_model = cm)
+  update_models(controls_model = cm)
  }
 
 }

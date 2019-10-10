@@ -37,7 +37,6 @@ Imports:
     portalr,
     readr,
     rlang,
-    runjags,
     tscount,
     viridis,
     yaml,

@@ -8,7 +8,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### `portalcast` updates model scripts according to `controls_model`
 * Previously, if you changed any controls of a prefab model, you had to manually re-write the models using `fill_models` before running `portalcast`.
-* Using `fill_models` would result in hand-made scripts being overwritted, so a specific function for updating the models was created. 
+* Using `fill_models` would result in hand-made scripts being overwritted, so a specific function (`update_models`) for updating the models was created. 
+* `update_models` by default only updates the models listed in the `controls_model` input, to avoid overwriting model scripts. To change this behavior and also update all of the prefab models' scripts, set `update_prefab_models = TRUE`. This is particularly handy when changing a global (with respect to model scripts) argument: `main`, `quiet`, `verbose`, or `arg_checks`.
 * [addresses](https://github.com/weecology/portalcasting/issues/147)
 
 ### Patching data set bug in plotting
