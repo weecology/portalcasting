@@ -234,9 +234,10 @@ jags_ss <- function(main = ".", data_set = "all",
                               data_sets = data_set,
                               controls_r = data_set_controls,
                               arg_checks = arg_checks)
-  list(metadata = metadata, #cast_tab = cast_tab, 
-model_fits = mods)#, 
-#       model_casts = casts)  
+  list(metadata = metadata,
+       #cast_tab = cast_tab, 
+       model_fits = mods)#, 
+       #       model_casts = casts)  
 }
 
 #' @title Create a control list for a runjags JAGS model run
@@ -247,7 +248,7 @@ model_fits = mods)#,
 #'  that users may be interested in changing, and this function wraps those
 #'  parameters with a few portalcasting-specific parameters into a control
 #'  list for input into reusable functions like \code{\link{jags_ss}} and 
-#'  specific model funcitons like \code{\link{jags_RW}}. 
+#'  specific model functions.
 #'
 #' @param nchains Non-negative \code{integer}-conformable value of the
 #'  number of parallel chains to use. See \code{\link[runjags]{run.jags}}.

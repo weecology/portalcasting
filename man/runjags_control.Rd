@@ -61,7 +61,7 @@ We leverage the \code{\link[runjags]{run.jags}} function in
  that users may be interested in changing, and this function wraps those
  parameters with a few portalcasting-specific parameters into a control
  list for input into reusable functions like \code{\link{jags_ss}} and 
- specific model funcitons like \code{\link{jags_RW}}.
+ specific model functions.
 }
 \examples{
  runjags_control()
