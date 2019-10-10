@@ -9,7 +9,7 @@ before_install:
   - sudo apt-get install gsl-bin libgsl0-dev
 
 r_packages:
-  - run_jags
+  - runjags
   - covr
 
 script: 
