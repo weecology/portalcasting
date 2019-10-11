@@ -7,23 +7,59 @@ jags_RW <- function(main = ".", data_set = "all",
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
 
   monitor <- c("mu", "tau")
-  inits <- function(chain = chain){
+  inits <- function(){
     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
               "base::Super-Duper", "base::Mersenne-Twister")
+    log_past_count <- log(past_count + 0.1)
+    mean_log_past_count <- mean(log_past_count)
+    sd_log_past_count <- sd(log_past_count) * 2
+         
+    diff_log_past_count <- rep(NA, past_N - 1)
+    for(i in 1:(past_N - 1)){
+      diff_count <- log_past_count[i + 1] - log_past_count[i]
+      diff_time <- past_moon[i + 1] - past_moon[i] 
+      diff_log_past_count[i] <- diff_count / diff_time
+    }
+    sd_diff_log_past_count <- sd(diff_log_past_count)
+    var_diff_log_past_count <- sd_diff_log_past_count^2
+    precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+    rate <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
     list(.RNG.name = sample(rngs, 1),
          .RNG.seed = sample(1:1e+06, 1),
-          mu = rnorm(1, 0, 1),
-          tau = rgamma(1, shape = 0.1, rate = 0.1))
+          mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
+          tau = rgamma(1, shape = shape, rate = rate))
   }
   jags_model <- "model {  
     # priors
-    mu ~ dnorm(log(1), 0.25); 
-    tau ~ dgamma(0.1,0.1); 
+    log_past_count <- log(past_count + 0.1)
+    mean_log_past_count <- mean(log_past_count)
+    sd_log_past_count <- sd(log_past_count) * 2
+    var_log_past_count <- sd_log_past_count^2
+    precision_log_past_count <- 1/(var_log_past_count)
+
+    diff_count[1] <- log_past_count[2] - log_past_count[1]
+    diff_time[1] <- past_moon[2] - past_moon[1] 
+    diff_log_past_count[1] <- diff_count[1] / diff_time[1]
+    for(i in 2:(past_N - 1)){
+      diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
+      diff_time[i] <- past_moon[i + 1] - past_moon[i] 
+      diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+    }    
+    sd_diff_log_past_count <- sd(diff_log_past_count)
+    var_diff_log_past_count <- sd_diff_log_past_count^2
+    precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+    rate <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
+    mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
+    tau ~ dgamma(shape, rate); 
    
     # initial state
     X[1] <- mu;
-    pred_count[1] <- exp(X[1]);
-    count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
+    pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.0001));
+    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.0001))) T(0, ntraps[1]);
 
     # through time
     for(i in 2:N) {
@@ -31,10 +67,10 @@ jags_RW <- function(main = ".", data_set = "all",
       predX[i] <- X[i-1];
       checkX[i] ~ dnorm(predX[i], tau); 
       X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-      pred_count[i] <- exp(X[i]);
+      pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.0001));
    
       # observation model
-      count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
+      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.0001))) T(0, ntraps[i]); 
     }
   }"
 
@@ -50,6 +86,21 @@ jags_RW <- function(main = ".", data_set = "all",
 #' @description Provides an API to \code{\link[runjags]{run.jags}} for
 #'  single-species portalcasting models that requires the user only provide
 #'  the JAGS model, initializer, monitor, and control list. 
+#'
+#' @details The data structure constructed internally, which is available to
+#'  the \code{jags_model} and \code{inits} components, contains the following
+#'  elements: \code{count}, \code{moon}, and \code{ntraps} (all three 
+#'  include the forecast horizon as well, with \code{NA} for \code{count},
+#'  \code{moon} extended as expected, and \code{ntraps} using the max number
+#'  of traps); \code{N} (the length of the \code{count} time series); 
+#'  \code{past_count}, \code{past_moon}, and \code{past_ntraps}, which 
+#'  provide all of the historic data that preceeded \code{start_moon}
+#'  (only including samples that are present; all \code{NA} counts are 
+#'  removed as are associated trap count sand moons); \code{past_N} (the 
+#'  length of the \code{past_count} time series); and if desired, 
+#'  \code{covariates} (table of all covariates for the span of \code{moon}).
+#'  and \code{past_covariates} (table of all covariates for the span of 
+#'  \code{past_moon}).
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -106,38 +157,7 @@ jags_RW <- function(main = ".", data_set = "all",
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   monitor <- c("mu", "tau")
-#'   inits <- function(chain = chain){
-#'     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
-#'               "base::Super-Duper", "base::Mersenne-Twister")
-#'     list(.RNG.name = sample(rngs, 1),
-#'          .RNG.seed = sample(1:1e+06, 1),
-#'           mu = rnorm(1, 0, 1),
-#'           tau = rgamma(1, shape = 0.1, rate = 0.1))
-#'   }
-#'   jags_model <- "model {  
-#'     # priors
-#'     mu ~ dnorm(log(1), 0.25); 
-#'     tau ~ dgamma(0.1,0.1); 
-#'   
-#'     # initial state
-#'     X[1] <- mu;
-#'     pred_count[1] <- exp(X[1]);
-#'     count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
 #' 
-#'     # through time
-#'     for(i in 2:N) {
-#'       # Process model
-#'       predX[i] <- X[i-1];
-#'       checkX[i] ~ dnorm(predX[i], tau); 
-#'       X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-#'       pred_count[i] <- exp(X[i]);
-#'   
-#'       # observation model
-#'       count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
-#'     }
-#'   }"
-#'
 #'   jags_ss(jags_model = jags_model, monitor = monitor, inits = inits)
 #'  }
 #'
@@ -161,26 +181,23 @@ jags_ss <- function(main = ".", data_set = "all",
   data_set_controls <- metadata$controls_r[[data_set]]
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  last_cc_moon <- max(metadata$covariate_cast_moons)
+  true_count_lead <- length(metadata$rodent_cast_moons)
+
   if(covariatesTF){
+    last_cc_moon <- max(metadata$covariate_cast_moons)
     covar <- read_covariates(main = main, control_files = control_files,
                              arg_checks = arg_checks)
     covar_lag <- lag_covariates(covariates = covar, lag = lag, 
                                 tail = TRUE, arg_checks = arg_checks)
-    moon_in <- which(covar_lag$moon >= start_moon & 
-                     covar_lag$moon <= last_cc_moon)
+    covar_moon_in <- which(covar_lag$moon >= start_moon & 
+                           covar_lag$moon <= last_cc_moon)
     col_in <- which(colnames(covar_lag) != "source")
-    covar_in <- as.matrix(covar_lag[moon_in, col_in])
+    covar_in <- as.matrix(covar_lag[covar_moon_in, col_in])
+
+    past_covar_moon_in <- which(covar_lag$moon < start_moon)
+    past_covar_in <- as.matrix(covar_lag[covar_moon_in, col_in])
   }
-  moon_in <- which(rodents_table$moon >= start_moon & 
-                   rodents_table$moon <= end_moon)
-  moon <- rodents_table[moon_in, "moon"] 
-  moon <- c(moon, metadata$rodent_cast_moons)
-  ntraps <- rodents_table[moon_in, "ntraps"] 
-  ntraps[which(is.na(ntraps) == TRUE)] <- 0
-  true_lead <- length(metadata$rodent_cast_moons)
-  cast_ntraps <- rep(max(ntraps), true_lead)
-  ntraps <- c(ntraps, cast_ntraps)
+
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE, arg_checks = arg_checks)
   nspecies <- length(species)
@@ -189,17 +206,37 @@ jags_ss <- function(main = ".", data_set = "all",
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
     messageq(paste0("   -", ss), !verbose)
+
+    moon_in <- which(rodents_table$moon >= start_moon & 
+                     rodents_table$moon <= end_moon)
+    past_moon_in <- which(rodents_table$moon < start_moon)
+    moon <- rodents_table[moon_in, "moon"] 
+    moon <- c(moon, metadata$rodent_cast_moons)
+    past_moon <- rodents_table[past_moon_in, "moon"]
+
+    ntraps <- rodents_table[moon_in, "ntraps"] 
+    ntraps[which(is.na(ntraps) == TRUE)] <- 0
+    cast_ntraps <- rep(max(ntraps), true_count_lead)
+    ntraps <- c(ntraps, cast_ntraps)
+    past_ntraps <- rodents_table[past_moon_in, "ntraps"]
+
     species_in <- which(colnames(rodents_table) == s)
     count <- rodents_table[moon_in, species_in]
     if(sum(count, na.rm = TRUE) == 0){
       next()
     }
-
-    cast_count <- rep(NA, true_lead)
+    cast_count <- rep(NA, true_count_lead)
     count <- c(count, cast_count)
- 
-    prior_moon <- which(rodents_table$moon < start_moon)
-    data <- list(count = count, ntraps = ntraps, N = length(count))
+    past_count <- rodents_table[past_moon_in, species_in]
+
+    no_count <- which(is.na(past_count) == TRUE)
+    past_moon <- past_moon[-no_count]
+    past_count <- past_count[-no_count]
+    past_ntraps <- past_ntraps[-no_count]
+
+    data <- list(count = count, ntraps = ntraps, N = length(count),
+                 moon = moon, past_moon = past_moon, past_count = past_count,
+                 past_ntraps = past_ntraps, past_N = length(past_count))
     if(covariatesTF){
       data[["covariates"]] <- covar_in
     }

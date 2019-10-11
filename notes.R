@@ -1,15 +1,30 @@
 #working on a few things:
-#the general jags build
-# USE THE DATA TO INFORM THE STATES
 #messaging 
 #  soften specified path not found errors
 #  pull errors through portalcast from the run_status
 
 
+
+xx <- run.jags(model = jags_model, monitor = monitor, 
+                          inits = inits, data = data, 
+                          n.chains = 3,#control_runjags$nchains, 
+                          adapt = 1e5,#control_runjags$adapt, 
+                          burnin = 1e5,#control_runjags$burnin, 
+                          sample = 1e5,#control_runjags$sample, 
+                          thin = control_runjags$thin, 
+                          modules = control_runjags$modules, 
+                          method = "parallel",#control_runjags$method, 
+                          factories = control_runjags$factories, 
+                          mutate = control_runjags$mutate, 
+                          summarise = FALSE, plots = FALSE)
+summary(xx)
+save(xx, file="xx.RData")
+
 for when jags_RW is ready
 
-#'  \code{jags_RW} fits a simple random walk using the JAGS (Just Another 
-#'  Gibbs Sampler; Plummer 2003) infrastructure. 
+#'  \code{jags_RW} fits a log-scale density random walk with a Poisson 
+#'  observation process using JAGS (Just Another Gibbs Sampler; 
+#'  Plummer 2003) hierarchical Bayesian inference. 
 
 #'
 #' @param control_runjags \code{list} of arguments passed to 
@@ -20,6 +35,22 @@ for when jags_RW is ready
 #'
 #' @export
 #'
+
+#'  \code{jags_RW} fits a hierarchical log-scale density random walk model 
+#'  with a Poisson observation process using the JAGS (Just Another Gibbs 
+#'  Sampler; Plummer 2003) infrastructure. There are two process parameters:
+#'  \code{mu}, the density of the species at the beginning of the time series,
+#'  and \code{tau}, the precision (inverse variance) of the random walk, which
+#'  is Gaussian on the log scale. The observation model has no additional
+#'  parameters. The prior distributions for \code{mu} and \code{tau} are
+#'  informed by the available data collected prior to the start of the data
+#'  used in the time series. \code{mu} is normally distributed with a mean
+#'  equal to the average log-scale density 
+#'  Due to the presence of 0s in the data and the modeling on the log scale,
+#'  an offset of \code{count + 0.1} is used prior to taking the log and then
+#'  the offset is removed after the reconversion (exponentiation)
+#'  as \code{density - 0.1}. 
+#'  
 
 
 devtools::document()

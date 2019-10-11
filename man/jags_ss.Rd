@@ -56,40 +56,25 @@ Provides an API to \code{\link[runjags]{run.jags}} for
  single-species portalcasting models that requires the user only provide
  the JAGS model, initializer, monitor, and control list.
 }
+\details{
+The data structure constructed internally, which is available to
+ the \code{jags_model} and \code{inits} components, contains the following
+ elements: \code{count}, \code{moon}, and \code{ntraps} (all three 
+ include the forecast horizon as well, with \code{NA} for \code{count},
+ \code{moon} extended as expected, and \code{ntraps} using the max number
+ of traps); \code{N} (the length of the \code{count} time series); 
+ \code{past_count}, \code{past_moon}, and \code{past_ntraps}, which 
+ provide all of the historic data that preceeded \code{start_moon}
+ (only including samples that are present; all \code{NA} counts are 
+ removed as are associated trap count sand moons); \code{past_N} (the 
+ length of the \code{past_count} time series); and if desired, 
+ \code{covariates} (table of all covariates for the span of \code{moon}).
+ and \code{past_covariates} (table of all covariates for the span of 
+ \code{past_moon}).
+}
 \examples{
  \donttest{
   setup_dir()
-  monitor <- c("mu", "tau")
-  inits <- function(chain = chain){
-    rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
-              "base::Super-Duper", "base::Mersenne-Twister")
-    list(.RNG.name = sample(rngs, 1),
-         .RNG.seed = sample(1:1e+06, 1),
-          mu = rnorm(1, 0, 1),
-          tau = rgamma(1, shape = 0.1, rate = 0.1))
-  }
-  jags_model <- "model {  
-    # priors
-    mu ~ dnorm(log(1), 0.25); 
-    tau ~ dgamma(0.1,0.1); 
-  
-    # initial state
-    X[1] <- mu;
-    pred_count[1] <- exp(X[1]);
-    count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
-
-    # through time
-    for(i in 2:N) {
-      # Process model
-      predX[i] <- X[i-1];
-      checkX[i] ~ dnorm(predX[i], tau); 
-      X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-      pred_count[i] <- exp(X[i]);
-  
-      # observation model
-      count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
-    }
-  }"
 
   jags_ss(jags_model = jags_model, monitor = monitor, inits = inits)
  }
