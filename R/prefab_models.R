@@ -22,6 +22,9 @@
 #'  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
 #'  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
 #'  using \code{\link[rEDM]{simplex}}. \cr \cr
+#'  \code{jags_RW} fits a log-scale density random walk with a Poisson 
+#'  observation process using JAGS (Just Another Gibbs Sampler; 
+#'  Plummer 2003) hierarchical Bayesian inference. 
 #'
 #' @details 
 #'  \code{AutoArima} \cr
@@ -50,6 +53,9 @@
 #' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
 #'  embedding dimension to search amongst for EDM models. See 
 #'  \code{\link[rEDM]{simplex}} for more information.
+#'
+#' @param control_runjags \code{list} of arguments passed to 
+#'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages).
@@ -99,6 +105,7 @@
 #'   nbsGARCH()
 #'   pevGARCH()
 #'   simplexEDM()
+#'   jags_RW()
 #'  }
 #'
 #' @name prefab_model_functions

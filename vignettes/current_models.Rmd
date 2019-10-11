@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 
-We currently analyze and forecast rodent data at Portal using seven models: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, pevGARCH, and simplexEDM [@PortalPredictions]. Each model has a function with its name (*e.g.*, `ESSS()`) which is called from an associated R script in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
+We currently analyze and forecast rodent data at Portal using eight models: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, pevGARCH, simplexEDM, and jags_RW [@PortalPredictions]. Each model has a function with its name (*e.g.*, `ESSS()`) which is called from an associated R script in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
 
 ### ESSS
 
@@ -79,11 +79,18 @@ Each species is fit using the following (nonexhaustive) sets of the environmenta
   
 The final model is an intercept-only model. The single best model of the 11 is  selected based on AIC. 
 
-## simplexEDM
+### simplexEDM
 
 simplexEDM (simplex projection using Empirical Dynamic Modeling) is a state-space reconstruction model adapted for forecasting. The method uses time-delay embedding to reconstruct a state-space for the dynamics underlying a time series [@Packard1980, @Takens1981]. A forecast from a point in the state space is then computed as a weighted average of the trajectories of nearest neighbors of that point, a minimal algorithm known as "simplex projection" [@Sugihara1990].
 
 In applications to ecological time series, many of the parameters are set automatically, with the exception of the dimension of the time-delay embedding. Here, the embedding dimension ($E$) is selected as the value (between `1` and the `max_E` argument to `simplexEDM()`) that minimizes the mean absolute error over the in-sample portion of the data.
+
+### jags_RW
+
+jags_RW fits a hierarchical log-scale density random walk model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003]. The model itself is very simple, and acts as a placeholder for more complex Bayesian time series. 
+
+There are two process parameters: mu (the density of the species at the beginning of the time series) and tau (the precision (inverse variance) of the random walk, which is Gaussian on the log scale). The observation model has no additional parameters. The prior distributions for mu and tau are informed by the available data collected prior to the start of the data used in the time series. mu is normally distributed with a mean
+equal to the average log-scale density and a variance that is twice as large as the observed variance. Due to the presence of 0s in the data and the modeling on the log scale, an offset of `count + 0.1` is used prior to taking the log and then is removed after the reconversion (exponentiation) as `density - 0.1` (where `density` is on the same scale as `count`, but can take non-integer values). 
 
 ### Ensemble
 

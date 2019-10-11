@@ -36,6 +36,14 @@ elements:
  \item \code{lag}: an \code{integer}-conformable value of the lag to use 
   with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
 } 
+In addition, some models require additional specific elements: 
+\itemize{
+ \item \code{max_E}: \code{integer} (or integer \code{numeric}) 
+  maximum embedding dimension to search amongst for EDM models. See 
+  \code{\link[rEDM]{simplex}} for more information.
+ \item \code{control_runjags}: \code{list} of arguments passed to 
+  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}. 
+}
 If only a single model is added, the name of the model from the element
 \code{name} will be used to name the model's \code{list} in the larger
 \code{list}. If multiple models are added, each element \code{list} must

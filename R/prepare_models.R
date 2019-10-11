@@ -25,7 +25,11 @@ prefab_model_controls <- function(){
                     covariatesTF = TRUE, lag = 6), 
     simplexEDM = list(name = "simplexEDM", 
                       data_sets = c("all_interp", "controls_interp"), 
-                      covariatesTF = FALSE, lag = NA, max_E = 7)
+                      covariatesTF = FALSE, lag = NA, max_E = 7),
+    jags_RW = list(name = "jags_RW", 
+                      data_sets = c("all", "controls"), 
+                      covariatesTF = FALSE, lag = NA,
+                      control_runjags = runjags_control())
   )
 }
 
@@ -85,6 +89,14 @@ prefab_model_controls <- function(){
 #'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
 #'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
 #'  } 
+#'  In addition, some models require additional specific elements: 
+#'  \itemize{
+#'   \item \code{max_E}: \code{integer} (or integer \code{numeric}) 
+#'    maximum embedding dimension to search amongst for EDM models. See 
+#'    \code{\link[rEDM]{simplex}} for more information.
+#'   \item \code{control_runjags}: \code{list} of arguments passed to 
+#'    \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}. 
+#'  }
 #'  If only a single model is added, the name of the model from the element
 #'  \code{name} will be used to name the model's \code{list} in the larger
 #'  \code{list}. If multiple models are added, each element \code{list} must
@@ -291,6 +303,9 @@ prefab_models <- function(){
 #'  embedding dimension to search amongst for EDM models. See 
 #'  \code{\link[rEDM]{simplex}} for more information.
 #'
+#' @param control_runjags \code{list} of arguments passed to 
+#'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.
+#'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr
 #'  \code{model_template}: \code{character}-valued text for a model script 
@@ -308,8 +323,8 @@ prefab_models <- function(){
 write_model <- function(name = NULL, data_sets = NULL, 
                         covariatesTF = NULL, lag = NULL, main = ".", 
                         control_model = NULL, control_files = files_control(),
-                        max_E = NULL, quiet = FALSE, verbose = TRUE, 
-                        arg_checks = TRUE){
+                        control_runjags = NULL, max_E = NULL, quiet = FALSE, 
+                        verbose = TRUE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   name <- ifnull(name, control_model$name)
   prefab_control <- tryCatch(prefab_model_controls()[[name]],
@@ -317,7 +332,8 @@ write_model <- function(name = NULL, data_sets = NULL,
   control_model <- ifnull(control_model, prefab_control[[name]])
   covariatesTF <- ifnull(covariatesTF, control_model$covariatesTF)
   lag <- ifnull(lag, control_model$lag)
-  max_E <- ifnull(max_E, control_model$max_E)
+  control_runjags <- ifnull(control_runjags, control_model$control_runjags)
+  lag <- ifnull(lag, control_model$lag)
   data_sets <- ifnull(data_sets, control_model$data_sets)
   return_if_null(name)
   if(verbose){
@@ -364,6 +380,7 @@ write_model <- function(name = NULL, data_sets = NULL,
   mod_template <- model_template(name = name, data_sets = data_sets, 
                                  covariatesTF = covariatesTF, lag = lag, 
                                  main = main, control_files = control_files,
+                                 control_runjags = control_runjags,
                                  max_E = max_E, quiet = quiet, 
                                  verbose = verbose, arg_checks = arg_checks)
   if (file.exists(mod_path) & control_files$overwrite){
@@ -388,6 +405,7 @@ write_model <- function(name = NULL, data_sets = NULL,
 model_template <- function(name = NULL, data_sets = NULL,
                            covariatesTF = FALSE, lag = NULL, main = ".", 
                            control_files = files_control(), max_E = NULL,
+                           control_runjags = NULL,
                            quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(name)
@@ -408,13 +426,39 @@ model_template <- function(name = NULL, data_sets = NULL,
   if (!is.null(max_E)){
     max_E_arg <- paste0(', max_E = ', max_E)
   }
+  control_runjags_arg <- NULL
+  if (!is.null(control_runjags)){
+    nvals <- length(control_runjags)
+    list_vals <- NULL
+    for(i in 1:nvals){
+      val_name <- names(control_runjags)[1]
+      val_value <- control_runjags[[1]]
+      if(is.character(val_value)){
+        val_value <- paste0('"', val_value, '"')
+      }
+      list_vals <- paste0(val_name, ' = ', val_value)
+    }
+    if(nvals > 1){
+      for(i in 2:nvals){
+        val_name <- names(control_runjags)[i]
+        val_value <- control_runjags[[i]]
+        if(is.character(val_value)){
+          val_value <- paste0('"', val_value, '"')
+        }
+        list_vals <- paste0(list_vals, ', ', val_name, ' = ', val_value)
+      }
+    }
+    control_runjags_arg <- paste0(', control_runjags = runjags_control(', 
+                                 list_vals, ')')
+  }
   ds_args <- paste0('data_set = "', data_sets, '"')
   nds <- length(data_sets)
   out <- NULL
   for(i in 1:nds){
     resp <- paste0('cast_', data_sets[i])
     model_args <- paste0(ds_args[i], lag_arg, main_arg, control_files_arg,
-                         max_E_arg, quiet_arg, verbose_arg, arg_checks_arg) 
+                         control_runjags_arg, max_E_arg, quiet_arg,
+                         verbose_arg, arg_checks_arg) 
     model_fun <- paste0(name, '(', model_args, ');')
     model_line <- paste0(resp, ' <- ', model_fun)
     save_args <- paste0(resp, main_arg, quiet_arg, arg_checks_arg)

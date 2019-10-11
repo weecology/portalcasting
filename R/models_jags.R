@@ -1,3 +1,7 @@
+#' @rdname prefab_model_functions
+#'
+#' @export
+#'
 jags_RW <- function(main = ".", data_set = "all",  
                     control_files = files_control(), 
                     control_runjags = runjags_control(), lag = NA, 
@@ -16,14 +20,14 @@ jags_RW <- function(main = ".", data_set = "all",
 
     log_past_count <- log(past_count + 0.1)
     mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- sd(log_past_count) * 2
+    sd_log_past_count <- sd(log_past_count) * sqrt(2)
     diff_log_past_count <- rep(NA, past_N - 1)
     for(i in 1:(past_N - 1)){
       diff_count <- log_past_count[i + 1] - log_past_count[i]
       diff_time <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count / diff_time
     }
-    sd_diff_log_past_count <- sd(diff_log_past_count) * 2
+    sd_diff_log_past_count <- sd(diff_log_past_count) * sqrt(2)
     var_diff_log_past_count <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
     rate <- 0.1
@@ -40,7 +44,7 @@ jags_RW <- function(main = ".", data_set = "all",
     # priors
     log_past_count <- log(past_count + 0.1)
     mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- sd(log_past_count) * 2
+    sd_log_past_count <- sd(log_past_count) * sqrt(2)
     var_log_past_count <- sd_log_past_count^2
     precision_log_past_count <- 1/(var_log_past_count)
 
@@ -52,7 +56,7 @@ jags_RW <- function(main = ".", data_set = "all",
       diff_time[i] <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count[i] / diff_time[i]
     }    
-    sd_diff_log_past_count <- sd(diff_log_past_count) * 2
+    sd_diff_log_past_count <- sd(diff_log_past_count) * sqrt(2)
     var_diff_log_past_count <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
     rate <- 0.1

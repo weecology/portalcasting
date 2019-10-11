@@ -32,6 +32,11 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Simple EDM model added
 * [addresses](https://github.com/weecology/portalcasting/issues/115)
 
+### JAGS infrastructure added
+* Using the runjags package, with extensive access to the API of `run.jags` via a `control_runjags` `list` (see `runjags_control`).
+* Currently in place with a very simple random walk model. 
+* [addresses](https://github.com/weecology/portalcasting/issues/142)
+
 ### Prepared rodents table includes more content
 * Expanded back in time to the start.
 * Added effort columns (all default options in `prefab_rodents_controls` have `effort = TRUE`).
