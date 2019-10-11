@@ -1,4 +1,6 @@
 #working on a few things:
+# jags_ss: summarizing output like other models
+#
 #messaging 
 #  soften specified path not found errors
 #  pull errors through portalcast from the run_status
@@ -8,9 +10,9 @@
 xx <- run.jags(model = jags_model, monitor = monitor, 
                           inits = inits, data = data, 
                           n.chains = 3,#control_runjags$nchains, 
-                          adapt = 1e5,#control_runjags$adapt, 
-                          burnin = 1e5,#control_runjags$burnin, 
-                          sample = 1e5,#control_runjags$sample, 
+                          adapt = 1e4,#control_runjags$adapt, 
+                          burnin = 1e4,#control_runjags$burnin, 
+                          sample = 1e4,#control_runjags$sample, 
                           thin = control_runjags$thin, 
                           modules = control_runjags$modules, 
                           method = "parallel",#control_runjags$method, 
@@ -60,7 +62,7 @@ devtools::load_all()
 
 
 main <- "c:/users/dappe/dropbox/uf/jags_build"
-#main <- "c:/users/uf/dropbox/uf/jags_build"
+main <- "c:/users/uf/dropbox/uf/jags_build"
 #main <- "~/logistic_build"
 #setup_dir(main)
 

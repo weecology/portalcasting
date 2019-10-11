@@ -1,3 +1,4 @@
+#' @importFrom coda HPDinterval
 #' @importFrom curl curl
 #' @importFrom DesignLibrary match.call.defaults
 #' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join 
