@@ -247,6 +247,7 @@ Argument details used for checking are produced simply via
   \code{lead} (must be positive),
   \code{lead_time} (must be non-negative),
   \code{lev},
+  \code{max_E} (must be positive, 1 to 24),
   \code{min_observed} (must be positive),
   \code{min_plots} (must be positive),
   \code{min_traps} (must be positive),

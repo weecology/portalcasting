@@ -7,12 +7,12 @@
 \usage{
 write_model(name = NULL, data_sets = NULL, covariatesTF = NULL,
   lag = NULL, main = ".", control_model = NULL,
-  control_files = files_control(), quiet = FALSE, verbose = TRUE,
-  arg_checks = TRUE)
+  control_files = files_control(), max_E = NULL, quiet = FALSE,
+  verbose = TRUE, arg_checks = TRUE)
 
 model_template(name = NULL, data_sets = NULL, covariatesTF = FALSE,
   lag = NULL, main = ".", control_files = files_control(),
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+  max_E = NULL, quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}
@@ -40,6 +40,10 @@ is \code{NULL}.}
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{max_E}{\code{integer} (or integer \code{numeric}) for the maximum 
+embedding dimension to search amongst for EDM models. See 
+\code{\link[rEDM]{simplex}} for more information.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 

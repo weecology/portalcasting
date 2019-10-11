@@ -4,10 +4,10 @@ jags_RW <- function(main = ".", data_set = "all",
                     quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
+  messageq(paste0("  -jags_RW for ", data_set), quiet)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
-
   monitor <- c("mu", "tau")
-  inits <- function(data = data, chain = chain){
+  inits <- function(data = NULL){
     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
               "base::Super-Duper", "base::Mersenne-Twister")
     past_N <- data$past_N 
@@ -29,10 +29,12 @@ jags_RW <- function(main = ".", data_set = "all",
     rate <- 0.1
     shape <- precision_diff_log_past_count * rate
 
-    list(.RNG.name = sample(rngs, 1),
-         .RNG.seed = sample(1:1e+06, 1),
-          mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
-          tau = rgamma(1, shape = shape, rate = rate))
+    function(chain = chain){
+      list(.RNG.name = sample(rngs, 1),
+           .RNG.seed = sample(1:1e+06, 1),
+            mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
+            tau = rgamma(1, shape = shape, rate = rate))
+    }
   }
   jags_model <- "model {  
     # priors
@@ -61,22 +63,20 @@ jags_RW <- function(main = ".", data_set = "all",
    
     # initial state
     X[1] <- mu;
-    pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
-    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
-
+    pred_count[1] <- exp(X[1]);
+    count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
     # through time
     for(i in 2:N) {
       # Process model
       predX[i] <- X[i-1];
       checkX[i] ~ dnorm(predX[i], tau); 
       X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-      pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
+      pred_count[i] <- exp(X[i]);
    
       # observation model
-      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+      count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
     }
   }"
-
   jags_ss(main = main, data_set = data_set, control_files = control_files,
           control_runjags = control_runjags, jags_model = jags_model,
           monitor = monitor, inits = inits, lag = lag, quiet = quiet, 
@@ -174,8 +174,8 @@ jags_ss <- function(main = ".", data_set = "all",
                     quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
-  runjags.options(silent.jags = FALSE,#control_runjags$silent_jags, 
-                  silent.runjags = FALSE)#control_runjags$silent_jags)
+  runjags.options(silent.jags = control_runjags$silent_jags, 
+                  silent.runjags = control_runjags$silent_jags)
   rodents_table <- read_rodents_table(main = main, data_set = data_set, 
                                       arg_checks = arg_checks)
 
@@ -283,8 +283,7 @@ jags_ss <- function(main = ".", data_set = "all",
       pred_cols <- grep("pred_count", colnames(vals))
       vals <- vals[ , pred_cols]
       point_forecast <- round(apply(vals, 2, mean), 3)
-return(vals)
-      HPD <- HPDinterval(vals)
+      HPD <- HPDinterval(as.mcmc(vals))
       lower_cl <- round(HPD[ , "lower"], 3)
       upper_cl <- round(HPD[ , "upper"], 3)
       casts_i <- data.frame(Point.Forecast = point_forecast,
@@ -388,9 +387,9 @@ return(vals)
 #'
 #' @export
 #'
-runjags_control <- function(nchains = 3, adapt = 1e3, burnin = 1e3, 
-                            sample = 1e3, thin = 1, modules = "", 
-                            method = "parallel", factories = "", 
+runjags_control <- function(nchains = 2, adapt = 1e4, burnin = 1e3, 
+                            sample = 1e4, thin = 1, modules = "", 
+                            method = "interruptible", factories = "", 
                             mutate = NA, cast_obs = TRUE, silent_jags = TRUE,
                             arg_checks = TRUE){
   check_args(arg_checks = arg_checks)

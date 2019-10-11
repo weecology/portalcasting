@@ -1,5 +1,21 @@
+devtools::document()
+devtools::load_all()
+
+
+
+main <- "c:/users/dappe/dropbox/uf/jags_build"
+#main <- "c:/users/uf/dropbox/uf/jags_build"
+#main <- "~/logistic_build"
+#setup_dir(main)
+
+jj <- jags_RW(main)
+plot(jj$model_fits[[1]])
+
+
+
+
 #working on a few things:
-# jags_ss: summarizing output like other models
+# jags_RW: incorporate into prefab models!
 #
 #messaging 
 #  soften specified path not found errors
@@ -55,18 +71,6 @@ for when jags_RW is ready
 #'  
 
 
-devtools::document()
-devtools::load_all()
-
-
-
-
-main <- "c:/users/dappe/dropbox/uf/jags_build"
-main <- "c:/users/uf/dropbox/uf/jags_build"
-#main <- "~/logistic_build"
-#setup_dir(main)
-
-
 
 portalcast(main = main, models = c("ESSS"))
 
@@ -105,3 +109,5 @@ devtools::test(filter="17")
 devtools::test(filter="18")
 devtools::test(filter="19")
 devtools::test(filter="20")
+devtools::test(filter="21")
+devtools::test(filter="22")

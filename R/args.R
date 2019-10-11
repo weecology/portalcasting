@@ -214,6 +214,7 @@
 #'   \code{lead} (must be positive),
 #'   \code{lead_time} (must be non-negative),
 #'   \code{lev},
+#'   \code{max_E} (must be positive, 1 to 24),
 #'   \code{min_observed} (must be positive),
 #'   \code{min_plots} (must be positive),
 #'   \code{min_traps} (must be positive),
@@ -550,6 +551,7 @@ check_arg_list <- function(){
   avail_subs <- c("casts", "models", "raw", "data", "tmp")
   avail_treatments <- c("control")
   avail_winners <- c("hist", "cast")
+  avail_max_Es <- 1:24
 
   list(
     adapt = arg_posintnum(),
@@ -631,9 +633,10 @@ check_arg_list <- function(){
     level = arg_character(),
     lon = arg_numeric(),
     main = arg_character(),
+    max_E = arg_nonnegintnum(vals = avail_max_Es),
     metadata = arg_list(),
     method = arg_character(vals = avail_methods),
-    min_lag  = arg_nonnegintnum(na = TRUE),
+    min_lag = arg_nonnegintnum(na = TRUE),
     min_observed = arg_posintnum(),
     min_plots = arg_posintnum(),
     min_traps = arg_posintnum(),

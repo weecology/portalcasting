@@ -286,6 +286,10 @@ prefab_models <- function(){
 #' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'  
+#' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
+#'  embedding dimension to search amongst for EDM models. See 
+#'  \code{\link[rEDM]{simplex}} for more information.
 #'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr
@@ -304,7 +308,7 @@ prefab_models <- function(){
 write_model <- function(name = NULL, data_sets = NULL, 
                         covariatesTF = NULL, lag = NULL, main = ".", 
                         control_model = NULL, control_files = files_control(),
-                        quiet = FALSE, verbose = TRUE, 
+                        max_E = NULL, quiet = FALSE, verbose = TRUE, 
                         arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   name <- ifnull(name, control_model$name)
@@ -313,6 +317,7 @@ write_model <- function(name = NULL, data_sets = NULL,
   control_model <- ifnull(control_model, prefab_control[[name]])
   covariatesTF <- ifnull(covariatesTF, control_model$covariatesTF)
   lag <- ifnull(lag, control_model$lag)
+  max_E <- ifnull(max_E, control_model$max_E)
   data_sets <- ifnull(data_sets, control_model$data_sets)
   return_if_null(name)
   if(verbose){
@@ -359,8 +364,8 @@ write_model <- function(name = NULL, data_sets = NULL,
   mod_template <- model_template(name = name, data_sets = data_sets, 
                                  covariatesTF = covariatesTF, lag = lag, 
                                  main = main, control_files = control_files,
-                                 quiet = quiet, verbose = verbose,
-                                 arg_checks = arg_checks)
+                                 max_E = max_E, quiet = quiet, 
+                                 verbose = verbose, arg_checks = arg_checks)
   if (file.exists(mod_path) & control_files$overwrite){
     verb <- ifelse(verbose, "Updating ", "")
     msgM <- paste0("  -", verb, name)
@@ -382,7 +387,7 @@ write_model <- function(name = NULL, data_sets = NULL,
 #'
 model_template <- function(name = NULL, data_sets = NULL,
                            covariatesTF = FALSE, lag = NULL, main = ".", 
-                           control_files = files_control(),
+                           control_files = files_control(), max_E = NULL,
                            quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(name)
@@ -399,13 +404,17 @@ model_template <- function(name = NULL, data_sets = NULL,
   if (covariatesTF){
     lag_arg <- paste0(', lag = ', lag)
   }
+  max_E_arg <- NULL
+  if (!is.null(max_E)){
+    max_E_arg <- paste0(', max_E = ', max_E)
+  }
   ds_args <- paste0('data_set = "', data_sets, '"')
   nds <- length(data_sets)
   out <- NULL
   for(i in 1:nds){
     resp <- paste0('cast_', data_sets[i])
     model_args <- paste0(ds_args[i], lag_arg, main_arg, control_files_arg,
-                         quiet_arg, verbose_arg, arg_checks_arg) 
+                         max_E_arg, quiet_arg, verbose_arg, arg_checks_arg) 
     model_fun <- paste0(name, '(', model_args, ');')
     model_line <- paste0(resp, ' <- ', model_fun)
     save_args <- paste0(resp, main_arg, quiet_arg, arg_checks_arg)
