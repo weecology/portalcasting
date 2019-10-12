@@ -13,7 +13,7 @@ The `portalcasting` package contains the functions used for continuous
 analysis and forecasting of [Portal rodent populations](https://portal.weecology.org/) 
 ([code repository](https://github.com/weecology/portalPredictions),
 [output website](http://portal.naturecast.org/),
-[Zenodo archive](https://zenodo.org/record/2543733)).
+[Zenodo archive](https://doi.org/10.5281/zenodo.833438)).
 
 `portalcasting`'s functions are also portable, allowing
 users to set up a fully-functional replica repository on a local or 
@@ -103,4 +103,5 @@ forecasts, and James Brown for establishing the Portal Project.
 All authors conceived the ideas, designed methodology, and developed the 
 automated forecasting system. J. L. Simonis led the transition of code from
 the [Portal Predictions repo](https://github.com/weecology/portalPredictions)
-to `portalcasting`. 
+to `portalcasting`. S. K. M. Ernest coded the `NaiveArima` model, H. Ye coded the
+`simplexEDM` model, and J. L. Simonis coded the `jags_RW` model.
