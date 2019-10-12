@@ -29,6 +29,8 @@ Here, we assume the user has already run through a basic installation, set up, a
 
 Unlike previous versions of **portalcasting**, starting with v0.9.0, there are very few formal requirements for the output of a model. Indeed, a model does not inherently need to produce any particular output to be valid and run. Rather, if the user desires the output to be archived with the other cast output, they must run the function `save_cast_output()` in their script, which requires that the `cast` argument be a list. If the list contains elements named `metadata`, `cast_tab`, `model_fits`, or `model_casts`, they are saved out (see `save_cast_output()`).
 
+
+
 ## Set up the directory
 
 To allow for a more flexible environment, here we use the `setup_sandbox()` function to make and fill our directory, which we house at `"~/sandbox_1"`:
@@ -83,7 +85,7 @@ As you can see, the model metadata contains a lot of key information used to fit
 
 ### Adding a data set
 
-To add "newdata" to the available data set, it is important to recognize that the rodent preparation functions point directly to the [**portalr** `summarize_rodent_data` function](https://weecology.github.io/portalr/reference/summarize_rodent_data.html), which allows for flexible data customization. 
+To add "newdata" to the available data sets, it is important to recognize that the rodent preparation functions point directly to the [**portalr** `summarize_rodent_data` function](https://weecology.github.io/portalr/reference/summarize_rodent_data.html), which allows for flexible data customization. 
 
 **portalcasting** turns the arguments in `summarize_rodent_data` into arguments in `rodents_control()`, which sets default values for most arguments, but does require an input for `name`, which names the data set, otherwise it will return `NULL`. Here, we create the data control list and call it `newdata_controls`, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the `prep_rodents()` function, which returns the data set to the console and saves it in the `data` sub-directory (Note that we **must** set `arg_checks = FALSE` to allow for the creation and use of the non-standard rodents data configuration.)
 
@@ -153,7 +155,7 @@ select_casts(main = main)
     + Create a data control list called `newdata_controls` using `rodents_control`
 4. Run model script using `portalcast`
     + Include `models = "newmod"` to tell the function to use the new model
-    + Include `controls_models = newmod_controls` to tell the function what the model needs
+    + Include `controls_model = newmod_controls` to tell the function what the model needs
     + Include `controls_rodents = newdata_controls` to tell the function how to configure the new data set
     + Include `arg_checks = FALSE` to allow the function to use non-standard inputs
 
@@ -262,4 +264,46 @@ Once you are all ready to go, submit the code on your branch as a [pull request]
 7. Run tests and checks    
 8. Submit the code as a pull request on GitHub
 
+## Applying existing models to new data sets
 
+This vignette focused on adding models and data in combination, but users may also be interested in just adding data sets to existing models. To accomplish this, a user should follow a restricted version of the tasks covered above. 
+
+Specifically, the user does not need to create a new model script or function and its associated control list, but rather just update the existing control list for the model of interest to include the new data sets.
+
+One noteworthy argument is `update_prefab_models` which is by default `FALSE`, but the user will need to switch to `TRUE` for this.
+
+### Checklist for sandboxing a new data set with an existing model (e.g., adding interpolated exclosure data to ESSS)
+
+1. Create a model control list called `ESSS_controls` using `model_control`
+2. Add "interpolated exclosure data"
+    + Create a data control list called `exclosure_interp_controls` using `rodents_control`
+3. Run model script using `portalcast`
+    + Set `update_prefab_models = TRUE`
+    + Include `models = "ESSS"` to tell the function to use the new model
+    + Include `controls_model = ESSS_controls` to tell the function what the model needs
+    + Include `controls_rodents = exclosure_interp_controls` to tell the function how to configure the new data set
+    + Include `arg_checks = FALSE` to allow the function to use non-standard inputs
+
+```{r, eval=FALSE}
+main <- "~/portalcasting_testing"
+setup_dir(main = main)
+ESSS_controls <- prefab_model_controls()$ESSS
+ESSS_controls$data_sets <- c(ESSS_controls$data_sets, "exclosure_interp")
+exclosure_interp_controls <- rodents_control(name = "exclosure_interp", 
+                                             interpolate = TRUE,
+                                             level = "Treatment", 
+                                             treatment = "exclosure",
+                                             arg_checks = FALSE)
+portalcast(main = main, models = "ESSS", controls_model = ESSS_controls, 
+           update_prefab_models = TRUE,  
+           controls_rodents = exclosure_interp_controls, arg_checks = FALSE)
+```
+
+### Checklist for adding a new data set for an existing model (e.g., adding interpolated exclosure data to ESSS) in the production pipeline
+
+1. Create a branch from the master on the [GitHub repo](https://github.com/weecology/portalcasting)
+2. Put the new version of the `ESSS_controls` list into the `prefab_model_controls` in the `prepare_models.R` script
+5. Put the `exclosure_interp_controls` list into the `prefab_rodents_controls` in the `prepare_rodents.R` script
+6. Add tests
+7. Run tests and checks    
+8. Submit the code as a pull request on GitHub

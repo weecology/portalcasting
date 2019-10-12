@@ -1,7 +1,7 @@
 ---
 title: "Current Models"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-author: "Juniper L. Simonis"
+author: "Juniper L. Simonis, Hao Ye, and S. K. Morgan Ernest"
 output: rmarkdown::html_vignette
 bibliography: refs.bibtex
 vignette: >

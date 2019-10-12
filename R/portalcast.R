@@ -130,7 +130,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
   check_args(arg_checks = arg_checks)
   return_if_null(models)
   mainp <- main_path(main = main, arg_checks = arg_checks)
-  verify(path = mainp, arg_checks = arg_checks)
+  verify(paths = mainp, arg_checks = arg_checks)
   portalcast_welcome(quiet = quiet, arg_checks = arg_checks)
   update_models(main = main, models = models, controls_model = controls_model, 
                 update_prefab_models = update_prefab_models, quiet = quiet,

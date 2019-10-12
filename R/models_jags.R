@@ -101,7 +101,7 @@ jags_RW <- function(main = ".", data_set = "all",
 #'  \code{moon} extended as expected, and \code{ntraps} using the max number
 #'  of traps); \code{N} (the length of the \code{count} time series); 
 #'  \code{past_count}, \code{past_moon}, and \code{past_ntraps}, which 
-#'  provide all of the historic data that preceeded \code{start_moon}
+#'  provide all of the historic data that preceded \code{start_moon}
 #'  (only including samples that are present; all \code{NA} counts are 
 #'  removed as are associated trap count sand moons); \code{past_N} (the 
 #'  length of the \code{past_count} time series); and if desired, 

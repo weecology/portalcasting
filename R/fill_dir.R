@@ -269,7 +269,7 @@ fill_raw <- function(main = ".",
   check_args(arg_checks = arg_checks)
   return_if_null(downloads)
   mainp <- main_path(main = main, arg_checks = arg_checks)
-  verify(path = mainp, arg_checks = arg_checks)
+  verify(paths = mainp, arg_checks = arg_checks)
   if(list_depth(downloads) == 1){
     downloads <- list(downloads)
   }

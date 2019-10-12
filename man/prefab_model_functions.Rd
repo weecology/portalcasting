@@ -135,12 +135,12 @@ Functions used for fitting the prefab models. For detailed
 
 }
 \references{
-Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
- F., Razbash S., Wang E., and Yasmeen F. 2018. forecast: Forecasting 
- functions for time series and linear models. R package version 8.3. 
- \href{http://pkg.robjhyndman.com/forecast}{URL}. 
+Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., 
+ Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. 
+ forecast: Forecasting functions for time series and linear models. 
+ R package version 8.3. \href{http://pkg.robjhyndman.com/forecast}{URL}. 
 
- Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
+ Liboschik, T., Fokianos, K., and Fried, R. 2017. tscount: An R Package for 
  Analysis of Count Time Series Following Generalized Linear Models. 
  \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
  \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
