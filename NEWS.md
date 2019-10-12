@@ -2,6 +2,21 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.13.0](https://github.com/weecology/portalcasting/releases/tag/v0.13.0)
+*2019-10-12*
+
+### Full writing of `control_files` in model scripts
+* Previously, the controls list for the files in the model scripts was taken from the environment in which the script was run, which opens the script to everything, which is undesirable.
+* After the need to include a control list for runjags models forced an explicit writing of the list inputs, the code was available to transfer to the files control list.
+* This does mean that the function calls in the scripts are now super long and explicit, but that's ok.
+* To avoid super long model script lines (where event default inputs are repeated in the list functions), a function `control_list_arg` was made to generalize what was coded up from the runjags list for use also with the files control list. This function writes a script component that only includes arguments to the list function that are different from the formal definition. 
+
+# portalcasting 0.12.1
+*2019-10-12*
+
+### Fixes to the pkgdown site
+* rmarkdown v1.16.0 has some issues with rendering images, so forcing use of v1.16.1 for now.
+* Inclusion of new functions in reference list.
 
 # [portalcasting 0.12.0](https://github.com/weecology/portalcasting/releases/tag/v0.12.0)
 *2019-10-11*
