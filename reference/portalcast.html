@@ -41,8 +41,7 @@
  portalcast wraps around cast to allow multiple runs of 
  multiple models, with data preparation as needed between runs occurring
  via prep_data.  
- cast runs a single cast of multiple models, using the data as
- prepared by prep_data." />
+ cast runs a single cast of multiple models across data sets." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -152,8 +151,7 @@
  <code>portalcast</code> wraps around <code>cast</code> to allow multiple runs of 
  multiple models, with data preparation as needed between runs occurring
  via <code>prep_data</code>. <br /> <br />
- <code>cast</code> runs a single cast of multiple models, using the data as
- prepared by <code>prep_data</code>.</p>
+ <code>cast</code> runs a single cast of multiple models across data sets.</p>
     </div>
 
     <pre class="usage"><span class='fu'>portalcast</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(), <span class='kw'>end_moons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -162,14 +160,18 @@
   <span class='kw'>controls_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='rodents_controls.html'>rodents_controls</a></span>(),
   <span class='kw'>control_climate_dl</span> <span class='kw'>=</span> <span class='fu'><a href='download_climate_casts.html'>climate_dl_control</a></span>(),
   <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
-  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)),
+  <span class='kw'>update_prefab_models</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>cast</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(), <span class='kw'>moons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(),
+<span class='fu'>cast</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(), <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start_moon</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>confidence_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>cast_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(), <span class='kw'>controls_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>controls_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='rodents_controls.html'>rodents_controls</a></span>(),
-  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>control_climate_dl</span> <span class='kw'>=</span> <span class='fu'><a href='download_climate_casts.html'>climate_dl_control</a></span>(),
+  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
+  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)), <span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -217,17 +219,21 @@ using <code><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></code>.<
     <tr>
       <th>controls_model</th>
       <td><p>Additional controls for models not in the prefab 
-set. <br /> 
+set or for overriding controls of a prefab model (for example when 
+applying a model to a new data set). <br /> 
 A <code>list</code> of a single model's script-writing controls or a
 <code>list</code> of <code>list</code>s, each of which is a single model's 
 script-writing controls. <br /> 
-Presently, each model's script writing controls
-should include three elements: <code>name</code> (a <code>character</code> value of 
-the model name), <code>covariates</code> (a <code>logical</code> indicator of if the 
-model needs covariates), and <code>lag</code> (an <code>integer</code>-conformable 
-value of the lag to use with the covariates or <code>NA</code> if 
-<code>covariates = FALSE</code>). <br /> 
-If only a single model is added, the name of 
+Presently, each model's script writing controls should include four 
+elements:</p><ul>
+<li><p><code>name</code>: a <code>character</code> value of the model name.</p></li>
+<li><p><code>data_sets</code>: a <code>character</code> vector of the data set names
+  that the model is applied to.</p></li>
+<li><p><code>covariatesTF</code>: a <code>logical</code> indicator of if the 
+  model needs covariates.</p></li>
+<li><p><code>lag</code>: an <code>integer</code>-conformable value of the lag to use 
+  with the covariates or <code>NA</code> if <code>covariatesTF = FALSE</code>.</p></li>
+</ul><p>If only a single model's controls are included, the name of 
 the model from the element <code>name</code> will be used to name the model's
 <code>list</code> in the larger <code>list</code>. If multiple models are added, each
 element <code>list</code> must be named according to the model and the
@@ -257,6 +263,24 @@ Generally shouldn't need to be edited. See <code><a href='files_control.html'>fi
 for raw file downloading.</p></td>
     </tr>
     <tr>
+      <th>update_prefab_models</th>
+      <td><p><code>logical</code> indicator if all of the models'
+scripts should be updated, even if they do not have an explicit change
+to their model options via <code>controls_model</code>. Default is
+<code>FALSE</code>, which leads to only the models in <code>controls_model</code>
+having their scripts re-written. Switching to <code>TRUE</code> results in the
+models listed in <code>models</code> having their scripts re-written. <br /> <br />
+This is particularly helpful when one is changing the global (with respect
+to the models) options <code>main</code>, <code>quiet</code>, <code>verbose</code>, or
+<code>control_files</code>.</p></td>
+    </tr>
+    <tr>
+      <th>bline</th>
+      <td><p><code>logical</code> indicator if horizontal break lines should be
+made or not. For toggling separately from the more general <code>quiet</code>
+argument.</p></td>
+    </tr>
+    <tr>
       <th>quiet</th>
       <td><p><code>logical</code> indicator if progress messages should be
 quieted.</p></td>
@@ -277,10 +301,6 @@ strict argument expectations. Setting <code>arg_checks = FALSE</code> triggers
 many/most/all enclosed functions to not check any arguments using 
 <code><a href='argument_checking.html'>check_args</a></code>, and as such, <em>caveat emptor</em>.</p></td>
     </tr>
-    <tr>
-      <th>moons</th>
-      <td><p>Moons <code>data.frame</code>. See <code><a href='prepare_moons.html'>prep_moons</a></code>.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -288,10 +308,11 @@ many/most/all enclosed functions to not check any arguments using
     <p>Results are saved to files, <code>NULL</code> is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Multiple models can be run together on the same data and 
- multiple runs of a model (e.g., with a rolling origin) can be initiated
- together using <code>portalcast</code> and <code>cast</code> runs the individual
- instances.</p>
+    <p>Multiple models can be run together on the multiple, varying 
+ data sets for a single new moon using <code>cast</code>. <code>portalcast</code>
+ wraps around <code>cast</code>, providing updating, verification, and resetting
+ utilities as well as facilitating multiple runs of <code>cast</code> across 
+ new moons (e.g., when using a rolling origin).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='co'># \donttest{</span>

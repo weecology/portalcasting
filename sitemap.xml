@@ -64,13 +64,13 @@
     <loc>https://weecology.github.io/portalcasting/reference/files_control.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/fill_casts_message.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/fill_directory.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/foy.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/jags_ss.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/lag_covariates.html</loc>
@@ -86,6 +86,9 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/messageq.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/messageq_break.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/model_control.html</loc>
@@ -184,6 +187,9 @@
     <loc>https://weecology.github.io/portalcasting/reference/rodents_controls.html</loc>
   </url>
   <url>
+    <loc>https://weecology.github.io/portalcasting/reference/runjags_control.html</loc>
+  </url>
+  <url>
     <loc>https://weecology.github.io/portalcasting/reference/save_cast_output.html</loc>
   </url>
   <url>
@@ -206,6 +212,9 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/update_list.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/update_models.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/verify_and_create.html</loc>

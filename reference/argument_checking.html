@@ -84,7 +84,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -225,6 +225,11 @@ checked.</p></td>
  simple evaluation of, e.g., element names of a <code>list</code>; see the 
  source code). <br /></p>
 <p>Usage rules for arguments are as follows: <br /></p>
+<p>Must be length-1 <code>logical</code> values, cannot be <code>NULL</code> or
+ <code>NA</code>: 
+  <code>bline</code>,
+  <code>force_model_updates</code>,
+  <code>only_if_missing</code>.</p>
 <p>Must be length-1 <code>logical</code> values, can be <code>NULL</code>, but cannot be 
  <code>NA</code>: 
   <code>add_error</code>,
@@ -233,6 +238,7 @@ checked.</p></td>
   <code>add_obs</code>, 
   <code>append_cast_csv</code>, 
   <code>arg_checks</code>, 
+  <code>cast_obs</code>,
   <code>clean</code>,
   <code>cleanup</code>,
   <code>covariatesTF</code>, 
@@ -249,9 +255,11 @@ checked.</p></td>
   <code>retain_target_moons</code>,
   <code>return_version</code>,
   <code>save</code>, 
+  <code>silent_jags</code>,
   <code>tail</code>, 
   <code>total</code>, 
   <code>unknowns</code>, 
+  <code>update_prefab_models</code>, 
   <code>verbose</code>,
   <code>with_census</code>,
   <code>zero_drop</code>.</p>
@@ -271,7 +279,8 @@ checked.</p></td>
   <code>filename_config</code>, 
   <code>filename_meta</code>,
   <code>filename_moons</code>, 
-  <code>freq</code>,  
+  <code>freq</code>, 
+  <code>jags_model</code>,  
   <code>level</code>, 
   <code>main</code>, 
   <code>method</code> (if not <code>NULL</code>, must be <code>"unwtavg"</code>),
@@ -308,9 +317,12 @@ checked.</p></td>
   <code>downloads_versions</code>,
   <code>enquote_args</code>, 
   <code>eval_args</code>, 
+  <code>factories</code>,
   <code>files</code>, 
   <code>models</code> (inputted values are checked via 
    <code><a href='verify_models.html'>verify_models</a></code>), 
+  <code>modules</code>,
+  <code>monitor</code>,
   <code>msg</code>, 
   <code>names</code>,
   <code>paths</code>, 
@@ -348,6 +360,7 @@ checked.</p></td>
   <code>control_climate_dl</code>,
   <code>control_files</code>,
   <code>control_model</code>,
+  <code>control_runjags</code>,
   <code>controls_models</code>,
   <code>controls_rodents</code>,
   <code>data_set_controls</code>,
@@ -355,6 +368,8 @@ checked.</p></td>
   <code>filenames</code>,
   <code>metadata</code>,
   <code>rodents</code>.</p>
+<p>Must be <code>list</code>s, can be any length, can be <code>NULL</code> or <code>NA</code>:
+  <code>run_status</code>.</p>
 <p>Must be length-1 <code>Date</code>-conformable values, can be <code>NULL</code>, 
  but cannot be <code>NA</code>:
   <code>cast_date</code>,
@@ -373,18 +388,24 @@ checked.</p></td>
   <code>lon</code>.</p>
 <p>Must be length-1 <code>integer</code>-conformable values can be <code>NULL</code>,
  but cannot be <code>NA</code>:
+  <code>adapt</code> (must be positive),
+  <code>burnin</code> (must be positive),
   <code>cast_id</code> (must be non-negative),
   <code>end_moon</code> (must be positive),
   <code>lead</code> (must be positive),
   <code>lead_time</code> (must be non-negative),
   <code>lev</code>,
+  <code>max_E</code> (must be positive, 1 to 24),
   <code>min_observed</code> (must be positive),
   <code>min_plots</code> (must be positive),
   <code>min_traps</code> (must be positive),
   <code>moon</code> (must be positive),
+  <code>nchains</code> (must be positive),
   <code>ndates</code> (must be positive),
   <code>nmoons</code> (must be non-negative),
+  <code>sample</code> (must be positive),
   <code>start_moon</code> (must be positive),
+  <code>thin</code> (must be positive),
   <code>topx</code> (must be positive).</p>
 <p>Must be length-1 <code>integer</code>-conformable values can be <code>NULL</code>, 
  and can be <code>NA</code>:
@@ -396,6 +417,11 @@ checked.</p></td>
   <code>cast_ids</code> (must be non-negative),
   <code>end_moons</code> (must be positive),
   <code>target_moons</code> (must be positive).</p>
+<p>Must be a <code>list</code> or <code>function</code>; can be <code>NULL</code> or <code>NA</code>:
+  <code>mutate</code>.</p>
+<p>Must be a <code>character</code> vector (any length), <code>list</code>, or
+ <code>function</code>; can be <code>NULL</code> but not <code>NA</code>:
+  <code>inits</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='fu'>check_arg_list</span>()

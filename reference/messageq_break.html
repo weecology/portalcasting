@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Determine a file's extension or remove the extension from the
- file path — file_ext • portalcasting</title>
+<title>Produce a horizontal break line for messaging — messageq_break • portalcasting</title>
 
 
 <!-- jquery -->
@@ -36,11 +35,9 @@
 
 
 
-<meta property="og:title" content="Determine a file's extension or remove the extension from the
- file path — file_ext" />
-<meta property="og:description" content="Based on the separating character, file_ext determines
- the file extension and path_no_ext determines the file path without
- the extension." />
+<meta property="og:title" content="Produce a horizontal break line for messaging — messageq_break" />
+<meta property="og:description" content="Optionally creates and returns a message that is a
+ horizontal break line of dashes." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -139,60 +136,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Determine a file's extension or remove the extension from the
- file path</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/paths.R'><code>R/paths.R</code></a></small>
-    <div class="hidden name"><code>file_ext.Rd</code></div>
+    <h1>Produce a horizontal break line for messaging</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/messaging.R'><code>R/messaging.R</code></a></small>
+    <div class="hidden name"><code>messageq_break.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Based on the separating character, <code>file_ext</code> determines
- the file extension and <code>path_no_ext</code> determines the file path without
- the extension.</p>
+    <p>Optionally creates and returns a message that is a
+ horizontal break line of dashes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>file_ext</span>(<span class='no'>path</span>, <span class='kw'>sep_char</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>path_no_ext</span>(<span class='no'>path</span>, <span class='kw'>sep_char</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>messageq_break</span>(<span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p><code>character</code> value of the file path possibly with an
-extension.</p></td>
+      <th>bline</th>
+      <td><p><code>logical</code> indicator if horizontal break lines should be
+made or not. For toggling separately from the more general <code>quiet</code>
+argument.</p></td>
     </tr>
     <tr>
-      <th>sep_char</th>
-      <td><p><code>character</code> value of the separator that delineates
-the extension from the file path. Generally, this will be <code>"."</code>,
-but for some API URLs, the extension is actually a query component,
-so the separator may sometimes need to be <code>"="</code>.</p></td>
+      <th>quiet</th>
+      <td><p><code>logical</code> indicator if messages should be quieted.</p></td>
     </tr>
     <tr>
       <th>arg_checks</th>
       <td><p><code>logical</code> value of if the arguments should be
 checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
 default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. <br />
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting <code>arg_checks = FALSE</code> triggers
-many/most/all enclosed functions to not check any arguments using 
-<code><a href='argument_checking.html'>check_args</a></code>, and as such, <em>caveat emptor</em>.</p></td>
+formatted correctly and provides directed error messages if not.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>character</code> value of the extension (<code>file_ext</code>) or the
- path without the extension (<code>path_no_ext</code>.</p>
+    <p><code>NULL</code> (message is put out to console).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"> <span class='fu'>file_ext</span>(<span class='st'>"home/folders.with.dots/stuff/ok.csv"</span>)
- <span class='fu'>path_no_ext</span>(<span class='st'>"home/folders.with.dots/stuff/ok.csv"</span>)
- <span class='fu'>file_ext</span>(<span class='fu'><a href='NMME_urls.html'>NMME_urls</a></span>()<span class='kw'>[[</span><span class='fl'>1</span>]])
- <span class='fu'>file_ext</span>(<span class='fu'><a href='NMME_urls.html'>NMME_urls</a></span>()<span class='kw'>[[</span><span class='fl'>1</span>]], <span class='st'>"="</span>)</pre>
+    <pre class="examples"> <span class='fu'>messageq_break</span>()</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

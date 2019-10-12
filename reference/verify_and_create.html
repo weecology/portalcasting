@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -148,10 +148,9 @@
  <code>create</code> creates a requested folder if it does not already exist.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>verify</span>(<span class='kw'>paths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>verify</span>(<span class='kw'>paths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>create</span>(<span class='kw'>paths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>create</span>(<span class='kw'>paths</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,26 +160,11 @@
       <td><p><code>character</code> vector of the folder paths.</p></td>
     </tr>
     <tr>
-      <th>names</th>
-      <td><p><code>character</code> vector of the names of the levels in the
-hierarchy at which the folders will exist or the folder names. For the
-purposes of messaging and not inherently required to be non-<code>NULL</code>.</p></td>
-    </tr>
-    <tr>
       <th>arg_checks</th>
       <td><p><code>logical</code> value of if the arguments should be
 checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
 default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p><code>logical</code> indicator if messages should be quieted.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p><code>logical</code> indicator of whether or not to print out
-all of the information or not (and thus just the tidy messages).</p></td>
     </tr>
     </table>
 

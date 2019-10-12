@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Directory welcome and model completion messages — portalcast_messages • portalcasting</title>
+<title>Specific message functions — portalcast_messages • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,14 +35,23 @@
 
 
 
-<meta property="og:title" content="Directory welcome and model completion messages — portalcast_messages" />
-<meta property="og:description" content="Messaging functions for top-level message output.
- portalcast_welcome creates a welcome message for the directory 
-  based on the package version and directory type.  
- portalcast_goodbye creates a goodbye message for when models are 
+<meta property="og:title" content="Specific message functions — portalcast_messages" />
+<meta property="og:description" content="Messaging functions:
+ version_message creates a message for the local package  
+  version.  
+ portalcast_welcome generates a welcome message for a
+  portalcast run.  
+ portalcast_goodbye makes a goodbye message for when models are 
   done.  
- sandbox_welcome creates a welcome message for sandbox users,
-  displayed upon completion of setup_sandbox.  " />
+ sandbox_welcome generates a special welcome message for sandboxes,
+  displayed upon completion of setup_sandbox.  
+ creation_message makes a message about the creation of the
+  directory.  
+ setup_completion_message creates a message for when the directory
+  setting up has successfully finished.  
+ fill_casts_message creates the final message to be used in 
+  fill_casts that relays the number, and optionally the
+  specific names, of the files moved." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +84,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -141,30 +150,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Directory welcome and model completion messages</h1>
+    <h1>Specific message functions</h1>
     <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/messaging.R'><code>R/messaging.R</code></a></small>
     <div class="hidden name"><code>portalcast_messages.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Messaging functions for top-level message output.
- <code>portalcast_welcome</code> creates a welcome message for the directory 
-  based on the package version and directory type. <br /> <br />
- <code>portalcast_goodbye</code> creates a goodbye message for when models are 
+    <p>Messaging functions:
+ <code>version_message</code> creates a message for the local package  
+  version. <br /> <br />
+ <code>portalcast_welcome</code> generates a welcome message for a
+  portalcast run. <br /> <br />
+ <code>portalcast_goodbye</code> makes a goodbye message for when models are 
   done. <br /> <br />
- <code>sandbox_welcome</code> creates a welcome message for sandbox users,
-  displayed upon completion of <code><a href='setup_dir.html'>setup_sandbox</a></code>. <br /> <br /></p>
+ <code>sandbox_welcome</code> generates a special welcome message for sandboxes,
+  displayed upon completion of <code><a href='setup_dir.html'>setup_sandbox</a></code>. <br /> <br />
+ <code>creation_message</code> makes a message about the creation of the
+  directory. <br /> <br />
+ <code>setup_completion_message</code> creates a message for when the directory
+  setting up has successfully finished. <br /> <br />
+ <code>fill_casts_message</code> creates the final message to be used in 
+  <code><a href='fill_directory.html'>fill_casts</a></code> that relays the number, and optionally the
+  specific names, of the files moved.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>portalcast_welcome</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>version_message</span>(<span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>portalcast_goodbye</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>portalcast_welcome</span>(<span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>sandbox_welcome</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>portalcast_goodbye</span>(<span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>sandbox_welcome</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>creation_message</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>setup_completion_message</span>(<span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>data_readying_message</span>(<span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>data_resetting_message</span>(<span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>models_running_message</span>(<span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>model_running_message</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>model_done_message</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>run_status</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>fill_casts_message</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>movedTF</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>bline</th>
+      <td><p><code>logical</code> indicator if horizontal break lines should be
+included.</p></td>
+    </tr>
     <tr>
       <th>quiet</th>
       <td><p><code>logical</code> indicator if message should be quieted.</p></td>
@@ -181,16 +229,58 @@ formatted correctly and provides directed error messages if not.</p></td>
       <td><p><code>character</code> value of the name of the main component of
 the directory tree.</p></td>
     </tr>
+    <tr>
+      <th>end_moon</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) 
+newmoon number of the last sample(s) to be included.</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p><code>character</code> value of the model name or model script path.
+Will be stripped of all excess path components and the extension to
+give just the name of the model itself.</p></td>
+    </tr>
+    <tr>
+      <th>run_status</th>
+      <td><p>Output from the <code><a href='https://rdrr.io/r/base/source.html'>source</a></code>-ing of a model
+script; a <code>list</code> if successful or <code>NA</code> if not.</p></td>
+    </tr>
+    <tr>
+      <th>files</th>
+      <td><p><code>character</code> vector of the base file names of the files
+that may or may not have been moved.</p></td>
+    </tr>
+    <tr>
+      <th>movedTF</th>
+      <td><p><code>logical</code> vector indicating if each of the files in 
+<code>files</code> has been moved or not.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p><code>logical</code> indicator of whether or not to print out
+all of the files and whether they were moved or not.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>NULL</code>, as message is printed.</p>
+    <p>Message is put to the console; <code>NULL</code> is returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='fu'>portalcast_welcome</span>()
  <span class='fu'>portalcast_goodbye</span>()
- <span class='fu'>sandbox_welcome</span>()</pre>
+ <span class='fu'>sandbox_welcome</span>()
+ <span class='fu'>creation_message</span>()
+ <span class='fu'>setup_completion_message</span>()
+ <span class='fu'>data_readying_message</span>(<span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='fl'>400</span>)
+ <span class='fu'>data_resetting_message</span>()
+ <span class='fu'>models_running_message</span>(<span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='fl'>400</span>)
+ <span class='fu'>model_running_message</span>(<span class='st'>"ESSS"</span>)
+ <span class='fu'>model_done_message</span>(<span class='st'>"ESSS"</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"output"</span>))
+ <span class='fu'>model_done_message</span>(<span class='st'>"ESSS"</span>, <span class='fl'>NA</span>)
+ <span class='fu'>fill_casts_message</span>(<span class='st'>"xx.csv"</span>, <span class='fl'>TRUE</span>)
+ <span class='fu'>fill_casts_message</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"xx.csv"</span>, <span class='st'>"yy.R"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>),
+                          <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

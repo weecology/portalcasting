@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Functions for the prefab portalcasting models — prefab_model_functions • portalcasting</title>
+<title>Functions for the prefab portalcasting models — simplexEDM • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Functions for the prefab portalcasting models — prefab_model_functions" />
+<meta property="og:title" content="Functions for the prefab portalcasting models — simplexEDM" />
 <meta property="og:description" content="Functions used for fitting the prefab models. For detailed
  descriptions of the models, see the
  model vignette.  
@@ -55,7 +55,12 @@
  pevGARCH fits a set of generalized autoregressive conditional
  heteroscedasticity models with Poisson response variables and 
  environmental covariates (max temp, mean temp, min temp, precipitation,
- and NDVI) using tsglm." />
+ and NDVI) using tsglm.  
+ simplexEDM fits an EDM model with the simplex projection &quot;kernel&quot; 
+ using simplex.  
+ jags_RW fits a log-scale density random walk with a Poisson 
+ observation process using JAGS (Just Another Gibbs Sampler; 
+ Plummer 2003) hierarchical Bayesian inference." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -88,7 +93,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -155,7 +160,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Functions for the prefab portalcasting models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/prefab_models.R'><code>R/prefab_models.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/models_EDM.R'><code>R/models_EDM.R</code></a>, <a href='https://github.com/weecology/portalcasting/blob/master/R/models_jags.R'><code>R/models_jags.R</code></a>, <a href='https://github.com/weecology/portalcasting/blob/master/R/prefab_models.R'><code>R/prefab_models.R</code></a></small>
     <div class="hidden name"><code>prefab_model_functions.Rd</code></div>
     </div>
 
@@ -179,10 +184,23 @@
  <code>pevGARCH</code> fits a set of generalized autoregressive conditional
  heteroscedasticity models with Poisson response variables and 
  environmental covariates (max temp, mean temp, min temp, precipitation,
- and NDVI) using <code><a href='https://rdrr.io/pkg/tscount/man/tsglm.html'>tsglm</a></code>.</p>
+ and NDVI) using <code><a href='https://rdrr.io/pkg/tscount/man/tsglm.html'>tsglm</a></code>. <br /> <br />
+ <code>simplexEDM</code> fits an EDM model with the simplex projection "kernel" 
+ using <code><a href='https://rdrr.io/pkg/rEDM/man/simplex.html'>simplex</a></code>. <br /> <br />
+ <code>jags_RW</code> fits a log-scale density random walk with a Poisson 
+ observation process using JAGS (Just Another Gibbs Sampler; 
+ Plummer 2003) hierarchical Bayesian inference.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>AutoArima</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
+    <pre class="usage"><span class='fu'>simplexEDM</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all_interp"</span>,
+  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>max_E</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>jags_RW</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
+  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>control_runjags</span> <span class='kw'>=</span> <span class='fu'><a href='runjags_control.html'>runjags_control</a></span>(),
+  <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>AutoArima</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
   <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
@@ -236,9 +254,20 @@ quiet.</p></td>
 all of the information or not (and thus just the tidy messages).</p></td>
     </tr>
     <tr>
+      <th>max_E</th>
+      <td><p><code>integer</code> (or integer <code>numeric</code>) for the maximum 
+embedding dimension to search amongst for EDM models. See 
+<code><a href='https://rdrr.io/pkg/rEDM/man/simplex.html'>simplex</a></code> for more information.</p></td>
+    </tr>
+    <tr>
       <th>arg_checks</th>
       <td><p><code>logical</code> value of if the arguments should be
 checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>control_runjags</th>
+      <td><p><code>list</code> of arguments passed to 
+<code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code> via <code><a href='runjags_control.html'>runjags_control</a></code>.</p></td>
     </tr>
     <tr>
       <th>lag</th>
@@ -267,14 +296,22 @@ use for the covariates.</p></td>
  use.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
- F., Razbash S., Wang E., and Yasmeen F. 2018. forecast: Forecasting 
- functions for time series and linear models. 
- <a href='http://pkg.robjhyndman.com/forecast'>R package version 8.3</a>.</p>
-<p>Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
+    <p>Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., 
+ Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. 
+ forecast: Forecasting functions for time series and linear models. 
+ R package version 8.3. <a href='http://pkg.robjhyndman.com/forecast'>URL</a>.</p>
+<p>Liboschik, T., Fokianos, K., and Fried, R. 2017. tscount: An R Package for 
  Analysis of Count Time Series Following Generalized Linear Models. 
  <em>Journal of Statistical Software</em> <strong>82</strong>:5, 1-51. 
- <a href='http://doi.org/10.18637/jss.v082.i05'>URL</a>.</p>
+ <a href='http://doi.org/10.18637/jss.v082.i05'>URL</a>.</p> 
+<p>Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical 
+ models using Gibbs Sampling. Proceedings of the 3rd International 
+ <a href='https://bit.ly/33aQ37Y'>URL</a>.</p>
+<p>Ye, H., Clark, A., Deyle, E., Munch, S., Cai, J., Cowles, J., Daon, Y., 
+ Edwards, A., Keyes, O., Stagge, J., Ushio, M., White, E., and Sugihara G. 
+ 2018. rEDM: Applications of Empirical Dynamic Modeling from Time Series. 
+ Zenodo. R package version0.7.4 
+ <a href='http://doi.org/10.5281/zenodo.1935847'>URL</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='co'># \donttest{</span>
@@ -285,6 +322,8 @@ use for the covariates.</p></td>
   <span class='fu'>nbGARCH</span>()
   <span class='fu'>nbsGARCH</span>()
   <span class='fu'>pevGARCH</span>()
+  <span class='fu'>simplexEDM</span>()
+  <span class='fu'>jags_RW</span>()
  <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

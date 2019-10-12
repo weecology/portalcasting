@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -158,8 +158,8 @@
   <span class='kw'>controls_rodents</span> <span class='kw'>=</span> <span class='fu'><a href='rodents_controls.html'>rodents_controls</a></span>(),
   <span class='kw'>control_climate_dl</span> <span class='kw'>=</span> <span class='fu'><a href='download_climate_casts.html'>climate_dl_control</a></span>(),
   <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
-  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>, <span class='st'>"833438"</span>)), <span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>setup_production</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'><a href='prefab_models.html'>prefab_models</a></span>(),
   <span class='kw'>end_moon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start_moon</span> <span class='kw'>=</span> <span class='fl'>217</span>, <span class='kw'>lead_time</span> <span class='kw'>=</span> <span class='fl'>12</span>,
@@ -261,6 +261,11 @@ Generally shouldn't need to be edited. See <code><a href='files_control.html'>fi
       <th>downloads</th>
       <td><p><code>list</code> of arguments to pass to <code><a href='download.html'>download</a></code>
 for raw file downloading.</p></td>
+    </tr>
+    <tr>
+      <th>bline</th>
+      <td><p><code>logical</code> indicator if a horizontal break lines should be
+included in messages.</p></td>
     </tr>
     <tr>
       <th>quiet</th>

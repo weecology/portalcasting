@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Clear the files from the tmp subdirectory.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>clear_tmp</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>bline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>cleanup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -154,6 +154,12 @@
       <th>main</th>
       <td><p><code>character</code> value of the name of the main component of
 the directory tree.</p></td>
+    </tr>
+    <tr>
+      <th>bline</th>
+      <td><p><code>logical</code> indicator if horizontal break lines should be
+made or not. For toggling separately from the more general <code>quiet</code>
+argument.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -175,11 +181,7 @@ subdirectory should be removed at the end of the process.</p></td>
       <td><p><code>logical</code> value of if the arguments should be
 checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
 default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. <br />
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting <code>arg_checks = FALSE</code> triggers
-many/most/all enclosed functions to not check any arguments using 
-<code><a href='argument_checking.html'>check_args</a></code>, and as such, <em>caveat emptor</em>.</p></td>
+formatted correctly and provides directed error messages if not.</p></td>
     </tr>
     </table>
 

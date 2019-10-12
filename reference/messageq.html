@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -160,18 +160,14 @@ are concatenated with a newline between.</p></td>
     <tr>
       <th>quiet</th>
       <td><p><code>logical</code> indicator controlling if the message is
-generated.</p></td>
+generated. If <code>NULL</code>, it is as if <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>arg_checks</th>
       <td><p><code>logical</code> value of if the arguments should be
 checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
 default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. <br />
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting <code>arg_checks = FALSE</code> triggers
-many/most/all enclosed functions to not check any arguments using 
-<code><a href='argument_checking.html'>check_args</a></code>, and as such, <em>caveat emptor</em>.</p></td>
+formatted correctly and provides directed error messages if not.</p></td>
     </tr>
     </table>
 

@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.0</span>
       </span>
     </div>
 
@@ -188,8 +188,8 @@
   <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>fill_raw</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>downloads</span> <span class='kw'>=</span> <span class='fu'><a href='zenodo_downloads.html'>zenodo_downloads</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1215988"</span>,
-  <span class='st'>"833438"</span>)), <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='st'>"833438"</span>)), <span class='kw'>only_if_missing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -239,13 +239,16 @@ set. <br />
 A <code>list</code> of a single model's script-writing controls or a
 <code>list</code> of <code>list</code>s, each of which is a single model's 
 script-writing controls. <br /> 
-Presently, each model's script writing controls
-should include three elements: <code>name</code> (a <code>character</code> value of 
-the model name), <code>covariates</code> (a <code>logical</code> indicator of if the 
-model needs covariates), and <code>lag</code> (an <code>integer</code>-conformable 
-value of the lag to use with the covariates or <code>NA</code> if 
-<code>covariates = FALSE</code>). <br /> 
-If only a single model is added, the name of 
+Presently, each model's script writing controls should include four 
+elements:</p><ul>
+<li><p><code>name</code>: a <code>character</code> value of the model name.</p></li>
+<li><p><code>data_sets</code>: a <code>character</code> vector of the data set names
+  that the model is applied to.</p></li>
+<li><p><code>covariatesTF</code>: a <code>logical</code> indicator of if the 
+  model needs covariates.</p></li>
+<li><p><code>lag</code>: an <code>integer</code>-conformable value of the lag to use 
+  with the covariates or <code>NA</code> if <code>covariatesTF = FALSE</code>.</p></li>
+</ul><p>If only a single model is added, the name of 
 the model from the element <code>name</code> will be used to name the model's
 <code>list</code> in the larger <code>list</code>. If multiple models are added, each
 element <code>list</code> must be named according to the model and the
@@ -290,6 +293,15 @@ all of the information or not (and thus just the tidy messages).</p></td>
 checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
 default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.</p></td>
+    </tr>
+    <tr>
+      <th>only_if_missing</th>
+      <td><p><code>logical</code> indicator if the content should
+be filled only if it is missing. Only used in <code>fill_raw</code>, where
+missingness is determined by <code><a href='verify_raw_data.html'>verify_raw_data</a></code>. Default
+is <code>FALSE</code>, which allows for control via <code>link{files_control}</code>'s
+<code>overwrite</code> argument. Only accessed and changed to <code>FALSE</code> 
+within <code><a href='portalcast.html'>portalcast</a></code>.</p></td>
     </tr>
     </table>
 

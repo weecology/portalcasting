@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save cast output to files — save_cast_output • portalcasting</title>
+<title>Create a control list for a runjags JAGS model run — runjags_control • portalcasting</title>
 
 
 <!-- jquery -->
@@ -35,11 +35,14 @@
 
 
 
-<meta property="og:title" content="Save cast output to files — save_cast_output" />
-<meta property="og:description" content="Save out any output from a cast of a model for a data set and
- update the cast metadata file accordingly to track the saved output. 
- Most users will want to at least save out model metadata and a table of
- predictions." />
+<meta property="og:title" content="Create a control list for a runjags JAGS model run — runjags_control" />
+<meta property="og:description" content="We leverage the run.jags function in
+ the runjags (Denwood 2016) package to run JAGS (Plummer 2003)
+ models in portalcasting. That function has a number of control parameters
+ that users may be interested in changing, and this function wraps those
+ parameters with a few portalcasting-specific parameters into a control
+ list for input into reusable functions like jags_ss and 
+ specific model functions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,90 +141,119 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save cast output to files</h1>
-    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/process_casts.R'><code>R/process_casts.R</code></a></small>
-    <div class="hidden name"><code>save_cast_output.Rd</code></div>
+    <h1>Create a control list for a runjags JAGS model run</h1>
+    <small class="dont-index">Source: <a href='https://github.com/weecology/portalcasting/blob/master/R/models_jags.R'><code>R/models_jags.R</code></a></small>
+    <div class="hidden name"><code>runjags_control.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Save out any output from a cast of a model for a data set and
- update the cast metadata file accordingly to track the saved output. <br />
- Most users will want to at least save out model metadata and a table of
- predictions.</p>
+    <p>We leverage the <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code> function in
+ the runjags (Denwood 2016) package to run JAGS (Plummer 2003)
+ models in portalcasting. That function has a number of control parameters
+ that users may be interested in changing, and this function wraps those
+ parameters with a few portalcasting-specific parameters into a control
+ list for input into reusable functions like <code><a href='jags_ss.html'>jags_ss</a></code> and 
+ specific model functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>save_cast_output</span>(<span class='kw'>cast</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>runjags_control</span>(<span class='kw'>nchains</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>adapt</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>burnin</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+  <span class='kw'>sample</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>thin</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>modules</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"interruptible"</span>,
+  <span class='kw'>factories</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>mutate</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>cast_obs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent_jags</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cast</th>
-      <td><p>Output from a model function (e.g., 
-<code><a href='prefab_model_functions.html'>AutoArima</a></code>) run on any rodents data set. Required to be a 
-<code>list</code>, but otherwise has minimal strict requirements. <br />
-Names of the elements of the list (such as <code>"metadat"</code>) indicate the 
-specific saving procedures that happens to each of them. 
-See <code>Details</code> section for specifics.</p></td>
+      <th>nchains</th>
+      <td><p>Non-negative <code>integer</code>-conformable value of the
+number of parallel chains to use. See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
     </tr>
     <tr>
-      <th>main</th>
-      <td><p><code>character</code> value of the name of the main component of
-the directory tree.</p></td>
+      <th>adapt</th>
+      <td><p>Non-negative <code>integer</code>-conformable value of the
+number of adaptation steps to use. See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
     </tr>
     <tr>
-      <th>quiet</th>
-      <td><p><code>logical</code> indicator if progress messages should be
-quieted.</p></td>
+      <th>burnin</th>
+      <td><p>Non-negative <code>integer</code>-conformable value of the
+number of burnin steps to use. See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>sample</th>
+      <td><p>Non-negative <code>integer</code>-conformable value of the
+number of sampling steps to use. See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>thin</th>
+      <td><p>Non-negative <code>integer</code>-conformable value of the
+thinning interval to use. See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>modules</th>
+      <td><p><code>character</code> vector of external modules to add to JAGS.
+See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p><code>character</code> value of the <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>
+method to use. Options include <code>"rjags"</code>, <code>"simple"</code>, 
+<code>"interruptible"</code>, <code>"parallel"</code>, <code>"rjparallel"</code>, 
+<code>"background"</code>, <code>"bgparallel"</code>, and <code>"snow"</code>.
+See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>factories</th>
+      <td><p><code>character</code> vector of factory modules to add to JAGS.
+See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>mutate</th>
+      <td><p>A <code>function</code> or <code>list</code> (with the first element
+being a <code>function</code>) used to add variables to the posterior chain
+(rather than throughout sampling). See <code><a href='https://rdrr.io/pkg/runjags/man/run.jags.html'>run.jags</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>cast_obs</th>
+      <td><p><code>logical</code> value indicating if the observations should
+be forecast as well (should be kept as <code>TRUE</code> for the vast majority
+of uses).</p></td>
+    </tr>
+    <tr>
+      <th>silent_jags</th>
+      <td><p><code>logical</code> value for quieting the output from the
+runjags function, including the underlying JAGS output.</p></td>
     </tr>
     <tr>
       <th>arg_checks</th>
       <td><p><code>logical</code> value of if the arguments should be
-checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>. The 
-default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.</p></td>
+checked using standard protocols via <code><a href='argument_checking.html'>check_args</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Relevant elements are saved to external files, and <code>NULL</code> is
- returned.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p><code>list</code> of controls.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Currently, four generalized output components are recognized and
- indicated by the names of the elements of <code>cast</code>.</p><ul>
-<li><p><code>"metadata"</code>: saved out with <code><a href='https://rdrr.io/pkg/yaml/man/as.yaml.html'>as.yaml</a></code>. Will
-   typically be the model-specific metadata from the 
-   <code>data/metadata.yaml</code> file, but can more generally be any 
-   appropriate object (typically a <code>list</code>).</p></li>
-<li><p><code>"cast_tab"</code>: saved using <code><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></code>, so is
-   assumed to be a table such as a <code>matrix</code> or <code>data.frame</code> 
-   or coercible to one. Used to summarize the output across instances
-   of the model (across multiple species, for example).</p></li>
-<li><p><code>"model_fits"</code>: saved out via <code><a href='https://rdrr.io/r/base/save.html'>save</a></code>, so quite
-   flexible with respect to object structure. Is used to save actual model
-   fit/return objects so that models do not need to be refit later.</p></li>
-<li><p><code>"casts"</code>: saved with <code><a href='https://rdrr.io/r/base/save.html'>save</a></code>, so quite
-   flexible with respect to object structure. Is used to save <code>list</code>s
-   of predictions across multiple instances of the model.</p></li>
-</ul>
-
+    <p>Denwood, M. J. 2016. runjags: an R package providing interface
+ utilities, model templates, parallel computing methods and additional
+ distributions for MCMC models in JAGS. Journal of Statistical
+ Software, 71:9. 
+ <a href='https://www.jstatsoft.org/article/view/v071i09'>URL</a>.</p> 
+<p>Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical 
+ models using Gibbs Sampling. Proceedings of the 3rd International 
+ <a href='https://bit.ly/33aQ37Y'>URL</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"> <span class='co'># \donttest{</span>
-  <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
-  <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prefab_model_functions.html'>AutoArima</a></span>()
-  <span class='fu'>save_cast_output</span>(<span class='no'>out</span>)
- <span class='co'># }</span></pre>
+    <pre class="examples"> <span class='fu'>runjags_control</span>()</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
+      <li><a href="#references">References</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
