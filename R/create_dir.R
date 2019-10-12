@@ -139,12 +139,14 @@ verify <- function(paths = NULL, arg_checks = TRUE){
     return(invisible(NULL))
   } 
   if (nmisses == 1){
-    msg <- paste0("Folder does not exist at ", misses)
+    msg <- paste0("\n Folder does not exist at ", misses)
   } else{
     msg_m <- paste(misses, collapse = ", ")
-    msg <- paste0("Folders do not exist at ", msg_m)
+    msg <- paste0("\n Folders do not exist at ", msg_m)
   }
-  stop(msg, call. = FALSE)
+  msg2 <- c("Missing directory components", msg, 
+             "\n Run `create_dir` to create directory")
+  stop(msg2, call. = FALSE)
 }
 
 #' @rdname verify_and_create

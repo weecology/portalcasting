@@ -1,3 +1,8 @@
+# to do:
+# add to the vignette (issue 145)
+# fix plotting bug (issue 140)
+# release
+
 devtools::document()
 devtools::load_all()
 

@@ -67,6 +67,7 @@
 #'   \code{tail}, 
 #'   \code{total}, 
 #'   \code{unknowns}, 
+#'   \code{update_prefab_models}, 
 #'   \code{verbose},
 #'   \code{with_census},
 #'   \code{zero_drop}. 
@@ -700,6 +701,7 @@ check_arg_list <- function(){
     treatment = arg_character(vals = avail_treatments),
     type = arg_character(),
     unknowns = arg_logical(),
+    update_prefab_models = arg_logical(),
     url = arg_character(),
     verbose = arg_logical(),
     winner = arg_character(vals = avail_winners),

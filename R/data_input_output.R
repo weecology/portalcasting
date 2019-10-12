@@ -391,7 +391,7 @@ read_moons <- function(main = ".", control_files = files_control(),
 #'
 read_metadata <- function(main = ".", control_files = files_control(),
                           arg_checks = TRUE){
-  check_args(arg_checks)
+  check_args(arg_checks = arg_checks)
   fpath <- file_path(main = main, sub = "data", 
                      files = control_files$filename_meta, 
                      arg_checks = arg_checks)

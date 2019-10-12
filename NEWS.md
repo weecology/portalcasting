@@ -12,6 +12,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * `update_models` by default only updates the models listed in the `controls_model` input, to avoid overwriting model scripts. To change this behavior and also update all of the prefab models' scripts, set `update_prefab_models = TRUE`. This is particularly handy when changing a global (with respect to model scripts) argument: `main`, `quiet`, `verbose`, or `arg_checks`.
 * [addresses](https://github.com/weecology/portalcasting/issues/147)
 
+### Messaging around trying to use not-complete directory improved
+* Indication now made that a component of the directory is missing and suggestion is made to run `create_dir`.
+* [addresses](https://github.com/weecology/portalcasting/issues/137)
+
 ### Patching data set bug in plotting
 * There was a bug with matching the interpolated to the non interpolated data sets within the ensembling, which has been fixed. [addresses](https://github.com/weecology/portalcasting/issues/140)
 

@@ -100,6 +100,7 @@ Argument details used for checking are produced simply via
   \code{tail}, 
   \code{total}, 
   \code{unknowns}, 
+  \code{update_prefab_models}, 
   \code{verbose},
   \code{with_census},
   \code{zero_drop}. 

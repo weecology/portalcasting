@@ -79,6 +79,13 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
                        control_files = files_control(), 
                        quiet = TRUE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
+  raw_data_present <- verify_raw_data(main = main, 
+                                      raw_data = control_files$raw_data,
+                                      arg_checks = arg_checks)
+  if(!raw_data_present){
+    fill_raw(main = main, quiet = quiet, control_files = control_files, 
+             arg_checks = arg_checks)
+  }
   messageq("  -lunar data file", quiet)
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
   traps_in <- load_trapping_data(path = raw_path, download_if_missing = FALSE,
