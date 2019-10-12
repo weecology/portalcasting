@@ -20,14 +20,14 @@ jags_RW <- function(main = ".", data_set = "all",
 
     log_past_count <- log(past_count + 0.1)
     mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- sd(log_past_count) * sqrt(2)
+    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
     diff_log_past_count <- rep(NA, past_N - 1)
     for(i in 1:(past_N - 1)){
       diff_count <- log_past_count[i + 1] - log_past_count[i]
       diff_time <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count / diff_time
     }
-    sd_diff_log_past_count <- sd(diff_log_past_count) * sqrt(2)
+    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
     var_diff_log_past_count <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
     rate <- 0.1
@@ -44,7 +44,7 @@ jags_RW <- function(main = ".", data_set = "all",
     # priors
     log_past_count <- log(past_count + 0.1)
     mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- sd(log_past_count) * sqrt(2)
+    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
     var_log_past_count <- sd_log_past_count^2
     precision_log_past_count <- 1/(var_log_past_count)
 
@@ -56,7 +56,7 @@ jags_RW <- function(main = ".", data_set = "all",
       diff_time[i] <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count[i] / diff_time[i]
     }    
-    sd_diff_log_past_count <- sd(diff_log_past_count) * sqrt(2)
+    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
     var_diff_log_past_count <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
     rate <- 0.1
@@ -313,7 +313,7 @@ jags_ss <- function(main = ".", data_set = "all",
       cast_tab <- rbind(cast_tab, cast_tab_i)
     }
   }
-  metadata <- update_list(metadata, models = "AutoArima",
+  metadata <- update_list(metadata, models = "jags_RW",
                               data_sets = data_set,
                               controls_r = data_set_controls,
                               arg_checks = arg_checks)
@@ -391,7 +391,7 @@ jags_ss <- function(main = ".", data_set = "all",
 #'
 #' @export
 #'
-runjags_control <- function(nchains = 2, adapt = 1e4, burnin = 1e3, 
+runjags_control <- function(nchains = 2, adapt = 1e4, burnin = 1e4, 
                             sample = 1e4, thin = 1, modules = "", 
                             method = "interruptible", factories = "", 
                             mutate = NA, cast_obs = TRUE, silent_jags = TRUE,

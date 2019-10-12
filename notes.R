@@ -3,10 +3,10 @@ devtools::load_all()
 
 main <- "~/portalcasting_testing1"
 setup_dir(main)
-portalcast(main = main, models = c("ESSS"))
-plot_cast_ts(main=main)
+portalcast(main = main, models = c("jags_RW"))
+plot_cast_ts(main=main, model = c("jags_RW"))
 
-plot_cast_point(main=main)
+plot_cast_point(main=main, model = c("jags_RW"))
 plot_cast_point(main=main,with_census=T)
 plot_casts_err_lead(main)
 plot_casts_cov_RMSE(main)
