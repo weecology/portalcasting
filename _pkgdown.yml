@@ -66,6 +66,16 @@ reference:
       - read_cast_tab
       - select_casts
       - update_models
+  - title: "Cast processing functions"
+    desc: "Functions for processing, evaluating, and combining casts"
+    contents:
+      - save_cast_output
+      - ensemble_casts
+      - measure_cast_level_error
+      - add_lead_to_cast_tab
+      - add_err_to_cast_tab
+      - add_covered_to_cast_tab
+      - add_obs_to_cast_tab
   - title: "Data IO"
     desc: "Functions for reading and writing data"
     contents:
@@ -117,6 +127,7 @@ reference:
       - remove_incompletes
       - last_census
       - species_from_table
+      - most_abundant_species
   - title: "Lunar data functions"
     desc: "Functions for managing the lunar temporal data"
     contents:
@@ -152,7 +163,6 @@ reference:
     contents:
       - covariate_models
       - lag_covariates
-      - save_cast_output
       - jags_ss 
       - runjags_control
   - title: "Utility functions"
@@ -229,3 +239,9 @@ reference:
     contents:
       - plot_cast_point
       - plot_cast_ts
+      - plot_casts_cov_RMSE
+      - plot_casts_err_lead
+  - title: "Overview"
+    desc: "Package overview documentation"
+    contents:
+      - portalcasting  
