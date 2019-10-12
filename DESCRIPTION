@@ -46,10 +46,11 @@ Imports:
 Suggests:
   knitr,
   pkgdown,
-  rmarkdown,
+  rmarkdown (>= 1.16.1),
   testthat
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
 Remotes:  
-    ha0ye/rEDM
+    ha0ye/rEDM,
+    rstudio/rmarkdown
