@@ -4,6 +4,7 @@ test_that("prep_moons", {
   skip_on_cran() # downloads take too long for cran checks
   moons <- prep_moons(main = "./testing")
   expect_is(moons, "data.frame")
+  expect_error(prep_moons("ok"))
 })
 
 test_that("add_future_moons", {

@@ -21,8 +21,8 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out
-#'   all of the information or just tidy messages. 
+#' @param bline \code{logical} indicator if a horizontal break lines should be
+#'  included in messages.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. Default value (\code{"."}) puts the forecasting
@@ -58,15 +58,12 @@ NULL
 #' @export
 #'
 create_dir <- function(main = ".", filename_config = "dir_config.yaml", 
-                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+                       bline = FALSE, quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  main_path <- main_path(main = main, arg_checks = arg_checks)
-  msg <- paste0("Establishing portalcasting directory at ", main_path)
-  messageq(msg = msg, quiet = quiet)
-  create_main(main = main, quiet = quiet, verbose = verbose, 
-              arg_checks = arg_checks)
-  create_subs(main = main, quiet = quiet, verbose = verbose, 
-              arg_checks = arg_checks)
+  creation_message(main = main, bline = bline, quiet = quiet, 
+                   arg_checks = arg_checks)
+  create_main(main = main, arg_checks = arg_checks)
+  create_subs(main = main, arg_checks = arg_checks)
   write_directory_config(main = main, filename_config = filename_config, 
                          quiet = quiet, arg_checks = arg_checks)
 }
@@ -75,27 +72,23 @@ create_dir <- function(main = ".", filename_config = "dir_config.yaml",
 #'
 #' @export
 #'
-create_main <- function(main = ".", quiet = FALSE, verbose = FALSE,
-                        arg_checks = TRUE){
+create_main <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   mainp <- main_path(main = main, arg_checks = arg_checks)
-  create(paths = mainp, names = "main", quiet = quiet, verbose = verbose, 
-         arg_checks = arg_checks)
+  create(paths = mainp, arg_checks = arg_checks)
 }
 
 #' @rdname directory_creation
 #'
 #' @export
 #'
-create_subs <- function(main = ".", quiet = FALSE, 
-                        verbose = FALSE, arg_checks = TRUE){
+create_subs <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   subs <- c("casts", "models", "raw", "data", "tmp")
   mainp <- main_path(main = main, arg_checks = arg_checks)
   subsp <- sub_path(main = main, subs = subs, arg_checks = arg_checks)
-  verify(paths = mainp, names = "main", arg_checks = arg_checks)
-  create(paths = subsp, names = basename(subsp), quiet = quiet,
-         verbose = verbose, arg_checks = arg_checks)
+  verify(paths = mainp, arg_checks = arg_checks)
+  create(paths = subsp, arg_checks = arg_checks)
 }
 
 #' @title Verify that folders exist and create folders 
@@ -106,15 +99,6 @@ create_subs <- function(main = ".", quiet = FALSE,
 #'  \code{create} creates a requested folder if it does not already exist.
 #'
 #' @param paths \code{character} vector of the folder paths.
-#'
-#' @param names \code{character} vector of the names of the levels in the
-#'  hierarchy at which the folders will exist or the folder names. For the
-#'  purposes of messaging and not inherently required to be non-\code{NULL}.
-#'
-#' @param quiet \code{logical} indicator if messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out
-#'   all of the information or not (and thus just the tidy messages). 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -141,36 +125,39 @@ NULL
 #'
 #' @export
 #'
-verify <- function(paths = NULL, names = NULL, arg_checks = TRUE){
+verify <- function(paths = NULL, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(paths)
+  misses <- NULL
   for(i in 1:length(paths)){
     if (!dir.exists(paths[i])){
-      msg <- paste0(names[i], " folder does not exist at ", paths[i])
-      stop(msg)
+      misses <- c(misses, paths[i])
     }
   }
+  nmisses <- length(misses)
+  if (nmisses == 0){
+    return(invisible(NULL))
+  } 
+  if (nmisses == 1){
+    msg <- paste0("\n Folder does not exist at ", misses)
+  } else{
+    msg_m <- paste(misses, collapse = ", ")
+    msg <- paste0("\n Folders do not exist at ", msg_m)
+  }
+  msg2 <- c("Missing directory components", msg, 
+             "\n Run `create_dir` to create directory")
+  stop(msg2, call. = FALSE)
 }
 
 #' @rdname verify_and_create
 #'
 #' @export
 #'
-create <- function(paths = NULL, names = NULL, quiet = FALSE, verbose = FALSE, 
-                   arg_checks = TRUE){
+create <- function(paths = NULL, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(paths)
   for(i in 1:length(paths)){
-    if (!dir.exists(paths[i])){
-      if(names[i] == "main"){ 
-        msg <- paste0(" -", names[i])
-      } else{
-        msg <- paste0("  -", names[i])
-      }
-      if(verbose){
-        msg <- paste0(msg, " at ", paths[i])
-      }
-      messageq(msg, quiet)
+    if(!dir.exists(paths[i])){
       dir.create(paths[i])
     }
   }

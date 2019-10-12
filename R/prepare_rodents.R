@@ -5,15 +5,15 @@ prefab_rodents_controls <- function(){
                  level = "Site", plots = "all", treatment = NULL, 
                  min_plots = 24, min_traps = 1, output = "abundance", 
                  fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
-                 na_drop = FALSE, zero_drop = TRUE, effort = FALSE,
+                 na_drop = FALSE, zero_drop = TRUE, effort = TRUE,
                  filename = "rodents_all.csv"),
     "all_interp" = list(name = "all_interp", species = base_species(), 
                         total = TRUE, interpolate = TRUE, clean = FALSE, 
                         type = "Rodents", level = "Site", plots = "all", 
                         treatment = NULL, min_plots = 24, min_traps = 1,
                         output = "abundance", fillweight = FALSE, 
-                        unknowns = FALSE, time = "newmoon", na_drop = FALSE, 
-                        zero_drop = TRUE, effort = FALSE, 
+                        unknowns = FALSE, time = "newmoon", na_drop = TRUE, 
+                        zero_drop = TRUE, effort = TRUE, 
                         filename = "rodents_all_interp.csv"),
     "controls" = list(name = "controls", species = base_species(), 
                       total = TRUE, interpolate = FALSE, clean = FALSE, 
@@ -21,7 +21,7 @@ prefab_rodents_controls <- function(){
                       plots = "Longterm", treatment = "control", 
                       min_plots = 24, min_traps = 1, output = "abundance", 
                       fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
-                      na_drop = FALSE, zero_drop = TRUE, effort = FALSE, 
+                      na_drop = FALSE, zero_drop = TRUE, effort = TRUE, 
                       filename = "rodents_controls.csv"),
     "controls_interp" = list(name = "controls_interp", 
                              species = base_species(), 
@@ -32,7 +32,7 @@ prefab_rodents_controls <- function(){
                              output = "abundance", fillweight = FALSE, 
                              unknowns = FALSE, time = "newmoon", 
                              na_drop = FALSE, zero_drop = TRUE, 
-                             effort = FALSE, 
+                             effort = TRUE, 
                              filename = "rodents_controls_interp.csv")
    )
 }
@@ -178,13 +178,13 @@ rodents_controls <- function(data_sets = NULL, controls_rodents = NULL,
     which_missing <- data_sets[missing_controls]
     all_missing <- paste(which_missing, collapse = ", ")
     msg <- paste0("missing controls for dataset(s): ", all_missing)
-    stop(msg)
+    stop(msg, call. = FALSE)
   }
   if(any(replicates > 1)){
     which_conflicting <- names(replicates)[which(replicates > 1)]
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of dataset(s): ", all_conflicting)
-    stop(msg)
+    stop(msg, call. = FALSE)
   }
   controls_rodents[included_data]
 
@@ -356,10 +356,6 @@ rodents_control <- function(name = "name", species = base_species(),
 #' @param ref_species \code{character}-valued vector of all possible species 
 #'  names that could be used. Should be set up via \code{\link{all_species}}.
 #'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the first sample to be included. Default value is \code{217}, 
-#'  corresponding to \code{1995-01-01}.
-#'
 #' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
@@ -386,8 +382,7 @@ rodents_control <- function(name = "name", species = base_species(),
 #' @export
 #'
 prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
-                         end_moon = NULL, start_moon = 217,
-                         controls_rodents = NULL, 
+                         end_moon = NULL, controls_rodents = NULL, 
                          control_files = files_control(), 
                          ref_species = all_species(), quiet = TRUE,
                          verbose = FALSE,  arg_checks = TRUE){
@@ -409,7 +404,6 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
 
     rodents[[i]] <- prep_rodents_table(main = main, moons = moons, 
                                        end_moon = end_moon, 
-                                       start_moon = start_moon, 
                                        species = ctrl_r_i[["species"]],
                                        total = ctrl_r_i[["total"]],
                                        interpolate = 
@@ -458,10 +452,6 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
-#'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the first sample to be included. Default value is \code{217}, 
-#'  corresponding to \code{1995-01-01}. 
 #'
 #' @param total \code{logical} value indicating if a total 
 #'  (sum across species) should be added or not. Only available if more than 
@@ -585,8 +575,7 @@ NULL
 #'
 #' @export
 #'
-prep_rodents_table <- function(main = ".", moons = NULL,
-                               end_moon = NULL, start_moon = 217, 
+prep_rodents_table <- function(main = ".", moons = NULL, end_moon = NULL, 
                                species = base_species(), total = TRUE, 
                                interpolate = TRUE,
                                clean = FALSE, type = "Rodents", 
@@ -622,9 +611,8 @@ prep_rodents_table <- function(main = ".", moons = NULL,
                         min_plots = min_plots, effort = effort, 
                         quiet = !verbose) %>%
   process_rodent_data(main = main, moons = moons, end_moon = end_moon,
-                      start_moon = start_moon, species = species, 
-                      total = total, interpolate = interpolate, 
-                      clean = clean, level = level, 
+                      species = species, total = total, 
+                      interpolate = interpolate, clean = clean, level = level, 
                       treatment = treatment, na_drop = na_drop,
                       time = time, ref_species = ref_species, quiet = quiet, 
                       verbose = verbose, arg_checks = arg_checks) %>%
@@ -637,8 +625,7 @@ prep_rodents_table <- function(main = ".", moons = NULL,
 #' @export
 #'
 process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
-                                end_moon = NULL, start_moon = 217, 
-                                species = base_species(), 
+                                end_moon = NULL, species = base_species(), 
                                 total = TRUE, interpolate = FALSE,
                                 clean = FALSE, level = "Site", 
                                 treatment = NULL, na_drop = FALSE,
@@ -694,11 +681,9 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
       rodents_tab[ , "total"] <- apply(rodents_tab[ , species], 1, sum)
     }
 
-    return_if_null(c(start_moon, end_moon), rodents_tab)
-    start_moon <- ifnull(start_moon, min(rodents_tab$moon))
+
     end_moon <- ifnull(end_moon, max(rodents_tab$moon))
-    rodents_tab <- subset(rodents_tab, moon >= start_moon) %>%
-                          subset(moon <= min(c(end_moon, max(moon))))
+    rodents_tab <- subset(rodents_tab, moon <= min(c(end_moon, max(moon))))
     messageq("    data trimmed according to moon window", !verbose)
   } else{
     messageq("    no time processing conducted", !verbose)

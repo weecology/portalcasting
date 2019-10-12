@@ -7,20 +7,19 @@
 \title{Prepare a rodents data tables for forecasting}
 \usage{
 prep_rodents_table(main = ".", moons = NULL, end_moon = NULL,
-  start_moon = 217, species = base_species(), total = TRUE,
-  interpolate = TRUE, clean = FALSE, type = "Rodents",
-  level = "Site", plots = "all", treatment = NULL, min_plots = 24,
-  min_traps = 1, output = "abundance", shape = "crosstab",
-  fillweight = (output != "abundance"), unknowns = FALSE,
-  time = "newmoon", na_drop = FALSE,
+  species = base_species(), total = TRUE, interpolate = TRUE,
+  clean = FALSE, type = "Rodents", level = "Site", plots = "all",
+  treatment = NULL, min_plots = 24, min_traps = 1,
+  output = "abundance", shape = "crosstab", fillweight = (output !=
+  "abundance"), unknowns = FALSE, time = "newmoon", na_drop = FALSE,
   zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site
   = TRUE), ref_species = all_species(), effort = FALSE, quiet = TRUE,
   verbose = FALSE, control_files = files_control(), save = TRUE,
   overwrite = TRUE, filename = "rodents_all.csv", arg_checks = TRUE)
 
 process_rodent_data(rodents_tab, main = ".", moons = NULL,
-  end_moon = NULL, start_moon = 217, species = base_species(),
-  total = TRUE, interpolate = FALSE, clean = FALSE, level = "Site",
+  end_moon = NULL, species = base_species(), total = TRUE,
+  interpolate = FALSE, clean = FALSE, level = "Site",
   treatment = NULL, na_drop = FALSE, time = "newmoon",
   ref_species = all_species(), quiet = TRUE, verbose = FALSE,
   arg_checks = TRUE)
@@ -34,10 +33,6 @@ the directory tree.}
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
 
 \item{species}{\code{character}-valued vector of species names 
 to include.}

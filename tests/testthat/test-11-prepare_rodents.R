@@ -7,6 +7,8 @@ test_that("rodents_control", {
 test_that("prep_rodents_table", {
   skip_on_cran() # downloads take too long for cran checks
   expect_is(prep_rodents_table(main = "./testing"), "data.frame")
+  expect_is(prep_rodents_table(main = "./testing", time = "date"), 
+            "data.frame")
 })
 
 test_that("prep_rodents", {

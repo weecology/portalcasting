@@ -77,7 +77,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
                                  include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
-      stop("no casts available for requested plot")
+      stop("no casts available for requested plot", call. = FALSE)
     }else{
       cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
                                  arg_checks = arg_checks)
@@ -105,7 +105,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
   end_moon_in <- cast_tab$end_moon %in% end_moons
   all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
   if(sum(all_in) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
   cast_tab <- cast_tab[all_in, ]
 
@@ -320,7 +320,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
                                  include_interp = include_interp,
                                  arg_checks = arg_checks)
     if(NROW(cast_choices) == 0){
-      stop("no casts available for requested plot")
+      stop("no casts available for requested plot", call. = FALSE)
     }else{
       cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
                                  arg_checks = arg_checks)
@@ -345,7 +345,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
   end_moon_in <- cast_tab$end_moon %in% end_moons
   all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
   if(sum(all_in) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
 
 
@@ -629,7 +629,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     casts_meta <- casts_meta[which_max, ]
   }
   if(NROW(casts_meta) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
 
   max_obs <- 0
@@ -641,16 +641,18 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     moon <- ifnull(moon, unique(obs$moon))
     obs <- obs[obs$moon %in% moon, species]
     if(NROW(obs) == 0){
-      stop("no observations available for requested plot") 
+      stop("no observations available for requested plot", call. = FALSE) 
     } 
     max_obs <- max(as.numeric(obs), na.rm = TRUE)
   }
-
+  data_set <- casts_meta$data_set
   if(!is.null(model) && tolower(model) == "ensemble"){
+    data_set <- gsub("_interp", "", data_set)
     preds <- ensemble_casts(main = main, cast_groups = cast_groups,
                             end_moon = casts_meta$end_moon, 
-                            data_set = casts_meta$data_set, species = species,
+                            data_set = data_set, species = species,
                             arg_checks = arg_checks)
+
   } else{
     preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
                            arg_checks = arg_checks)
@@ -667,8 +669,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   moon_month <- moons$month[moons$moon == moon]
   moon_year <- moons$year[moons$moon == moon]
   title_date <- paste(month(moon_month, TRUE), moon_year, sep = " ")
-  data_set_name <- casts_meta$data_set
-  data_set_name <- gsub("_interp", " (interpolated)", data_set_name)
+  data_set_name <- gsub("_interp", " (interpolated)", data_set)
   model_name <- ifnull(model, casts_meta$model)
   title <- paste0(title_date, ", " , model_name, ", ", data_set_name)
 
@@ -831,7 +832,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     casts_meta <- casts_meta[which_max, ]
   }
   if(NROW(casts_meta) == 0){
-    stop("no casts available for requested plot")
+    stop("no casts available for requested plot", call. = FALSE)
   }
 
   obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
@@ -839,11 +840,12 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
   species <- ifnull(species, colnames(obs)[sp_col])
   obs <- obs[ , c("moon", species)]
-
+  data_set <- casts_meta$data_set
   if(!is.null(model) && tolower(model) == "ensemble"){
+    data_set <- gsub("_interp", "", data_set)
     preds <- ensemble_casts(main = main, cast_groups = cast_groups,
                             end_moon = casts_meta$end_moon, 
-                            data_set = casts_meta$data_set, species = species,
+                            data_set = data_set, species = species,
                             arg_checks = arg_checks)
   } else{
     preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
@@ -931,8 +933,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   points(o_x_2, o_y_2, type = "l", lwd = 2)
 
   model_name <- ifnull(model, casts_meta$model)
-  data_set_name <- casts_meta$data_set
-  data_set_name <- gsub("_interp", " (interpolated)", data_set_name)
+  data_set_name <- gsub("_interp", " (interpolated)", data_set)
   title <- paste0(model_name, ", ", data_set_name)
   mtext(title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
 

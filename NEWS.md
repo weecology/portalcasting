@@ -3,6 +3,53 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.12.0](https://github.com/weecology/portalcasting/releases/tag/v0.12.0)
+*2019-10-11*
+
+### `portalcast` updates model scripts according to `controls_model`
+* Previously, if you changed any controls of a prefab model, you had to manually re-write the models using `fill_models` before running `portalcast`.
+* Using `fill_models` would result in hand-made scripts being overwritten, so a specific function (`update_models`) for updating the models was created. 
+* `update_models` by default only updates the models listed in the `controls_model` input, to avoid overwriting model scripts. To change this behavior and also update all of the prefab models' scripts, set `update_prefab_models = TRUE`. This is particularly handy when changing a global (with respect to model scripts) argument: `main`, `quiet`, `verbose`, or `arg_checks`.
+* [addresses](https://github.com/weecology/portalcasting/issues/147)
+
+### Messaging around trying to use not-complete directory improved
+* Indication now made that a component of the directory is missing and suggestion is made to run `create_dir`.
+* [addresses](https://github.com/weecology/portalcasting/issues/137)
+
+### Patching data set bug in plotting
+* There was a bug with matching the interpolated to the non interpolated data sets within the ensembling, which has been fixed. 
+* [addresses](https://github.com/weecology/portalcasting/issues/140)
+
+### Updated messaging 
+* Moved most of the messaging into tidied functions.
+
+### Changed behavior of `prep_rodents_table` and `prep_rodents` 
+* Now there is no `start_moon` argument, and all of the data prior to `end_moon` are returned.
+* This aligns the rodents prep functions with the other (moons, covariates) prep functions.
+* Facilitates use of data prior to `start_moon` in forecasting models (e.g., for distributions of starting state variables).
+* Requires that model functions now explicitly trim the rodents table being used. This has been added to all prefab models. 
+
+### Fixed codecov targets
+* Previous targets were restrictively high due to earlier near-perfect coverage.
+* A codecov.yml file is now included in the repo (and ignored for the R build) which sets the target arbitrarily at the still-quite-high-but-not-restrictively-so 95%. 
+* It can be changed if needed in the future.
+
+### Simple EDM model added
+* [addresses](https://github.com/weecology/portalcasting/issues/115)
+
+### JAGS infrastructure added
+* Using the runjags package, with extensive access to the API of `run.jags` via a `control_runjags` `list` (see `runjags_control`).
+* Currently in place with a very simple random walk model. 
+* [addresses](https://github.com/weecology/portalcasting/issues/142)
+
+### Prepared rodents table includes more content
+* Expanded back in time to the start.
+* Added effort columns (all default options in `prefab_rodents_controls` have `effort = TRUE`).
+
+### Updated adding a model and data vignette
+* Added section at the end about just extending existing models to new data sets.
+* [addresses](https://github.com/weecology/portalcasting/issues/145)
+
 # [portalcasting 0.11.0](https://github.com/weecology/portalcasting/releases/tag/v0.11.0)
 *2019-09-14*
 

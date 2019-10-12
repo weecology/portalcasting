@@ -23,5 +23,7 @@ test_that("check_arg", {
   expect_is(check_arg("extension", "ab"), "character")
 
   expect_is(check_arg("cleanup", "ok"), "character")
+  expect_is(check_arg("mutate", 1), "character")
+  expect_is(check_arg("inits", 1), "character")
 })
 

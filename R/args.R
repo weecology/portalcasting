@@ -32,6 +32,12 @@
 #'
 #'  Usage rules for arguments are as follows: \cr
 #'
+#'  Must be length-1 \code{logical} values, cannot be \code{NULL} or
+#'  \code{NA}: 
+#'   \code{bline},
+#'   \code{force_model_updates},
+#'   \code{only_if_missing}.
+#'
 #'  Must be length-1 \code{logical} values, can be \code{NULL}, but cannot be 
 #'  \code{NA}: 
 #'   \code{add_error},
@@ -40,6 +46,7 @@
 #'   \code{add_obs}, 
 #'   \code{append_cast_csv}, 
 #'   \code{arg_checks}, 
+#'   \code{cast_obs},
 #'   \code{clean},
 #'   \code{cleanup},
 #'   \code{covariatesTF}, 
@@ -56,9 +63,11 @@
 #'   \code{retain_target_moons},
 #'   \code{return_version},
 #'   \code{save}, 
+#'   \code{silent_jags},
 #'   \code{tail}, 
 #'   \code{total}, 
 #'   \code{unknowns}, 
+#'   \code{update_prefab_models}, 
 #'   \code{verbose},
 #'   \code{with_census},
 #'   \code{zero_drop}. 
@@ -80,7 +89,8 @@
 #'   \code{filename_config}, 
 #'   \code{filename_meta},
 #'   \code{filename_moons}, 
-#'   \code{freq},  
+#'   \code{freq}, 
+#'   \code{jags_model},  
 #'   \code{level}, 
 #'   \code{main}, 
 #'   \code{method} (if not \code{NULL}, must be \code{"unwtavg"}),
@@ -118,9 +128,12 @@
 #'   \code{downloads_versions},
 #'   \code{enquote_args}, 
 #'   \code{eval_args}, 
+#'   \code{factories},
 #'   \code{files}, 
 #'   \code{models} (inputted values are checked via 
 #'    \code{\link{verify_models}}), 
+#'   \code{modules},
+#'   \code{monitor},
 #'   \code{msg}, 
 #'   \code{names},
 #'   \code{paths}, 
@@ -162,6 +175,7 @@
 #'   \code{control_climate_dl},
 #'   \code{control_files},
 #'   \code{control_model},
+#'   \code{control_runjags},
 #'   \code{controls_models},
 #'   \code{controls_rodents},
 #'   \code{data_set_controls},
@@ -169,6 +183,9 @@
 #'   \code{filenames},
 #'   \code{metadata},
 #'   \code{rodents}.
+#'
+#'  Must be \code{list}s, can be any length, can be \code{NULL} or \code{NA}:
+#'   \code{run_status}.
 #'
 #'  Must be length-1 \code{Date}-conformable values, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
@@ -191,18 +208,24 @@
 #'
 #'  Must be length-1 \code{integer}-conformable values can be \code{NULL},
 #'  but cannot be \code{NA}:
+#'   \code{adapt} (must be positive),
+#'   \code{burnin} (must be positive),
 #'   \code{cast_id} (must be non-negative),
 #'   \code{end_moon} (must be positive),
 #'   \code{lead} (must be positive),
 #'   \code{lead_time} (must be non-negative),
 #'   \code{lev},
+#'   \code{max_E} (must be positive, 1 to 24),
 #'   \code{min_observed} (must be positive),
 #'   \code{min_plots} (must be positive),
 #'   \code{min_traps} (must be positive),
 #'   \code{moon} (must be positive),
+#'   \code{nchains} (must be positive),
 #'   \code{ndates} (must be positive),
 #'   \code{nmoons} (must be non-negative),
+#'   \code{sample} (must be positive),
 #'   \code{start_moon} (must be positive),
+#'   \code{thin} (must be positive),
 #'   \code{topx} (must be positive).
 #'
 #'  Must be length-1 \code{integer}-conformable values can be \code{NULL}, 
@@ -216,6 +239,13 @@
 #'   \code{cast_ids} (must be non-negative),
 #'   \code{end_moons} (must be positive),
 #'   \code{target_moons} (must be positive).
+#'
+#'  Must be a \code{list} or \code{function}; can be \code{NULL} or \code{NA}:
+#'   \code{mutate}. 
+#'
+#'  Must be a \code{character} vector (any length), \code{list}, or
+#'  \code{function}; can be \code{NULL} but not \code{NA}:
+#'   \code{inits}. 
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'   checked.
@@ -248,7 +278,7 @@ NULL
 #'
 check_args <- function(arg_checks = TRUE){
   if(length(arg_checks) !=1 | !is.logical(arg_checks)){
-    stop("`arg_checks` must be a single logical value")
+    stop("`arg_checks` must be a single logical value", call. = FALSE)
   }
   if(!arg_checks){
     return()
@@ -266,7 +296,8 @@ check_args <- function(arg_checks = TRUE){
     fun_name <- as.list(fun_call2)[[1]]
 
   } else{
-    stop("unrecognized class for function reference in check_args")
+    stop("unrecognized class for function reference in check_args", 
+         call. = FALSE)
   }
   arg_values <- as.list(fun_call)[-1]
   arg_names <- names(arg_values)
@@ -279,7 +310,8 @@ check_args <- function(arg_checks = TRUE){
                      error = function(x){NA},
                      warning = function(x){x}
                    )
-      if(!all(is.null(arg_value)) && all(is.na(arg_value))){
+      if(!all(is.null(arg_value)) && !("function" %in% class(arg_value)) && 
+         all(is.na(arg_value))){
         arg_value <- tryCatch(
                        eval.parent(arg_values[[i]], 1),
                        error = function(x){NULL},
@@ -318,8 +350,7 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
     }
     return(out)
   }
-
-  if(all(is.na(arg_value))){
+  if(!("function" %in% class(arg_value)) && all(is.na(arg_value))){
     if(!can_be_na){
       out <- paste0("`", arg_name, "` cannot be NA")
     }
@@ -345,6 +376,20 @@ check_arg <- function(arg_name, arg_value, fun_name = NULL){
   } else if (deets$class == "dfv"){
     if (!("data.frame" %in% class(arg_value)) & !is.vector(arg_value)){
       out2 <- paste0("`", arg_name, "` must be a data.frame or vector")
+      out <- c(out, out2)
+    }
+  } else if (deets$class == "listfun"){
+    if (!("list" %in% class(arg_value)) &
+        !("function" %in% class(arg_value))){
+      out2 <- paste0("`", arg_name, "` must be a list, or function")
+      out <- c(out, out2)
+    }
+  } else if (deets$class == "inits"){
+    if (!("character" %in% class(arg_value)) &
+        !("list" %in% class(arg_value)) &
+        !("function" %in% class(arg_value))){
+      out2 <- paste0("`", arg_name, 
+                     "` must be a character vector, list, or function")
       out <- c(out, out2)
     }
   } else if (deets$class == "dfl"){
@@ -444,8 +489,17 @@ check_arg_list <- function(){
     list(class = "zeroone", null = null, na = na, length = length, 
          vals = vals)
   }
+  arg_inits <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
+    list(class = "inits", null = null, na = na, length = length, 
+         vals = vals)
+  }
   arg_list <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
     list(class = "list", null = null, na = na, length = length, 
+         vals = vals)
+  }
+  arg_listfun <- function(length = NULL, null = TRUE, na = TRUE, 
+                          vals = NULL){
+    list(class = "listfun", null = null, na = na, length = length, 
          vals = vals)
   }
   arg_df <- function(length = NULL, null = TRUE, na = FALSE, vals = NULL){
@@ -487,7 +541,9 @@ check_arg_list <- function(){
   }
 
 
-  avail_methods <- c("unwtavg")
+  avail_methods <- c("unwtavg", "rjags", "simple", "interruptible", 
+                     "parallel", "rjparallel", "background", "bgparallel",
+                     "snow")
   avail_outputs <- c("abundance")
   avail_plots <- c("all", "longterm")
   avail_species <- c("BA", "DM", "DO", "DS", "NA", "NA.", "OL", "OT", "PB", 
@@ -496,55 +552,62 @@ check_arg_list <- function(){
   avail_subs <- c("casts", "models", "raw", "data", "tmp")
   avail_treatments <- c("control")
   avail_winners <- c("hist", "cast")
+  avail_max_Es <- 1:24
 
   list(
+    adapt = arg_posintnum(),
     add_error = arg_logical(),
     add_in_window = arg_logical(), 
     add_lead = arg_logical(),
     add_obs = arg_logical(),
     append_cast_csv = arg_logical(),
     arg_checks = arg_logical(),
+    bline = arg_logical(null = FALSE),
+    burnin = arg_posintnum(),
     cast = arg_cast(),
-    cast_groups = arg_nonnegintnum(NULL),
-    cast_ids = arg_nonnegintnum(NULL),
+    cast_groups = arg_nonnegintnum(length = NULL),
+    cast_ids = arg_nonnegintnum(length = NULL),
     cast_id = arg_nonnegintnum(),
     cast_cov = arg_df(),
     cast_date = arg_date(),
-    cast_dates = arg_date(NULL),
+    cast_dates = arg_date(length = NULL),
+    cast_obs = arg_logical(),
     cast_tab = arg_df(),
     casts = arg_df(),
     clean = arg_logical(),
     cleanup = arg_logical(),
     colname = arg_character(),
-    colnames = arg_character(NULL),
-    concept_rec_id = arg_character(NULL),
+    colnames = arg_character(length = NULL),
+    concept_rec_id = arg_character(length = NULL),
     confidence_level = arg_zeroone(),
     control_model = arg_list(),
     control_climate_dl = arg_list(),
     controls_model = arg_list(),
     controls_rodents = arg_list(),
+    control_runjags = arg_list(),
     control_files = arg_list(),
     covariates = arg_df(),
     covariatesTF = arg_logical(),
     data_name = arg_character(),
-    data = arg_character(NULL),
+    data = arg_character(length = NULL),
     data_set = arg_character(),
     data_set_controls = arg_list(),
-    data_sets = arg_character(NULL),
+    data_sets = arg_character(length = NULL),
     date = arg_date(),
-    dates = arg_date(NULL),
+    dates = arg_date(length = NULL),
     df = arg_df(),
     dfl = arg_dfl(),
     dfv = arg_dfv(),
     directory = arg_character(),
     downloads = arg_list(),
-    downloads_versions = arg_character(NULL),
+    downloads_versions = arg_character(length = NULL),
     effort = arg_logical(),
     ensemble = arg_logical(),
     end = arg_date(),
     end_moon = arg_posintnum(),
-    end_moons = arg_posintnum(NULL),
+    end_moons = arg_posintnum(length = NULL),
     extension = arg_extension(),
+    factories = arg_character(length = NULL),
     filename = arg_character(),
     filenames = arg_list(),
     filename_config = arg_character(),
@@ -552,15 +615,18 @@ check_arg_list <- function(){
     filename_cov_casts = arg_character(),
     filename_meta = arg_character(),
     filename_moons = arg_character(),
-    files = arg_character(NULL),  
+    files = arg_character(length = NULL),  
     fillweight = arg_logical(),
+    force_model_updates = arg_logical(null = FALSE),
     freq = arg_character(),
     from_date = arg_date(),
     hist_cov = arg_df(),
     hist_tab = arg_df(),
-    interpolate = arg_logical(null = TRUE),
-    include_interp = arg_logical(null = TRUE),
-    lag = arg_nonnegintnum(null = TRUE, na = TRUE),
+    interpolate = arg_logical(),
+    include_interp = arg_logical(),
+    inits = arg_inits(),
+    jags_model = arg_character(),  
+    lag = arg_nonnegintnum(na = TRUE),
     lat = arg_numeric(),
     lead = arg_posintnum(),
     lead_time  = arg_nonnegintnum(),
@@ -568,56 +634,66 @@ check_arg_list <- function(){
     level = arg_character(),
     lon = arg_numeric(),
     main = arg_character(),
+    max_E = arg_nonnegintnum(vals = avail_max_Es),
     metadata = arg_list(),
     method = arg_character(vals = avail_methods),
-    min_lag  = arg_nonnegintnum(na = TRUE),
+    min_lag = arg_nonnegintnum(na = TRUE),
     min_observed = arg_posintnum(),
     min_plots = arg_posintnum(),
     min_traps = arg_posintnum(),
     model = arg_character(),
-    models = arg_character(NULL),
+    models = arg_character(length = NULL),
+    modules = arg_character(length = NULL),
+    monitor = arg_character(length = NULL),
     moon = arg_posintnum(),
     moons = arg_df(),
-    movedTF = arg_logical(NULL),
-    msg = arg_character(NULL),
+    movedTF = arg_logical(length = NULL),
+    msg = arg_character(length = NULL),
+    mutate = arg_listfun(),
     na_drop = arg_logical(),
     nadot = arg_logical(),
     name = arg_character(),
-    names = arg_character(NULL),
+    names = arg_character(length = NULL),
+    nchains = arg_posintnum(),
     ndates = arg_posintnum(),
     nmoons = arg_nonnegintnum(),
     NULLname = arg_logical(),
     obs = arg_df(),
+    only_if_missing = arg_logical(null = FALSE),
     output = arg_character(vals = avail_outputs),
     overwrite = arg_logical(),
     path = arg_character(),
-    paths = arg_character(NULL),
+    paths = arg_character(length = NULL),
     plots = arg_character(vals = avail_plots),
     preds = arg_df(),
     quiet = arg_logical(),
     raw_data = arg_character(),
-    rec_id = arg_character(NULL),
-    rec_version = arg_character(NULL),
-    ref_species = arg_character(NULL),
+    rec_id = arg_character(length = NULL),
+    rec_version = arg_character(length = NULL),
+    ref_species = arg_character(length = NULL),
     retain_target_moons = arg_logical(),
     return_version = arg_logical(),
     rodents = arg_list(),
     rodents_tab = arg_df(),
+    run_status = arg_list(na = TRUE),
+    sample = arg_posintnum(),
     save = arg_logical(),
     sep_char = arg_character(),
     set = arg_character(),
     shape = arg_character(),
+    silent_jags = arg_logical(),
     source_name = arg_character(),
     source_url = arg_character(),
-    species = arg_character(NULL, vals = avail_species),
+    species = arg_character(length = NULL, vals = avail_species),
     species_id = arg_character(vals = avail_species),
     start = arg_date(),
     start_moon = arg_posintnum(),
     sub = arg_character(vals = avail_subs),
-    subs = arg_character(NULL, vals = avail_subs),
+    subs = arg_character(length = NULL, vals = avail_subs),
     tail = arg_logical(),
-    target_moons = arg_posintnum(NULL),
-    target_cols = arg_character(NULL),
+    target_moons = arg_posintnum(length = NULL),
+    target_cols = arg_character(length = NULL),
+    thin = arg_posintnum(),
     time = arg_character(),
     title = arg_character(),
     topx = arg_posintnum(),
@@ -625,6 +701,7 @@ check_arg_list <- function(){
     treatment = arg_character(vals = avail_treatments),
     type = arg_character(),
     unknowns = arg_logical(),
+    update_prefab_models = arg_logical(),
     url = arg_character(),
     verbose = arg_logical(),
     winner = arg_character(vals = avail_winners),

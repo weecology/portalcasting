@@ -5,13 +5,13 @@
 #'  \code{portalcast} wraps around \code{cast} to allow multiple runs of 
 #'  multiple models, with data preparation as needed between runs occurring
 #'  via \code{prep_data}. \cr \cr
-#'  \code{cast} runs a single cast of multiple models, using the data as
-#'  prepared by \code{prep_data}.
+#'  \code{cast} runs a single cast of multiple models across data sets.
 #'
-#' @details Multiple models can be run together on the same data and 
-#'  multiple runs of a model (e.g., with a rolling origin) can be initiated
-#'  together using \code{portalcast} and \code{cast} runs the individual
-#'  instances.
+#' @details Multiple models can be run together on the multiple, varying 
+#'  data sets for a single new moon using \code{cast}. \code{portalcast}
+#'  wraps around \code{cast}, providing updating, verification, and resetting
+#'  utilities as well as facilitating multiple runs of \code{cast} across 
+#'  new moons (e.g., when using a rolling origin).
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -25,8 +25,6 @@
 #'  \strong{\code{end_moons} allows for multiple moons, \code{end_moon}
 #'  can only be one value}.
 #'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
@@ -39,24 +37,30 @@
 #'  corresponding to \code{1995-01-01}.
 #'
 #' @param confidence_level \code{numeric} confidence level used in 
-#'   summarizing model output. Must be between \code{0} and \code{1}.
+#'  summarizing model output. Must be between \code{0} and \code{1}.
 #'
 #' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
 #' @param controls_model Additional controls for models not in the prefab 
-#'  set. \cr 
+#'  set or for overriding controls of a prefab model (for example when 
+#'  applying a model to a new data set). \cr 
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
 #'  script-writing controls. \cr 
-#'  Presently, each model's script writing controls
-#'  should include three elements: \code{name} (a \code{character} value of 
-#'  the model name), \code{covariates} (a \code{logical} indicator of if the 
-#'  model needs covariates), and \code{lag} (an \code{integer}-conformable 
-#'  value of the lag to use with the covariates or \code{NA} if 
-#'  \code{covariates = FALSE}). \cr 
-#'  If only a single model is added, the name of 
+#'  Presently, each model's script writing controls should include four 
+#'  elements: 
+#'  \itemize{
+#'   \item \code{name}: a \code{character} value of the model name.
+#'   \item \code{data_sets}: a \code{character} vector of the data set names
+#'    that the model is applied to. 
+#'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
+#'    model needs covariates.
+#'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
+#'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
+#'  }
+#'  If only a single model's controls are included, the name of 
 #'  the model from the element \code{name} will be used to name the model's
 #'  \code{list} in the larger \code{list}. If multiple models are added, each
 #'  element \code{list} must be named according to the model and the
@@ -65,6 +69,10 @@
 #' @param controls_rodents Control \code{list} or \code{list} of \code{list}s 
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details.  
+#'
+#' @param bline \code{logical} indicator if horizontal break lines should be
+#'  made or not. For toggling separately from the more general \code{quiet}
+#'  argument. 
 #'
 #' @param control_climate_dl \code{list} of specifications for the download, 
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
@@ -75,6 +83,16 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
+#'
+#' @param update_prefab_models \code{logical} indicator if all of the models'
+#'  scripts should be updated, even if they do not have an explicit change
+#'  to their model options via \code{controls_model}. Default is
+#'  \code{FALSE}, which leads to only the models in \code{controls_model}
+#'  having their scripts re-written. Switching to \code{TRUE} results in the
+#'  models listed in \code{models} having their scripts re-written. \cr \cr
+#'  This is particularly helpful when one is changing the global (with respect
+#'  to the models) options \code{main}, \code{quiet}, \code{verbose}, or
+#'  \code{control_files}.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages). 
@@ -107,54 +125,37 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                        control_climate_dl = climate_dl_control(),
                        control_files = files_control(),
                        downloads = zenodo_downloads(c("1215988", "833438")), 
-                       quiet = FALSE, verbose = FALSE, 
-                       arg_checks = TRUE){
-  check_args(arg_checks)
-  portalcast_welcome(quiet = quiet)
-  messageq("Preparing directory for casting", quiet)
-  messageq("---------------------------------------------------------", quiet)
+                       update_prefab_models = FALSE, bline = TRUE, 
+                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  return_if_null(models)
+  mainp <- main_path(main = main, arg_checks = arg_checks)
+  verify(paths = mainp, arg_checks = arg_checks)
+  portalcast_welcome(quiet = quiet, arg_checks = arg_checks)
+  update_models(main = main, models = models, controls_model = controls_model, 
+                update_prefab_models = update_prefab_models, quiet = quiet,
+                verbose = verbose, control_files = control_files, 
+                arg_checks = arg_checks)
   verify_models(main = main, models = models, quiet = quiet, 
                 arg_checks = arg_checks)
-  raw_data_present <- verify_raw_data(main = main, 
-                                      raw_data = control_files$raw_data, 
-                                      arg_checks = arg_checks)
-  if(!raw_data_present){
-    fill_raw(main = main, downloads = downloads, quiet = quiet, 
-             control_files = control_files, arg_checks = arg_checks)
-  }
-  moons <- read_moons(main = main, control_files = control_files,
-                      arg_checks = arg_checks)
-  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
-                            arg_checks = arg_checks)
-  end_moons <- ifnull(end_moons, last_moon)
+  fill_raw(main = main, downloads = downloads, only_if_missing = TRUE, 
+           quiet = quiet, control_files = control_files, 
+           arg_checks = arg_checks)
+  last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
+  end_moons <- ifnull(end_moons, last)
   nend_moons <- length(end_moons)
   for(i in 1:nend_moons){
-    if(i>1){
-      messageq("---------------------------------------------------------", 
-             quiet)
-    }
-    msg <- paste0("Readying data for forecast origin newmoon ", end_moons[i])
-    messageq(msg, quiet)
-    fill_data(main = main, models = models, 
-              end_moon = end_moons[i], lead_time = lead_time, 
-              cast_date = cast_date, start_moon = start_moon, 
-              confidence_level = confidence_level, 
-              controls_rodents = controls_rodents,
-              controls_model = controls_model, 
-              control_climate_dl = control_climate_dl, 
-              downloads = downloads, control_files = control_files,
-              quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
-    cast(main = main, models = models,
-         cast_date = cast_date, moons = moons, 
-         end_moon = end_moons[i], 
-         controls_rodents = controls_rodents, control_files = control_files,
-         confidence_level = confidence_level, quiet = quiet, 
-         verbose = verbose, arg_checks = TRUE)
+    cast(main = main, models = models, end_moon = end_moons[i], 
+         start_moon = start_moon, lead_time = lead_time, 
+         confidence_level = confidence_level, cast_date = cast_date, 
+         controls_model = controls_model, controls_rodents = controls_rodents, 
+         control_climate_dl = control_climate_dl, 
+         control_files = control_files, downloads = downloads, 
+         quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   }
-  if(end_moons[nend_moons] != last_moon){
-    messageq("---------------------------------------------------------", 
-             quiet)
-    messageq("Resetting data to the most up-to-date versions", quiet)
+  if(end_moons[nend_moons] != last){
+    data_resetting_message(bline = bline, quiet = quiet, 
+                           arg_checks = arg_checks)
     fill_data(main = main, models = models, 
               end_moon = NULL, lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 
@@ -164,9 +165,8 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
               control_climate_dl = control_climate_dl, 
               downloads = downloads, control_files = control_files,
               quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
-
   }
-  portalcast_goodbye(quiet = quiet)
+  portalcast_goodbye(bline = bline, quiet = quiet, arg_checks = arg_checks)
 } 
 
 
@@ -174,50 +174,52 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
 #'
 #' @export
 #'
-cast <- function(main = ".", models = prefab_models(), moons = NULL, 
-                 end_moon = NULL, confidence_level = 0.95, 
-                 cast_date = Sys.Date(), 
-                 controls_rodents = rodents_controls(), 
+cast <- function(main = ".", models = prefab_models(), end_moon = NULL, 
+                 start_moon = 217, lead_time = 12, confidence_level = 0.95, 
+                 cast_date = Sys.Date(), controls_model = NULL, 
+                 controls_rodents = rodents_controls(),
+                 control_climate_dl = climate_dl_control(),
                  control_files = files_control(),
-                 quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+                 downloads = zenodo_downloads(c("1215988", "833438")), 
+                 bline = TRUE, quiet = FALSE, verbose = FALSE,
+                 arg_checks = TRUE){
+
   check_args(arg_checks = arg_checks)
-  messageq("---------------------------------------------------------", quiet)
+  data_readying_message(end_moon = end_moon, bline = bline, 
+                        quiet = quiet, arg_checks = arg_checks)
+  fill_data(main = main, models = models, end_moon = end_moon, 
+            lead_time = lead_time, cast_date = cast_date, 
+            start_moon = start_moon, confidence_level = confidence_level, 
+            controls_rodents = controls_rodents,
+            controls_model = controls_model, 
+            control_climate_dl = control_climate_dl, 
+            downloads = downloads, control_files = control_files,
+            quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
+
   clear_tmp(main = main, quiet = quiet, cleanup = control_files$cleanup,
             arg_checks = arg_checks)
-  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
-                            arg_checks = arg_checks)
-  end_moon <- ifnull(end_moon, last_moon)
 
-  msg1 <- "---------------------------------------------------------"
-  msg2 <- paste0("Running models for forecast origin newmoon ", end_moon)
-  messageq(c(msg1, msg2), quiet)
+  last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
+  end_moon <- ifnull(end_moon, last)
 
+  models_running_message(end_moon = end_moon, bline = bline, quiet = quiet, 
+                         arg_checks = arg_checks)
   models_scripts <- models_to_cast(main = main, models = models,
                                    arg_checks = arg_checks)
-
   nmodels <- length(models)
   for(i in 1:nmodels){
-    modelname <- path_no_ext(basename(models_scripts)[i])
-    messageq(paste0(" -Running ", modelname), quiet)
-
+    model <- models_scripts[i]
+    model_running_message(model = model, quiet = quiet,
+                          arg_checks = arg_checks)
     run_status <- tryCatch(
-                     source(models_scripts[i], local = TRUE),
-                     error = function(x){NA}
+                     source(model, local = TRUE),
+                     error = function(x){NA}                     
                   )
-    if(all(is.na(run_status))){
-      msg <- paste0("  |----| ", modelname, " failed |----|")
-    } else{
-      msg <- paste0("  |++++| ", modelname, " successful |++++|")
-    }
-    messageq(msg, quiet)
+    model_done_message(model = model, run_status = run_status, quiet = quiet,
+                       arg_checks = arg_checks)
   }
-  messageq("---------------------------------------------------------", quiet)
   clear_tmp(main = main, quiet = quiet, verbose = verbose, 
             cleanup = control_files$cleanup, arg_checks = arg_checks)
-
 }
 
 

@@ -62,6 +62,9 @@
 #' @param downloads \code{list} of arguments to pass to \code{\link{download}}
 #'  for raw file downloading. 
 #'
+#' @param bline \code{logical} indicator if a horizontal break lines should be
+#'  included in messages.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -96,12 +99,12 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       control_climate_dl = climate_dl_control(),
                       control_files = files_control(),
                       downloads = zenodo_downloads(c("1215988", "833438")), 
-                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
-  portalcast_welcome(quiet = quiet)
+                      bline = TRUE, quiet = FALSE, verbose = FALSE, 
+                      arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  version_message(bline = bline, quiet = quiet, arg_checks = arg_checks)
   create_dir(main = main, filename_config = control_files$filename_config,
-             quiet = quiet, verbose = verbose, arg_checks = arg_checks)
-  messageq("---------------------------------------------------------", quiet)
+             bline = TRUE, quiet = quiet, arg_checks = arg_checks)
   fill_dir(main = main, models = models, 
            end_moon = end_moon, lead_time = lead_time, 
            cast_date = cast_date, start_moon = start_moon, 
@@ -111,9 +114,8 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            control_climate_dl = control_climate_dl, 
            downloads = downloads, quiet = quiet, verbose = verbose, 
            control_files = control_files, arg_checks = arg_checks)
-  messageq("---------------------------------------------------------", quiet)
-  messageq("Directory successfully instantiated", quiet)
-  messageq("---------------------------------------------------------", quiet)
+  setup_completion_message(bline = bline, quiet = quiet, 
+                           arg_checks = arg_checks)
 }
 
 

@@ -1,3 +1,4 @@
+#' @importFrom coda as.mcmc HPDinterval
 #' @importFrom curl curl
 #' @importFrom DesignLibrary match.call.defaults
 #' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join 
@@ -11,7 +12,9 @@
 #'  load_trapping_data ndvi summarize_rodent_data weather
 #' @importFrom readr read_csv
 #' @importFrom rlang !! !!! .data quo quos
-#' @importFrom stats AIC lm na.omit predict qnorm quantile rnorm runif
+#' @importFrom runjags run.jags runjags.options
+#' @importFrom stats AIC lm na.omit predict qnorm quantile rgamma rnorm runif
+#'  sd
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file packageDescription read.csv sessionInfo
 #'  tail unzip write.csv write.table

@@ -19,7 +19,12 @@
 #'  \code{pevGARCH} fits a set of generalized autoregressive conditional
 #'  heteroscedasticity models with Poisson response variables and 
 #'  environmental covariates (max temp, mean temp, min temp, precipitation,
-#'  and NDVI) using \code{\link[tscount]{tsglm}}.
+#'  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
+#'  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
+#'  using \code{\link[rEDM]{simplex}}. \cr \cr
+#'  \code{jags_RW} fits a log-scale density random walk with a Poisson 
+#'  observation process using JAGS (Just Another Gibbs Sampler; 
+#'  Plummer 2003) hierarchical Bayesian inference. 
 #'
 #' @details 
 #'  \code{AutoArima} \cr
@@ -44,6 +49,13 @@
 #'
 #' @param lag \code{integer} (or integer \code{numeric}) of the lag time to
 #'  use for the covariates.
+#'  
+#' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
+#'  embedding dimension to search amongst for EDM models. See 
+#'  \code{\link[rEDM]{simplex}} for more information.
+#'
+#' @param control_runjags \code{list} of arguments passed to 
+#'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages).
@@ -61,15 +73,27 @@
 #'  [4] \code{list} of model cast objects (\code{"model_casts"}).
 #'
 #' @references 
-#'  Hyndman R., Bergmeir C., Caceres G., Chhay L., O'Hara-Wild M., Petropoulos
-#'  F., Razbash S., Wang E., and Yasmeen F. 2018. forecast: Forecasting 
-#'  functions for time series and linear models. 
-#'  \href{http://pkg.robjhyndman.com/forecast}{R package version 8.3}. 
+#'  Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., 
+#'  Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. 
+#'  forecast: Forecasting functions for time series and linear models. 
+#'  R package version 8.3. \href{http://pkg.robjhyndman.com/forecast}{URL}. 
 #'
-#'  Liboschik T., Fokianos K., and Fried R. 2017. tscount: An R Package for 
+#'  Liboschik, T., Fokianos, K., and Fried, R. 2017. tscount: An R Package for 
 #'  Analysis of Count Time Series Following Generalized Linear Models. 
 #'  \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
 #'  \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
+#'  
+#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical 
+#'  models using Gibbs Sampling. Proceedings of the 3rd International 
+#.  Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X.
+#'  \href{https://bit.ly/33aQ37Y}{URL}.
+#'
+#'  Ye, H., Clark, A., Deyle, E., Munch, S., Cai, J., Cowles, J., Daon, Y., 
+#'  Edwards, A., Keyes, O., Stagge, J., Ushio, M., White, E., and Sugihara G. 
+#'  2018. rEDM: Applications of Empirical Dynamic Modeling from Time Series. 
+#'  Zenodo. R package version0.7.4 
+#'  \href{http://doi.org/10.5281/zenodo.1935847}{URL}.
+#'  
 #'
 #' @examples
 #'  \donttest{
@@ -80,6 +104,8 @@
 #'   nbGARCH()
 #'   nbsGARCH()
 #'   pevGARCH()
+#'   simplexEDM()
+#'   jags_RW()
 #'  }
 #'
 #' @name prefab_model_functions
@@ -106,6 +132,10 @@ AutoArima <- function(main = ".", data_set = "all",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -173,6 +203,10 @@ NaiveArima <- function(main = ".", data_set = "all",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -239,6 +273,10 @@ ESSS <- function(main = ".", data_set = "all_interp",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -305,6 +343,10 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
@@ -386,6 +428,10 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   moons <- read_moons(main = main, control_files = control_files,
                       arg_checks = arg_checks)
   moon_foys <- foy(dates = moons$moondate, arg_checks = arg_checks)
@@ -482,6 +528,10 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
 
   metadata <- read_metadata(main = main, control_files = control_files,
                             arg_checks = arg_checks)
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level

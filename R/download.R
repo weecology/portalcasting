@@ -2,7 +2,7 @@
 #'
 #' @description This suite of functions manages the downloading and (if 
 #'  needed) unzipping of raw files associated with the directory. \cr \cr
-#'  \code{download} downloads a file from a from a website into the 
+#'  \code{download} downloads a file from a website into the 
 #'  directory, unzipping and cleaning up as needed. \cr \cr
 #'  \code{download_message} creates a customized download message. \cr \cr
 #'  \code{download_url} prepares the URL from the inputs, depending on the
@@ -214,7 +214,7 @@ download_url <- function(type = NULL, url = NULL, concept_rec_id = NULL,
   } else if (type == "zenodo"){
     zenodo_url(concept_rec_id, rec_version, rec_id)
   } else {
-    stop("present types allowed are only `url` and `zenodo`")
+    stop("present types allowed are only `url` and `zenodo`", call. = FALSE)
   }
 }
 
@@ -289,7 +289,7 @@ zenodo_url <- function(concept_rec_id = NULL, rec_version = "latest",
     } else{
       spot <- which(avail_versions$version == rec_version)
       if(length(spot) == 0){
-        stop(paste0("version ", rec_version, " not available"))
+        stop(paste0("version ", rec_version, " not available"), call. = FALSE)
       }
       rec_id <- avail_versions$rec_id[spot]
     }
@@ -516,17 +516,17 @@ NMME_urls <- function(start = Sys.Date(), end = as.Date("2050-01-01"),
 
   mods <- c("ENSMEAN", "CMC1", "CMC2", "CFCSv2", "GFDL", "GFDL-FLOR", "NCAR")
   if(any(!(model %in% mods))){
-    stop("model not in available options")
+    stop("model not in available options", call. = FALSE)
   }
 
   datas <- c("tasmin", "tasmean", "tasmax", "pr", "dps", "rsds", "was")
   if(any(!(data %in% datas))){
-    stop("at least one of the data sets not in available options")
+    stop("at least one data set not in available options", call. = FALSE)
   }
 
   freqs <- c("daily", paste0(1:7, "monthAverage"))
   if(any(!(freq %in% freqs))){
-    stop("frequency of predictions requested not available")
+    stop("frequency of predictions requested not available", call. = FALSE)
   }
   
   thredds <- "https://tds-proxy.nkn.uidaho.edu/thredds/"

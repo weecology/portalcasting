@@ -25,7 +25,7 @@ set. \cr
 A \code{list} of a single model's script-writing controls or a
 \code{list} of \code{list}s, each of which is a single model's 
 script-writing controls. \cr 
-Presently, each model's script writing controls should include three 
+Presently, each model's script writing controls should include four 
 elements: 
 \itemize{
  \item \code{name}: a \code{character} value of the model name.
@@ -36,6 +36,14 @@ elements:
  \item \code{lag}: an \code{integer}-conformable value of the lag to use 
   with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
 } 
+In addition, some models require additional specific elements: 
+\itemize{
+ \item \code{max_E}: \code{integer} (or integer \code{numeric}) 
+  maximum embedding dimension to search amongst for EDM models. See 
+  \code{\link[rEDM]{simplex}} for more information.
+ \item \code{control_runjags}: \code{list} of arguments passed to 
+  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}. 
+}
 If only a single model is added, the name of the model from the element
 \code{name} will be used to name the model's \code{list} in the larger
 \code{list}. If multiple models are added, each element \code{list} must
@@ -77,7 +85,8 @@ The models are written and managed using generalized functions
 \details{
 Any model that is part of the \code{prefab} set 
  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
- "pevGARCH")}) has its script-writing controls already included internally
+ "pevGARCH", "EDM_simplex")}) 
+ has its script-writing controls already included internally
  via the non-exported function \code{prefab_model_controls}. Users 
  only need to include controls for non-prefab \code{models}. \cr \cr
  Any user-defined \code{models} that are not included in \code{controls_m}

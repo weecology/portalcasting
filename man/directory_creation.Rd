@@ -8,13 +8,11 @@
 \title{Create the structure of a forecasting directory}
 \usage{
 create_dir(main = ".", filename_config = "dir_config.yaml",
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+  bline = FALSE, quiet = FALSE, arg_checks = TRUE)
 
-create_main(main = ".", quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+create_main(main = ".", arg_checks = TRUE)
 
-create_subs(main = ".", quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+create_subs(main = ".", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -26,11 +24,11 @@ in a folder can be done by simply adding to the \code{main} input (see
 \item{filename_config}{\code{character} value of the path to the directory
 config YAML.}
 
+\item{bline}{\code{logical} indicator if a horizontal break lines should be
+included in messages.}
+
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or just tidy messages.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

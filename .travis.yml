@@ -8,6 +8,9 @@ before_install:
   - sudo apt-get install texlive-latex-base
   - sudo apt-get install gsl-bin libgsl0-dev
 
+r_binary_packages:
+  - runjags
+
 r_packages:
   - covr
 
@@ -23,7 +26,7 @@ matrix:
     after_success:
     - R CMD INSTALL .
     - Rscript -e 'pkgdown::build_site(examples = FALSE)'
-    - travis_wait 40 Rscript -e 'library(covr); codecov()'
+    - travis_wait 40 Rscript -e 'covr::codecov()'
     deploy:
       provider: pages
       skip-cleanup: true

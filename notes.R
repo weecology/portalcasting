@@ -1,35 +1,27 @@
 devtools::document()
 devtools::load_all()
-main <- "~/hindcasting"
 
-
+main <- "~/portalcasting_testing1"
 setup_dir(main)
+portalcast(main = main, models = c("jags_RW"))
+plot_cast_ts(main=main, model = c("jags_RW"))
 
-portalcast(main = main,models = c("AutoArima", "ESSS", "NaiveArima"), 
-           end_moons = 515:518)
-plot_cast_ts(main=main)
-plot_cast_point(main=main)
+plot_cast_point(main=main, model = c("jags_RW"))
 plot_cast_point(main=main,with_census=T)
 plot_casts_err_lead(main)
 plot_casts_cov_RMSE(main)
 
-devtools::test(filter="01")
-devtools::test(filter="02")
-devtools::test(filter="03")
-devtools::test(filter="04")
-devtools::test(filter="05")
-devtools::test(filter="06")
-devtools::test(filter="07")
-devtools::test(filter="08")
-devtools::test(filter="09")
-devtools::test(filter="10")
-devtools::test(filter="11")
-devtools::test(filter="12")
-devtools::test(filter="13")
-devtools::test(filter="14")
-devtools::test(filter="15")
-devtools::test(filter="16")
-devtools::test(filter="17")
-devtools::test(filter="18")
-devtools::test(filter="19")
-devtools::test(filter="20")
+
+ESSS_controls <- prefab_model_controls()$ESSS
+ESSS_controls$data_sets <- c(ESSS_controls$data_sets, "exclosure_interp")
+exclosure_interp_controls <- rodents_control(name = "exclosure_interp", 
+                                      interpolate = TRUE,
+                                      level = "Treatment", 
+                                      treatment = "exclosure",
+                                      arg_checks = FALSE)
+portalcast(main = main, models = "ESSS", controls_model = ESSS_controls, 
+           update_prefab_models = TRUE,  
+           controls_rodents = exclosure_interp_controls, arg_checks = FALSE)
+
+
+

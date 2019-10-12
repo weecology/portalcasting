@@ -29,7 +29,7 @@ test_that("verify_models", {
 
 test_that("model_controls", {
   expect_is(model_controls(prefab_models()), "list")
-  expect_equal(length(model_controls(prefab_models())), 6)
+  expect_equal(length(model_controls(prefab_models())), 8)
   expect_is(model_controls(prefab_models(), 
                                      list(name = "xx", 
                                           covariates = FALSE, lag = NA)), 
@@ -48,7 +48,7 @@ test_that("model_controls", {
 })
 
 test_that("prefab_models", {
-  expect_equal(length(prefab_models()), 6)
+  expect_equal(length(prefab_models()), 8)
 })
 
 
@@ -65,6 +65,10 @@ test_that("write_model", {
 
 })
 
+test_that("update_models", {
+   cm <- model_control(name = "AutoArima", data_sets = c("all", "controls"))
+   update_models(main = main, controls_model = cm)
+})
 
 test_that("model_template", {
 

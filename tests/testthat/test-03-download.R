@@ -24,6 +24,7 @@ test_that("download_destin", {
 
 test_that("zenodo_url", {
   skip_on_cran() # could hang?
+  expect_is(zenodo_url("1215988", rec_version = "1.89.0"), "character")
   expect_warning(zenodo_url("1215988", rec_id = "1217163"))
   expect_is(zenodo_url(concept_rec_id = NULL, rec_id = "1217163", 
                        rec_version = NULL), "character")

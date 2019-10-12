@@ -22,7 +22,14 @@ prefab_model_controls <- function(){
                     lag = NA), 
     pevGARCH = list(name = "pevGARCH",  
                     data_sets = c("all_interp", "controls_interp"),
-                    covariatesTF = TRUE, lag = 6)
+                    covariatesTF = TRUE, lag = 6), 
+    simplexEDM = list(name = "simplexEDM", 
+                      data_sets = c("all_interp", "controls_interp"), 
+                      covariatesTF = FALSE, lag = NA, max_E = 7),
+    jags_RW = list(name = "jags_RW", 
+                      data_sets = c("all", "controls"), 
+                      covariatesTF = FALSE, lag = NA,
+                      control_runjags = runjags_control())
   )
 }
 
@@ -45,7 +52,8 @@ prefab_model_controls <- function(){
 #'
 #' @details Any model that is part of the \code{prefab} set 
 #'  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
-#'  "pevGARCH")}) has its script-writing controls already included internally
+#'  "pevGARCH", "EDM_simplex")}) 
+#'  has its script-writing controls already included internally
 #'  via the non-exported function \code{prefab_model_controls}. Users 
 #'  only need to include controls for non-prefab \code{models}. \cr \cr
 #'  Any user-defined \code{models} that are not included in \code{controls_m}
@@ -70,7 +78,7 @@ prefab_model_controls <- function(){
 #'  A \code{list} of a single model's script-writing controls or a
 #'  \code{list} of \code{list}s, each of which is a single model's 
 #'  script-writing controls. \cr 
-#'  Presently, each model's script writing controls should include three 
+#'  Presently, each model's script writing controls should include four 
 #'  elements: 
 #'  \itemize{
 #'   \item \code{name}: a \code{character} value of the model name.
@@ -81,6 +89,14 @@ prefab_model_controls <- function(){
 #'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
 #'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
 #'  } 
+#'  In addition, some models require additional specific elements: 
+#'  \itemize{
+#'   \item \code{max_E}: \code{integer} (or integer \code{numeric}) 
+#'    maximum embedding dimension to search amongst for EDM models. See 
+#'    \code{\link[rEDM]{simplex}} for more information.
+#'   \item \code{control_runjags}: \code{list} of arguments passed to 
+#'    \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}. 
+#'  }
 #'  If only a single model is added, the name of the model from the element
 #'  \code{name} will be used to name the model's \code{list} in the larger
 #'  \code{list}. If multiple models are added, each element \code{list} must
@@ -156,7 +172,7 @@ model_controls <- function(models = NULL, controls_model = NULL,
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of model(s): ", all_conflicting)
     msg2 <- paste0(msg, "\n   to override, set `arg_checks = FALSE`")
-    stop(msg2)
+    stop(msg2, call. = FALSE)
   }
   if(any(replicates > 1) & !arg_checks){
     which_conflicting <- names(replicates)[which(replicates > 1)]
@@ -282,6 +298,13 @@ prefab_models <- function(){
 #' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'  
+#' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
+#'  embedding dimension to search amongst for EDM models. See 
+#'  \code{\link[rEDM]{simplex}} for more information.
+#'
+#' @param control_runjags \code{list} of arguments passed to 
+#'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.
 #'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr
@@ -300,14 +323,16 @@ prefab_models <- function(){
 write_model <- function(name = NULL, data_sets = NULL, 
                         covariatesTF = NULL, lag = NULL, main = ".", 
                         control_model = NULL, control_files = files_control(),
-                        quiet = FALSE, verbose = TRUE, 
-                        arg_checks = TRUE){
+                        control_runjags = NULL, max_E = NULL, quiet = FALSE, 
+                        verbose = TRUE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   name <- ifnull(name, control_model$name)
   prefab_control <- tryCatch(prefab_model_controls()[[name]],
                              error = function(x){NULL})
   control_model <- ifnull(control_model, prefab_control[[name]])
   covariatesTF <- ifnull(covariatesTF, control_model$covariatesTF)
+  lag <- ifnull(lag, control_model$lag)
+  control_runjags <- ifnull(control_runjags, control_model$control_runjags)
   lag <- ifnull(lag, control_model$lag)
   data_sets <- ifnull(data_sets, control_model$data_sets)
   return_if_null(name)
@@ -355,8 +380,9 @@ write_model <- function(name = NULL, data_sets = NULL,
   mod_template <- model_template(name = name, data_sets = data_sets, 
                                  covariatesTF = covariatesTF, lag = lag, 
                                  main = main, control_files = control_files,
-                                 quiet = quiet, verbose = verbose,
-                                 arg_checks = arg_checks)
+                                 control_runjags = control_runjags,
+                                 max_E = max_E, quiet = quiet, 
+                                 verbose = verbose, arg_checks = arg_checks)
   if (file.exists(mod_path) & control_files$overwrite){
     verb <- ifelse(verbose, "Updating ", "")
     msgM <- paste0("  -", verb, name)
@@ -378,7 +404,8 @@ write_model <- function(name = NULL, data_sets = NULL,
 #'
 model_template <- function(name = NULL, data_sets = NULL,
                            covariatesTF = FALSE, lag = NULL, main = ".", 
-                           control_files = files_control(),
+                           control_files = files_control(), max_E = NULL,
+                           control_runjags = NULL,
                            quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   return_if_null(name)
@@ -395,13 +422,43 @@ model_template <- function(name = NULL, data_sets = NULL,
   if (covariatesTF){
     lag_arg <- paste0(', lag = ', lag)
   }
+  max_E_arg <- NULL
+  if (!is.null(max_E)){
+    max_E_arg <- paste0(', max_E = ', max_E)
+  }
+  control_runjags_arg <- NULL
+  if (!is.null(control_runjags)){
+    nvals <- length(control_runjags)
+    list_vals <- NULL
+    for(i in 1:nvals){
+      val_name <- names(control_runjags)[1]
+      val_value <- control_runjags[[1]]
+      if(is.character(val_value)){
+        val_value <- paste0('"', val_value, '"')
+      }
+      list_vals <- paste0(val_name, ' = ', val_value)
+    }
+    if(nvals > 1){
+      for(i in 2:nvals){
+        val_name <- names(control_runjags)[i]
+        val_value <- control_runjags[[i]]
+        if(is.character(val_value)){
+          val_value <- paste0('"', val_value, '"')
+        }
+        list_vals <- paste0(list_vals, ', ', val_name, ' = ', val_value)
+      }
+    }
+    control_runjags_arg <- paste0(', control_runjags = runjags_control(', 
+                                 list_vals, ')')
+  }
   ds_args <- paste0('data_set = "', data_sets, '"')
   nds <- length(data_sets)
   out <- NULL
   for(i in 1:nds){
     resp <- paste0('cast_', data_sets[i])
     model_args <- paste0(ds_args[i], lag_arg, main_arg, control_files_arg,
-                         quiet_arg, verbose_arg, arg_checks_arg) 
+                         control_runjags_arg, max_E_arg, quiet_arg,
+                         verbose_arg, arg_checks_arg) 
     model_fun <- paste0(name, '(', model_args, ');')
     model_line <- paste0(resp, ' <- ', model_fun)
     save_args <- paste0(resp, main_arg, quiet_arg, arg_checks_arg)
@@ -485,7 +542,7 @@ verify_models <- function(main = ".", models = prefab_models(),
   messageq("Checking model availability", quiet)
   model_dir <- sub_path(main = main, subs = "models", arg_checks = arg_checks)
   if (!dir.exists(model_dir)){
-    stop("Models subidrectory does not exist")
+    stop("Models subidrectory does not exist", call. = FALSE)
   }
   available <- list.files(model_dir)
   if (models[1] != "all"){
@@ -493,11 +550,119 @@ verify_models <- function(main = ".", models = prefab_models(),
     torun <- (modelnames %in% available)  
     if (any(torun == FALSE)){
       missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
-      stop(paste0("Requested model(s) ", missmod, " not in directory \n"))
+      msg <- paste0("Requested model(s) ", missmod, " not in directory \n")
+      stop(msg, call. = FALSE)
     }
   }
   messageq(" *All requested models available*", quiet)
-  messageq("---------------------------------------------------------", quiet)
+  messageq_break(quiet = quiet, arg_checks = arg_checks)
+  invisible(NULL)
+}
+
+
+#' @title Update models based on user input controls
+#'
+#' @description Update model scripts based on the user-defined model control
+#'  inputs. This allows users to define their own models or re-define prefab
+#'  models within the \code{\link{portalcast}} pipeline.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param models \code{character} vector of name(s) of model(s), used to 
+#'  restrict the models to update from \code{controls_model}. The default
+#'  (\code{NULL}) translates to all models in the \code{controls_model} list,
+#'  which is recommended for general usage and is enforced within the main
+#'  \code{\link{portalcast}} pipeline. 
+#'
+#' @param controls_model Controls for models not in the prefab set or for 
+#'  overriding those in the prefab set. \cr 
+#'  A \code{list} of a single model's script-writing controls or a
+#'  \code{list} of \code{list}s, each of which is a single model's 
+#'  script-writing controls. \cr 
+#'  Presently, each model's script writing controls should include four 
+#'  elements: 
+#'  \itemize{
+#'   \item \code{name}: a \code{character} value of the model name.
+#'   \item \code{data_sets}: a \code{character} vector of the data set names
+#'    that the model is applied to. 
+#'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
+#'    model needs covariates.
+#'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
+#'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
+#'  } 
+#'  If only a single model is added, the name of 
+#'  the model from the element \code{name} will be used to name the model's
+#'  \code{list} in the larger \code{list}. If multiple models are added, each
+#'  element \code{list} must be named according to the model and the
+#'  \code{name} element. \cr 
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'  all of the information or not (and thus just the tidy messages). 
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param bline \code{logical} indicator if horizontal break lines should be
+#'  included in messaging.
+#'
+#' @param update_prefab_models \code{logical} indicator if all of the models'
+#'  scripts should be updated, even if they do not have an explicit change
+#'  to their model options via \code{controls_model}. Default is
+#'  \code{FALSE}, which leads to only the models in \code{controls_model}
+#'  having their scripts re-written. Switching to \code{TRUE} results in the
+#'  models listed in \code{models} having their scripts re-written. \cr \cr
+#'  This is particularly helpful when one is changing the global (with respect
+#'  to the models) options \code{main}, \code{quiet}, \code{verbose}, or
+#'  \code{control_files}.
+#'
+#' @return \code{NULL}. 
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   cm <- model_control(name = "AutoArima", data_sets = "all")
+#'   update_models(controls_model = cm)
+#'  }
+#'
+#' @export
+#'
+update_models <- function(main = ".", models = NULL,
+                          controls_model = NULL, update_prefab_models = FALSE, 
+                          control_files = files_control(), bline = FALSE,
+                          quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  if(list_depth(controls_model) == 1){
+    controls_model <- list(controls_model)
+    names(controls_model) <- controls_model[[1]]$name
+  }
+  if(update_prefab_models){
+    controls_model <- model_controls(models = models, 
+                                     controls_model = controls_model, 
+                                     quiet = quiet, arg_checks = arg_checks)
+  } else{
+    models <- NULL
+  }
+  return_if_null(c(controls_model, models))
+  models <- unique(c(models, names(controls_model)))
+  messageq("Updating model scripts", quiet)
+  nmodels <- length(models)
+  for(i in 1:nmodels){
+    write_model(main = main, quiet = quiet, verbose = verbose, 
+                control_files = control_files, 
+                control_model = controls_model[[models[i]]], 
+                arg_checks = arg_checks)
+  }
+  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks) 
   invisible(NULL)
 }
 

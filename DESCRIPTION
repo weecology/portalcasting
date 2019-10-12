@@ -1,6 +1,6 @@
 Package: portalcasting
 Title: Functions Used in Predicting Portal Rodent Dynamics
-Version: 0.11.0
+Version: 0.12.0
 Authors@R: c(
     person(c("Juniper", "L."), "Simonis",
       email = "juniper.simonis@weecology.org", role = c("aut", "cre"),
@@ -28,18 +28,21 @@ Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
-  curl,
-  DesignLibrary,
-  dplyr,
-  forecast,
-  httr,
-  lubridate,
-  portalr,
-  readr,
-  rlang,
-  tscount,
-  viridis,
-  yaml
+    coda,
+    curl,
+    DesignLibrary,
+    dplyr,
+    forecast,
+    httr,
+    lubridate,
+    portalr,
+    readr,
+    rlang,
+    runjags,
+    tscount,
+    viridis,
+    yaml,
+    rEDM (>= 0.7.4)
 Suggests:
   knitr,
   pkgdown,
@@ -48,3 +51,5 @@ Suggests:
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
+Remotes:  
+    ha0ye/rEDM
