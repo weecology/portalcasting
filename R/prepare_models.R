@@ -262,6 +262,9 @@ prefab_models <- function(){
 #'  \code{model_template} creates the \code{character}-valued
 #'  text for a model script to be housed in the model directory, as written
 #'  out by \code{write_model}. \cr \cr
+#'  \code{control_list_arg} creates the \code{character}-valued
+#'  text for a specific list argument into model function within a model
+#'  script to be housed in the model directory.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -306,16 +309,25 @@ prefab_models <- function(){
 #' @param control_runjags \code{list} of arguments passed to 
 #'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.
 #'
+#' @param control_list \code{list} of arguments passed to 
+#'  \code{list_function}.
+#'
+#' @param list_function \code{character} value name of the function to 
+#'  send \code{control_list} arguments to within the model script.
+#'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr
 #'  \code{model_template}: \code{character}-valued text for a model script 
-#'  to be housed in the model directory
+#'  to be housed in the model directory. \cr \cr
+#'  \code{control_list_arg}: \code{character}-valued text for part of a 
+#'  model script. \cr \cr
 #'
 #' @examples
 #'  \donttest{
 #'   create_dir()
 #'   write_model("AutoArima")
 #'   model_template()
+#'   control_list_arg(runjags_control(nchains = 3), "runjags_control")
 #'  }
 #'
 #' @export
@@ -414,7 +426,6 @@ model_template <- function(name = NULL, data_sets = NULL,
                               arg_checks = arg_checks)[[name]]$data_sets)
   return_if_null(data_sets)
   main_arg <- paste0(', main = "', main, '"')
-  control_files_arg <- paste0(', control_files = control_files')
   quiet_arg <- paste0(', quiet = ', quiet)
   verbose_arg <- paste0(', verbose = ', verbose)
   arg_checks_arg <- paste0(', arg_checks = ', arg_checks)
@@ -426,31 +437,14 @@ model_template <- function(name = NULL, data_sets = NULL,
   if (!is.null(max_E)){
     max_E_arg <- paste0(', max_E = ', max_E)
   }
-  control_runjags_arg <- NULL
-  if (!is.null(control_runjags)){
-    nvals <- length(control_runjags)
-    list_vals <- NULL
-    for(i in 1:nvals){
-      val_name <- names(control_runjags)[1]
-      val_value <- control_runjags[[1]]
-      if(is.character(val_value)){
-        val_value <- paste0('"', val_value, '"')
-      }
-      list_vals <- paste0(val_name, ' = ', val_value)
-    }
-    if(nvals > 1){
-      for(i in 2:nvals){
-        val_name <- names(control_runjags)[i]
-        val_value <- control_runjags[[i]]
-        if(is.character(val_value)){
-          val_value <- paste0('"', val_value, '"')
-        }
-        list_vals <- paste0(list_vals, ', ', val_name, ' = ', val_value)
-      }
-    }
-    control_runjags_arg <- paste0(', control_runjags = runjags_control(', 
-                                 list_vals, ')')
-  }
+  control_runjags_arg <- control_list_arg(control_list = control_runjags,
+                                          list_function = "runjags_control",
+                                          arg_checks = arg_checks)
+  
+  control_files_arg <- control_list_arg(control_list = control_files,
+                                        list_function = "files_control",
+                                        arg_checks = arg_checks)
+  
   ds_args <- paste0('data_set = "', data_sets, '"')
   nds <- length(data_sets)
   out <- NULL
@@ -468,6 +462,51 @@ model_template <- function(name = NULL, data_sets = NULL,
     out <- c(out, newout)
   }
   out
+}
+
+
+
+
+#' @rdname write_model
+#'
+#' @export
+#'
+control_list_arg <- function(control_list = NULL, list_function = NULL,
+                             arg_checks = TRUE){                             
+  return_if_null(control_list)
+  return_if_null(list_function)
+
+  list_name <- paste(strsplit(list_function, "_")[[1]][2:1], collapse = "_")
+  nvals <- length(control_list)
+  val_values <- rep(NA, nvals)
+  for(i in 1:nvals){
+    val_name <- names(control_list)[i]
+    val_value <- control_list[[i]]
+    formal_value <- formals(eval(parse(text = list_function)))[[val_name]]
+
+    if(!identical(val_value, formal_value)){
+      if(is.character(val_value)){
+        val_value <- paste0('"', val_value, '"')
+      }
+      if(is.null(val_value)){
+        val_value <- "NULL"
+      }
+      val_values[i] <- val_value
+    }
+  }
+  update_values <- which(is.na(val_values) == FALSE)
+  nupdate_values <- length(update_values)
+  val_texts <- NULL
+  if(nupdate_values > 0){
+    val_text <- rep(NA, nupdate_values)
+    update_val_names <- names(control_list)[update_values]
+    update_val_values <- val_values[update_values]
+    for(i in 1:nupdate_values){
+      val_text[i] <- paste0(update_val_names[i], ' = ', update_val_values[i])
+    }
+    val_texts <- paste0(val_text, collapse = ', ')
+  }
+  paste0(', ', list_name, ' = ', list_function, '(', val_texts, ')')
 }
 
 

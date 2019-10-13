@@ -124,9 +124,13 @@ Argument details used for checking are produced simply via
   \code{filename_moons}, 
   \code{freq}, 
   \code{jags_model},  
-  \code{level}, 
+  \code{level},
+  \code{list_function}, 
   \code{main}, 
-  \code{method} (if not \code{NULL}, must be \code{"unwtavg"}),
+  \code{method} (if not \code{NULL}, must be \code{"unwtavg"}, 
+   \code{"unwtavg"}, \code{"rjags"}, \code{"simple"}, 
+   \code{"interruptible"}, \code{"parallel"}, \code{"rjparallel"},
+   \code{"background"}, \code{"bgparallel"}, or \code{"snow"}),
   \code{model} (inputted values are checked via 
    \code{\link{verify_models}}), 
   \code{name}, 
@@ -207,6 +211,7 @@ Argument details used for checking are produced simply via
  be \code{NA}:
   \code{control_climate_dl},
   \code{control_files},
+  \code{control_list},
   \code{control_model},
   \code{control_runjags},
   \code{controls_models},

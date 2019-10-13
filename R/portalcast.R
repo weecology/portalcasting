@@ -212,7 +212,7 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
     model_running_message(model = model, quiet = quiet,
                           arg_checks = arg_checks)
     run_status <- tryCatch(
-                     source(model, local = TRUE),
+                     source(model),
                      error = function(x){NA}                     
                   )
     model_done_message(model = model, run_status = run_status, quiet = quiet,

@@ -146,6 +146,7 @@ reference:
       - model_controls
       - write_model
       - model_template
+      - control_list_arg
       - prefab_models
   - title: "Prefabricated models"
     desc: "Functions used to run the prefab models"

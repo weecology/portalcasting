@@ -81,3 +81,11 @@ test_that("model_template", {
   expect_equal(length(temp2), 4)
 
 })
+
+test_that("control_list_arg", {
+  expect_is(control_list_arg(runjags_control(nchains = 3), "runjags_control"),
+            "character")
+  expect_is(control_list_arg(runjags_control(nchains = NULL), 
+                             "runjags_control"),
+            "character")
+})
