@@ -84,7 +84,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.13.0</span>
       </span>
     </div>
 
@@ -281,9 +281,13 @@ checked.</p></td>
   <code>filename_moons</code>, 
   <code>freq</code>, 
   <code>jags_model</code>,  
-  <code>level</code>, 
+  <code>level</code>,
+  <code>list_function</code>, 
   <code>main</code>, 
-  <code>method</code> (if not <code>NULL</code>, must be <code>"unwtavg"</code>),
+  <code>method</code> (if not <code>NULL</code>, must be <code>"unwtavg"</code>, 
+   <code>"unwtavg"</code>, <code>"rjags"</code>, <code>"simple"</code>, 
+   <code>"interruptible"</code>, <code>"parallel"</code>, <code>"rjparallel"</code>,
+   <code>"background"</code>, <code>"bgparallel"</code>, or <code>"snow"</code>),
   <code>model</code> (inputted values are checked via 
    <code><a href='verify_models.html'>verify_models</a></code>), 
   <code>name</code>, 
@@ -359,6 +363,7 @@ checked.</p></td>
  be <code>NA</code>:
   <code>control_climate_dl</code>,
   <code>control_files</code>,
+  <code>control_list</code>,
   <code>control_model</code>,
   <code>control_runjags</code>,
   <code>controls_models</code>,

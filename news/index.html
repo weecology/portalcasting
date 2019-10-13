@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.13.0</span>
       </span>
     </div>
 
@@ -141,6 +141,35 @@
 <h1 class="page-header">
 <a href="#portalcasting-development-version" class="anchor"></a>portalcasting (development version)</h1>
 <p>Version numbers follow <a href="https://semver.org/">Semantic Versioning</a>.</p>
+</div>
+    <div id="portalcasting-0-13-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-13-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.13.0">portalcasting 0.13.0</a>
+</h1>
+<p><em>2019-10-12</em></p>
+<div id="full-writing-of-control_files-in-model-scripts" class="section level3">
+<h3 class="hasAnchor">
+<a href="#full-writing-of-control_files-in-model-scripts" class="anchor"></a>Full writing of <code>control_files</code> in model scripts</h3>
+<ul>
+<li>Previously, the controls list for the files in the model scripts was taken from the environment in which the script was run, which opens the script to everything, which is undesirable.</li>
+<li>After the need to include a control list for runjags models forced an explicit writing of the list inputs, the code was available to transfer to the files control list.</li>
+<li>This does mean that the function calls in the scripts are now super long and explicit, but that’s ok.</li>
+<li>To avoid super long model script lines (where event default inputs are repeated in the list functions), a function <code>control_list_arg</code> was made to generalize what was coded up from the runjags list for use also with the files control list. This function writes a script component that only includes arguments to the list function that are different from the formal definition.</li>
+</ul>
+</div>
+</div>
+    <div id="portalcasting-0-12-1" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-12-1" class="anchor"></a>portalcasting 0.12.1</h1>
+<p><em>2019-10-12</em></p>
+<div id="fixes-to-the-pkgdown-site" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fixes-to-the-pkgdown-site" class="anchor"></a>Fixes to the pkgdown site</h3>
+<ul>
+<li>rmarkdown v1.16.0 has some issues with rendering images, so forcing use of v1.16.1 for now.</li>
+<li>Inclusion of new functions in reference list.</li>
+</ul>
+</div>
 </div>
     <div id="portalcasting-0-12-0" class="section level1">
 <h1 class="page-header">
@@ -1002,6 +1031,8 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#portalcasting-development-version">development version</a></li>
+        <li><a href="#portalcasting-0-13-0">0.13.0</a></li>
+        <li><a href="#portalcasting-0-12-1">0.12.1</a></li>
         <li><a href="#portalcasting-0-12-0">0.12.0</a></li>
         <li><a href="#portalcasting-0-11-0">0.11.0</a></li>
         <li><a href="#portalcasting-0-10-0">0.10.0</a></li>

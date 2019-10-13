@@ -40,7 +40,10 @@
  model_template) for a given model.  
  model_template creates the character-valued
  text for a model script to be housed in the model directory, as written
- out by write_model.  " />
+ out by write_model.  
+ control_list_arg creates the character-valued
+ text for a specific list argument into model function within a model
+ script to be housed in the model directory." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -73,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.12.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.13.0</span>
       </span>
     </div>
 
@@ -149,7 +152,10 @@
  <code>model_template</code>) for a given model. <br /> <br />
  <code>model_template</code> creates the <code>character</code>-valued
  text for a model script to be housed in the model directory, as written
- out by <code>write_model</code>. <br /> <br /></p>
+ out by <code>write_model</code>. <br /> <br />
+ <code>control_list_arg</code> creates the <code>character</code>-valued
+ text for a specific list argument into model function within a model
+ script to be housed in the model directory.</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_model</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data_sets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>covariatesTF</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -160,7 +166,10 @@
 <span class='fu'>model_template</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data_sets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>covariatesTF</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>lag</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(),
   <span class='kw'>max_E</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>control_runjags</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>control_list_arg</span>(<span class='kw'>control_list</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>list_function</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,6 +241,16 @@ checked using standard protocols via <code><a href='argument_checking.html'>chec
 default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
 formatted correctly and provides directed error messages if not. <br /></p></td>
     </tr>
+    <tr>
+      <th>control_list</th>
+      <td><p><code>list</code> of arguments passed to 
+<code>list_function</code>.</p></td>
+    </tr>
+    <tr>
+      <th>list_function</th>
+      <td><p><code>character</code> value name of the function to 
+send <code>control_list</code> arguments to within the model script.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -239,13 +258,16 @@ formatted correctly and provides directed error messages if not. <br /></p></td>
     <p><code>write_mode</code> <code><a href='https://rdrr.io/r/base/write.html'>write</a></code>s the model script out
  and returns <code>NULL</code>. <br /> <br />
  <code>model_template</code>: <code>character</code>-valued text for a model script 
- to be housed in the model directory</p>
+ to be housed in the model directory. <br /> <br />
+ <code>control_list_arg</code>: <code>character</code>-valued text for part of a 
+ model script. <br /> <br /></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='co'># \donttest{</span>
   <span class='fu'><a href='directory_creation.html'>create_dir</a></span>()
   <span class='fu'>write_model</span>(<span class='st'>"AutoArima"</span>)
   <span class='fu'>model_template</span>()
+  <span class='fu'>control_list_arg</span>(<span class='fu'><a href='runjags_control.html'>runjags_control</a></span>(<span class='kw'>nchains</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='st'>"runjags_control"</span>)
  <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
