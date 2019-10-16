@@ -33,7 +33,26 @@ prefab_rodents_controls <- function(){
                              unknowns = FALSE, time = "newmoon", 
                              na_drop = FALSE, zero_drop = TRUE, 
                              effort = TRUE, 
-                             filename = "rodents_controls_interp.csv")
+                             filename = "rodents_controls_interp.csv"),
+    "exclosures" = list(name = "exclosures", species = base_species(), 
+                        total = TRUE, interpolate = FALSE, clean = FALSE, 
+                        type = "Rodents", level = "Treatment", 
+                        plots = "Longterm", treatment = "exclosure", 
+                        min_plots = 24, min_traps = 1, output = "abundance", 
+                        fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
+                        na_drop = FALSE, zero_drop = TRUE, effort = TRUE, 
+                        filename = "rodents_exclosures.csv"),
+    "exclosures_interp" = list(name = "exclosures_interp", 
+                               species = base_species(), total = TRUE, 
+                               interpolate = TRUE, clean = FALSE, 
+                               type = "Rodents", level = "Treatment", 
+                               plots = "Longterm", treatment = "exclosure", 
+                               min_plots = 24, min_traps = 1, 
+                               output = "abundance", fillweight = FALSE, 
+                               unknowns = FALSE, time = "newmoon", 
+                               na_drop = FALSE, zero_drop = TRUE, 
+                               effort = TRUE, 
+                               filename = "rodents_exclosures_interp.csv") 
    )
 }
 
@@ -65,8 +84,9 @@ prefab_rodents_controls <- function(){
 #
 #' @param data_sets \code{character} value(s) of the rodent data set name(s) 
 #'  used to enforce certain arguments. Currently available prefab data
-#'  sets are \code{"all"}, \code{"all_interp"}, \code{"controls"} and
-#'  \code{"controls_interp"}. 
+#'  sets are \code{"all"}, \code{"all_interp"}, \code{"controls"}, 
+#'  \code{"controls_interp"}, \code{"exclosures_interp"}, and 
+#'  \code{"exclosures"}. 
 #'
 #' @param controls_rodents Additional controls for datasets not in the 
 #'  prefab set. \cr
@@ -223,7 +243,7 @@ rodents_controls <- function(data_sets = NULL, controls_rodents = NULL,
 #' @param type \code{character} value of the rodent data set type, according 
 #'  to pre-existing definitions. An alternative toggle to \code{species}. \cr
 #'  Either all species 
-#'  (\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}). 
+#'  (\code{type = "Rodents"}) or only granivores (\code{type = "Granivores"}). 
 #'
 #' @param level \code{character} indicating the type of summary:
 #'  \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 
