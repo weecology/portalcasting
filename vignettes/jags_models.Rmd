@@ -1,0 +1,85 @@
+---
+title: "JAGS Models"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Juniper L. Simonis"
+output: rmarkdown::html_document
+bibliography: refs.bibtex
+vignette: >
+  %\VignetteIndexEntry{jags_models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+The **portalcasting** package provides utilities for working with Bayesian hierarchical models via the Just Another Gibbs Sampler (JAGS) software [@Plummer2003], and the R interface used to access JAGS is the [`run.jags`](https://www.rdocumentation.org/packages/runjags/versions/2.0.4-2/topics/run.jags) function in the **runjags** package [@Denwood2016]. **runjags** is a powerful interface for JAGS that facilitates rapid expansion to multi-core processing and provides helpful summarization procedures. This vignette covers the usage of these utilities to build **portalcasting** models.
+
+Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the [Getting Started](https://weecology.github.io/portalcasting/articles/getting_started.html) vignette, and we assume that the user understands how to add models and data sets to the **portalcasting** pipeline, as covered in the [Adding a Model and Data](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html) vignette. 
+
+## The API to **JAGS** and **runjags** in **portalcasting**
+
+`runjags::run.jags` has a considerable number of arguments, which allow the user to define the model, input the data and control the MCMC algorithm used to fit the model and data. To reduce the number of top-level arguments and facilitate alignment with higher **portalcasting** functionality, we bundled all of the MCMC control arguments (number of chains; number of adaptation, burnin, and sampling iterations; thinning interval; modules, methods, and factories; and add-on "mutation" estimates) into a single `control_runjags` list argument, which is created by/gets its defaults from the function `runjags_control`. 
+
+To reduce the amount of code that needs to be written for a model and to simplify the model's function, we provide flexible general functions for common situations that only require the user to write the `jags_model` (which is piped to the `model` argument in `runjags::run.jags`), `inits` (initializer), and `monitor` inputs to create a model. These models do not require that the user pass any data objects, but rather take the `main` and `data_set` arguments, which allows the internal functionality to leverage **portalcasting**'s file-accessing capacity and do all of the loading and prepping of data required. This includes use of "past data" (from before `start_moon`) to inform the priors and model initialization function, thereby facilitating the use of generalized models (e.g., that base priors on data, rather than needing priors that are appropriate for all species).
+
+The general function then takes the output from `runjags::runjags`, processes the multi-chain information (if relevant), and formats the results akin to the standard single-species **portalcasting** model, returning a list of `metadata` (standard model metadata), `cast_tab` (the condensed-for-use-elsewhere table of forecasts), `model_fits` (the fitted model object), and `model_casts` (the forecasts of all of the models for all species).
+
+### Single Species Modeling: `jags_ss`
+
+Presently, the only such function is `jags_ss` ("JAGS Single Species"), which follows the current state of **portalcasting** models and treats each species and the total abundance as separate time series that it fits individually within a given data set. 
+
+The data objects provided to the model and initializer for a given species via `jags_SS` are:
+
+* Data for the time series used to fit the model and forecast 
+  + `count`: counts of the species 
+  + `ntraps`: number of traps used 
+  + `moon`: newmoon numbers 
+  + `N`: number of time steps 
+* Data for the time series from before the data used to fit the model
+  + `past_count`: counts of the species 
+  + `past_ntraps`: number of traps 
+  + `past_moon`: newmoon numbers 
+  + `past_N`: number of time steps 
+
+The data for the time series used to fit the model and forecast includes the as-of-yet not observed data with `NA` placeholders for `count`, an assumption of full sampling effort (max `ntraps`), and an appropriatedly extended `moon`. The `past_` data allow the user to inform priors and initializers as desired and should only be used within those components. 
+
+#### An example: random walk (`jags_RW`)
+
+The usage of `jags_SS` is exemplified by the `jags_RW` model, which is a "simple" random walk model. The observations are treated as Poisson distributed (with truncation based on the number of traps), with an underlying log-scale density that takes a random walk through time. The model has two parameters: 
+
+* `mu`: the log-scale density at `start_moon`
+* `tau`: the precision (inverse variance) of the log-scale random walk
+
+The time series is then modeled using an initial state (`1`) based only on `mu` and subsequent states (`2` to `N`) based on the previous state and `tau` with a truncated Poisson observation:
+
+```
+# initial state
+X[1] <- mu;
+pred_count[1] <- exp(X[1]);
+count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
+
+# through time
+for(i in 2:N) {
+  # Process model
+  predX[i] <- X[i-1];
+  checkX[i] ~ dnorm(predX[i], tau); 
+  X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
+  pred_count[i] <- exp(X[i]);
+   
+  # observation model
+  count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
+}
+```
+
+where `X` is used to track the state, `predX` is the mean/predicted value for the next step, `checkX` is the initial draw from the process model that has an overflow check on it (the `min` call) before passing the value to `X`, and `pred_count` is the natural-scale mean density, used as the parameter for the observation process.
+
+The truncation and overflow protection are especially important here, as a log-scale density on a random walk has the potential to explode (run to `Inf`). However, it is possible that any model fit using JAGS could encounter some iterations of the algorithm that run to `Inf` (even if exceedingly rare), and so it is suggested for users that build JAGS **portalcasting** models to retain these or similar edge protections.
+
+## References

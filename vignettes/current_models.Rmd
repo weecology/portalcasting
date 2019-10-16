@@ -5,7 +5,7 @@ author: "Juniper L. Simonis, Hao Ye, and S. K. Morgan Ernest"
 output: rmarkdown::html_vignette
 bibliography: refs.bibtex
 vignette: >
-  %\VignetteIndexEntry{models}
+  %\VignetteIndexEntry{current_models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Models
 
 We currently analyze and forecast rodent data at Portal using eight models: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, pevGARCH, simplexEDM, and jags_RW [@PortalPredictions]. Each model has a function with its name (*e.g.*, `ESSS()`) which is called from an associated R script in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
 
@@ -97,4 +98,4 @@ equal to the average log-scale density and a variance that is twice as large as 
 In addition to the base models, we include a starting-point ensemble. In versions before v0.9.0, the ensemble was based on AIC weights, but in the shift to separating the interpolated from non-interpolated data in model fitting, we had to transfer to an unweighted average ensemble model. The ensemble mean is calculated as the mean of all model means and the ensemble variance is estimated as the sum of the mean of all model variances and the variance of the estimated mean, calculated using the unbiased estimate of sample variances.
 
 
-### References
+## References

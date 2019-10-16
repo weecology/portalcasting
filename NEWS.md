@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.14.0
+*In progress*
+
+### JAGS vignette
+* Adding a vignette that describes how to use the JAGS/runjags API within portalcasting
+
+
 # [portalcasting 0.13.0](https://github.com/weecology/portalcasting/releases/tag/v0.13.0)
 *2019-10-12*
 
