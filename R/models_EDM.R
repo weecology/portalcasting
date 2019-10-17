@@ -186,8 +186,8 @@ GPEDM <- function(main = ".", data_set = "all_interp",
                         species = species_name)
     
     # check for low variance in time series
-    ts <- head(rodents_table[, s], -1)
-    ts_var <- var(ts)
+    ts <- utils::head(rodents_table[, s], -1)
+    ts_var <- stats::var(ts)
     if (is.finite(ts_var) &&
         ts_var > 2 * .Machine$double.eps)
     {
