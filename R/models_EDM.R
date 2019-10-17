@@ -179,50 +179,57 @@ GPEDM <- function(main = ".", data_set = "all_interp",
     messageq(paste0("   -", species_name), !verbose)
     
     abund_s <- rodents_table[, c("moon", s)]
-    
-    n <- nrow(abund_s)
-    models <- rEDM::tde_gp(abund_s, 
-                           lib = c(1, n), 
-                           pred = c(1, n), 
-                           E = E_range, 
-                           fit_params = TRUE, 
-                           stats_only = FALSE, silent = TRUE)
-    best_idx <- which.min(models$mae)
-    best_phi <- models$phi[best_idx]
-    best_v_e <- models$v_e[best_idx]
-    best_eta <- models$eta[best_idx]
-    best_e <- models$E[best_idx]
-    
-    # set up data structures to hold forecasts
     preds <- data.frame(moon = moons_to_cast, 
-                        estimate = numeric(num_moons), 
-                        lower_pi = numeric(num_moons), 
-                        upper_pi = numeric(num_moons))
-    preds$species <- species_name
-    to_add <- data.frame(moons_to_cast, NA)
-    colnames(to_add) <- c("moon", s)
-    pred_data <- rbind(abund_s, to_add)
+                        estimate = mean(abund_s[, s]), 
+                        lower_pi = NA, 
+                        upper_pi = NA, 
+                        species = species_name)
     
-    # make forecasts
-    for (i in seq_along(moons_to_cast))
+    # check for low variance in time series
+    ts <- head(rodents_table[, s], -1)
+    ts_var <- var(ts)
+    if (is.finite(ts_var) &&
+        ts_var > 2 * .Machine$double.eps)
     {
-      model <- rEDM::tde_gp(pred_data,
-                            lib = c(1, n),
-                            pred = c(n + i - best_e, n + i),
-                            E = best_e,
-                            phi = best_phi, 
-                            v_e = best_v_e, 
-                            eta = best_eta, 
-                            fit_params = FALSE, 
-                            stats_only = FALSE,
-                            silent = TRUE)
+      n <- nrow(abund_s)
+      models <- rEDM::tde_gp(abund_s, 
+                             lib = c(1, n), 
+                             pred = c(1, n), 
+                             E = E_range, 
+                             fit_params = TRUE, 
+                             stats_only = FALSE, silent = TRUE)
+      best_idx <- which.min(models$mae)
+      best_phi <- models$phi[best_idx]
+      best_v_e <- models$v_e[best_idx]
+      best_eta <- models$eta[best_idx]
+      best_e <- models$E[best_idx]
       
-      pred_row <- model$model_out[[1]][best_e, ]
-      pt_est <- pred_row$pred
-      preds$estimate[i] <- pt_est
-      preds$lower_pi[i] <- qnorm(1 - pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
-      preds$upper_pi[i] <- qnorm(pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
-      pred_data[n + i, s] <- pt_est
+      # set up data structures to hold forecasts
+      to_add <- data.frame(moons_to_cast, NA)
+      colnames(to_add) <- c("moon", s)
+      pred_data <- rbind(abund_s, to_add)
+      
+      # make forecasts
+      for (i in seq_along(moons_to_cast))
+      {
+        model <- rEDM::tde_gp(pred_data,
+                              lib = c(1, n),
+                              pred = c(n + i - best_e, n + i),
+                              E = best_e,
+                              phi = best_phi, 
+                              v_e = best_v_e, 
+                              eta = best_eta, 
+                              fit_params = FALSE, 
+                              stats_only = FALSE,
+                              silent = TRUE)
+        
+        pred_row <- model$model_out[[1]][best_e, ]
+        pt_est <- pred_row$pred
+        preds$estimate[i] <- pt_est
+        preds$lower_pi[i] <- qnorm(1 - pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
+        preds$upper_pi[i] <- qnorm(pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
+        pred_data[n + i, s] <- pt_est
+      }
     }
     
     # generate cast_tab to add

@@ -249,9 +249,9 @@ test_that("GPEDM", {
             row.names = FALSE)
   
   expect_message(f_a <- GPEDM(main = "./testing", max_E = 3,
-                                   data_set = "all_interp", quiet = FALSE))
+                              data_set = "all_interp", quiet = FALSE))
   expect_message(f_c <- GPEDM(main = "./testing", max_E = 3,
-                                   data_set = "controls_interp", quiet = FALSE))
+                              data_set = "controls_interp", quiet = FALSE))
   
   expect_is(f_a, "list")
   expect_is(f_c, "list")
