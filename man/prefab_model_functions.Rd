@@ -3,6 +3,7 @@
 %   R/prefab_models.R
 \name{simplexEDM}
 \alias{simplexEDM}
+\alias{GPEDM}
 \alias{jags_RW}
 \alias{prefab_model_functions}
 \alias{AutoArima}
@@ -14,6 +15,10 @@
 \title{Functions for the prefab portalcasting models}
 \usage{
 simplexEDM(main = ".", data_set = "all_interp",
+  control_files = files_control(), quiet = FALSE, verbose = FALSE,
+  max_E = 7, arg_checks = TRUE)
+
+GPEDM(main = ".", data_set = "all_interp",
   control_files = files_control(), quiet = FALSE, verbose = FALSE,
   max_E = 7, arg_checks = TRUE)
 
@@ -104,6 +109,8 @@ Functions used for fitting the prefab models. For detailed
  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
  using \code{\link[rEDM]{simplex}}. \cr \cr
+ \code{GPEDM} fits an EDM model using Gaussian Processes for function 
+ approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
  \code{jags_RW} fits a log-scale density random walk with a Poisson 
  observation process using JAGS (Just Another Gibbs Sampler; 
  Plummer 2003) hierarchical Bayesian inference.
@@ -130,6 +137,7 @@ Functions used for fitting the prefab models. For detailed
   nbsGARCH()
   pevGARCH()
   simplexEDM()
+  gpEDM()
   jags_RW()
  }
 

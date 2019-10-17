@@ -227,8 +227,48 @@ test_that("simplexEDM", {
   expect_is(f_e, "list")
 })
 
+test_that("GPEDM", {
+  skip_on_cran() # downloads and casting take too long to run on cran
+  fill_data(main = "./testing", end_moon = 520)
+  
+  keepers <- c("moon", "BA", "DM", "DO")
+  all <- read_rodents_table(main = main, "all_interp")
+  rest_cols <- which(colnames(all) %in% keepers)
+  all2 <- all[, rest_cols]
+  all2$BA <- 0
+  all2$DO <- c(rep(0, nrow(all2) - 1), 1)
+  write.csv(all2, file_path(main = main, "data", "rodents_all_interp.csv"), 
+            row.names = FALSE)
+  
+  keepers <- c("moon", "DM")
+  controls <- read_rodents_table(main = main, "controls_interp")
+  rest_cols <- which(colnames(controls) %in% keepers)
+  controls2 <- controls[, rest_cols]
+  write.csv(controls2, file_path(main = main, 
+                                 "data", "rodents_controls_interp.csv"), 
+            row.names = FALSE)
+  
+  expect_message(f_a <- GPEDM(main = "./testing", max_E = 3,
+                                   data_set = "all_interp", quiet = FALSE))
+  expect_message(f_c <- GPEDM(main = "./testing", max_E = 3,
+                                   data_set = "controls_interp", quiet = FALSE))
+  
+  expect_is(f_a, "list")
+  expect_is(f_c, "list")
+})
+
+check_jags <- function()
+{
+  result <- capture_condition(runjags::findjags())
+  if (any(c("warning", "error") %in% attributes(result)$class))
+  {
+    skip(result$message)
+  }
+}
+
 test_that("jags_RW", {
   skip_on_cran() # downloads and casting take too long to run on cran
+  check_jags() # check for JAGS installation on system
   fill_data(main = "./testing", end_moon = 520)
 
   keepers <- c("moon", "BA", "ntraps")
