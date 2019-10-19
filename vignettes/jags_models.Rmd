@@ -29,6 +29,8 @@ Here, we assume the user has already run through a basic installation, set up, a
 
 To reduce the amount of code that needs to be written for a model and to simplify the model's function, we provide flexible general functions for common situations that only require the user to write the `jags_model` (which is piped to the `model` argument in `runjags::run.jags`), `inits` (initializer), and `monitor` inputs to create a model. These models do not require that the user pass any data objects, but rather take the `main` and `data_set` arguments, which allows the internal functionality to leverage **portalcasting**'s file-accessing capacity and do all of the loading and prepping of data required. This includes use of "past data" (from before `start_moon`) to inform the priors and model initialization function, thereby facilitating the use of generalized models (e.g., that base priors on data, rather than needing priors that are appropriate for all species).
 
+The interface to `runjags::run.jags` retains the flexibility of its `model` argument, but for general use, users should provide the function with a character value formatted as `"model { <model code>}"` (where `<model code>` is replaced with the actual code of the model). The code should be written in JAGS's language, which is a dialect of the informal BUGS language written in C++ [@Plummer2003]. 
+
 The general function then takes the output from `runjags::runjags`, processes the multi-chain information (if relevant), and formats the results akin to the standard single-species **portalcasting** model, returning a list of `metadata` (standard model metadata), `cast_tab` (the condensed-for-use-elsewhere table of forecasts), `model_fits` (the fitted model object), and `model_casts` (the forecasts of all of the models for all species).
 
 ### Single Species Modeling: `jags_ss`
@@ -48,7 +50,7 @@ The data objects provided to the model and initializer for a given species via `
   + `past_moon`: newmoon numbers 
   + `past_N`: number of time steps 
 
-The data for the time series used to fit the model and forecast includes the as-of-yet not observed data with `NA` placeholders for `count`, an assumption of full sampling effort (max `ntraps`), and an appropriatedly extended `moon`. The `past_` data allow the user to inform priors and initializers as desired and should only be used within those components. 
+The data for the time series used to fit the model and forecast includes the as-of-yet not observed data with `NA` placeholders for `count`, an assumption of full sampling effort (max `ntraps`), and an appropriately extended `moon`. The `past_` data allow the user to inform priors and initializers as desired and should only be used within those components. 
 
 #### An example: random walk (`jags_RW`)
 
@@ -62,8 +64,8 @@ The time series is then modeled using an initial state (`1`) based only on `mu` 
 ```
 # initial state
 X[1] <- mu;
-pred_count[1] <- exp(X[1]);
-count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
+pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
+count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0,ntraps[1]);
 
 # through time
 for(i in 2:N) {
@@ -71,15 +73,213 @@ for(i in 2:N) {
   predX[i] <- X[i-1];
   checkX[i] ~ dnorm(predX[i], tau); 
   X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-  pred_count[i] <- exp(X[i]);
+  pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
    
   # observation model
-  count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
+  count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
 }
 ```
 
-where `X` is used to track the state, `predX` is the mean/predicted value for the next step, `checkX` is the initial draw from the process model that has an overflow check on it (the `min` call) before passing the value to `X`, and `pred_count` is the natural-scale mean density, used as the parameter for the observation process.
+where `X` is used to track the state, `predX` is the mean/predicted value for the next step, `checkX` is the initial draw from the process model that has an overflow check on it (the `min` call) before passing the value to `X`, and `pred_count` is the natural-scale mean density, used as the parameter for the observation process. The offset (`0.1`) is removed here after being added in the priors (see below), and the `max` ensures that the parameter remains positive after the offset is removed.
 
 The truncation and overflow protection are especially important here, as a log-scale density on a random walk has the potential to explode (run to `Inf`). However, it is possible that any model fit using JAGS could encounter some iterations of the algorithm that run to `Inf` (even if exceedingly rare), and so it is suggested for users that build JAGS **portalcasting** models to retain these or similar edge protections.
+
+The two model parameters (`mu` and `tau`) are assumed to be distributed according to the available data that are from before `start_moon` (the start of the time series used to fit the model. In particular, `mu`, which is the log-scale density of rodents at time step 1 is considered to be drawn from a normal distribution with a mean equal to the prior average log-scale density of rodents and with a variance that is twice as large as the variance among prior log-scale density observations. Also, `tau` (the precision of the random walk) has a prior that is gamma distributed with a fixed rate of 0.1 and a rate-scaled shape equal to the mean of the distribution, which was set as the precision of the prior counts. 
+
+```
+# priors
+  log_past_count <- log(past_count + 0.1)
+  mean_log_past_count <- mean(log_past_count)
+  sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+  var_log_past_count <- sd_log_past_count^2
+  precision_log_past_count <- 1/(var_log_past_count)
+
+  diff_count[1] <- log_past_count[2] - log_past_count[1]
+  diff_time[1] <- past_moon[2] - past_moon[1] 
+  diff_log_past_count[1] <- diff_count[1] / diff_time[1]
+  for(i in 2:(past_N - 1)){
+    diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
+    diff_time[i] <- past_moon[i + 1] - past_moon[i] 
+    diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+  }    
+  sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+  var_diff_log_past_count <- sd_diff_log_past_count^2
+  precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+  rate <- 0.1
+  shape <- precision_diff_log_past_count * rate
+
+  mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
+  tau ~ dgamma(shape, rate); 
+```
+
+The priors and time series components are then combined into a single character value for input:
+
+```
+jags_model <- "model {  
+  # priors
+  log_past_count <- log(past_count + 0.1)
+  mean_log_past_count <- mean(log_past_count)
+  sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+   var_log_past_count <- sd_log_past_count^2
+  precision_log_past_count <- 1/(var_log_past_count)
+
+  diff_count[1] <- log_past_count[2] - log_past_count[1]
+  diff_time[1] <- past_moon[2] - past_moon[1] 
+  diff_log_past_count[1] <- diff_count[1] / diff_time[1]
+  for(i in 2:(past_N - 1)){
+    diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
+    diff_time[i] <- past_moon[i + 1] - past_moon[i] 
+    diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+  }    
+  sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+  var_diff_log_past_count <- sd_diff_log_past_count^2
+  precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+  rate <- 0.1
+  shape <- precision_diff_log_past_count * rate
+
+  mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
+  tau ~ dgamma(shape, rate); 
+   
+  # initial state
+  X[1] <- mu;
+  pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
+  count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+  # through time
+  for(i in 2:N) {
+    # Process model
+    predX[i] <- X[i-1];
+    checkX[i] ~ dnorm(predX[i], tau); 
+    X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
+    pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
+   
+    # observation model
+    count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+  }
+}"
+
+```
+
+As a starting point, we used an initializer function (`inits`) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The `inits` function takes the data provided as input, the allowing use of the prior data, and returns a function that can be used within `runjags::run.jags` for a given chain:
+
+```
+inits <- function(data = NULL){
+  rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
+            "base::Super-Duper", "base::Mersenne-Twister")
+  past_N <- data$past_N 
+  past_count <- data$past_count 
+  past_moon <- data$past_moon
+
+  log_past_count <- log(past_count + 0.1)
+  mean_log_past_count <- mean(log_past_count)
+  sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+  diff_log_past_count <- rep(NA, past_N - 1)
+  for(i in 1:(past_N - 1)){
+    diff_count <- log_past_count[i + 1] - log_past_count[i]
+    diff_time <- past_moon[i + 1] - past_moon[i] 
+    diff_log_past_count[i] <- diff_count / diff_time
+  }
+  sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+  var_diff_log_past_count <- sd_diff_log_past_count^2
+  precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+  rate <- 0.1
+  shape <- precision_diff_log_past_count * rate
+
+  function(chain = chain){
+    list(.RNG.name = sample(rngs, 1),
+         .RNG.seed = sample(1:1e+06, 1),
+          mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
+          tau = rgamma(1, shape = shape, rate = rate))
+  }
+}
+```
+
+Finally, we tell the software to track both parameters through the `monitor` vector:
+
+```
+  monitor <- c("mu", "tau")
+```
+
+These components can then be combined within a function (like `jags_RW`) to leverage the internal functionality of `jags_ss` and flexibility of `runjags_control`. Because `jags_ss` process and packages the output for the casting standards, nothing in particular needs to be added in the wrapper function `jags_RW` after calling `jags_ss`:
+
+```
+  monitor <- c("mu", "tau")
+  inits <- function(data = NULL){
+    rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
+              "base::Super-Duper", "base::Mersenne-Twister")
+    past_N <- data$past_N 
+    past_count <- data$past_count 
+    past_moon <- data$past_moon
+
+    log_past_count <- log(past_count + 0.1)
+    mean_log_past_count <- mean(log_past_count)
+    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    diff_log_past_count <- rep(NA, past_N - 1)
+    for(i in 1:(past_N - 1)){
+      diff_count <- log_past_count[i + 1] - log_past_count[i]
+      diff_time <- past_moon[i + 1] - past_moon[i] 
+      diff_log_past_count[i] <- diff_count / diff_time
+    }
+    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count <- sd_diff_log_past_count^2
+    precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+    rate <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
+    function(chain = chain){
+      list(.RNG.name = sample(rngs, 1),
+           .RNG.seed = sample(1:1e+06, 1),
+            mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
+            tau = rgamma(1, shape = shape, rate = rate))
+    }
+  }
+  jags_model <- "model {  
+    # priors
+    log_past_count <- log(past_count + 0.1)
+    mean_log_past_count <- mean(log_past_count)
+    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    var_log_past_count <- sd_log_past_count^2
+    precision_log_past_count <- 1/(var_log_past_count)
+
+    diff_count[1] <- log_past_count[2] - log_past_count[1]
+    diff_time[1] <- past_moon[2] - past_moon[1] 
+    diff_log_past_count[1] <- diff_count[1] / diff_time[1]
+    for(i in 2:(past_N - 1)){
+      diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
+      diff_time[i] <- past_moon[i + 1] - past_moon[i] 
+      diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+    }    
+    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count <- sd_diff_log_past_count^2
+    precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+    rate <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
+    mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
+    tau ~ dgamma(shape, rate); 
+   
+    # initial state
+    X[1] <- mu;
+    pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
+    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+    # through time
+    for(i in 2:N) {
+      # Process model
+      predX[i] <- X[i-1];
+      checkX[i] ~ dnorm(predX[i], tau); 
+      X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
+      pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
+   
+      # observation model
+      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+    }
+  }"
+  jags_ss(main = main, data_set = "all", control_files = control_files,
+          control_runjags = control_runjags, jags_model = jags_model,
+          monitor = monitor, inits = inits, quiet = quiet, 
+          verbose = verbose)
+```
+
+Running this model in the forecasting pipeline produces standard output (allowing it to be integrated with the other cast output) and highlights the starting point for more mechanistic time series models.
+
 
 ## References

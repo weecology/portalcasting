@@ -67,18 +67,18 @@ jags_RW <- function(main = ".", data_set = "all",
    
     # initial state
     X[1] <- mu;
-    pred_count[1] <- exp(X[1]);
-    count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
+    pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
+    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
     # through time
     for(i in 2:N) {
       # Process model
       predX[i] <- X[i-1];
       checkX[i] ~ dnorm(predX[i], tau); 
       X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-      pred_count[i] <- exp(X[i]);
+      pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
    
       # observation model
-      count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
+      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
     }
   }"
   jags_ss(main = main, data_set = data_set, control_files = control_files,
@@ -224,18 +224,18 @@ jags_RW <- function(main = ".", data_set = "all",
 #'    
 #'     # initial state
 #'     X[1] <- mu;
-#'     pred_count[1] <- exp(X[1]);
-#'     count[1] ~ dpois(exp(X[1])) T(0,ntraps[1]);
+#'     pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
+#'     count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0,ntraps[1]);
 #'     # through time
 #'     for(i in 2:N) {
 #'       # Process model
 #'       predX[i] <- X[i-1];
 #'       checkX[i] ~ dnorm(predX[i], tau); 
 #'       X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-#'       pred_count[i] <- exp(X[i]);
+#'       pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
 #'    
 #'       # observation model
-#'       count[i] ~ dpois(exp(X[i])) T(0, ntraps[i]); 
+#'       count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
 #'     }
 #'   }"
 #'
