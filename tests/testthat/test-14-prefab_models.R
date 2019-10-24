@@ -23,12 +23,24 @@ test_that("AutoArima", {
   write.csv(controls2, file_path(main = main, 
                                  "data", "rodents_controls.csv"), 
             row.names = FALSE)
+  
+  keepers <- c("moon", "DM")
+  controls <- read_rodents_table(main = main, "exclosures")
+  rest_cols <- which(colnames(controls) %in% keepers)
+  controls3 <- controls[, rest_cols]
+  write.csv(controls3, file_path(main = main, 
+                                 "data", "rodents_exclosures.csv"), 
+            row.names = FALSE)
+  
   expect_message(f_a <- AutoArima(main = main, 
                                   data_set = "All", quiet = FALSE))
   expect_message(f_c <- AutoArima(main = main, 
                                   data_set = "Controls", quiet = FALSE))
+  expect_message(f_e <- AutoArima(main = main, 
+                                  data_set = "Exclosures", quiet = FALSE)) 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 test_that("NaiveArima", {
@@ -37,9 +49,12 @@ test_that("NaiveArima", {
                                    data_set = "Controls", quiet = FALSE))
   expect_message(f_a <- NaiveArima(main = "./testing", 
                                    data_set = "All", quiet = FALSE))
+  expect_message(f_e <- NaiveArima(main = "./testing", 
+                                   data_set = "Exclosures", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 
@@ -64,15 +79,24 @@ test_that("ESSS", {
                                  "data", "rodents_controls_interp.csv"), 
             row.names = FALSE)
 
-
+  keepers <- c("moon", "DM")
+  controls <- read_rodents_table(main = main, "exclosures_interp")
+  rest_cols <- which(colnames(controls) %in% keepers)
+  controls3 <- controls[, rest_cols]
+  write.csv(controls3, file_path(main = main, 
+                                 "data", "rodents_exclosures_interp.csv"), 
+            row.names = FALSE)
 
   expect_message(f_c <- ESSS(main = "./testing",  
                              data_set = "Controls_interp", quiet = FALSE))
   expect_message(f_a <- ESSS(main = "./testing", 
                              data_set = "All_interp", quiet = FALSE))
+  expect_message(f_e <- ESSS(main = "./testing", 
+                             data_set = "Exclosures_interp", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 
@@ -83,9 +107,12 @@ test_that("nbGARCH", {
                                 data_set = "Controls_interp", quiet = FALSE))
   expect_message(f_a <- nbGARCH(main = "./testing", 
                                 data_set = "All_interp", quiet = FALSE))
+  expect_message(f_e <- nbGARCH(main = "./testing", 
+                                data_set = "Exclosures_interp", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 test_that("nbsGARCH", {
@@ -94,9 +121,13 @@ test_that("nbsGARCH", {
                                  data_set = "Controls_interp", quiet = FALSE))
   expect_message(f_a <- nbsGARCH(main = "./testing", 
                                  data_set = "All_interp", quiet = FALSE))
-
+  expect_message(f_e <- nbsGARCH(main = "./testing", 
+                                 data_set = "Exclosures_interp", quiet = FALSE))
+  
+  
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 test_that("pevGARCH", {
@@ -105,9 +136,12 @@ test_that("pevGARCH", {
                                  data_set = "Controls_interp", quiet = FALSE))
   expect_message(f_a <- pevGARCH(main = "./testing", 
                                  data_set = "All_interp", quiet = FALSE))
+  expect_message(f_e <- pevGARCH(main = "./testing", 
+                                 data_set = "Exclosures_interp", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 test_that("pevGARCH", {
@@ -130,14 +164,26 @@ test_that("pevGARCH", {
   write.csv(controls2, file_path(main = main, 
                                  "data", "rodents_controls_interp.csv"), 
             row.names = FALSE)
+  
+  keepers <- c("moon", "DM")
+  controls <- read_rodents_table(main = main, "exclosures_interp")
+  rest_cols <- which(colnames(controls) %in% keepers)
+  controls3 <- controls[, rest_cols]
+  write.csv(controls3, file_path(main = main, 
+                                 "data", "rodents_exclosures_interp.csv"), 
+            row.names = FALSE)
+  
 
   expect_message(f_a <- pevGARCH(main = "./testing", lag = 6,
                                   data_set = "all_interp", quiet = FALSE))
   expect_message(f_c <- pevGARCH(main = "./testing", lag = 6, 
                               data_set = "controls_interp", quiet = FALSE))
+  expect_message(f_e <- pevGARCH(main = "./testing", lag = 6, 
+                                 data_set = "exclosures_interp", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 test_that("simplexEDM", {
@@ -161,13 +207,24 @@ test_that("simplexEDM", {
                                  "data", "rodents_controls_interp.csv"), 
             row.names = FALSE)
   
+  keepers <- c("moon", "DM")
+  controls <- read_rodents_table(main = main, "controls_interp")
+  rest_cols <- which(colnames(controls) %in% keepers)
+  controls3 <- controls[, rest_cols]
+  write.csv(controls3, file_path(main = main, 
+                                 "data", "rodents_exclosures_interp.csv"), 
+            row.names = FALSE)
+  
   expect_message(f_a <- simplexEDM(main = "./testing", max_E = 7,
                                  data_set = "all_interp", quiet = FALSE))
   expect_message(f_c <- simplexEDM(main = "./testing", max_E = 7,
                                  data_set = "controls_interp", quiet = FALSE))
+  expect_message(f_e <- simplexEDM(main = "./testing", max_E = 7,
+                                   data_set = "exclosures_interp", quiet = FALSE))
   
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
 
 test_that("jags_RW", {
@@ -188,6 +245,14 @@ test_that("jags_RW", {
   write.csv(controls2, file_path(main = main, 
                                  "data", "rodents_controls.csv"), 
             row.names = FALSE)
+  
+  keepers <- c("moon", "DM", "ntraps")
+  controls <- read_rodents_table(main = main, "exclosures")
+  rest_cols <- which(colnames(controls) %in% keepers)
+  controls3 <- controls[, rest_cols]
+  write.csv(controls3, file_path(main = main, 
+                                 "data", "rodents_exclosures.csv"), 
+            row.names = FALSE)
 
   expect_message(f_a <- jags_RW(main = "./testing", 
                                 control_runjags = runjags_control(adapt = 1e3,
@@ -197,7 +262,12 @@ test_that("jags_RW", {
                                 control_runjags = runjags_control(adapt = 1e3,
                                        burnin = 1e3, sample = 1e3),
                                 data_set = "controls", quiet = FALSE))
-
+  expect_message(f_e <- jags_RW(main = "./testing",  
+                                control_runjags = runjags_control(adapt = 1e3,
+                                                                  burnin = 1e3, 
+                                                                  sample = 1e3),
+                                data_set = "exclosures", quiet = FALSE))
   expect_is(f_a, "list")
   expect_is(f_c, "list")
+  expect_is(f_e, "list")
 })
