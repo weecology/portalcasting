@@ -555,7 +555,7 @@ check_arg_list <- function(){
                      "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", 
                      "RO", "SF", "SH", "SO", "total")
   avail_subs <- c("casts", "models", "raw", "data", "tmp")
-  avail_treatments <- c("control")
+  avail_treatments <- c("control", "exclosure")
   avail_winners <- c("hist", "cast")
   avail_max_Es <- 1:24
 
