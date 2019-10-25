@@ -38,7 +38,7 @@ that passed QA/QC (\code{clean = TRUE}) or if all data
 \item{type}{\code{character} value of the rodent data set type, according 
 to pre-existing definitions. An alternative toggle to \code{species}. \cr
 Either all species 
-(\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}).}
+(\code{type = "Rodents"}) or only granivores (\code{type = "Granivores"}).}
 
 \item{level}{\code{character} indicating the type of summary:
 \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 

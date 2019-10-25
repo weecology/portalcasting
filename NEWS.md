@@ -2,6 +2,11 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.14.0](https://github.com/weecology/portalcasting/releases/tag/v0.14.0)
+*2019-10-24*
+
+### Adds exclosure data to the prefab models
+
 # [portalcasting 0.13.0](https://github.com/weecology/portalcasting/releases/tag/v0.13.0)
 *2019-10-12*
 
