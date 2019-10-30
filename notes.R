@@ -1,10 +1,42 @@
 devtools::document()
 devtools::load_all()
 
-main <- "~/portalcasting_testing1"
+main <- "./model_testing"
 setup_dir(main)
-portalcast(main = main, models = c("jags_RW"))
-plot_cast_ts(main=main, model = c("jags_RW"))
+
+
+rt <- read_rodents_table(main, "all")
+head(rt)
+rt$total
+plot(rt$SH~rt$moon)
+nas <- which(is.na(rt$SH == TRUE))
+td <- diff(rt$SH[-nas])
+t1 <- rt$SH[-nas]
+t1 <- t1[-length(t1)]
+md <- diff(rt$moon[-nas])
+pgr <- td/(t1*md)
+m1 <- rt$moon[-nas]
+m1 <- m1[-length(m1)]
+plot(pgr~m1)
+
+
+
+summarize_rodent_data("./model_testing/raw")
+
+
+head(rt)
+
+
+
+
+
+
+hist(pgr)
+plot(pgr)
+
+portalcast(main = main, models = c("pevGARCH"))
+plot_cast_ts(main=main, model = c("ESSS"), species = "SH", 
+             data_set = "all_interp")
 
 plot_cast_point(main=main, model = c("jags_RW"))
 plot_cast_point(main=main,with_census=T)

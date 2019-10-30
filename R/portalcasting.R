@@ -1,6 +1,5 @@
 #' @importFrom coda as.mcmc HPDinterval
 #' @importFrom curl curl
-#' @importFrom DesignLibrary match.call.defaults
 #' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join 
 #'  left_join mutate n one_of rename right_join select summarize ungroup
 #' @importFrom forecast Arima auto.arima ets forecast na.interp
