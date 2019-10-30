@@ -10,8 +10,9 @@ rodents_controls(data_sets = NULL, controls_rodents = NULL,
 \arguments{
 \item{data_sets}{\code{character} value(s) of the rodent data set name(s) 
 used to enforce certain arguments. Currently available prefab data
-sets are \code{"all"}, \code{"all_interp"}, \code{"controls"} and
-\code{"controls_interp"}.}
+sets are \code{"all"}, \code{"all_interp"}, \code{"controls"}, 
+\code{"controls_interp"}, \code{"exclosures_interp"}, and 
+\code{"exclosures"}.}
 
 \item{controls_rodents}{Additional controls for datasets not in the 
 prefab set. \cr

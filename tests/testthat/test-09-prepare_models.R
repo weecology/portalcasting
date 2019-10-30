@@ -74,11 +74,11 @@ test_that("model_template", {
 
   temp1 <- model_template("AutoArima", main = "./testing")
   expect_is(temp1, "character")
-  expect_equal(length(temp1), 4)
+  expect_equal(length(temp1), 6)
 
   temp2 <- model_template("pevGARCH", main = "./testing")
   expect_is(temp2, "character")
-  expect_equal(length(temp2), 4)
+  expect_equal(length(temp2), 6)
 
 })
 
