@@ -1,5 +1,13 @@
 context("Test utility functions")
 
+test_that("match.call.defaults", {
+  fun <- function(arg1 = "ok", ...) {
+    match.call.defaults()
+  }
+  expect_is(fun(), "call")
+  expect_is(fun(arg2 = "hi"), "call")
+})
+
 test_that("named_null_list", {
   expect_is(named_null_list(c("a", "b", "c")), "list")
   expect_equal(length(named_null_list(c("a", "b", "c"))), 3)
