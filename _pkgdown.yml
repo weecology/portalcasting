@@ -184,6 +184,7 @@ reference:
       - update_list
       - append_csv
       - combine_hist_and_cast
+      - match.call.defaults
   - title: "Messenger functions"
     desc: "Functions that provide messages to the user"
     contents:
