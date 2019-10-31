@@ -61,7 +61,7 @@ The usage of `jags_SS` is exemplified by the `jags_RW` model, which is a "simple
 
 The time series is then modeled using an initial state (`1`) based only on `mu` and subsequent states (`2` to `N`) based on the previous state and `tau` with a truncated Poisson observation:
 
-```
+```{r, eval=FALSE}
 # initial state
 X[1] <- mu;
 pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
@@ -86,7 +86,7 @@ The truncation and overflow protection are especially important here, as a log-s
 
 The two model parameters (`mu` and `tau`) are assumed to be distributed according to the available data that are from before `start_moon` (the start of the time series used to fit the model. In particular, `mu`, which is the log-scale density of rodents at time step 1 is considered to be drawn from a normal distribution with a mean equal to the prior average log-scale density of rodents and with a variance that is twice as large as the variance among prior log-scale density observations. Also, `tau` (the precision of the random walk) has a prior that is gamma distributed with a fixed rate of 0.1 and a rate-scaled shape equal to the mean of the distribution, which was set as the precision of the prior counts. 
 
-```
+```{r, eval=FALSE}
 # priors
   log_past_count <- log(past_count + 0.1)
   mean_log_past_count <- mean(log_past_count)
@@ -114,7 +114,7 @@ The two model parameters (`mu` and `tau`) are assumed to be distributed accordin
 
 The priors and time series components are then combined into a single character value for input:
 
-```
+```{r, eval=FALSE}
 jags_model <- "model {  
   # priors
   log_past_count <- log(past_count + 0.1)
@@ -161,7 +161,7 @@ jags_model <- "model {
 
 As a starting point, we used an initializer function (`inits`) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The `inits` function takes the data provided as input, the allowing use of the prior data, and returns a function that can be used within `runjags::run.jags` for a given chain:
 
-```
+```{r, eval=FALSE}
 inits <- function(data = NULL){
   rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
             "base::Super-Duper", "base::Mersenne-Twister")
@@ -195,13 +195,13 @@ inits <- function(data = NULL){
 
 Finally, we tell the software to track both parameters through the `monitor` vector:
 
-```
+```{r, eval=FALSE}
   monitor <- c("mu", "tau")
 ```
 
 These components can then be combined within a function (like `jags_RW`) to leverage the internal functionality of `jags_ss` and flexibility of `runjags_control`. Because `jags_ss` process and packages the output for the casting standards, nothing in particular needs to be added in the wrapper function `jags_RW` after calling `jags_ss`:
 
-```
+```{r, eval=FALSE}
   monitor <- c("mu", "tau")
   inits <- function(data = NULL){
     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
