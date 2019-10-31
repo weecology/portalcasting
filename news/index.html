@@ -149,7 +149,7 @@
 <h1 class="page-header">
 <a href="#portalcasting-0-15-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.15.0">portalcasting 0.15.0</a>
 </h1>
-<p><em>2019-10-30</em></p>
+<p><em>2019-10-31</em></p>
 <div id="jags-vignette" class="section level3">
 <h3 class="hasAnchor">
 <a href="#jags-vignette" class="anchor"></a>JAGS vignette</h3>
@@ -163,6 +163,14 @@
 <a href="#pulls-code-for-match-call-defaults-into-the-package" class="anchor"></a>Pulls code for <code>match.call.defaults</code> into the package</h3>
 <ul>
 <li>Use of it from <code>DesignLibrary</code> causes a problematic dependency chain with the docker image building</li>
+</ul>
+</div>
+<div id="patch-bug-in-most_abundant_species" class="section level3">
+<h3 class="hasAnchor">
+<a href="#patch-bug-in-most_abundant_species" class="anchor"></a>Patch bug in <code>most_abundant_species</code>
+</h3>
+<ul>
+<li>Wasn’t using the species name function, and so was pulling in the traps column, which was causing a break in plotting.</li>
 </ul>
 </div>
 </div>
