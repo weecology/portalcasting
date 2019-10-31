@@ -102,7 +102,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       bline = TRUE, quiet = FALSE, verbose = FALSE, 
                       arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-print(sessionInfo())
+
   version_message(bline = bline, quiet = quiet, arg_checks = arg_checks)
   create_dir(main = main, filename_config = control_files$filename_config,
              bline = TRUE, quiet = quiet, arg_checks = arg_checks)
