@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.14.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.0</span>
       </span>
     </div>
 
@@ -58,6 +58,9 @@
     </li>
     <li>
       <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
+    </li>
+    <li>
+      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -100,7 +103,7 @@
       <h1>Adding a Model and Data</h1>
                         <h4 class="author">Juniper L. Simonis and Glenda M. Yenni</h4>
             
-            <h4 class="date">25 October, 2019</h4>
+            <h4 class="date">31 October, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/adding_model_and_data.Rmd"><code>vignettes/adding_model_and_data.Rmd</code></a></small>
       <div class="hidden name"><code>adding_model_and_data.Rmd</code></div>
@@ -114,7 +117,7 @@
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>The <strong>portalcasting</strong> package provides the ability to add functions both to a local copy of the repository for testing as well as to contribute to the base set of models provided within the package (and thus executed in the main repository). Similarly, users may often want or need to analyze the data in a slightly different configuration than what is already available. Here, we walk through the steps to add user-defined models and data sets to the directory for local use or for integration within the production pipeline.</p>
 <p>For the purposes here, consider that you are interested in adding a model named “newmod” to the forecasting suite. While “newmod” can work on the existing data, you are are really interested in a slightly different configuration (perhaps only the long-term kangaroo rat exclosures) of the data you call “newdata”.</p>
-<p>Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the <a href="https://weecology.github.io/portalcasting/articles/howto.html">Getting Started</a> vignette.</p>
+<p>Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the <a href="https://weecology.github.io/portalcasting/articles/getting_started.html">Getting Started</a> vignette.</p>
 </div>
 <div id="model-requirements" class="section level2">
 <h2 class="hasAnchor">

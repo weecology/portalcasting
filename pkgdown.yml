@@ -6,6 +6,7 @@ articles:
   codebase: codebase.html
   current_models: current_models.html
   getting_started: getting_started.html
+  jags_models: jags_models.html
 urls:
   reference: https://weecology.github.io/portalcasting/reference
   article: https://weecology.github.io/portalcasting/articles

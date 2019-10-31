@@ -82,6 +82,9 @@
     <loc>https://weecology.github.io/portalcasting/reference/list_depth.html</loc>
   </url>
   <url>
+    <loc>https://weecology.github.io/portalcasting/reference/match.call.defaults.html</loc>
+  </url>
+  <url>
     <loc>https://weecology.github.io/portalcasting/reference/measure_cast_level_error.html</loc>
   </url>
   <url>
@@ -248,5 +251,8 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/articles/getting_started.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/articles/jags_models.html</loc>
   </url>
 </urlset>

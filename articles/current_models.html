@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.14.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.0</span>
       </span>
     </div>
 
@@ -58,6 +58,9 @@
     </li>
     <li>
       <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
+    </li>
+    <li>
+      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -100,7 +103,7 @@
       <h1>Current Models</h1>
                         <h4 class="author">Juniper L. Simonis, Hao Ye, and S. K. Morgan Ernest</h4>
             
-            <h4 class="date">25 October, 2019</h4>
+            <h4 class="date">31 October, 2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/current_models.Rmd"><code>vignettes/current_models.Rmd</code></a></small>
       <div class="hidden name"><code>current_models.Rmd</code></div>
@@ -109,6 +112,9 @@
 
     
     
+<div id="models" class="section level2">
+<h2 class="hasAnchor">
+<a href="#models" class="anchor"></a>Models</h2>
 <p>We currently analyze and forecast rodent data at Portal using eight models: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, pevGARCH, simplexEDM, and jags_RW <span class="citation">(WeecologyLab 2019)</span>. Each model has a function with its name (<em>e.g.</em>, <code><a href="../reference/prefab_model_functions.html">ESSS()</a></code>) which is called from an associated R script in the <code>models</code> subdirectory with its name (<em>e.g.</em>, <code>ESSS.R</code>)</p>
 <div id="esss" class="section level3">
 <h3 class="hasAnchor">
@@ -125,7 +131,7 @@
 <div id="naivearima" class="section level3">
 <h3 class="hasAnchor">
 <a href="#naivearima" class="anchor"></a>NaiveArima</h3>
-<p>NaiveArima (Naive Auto-Regressive Integrated Moving Average) is a fixed Auto-Regressive Integrated Moving Average (ARIMA) model of order (0,1,0) fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model is selected and fitted using the <code>Arima</code> and <code>forecast</code> functions in the <strong>forecast</strong> package <span class="citation">(Hyndman and Athanasopoulos 2013; Hyndman 2017)</span> within the <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code> function.</p>
+<p>NaiveArima (Naive Auto-Regressive Integrated Moving Average) is a fixed Auto-Regressive Integrated Moving Average (ARIMA) model of order (0,1,0) fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model is selected and fitted using the <code>Arima</code> and <code>forecast</code> functions in the <strong>forecast</strong> package <span class="citation">(Hyndman and Athanasopoulos 2013; Hyndman 2017)</span> within the <code><a href="../reference/prefab_model_functions.html">NaiveArima()</a></code> function.</p>
 </div>
 <div id="nbgarch" class="section level3">
 <h3 class="hasAnchor">
@@ -153,7 +159,7 @@
 <div id="simplexedm" class="section level3">
 <h3 class="hasAnchor">
 <a href="#simplexedm" class="anchor"></a>simplexEDM</h3>
-<p>simplexEDM (simplex projection using Empirical Dynamic Modeling) is a state-space reconstruction model adapted for forecasting and fit to the interpolated data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. . The method uses time-delay embedding to reconstruct a state-space for the dynamics underlying a time series <span class="citation">(Packard et al. 1980, <span class="citation">@Takens1981</span>)</span>. A forecast from a point in the state space is then computed as a weighted average of the trajectories of nearest neighbors of that point, a minimal algorithm known as “simplex projection” <span class="citation">(Sugihara and May 1990)</span>.</p>
+<p>simplexEDM (simplex projection using Empirical Dynamic Modeling) is a state-space reconstruction model adapted for forecasting and fit to the interpolated data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The method uses time-delay embedding to reconstruct a state-space for the dynamics underlying a time series <span class="citation">(Packard et al. 1980, <span class="citation">@Takens1981</span>)</span>. A forecast from a point in the state space is then computed as a weighted average of the trajectories of nearest neighbors of that point, a minimal algorithm known as “simplex projection” <span class="citation">(Sugihara and May 1990)</span>.</p>
 <p>In applications to ecological time series, many of the parameters are set automatically, with the exception of the dimension of the time-delay embedding. Here, the embedding dimension (<span class="math inline">\(E\)</span>) is selected as the value (between <code>1</code> and the <code>max_E</code> argument to <code><a href="../reference/prefab_model_functions.html">simplexEDM()</a></code>) that minimizes the mean absolute error over the in-sample portion of the data.</p>
 </div>
 <div id="jags_rw" class="section level3">
@@ -167,9 +173,10 @@
 <a href="#ensemble" class="anchor"></a>Ensemble</h3>
 <p>In addition to the base models, we include a starting-point ensemble. In versions before v0.9.0, the ensemble was based on AIC weights, but in the shift to separating the interpolated from non-interpolated data in model fitting, we had to transfer to an unweighted average ensemble model. The ensemble mean is calculated as the mean of all model means and the ensemble variance is estimated as the sum of the mean of all model variances and the variance of the estimated mean, calculated using the unbiased estimate of sample variances.</p>
 </div>
-<div id="references" class="section level3 unnumbered">
-<h3 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h3>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
 <div id="refs" class="references">
 <div id="ref-Box1970">
 <p>Box, G., and G. Jenkins. 1970. <em>Time Series Analysis: Forecasting and Control</em>. Holden-Day.</p>
@@ -193,7 +200,7 @@
 <p>Packard, N. H., J. P. Crutchfield, J. D. Farmer, and R. S. Shaw. 1980. “Geometry from a Time Series.” <em>Physical Review Letters</em> 45 (9): 712–16.</p>
 </div>
 <div id="ref-Plummer2003">
-<p>Plummer, M. 2003. “A Program for Analysis of Bayesian Graphical Models Using Gibbs Sampling.” <em>Proceedings of the 3rd International Workshop on Distributed Statistical Computing</em>. <a href="https://bit.ly/33aQ37Y" class="uri">https://bit.ly/33aQ37Y</a>.</p>
+<p>Plummer, M. 2003. “A Program for Analysis of Bayesian Graphical Models Using Gibbs Sampling.” <em>Proceedings of the 3rd International Workshop on Distributed Statistical Computing</em>. <a href="http://www.ci.tuwien.ac.at/Conferences/DSC-2003/Proceedings/Plummer.pdf" class="uri">http://www.ci.tuwien.ac.at/Conferences/DSC-2003/Proceedings/Plummer.pdf</a>.</p>
 </div>
 <div id="ref-Sugihara1990">
 <p>Sugihara, G., and R. M. May. 1990. “Nonlinear Forecasting as a Way of Distinguishing Chaos from Measurement Error in Time Series.” <em>Nature</em> 344: 734–41.</p>
@@ -210,6 +217,14 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
 
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#models">Models</a></li>
+      <li><a href="#references">References</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

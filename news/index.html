@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.14.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.0</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@
     </li>
     <li>
       <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
+    </li>
+    <li>
+      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -141,6 +144,27 @@
 <h1 class="page-header">
 <a href="#portalcasting-development-version" class="anchor"></a>portalcasting (development version)</h1>
 <p>Version numbers follow <a href="https://semver.org/">Semantic Versioning</a>.</p>
+</div>
+    <div id="portalcasting-0-15-0" class="section level1">
+<h1 class="page-header">
+<a href="#portalcasting-0-15-0" class="anchor"></a><a href="https://github.com/weecology/portalcasting/releases/tag/v0.15.0">portalcasting 0.15.0</a>
+</h1>
+<p><em>2019-10-30</em></p>
+<div id="jags-vignette" class="section level3">
+<h3 class="hasAnchor">
+<a href="#jags-vignette" class="anchor"></a>JAGS vignette</h3>
+<ul>
+<li>Added a vignette that describes how to use the JAGS/runjags API within portalcasting.</li>
+<li><a href="https://github.com/weecology/portalcasting/issues/152">addresses</a></li>
+</ul>
+</div>
+<div id="pulls-code-for-match-call-defaults-into-the-package" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pulls-code-for-match-call-defaults-into-the-package" class="anchor"></a>Pulls code for <code>match.call.defaults</code> into the package</h3>
+<ul>
+<li>Use of it from <code>DesignLibrary</code> causes a problematic dependency chain with the docker image building</li>
+</ul>
+</div>
 </div>
     <div id="portalcasting-0-14-0" class="section level1">
 <h1 class="page-header">
@@ -1041,6 +1065,7 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#portalcasting-development-version">development version</a></li>
+        <li><a href="#portalcasting-0-15-0">0.15.0</a></li>
         <li><a href="#portalcasting-0-14-0">0.14.0</a></li>
         <li><a href="#portalcasting-0-13-0">0.13.0</a></li>
         <li><a href="#portalcasting-0-12-1">0.12.1</a></li>
