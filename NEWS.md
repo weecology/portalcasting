@@ -3,7 +3,7 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 # [portalcasting 0.15.0](https://github.com/weecology/portalcasting/releases/tag/v0.15.0)
-*2019-10-30*
+*2019-10-31*
 
 ### JAGS vignette
 * Added a vignette that describes how to use the JAGS/runjags API within portalcasting.
@@ -11,6 +11,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### Pulls code for `match.call.defaults` into the package
 * Use of it from `DesignLibrary` causes a problematic dependency chain with the docker image building
+
+### Patch bug in `most_abundant_species`
+* Wasn't using the species name function, and so was pulling in the traps column, which was causing a break in plotting.
 
 # [portalcasting 0.14.0](https://github.com/weecology/portalcasting/releases/tag/v0.14.0)
 *2019-10-24*

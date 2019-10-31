@@ -973,8 +973,8 @@ most_abundant_species <- function(main = ".", data_set = "all", topx = 3,
   check_args(arg_checks = arg_checks)
   rodents_tab <- read_rodents_table(main = main, data_set = data_set, 
                                     arg_checks = arg_checks)
-  col_drop <- which(colnames(rodents_tab) %in% c("moon", "total"))
-  rodents_tab <- rodents_tab[ , -col_drop]
+  col_keep <- which(colnames(rodents_tab) %in% all_species())
+  rodents_tab <- rodents_tab[ , col_keep]
   tots <- apply(rodents_tab, 2, sum, na.rm = TRUE)
   tots_order <- order(tots)
   names(tots) <- colnames(rodents_tab)
