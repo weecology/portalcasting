@@ -1,10 +1,10 @@
 ---
-title: "portalcasting"
+title: "portalcasting Codebase"
 output: rmarkdown::html_vignette
 author: "Juniper L. Simonis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 vignette: >
-  %\VignetteIndexEntry{codebase}
+  %\VignetteIndexEntry{portalcasting_codebase}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

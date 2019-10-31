@@ -4,7 +4,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: "Juniper L. Simonis and Glenda M. Yenni"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{adding_a_model}
+  %\VignetteIndexEntry{adding_model_and_data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,7 +23,7 @@ main repository). Similarly, users may often want or need to analyze the data in
 
 For the purposes here, consider that you are interested in adding a model named "newmod" to the forecasting suite. While "newmod" can work on the existing data, you are are really interested in a slightly different configuration (perhaps only the long-term kangaroo rat exclosures) of the data you call "newdata".  
 
-Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the [Getting Started](https://weecology.github.io/portalcasting/articles/howto.html) vignette.
+Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the [Getting Started](https://weecology.github.io/portalcasting/articles/getting_started.html) vignette.
 
 ## Model requirements
 
