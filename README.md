@@ -9,7 +9,7 @@
 
 ## Overview
 
-The `portalcasting` package contains the functions used for continuous analysis and forecasting of [Portal rodent populations](https://portal.weecology.org/) ([code repository](https://github.com/weecology/portalPredictions), [output website](http://portal.naturecast.org/),[Zenodo archive](https://doi.org/10.5281/zenodo.833438)).
+The `portalcasting` package contains the functions used for continuous analysis and forecasting of [Portal rodent populations](https://portal.weecology.org/) ([code repository](https://github.com/weecology/portalPredictions), [output website](http://portal.naturecast.org/), [Zenodo archive](https://doi.org/10.5281/zenodo.833438)).
 
 `portalcasting`'s functions are also portable, allowing users to set up a fully-functional replica repository on a local or remote machine. This facilitates development and testing of new models
 via a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(software_development)) approach. 
