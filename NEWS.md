@@ -2,6 +2,19 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.15.2](https://github.com/weecology/portalcasting/releases/tag/v0.15.2)
+*2019-12-18*
+
+### Using github version of portalr
+* Due to backwards incompatable changes in portalr and it not being on CRAN yet
+
+
+# [portalcasting 0.15.1](https://github.com/weecology/portalcasting/releases/tag/v0.15.1)
+*2019-12-18*
+
+### Trivial updating
+* To address a Zenodo hiccup
+
 # [portalcasting 0.15.0](https://github.com/weecology/portalcasting/releases/tag/v0.15.0)
 *2019-10-31*
 
