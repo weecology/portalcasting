@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.1</span>
       </span>
     </div>
 
@@ -112,14 +112,14 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <code>portalcasting</code> package contains the functions used for continuous analysis and forecasting of <a href="https://portal.weecology.org/">Portal rodent populations</a> (<a href="https://github.com/weecology/portalPredictions">code repository</a>, <a href="http://portal.naturecast.org/">output website</a>,<a href="https://doi.org/10.5281/zenodo.833438">Zenodo archive</a>).</p>
+<p>The <code>portalcasting</code> package contains the functions used for continuous analysis and forecasting of <a href="https://portal.weecology.org/">Portal rodent populations</a> (<a href="https://github.com/weecology/portalPredictions">code repository</a>, <a href="http://portal.naturecast.org/">output website</a>, <a href="https://doi.org/10.5281/zenodo.833438">Zenodo archive</a>).</p>
 <p><code>portalcasting</code>’s functions are also portable, allowing users to set up a fully-functional replica repository on a local or remote machine. This facilitates development and testing of new models via a <a href="https://en.wikipedia.org/wiki/Sandbox_(software_development)">sandbox</a> approach.</p>
 </div>
 <div id="status-deployed-active-development" class="section level2">
 <h2 class="hasAnchor">
 <a href="#status-deployed-active-development" class="anchor"></a>Status: Deployed, Active Development</h2>
 <p>The <code>portalcasting</code> package is deployed for use within the <a href="https://github.com/weecology/portalPredictions">Portal Predictions repository</a>, providing the underlying R code to populate the directory with up-to-date data, analyze the data, produce new forecasts, generate new output figures, and render a new version of the <a href="http://portal.naturecast.org/">website</a>. All of the code underlying the forecasting functionality has been migrated over from the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>, which contains the code executed by the continuous integration. Having relocated the code here, the <code>portalcasting</code> package is the location for active development of the model set and additional functionality.</p>
-<p>The current master branch code is not necessarily always being executed within the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>. This is a desired result of our use of a <a href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">software container</a>, in the <a href="https://github.com/weecology/portalPredictions">repository</a>, which enables reproducibility. Presently, we use a <a href="https://hub.docker.com/r/weecology/portal_predictions">Docker</a> image of the software environment to create a container for the code. The image update (<em>i.e.</em> the integration of the current master branch of <code>portalcasting</code> into the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>) necessarily lags behind updates to the master branch of <code>portalcasting</code>, although ideally not long behind. The <code>latest</code> image is built using <code>portalcasting</code> <a href="https://github.com/weecology/portalcasting/releases/tag/v0.15.0">v0.8.0</a>.</p>
+<p>The current master branch code is not necessarily always being executed within the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>. This is a desired result of our use of a <a href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">software container</a>, in the <a href="https://github.com/weecology/portalPredictions">repository</a>, which enables reproducibility. Presently, we use a <a href="https://hub.docker.com/r/weecology/portal_predictions">Docker</a> image of the software environment to create a container for the code. The image update (<em>i.e.</em> the integration of the current master branch of <code>portalcasting</code> into the <a href="https://github.com/weecology/portalPredictions">predictions repository</a>) necessarily lags behind updates to the master branch of <code>portalcasting</code>, although ideally not long behind. The <code>latest</code> image is built using <code>portalcasting</code> <a href="https://github.com/weecology/portalcasting/releases/tag/v0.15.1">v0.15.1</a>.</p>
 <p>The API is moderately well defined at this point, but is still evolving.</p>
 </div>
 <div id="installation" class="section level2">
