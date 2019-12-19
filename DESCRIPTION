@@ -34,7 +34,7 @@ Imports:
     forecast,
     httr,
     lubridate,
-    portalr,
+    portalr (>= 0.2.8),
     readr,
     rlang,
     runjags,
@@ -52,4 +52,5 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 Remotes:  
     ha0ye/rEDM,
-    rstudio/rmarkdown
+    rstudio/rmarkdown,
+    weecology/portalr
