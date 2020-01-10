@@ -159,7 +159,7 @@ jags_model <- "model {
 
 ```
 
-As a starting point, we used an initializer function (`inits`) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The `inits` function takes the data provided as input, the allowing use of the prior data, and returns a function that can be used within `runjags::run.jags` for a given chain:
+As a starting point, we used an initializer function (`inits`) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The `inits` function takes the data provided as input, thus allowing use of the prior data, and returns a function that can be used within `runjags::run.jags` for a given chain:
 
 ```{r, eval=FALSE}
 inits <- function(data = NULL){
@@ -202,6 +202,13 @@ Finally, we tell the software to track both parameters through the `monitor` vec
 These components can then be combined within a function (like `jags_RW`) to leverage the internal functionality of `jags_ss` and flexibility of `runjags_control`. Because `jags_ss` process and packages the output for the casting standards, nothing in particular needs to be added in the wrapper function `jags_RW` after calling `jags_ss`:
 
 ```{r, eval=FALSE}
+jags_RW <- function(main = ".", data_set = "all",  
+                    control_files = files_control(), 
+                    control_runjags = runjags_control(), lag = NA, 
+                    quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  data_set <- tolower(data_set)
+  
   monitor <- c("mu", "tau")
   inits <- function(data = NULL){
     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
@@ -273,10 +280,11 @@ These components can then be combined within a function (like `jags_RW`) to leve
       count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
     }
   }"
-  jags_ss(main = main, data_set = "all", control_files = control_files,
+  jags_ss(main = main, data_set = data_set, control_files = control_files,
           control_runjags = control_runjags, jags_model = jags_model,
-          monitor = monitor, inits = inits, quiet = quiet, 
-          verbose = verbose)
+          monitor = monitor, inits = inits, lag = lag, quiet = quiet, 
+          verbose = verbose, arg_checks = arg_checks)
+}
 ```
 
 Running this model in the forecasting pipeline produces standard output (allowing it to be integrated with the other cast output) and highlights the starting point for more mechanistic time series models.

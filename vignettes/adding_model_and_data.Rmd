@@ -75,7 +75,7 @@ The **portalcasting** machinery allows any model with a script in the `models` s
 
 Obviously, you'll need to add some code to the `newmod.R` script, but as stated above, the requirements are lax and the options broad.
 
-If you would like your output to be archived with the other cast output, your code must produce a `list` object and you must pass it to `save_cast_output()` in your script. If the list contains elements named `metadata`, `cast_tab`, `model_fits`, or `model_casts`, they are saved out. See `save_cast_output()` for processing specs and the models in `prefab_model_functions` for execution.
+If you would like your output to be archived with the other cast output, your code must produce a `list` object and you must pass it to `save_cast_output()` in your script. If the list contains elements named `metadata`, `cast_tab` (summary table of predictions), `model_fits` (list of model fit objects), or `model_casts` (list of model predictions), they are saved out. Use of `JSON` and `yaml` formats allows for generalized saving into robust formats. See `save_cast_output()` for processing specs and the models in `prefab_model_functions` for execution. 
 
 As an example here, I have filled out the model script for newmod with a very basic model. It uses a linear regression with no autocorrelation and only analyzes the total rodent counts. The forecast is simply the linear model's prediction over the future moons. 
 
