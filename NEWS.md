@@ -2,6 +2,16 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+
+# [portalcasting 0.16.0](https://github.com/weecology/portalcasting/releases/tag/v0.16.0)
+*2020-01-10*
+
+### Change in format for saving out `model_fits` and `model_casts`
+* Saving `model_fits` and `model_casts` out as serialized `.json` files now instead of `.rData` files
+* More reliable and generlized.
+* Also added functions for reading them in (`read_model_casts` and `read_model_fits`).
+* [addresses](https://github.com/weecology/portalcasting/issues/164)
+
 # [portalcasting 0.15.2](https://github.com/weecology/portalcasting/releases/tag/v0.15.2)
 *2019-12-18*
 
