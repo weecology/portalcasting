@@ -35,7 +35,7 @@ Imports:
     httr,
     jsonlite,
     lubridate,
-    portalr (>= 0.2.8),
+    portalr (>= 0.3.0),
     readr,
     rlang,
     runjags,
@@ -53,5 +53,4 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 Remotes:  
     ha0ye/rEDM,
-    rstudio/rmarkdown,
-    weecology/portalr
+    rstudio/rmarkdown
