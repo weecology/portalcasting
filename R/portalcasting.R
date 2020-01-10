@@ -5,7 +5,7 @@
 #' @importFrom forecast Arima auto.arima ets forecast na.interp
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices grey rgb
-#' @importFrom jsonlite fromJSON serializeJSON unserializeJSON
+#' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
 #' @importFrom httr content GET stop_for_status
 #' @importFrom lubridate month year
 #' @importFrom portalr find_incomplete_censuses get_future_moons 

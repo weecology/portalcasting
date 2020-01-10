@@ -41,8 +41,8 @@ default), the most recently generated cast's output is read in. \cr
  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with
  a \code{cast_id} column added to distinguish among casts. \cr \cr
  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
- \code{read_cast_model_fits}: \code{list} of \code{model_fits}. \cr \cr
- \code{read_cast_model_casts}: \code{list} of \code{model_casts}.
+ \code{read_model_fits}: \code{list} of \code{model_fits}. \cr \cr
+ \code{read_model_casts}: \code{list} of \code{model_casts}.
 }
 \description{
 Read in the various output files of a cast or casts in the 
@@ -50,8 +50,8 @@ Read in the various output files of a cast or casts in the
  \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
  \code{read_cast_tabs} combines one or more \code{cast_tab}s. \cr \cr
  \code{read_cast_metadata} retrieves the \code{cast_metdata}. \cr \cr
- \code{read_cast_model_fits} retrieves the \code{model_fits}. \cr \cr
- \code{read_cast_model_casts} retrieves the \code{model_casts}.
+ \code{read_model_fits} retrieves the \code{model_fits}. \cr \cr
+ \code{read_model_casts} retrieves the \code{model_casts}.
 }
 \examples{
  \donttest{
@@ -60,8 +60,8 @@ Read in the various output files of a cast or casts in the
   read_cast_tab(cast_id = 1)
   read_cast_tabs(cast_ids = 1:2)
   read_cast_metadata(cast_id = 1)
-  read_cast_model_fits(cast_id = 1)
-  read_cast_model_casts(cast_id = 1)
+  read_model_fits(cast_id = 1)
+  read_model_casts(cast_id = 1)
 }
 
 }
