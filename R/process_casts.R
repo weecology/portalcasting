@@ -194,7 +194,9 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'  casts sub directory. \cr \cr
 #'  \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
 #'  \code{read_cast_tabs} combines one or more \code{cast_tab}s. \cr \cr
-#'  \code{read_cast_tab} retrieves the \code{cast_metdata}
+#'  \code{read_cast_metadata} retrieves the \code{cast_metdata}. \cr \cr
+#'  \code{read_model_fits} retrieves the \code{model_fits}. \cr \cr
+#'  \code{read_model_casts} retrieves the \code{model_casts}.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
@@ -216,7 +218,9 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
 #'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with
 #'  a \code{cast_id} column added to distinguish among casts. \cr \cr
-#'  \code{read_cast_metadata}: \code{list} of the \code{cast_metadata}.
+#'  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
+#'  \code{read_model_fits}: \code{list} of \code{model_fits}. \cr \cr
+#'  \code{read_model_casts}: \code{list} of \code{model_casts}.
 #' 
 #' @examples
 #'  \donttest{
@@ -225,6 +229,8 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'   read_cast_tab(cast_id = 1)
 #'   read_cast_tabs(cast_ids = 1:2)
 #'   read_cast_metadata(cast_id = 1)
+#'   read_model_fits(cast_id = 1)
+#'   read_model_casts(cast_id = 1)
 #' }
 #'
 #' @name read_cast_output
@@ -291,6 +297,44 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
   yaml.load_file(cpath) 
 }
 
+
+#' @rdname read_cast_output
+#'
+#' @export
+#'
+read_model_fits <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_id)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_id <- max(casts_meta$cast_id)
+  }
+  lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
+  cpath <- file_path(main, "casts", lpath, arg_checks)
+  if(!file.exists(cpath)){
+    stop("cast_id does not have a model_fits file", call. = FALSE)
+  }
+  read_in_json <- fromJSON(readLines(cpath))
+  unserializeJSON(read_in_json)
+}
+
+#' @rdname read_cast_output
+#'
+#' @export
+#'
+read_model_casts <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
+  check_args(arg_checks)
+  if(is.null(cast_id)){
+    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    cast_id <- max(casts_meta$cast_id)
+  }
+  lpath <- paste0("cast_id_", cast_id, "_model_casts.json")
+  cpath <- file_path(main, "casts", lpath, arg_checks)
+  if(!file.exists(cpath)){
+    stop("cast_id does not have a model_casts file", call. = FALSE)
+  }
+  read_in_json <- fromJSON(readLines(cpath))
+  unserializeJSON(read_in_json)
+}
 
 #' @title Find casts that fit specifications
 #'
@@ -412,11 +456,15 @@ select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
 #'    assumed to be a table such as a \code{matrix} or \code{data.frame} 
 #'    or coercible to one. Used to summarize the output across instances
 #'    of the model (across multiple species, for example). 
-#'   \item \code{"model_fits"}: saved out via \code{\link{save}}, so quite
-#'    flexible with respect to object structure. Is used to save actual model
-#'    fit/return objects so that models do not need to be refit later.
-#'   \item \code{"casts"}: saved with \code{\link{save}}, so quite
-#'    flexible with respect to object structure. Is used to save \code{list}s
+#'   \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
+#'    via \code{\link[jsonlite]{serializeJSON}} and 
+#'    \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
+#'    specific object structure. Saving out a \code{list} of the actual model
+#'    fit/return objects means that models do not need to be refit later.
+#'   \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
+#'    via \code{\link[jsonlite]{serializeJSON}} and 
+#'    \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
+#'    specific object structure. Is used to save \code{list}s
 #'    of predictions across multiple instances of the model.
 #'  }
 #'
@@ -493,21 +541,23 @@ save_cast_output <- function(cast = NULL, main = ".",
   }
   if(!is.null(cast$model_fits)){
     model_fits_filename <- paste0("cast_id_", next_cast_id, 
-                                  "_model_fits.RData") 
+                                  "_model_fits.json") 
     model_fits_path <- file_path(main = main, sub = "casts", 
                                  files = model_fits_filename,
                                  arg_checks = arg_checks)
     model_fits <- cast$model_fits
-    save(model_fits, file = model_fits_path)
+    model_fits <- serializeJSON(model_fits)
+    write_json(model_fits, path = model_fits_path)
   }
   if(!is.null(cast$model_casts)){
     model_casts_filename <- paste0("cast_id_", next_cast_id, 
-                                   "_model_casts.RData") 
+                                   "_model_casts.json") 
     model_casts_path <- file_path(main = main, sub = "casts", 
                                   files = model_casts_filename, 
                                   arg_checks = arg_checks)
     model_casts <- cast$model_casts
-    save(model_casts, file = model_casts_path)
+    model_casts <- serializeJSON(model_casts)
+    write_json(model_casts, path = model_casts_path)
   }
   invisible(NULL)
 }

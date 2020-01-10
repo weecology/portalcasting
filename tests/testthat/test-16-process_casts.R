@@ -20,6 +20,18 @@ test_that("read_cast_metadata", {
   expect_error(read_cast_metadata(main = main, cast_id = 1e10))
 })
 
+test_that("read_model_fits", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(read_model_fits(main = main, cast_id = NULL), "list")
+  expect_error(read_model_fits(main = main, cast_id = 1e10))
+})
+
+test_that("read_model_casts", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_is(read_model_casts(main = main, cast_id = NULL), "list")
+  expect_error(read_model_casts(main = main, cast_id = 1e10))
+})
+
 test_that("add_to_cast_tab", {
   skip_on_cran() # downloads take too long for cran checks
    cast_tab <- read_cast_tab(main = main, cast_id = 1)
