@@ -557,7 +557,7 @@ save_cast_output <- function(cast = NULL, main = ".",
                                   arg_checks = arg_checks)
     model_casts <- cast$model_casts
     model_casts <- serializeJSON(model_casts)
-    save(model_casts, path = model_casts_path)
+    write_json(model_casts, path = model_casts_path)
   }
   invisible(NULL)
 }
