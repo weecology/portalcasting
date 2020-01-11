@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.16.0</span>
       </span>
     </div>
 
@@ -203,11 +203,15 @@ formatted correctly and provides directed error messages if not.</p></td>
    assumed to be a table such as a <code>matrix</code> or <code>data.frame</code> 
    or coercible to one. Used to summarize the output across instances
    of the model (across multiple species, for example).</p></li>
-<li><p><code>"model_fits"</code>: saved out via <code><a href='https://rdrr.io/r/base/save.html'>save</a></code>, so quite
-   flexible with respect to object structure. Is used to save actual model
-   fit/return objects so that models do not need to be refit later.</p></li>
-<li><p><code>"casts"</code>: saved with <code><a href='https://rdrr.io/r/base/save.html'>save</a></code>, so quite
-   flexible with respect to object structure. Is used to save <code>list</code>s
+<li><p><code>"model_fits"</code>: saved out as a serialized <code>JSON</code> file 
+   via <code><a href='https://rdrr.io/pkg/jsonlite/man/serializeJSON.html'>serializeJSON</a></code> and 
+   <code><a href='https://rdrr.io/pkg/jsonlite/man/read_json.html'>write_json</a></code>, so quite flexible with respect to 
+   specific object structure. Saving out a <code>list</code> of the actual model
+   fit/return objects means that models do not need to be refit later.</p></li>
+<li><p><code>"model_casts"</code>: saved out as a serialized <code>JSON</code> file 
+   via <code><a href='https://rdrr.io/pkg/jsonlite/man/serializeJSON.html'>serializeJSON</a></code> and 
+   <code><a href='https://rdrr.io/pkg/jsonlite/man/read_json.html'>write_json</a></code>, so quite flexible with respect to 
+   specific object structure. Is used to save <code>list</code>s
    of predictions across multiple instances of the model.</p></li>
 </ul>
 

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.16.0</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
       <h1>Adding a Model and Data</h1>
                         <h4 class="author">Juniper L. Simonis and Glenda M. Yenni</h4>
             
-            <h4 class="date">19 December, 2019</h4>
+            <h4 class="date">11 January, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/adding_model_and_data.Rmd"><code>vignettes/adding_model_and_data.Rmd</code></a></small>
       <div class="hidden name"><code>adding_model_and_data.Rmd</code></div>
@@ -160,7 +160,7 @@
 <img src="imgs/sandbox_1_models_added.jpg" alt="The sandbox’s models sub folder with a new addition" width="400"><p class="caption">The sandbox’s models sub folder with a new addition</p>
 </div>
 <p>Obviously, you’ll need to add some code to the <code>newmod.R</code> script, but as stated above, the requirements are lax and the options broad.</p>
-<p>If you would like your output to be archived with the other cast output, your code must produce a <code>list</code> object and you must pass it to <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> in your script. If the list contains elements named <code>metadata</code>, <code>cast_tab</code>, <code>model_fits</code>, or <code>model_casts</code>, they are saved out. See <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> for processing specs and the models in <code>prefab_model_functions</code> for execution.</p>
+<p>If you would like your output to be archived with the other cast output, your code must produce a <code>list</code> object and you must pass it to <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> in your script. If the list contains elements named <code>metadata</code>, <code>cast_tab</code> (summary table of predictions), <code>model_fits</code> (list of model fit objects), or <code>model_casts</code> (list of model predictions), they are saved out. Use of <code>JSON</code> and <code>yaml</code> formats allows for generalized saving into robust formats. See <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> for processing specs and the models in <code>prefab_model_functions</code> for execution.</p>
 <p>As an example here, I have filled out the model script for newmod with a very basic model. It uses a linear regression with no autocorrelation and only analyzes the total rodent counts. The forecast is simply the linear model’s prediction over the future moons.</p>
 <div class="figure">
 <img src="imgs/sandbox_1_newmod.jpg" alt="A trivial newmod" width="600"><p class="caption">A trivial newmod</p>

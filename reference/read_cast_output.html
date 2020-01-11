@@ -40,7 +40,9 @@
  casts sub directory.  
  read_cast_tab retrieves the cast_tab.  
  read_cast_tabs combines one or more cast_tabs.  
- read_cast_tab retrieves the cast_metdata" />
+ read_cast_metadata retrieves the cast_metdata.  
+ read_model_fits retrieves the model_fits.  
+ read_model_casts retrieves the model_casts." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -73,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.16.0</span>
       </span>
     </div>
 
@@ -152,14 +154,20 @@
  casts sub directory. <br /> <br />
  <code>read_cast_tab</code> retrieves the <code>cast_tab</code>. <br /> <br />
  <code>read_cast_tabs</code> combines one or more <code>cast_tab</code>s. <br /> <br />
- <code>read_cast_tab</code> retrieves the <code>cast_metdata</code></p>
+ <code>read_cast_metadata</code> retrieves the <code>cast_metdata</code>. <br /> <br />
+ <code>read_model_fits</code> retrieves the <code>model_fits</code>. <br /> <br />
+ <code>read_model_casts</code> retrieves the <code>model_casts</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>read_cast_tab</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>read_cast_tabs</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>read_cast_metadata</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>read_cast_metadata</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>read_model_fits</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>read_model_casts</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,7 +201,9 @@ default), the most recently generated cast's output is read in. <br />
     <p><code>read_cast_tab</code>: <code>data.frame</code> of the <code>cast_tab</code>. <br /> <br />
  <code>read_cast_tabs</code>: <code>data.frame</code> of the <code>cast_tab</code>s with
  a <code>cast_id</code> column added to distinguish among casts. <br /> <br />
- <code>read_cast_metadata</code>: <code>list</code> of the <code>cast_metadata</code>.</p>
+ <code>read_cast_metadata</code>: <code>list</code> of <code>cast_metadata</code>. <br /> <br />
+ <code>read_model_fits</code>: <code>list</code> of <code>model_fits</code>. <br /> <br />
+ <code>read_model_casts</code>: <code>list</code> of <code>model_casts</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='co'># \donttest{</span>
@@ -202,6 +212,8 @@ default), the most recently generated cast's output is read in. <br />
   <span class='fu'>read_cast_tab</span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
   <span class='fu'>read_cast_tabs</span>(<span class='kw'>cast_ids</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)
   <span class='fu'>read_cast_metadata</span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='fu'>read_model_fits</span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+  <span class='fu'>read_model_casts</span>(<span class='kw'>cast_id</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

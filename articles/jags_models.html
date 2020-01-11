@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.15.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.16.0</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
       <h1>JAGS Models</h1>
                         <h4 class="author">Juniper L. Simonis</h4>
             
-            <h4 class="date">19 December, 2019</h4>
+            <h4 class="date">11 January, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/jags_models.Rmd"><code>vignettes/jags_models.Rmd</code></a></small>
       <div class="hidden name"><code>jags_models.Rmd</code></div>
@@ -255,7 +255,7 @@
 <a class="sourceLine" id="cb3-39" data-line-number="39"><span class="st">    count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); </span></a>
 <a class="sourceLine" id="cb3-40" data-line-number="40"><span class="st">  }</span></a>
 <a class="sourceLine" id="cb3-41" data-line-number="41"><span class="st">}"</span></a></code></pre></div>
-<p>As a starting point, we used an initializer function (<code>inits</code>) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The <code>inits</code> function takes the data provided as input, the allowing use of the prior data, and returns a function that can be used within <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html">runjags::run.jags</a></code> for a given chain:</p>
+<p>As a starting point, we used an initializer function (<code>inits</code>) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The <code>inits</code> function takes the data provided as input, thus allowing use of the prior data, and returns a function that can be used within <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html">runjags::run.jags</a></code> for a given chain:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">inits &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">data =</span> <span class="ot">NULL</span>){</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  rngs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"base::Wichmann-Hill"</span>, <span class="st">"base::Marsaglia-Multicarry"</span>,</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">            <span class="st">"base::Super-Duper"</span>, <span class="st">"base::Mersenne-Twister"</span>)</a>
@@ -288,81 +288,89 @@
 <p>Finally, we tell the software to track both parameters through the <code>monitor</code> vector:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">  monitor &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu"</span>, <span class="st">"tau"</span>)</a></code></pre></div>
 <p>These components can then be combined within a function (like <code>jags_RW</code>) to leverage the internal functionality of <code>jags_ss</code> and flexibility of <code>runjags_control</code>. Because <code>jags_ss</code> process and packages the output for the casting standards, nothing in particular needs to be added in the wrapper function <code>jags_RW</code> after calling <code>jags_ss</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">  monitor &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu"</span>, <span class="st">"tau"</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">  inits &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">data =</span> <span class="ot">NULL</span>){</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">    rngs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"base::Wichmann-Hill"</span>, <span class="st">"base::Marsaglia-Multicarry"</span>,</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">              <span class="st">"base::Super-Duper"</span>, <span class="st">"base::Mersenne-Twister"</span>)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">    past_N &lt;-<span class="st"> </span>data<span class="op">$</span>past_N </a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">    past_count &lt;-<span class="st"> </span>data<span class="op">$</span>past_count </a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">    past_moon &lt;-<span class="st"> </span>data<span class="op">$</span>past_moon</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">    log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(past_count <span class="op">+</span><span class="st"> </span><span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">    mean_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(log_past_count)</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">    sd_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(log_past_count) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">2</span>), <span class="fl">0.01</span>))</a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">    diff_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, past_N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(past_N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)){</a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">      diff_count &lt;-<span class="st"> </span>log_past_count[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>log_past_count[i]</a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">      diff_time &lt;-<span class="st"> </span>past_moon[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>past_moon[i] </a>
-<a class="sourceLine" id="cb6-16" data-line-number="16">      diff_log_past_count[i] &lt;-<span class="st"> </span>diff_count <span class="op">/</span><span class="st"> </span>diff_time</a>
-<a class="sourceLine" id="cb6-17" data-line-number="17">    }</a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">    sd_diff_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(diff_log_past_count) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">2</span>), <span class="fl">0.01</span>))</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">    var_diff_log_past_count &lt;-<span class="st"> </span>sd_diff_log_past_count<span class="op">^</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">    precision_diff_log_past_count &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(var_diff_log_past_count)</a>
-<a class="sourceLine" id="cb6-21" data-line-number="21">    rate &lt;-<span class="st"> </span><span class="fl">0.1</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22">    shape &lt;-<span class="st"> </span>precision_diff_log_past_count <span class="op">*</span><span class="st"> </span>rate</a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24">    <span class="cf">function</span>(<span class="dt">chain =</span> chain){</a>
-<a class="sourceLine" id="cb6-25" data-line-number="25">      <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">.RNG.name =</span> <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(rngs, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb6-26" data-line-number="26">           <span class="dt">.RNG.seed =</span> <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="fl">1e+06</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb6-27" data-line-number="27">            <span class="dt">mu =</span> <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, mean_log_past_count, sd_log_past_count), </a>
-<a class="sourceLine" id="cb6-28" data-line-number="28">            <span class="dt">tau =</span> <span class="kw"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span>(<span class="dv">1</span>, <span class="dt">shape =</span> shape, <span class="dt">rate =</span> rate))</a>
-<a class="sourceLine" id="cb6-29" data-line-number="29">    }</a>
-<a class="sourceLine" id="cb6-30" data-line-number="30">  }</a>
-<a class="sourceLine" id="cb6-31" data-line-number="31">  jags_model &lt;-<span class="st"> "model {  </span></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="st">    # priors</span></a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="st">    log_past_count &lt;- log(past_count + 0.1)</span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="st">    mean_log_past_count &lt;- mean(log_past_count)</span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="st">    sd_log_past_count &lt;- max(c(sd(log_past_count) * sqrt(2), 0.01))</span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="st">    var_log_past_count &lt;- sd_log_past_count^2</span></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="st">    precision_log_past_count &lt;- 1/(var_log_past_count)</span></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="st">    diff_count[1] &lt;- log_past_count[2] - log_past_count[1]</span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="st">    diff_time[1] &lt;- past_moon[2] - past_moon[1] </span></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="st">    diff_log_past_count[1] &lt;- diff_count[1] / diff_time[1]</span></a>
-<a class="sourceLine" id="cb6-42" data-line-number="42"><span class="st">    for(i in 2:(past_N - 1)){</span></a>
-<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="st">      diff_count[i] &lt;- log_past_count[i + 1] - log_past_count[i]</span></a>
-<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="st">      diff_time[i] &lt;- past_moon[i + 1] - past_moon[i] </span></a>
-<a class="sourceLine" id="cb6-45" data-line-number="45"><span class="st">      diff_log_past_count[i] &lt;- diff_count[i] / diff_time[i]</span></a>
-<a class="sourceLine" id="cb6-46" data-line-number="46"><span class="st">    }    </span></a>
-<a class="sourceLine" id="cb6-47" data-line-number="47"><span class="st">    sd_diff_log_past_count &lt;- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))</span></a>
-<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="st">    var_diff_log_past_count &lt;- sd_diff_log_past_count^2</span></a>
-<a class="sourceLine" id="cb6-49" data-line-number="49"><span class="st">    precision_diff_log_past_count &lt;- 1/(var_diff_log_past_count)</span></a>
-<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="st">    rate &lt;- 0.1</span></a>
-<a class="sourceLine" id="cb6-51" data-line-number="51"><span class="st">    shape &lt;- precision_diff_log_past_count * rate</span></a>
-<a class="sourceLine" id="cb6-52" data-line-number="52"></a>
-<a class="sourceLine" id="cb6-53" data-line-number="53"><span class="st">    mu ~ dnorm(mean_log_past_count, precision_log_past_count); </span></a>
-<a class="sourceLine" id="cb6-54" data-line-number="54"><span class="st">    tau ~ dgamma(shape, rate); </span></a>
-<a class="sourceLine" id="cb6-55" data-line-number="55"><span class="st">   </span></a>
-<a class="sourceLine" id="cb6-56" data-line-number="56"><span class="st">    # initial state</span></a>
-<a class="sourceLine" id="cb6-57" data-line-number="57"><span class="st">    X[1] &lt;- mu;</span></a>
-<a class="sourceLine" id="cb6-58" data-line-number="58"><span class="st">    pred_count[1] &lt;- max(c(exp(X[1]) - 0.1, 0.00001));</span></a>
-<a class="sourceLine" id="cb6-59" data-line-number="59"><span class="st">    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);</span></a>
-<a class="sourceLine" id="cb6-60" data-line-number="60"><span class="st">    # through time</span></a>
-<a class="sourceLine" id="cb6-61" data-line-number="61"><span class="st">    for(i in 2:N) {</span></a>
-<a class="sourceLine" id="cb6-62" data-line-number="62"><span class="st">      # Process model</span></a>
-<a class="sourceLine" id="cb6-63" data-line-number="63"><span class="st">      predX[i] &lt;- X[i-1];</span></a>
-<a class="sourceLine" id="cb6-64" data-line-number="64"><span class="st">      checkX[i] ~ dnorm(predX[i], tau); </span></a>
-<a class="sourceLine" id="cb6-65" data-line-number="65"><span class="st">      X[i] &lt;- min(c(checkX[i], log(ntraps[i] + 1))); </span></a>
-<a class="sourceLine" id="cb6-66" data-line-number="66"><span class="st">      pred_count[i] &lt;- max(c(exp(X[i]) - 0.1, 0.00001));</span></a>
-<a class="sourceLine" id="cb6-67" data-line-number="67"><span class="st">   </span></a>
-<a class="sourceLine" id="cb6-68" data-line-number="68"><span class="st">      # observation model</span></a>
-<a class="sourceLine" id="cb6-69" data-line-number="69"><span class="st">      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); </span></a>
-<a class="sourceLine" id="cb6-70" data-line-number="70"><span class="st">    }</span></a>
-<a class="sourceLine" id="cb6-71" data-line-number="71"><span class="st">  }"</span></a>
-<a class="sourceLine" id="cb6-72" data-line-number="72">  <span class="kw"><a href="../reference/jags_ss.html">jags_ss</a></span>(<span class="dt">main =</span> main, <span class="dt">data_set =</span> <span class="st">"all"</span>, <span class="dt">control_files =</span> control_files,</a>
-<a class="sourceLine" id="cb6-73" data-line-number="73">          <span class="dt">control_runjags =</span> control_runjags, <span class="dt">jags_model =</span> jags_model,</a>
-<a class="sourceLine" id="cb6-74" data-line-number="74">          <span class="dt">monitor =</span> monitor, <span class="dt">inits =</span> inits, <span class="dt">quiet =</span> quiet, </a>
-<a class="sourceLine" id="cb6-75" data-line-number="75">          <span class="dt">verbose =</span> verbose)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">jags_RW &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">main =</span> <span class="st">"."</span>, <span class="dt">data_set =</span> <span class="st">"all"</span>,  </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                    <span class="dt">control_files =</span> <span class="kw"><a href="../reference/files_control.html">files_control</a></span>(), </a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">                    <span class="dt">control_runjags =</span> <span class="kw"><a href="../reference/runjags_control.html">runjags_control</a></span>(), <span class="dt">lag =</span> <span class="ot">NA</span>, </a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">                    <span class="dt">quiet =</span> <span class="ot">FALSE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>, <span class="dt">arg_checks =</span> <span class="ot">TRUE</span>){</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="kw"><a href="../reference/argument_checking.html">check_args</a></span>(<span class="dt">arg_checks =</span> arg_checks)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  data_set &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span>(data_set)</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">  </a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">  monitor &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mu"</span>, <span class="st">"tau"</span>)</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">  inits &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">data =</span> <span class="ot">NULL</span>){</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">    rngs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"base::Wichmann-Hill"</span>, <span class="st">"base::Marsaglia-Multicarry"</span>,</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">              <span class="st">"base::Super-Duper"</span>, <span class="st">"base::Mersenne-Twister"</span>)</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">    past_N &lt;-<span class="st"> </span>data<span class="op">$</span>past_N </a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">    past_count &lt;-<span class="st"> </span>data<span class="op">$</span>past_count </a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">    past_moon &lt;-<span class="st"> </span>data<span class="op">$</span>past_moon</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">    log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(past_count <span class="op">+</span><span class="st"> </span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">    mean_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(log_past_count)</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">    sd_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(log_past_count) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">2</span>), <span class="fl">0.01</span>))</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">    diff_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">NA</span>, past_N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(past_N <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)){</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">      diff_count &lt;-<span class="st"> </span>log_past_count[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>log_past_count[i]</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">      diff_time &lt;-<span class="st"> </span>past_moon[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>past_moon[i] </a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">      diff_log_past_count[i] &lt;-<span class="st"> </span>diff_count <span class="op">/</span><span class="st"> </span>diff_time</a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">    }</a>
+<a class="sourceLine" id="cb6-25" data-line-number="25">    sd_diff_log_past_count &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(diff_log_past_count) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">2</span>), <span class="fl">0.01</span>))</a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">    var_diff_log_past_count &lt;-<span class="st"> </span>sd_diff_log_past_count<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27">    precision_diff_log_past_count &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(var_diff_log_past_count)</a>
+<a class="sourceLine" id="cb6-28" data-line-number="28">    rate &lt;-<span class="st"> </span><span class="fl">0.1</span></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29">    shape &lt;-<span class="st"> </span>precision_diff_log_past_count <span class="op">*</span><span class="st"> </span>rate</a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31">    <span class="cf">function</span>(<span class="dt">chain =</span> chain){</a>
+<a class="sourceLine" id="cb6-32" data-line-number="32">      <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">.RNG.name =</span> <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(rngs, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb6-33" data-line-number="33">           <span class="dt">.RNG.seed =</span> <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="fl">1e+06</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb6-34" data-line-number="34">            <span class="dt">mu =</span> <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">1</span>, mean_log_past_count, sd_log_past_count), </a>
+<a class="sourceLine" id="cb6-35" data-line-number="35">            <span class="dt">tau =</span> <span class="kw"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span>(<span class="dv">1</span>, <span class="dt">shape =</span> shape, <span class="dt">rate =</span> rate))</a>
+<a class="sourceLine" id="cb6-36" data-line-number="36">    }</a>
+<a class="sourceLine" id="cb6-37" data-line-number="37">  }</a>
+<a class="sourceLine" id="cb6-38" data-line-number="38">  jags_model &lt;-<span class="st"> "model {  </span></a>
+<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="st">    # priors</span></a>
+<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="st">    log_past_count &lt;- log(past_count + 0.1)</span></a>
+<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="st">    mean_log_past_count &lt;- mean(log_past_count)</span></a>
+<a class="sourceLine" id="cb6-42" data-line-number="42"><span class="st">    sd_log_past_count &lt;- max(c(sd(log_past_count) * sqrt(2), 0.01))</span></a>
+<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="st">    var_log_past_count &lt;- sd_log_past_count^2</span></a>
+<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="st">    precision_log_past_count &lt;- 1/(var_log_past_count)</span></a>
+<a class="sourceLine" id="cb6-45" data-line-number="45"></a>
+<a class="sourceLine" id="cb6-46" data-line-number="46"><span class="st">    diff_count[1] &lt;- log_past_count[2] - log_past_count[1]</span></a>
+<a class="sourceLine" id="cb6-47" data-line-number="47"><span class="st">    diff_time[1] &lt;- past_moon[2] - past_moon[1] </span></a>
+<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="st">    diff_log_past_count[1] &lt;- diff_count[1] / diff_time[1]</span></a>
+<a class="sourceLine" id="cb6-49" data-line-number="49"><span class="st">    for(i in 2:(past_N - 1)){</span></a>
+<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="st">      diff_count[i] &lt;- log_past_count[i + 1] - log_past_count[i]</span></a>
+<a class="sourceLine" id="cb6-51" data-line-number="51"><span class="st">      diff_time[i] &lt;- past_moon[i + 1] - past_moon[i] </span></a>
+<a class="sourceLine" id="cb6-52" data-line-number="52"><span class="st">      diff_log_past_count[i] &lt;- diff_count[i] / diff_time[i]</span></a>
+<a class="sourceLine" id="cb6-53" data-line-number="53"><span class="st">    }    </span></a>
+<a class="sourceLine" id="cb6-54" data-line-number="54"><span class="st">    sd_diff_log_past_count &lt;- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))</span></a>
+<a class="sourceLine" id="cb6-55" data-line-number="55"><span class="st">    var_diff_log_past_count &lt;- sd_diff_log_past_count^2</span></a>
+<a class="sourceLine" id="cb6-56" data-line-number="56"><span class="st">    precision_diff_log_past_count &lt;- 1/(var_diff_log_past_count)</span></a>
+<a class="sourceLine" id="cb6-57" data-line-number="57"><span class="st">    rate &lt;- 0.1</span></a>
+<a class="sourceLine" id="cb6-58" data-line-number="58"><span class="st">    shape &lt;- precision_diff_log_past_count * rate</span></a>
+<a class="sourceLine" id="cb6-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb6-60" data-line-number="60"><span class="st">    mu ~ dnorm(mean_log_past_count, precision_log_past_count); </span></a>
+<a class="sourceLine" id="cb6-61" data-line-number="61"><span class="st">    tau ~ dgamma(shape, rate); </span></a>
+<a class="sourceLine" id="cb6-62" data-line-number="62"><span class="st">   </span></a>
+<a class="sourceLine" id="cb6-63" data-line-number="63"><span class="st">    # initial state</span></a>
+<a class="sourceLine" id="cb6-64" data-line-number="64"><span class="st">    X[1] &lt;- mu;</span></a>
+<a class="sourceLine" id="cb6-65" data-line-number="65"><span class="st">    pred_count[1] &lt;- max(c(exp(X[1]) - 0.1, 0.00001));</span></a>
+<a class="sourceLine" id="cb6-66" data-line-number="66"><span class="st">    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);</span></a>
+<a class="sourceLine" id="cb6-67" data-line-number="67"><span class="st">    # through time</span></a>
+<a class="sourceLine" id="cb6-68" data-line-number="68"><span class="st">    for(i in 2:N) {</span></a>
+<a class="sourceLine" id="cb6-69" data-line-number="69"><span class="st">      # Process model</span></a>
+<a class="sourceLine" id="cb6-70" data-line-number="70"><span class="st">      predX[i] &lt;- X[i-1];</span></a>
+<a class="sourceLine" id="cb6-71" data-line-number="71"><span class="st">      checkX[i] ~ dnorm(predX[i], tau); </span></a>
+<a class="sourceLine" id="cb6-72" data-line-number="72"><span class="st">      X[i] &lt;- min(c(checkX[i], log(ntraps[i] + 1))); </span></a>
+<a class="sourceLine" id="cb6-73" data-line-number="73"><span class="st">      pred_count[i] &lt;- max(c(exp(X[i]) - 0.1, 0.00001));</span></a>
+<a class="sourceLine" id="cb6-74" data-line-number="74"><span class="st">   </span></a>
+<a class="sourceLine" id="cb6-75" data-line-number="75"><span class="st">      # observation model</span></a>
+<a class="sourceLine" id="cb6-76" data-line-number="76"><span class="st">      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); </span></a>
+<a class="sourceLine" id="cb6-77" data-line-number="77"><span class="st">    }</span></a>
+<a class="sourceLine" id="cb6-78" data-line-number="78"><span class="st">  }"</span></a>
+<a class="sourceLine" id="cb6-79" data-line-number="79">  <span class="kw"><a href="../reference/jags_ss.html">jags_ss</a></span>(<span class="dt">main =</span> main, <span class="dt">data_set =</span> data_set, <span class="dt">control_files =</span> control_files,</a>
+<a class="sourceLine" id="cb6-80" data-line-number="80">          <span class="dt">control_runjags =</span> control_runjags, <span class="dt">jags_model =</span> jags_model,</a>
+<a class="sourceLine" id="cb6-81" data-line-number="81">          <span class="dt">monitor =</span> monitor, <span class="dt">inits =</span> inits, <span class="dt">lag =</span> lag, <span class="dt">quiet =</span> quiet, </a>
+<a class="sourceLine" id="cb6-82" data-line-number="82">          <span class="dt">verbose =</span> verbose, <span class="dt">arg_checks =</span> arg_checks)</a>
+<a class="sourceLine" id="cb6-83" data-line-number="83">}</a></code></pre></div>
 <p>Running this model in the forecasting pipeline produces standard output (allowing it to be integrated with the other cast output) and highlights the starting point for more mechanistic time series models.</p>
 </div>
 </div>
