@@ -58,6 +58,8 @@
  and NDVI) using tsglm.  
  simplexEDM fits an EDM model with the simplex projection &quot;kernel&quot; 
  using simplex.  
+ GPEDM fits an EDM model using Gaussian Processes for function 
+ approximation using tde_gp.  
  jags_RW fits a log-scale density random walk with a Poisson 
  observation process using JAGS (Just Another Gibbs Sampler; 
  Plummer 2003) hierarchical Bayesian inference." />
@@ -93,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.16.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.17.1</span>
       </span>
     </div>
 
@@ -190,12 +192,18 @@
  and NDVI) using <code><a href='https://rdrr.io/pkg/tscount/man/tsglm.html'>tsglm</a></code>. <br /> <br />
  <code>simplexEDM</code> fits an EDM model with the simplex projection "kernel" 
  using <code><a href='https://rdrr.io/pkg/rEDM/man/simplex.html'>simplex</a></code>. <br /> <br />
+ <code>GPEDM</code> fits an EDM model using Gaussian Processes for function 
+ approximation using <code><a href='https://rdrr.io/pkg/rEDM/man/tde_gp.html'>tde_gp</a></code>. <br /> <br />
  <code>jags_RW</code> fits a log-scale density random walk with a Poisson 
  observation process using JAGS (Just Another Gibbs Sampler; 
  Plummer 2003) hierarchical Bayesian inference.</p>
     </div>
 
     <pre class="usage"><span class='fu'>simplexEDM</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all_interp"</span>,
+  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>max_E</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>GPEDM</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all_interp"</span>,
   <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>max_E</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
@@ -326,6 +334,7 @@ use for the covariates.</p></td>
   <span class='fu'>nbsGARCH</span>()
   <span class='fu'>pevGARCH</span>()
   <span class='fu'>simplexEDM</span>()
+  <span class='fu'>gpEDM</span>()
   <span class='fu'>jags_RW</span>()
  <span class='co'># }</span></pre>
   </div>
