@@ -22,6 +22,8 @@
 #'  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
 #'  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
 #'  using \code{\link[rEDM]{simplex}}. \cr \cr
+#'  \code{GPEDM} fits an EDM model using Gaussian Processes for function 
+#'  approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson 
 #'  observation process using JAGS (Just Another Gibbs Sampler; 
 #'  Plummer 2003) hierarchical Bayesian inference. 
@@ -105,6 +107,7 @@
 #'   nbsGARCH()
 #'   pevGARCH()
 #'   simplexEDM()
+#'   gpEDM()
 #'   jags_RW()
 #'  }
 #'

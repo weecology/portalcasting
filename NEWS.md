@@ -3,6 +3,12 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.17.0](https://github.com/weecology/portalcasting/releases/tag/v0.17.0)
+*2020-01-15*
+
+### Addition of GPEDM (model and function)
+* Gaussian processes using Empirical Dynamic Modeling
+
 # [portalcasting 0.16.0](https://github.com/weecology/portalcasting/releases/tag/v0.16.0)
 *2020-01-10*
 
