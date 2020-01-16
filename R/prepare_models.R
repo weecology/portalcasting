@@ -26,10 +26,14 @@ prefab_model_controls <- function(){
     simplexEDM = list(name = "simplexEDM", 
                       data_sets = c("all_interp", "controls_interp", "exclosures_interp"), 
                       covariatesTF = FALSE, lag = NA, max_E = 7),
+    GPEDM = list(name = "GPEDM", 
+                 data_sets = c("all_interp", "controls_interp", "exclosures_interp"), 
+                 covariatesTF = FALSE, lag = NA, max_E = 7),
+    
     jags_RW = list(name = "jags_RW", 
-                      data_sets = c("all", "controls", "exclosures"), 
-                      covariatesTF = FALSE, lag = NA,
-                      control_runjags = runjags_control())
+                   data_sets = c("all", "controls", "exclosures"), 
+                   covariatesTF = FALSE, lag = NA,
+                   control_runjags = runjags_control())
   )
 }
 
@@ -52,7 +56,7 @@ prefab_model_controls <- function(){
 #'
 #' @details Any model that is part of the \code{prefab} set 
 #'  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
-#'  "pevGARCH", "EDM_simplex")}) 
+#'  "pevGARCH", "simplexEDM", "GPEDM", "jags_RW")}) 
 #'  has its script-writing controls already included internally
 #'  via the non-exported function \code{prefab_model_controls}. Users 
 #'  only need to include controls for non-prefab \code{models}. \cr \cr

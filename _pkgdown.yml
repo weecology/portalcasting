@@ -161,6 +161,7 @@ reference:
       - NaiveArima
       - pevGARCH
       - simplexEDM
+      - GPEDM
   - title: "Model helpers"
     desc: "Functions that help reduce code within model functions"
     contents:
