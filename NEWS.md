@@ -2,6 +2,12 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.18.0 
+*in progress*
+
+### Bringing the Dockerfile over from `portalPredictions`
+* For building here.
+
 
 # [portalcasting 0.17.1](https://github.com/weecology/portalcasting/releases/tag/v0.17.1)
 *2020-01-16*
