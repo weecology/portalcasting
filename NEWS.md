@@ -2,6 +2,11 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.18.3](https://github.com/weecology/portalcasting/releases/tag/v0.18.3)
+*2020-01-23*
+
+### Testing the Dockerfile
+
 # [portalcasting 0.18.2](https://github.com/weecology/portalcasting/releases/tag/v0.18.2)
 *2020-01-23*
 
