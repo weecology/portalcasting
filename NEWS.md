@@ -2,11 +2,23 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.18.0 
-*in progress*
+# [portalcasting 0.18.2](https://github.com/weecology/portalcasting/releases/tag/v0.18.2)
+*2020-01-23*
+
+### Setting the Docker build up with its own folder
+
+### Tidying README etc
+
+# [portalcasting 0.18.1](https://github.com/weecology/portalcasting/releases/tag/v0.18.1)
+*2020-01-23*
+
+### Testing the Dockerfile 
+
+# [portalcasting 0.18.0](https://github.com/weecology/portalcasting/releases/tag/v0.18.0)
+*2020-01-23*
 
 ### Bringing the Dockerfile over from `portalPredictions`
-* For building here.
+* For building here
 
 
 # [portalcasting 0.17.1](https://github.com/weecology/portalcasting/releases/tag/v0.17.1)

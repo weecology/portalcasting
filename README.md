@@ -19,7 +19,9 @@ via a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(software_development)) ap
 The `portalcasting` package is deployed for use within the [Portal Predictions repository](https://github.com/weecology/portalPredictions), providing the underlying R code to populate the directory with up-to-date data, analyze the data, produce new forecasts, generate new output figures, and render a new version of the [website](http://portal.naturecast.org/). All of the code underlying the forecasting functionality has been migrated 
 over from the [predictions repository](https://github.com/weecology/portalPredictions), which contains the code executed by the continuous integration. Having relocated the code here, the `portalcasting` package is the location for active development of the model set and additional functionality. 
 
-The current master branch code is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). This is a desired result of our use of a [software container](https://en.wikipedia.org/wiki/Operating-system-level_virtualization), in the [repository](https://github.com/weecology/portalPredictions), which enables reproducibility. Presently, we use a [Docker](https://hub.docker.com/r/weecology/portal_predictions) image of the software environment to create a container for the code. The image update (*i.e.* the integration of the current master branch of `portalcasting` into the [predictions repository](https://github.com/weecology/portalPredictions)) necessarily lags behind updates to the master branch of `portalcasting`, although ideally not long behind. The `latest` image is built using `portalcasting` [v0.17.1](https://github.com/weecology/portalcasting/releases/tag/v0.17.1).
+We leverage a [software container](https://en.wikipedia.org/wiki/Operating-system-level_virtualization) to enable reproducibility of the [predictions repository](https://github.com/weecology/portalPredictions). Presently, we use a [Docker](https://hub.docker.com/r/weecology/portalcasting) image of the software environment to create a container for running the code. The image is automatically rebuilt when there is a new `portalcasting` release, tagged with both the `latest` and version-specific (`vX.X.X`) tags, and pushed to [DockerHub](https://hub.docker.com/r/weecology/portalcasting). 
+
+Because the images are updated with releases, the current master branch code in `portalcasting` is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). Rather, the most recent release is what is currently being executed. Presently, the `latest` image is built using `portalcasting` [v0.18.2](https://github.com/weecology/portalcasting/releases/tag/v0.18.2).
 
 The API is moderately well defined at this point, but is still evolving.
 
@@ -34,12 +36,12 @@ devtools::install_github("weecology/portalcasting")
 
 ## Production environment
 
-If you wish to spin up a local container from the Portal Predictions image (to ensure that you are using a copy of the production environment for implementation of the `portalcasting` pipeline), you can run
+If you wish to spin up a local container from the `portalcasting` image (to ensure that you are using a copy of the production environment for implementation of the `portalcasting` pipeline), you can run
 
 ```
-sudo docker pull weecology/portal_predictions
+sudo docker pull weecology/portalcasting
 ```
-from a shell on a computer with [Docker](https://www.docker.com/) installed (Windows users need not include `sudo`). A tutorial on using the image to spin up a container is forthcoming. 
+from a shell on a computer with [Docker](https://www.docker.com/) installed. A tutorial on using the image to spin up a container is forthcoming. 
 
 ## Usage
 
