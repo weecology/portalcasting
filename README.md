@@ -5,7 +5,7 @@
 [![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/master.svg)](https://codecov.io/github/weecology/portalcasting/branch/master)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3332973.svg)](https://doi.org/10.5281/zenodo.3332973)
 
-<img src="man/figures/portalcasting.png" width="200px">  
+<img src="man/figures/portalcasting.png" width="200px">   
 
 ## Overview
 
@@ -20,6 +20,7 @@ The `portalcasting` package is deployed for use within the [Portal Predictions r
 over from the [predictions repository](https://github.com/weecology/portalPredictions), which contains the code executed by the continuous integration. Having relocated the code here, the `portalcasting` package is the location for active development of the model set and additional functionality. 
 
 We leverage a [software container](https://en.wikipedia.org/wiki/Operating-system-level_virtualization) to enable reproducibility of the [predictions repository](https://github.com/weecology/portalPredictions). Presently, we use a [Docker](https://hub.docker.com/r/weecology/portalcasting) image of the software environment to create a container for running the code. The image is automatically rebuilt when there is a new `portalcasting` release, tagged with both the `latest` and version-specific (`vX.X.X`) tags, and pushed to [DockerHub](https://hub.docker.com/r/weecology/portalcasting). 
+
 
 Because the `latest` image is updated with releases, the current master branch code in `portalcasting` is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). Rather, the most recent release is what is currently being executed. Presently, the `latest` image is built using `portalcasting` [v0.18.3](https://github.com/weecology/portalcasting/releases/tag/v0.18.3).
 
