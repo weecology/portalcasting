@@ -21,7 +21,9 @@ over from the [predictions repository](https://github.com/weecology/portalPredic
 
 We leverage a [software container](https://en.wikipedia.org/wiki/Operating-system-level_virtualization) to enable reproducibility of the [predictions repository](https://github.com/weecology/portalPredictions). Presently, we use a [Docker](https://hub.docker.com/r/weecology/portalcasting) image of the software environment to create a container for running the code. The image is automatically rebuilt when there is a new `portalcasting` release, tagged with both the `latest` and version-specific (`vX.X.X`) tags, and pushed to [DockerHub](https://hub.docker.com/r/weecology/portalcasting). 
 
-Because the images are updated with releases, the current master branch code in `portalcasting` is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). Rather, the most recent release is what is currently being executed. Presently, the `latest` image is built using `portalcasting` [v0.18.2](https://github.com/weecology/portalcasting/releases/tag/v0.18.2).
+Because the `latest` image is updated with releases, the current master branch code in `portalcasting` is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). Rather, the most recent release is what is currently being executed. Presently, the `latest` image is built using `portalcasting` [v0.18.3](https://github.com/weecology/portalcasting/releases/tag/v0.18.3).
+
+A development image (`dev`) is built from the master branch of `portalcasting` at every push to facilitate testing and should not be considered stable.
 
 The API is moderately well defined at this point, but is still evolving.
 
@@ -36,7 +38,7 @@ devtools::install_github("weecology/portalcasting")
 
 ## Production environment
 
-If you wish to spin up a local container from the `portalcasting` image (to ensure that you are using a copy of the production environment for implementation of the `portalcasting` pipeline), you can run
+If you wish to spin up a local container from the `latest` `portalcasting` image (to ensure that you are using a copy of the current production environment for implementation of the `portalcasting` pipeline), you can run
 
 ```
 sudo docker pull weecology/portalcasting
