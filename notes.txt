@@ -1,0 +1,37 @@
+yipes, how apropos or whatever, 'evaluate models' isnt even in the codebase vignette
+and we don't have an evaluate script even
+this needs to be broken out into its own self away from processing the casts, which should be focused on the file and object connection.
+
+the evaluations are ephemeral at this point, do we, for example want to automate updating the evaluation of previous forecasts?
+that would let us keep the figure generating etc much more nimble
+not sure how to set that up but think it might be a good mid-term idea
+
+
+
+
+
+
+we should start using proper methods to score previous models
+
+
+
+do we want progress bars for downloading?
+
+
+
+
+
+
+
+
+read_cast_tabs
+  
+
+each model will need to have its own functionality for processing the model fit objects, etc
+  what is the common denominator for evaluation
+    we want the functionality to be generalizable as desired, even if we start w a log score
+
+
+i'm wondering how this plays into the general mapping of a model
+is it ok that we have all the components for a given model spread out or should we colocate them? like have a single yaml or something that has all the components?
+

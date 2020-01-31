@@ -1,18 +1,14 @@
 #' @importFrom coda as.mcmc HPDinterval
-#' @importFrom curl curl
-#' @importFrom dplyr %>% arrange bind_rows filter group_by inner_join 
-#'  left_join mutate n one_of rename right_join select summarize ungroup
 #' @importFrom forecast Arima auto.arima ets forecast na.interp
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices grey rgb
-#' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
 #' @importFrom httr content GET stop_for_status
-#' @importFrom lubridate month year
-#' @importFrom portalr find_incomplete_censuses get_future_moons 
-#'  load_trapping_data ndvi summarize_rodent_data weather
-#' @importFrom readr read_csv
-#' @importFrom rlang !! !!! .data quo quos
+#' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
+#' @importFrom portalr get_future_moons load_trapping_data ndvi 
+#'  summarize_rodent_data weather
 #' @importFrom runjags run.jags runjags.options
+#' @importFrom rEDM simplex tde_gp
+#' @importFrom scoringRules crps_sample
 #' @importFrom stats AIC lm na.omit predict qnorm quantile rgamma rnorm runif
 #'  sd
 #' @importFrom tscount tsglm
@@ -20,9 +16,8 @@
 #'  tail unzip write.csv write.table
 #' @importFrom viridis viridis
 #' @importFrom yaml as.yaml yaml.load_file
-#'
 
-#' @title Functions for Portal -casting (Forecasting and Hindcasting)
+#' @title Functions for Portalcasting (Forecasting Portal Rodents)
 #'
 #' @description This package contains the functions used for continuous
 #'  analysis and forecasting of 
@@ -41,19 +36,4 @@
 #' @keywords package
 #'
 NULL
-
-# To quiet concerns of R CMD check re: variables used in non-standard eval
-if (getRversion() >= "2.15.1"){
-  utils::globalVariables(
-    c(".", "aic", "battery_low", "cast_moon", "castmonth", "castyear",
-      "censusdate", "currency", "day", "date_made", "delta_aic", 
-      "ensemble_estimate", "ensemble_var", "estimate",
-      "fit_end_moon", "fit_start_moon",
-      "forecast_moon", "initial_moon", "level",
-      "locally_measured", "LowerPI", "main", "maxtemp", "meantemp", 
-      "mintemp", "model_var", "moondate", "moon", "newmoondate", 
-      "precipitation", "species", "sum_weight", "UpperPI", "weight", 
-      "weighted_ss")
-  )
-}
 

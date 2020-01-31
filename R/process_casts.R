@@ -191,12 +191,7 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #' @title Read in cast output from a given cast
 #'
 #' @description Read in the various output files of a cast or casts in the 
-#'  casts sub directory. \cr \cr
-#'  \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
-#'  \code{read_cast_tabs} combines one or more \code{cast_tab}s. \cr \cr
-#'  \code{read_cast_metadata} retrieves the \code{cast_metdata}. \cr \cr
-#'  \code{read_model_fits} retrieves the \code{model_fits}. \cr \cr
-#'  \code{read_model_casts} retrieves the \code{model_casts}.
+#'  casts sub directory. 
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.

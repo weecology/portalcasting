@@ -39,7 +39,7 @@ prefab_rodents_controls <- function(){
                         type = "Rodents", level = "Treatment", 
                         plots = "Longterm", treatment = "exclosure", 
                         min_plots = 24, min_traps = 1, output = "abundance", 
-                        fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
+                       fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
                         na_drop = FALSE, zero_drop = TRUE, effort = TRUE, 
                         filename = "rodents_exclosures.csv"),
     "exclosures_interp" = list(name = "exclosures_interp", 
@@ -623,20 +623,26 @@ prep_rodents_table <- function(main = ".", moons = NULL, end_moon = NULL,
                                     control_files = control_files,
                                     arg_checks = arg_checks))
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
-  summarize_rodent_data(path = raw_path, clean = clean, level = level,
-                        type = type, plots = plots, unknowns = unknowns,
-                        shape = shape, time = time, output = output,
-                        fillweight = fillweight, na_drop = na_drop,
-                        zero_drop = zero_drop, min_traps = min_traps,
-                        min_plots = min_plots, effort = effort, 
-                        quiet = !verbose) %>%
-  process_rodent_data(main = main, moons = moons, end_moon = end_moon,
-                      species = species, total = total, 
-                      interpolate = interpolate, clean = clean, level = level, 
-                      treatment = treatment, na_drop = na_drop,
-                      time = time, ref_species = ref_species, quiet = quiet, 
-                      verbose = verbose, arg_checks = arg_checks) %>%
-  write_data(main = main, save = save, filename = filename, 
+  rodents_tab <- summarize_rodent_data(path = raw_path, clean = clean, 
+                                       level = level, type = type, 
+                                       plots = plots, unknowns = unknowns,
+                                       shape = shape, time = time, 
+                                       output = output,
+                                       fillweight = fillweight, 
+                                       na_drop = na_drop,
+                                       zero_drop = zero_drop, 
+                                       min_traps = min_traps,
+                                       min_plots = min_plots, effort = effort, 
+                                       quiet = !verbose) 
+  out <- process_rodent_data(rodents_tab = rodents_tab, main = main, 
+                             moons = moons, end_moon = end_moon,
+                            species = species, total = total, 
+                            interpolate = interpolate, clean = clean, 
+                            level = level, treatment = treatment, 
+                            na_drop = na_drop, time = time, 
+                            ref_species = ref_species, quiet = quiet, 
+                            verbose = verbose, arg_checks = arg_checks) 
+  write_data(out, main = main, save = save, filename = filename, 
              overwrite = overwrite, quiet = !verbose, arg_checks = arg_checks)
 }
 
@@ -658,7 +664,8 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
   total <- ifelse(nspecies == 1, FALSE, total)
   drop_species <- ref_species[which(ref_species %in% species == FALSE)]
   if(length(drop_species) > 0){
-    rodents_tab <- select(rodents_tab, -one_of(drop_species))
+    cols_in <- !(colnames(rodents_tab) %in% drop_species)
+    rodents_tab <- rodents_tab[ , cols_in] 
     spp <- paste(drop_species, collapse = ", ")
     msg <- paste0("    removing species: ", spp)
     messageq(msg, !verbose)
@@ -666,13 +673,13 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
   if(total){
     spp_col <- is_sp_col(rodents_tab = rodents_tab, species = ref_species,
                          arg_checks = arg_checks)
-    total_count <- rowSums(rodents_tab[ , spp_col])
-    rodents_tab <- mutate(rodents_tab, total = total_count)
+    rodents_tab$total <- rowSums(rodents_tab[ , spp_col])
     messageq("    adding total column", !verbose)
   }
   if(level == "Treatment"){
-    rodents_tab <- filter(rodents_tab, treatment == !!treatment)  %>%
-                   select(-treatment)
+    rows_in <- rodents_tab$treatment %in% treatment
+    cols_in <- colnames(rodents_tab) != "treatment"
+    rodents_tab <- rodents_tab[rows_in, cols_in]
   }
   if(time == "newmoon"){
     newmoon_col <- which(colnames(rodents_tab) == "newmoonnumber")
@@ -703,7 +710,9 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
 
 
     end_moon <- ifnull(end_moon, max(rodents_tab$moon))
-    rodents_tab <- subset(rodents_tab, moon <= min(c(end_moon, max(moon))))
+    last_moon_in <- min(c(end_moon, max(rodents_tab$moon)))
+    rows_in <- rodents_tab$moon <= last_moon_in
+    rodents_tab <- rodents_tab[rows_in, ]
     messageq("    data trimmed according to moon window", !verbose)
   } else{
     messageq("    no time processing conducted", !verbose)

@@ -111,7 +111,7 @@ checked using standard protocols via \code{\link{check_args}}. The
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
 
-\item{only_if_missing}{\code{logical} indicator if the content should
+\item{only_if_missing}{\code{logical} indicator if the     -  should
 be filled only if it is missing. Only used in \code{fill_raw}, where
 missingness is determined by \code{\link{verify_raw_data}}. Default
 is \code{FALSE}, which allows for control via \code{link{files_control}}'s

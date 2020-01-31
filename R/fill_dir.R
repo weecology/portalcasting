@@ -78,7 +78,7 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param only_if_missing \code{logical} indicator if the content should
+#' @param only_if_missing \code{logical} indicator if the     -  should
 #'  be filled only if it is missing. Only used in \code{fill_raw}, where
 #'  missingness is determined by \code{\link{verify_raw_data}}. Default
 #'  is \code{FALSE}, which allows for control via \code{link{files_control}}'s
@@ -123,7 +123,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
-  messageq("Filling directory with standard content", quiet)
+  messageq("Filling directory with standard     - ", quiet)
   fill_raw(main = main, downloads = downloads, quiet = quiet, 
            control_files = control_files, arg_checks = arg_checks)
   fill_casts(main = main, quiet = quiet, verbose = verbose, 

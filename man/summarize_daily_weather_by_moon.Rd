@@ -24,14 +24,12 @@ Summarizes a daily weather table by newmoons. Taking the
  \donttest{
   create_dir()
   fill_raw()
-  "\%>\%" <- dplyr::"\%>\%"
   raw_path <- raw_path()
   moons <- prep_moons()
-  portalr::weather("daily", TRUE, raw_path) \%>\% 
-  add_date_from_components() \%>\%
-  dplyr::select(-c(year, month, day, battery_low, locally_measured))  \%>\%
-  add_moons_from_date(moons) \%>\%
-  summarize_daily_weather_by_moon()
+  weather <- portalr::weather("daily", TRUE, raw_path)
+  weather <- add_date_from_components(weather)
+  weather <- add_moons_from_date(weather, moons)
+  summarize_daily_weather_by_moon(weather)
  }
 
 }

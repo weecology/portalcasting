@@ -111,7 +111,10 @@ cast_covariates <- function(main = ".", moons = NULL,
     ndvi_cast <- cast_ndvi(main = main, hist_cov = hist_cov,
                            lead_time = lead_time, min_lag = min_lag,
                            arg_checks = arg_checks)
-    cov_cast <- right_join(weather_cast, ndvi_cast, by = "moon")
+    moon_match <- match(ndvi_cast$moon, weather_cast$moon)
+    cov_cast <- weather_cast[moon_match, ]
+    cov_cast$moon <- ndvi_cast$moon
+    cov_cast$ndvi <- ndvi_cast$ndvi
     cast_moon <- end_moon
     covariates_tab <- round(data.frame(cast_moon, cov_cast), 3)
     lagged_lead <- lead_time - min_lag
@@ -136,7 +139,7 @@ cast_covariates <- function(main = ".", moons = NULL,
     most_recent <- max(cov_cast2$date_made)
     made_in <- cov_cast2$date_made == most_recent
     out <- cov_cast2[which(made_in), ]
-    out <- select(out, -date_made)
+    out$date_made <- NULL
   }
   out
 }
@@ -155,20 +158,21 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  quiet = TRUE, verbose = FALSE, 
                                  arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  cast_covariates(main = main, moons = moons, hist_cov = hist_cov, 
-                  end_moon = end_moon, lead_time = lead_time, 
-                  min_lag = min_lag, cast_date = cast_date, 
-                  control_files = control_files,
-                  control_climate_dl = control_climate_dl,
-                  quiet = quiet, verbose = verbose,
-                  arg_checks = arg_checks) %>%
-  save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
-                    cast_date = cast_date, .,
-                    control_files = control_files,
-                    quiet = quiet, verbose = verbose,
-                    arg_checks = arg_checks) %>%
-  select(-cast_moon) %>%
-  mutate("source" = "cast")
+  cast_cov <- cast_covariates(main = main, moons = moons, hist_cov = hist_cov, 
+                              end_moon = end_moon, lead_time = lead_time, 
+                              min_lag = min_lag, cast_date = cast_date, 
+                              control_files = control_files,
+                              control_climate_dl = control_climate_dl,
+                              quiet = quiet, verbose = verbose,
+                              arg_checks = arg_checks)
+  out <- save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
+                           cast_date = cast_date, cast_cov = cast_cov,
+                           control_files = control_files,
+                           quiet = quiet, verbose = verbose,
+                           arg_checks = arg_checks)
+  out$cast_moon <- NULL
+  out$source <- "cast"
+  out
 }
 
 #' @rdname cast_covariates
@@ -222,12 +226,17 @@ cast_weather <- function(main = ".", moons = NULL,
                                      control_climate_dl = control_climate_dl, 
                                      arg_checks = arg_checks)
 
-  weather("daily", TRUE, raw_path) %>% 
-  add_date_from_components(arg_checks = arg_checks) %>%
-  select(-c(year, month, day, battery_low, locally_measured))  %>%
-  combine_hist_and_cast(cast_tab = weather_cast, arg_checks = arg_checks) %>% 
-  add_moons_from_date(moons = moons, arg_checks = arg_checks) %>%
-  summarize_daily_weather_by_moon()
+  hist_tab <- weather("daily", TRUE, raw_path)
+  hist_tab <- add_date_from_components(df = hist_tab, arg_checks = arg_checks)
+  cols_to_drop <- c("year", "month", "day", "battery_low", "locally_measured")
+  cols_in <- !(colnames(hist_tab) %in% cols_to_drop)
+  hist_tab <- hist_tab[ , cols_in]
+  cov_table <- combine_hist_and_cast(hist_tab = hist_tab, 
+                                     cast_tab = weather_cast, 
+                                     arg_checks = arg_checks)
+  cov_table <- add_moons_from_date(df = cov_table, moons = moons, 
+                                   arg_checks = arg_checks)
+  summarize_daily_weather_by_moon(cov_table)
 }
 
 

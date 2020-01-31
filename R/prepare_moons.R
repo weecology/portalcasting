@@ -91,8 +91,9 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
   traps_in <- load_trapping_data(path = raw_path, download_if_missing = FALSE,
                                  clean = FALSE, quiet = !verbose)
   moons_in <- traps_in[["newmoons_table"]]
-  moons <- add_future_moons(moons = moons_in, lead_time = lead_time, 
-                            cast_date = cast_date, arg_checks = arg_checks)
+  moons <- add_future_moons(main = main, moons = moons_in, 
+                            lead_time = lead_time, cast_date = cast_date, 
+                            arg_checks = arg_checks)
   moons_out <- format_moons(moons)
   write_data(dfl = moons_out, main = main, save = control_files$save, 
              filename = control_files$filename_moons, 
@@ -106,8 +107,8 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
 #'
 format_moons <- function(moons, arg_checks = TRUE){
   check_args(arg_checks)
-  moons$year <- year(moons$newmoondate)
-  moons$month <- month(moons$newmoondate)
+  moons$year <- as.numeric(format(as.Date(moons$newmoondate), "%Y"))
+  moons$month <- as.numeric(format(as.Date(moons$newmoondate), "%m"))
   moons$newmoondate <- as.Date(moons$newmoondate)
   colnames(moons)[which(colnames(moons) == "newmoonnumber")] <- "moon"
   colnames(moons)[which(colnames(moons) == "newmoondate")] <- "moondate"
@@ -119,7 +120,7 @@ format_moons <- function(moons, arg_checks = TRUE){
 #'
 #' @export
 #'
-add_future_moons <- function(moons = NULL, lead_time = 12, 
+add_future_moons <- function(main = ".", moons = NULL, lead_time = 12, 
                              cast_date = Sys.Date(), 
                              control_files = files_control(),
                              arg_checks = TRUE){
@@ -130,10 +131,10 @@ add_future_moons <- function(moons = NULL, lead_time = 12,
   if(lead_time == 0){
     return(moons)
   }
-  get_future_moons(moons, lead_time) %>%
-  add_extra_future_moons(cast_date) %>%
-  mutate(newmoondate = as.character(newmoondate)) %>%
-  bind_rows(moons, .)
+  future_moons <- get_future_moons(moons, lead_time)
+  future_moons <- add_extra_future_moons(future_moons, cast_date)
+  future_moons$newmoondate <- as.character(future_moons$newmoondate)
+  rbind(moons, future_moons)
 }
 
 #' @rdname prepare_moons
@@ -146,7 +147,7 @@ add_extra_future_moons <- function(moons, cast_date = Sys.Date(),
   n_extra_future_moons <- length(which(moons$newmoondate < cast_date))
   if (n_extra_future_moons > 0){
     extra_moons <- get_future_moons(moons, n_extra_future_moons)
-    moons <- bind_rows(moons, extra_moons)
+    moons <- rbind(moons, extra_moons)
   } 
   moons
 }

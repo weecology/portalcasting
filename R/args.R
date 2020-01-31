@@ -130,7 +130,6 @@
 #'   \code{data}, 
 #'   \code{data_sets}, 
 #'   \code{downloads_versions},
-#'   \code{enquote_args}, 
 #'   \code{eval_args}, 
 #'   \code{factories},
 #'   \code{files}, 

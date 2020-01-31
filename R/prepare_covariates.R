@@ -77,7 +77,7 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
                                    control_climate_dl = control_climate_dl,
                                    quiet = quiet, verbose = verbose, 
                                    arg_checks = arg_checks)
-  out <- bind_rows(hist_cov, cast_cov)
+  out <- rbind(hist_cov, cast_cov)
 
   write_data(dfl = out, main = main, save = control_files$save, 
              filename = control_files$filename_cov, 
@@ -143,7 +143,10 @@ prep_hist_covariates <- function(main = ".", end_moon = NULL,
   weather_data <- prep_weather_data(main = main, arg_checks = arg_checks)
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
   ndvi_data <- ndvi(level = "newmoon", fill = TRUE, path = raw_path)
-  out <- right_join(weather_data, ndvi_data, by = "newmoonnumber")
+  out <- weather_data
+  out$ndvi <- NA
+  moon_match <- match(ndvi_data$newmoonnumber, out$newmoonnumber)
+  out$ndvi[moon_match] <- ndvi_data$newmoonnumber
   out$source <- "hist"
   colnames(out)[which(colnames(out) == "newmoonnumber")] <- "moon"
   if (!is.null(end_moon)){
@@ -161,10 +164,10 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
-  weather("newmoon", TRUE, raw_path) %>% 
-  ungroup() %>%
-  select(cols) %>%
-  remove_incompletes("newmoonnumber")
+  weather <- weather("newmoon", TRUE, raw_path)
+  cols_in <- colnames(weather) %in% cols
+  weather <- weather[ , cols_in]
+  remove_incompletes(weather, "newmoonnumber")
 }
 
 #' @title Summarize a daily weather table by newmoons
@@ -184,27 +187,36 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
 #'  \donttest{
 #'   create_dir()
 #'   fill_raw()
-#'   "%>%" <- dplyr::"%>%"
 #'   raw_path <- raw_path()
 #'   moons <- prep_moons()
-#'   portalr::weather("daily", TRUE, raw_path) %>% 
-#'   add_date_from_components() %>%
-#'   dplyr::select(-c(year, month, day, battery_low, locally_measured))  %>%
-#'   add_moons_from_date(moons) %>%
-#'   summarize_daily_weather_by_moon()
+#'   weather <- portalr::weather("daily", TRUE, raw_path)
+#'   weather <- add_date_from_components(weather)
+#'   weather <- add_moons_from_date(weather, moons)
+#'   summarize_daily_weather_by_moon(weather)
 #'  }
 #'
 #' @export
 #'
 summarize_daily_weather_by_moon <- function(x){
-  group_by(x, moon) %>%
-  summarize(date = max(date, na.rm = TRUE), 
-            mintemp = min(mintemp, na.rm = TRUE), 
-            maxtemp = max(maxtemp, na.rm = TRUE), 
-            meantemp = mean(meantemp, na.rm = TRUE), 
-            precipitation = sum(precipitation, na.rm = TRUE)) %>% 
-  arrange(moon) %>% 
-  select(moon, mintemp, maxtemp, meantemp, precipitation)
+
+  umoons <- unique(x$moon)
+  numoons <- length(umoons)
+  date <- rep(NA, numoons)
+  mintemp <- rep(NA, numoons)
+  maxtemp <- rep(NA, numoons)
+  meantemp <- rep(NA, numoons)
+  precipitation <- rep(NA, numoons)
+  for(i in 1:numoons){
+    moons_in <- x$moon == umoons[i]
+    date[i] <- max(as.Date(x$date[moons_in], na.rm = TRUE))
+    mintemp[i] <- min(x$mintemp[moons_in], na.rm = TRUE)
+    maxtemp[i] <- max(x$maxtemp[moons_in], na.rm = TRUE)
+    meantemp[i] <- mean(x$meantemp[moons_in], na.rm = TRUE)
+    precipitation[i] <- sum(x$precipitation[moons_in], na.rm = TRUE)
+  }
+  out <- data.frame(moon = umoons, mintemp, maxtemp, meantemp, precipitation)
+  moon_order <- order(out$moon)
+  out[moon_order, ]
 }
 
 
@@ -251,16 +263,13 @@ lag_covariates <- function(covariates, lag, tail = FALSE,
     oldest_included_moon <- covariates$moon[1]
     most_recent_moon <- covariates$moon[nrow(covariates)]
     hist_moons <- oldest_included_moon:most_recent_moon
-    hist_moons_table <- data.frame(moon = hist_moons)
-    nm_match <- c("moon_lag" = "moon")
-    data <- right_join(covariates, hist_moons_table, by = nm_match) 
+    moon_match <- match(covariates$moon_lag, hist_moons)
+    covariates$moon <- hist_moons[moon_match]
     if (lag > 0){
       covariates <- covariates[-(1:lag), ]
     }
   }
-  covariates <- select(covariates, -moon)
-  cn_covariates <- colnames(covariates)
-  cn_nmn_l <- which(cn_covariates == "moon_lag")
-  colnames(covariates)[cn_nmn_l] <- "moon"
+  covariates$moon <- covariates$moon_lag
+  covariates$moon_lag <- NULL
   covariates
 }

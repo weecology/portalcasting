@@ -134,8 +134,8 @@ download <- function(name = NULL, type = NULL, url = NULL,
                    cleanup = cleanup, arg_checks = arg_checks)
   } 
   if(return_version){ 
-    basename(source_url) %>%
-    path_no_ext()
+    base_url <- basename(source_url) 
+    path_no_ext(base_url)
   }
 }
 
