@@ -1,8 +1,19 @@
 stipping out tests to help on that end, too
 
+ohhhhhhhhhhhhhhhhhhhh the archive is getting too big to download from zenodo
+it causing the system to grind
+ok this needs to be a discussion point here
+gonna hold off much more in this realm for the time being
+circle back with infrastructure team
 
 
+oh its the model fits
+the model casts are fine
+we just cant afford to store the model fits right now
+probably the jags models, but i'm not 100% yet
+might need to go and clean out files from the repo 
 
+or could we get the github dl
 
 
 ok so yeah looks like it's got some bugs to work through?
