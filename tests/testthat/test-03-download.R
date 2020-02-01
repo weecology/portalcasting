@@ -1,5 +1,18 @@
 context("Test downloading functions")
 
+main <- "./testing"
+
+test_that("download works properly to get portal data", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_message(download("PortalData", "zenodo", main = "./testing",
+                          concept_rec_id = "1215988"))
+})
+
+test_that("download works properly to get archive", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_message(download("portalPredictions", "zenodo", main = "./testing",
+                          concept_rec_id = "833438"))
+})
 
 test_that("download_message handles messaging options", {
   expect_message(download_message("ok"))
