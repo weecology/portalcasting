@@ -1,11 +1,11 @@
-context("Test arg functions")
+context("arg functions")
 
-test_that("check_args", {
+test_that("check_args throws needed errors",{
   expect_error(check_args("a"))
   expect_error(check_args(c(TRUE, TRUE)))
 })
 
-test_that("check_arg", {
+test_that("check_arg handles the range of input possibilities", {
 
   expect_message(check_arg("x", 12))
 
