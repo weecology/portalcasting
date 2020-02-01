@@ -1,8 +1,12 @@
-context("arg functions")
+context("basic arg checking utilities")
 
 test_that("check_args throws needed errors",{
   expect_error(check_args("a"))
   expect_error(check_args(c(TRUE, TRUE)))
+})
+
+test_that("check_args returns if false", {
+  expect_equal(check_args(FALSE), NULL)
 })
 
 test_that("check_arg handles the range of input possibilities", {
