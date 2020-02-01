@@ -1,3 +1,10 @@
+stipping out tests to help on that end, too
+
+
+
+
+
+
 ok so yeah looks like it's got some bugs to work through?
 
 devtools::document()
@@ -26,7 +33,20 @@ devtools::test(filter="20")
 devtools::test(filter="21")
 
 
+testing of verify data and the function should move out of downloads
 
+
+test_that("verify_raw_data", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_equal(verify_raw_data(main = "./testing"), TRUE)
+})
+
+
+test_that("download", {
+  skip_on_cran() # downloads take too long for cran checks
+  expect_message(download("PortalData", "zenodo", main = "./testing",
+                          concept_rec_id = "1215988"))
+})
 
 
 
