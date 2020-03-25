@@ -1,3 +1,21 @@
+
+working on the DM ricker model
+
+
+presently see quests.R
+
+
+
+
+
+
+
+
+
+
+
+
+
 stipping out tests to help on that end, too
 
 ohhhhhhhhhhhhhhhhhhhh the archive is getting too big to download from zenodo
@@ -6,6 +24,7 @@ ok this needs to be a discussion point here
 gonna hold off much more in this realm for the time being
 circle back with infrastructure team
 
+it's also making things difficult to move around within the directory
 
 oh its the model fits
 the model casts are fine

@@ -123,7 +123,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
                      downloads = zenodo_downloads(c("1215988", "833438")), 
                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks)
-  messageq("Filling directory with standard     - ", quiet)
+  messageq("Filling directory with standard content", quiet)
   fill_raw(main = main, downloads = downloads, quiet = quiet, 
            control_files = control_files, arg_checks = arg_checks)
   fill_casts(main = main, quiet = quiet, verbose = verbose, 
