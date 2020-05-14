@@ -1,7 +1,8 @@
 prefab_model_controls <- function(){
   list(
     AutoArima = list(name = "AutoArima", 
-                     data_sets = c("all", "controls", "exclosures"),
+                     data_sets = c("all", "controls", "exclosures",
+                                   "dm_controls"),
                      covariatesTF = FALSE, 
                      lag = NA), 
     ESSS = list(name = "ESSS", 
@@ -10,7 +11,8 @@ prefab_model_controls <- function(){
                 covariatesTF = FALSE, 
                 lag = NA), 
     NaiveArima = list(name = "NaiveArima", 
-                      data_sets = c("all", "controls", "exclosures"),
+                      data_sets = c("all", "controls", "exclosures",
+                                    "dm_controls"),
                       covariatesTF = FALSE, 
                       lag = NA), 
     nbGARCH = list(name = "nbGARCH", 
@@ -37,7 +39,8 @@ prefab_model_controls <- function(){
                  covariatesTF = FALSE, lag = NA, max_E = 7),
     
     jags_RW = list(name = "jags_RW", 
-                   data_sets = c("all", "controls", "exclosures"), 
+                   data_sets = c("all", "controls", "exclosures",
+                                 "dm_controls"), 
                    covariatesTF = FALSE, lag = NA,
                    control_runjags = runjags_control())
   )

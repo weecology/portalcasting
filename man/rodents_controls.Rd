@@ -11,8 +11,8 @@ rodents_controls(data_sets = NULL, controls_rodents = NULL,
 \item{data_sets}{\code{character} value(s) of the rodent data set name(s) 
 used to enforce certain arguments. Currently available prefab data
 sets are \code{"all"}, \code{"all_interp"}, \code{"controls"}, 
-\code{"controls_interp"}, \code{"exclosures_interp"}, and 
-\code{"exclosures"}.}
+\code{"controls_interp"}, \code{"exclosures_interp"}, 
+\code{"exclosures"} and \code{"DM_controls"}.}
 
 \item{controls_rodents}{Additional controls for datasets not in the 
 prefab set. \cr
@@ -107,7 +107,8 @@ Given the number of arguments into
 }
 \details{
 Any data set that is part of the \code{prefab} rodents data sets 
- (\code{c("all", "controls", "all_interp", "controls_interp")}) has its 
+ (\code{c("all", "controls", "exclosures", "all_interp", 
+          "controls_interp", "exclosures_interp", "DM_controls")}) has its 
  controls already included internally via the non-exported function
  \code{prefab_rodents_controls}. Users only need to include controls for
  non-prefab \code{data_sets}. \cr \cr

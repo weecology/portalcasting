@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.19.0
+*Active development*
+
+### Added `dm_controls` to prefab data sets
+* For use in the basic single-species process models
+* Note lowercase name! Using capitals in the actual name of the data set creation will cause problems because `tolower` gets used elsewhere!
+
 # [portalcasting 0.18.3](https://github.com/weecology/portalcasting/releases/tag/v0.18.3)
 *2020-01-23*
 

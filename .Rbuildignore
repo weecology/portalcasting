@@ -11,5 +11,6 @@
 ^inst/WORDLIST$
 ^codecov\.yml$
 ^notes.R$
+^working.R$
 ^docs$
 ^docker$

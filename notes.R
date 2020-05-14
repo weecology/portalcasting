@@ -1,41 +1,23 @@
 
 working on the DM ricker model
+have a DM_controls data set which I can run the jags_RW on just fine
+now need to build the jags_ricker
 
 
-presently see quests.R
+devtools::load_all()
+main <- "~/builder"
+x <- fill_data(main, quiet=F)
 
-
-
-
-
-
-
-
-
-
+jags_RW(main = main, data_set = "dm_controls",
+        control_runjags = runjags_control(silent_jags = FALSE))
 
 
 
-stipping out tests to help on that end, too
-
-ohhhhhhhhhhhhhhhhhhhh the archive is getting too big to download from zenodo
-it causing the system to grind
-ok this needs to be a discussion point here
-gonna hold off much more in this realm for the time being
-circle back with infrastructure team
-
-it's also making things difficult to move around within the directory
-
-oh its the model fits
-the model casts are fine
-we just cant afford to store the model fits right now
-probably the jags models, but i'm not 100% yet
-might need to go and clean out files from the repo 
-
-or could we get the github dl
 
 
-ok so yeah looks like it's got some bugs to work through?
+AutoArima(main, "controls")
+
+
 
 devtools::document()
 devtools::load_all()

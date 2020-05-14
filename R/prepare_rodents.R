@@ -52,7 +52,17 @@ prefab_rodents_controls <- function(){
                                unknowns = FALSE, time = "newmoon", 
                                na_drop = FALSE, zero_drop = TRUE, 
                                effort = TRUE, 
-                               filename = "rodents_exclosures_interp.csv") 
+                               filename = "rodents_exclosures_interp.csv"),
+    "dm_controls" = list(name = "dm_controls", species = "DM", total = FALSE, 
+                             interpolate = FALSE, clean = FALSE, 
+                             type = "Rodents", level = "Treatment", 
+                             plots = "Longterm", treatment = "control", 
+                             min_plots = 24, min_traps = 1, 
+                             output = "abundance", fillweight = FALSE, 
+                             unknowns = FALSE, time = "newmoon", 
+                             na_drop = FALSE, zero_drop = TRUE, 
+                             effort = TRUE, 
+                             filename = "rodents_dm_controls.csv") 
    )
 }
 
@@ -69,7 +79,8 @@ prefab_rodents_controls <- function(){
 #'  arguments for a user's novel data set. 
 #'
 #' @details Any data set that is part of the \code{prefab} rodents data sets 
-#'  (\code{c("all", "controls", "all_interp", "controls_interp")}) has its 
+#'  (\code{c("all", "controls", "exclosures", "all_interp", 
+#'           "controls_interp", "exclosures_interp", "dm_controls")}) has its 
 #'  controls already included internally via the non-exported function
 #'  \code{prefab_rodents_controls}. Users only need to include controls for
 #'  non-prefab \code{data_sets}. \cr \cr
@@ -85,8 +96,8 @@ prefab_rodents_controls <- function(){
 #' @param data_sets \code{character} value(s) of the rodent data set name(s) 
 #'  used to enforce certain arguments. Currently available prefab data
 #'  sets are \code{"all"}, \code{"all_interp"}, \code{"controls"}, 
-#'  \code{"controls_interp"}, \code{"exclosures_interp"}, and 
-#'  \code{"exclosures"}. 
+#'  \code{"controls_interp"}, \code{"exclosures_interp"}, 
+#'  \code{"exclosures"} and \code{"dm_controls"}.  
 #'
 #' @param controls_rodents Additional controls for datasets not in the 
 #'  prefab set. \cr
@@ -705,7 +716,8 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
         rodents_tab[ , species[i]] <- interped
 
       }
-      rodents_tab[ , "total"] <- apply(rodents_tab[ , species], 1, sum)
+      rodents_tab[ , "total"] <- apply(rodents_tab[ , species, drop = FALSE],
+                                       1, sum)
     }
 
 
