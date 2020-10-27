@@ -55,6 +55,6 @@ The directory configuration file is a special file within
  \code{dir_config.yaml} file; presently only adding the versions of the
  downloaded data from within \code{\link{fill_raw}} (the only place it is
  and should be called from. \cr \cr
- \code{read_directory_config} reads     - s of the \code{dir_config.yaml} 
+ \code{read_directory_config} reads contents of the \code{dir_config.yaml} 
  file into the R session.
 }
