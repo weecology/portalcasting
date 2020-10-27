@@ -9,18 +9,20 @@ as well as others but still its a great starting point
 DM <- read_rodents_table(main, "DM_controls")
 covar <- read_covariates(main)
 covar
-plot(covar$moon[1:NROW(DM)], DM[,1])
+plot(covar$moon[1:NROW(DM)], DM[,4])
 
 
-DMs <- na.omit(DM[,1])
+DMs <- na.omit(DM[,4])
 Nt1 <- DMs[-length(DMs)]
 Nt2 <- DMs[-1]
 Rt2 <- log(Nt2/Nt1)
-ts <- covar$moon[1:NROW(DM)][!is.na(DM[,1])]
+ts <- covar$moon[1:NROW(DM)][!is.na(DM[,4])]
 t1 <- ts[-length(ts)]
 t2 <- ts[-1]
 t2_t1 <- t2 - t1
 Rbar <- Rt2 / t2_t1
+
+hist(Rbar)
 
 mod <- nls(Rbar ~ log(rm) - c * Nt1, start = list(rm = 0.5, c = 1))
 summary(mod)
@@ -60,7 +62,7 @@ for(j in 1:nreps){
                       summary(mod)$parameters["rm", "Std. Error"])
   c <- rnorm(nfuture, summary(mod)$parameters["c", "Estimate"], 
                       summary(mod)$parameters["c", "Std. Error"])
-  n <- DM[NROW(DM), 1]
+  n <- DM[NROW(DM), 4]
   for(i in 1:nfuture){
     n_predict <- n * exp(log(rm[i])-c[i]*n)
     out[i,j] <- n_predict
@@ -81,7 +83,7 @@ for(j in 1:nreps){
                       summary(mod2)$parameters["c", "Std. Error"])
   a <- rnorm(nfuture, summary(mod2)$parameters["a", "Estimate"], 
                       summary(mod2)$parameters["a", "Std. Error"])
-  n <- DM[NROW(DM), 1]
+  n <- DM[NROW(DM), 4]
   for(i in 1:nfuture){
     n_predict <- n * exp(log(rm[i])-c[i]*n^a[i])
     out2[i,j] <- n_predict
@@ -100,7 +102,7 @@ for(j in 1:nreps){
                       sqrt(diag(solve(mod3$hessian)))["c"])
   a <- rnorm(nfuture, mod3$par["a"], 
                       sqrt(diag(solve(mod3$hessian)))["a"])
-  n <- DM[NROW(DM), 1]
+  n <- DM[NROW(DM), 4]
   for(i in 1:nfuture){
     n_predict <- n * exp(log(rm[i])-c[i]*n^a[i])
     out3[i,j] <- n_predict
@@ -108,16 +110,16 @@ for(j in 1:nreps){
   }
 }
 
-plot(covar$moon[1:NROW(DM)], DM[,1], xlim = c(400,550),ylim=c(0,45))
+plot(covar$moon[1:NROW(DM)], DM[,4], xlim = c(400,550),ylim=c(0,45))
 
 
 for(j in 1:nreps){
-  points(covar$moon[NROW(DM)]+1:12, out[,j],col=rgb(0,0,0.7,alpha=0.1), 
-         type = "l",lwd=1)
+  #points(covar$moon[NROW(DM)]+1:12, out[,j],col=rgb(0,0,0.7,alpha=0.1), 
+   #      type = "l",lwd=1)
   points(covar$moon[NROW(DM)]+1:12, out2[,j],col=rgb(0,0.6,0.2,alpha=0.1), 
          type = "l",lwd=1)
-  points(covar$moon[NROW(DM)]+1:12, out3[,j],col=rgb(0.8,0.1,0.6,alpha=0.1), 
-         type = "l",lwd=1)
+#  points(covar$moon[NROW(DM)]+1:12, out3[,j],col=rgb(0.8,0.1,0.6,alpha=0.1), 
+ #        type = "l",lwd=1)
 }
 
 points(ns3, col = rgb(0.8,0.1,0.6))
@@ -143,7 +145,7 @@ for(j in 1:nreps){
   }
 }
 
-plot(DM[,1], xlim = c(400,500),ylim=c(0,20))
+plot(DM[,4], xlim = c(400,500),ylim=c(0,20))
 for(j in 1:nreps){
   points(426+1:nfuture, out[,j],col=rgb(0,0,0.8,alpha=0.01), 
   type = "l")
