@@ -1,8 +1,8 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./model_testing"
-setup_dir(main)
+main <- "~/builder"
+#setup_dir(main)
 
 
 rt <- read_rodents_table(main, "all")
