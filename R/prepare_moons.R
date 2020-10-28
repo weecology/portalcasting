@@ -135,6 +135,10 @@ add_future_moons <- function(main = ".", moons = NULL, lead_time = 12,
   future_moons <- add_extra_future_moons(future_moons, cast_date)
   future_moons$newmoondate <- as.character(future_moons$newmoondate)
   rbind(moons, future_moons)
+  get_future_moons(moons, lead_time) %>%
+  add_extra_future_moons(cast_date) %>%
+  mutate(newmoondate = as.character(newmoondate), censusdate = as.character(censusdate)) %>%
+  bind_rows(moons, .)
 }
 
 #' @rdname prepare_moons

@@ -226,17 +226,13 @@ cast_weather <- function(main = ".", moons = NULL,
                                      control_climate_dl = control_climate_dl, 
                                      arg_checks = arg_checks)
 
-  hist_tab <- weather("daily", TRUE, raw_path)
-  hist_tab <- add_date_from_components(df = hist_tab, arg_checks = arg_checks)
-  cols_to_drop <- c("year", "month", "day", "battery_low", "locally_measured")
-  cols_in <- !(colnames(hist_tab) %in% cols_to_drop)
-  hist_tab <- hist_tab[ , cols_in]
-  cov_table <- combine_hist_and_cast(hist_tab = hist_tab, 
-                                     cast_tab = weather_cast, 
-                                     arg_checks = arg_checks)
-  cov_table <- add_moons_from_date(df = cov_table, moons = moons, 
-                                   arg_checks = arg_checks)
-  summarize_daily_weather_by_moon(cov_table)
+  weather(level = "daily", fill = TRUE, path = raw_path) %>% 
+  add_date_from_components(arg_checks = arg_checks) %>%
+  select(-c(year, month, day, battery_low, locally_measured))  %>%
+  combine_hist_and_cast(cast_tab = weather_cast, arg_checks = arg_checks) %>% 
+  add_moons_from_date(moons = moons, arg_checks = arg_checks) %>%
+  summarize_daily_weather_by_moon()
+
 }
 
 
