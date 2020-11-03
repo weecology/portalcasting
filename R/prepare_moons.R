@@ -132,7 +132,7 @@ add_future_moons <- function(moons = NULL, lead_time = 12,
   }
   get_future_moons(moons, lead_time) %>%
   add_extra_future_moons(cast_date) %>%
-  mutate(newmoondate = as.character(newmoondate)) %>%
+  mutate(newmoondate = as.character(newmoondate), censusdate = as.character(censusdate)) %>%
   bind_rows(moons, .)
 }
 

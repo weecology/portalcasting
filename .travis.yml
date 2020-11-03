@@ -5,7 +5,7 @@ warnings_are_errors: false
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install texlive-latex-base
+  - sudo apt-get install texlive-latex-base libharfbuzz-dev libfribidi-dev
   - sudo apt-get install gsl-bin libgsl0-dev
 
 r_binary_packages:
