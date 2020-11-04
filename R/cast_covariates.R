@@ -223,7 +223,7 @@ cast_weather <- function(main = ".", moons = NULL,
                                      arg_checks = arg_checks)
 
   weather(level = "daily", fill = TRUE, path = raw_path) %>% 
-  add_date_from_components(arg_checks = arg_checks) %>%
+  #add_date_from_components(arg_checks = arg_checks) %>%
   select(-c(year, month, day, battery_low, locally_measured))  %>%
   combine_hist_and_cast(cast_tab = weather_cast, arg_checks = arg_checks) %>% 
   add_moons_from_date(moons = moons, arg_checks = arg_checks) %>%
