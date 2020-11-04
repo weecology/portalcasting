@@ -6,6 +6,13 @@ main <- "~/builder"
 
 
 rt <- read_rodents_table(main, "all")
+
+
+
+
+
+
+
 head(rt)
 rt$total
 plot(rt$SH~rt$moon)
