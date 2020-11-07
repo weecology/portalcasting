@@ -14,41 +14,91 @@
 \alias{pevGARCH}
 \title{Functions for the prefab portalcasting models}
 \usage{
-simplexEDM(main = ".", data_set = "all_interp",
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  max_E = 7, arg_checks = TRUE)
+simplexEDM(
+  main = ".",
+  data_set = "all_interp",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  max_E = 7,
+  arg_checks = TRUE
+)
 
-GPEDM(main = ".", data_set = "all_interp",
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  max_E = 7, arg_checks = TRUE)
+GPEDM(
+  main = ".",
+  data_set = "all_interp",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  max_E = 7,
+  arg_checks = TRUE
+)
 
-jags_RW(main = ".", data_set = "all",
-  control_files = files_control(), control_runjags = runjags_control(),
-  lag = NA, quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+jags_RW(
+  main = ".",
+  data_set = "all",
+  control_files = files_control(),
+  control_runjags = runjags_control(),
+  lag = NA,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-AutoArima(main = ".", data_set = "all",
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+AutoArima(
+  main = ".",
+  data_set = "all",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-NaiveArima(main = ".", data_set = "all",
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+NaiveArima(
+  main = ".",
+  data_set = "all",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-ESSS(main = ".", data_set = "all_interp",
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+ESSS(
+  main = ".",
+  data_set = "all_interp",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-nbGARCH(main = ".", data_set = "all_interp",
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+nbGARCH(
+  main = ".",
+  data_set = "all_interp",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-nbsGARCH(main = ".", data_set = "all_interp",
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+nbsGARCH(
+  main = ".",
+  data_set = "all_interp",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-pevGARCH(main = ".", data_set = "all_interp", lag = 6,
-  control_files = files_control(), quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+pevGARCH(
+  main = ".",
+  data_set = "all_interp",
+  lag = 6,
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

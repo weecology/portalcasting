@@ -5,24 +5,44 @@
 \alias{cast}
 \title{Cast Portal rodents models}
 \usage{
-portalcast(main = ".", models = prefab_models(), end_moons = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+portalcast(
+  main = ".",
+  models = prefab_models(),
+  end_moons = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
   downloads = zenodo_downloads(c("1215988", "833438")),
-  update_prefab_models = FALSE, bline = TRUE, quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  update_prefab_models = FALSE,
+  bline = TRUE,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-cast(main = ".", models = prefab_models(), end_moon = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+cast(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), bline = TRUE,
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  bline = TRUE,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

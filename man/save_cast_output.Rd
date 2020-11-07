@@ -4,8 +4,7 @@
 \alias{save_cast_output}
 \title{Save cast output to files}
 \usage{
-save_cast_output(cast = NULL, main = ".", quiet = FALSE,
-  arg_checks = TRUE)
+save_cast_output(cast = NULL, main = ".", quiet = FALSE, arg_checks = TRUE)
 }
 \arguments{
 \item{cast}{Output from a model function (e.g., 

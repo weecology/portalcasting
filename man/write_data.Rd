@@ -4,8 +4,15 @@
 \alias{write_data}
 \title{Save data out to a file and return it}
 \usage{
-write_data(dfl = NULL, main = ".", save = TRUE, filename = NULL,
-  overwrite = TRUE, quiet = FALSE, arg_checks = TRUE)
+write_data(
+  dfl = NULL,
+  main = ".",
+  save = TRUE,
+  filename = NULL,
+  overwrite = TRUE,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{dfl}{\code{data.frame} or YAML \code{list} to be written out.}

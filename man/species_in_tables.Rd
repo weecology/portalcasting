@@ -6,11 +6,20 @@
 \alias{species_from_table}
 \title{Determine if columns in a table are species columns}
 \usage{
-is_sp_col(rodents_tab, species = NULL, total = FALSE, nadot = FALSE,
-  arg_checks = TRUE)
+is_sp_col(
+  rodents_tab,
+  species = NULL,
+  total = FALSE,
+  nadot = FALSE,
+  arg_checks = TRUE
+)
 
-species_from_table(rodents_tab = NULL, total = FALSE, nadot = FALSE,
-  arg_checks = TRUE)
+species_from_table(
+  rodents_tab = NULL,
+  total = FALSE,
+  nadot = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{rodents_tab}{\code{data.frame} of columns to be checked.}

@@ -135,10 +135,6 @@ add_future_moons <- function(main = ".", moons = NULL, lead_time = 12,
   future_moons <- add_extra_future_moons(future_moons, cast_date)
   future_moons$newmoondate <- as.character(future_moons$newmoondate)
   rbind(moons, future_moons)
-  get_future_moons(moons, lead_time) %>%
-  add_extra_future_moons(cast_date) %>%
-  mutate(newmoondate = as.character(newmoondate), censusdate = as.character(censusdate)) %>%
-  bind_rows(moons, .)
 }
 
 #' @rdname prepare_moons
@@ -337,10 +333,10 @@ target_moons <- function(main = ".", moons = NULL, end_moon = NULL,
 #'
 last_moon <- function(main = ".", moons = NULL, date = Sys.Date(), 
                       control_files = files_control(), arg_checks = TRUE){
+  check_args(arg_checks)
   moons <- ifnull(moons, read_moons(main = main, 
                                     control_files = control_files,
                                     arg_checks = arg_checks))
-  check_args(arg_checks)
   which_last_moon <- max(which(moons$moondate < date))
   moons$moon[which_last_moon]
 }

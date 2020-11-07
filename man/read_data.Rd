@@ -10,26 +10,32 @@
 \alias{read_metadata}
 \title{Read in a data file and format it for specific class}
 \usage{
-read_data(main = ".", data_name = NULL, data_set = "all",
-  data_sets = c("all", "controls"), control_files = files_control(),
-  arg_checks = TRUE)
+read_data(
+  main = ".",
+  data_name = NULL,
+  data_set = "all",
+  data_sets = c("all", "controls"),
+  control_files = files_control(),
+  arg_checks = TRUE
+)
 
 read_rodents_table(main = ".", data_set = "all", arg_checks = TRUE)
 
-read_rodents(main = ".", data_sets = c("all", "controls"),
-  arg_checks = TRUE)
+read_rodents(main = ".", data_sets = c("all", "controls"), arg_checks = TRUE)
 
-read_covariates(main = ".", control_files = files_control(),
-  arg_checks = TRUE)
+read_covariates(main = ".", control_files = files_control(), arg_checks = TRUE)
 
-read_covariate_casts(main = ".", control_files = files_control(),
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+read_covariate_casts(
+  main = ".",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-read_moons(main = ".", control_files = files_control(),
-  arg_checks = TRUE)
+read_moons(main = ".", control_files = files_control(), arg_checks = TRUE)
 
-read_metadata(main = ".", control_files = files_control(),
-  arg_checks = TRUE)
+read_metadata(main = ".", control_files = files_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

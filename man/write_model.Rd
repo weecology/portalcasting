@@ -6,18 +6,36 @@
 \alias{control_list_arg}
 \title{Write the template for a model into model subdirectory}
 \usage{
-write_model(name = NULL, data_sets = NULL, covariatesTF = NULL,
-  lag = NULL, main = ".", control_model = NULL,
-  control_files = files_control(), control_runjags = NULL,
-  max_E = NULL, quiet = FALSE, verbose = TRUE, arg_checks = TRUE)
+write_model(
+  name = NULL,
+  data_sets = NULL,
+  covariatesTF = NULL,
+  lag = NULL,
+  main = ".",
+  control_model = NULL,
+  control_files = files_control(),
+  control_runjags = NULL,
+  max_E = NULL,
+  quiet = FALSE,
+  verbose = TRUE,
+  arg_checks = TRUE
+)
 
-model_template(name = NULL, data_sets = NULL, covariatesTF = FALSE,
-  lag = NULL, main = ".", control_files = files_control(),
-  max_E = NULL, control_runjags = NULL, quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+model_template(
+  name = NULL,
+  data_sets = NULL,
+  covariatesTF = FALSE,
+  lag = NULL,
+  main = ".",
+  control_files = files_control(),
+  max_E = NULL,
+  control_runjags = NULL,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-control_list_arg(control_list = NULL, list_function = NULL,
-  arg_checks = TRUE)
+control_list_arg(control_list = NULL, list_function = NULL, arg_checks = TRUE)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}

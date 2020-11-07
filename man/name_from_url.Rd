@@ -4,8 +4,7 @@
 \alias{name_from_url}
 \title{Attempt to extract the record name from a URL}
 \usage{
-name_from_url(url, NULLname = FALSE, sep_char = ".",
-  arg_checks = TRUE)
+name_from_url(url, NULLname = FALSE, sep_char = ".", arg_checks = TRUE)
 }
 \arguments{
 \item{url}{\code{character} value of the URL.}

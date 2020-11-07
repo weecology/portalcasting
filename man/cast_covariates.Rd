@@ -8,31 +8,70 @@
 \alias{save_cast_cov_csv}
 \title{Cast the covariates}
 \usage{
-cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
-  end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), control_files = files_control(),
-  control_climate_dl = climate_dl_control(), quiet = TRUE,
-  verbose = FALSE, arg_checks = TRUE)
+cast_covariates(
+  main = ".",
+  moons = NULL,
+  hist_cov = NULL,
+  end_moon = NULL,
+  lead_time = 12,
+  min_lag = 6,
+  cast_date = Sys.Date(),
+  control_files = files_control(),
+  control_climate_dl = climate_dl_control(),
+  quiet = TRUE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-prep_cast_covariates(main = ".", moons = NULL, hist_cov = NULL,
-  end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), control_climate_dl = climate_dl_control(),
-  control_files = files_control(), quiet = TRUE, verbose = FALSE,
-  arg_checks = TRUE)
+prep_cast_covariates(
+  main = ".",
+  moons = NULL,
+  hist_cov = NULL,
+  end_moon = NULL,
+  lead_time = 12,
+  min_lag = 6,
+  cast_date = Sys.Date(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
+  quiet = TRUE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-cast_ndvi(main = ".", hist_cov = NULL, lead_time = 12, min_lag = 6,
-  arg_checks = TRUE)
+cast_ndvi(
+  main = ".",
+  hist_cov = NULL,
+  lead_time = 12,
+  min_lag = 6,
+  arg_checks = TRUE
+)
 
-cast_weather(main = ".", moons = NULL, hist_cov = NULL,
-  end_moon = NULL, lead_time = 12, min_lag = 6,
-  cast_date = Sys.Date(), control_climate_dl = climate_dl_control(),
-  control_files = files_control(), quiet = TRUE, verbose = TRUE,
-  arg_checks = TRUE)
+cast_weather(
+  main = ".",
+  moons = NULL,
+  hist_cov = NULL,
+  end_moon = NULL,
+  lead_time = 12,
+  min_lag = 6,
+  cast_date = Sys.Date(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
+  quiet = TRUE,
+  verbose = TRUE,
+  arg_checks = TRUE
+)
 
-save_cast_cov_csv(main = ".", moons = NULL, end_moon = NULL,
-  cast_date = Sys.Date(), cast_cov = NULL,
-  control_files = files_control(), quiet = TRUE, verbose = FALSE,
-  arg_checks = TRUE)
+save_cast_cov_csv(
+  main = ".",
+  moons = NULL,
+  end_moon = NULL,
+  cast_date = Sys.Date(),
+  cast_cov = NULL,
+  control_files = files_control(),
+  quiet = TRUE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} name of the main directory tree component.}

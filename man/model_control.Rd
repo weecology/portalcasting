@@ -4,8 +4,13 @@
 \alias{model_control}
 \title{Create a control list for a model}
 \usage{
-model_control(name = "model", data_sets = prefab_data_sets(interpolate
-  = FALSE), covariatesTF = FALSE, lag = NA, arg_checks = TRUE)
+model_control(
+  name = "model",
+  data_sets = prefab_data_sets(interpolate = FALSE),
+  covariatesTF = FALSE,
+  lag = NA,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{name}{\code{character} value of the name of the model.}

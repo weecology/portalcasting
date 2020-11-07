@@ -4,8 +4,12 @@
 \alias{combine_hist_and_cast}
 \title{Combine a historical table and a cast table}
 \usage{
-combine_hist_and_cast(hist_tab = NULL, cast_tab = NULL,
-  winner = "hist", arg_checks = TRUE)
+combine_hist_and_cast(
+  hist_tab = NULL,
+  cast_tab = NULL,
+  winner = "hist",
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{hist_tab, cast_tab}{A pair of \code{data.frame}s with the same columns

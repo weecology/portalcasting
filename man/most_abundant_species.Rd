@@ -4,8 +4,12 @@
 \alias{most_abundant_species}
 \title{Select the most abundant species from a data set}
 \usage{
-most_abundant_species(main = ".", data_set = "all", topx = 3,
-  arg_checks = TRUE)
+most_abundant_species(
+  main = ".",
+  data_set = "all",
+  topx = 3,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

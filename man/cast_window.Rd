@@ -4,9 +4,15 @@
 \alias{cast_window}
 \title{Determine the start and end calendar dates for a cast window}
 \usage{
-cast_window(main = ".", moons = NULL, cast_date = Sys.Date(),
-  lead_time = 12, min_lag = 6, control_files = files_control(),
-  arg_checks = TRUE)
+cast_window(
+  main = ".",
+  moons = NULL,
+  cast_date = Sys.Date(),
+  lead_time = 12,
+  min_lag = 6,
+  control_files = files_control(),
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

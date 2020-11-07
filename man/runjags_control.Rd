@@ -4,10 +4,20 @@
 \alias{runjags_control}
 \title{Create a control list for a runjags JAGS model run}
 \usage{
-runjags_control(nchains = 2, adapt = 10000, burnin = 10000,
-  sample = 10000, thin = 1, modules = "", method = "interruptible",
-  factories = "", mutate = NA, cast_obs = TRUE, silent_jags = TRUE,
-  arg_checks = TRUE)
+runjags_control(
+  nchains = 2,
+  adapt = 10000,
+  burnin = 10000,
+  sample = 10000,
+  thin = 1,
+  modules = "",
+  method = "interruptible",
+  factories = "",
+  mutate = NA,
+  cast_obs = TRUE,
+  silent_jags = TRUE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{nchains}{Non-negative \code{integer}-conformable value of the

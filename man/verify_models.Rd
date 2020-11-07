@@ -4,8 +4,12 @@
 \alias{verify_models}
 \title{Verify that models requested to cast with exist}
 \usage{
-verify_models(main = ".", models = prefab_models(), quiet = FALSE,
-  arg_checks = TRUE)
+verify_models(
+  main = ".",
+  models = prefab_models(),
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

@@ -4,10 +4,19 @@
 \alias{ensemble_casts}
 \title{Combine (ensemble) casts}
 \usage{
-ensemble_casts(main = ".", method = "unwtavg", cast_groups = NULL,
-  cast_ids = NULL, cast_tab = NULL, end_moon = NULL, models = NULL,
-  data_set = NULL, include_interp = TRUE, species = NULL,
-  arg_checks = TRUE)
+ensemble_casts(
+  main = ".",
+  method = "unwtavg",
+  cast_groups = NULL,
+  cast_ids = NULL,
+  cast_tab = NULL,
+  end_moon = NULL,
+  models = NULL,
+  data_set = NULL,
+  include_interp = TRUE,
+  species = NULL,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

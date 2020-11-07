@@ -3,7 +3,6 @@
 \docType{package}
 \name{portalcasting}
 \alias{portalcasting}
-\alias{portalcasting-package}
 \title{Functions for Portalcasting (Forecasting Portal Rodents)}
 \description{
 This package contains the functions used for continuous

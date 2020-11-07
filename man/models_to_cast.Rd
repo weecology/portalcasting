@@ -4,8 +4,7 @@
 \alias{models_to_cast}
 \title{Determine the paths to the scripts for models to cast with}
 \usage{
-models_to_cast(main = ".", models = prefab_models(),
-  arg_checks = TRUE)
+models_to_cast(main = ".", models = prefab_models(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

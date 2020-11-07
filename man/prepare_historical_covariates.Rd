@@ -6,8 +6,12 @@
 \alias{prep_weather_data}
 \title{Prepare historical covariates data}
 \usage{
-prep_hist_covariates(main = ".", end_moon = NULL, quiet = TRUE,
-  arg_checks = TRUE)
+prep_hist_covariates(
+  main = ".",
+  end_moon = NULL,
+  quiet = TRUE,
+  arg_checks = TRUE
+)
 
 prep_weather_data(main = ".", arg_checks = TRUE)
 }

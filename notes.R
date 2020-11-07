@@ -1,14 +1,21 @@
+# working here on portalcasting, 
+
+####   oop need to roll through all the code again!
+
+
+
 devtools::document()
 devtools::load_all()
 
-main <- "~/builder"
-#setup_dir(main)
+main <- "~/newber"
+setup_dir(main)
 
 
 rt <- read_rodents_table(main, "all")
 
 
-
+# add fits folder! make sure to propagate to 
+# remove predictions folder!
 
 
 

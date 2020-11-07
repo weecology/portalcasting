@@ -4,13 +4,21 @@
 \alias{files_control}
 \title{Create a control list for files}
 \usage{
-files_control(directory = "portalPredictions", raw_data = "PortalData",
+files_control(
+  directory = "portalPredictions",
+  raw_data = "PortalData",
   filename_moons = "moon_dates.csv",
-  filename_config = "dir_config.yaml", filename_cov = "covariates.csv",
+  filename_config = "dir_config.yaml",
+  filename_cov = "covariates.csv",
   filename_cov_casts = "covariate_casts.csv",
-  filename_meta = "metadata.yaml", save = TRUE, overwrite = TRUE,
-  cleanup = TRUE, source_name = "current_archive",
-  append_cast_csv = TRUE, arg_checks = TRUE)
+  filename_meta = "metadata.yaml",
+  save = TRUE,
+  overwrite = TRUE,
+  cleanup = TRUE,
+  source_name = "current_archive",
+  append_cast_csv = TRUE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{directory}{\code{character} value of the directory name.}

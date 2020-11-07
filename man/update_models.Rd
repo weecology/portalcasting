@@ -4,9 +4,17 @@
 \alias{update_models}
 \title{Update models based on user input controls}
 \usage{
-update_models(main = ".", models = NULL, controls_model = NULL,
-  update_prefab_models = FALSE, control_files = files_control(),
-  bline = FALSE, quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+update_models(
+  main = ".",
+  models = NULL,
+  controls_model = NULL,
+  update_prefab_models = FALSE,
+  control_files = files_control(),
+  bline = FALSE,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

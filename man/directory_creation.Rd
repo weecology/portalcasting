@@ -7,8 +7,13 @@
 \alias{create_subs}
 \title{Create the structure of a forecasting directory}
 \usage{
-create_dir(main = ".", filename_config = "dir_config.yaml",
-  bline = FALSE, quiet = FALSE, arg_checks = TRUE)
+create_dir(
+  main = ".",
+  filename_config = "dir_config.yaml",
+  bline = FALSE,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
 create_main(main = ".", arg_checks = TRUE)
 

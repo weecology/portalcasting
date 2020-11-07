@@ -9,34 +9,68 @@
 \alias{fill_raw}
 \title{Fill a forecasting directory with basic components.}
 \usage{
-fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+fill_dir(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_data(main = ".", models = prefab_models(), end_moon = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+fill_data(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_models(main = ".", models = prefab_models(),
-  controls_model = NULL, control_files = files_control(),
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+fill_models(
+  main = ".",
+  models = prefab_models(),
+  controls_model = NULL,
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_casts(main = ".", control_files = files_control(),
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+fill_casts(
+  main = ".",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_raw(main = ".", downloads = zenodo_downloads(c("1215988",
-  "833438")), only_if_missing = FALSE, control_files = files_control(),
-  quiet = FALSE, arg_checks = TRUE)
+fill_raw(
+  main = ".",
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  only_if_missing = FALSE,
+  control_files = files_control(),
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

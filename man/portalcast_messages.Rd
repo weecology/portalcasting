@@ -24,28 +24,42 @@ portalcast_goodbye(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
 sandbox_welcome(main = ".", quiet = FALSE, arg_checks = TRUE)
 
-creation_message(main = ".", bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+creation_message(main = ".", bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
-setup_completion_message(bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+setup_completion_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
-data_readying_message(end_moon = NULL, bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+data_readying_message(
+  end_moon = NULL,
+  bline = TRUE,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
-data_resetting_message(bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+data_resetting_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
-models_running_message(end_moon = NULL, bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+models_running_message(
+  end_moon = NULL,
+  bline = TRUE,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
 model_running_message(model = NULL, quiet = FALSE, arg_checks = TRUE)
 
-model_done_message(model = NULL, run_status = NULL, quiet = FALSE,
-  arg_checks = TRUE)
+model_done_message(
+  model = NULL,
+  run_status = NULL,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
-fill_casts_message(files = NULL, movedTF = NULL, quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+fill_casts_message(
+  files = NULL,
+  movedTF = NULL,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{bline}{\code{logical} indicator if horizontal break lines should be

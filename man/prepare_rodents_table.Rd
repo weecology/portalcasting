@@ -6,23 +6,56 @@
 \alias{process_rodent_data}
 \title{Prepare a rodents data tables for forecasting}
 \usage{
-prep_rodents_table(main = ".", moons = NULL, end_moon = NULL,
-  species = base_species(), total = TRUE, interpolate = TRUE,
-  clean = FALSE, type = "Rodents", level = "Site", plots = "all",
-  treatment = NULL, min_plots = 24, min_traps = 1,
-  output = "abundance", shape = "crosstab", fillweight = (output !=
-  "abundance"), unknowns = FALSE, time = "newmoon", na_drop = FALSE,
-  zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site
-  = TRUE), ref_species = all_species(), effort = FALSE, quiet = TRUE,
-  verbose = FALSE, control_files = files_control(), save = TRUE,
-  overwrite = TRUE, filename = "rodents_all.csv", arg_checks = TRUE)
+prep_rodents_table(
+  main = ".",
+  moons = NULL,
+  end_moon = NULL,
+  species = base_species(),
+  total = TRUE,
+  interpolate = TRUE,
+  clean = FALSE,
+  type = "Rodents",
+  level = "Site",
+  plots = "all",
+  treatment = NULL,
+  min_plots = 24,
+  min_traps = 1,
+  output = "abundance",
+  shape = "crosstab",
+  fillweight = (output != "abundance"),
+  unknowns = FALSE,
+  time = "newmoon",
+  na_drop = FALSE,
+  zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site = TRUE),
+  ref_species = all_species(),
+  effort = FALSE,
+  quiet = TRUE,
+  verbose = FALSE,
+  control_files = files_control(),
+  save = TRUE,
+  overwrite = TRUE,
+  filename = "rodents_all.csv",
+  arg_checks = TRUE
+)
 
-process_rodent_data(rodents_tab, main = ".", moons = NULL,
-  end_moon = NULL, species = base_species(), total = TRUE,
-  interpolate = FALSE, clean = FALSE, level = "Site",
-  treatment = NULL, na_drop = FALSE, time = "newmoon",
-  ref_species = all_species(), quiet = TRUE, verbose = FALSE,
-  arg_checks = TRUE)
+process_rodent_data(
+  rodents_tab,
+  main = ".",
+  moons = NULL,
+  end_moon = NULL,
+  species = base_species(),
+  total = TRUE,
+  interpolate = FALSE,
+  clean = FALSE,
+  level = "Site",
+  treatment = NULL,
+  na_drop = FALSE,
+  time = "newmoon",
+  ref_species = all_species(),
+  quiet = TRUE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

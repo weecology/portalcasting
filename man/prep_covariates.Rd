@@ -4,11 +4,19 @@
 \alias{prep_covariates}
 \title{Prepare covariate data for casting}
 \usage{
-prep_covariates(main = ".", moons = NULL, end_moon = NULL,
-  lead_time = 12, min_lag = 6, cast_date = Sys.Date(),
+prep_covariates(
+  main = ".",
+  moons = NULL,
+  end_moon = NULL,
+  lead_time = 12,
+  min_lag = 6,
+  cast_date = Sys.Date(),
   control_climate_dl = climate_dl_control(),
-  control_files = files_control(), quiet = TRUE, verbose = FALSE,
-  arg_checks = TRUE)
+  control_files = files_control(),
+  quiet = TRUE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

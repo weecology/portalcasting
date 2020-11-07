@@ -4,9 +4,17 @@
 \alias{select_casts}
 \title{Find casts that fit specifications}
 \usage{
-select_casts(main = ".", cast_ids = NULL, cast_groups = NULL,
-  end_moons = NULL, models = NULL, data_sets = NULL, quiet = FALSE,
-  include_interp = FALSE, arg_checks = TRUE)
+select_casts(
+  main = ".",
+  cast_ids = NULL,
+  cast_groups = NULL,
+  end_moons = NULL,
+  models = NULL,
+  data_sets = NULL,
+  quiet = FALSE,
+  include_interp = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

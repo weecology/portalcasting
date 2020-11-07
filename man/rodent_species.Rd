@@ -7,17 +7,24 @@
 \alias{evalplot_species}
 \title{Rodent species abbreviations}
 \usage{
-rodent_species(species = NULL, set = NULL, nadot = FALSE,
-  total = FALSE, arg_checks = TRUE)
+rodent_species(
+  species = NULL,
+  set = NULL,
+  nadot = FALSE,
+  total = FALSE,
+  arg_checks = TRUE
+)
 
-all_species(species = NULL, nadot = FALSE, total = FALSE,
-  arg_checks = TRUE)
+all_species(species = NULL, nadot = FALSE, total = FALSE, arg_checks = TRUE)
 
-base_species(species = NULL, nadot = FALSE, total = FALSE,
-  arg_checks = TRUE)
+base_species(species = NULL, nadot = FALSE, total = FALSE, arg_checks = TRUE)
 
-evalplot_species(species = NULL, nadot = FALSE, total = TRUE,
-  arg_checks = TRUE)
+evalplot_species(
+  species = NULL,
+  nadot = FALSE,
+  total = TRUE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{species}{\code{character}-valued vector of species names to include.}

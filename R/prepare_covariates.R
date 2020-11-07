@@ -164,10 +164,10 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
   cols <- c("mintemp", "maxtemp", "meantemp", "precipitation", 
             "newmoonnumber")
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
-  weather(level = "newmoon", fill = TRUE, path = raw_path) %>% 
-  ungroup() %>%
-  select(cols) %>%
-  remove_incompletes("newmoonnumber")
+  weather <- weather(level = "newmoon", fill = TRUE, path = raw_path)
+  cols_in <- colnames(weather) %in% cols
+  weather <- weather[ , cols_in]
+  remove_incompletes(weather, "newmoonnumber")
 }
 
 #' @title Summarize a daily weather table by newmoons

@@ -4,10 +4,19 @@
 \alias{plot_cast_ts}
 \title{Visualize a time series cast of a species}
 \usage{
-plot_cast_ts(main = ".", cast_id = NULL, cast_groups = NULL,
-  data_set = NULL, model = NULL, end_moon = NULL,
-  species = "total", start_moon = 217,
-  control_files = files_control(), quiet = FALSE, arg_checks = TRUE)
+plot_cast_ts(
+  main = ".",
+  cast_id = NULL,
+  cast_groups = NULL,
+  data_set = NULL,
+  model = NULL,
+  end_moon = NULL,
+  species = "total",
+  start_moon = 217,
+  control_files = files_control(),
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
