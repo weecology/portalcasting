@@ -7,6 +7,8 @@
 #'   directory configuration metadata accordingly. \cr \cr
 #'  \code{fill_casts} moves the historic casts from the archive into the 
 #'   current directory. \cr \cr
+#'  \code{fill_fits} moves the historic fits from the archive into the 
+#'   current directory. \cr \cr
 #'  \code{fill_models} writes out the model scripts to the models
 #'   subdirectory. \cr \cr
 #'  \code{fill_data} prepares model-ready data from the raw data.
@@ -101,6 +103,7 @@
 #'   fill_dir()
 #'   fill_raw()
 #'   fill_casts()
+#'   fill_fits()
 #'   fill_models()
 #'   fill_data()
 #'  }
@@ -128,6 +131,8 @@ fill_dir <- function(main = ".", models = prefab_models(),
            control_files = control_files, arg_checks = arg_checks)
   fill_casts(main = main, quiet = quiet, verbose = verbose, 
              control_files = control_files, arg_checks = arg_checks)
+  fill_fits(main = main, quiet = quiet, verbose = verbose, 
+            control_files = control_files, arg_checks = arg_checks)
   fill_models(main = main, models = models, controls_model = controls_model, 
               quiet = quiet, verbose = verbose, control_files = control_files,
               arg_checks = arg_checks)
@@ -247,13 +252,38 @@ fill_casts <- function(main = ".", control_files = files_control(),
                          arg_checks = arg_checks)
     arch_files <- list.files(archive, full.names = TRUE)
   }
-  arch_files_local <- paste0(path_casts, arch_files)
   casts_folder <- casts_path(main = main, arg_checks = arg_checks)
   fc <- file.copy(arch_files, casts_folder, control_files$overwrite)
   casts_meta <- read_casts_metadata(main = main, quiet = quiet, 
                                     arg_checks = arg_checks)
   fill_casts_message(files = arch_files, movedTF = fc, quiet = !verbose,
                      verbose = verbose, arg_checks = arg_checks)
+  invisible(NULL)
+}
+
+#' @rdname fill_directory
+#'
+#' @export
+#'
+fill_fits <- function(main = ".", control_files = files_control(),
+                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  directory <- control_files$directory
+  path_fits <- paste0(directory, "/fits")
+  fits_folder <- fits_path(main = main, arg_checks = arg_checks)
+
+  archive <- file_path(main = main, sub = "raw", files = path_fits,
+                       arg_checks = arg_checks)
+  arch_files <- list.files(archive, full.names = TRUE)
+  if(length(arch_files) == 0){
+    arch_files <- NULL
+    fc <- FALSE
+  } else{
+    messageq(" -Filling fits folder with files from archive", quiet)
+    fc <- file.copy(arch_files, fits_folder, control_files$overwrite)
+  }
+  fill_fits_message(files = arch_files, movedTF = fc, quiet = !verbose,
+                    verbose = verbose, arg_checks = arg_checks)
   invisible(NULL)
 }
 

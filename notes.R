@@ -7,7 +7,7 @@
 devtools::document()
 devtools::load_all()
 
-main <- "~/newber"
+main <- "~/newber223"
 setup_dir(main)
 
 
@@ -15,7 +15,7 @@ rt <- read_rodents_table(main, "all")
 
 
 # add fits folder! make sure to propagate to 
-# remove predictions folder!
+#    make fits be saved there!
 
 
 
@@ -35,7 +35,6 @@ plot(pgr~m1)
 
 
 
-summarize_rodent_data("./model_testing/raw")
 
 
 head(rt)

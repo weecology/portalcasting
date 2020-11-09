@@ -14,6 +14,7 @@
 \alias{model_running_message}
 \alias{model_done_message}
 \alias{fill_casts_message}
+\alias{fill_fits_message}
 \title{Specific message functions}
 \usage{
 version_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
@@ -54,6 +55,14 @@ model_done_message(
 )
 
 fill_casts_message(
+  files = NULL,
+  movedTF = NULL,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
+
+fill_fits_message(
   files = NULL,
   movedTF = NULL,
   quiet = FALSE,
@@ -114,6 +123,9 @@ Messaging functions:
  \code{fill_casts_message} creates the final message to be used in 
   \code{\link{fill_casts}} that relays the number, and optionally the
   specific names, of the files moved.
+ \code{fill_fits_message} creates the final message to be used in 
+  \code{\link{fill_fits}} that relays the number, and optionally the
+  specific names, of the files moved.
 }
 \examples{
  portalcast_welcome()
@@ -130,5 +142,6 @@ Messaging functions:
  fill_casts_message("xx.csv", TRUE)
  fill_casts_message(c("xx.csv", "yy.R"), c(TRUE, FALSE), 
                           verbose = TRUE)
+ fill_fits_message("xx.csv", TRUE)
 
 }

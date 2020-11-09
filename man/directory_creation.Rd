@@ -55,7 +55,8 @@ This suite of functions creates the necessary folder structure
  \code{\link{write_directory_config}}. \cr \cr
  \code{create_main} creates the main folder of the directory.\cr \cr
  \code{create_subs} creates the sub folders of the directory 
- (\code{tmp}, \code{raw}, \code{data}, \code{models}, and \code{casts}).
+ (\code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, 
+ and \code{casts}).
 }
 \details{
 Folder paths are created internally using  

@@ -6,6 +6,7 @@
 \alias{fill_data}
 \alias{fill_models}
 \alias{fill_casts}
+\alias{fill_fits}
 \alias{fill_raw}
 \title{Fill a forecasting directory with basic components.}
 \usage{
@@ -56,6 +57,14 @@ fill_models(
 )
 
 fill_casts(
+  main = ".",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
+
+fill_fits(
   main = ".",
   control_files = files_control(),
   quiet = FALSE,
@@ -163,6 +172,8 @@ Fill the directory with foundational components. \cr \cr
   directory configuration metadata accordingly. \cr \cr
  \code{fill_casts} moves the historic casts from the archive into the 
   current directory. \cr \cr
+ \code{fill_fits} moves the historic fits from the archive into the 
+  current directory. \cr \cr
  \code{fill_models} writes out the model scripts to the models
   subdirectory. \cr \cr
  \code{fill_data} prepares model-ready data from the raw data.
@@ -177,6 +188,7 @@ Arguments input directly here take precedence over those in the
   fill_dir()
   fill_raw()
   fill_casts()
+  fill_fits()
   fill_models()
   fill_data()
  }

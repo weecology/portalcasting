@@ -375,6 +375,7 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
       hist_tab <- hist_tab[-dupes, ]
     } 
   }
+  hist_tab <- hist_tab[ , colnames(hist_tab) %in% colnames(cast_tab)]
   rbind(hist_tab, cast_tab)
 }
 

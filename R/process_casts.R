@@ -537,7 +537,7 @@ save_cast_output <- function(cast = NULL, main = ".",
   if(!is.null(cast$model_fits)){
     model_fits_filename <- paste0("cast_id_", next_cast_id, 
                                   "_model_fits.json") 
-    model_fits_path <- file_path(main = main, sub = "casts", 
+    model_fits_path <- file_path(main = main, sub = "fits", 
                                  files = model_fits_filename,
                                  arg_checks = arg_checks)
     model_fits <- cast$model_fits

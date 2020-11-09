@@ -147,7 +147,8 @@ Argument details used for checking are produced simply via
   \code{species_id} (if not \code{NULL}, must be within the species
    produced by \code{rodent_spp("wtotal")}),
   \code{sub} (must be one of the named sub directories: \code{"tmp"},
-   \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
+   \code{"raw"}, \code{"data"}, \code{"models"}, \code{"fits"}, or 
+   \code{"casts"}),
   \code{time}, 
   \code{title}, 
   \code{type}, 
@@ -179,7 +180,8 @@ Argument details used for checking are produced simply via
   \code{species} (if not \code{NULL}, must be all within the species
    produced by \code{all_secies(total = TRUE)}),
   \code{subs} (must all be one of the named sub directories: \code{"tmp"},
-   \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
+   \code{"raw"}, \code{"data"}, \code{"models"}, \code{"fits"}, or 
+   \code{"casts"}),
   \code{target_cols}, 
   \code{treatment} (if not \code{NULL}, must be \code{"control"})
 

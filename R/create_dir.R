@@ -11,7 +11,8 @@
 #'  \code{\link{write_directory_config}}. \cr \cr
 #'  \code{create_main} creates the main folder of the directory.\cr \cr
 #'  \code{create_subs} creates the sub folders of the directory 
-#'  (\code{tmp}, \code{raw}, \code{data}, \code{models}, and \code{casts}).
+#'  (\code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, 
+#'  and \code{casts}).
 #'
 #' @details Folder paths are created internally using  
 #'  \code{\link{main_path}} and \code{\link{sub_path}}, such that the user 
@@ -84,7 +85,7 @@ create_main <- function(main = ".", arg_checks = TRUE){
 #'
 create_subs <- function(main = ".", arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  subs <- c("casts", "models", "raw", "data", "tmp")
+  subs <- c("casts", "fits", "models", "raw", "data", "tmp")
   mainp <- main_path(main = main, arg_checks = arg_checks)
   subsp <- sub_path(main = main, subs = subs, arg_checks = arg_checks)
   verify(paths = mainp, arg_checks = arg_checks)

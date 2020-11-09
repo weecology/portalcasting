@@ -199,6 +199,7 @@ prep_weather_data <- function(main = ".", arg_checks = TRUE){
 #'
 summarize_daily_weather_by_moon <- function(x){
 
+  x <- x[!(is.na(x$moon)), ] 
   umoons <- unique(x$moon)
   numoons <- length(umoons)
   date <- rep(NA, numoons)

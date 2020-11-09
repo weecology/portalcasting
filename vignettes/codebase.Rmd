@@ -54,11 +54,13 @@ main
 └──data
 │   <data used for a specific run of models>
 └──casts
-│   <previous and current model output>
+│   <previous and current model casts>
+└──fits
+│   <previous and current model fits>
 └──dir_config.yaml
 ```
 
-(**Note**: Previous versions of **portalcasting** had an explicitly named `base` level more basal than `main`, but that has been removed as of v0.9.0 due to its redundancy. To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "~/project_folder"`.)
+To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "~/project_folder"`.
 
 ## Instantiating a Directory
 

@@ -1,7 +1,7 @@
 #' @title Create and fill a forecasting directory
 #'
 #' @description Combines \code{\link{create_dir}} and \code{\link{fill_dir}}
-#'  to create a ready-to-run (via \code{\link{portalcast}}) when
+#'  to create a ready-to-run (via \code{\link{portalcast}}) directory where
 #'  indicated. \cr \cr
 #'  \code{setup_production} creates a standard production directory. \cr \cr
 #'  \code{setup_sandbox} creates a sandboxing directory. \cr \cr
@@ -127,8 +127,8 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #'
 setup_production <- function(main = ".", models = prefab_models(), 
                              end_moon = NULL, start_moon = 217, 
-                             lead_time = 12, cast_date = Sys.Date(),
-                             confidence_level = 0.95, controls_model = NULL,
+                             lead_time = 12, confidence_level = 0.95, 
+                             cast_date = Sys.Date(), controls_model = NULL,
                              controls_rodents = rodents_controls(),
                              control_climate_dl = climate_dl_control(),
                              control_files = files_control(), 
