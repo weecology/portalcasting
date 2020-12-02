@@ -7,15 +7,12 @@
 devtools::document()
 devtools::load_all()
 
-main <- "~/newber223"
+main <- "~/x3gyz3"
 setup_dir(main)
-
+portalcast(main)
 
 rt <- read_rodents_table(main, "all")
 
-
-# add fits folder! make sure to propagate to 
-#    make fits be saved there!
 
 
 
