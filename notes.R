@@ -1,14 +1,26 @@
 # working here on portalcasting, 
 
-####   oop need to roll through all the code again!
+####   roll through all the code front to back for use
+####    then update tests
 
+#
+# getting issues with the weather data.... missing in PortalData
+#
 
 
 devtools::document()
 devtools::load_all()
 
-main <- "~/x3gyz3"
+main <- "~/new1"
 setup_dir(main)
+
+
+
+
+
+
+
+
 portalcast(main)
 
 rt <- read_rodents_table(main, "all")
