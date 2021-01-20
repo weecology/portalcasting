@@ -79,16 +79,14 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
                                    control_climate_dl = control_climate_dl,
                                    quiet = quiet, verbose = verbose, 
                                    arg_checks = arg_checks)
+  out <- combine_hist_and_cast(hist_tab = hist_cov, cast_tab = cast_cov, 
+                               column = "moon", arg_checks = arg_checks)
 
 #
 #
 ## working in here!
 #
-#
-
-
-  out <- combine_hist_and_cast(hist_tab = hist_cov, cast_tab = cast_cov, 
-                               column = "moon", arg_checks = arg_checks)
+# now need to back fill that one line specifically
 
 
   write_data(dfl = out, main = main, save = control_files$save, 

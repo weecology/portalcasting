@@ -12,6 +12,7 @@ devtools::document()
 devtools::load_all()
 
 main <- "~/xxxxxx"
+create_dir(main)
 setup_dir(main)
 
 

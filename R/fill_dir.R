@@ -154,7 +154,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 fill_data <- function(main = ".", models = prefab_models(),
-                      end_moon = NULL,start_moon = 217, lead_time = 12,
+                      end_moon = NULL, start_moon = 217, lead_time = 12,
                       confidence_level = 0.95, cast_date = Sys.Date(), 
                       controls_model = NULL,
                       controls_rodents = rodents_controls(), 

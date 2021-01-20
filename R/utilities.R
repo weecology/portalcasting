@@ -343,10 +343,11 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
 #'
 #' @param winner \code{character} value either {"hist"} or \code{"cast"} to
 #'  decide who wins any ties. In the typical portalcasting space, this is 
-#'  kept at its default value throughout.
+#'  kept at its default value throughout. In the case of \code{NA} values,
+#'  this will be overriden to use the entry that has no missing entries.
 #'
-#' @param column \code{character} indicating the column to use for 
-#'  combining.
+#' @param column \code{character} indicating the column to use for identifying
+#'  entries in combining.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -369,18 +370,40 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
   check_args(arg_checks)
   return_if_null(hist_tab, cast_tab)
   return_if_null(cast_tab, hist_tab)
-  
-  dupes <- which(cast_tab[ , column] %in% hist_tab[ , column])
-  if(length(dupes) > 0){
-    if(winner == "hist"){
-      cast_tab <- cast_tab[-dupes, ]
-    } else if (winner == "cast"){
-      dupes <- which(hist_tab[ , column] %in% cast_tab[ , column])
-      hist_tab <- hist_tab[-dupes, ]
-    } 
+
+
+  out <- rbind(hist_tab, cast_tab)
+  in_out <- rep(TRUE, NROW(out))
+  dupes <- as.numeric(names(which(table(out$moon) > 1)))
+
+  ndupes <- length(dupes) 
+  if(ndupes > 0){
+    for(i in 1:ndupes){
+      which_duped <- which(out$moon == dupes[i])
+
+      which_duped_hist <- which(out$moon == dupes[i] & out$source == "hist")
+      which_duped_cast <- which(out$moon == dupes[i] & out$source == "cast") 
+
+      hist_dupe_NA <- any(is.na(out[which_duped_hist, ]))
+      cast_dupe_NA <- any(is.na(out[which_duped_cast, ]))
+
+      if(winner == "hist"){
+        if(!hist_dupe_NA){
+          in_out[which_duped_cast] <- FALSE
+        } else{
+          in_out[which_duped_hist] <- FALSE   
+        }
+      } else if(winer == "cast"){
+        if(!cast_dupe_NA){
+          in_out[which_duped_hist] <- FALSE
+        } else{
+          in_out[which_duped_cast] <- FALSE   
+        }
+      }
+    }
   }
-  hist_tab <- hist_tab[ , colnames(hist_tab) %in% colnames(cast_tab)]
-  rbind(hist_tab, cast_tab)
+
+  out[in_out, ]
 }
 
 #' @title Add a date to a table that has the year month and day as components 

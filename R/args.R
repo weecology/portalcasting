@@ -124,6 +124,9 @@
 #'    \code{"cast"}), 
 #'   \code{zip_destin}.
 #'
+#'  Must be length-1 \code{character} cannot be \code{NULL} or \code{NA}:
+#'   \code{column}
+#'
 #'  Must be \code{character} values, can be any length, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
 #'   \code{colnames},
@@ -584,6 +587,7 @@ check_arg_list <- function(){
     cleanup = arg_logical(),
     colname = arg_character(),
     colnames = arg_character(length = NULL),
+    column = arg_character(length = 1, null = FALSE, na = FALSE),
     concept_rec_id = arg_character(length = NULL),
     confidence_level = arg_zeroone(),
     control_model = arg_list(),

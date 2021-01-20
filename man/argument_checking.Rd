@@ -157,6 +157,9 @@ Argument details used for checking are produced simply via
    \code{"cast"}), 
   \code{zip_destin}.
 
+ Must be length-1 \code{character} cannot be \code{NULL} or \code{NA}:
+  \code{column}
+
  Must be \code{character} values, can be any length, can be \code{NULL}, 
  but cannot be \code{NA}:
   \code{colnames},
