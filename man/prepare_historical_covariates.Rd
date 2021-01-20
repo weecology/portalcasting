@@ -5,7 +5,7 @@
 \alias{prep_hist_covariates}
 \title{Prepare historical covariates data}
 \usage{
-prep_hist_covariates(main = ".", quiet = TRUE, arg_checks = TRUE)
+prep_hist_covariates(main = ".", moons = NULL, quiet = TRUE, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

@@ -191,8 +191,8 @@ fill_data <- function(main = ".", models = prefab_models(),
                          control_files = control_files, 
                          arg_checks = arg_checks)
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
-                            lead_time = lead_time, min_lag = min_lag, 
-                            cast_date = cast_date, 
+                            start_moon = start_moon, lead_time = lead_time, 
+                            min_lag = min_lag, cast_date = cast_date, 
                             control_climate_dl = control_climate_dl,
                             quiet = quiet, control_files = control_files,
                             arg_checks = arg_checks)

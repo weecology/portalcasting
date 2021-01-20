@@ -19,10 +19,11 @@ them.}
 
 \item{winner}{\code{character} value either {"hist"} or \code{"cast"} to
 decide who wins any ties. In the typical portalcasting space, this is 
-kept at its default value throughout.}
+kept at its default value throughout. In the case of \code{NA} values,
+this will be overriden to use the entry that has no missing entries.}
 
-\item{column}{\code{character} indicating the column to use for 
-combining.}
+\item{column}{\code{character} indicating the column to use for identifying
+entries in combining.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

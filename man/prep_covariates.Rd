@@ -8,6 +8,7 @@ prep_covariates(
   main = ".",
   moons = NULL,
   end_moon = NULL,
+  start_moon = 217,
   lead_time = 12,
   min_lag = 6,
   cast_date = Sys.Date(),
@@ -27,6 +28,10 @@ the directory tree.}
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
+
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the first sample to be included. Default value is \code{217}, 
+corresponding to \code{1995-01-01}.}
 
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}

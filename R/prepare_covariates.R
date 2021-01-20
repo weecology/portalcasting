@@ -30,6 +30,10 @@
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
+#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the first sample to be included. Default value is \code{217}, 
+#'  corresponding to \code{1995-01-01}.
+#'
 #' @param control_climate_dl \code{list} of specifications for the download, 
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
@@ -55,7 +59,7 @@
 #' @export
 #'
 prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL, 
-                            lead_time = 12, min_lag = 6, 
+                            start_moon = 217, lead_time = 12, min_lag = 6, 
                             cast_date = Sys.Date(),
                             control_climate_dl = climate_dl_control(), 
                             control_files = files_control(),
@@ -67,7 +71,7 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
                                     arg_checks = arg_checks))
   messageq("  -covariate data files", quiet)
 
-  hist_cov <- prep_hist_covariates(main = main, quiet = quiet, 
+  hist_cov <- prep_hist_covariates(main = main, moons = moons, quiet = quiet, 
                                    arg_checks = arg_checks)
 
   cast_cov <- prep_cast_covariates(main = main, moons = moons, 
@@ -82,12 +86,30 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
   out <- combine_hist_and_cast(hist_tab = hist_cov, cast_tab = cast_cov, 
                                column = "moon", arg_checks = arg_checks)
 
-#
-#
-## working in here!
-#
-# now need to back fill that one line specifically
+  na_rows <- apply(is.na(out), 1, sum) > 0
+  moon_in <- out$moon >= start_moon
+  which_na_rows <- which(na_rows & moon_in)
+  nna_rows <- length(which_na_rows)
+  if(any(na_rows)){
 
+    cov_casts <- read_covariate_casts(main = main, 
+                                      control_files = control_files, 
+                                      arg_checks = arg_checks)
+    for(i in 1:nna_rows){
+      na_moon <- out$moon[which_na_rows[i]]
+      possibles <- cov_casts[cov_casts$moon == na_moon, ]
+
+      if(NROW(possibles > 0)){
+        which_possible <- which.max(as.Date(possibles$date_made))
+        cols_keep <- c("mintemp", "maxtemp", "meantemp", "precipitation",
+                       "ndvi")
+        patch <- data.frame(moon = na_moon, 
+                            possibles[which_possible, cols_keep],
+                            source = "cast")
+        out[which_na_rows[i], ] <- patch
+      }
+    }
+  }
 
   write_data(dfl = out, main = main, save = control_files$save, 
              filename = control_files$filename_cov, 
@@ -139,10 +161,13 @@ NULL
 #'
 #' @export
 #'
-prep_hist_covariates <- function(main = ".", quiet = TRUE, arg_checks = TRUE){
+prep_hist_covariates <- function(main = ".", moons = NULL,
+                                 quiet = TRUE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
-
   weather_data <- weather(level = "daily", fill = TRUE, path = raw_path)
   ndvi_data <- ndvi(level = "daily", fill = TRUE, path = raw_path)
   ndvi_data$date <- as.Date(ndvi_data$date)

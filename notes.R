@@ -3,16 +3,11 @@
 ####   roll through all the code front to back for use
 ####    then update tests
 
-#
-# getting issues with the weather data.... missing in PortalData
-#
-
 
 devtools::document()
 devtools::load_all()
 
-main <- "~/xxxxxx"
-create_dir(main)
+main <- "~/work_please"
 setup_dir(main)
 
 
