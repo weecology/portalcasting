@@ -11,12 +11,43 @@
 devtools::document()
 devtools::load_all()
 
-main <- "~/new1"
+main <- "~/xxxxxx"
 setup_dir(main)
 
 
 
 
+do we use   
+
+remove_incompletes
+
+
+now anywhere else?
+
+
+
+need to manage covariate casts when not from 'today'
+
+
+
+REMOVE FROM ALL DOCS
+
+prep_weather_data
+
+
+
+  colnames(out)[which(colnames(out) == "newmoonnumber")] <- "moon"
+  if (!is.null(end_moon)){
+    out <- out[which(out$moon <= end_moon), ]
+  }
+
+
+  cols_to_drop <- c("year", "month", "day", "battery_low", "locally_measured")
+  cols_in <- !(colnames(hist_tab) %in% cols_to_drop)
+  hist_cov <- hist_cov[ , cols_in]
+
+  cov_table <- add_moons_from_date(df = cov_table, moons = moons, 
+                                   arg_checks = arg_checks)
 
 
 

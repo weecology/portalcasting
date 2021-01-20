@@ -345,6 +345,9 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
 #'  decide who wins any ties. In the typical portalcasting space, this is 
 #'  kept at its default value throughout.
 #'
+#' @param column \code{character} indicating the column to use for 
+#'  combining.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -361,17 +364,18 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
 #' @export
 #'
 combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
-                                  winner = "hist", arg_checks = TRUE){
+                                  winner = "hist", column = "date",
+                                  arg_checks = TRUE){
   check_args(arg_checks)
   return_if_null(hist_tab, cast_tab)
   return_if_null(cast_tab, hist_tab)
   
-  dupes <- which(cast_tab$date %in% hist_tab$date)
+  dupes <- which(cast_tab[ , column] %in% hist_tab[ , column])
   if(length(dupes) > 0){
     if(winner == "hist"){
       cast_tab <- cast_tab[-dupes, ]
     } else if (winner == "cast"){
-      dupes <- which(hist_tab$date %in% cast_tab$date)
+      dupes <- which(hist_tab[ , column] %in% cast_tab[ , column])
       hist_tab <- hist_tab[-dupes, ]
     } 
   }
@@ -472,8 +476,8 @@ cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
   colnames(moons0x)[which(colnames(moons0x) == "moon")] <- "newmoonnumber"
   colnames(moons0x)[which(colnames(moons0x) == "moondate")] <- "newmoondate"
   future_moons <- get_future_moons(moons0x, num_future_moons = lead_time)
-  start_day <- as.character(as.Date(last_moon$moondate) + 1)
-  end_day <- as.character(as.Date(future_moons$newmoondate[lead_time]))
+  start_day <- as.Date(last_moon$moondate) + 1
+  end_day <- as.Date(future_moons$newmoondate[lead_time])
   list(start = start_day, end = end_day)
 }
 

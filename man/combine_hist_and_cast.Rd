@@ -8,6 +8,7 @@ combine_hist_and_cast(
   hist_tab = NULL,
   cast_tab = NULL,
   winner = "hist",
+  column = "date",
   arg_checks = TRUE
 )
 }
@@ -19,6 +20,9 @@ them.}
 \item{winner}{\code{character} value either {"hist"} or \code{"cast"} to
 decide who wins any ties. In the typical portalcasting space, this is 
 kept at its default value throughout.}
+
+\item{column}{\code{character} indicating the column to use for 
+combining.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 

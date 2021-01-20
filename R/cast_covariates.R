@@ -1,13 +1,11 @@
 #' @title Cast the covariates
 #'
 #' @description Cast the covariates for a model run. \cr \cr
-#'  \code{cast_covariates} is the primary function, which produces the 
+#'  \code{prep_cast_covariates} is the primary function, which produces the 
 #'  covariates (min, mean, and max temperature; precipitation; and NDVI) 
-#'  required for a model to be cast. \cr \cr
-#'  \code{prep_cast_covariates} provides a wrapper on \code{cast_covariates}
-#'  that includes saving the cast data out via \code{save_cast_cov_csv}
-#'  and tidying the data for use within the model (by removing the vestigial
-#'  columns that are only needed for saving). 
+#'  required for a model to be cast. Saves the cast data out via
+#'  \code{save_cast_cov_csv} and tidying the data for use within the model 
+#'  (by removing the vestigial columns that are only needed for saving). 
 #'
 #' @param main \code{character} name of the main directory tree component.
 #'
@@ -51,19 +49,14 @@
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
-#' @details If forecasting from the current newmoon, weather is forecast using 
-#'  \code{\link{cast_weather}} and NDVI is forecast using 
-#'  \code{\link{cast_ndvi}}. If casting from a previous newmoon, the
+#' @details If forecasting from the current newmoon, casts the covariates 
+#'  If casting from a previous newmoon, the
 #'  historical forecasted weather and NDVI data are retrieved from the file 
 #'  pointed to by \code{filename_cov_casts}.
 #'
 #' @return 
-#'  \code{cast_covariates}: \code{data.frame} of the covariates cast for the
-#'   moons as defined as needed for saving. \cr \cr
 #'  \code{prep_cast_covariates}: \code{data.frame} of the cast covariates
 #'   after saving, with excess columns removed. \cr \cr
-#'  \code{cast_ndvi}: \code{data.frame} of -casted NDVI values. \cr \cr
-#'  \code{cast_weather}: \code{data.frame} of -casted weather values. \cr \cr
 #'  \code{save_cast_cov_csv}: \code{cast_cov} \code{data.frame} exactly as 
 #'   input. 
 #'  
@@ -72,21 +65,24 @@
 #'   setup_dir()
 #'   hist_cov <- prep_hist_covariates()
 #'   prep_cast_covariates(hist_cov = hist_cov)
-#'   cast_cov <- cast_covariates(hist_cov = hist_cov)
 #'   save_cast_cov_csv(cast_cov = cast_cov)
-#'   cast_ndvi_data <- cast_ndvi(hist_cov = hist_cov)
-#'   cast_weather_data <- cast_weather(hist_cov = hist_cov)
 #'  }
+#'
+#' @name cast_covariates
+#'
+
+#' @rdname cast_covariates
 #'
 #' @export
 #'
-cast_covariates <- function(main = ".", moons = NULL,
-                            hist_cov = NULL, end_moon = NULL, lead_time = 12, 
-                            min_lag = 6, cast_date = Sys.Date(), 
-                            control_files = files_control(),
-                            control_climate_dl = climate_dl_control(),
-                            quiet = TRUE, verbose = FALSE, 
-                            arg_checks = TRUE){
+prep_cast_covariates <- function(main = ".", moons = NULL,
+                                 hist_cov = NULL, end_moon = NULL, 
+                                 lead_time = 12, min_lag = 6, 
+                                 cast_date = Sys.Date(), 
+                                 control_files = files_control(),
+                                 control_climate_dl = climate_dl_control(),
+                                 quiet = TRUE, verbose = FALSE, 
+                                 arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main, 
                                     control_files = control_files,
@@ -96,30 +92,55 @@ cast_covariates <- function(main = ".", moons = NULL,
   end_moon <- ifnull(end_moon, last_moon)
   min_lag <- ifna(min_lag, 0)
   hist_cov <- ifnull(hist_cov, prep_hist_covariates(main = main,
-                                                    end_moon = end_moon,
                                                     quiet = quiet,
                                                     arg_checks = arg_checks)) 
   if(last_moon == end_moon){
-    weather_cast <- cast_weather(main = main, moons = moons, 
-                                 hist_cov = hist_cov, end_moon = end_moon,
-                                 lead_time = lead_time, min_lag = min_lag,
-                                 cast_date = cast_date, 
-                                 control_climate_dl = control_climate_dl,
-                                 control_files = control_files, 
-                                 quiet = quiet,
-                                 verbose = verbose, arg_checks = TRUE)
-    ndvi_cast <- cast_ndvi(main = main, hist_cov = hist_cov,
-                           lead_time = lead_time, min_lag = min_lag,
+
+    win <- cast_window(main = main, moons = moons, cast_date = cast_date,
+                       lead_time = lead_time, min_lag = 6,
+                       arg_checks = arg_checks)
+    control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
+    control_climate_dl <- update_list(control_climate_dl, start = win$start, 
+                                     end = win$end)
+    download_climate_casts(main = main, 
+                           control_climate_dl = control_climate_dl, 
+                           quiet = quiet, verbose = verbose, 
                            arg_checks = arg_checks)
-    moon_match <- match(ndvi_cast$moon, weather_cast$moon)
-    cov_cast <- weather_cast[moon_match, ]
-    cov_cast$moon <- ndvi_cast$moon
-    cov_cast$ndvi <- ndvi_cast$ndvi
+
+    cast_cov <- read_climate_casts(main = main, 
+                                   control_climate_dl = control_climate_dl, 
+                                   arg_checks = arg_checks)
+    win_vec <- seq(win$start, win$end, 1)
+    win_length <- length(win_vec)
+    ndvi_fit <- auto.arima(hist_cov$ndvi)
+    ndvi_cast <- forecast(ndvi_fit, h = win_length)
+    ndvi_cast <- as.numeric(ndvi_cast$mean)
+
+
+    spots <- na.omit(match(win_vec, cast_cov$date))
+    incl <- win_vec %in% cast_cov$date
+    cast_cov$ndvi[spots] <- ndvi_cast[incl]
+
+    cast_cov <- add_moons_from_date(df = cast_cov, moons = moons, 
+                                   arg_checks = arg_checks)
+    cast_cov_tab <- summarize_daily_weather_by_moon(cast_cov)
+    cast_cov$cast_moon <- end_moon
+
     cast_moon <- end_moon
-    covariates_tab <- round(data.frame(cast_moon, cov_cast), 3)
+    covariates_tab <- data.frame(cast_moon, cast_cov_tab)
     lagged_lead <- lead_time - min_lag
+
+    out <- save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
+                           cast_date = cast_date, cast_cov = cast_cov,
+                           control_files = control_files,
+                           quiet = quiet, verbose = verbose,
+                           arg_checks = arg_checks)
+    
     out <- covariates_tab[1:lagged_lead, ]
+
+
   } else {
+
     target_moons <- target_moons(main = main, moons = moons,
                                  end_moon = end_moon, lead_time = lead_time, 
                                  date = cast_date, arg_checks = arg_checks)
@@ -141,103 +162,13 @@ cast_covariates <- function(main = ".", moons = NULL,
     out <- cov_cast2[which(made_in), ]
     out$date_made <- NULL
   }
-  out
-}
 
-
-#' @rdname cast_covariates
-#'
-#' @export
-#'
-prep_cast_covariates <- function(main = ".", moons = NULL,
-                                 hist_cov = NULL, end_moon = NULL, 
-                                 lead_time = 12, min_lag = 6, 
-                                 cast_date = Sys.Date(), 
-                                 control_climate_dl = climate_dl_control(),
-                                 control_files = files_control(),
-                                 quiet = TRUE, verbose = FALSE, 
-                                 arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  cast_cov <- cast_covariates(main = main, moons = moons, hist_cov = hist_cov, 
-                              end_moon = end_moon, lead_time = lead_time, 
-                              min_lag = min_lag, cast_date = cast_date, 
-                              control_files = control_files,
-                              control_climate_dl = control_climate_dl,
-                              quiet = quiet, verbose = verbose,
-                              arg_checks = arg_checks)
-  out <- save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
-                           cast_date = cast_date, cast_cov = cast_cov,
-                           control_files = control_files,
-                           quiet = quiet, verbose = verbose,
-                           arg_checks = arg_checks)
   out$cast_moon <- NULL
   out$source <- "cast"
   out
 }
 
-#' @rdname cast_covariates
-#'
-#' @export
-#'
-cast_ndvi <- function(main = ".", hist_cov = NULL, lead_time = 12,
-                      min_lag = 6, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  min_lag <- ifna(min_lag, 0)
-  lagged_lead <- lead_time - min_lag
-  ndvi_fit <- auto.arima(hist_cov$ndvi)
-  ndvi_cast <- forecast(ndvi_fit, h = lagged_lead)
-  max_moon <- max(hist_cov$moon)
-  data.frame(ndvi = as.numeric(ndvi_cast$mean), moon = max_moon+(1:lead_time))
-}
 
-#' @rdname cast_covariates
-#'
-#' @export
-#'
-cast_weather <- function(main = ".", moons = NULL,
-                         hist_cov = NULL, end_moon = NULL, lead_time = 12, 
-                         min_lag = 6, cast_date = Sys.Date(), 
-                         control_climate_dl = climate_dl_control(),
-                         control_files = files_control(),
-                         quiet = TRUE, verbose = TRUE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
-  target_moons <- target_moons(main = main, moons = moons,
-                              end_moon = end_moon, lead_time = lead_time, 
-                              date = cast_date, arg_checks = arg_checks)
-  moons0 <- trim_moons(moons = moons, target_moons = target_moons, 
-                       retain_target_moons = FALSE, arg_checks = arg_checks)
-  raw_path <- raw_path(main = main, arg_checks = arg_checks)
-
-  win <- cast_window(main = main, moons = moons, cast_date = cast_date,
-                     lead_time = lead_time, min_lag = 6,                                
-                     arg_checks = arg_checks)
-  control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
-  control_climate_dl <- update_list(control_climate_dl, start = win$start, 
-                                 end = win$end)
-
-  download_climate_casts(main = main, control_climate_dl = control_climate_dl, 
-                         quiet = quiet, verbose = verbose, 
-                         arg_checks = arg_checks)
-
-  weather_cast <- read_climate_casts(main = main, 
-                                     control_climate_dl = control_climate_dl, 
-                                     arg_checks = arg_checks)
-
-  hist_tab <- weather(level = "daily", fill = TRUE, path = raw_path)
-  hist_tab <- add_date_from_components(df = hist_tab, arg_checks = arg_checks)
-  cols_to_drop <- c("year", "month", "day", "battery_low", "locally_measured")
-  cols_in <- !(colnames(hist_tab) %in% cols_to_drop)
-  hist_tab <- hist_tab[ , cols_in]
-  cov_table <- combine_hist_and_cast(hist_tab = hist_tab, 
-                                     cast_tab = weather_cast, 
-                                     arg_checks = arg_checks)
-  cov_table <- add_moons_from_date(df = cov_table, moons = moons, 
-                                   arg_checks = arg_checks)
-  summarize_daily_weather_by_moon(cov_table)
-}
 
 
 #' @rdname cast_covariates
@@ -272,7 +203,12 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
                                     control_files = control_files,
                                     quiet = quiet, verbose = verbose, 
                                     arg_checks = arg_checks)
+  if(!("date" %in% colnames(hist_cast))){
+    hist_cast$date <- NA
+  }
+  
   out <- rbind(hist_cast, new_cast)
+  out$date <- as.character(out$date)
   out_path <- file_path(main = main, sub = "data", 
                         files = control_files$filename_cov_casts,
                         arg_checks = arg_checks)
