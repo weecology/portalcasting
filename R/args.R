@@ -296,7 +296,7 @@ check_args <- function(arg_checks = TRUE){
   fun_call <- match.call.defaults(definition = sys.function(-1), 
                                   call = sys.call(-1))
   fun_class <- class(as.list(fun_call)[[1]])
-  if(fun_class == "name"){  
+  if(fun_class == "name" | fun_class == "call"){  
     fun_name <- as.list(fun_call)[[1]]
   } else if(fun_class == "function"){
 
