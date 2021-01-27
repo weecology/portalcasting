@@ -259,7 +259,7 @@ summarize_daily_weather_by_moon <- function(x){
 
     nn <- na.omit(x$ndvi[moons_in])
     if(length(nn) > 0){
-      ndvi[i] <- sum(pp, na.rm = TRUE)
+      ndvi[i] <- sum(nn, na.rm = TRUE)
     } else{
       ndvi[i] <- NA
     }
