@@ -90,7 +90,7 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
   moon_in <- out$moon >= start_moon
   which_na_rows <- which(na_rows & moon_in)
   nna_rows <- length(which_na_rows)
-  if(any(na_rows)){
+  if(nna_rows > 0){
 
     cov_casts <- read_covariate_casts(main = main, 
                                       control_files = control_files, 
