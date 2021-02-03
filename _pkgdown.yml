@@ -109,7 +109,6 @@ reference:
       - cast_weather
       - prep_cast_covariates
       - prep_hist_covariates
-      - prep_weather_data
       - summarize_daily_weather_by_moon
   - title: "Rodent data functions"
     desc: "Functions that facilitate use of the Portal rodents data"

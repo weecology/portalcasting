@@ -133,6 +133,8 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param moons Lunar data \code{data.frame}. See \code{\link{prep_moons}}.
+#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 

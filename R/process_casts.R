@@ -1,4 +1,64 @@
-
+#' @title Determine the start and end calendar dates for a cast window
+#'
+#' @description Based on the cast origin (\code{cast_date}), lead time
+#'  (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
+#'  the dates bracketing the requested window.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @return Named \code{list} with elements \code{start} and \code{end},
+#'  which are both \code{Dates}.
+#'
+#' @examples
+#'  \donttest{
+#'    create_dir()
+#'    fill_raw()
+#'    cast_window()
+#'  }
+#'
+#' @export
+#'
+cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
+                        lead_time = 12, min_lag = 6,
+                        control_files = files_control(), arg_checks = TRUE){
+  check_args(arg_checks)
+  moons <- ifnull(moons, read_moons(main = main, 
+                                    control_files = control_files,
+                                    arg_checks = arg_checks))
+  lagged_lead <- lead_time - min_lag
+  moons0 <- moons[moons$moondate < cast_date, ]
+  last_moon <- tail(moons0, 1)
+  last_moon$moondate <- as.Date(last_moon$moondate)
+  moons0x <- moons0
+  colnames(moons0x)[which(colnames(moons0x) == "moon")] <- "newmoonnumber"
+  colnames(moons0x)[which(colnames(moons0x) == "moondate")] <- "newmoondate"
+  future_moons <- get_future_moons(moons0x, num_future_moons = lead_time)
+  start_day <- as.Date(last_moon$moondate) + 1
+  end_day <- as.Date(future_moons$newmoondate[lead_time])
+  list(start = start_day, end = end_day)
+}
 
 #' @title Measure error/fit metrics for forecasts
 #' 

@@ -357,8 +357,9 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
 #' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
 #' 
 #' @examples
-#'  hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
-#'  cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+#'  hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
+#'  cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1),
+#'                         x = 101:106)
 #'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
 #'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
 #'
@@ -371,18 +372,21 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
   return_if_null(hist_tab, cast_tab)
   return_if_null(cast_tab, hist_tab)
 
-
+  hist_tab$x_source <- "hist"
+  cast_tab$x_source <- "cast"
   out <- rbind(hist_tab, cast_tab)
   in_out <- rep(TRUE, NROW(out))
-  dupes <- as.numeric(names(which(table(out$moon) > 1)))
+  dupes <- names(which(table(out[,column]) > 1))
 
   ndupes <- length(dupes) 
   if(ndupes > 0){
     for(i in 1:ndupes){
       which_duped <- which(out$moon == dupes[i])
 
-      which_duped_hist <- which(out$moon == dupes[i] & out$source == "hist")
-      which_duped_cast <- which(out$moon == dupes[i] & out$source == "cast") 
+      which_duped_hist <- which(as.character(out[,column]) == dupes[i] &
+                                out$x_source == "hist")
+      which_duped_cast <- which(as.character(out[,column]) == dupes[i] &
+                                out$x_source == "cast") 
 
       hist_dupe_NA <- any(is.na(out[which_duped_hist, ]))
       cast_dupe_NA <- any(is.na(out[which_duped_cast, ]))
@@ -393,7 +397,7 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
         } else{
           in_out[which_duped_hist] <- FALSE   
         }
-      } else if(winer == "cast"){
+      } else if(winner == "cast"){
         if(!cast_dupe_NA){
           in_out[which_duped_hist] <- FALSE
         } else{
@@ -402,7 +406,7 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
       }
     }
   }
-
+  out <- out[ , -which(colnames(out) == "x_source")]
   out[in_out, ]
 }
 
@@ -442,67 +446,7 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 }
 
 
-#' @title Determine the start and end calendar dates for a cast window
-#'
-#' @description Based on the cast origin (\code{cast_date}), lead time
-#'  (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
-#'  the dates bracketing the requested window.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
-#'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
-#'  covariate lag time used in any model.
-#'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
-#'
-#' @return Named \code{list} with elements \code{start} and \code{end},
-#'  which are both \code{Dates}.
-#'
-#' @examples
-#'  \donttest{
-#'    create_dir()
-#'    fill_raw()
-#'    cast_window()
-#'  }
-#'
-#' @export
-#'
-cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
-                        lead_time = 12, min_lag = 6,
-                        control_files = files_control(), arg_checks = TRUE){
-  check_args(arg_checks)
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
-  lagged_lead <- lead_time - min_lag
-  moons0 <- moons[moons$moondate < cast_date, ]
-  last_moon <- tail(moons0, 1)
-  last_moon$moondate <- as.Date(last_moon$moondate)
-  moons0x <- moons0
-  colnames(moons0x)[which(colnames(moons0x) == "moon")] <- "newmoonnumber"
-  colnames(moons0x)[which(colnames(moons0x) == "moondate")] <- "newmoondate"
-  future_moons <- get_future_moons(moons0x, num_future_moons = lead_time)
-  start_day <- as.Date(last_moon$moondate) + 1
-  end_day <- as.Date(future_moons$newmoondate[lead_time])
-  list(start = start_day, end = end_day)
-}
+
 
 #' @title Remove any specific incomplete entries as noted by an NA
 #'

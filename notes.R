@@ -7,23 +7,20 @@
 devtools::document()
 devtools::load_all()
 
-main <- "~/work_please"
+
+devtools::test()
+
+
+
+covr::package_coverage()
+
+main <- "~/what_nowfff"
 setup_dir(main)
 
+# set up is good to go!
+#
 
-
-
-do we use   
-
-remove_incompletes
-
-
-now anywhere else?
-
-
-
-need to manage covariate casts when not from 'today'
-
+# # tidying up # # 
 
 
 REMOVE FROM ALL DOCS

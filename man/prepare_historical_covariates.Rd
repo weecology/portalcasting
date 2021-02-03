@@ -11,6 +11,8 @@ prep_hist_covariates(main = ".", moons = NULL, quiet = TRUE, arg_checks = TRUE)
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
+\item{moons}{Lunar data \code{data.frame}. See \code{\link{prep_moons}}.}
+
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 

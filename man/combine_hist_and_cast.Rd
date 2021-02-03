@@ -39,8 +39,9 @@ A simple utility for combining a table of historical data
  or the other.
 }
 \examples{
- hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
- cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+ hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
+ cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1),
+                        x = 101:106)
  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
 

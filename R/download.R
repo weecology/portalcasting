@@ -102,7 +102,7 @@
 #'
 download <- function(name = NULL, type = NULL, url = NULL, 
                      concept_rec_id = NULL, rec_version = "latest", 
-                     rec_id = NULL, sep_char = ".",return_version = TRUE, 
+                     rec_id = NULL, sep_char = ".", return_version = TRUE, 
                      main = ".", sub = "raw", quiet = FALSE, 
                      verbose = FALSE, cleanup = TRUE, NULLname = FALSE, 
                      arg_checks = TRUE){
@@ -151,9 +151,12 @@ unzip_download <- function(name = NULL, zip_destin, main = ".",
   unzip_destins <- unzip_destins(name = name, zip_destin = zip_destin, 
                                  main = main, arg_checks = arg_checks)
   unzip(zip_destin, exdir = unzip_destins$initial)
-  file.rename(unzip_destins$with_archive, unzip_destins$final)
+  create(unzip_destins$final)
+  files_to_move <- list.files(unzip_destins$with_archive, full.names = TRUE)
+  file.copy(files_to_move, unzip_destins$final, recursive = TRUE)
   if(cleanup){
-    unlink(unzip_destins$initial, recursive = TRUE)
+    unlink(unzip_destins$with_archive, recursive = TRUE, force = TRUE)
+    unlink(unzip_destins$initial, recursive = TRUE, force = TRUE)
     unlink(zip_destin)
   }
 }
