@@ -55,6 +55,3 @@ test_that("fill_models adds the models to their folder", {
 })
 
 
-unlink(main_path(main = main), recursive = TRUE, force = TRUE)
-unlink(main_path(main = main), recursive = TRUE, force = TRUE)
-unlink(main_path(main = main), recursive = TRUE, force = TRUE)

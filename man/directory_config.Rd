@@ -17,7 +17,7 @@ write_directory_config(
 update_directory_config(
   main = ".",
   filename_config = "dir_config.yaml",
-  downloads_versions = downloads_versions,
+  downloads_versions = NULL,
   quiet = FALSE,
   arg_checks = TRUE
 )

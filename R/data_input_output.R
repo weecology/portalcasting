@@ -71,14 +71,16 @@ write_directory_config <- function(main = ".",
 #'
 update_directory_config <- function(main = ".", 
                                    filename_config = "dir_config.yaml",
-                                    downloads_versions = downloads_versions, 
+                                    downloads_versions = NULL, 
                                     quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   config_path <- file_path(main = main, files = filename_config)
   config <- read_directory_config(main = main, 
                                  filename_config = filename_config,
                                  quiet = quiet, arg_checks = arg_checks)
-  config$downloads_versions <- downloads_versions
+  if(!is.null(downloads_versions)){
+    config$downloads_versions <- downloads_versions
+  }
   yams <- as.yaml(config)
   writeLines(yams, con = config_path)  
   invisible(NULL)
