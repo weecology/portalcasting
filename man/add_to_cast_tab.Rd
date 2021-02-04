@@ -12,8 +12,7 @@ add_lead_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
 
 add_err_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
 
-add_covered_to_cast_tab(main = ".", cast_tab = NULL,
-  arg_checks = TRUE)
+add_covered_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
 
 add_obs_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
 }

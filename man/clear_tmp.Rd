@@ -4,8 +4,14 @@
 \alias{clear_tmp}
 \title{Remove files from the tmp subdirectory}
 \usage{
-clear_tmp(main = ".", bline = TRUE, quiet = FALSE, verbose = FALSE,
-  cleanup = TRUE, arg_checks = TRUE)
+clear_tmp(
+  main = ".",
+  bline = TRUE,
+  quiet = FALSE,
+  verbose = FALSE,
+  cleanup = TRUE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

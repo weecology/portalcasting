@@ -4,9 +4,9 @@ coverage:
   status:
     patch:
       default:
-        target: 95%
+        target: 50%
     project:
       default:
-        target: 95%
+        target: 50%
 
 comment: false

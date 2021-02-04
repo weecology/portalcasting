@@ -6,6 +6,7 @@
 \alias{sub_path}
 \alias{raw_path}
 \alias{casts_path}
+\alias{fits_path}
 \alias{data_path}
 \alias{models_path}
 \alias{tmp_path}
@@ -19,6 +20,8 @@ sub_path(main = ".", subs = NULL, arg_checks = TRUE)
 raw_path(main = ".", arg_checks = TRUE)
 
 casts_path(main = ".", arg_checks = TRUE)
+
+fits_path(main = ".", arg_checks = TRUE)
 
 data_path(main = ".", arg_checks = TRUE)
 
@@ -63,6 +66,12 @@ Produce paths for a forecasting directory. \cr \cr
   main_path()
   sub_path()
   sub_path(subs = "models")
+  raw_path()
+  data_path()
+  models_path()
+  fits_path()
+  casts_path()
+  tmp_path()
   file_path(".", "raw", "PortalData/Rodents/Portal_rodent_species.csv")
  }
 

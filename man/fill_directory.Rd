@@ -6,37 +6,80 @@
 \alias{fill_data}
 \alias{fill_models}
 \alias{fill_casts}
+\alias{fill_fits}
 \alias{fill_raw}
 \title{Fill a forecasting directory with basic components.}
 \usage{
-fill_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+fill_dir(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_data(main = ".", models = prefab_models(), end_moon = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+fill_data(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_models(main = ".", models = prefab_models(),
-  controls_model = NULL, control_files = files_control(),
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+fill_models(
+  main = ".",
+  models = prefab_models(),
+  controls_model = NULL,
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_casts(main = ".", control_files = files_control(),
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+fill_casts(
+  main = ".",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-fill_raw(main = ".", downloads = zenodo_downloads(c("1215988",
-  "833438")), only_if_missing = FALSE, control_files = files_control(),
-  quiet = FALSE, arg_checks = TRUE)
+fill_fits(
+  main = ".",
+  control_files = files_control(),
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
+
+fill_raw(
+  main = ".",
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  only_if_missing = FALSE,
+  control_files = files_control(),
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -111,7 +154,7 @@ checked using standard protocols via \code{\link{check_args}}. The
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
 
-\item{only_if_missing}{\code{logical} indicator if the content should
+\item{only_if_missing}{\code{logical} indicator if the     -  should
 be filled only if it is missing. Only used in \code{fill_raw}, where
 missingness is determined by \code{\link{verify_raw_data}}. Default
 is \code{FALSE}, which allows for control via \code{link{files_control}}'s
@@ -129,6 +172,8 @@ Fill the directory with foundational components. \cr \cr
   directory configuration metadata accordingly. \cr \cr
  \code{fill_casts} moves the historic casts from the archive into the 
   current directory. \cr \cr
+ \code{fill_fits} moves the historic fits from the archive into the 
+  current directory. \cr \cr
  \code{fill_models} writes out the model scripts to the models
   subdirectory. \cr \cr
  \code{fill_data} prepares model-ready data from the raw data.
@@ -143,6 +188,7 @@ Arguments input directly here take precedence over those in the
   fill_dir()
   fill_raw()
   fill_casts()
+  fill_fits()
   fill_models()
   fill_data()
  }

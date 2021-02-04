@@ -112,8 +112,8 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
 
 
   lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
-           na_conformer("speciescode")
+  sptab <- read.csv(lp, stringsAsFactors = FALSE)  
+  sptab <- na_conformer(sptab, "speciescode")
 
   if(ensemble){
     ecast_tab <- data.frame()
@@ -351,8 +351,8 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 
   cast_tab <- cast_tab[all_in, ]
   lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
-           na_conformer("speciescode")
+  sptab <- read.csv(lp, stringsAsFactors = FALSE)  
+  sptab <- na_conformer(sptab, "speciescode")
 
   if(ensemble){
     ecast_tab <- data.frame()
@@ -639,7 +639,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species <- ifnull(species, colnames(obs)[sp_col])
     moon <- ifnull(moon, unique(obs$moon))
-    obs <- obs[obs$moon %in% moon, species]
+    obs <- obs[obs$moon %in% moon, species, drop = FALSE]
     if(NROW(obs) == 0){
       stop("no observations available for requested plot", call. = FALSE) 
     } 
@@ -668,7 +668,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
 
   moon_month <- moons$month[moons$moon == moon]
   moon_year <- moons$year[moons$moon == moon]
-  title_date <- paste(month(moon_month, TRUE), moon_year, sep = " ")
+  title_date <- paste(month.abb[moon_month], moon_year, sep = " ")
   data_set_name <- gsub("_interp", " (interpolated)", data_set)
   model_name <- ifnull(model, casts_meta$model)
   title <- paste0(title_date, ", " , model_name, ", ", data_set_name)
@@ -893,8 +893,8 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
 
   lab <- list(text = "", font = 1)
   lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lp, stringsAsFactors = FALSE) %>% 
-           na_conformer("speciescode")
+  sptab <- read.csv(lp, stringsAsFactors = FALSE)  
+  sptab <- na_conformer(sptab, "speciescode")
   if (species == "total"){
     lab$text <- "Total Abundance"
     lab$font <- 1

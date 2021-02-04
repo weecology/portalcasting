@@ -4,8 +4,13 @@
 \alias{combine_hist_and_cast}
 \title{Combine a historical table and a cast table}
 \usage{
-combine_hist_and_cast(hist_tab = NULL, cast_tab = NULL,
-  winner = "hist", arg_checks = TRUE)
+combine_hist_and_cast(
+  hist_tab = NULL,
+  cast_tab = NULL,
+  winner = "hist",
+  column = "date",
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{hist_tab, cast_tab}{A pair of \code{data.frame}s with the same columns
@@ -14,7 +19,11 @@ them.}
 
 \item{winner}{\code{character} value either {"hist"} or \code{"cast"} to
 decide who wins any ties. In the typical portalcasting space, this is 
-kept at its default value throughout.}
+kept at its default value throughout. In the case of \code{NA} values,
+this will be overriden to use the entry that has no missing entries.}
+
+\item{column}{\code{character} indicating the column to use for identifying
+entries in combining.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
@@ -30,8 +39,9 @@ A simple utility for combining a table of historical data
  or the other.
 }
 \examples{
- hist_tab <- data.frame(date = Sys.Date(), x = 1:10)
- cast_tab <- data.frame(date = Sys.Date(), x = 101:110)
+ hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
+ cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1),
+                        x = 101:106)
  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
 

@@ -4,8 +4,7 @@
 \alias{last_census}
 \title{Determine the most recent data collection}
 \usage{
-last_census(main = ".", control_files = files_control(),
-  arg_checks = TRUE)
+last_census(main = ".", control_files = files_control(), arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

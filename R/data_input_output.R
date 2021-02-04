@@ -11,7 +11,7 @@
 #'  \code{dir_config.yaml} file; presently only adding the versions of the
 #'  downloaded data from within \code{\link{fill_raw}} (the only place it is
 #'  and should be called from. \cr \cr
-#'  \code{read_directory_config} reads contents of the \code{dir_config.yaml} 
+#'  \code{read_directory_config} reads     - s of the \code{dir_config.yaml} 
 #'  file into the R session.
 #'
 #' @param main \code{character} value of the name of the main component of
@@ -71,14 +71,16 @@ write_directory_config <- function(main = ".",
 #'
 update_directory_config <- function(main = ".", 
                                    filename_config = "dir_config.yaml",
-                                    downloads_versions = downloads_versions, 
+                                    downloads_versions = NULL, 
                                     quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   config_path <- file_path(main = main, files = filename_config)
   config <- read_directory_config(main = main, 
                                  filename_config = filename_config,
                                  quiet = quiet, arg_checks = arg_checks)
-  config$downloads_versions <- downloads_versions
+  if(!is.null(downloads_versions)){
+    config$downloads_versions <- downloads_versions
+  }
   yams <- as.yaml(config)
   writeLines(yams, con = config_path)  
   invisible(NULL)

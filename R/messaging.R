@@ -86,6 +86,9 @@ messageq_break <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
 #'  \code{fill_casts_message} creates the final message to be used in 
 #'   \code{\link{fill_casts}} that relays the number, and optionally the
 #'   specific names, of the files moved.
+#'  \code{fill_fits_message} creates the final message to be used in 
+#'   \code{\link{fill_fits}} that relays the number, and optionally the
+#'   specific names, of the files moved.
 #'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. 
@@ -136,6 +139,7 @@ messageq_break <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
 #'  fill_casts_message("xx.csv", TRUE)
 #'  fill_casts_message(c("xx.csv", "yy.R"), c(TRUE, FALSE), 
 #'                           verbose = TRUE)
+#'  fill_fits_message("xx.csv", TRUE)
 #'
 #' @name portalcast_messages
 #'
@@ -358,5 +362,37 @@ fill_casts_message <- function(files = NULL, movedTF = NULL, quiet = FALSE,
 
 
 
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+fill_fits_message <- function(files = NULL, movedTF = NULL, quiet = FALSE,
+                              verbose = FALSE, arg_checks = TRUE){
 
+  check_args(arg_checks = arg_checks)
+  return_if_null(files)
+  moved <- basename(files[movedTF])
+  not_moved <- basename(files[!movedTF])
+  n_moved <- length(moved)
+  n_not_moved <- length(not_moved)
+  msg1 <- NULL
+  msg2 <- NULL
+  if(n_moved > 0){
+    msg1 <- c(msg1, "moved:", moved)
+    msg2 <- paste0(msg2, n_moved, " fits files moved")
+  }
+  if(n_not_moved > 0){
+    msg1 <- c(msg1, "not moved: ", not_moved)
+    if(n_moved > 0){
+      msg2 <- paste(msg2, ", ")
+    }
+    msg2 <- paste0(msg2, n_moved, " fits files not moved")
+  }
+  if(!verbose){   
+    msg1 <- NULL 
+  }
+  
+  msg <- c(msg1, paste0("   **", msg2, "**"))
+  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+}
 

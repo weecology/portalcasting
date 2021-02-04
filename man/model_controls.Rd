@@ -6,14 +6,26 @@
 \alias{extract_data_sets}
 \title{Produce the control lists for models}
 \usage{
-model_controls(models = NULL, controls_model = NULL, quiet = FALSE,
-  arg_checks = TRUE)
+model_controls(
+  models = NULL,
+  controls_model = NULL,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
-extract_min_lag(models = prefab_models(), controls_model = NULL,
-  quiet = FALSE, arg_checks = TRUE)
+extract_min_lag(
+  models = prefab_models(),
+  controls_model = NULL,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
-extract_data_sets(models = prefab_models(), controls_model = NULL,
-  quiet = FALSE, arg_checks = TRUE)
+extract_data_sets(
+  models = prefab_models(),
+  controls_model = NULL,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{models}{\code{character} vector of name(s) of model(s) whose 

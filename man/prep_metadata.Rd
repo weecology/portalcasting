@@ -4,13 +4,26 @@
 \alias{prep_metadata}
 \title{Prepare a model-running metadata list}
 \usage{
-prep_metadata(main = ".", models = prefab_models(), data_sets = NULL,
-  moons = NULL, rodents = NULL, covariates = NULL, end_moon = NULL,
-  start_moon = 217, lead_time = 12, min_lag = NULL,
-  cast_date = Sys.Date(), confidence_level = 0.95,
-  controls_model = NULL, controls_rodents = NULL,
-  control_files = files_control(), quiet = TRUE, verbose = FALSE,
-  arg_checks = TRUE)
+prep_metadata(
+  main = ".",
+  models = prefab_models(),
+  data_sets = NULL,
+  moons = NULL,
+  rodents = NULL,
+  covariates = NULL,
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  min_lag = NULL,
+  cast_date = Sys.Date(),
+  confidence_level = 0.95,
+  controls_model = NULL,
+  controls_rodents = NULL,
+  control_files = files_control(),
+  quiet = TRUE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

@@ -4,9 +4,13 @@
 \alias{trim_moons}
 \title{Trim a moons table based on target moons}
 \usage{
-trim_moons(moons = NULL, target_moons = NULL,
-  retain_target_moons = TRUE, target_cols = c("moon", "moondate",
-  "period", "censusdate"), arg_checks = TRUE)
+trim_moons(
+  moons = NULL,
+  target_moons = NULL,
+  retain_target_moons = TRUE,
+  target_cols = c("moon", "moondate", "period", "censusdate"),
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}

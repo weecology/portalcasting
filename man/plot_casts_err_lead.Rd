@@ -4,10 +4,18 @@
 \alias{plot_casts_err_lead}
 \title{Plot the forecast error as a function of lead time}
 \usage{
-plot_casts_err_lead(main = ".", cast_ids = NULL, cast_tab = NULL,
-  end_moons = NULL, models = NULL, ensemble = TRUE,
-  data_set = "controls", include_interp = TRUE, species = NULL,
-  arg_checks = TRUE)
+plot_casts_err_lead(
+  main = ".",
+  cast_ids = NULL,
+  cast_tab = NULL,
+  end_moons = NULL,
+  models = NULL,
+  ensemble = TRUE,
+  data_set = "controls",
+  include_interp = TRUE,
+  species = NULL,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

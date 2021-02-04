@@ -14,6 +14,7 @@
 \alias{model_running_message}
 \alias{model_done_message}
 \alias{fill_casts_message}
+\alias{fill_fits_message}
 \title{Specific message functions}
 \usage{
 version_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
@@ -24,28 +25,50 @@ portalcast_goodbye(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
 sandbox_welcome(main = ".", quiet = FALSE, arg_checks = TRUE)
 
-creation_message(main = ".", bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+creation_message(main = ".", bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
-setup_completion_message(bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+setup_completion_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
-data_readying_message(end_moon = NULL, bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+data_readying_message(
+  end_moon = NULL,
+  bline = TRUE,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
-data_resetting_message(bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+data_resetting_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
-models_running_message(end_moon = NULL, bline = TRUE, quiet = FALSE,
-  arg_checks = TRUE)
+models_running_message(
+  end_moon = NULL,
+  bline = TRUE,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
 model_running_message(model = NULL, quiet = FALSE, arg_checks = TRUE)
 
-model_done_message(model = NULL, run_status = NULL, quiet = FALSE,
-  arg_checks = TRUE)
+model_done_message(
+  model = NULL,
+  run_status = NULL,
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 
-fill_casts_message(files = NULL, movedTF = NULL, quiet = FALSE,
-  verbose = FALSE, arg_checks = TRUE)
+fill_casts_message(
+  files = NULL,
+  movedTF = NULL,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
+
+fill_fits_message(
+  files = NULL,
+  movedTF = NULL,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{bline}{\code{logical} indicator if horizontal break lines should be
@@ -100,6 +123,9 @@ Messaging functions:
  \code{fill_casts_message} creates the final message to be used in 
   \code{\link{fill_casts}} that relays the number, and optionally the
   specific names, of the files moved.
+ \code{fill_fits_message} creates the final message to be used in 
+  \code{\link{fill_fits}} that relays the number, and optionally the
+  specific names, of the files moved.
 }
 \examples{
  portalcast_welcome()
@@ -116,5 +142,6 @@ Messaging functions:
  fill_casts_message("xx.csv", TRUE)
  fill_casts_message(c("xx.csv", "yy.R"), c(TRUE, FALSE), 
                           verbose = TRUE)
+ fill_fits_message("xx.csv", TRUE)
 
 }

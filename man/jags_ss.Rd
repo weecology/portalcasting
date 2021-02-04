@@ -4,10 +4,19 @@
 \alias{jags_ss}
 \title{Run a single-species JAGS model}
 \usage{
-jags_ss(main = ".", data_set = "all",
-  control_files = files_control(), control_runjags = runjags_control(),
-  jags_model = NULL, monitor = NULL, inits = NULL, lag = NA,
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+jags_ss(
+  main = ".",
+  data_set = "all",
+  control_files = files_control(),
+  control_runjags = runjags_control(),
+  jags_model = NULL,
+  monitor = NULL,
+  inits = NULL,
+  lag = NA,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

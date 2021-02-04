@@ -588,8 +588,9 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
       predictors <- NULL
       cast_predictors <- NULL
       if (!(is.null(unlist(m)))){
-        predictors <- select(covar_hist, unlist(m))
-        cast_predictors <- select(covar_cast, unlist(m))
+        cols_in <- unlist(m) 
+        predictors <- covar_hist[ , cols_in]
+        cast_predictors <- covar_cast[ , cols_in]
       }
       mods_i[[j]] <- tryCatch(tsglm(abund_s, model = past, distr = "poisson",
                                     xreg = predictors, link = "log"), 

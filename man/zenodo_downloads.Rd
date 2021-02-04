@@ -4,8 +4,12 @@
 \alias{zenodo_downloads}
 \title{Create a downloads list for zenodo downloads}
 \usage{
-zenodo_downloads(concept_rec_id = NULL, rec_version = "latest",
-  rec_id = NULL, arg_checks = TRUE)
+zenodo_downloads(
+  concept_rec_id = NULL,
+  rec_version = "latest",
+  rec_id = NULL,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{concept_rec_id}{Concept record identifier, a \code{character} value

@@ -2,6 +2,29 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.20.0](https://github.com/weecology/portalcasting/releases/tag/v0.20.0)
+*2021-02-04*
+
+### Stops saving model fits in the portalPredictions repository
+
+### Addresses issues with covariate data
+* Missing data from weather stations caused issues
+* Now if there is a missing set of data for a month of covariates, the saved covariate forecasts are used
+
+### Added `dm_controls` and `dm_controls_interp` to prefab data sets
+* For use in the basic single-species process models
+* Note lowercase name! Using capitals in the actual name of the data set creation will cause problems because `tolower` gets used elsewhere!
+
+### Patches issue with `check_args` when using `portalcasting::function_name()`
+
+### Tightens testing time
+
+# portalcasting 0.19.0
+*2020-10-28*
+
+### Patch moons
+* Addressing issues with updated dplyr
+
 # [portalcasting 0.18.3](https://github.com/weecology/portalcasting/releases/tag/v0.18.3)
 *2020-01-23*
 

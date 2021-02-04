@@ -114,7 +114,8 @@
 #'   \code{species_id} (if not \code{NULL}, must be within the species
 #'    produced by \code{rodent_spp("wtotal")}),
 #'   \code{sub} (must be one of the named sub directories: \code{"tmp"},
-#'    \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
+#'    \code{"raw"}, \code{"data"}, \code{"models"}, \code{"fits"}, or 
+#'    \code{"casts"}),
 #'   \code{time}, 
 #'   \code{title}, 
 #'   \code{type}, 
@@ -123,6 +124,9 @@
 #'    \code{"cast"}), 
 #'   \code{zip_destin}.
 #'
+#'  Must be length-1 \code{character} cannot be \code{NULL} or \code{NA}:
+#'   \code{column}
+#'
 #'  Must be \code{character} values, can be any length, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
 #'   \code{colnames},
@@ -130,7 +134,6 @@
 #'   \code{data}, 
 #'   \code{data_sets}, 
 #'   \code{downloads_versions},
-#'   \code{enquote_args}, 
 #'   \code{eval_args}, 
 #'   \code{factories},
 #'   \code{files}, 
@@ -147,7 +150,8 @@
 #'   \code{species} (if not \code{NULL}, must be all within the species
 #'    produced by \code{all_secies(total = TRUE)}),
 #'   \code{subs} (must all be one of the named sub directories: \code{"tmp"},
-#'    \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
+#'    \code{"raw"}, \code{"data"}, \code{"models"}, \code{"fits"}, or 
+#'    \code{"casts"}),
 #'   \code{target_cols}, 
 #'   \code{treatment} (if not \code{NULL}, must be \code{"control"})
 #'
@@ -292,7 +296,7 @@ check_args <- function(arg_checks = TRUE){
   fun_call <- match.call.defaults(definition = sys.function(-1), 
                                   call = sys.call(-1))
   fun_class <- class(as.list(fun_call)[[1]])
-  if(fun_class == "name"){  
+  if(fun_class == "name" | fun_class == "call"){  
     fun_name <- as.list(fun_call)[[1]]
   } else if(fun_class == "function"){
 
@@ -554,7 +558,7 @@ check_arg_list <- function(){
   avail_species <- c("BA", "DM", "DO", "DS", "NA", "NA.", "OL", "OT", "PB", 
                      "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", 
                      "RO", "SF", "SH", "SO", "total")
-  avail_subs <- c("casts", "models", "raw", "data", "tmp")
+  avail_subs <- c("casts", "models", "raw", "data", "fits", "tmp")
   avail_treatments <- c("control", "exclosure")
   avail_winners <- c("hist", "cast")
   avail_max_Es <- 1:24
@@ -583,6 +587,7 @@ check_arg_list <- function(){
     cleanup = arg_logical(),
     colname = arg_character(),
     colnames = arg_character(length = NULL),
+    column = arg_character(length = 1, null = FALSE, na = FALSE),
     concept_rec_id = arg_character(length = NULL),
     confidence_level = arg_zeroone(),
     control_model = arg_list(),

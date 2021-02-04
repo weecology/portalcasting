@@ -4,10 +4,18 @@
 \alias{plot_casts_cov_RMSE}
 \title{Plot the forecast coverage and RMSE}
 \usage{
-plot_casts_cov_RMSE(main = ".", cast_ids = NULL, cast_tab = NULL,
-  end_moons = NULL, models = NULL, ensemble = TRUE,
-  data_set = NULL, include_interp = TRUE, species = NULL,
-  arg_checks = TRUE)
+plot_casts_cov_RMSE(
+  main = ".",
+  cast_ids = NULL,
+  cast_tab = NULL,
+  end_moons = NULL,
+  models = NULL,
+  ensemble = TRUE,
+  data_set = NULL,
+  include_interp = TRUE,
+  species = NULL,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

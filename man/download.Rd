@@ -9,26 +9,61 @@
 \alias{download_destin}
 \title{Download raw components of a portalcasting directory}
 \usage{
-download(name = NULL, type = NULL, url = NULL,
-  concept_rec_id = NULL, rec_version = "latest", rec_id = NULL,
-  sep_char = ".", return_version = TRUE, main = ".", sub = "raw",
-  quiet = FALSE, verbose = FALSE, cleanup = TRUE, NULLname = FALSE,
-  arg_checks = TRUE)
+download(
+  name = NULL,
+  type = NULL,
+  url = NULL,
+  concept_rec_id = NULL,
+  rec_version = "latest",
+  rec_id = NULL,
+  sep_char = ".",
+  return_version = TRUE,
+  main = ".",
+  sub = "raw",
+  quiet = FALSE,
+  verbose = FALSE,
+  cleanup = TRUE,
+  NULLname = FALSE,
+  arg_checks = TRUE
+)
 
-unzip_download(name = NULL, zip_destin, main = ".", cleanup = TRUE,
-  arg_checks = TRUE)
+unzip_download(
+  name = NULL,
+  zip_destin,
+  main = ".",
+  cleanup = TRUE,
+  arg_checks = TRUE
+)
 
 unzip_destins(name = NULL, zip_destin, main = ".", arg_checks = TRUE)
 
-download_message(name = NULL, type = NULL, url = NULL,
-  rec_version = NULL, quiet = FALSE, verbose = FALSE,
-  arg_checks = TRUE)
+download_message(
+  name = NULL,
+  type = NULL,
+  url = NULL,
+  rec_version = NULL,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-download_url(type = NULL, url = NULL, concept_rec_id = NULL,
-  rec_version = "latest", rec_id = NULL, arg_checks = TRUE)
+download_url(
+  type = NULL,
+  url = NULL,
+  concept_rec_id = NULL,
+  rec_version = "latest",
+  rec_id = NULL,
+  arg_checks = TRUE
+)
 
-download_destin(name = NULL, source_url, main = ".", sub = "raw",
-  sep_char = ".", arg_checks = TRUE)
+download_destin(
+  name = NULL,
+  source_url,
+  main = ".",
+  sub = "raw",
+  sep_char = ".",
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{name}{\code{character} value of the component's name, used to create

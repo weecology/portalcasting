@@ -85,6 +85,12 @@ path_no_ext <- function(path, sep_char = ".", arg_checks = TRUE){
 #'   main_path()
 #'   sub_path()
 #'   sub_path(subs = "models")
+#'   raw_path()
+#'   data_path()
+#'   models_path()
+#'   fits_path()
+#'   casts_path()
+#'   tmp_path()
 #'   file_path(".", "raw", "PortalData/Rodents/Portal_rodent_species.csv")
 #'  }
 #'
@@ -127,6 +133,14 @@ raw_path <- function(main = ".", arg_checks = TRUE){
 #'
 casts_path <- function(main = ".", arg_checks = TRUE){
   sub_path(main = main, subs = "casts", arg_checks = arg_checks)
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+fits_path <- function(main = ".", arg_checks = TRUE){
+  sub_path(main = main, subs = "fits", arg_checks = arg_checks)
 }
 
 #' @rdname paths

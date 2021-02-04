@@ -1,8 +1,9 @@
-context("Test prepare_models functions")
+context("model preparation functions")
 
 main <- "./testing"
 
-test_that("covariate_models", {
+test_that("covariate_models constructs the submodels", {
+
   ref <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),
               c("maxtemp", "mintemp", "precipitation", "ndvi"),
               c("mintemp", "maxtemp", "meantemp", "precipitation"),
@@ -17,17 +18,20 @@ test_that("covariate_models", {
   mods1 <- covariate_models()
   expect_equal(length(mods1), 11)
   expect_equal(mods1, ref)
+
 })
 
-test_that("verify_models", {
-  create_dir(main = "./testing")
-  fill_models(main = "./testing")
-  expect_message(verify_models(main = "./testing"))
-  expect_error(verify_models(main = "./testing", models = "1234")) 
+test_that("verify_models verifies that models or present or throws errors", {
+
+  fill_models(main = main)
+  expect_message(verify_models(main = main))
+  expect_error(verify_models(main = main, models = "1234")) 
   expect_error(verify_models(main = "./123"))
+
 })
 
-test_that("model_controls", {
+test_that("model_controls creates control lists", {
+
   expect_is(model_controls(prefab_models()), "list")
   expect_equal(length(model_controls(prefab_models())), 9)
   expect_is(model_controls(prefab_models(), 
@@ -45,14 +49,20 @@ test_that("model_controls", {
            "list")
 
   expect_message(model_controls("xx"))
+
 })
 
-test_that("prefab_models", {
-  expect_equal(length(prefab_models()), 9)
+test_that("prefab_models creates a vector of model names", {
+
+  pfm <- prefab_models()
+  expect_equal(length(pfm), 9)
+  expect_is(pfm, "character")
+
 })
 
 
-test_that("write_model", {
+test_that("write_model constructs model file", {
+
   expect_message(write_model("AutoArima", main = main))
   expect_message(write_model("AutoArima", main = main, 
                              covariatesTF = NULL, lag = NULL))
@@ -65,27 +75,31 @@ test_that("write_model", {
 
 })
 
-test_that("update_models", {
+test_that("update_models updates a script", {
+
    cm <- model_control(name = "AutoArima", data_sets = c("all", "controls"))
-   update_models(main = main, controls_model = cm)
+   expect_message(update_models(main = main, controls_model = cm))
+
 })
 
-test_that("model_template", {
+test_that("model_template produces lines for a model script", {
 
-  temp1 <- model_template("AutoArima", main = "./testing")
+  temp1 <- model_template("AutoArima", main = main)
   expect_is(temp1, "character")
-  expect_equal(length(temp1), 6)
+  expect_equal(length(temp1), 8)
 
-  temp2 <- model_template("pevGARCH", main = "./testing")
+  temp2 <- model_template("pevGARCH", main = main)
   expect_is(temp2, "character")
-  expect_equal(length(temp2), 6)
+  expect_equal(length(temp2), 8)
 
 })
 
-test_that("control_list_arg", {
+test_that("control_list_arg creates args for model scripts", {
+
   expect_is(control_list_arg(runjags_control(nchains = 3), "runjags_control"),
             "character")
   expect_is(control_list_arg(runjags_control(nchains = NULL), 
                              "runjags_control"),
             "character")
+
 })

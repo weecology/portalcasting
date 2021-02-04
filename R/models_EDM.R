@@ -24,8 +24,10 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   moons_to_cast <- metadata$rodent_cast_moons
   num_moons <- length(moons_to_cast)
   CL <- metadata$confidence_level
-  # Calculate the probability for estimating the prediction interval from the CL
-  # CL gives the probabilty range we want to cover, so to get the +/- from qnorm
+  # Calculate the probability for estimating the prediction interval
+  #   from the CL
+  # CL gives the probabilty range we want to cover, so to get the +/- 
+  #  from qnorm
   # we want 1 - ((1 - CL) / 2) == 0.5 + CL/2
   pr_for_CL <- 0.5 + CL/2
   
@@ -52,7 +54,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
     abund_s <- rodents_table[, c("moon", s)]
     
     n <- nrow(abund_s)
-    models <- rEDM::simplex(abund_s,
+    models <- simplex(abund_s,
                             lib = c(1, n),
                             pred = c(1, n),
                             E = E_range,
@@ -73,7 +75,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
     # make forecasts
     for (i in seq_along(moons_to_cast))
     {
-      model <- rEDM::simplex(pred_data,
+      model <- simplex(pred_data,
                              lib = c(1, n),
                              pred = c(n + i - best_e, n + i),
                              E = best_e,
@@ -83,8 +85,10 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
       pred_row <- model$model_out[[1]][best_e, ]
       pt_est <- pred_row$pred
       preds$estimate[i] <- pt_est
-      preds$lower_pi[i] <- qnorm(1 - pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
-      preds$upper_pi[i] <- qnorm(pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
+      preds$lower_pi[i] <- qnorm(1 - pr_for_CL, mean = pt_est, 
+                                 sd = sqrt(pred_row$pred_var))
+      preds$upper_pi[i] <- qnorm(pr_for_CL, mean = pt_est, 
+                                 sd = sqrt(pred_row$pred_var))
       pred_data[n + i, s] <- pt_est
     }
     
@@ -98,14 +102,16 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
                              data_set = data_set, 
                              species = species_name, 
                              estimate = preds$estimate, 
-                             lower_pi = preds$lower_pi, upper_pi = preds$upper_pi, 
+                             lower_pi = preds$lower_pi, 
+                             upper_pi = preds$upper_pi, 
                              start_moon = metadata$start_moon, 
                              end_moon = metadata$end_moon, 
                              stringsAsFactors = FALSE)
     
     # model_aic <- NA
     # 
-    # aic_s <- data.frame(date = metadata$forecast_date, currency = "abundance", 
+    # aic_s <- data.frame(date = metadata$forecast_date, 
+    #            currency = "abundance", 
     #            model = "EDM", level = level, species = ss, aic = model_aic, 
     #            fit_start_newmoon = min(abundances$moons),
     #            fit_end_newmoon = max(abundances$moons),
@@ -155,8 +161,10 @@ GPEDM <- function(main = ".", data_set = "all_interp",
   moons_to_cast <- metadata$rodent_cast_moons
   num_moons <- length(moons_to_cast)
   CL <- metadata$confidence_level
-  # Calculate the probability for estimating the prediction interval from the CL
-  # CL gives the probabilty range we want to cover, so to get the +/- from qnorm
+  # Calculate the probability for estimating the prediction interval
+  #   from the CL
+  # CL gives the probabilty range we want to cover, so to get the +/- 
+  #   from qnorm
   # we want 1 - ((1 - CL) / 2) == 0.5 + CL/2
   pr_for_CL <- 0.5 + CL/2
   
@@ -192,7 +200,7 @@ GPEDM <- function(main = ".", data_set = "all_interp",
         ts_var > 2 * .Machine$double.eps)
     {
       n <- nrow(abund_s)
-      models <- rEDM::tde_gp(abund_s, 
+      models <- tde_gp(abund_s, 
                              lib = c(1, n), 
                              pred = c(1, n), 
                              E = E_range, 
@@ -212,7 +220,7 @@ GPEDM <- function(main = ".", data_set = "all_interp",
       # make forecasts
       for (i in seq_along(moons_to_cast))
       {
-        model <- rEDM::tde_gp(pred_data,
+        model <- tde_gp(pred_data,
                               lib = c(1, n),
                               pred = c(n + i - best_e, n + i),
                               E = best_e,
@@ -226,8 +234,10 @@ GPEDM <- function(main = ".", data_set = "all_interp",
         pred_row <- model$model_out[[1]][best_e, ]
         pt_est <- pred_row$pred
         preds$estimate[i] <- pt_est
-        preds$lower_pi[i] <- qnorm(1 - pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
-        preds$upper_pi[i] <- qnorm(pr_for_CL, mean = pt_est, sd = sqrt(pred_row$pred_var))
+        preds$lower_pi[i] <- qnorm(1 - pr_for_CL, mean = pt_est, 
+                                   sd = sqrt(pred_row$pred_var))
+        preds$upper_pi[i] <- qnorm(pr_for_CL, mean = pt_est, 
+                                   sd = sqrt(pred_row$pred_var))
         pred_data[n + i, s] <- pt_est
       }
     }
@@ -242,7 +252,8 @@ GPEDM <- function(main = ".", data_set = "all_interp",
                              data_set = data_set, 
                              species = species_name, 
                              estimate = preds$estimate, 
-                             lower_pi = preds$lower_pi, upper_pi = preds$upper_pi, 
+                             lower_pi = preds$lower_pi,
+                             upper_pi = preds$upper_pi, 
                              start_moon = metadata$start_moon, 
                              end_moon = metadata$end_moon, 
                              stringsAsFactors = FALSE)

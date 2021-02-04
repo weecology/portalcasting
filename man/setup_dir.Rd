@@ -6,32 +6,60 @@
 \alias{setup_sandbox}
 \title{Create and fill a forecasting directory}
 \usage{
-setup_dir(main = ".", models = prefab_models(), end_moon = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+setup_dir(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), bline = TRUE,
-  quiet = FALSE, verbose = FALSE, arg_checks = TRUE)
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  bline = TRUE,
+  quiet = FALSE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 
-setup_production(main = ".", models = prefab_models(),
-  end_moon = NULL, start_moon = 217, lead_time = 12,
-  cast_date = Sys.Date(), confidence_level = 0.95,
-  controls_model = NULL, controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
-  control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = TRUE, arg_checks = TRUE)
-
-setup_sandbox(main = ".", models = prefab_models(), end_moon = NULL,
-  start_moon = 217, lead_time = 12, confidence_level = 0.95,
-  cast_date = Sys.Date(), controls_model = NULL,
+setup_production(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")), quiet = FALSE,
-  verbose = TRUE, arg_checks = FALSE)
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  quiet = FALSE,
+  verbose = TRUE,
+  arg_checks = TRUE
+)
+
+setup_sandbox(
+  main = ".",
+  models = prefab_models(),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  confidence_level = 0.95,
+  cast_date = Sys.Date(),
+  controls_model = NULL,
+  controls_rodents = rodents_controls(),
+  control_climate_dl = climate_dl_control(),
+  control_files = files_control(),
+  downloads = zenodo_downloads(c("1215988", "833438")),
+  quiet = FALSE,
+  verbose = TRUE,
+  arg_checks = FALSE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -113,7 +141,7 @@ many/most/all enclosed functions to not check any arguments using
 }
 \description{
 Combines \code{\link{create_dir}} and \code{\link{fill_dir}}
- to create a ready-to-run (via \code{\link{portalcast}}) when
+ to create a ready-to-run (via \code{\link{portalcast}}) directory where
  indicated. \cr \cr
  \code{setup_production} creates a standard production directory. \cr \cr
  \code{setup_sandbox} creates a sandboxing directory. \cr \cr

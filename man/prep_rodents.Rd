@@ -4,10 +4,18 @@
 \alias{prep_rodents}
 \title{Prepare a list of rodents data tables for forecasting}
 \usage{
-prep_rodents(main = ".", moons = NULL, data_sets = NULL,
-  end_moon = NULL, controls_rodents = NULL,
-  control_files = files_control(), ref_species = all_species(),
-  quiet = TRUE, verbose = FALSE, arg_checks = TRUE)
+prep_rodents(
+  main = ".",
+  moons = NULL,
+  data_sets = NULL,
+  end_moon = NULL,
+  controls_rodents = NULL,
+  control_files = files_control(),
+  ref_species = all_species(),
+  quiet = TRUE,
+  verbose = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

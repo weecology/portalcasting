@@ -5,12 +5,23 @@
 \alias{last_moon}
 \title{Determine specific newmoon numbers}
 \usage{
-target_moons(main = ".", moons = NULL, end_moon = NULL,
-  lead_time = 12, date = Sys.Date(), control_files = files_control(),
-  arg_checks = TRUE)
+target_moons(
+  main = ".",
+  moons = NULL,
+  end_moon = NULL,
+  lead_time = 12,
+  date = Sys.Date(),
+  control_files = files_control(),
+  arg_checks = TRUE
+)
 
-last_moon(main = ".", moons = NULL, date = Sys.Date(),
-  control_files = files_control(), arg_checks = TRUE)
+last_moon(
+  main = ".",
+  moons = NULL,
+  date = Sys.Date(),
+  control_files = files_control(),
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

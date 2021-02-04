@@ -5,10 +5,16 @@
 \title{Provide URLs for the Northwest Knowledge Network's North American
  Multi-Model Ensemble (NMME) climate forecasts}
 \usage{
-NMME_urls(start = Sys.Date(), end = as.Date("2050-01-01"),
-  model = "ENSMEAN", lat = 31.9555, lon = -109.0744,
-  freq = "daily", data = c("tasmin", "tasmean", "tasmax", "pr"),
-  arg_checks = TRUE)
+NMME_urls(
+  start = Sys.Date(),
+  end = as.Date("2050-01-01"),
+  model = "ENSMEAN",
+  lat = 31.9555,
+  lon = -109.0744,
+  freq = "daily",
+  data = c("tasmin", "tasmean", "tasmax", "pr"),
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{start, end}{\code{Date} for the start and end of the cast.}

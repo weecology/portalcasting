@@ -147,7 +147,8 @@ Argument details used for checking are produced simply via
   \code{species_id} (if not \code{NULL}, must be within the species
    produced by \code{rodent_spp("wtotal")}),
   \code{sub} (must be one of the named sub directories: \code{"tmp"},
-   \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
+   \code{"raw"}, \code{"data"}, \code{"models"}, \code{"fits"}, or 
+   \code{"casts"}),
   \code{time}, 
   \code{title}, 
   \code{type}, 
@@ -156,6 +157,9 @@ Argument details used for checking are produced simply via
    \code{"cast"}), 
   \code{zip_destin}.
 
+ Must be length-1 \code{character} cannot be \code{NULL} or \code{NA}:
+  \code{column}
+
  Must be \code{character} values, can be any length, can be \code{NULL}, 
  but cannot be \code{NA}:
   \code{colnames},
@@ -163,7 +167,6 @@ Argument details used for checking are produced simply via
   \code{data}, 
   \code{data_sets}, 
   \code{downloads_versions},
-  \code{enquote_args}, 
   \code{eval_args}, 
   \code{factories},
   \code{files}, 
@@ -180,7 +183,8 @@ Argument details used for checking are produced simply via
   \code{species} (if not \code{NULL}, must be all within the species
    produced by \code{all_secies(total = TRUE)}),
   \code{subs} (must all be one of the named sub directories: \code{"tmp"},
-   \code{"raw"}, \code{"data"}, \code{"models"}, or \code{"casts"}),
+   \code{"raw"}, \code{"data"}, \code{"models"}, \code{"fits"}, or 
+   \code{"casts"}),
   \code{target_cols}, 
   \code{treatment} (if not \code{NULL}, must be \code{"control"})
 

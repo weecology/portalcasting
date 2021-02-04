@@ -4,8 +4,7 @@
 \alias{verify_raw_data}
 \title{Verify that the raw data folder exists}
 \usage{
-verify_raw_data(main = ".", raw_data = "PortalData",
-  arg_checks = TRUE)
+verify_raw_data(main = ".", raw_data = "PortalData", arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of

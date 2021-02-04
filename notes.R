@@ -1,11 +1,58 @@
+# working here on portalcasting, 
+
+####   roll through all the code front to back for use
+####    then update tests
+
+
 devtools::document()
 devtools::load_all()
 
-main <- "./model_testing"
+
+devtools::test()
+
+
+
+covr::package_coverage()
+
+main <- "~/what_nowfff"
 setup_dir(main)
 
+# set up is good to go!
+#
+
+# # tidying up # # 
+
+
+REMOVE FROM ALL DOCS
+
+prep_weather_data
+
+
+
+  colnames(out)[which(colnames(out) == "newmoonnumber")] <- "moon"
+  if (!is.null(end_moon)){
+    out <- out[which(out$moon <= end_moon), ]
+  }
+
+
+  cols_to_drop <- c("year", "month", "day", "battery_low", "locally_measured")
+  cols_in <- !(colnames(hist_tab) %in% cols_to_drop)
+  hist_cov <- hist_cov[ , cols_in]
+
+  cov_table <- add_moons_from_date(df = cov_table, moons = moons, 
+                                   arg_checks = arg_checks)
+
+
+
+
+portalcast(main)
 
 rt <- read_rodents_table(main, "all")
+
+
+
+
+
 head(rt)
 rt$total
 plot(rt$SH~rt$moon)
@@ -21,7 +68,6 @@ plot(pgr~m1)
 
 
 
-summarize_rodent_data("./model_testing/raw")
 
 
 head(rt)

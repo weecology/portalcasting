@@ -4,15 +4,28 @@
 \alias{rodents_control}
 \title{Create a control lists for generating a rodents data table}
 \usage{
-rodents_control(name = "name", species = base_species(),
-  total = TRUE, interpolate = FALSE, clean = FALSE,
-  type = "Rodents", level = "Site", plots = "all",
-  treatment = NULL, min_plots = 24, min_traps = 1,
-  output = "abundance", fillweight = (output != "abundance"),
-  unknowns = FALSE, time = "newmoon", na_drop = FALSE,
-  zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site
-  = TRUE), effort = FALSE, filename = paste0("rodents_", name, ".csv"),
-  arg_checks = TRUE)
+rodents_control(
+  name = "name",
+  species = base_species(),
+  total = TRUE,
+  interpolate = FALSE,
+  clean = FALSE,
+  type = "Rodents",
+  level = "Site",
+  plots = "all",
+  treatment = NULL,
+  min_plots = 24,
+  min_traps = 1,
+  output = "abundance",
+  fillweight = (output != "abundance"),
+  unknowns = FALSE,
+  time = "newmoon",
+  na_drop = FALSE,
+  zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site = TRUE),
+  effort = FALSE,
+  filename = paste0("rodents_", name, ".csv"),
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{name}{\code{character} value of the rodent data set name

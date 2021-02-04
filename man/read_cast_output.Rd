@@ -46,12 +46,7 @@ default), the most recently generated cast's output is read in. \cr
 }
 \description{
 Read in the various output files of a cast or casts in the 
- casts sub directory. \cr \cr
- \code{read_cast_tab} retrieves the \code{cast_tab}. \cr \cr
- \code{read_cast_tabs} combines one or more \code{cast_tab}s. \cr \cr
- \code{read_cast_metadata} retrieves the \code{cast_metdata}. \cr \cr
- \code{read_model_fits} retrieves the \code{model_fits}. \cr \cr
- \code{read_model_casts} retrieves the \code{model_casts}.
+ casts sub directory.
 }
 \examples{
  \donttest{

@@ -7,6 +7,8 @@
 #'   directory configuration metadata accordingly. \cr \cr
 #'  \code{fill_casts} moves the historic casts from the archive into the 
 #'   current directory. \cr \cr
+#'  \code{fill_fits} moves the historic fits from the archive into the 
+#'   current directory. \cr \cr
 #'  \code{fill_models} writes out the model scripts to the models
 #'   subdirectory. \cr \cr
 #'  \code{fill_data} prepares model-ready data from the raw data.
@@ -78,7 +80,7 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param only_if_missing \code{logical} indicator if the content should
+#' @param only_if_missing \code{logical} indicator if the     -  should
 #'  be filled only if it is missing. Only used in \code{fill_raw}, where
 #'  missingness is determined by \code{\link{verify_raw_data}}. Default
 #'  is \code{FALSE}, which allows for control via \code{link{files_control}}'s
@@ -101,6 +103,7 @@
 #'   fill_dir()
 #'   fill_raw()
 #'   fill_casts()
+#'   fill_fits()
 #'   fill_models()
 #'   fill_data()
 #'  }
@@ -128,6 +131,8 @@ fill_dir <- function(main = ".", models = prefab_models(),
            control_files = control_files, arg_checks = arg_checks)
   fill_casts(main = main, quiet = quiet, verbose = verbose, 
              control_files = control_files, arg_checks = arg_checks)
+  fill_fits(main = main, quiet = quiet, verbose = verbose, 
+            control_files = control_files, arg_checks = arg_checks)
   fill_models(main = main, models = models, controls_model = controls_model, 
               quiet = quiet, verbose = verbose, control_files = control_files,
               arg_checks = arg_checks)
@@ -149,7 +154,7 @@ fill_dir <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 fill_data <- function(main = ".", models = prefab_models(),
-                      end_moon = NULL,start_moon = 217, lead_time = 12,
+                      end_moon = NULL, start_moon = 217, lead_time = 12,
                       confidence_level = 0.95, cast_date = Sys.Date(), 
                       controls_model = NULL,
                       controls_rodents = rodents_controls(), 
@@ -166,13 +171,10 @@ fill_data <- function(main = ".", models = prefab_models(),
                                  controls_model = controls_model, 
                                  quiet = quiet, arg_checks = arg_checks)
 
-  raw_data_present <- verify_raw_data(main = main, 
-                                      raw_data = control_files$raw_data, 
-                                      arg_checks = arg_checks)
-  if(!raw_data_present){
-    fill_raw(main = main, downloads = downloads, quiet = quiet, 
-             control_files = control_files, arg_checks = arg_checks)
-  }
+  fill_raw(main = main, downloads = downloads, only_if_missing = TRUE, 
+           quiet = quiet, control_files = control_files, 
+           arg_checks = arg_checks)
+
   messageq(" -Adding data files to data subdirectory", quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
                        cast_date = cast_date, 
@@ -186,8 +188,8 @@ fill_data <- function(main = ".", models = prefab_models(),
                          control_files = control_files, 
                          arg_checks = arg_checks)
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
-                            lead_time = lead_time, min_lag = min_lag, 
-                            cast_date = cast_date, 
+                            start_moon = start_moon, lead_time = lead_time, 
+                            min_lag = min_lag, cast_date = cast_date, 
                             control_climate_dl = control_climate_dl,
                             quiet = quiet, control_files = control_files,
                             arg_checks = arg_checks)
@@ -247,13 +249,38 @@ fill_casts <- function(main = ".", control_files = files_control(),
                          arg_checks = arg_checks)
     arch_files <- list.files(archive, full.names = TRUE)
   }
-  arch_files_local <- paste0(path_casts, arch_files)
   casts_folder <- casts_path(main = main, arg_checks = arg_checks)
   fc <- file.copy(arch_files, casts_folder, control_files$overwrite)
   casts_meta <- read_casts_metadata(main = main, quiet = quiet, 
                                     arg_checks = arg_checks)
   fill_casts_message(files = arch_files, movedTF = fc, quiet = !verbose,
                      verbose = verbose, arg_checks = arg_checks)
+  invisible(NULL)
+}
+
+#' @rdname fill_directory
+#'
+#' @export
+#'
+fill_fits <- function(main = ".", control_files = files_control(),
+                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  directory <- control_files$directory
+  path_fits <- paste0(directory, "/fits")
+  fits_folder <- fits_path(main = main, arg_checks = arg_checks)
+
+  archive <- file_path(main = main, sub = "raw", files = path_fits,
+                       arg_checks = arg_checks)
+  arch_files <- list.files(archive, full.names = TRUE)
+  if(length(arch_files) == 0){
+    arch_files <- NULL
+    fc <- FALSE
+  } else{
+    messageq(" -Filling fits folder with files from archive", quiet)
+    fc <- file.copy(arch_files, fits_folder, control_files$overwrite)
+  }
+  fill_fits_message(files = arch_files, movedTF = fc, quiet = !verbose,
+                    verbose = verbose, arg_checks = arg_checks)
   invisible(NULL)
 }
 
@@ -273,24 +300,42 @@ fill_raw <- function(main = ".",
   if(list_depth(downloads) == 1){
     downloads <- list(downloads)
   }
+  ndl <- length(downloads)
 
-  raw_data <- control_files$raw_data
-  raw_data_present <- verify_raw_data(main = main, raw_data = raw_data, 
-                                      arg_checks = arg_checks)
-  if(raw_data_present & only_if_missing){
-    return(invisible(NULL))
+  # this is very much patched together here, needs to be generalized
+  # we'll want to make it be so any directories can get downloaded, not 
+  # just these two
+  # and here is also where we'll want to verify versions to not update etc
+
+  raw_data_dir <- control_files$raw_data
+  raw_data_path <- file_path(main = main, sub = "raw", files = raw_data_dir, 
+                             arg_checks = arg_checks)
+  raw_data_pres <- file.exists(raw_data_path)
+
+  directory_dir <- control_files$directory
+  directory_path <- file_path(main = main, sub = "raw", files = directory_dir, 
+                             arg_checks = arg_checks)
+  directory_pres <- file.exists(directory_path)
+
+  downloads_yes <- c(!raw_data_pres, !directory_pres)
+  if(!only_if_missing){
+    downloads_yes <- rep(TRUE, ndl)
   }
 
+  ndlyes <- sum(downloads_yes)
+  if(ndlyes == 0){
+    return(invisible(NULL))
+  }
   messageq(" -Downloading raw files", quiet)
-  ndl <- length(downloads)
-  dl_vers <- rep(NA, ndl)
-  for(i in 1:ndl){
-    downloads[[i]]$cleanup <- ifnull(downloads[[i]]$cleanup, 
+  dl_vers <- rep(NA, ndlyes)
+  for(i in 1:ndlyes){
+    yes_i <- which(downloads_yes)[i]
+    downloads[[yes_i]]$cleanup <- ifnull(downloads[[yes_i]]$cleanup, 
                                      control_files$cleanup)
-    downloads[[i]]$main <- ifnull(downloads[[i]]$main, main)
-    downloads[[i]]$quiet <- ifnull(downloads[[i]]$quiet, quiet)
-    downloads[[i]]$sub <- "raw"
-    dl_vers[i] <- do.call(download, downloads[[i]])
+    downloads[[yes_i]]$main <- ifnull(downloads[[yes_i]]$main, main)
+    downloads[[yes_i]]$quiet <- ifnull(downloads[[yes_i]]$quiet, quiet)
+    downloads[[yes_i]]$sub <- "raw"
+    dl_vers[i] <- do.call(download, downloads[[yes_i]])
   }
   update_directory_config(main = main, downloads_versions = dl_vers,
                           quiet = quiet, arg_checks = arg_checks)

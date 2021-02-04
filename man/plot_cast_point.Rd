@@ -4,10 +4,20 @@
 \alias{plot_cast_point}
 \title{Plot predictions for a given point in time across multiple species}
 \usage{
-plot_cast_point(main = ".", cast_id = NULL, cast_groups = NULL,
-  data_set = NULL, model = NULL, end_moon = NULL, species = NULL,
-  moon = NULL, with_census = FALSE, control_files = files_control(),
-  quiet = FALSE, arg_checks = TRUE)
+plot_cast_point(
+  main = ".",
+  cast_id = NULL,
+  cast_groups = NULL,
+  data_set = NULL,
+  model = NULL,
+  end_moon = NULL,
+  species = NULL,
+  moon = NULL,
+  with_census = FALSE,
+  control_files = files_control(),
+  quiet = FALSE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
