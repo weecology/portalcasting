@@ -131,6 +131,7 @@ add_future_moons <- function(main = ".", moons = NULL, lead_time = 12,
   if(lead_time == 0){
     return(moons)
   }
+  moons$newmoondate <- moons$moondate
   future_moons <- get_future_moons(moons, lead_time)
   future_moons <- add_extra_future_moons(future_moons, cast_date)
   future_moons$newmoondate <- as.character(future_moons$newmoondate)
