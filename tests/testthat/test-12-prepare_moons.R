@@ -21,6 +21,8 @@ test_that("add_future_moons skips for 0 or adds specifically extra more", {
     skip_on_cran() 
 
   moons <- prep_moons(main = main)
+  moons$newmoondate <- moons$moondate
+
   moons2 <- add_future_moons(main = main, moons, lead_time = 0)
   expect_is(moons2, "data.frame")
   expect_equal(moons, moons2)
