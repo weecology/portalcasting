@@ -5,13 +5,23 @@
 \alias{prep_hist_covariates}
 \title{Prepare historical covariates data}
 \usage{
-prep_hist_covariates(main = ".", moons = NULL, quiet = TRUE, arg_checks = TRUE)
+prep_hist_covariates(
+  main = ".",
+  moons = NULL,
+  control_files = files_control(),
+  quiet = TRUE,
+  arg_checks = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
 \item{moons}{Lunar data \code{data.frame}. See \code{\link{prep_moons}}.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

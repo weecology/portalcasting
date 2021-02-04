@@ -236,7 +236,7 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'   fill_dir()
 #'   moons <- prep_moons()
 #'   raw_path <- raw_path()
-#'   weather <- portalr::weather("daily", TRUE, raw_path)
+#'   weather <- portalr::weather("daily", fill = TRUE, path = raw_path)
 #'   add_moons_from_date(weather, moons)
 #'  }
 #'

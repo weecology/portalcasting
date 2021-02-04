@@ -133,6 +133,10 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
 #' @param moons Lunar data \code{data.frame}. See \code{\link{prep_moons}}.
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
@@ -164,6 +168,7 @@ NULL
 #' @export
 #'
 prep_hist_covariates <- function(main = ".", moons = NULL,
+                                 control_files = files_control(),
                                  quiet = TRUE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- ifnull(moons, read_moons(main = main, 
