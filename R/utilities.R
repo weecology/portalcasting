@@ -317,7 +317,7 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
       tmp_files_full_paths <- file_path(main = main, sub = "tmp", 
                                         files = tmp_files, 
                                         arg_checks = arg_checks)
-      file.remove(tmp_files_full_paths)
+      unlink(tmp_files_full_paths, force = TRUE, recursive = TRUE)
       msg <- "    *temporary files cleared from tmp subdirectory*"
     } else {
       msg <- "    *tmp subdirectory already clear*"

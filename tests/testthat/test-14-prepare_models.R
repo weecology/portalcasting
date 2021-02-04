@@ -86,7 +86,7 @@ test_that("model_template produces lines for a model script", {
 
   temp1 <- model_template("AutoArima", main = main)
   expect_is(temp1, "character")
-  expect_equal(length(temp1), 6)
+  expect_equal(length(temp1), 8)
 
   temp2 <- model_template("pevGARCH", main = main)
   expect_is(temp2, "character")

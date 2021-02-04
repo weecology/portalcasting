@@ -161,6 +161,7 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
     made_in <- cov_cast2$date_made == most_recent
     out <- cov_cast2[which(made_in), ]
     out$date_made <- NULL
+    out$date <- NULL
   }
 
   out$cast_moon <- NULL
