@@ -639,7 +639,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species <- ifnull(species, colnames(obs)[sp_col])
     moon <- ifnull(moon, unique(obs$moon))
-    obs <- obs[obs$moon %in% moon, species]
+    obs <- obs[obs$moon %in% moon, species, drop = FALSE]
     if(NROW(obs) == 0){
       stop("no observations available for requested plot", call. = FALSE) 
     } 

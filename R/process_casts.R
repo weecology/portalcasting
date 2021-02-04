@@ -364,7 +364,7 @@ read_model_fits <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
     cast_id <- max(casts_meta$cast_id)
   }
   lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath <- file_path(main, "casts", lpath, arg_checks)
+  cpath <- file_path(main, "fits", lpath, arg_checks)
   if(!file.exists(cpath)){
     stop("cast_id does not have a model_fits file", call. = FALSE)
   }

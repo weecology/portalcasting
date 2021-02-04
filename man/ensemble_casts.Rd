@@ -83,7 +83,7 @@ A pre-loaded table of casts can be input, but if not (default),
 \examples{
  \donttest{
   setup_dir()
-  portalcast(models = c("AutoArima", "ESSS"), end_moons = 515)
+  portalcast(models = c("AutoArima", "ESSS"), end_moon = 515)
   ensemble_casts()
 }
 

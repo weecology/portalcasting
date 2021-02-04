@@ -244,7 +244,7 @@ test_that("jags_RW model", {
   rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
   expect_message(f_a <- jags_RW(main = main, control_runjags = rjc,
                                 data_set = "all", quiet = FALSE))
-  expect_message(f_c <- jags_RW(main = main, control_runjags = rcc,
+  expect_message(f_c <- jags_RW(main = main, control_runjags = rjc,
                                 data_set = "controls", quiet = FALSE))
   expect_message(f_e <- jags_RW(main = main, control_runjags = rjc,
                                 data_set = "exclosures", quiet = FALSE))

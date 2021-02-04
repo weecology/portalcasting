@@ -90,7 +90,7 @@ test_that("model_template produces lines for a model script", {
 
   temp2 <- model_template("pevGARCH", main = main)
   expect_is(temp2, "character")
-  expect_equal(length(temp2), 6)
+  expect_equal(length(temp2), 8)
 
 })
 

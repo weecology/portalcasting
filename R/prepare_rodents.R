@@ -62,7 +62,18 @@ prefab_rodents_controls <- function(){
                              unknowns = FALSE, time = "newmoon", 
                              na_drop = FALSE, zero_drop = TRUE, 
                              effort = TRUE, 
-                             filename = "rodents_dm_controls.csv") 
+                             filename = "rodents_dm_controls.csv"),
+    "dm_controls_interp" = list(name = "dm_controls_interp", species = "DM", 
+                                total = FALSE, interpolate = TRUE, 
+                                clean = FALSE, 
+                             type = "Rodents", level = "Treatment", 
+                             plots = "Longterm", treatment = "control", 
+                             min_plots = 24, min_traps = 1, 
+                             output = "abundance", fillweight = FALSE, 
+                             unknowns = FALSE, time = "newmoon", 
+                             na_drop = FALSE, zero_drop = TRUE, 
+                             effort = TRUE, 
+                             filename = "rodents_dm_controls_interp.csv")  
    )
 }
 
