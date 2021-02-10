@@ -1,14 +1,12 @@
-# For help debugging build failures open an issue on the RStudio community with the 'github-actions' tag.
-# https://community.rstudio.com/new-topic?category=Package%20development&tags=github-actions
+# R package release checking
+
 on:
   push:
     branches:
       - main
-      - master
   pull_request:
     branches:
       - main
-      - master
 
 name: R-CMD-check-release
 
@@ -26,6 +24,7 @@ jobs:
           sudo apt-get install texlive-latex-base libharfbuzz-dev libfribidi-dev
           sudo apt-get install gsl-bin libgsl0-dev
           sudo apt-get install libcurl4-openssl-dev
+          sudo apt-get install jags
       - name: Install package dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
