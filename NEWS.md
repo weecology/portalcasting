@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+[portalcasting 0.21.0](https://github.com/weecology/portalcasting/releases/tag/v0.21.0)
+*2021-02-10*
+
+### Highlighting of species in plotting
+
+### Shift to GitHub actions
+
 # [portalcasting 0.20.0](https://github.com/weecology/portalcasting/releases/tag/v0.20.0)
 *2021-02-04*
 
