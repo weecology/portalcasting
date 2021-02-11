@@ -44,7 +44,7 @@ jobs:
           sudo apt-get install jags
       - name: Install package dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE, type = "binary")
+          remotes::install_deps(dependencies = TRUE)
           remotes::install_github("tidyverse/tidytemplate")
           remotes::install_dev("pkgdown")
         shell: Rscript {0}
