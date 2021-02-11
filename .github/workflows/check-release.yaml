@@ -1,0 +1,37 @@
+# R package release checking
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+name: R-CMD-check-release
+
+jobs:
+  R-CMD-check:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@v1
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install texlive-latex-base libharfbuzz-dev libfribidi-dev
+          sudo apt-get install gsl-bin libgsl0-dev
+          sudo apt-get install libcurl4-openssl-dev
+          sudo apt-get install jags
+      - name: Install package dependencies
+        run: |
+          install.packages(c("remotes", "rcmdcheck"))
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+      - name: Check
+        run: |
+          options(crayon.enabled = TRUE)
+          rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        shell: Rscript {0}

@@ -15,3 +15,4 @@
 ^working.R$
 ^docs$
 ^docker$
+^\.github$
