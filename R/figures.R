@@ -570,6 +570,10 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #' @param species \code{character} vector of the species codes (or 
 #'  \code{"total"} for the total across species) to be plotted or 
 #'  \code{NULL} (default) to plot all species in \code{data_set}.
+#' 
+#' @param highlight_sp \code{character} vector of the species codes (or 
+#'  \code{"total"} for the total across species) to be highlighted or 
+#'  \code{NULL} (default) to not highlight anything.
 #'
 #' @param cast_groups \code{integer} (or integer \code{numeric}) value
 #'  of the cast group to combine with an ensemble. If \code{NULL} (default),
@@ -595,9 +599,10 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'
 plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
                             data_set = NULL, model = NULL, end_moon = NULL, 
-                            species = NULL, moon = NULL, with_census = FALSE, 
-                            control_files = files_control(), quiet = FALSE,
-                            arg_checks = TRUE){
+                            species = NULL, highlight_sp = NULL,
+                            moon = NULL, with_census = FALSE, 
+                            control_files = files_control(),
+                            quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   moons <- read_moons(main = main, control_files = control_files,
                       arg_checks = arg_checks)
@@ -714,11 +719,18 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     up <- preds$upper_pi[i]
     est <- preds$estimate[i]
     vbars <- i + (0.015 * nspp * c(-1, 1))
-    points(c(low, up), rep(i, 2), type = "l", lwd = 2)
-    points(rep(low, 2), vbars, type = "l", lwd = 2)
-    points(rep(up, 2), vbars, type = "l", lwd = 2)
+    if (!is.null(highlight_sp) && species[i] %in% highlight_sp){
+      col = rgb(0.2, 0.5, 0.9)
+      lwd = 4
+    } else {
+      col = "black"
+      lwd = 2
+    }
+    points(c(low, up), rep(i, 2), type = "l", col = col, lwd = lwd)
+    points(rep(low, 2), vbars, type = "l", col = col, lwd = lwd)
+    points(rep(up, 2), vbars, type = "l", col = col, lwd = lwd)
     points(est, i, pch = 16, col = "white", cex = 1.25)
-    points(est, i, lwd = 2, cex = 1.25)
+    points(est, i, lwd = lwd, col = col, cex = 1.25)
 
    if (with_census){
       spmatch <- preds$species[i]
