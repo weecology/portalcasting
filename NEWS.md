@@ -2,6 +2,11 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+[portalcasting 0.21.1](https://github.com/weecology/portalcasting/releases/tag/v0.21.1)
+*2021-02-11*
+
+### Patch "NA" plotting issue
+
 [portalcasting 0.21.0](https://github.com/weecology/portalcasting/releases/tag/v0.21.0)
 *2021-02-10*
 

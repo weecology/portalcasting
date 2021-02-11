@@ -641,6 +641,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   if(with_census){
     obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
                               arg_checks = arg_checks)
+    colnames(obs) <- gsub("\\.", "", colnames(obs))
     sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species <- ifnull(species, colnames(obs)[sp_col])
     moon <- ifnull(moon, unique(obs$moon))
@@ -849,8 +850,14 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
 
   obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
                             arg_checks = arg_checks)
+  colnames(obs) <- gsub("\\.", "", colnames(obs))
+
   sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
   species <- ifnull(species, colnames(obs)[sp_col])
+
+  if(!all(species %in% colnames(obs))){
+    stop("cast not available for requested species", call. = FALSE)
+  }
   obs <- obs[ , c("moon", species)]
   data_set <- casts_meta$data_set
   if(!is.null(model) && tolower(model) == "ensemble"){
