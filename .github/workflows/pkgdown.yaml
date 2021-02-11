@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - main
+  release:
+    types: [published]
 
 name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -27,23 +29,17 @@ jobs:
         shell: Rscript {0}
 
       - name: Cache R packages
-        uses: actions/cache@v2
+        uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install dependencies
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install texlive-latex-base libharfbuzz-dev libfribidi-dev
-          sudo apt-get install gsl-bin libgsl0-dev
-          sudo apt-get install libcurl4-openssl-dev
-          sudo apt-get install jags
-      - name: Install package dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE)
-          install.packages("pkgdown")
+          remotes::install_deps(dependencies = TRUE, type = "binary")
+          remotes::install_github("tidyverse/tidytemplate")
+          remotes::install_dev("pkgdown")
         shell: Rscript {0}
 
       - name: Install package
