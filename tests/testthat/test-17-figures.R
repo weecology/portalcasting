@@ -11,6 +11,7 @@ test_that("plot_cast_point", {
   portalcast(main = main, 
              models = c("AutoArima", "NaiveArima"), end_moons = 515:516)
   expect_silent(plot_cast_point(main = main, moon = 520))
+  expect_silent(plot_cast_point(main = main, moon = 520, highlight_sp = "DM"))
   expect_silent(plot_cast_point(main = main, moon = 520, model = "AutoArima"))
   expect_silent(plot_cast_point(main = main, moon = 520, with_census = TRUE))
   expect_error(plot_cast_point(main = main, cast_id = 1e10))

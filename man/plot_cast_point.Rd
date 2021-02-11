@@ -12,6 +12,7 @@ plot_cast_point(
   model = NULL,
   end_moon = NULL,
   species = NULL,
+  highlight_sp = NULL,
   moon = NULL,
   with_census = FALSE,
   control_files = files_control(),
@@ -49,6 +50,10 @@ newmoon number of the forecast origin. Default value is
 \item{species}{\code{character} vector of the species codes (or 
 \code{"total"} for the total across species) to be plotted or 
 \code{NULL} (default) to plot all species in \code{data_set}.}
+
+\item{highlight_sp}{\code{character} vector of the species codes (or 
+\code{"total"} for the total across species) to be highlighted or 
+\code{NULL} (default) to not highlight anything.}
 
 \item{moon}{\code{integer} (or integer \code{numeric}) newmoon number for
 the plot.}
