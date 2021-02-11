@@ -697,6 +697,7 @@ check_arg_list <- function(){
     source_name = arg_character(),
     source_url = arg_character(),
     species = arg_character(length = NULL, vals = avail_species),
+    highlight_sp = arg_character(length = NULL, vals = avail_species),
     species_id = arg_character(vals = avail_species),
     start = arg_date(),
     start_moon = arg_posintnum(),
