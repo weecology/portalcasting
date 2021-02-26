@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      CRAN_REPO: https://packagemanager.rstudio.com/all/__linux__/bionic/latest
     steps:
       - uses: actions/checkout@v2
 
@@ -22,7 +23,7 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
+          install.packages('remotes', repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
@@ -43,9 +44,9 @@ jobs:
           sudo apt-get install jags
       - name: Install package dependencies
         run: |
-          install.packages(c("remotes"))
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("covr")
+          install.packages(c("remotes"), repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
+          remotes::install_deps(dependencies = TRUE, repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
+          remotes::install_cran("covr", repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
         shell: Rscript {0}
 
       - name: Test coverage
