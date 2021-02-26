@@ -11,9 +11,10 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      CRAN_REPO: https://packagemanager.rstudio.com/all/__linux__/bionic/latest
     steps:
       - uses: actions/checkout@v2
 
@@ -23,7 +24,7 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
+          install.packages('remotes', repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
@@ -42,9 +43,10 @@ jobs:
           sudo apt-get install gsl-bin libgsl0-dev
           sudo apt-get install libcurl4-openssl-dev
           sudo apt-get install jags
+
       - name: Install package dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
+          remotes::install_deps(dependencies = TRUE, repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
           remotes::install_github("tidyverse/tidytemplate")
           remotes::install_dev("pkgdown")
         shell: Rscript {0}
