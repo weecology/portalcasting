@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="pkgdown.css" rel="stylesheet">
@@ -36,6 +40,8 @@
 
 
 <meta property="og:title" content="Guidelines for Contributing" />
+
+
 
 
 
@@ -51,9 +57,15 @@
 
 
 
+  
+
+  
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -67,19 +79,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.18.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Vignettes
      
@@ -113,13 +119,13 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/weecology">
-    <span class="fa fa-twitter"></span>
+    <span class="fas fa-twitter"></span>
      
   </a>
 </li>
 <li>
   <a href="https://github.com/weecology">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -151,9 +157,9 @@
 <h2 class="hasAnchor">
 <a href="#for-the-general-public" class="anchor"></a>For the General Public</h2>
 <p>If you’re not a member of the Weecology lab, we ask that you use one of the following two methods for contributing:</p>
-<ol>
-<li><p>Create an issue – if you spot any typos, bugs, or have general suggestions, etc. You can also use this to participate in ongoing discussions. For more info, please check out this Github <a href="https://guides.github.com/features/issues/">guide</a>.</p></li>
-<li><p>Fork and create a pull request – if you have suggested bugfixes or changes. For more info, please check out this Github <a href="https://help.github.com/articles/about-pull-requests/">guide</a>. We ask that you follow our guidelines below on documentation and testing.</p></li>
+<ol style="list-style-type: decimal">
+<li><p>Create an issue – if you spot any typos, bugs, or have general suggestions, etc. You can also use this to participate in ongoing discussions. For more info, please check out this Github <a href="https://guides.github.com/features/issues/" class="external-link">guide</a>.</p></li>
+<li><p>Fork and create a pull request – if you have suggested bugfixes or changes. For more info, please check out this Github <a href="https://help.github.com/articles/about-pull-requests/" class="external-link">guide</a>. We ask that you follow our guidelines below on documentation and testing.</p></li>
 </ol>
 </div>
 <div id="weecologists" class="section level2">
@@ -181,42 +187,38 @@
 #' @export
 #'
 newfunc &lt;- function() ...</code></pre>
-<p>Note that you can also include links to other functions, math formatting, and more. For more details, see the <a href="http://r-pkgs.had.co.nz/man.html">chapter on documentation</a> in Hadley Wickham’s book for R packages.</p>
+<p>Note that you can also include links to other functions, math formatting, and more. For more details, see the <a href="http://r-pkgs.had.co.nz/man.html" class="external-link">chapter on documentation</a> in Hadley Wickham’s book for R packages.</p>
 </div>
 <div id="testing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#testing" class="anchor"></a>Testing</h2>
 <p>If you are adding new functionality, please include automated tests to verify that some of the basic functionality is correct.</p>
 <p>Automated testing uses R scripts, that live in the <code>tests/testthat/</code> subfolder for the package. If you are adding a new file, please name it as <code>test-{concept}.R</code>.</p>
-<p>As a general rule, you don’t need to test all possible inputs and outputs for a function, but you should test some important aspects:</p>
-<ul>
-<li>outputs are the correct format (including dimensions and components)</li>
-<li>sample input produces the correct sample output</li>
-</ul>
-<p>You can see the existing tests as examples of how to organize your tests, but note that there are several different kinds of <code>expect_</code> functions that test for different things. For more details, see the <a href="http://r-pkgs.had.co.nz/tests.html">chapter on testing</a> in Hadley Wickham’s book for R packages.</p>
+<p>As a general rule, you don’t need to test all possible inputs and outputs for a function, but you should test some important aspects: * outputs are the correct format (including dimensions and components) * sample input produces the correct sample output</p>
+<p>You can see the existing tests as examples of how to organize your tests, but note that there are several different kinds of <code>expect_</code> functions that test for different things. For more details, see the <a href="http://r-pkgs.had.co.nz/tests.html" class="external-link">chapter on testing</a> in Hadley Wickham’s book for R packages.</p>
 </div>
 <div id="building" class="section level2">
 <h2 class="hasAnchor">
 <a href="#building" class="anchor"></a>Building</h2>
 <p>To fully build the package, including documentation, running-tests, you will need the <code>roxygen2</code>, the <code>testthat</code>, and the <code>devtools</code> package.</p>
 <p>Specific operations are then done by calling the appropriate functions from within R, while your working directory is somewhere in the package folder.</p>
-<p>The suggested workflow is:</p>
-<ol>
-<li>Write code, documentation, and tests.</li>
-<li>Run <code>devtools::document()</code> to generate the documentation files and update the <code>NAMESPACE</code> file.</li>
-<li>Run <code>devtools::install()</code> to install the new version of the package.</li>
-<li>Run <code>devtools::test()</code> to run the test scripts on the new version of the package.</li>
-</ol>
+<p>The suggested workflow is: 1. Write code, documentation, and tests. 2. Run <code>devtools::document()</code> to generate the documentation files and update the <code>NAMESPACE</code> file. 3. Run <code>devtools::install()</code> to install the new version of the package. 4. Run <code>devtools::test()</code> to run the test scripts on the new version of the package.</p>
 <p>If you are also prepping the package as a whole, then you will also want to run <code>devtools::check()</code> and/or <code>devtools::check_cran()</code> to make sure that the package is complete. Note that you need an up-to-date TeX/LaTeX distribution for running <code>devtools::check()</code> and/or <code>devtools::check_cran()</code> due to the rendering of the package manual.</p>
-<p>For more info, see the <a href="https://github.com/hadley/devtools">GitHub repo</a> for the <code>devtools</code> package.</p>
+<p>For more info, see the <a href="https://github.com/hadley/devtools" class="external-link">GitHub repo</a> for the <code>devtools</code> package.</p>
 </div>
 <div id="attribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#attribution" class="anchor"></a>Attribution</h2>
-<p>This document is based on the <a href="https://github.com/weecology/portalr/blob/master/CONTRIBUTING.md">CONTRIBUTING file</a> associated with the Beta release of the <a href="https://github.com/weecology/portalr/"><strong>portalr</strong></a> package and is used under the MIT License.</p>
+<p>This document is based on the <a href="https://github.com/weecology/portalr/blob/master/CONTRIBUTING.md" class="external-link">CONTRIBUTING file</a> associated with the Beta release of the <a href="https://github.com/weecology/portalr/" class="external-link"><strong>portalr</strong></a> package and is used under the MIT License.</p>
 </div>
 </div>
 
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -225,11 +227,11 @@ newfunc &lt;- function() ...</code></pre>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
+  <p><p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -237,6 +239,8 @@ newfunc &lt;- function() ...</code></pre>
 
   
 
+
+  
 
   </body>
 </html>

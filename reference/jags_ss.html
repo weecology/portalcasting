@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,7 +43,8 @@
 <meta property="og:description" content="Provides an API to run.jags for
  single-species portalcasting models that requires the user only provide
  the JAGS model, initializer, monitor, and control list." />
-<meta name="twitter:card" content="summary" />
+
+
 
 
 
@@ -55,9 +60,15 @@
 
 
 
+  
+
+  
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,19 +82,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.18.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Vignettes
      
@@ -117,13 +122,13 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/weecology">
-    <span class="fa fa-twitter"></span>
+    <span class="fas fa-twitter"></span>
      
   </a>
 </li>
 <li>
   <a href="https://github.com/weecology">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -151,10 +156,19 @@
  the JAGS model, initializer, monitor, and control list.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>jags_ss</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>data_set</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-  <span class='kw'>control_files</span> <span class='kw'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span>(), <span class='kw'>control_runjags</span> <span class='kw'>=</span> <span class='fu'><a href='runjags_control.html'>runjags_control</a></span>(),
-  <span class='kw'>jags_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>monitor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lag</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>arg_checks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>jags_ss</span><span class='op'>(</span>
+  main <span class='op'>=</span> <span class='st'>"."</span>,
+  data_set <span class='op'>=</span> <span class='st'>"all"</span>,
+  control_files <span class='op'>=</span> <span class='fu'><a href='files_control.html'>files_control</a></span><span class='op'>(</span><span class='op'>)</span>,
+  control_runjags <span class='op'>=</span> <span class='fu'><a href='runjags_control.html'>runjags_control</a></span><span class='op'>(</span><span class='op'>)</span>,
+  jags_model <span class='op'>=</span> <span class='cn'>NULL</span>,
+  monitor <span class='op'>=</span> <span class='cn'>NULL</span>,
+  inits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  lag <span class='op'>=</span> <span class='cn'>NA</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  arg_checks <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,65 +267,62 @@ checked using standard protocols via <code><a href='argument_checking.html'>chec
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"> <span class='co'># \donttest{</span>
-  <span class='fu'><a href='setup_dir.html'>setup_dir</a></span>()
+  <span class='fu'><a href='setup_dir.html'>setup_dir</a></span><span class='op'>(</span><span class='op'>)</span>
 
-  <span class='no'>monitor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mu"</span>, <span class='st'>"tau"</span>)
-  <span class='no'>inits</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>){
-    <span class='no'>rngs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"base::Wichmann-Hill"</span>, <span class='st'>"base::Marsaglia-Multicarry"</span>,
-             <span class='st'>"base::Super-Duper"</span>, <span class='st'>"base::Mersenne-Twister"</span>)
-    <span class='no'>past_N</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>past_N</span>
-    <span class='no'>past_count</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>past_count</span>
-    <span class='no'>past_moon</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>past_moon</span>
+  <span class='va'>monitor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mu"</span>, <span class='st'>"tau"</span><span class='op'>)</span>
+  <span class='va'>inits</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span> <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span><span class='op'>{</span>
+    <span class='va'>rngs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"base::Wichmann-Hill"</span>, <span class='st'>"base::Marsaglia-Multicarry"</span>,
+             <span class='st'>"base::Super-Duper"</span>, <span class='st'>"base::Mersenne-Twister"</span><span class='op'>)</span>
+    <span class='va'>past_N</span> <span class='op'>&lt;-</span> <span class='va'>data</span><span class='op'>$</span><span class='va'>past_N</span> 
+    <span class='va'>past_count</span> <span class='op'>&lt;-</span> <span class='va'>data</span><span class='op'>$</span><span class='va'>past_count</span> 
+    <span class='va'>past_moon</span> <span class='op'>&lt;-</span> <span class='va'>data</span><span class='op'>$</span><span class='va'>past_moon</span>
 
-    <span class='no'>log_past_count</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>past_count</span> + <span class='fl'>0.1</span>)
-    <span class='no'>mean_log_past_count</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>log_past_count</span>)
-    <span class='no'>sd_log_past_count</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='no'>log_past_count</span>) * <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fl'>2</span>), <span class='fl'>0.01</span>))
-    <span class='no'>diff_log_past_count</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='no'>past_N</span> - <span class='fl'>1</span>)
-    <span class='kw'>for</span>(<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:(<span class='no'>past_N</span> - <span class='fl'>1</span>)){
-      <span class='no'>diff_count</span> <span class='kw'>&lt;-</span> <span class='no'>log_past_count</span>[<span class='no'>i</span> + <span class='fl'>1</span>] - <span class='no'>log_past_count</span>[<span class='no'>i</span>]
-      <span class='no'>diff_time</span> <span class='kw'>&lt;-</span> <span class='no'>past_moon</span>[<span class='no'>i</span> + <span class='fl'>1</span>] - <span class='no'>past_moon</span>[<span class='no'>i</span>]
-      <span class='no'>diff_log_past_count</span>[<span class='no'>i</span>] <span class='kw'>&lt;-</span> <span class='no'>diff_count</span> / <span class='no'>diff_time</span>
-    }
-    <span class='no'>sd_diff_log_past_count</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span>(<span class='no'>diff_log_past_count</span>) * <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fl'>2</span>),
-                                  <span class='fl'>0.01</span>))
-    <span class='no'>var_diff_log_past_count</span> <span class='kw'>&lt;-</span> <span class='no'>sd_diff_log_past_count</span>^<span class='fl'>2</span>
-    <span class='no'>precision_diff_log_past_count</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>/(<span class='no'>var_diff_log_past_count</span>)
-    <span class='no'>rate</span> <span class='kw'>&lt;-</span> <span class='fl'>0.1</span>
-    <span class='no'>shape</span> <span class='kw'>&lt;-</span> <span class='no'>precision_diff_log_past_count</span> * <span class='no'>rate</span>
+    <span class='va'>log_past_count</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>past_count</span> <span class='op'>+</span> <span class='fl'>0.1</span><span class='op'>)</span>
+    <span class='va'>mean_log_past_count</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>log_past_count</span><span class='op'>)</span>
+    <span class='va'>sd_log_past_count</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>log_past_count</span><span class='op'>)</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>, <span class='fl'>0.01</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='va'>diff_log_past_count</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='va'>past_N</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span>
+    <span class='kw'>for</span><span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='op'>(</span><span class='va'>past_N</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
+      <span class='va'>diff_count</span> <span class='op'>&lt;-</span> <span class='va'>log_past_count</span><span class='op'>[</span><span class='va'>i</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>]</span> <span class='op'>-</span> <span class='va'>log_past_count</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span>
+      <span class='va'>diff_time</span> <span class='op'>&lt;-</span> <span class='va'>past_moon</span><span class='op'>[</span><span class='va'>i</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>]</span> <span class='op'>-</span> <span class='va'>past_moon</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> 
+      <span class='va'>diff_log_past_count</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>diff_count</span> <span class='op'>/</span> <span class='va'>diff_time</span>
+    <span class='op'>}</span>
+    <span class='va'>sd_diff_log_past_count</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>diff_log_past_count</span><span class='op'>)</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>, 
+                                  <span class='fl'>0.01</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='va'>var_diff_log_past_count</span> <span class='op'>&lt;-</span> <span class='va'>sd_diff_log_past_count</span><span class='op'>^</span><span class='fl'>2</span>
+    <span class='va'>precision_diff_log_past_count</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>/</span><span class='op'>(</span><span class='va'>var_diff_log_past_count</span><span class='op'>)</span>
+    <span class='va'>rate</span> <span class='op'>&lt;-</span> <span class='fl'>0.1</span>
+    <span class='va'>shape</span> <span class='op'>&lt;-</span> <span class='va'>precision_diff_log_past_count</span> <span class='op'>*</span> <span class='va'>rate</span>
 
-    <span class='kw'>function</span>(<span class='no'>chain</span> <span class='kw'>=</span> <span class='no'>chain</span>){
-      <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>.RNG.name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>rngs</span>, <span class='fl'>1</span>),
-           <span class='kw'>.RNG.seed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>1e+06</span>, <span class='fl'>1</span>),
-            <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='no'>mean_log_past_count</span>, <span class='no'>sd_log_past_count</span>),
-            <span class='kw'>tau</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span>(<span class='fl'>1</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='no'>rate</span>))
-    }
-  }
-  <span class='no'>jags_model</span> <span class='kw'>&lt;-</span> <span class='st'>[1589 chars quoted with '"']</span>
+    <span class='kw'>function</span><span class='op'>(</span><span class='va'>chain</span> <span class='op'>=</span> <span class='va'>chain</span><span class='op'>)</span><span class='op'>{</span>
+      <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>.RNG.name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>rngs</span>, <span class='fl'>1</span><span class='op'>)</span>,
+           .RNG.seed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e+06</span>, <span class='fl'>1</span><span class='op'>)</span>,
+            mu <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>mean_log_past_count</span>, <span class='va'>sd_log_past_count</span><span class='op'>)</span>, 
+            tau <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1</span>, shape <span class='op'>=</span> <span class='va'>shape</span>, rate <span class='op'>=</span> <span class='va'>rate</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='op'>}</span>
+  <span class='op'>}</span>
+  <span class='va'>jags_model</span> <span class='op'>&lt;-</span> <span class='st'>[1589 chars quoted with '"']</span>
 
-  <span class='fu'>jags_ss</span>(<span class='kw'>jags_model</span> <span class='kw'>=</span> <span class='no'>jags_model</span>, <span class='kw'>monitor</span> <span class='kw'>=</span> <span class='no'>monitor</span>, <span class='kw'>inits</span> <span class='kw'>=</span> <span class='no'>inits</span>)
- <span class='co'># }</span></pre>
+  <span class='fu'>jags_ss</span><span class='op'>(</span>jags_model <span class='op'>=</span> <span class='va'>jags_model</span>, monitor <span class='op'>=</span> <span class='va'>monitor</span>, inits <span class='op'>=</span> <span class='va'>inits</span><span class='op'>)</span>
+ <span class='co'># }</span>
+
+
+</pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
 
       <footer>
       <div class="copyright">
-  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
+  <p><p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -319,6 +330,8 @@ checked using standard protocols via <code><a href='argument_checking.html'>chec
 
   
 
+
+  
 
   </body>
 </html>

@@ -6,19 +6,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adding a Model and Data • portalcasting</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Adding a Model and Data">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="portalcasting">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.18.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Vignettes
@@ -76,14 +72,14 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://twitter.com/weecology">
-    <span class="fa fa-twitter"></span>
+  <a href="https://twitter.com/weecology" class="external-link">
+    <span class="fas fa-twitter"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://github.com/weecology">
-    <span class="fa fa-github"></span>
+  <a href="https://github.com/weecology" class="external-link">
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -97,15 +93,15 @@
 
       
 
-      </header><div class="row">
+      </header><script src="adding_model_and_data_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Adding a Model and Data</h1>
-                        <h4 class="author">Juniper L. Simonis and Glenda M. Yenni</h4>
+      <h1 data-toc-skip>Adding a Model and Data</h1>
+                        <h4 data-toc-skip class="author">Juniper L. Simonis and Glenda M. Yenni</h4>
             
-            <h4 class="date">24 January, 2020</h4>
+            <h4 data-toc-skip class="date">26 February, 2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/adding_model_and_data.Rmd"><code>vignettes/adding_model_and_data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/adding_model_and_data.Rmd" class="external-link"><code>vignettes/adding_model_and_data.Rmd</code></a></small>
       <div class="hidden name"><code>adding_model_and_data.Rmd</code></div>
 
     </div>
@@ -128,25 +124,26 @@
 <h2 class="hasAnchor">
 <a href="#set-up-the-directory" class="anchor"></a>Set up the directory</h2>
 <p>To allow for a more flexible environment, here we use the <code><a href="../reference/setup_dir.html">setup_sandbox()</a></code> function to make and fill our directory, which we house at <code>"~/sandbox_1"</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(portalcasting)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">main &lt;-<span class="st"> "~/sandbox_1"</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="../reference/setup_dir.html">setup_sandbox</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://weecology.github.io/portalcasting">portalcasting</a></span><span class="op">)</span>
+<span class="va">main</span> <span class="op">&lt;-</span> <span class="st">"~/sandbox_1"</span>
+<span class="fu"><a href="../reference/setup_dir.html">setup_sandbox</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="imgs/sandbox_1_main.jpg" alt="The sandbox’s main folder" width="400"><p class="caption">The sandbox’s main folder</p>
+<img src="imgs/sandbox_1_main.jpg" width="400" alt=""><p class="caption">The sandbox’s main folder</p>
 </div>
 <p>The standard, prefabricated (“prefab”) models that come with the <strong>portalcasting</strong> package are automatically added to the directory’s <code>models</code> sub folder.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_models.jpg" alt="The sandbox’s models prefab sub folder" width="400"><p class="caption">The sandbox’s models prefab sub folder</p>
+<img src="imgs/sandbox_1_models.jpg" width="400" alt=""><p class="caption">The sandbox’s models prefab sub folder</p>
 </div>
 <p>Similarly, the standard, prefabricated (“prefab”) data sets that come with the <strong>portalcasting</strong> package are automatically added to the directory’s <code>data</code> sub folder.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_data.jpg" alt="The sandbox’s models prefab data folder" width="400"><p class="caption">The sandbox’s models prefab data folder</p>
+<img src="imgs/sandbox_1_data.jpg" width="400" alt=""><p class="caption">The sandbox’s models prefab data folder</p>
 </div>
-<p>The default model scripts take advantage of having main functions that contain the majority of the code, such as <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code>, which returns a <code>list</code> with output components that are passed into <code>save_cast_output</code>, which adds the results from the model run to the <code>casts</code> sub folder.</p>
+<p>The default model scripts take advantage of having main functions that contain the majority of the code, such as <code><a href="../reference/simplexEDM.html">AutoArima()</a></code>, which returns a <code>list</code> with output components that are passed into <code>save_cast_output</code>, which adds the results from the model run to the <code>casts</code> sub folder.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_AutoArima.jpg" alt="AutoArima.R" width="600"><p class="caption">AutoArima.R</p>
+<img src="imgs/sandbox_1_AutoArima.jpg" width="600" alt=""><p class="caption">AutoArima.R</p>
 </div>
-<p>You do not need to use a model function like <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code> in your script, however. The pipeline will work with basically any code that will run in R. The whole script is run using <code><a href="https://rdrr.io/r/base/source.html">source()</a></code> and it is wrapped (within <code><a href="../reference/portalcast.html">cast()</a></code>) in a <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> call, which softens any errors at the whole-script level.</p>
+<p>You do not need to use a model function like <code><a href="../reference/simplexEDM.html">AutoArima()</a></code> in your script, however. The pipeline will work with basically any code that will run in R. The whole script is run using <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> and it is wrapped (within <code><a href="../reference/portalcast.html">cast()</a></code>) in a <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> call, which softens any errors at the whole-script level.</p>
 <p>You may be interested in one or both of two levels of model/data-adding. At one level, you might be interested in just working “locally” (although maybe on a remote machine or server, just not <em>the</em> server that runs the production pipeline), perhaps to do some basic exploration, actively engage in research and development, or spin off another project using the same infrastructure. For the present vignette, we’ll call that the “development space”. At another level, you might be interested in adding to the stuff that’s run as part of the existing main project’s production pipeline (). Here, we’ll call that the “production space”. It’s likely that you might use the “development space” on the way to the “production space” or that the “development space” is sufficient in and of itself for your needs. We’ll detail adding models and data in each of these spaces in the subsequent sections.</p>
 </div>
 <div id="adding-in-a-development-space" class="section level2">
@@ -157,50 +154,58 @@
 <a href="#adding-a-model" class="anchor"></a>Adding a model</h3>
 <p>The <strong>portalcasting</strong> machinery allows any model with a script in the <code>models</code> sub-directory to be run just like the prefab model scripts. All that is required is for the user to save the script with the name and name the model explicitly in the <code>models</code> argument for <code><a href="../reference/portalcast.html">portalcast()</a></code>.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_models_added.jpg" alt="The sandbox’s models sub folder with a new addition" width="400"><p class="caption">The sandbox’s models sub folder with a new addition</p>
+<img src="imgs/sandbox_1_models_added.jpg" width="400" alt=""><p class="caption">The sandbox’s models sub folder with a new addition</p>
 </div>
 <p>Obviously, you’ll need to add some code to the <code>newmod.R</code> script, but as stated above, the requirements are lax and the options broad.</p>
 <p>If you would like your output to be archived with the other cast output, your code must produce a <code>list</code> object and you must pass it to <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> in your script. If the list contains elements named <code>metadata</code>, <code>cast_tab</code> (summary table of predictions), <code>model_fits</code> (list of model fit objects), or <code>model_casts</code> (list of model predictions), they are saved out. Use of <code>JSON</code> and <code>yaml</code> formats allows for generalized saving into robust formats. See <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> for processing specs and the models in <code>prefab_model_functions</code> for execution.</p>
 <p>As an example here, I have filled out the model script for newmod with a very basic model. It uses a linear regression with no autocorrelation and only analyzes the total rodent counts. The forecast is simply the linear model’s prediction over the future moons.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_newmod.jpg" alt="A trivial newmod" width="600"><p class="caption">A trivial newmod</p>
+<img src="imgs/sandbox_1_newmod.jpg" width="600" alt=""><p class="caption">A trivial newmod</p>
 </div>
 <p>As you can see, the model metadata contains a lot of key information used to fit the models, such as the forecast horizon (which for Portal may not necessarily be equal to the theoretical lead time, as some surveys are missed and there is a lag to entering data, so sometimes additional surveys need to be cast)</p>
 </div>
 <div id="adding-a-data-set" class="section level3">
 <h3 class="hasAnchor">
 <a href="#adding-a-data-set" class="anchor"></a>Adding a data set</h3>
-<p>To add “newdata” to the available data sets, it is important to recognize that the rodent preparation functions point directly to the <a href="https://weecology.github.io/portalr/reference/summarize_rodent_data.html"><strong>portalr</strong> <code>summarize_rodent_data</code> function</a>, which allows for flexible data customization.</p>
+<p>To add “newdata” to the available data sets, it is important to recognize that the rodent preparation functions point directly to the <a href="https://weecology.github.io/portalr/reference/summarize_rodent_data.html" class="external-link"><strong>portalr</strong> <code>summarize_rodent_data</code> function</a>, which allows for flexible data customization.</p>
 <p><strong>portalcasting</strong> turns the arguments in <code>summarize_rodent_data</code> into arguments in <code><a href="../reference/rodents_control.html">rodents_control()</a></code>, which sets default values for most arguments, but does require an input for <code>name</code>, which names the data set, otherwise it will return <code>NULL</code>. Here, we create the data control list and call it <code>newdata_controls</code>, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the <code><a href="../reference/prep_rodents.html">prep_rodents()</a></code> function, which returns the data set to the console and saves it in the <code>data</code> sub-directory (Note that we <strong>must</strong> set <code>arg_checks = FALSE</code> to allow for the creation and use of the non-standard rodents data configuration.)</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">newdata_controls &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rodents_control.html">rodents_control</a></span>(<span class="dt">name =</span> <span class="st">"newdata"</span>, <span class="dt">level =</span> <span class="st">"Treatment"</span>, <span class="dt">treatment =</span> <span class="st">"removal"</span>, <span class="dt">arg_checks =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">newdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/prep_rodents.html">prep_rodents</a></span>(<span class="dt">main =</span> main, <span class="dt">data_sets =</span> <span class="st">"newdata"</span>, <span class="dt">controls_rodents =</span> newdata_controls, <span class="dt">arg_checks =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">newdata_controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rodents_control.html">rodents_control</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"newdata"</span>, level <span class="op">=</span> <span class="st">"Treatment"</span>, treatment <span class="op">=</span> <span class="st">"removal"</span>, arg_checks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="va">newdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prep_rodents.html">prep_rodents</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_sets <span class="op">=</span> <span class="st">"newdata"</span>, controls_rodents <span class="op">=</span> <span class="va">newdata_controls</span>, arg_checks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="imgs/sandbox_1_data_added.jpg" alt="The sandbox’s models data folder with newdata added" width="400"><p class="caption">The sandbox’s models data folder with newdata added</p>
+<img src="imgs/sandbox_1_data_added.jpg" width="400" alt=""><p class="caption">The sandbox’s models data folder with newdata added</p>
 </div>
 <p>Although <code><a href="../reference/prep_rodents.html">prep_rodents()</a></code> returns the data to the console, you might want to retrieve it later again (perhaps in a new R instance), for which <code><a href="../reference/read_data.html">read_rodents()</a></code> is flexible enough:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">newdat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_data.html">read_rodents</a></span>(<span class="dt">main =</span> main, <span class="dt">data_set =</span> <span class="st">"newdata"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">newdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_data.html">read_rodents</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"newdata"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="running-the-model-with-the-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#running-the-model-with-the-data" class="anchor"></a>Running the model with the data</h3>
 <p>To run the model with the pipeline, you then simply use <code>portalcast</code> with a few additional arguments to specify the model and data components. However, you will notice that there is no <code>data_sets</code> argument in <code>portalcast</code>… so how do you tell the function what data sets the models will need? Well, the function automatically grabs the data sets that are required by the models named in the <code>models</code> argument, so how do you tell the function what newmod needs? You do that by creating a model control list:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">newmod_controls &lt;-<span class="st">  </span><span class="kw"><a href="../reference/model_control.html">model_control</a></span>(<span class="dt">name =</span> <span class="st">"newmod"</span>, <span class="dt">data_sets =</span> <span class="st">"newdata"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">newmod_controls</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/model_control.html">model_control</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"newmod"</span>, data_sets <span class="op">=</span> <span class="st">"newdata"</span><span class="op">)</span></code></pre></div>
 <p>And then you can run the <code>portalcast</code> function with the arguments specified as needed:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/portalcast.html">portalcast</a></span>(<span class="dt">main =</span> main, <span class="dt">models =</span> <span class="st">"newmod"</span>, <span class="dt">controls_model =</span> newmod_controls, <span class="dt">controls_rodents =</span> newdata_controls, <span class="dt">arg_checks =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="st">"newmod"</span>, controls_model <span class="op">=</span> <span class="va">newmod_controls</span>, controls_rodents <span class="op">=</span> <span class="va">newdata_controls</span>, arg_checks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>To visualize the output, simply run <code>plot_cast_ts</code> and <code>plot_cast_point</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="imgs/sandbox_1_newmod_cast_ts.jpg" alt="Prediction time series from a trivial newmod" width="600"><p class="caption">Prediction time series from a trivial newmod</p>
+<img src="imgs/sandbox_1_newmod_cast_ts.jpg" width="600" alt=""><p class="caption">Prediction time series from a trivial newmod</p>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<img src="imgs/sandbox_1_newmod_cast_point.jpg" alt="Next-step-ahead prediction from a trivial newmod" width="600"><p class="caption">Next-step-ahead prediction from a trivial newmod</p>
+<img src="imgs/sandbox_1_newmod_cast_point.jpg" width="600" alt=""><p class="caption">Next-step-ahead prediction from a trivial newmod</p>
 </div>
 <p>Reading the cast’s predictions into the R console is done using <code>read_cast_tab</code>, which also defaults to the most recently generated output:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/read_cast_output.html">read_cast_tab</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/read_cast_output.html">read_cast_tab</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 <p>To choose a non-default output, use <code>select_casts</code> to read in the cast metadata with any desired filters on <code>end_moon</code>, <code>model</code>, or <code>data_set</code> and then locate the <code>cast_id</code> of interest:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/select_casts.html">select_casts</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/select_casts.html">select_casts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="checklist" class="section level3">
 <h3 class="hasAnchor">
@@ -234,22 +239,22 @@
 <h2 class="hasAnchor">
 <a href="#adding-in-a-production-space" class="anchor"></a>Adding in a production space</h2>
 <p>Once you’ve worked out all of the kinks in your model and are interested in adding it to the prefabricated (prefab) set, some additional steps will be required.</p>
-<p>First create a branch from the master branch on the <strong>portalcasting</strong> <a href="https://github.com/weecology/portalcasting">GitHub repo</a>. This allows you to work within the package environment.</p>
+<p>First create a branch from the master branch on the <strong>portalcasting</strong> <a href="https://github.com/weecology/portalcasting" class="external-link">GitHub repo</a>. This allows you to work within the package environment.</p>
 <div id="adding-a-model-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#adding-a-model-1" class="anchor"></a>Adding a model</h3>
-<p>Moving your model to the production pipeline requires encapsulating that code within a function (with the same name as the model, so here <code>newmod()</code>), similar to how the other prefab models are (for example <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code>). Notably, each function works on a single data set (for example “all” or “controls”) at a time. Models that work on multiple data sets (such as <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code> on both “all” and “controls”) have that indicated in their control lists.</p>
+<p>Moving your model to the production pipeline requires encapsulating that code within a function (with the same name as the model, so here <code>newmod()</code>), similar to how the other prefab models are (for example <code><a href="../reference/simplexEDM.html">AutoArima()</a></code>). Notably, each function works on a single data set (for example “all” or “controls”) at a time. Models that work on multiple data sets (such as <code><a href="../reference/simplexEDM.html">AutoArima()</a></code> on both “all” and “controls”) have that indicated in their control lists.</p>
 <p>The prefab model functions have a shared set of arguments and documentation, highlighting their similarity in structure.</p>
 <p>Each function takes the following arguments: * <code>main</code> (points to the directory) * <code>data_set</code> (indicates which version of the data a particular run of the model will cover) * <code>control_files</code> (is a control list with file names) * <code>quiet</code> and <code>verbose</code> (deal with message printing) * <code>arg_checks</code> (handles argument checking) and if the model uses covariates, it will also take: * <code>lag</code> (indicates the number of steps for lagging the covariates)</p>
 <p>Each function also returns a list with elements named <code>metadata</code>, <code>cast_tab</code>, <code>model_fits</code>, and <code>model_casts</code>, as was discussed earlier. This is more important here, as each prefab model has its output automatically saved using <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code>.</p>
 <p>Based off of the other prefab models, here is an example of how to encapsulate <code>newmod()</code>:</p>
 <div class="figure">
-<img src="imgs/sandbox_1_newmod_function.jpg" alt="Adding to the args options" width="400"><p class="caption">Adding to the args options</p>
+<img src="imgs/sandbox_1_newmod_function.jpg" width="400" alt=""><p class="caption">Adding to the args options</p>
 </div>
 <p>Once you have the model encapsulated in a function, add that function to the <code>prefab_model_functions</code> object within <code>prefab_models.R</code> script and add the relevant text to the documentation.</p>
 <p>You then need to permanently add the controls for the model (the control list called <code>newmod_controls</code>) into the (non-exported) function <code>prefab_model_controls</code>, which is at the top of the <code>prepare_models.R</code> script. This function houses the controls for models that are loaded by default and is also used to extract the names of the models.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_newmod_to_prefab.jpg" alt="newmod added to the prefab model controls" width="400"><p class="caption">newmod added to the prefab model controls</p>
+<img src="imgs/sandbox_1_newmod_to_prefab.jpg" width="400" alt=""><p class="caption">newmod added to the prefab model controls</p>
 </div>
 </div>
 <div id="adding-a-data-set-1" class="section level3">
@@ -257,25 +262,29 @@
 <a href="#adding-a-data-set-1" class="anchor"></a>Adding a data set</h3>
 <p>Similarly to with adding the model, you then need to permanently add the controls for the data (the control list called <code>newdata_controls</code>) into the (non-exported) function <code>prefab_rodents_controls</code>, which is at the top of the <code>prepare_rodents.R</code> script. This function houses the controls for data sets that are loaded by default and is also used to extract the names of the data sets.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_newdata_to_prefab.jpg" alt="newdata added to the prefab data controls" width="400"><p class="caption">newdata added to the prefab data controls</p>
+<img src="imgs/sandbox_1_newdata_to_prefab.jpg" width="400" alt=""><p class="caption">newdata added to the prefab data controls</p>
 </div>
 <p>Notably here, as mentioned earlier, the input for <code>treatment</code> (<code>"removal"</code>) was not previously allowed (so you needed to set <code>arg_checks = FALSE</code>). To permanently allow it, you’ll need to add it to the available treatment options within the <code><a href="../reference/argument_checking.html">check_arg_list()</a></code> function in the <code>args.R</code> script. This is true of any level that needs to be added to the available options.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_add_to_args.jpg" alt="Adding to the args options" width="400"><p class="caption">Adding to the args options</p>
+<img src="imgs/sandbox_1_add_to_args.jpg" width="400" alt=""><p class="caption">Adding to the args options</p>
 </div>
 </div>
 <div id="running-the-model-with-the-data-set" class="section level3">
 <h3 class="hasAnchor">
 <a href="#running-the-model-with-the-data-set" class="anchor"></a>Running the model with the data set</h3>
 <p>Running the model is now then nearly as easy as using <code><a href="../reference/portalcast.html">portalcast()</a></code> with base arguments. First make sure you can build the package:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">load_all</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Then, verify that the proper version of the model scripts are in the <code>models</code> subdirectory:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/fill_directory.html">fill_models</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/fill_directory.html">fill_models</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 <p>This will create the <code>newmod.R</code> script akin to the other prefab models.</p>
 <p>And either run newmod by itself</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/portalcast.html">portalcast</a></span>(<span class="dt">main =</span> main, <span class="dt">models =</span> <span class="st">"newmod"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="st">"newmod"</span><span class="op">)</span></code></pre></div>
 <p>or with all of the other models</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/portalcast.html">portalcast</a></span>(<span class="dt">main =</span> main)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 <p>Model output can then be read in, visualized, and processed as before with the hand-done script.</p>
 </div>
 <div id="verification" class="section level3">
@@ -283,20 +292,21 @@
 <a href="#verification" class="anchor"></a>Verification</h3>
 <p>Having added your code to the package, it is imperative that you add unit tests for the model to the tests in the package already (within the package, in the <code>tests/testthat/test-15-prefab_models.R</code> script). Tests should be added for each of the data sets used.</p>
 <div class="figure">
-<img src="imgs/sandbox_1_newmod_test.jpg" alt="Adding to the tests" width="400"><p class="caption">Adding to the tests</p>
+<img src="imgs/sandbox_1_newmod_test.jpg" width="400" alt=""><p class="caption">Adding to the tests</p>
 </div>
 <p>Note that because of the length of time taken downloading data and running models, the majority of tests are not implemented on CRAN, which should be followed here, as none of the necessary components will be available for use. Because newmod only applies to the total rodent counts, there was no need to thin the data set, but models that apply across all of the species and the total can take a long time to run. Presently, we therefore thin the controls, all, controls_interp, and all_interp data sets for use. It is highly recommended that you do this for additional data sets you add, and the code implemented within that testing script provides working examples.</p>
 <p>With the tests added, you should then verify that the package will still pass through the following set of calls to package-building functions in <strong>devtools</strong>:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">document</span>()</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">check</span>()</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">devtools<span class="op">::</span><span class="kw">test</span>()</a></code></pre></div>
-<p>Once you are all ready to go, submit the code on your branch as a <a href="https://github.com/weecology/portalcasting/pulls">pull request</a> and tag <span class="citation">@juniperlsimonis</span>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Once you are all ready to go, submit the code on your branch as a <a href="https://github.com/weecology/portalcasting/pulls" class="external-link">pull request</a> and tag <span class="citation">@juniperlsimonis</span>.</p>
 </div>
 <div id="checklist-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#checklist-1" class="anchor"></a>Checklist</h3>
 <ol style="list-style-type: decimal">
-<li>Create a branch from the master on the <a href="https://github.com/weecology/portalcasting">GitHub repo</a>
+<li>Create a branch from the master on the <a href="https://github.com/weecology/portalcasting" class="external-link">GitHub repo</a>
 </li>
 <li>Turn the script for “newmod” into a function called <code>newmod</code>
 </li>
@@ -343,24 +353,25 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">main &lt;-<span class="st"> "~/portalcasting_testing"</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw"><a href="../reference/setup_dir.html">setup_dir</a></span>(<span class="dt">main =</span> main)</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">ESSS_controls &lt;-<span class="st"> </span><span class="kw">prefab_model_controls</span>()<span class="op">$</span>ESSS</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">ESSS_controls<span class="op">$</span>data_sets &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(ESSS_controls<span class="op">$</span>data_sets, <span class="st">"exclosure_interp"</span>)</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">exclosure_interp_controls &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rodents_control.html">rodents_control</a></span>(<span class="dt">name =</span> <span class="st">"exclosure_interp"</span>, </a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">                                             <span class="dt">interpolate =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">                                             <span class="dt">level =</span> <span class="st">"Treatment"</span>, </a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">                                             <span class="dt">treatment =</span> <span class="st">"exclosure"</span>,</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">                                             <span class="dt">arg_checks =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="kw"><a href="../reference/portalcast.html">portalcast</a></span>(<span class="dt">main =</span> main, <span class="dt">models =</span> <span class="st">"ESSS"</span>, <span class="dt">controls_model =</span> ESSS_controls, </a>
-<a class="sourceLine" id="cb15-11" data-line-number="11">           <span class="dt">update_prefab_models =</span> <span class="ot">TRUE</span>,  </a>
-<a class="sourceLine" id="cb15-12" data-line-number="12">           <span class="dt">controls_rodents =</span> exclosure_interp_controls, <span class="dt">arg_checks =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">main</span> <span class="op">&lt;-</span> <span class="st">"~/portalcasting_testing"</span>
+<span class="fu"><a href="../reference/setup_dir.html">setup_dir</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
+<span class="va">ESSS_controls</span> <span class="op">&lt;-</span> <span class="fu">prefab_model_controls</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ESSS</span>
+<span class="va">ESSS_controls</span><span class="op">$</span><span class="va">data_sets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ESSS_controls</span><span class="op">$</span><span class="va">data_sets</span>, <span class="st">"exclosure_interp"</span><span class="op">)</span>
+<span class="va">exclosure_interp_controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rodents_control.html">rodents_control</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"exclosure_interp"</span>, 
+                                             interpolate <span class="op">=</span> <span class="cn">TRUE</span>,
+                                             level <span class="op">=</span> <span class="st">"Treatment"</span>, 
+                                             treatment <span class="op">=</span> <span class="st">"exclosure"</span>,
+                                             arg_checks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="st">"ESSS"</span>, controls_model <span class="op">=</span> <span class="va">ESSS_controls</span>, 
+           update_prefab_models <span class="op">=</span> <span class="cn">TRUE</span>,  
+           controls_rodents <span class="op">=</span> <span class="va">exclosure_interp_controls</span>, arg_checks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="checklist-for-adding-a-new-data-set-for-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss-in-the-production-pipeline" class="section level3">
 <h3 class="hasAnchor">
 <a href="#checklist-for-adding-a-new-data-set-for-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss-in-the-production-pipeline" class="anchor"></a>Checklist for adding a new data set for an existing model (e.g., adding interpolated exclosure data to ESSS) in the production pipeline</h3>
 <ol style="list-style-type: decimal">
-<li>Create a branch from the master on the <a href="https://github.com/weecology/portalcasting">GitHub repo</a>
+<li>Create a branch from the master on the <a href="https://github.com/weecology/portalcasting" class="external-link">GitHub repo</a>
 </li>
 <li>Put the new version of the <code>ESSS_controls</code> list into the <code>prefab_model_controls</code> in the <code>prepare_models.R</code> script</li>
 <li>Put the <code>exclosure_interp_controls</code> list into the <code>prefab_rodents_controls</code> in the <code>prepare_rodents.R</code> script</li>
@@ -373,32 +384,24 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#overview">Overview</a></li>
-      <li><a href="#model-requirements">Model requirements</a></li>
-      <li><a href="#set-up-the-directory">Set up the directory</a></li>
-      <li><a href="#adding-in-a-development-space">Adding in a development space</a></li>
-      <li><a href="#adding-in-a-production-space">Adding in a production space</a></li>
-      <li><a href="#applying-existing-models-to-new-data-sets">Applying existing models to new data sets</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
 
 
       <footer><div class="copyright">
-  <p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
+  <p></p>
+<p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
@@ -406,6 +409,8 @@
 
   
 
+
+  
 
   </body>
 </html>
