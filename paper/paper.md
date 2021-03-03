@@ -7,13 +7,13 @@ tags:
 authors:
   - name: Juniper L. Simonis
     orcid: 0000-0001-9798-0460
-    affiliation: “1, 2”
+    affiliation: "1, 2"
   - name: Glenda M. Yenni
     orcid: 0000-0001-6969-1848
     affiliation: 1
   - name: Ellen K. Bledsoe
     orcid: 0000-0002-3629-7235
-    affiliation: “1, 3”
+    affiliation: "1, 3"
   - name: Erica M. Christensen
     orcid: 0000-0002-5635-2502
     affiliation: 4
