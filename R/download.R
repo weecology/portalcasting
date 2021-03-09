@@ -107,6 +107,7 @@ download <- function(name = NULL, type = NULL, url = NULL,
                      verbose = FALSE, cleanup = TRUE, NULLname = FALSE, 
                      arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
+  options(timeout = 226) # Avoid timeouts due to slowness from Zenodo
   source_url <- download_url(type = type, url = url, 
                              concept_rec_id = concept_rec_id,
                              rec_version = rec_version, rec_id = rec_id)
