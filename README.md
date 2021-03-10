@@ -1,5 +1,5 @@
 # Supporting [automated forecasting](https://github.com/weecology/portalPredictions) of [rodent populations](https://portal.weecology.org/)
-![R-CMD-check-release](https://github.com/weecology/portalcasting/workflows/R-CMD-check-release/badge.svg)
+[![R-CMD-check-release](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml)
 [![Docker](https://img.shields.io/docker/cloud/build/weecology/portalcasting.svg)](https://hub.docker.com/repository/docker/weecology/portalcasting)
 [![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/master.svg)](https://codecov.io/github/weecology/portalcasting/branch/master)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
