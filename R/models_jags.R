@@ -318,9 +318,21 @@ jags_ss <- function(main = ".", data_set = "all",
     past_count <- past_count[-no_count]
     past_ntraps <- past_ntraps[-no_count]
 
-    data <- list(count = count, ntraps = ntraps, N = length(count),
+    past_N <- length(past_count)
+    past_diff_rate <- diff_count <- diff_time <- rep(NA, past_N - 1)
+    diff_count[1] <- past_count[2] - past_count[1]
+    diff_time[1] <- past_moon[2] - past_moon[1]
+    past_diff_rate[1] <- diff_count[1] / diff_time[1]
+    for(i in 2:(past_N - 1)){
+      diff_count[i] <- past_count[i] - past_count[i-1] 
+      diff_time[i] <- past_moon[i] - past_moon[i-1]
+      past_diff_rate[i] <- diff_count[i] / diff_time[i]
+    }
+
+    data <- list(count = count, ntraps = ntraps, max_ntraps = max(ntraps),
+                 N = length(count), past_diff_rate = past_diff_rate,
                  moon = moon, past_moon = past_moon, past_count = past_count,
-                 past_ntraps = past_ntraps, past_N = length(past_count))
+                 past_ntraps = past_ntraps, past_N = past_N)
     if(covariatesTF){
       data[["covariates"]] <- covar_in
     }

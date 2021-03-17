@@ -6,6 +6,133 @@
 
 devtools::load_all()
 main <- "./testing"
+
+
+
+
+jags_Ricker <- function(main = ".", data_set = "all",  
+                        control_files = files_control(), 
+                        control_runjags = runjags_control(), lag = NA, 
+                        quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
+
+  check_args(arg_checks = arg_checks)
+  data_set <- tolower(data_set)
+  messageq(paste0("  -jags_Ricker for ", data_set), quiet)
+  covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
+
+# remove X
+  monitor <-c( "mu", "r", "K", "a", "tau", "X")
+
+  inits <- function(data = NULL){
+    rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
+              "base::Super-Duper", "base::Mersenne-Twister")
+
+    past_count <- data$past_count 
+    past_moon <- data$past_moon 
+    past_N <- data$past_N
+    moon <- data$moon
+
+    mean_past_count <- mean(past_count)
+    max_past_count <- max(past_count)
+    sd_past_count <- sd(past_count)
+    
+    last_count <- past_count[past_N]
+    last_moon <- past_moon[past_N]
+    first_moon <- moon[1]
+    last_time_diff <- first_moon - last_moon
+    
+    mean_past_diff_rate <- mean(past_diff_rate)
+    sd_past_diff_rate <- max(c(sd(past_diff_rate) * sqrt(2), 0.01))
+    var_past_diff_rate <- sd_past_diff_rate^2
+    precision_past_diff_rate <- 1/(var_past_diff_rate)
+
+    pred_mu <- last_count + last_time_diff * mean_past_diff_rate
+
+    rate <- 100
+    shape <- precision_past_diff_rate * rate
+
+    function(chain = chain){
+      list(.RNG.name = sample(rngs, 1),
+           .RNG.seed = sample(1:1e+06, 1),
+            mu = rnorm(1, pred_mu, sd_past_count),
+            r = rnorm(1, mean_past_diff_rate, mean_past_diff_rate),
+            K = rnorm(1, max_past_count, sd_past_count),
+            a = runif(1, 0.5, 1.5),
+            tau = rgamma(1, shape = shape, rate = rate))
+    }
+  }
+
+
+  jags_model <- "model {  
+
+    mean_past_count <- mean(past_count)
+    max_past_count <- max(past_count)
+    sd_past_count <- max(c(sd(past_count) * sqrt(2), 0.01))
+    var_past_count <- sd_past_count^2
+    precision_past_count <- 1/(var_past_count)
+
+    last_count <- past_count[past_N]
+    last_moon <- past_moon[past_N]
+    first_moon <- moon[1]
+    last_time_diff <- first_moon - last_moon
+
+    mean_past_diff_rate <- mean(past_diff_rate)
+    sd_past_diff_rate <- max(c(sd(past_diff_rate) * sqrt(2), 0.01))
+    var_past_diff_rate <- sd_past_diff_rate^2
+    precision_past_diff_rate <- 1/(var_past_diff_rate)
+
+    pred_mu <- last_count + last_time_diff * mean_past_diff_rate
+
+    rate <- 100
+    shape <- precision_past_diff_rate * rate
+
+    mu ~ dnorm(pred_mu, 0.5 * precision_past_count) T(0.1, max(ntraps)); 
+    r ~ dnorm(mean_past_diff_rate, 0.5 * 1/(mean_past_diff_rate ^ 2));
+    K ~ dnorm(max_past_count, 0.5 * precision_past_count) T(0.1, max(ntraps)); 
+    tau ~ dgamma(shape, rate);
+    a ~ dunif(0.5, 1.5);
+
+    X[1] <- mu;
+    count[1] ~ dpois(X[1]) T(0.1, ntraps[1]); 
+
+    for(i in 2:N) {
+
+      pred_X[i] <- X[i-1] * exp(r) * exp(-(r / K) * X[i-1] ^ a);
+      X[i] ~ dnorm(pred_X[i], tau) T(0, max_ntraps);
+      count[i] ~ dpois(X[i]) T( , ntraps[i]); 
+    }
+  }"
+
+i<-2
+
+
+
+
+
+s
+
+
+modd <- run.jags(model = jags_model, monitor = monitor, 
+                          inits = inits(data), data = data, 
+                          n.chains = control_runjags$nchains, 
+                          adapt = control_runjags$adapt, 
+                          burnin = control_runjags$burnin, 
+                          sample = control_runjags$sample, 
+                          thin = control_runjags$thin, 
+                          modules = control_runjags$modules, 
+                          method = control_runjags$method, 
+                          factories = control_runjags$factories, 
+                          mutate = control_runjags$mutate, 
+                          summarise = FALSE, plots = FALSE)
+
+
+
+
+
+
+
+
+
 DM <- read_rodents_table(main, "DM_controls")
 covar <- read_covariates(main)
 covar
