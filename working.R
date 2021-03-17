@@ -103,13 +103,19 @@ model <- "model {
   last_time_diff <- first_moon - last_moon
 
   mean_past_diff_rate <- mean(past_diff_rate)
+  sd_past_diff_rate <- max(c(sd(past_diff_rate) * sqrt(2), 0.01))
+  var_past_diff_rate <- sd_past_diff_rate^2
+  precision_past_diff_rate <- 1/(var_past_diff_rate)
 
   pred_mu <- last_count + last_time_diff * mean_past_diff_rate
 
-  mu ~ dnorm(pred_mu, precision_past_count) T(0.1, max(ntraps)); 
-  r ~ dnorm(0, 100);
-  K ~ dnorm(max_past_count, precision_past_count) T(0.1, max(ntraps)); 
-  tau ~ dgamma(0.46, 0.1);
+  rate <- 100
+  shape <- precision_past_diff_rate * rate
+
+  mu ~ dnorm(pred_mu, 0.5 * precision_past_count) T(0.1, max(ntraps)); 
+  r ~ dnorm(mean_past_diff_rate, 0.5 * 1/(mean_past_diff_rate ^ 2));
+  K ~ dnorm(max_past_count, 0.5 * precision_past_count) T(0.1, max(ntraps)); 
+  tau ~ dgamma(shape, rate);
   a ~ dunif(0.5, 1.5);
 
 
@@ -147,18 +153,23 @@ monitor <-c( "mu", "r", "K", "a", "tau")
     last_time_diff <- first_moon - last_moon
     
     mean_past_diff_rate <- mean(past_diff_rate)
+    sd_past_diff_rate <- max(c(sd(past_diff_rate) * sqrt(2), 0.01))
+    var_past_diff_rate <- sd_past_diff_rate^2
+    precision_past_diff_rate <- 1/(var_past_diff_rate)
 
     pred_mu <- last_count + last_time_diff * mean_past_diff_rate
 
+    rate <- 100
+    shape <- precision_past_diff_rate * rate
 
     function(chain = chain){
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
             mu = rnorm(1, pred_mu, sd_past_count),
-            r = rnorm(1, mean_past_diff_rate, 0.1),
+            r = rnorm(1, mean_past_diff_rate, mean_past_diff_rate),
             K = rnorm(1, max_past_count, sd_past_count),
             a = runif(1, 0.5, 1.5),
-            tau = rgamma(1, shape = 0.46, rate = 0.1))
+            tau = rgamma(1, shape = shape, rate = rate))
     }
   }
 
