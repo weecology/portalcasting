@@ -97,11 +97,21 @@ model <- "model {
   var_past_count <- sd_past_count^2
   precision_past_count <- 1/(var_past_count)
 
+  last_count <- past_count[past_N]
+  last_moon <- past_moon[past_N]
+  first_moon <- moon[1]
+  last_time_diff <- first_moon - last_moon
 
-  mu ~ dnorm(mean_past_count, precision_past_count) T(0.1, max(ntraps)); 
-  r ~ dnorm(0, 100)
+  mean_past_diff_rate <- mean(past_diff_rate)
+
+  pred_mu <- last_count + last_time_diff * mean_past_diff_rate
+
+  mu ~ dnorm(pred_mu, precision_past_count) T(0.1, max(ntraps)); 
+  r ~ dnorm(0, 100);
   K ~ dnorm(max_past_count, precision_past_count) T(0.1, max(ntraps)); 
-  tau ~ dgamma(0.46, 0.1)
+  tau ~ dgamma(0.46, 0.1);
+  a ~ dunif(0.5, 1.5);
+
 
 
   X[1] <- mu;
@@ -123,15 +133,29 @@ monitor <-c( "mu", "r", "K", "a", "tau")
               "base::Super-Duper", "base::Mersenne-Twister")
 
     past_count <- data$past_count 
+    past_moon <- data$past_moon 
+    past_N <- data$past_N
+    moon <- data$moon
+
     mean_past_count <- mean(past_count)
     max_past_count <- max(past_count)
     sd_past_count <- sd(past_count)
+    
+    last_count <- past_count[past_N]
+    last_moon <- past_moon[past_N]
+    first_moon <- moon[1]
+    last_time_diff <- first_moon - last_moon
+    
+    mean_past_diff_rate <- mean(past_diff_rate)
+
+    pred_mu <- last_count + last_time_diff * mean_past_diff_rate
+
 
     function(chain = chain){
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
-            mu = rnorm(1, mean_past_count, sd_past_count),
-            r = rnorm(1, 0, 0.1),
+            mu = rnorm(1, pred_mu, sd_past_count),
+            r = rnorm(1, mean_past_diff_rate, 0.1),
             K = rnorm(1, max_past_count, sd_past_count),
             a = runif(1, 0.5, 1.5),
             tau = rgamma(1, shape = 0.46, rate = 0.1))
