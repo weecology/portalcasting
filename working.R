@@ -4,13 +4,12 @@ looks like from this that a general ricker model with the three params
 is flexible enough that a fit of the data can generate trajectories like it
 as well as others but still its a great starting point
 
-
-
+devtools::load_all()
+main <- "./testing"
 DM <- read_rodents_table(main, "DM_controls")
 covar <- read_covariates(main)
 covar
 plot(covar$moon[1:NROW(DM)], DM[,4])
-
 
 DMs <- na.omit(DM[,4])
 Nt1 <- DMs[-length(DMs)]
@@ -24,13 +23,185 @@ Rbar <- Rt2 / t2_t1
 
 hist(Rbar)
 
+quiet <- verbose <- FALSE
+arg_checks <- TRUE
+control_files <- files_control()
+control_runjags <- runjags_control(adapt = 1000, burnin = 1000, sample = 1000)
+
+lag <- NA
+data_set <- "DM_controls"
+  rodents_table <- read_rodents_table(main = main, data_set = data_set, 
+                                      arg_checks = arg_checks)
+
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
+  data_set_controls <- metadata$controls_r[[data_set]]
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  true_count_lead <- length(metadata$rodent_cast_moons)
+  CL <- metadata$confidence_level
+
+
+    ss <- s <- "DM"
+    messageq(paste0("   -", ss), !verbose)
+
+    moon_in <- which(rodents_table$moon >= start_moon & 
+                     rodents_table$moon <= end_moon)
+    past_moon_in <- which(rodents_table$moon < start_moon)
+    moon <- rodents_table[moon_in, "moon"] 
+    moon <- c(moon, metadata$rodent_cast_moons)
+    past_moon <- rodents_table[past_moon_in, "moon"]
+
+    ntraps <- rodents_table[moon_in, "ntraps"] 
+    ntraps[which(is.na(ntraps) == TRUE)] <- 0
+    cast_ntraps <- rep(max(ntraps), true_count_lead)
+    ntraps <- c(ntraps, cast_ntraps)
+    past_ntraps <- rodents_table[past_moon_in, "ntraps"]
+
+    species_in <- which(colnames(rodents_table) == s)
+    count <- rodents_table[moon_in, species_in]
+    if(sum(count, na.rm = TRUE) == 0){
+      next()
+    }
+    cast_count <- rep(NA, true_count_lead)
+    count <- c(count, cast_count)
+    past_count <- rodents_table[past_moon_in, species_in]
+
+    no_count <- which(is.na(past_count) == TRUE)
+    past_moon <- past_moon[-no_count]
+    past_count <- past_count[-no_count]
+    past_ntraps <- past_ntraps[-no_count]
+
+    data <- list(count = count, ntraps = ntraps, max_ntraps = max(ntraps),
+                 N = length(count),
+                 moon = moon, past_moon = past_moon, past_count = past_count,
+                 past_ntraps = past_ntraps, past_N = length(past_count))
+
+
+model <- "model {  
+
+  mean_past_count <- mean(past_count)
+  max_past_count <- max(past_count)
+  sd_past_count <- max(c(sd(past_count) * sqrt(2), 0.01))
+  var_past_count <- sd_past_count^2
+  precision_past_count <- 1/(var_past_count)
+   
+
+  mu ~ dnorm(mean_past_count, precision_past_count) T(0.1, max(ntraps)); 
+  r ~ dnorm(0, 100)
+  K ~ dnorm(max_past_count, precision_past_count) T(0.1, max(ntraps)); 
+  tau ~ dgamma(0.46, 0.1)
+
+  X[1] <- mu;
+  count[1] ~ dpois(X[1]) T(0.1, ntraps[1]); 
+
+  for(i in 2:N) {
+
+    pred_X[i] <- X[i-1] * exp(r) * exp(-(r / K) * X[i-1]);
+    X[i] ~ dnorm(pred_X[i], tau) T(0, max_ntraps);
+    count[i] ~ dpois(X[i]) T( , ntraps[i]); 
+  }
+}"
+
+
+
+monitor <-c( "mu", "r", "K", "tau", "X")
+  inits <- function(data = NULL){
+    rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
+              "base::Super-Duper", "base::Mersenne-Twister")
+    past_count <- data$past_count 
+
+    function(chain = chain){
+      list(.RNG.name = sample(rngs, 1),
+           .RNG.seed = sample(1:1e+06, 1),
+            mu = rnorm(1, mean(past_count), sd(past_count)),
+            r = rnorm(1, 0, 0.1),
+            K = rnorm(1, 25, 2),
+            tau = rgamma(1, shape = 0.46, rate = 0.1))
+    }
+  }
+modd <- run.jags(model = model, monitor = monitor, 
+                          inits = inits(data), data = data, 
+                          n.chains = control_runjags$nchains, 
+                          adapt = control_runjags$adapt, 
+                          burnin = control_runjags$burnin, 
+                          sample = control_runjags$sample, 
+                          thin = control_runjags$thin, 
+                          modules = control_runjags$modules, 
+                          method = control_runjags$method, 
+                          factories = control_runjags$factories, 
+                          mutate = control_runjags$mutate, 
+                          summarise = FALSE, plots = FALSE)
+
+
+xxx <- summary(modd)
+head(xxx)
+tail(xxx)
+
+plot(((xxx[4:NROW(xxx),2])))
+
+
+
+
+
+
+
+count
+
+
+
+
+x <- rep(9.5, 100)
+
+r <- 0
+K <- 20
+rm <- exp(r)
+c <- r / K
+a <- 1
+for(i in 2:100){
+  x[i] <- x[i-1] * rm * exp(-c * (x[i-1]^a))
+}
+plot(x, type = "l")
+count
+
+
+####################################################################
+#
+# good to work with but old
+#
+
 mod <- nls(Rbar ~ log(rm) - c * Nt1, start = list(rm = 0.5, c = 1))
 summary(mod)
 
 
 mod2 <- nls(Rbar ~ log(rm) - c * Nt1^a, 
-            start = list(rm = 0.5, c = -1, a = -1))
+            start = list(rm = 0.5, c = 1, a = -1))
 summary(mod2)
+
+
+data <- list(counts = DM[,1])
+parameters <- c(rm = 0.75, c = -2.5, a = -0.88)
+
+fun <- function(parameters, data){
+  rm <- parameters[1]
+  c <- parameters[2]
+  a <- parameters[3]
+  counts <- data$counts
+  dens <- rep(0, length(counts))
+  dens[1] <- counts[1] 
+  for(i in 2:length(dens)){
+    dens[i] <- dens[i-1] * exp(log(rm)-c*dens[i-1]^a)
+  }
+  lliks <- dpois(counts[-1], dens[-1], log = TRUE)
+  -sum(lliks, na.rm = TRUE)
+}
+
+mod3 <- optim(parameters, fun, data = data, hessian = TRUE)
+mod3
+
+
+
+
 
 nstep <- 40
 ns <- ns2 <- ns3 <- rep(0, nstep)
@@ -38,7 +209,7 @@ ns[1] <- ns2[1] <- ns3[1] <- 1
 for(i in 2:nstep){
   ns[i] <- ns[i-1] * exp(log(1.3) - (0.02)*ns[i-1]^(1))
   ns2[i] <- ns2[i-1] * exp(log(0.75) - (-2.5)*ns2[i-1]^(-0.88))
-  ns3[i] <- ns3[i-1] * exp(log(0.22) - (-6.1)*ns3[i-1]^(-.52))
+  ns3[i] <- ns3[i-1] * exp(log(1.001) - (-2.0002)*ns3[i-1]^(-1.174))
 }
 plot(ns, col = rgb(0,0,0.7),ylim=c(0,20))
 points(ns2, col = rgb(0,0.6,0.2))
@@ -114,12 +285,12 @@ plot(covar$moon[1:NROW(DM)], DM[,4], xlim = c(400,550),ylim=c(0,45))
 
 
 for(j in 1:nreps){
-  #points(covar$moon[NROW(DM)]+1:12, out[,j],col=rgb(0,0,0.7,alpha=0.1), 
-   #      type = "l",lwd=1)
+  points(covar$moon[NROW(DM)]+1:12, out[,j],col=rgb(0,0,0.7,alpha=0.1), 
+         type = "l",lwd=1)
   points(covar$moon[NROW(DM)]+1:12, out2[,j],col=rgb(0,0.6,0.2,alpha=0.1), 
          type = "l",lwd=1)
-#  points(covar$moon[NROW(DM)]+1:12, out3[,j],col=rgb(0.8,0.1,0.6,alpha=0.1), 
- #        type = "l",lwd=1)
+  points(covar$moon[NROW(DM)]+1:12, out3[,j],col=rgb(0.8,0.1,0.6,alpha=0.1), 
+         type = "l",lwd=1)
 }
 
 points(ns3, col = rgb(0.8,0.1,0.6))
@@ -204,39 +375,6 @@ plot(n)
 
 
 
-data <- list(counts = DM[,1])
-parameters <- c(lambda = 1)
-
-fun <- function(parameters, data){
-  lambda <- parameters[1]
-  counts <- data$counts
-  lliks <- dpois(counts, lambda, log = TRUE) 
-  -sum(lliks, na.rm = TRUE)
-}
-
-optim(parameters, fun, data = data)
-
-parameters <- c(rm = 0.75, c = -2.5, a = -0.88)
-
-fun <- function(parameters, data){
-  rm <- parameters[1]
-  c <- parameters[2]
-  a <- parameters[3]
-  counts <- data$counts
-  dens <- rep(0, length(counts))
-  dens[1] <- counts[1] 
-  for(i in 2:length(dens)){
-    dens[i] <- dens[i-1] * exp(log(rm)-c*dens[i-1]^a)
-  }
-  lliks <- dpois(counts[-1], dens[-1], log = TRUE)
-  -sum(lliks, na.rm = TRUE)
-}
-
-mod3 <- optim(parameters, fun, data = data, hessian = TRUE)
-mod3
-solve(mod3$hessian)
-fun(parameters,data)
-
 
 
 
@@ -262,7 +400,7 @@ fun <- function(parameters, data){
 
 
 
-mod3 <- optim(parameters, fun, data = data, hessian = TRUE)
-mod3
-solve(mod3$hessian)
+mod4 <- optim(parameters, fun, data = data, hessian = TRUE)
+mod4
+solve(mod4$hessian)
 
