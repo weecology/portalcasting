@@ -133,7 +133,7 @@ model <- "model {
 
 
 
-monitor <-c( "mu", "r", "K", "a", "tau")
+monitor <-c( "mu", "r", "K", "a", "tau", "X")
   inits <- function(data = NULL){
     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
               "base::Super-Duper", "base::Mersenne-Twister")
@@ -189,12 +189,13 @@ modd <- run.jags(model = model, monitor = monitor,
                           summarise = FALSE, plots = FALSE)
 
 
-summary(modd)
-plot(modd)
 
 xxx <- summary(modd)
 head(xxx)
 tail(xxx)
+
+
+plot(modd, vars = c("mu", "r", "K", "a", "tau"))
 
 plot(((xxx[6:NROW(xxx),2])), type = "l", ylim = c(0, 45))
 points(count)
@@ -209,16 +210,16 @@ count
 
 
 
-x <- rep(0, 300)
+x <- rep(0, 20)
 
-r <- 0.0446
-K <- 19.353
-a <- 1.00
-tau <- 0.317
-mu <- 12.1117
+r <- 0.05318
+K <- 28.17558
+a <- 1.19433
+tau <- 0.1591
+mu <- 24
 
 x[1] <- mu
-for(i in 2:300){
+for(i in 2:20){
   x[i] <- max(c(rnorm(1, 
                       x[i-1] * exp(r) * exp(-(r/K) * (x[i-1]^a)), 
                       sqrt(1/tau)), 
