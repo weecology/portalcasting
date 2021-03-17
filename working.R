@@ -1,8 +1,8 @@
-working here to do some simple nls modeling of DMs in controls
-follow bolker!
-looks like from this that a general ricker model with the three params
-is flexible enough that a fit of the data can generate trajectories like it
-as well as others but still its a great starting point
+#
+#  working version of a logistic growth model
+#
+
+# just needs to get tidied up and integrated!
 
 devtools::load_all()
 main <- "./testing"
@@ -72,8 +72,19 @@ data_set <- "DM_controls"
     past_count <- past_count[-no_count]
     past_ntraps <- past_ntraps[-no_count]
 
+past_diff_rate<-diff_count<-diff_time<-rep(NA, length(past_count) - 1)
+  diff_count[1] <- past_count[2] - past_count[1]
+  diff_time[1] <- past_moon[2] - past_moon[1]
+  past_diff_rate[1] <- diff_count[1] / diff_time[1]
+  for(i in 2:(past_N - 1)){
+    diff_count[i] <- past_count[i] - past_count[i-1] 
+    diff_time[i] <- past_moon[i] - past_moon[i-1]
+    past_diff_rate[i] <- diff_count[i] / diff_time[i]
+  }
+
+
     data <- list(count = count, ntraps = ntraps, max_ntraps = max(ntraps),
-                 N = length(count),
+                 N = length(count), past_diff_rate = past_diff_rate,
                  moon = moon, past_moon = past_moon, past_count = past_count,
                  past_ntraps = past_ntraps, past_N = length(past_count))
 
@@ -85,19 +96,20 @@ model <- "model {
   sd_past_count <- max(c(sd(past_count) * sqrt(2), 0.01))
   var_past_count <- sd_past_count^2
   precision_past_count <- 1/(var_past_count)
-   
+
 
   mu ~ dnorm(mean_past_count, precision_past_count) T(0.1, max(ntraps)); 
   r ~ dnorm(0, 100)
   K ~ dnorm(max_past_count, precision_past_count) T(0.1, max(ntraps)); 
   tau ~ dgamma(0.46, 0.1)
 
+
   X[1] <- mu;
   count[1] ~ dpois(X[1]) T(0.1, ntraps[1]); 
 
   for(i in 2:N) {
 
-    pred_X[i] <- X[i-1] * exp(r) * exp(-(r / K) * X[i-1]);
+    pred_X[i] <- X[i-1] * exp(r) * exp(-(r / K) * X[i-1] ^ a);
     X[i] ~ dnorm(pred_X[i], tau) T(0, max_ntraps);
     count[i] ~ dpois(X[i]) T( , ntraps[i]); 
   }
@@ -105,21 +117,29 @@ model <- "model {
 
 
 
-monitor <-c( "mu", "r", "K", "tau", "X")
+monitor <-c( "mu", "r", "K", "a", "tau")
   inits <- function(data = NULL){
     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
               "base::Super-Duper", "base::Mersenne-Twister")
+
     past_count <- data$past_count 
+    mean_past_count <- mean(past_count)
+    max_past_count <- max(past_count)
+    sd_past_count <- sd(past_count)
 
     function(chain = chain){
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
-            mu = rnorm(1, mean(past_count), sd(past_count)),
+            mu = rnorm(1, mean_past_count, sd_past_count),
             r = rnorm(1, 0, 0.1),
-            K = rnorm(1, 25, 2),
+            K = rnorm(1, max_past_count, sd_past_count),
+            a = runif(1, 0.5, 1.5),
             tau = rgamma(1, shape = 0.46, rate = 0.1))
     }
   }
+
+#control_runjags <- runjags_control(nchains = 4, thin = 10)
+
 modd <- run.jags(model = model, monitor = monitor, 
                           inits = inits(data), data = data, 
                           n.chains = control_runjags$nchains, 
@@ -134,12 +154,15 @@ modd <- run.jags(model = model, monitor = monitor,
                           summarise = FALSE, plots = FALSE)
 
 
+summary(modd)
+plot(modd)
+
 xxx <- summary(modd)
 head(xxx)
 tail(xxx)
 
-plot(((xxx[4:NROW(xxx),2])))
-
+plot(((xxx[6:NROW(xxx),2])), type = "l", ylim = c(0, 45))
+points(count)
 
 
 
@@ -151,19 +174,56 @@ count
 
 
 
-x <- rep(9.5, 100)
+x <- rep(0, 300)
 
-r <- 0
-K <- 20
-rm <- exp(r)
-c <- r / K
-a <- 1
-for(i in 2:100){
-  x[i] <- x[i-1] * rm * exp(-c * (x[i-1]^a))
+r <- 0.0446
+K <- 19.353
+a <- 1.00
+tau <- 0.317
+mu <- 12.1117
+
+x[1] <- mu
+for(i in 2:300){
+  x[i] <- max(c(rnorm(1, 
+                      x[i-1] * exp(r) * exp(-(r/K) * (x[i-1]^a)), 
+                      sqrt(1/tau)), 
+              0.01))
 }
-plot(x, type = "l")
+plot(x, type = "l", ylim = c(0, 30), col = 1)
+
+
+r <- 0.0306
+K <- 24.679
+a <- 1.106
+tau <- 0.334
+mu <- 12.386
+
+x[1] <- mu
+for(i in 2:300){
+  x[i] <- max(c(rnorm(1, 
+                      x[i-1] * exp(r) * exp(-(r/K) * (x[i-1]^a)), 
+                      sqrt(1/tau)), 
+              0.01))
+}
+points(x, type = "l", col = 2)
+
+
+
+
+
+
+
 count
 
+  X[1] <- mu;
+  count[1] ~ dpois(X[1]) T(0.1, ntraps[1]); 
+
+  for(i in 2:N) {
+
+    pred_X[i] <- X[i-1] * exp(r) * exp(-(r / K) * X[i-1] ^ a);
+    X[i] ~ dnorm(pred_X[i], tau) T(0, max_ntraps);
+    count[i] ~ dpois(X[i]) T( , ntraps[i]); 
+  }
 
 ####################################################################
 #
