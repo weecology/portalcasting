@@ -2,7 +2,11 @@
 #  working version of a logistic growth model
 #
 
-# just needs to get tidied up and integrated!
+# #
+#
+#  generalizations occurring.
+#  see log version too
+#
 
 devtools::load_all()
 main <- "./testing"
@@ -20,8 +24,7 @@ jags_Ricker <- function(main = ".", data_set = "all",
   messageq(paste0("  -jags_Ricker for ", data_set), quiet)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
 
-# remove X
-  monitor <-c( "mu", "r", "K", "a", "tau", "X")
+  monitor <-c( "mu", "r", "K", "a", "tau")
 
   inits <- function(data = NULL){
     rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
@@ -31,6 +34,9 @@ jags_Ricker <- function(main = ".", data_set = "all",
     past_moon <- data$past_moon 
     past_N <- data$past_N
     moon <- data$moon
+    max_ntraps <- data$max_ntraps
+
+    past_diff_rate <- data$past_diff_rate 
 
     mean_past_count <- mean(past_count)
     max_past_count <- max(past_count)
@@ -54,9 +60,10 @@ jags_Ricker <- function(main = ".", data_set = "all",
     function(chain = chain){
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
-            mu = rnorm(1, pred_mu, sd_past_count),
-            r = rnorm(1, mean_past_diff_rate, mean_past_diff_rate),
-            K = rnorm(1, max_past_count, sd_past_count),
+            mu = max(c(rnorm(1, pred_mu, sd_past_count), 1e-4)),
+            r = rnorm(1, mean_past_diff_rate, 
+                         max(c(1e-4, mean_past_diff_rate))),
+            K = runif(1, 2, max_past_count * 2), 
             a = runif(1, 0.5, 1.5),
             tau = rgamma(1, shape = shape, rate = rate))
     }
@@ -81,36 +88,111 @@ jags_Ricker <- function(main = ".", data_set = "all",
     var_past_diff_rate <- sd_past_diff_rate^2
     precision_past_diff_rate <- 1/(var_past_diff_rate)
 
-    pred_mu <- last_count + last_time_diff * mean_past_diff_rate
+    pred_mu <- max(c(last_count + last_time_diff * mean_past_diff_rate,
+                     1e-4))
 
     rate <- 100
     shape <- precision_past_diff_rate * rate
 
-    mu ~ dnorm(pred_mu, 0.5 * precision_past_count) T(0.1, max(ntraps)); 
-    r ~ dnorm(mean_past_diff_rate, 0.5 * 1/(mean_past_diff_rate ^ 2));
-    K ~ dnorm(max_past_count, 0.5 * precision_past_count) T(0.1, max(ntraps)); 
+    mu ~ dnorm(pred_mu, 0.5 * precision_past_count) T(1e-4, max_ntraps); 
+    r ~ dnorm(mean_past_diff_rate, 
+              0.5 * 1/(max(c(mean_past_diff_rate, 1e-4))^ 2));
+    K ~ dunif(2, max_past_count * 2);
     tau ~ dgamma(shape, rate);
-    a ~ dunif(0.5, 1.5);
+    a ~ dunif(0, 2);
 
     X[1] <- mu;
-    count[1] ~ dpois(X[1]) T(0.1, ntraps[1]); 
+    pred_count[1] <- X[1]
+    count[1] ~ dpois(X[1]) T( , ntraps[1]); 
 
     for(i in 2:N) {
 
-      pred_X[i] <- X[i-1] * exp(r) * exp(-(r / K) * X[i-1] ^ a);
-      X[i] ~ dnorm(pred_X[i], tau) T(0, max_ntraps);
+      pred_X[i] <- max(c(X[i-1] * exp(r) * exp(-(r / K) * X[i-1] ^ a),
+                       1e-4));
+      X[i] ~ dnorm(pred_X[i], tau) T(1e-4, max_ntraps);
+      pred_count[i] <- X[i]
       count[i] ~ dpois(X[i]) T( , ntraps[i]); 
     }
   }"
+  jags_ss(main = main, data_set = data_set, control_files = control_files,
+          control_runjags = control_runjags, jags_model = jags_model,
+          monitor = monitor, inits = inits, lag = lag, quiet = quiet, 
+          verbose = verbose, arg_checks = arg_checks)
+}
 
-i<-2
 
 
+data_set <- "all"
+s <- "DM"
+ss <- "DM"
+
+ arg_checks <- TRUE
+
+control_files <- files_control() 
+control_runjags <- runjags_control()
+lag <- NA 
+quiet <- FALSE
+verbose <- TRUE
+
+  rodents_table <- read_rodents_table(main = main, data_set = data_set, 
+                                      arg_checks = arg_checks)
+
+  metadata <- read_metadata(main = main, control_files = control_files,
+                            arg_checks = arg_checks)
+  data_set_controls <- metadata$controls_r[[data_set]]
+  start_moon <- metadata$start_moon
+  end_moon <- metadata$end_moon
+  true_count_lead <- length(metadata$rodent_cast_moons)
+  CL <- metadata$confidence_level
+
+    moon_in <- which(rodents_table$moon >= start_moon & 
+                     rodents_table$moon <= end_moon)
+    past_moon_in <- which(rodents_table$moon < start_moon)
+    moon <- rodents_table[moon_in, "moon"] 
+    moon <- c(moon, metadata$rodent_cast_moons)
+    past_moon <- rodents_table[past_moon_in, "moon"]
+
+    ntraps <- rodents_table[moon_in, "ntraps"] 
+    ntraps[which(is.na(ntraps) == TRUE)] <- 0
+    cast_ntraps <- rep(max(ntraps), true_count_lead)
+    ntraps <- c(ntraps, cast_ntraps)
+    past_ntraps <- rodents_table[past_moon_in, "ntraps"]
+
+    species_in <- which(colnames(rodents_table) == s)
+    count <- rodents_table[moon_in, species_in]
+    if(sum(count, na.rm = TRUE) == 0){
+      next()
+    }
+    cast_count <- rep(NA, true_count_lead)
+    count <- c(count, cast_count)
+
+    past_count <- rodents_table[past_moon_in, species_in]
+    no_count <- is.na(past_count) == TRUE
+    past_moon <- past_moon[!no_count]
+    past_count <- past_count[!no_count]
+    past_ntraps <- past_ntraps[!no_count]
 
 
+    past_N <- length(past_count)
+    past_diff_rate <- diff_count <- diff_time <- rep(NA, past_N - 1)
 
-s
+    diff_count[1] <- past_count[2] - past_count[1]
+    diff_time[1] <- past_moon[2] - past_moon[1]
+    past_diff_rate[1] <- diff_count[1] / diff_time[1]
+    for(j in 2:(past_N - 1)){
+      diff_count[j] <- past_count[j] - past_count[j-1] 
+      diff_time[j] <- past_moon[j] - past_moon[j-1]
+      past_diff_rate[j] <- diff_count[j] / diff_time[j]
+    }
 
+
+    data <- list(count = count, ntraps = ntraps, max_ntraps = max(ntraps),
+                 N = length(count), past_diff_rate = past_diff_rate,
+                 moon = moon, past_moon = past_moon, 
+                 past_ntraps = past_ntraps, past_N = past_N,
+                 past_count = past_count)
+
+  monitor <-c( "mu", "r", "K", "a", "tau", "X")
 
 modd <- run.jags(model = jags_model, monitor = monitor, 
                           inits = inits(data), data = data, 
@@ -126,11 +208,21 @@ modd <- run.jags(model = jags_model, monitor = monitor,
                           summarise = FALSE, plots = FALSE)
 
 
+xxx <- summary(modd)
+head(xxx)
+tail(xxx)
+
+plot(count)
+points(((xxx[6:NROW(xxx),2])), type = "l")
+
+
+plot(modd, vars = c("mu", "r", "K", "a", "tau"))
+ 
 
 
 
-
-
+  runjags.options(silent.jags = F,
+                  silent.runjags = F)
 
 
 DM <- read_rodents_table(main, "DM_controls")
@@ -324,7 +416,8 @@ tail(xxx)
 
 plot(modd, vars = c("mu", "r", "K", "a", "tau"))
 
-plot(((xxx[6:NROW(xxx),2])), type = "l", ylim = c(0, 45))
+vals <- ((xxx[6:NROW(xxx),2]))
+plot(vals, type = "l", ylim = c(0, max(c(vals, count), na.rm = TRUE)))
 points(count)
 
 

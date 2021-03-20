@@ -323,11 +323,12 @@ jags_ss <- function(main = ".", data_set = "all",
     diff_count[1] <- past_count[2] - past_count[1]
     diff_time[1] <- past_moon[2] - past_moon[1]
     past_diff_rate[1] <- diff_count[1] / diff_time[1]
-    for(i in 2:(past_N - 1)){
-      diff_count[i] <- past_count[i] - past_count[i-1] 
-      diff_time[i] <- past_moon[i] - past_moon[i-1]
-      past_diff_rate[i] <- diff_count[i] / diff_time[i]
+    for(j in 2:(past_N - 1)){
+      diff_count[j] <- past_count[j] - past_count[j-1] 
+      diff_time[j] <- past_moon[j] - past_moon[j-1]
+      past_diff_rate[j] <- diff_count[j] / diff_time[j]
     }
+
 
     data <- list(count = count, ntraps = ntraps, max_ntraps = max(ntraps),
                  N = length(count), past_diff_rate = past_diff_rate,
@@ -352,10 +353,10 @@ jags_ss <- function(main = ".", data_set = "all",
 
     mods[[i]] <- run.jags(model = jags_model, monitor = monitor, 
                           inits = inits(data), data = data, 
-                          n.chains = control_runjags$nchains, 
-                          adapt = control_runjags$adapt, 
-                          burnin = control_runjags$burnin, 
-                          sample = control_runjags$sample, 
+                          n.chains = 8,#control_runjags$nchains, 
+                          adapt = 1e4,#control_runjags$adapt, 
+                          burnin = 1e4,#control_runjags$burnin, 
+                          sample = 1e4,#control_runjags$sample, 
                           thin = control_runjags$thin, 
                           modules = control_runjags$modules, 
                           method = control_runjags$method, 
