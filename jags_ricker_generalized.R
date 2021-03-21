@@ -20,8 +20,8 @@ rngs <- function(){
 
 
 data_set <- "all"
-s <- "PB"
-ss <- "PB"
+s <- "RM"
+ss <- "RM"
 arg_checks <- TRUE
 
 control_files <- files_control() 
@@ -136,7 +136,7 @@ jags_model <- "model {
 
   K ~ dunif(max_past_count, max_K)
 
-  a ~ dnorm(1, 100) T(0.5, 1.5)
+  a ~ dnorm(1, 10000) T(0.8, 1.2)
 
   log_x[1] <- min(log_x1, log(max_c))
   x[1] <- max(c(exp(log_x[1]), min_count))
@@ -171,7 +171,7 @@ inits <- function(data = NULL, generators = rngs(), seeds = 1:1e6){
          r = rnorm(1, data$mean_diff_log_past_count, 
                       data$sd_r),
          K = runif(1, data$max_past_count, data$max_K),
-         a = min(c(max(c(rnorm(1, 1, 0.1), 0.5)), 1.5))     
+         a = min(c(max(c(rnorm(1, 1, 0.01), 0.8)), 1.2))     
     )
 
   }
@@ -186,9 +186,9 @@ monitor <- c("log_x1", "tau_delta", "r", "K", "a", "x")
 modd <- run.jags(model = jags_model, monitor = monitor, 
                           inits = inits(data), data = data,  
                           n.chains = control_runjags$nchains,
-                          adapt = 1e3,#control_runjags$adapt,
-                          burnin = 1e3,#control_runjags$burnin,
-                          sample = 1e3,#control_runjags$sample,
+                          adapt = control_runjags$adapt,
+                          burnin = control_runjags$burnin,
+                          sample = control_runjags$sample,
                           thin = control_runjags$thin, 
                           modules = control_runjags$modules, 
                           method = control_runjags$method, 
