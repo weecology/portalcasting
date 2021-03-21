@@ -16,12 +16,12 @@ rngs <- function(){
 
 
 data_set <- "all"
-s <- "DS"
-ss <- "DS"
+s <- "DM"
+ss <- "DM"
 arg_checks <- TRUE
 
 control_files <- files_control() 
-control_runjags <- runjags_control()
+control_runjags <- runjags_control(nchains = 4)
 lag <- NA 
 quiet <- FALSE
 verbose <- TRUE
@@ -42,7 +42,7 @@ CL <- metadata$confidence_level
 # add to metadata
 
 start_past_moon <- 200
-min_val <- 1e-3
+min_val <- 0.1
 
 # make these into functions too
 
@@ -67,7 +67,7 @@ past_ntraps <- past_ntraps[!na_past_count]
 past_moon <- past_moon[!na_past_count]
 past_N <- length(past_count)
 
-min_sd <- 1e-3
+min_sd <- 0.01
 
 log_past_count <- log(past_count + min_val)
 mean_log_past_count <- mean(log_past_count)
@@ -84,17 +84,21 @@ data <- list(pred_log_x1 = pred_log_x1,
              precision_pred_log_x1 = precision_pred_log_x1,
              y = count,
              T = N,       # T = time steps
-             c = ntraps)  # c = cap
-
+             c = ntraps,  # c = cap
+             max_c = max(ntraps),
+             log_max_c = log(max(ntraps)),
+             min_val = min_val,
+             log_min_val = log(min_val))
 
 
 jags_model <- "model {  
 
-  log_x1 ~ dnorm(pred_log_x1, precision_pred_log_x1)
+  log_x1 ~ dnorm(pred_log_x1, precision_pred_log_x1) T(log_min_val, log_max_c)
 
   x1 <- exp(log_x1)
 
-  log_x[1] <- log_x1
+  log_x[1] <- min(log_x1, log(max_c))
+
   x[1] <- exp(log_x[1])
   y[1] ~ dpois(x[1]) T( , c[1])
 
@@ -113,7 +117,9 @@ inits <- function(data = NULL, generators = rngs(), seeds = 1:1e6){
 
     list(.RNG.name = sample(generators, 1),
          .RNG.seed = sample(seeds, 1),
-         log_x1 = rnorm(1, pred_log_x1, sd_pred_log_x1)     
+         log_x1 = max(c(min(c(rnorm(1, data$pred_log_x1, data$sd_pred_log_x1),
+                            data$log_max_c)),
+                        data$log_min_val))  
     )
 
   }
@@ -125,10 +131,10 @@ monitor <- c("log_x1", "x")
 
 modd <- run.jags(model = jags_model, monitor = monitor, 
                           inits = inits(data), data = data, 
-                          n.chains = 4,
-                          adapt = 1e3,
-                          burnin = 1e3,
-                          sample = 1e3,
+                          n.chains = control_runjags$nchains,
+                          adapt = control_runjags$adapt,
+                          burnin = control_runjags$burnin,
+                          sample = control_runjags$sample,
                           thin = control_runjags$thin, 
                           modules = control_runjags$modules, 
                           method = control_runjags$method, 
@@ -146,10 +152,4 @@ plot(count)
 points(modd_sum[2:NROW(modd_sum), 2], type = "l")
 
 
-
-
-
-
-count
-plot(count)
 

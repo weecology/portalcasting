@@ -6,7 +6,7 @@
 #    1. mean overall density, not fluctuating
 #    2. random walk overall density
 #    3. logistic growth (r and K)
-#
+#    4. generalized ricker (r and K and a)
 
 
 devtools::load_all()
@@ -18,13 +18,14 @@ rngs <- function(){
 }
 
 
+
 data_set <- "all"
-s <- "DM"
-ss <- "DM"
+s <- "PB"
+ss <- "PB"
 arg_checks <- TRUE
 
 control_files <- files_control() 
-control_runjags <- runjags_control()
+control_runjags <- runjags_control(nchains = 4)
 lag <- NA 
 quiet <- FALSE
 verbose <- TRUE
@@ -42,12 +43,9 @@ true_count_lead <- length(metadata$rodent_cast_moons)
 CL <- metadata$confidence_level
 
 
-# add to metadata
-
 start_past_moon <- 200
-min_val <- 1e-3
+min_count <- 0.001
 
-# make these into functions too
 
 moon_in <- which(rodents_table$moon >= start_moon & 
                      rodents_table$moon <= end_moon)
@@ -70,11 +68,11 @@ past_ntraps <- past_ntraps[!na_past_count]
 past_moon <- past_moon[!na_past_count]
 past_N <- length(past_count)
 
-min_sd <- 1e-3
+min_count_sd <- 0.01
 
-log_past_count <- log(past_count + min_val)
+log_past_count <- log(past_count + min_count)
 mean_log_past_count <- mean(log_past_count)
-sd_log_past_count <- max(c(sd(log_past_count), min_sd))
+sd_log_past_count <- max(c(sd(log_past_count), min_count_sd))
 precision_log_past_count <- 1/(sd_log_past_count ^ 2) 
 
 precision_scale <- 0.5
@@ -83,21 +81,29 @@ pred_log_x1 <- mean_log_past_count
 sd_pred_log_x1 <- sd_log_past_count
 precision_pred_log_x1 <- precision_scale * precision_log_past_count
 
+
+min_diff_sd <- 0.1
 diff_log_past_count <- diff(log_past_count)
 mean_diff_log_past_count <- mean(diff_log_past_count)
-sd_diff_log_past_count <- max(c(sd(diff_log_past_count), min_sd))
+sd_diff_log_past_count <- max(c(sd(diff_log_past_count), min_diff_sd))
 precision_diff_log_past_count <- 1/(sd_diff_log_past_count ^ 2) 
 
 
-rate_delta <- 0.1
+rate_delta <- 1
 shape_delta <- rate_delta * precision_scale * precision_diff_log_past_count
 
+sd_r <- 0.1
+precision_r <- 1/sd_r^2
+
+max_K <- max(ntraps) * 0.5
 
 data <- list(pred_log_x1 = pred_log_x1,
              sd_pred_log_x1 = sd_pred_log_x1,
              precision_pred_log_x1 = precision_pred_log_x1,
 
              mean_diff_log_past_count = mean_diff_log_past_count,
+             sd_diff_log_past_count = sd_diff_log_past_count,
+             precision_diff_log_past_count = precision_diff_log_past_count,
 
              shape_delta = shape_delta,
              rate_delta = rate_delta,
@@ -106,35 +112,43 @@ data <- list(pred_log_x1 = pred_log_x1,
              T = N,       # T = time steps
              c = ntraps,  # c = cap
 
-             log_max_past_count = log(max(past_count) + min_val),
+             max_past_count = max(past_count),
              sd_log_past_count = sd_log_past_count,
+             precision_log_past_count = precision_log_past_count,
              max_c = max(ntraps),
-             min_val = min_val)
+             min_count = min_count,
+             log_max_c = log(max(ntraps)),
+             log_min_count = log(min_count),
+             max_K = max_K,
+             precision_r = precision_r,
+             sd_r = sd_r)
 
 
 
 jags_model <- "model {  
 
-  log_x1 ~ dnorm(pred_log_x1, precision_pred_log_x1)
+  log_x1 ~ dnorm(pred_log_x1, 
+                 precision_pred_log_x1) T(log_min_count, log_max_c)
 
-  tau_delta ~ dgamma(shape_delta, rate_delta)
+  tau_delta ~ dgamma(shape_delta, rate_delta) T(1e-100, 100)
 
-  r ~ dnorm(mean_diff_log_past_count, 1e4)
+  r ~ dnorm(mean_diff_log_past_count, precision_r)
 
-  K ~ dlnorm(log_max_past_count, sd_log_past_count)
+  K ~ dunif(max_past_count, max_K)
 
+  a ~ dnorm(1, 100) T(0.5, 1.5)
 
   log_x[1] <- min(log_x1, log(max_c))
-  x[1] <- max(c(exp(log_x[1]), min_val))
+  x[1] <- max(c(exp(log_x[1]), min_count))
   y[1] ~ dpois(x[1]) T( , c[1])
 
   for(t in 2:T){
 
-    pred_log_x[t] <- log_x[t - 1] + r - (r / K) * x[t - 1]
+    pred_log_x[t] <- log_x[t - 1] + r - (r / K) * x[t - 1] ^ a
     check_log_x[t] ~ dnorm(pred_log_x[t], tau_delta)
-    log_x[t] <- min(c(check_log_x[t], log(max_c)))
+    log_x[t] <- min(c(check_log_x[t], log_max_c))
 
-    x[t] <- max(c(exp(log_x[t]), min_val))
+    x[t] <- max(c(exp(log_x[t]), min_count))
     y[t] ~ dpois(x[t]) T( , c[t])
 
   }
@@ -147,13 +161,17 @@ inits <- function(data = NULL, generators = rngs(), seeds = 1:1e6){
 
     list(.RNG.name = sample(generators, 1),
          .RNG.seed = sample(seeds, 1),
-         log_x1 = max(c(rnorm(1, data$pred_log_x1, data$sd_pred_log_x1),
-                        log(data$max_c))),
-         tau_delta = rgamma(1, shape = data$shape_delta, 
-                               rate = data$rate_delta),
-         r = rnorm(1, data$mean_diff_log_past_count, 1e-5),
-         K = max(c(rlnorm(1, data$log_max_past_count, data$sd_log_past_count),
-                   data$max_c))     
+         log_x1 = max(c(min(c(rnorm(1, data$pred_log_x1, data$sd_pred_log_x1),
+                            data$log_max_c)),
+                        data$log_min_count)),
+         tau_delta = min(c(max(c(rgamma(1, shape = data$shape_delta, 
+                                  rate = data$rate_delta),
+                               1e-100)),
+                         100)), 
+         r = rnorm(1, data$mean_diff_log_past_count, 
+                      data$sd_r),
+         K = runif(1, data$max_past_count, data$max_K),
+         a = min(c(max(c(rnorm(1, 1, 0.1), 0.5)), 1.5))     
     )
 
   }
@@ -161,14 +179,16 @@ inits <- function(data = NULL, generators = rngs(), seeds = 1:1e6){
 }
 
 
-monitor <- c("log_x1", "tau_delta", "r", "K", "x")
+
+
+monitor <- c("log_x1", "tau_delta", "r", "K", "a", "x")
 
 modd <- run.jags(model = jags_model, monitor = monitor, 
-                          inits = inits(data), data = data, 
-                          n.chains = 4,
-                          adapt = 1e3,
-                          burnin = 1e3,
-                          sample = 1e3,
+                          inits = inits(data), data = data,  
+                          n.chains = control_runjags$nchains,
+                          adapt = 1e3,#control_runjags$adapt,
+                          burnin = 1e3,#control_runjags$burnin,
+                          sample = 1e3,#control_runjags$sample,
                           thin = control_runjags$thin, 
                           modules = control_runjags$modules, 
                           method = control_runjags$method, 
@@ -179,17 +199,10 @@ modd <- run.jags(model = jags_model, monitor = monitor,
 modd_sum <- summary(modd)
 head(modd_sum)
 
-plot(modd, vars = c("log_x1", "tau_delta", "r", "K"))
+plot(modd, vars = c("log_x1", "tau_delta", "r", "K", "a"))
 
-
+windows()
 plot(count)
-points(modd_sum[5:NROW(modd_sum), 2], type = "l")
+points(modd_sum[6:NROW(modd_sum), 2], type = "l")
 
-
-
-
-
-
-count
-plot(count)
 
