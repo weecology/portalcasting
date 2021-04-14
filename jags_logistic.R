@@ -18,9 +18,9 @@ rngs <- function(){
 }
 
 
-data_set <- "all"
-s <- "DM"
-ss <- "DM"
+data_set <- "controls"
+s <- "PP"
+ss <- "PP"
 arg_checks <- TRUE
 
 control_files <- files_control() 
@@ -42,7 +42,7 @@ true_count_lead <- length(metadata$rodent_cast_moons)
 CL <- metadata$confidence_level
 
 
-start_past_moon <- 200
+start_past_moon <- 1
 min_count <- 0.001
 
 
@@ -83,7 +83,8 @@ precision_pred_log_x1 <- precision_scale * precision_log_past_count
 
 min_diff_sd <- 0.01
 diff_log_past_count <- diff(log_past_count)
-mean_diff_log_past_count <- mean(diff_log_past_count)
+nneg_diff_log_past_count <- diff_log_past_count[diff_log_past_count >= 0] 
+mean_diff_log_past_count <- mean(nneg_diff_log_past_count)
 sd_diff_log_past_count <- max(c(sd(diff_log_past_count), min_diff_sd))
 precision_diff_log_past_count <- 1/(sd_diff_log_past_count ^ 2) 
 
@@ -93,6 +94,19 @@ shape_delta <- rate_delta * precision_scale * precision_diff_log_past_count
 
 sd_r <- 0.1
 precision_r <- 1/sd_r^2
+
+max_K <- max(ntraps) * 0.8
+min_K <- 1
+
+max_c 
+
+
+max_past_count <- max(c(max(past_count), min_count))
+max_log_past_count <- max(log(pmax(past_count, min_count)))
+max_c <- max(ntraps)
+log_max_c <- log(max(ntraps))
+log_min_count <- log(min_count)
+
 
 data <- list(pred_log_x1 = pred_log_x1,
              sd_pred_log_x1 = sd_pred_log_x1,
@@ -109,13 +123,17 @@ data <- list(pred_log_x1 = pred_log_x1,
              T = N,       # T = time steps
              c = ntraps,  # c = cap
 
-             max_past_count = max(past_count),
+             max_past_count = max_past_count,
+             max_log_past_count = max_log_past_count,
              sd_log_past_count = sd_log_past_count,
              precision_log_past_count = precision_log_past_count,
+             min_K = min_K, 
+             max_K = max_K,
              max_c = max(ntraps),
+
              min_count = min_count,
-             log_max_c = log(max(ntraps)),
-             log_min_count = log(min_count),
+             log_max_c = log_max_c,
+             log_min_count = log_min_count,
 
              precision_r = precision_r,
              sd_r = sd_r)
@@ -131,7 +149,7 @@ jags_model <- "model {
 
   r ~ dnorm(mean_diff_log_past_count, precision_r)
 
-  K ~ dunif(max_past_count, max_c)
+  K ~ dlnorm(max_log_past_count, precision_log_past_count) T(min_K, max_K)
 
 
   log_x[1] <- min(log_x1, log(max_c))
@@ -179,9 +197,9 @@ monitor <- c("log_x1", "tau_delta", "r", "K", "x")
 modd <- run.jags(model = jags_model, monitor = monitor, 
                           inits = inits(data), data = data, 
                           n.chains = control_runjags$nchains,
-                          adapt = control_runjags$adapt,
-                          burnin = control_runjags$burnin,
-                          sample = control_runjags$sample,
+                          adapt = 1e3,
+                          burnin = 1e3,
+                          sample = 1e3,
                           thin = control_runjags$thin, 
                           modules = control_runjags$modules, 
                           method = control_runjags$method, 
@@ -194,7 +212,7 @@ head(modd_sum)
 
 plot(modd, vars = c("log_x1", "tau_delta", "r", "K"))
 
-
+windows()
 plot(count)
 points(modd_sum[5:NROW(modd_sum), 2], type = "l")
 

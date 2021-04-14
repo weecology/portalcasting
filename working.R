@@ -1,3 +1,6 @@
+do dm pp pb 
+rm pe should be stable
+
 #
 #  have a series of jags models of increasing complexity all parameterized
 #   using the same terms etc
@@ -37,3 +40,11 @@
 #  can we get it to throw an error and stop when it hangs instead of hanging?
 #
 
+
+
+maximum trap success for the maximum reasonable total
+will get discouraged with closed traps
+help glenda make model explorer new page model simulator 
+  - allow user to toggle parameters
+
+reduce to a min the amount that a user needs to create a model

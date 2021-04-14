@@ -15,7 +15,7 @@ rngs <- function(){
 }
 
 
-data_set <- "all"
+data_set <- "controls"
 s <- "DM"
 ss <- "DM"
 arg_checks <- TRUE
@@ -132,9 +132,9 @@ monitor <- c("log_x1", "x")
 modd <- run.jags(model = jags_model, monitor = monitor, 
                           inits = inits(data), data = data, 
                           n.chains = control_runjags$nchains,
-                          adapt = control_runjags$adapt,
-                          burnin = control_runjags$burnin,
-                          sample = control_runjags$sample,
+                          adapt = 1e3,
+                          burnin = 1e3,
+                          sample = 1e3,
                           thin = control_runjags$thin, 
                           modules = control_runjags$modules, 
                           method = control_runjags$method, 
