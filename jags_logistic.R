@@ -19,8 +19,8 @@ rngs <- function(){
 
 
 data_set <- "controls"
-s <- "PP"
-ss <- "PP"
+s <- "PB"
+ss <- "PB"
 arg_checks <- TRUE
 
 control_files <- files_control() 
@@ -67,11 +67,11 @@ past_ntraps <- past_ntraps[!na_past_count]
 past_moon <- past_moon[!na_past_count]
 past_N <- length(past_count)
 
-min_count_sd <- 0.01
+min_log_count_sd <- 0.01
 
 log_past_count <- log(past_count + min_count)
 mean_log_past_count <- mean(log_past_count)
-sd_log_past_count <- max(c(sd(log_past_count), min_count_sd))
+sd_log_past_count <- max(c(sd(log_past_count), min_log_count_sd))
 precision_log_past_count <- 1/(sd_log_past_count ^ 2) 
 
 precision_scale <- 0.5
@@ -81,7 +81,7 @@ sd_pred_log_x1 <- sd_log_past_count
 precision_pred_log_x1 <- precision_scale * precision_log_past_count
 
 
-min_diff_sd <- 0.01
+min_diff_sd <- 1
 diff_log_past_count <- diff(log_past_count)
 nneg_diff_log_past_count <- diff_log_past_count[diff_log_past_count >= 0] 
 mean_diff_log_past_count <- mean(nneg_diff_log_past_count)
@@ -100,13 +100,20 @@ min_K <- 1
 
 max_c 
 
-
-max_past_count <- max(c(max(past_count), min_count))
-max_log_past_count <- max(log(pmax(past_count, min_count)))
+min_max_count <- 1
+max_past_count <- max(c(max(past_count), min_max_count))
+max_log_past_count <- max(log(pmax(past_count, min_max_count)))
 max_c <- max(ntraps)
 log_max_c <- log(max(ntraps))
 log_min_count <- log(min_count)
 
+
+# clear issue with prior for K specifically when historical values are
+# consistent and specifically consistently 0
+# target the patch to specifically consistently 0 time 
+
+# looking like using 1 rather than 0.001 etc is the way to go especially
+# for priors
 
 data <- list(pred_log_x1 = pred_log_x1,
              sd_pred_log_x1 = sd_pred_log_x1,
@@ -168,6 +175,8 @@ jags_model <- "model {
   }
 }"
 
+
+#change initializer function for K
 
 inits <- function(data = NULL, generators = rngs(), seeds = 1:1e6){
 
