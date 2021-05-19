@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{NMME_urls}
 \alias{NMME_urls}
-\title{Provide URLs for the Northwest Knowledge Network's North American
+\title{URLs for the Northwest Knowledge Network's North American
  Multi-Model Ensemble (NMME) climate forecasts}
 \usage{
 NMME_urls(

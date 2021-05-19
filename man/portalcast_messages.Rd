@@ -2,7 +2,6 @@
 % Please edit documentation in R/messaging.R
 \name{portalcast_messages}
 \alias{portalcast_messages}
-\alias{version_message}
 \alias{portalcast_welcome}
 \alias{portalcast_goodbye}
 \alias{sandbox_welcome}
@@ -17,8 +16,6 @@
 \alias{fill_fits_message}
 \title{Specific message functions}
 \usage{
-version_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
-
 portalcast_welcome(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
 
 portalcast_goodbye(bline = TRUE, quiet = FALSE, arg_checks = TRUE)

@@ -2,13 +2,19 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+### Streamlining of codebase
+
+#### Messages
+* Converting `messageq` to a proper wrapper on `message`
+* Removing the specialized message functions
+* Leveraging the config file to avoid over messaging (e.g., version number)
+
 portalcasting 0.21.2
 *In Progress*
 
 ### Improving GitHub Actions Running 
 * Including no running of examples (needed to be explicitly stated); [addressing 206](https://github.com/weecology/portalcasting/issues/206)
 * Use RStudio package manager to speed up running; [addressing 206](https://github.com/weecology/portalcasting/issues/206)
-
 
 [portalcasting 0.21.1](https://github.com/weecology/portalcasting/releases/tag/v0.21.1)
 *2021-02-11*

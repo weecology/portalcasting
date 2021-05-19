@@ -1,5 +1,21 @@
 # working here on portalcasting, 
 
+
+#
+# having taken all of that out and then brought back, start through from
+# square 1 with create etc
+#  dont generalize directree
+#  do use ewRL, but dont bring it out on its own yet
+#
+
+
+
+
+
+
+
+
+
 ####   roll through all the code front to back for use
 ####    then update tests
 

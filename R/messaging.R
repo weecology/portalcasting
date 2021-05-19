@@ -1,37 +1,46 @@
 #' @title Optionally generate a message based on a logical input
 #'
-#' @description Given the input to \code{quiet}, generate the message(s) 
-#'   in \code{msg} or not.
+#' @description A wrapper on \code{\link[base]{message}} that, given the
+#'              input to \code{quiet}, generates the message(s) in \code{...}
+#'              or not.
 #'
-#' @param msg \code{character} vector of the message(s) to generate or 
-#'   \code{NULL}. If more than one element is contained in \code{msg}, they
-#'   are concatenated with a newline between.
+#' @param ... zero or more objects that can be coerced to \code{character}
+#'            and are concatenated with no separator added, or a single 
+#'            condition object.
+#'            \cr \cr
+#'            See \code{\link[base]{message}}.
 #'
-#' @param quiet \code{logical} indicator controlling if the message is
-#'   generated. If \code{NULL}, it is as if \code{TRUE}.
+#' @param quiet \code{logical} indicator if the message should be generated. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
+#' @param domain The domain for the translation. If \code{NA}, messages will
+#'               not be translated.
+#'               \cr \cr
+#'               See \code{\link[base]{message}} and 
+#'               \code{\link[base]{gettext}}.
+#'
+#' @param appendLF \code{logical} indicator if messages given as a 
+#'                 \code{character} string should have a newline appended.
+#'                 \cr \cr
+#'                 See \code{\link[base]{message}}.
 #'
 #' @return A message is given, and \code{NULL} returned.
 #'
-#' @examples
-#'  messageq("Hello world", FALSE)
-#'  messageq("Hello world", TRUE)
-#'
 #' @export
 #'
-messageq <- function(msg = NULL, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  return_if_null(msg)
-  return_if_null(quiet)
-  if (!quiet){
-    msg2 <- paste(msg, collapse = "\n")
-    message(msg2)
+messageq <- function (..., 
+                      quiet    = FALSE, 
+                      domain   = NULL, 
+                      appendLF = TRUE) {
+
+  if (!quiet) {
+
+    message(...,
+            domain   = domain,
+            appendLF = appendLF)
+
   }
-  invisible(NULL)
+
+  invisible()
 }
 
 
@@ -145,22 +154,6 @@ messageq_break <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
 #'
 #'
 NULL
-
-#' @rdname portalcast_messages
-#'
-#' @export
-#' 
-version_message <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  version_number <- packageDescription("portalcasting", fields = "Version")
-  msg <- paste0("This is portalcasting v", version_number)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  invisible(NULL)
-}
-
-  
 
 #' @rdname portalcast_messages
 #'

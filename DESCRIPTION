@@ -34,7 +34,7 @@ Imports:
     forecast,
     httr,
     jsonlite,
-    portalr (>= 0.3.0),
+    portalr (>= 0.4.0),
     rEDM (>= 0.7.4),
     runjags,
     scoringRules,
@@ -51,4 +51,5 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 Remotes: 
     ha0ye/rEDM,
-    rstudio/rmarkdown
+    rstudio/rmarkdown,
+    weecology/portalr#269

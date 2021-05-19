@@ -45,10 +45,8 @@ structured as
 ```
 main
 │
-└──tmp
-│   <temporary files>
-└──raw
-│   <stable version of raw components used to populate other folders>
+└──resources
+│   <stable version of resources used to populate other folders>
 └──models
 │   <model scripts>
 └──data
@@ -57,7 +55,7 @@ main
 │   <previous and current model casts>
 └──fits
 │   <previous and current model fits>
-└──dir_config.yaml
+└──config.yaml
 ```
 
 To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "~/project_folder"`.

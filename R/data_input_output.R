@@ -1,12 +1,13 @@
 #' @title Create, update, and read the directory configuration file
 #' 
-#' @description The directory configuration file is a special file within
-#'  the portalcasting directory setup and has its own set of functions. 
-#'  \cr \cr
-#'  \code{write_directory_config} creates the \code{dir_config.yaml} file.
-#'  It is (and should only be) called from within \code{\link{create_dir}}, 
-#'  it captures information about the compute environment used to create
-#'  the directory. \cr \cr
+#' @description The configuration file is a special file within the 
+#'              portalcasting directory that has its own set of functions. 
+#'              \cr \cr
+#'              \code{write_config} creates the file. It is (and should only 
+#'              be) called from within \code{\link{create_dir}}, as
+#'              it captures information about the compute environment used to
+#'              instantiate the directory. \cr \cr
+#'
 #'  \code{update_directory_config} adds key components to the 
 #'  \code{dir_config.yaml} file; presently only adding the versions of the
 #'  downloaded data from within \code{\link{fill_raw}} (the only place it is
@@ -15,18 +16,12 @@
 #'  file into the R session.
 #'
 #' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
+#'              the directory tree. 
 #'
-#' @param filename_config \code{character} value of the path to the directory
-#'  config YAML.
+#' @param filename \code{character} value of the the directory config YAML.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not.
+#'              quieted.
 #'
 #' @param downloads_versions \code{character} vector returned from 
 #'  \code{fill_raw} of the successfully downloaded versions of
@@ -45,31 +40,29 @@ NULL
 #'
 #' @export
 #'
-write_directory_config <- function(main = ".", 
-                                   filename_config = "dir_config.yaml",
-                                   quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  subs <- c("casts", "models", "raw", "data", "tmp")
-  config_path <- file_path(main = main, files = filename_config)
-  pc_version <- packageDescription("portalcasting", fields = "Version")
-  R_version <- sessionInfo()$R.version
-  downloads_versions <- NULL
-  directory_tree <- list(main = main, subs = subs)
-  config <- list(setup_date = as.character(Sys.Date()),
-              setup_R_version = R_version,
-              setup_portalcasting_version = pc_version,
-              directory_tree = directory_tree,
-              downloads_versions = downloads_versions) 
-  yams <- as.yaml(config)
-  writeLines(yams, con = config_path)
-  invisible(NULL)
+write_config <- function (main     = ".", 
+                          filename = "config.yaml"){
+
+
+  subs <- c("casts", "fits", "models", "resources", "data")
+
+
+  write_yaml(list(date                  = as.character(Sys.Date()),
+                  R_version             = sessionInfo()$R.version,
+                  portalcasting_version = as.character(packageVersion("portalcasting")),
+                  directory_tree        = list(main = main, subs = subs),
+                  downloads_versions    = NULL) , 
+             file = normalized_file_path(main, filename,
+                                         mustWork = FALSE))
+
+
 }
 
 #' @rdname directory_config
 #'
 #' @export
 #'
-update_directory_config <- function(main = ".", 
+update_config <- function(main = ".", 
                                    filename_config = "dir_config.yaml",
                                     downloads_versions = NULL, 
                                     quiet = FALSE, arg_checks = TRUE){
@@ -92,7 +85,7 @@ update_directory_config <- function(main = ".",
 #'
 #' @export
 #'
-read_directory_config <- function(main = ".", 
+read_config <- function(main = ".", 
                                   filename_config = "dir_config.yaml",
                                   quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)

@@ -4,30 +4,33 @@
 \alias{messageq}
 \title{Optionally generate a message based on a logical input}
 \usage{
-messageq(msg = NULL, quiet = FALSE, arg_checks = TRUE)
+messageq(..., quiet = FALSE, domain = NULL, appendLF = TRUE)
 }
 \arguments{
-\item{msg}{\code{character} vector of the message(s) to generate or 
-\code{NULL}. If more than one element is contained in \code{msg}, they
-are concatenated with a newline between.}
+\item{...}{zero or more objects that can be coerced to \code{character}
+and are concatenated with no separator added, or a single 
+condition object.
+\cr \cr
+See \code{\link[base]{message}}.}
 
-\item{quiet}{\code{logical} indicator controlling if the message is
-generated. If \code{NULL}, it is as if \code{TRUE}.}
+\item{quiet}{\code{logical} indicator if the message should be generated.}
 
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{domain}{The domain for the translation. If \code{NA}, messages will
+not be translated.
+\cr \cr
+See \code{\link[base]{message}} and 
+\code{\link[base]{gettext}}.}
+
+\item{appendLF}{\code{logical} indicator if messages given as a 
+\code{character} string should have a newline appended.
+\cr \cr
+See \code{\link[base]{message}}.}
 }
 \value{
 A message is given, and \code{NULL} returned.
 }
 \description{
-Given the input to \code{quiet}, generate the message(s) 
-  in \code{msg} or not.
-}
-\examples{
- messageq("Hello world", FALSE)
- messageq("Hello world", TRUE)
-
+A wrapper on \code{\link[base]{message}} that, given the
+             input to \code{quiet}, generates the message(s) in \code{...}
+             or not.
 }

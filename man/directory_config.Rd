@@ -2,19 +2,14 @@
 % Please edit documentation in R/data_input_output.R
 \name{directory_config}
 \alias{directory_config}
-\alias{write_directory_config}
-\alias{update_directory_config}
-\alias{read_directory_config}
+\alias{write_config}
+\alias{update_config}
+\alias{read_config}
 \title{Create, update, and read the directory configuration file}
 \usage{
-write_directory_config(
-  main = ".",
-  filename_config = "dir_config.yaml",
-  quiet = FALSE,
-  arg_checks = TRUE
-)
+write_config(main = ".", filename = "config.yaml")
 
-update_directory_config(
+update_config(
   main = ".",
   filename_config = "dir_config.yaml",
   downloads_versions = NULL,
@@ -22,7 +17,7 @@ update_directory_config(
   arg_checks = TRUE
 )
 
-read_directory_config(
+read_config(
   main = ".",
   filename_config = "dir_config.yaml",
   quiet = FALSE,
@@ -33,20 +28,14 @@ read_directory_config(
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{filename_config}{\code{character} value of the path to the directory
-config YAML.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{filename}{\code{character} value of the the directory config YAML.}
 
 \item{downloads_versions}{\code{character} vector returned from 
 \code{fill_raw} of the successfully downloaded versions of
 \code{downloads}.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be
+quieted.}
 }
 \value{
 \code{write_directory_config} and \code{update_directory_config}
@@ -55,13 +44,14 @@ formatted correctly and provides directed error messages if not.}
  \code{read_directory_config}: \code{list} of directory configurations.
 }
 \description{
-The directory configuration file is a special file within
- the portalcasting directory setup and has its own set of functions. 
- \cr \cr
- \code{write_directory_config} creates the \code{dir_config.yaml} file.
- It is (and should only be) called from within \code{\link{create_dir}}, 
- it captures information about the compute environment used to create
- the directory. \cr \cr
+The configuration file is a special file within the 
+             portalcasting directory that has its own set of functions. 
+             \cr \cr
+             \code{write_config} creates the file. It is (and should only 
+             be) called from within \code{\link{create_dir}}, as
+             it captures information about the compute environment used to
+             instantiate the directory. \cr \cr
+
  \code{update_directory_config} adds key components to the 
  \code{dir_config.yaml} file; presently only adding the versions of the
  downloaded data from within \code{\link{fill_raw}} (the only place it is

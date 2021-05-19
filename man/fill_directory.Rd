@@ -8,24 +8,15 @@
 \alias{fill_casts}
 \alias{fill_fits}
 \alias{fill_raw}
-\title{Fill a forecasting directory with basic components.}
+\title{Fill a portalcasting directory with basic components.}
 \usage{
 fill_dir(
   main = ".",
-  models = prefab_models(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
-  cast_date = Sys.Date(),
-  controls_model = NULL,
-  controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
-  control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  PortalData_version = "latest",
+  PortalData_source = "gitub",
+  portalPredictions_version = NULL,
+  portalPredictions_source = "github",
+  quiet = FALSE
 )
 
 fill_data(
@@ -81,116 +72,18 @@ fill_raw(
   arg_checks = TRUE
 )
 }
-\arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
-
-\item{models}{\code{character} vector of name(s) of model(s) to 
-include.}
-
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
-
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
-
-\item{confidence_level}{\code{numeric} confidence level used in 
-summarizing model output. Must be between \code{0} and \code{1}.}
-
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
-
-\item{controls_model}{Additional controls for models not in the prefab 
-set. \cr 
-A \code{list} of a single model's script-writing controls or a
-\code{list} of \code{list}s, each of which is a single model's 
-script-writing controls. \cr 
-Presently, each model's script writing controls should include four 
-elements: 
-\itemize{
- \item \code{name}: a \code{character} value of the model name.
- \item \code{data_sets}: a \code{character} vector of the data set names
-  that the model is applied to. 
- \item \code{covariatesTF}: a \code{logical} indicator of if the 
-  model needs covariates.
- \item \code{lag}: an \code{integer}-conformable value of the lag to use 
-  with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
-} 
-If only a single model is added, the name of 
-the model from the element \code{name} will be used to name the model's
-\code{list} in the larger \code{list}. If multiple models are added, each
-element \code{list} must be named according to the model and the
-\code{name} element. \cr}
-
-\item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
-(from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_controls}} for details.}
-
-\item{control_climate_dl}{\code{list} of specifications for the download, 
-which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-\code{\link{climate_dl_control}}.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
-for raw file downloading.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or not (and thus just the tidy messages).}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
-
-\item{only_if_missing}{\code{logical} indicator if the     -  should
-be filled only if it is missing. Only used in \code{fill_raw}, where
-missingness is determined by \code{\link{verify_raw_data}}. Default
-is \code{FALSE}, which allows for control via \code{link{files_control}}'s
-\code{overwrite} argument. Only accessed and changed to \code{FALSE} 
-within \code{\link{portalcast}}.}
-}
 \value{
-All \code{fill_} functions return \code{NULL}.
+\code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Fill the directory with foundational components. \cr \cr
- \code{fill_dir} combines \code{fill_raw}, \code{fill_casts},
-  \code{fill_models}, and \code{fill_data}.
- \code{fill_raw} downloads the raw data and archive and updates the 
-  directory configuration metadata accordingly. \cr \cr
- \code{fill_casts} moves the historic casts from the archive into the 
-  current directory. \cr \cr
- \code{fill_fits} moves the historic fits from the archive into the 
-  current directory. \cr \cr
- \code{fill_models} writes out the model scripts to the models
-  subdirectory. \cr \cr
- \code{fill_data} prepares model-ready data from the raw data.
-}
-\details{
-Arguments input directly here take precedence over those in the 
- \code{downloads} \code{list}.
+Fill the directory with foundational components.
 }
 \examples{
  \donttest{
-  create_dir()
-  fill_dir()
-  fill_raw()
-  fill_casts()
-  fill_fits()
-  fill_models()
-  fill_data()
+
+  create_dir("./portalcasting")
+  fill_dir("./portalcasting")
+
  }
 
 }

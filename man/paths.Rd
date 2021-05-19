@@ -4,75 +4,46 @@
 \alias{paths}
 \alias{main_path}
 \alias{sub_path}
-\alias{raw_path}
+\alias{resources_path}
 \alias{casts_path}
 \alias{fits_path}
 \alias{data_path}
 \alias{models_path}
-\alias{tmp_path}
-\alias{file_path}
-\title{Determine the path for a specific level of a forecasting directory}
+\title{Determine the path for a specific level of a portalcasting directory}
 \usage{
-main_path(main = ".", arg_checks = TRUE)
+main_path(main = ".")
 
-sub_path(main = ".", subs = NULL, arg_checks = TRUE)
+sub_path(main = ".", subs = NULL)
 
-raw_path(main = ".", arg_checks = TRUE)
+resources_path(main = ".")
 
-casts_path(main = ".", arg_checks = TRUE)
+casts_path(main = ".")
 
-fits_path(main = ".", arg_checks = TRUE)
+fits_path(main = ".")
 
-data_path(main = ".", arg_checks = TRUE)
+data_path(main = ".")
 
-models_path(main = ".", arg_checks = TRUE)
-
-tmp_path(main = ".", arg_checks = TRUE)
-
-file_path(main = ".", sub = NULL, files = NULL, arg_checks = TRUE)
+models_path(main = ".")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
-
-\item{sub, subs}{\code{character} of the name(s) of the sub component(s) of
-the directory tree to get the path of. \code{sub} can only take a single
-value, \code{subs} can take a vector of multiple values.}
-
-\item{files}{\code{character} file path(s) within the \code{main}
-level of the portalcasting directory.}
+\item{subs}{\code{character} of the name(s) of the sub component(s) of
+the directory tree. can take a vector of multiple values.}
 }
 \value{
-\code{character} value normalized paths 
- (see \code{\link{normalizePath}}) . \cr \cr
- \code{main_path} normalized path of the \code{main} folder. \cr \cr
- \code{subs_path} normalized paths of the \code{sub} folder(s). \cr \cr
- \code{file_path} normalized paths of the \code{files}.
+\code{character} \code{\link{normalized_file_path}}(s).
+         \cr \cr
+         \code{main_path} normalized path of the \code{main} folder.
+         \cr \cr
+         \code{subs_path} normalized paths of the \code{sub} folder(s).
 }
 \description{
-Produce paths for a forecasting directory. \cr \cr
- \code{main_path} returns the path for the \code{main} folder. \cr \cr
- \code{sub_path} returns the path(s) for the \code{sub} folder(s). \cr \cr
- \code{file_path} returns the path(s) for the \code{files}. \cr \cr
-}
-\examples{
- \donttest{
-  create_dir()
-  main_path()
-  sub_path()
-  sub_path(subs = "models")
-  raw_path()
-  data_path()
-  models_path()
-  fits_path()
-  casts_path()
-  tmp_path()
-  file_path(".", "raw", "PortalData/Rodents/Portal_rodent_species.csv")
- }
-
+Produce paths for a portalcasting directory. 
+             \cr \cr
+             \code{main_path} returns the path for the \code{main} folder.
+             \cr \cr
+             \code{sub_path} returns the path(s) for the \code{subs}
+             folder(s). \cr \cr
 }
