@@ -19,7 +19,7 @@ puts the directory in the present location.}
 \description{
 Creates the necessary folder structure for a portalcasting 
              directory as well as a YAML file that tracks the setup 
-             configurations. Folder paths are created internally using  
+             configurations. Folder paths are created internally 
              such that the user only needs to input the main folder's 
              location components (a la \code{\link[base]{file.path}}).
              The subdirectories are hardcoded as \code{"casts"},

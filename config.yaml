@@ -1,0 +1,26 @@
+date: '2021-07-02'
+R_version:
+  platform: x86_64-w64-mingw32
+  arch: x86_64
+  os: mingw32
+  system: x86_64, mingw32
+  status: ''
+  major: '4'
+  minor: '0.5'
+  year: '2021'
+  month: '03'
+  day: '31'
+  svn rev: '80133'
+  language: R
+  version.string: R version 4.0.5 (2021-03-31)
+  nickname: Shake and Throw
+portalcasting_version: 0.21.2
+directory_tree:
+  main: '.'
+  subs:
+  - casts
+  - fits
+  - models
+  - resources
+  - data
+downloads_versions: ~

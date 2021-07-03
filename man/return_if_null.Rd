@@ -14,13 +14,13 @@ from the parent function.}
 }
 \value{
 If \code{x} is not \code{NULL}, \code{NULL} is returned. If 
- \code{x} is \code{NULL}, the result of \code{\link{return}} with 
- \code{value} as its input evaluated within the parent function's 
- environment is returned.
+        \code{x} is \code{NULL}, the result of \code{\link{return}} with 
+        \code{value} as its input evaluated within the parent function's 
+        environment is returned.
 }
 \description{
 If the focal input is \code{NULL}, return \code{value} from
- the parent function. Should only be used within a function.
+             the parent function. Should only be used within a function.
 }
 \examples{
  ff <- function(x = 1, null_return = "hello"){
@@ -29,5 +29,7 @@ If the focal input is \code{NULL}, return \code{value} from
  }
  ff()
  ff(NULL)
+ ff(NULL, null_return = "ok")
+ ff(null_return = "ok")
 
 }

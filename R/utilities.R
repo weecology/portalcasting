@@ -1,3 +1,230 @@
+#' @title Optionally generate a message based on a logical input
+#'
+#' @description A wrapper on \code{\link[base]{message}} that, given the
+#'              input to \code{quiet}, generates the message(s) in \code{...}
+#'              or not.
+#'
+#' @param ... zero or more objects that can be coerced to \code{character}
+#'            and are concatenated with no separator added, or a single 
+#'            condition object.
+#'            \cr \cr
+#'            See \code{\link[base]{message}}.
+#'
+#' @param quiet \code{logical} indicator if the message should be generated. 
+#'
+#' @param domain The domain for the translation. If \code{NA}, messages will
+#'               not be translated.
+#'               \cr \cr
+#'               See \code{\link[base]{message}} and 
+#'               \code{\link[base]{gettext}}.
+#'
+#' @param appendLF \code{logical} indicator if messages given as a 
+#'                 \code{character} string should have a newline appended.
+#'                 \cr \cr
+#'                 See \code{\link[base]{message}}.
+#'
+#' @return A message is given, and \code{NULL} returned.
+#'
+#' @export
+#'
+messageq <- function (..., 
+                      quiet    = FALSE, 
+                      domain   = NULL, 
+                      appendLF = TRUE) {
+
+  if (!quiet) {
+
+    message(...,
+            domain   = domain,
+            appendLF = appendLF)
+
+  }
+
+  invisible()
+}
+
+
+
+#' @title Determine the path for a specific level of a portalcasting directory
+#'
+#' @description Produce paths for a portalcasting directory. 
+#'              \cr \cr
+#'              \code{main_path} returns the path for the \code{main} folder.
+#'              \cr \cr
+#'              \code{sub_path} returns the path(s) for the \code{subs}
+#'              folder(s). \cr \cr
+#'
+#' @param main \code{character} value of the name of the main component of
+#'              the directory tree. 
+#'
+#' @param sub \code{character} vector of the name(s) of the sub component(s)
+#'             of the directory tree. 
+#'
+#' @return \code{character} \code{\link[port{normalized_file_path}}(s).
+#'          \cr \cr
+#'          \code{main_path} path of the \code{main} folder.
+#'          \cr \cr
+#'          \code{subs_path} paths of the \code{sub} folder(s). 
+#'
+#' @name paths
+#'
+NULL
+
+#' @rdname paths
+#'
+#' @export
+#'
+main_path <- function (main = ".") {
+
+  if (length(main) > 1) {
+
+    stop("`main` must be length-1")
+
+  }
+
+  normalized_file_path(main,
+                       mustWork = FALSE)
+
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+sub_path <- function (main = ".", sub = NULL) {
+
+  if (length(main) > 1) {
+
+    stop("`main` must be length-1")
+
+  }
+
+  normalized_file_path(main, sub,
+                       mustWork = FALSE)
+
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+resources_path <- function (main = ".") {
+
+  sub_path(main = main, 
+           sub = "resources")
+
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+casts_path <- function (main = ".") {
+
+  sub_path(main = main, 
+           sub = "casts")
+
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+fits_path <- function (main = ".") {
+
+  sub_path(main = main, 
+           sub = "fits")
+
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+data_path <- function (main = ".") {
+
+  sub_path(main = main, 
+           sub = "data")
+
+}
+
+#' @rdname paths
+#'
+#' @export
+#'
+models_path <- function (main = ".") {
+
+  sub_path(main = main, 
+           sub = "models")
+
+}
+
+
+
+#' @title If a value is NULL, trigger the parent function's return
+#'
+#' @description If the focal input is \code{NULL}, return \code{value} from
+#'              the parent function. Should only be used within a function.
+#'
+#' @param x Focal input.
+#'
+#' @param value If \code{x} is \code{NULL}, \code{\link{return}} this input
+#'              from the parent function. 
+#'
+#' @return If \code{x} is not \code{NULL}, \code{NULL} is returned. If 
+#'         \code{x} is \code{NULL}, the result of \code{\link{return}} with 
+#'         \code{value} as its input evaluated within the parent function's 
+#'         environment is returned.
+#' 
+#' @examples
+#'  ff <- function(x = 1, null_return = "hello"){
+#'    return_if_null(x, null_return)
+#'    x
+#'  }
+#'  ff()
+#'  ff(NULL)
+#'  ff(NULL, null_return = "ok")
+#'  ff(null_return = "ok")
+#'
+#' @export 
+#'
+return_if_null <- function(x, value = NULL){
+  if(is.null(x)){
+    do.call(return, list(value), envir = sys.frame(-1))
+  } 
+}
+
+#
+# utility not yet reestablished
+############################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #' @title Argument matching with defaults
 #'
 #' @description Expansion of \code{\link[base]{match.call}} to include
@@ -512,36 +739,6 @@ list_depth <- function(xlist){
   }
 }
 
-#' @title If a value is NULL, trigger the parent function's return
-#'
-#' @description If the focal input is \code{NULL}, return \code{value} from
-#'  the parent function. Should only be used within a function.
-#'
-#' @param x Focal input.
-#'
-#' @param value If \code{x} is \code{NULL}, \code{\link{return}} this input
-#'  from the parent function. 
-#'
-#' @return If \code{x} is not \code{NULL}, \code{NULL} is returned. If 
-#'  \code{x} is \code{NULL}, the result of \code{\link{return}} with 
-#'  \code{value} as its input evaluated within the parent function's 
-#'  environment is returned.
-#' 
-#' @examples
-#'  ff <- function(x = 1, null_return = "hello"){
-#'    return_if_null(x, null_return)
-#'    x
-#'  }
-#'  ff()
-#'  ff(NULL)
-#'
-#' @export 
-#'
-return_if_null <- function(x, value = NULL){
-  if(is.null(x)){
-    do.call(return, list(value), envir = sys.frame(-1))
-  } 
-}
 
 
 #' @title Replace a value with an alternative if it is NULL or if it is NA

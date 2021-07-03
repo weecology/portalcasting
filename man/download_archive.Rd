@@ -5,16 +5,17 @@
 \title{Download the Portal Predictions Repository Archive}
 \usage{
 download_archive(
-  path = resources_path(main = "."),
+  main = ".",
   version = "latest",
   source = "github",
   quiet = FALSE,
+  verbose = FALSE,
   timeout = getOption("timeout")
 )
 }
 \arguments{
-\item{path}{\code{character} path to the folderinto which the archive will 
-be downloaded.}
+\item{main}{\code{character} value defining the main component of the 
+portalcasting directory tree.}
 
 \item{version}{\code{character} version of the data to download. Default 
 \code{"latest"} downloads the most recent (by date 
@@ -26,6 +27,9 @@ Either \code{"github"} (defualt) or \code{"github"}.}
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 
+\item{verbose}{\code{logical} indicator if detailed messages should be
+printed.}
+
 \item{timeout}{\code{numeric} value passed to \code{\link[base]{options}}
 to dictate the download timeout limit.}
 }
@@ -35,5 +39,9 @@ to dictate the download timeout limit.}
 \description{
 Downloads a specific \code{version} of the Portal Predictions 
              repository from either GitHub or Zenodo (based on 
-             \code{source}).
+             \code{source}) into the \code{<main>/resources} sub.
+}
+\note{
+There are two calls to \code{link[base]{Sys.sleep}} for 30 seconds 
+      each to allow for the file unzipping, copying, and such to catch up.
 }

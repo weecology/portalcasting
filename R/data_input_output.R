@@ -47,12 +47,13 @@ write_config <- function (main     = ".",
   subs <- c("casts", "fits", "models", "resources", "data")
 
 
-  write_yaml(list(date                  = as.character(Sys.Date()),
-                  R_version             = sessionInfo()$R.version,
-                  portalcasting_version = as.character(packageVersion("portalcasting")),
-                  directory_tree        = list(main = main, subs = subs),
-                  downloads_versions    = NULL) , 
-             file = normalized_file_path(main, filename,
+  write_yaml(
+   list(date                  = as.character(Sys.Date()),
+        R_version             = sessionInfo()$R.version,
+        portalcasting_version = as.character(packageVersion("portalcasting")),
+        directory_tree        = list(main = main, subs = subs),
+        downloads_versions    = NULL), 
+   file = normalized_file_path(main, filename,
                                          mustWork = FALSE))
 
 

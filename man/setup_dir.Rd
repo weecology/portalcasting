@@ -12,44 +12,13 @@ setup_dir(
   PortalData_source = "github",
   portalPredictions_version = NULL,
   portalPredictions_source = "github",
+  climate_forecast_source = "NMME",
   quiet = FALSE
 )
 
-setup_production(
-  main = ".",
-  models = prefab_models(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
-  cast_date = Sys.Date(),
-  controls_model = NULL,
-  controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
-  control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
-  quiet = FALSE,
-  verbose = TRUE,
-  arg_checks = TRUE
-)
+setup_production(...)
 
-setup_sandbox(
-  main = ".",
-  models = prefab_models(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
-  cast_date = Sys.Date(),
-  controls_model = NULL,
-  controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
-  control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
-  quiet = FALSE,
-  verbose = TRUE,
-  arg_checks = FALSE
-)
+setup_sandbox(...)
 }
 \arguments{
 \item{main}{\code{character} value defining the main component of the 

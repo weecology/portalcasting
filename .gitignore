@@ -11,3 +11,4 @@ tests/testthat/sand/*
 tests/testthat/test/*
 model_testing/*
 testing/*
+portalcasting/*

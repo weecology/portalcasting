@@ -3,12 +3,12 @@
 \name{fill_directory}
 \alias{fill_directory}
 \alias{fill_dir}
-\alias{fill_data}
 \alias{fill_models}
+\alias{fill_resources}
 \alias{fill_casts}
 \alias{fill_fits}
-\alias{fill_raw}
-\title{Fill a portalcasting directory with basic components.}
+\alias{fill_data}
+\title{Fill a Portalcasting Directory with Basic Components}
 \usage{
 fill_dir(
   main = ".",
@@ -16,8 +16,35 @@ fill_dir(
   PortalData_source = "gitub",
   portalPredictions_version = NULL,
   portalPredictions_source = "github",
-  quiet = FALSE
+  climate_forecast_version = Sys.Date(),
+  climate_forecast_source = "NMME",
+  models = prefab_models(),
+  quiet = FALSE,
+  verbose = FALSE
 )
+
+fill_models(
+  main = ".",
+  models = prefab_models(),
+  quiet = FALSE,
+  verbose = FALSE
+)
+
+fill_resources(
+  main = ".",
+  PortalData_version = "latest",
+  PortalData_source = "gitub",
+  portalPredictions_version = NULL,
+  portalPredictions_source = "github",
+  climate_forecast_version = Sys.Date(),
+  climate_forecast_source = "NMME",
+  quiet = FALSE,
+  verbose = FALSE
+)
+
+fill_casts(main = ".", quiet = FALSE, verbose = FALSE)
+
+fill_fits(main = ".", quiet = FALSE, verbose = FALSE)
 
 fill_data(
   main = ".",
@@ -36,47 +63,17 @@ fill_data(
   verbose = FALSE,
   arg_checks = TRUE
 )
-
-fill_models(
-  main = ".",
-  models = prefab_models(),
-  controls_model = NULL,
-  control_files = files_control(),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
-
-fill_casts(
-  main = ".",
-  control_files = files_control(),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
-
-fill_fits(
-  main = ".",
-  control_files = files_control(),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
-
-fill_raw(
-  main = ".",
-  downloads = zenodo_downloads(c("1215988", "833438")),
-  only_if_missing = FALSE,
-  control_files = files_control(),
-  quiet = FALSE,
-  arg_checks = TRUE
-)
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Fill the directory with foundational components.
+Fill the directory with components including (optionally) 
+             the raw data (\code{\link[portalr]{download_observations}}), 
+             portalPredictions archive (\code{\link{download_archive}}), 
+             climate forecasts (\code{\link{download_climate_forecasts}}), 
+             models (\code{\link{write_model}}), 
+             and model-ready data.
 }
 \examples{
  \donttest{
@@ -84,6 +81,11 @@ Fill the directory with foundational components.
   create_dir("./portalcasting")
   fill_dir("./portalcasting")
 
+  create_dir("./pc")
+  fill_resources("./pc")
+  fill_casts("./pc")
+  fill_fits("./pc")
+  fill_models("./pc")
  }
 
 }

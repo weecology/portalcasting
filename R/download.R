@@ -2,10 +2,10 @@
 #'
 #' @description Downloads a specific \code{version} of the Portal Predictions 
 #'              repository from either GitHub or Zenodo (based on 
-#'              \code{source}).
+#'              \code{source}) into the \code{<main>/resources} sub.
 #'
-#' @param path \code{character} path to the folderinto which the archive will 
-#'             be downloaded. 
+#' @param main \code{character} value defining the main component of the 
+#'              portalcasting directory tree. 
 #'
 #' @param version \code{character} version of the data to download. Default 
 #'                \code{"latest"} downloads the most recent (by date 
@@ -20,19 +20,29 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'              quieted.
 #'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'                printed.
+#'
+#' @note There are two calls to \code{link[base]{Sys.sleep}} for 30 seconds 
+#'       each to allow for the file unzipping, copying, and such to catch up.
+#'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
-download_archive <- function(path    = resources_path(main = "."),
+download_archive <- function(main    = ".",
                              version = "latest", 
                              source  = "github",
                              quiet   = FALSE,
+                             verbose   = FALSE,
                              timeout = getOption("timeout")) {
+
+  return_if_null(version)
 
   timeout_backup <- getOption("timeout")
   on.exit(options(timeout = timeout_backup))
   options(timeout = timeout) 
+
   if (tolower(source) == "zenodo") {
 
     base_url <- "https://zenodo.org/api/records/" 
@@ -91,16 +101,16 @@ download_archive <- function(path    = resources_path(main = "."),
 
   }
   
-
   if (!quiet) {
     message("Downloading version `", version, "` of the archive...")
   }
 
   temp <- normalized_file_path(tempdir(), "portalPredictions.zip", 
                                mustWork = FALSE)
-  final <- normalized_file_path(path, "portalPredictions", mustWork = FALSE)
+  final <- normalized_file_path(main, "resources", "portalPredictions", 
+                                mustWork = FALSE)
 
-  download.file(zipball_url, temp, quiet = TRUE, mode = "wb")
+  download.file(zipball_url, temp, quiet = !verbose, mode = "wb")
 
   if (file.exists(final)) {
 
@@ -116,12 +126,14 @@ download_archive <- function(path    = resources_path(main = "."),
 
   }
 
-  temp_unzip <- normalized_file_path(path, unzip(temp, list = TRUE)$Name[1],
+  folder_name <- unzip(temp, list = TRUE)$Name[1]
+
+  temp_unzip <- normalized_file_path(main, "resources", folder_name,
                                      mustWork = FALSE)
 
-  unzip(temp, exdir = path)
+  unzip(temp, exdir = normalized_file_path(main, "resources"))
 
-  Sys.sleep(10)
+  Sys.sleep(30)
 
   dir.create(final)
 
@@ -129,7 +141,7 @@ download_archive <- function(path    = resources_path(main = "."),
             final, 
             recursive = TRUE)
 
-  Sys.sleep(10)
+  Sys.sleep(30)
 
   unlink(temp_unzip, recursive = TRUE)
   file.remove(temp)
@@ -140,62 +152,135 @@ download_archive <- function(path    = resources_path(main = "."),
 
 
 
-#' @title URLs for the Northwest Knowledge Network's North American
-#'  Multi-Model Ensemble (NMME) climate forecasts
+#' @title Download Climate Forecasts
 #'
-#' @description The 
-#'  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at
-#'  at the University of Idaho provides a 
-#'  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled
-#'  climate forecasts using the 
-#'  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
-#'  set. This function generates the URL for specific request based on all
-#'  possible user inputs including, time window, location, model,
-#'  frequency of data, and data type. Given the construction of the URL,
-#'  \strong{only \code{data} is vectorized}. See arguments for specifics.
+#' @description Downloads climate forecasts, presently only from NMME 
+#'              (see \code{\link{NMME_urls}}) into the
+#'               \code{<main>/resources} sub.
+#'
+#' @param main \code{character} value defining the main component of the 
+#'              portalcasting directory tree. 
+#'
+#' @param source \code{character} indicator of the source for the download. 
+#'                Only \code{"NMME"} presently available.
+#'
+#' @param version \code{Date}-coercible start of the climate cast. See
+#'                \code{\link{NMME_urls}} (used as \code{start}).
+#'
+#' @param timeout \code{numeric} value passed to \code{\link[base]{options}}
+#'                to dictate the download timeout limit.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'              quieted.
+#'
+#' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
+#'
+#' @export
+#'
+download_climate_forecasts <- function(main    = ".",
+                                       version = Sys.Date(), 
+                                       source  = "NMME",
+                                       quiet   = FALSE,
+                                       verbose = FALSE,
+                                       timeout = getOption("timeout")) {
+
+  return_if_null(version)
+
+  timeout_backup <- getOption("timeout")
+  on.exit(options(timeout = timeout_backup))
+  options(timeout = timeout) 
+
+  if (tolower(source) == "nmme") {
+
+    dir.create(path = normalized_file_path(main, "resources", source, 
+                                           mustWork = FALSE),
+               showWarnings = FALSE)
+
+    urls <- NMME_urls(start = version)
+    file_names <- paste0(names(urls), ".csv")
+    dests <- normalized_file_path(main, "resources", source, file_names, 
+                                  mustWork = FALSE)
+
+    if (!quiet) {
+      message("Downloading version `", version, "` of climate forcasts...")
+    }
+
+    mapply(FUN = download.file,
+           url = urls,
+           destfile = dests, 
+           mode = "wb",
+           quiet = !verbose)
+
+
+  } else {
+
+    stop("`source` must be 'NMME'")
+
+  }
+
+  invisible()
+
+}
+
+#' @title URLs for the Northwest Knowledge Network's North American
+#'        Multi-Model Ensemble (NMME) climate forecasts
+#'
+#' @description Generate the URL for a specific request to the NMME API based 
+#'              on parameters. See arguments for specifics and \code{Details}
+#'              for links. 
 #'
 #' @param start,end \code{Date} for the start and end of the cast.
 #'
-#' @param model \code{character} value of the model, one of \code{"ENSMEAN"},
-#'  (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"}
-#'  (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
-#'  \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). \cr \cr
-#'  Presently can only take one value.
+#' @param model \code{character} value of the model to use, one of 
+#'               \code{"ENSMEAN"}, (Multi-Model Mean), 
+#'               \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), 
+#'               \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
+#'               \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} 
+#'               (NCAR-CCSM4). 
+#'               \cr \cr
+#'               Presently can only take one value.
 #'
 #' @param lat,lon \code{numeric} latitude and longitude values used to 
-#'  downscale the model. \cr \cr
-#'  Presently can only take one value for each.
+#'                downscale the model. 
+#'                \cr \cr
+#'                Presently can only take one value for each.
 #'
 #' @param freq \code{character} value of the frequency of the data, can 
-#'  be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a
-#'  number between \code{1} and \code{7}. \cr \cr
-#'  Presently can only take one value.
+#'             be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} 
+#'             is a number between \code{1} and \code{7}. 
+#'             \cr \cr
+#'             Presently can only take one value.
 #'
 #' @param data \code{character} value of the type of data, one of 
-#'  \code{"tasmin"} (minimum temperature),  \code{"tasmean"}
-#'  (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"}
-#'  (precipitation), \code{"dps"} (dew point), \code{"rsds"}
-#'  (shortwave radiation; sun intensity), \code{"was"} (wind speed).
+#'             \code{"tasmin"} (minimum temperature), \code{"tasmean"}
+#'             (mean temperature), \code{"tasmax"} (maximum temperature),
+#'             \code{"pr"} (precipitation), \code{"dps"} (dew point), 
+#'             \code{"rsds"} (shortwave radiation; sun intensity), 
+#'             \code{"was"} (wind speed).
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
+#' @details The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} 
+#'          (NKN) at the University of Idaho provides a 
+#'          \href{https://bit.ly/2tCP8NX}{simple API} to download 
+#'          downscaled climate forecasts using the 
+#'          \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} 
+#'          (NMME) set. 
 #'
 #' @return Named \code{character} vector of URLs, or \code{NULL} if
-#'  \code{data}, \code{freq}, or \code{model} is \code{NULL}.
+#'         \code{data}, \code{freq}, or \code{model} is \code{NULL}.
 #'
 #' @examples
 #'   NMME_urls()
 #'
 #' @export
 #'
-NMME_urls <- function(start = Sys.Date(), end = as.Date("2050-01-01"),
-                      model = "ENSMEAN", lat = 31.9555, lon = -109.0744, 
-                      freq = "daily",
-                      data = c("tasmin", "tasmean", "tasmax", "pr"), 
-                      arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+NMME_urls <- function (start = Sys.Date(), 
+                       end = as.Date("2050-01-01"),
+                       model = "ENSMEAN", 
+                       lat = 31.9555, 
+                       lon = -109.0744, 
+                       freq = "daily",
+                       data = c("tasmin", "tasmean", "tasmax", "pr")) {
+
   return_if_null(data)
   return_if_null(freq)
   return_if_null(model)
@@ -234,5 +319,6 @@ NMME_urls <- function(start = Sys.Date(), end = as.Date("2050-01-01"),
   full_urls <- paste0(catalog, og_nc_data, specs)
   names(full_urls) <- data
   full_urls
+
 }
 
