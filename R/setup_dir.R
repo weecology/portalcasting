@@ -10,11 +10,43 @@
 #'              \code{setup_sandbox} creates a sandboxing directory for 
 #'              exploration, tinkering, etc. with the code outside of 
 #'              productions. 
-#'              \cr \cr
 #'
 #' @param main \code{character} value defining the main component of the 
 #'              portalcasting directory tree. Default value (\code{"."}) 
 #'              puts the directory in the present location. 
+#'
+#' @param PortalData_source,PortalData_version \code{character} values for the
+#'        source and version of the Portal Data to download. 
+#'        \cr \cr 
+#'        Default values retrieve the latest data from github.
+#'        \cr \cr 
+#'        See \code{\link[portalr]{download_observations}}.
+#'
+#' @param portalPredictions_source,portalPredictions_version \code{character} 
+#'        values for the source and version of the archive to download.
+#'        \cr \cr 
+#'        Default values point to github, but \code{version = NULL} indicates
+#'        no download.
+#'        \cr \cr 
+#'        See \code{\link{download_archive}}.
+#'
+#' @param climate_source,climate_version  \code{character} values for the
+#'        source and version of the climate forecasts to download.
+#'        \cr \cr 
+#'        Default values retrieve the current day's forecast from the
+#'        Northwest Knowledge Network's North American Multi-Model Ensemble 
+#'        (NMME) climate forecasts.
+#'        \cr \cr 
+#'        See \code{\link{download_climate_forecasts}}.
+#'
+#' @param models \code{vector} of models to be written via 
+#'        \code{\link{write_model}}.
+#'
+#' @param datasets \code{list} of datasets to be created using 
+#'        \code{\link{do.call}} on the defined functions. 
+#'        \cr \cr
+#'        For example, \code{\link{prefab_datasets}} use 
+#'        \code{\link{prepare_rodent_data}}.
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
@@ -35,13 +67,14 @@
 #' @export
 #'
 setup_dir <- function (main  = ".",
-                       PortalData_version = "latest",
                        PortalData_source = "gitub",
-                       portalPredictions_version = NULL,
+                       PortalData_version = "latest",
                        portalPredictions_source = "github",
-                       climate_forecast_version = Sys.Date(),
+                       portalPredictions_version = NULL,
                        climate_forecast_source = "NMME",
+                       climate_forecast_version = Sys.Date(),
                        models = prefab_models(),
+                       datasets = prefab_datasets(),
                        quiet = FALSE,
                        verbose = TRUE) {
 
@@ -56,6 +89,7 @@ setup_dir <- function (main  = ".",
            climate_forecast_version = climate_forecast_version,
            climate_forecast_source = climate_forecast_source,
            models = models,
+           datasets = datasets,
            quiet = quiet,
            verbose = verbose)
 

@@ -6,7 +6,7 @@
 \alias{GPEDM}
 \alias{jags_RW}
 \alias{prefab_model_functions}
-\alias{AutoArima}
+\alias{cAutoArima}
 \alias{NaiveArima}
 \alias{ESSS}
 \alias{nbGARCH}
@@ -45,7 +45,7 @@ jags_RW(
   arg_checks = TRUE
 )
 
-AutoArima(
+cAutoArima(
   main = ".",
   data_set = "all",
   control_files = files_control(),

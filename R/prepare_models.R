@@ -1,9 +1,7 @@
-#' @title Provide the names of the prefabricated models
+#' @title Provide the Names of the Prefabricated Models
 #'
 #' @description Create a \code{character} vector of the names of the models
-#'              to be included including the pre-fabricated (prefab) models, 
-#'              extracting them from the \code{prefab_model_controls} 
-#'              internal function. 
+#'              to be included including the pre-fabricated (prefab) models.
 #'              \cr \cr
 #'              The currently prefabricated models include \code{"AutoArima"}, 
 #'              \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, 
@@ -19,8 +17,8 @@
 #'
 prefab_models <- function () {
 
-  c("AutoArima", "ESSS", "NaiveArima", "nbGARCH", "nbsGARCH", "pevGARCH",
-    "simplexEDM", "GPEDM", "jags_RW")
+  c("AutoArima")#, "ESSS", "NaiveArima", "nbGARCH", "nbsGARCH", "pevGARCH",
+#    "simplexEDM", "GPEDM", "jags_RW")
 
 }
 
@@ -32,7 +30,7 @@ prefab_models <- function () {
 #'              \cr \cr
 #'              \code{model} can be input as a \code{character} string,
 #'              symbol (backquoted name), or \code{function}, 
-#'              as \code\link{match.fun}}
+#'              as \code{\link{match.fun}}
 #'
 #' @param main \code{character} value defining the main component of the 
 #'              portalcasting directory tree. 

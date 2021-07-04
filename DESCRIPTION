@@ -30,16 +30,10 @@ Depends: R (>= 3.2.3)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
-    coda,
     forecast,
     httr,
     jsonlite,
     portalr (>= 0.4.0),
-    rEDM (>= 0.7.4),
-    runjags,
-    scoringRules,
-    tscount,
-    viridis,
     yaml
 Suggests:
   knitr,

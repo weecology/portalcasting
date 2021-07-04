@@ -8,12 +8,16 @@
 \usage{
 setup_dir(
   main = ".",
+  PortalData_source = "gitub",
   PortalData_version = "latest",
-  PortalData_source = "github",
-  portalPredictions_version = NULL,
   portalPredictions_source = "github",
+  portalPredictions_version = NULL,
   climate_forecast_source = "NMME",
-  quiet = FALSE
+  climate_forecast_version = Sys.Date(),
+  models = prefab_models(),
+  datasets = prefab_datasets(),
+  quiet = FALSE,
+  verbose = TRUE
 )
 
 setup_production(...)
@@ -25,7 +29,43 @@ setup_sandbox(...)
 portalcasting directory tree. Default value (\code{"."}) 
 puts the directory in the present location.}
 
+\item{PortalData_source, PortalData_version}{\code{character} values for the
+source and version of the Portal Data to download. 
+\cr \cr 
+Default values retrieve the latest data from github.
+\cr \cr 
+See \code{\link[portalr]{download_observations}}.}
+
+\item{portalPredictions_source, portalPredictions_version}{\code{character} 
+values for the source and version of the archive to download.
+\cr \cr 
+Default values point to github, but \code{version = NULL} indicates
+no download.
+\cr \cr 
+See \code{\link{download_archive}}.}
+
+\item{models}{\code{vector} of models to be written via 
+\code{\link{write_model}}.}
+
+\item{datasets}{\code{list} of datasets to be created using 
+\code{\link{do.call}} on the defined functions. 
+\cr \cr
+For example, \code{\link{prefab_datasets}} use 
+\code{\link{prepare_rodent_data}}.}
+
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
+
+\item{verbose}{\code{logical} indicator if detailed messages should be
+printed.}
+
+\item{climate_source, climate_version}{\code{character} values for the
+source and version of the climate forecasts to download.
+\cr \cr 
+Default values retrieve the current day's forecast from the
+Northwest Knowledge Network's North American Multi-Model Ensemble 
+(NMME) climate forecasts.
+\cr \cr 
+See \code{\link{download_climate_forecasts}}.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
@@ -40,8 +80,7 @@ Combines \code{\link{create_dir}} and \code{\link{fill_dir}}
              \cr \cr
              \code{setup_sandbox} creates a sandboxing directory for 
              exploration, tinkering, etc. with the code outside of 
-             productions. 
-             \cr \cr
+             productions.
 }
 \examples{
  \donttest{

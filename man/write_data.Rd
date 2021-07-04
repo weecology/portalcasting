@@ -10,8 +10,7 @@ write_data(
   save = TRUE,
   filename = NULL,
   overwrite = TRUE,
-  quiet = FALSE,
-  arg_checks = TRUE
+  quiet = FALSE
 )
 }
 \arguments{
@@ -20,25 +19,20 @@ write_data(
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{save}{\code{logical} indicator controlling if \code{x} should 
+\item{save}{\code{logical} indicator controlling if \code{dfl} should 
 be saved out.}
 
-\item{filename}{\code{character} name of the file for saving \code{x}.}
+\item{filename}{\code{character} name of the file for saving \code{dfl}.}
 
 \item{overwrite}{\code{logical} indicator of if the file should be
 overwritten if it exists.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{dfl} as input.
 }
 \description{
 Save inputted data out to a data file if requested and 
- return it to the console.
+             return it to the console.
 }

@@ -5,8 +5,49 @@
 #'              portalPredictions archive (\code{\link{download_archive}}), 
 #'              climate forecasts (\code{\link{download_climate_forecasts}}), 
 #'              models (\code{\link{write_model}}), 
-#'              and model-ready data.
+#'              and model-ready data (\code{\link{prepare_rodent_data}}).
 #'             
+#' @param main \code{character} value defining the main component of the 
+#'              portalcasting directory tree. Default value (\code{"."}) 
+#'              puts the directory in the present location. 
+#'
+#' @param PortalData_source,PortalData_version \code{character} values for the
+#'        source and version of the Portal Data to download. 
+#'        \cr \cr 
+#'        Default values retrieve the latest data from github.
+#'        \cr \cr 
+#'        See \code{\link[portalr]{download_observations}}.
+#'
+#' @param portalPredictions_source,portalPredictions_version \code{character} 
+#'        values for the source and version of the archive to download.
+#'        \cr \cr 
+#'        Default values point to github, but \code{version = NULL} indicates
+#'        no download.
+#'        \cr \cr 
+#'        See \code{\link{download_archive}}.
+#'
+#' @param climate_source,climate_version  \code{character} values for the
+#'        source and version of the climate forecasts to download.
+#'        \cr \cr 
+#'        Default values retrieve the current day's forecast from the
+#'        Northwest Knowledge Network's North American Multi-Model Ensemble 
+#'        (NMME) climate forecasts.
+#'        \cr \cr 
+#'        See \code{\link{download_climate_forecasts}}.
+#'
+#' @param models \code{vector} of models to be written via 
+#'        \code{\link{write_model}}.
+#'
+#' @param datasets \code{list} of datasets to be created using 
+#'        \code{\link{do.call}} on the defined functions. 
+#'        \cr \cr
+#'        For example, \code{\link{prefab_datasets}} use 
+#'        \code{\link{prepare_rodent_data}}.
+#'
+#' @param quiet \code{logical} indicator if messages should be quieted.
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'                printed.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -32,13 +73,14 @@ NULL
 #' @export
 #'
 fill_dir <- function (main  = ".",
-                      PortalData_version = "latest",
                       PortalData_source = "gitub",
-                      portalPredictions_version = NULL,
+                      PortalData_version = "latest",
                       portalPredictions_source = "github",
-                      climate_forecast_version = Sys.Date(),
+                      portalPredictions_version = NULL,
                       climate_forecast_source = "NMME",
+                      climate_forecast_version = Sys.Date(),
                       models = prefab_models(),
+                      datasets = prefab_datasets(),
                       quiet = FALSE,
                       verbose = TRUE) {
 
@@ -65,85 +107,36 @@ fill_dir <- function (main  = ".",
               quiet = quiet, 
               verbose = verbose)
 
+  fill_data(main = main, 
+            datasets = datasets,
+            quiet = quiet, 
+            verbose = verbose)
 
-return()
-
-#
-# Working here. 
-#
-
-
-  fill_data(main = main, models = models, 
-            end_moon = end_moon, lead_time = lead_time, 
-            cast_date = cast_date, start_moon = start_moon, 
-            confidence_level = confidence_level, 
-            controls_rodents = controls_rodents,
-            controls_model = controls_model, 
-            control_climate_dl = control_climate_dl, 
-            downloads = downloads, control_files = control_files,
-            quiet = quiet, verbose = verbose, arg_checks = arg_checks)
+  invisible()
 
 }
-
 
 
 #' @rdname fill_directory
 #'
 #' @export
 #'
-fill_data <- function(main = ".", models = prefab_models(),
-                      end_moon = NULL, start_moon = 217, lead_time = 12,
-                      confidence_level = 0.95, cast_date = Sys.Date(), 
-                      controls_model = NULL,
-                      controls_rodents = rodents_controls(), 
-                      control_climate_dl = climate_dl_control(),
-                      control_files = files_control(),
-                      downloads = zenodo_downloads(c("1215988", "833438")), 
-                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+fill_data <- function (main  = ".",
+                       datasets = prefab_datasets(),
+                       quiet = FALSE,
+                       verbose = TRUE) {
 
-  min_lag <- extract_min_lag(models = models, 
-                             controls_model = controls_model, 
-                             quiet = quiet, arg_checks = arg_checks)
-  data_sets <- extract_data_sets(models = models, 
-                                 controls_model = controls_model, 
-                                 quiet = quiet, arg_checks = arg_checks)
 
-  fill_raw(main = main, downloads = downloads, only_if_missing = TRUE, 
-           quiet = quiet, control_files = control_files, 
-           arg_checks = arg_checks)
 
-  messageq(" -Adding data files to data subdirectory", quiet)
-  data_m <- prep_moons(main = main, lead_time = lead_time, 
-                       cast_date = cast_date, 
-                       quiet = quiet, verbose = verbose,
-                       control_files = control_files, 
-                       arg_checks = arg_checks)
-  data_r <- prep_rodents(main = main, moons = data_m, 
-                         data_sets = data_sets, end_moon = end_moon, 
-                         controls_rodents = controls_rodents,
-                         quiet = quiet, verbose = verbose, 
-                         control_files = control_files, 
-                         arg_checks = arg_checks)
-  data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
-                            start_moon = start_moon, lead_time = lead_time, 
-                            min_lag = min_lag, cast_date = cast_date, 
-                            control_climate_dl = control_climate_dl,
-                            quiet = quiet, control_files = control_files,
-                            arg_checks = arg_checks)
-  prep_metadata(main = main, models = models,
-                data_sets = data_sets, moons = data_m, 
-                rodents = data_r, covariates = data_c, end_moon = end_moon, 
-                lead_time = lead_time, min_lag = min_lag, 
-                cast_date = cast_date, start_moon = start_moon, 
-                confidence_level = confidence_level, 
-                controls_model = controls_model,
-                controls_rodents = controls_rodents, quiet = quiet, 
-                control_files = control_files, arg_checks = arg_checks)
+  messageq(" -Writing data files", quiet = quiet)
 
-  invisible(NULL)
+  prepare_rodent_datasets(main = main,
+                          datasets = datasets,
+                          quiet = quiet,
+                          verbose = verbose)
+
+
 }
-
 
 #' @rdname fill_directory
 #'

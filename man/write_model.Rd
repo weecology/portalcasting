@@ -23,5 +23,10 @@ printed.}
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-
+Writes a model's function as a script into the 
+             defined directory. 
+             \cr \cr
+             \code{model} can be input as a \code{character} string,
+             symbol (backquoted name), or \code{function}, 
+             as \code{\link{match.fun}}
 }
