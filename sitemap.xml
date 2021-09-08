@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://weecology.github.io/portalcasting/404.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/articles/adding_model_and_data.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/articles/codebase.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/articles/current_models.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/articles/getting_started.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/articles/jags_models.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/authors.html</loc>
+  </url>
+  <url>
     <loc>https://weecology.github.io/portalcasting/index.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/news/index.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/NMME_urls.html</loc>
@@ -68,6 +107,9 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/foy.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/index.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/jags_ss.html</loc>
@@ -239,20 +281,5 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/zenodo_url.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/adding_model_and_data.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/codebase.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/current_models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/getting_started.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/jags_models.html</loc>
   </url>
 </urlset>

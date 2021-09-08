@@ -119,13 +119,13 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/weecology">
-    <span class="fas fa-twitter"></span>
+    <span class="fa fa-twitter"></span>
      
   </a>
 </li>
 <li>
   <a href="https://github.com/weecology">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -150,12 +150,12 @@
 <p>Thanks for checking out our project! If you haven’t already, please check out the <a href="README.html">readme</a> for general info about this project.</p>
 <div id="contributor-code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
-<a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h2>
+<a href="#contributor-code-of-conduct" class="anchor" aria-hidden="true"></a>Contributor Code of Conduct</h2>
 <p>All contributors will be expected to follow our <a href="CODE_OF_CONDUCT.html">code of conduct</a>.</p>
 </div>
 <div id="for-the-general-public" class="section level2">
 <h2 class="hasAnchor">
-<a href="#for-the-general-public" class="anchor"></a>For the General Public</h2>
+<a href="#for-the-general-public" class="anchor" aria-hidden="true"></a>For the General Public</h2>
 <p>If you’re not a member of the Weecology lab, we ask that you use one of the following two methods for contributing:</p>
 <ol style="list-style-type: decimal">
 <li><p>Create an issue – if you spot any typos, bugs, or have general suggestions, etc. You can also use this to participate in ongoing discussions. For more info, please check out this Github <a href="https://guides.github.com/features/issues/" class="external-link">guide</a>.</p></li>
@@ -164,13 +164,13 @@
 </div>
 <div id="weecologists" class="section level2">
 <h2 class="hasAnchor">
-<a href="#weecologists" class="anchor"></a>Weecologists</h2>
+<a href="#weecologists" class="anchor" aria-hidden="true"></a>Weecologists</h2>
 <p>If you’re actively working on this repo, then you should have write access to create branches for any new features or bugfixes. Please see the lab-wiki for info on using branches in a shared repository.</p>
 <p>If you don’t have write access and you would like to, please contact @gmyenni for access.</p>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h2>
+<a href="#documentation" class="anchor" aria-hidden="true"></a>Documentation</h2>
 <p>If you are contributing code to this project, you generally don’t need any additional packages, since the documentation will be written as comments in the R scripts. If you are also building the package, see the <a href="#building">section below</a> for more details.</p>
 <p>In most cases, you’ll be creating a new function and then documenting it. You can check the existing functions for examples, but here’s a basic template:</p>
 <pre><code>#' @title {this is the heading for the help file}
@@ -191,7 +191,7 @@ newfunc &lt;- function() ...</code></pre>
 </div>
 <div id="testing" class="section level2">
 <h2 class="hasAnchor">
-<a href="#testing" class="anchor"></a>Testing</h2>
+<a href="#testing" class="anchor" aria-hidden="true"></a>Testing</h2>
 <p>If you are adding new functionality, please include automated tests to verify that some of the basic functionality is correct.</p>
 <p>Automated testing uses R scripts, that live in the <code>tests/testthat/</code> subfolder for the package. If you are adding a new file, please name it as <code>test-{concept}.R</code>.</p>
 <p>As a general rule, you don’t need to test all possible inputs and outputs for a function, but you should test some important aspects: * outputs are the correct format (including dimensions and components) * sample input produces the correct sample output</p>
@@ -199,7 +199,7 @@ newfunc &lt;- function() ...</code></pre>
 </div>
 <div id="building" class="section level2">
 <h2 class="hasAnchor">
-<a href="#building" class="anchor"></a>Building</h2>
+<a href="#building" class="anchor" aria-hidden="true"></a>Building</h2>
 <p>To fully build the package, including documentation, running-tests, you will need the <code>roxygen2</code>, the <code>testthat</code>, and the <code>devtools</code> package.</p>
 <p>Specific operations are then done by calling the appropriate functions from within R, while your working directory is somewhere in the package folder.</p>
 <p>The suggested workflow is: 1. Write code, documentation, and tests. 2. Run <code>devtools::document()</code> to generate the documentation files and update the <code>NAMESPACE</code> file. 3. Run <code>devtools::install()</code> to install the new version of the package. 4. Run <code>devtools::test()</code> to run the test scripts on the new version of the package.</p>
@@ -208,7 +208,7 @@ newfunc &lt;- function() ...</code></pre>
 </div>
 <div id="attribution" class="section level2">
 <h2 class="hasAnchor">
-<a href="#attribution" class="anchor"></a>Attribution</h2>
+<a href="#attribution" class="anchor" aria-hidden="true"></a>Attribution</h2>
 <p>This document is based on the <a href="https://github.com/weecology/portalr/blob/master/CONTRIBUTING.md" class="external-link">CONTRIBUTING file</a> associated with the Beta release of the <a href="https://github.com/weecology/portalr/" class="external-link"><strong>portalr</strong></a> package and is used under the MIT License.</p>
 </div>
 </div>
@@ -231,7 +231,7 @@ newfunc &lt;- function() ...</code></pre>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

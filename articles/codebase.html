@@ -73,13 +73,13 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://twitter.com/weecology" class="external-link">
-    <span class="fas fa-twitter"></span>
+    <span class="fa fa-twitter"></span>
      
   </a>
 </li>
 <li>
   <a href="https://github.com/weecology" class="external-link">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -99,7 +99,7 @@
       <h1 data-toc-skip>portalcasting Codebase</h1>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">10 March, 2021</h4>
+            <h4 data-toc-skip class="date">08 September, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/codebase.Rmd" class="external-link"><code>vignettes/codebase.Rmd</code></a></small>
       <div class="hidden name"><code>codebase.Rmd</code></div>
@@ -111,7 +111,7 @@
 <p>This vignette outlines the codebase and functionality of the <strong>portalcasting</strong> package (v0.21.2), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions production pipeline</a>. <strong>portalcasting</strong> has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
 <p>To install the most recent version of <strong>portalcasting</strong> from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
@@ -119,7 +119,7 @@
 </div>
 <div id="directory-structure" class="section level2">
 <h2 class="hasAnchor">
-<a href="#directory-structure" class="anchor"></a>Directory Structure</h2>
+<a href="#directory-structure" class="anchor" aria-hidden="true"></a>Directory Structure</h2>
 <p>The package uses a directory tree with two levels to organize the project:</p>
 <ul>
 <li>
@@ -147,17 +147,17 @@
 </div>
 <div id="instantiating-a-directory" class="section level2">
 <h2 class="hasAnchor">
-<a href="#instantiating-a-directory" class="anchor"></a>Instantiating a Directory</h2>
+<a href="#instantiating-a-directory" class="anchor" aria-hidden="true"></a>Instantiating a Directory</h2>
 <p>Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). These steps can be executed separately or in combination via a general <code>setup_dir</code> function or via specialized versions of <code>setup_dir</code>: <code>setup_sandbox</code> (for creating a pipeline with defaults to facilitate sandboxing) and <code>setup_production</code> (for creating a production pipeline). These functions are general and flexible, allowing for customization through a variety of arguments, but are designed to work well under default settings.</p>
 <div id="creating" class="section level3">
 <h3 class="hasAnchor">
-<a href="#creating" class="anchor"></a>Creating</h3>
+<a href="#creating" class="anchor" aria-hidden="true"></a>Creating</h3>
 <p>The directory is established using <code>create_dir</code>, which takes <code>main</code> as an argument and in sequence creates each of the levels’ folders if they do not already exist. This occurs through calls to <code>create_main</code> and <code>create_subs</code>. A typical user is likely to want to change the <code>main</code> input (to locate the forecasting directory where they would like it), but general users should not alter the <code>subs</code> structure, and so that option is not available through the <code>create</code> functions.</p>
 <p><code>create_dir</code> also initializes the <code>dir_config.yaml</code> file, which is held within <code>main</code> and contains metadata about the directory setting up process.</p>
 </div>
 <div id="filling" class="section level3">
 <h3 class="hasAnchor">
-<a href="#filling" class="anchor"></a>Filling</h3>
+<a href="#filling" class="anchor" aria-hidden="true"></a>Filling</h3>
 <p>The directory is filled (loaded with files for forecasting) using a series of subdirectory-specific functions that are combined in the overall <code>fill_dir</code> function:</p>
 <ul>
 <li>
@@ -185,7 +185,7 @@
 </div>
 <div id="running-models" class="section level2">
 <h2 class="hasAnchor">
-<a href="#running-models" class="anchor"></a>Running models</h2>
+<a href="#running-models" class="anchor" aria-hidden="true"></a>Running models</h2>
 <p>Models are run using a function pipeline similar to the creation and filling function pipelines, with flexible controls through a variety of arguments, but robust operation under default settings.</p>
 <ul>
 <li>
@@ -223,11 +223,11 @@
 </div>
 <div id="utilities" class="section level2">
 <h2 class="hasAnchor">
-<a href="#utilities" class="anchor"></a>Utilities</h2>
+<a href="#utilities" class="anchor" aria-hidden="true"></a>Utilities</h2>
 <p>To facilitate tidy and easy-to-follow code, we introduce a few important utility functions, which are put to use throughout the codebase.</p>
 <div id="file-paths" class="section level3">
 <h3 class="hasAnchor">
-<a href="#file-paths" class="anchor"></a>File paths</h3>
+<a href="#file-paths" class="anchor" aria-hidden="true"></a>File paths</h3>
 <p>Given the reliance of files located in a variety of subdirectories that could be operating on multiple platforms, we constructed some simple functions for managing and point to particular folders or files.</p>
 <ul>
 <li>
@@ -240,14 +240,14 @@
 </div>
 <div id="data-io" class="section level3">
 <h3 class="hasAnchor">
-<a href="#data-io" class="anchor"></a>Data IO</h3>
+<a href="#data-io" class="anchor" aria-hidden="true"></a>Data IO</h3>
 <p><strong>portalcasting</strong> has a generalized <code>read_data</code> function that allows for toggling among <code>read_rodents</code>, <code>read_rodents_table</code>, <code>read_covariates</code>, <code>read_covariate_casts</code>, <code>read_moons</code>, and <code>read_metadata</code>, which each have specific loading procedures in place and, in the case that the requested file does not exist, an attempt is made (through the corresponding <code>prep_</code> function) to create the data file. Similar to the <code>read_data</code> functions, <code>read_casts</code> provides a simple user interface for reading the cast files into the R session.</p>
 <p>For saving out, <code>write_data</code> provides a simple means for interfacing with potentially pre-existing data files, with logical inputs for saving generally and overwriting a pre-existing file specifically, and flexible file naming. The type of data saved out is currently restricted to <code>.csv</code> and <code>.yaml</code>, which is extracted from the filename given.</p>
 <p>The directory configuration file is a special file, and has its own IO functions separate from the rest: <code>write_directory_config</code> creates the file (from within <code>create_dir</code>, <code>update_directory_config</code> adds downloads information (from inside <code>fill_raw</code>) <code>read_directory_config</code> brings the information from the file into the R session.</p>
 </div>
 <div id="argument-checking" class="section level3">
 <h3 class="hasAnchor">
-<a href="#argument-checking" class="anchor"></a>Argument checking</h3>
+<a href="#argument-checking" class="anchor" aria-hidden="true"></a>Argument checking</h3>
 <p><strong>portalcasting</strong> provides tidy and toggle-able argument checking via <code>check_arg</code>, <code>check_args</code>, and <code>check_arg_list</code>. They check the validity of inputted values for arguments, variably (depending on the argument) including the class, length, and values. It extracts the boolean checking code that would normally be within each function, placing it instead within <code>check_arg</code> which is called for each argument by <code>check_args</code>.</p>
 <p>A key aspect to the <strong>portalcasting</strong> pipeline’s ability to connect pieces is tied directly to argument checking: argument names should not be re-used in different functions unless they are for the same type of object with the same value options.</p>
 <p>Some base <strong>portalcasting</strong> utilities cannot use <code>check_args</code> however, and so have their own specific internal checking. For example, <code>list_depth</code>’s recursive nature prevents its use, and <code>check_arg</code> cannot use <code>check_args</code> itself.</p>
@@ -255,7 +255,7 @@
 </div>
 <div id="messageq" class="section level3">
 <h3 class="hasAnchor">
-<a href="#messageq" class="anchor"></a><code>messageq</code>
+<a href="#messageq" class="anchor" aria-hidden="true"></a><code>messageq</code>
 </h3>
 <p><code>messageq</code> provides a simple wrapper on <code>message</code> that also has a logical input for quieting. This helps switch messaging off as desired while localizing the actual boolean operator code to one spot.</p>
 </div>
@@ -279,7 +279,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>

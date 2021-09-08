@@ -73,13 +73,13 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://twitter.com/weecology" class="external-link">
-    <span class="fas fa-twitter"></span>
+    <span class="fa fa-twitter"></span>
      
   </a>
 </li>
 <li>
   <a href="https://github.com/weecology" class="external-link">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -99,7 +99,7 @@
       <h1 data-toc-skip>Adding a Model and Data</h1>
                         <h4 data-toc-skip class="author">Juniper L. Simonis and Glenda M. Yenni</h4>
             
-            <h4 data-toc-skip class="date">10 March, 2021</h4>
+            <h4 data-toc-skip class="date">08 September, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/adding_model_and_data.Rmd" class="external-link"><code>vignettes/adding_model_and_data.Rmd</code></a></small>
       <div class="hidden name"><code>adding_model_and_data.Rmd</code></div>
@@ -110,19 +110,19 @@
     
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h2>
 <p>The <strong>portalcasting</strong> package provides the ability to add functions both to a local copy of the repository for testing as well as to contribute to the base set of models provided within the package (and thus executed in the main repository). Similarly, users may often want or need to analyze the data in a slightly different configuration than what is already available. Here, we walk through the steps to add user-defined models and data sets to the directory for local use or for integration within the production pipeline.</p>
 <p>For the purposes here, consider that you are interested in adding a model named “newmod” to the forecasting suite. While “newmod” can work on the existing data, you are are really interested in a slightly different configuration (perhaps only the long-term kangaroo rat exclosures) of the data you call “newdata”.</p>
 <p>Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the <a href="https://weecology.github.io/portalcasting/articles/getting_started.html">Getting Started</a> vignette.</p>
 </div>
 <div id="model-requirements" class="section level2">
 <h2 class="hasAnchor">
-<a href="#model-requirements" class="anchor"></a>Model requirements</h2>
+<a href="#model-requirements" class="anchor" aria-hidden="true"></a>Model requirements</h2>
 <p>Unlike previous versions of <strong>portalcasting</strong>, starting with v0.9.0, there are very few formal requirements for the output of a model. Indeed, a model does not inherently need to produce any particular output to be valid and run. Rather, if the user desires the output to be archived with the other cast output, they must run the function <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code> in their script, which requires that the <code>cast</code> argument be a list. If the list contains elements named <code>metadata</code>, <code>cast_tab</code>, <code>model_fits</code>, or <code>model_casts</code>, they are saved out (see <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code>).</p>
 </div>
 <div id="set-up-the-directory" class="section level2">
 <h2 class="hasAnchor">
-<a href="#set-up-the-directory" class="anchor"></a>Set up the directory</h2>
+<a href="#set-up-the-directory" class="anchor" aria-hidden="true"></a>Set up the directory</h2>
 <p>To allow for a more flexible environment, here we use the <code><a href="../reference/setup_dir.html">setup_sandbox()</a></code> function to make and fill our directory, which we house at <code>"~/sandbox_1"</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://weecology.github.io/portalcasting">portalcasting</a></span><span class="op">)</span>
@@ -139,19 +139,19 @@
 <div class="figure">
 <img src="imgs/sandbox_1_data.jpg" width="400" alt=""><p class="caption">The sandbox’s models prefab data folder</p>
 </div>
-<p>The default model scripts take advantage of having main functions that contain the majority of the code, such as <code><a href="../reference/simplexEDM.html">AutoArima()</a></code>, which returns a <code>list</code> with output components that are passed into <code>save_cast_output</code>, which adds the results from the model run to the <code>casts</code> sub folder.</p>
+<p>The default model scripts take advantage of having main functions that contain the majority of the code, such as <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code>, which returns a <code>list</code> with output components that are passed into <code>save_cast_output</code>, which adds the results from the model run to the <code>casts</code> sub folder.</p>
 <div class="figure">
 <img src="imgs/sandbox_1_AutoArima.jpg" width="600" alt=""><p class="caption">AutoArima.R</p>
 </div>
-<p>You do not need to use a model function like <code><a href="../reference/simplexEDM.html">AutoArima()</a></code> in your script, however. The pipeline will work with basically any code that will run in R. The whole script is run using <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> and it is wrapped (within <code><a href="../reference/portalcast.html">cast()</a></code>) in a <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> call, which softens any errors at the whole-script level.</p>
+<p>You do not need to use a model function like <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code> in your script, however. The pipeline will work with basically any code that will run in R. The whole script is run using <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> and it is wrapped (within <code><a href="../reference/portalcast.html">cast()</a></code>) in a <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> call, which softens any errors at the whole-script level.</p>
 <p>You may be interested in one or both of two levels of model/data-adding. At one level, you might be interested in just working “locally” (although maybe on a remote machine or server, just not <em>the</em> server that runs the production pipeline), perhaps to do some basic exploration, actively engage in research and development, or spin off another project using the same infrastructure. For the present vignette, we’ll call that the “development space”. At another level, you might be interested in adding to the stuff that’s run as part of the existing main project’s production pipeline (). Here, we’ll call that the “production space”. It’s likely that you might use the “development space” on the way to the “production space” or that the “development space” is sufficient in and of itself for your needs. We’ll detail adding models and data in each of these spaces in the subsequent sections.</p>
 </div>
 <div id="adding-in-a-development-space" class="section level2">
 <h2 class="hasAnchor">
-<a href="#adding-in-a-development-space" class="anchor"></a>Adding in a development space</h2>
+<a href="#adding-in-a-development-space" class="anchor" aria-hidden="true"></a>Adding in a development space</h2>
 <div id="adding-a-model" class="section level3">
 <h3 class="hasAnchor">
-<a href="#adding-a-model" class="anchor"></a>Adding a model</h3>
+<a href="#adding-a-model" class="anchor" aria-hidden="true"></a>Adding a model</h3>
 <p>The <strong>portalcasting</strong> machinery allows any model with a script in the <code>models</code> sub-directory to be run just like the prefab model scripts. All that is required is for the user to save the script with the name and name the model explicitly in the <code>models</code> argument for <code><a href="../reference/portalcast.html">portalcast()</a></code>.</p>
 <div class="figure">
 <img src="imgs/sandbox_1_models_added.jpg" width="400" alt=""><p class="caption">The sandbox’s models sub folder with a new addition</p>
@@ -166,7 +166,7 @@
 </div>
 <div id="adding-a-data-set" class="section level3">
 <h3 class="hasAnchor">
-<a href="#adding-a-data-set" class="anchor"></a>Adding a data set</h3>
+<a href="#adding-a-data-set" class="anchor" aria-hidden="true"></a>Adding a data set</h3>
 <p>To add “newdata” to the available data sets, it is important to recognize that the rodent preparation functions point directly to the <a href="https://weecology.github.io/portalr/reference/summarize_rodent_data.html" class="external-link"><strong>portalr</strong> <code>summarize_rodent_data</code> function</a>, which allows for flexible data customization.</p>
 <p><strong>portalcasting</strong> turns the arguments in <code>summarize_rodent_data</code> into arguments in <code><a href="../reference/rodents_control.html">rodents_control()</a></code>, which sets default values for most arguments, but does require an input for <code>name</code>, which names the data set, otherwise it will return <code>NULL</code>. Here, we create the data control list and call it <code>newdata_controls</code>, allowing us to model the rodents found on the removal plots only. We can then create the data set to verify it looks like how we want by running the <code><a href="../reference/prep_rodents.html">prep_rodents()</a></code> function, which returns the data set to the console and saves it in the <code>data</code> sub-directory (Note that we <strong>must</strong> set <code>arg_checks = FALSE</code> to allow for the creation and use of the non-standard rodents data configuration.)</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -182,7 +182,7 @@
 </div>
 <div id="running-the-model-with-the-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#running-the-model-with-the-data" class="anchor"></a>Running the model with the data</h3>
+<a href="#running-the-model-with-the-data" class="anchor" aria-hidden="true"></a>Running the model with the data</h3>
 <p>To run the model with the pipeline, you then simply use <code>portalcast</code> with a few additional arguments to specify the model and data components. However, you will notice that there is no <code>data_sets</code> argument in <code>portalcast</code>… so how do you tell the function what data sets the models will need? Well, the function automatically grabs the data sets that are required by the models named in the <code>models</code> argument, so how do you tell the function what newmod needs? You do that by creating a model control list:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">newmod_controls</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/model_control.html">model_control</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"newmod"</span>, data_sets <span class="op">=</span> <span class="st">"newdata"</span><span class="op">)</span></code></pre></div>
@@ -209,7 +209,7 @@
 </div>
 <div id="checklist" class="section level3">
 <h3 class="hasAnchor">
-<a href="#checklist" class="anchor"></a>Checklist</h3>
+<a href="#checklist" class="anchor" aria-hidden="true"></a>Checklist</h3>
 <ol style="list-style-type: decimal">
 <li>Create script for “newmod” at <code>~/sandbox_1/main/newmod.R</code>
 <ul>
@@ -237,13 +237,13 @@
 </div>
 <div id="adding-in-a-production-space" class="section level2">
 <h2 class="hasAnchor">
-<a href="#adding-in-a-production-space" class="anchor"></a>Adding in a production space</h2>
+<a href="#adding-in-a-production-space" class="anchor" aria-hidden="true"></a>Adding in a production space</h2>
 <p>Once you’ve worked out all of the kinks in your model and are interested in adding it to the prefabricated (prefab) set, some additional steps will be required.</p>
 <p>First create a branch from the master branch on the <strong>portalcasting</strong> <a href="https://github.com/weecology/portalcasting" class="external-link">GitHub repo</a>. This allows you to work within the package environment.</p>
 <div id="adding-a-model-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#adding-a-model-1" class="anchor"></a>Adding a model</h3>
-<p>Moving your model to the production pipeline requires encapsulating that code within a function (with the same name as the model, so here <code>newmod()</code>), similar to how the other prefab models are (for example <code><a href="../reference/simplexEDM.html">AutoArima()</a></code>). Notably, each function works on a single data set (for example “all” or “controls”) at a time. Models that work on multiple data sets (such as <code><a href="../reference/simplexEDM.html">AutoArima()</a></code> on both “all” and “controls”) have that indicated in their control lists.</p>
+<a href="#adding-a-model-1" class="anchor" aria-hidden="true"></a>Adding a model</h3>
+<p>Moving your model to the production pipeline requires encapsulating that code within a function (with the same name as the model, so here <code>newmod()</code>), similar to how the other prefab models are (for example <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code>). Notably, each function works on a single data set (for example “all” or “controls”) at a time. Models that work on multiple data sets (such as <code><a href="../reference/prefab_model_functions.html">AutoArima()</a></code> on both “all” and “controls”) have that indicated in their control lists.</p>
 <p>The prefab model functions have a shared set of arguments and documentation, highlighting their similarity in structure.</p>
 <p>Each function takes the following arguments: * <code>main</code> (points to the directory) * <code>data_set</code> (indicates which version of the data a particular run of the model will cover) * <code>control_files</code> (is a control list with file names) * <code>quiet</code> and <code>verbose</code> (deal with message printing) * <code>arg_checks</code> (handles argument checking) and if the model uses covariates, it will also take: * <code>lag</code> (indicates the number of steps for lagging the covariates)</p>
 <p>Each function also returns a list with elements named <code>metadata</code>, <code>cast_tab</code>, <code>model_fits</code>, and <code>model_casts</code>, as was discussed earlier. This is more important here, as each prefab model has its output automatically saved using <code><a href="../reference/save_cast_output.html">save_cast_output()</a></code>.</p>
@@ -259,7 +259,7 @@
 </div>
 <div id="adding-a-data-set-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#adding-a-data-set-1" class="anchor"></a>Adding a data set</h3>
+<a href="#adding-a-data-set-1" class="anchor" aria-hidden="true"></a>Adding a data set</h3>
 <p>Similarly to with adding the model, you then need to permanently add the controls for the data (the control list called <code>newdata_controls</code>) into the (non-exported) function <code>prefab_rodents_controls</code>, which is at the top of the <code>prepare_rodents.R</code> script. This function houses the controls for data sets that are loaded by default and is also used to extract the names of the data sets.</p>
 <div class="figure">
 <img src="imgs/sandbox_1_newdata_to_prefab.jpg" width="400" alt=""><p class="caption">newdata added to the prefab data controls</p>
@@ -271,7 +271,7 @@
 </div>
 <div id="running-the-model-with-the-data-set" class="section level3">
 <h3 class="hasAnchor">
-<a href="#running-the-model-with-the-data-set" class="anchor"></a>Running the model with the data set</h3>
+<a href="#running-the-model-with-the-data-set" class="anchor" aria-hidden="true"></a>Running the model with the data set</h3>
 <p>Running the model is now then nearly as easy as using <code><a href="../reference/portalcast.html">portalcast()</a></code> with base arguments. First make sure you can build the package:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -289,7 +289,7 @@
 </div>
 <div id="verification" class="section level3">
 <h3 class="hasAnchor">
-<a href="#verification" class="anchor"></a>Verification</h3>
+<a href="#verification" class="anchor" aria-hidden="true"></a>Verification</h3>
 <p>Having added your code to the package, it is imperative that you add unit tests for the model to the tests in the package already (within the package, in the <code>tests/testthat/test-15-prefab_models.R</code> script). Tests should be added for each of the data sets used.</p>
 <div class="figure">
 <img src="imgs/sandbox_1_newmod_test.jpg" width="400" alt=""><p class="caption">Adding to the tests</p>
@@ -304,7 +304,7 @@
 </div>
 <div id="checklist-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#checklist-1" class="anchor"></a>Checklist</h3>
+<a href="#checklist-1" class="anchor" aria-hidden="true"></a>Checklist</h3>
 <ol style="list-style-type: decimal">
 <li>Create a branch from the master on the <a href="https://github.com/weecology/portalcasting" class="external-link">GitHub repo</a>
 </li>
@@ -326,13 +326,13 @@
 </div>
 <div id="applying-existing-models-to-new-data-sets" class="section level2">
 <h2 class="hasAnchor">
-<a href="#applying-existing-models-to-new-data-sets" class="anchor"></a>Applying existing models to new data sets</h2>
+<a href="#applying-existing-models-to-new-data-sets" class="anchor" aria-hidden="true"></a>Applying existing models to new data sets</h2>
 <p>This vignette focused on adding models and data in combination, but users may also be interested in just adding data sets to existing models. To accomplish this, a user should follow a restricted version of the tasks covered above.</p>
 <p>Specifically, the user does not need to create a new model script or function and its associated control list, but rather just update the existing control list for the model of interest to include the new data sets.</p>
 <p>One noteworthy argument is <code>update_prefab_models</code> which is by default <code>FALSE</code>, but the user will need to switch to <code>TRUE</code> for this.</p>
 <div id="checklist-for-sandboxing-a-new-data-set-with-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss" class="section level3">
 <h3 class="hasAnchor">
-<a href="#checklist-for-sandboxing-a-new-data-set-with-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss" class="anchor"></a>Checklist for sandboxing a new data set with an existing model (e.g., adding interpolated exclosure data to ESSS)</h3>
+<a href="#checklist-for-sandboxing-a-new-data-set-with-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss" class="anchor" aria-hidden="true"></a>Checklist for sandboxing a new data set with an existing model (e.g., adding interpolated exclosure data to ESSS)</h3>
 <ol style="list-style-type: decimal">
 <li>Create a model control list called <code>ESSS_controls</code> using <code>model_control</code>
 </li>
@@ -369,7 +369,7 @@
 </div>
 <div id="checklist-for-adding-a-new-data-set-for-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss-in-the-production-pipeline" class="section level3">
 <h3 class="hasAnchor">
-<a href="#checklist-for-adding-a-new-data-set-for-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss-in-the-production-pipeline" class="anchor"></a>Checklist for adding a new data set for an existing model (e.g., adding interpolated exclosure data to ESSS) in the production pipeline</h3>
+<a href="#checklist-for-adding-a-new-data-set-for-an-existing-model-e-g--adding-interpolated-exclosure-data-to-esss-in-the-production-pipeline" class="anchor" aria-hidden="true"></a>Checklist for adding a new data set for an existing model (e.g., adding interpolated exclosure data to ESSS) in the production pipeline</h3>
 <ol style="list-style-type: decimal">
 <li>Create a branch from the master on the <a href="https://github.com/weecology/portalcasting" class="external-link">GitHub repo</a>
 </li>
@@ -401,7 +401,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
