@@ -9,6 +9,6 @@ RUN apt-get update \
        curl \
        jags
 
-# Install portalcasting from github
-
+# Install git2r, portalcasting from github
+RUN R -e "devtools::install_github('ropensci/git2r')"
 RUN R -e "devtools::install_github('weecology/portalcasting')"
