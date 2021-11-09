@@ -34,8 +34,8 @@ Imports:
     forecast,
     httr,
     jsonlite,
-    portalr (>= 0.3.0),
-    rEDM (>= 0.7.4),
+    portalr,
+    rEDM,
     runjags,
     scoringRules,
     tscount,
@@ -45,11 +45,8 @@ Suggests:
   knitr,
   pkgdown,
   markdown,
-  rmarkdown (>= 1.16.1),
+  rmarkdown,
   testthat
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
-Remotes: 
-    ha0ye/rEDM,
-    rstudio/rmarkdown
