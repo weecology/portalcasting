@@ -2,20 +2,33 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-portalcasting 0.21.2
-*In Progress*
+
+
+# [portalcasting 0.21.4](https://github.com/weecology/portalcasting/releases/tag/v0.21.4)
+*2021-11-09*
+
+### Add Henry to the DESCRIPTION file
+
+
+
+# [portalcasting 0.21.3](https://github.com/weecology/portalcasting/releases/tag/v0.21.3)
+*2021-09-17*
+
+### Add git2r to the docker container
+
+# portalcasting 0.21.2
+*Skipped*
 
 ### Improving GitHub Actions Running 
 * Including no running of examples (needed to be explicitly stated); [addressing 206](https://github.com/weecology/portalcasting/issues/206)
 * Use RStudio package manager to speed up running; [addressing 206](https://github.com/weecology/portalcasting/issues/206)
 
-
-[portalcasting 0.21.1](https://github.com/weecology/portalcasting/releases/tag/v0.21.1)
+# [portalcasting 0.21.1](https://github.com/weecology/portalcasting/releases/tag/v0.21.1)
 *2021-02-11*
 
 ### Patch "NA" plotting issue
 
-[portalcasting 0.21.0](https://github.com/weecology/portalcasting/releases/tag/v0.21.0)
+# [portalcasting 0.21.0](https://github.com/weecology/portalcasting/releases/tag/v0.21.0)
 *2021-02-10*
 
 ### Highlighting of species in plotting
