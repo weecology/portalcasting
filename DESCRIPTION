@@ -1,6 +1,6 @@
 Package: portalcasting
 Title: Functions Used in Predicting Portal Rodent Dynamics
-Version: 0.21.2
+Version: 0.21.4
 Authors@R: c(
     person(c("Juniper", "L."), "Simonis",
       email = "juniper.simonis@weecology.org", role = c("aut", "cre"),
@@ -11,6 +11,8 @@ Authors@R: c(
       comment = c(ORCID = "0000-0002-3629-7235")), 
     person(c("Erica", "M."), "Christensen",
       role = c("aut"), comment = c(ORCID = "0000-0002-5635-2502")),
+    person("Henry", "Senyondo", role = c("aut"),
+      comment = c(ORCID = "0000-0001-7105-5808")),
     person("Hao", "Ye", role = c("aut"),
       comment = c(ORCID = "0000-0002-8630-1458")),
 	person(c("Ethan", "P."), "White", role = c("aut"),
