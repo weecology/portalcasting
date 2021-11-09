@@ -67,7 +67,7 @@
 #' @export
 #'
 setup_dir <- function (main  = ".",
-                       PortalData_source = "gitub",
+                       PortalData_source = "github",
                        PortalData_version = "latest",
                        portalPredictions_source = "github",
                        portalPredictions_version = NULL,
