@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.4</span>
       </span>
     </div>
 
@@ -100,9 +100,9 @@
             <h3 data-toc-skip class="subtitle">Set Up and Use a Portal Predictions Directory</h3>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">17 September, 2021</h4>
+            <h4 data-toc-skip class="date">09 November, 2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/getting_started.Rmd" class="external-link"><code>vignettes/getting_started.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/getting_started.Rmd" class="external-link"><code>vignettes/getting_started.Rmd</code></a></small>
       <div class="hidden name"><code>getting_started.Rmd</code></div>
 
     </div>
@@ -110,18 +110,18 @@
     
     
 <p>This vignette shows how to set up and run your own <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions</a> directory.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>First things first, make sure you have the current version of <strong>portalcasting</strong> installed from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"weecology/portalcasting"</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://weecology.github.io/portalcasting">portalcasting</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="create-a-portal-predictions-directory" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-a-portal-predictions-directory" class="anchor" aria-hidden="true"></a>Create a Portal Predictions directory</h2>
+<div class="section level2">
+<h2 id="create-a-portal-predictions-directory">Create a Portal Predictions directory<a class="anchor" aria-label="anchor" href="#create-a-portal-predictions-directory"></a>
+</h2>
 <p>The <code><a href="../reference/setup_dir.html">setup_dir()</a></code> function creates and populates a standard Portal Predictions directory that includes <code>tmp</code>, <code>raw</code>, <code>data</code>, <code>models</code>, and <code>casts</code> subdirectories. By default, <code><a href="../reference/setup_dir.html">setup_dir()</a></code> downloads the most up-to-date version of the <a href="https://doi.org/10.5281/zenodo.1215988" class="external-link">Portal Data</a> and <a href="https://doi.org/10.5281/zenodo.833438" class="external-link">Portal Predictions</a> archives from Zenodo into the <code>raw</code> subdirectory, prepares the moons, rodents, covariates, covariate forecast, and metadata data files (and places them in the <code>data</code> subdirectory) and populates the <code>models</code> subdirectory with scripts for the six existing models (“AutoArima”, “NaiveArima”, “ESSS”, “nbGARCH”, “nbsGARCH”, and “pevGARCH”).</p>
 <p>Specialized versions of <code>setup_dir</code> are tailored for local model exploration, development, and testing (“<code>setup_sandbox</code>”) and for use in the real-deal pipeline (“<code>setup_production</code>”). The settings are fairly similar, although <code>setup_sandbox</code> has extra rigid argument checking turned off and extra verbose messaging turned on. <code>setup_dir</code> provides a good starting point for a user interested in seeing what the package can do, with specific error checking and tidy messaging, so we use it here.</p>
 <p>There are many arguments available for the user to tailor the setup of the directory, which can be found on the help page (<code><a href="../reference/setup_dir.html">?setup_dir</a></code>). Perhaps the most important argument is <code>main</code> which allows the user to point the directory to any particular location. The default is <code>main = "."</code>, which is basically “the present directory”. A common implementation would be to create a directory in the home directory of a computer (indicated by <code>"~"</code>) and within a named folder, say “portalcast_directory”, which would be done with <code>main = "~/portalcast_directory"</code>, or by setting <code>main &lt;- "~/portalcast_directory"</code> and then using <code>main = main</code> throughout the code:</p>
@@ -129,18 +129,18 @@
 <code class="sourceCode R"><span class="va">main</span> <span class="op">&lt;-</span> <span class="st">"~/portalcast_directory"</span>
 <span class="fu"><a href="../reference/setup_dir.html">setup_dir</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="run-a-cast-forecast-or-hindcast" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-a-cast-forecast-or-hindcast" class="anchor" aria-hidden="true"></a>Run a cast (forecast or hindcast)</h2>
+<div class="section level2">
+<h2 id="run-a-cast-forecast-or-hindcast">Run a cast (forecast or hindcast)<a class="anchor" aria-label="anchor" href="#run-a-cast-forecast-or-hindcast"></a>
+</h2>
 <p>The <code><a href="../reference/portalcast.html">portalcast()</a></code> function controls the running of potentially multiple models across different data sets for multiple time steps. They can involve what we have classically called “forecasts” (from the present time step) and “hindcast” (from a time step before the current one). It will prepare the data (rodents, covariates, newmoons, metadata) as needed, verify that the requested models are available to run, run the models, and compile the output.</p>
 <p>Presently, the preloaded model set includes <a href="https://weecology.github.io/portalcasting/articles/models.html">six models</a>: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, and pevGARCH. The GARCH models all take a bit longer to run (nbGARCH less time than nbsGARCH less time than pevGARCH), so for the purposes of illustration, we will only run ESS, AutoArima, and NaiveArima models, which we indicate through input to the <code>models</code> argument:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESSS"</span>, <span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>If the user does not specify the models, all of the prefab models are run. Note that we need to point <code>portalcast</code> to the directory of interest via the <code>main</code> argument. This allows us to go between different directories from the same R session with relative ease, but it does mean that <code>main</code> is a key argument in nearly all functions.</p>
 </div>
-<div id="plotting-the-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plotting-the-results" class="anchor" aria-hidden="true"></a>Plotting the results</h2>
+<div class="section level2">
+<h2 id="plotting-the-results">Plotting the results<a class="anchor" aria-label="anchor" href="#plotting-the-results"></a>
+</h2>
 <p>Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for casts. The functions for both of these figure types point directly to the cast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run). By default, they select the most recent cast, which will be NaiveArima on controls.</p>
 <p>Time series plots are constructed using <code>plot_cast_ts</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -155,9 +155,9 @@
 <img src="imgs/getting_started_fig2.jpg" width="600" alt=""><p class="caption">Point-in-time forecast (mean with 95% CI) for all species and total rodents on the control plots</p>
 </div>
 </div>
-<div id="going-back-in-time" class="section level2">
-<h2 class="hasAnchor">
-<a href="#going-back-in-time" class="anchor" aria-hidden="true"></a>Going back in time</h2>
+<div class="section level2">
+<h2 id="going-back-in-time">Going back in time<a class="anchor" aria-label="anchor" href="#going-back-in-time"></a>
+</h2>
 <p>We can step back to an earlier date by simply setting the <code>end_moons</code> or <code>end_moon</code> (depending on the function, some can take more than one value) to earlier than the present time.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESSS"</span>, <span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span>, end_moons <span class="op">=</span> <span class="fl">512</span><span class="op">)</span></code></pre></div>
@@ -173,9 +173,9 @@
 <img src="imgs/getting_started_fig4.jpg" width="600" alt=""><p class="caption">Point-in-time forecast (mean with 95% CI) for all species and total rodents on the control plots with observations (blue squares)</p>
 </div>
 </div>
-<div id="reading-in-data-to-the-r-console-from-the-directory" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reading-in-data-to-the-r-console-from-the-directory" class="anchor" aria-hidden="true"></a>Reading in data to the R console from the directory</h2>
+<div class="section level2">
+<h2 id="reading-in-data-to-the-r-console-from-the-directory">Reading in data to the R console from the directory<a class="anchor" aria-label="anchor" href="#reading-in-data-to-the-r-console-from-the-directory"></a>
+</h2>
 <p>A series of <code>read_&lt;name&gt;</code> functions are available for simple loading of the data sets into R from the directory. A generalized <code>read_data</code> function includes an argument for which data set to load (“rodents” [and then which specific data set], “covariates”, “covariate_casts”, “moons”, “metadata”, or “cast_metadata”), and each of those data sets also has a specific function, such as <code>read_moons</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents"</span><span class="op">)</span>
@@ -197,9 +197,9 @@
 <span class="fu"><a href="../reference/read_data.html">read_metadata</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
 <span class="fu"><a href="../reference/read_cast_output.html">read_cast_metadata</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="reading-in-cast-output-to-the-r-console-from-the-directory" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reading-in-cast-output-to-the-r-console-from-the-directory" class="anchor" aria-hidden="true"></a>Reading in cast output to the R console from the directory</h2>
+<div class="section level2">
+<h2 id="reading-in-cast-output-to-the-r-console-from-the-directory">Reading in cast output to the R console from the directory<a class="anchor" aria-label="anchor" href="#reading-in-cast-output-to-the-r-console-from-the-directory"></a>
+</h2>
 <p>Presently, two functions are available for interfacing with saved cast output.</p>
 <p><code>select_casts</code> provides a simple interface to the cast metadata file with quick filtering:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -222,12 +222,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
+<p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Henry Senyondo, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>

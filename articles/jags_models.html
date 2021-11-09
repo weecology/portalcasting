@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.4</span>
       </span>
     </div>
 
@@ -99,32 +99,30 @@
       <h1 data-toc-skip>JAGS Models</h1>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">17 September, 2021</h4>
+            <h4 data-toc-skip class="date">09 November, 2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/master/vignettes/jags_models.Rmd" class="external-link"><code>vignettes/jags_models.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/jags_models.Rmd" class="external-link"><code>vignettes/jags_models.Rmd</code></a></small>
       <div class="hidden name"><code>jags_models.Rmd</code></div>
 
     </div>
 
     
     
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h2>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p>The <strong>portalcasting</strong> package provides utilities for working with Bayesian hierarchical models via the Just Another Gibbs Sampler (JAGS) software <span class="citation">(Plummer 2003)</span>, and the R interface used to access JAGS is the <a href="https://www.rdocumentation.org/packages/runjags/versions/2.0.4-2/topics/run.jags" class="external-link"><code>run.jags</code></a> function in the <strong>runjags</strong> package <span class="citation">(Denwood 2016)</span>. <strong>runjags</strong> is a powerful interface for JAGS that facilitates rapid expansion to multi-core processing and provides helpful summarization procedures. This vignette covers the usage of these utilities to build <strong>portalcasting</strong> models.</p>
 <p>Here, we assume the user has already run through a basic installation, set up, and evaluation of the package, as covered in the <a href="https://weecology.github.io/portalcasting/articles/getting_started.html">Getting Started</a> vignette, and we assume that the user understands how to add models and data sets to the <strong>portalcasting</strong> pipeline, as covered in the <a href="https://weecology.github.io/portalcasting/articles/adding_model_and_data.html">Adding a Model and Data</a> vignette.</p>
 </div>
-<div id="the-api-to-jags-and-runjags-in-portalcasting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-api-to-jags-and-runjags-in-portalcasting" class="anchor" aria-hidden="true"></a>The API to <strong>JAGS</strong> and <strong>runjags</strong> in <strong>portalcasting</strong>
+<div class="section level2">
+<h2 id="the-api-to-jags-and-runjags-in-portalcasting">The API to <strong>JAGS</strong> and <strong>runjags</strong> in <strong>portalcasting</strong><a class="anchor" aria-label="anchor" href="#the-api-to-jags-and-runjags-in-portalcasting"></a>
 </h2>
 <p><code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">runjags::run.jags</a></code> has a considerable number of arguments, which allow the user to define the model, input the data and control the MCMC algorithm used to fit the model and data. To reduce the number of top-level arguments and facilitate alignment with higher <strong>portalcasting</strong> functionality, we bundled all of the MCMC control arguments (number of chains; number of adaptation, burnin, and sampling iterations; thinning interval; modules, methods, and factories; and add-on “mutation” estimates) into a single <code>control_runjags</code> list argument, which is created by/gets its defaults from the function <code>runjags_control</code>.</p>
 <p>To reduce the amount of code that needs to be written for a model and to simplify the model’s function, we provide flexible general functions for common situations that only require the user to write the <code>jags_model</code> (which is piped to the <code>model</code> argument in <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">runjags::run.jags</a></code>), <code>inits</code> (initializer), and <code>monitor</code> inputs to create a model. These models do not require that the user pass any data objects, but rather take the <code>main</code> and <code>data_set</code> arguments, which allows the internal functionality to leverage <strong>portalcasting</strong>’s file-accessing capacity and do all of the loading and prepping of data required. This includes use of “past data” (from before <code>start_moon</code>) to inform the priors and model initialization function, thereby facilitating the use of generalized models (e.g., that base priors on data, rather than needing priors that are appropriate for all species).</p>
 <p>The interface to <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">runjags::run.jags</a></code> retains the flexibility of its <code>model</code> argument, but for general use, users should provide the function with a character value formatted as <code>"model { &lt;model code&gt;}"</code> (where <code>&lt;model code&gt;</code> is replaced with the actual code of the model). The code should be written in JAGS’s language, which is a dialect of the informal BUGS language written in C++ <span class="citation">(Plummer 2003)</span>.</p>
 <p>The general function then takes the output from <code><a href="https://rdrr.io/pkg/runjags/man/runjags-package.html" class="external-link">runjags::runjags</a></code>, processes the multi-chain information (if relevant), and formats the results akin to the standard single-species <strong>portalcasting</strong> model, returning a list of <code>metadata</code> (standard model metadata), <code>cast_tab</code> (the condensed-for-use-elsewhere table of forecasts), <code>model_fits</code> (the fitted model object), and <code>model_casts</code> (the forecasts of all of the models for all species).</p>
-<div id="single-species-modeling-jags_ss" class="section level3">
-<h3 class="hasAnchor">
-<a href="#single-species-modeling-jags_ss" class="anchor" aria-hidden="true"></a>Single Species Modeling: <code>jags_ss</code>
+<div class="section level3">
+<h3 id="single-species-modeling-jags_ss">Single Species Modeling: <code>jags_ss</code><a class="anchor" aria-label="anchor" href="#single-species-modeling-jags_ss"></a>
 </h3>
 <p>Presently, the only such function is <code><a href="../reference/jags_ss.html">jags_ss()</a></code> (“JAGS Single Species”), which follows the current state of <strong>portalcasting</strong> models and treats each species and the total abundance as separate time series that it fits individually within a given data set.</p>
 <p>The data objects provided to the model and initializer for a given species via <code>jags_SS</code> are:</p>
@@ -155,9 +153,9 @@
 </li>
 </ul>
 <p>The data for the time series used to fit the model and forecast includes the as-of-yet not observed data with <code>NA</code> placeholders for <code>count</code>, an assumption of full sampling effort (max <code>ntraps</code>), and an appropriately extended <code>moon</code>. The <code>past_</code> data allow the user to inform priors and initializers as desired and should only be used within those components.</p>
-<div id="an-example-random-walk-jags_rw" class="section level4">
-<h4 class="hasAnchor">
-<a href="#an-example-random-walk-jags_rw" class="anchor" aria-hidden="true"></a>An example: random walk (<code>jags_RW</code>)</h4>
+<div class="section level4">
+<h4 id="an-example-random-walk-jags_rw">An example: random walk (<code>jags_RW</code>)<a class="anchor" aria-label="anchor" href="#an-example-random-walk-jags_rw"></a>
+</h4>
 <p>The usage of <code>jags_SS</code> is exemplified by the <code>jags_RW</code> model, which is a “simple” random walk model. The observations are treated as Poisson distributed (with truncation based on the number of traps), with an underlying log-scale density that takes a random walk through time. The model has two parameters:</p>
 <ul>
 <li>
@@ -296,9 +294,9 @@
 </div>
 </div>
 </div>
-<div id="references" class="section level2 unnumbered">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor" aria-hidden="true"></a>References</h2>
+<div class="section level2 unnumbered">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references">
 <div id="ref-Denwood2016">
 <p>Denwood, M. J. 2016. “runjags: An R Package Providing Interface Utilities, Model Templates, Parallel Computing Methods and Additional Distributions for MCMC Models in JAGS.” <em>Journal of Statistical Software</em> 71 (9): 1–25. <a href="https://www.jstatsoft.org/article/view/v071i09" class="external-link">https://www.jstatsoft.org/article/view/v071i09</a>.</p>
@@ -322,12 +320,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
+<p>Developed by Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M. Christensen, Henry Senyondo, Hao Ye, Ethan P. White, S.K. Morgan Ernest.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
