@@ -3,6 +3,13 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# portalcasting 0.21.5
+*In Progress*
+
+### Updating `rEDM`
+* Previous versions used Hao's fork of the `rEDM` packages, which has been deprecated and now breaks because of the updates in Rcpp
+* Switching to CRAN version
+
 
 # [portalcasting 0.21.4](https://github.com/weecology/portalcasting/releases/tag/v0.21.4)
 *2021-11-09*

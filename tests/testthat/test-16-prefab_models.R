@@ -183,46 +183,46 @@ test_that("pevGARCH model", {
 
 })
 
-test_that("simplexEDM model", {
+#test_that("simplexEDM model", {
 
   # download is held back on cran
 
     skip_on_cran() 
 
  
-  expect_message(f_a <- simplexEDM(main = main, max_E = 7,
-                                 data_set = "all_interp", quiet = FALSE))
-  expect_message(f_c <- simplexEDM(main = main, max_E = 7,
-                                 data_set = "controls_interp", quiet = FALSE))
-  expect_message(f_e <- simplexEDM(main = main, max_E = 7,
-                                   data_set = "exclosures_interp",  
-                                   quiet = FALSE))
+ # expect_message(f_a <- simplexEDM(main = main, max_E = 7,
+  #                               data_set = "all_interp", quiet = FALSE))
+#  expect_message(f_c <- simplexEDM(main = main, max_E = 7,
+ #                                data_set = "controls_interp", quiet = FALSE))
+  #expect_message(f_e <- simplexEDM(main = main, max_E = 7,
+   #                                data_set = "exclosures_interp",  
+    #                               quiet = FALSE))
   
-  expect_is(f_a, "list")
-  expect_is(f_c, "list")
-  expect_is(f_e, "list")
+#  expect_is(f_a, "list")
+ # expect_is(f_c, "list")
+  #expect_is(f_e, "list")
 
-})
+#})
 
-test_that("GPEDM model", {
+#test_that("GPEDM model", {
 
   # download is held back on cran
 
-    skip_on_cran() 
+ #   skip_on_cran() 
 
 
-  expect_message(f_a <- GPEDM(main = main, max_E = 3,
-                              data_set = "all_interp", quiet = FALSE))
-  expect_message(f_c <- GPEDM(main = main, max_E = 3,
-                              data_set = "controls_interp", quiet = FALSE))
-  expect_message(f_e <- GPEDM(main = main, max_E = 3,
-                              data_set = "exclosures_interp", quiet = FALSE))
+  #expect_message(f_a <- GPEDM(main = main, max_E = 3,
+  #                            data_set = "all_interp", quiet = FALSE))
+  #expect_message(f_c <- GPEDM(main = main, max_E = 3,
+   #                           data_set = "controls_interp", quiet = FALSE))
+  #expect_message(f_e <- GPEDM(main = main, max_E = 3,
+   #                           data_set = "exclosures_interp", quiet = FALSE))
   
-  expect_is(f_a, "list")
-  expect_is(f_c, "list")
-  expect_is(f_e, "list")
+  #expect_is(f_a, "list")
+  #expect_is(f_c, "list")
+  #expect_is(f_e, "list")
 
-})
+#})
 
 check_jags <- function(){
   result <- capture_condition(runjags::findjags())
