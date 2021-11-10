@@ -8,12 +8,16 @@ test_that("plot_cast_point", {
 
     skip_on_cran() 
 
-  portalcast(main = main, 
-             models = c("AutoArima", "NaiveArima"), end_moons = 515:516)
-  expect_silent(plot_cast_point(main = main, moon = 520))
-  expect_silent(plot_cast_point(main = main, moon = 520, highlight_sp = "DM"))
-  expect_silent(plot_cast_point(main = main, moon = 520, model = "AutoArima"))
-  expect_silent(plot_cast_point(main = main, moon = 520, with_census = TRUE))
+  fill_data(main = main)
+  moons <- read_moons(main = main)
+  last_census_date <- last_census(main = main)
+  which_last_census_moon <- which(moons$censusdate == last_census_date)
+  last_census_moon <- moons$moon[which_last_census_moon]
+
+  expect_silent(plot_cast_point(main = main))
+  expect_silent(plot_cast_point(main = main, highlight_sp = "DM"))
+  expect_silent(plot_cast_point(main = main, model = "AutoArima"))
+  expect_silent(plot_cast_point(main = main, model = "AutoArima", moon = last_census_moon, with_census = TRUE))
   expect_error(plot_cast_point(main = main, cast_id = 1e10))
 
 })

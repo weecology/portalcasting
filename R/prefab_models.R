@@ -20,10 +20,10 @@
 #'  heteroscedasticity models with Poisson response variables and 
 #'  environmental covariates (max temp, mean temp, min temp, precipitation,
 #'  and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
-#'  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
-#'  using \code{\link[rEDM]{simplex}}. \cr \cr
-#'  \code{GPEDM} fits an EDM model using Gaussian Processes for function 
-#'  approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
+#  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" 
+#  using \code{\link[rEDM]{simplex}}. \cr \cr
+#  \code{GPEDM} fits an EDM model using Gaussian Processes for function 
+#  approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson 
 #'  observation process using JAGS (Just Another Gibbs Sampler; 
 #'  Plummer 2003) hierarchical Bayesian inference. 
@@ -52,9 +52,9 @@
 #' @param lag \code{integer} (or integer \code{numeric}) of the lag time to
 #'  use for the covariates.
 #'  
-#' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
-#'  embedding dimension to search amongst for EDM models. See 
-#'  \code{\link[rEDM]{simplex}} for more information.
+# @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
+#  embedding dimension to search amongst for EDM models. See 
+#  \code{\link[rEDM]{simplex}} for more information.
 #'
 #' @param control_runjags \code{list} of arguments passed to 
 #'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.
@@ -106,8 +106,6 @@
 #'   nbGARCH()
 #'   nbsGARCH()
 #'   pevGARCH()
-#'   simplexEDM()
-#'   gpEDM()
 #'   jags_RW()
 #'  }
 #'

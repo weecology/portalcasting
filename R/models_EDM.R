@@ -1,7 +1,7 @@
-#' @rdname prefab_model_functions
-#' 
-#' @export
-#'
+# @rdname prefab_model_functions
+# 
+# @export
+#
 simplexEDM <- function(main = ".", data_set = "all_interp", 
                        control_files = files_control(), 
                        quiet = FALSE, 
@@ -135,10 +135,10 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
                    model_casts = model_casts)
 }
 
-#' @rdname prefab_model_functions
-#' 
-#' @export
-#'
+# @rdname prefab_model_functions
+# 
+# @export
+#
 GPEDM <- function(main = ".", data_set = "all_interp", 
                   control_files = files_control(), 
                   quiet = FALSE, 

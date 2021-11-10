@@ -2,7 +2,19 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.22.0](https://github.com/weecology/portalcasting/releases/tag/v0.21.4)
+*2021-11-09*
 
+### Removal of `simplexEDM` and `GPEDM`
+* Previous versions used Hao's fork of the `rEDM` packages, which has been deprecated and now breaks because of the updates in Rcpp
+* Switching to CRAN version
+* Updating `rEDM` to CRAN does not fix the issue, so these models cannot be used in prefab set
+* Removed from the prefab control list and removed the documentation
+* No longer exported from the NAMESPACE
+
+### Edit tests for ensembling and figure making
+* A few edge case issues arose in test because of fixed moons
+* Should be resolved through edits to test scripts without altering functions
 
 # [portalcasting 0.21.4](https://github.com/weecology/portalcasting/releases/tag/v0.21.4)
 *2021-11-09*
