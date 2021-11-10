@@ -8,6 +8,7 @@ test_that("plot_cast_point", {
 
     skip_on_cran() 
 
+  fill_data(main = main)
   moons <- read_moons(main = main)
   last_census_date <- last_census(main = main)
   which_last_census_moon <- which(moons$censusdate == last_census_date)
