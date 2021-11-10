@@ -33,7 +33,7 @@ test_that("verify_models verifies that models or present or throws errors", {
 test_that("model_controls creates control lists", {
 
   expect_is(model_controls(prefab_models()), "list")
-  expect_equal(length(model_controls(prefab_models())), 9)
+  expect_equal(length(model_controls(prefab_models())), 7)
   expect_is(model_controls(prefab_models(), 
                                      list(name = "xx", 
                                           covariates = FALSE, lag = NA)), 
@@ -55,7 +55,7 @@ test_that("model_controls creates control lists", {
 test_that("prefab_models creates a vector of model names", {
 
   pfm <- prefab_models()
-  expect_equal(length(pfm), 9)
+  expect_equal(length(pfm), 7)
   expect_is(pfm, "character")
 
 })
