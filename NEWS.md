@@ -2,7 +2,7 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# [portalcasting 0.22.0](https://github.com/weecology/portalcasting/releases/tag/v0.21.4)
+# [portalcasting 0.22.0](https://github.com/weecology/portalcasting/releases/tag/v0.22.0)
 *2021-11-09*
 
 ### Removal of `simplexEDM` and `GPEDM`
