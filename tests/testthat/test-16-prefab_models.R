@@ -10,7 +10,7 @@ main <- "./testing"
 # also not sure if that's how it should be now
 
 
-  fill_data(main = main, end_moon = 520)
+  fill_data(main = main)
   keepers <- c("moon", "DM", "ntraps")
 
 
