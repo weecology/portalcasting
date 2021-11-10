@@ -2,9 +2,8 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-
-# portalcasting 0.22.0
-*In Progress*
+# [portalcasting 0.22.0](https://github.com/weecology/portalcasting/releases/tag/v0.21.4)
+*2021-11-09*
 
 ### Removal of `simplexEDM` and `GPEDM`
 * Previous versions used Hao's fork of the `rEDM` packages, which has been deprecated and now breaks because of the updates in Rcpp
