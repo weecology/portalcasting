@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.21.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.22.0</span>
       </span>
     </div>
 
@@ -78,6 +78,24 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="portalcasting-development-version">portalcasting (development version)<a class="anchor" aria-label="anchor" href="#portalcasting-development-version"></a></h2>
 <p>Version numbers follow <a href="https://semver.org/" class="external-link">Semantic Versioning</a>.</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.22.0" id="portalcasting-0220"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.21.4" class="external-link">portalcasting 0.22.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0220"></a></h2>
+<p><em>2021-11-09</em></p>
+<div class="section level4">
+<h4 id="removal-of-simplexedm-and-gpedm-0-22-0">Removal of <code>simplexEDM</code> and <code>GPEDM</code>
+<a class="anchor" aria-label="anchor" href="#removal-of-simplexedm-and-gpedm-0-22-0"></a></h4>
+<ul><li>Previous versions used Hao’s fork of the <code>rEDM</code> packages, which has been deprecated and now breaks because of the updates in Rcpp</li>
+<li>Switching to CRAN version</li>
+<li>Updating <code>rEDM</code> to CRAN does not fix the issue, so these models cannot be used in prefab set</li>
+<li>Removed from the prefab control list and removed the documentation</li>
+<li>No longer exported from the NAMESPACE</li>
+</ul></div>
+<div class="section level4">
+<h4 id="edit-tests-for-ensembling-and-figure-making-0-22-0">Edit tests for ensembling and figure making<a class="anchor" aria-label="anchor" href="#edit-tests-for-ensembling-and-figure-making-0-22-0"></a></h4>
+<ul><li>A few edge case issues arose in test because of fixed moons</li>
+<li>Should be resolved through edits to test scripts without altering functions</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.21.4" id="portalcasting-0214"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.21.4" class="external-link">portalcasting 0.21.4</a><a class="anchor" aria-label="anchor" href="#portalcasting-0214"></a></h2>
