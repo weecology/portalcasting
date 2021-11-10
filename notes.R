@@ -7,6 +7,9 @@
 devtools::document()
 devtools::load_all()
 devtools::build()
+devtools::test()
+
+
 
 list.files("tests/testthat")
 devtools::test(filter = "01")
