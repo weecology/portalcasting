@@ -295,8 +295,7 @@ fill_raw <- function (main  = ".",
   download_observations(path = raw_path(main = main), 
                         version = PortalData_version,
                         from_zenodo = PortalData_source == "zenodo",
-                        quiet = quiet,
-                        verbose = verbose)
+                        quiet = quiet)
 
   download_archive(main = main, 
                    version = portalPredictions_version,
