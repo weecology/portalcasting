@@ -3,6 +3,15 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0)
+*2021-11-11*
+
+### Speeding downloading
+* Shift to default downloading archive from GitHub
+* setup_dir does not download archive by default, but setup_production does
+* download function being broken out into components -- work is still ongoing, but now have a separate function for each of the portaldata portalpredictions and climate forecasts
+* addresses #132  #199 
+
 # [portalcasting 0.23.0](https://github.com/weecology/portalcasting/releases/tag/v0.23.0)
 *2021-11-10*
 

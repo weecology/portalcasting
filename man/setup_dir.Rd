@@ -18,7 +18,13 @@ setup_dir(
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = NULL,
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
+  data_sets = prefab_data_sets(),
   bline = TRUE,
   quiet = FALSE,
   verbose = FALSE,
@@ -37,9 +43,15 @@ setup_production(
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = "latest",
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
   quiet = FALSE,
   verbose = TRUE,
+  data_sets = prefab_data_sets(),
   arg_checks = TRUE
 )
 
@@ -55,7 +67,13 @@ setup_sandbox(
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = NULL,
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
+  data_sets = prefab_data_sets(),
   quiet = FALSE,
   verbose = TRUE,
   arg_checks = FALSE
@@ -115,8 +133,26 @@ which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
-\item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
-for raw file downloading.}
+\item{PortalData_source, PortalData_version}{\code{character} values for the
+source and version of the Portal Data to download. 
+\cr \cr 
+Default values retrieve the latest data from github.
+\cr \cr 
+See \code{\link[portalr]{download_observations}}.}
+
+\item{portalPredictions_source, portalPredictions_version}{\code{character} 
+values for the source and version of the archive to download.
+\cr \cr 
+Default values point to github, but \code{version = NULL} indicates
+no download.
+\cr \cr 
+See \code{\link{download_archive}}.}
+
+\item{data_sets}{\code{list} of data_sets to be created using 
+\code{\link{do.call}} on the defined functions. 
+\cr \cr
+For example, \code{\link{prefab_data_sets}} use 
+\code{\link{prepare_rodent_data}}.}
 
 \item{bline}{\code{logical} indicator if a horizontal break lines should be
 included in messages.}
@@ -135,6 +171,15 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+
+\item{climate_source, climate_version}{\code{character} values for the
+source and version of the climate forecasts to download.
+\cr \cr 
+Default values retrieve the current day's forecast from the
+Northwest Knowledge Network's North American Multi-Model Ensemble 
+(NMME) climate forecasts.
+\cr \cr 
+See \code{\link{download_climate_forecasts}}.}
 }
 \value{
 \code{NULL}

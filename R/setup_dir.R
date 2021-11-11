@@ -59,8 +59,35 @@
 #'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 #'  \code{\link{climate_dl_control}}.
 #'
-#' @param downloads \code{list} of arguments to pass to \code{\link{download}}
-#'  for raw file downloading. 
+#' @param data_sets \code{list} of data_sets to be created using 
+#'        \code{\link{do.call}} on the defined functions. 
+#'        \cr \cr
+#'        For example, \code{\link{prefab_data_sets}} use 
+#'        \code{\link{prepare_rodent_data}}.
+#'
+#' @param PortalData_source,PortalData_version \code{character} values for the
+#'        source and version of the Portal Data to download. 
+#'        \cr \cr 
+#'        Default values retrieve the latest data from github.
+#'        \cr \cr 
+#'        See \code{\link[portalr]{download_observations}}.
+#'
+#' @param portalPredictions_source,portalPredictions_version \code{character} 
+#'        values for the source and version of the archive to download.
+#'        \cr \cr 
+#'        Default values point to github, but \code{version = NULL} indicates
+#'        no download.
+#'        \cr \cr 
+#'        See \code{\link{download_archive}}.
+#'
+#' @param climate_source,climate_version  \code{character} values for the
+#'        source and version of the climate forecasts to download.
+#'        \cr \cr 
+#'        Default values retrieve the current day's forecast from the
+#'        Northwest Knowledge Network's North American Multi-Model Ensemble 
+#'        (NMME) climate forecasts.
+#'        \cr \cr 
+#'        See \code{\link{download_climate_forecasts}}.
 #'
 #' @param bline \code{logical} indicator if a horizontal break lines should be
 #'  included in messages.
@@ -98,7 +125,14 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       controls_rodents = rodents_controls(),
                       control_climate_dl = climate_dl_control(),
                       control_files = files_control(),
-                      downloads = zenodo_downloads(c("1215988", "833438")), 
+                      PortalData_source = "gitub",
+                      PortalData_version = "latest",
+                      portalPredictions_source = "github",
+                      portalPredictions_version = NULL,
+                      climate_forecast_source = "NMME",
+                      climate_forecast_version = Sys.Date(),
+                      data_sets = prefab_data_sets(),
+
                       bline = TRUE, quiet = FALSE, verbose = FALSE, 
                       arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -106,15 +140,30 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
   version_message(bline = bline, quiet = quiet, arg_checks = arg_checks)
   create_dir(main = main, filename_config = control_files$filename_config,
              bline = TRUE, quiet = quiet, arg_checks = arg_checks)
-  fill_dir(main = main, models = models, 
+
+
+
+  fill_dir(main = main,
+
+                 PortalData_version = PortalData_version,
+                 PortalData_source = PortalData_source,
+                 portalPredictions_version = portalPredictions_version,
+                 portalPredictions_source = portalPredictions_source,
+                 climate_forecast_source = climate_forecast_source,
+                 climate_forecast_version = climate_forecast_version,
+               models = models, 
+                      data_sets = data_sets,
+           controls_model = controls_model, 
+           control_files = control_files, 
+
            end_moon = end_moon, lead_time = lead_time, 
            cast_date = cast_date, start_moon = start_moon, 
            confidence_level = confidence_level, 
-           controls_model = controls_model, 
+
            controls_rodents = controls_rodents, 
            control_climate_dl = control_climate_dl, 
-           downloads = downloads, quiet = quiet, verbose = verbose, 
-           control_files = control_files, arg_checks = arg_checks)
+           quiet = quiet, verbose = verbose, 
+           arg_checks = arg_checks)
   setup_completion_message(bline = bline, quiet = quiet, 
                            arg_checks = arg_checks)
 }
@@ -132,9 +181,14 @@ setup_production <- function(main = ".", models = prefab_models(),
                              controls_rodents = rodents_controls(),
                              control_climate_dl = climate_dl_control(),
                              control_files = files_control(), 
-                             downloads = 
-                               zenodo_downloads(c("1215988", "833438")), 
+                      PortalData_source = "gitub",
+                      PortalData_version = "latest",
+                      portalPredictions_source = "github",
+                      portalPredictions_version = "latest",
+                      climate_forecast_source = "NMME",
+                      climate_forecast_version = Sys.Date(),
                              quiet = FALSE, verbose = TRUE, 
+                      data_sets = prefab_data_sets(),
                              arg_checks = TRUE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
@@ -144,7 +198,14 @@ setup_production <- function(main = ".", models = prefab_models(),
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 
             control_climate_dl = control_climate_dl, 
-            downloads = downloads, quiet = quiet, verbose = verbose, 
+            quiet = quiet, verbose = verbose, 
+                      data_sets = data_sets,
+                 PortalData_version = PortalData_version,
+                 PortalData_source = PortalData_source,
+                 portalPredictions_version = portalPredictions_version,
+                 portalPredictions_source = portalPredictions_source,
+                 climate_forecast_source = climate_forecast_source,
+                 climate_forecast_version = climate_forecast_version,
             control_files = control_files, arg_checks = arg_checks)
 }
 
@@ -160,8 +221,13 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           controls_rodents = rodents_controls(),
                           control_climate_dl = climate_dl_control(),
                           control_files = files_control(),
-                          downloads = 
-                            zenodo_downloads(c("1215988", "833438")), 
+                      PortalData_source = "gitub",
+                      PortalData_version = "latest",
+                      portalPredictions_source = "github",
+                      portalPredictions_version = NULL,
+                      climate_forecast_source = "NMME",
+                      climate_forecast_version = Sys.Date(),
+                      data_sets = prefab_data_sets(),
                           quiet = FALSE, verbose = TRUE, 
                           arg_checks = FALSE){
   check_args(arg_checks)
@@ -172,7 +238,14 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 
             control_climate_dl = control_climate_dl, 
-            downloads = downloads, quiet = quiet, verbose = verbose, 
+                             PortalData_version = PortalData_version,
+                      data_sets = data_sets,
+                 PortalData_source = PortalData_source,
+                 portalPredictions_version = portalPredictions_version,
+                 portalPredictions_source = portalPredictions_source,
+                 climate_forecast_source = climate_forecast_source,
+                 climate_forecast_version = climate_forecast_version,
+quiet = quiet, verbose = verbose, 
             control_files = control_files, arg_checks = arg_checks)
   sandbox_welcome(main = main, quiet = quiet, arg_checks = arg_checks)
 }

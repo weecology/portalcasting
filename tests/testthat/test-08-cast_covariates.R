@@ -35,9 +35,8 @@ test_that("download_climate_forecasts retrieves files", {
 
     skip_on_cran() 
 
-  dlcc <- download_climate_casts(main = main)
-  expect_is(dlcc, "character")
-  expect_equal(length(dlcc), 4)
+  dlcc <- download_climate_forecasts(main = main)
+  expect_equal((dlcc), NULL)
 
 })
 

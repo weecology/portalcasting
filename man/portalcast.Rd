@@ -17,7 +17,12 @@ portalcast(
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = NULL,
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
   update_prefab_models = FALSE,
   bline = TRUE,
   quiet = FALSE,
@@ -37,7 +42,12 @@ cast(
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = NULL,
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
   bline = TRUE,
   quiet = FALSE,
   verbose = FALSE,
@@ -106,8 +116,20 @@ which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
-\item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
-for raw file downloading.}
+\item{PortalData_source, PortalData_version}{\code{character} values for the
+source and version of the Portal Data to download. 
+\cr \cr 
+Default values retrieve the latest data from github.
+\cr \cr 
+See \code{\link[portalr]{download_observations}}.}
+
+\item{portalPredictions_source, portalPredictions_version}{\code{character} 
+values for the source and version of the archive to download.
+\cr \cr 
+Default values point to github, but \code{version = NULL} indicates
+no download.
+\cr \cr 
+See \code{\link{download_archive}}.}
 
 \item{update_prefab_models}{\code{logical} indicator if all of the models'
 scripts should be updated, even if they do not have an explicit change
@@ -137,6 +159,15 @@ However, in sandboxing, it is often desirable to be able to deviate from
 strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 many/most/all enclosed functions to not check any arguments using 
 \code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+
+\item{climate_source, climate_version}{\code{character} values for the
+source and version of the climate forecasts to download.
+\cr \cr 
+Default values retrieve the current day's forecast from the
+Northwest Knowledge Network's North American Multi-Model Ensemble 
+(NMME) climate forecasts.
+\cr \cr 
+See \code{\link{download_climate_forecasts}}.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned.

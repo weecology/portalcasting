@@ -4,27 +4,33 @@
 \alias{fill_directory}
 \alias{fill_dir}
 \alias{fill_data}
-\alias{fill_models}
+\alias{fill_raw}
 \alias{fill_casts}
 \alias{fill_fits}
-\alias{fill_raw}
-\title{Fill a forecasting directory with basic components.}
+\alias{fill_models}
+\title{Fill a Portalcasting Directory with Basic Components}
 \usage{
 fill_dir(
   main = ".",
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = NULL,
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
   models = prefab_models(),
+  data_sets = prefab_data_sets(),
+  quiet = FALSE,
+  verbose = TRUE,
+  controls_model = NULL,
+  control_files = files_control(),
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
   confidence_level = 0.95,
   cast_date = Sys.Date(),
-  controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
-  control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
-  quiet = FALSE,
-  verbose = FALSE,
   arg_checks = TRUE
 )
 
@@ -40,11 +46,27 @@ fill_data(
   controls_rodents = rodents_controls(),
   control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  data_sets = prefab_data_sets(),
   quiet = FALSE,
   verbose = FALSE,
   arg_checks = TRUE
 )
+
+fill_raw(
+  main = ".",
+  PortalData_version = "latest",
+  PortalData_source = "gitub",
+  portalPredictions_version = NULL,
+  portalPredictions_source = "github",
+  climate_forecast_version = Sys.Date(),
+  climate_forecast_source = "NMME",
+  quiet = FALSE,
+  verbose = FALSE
+)
+
+fill_casts(main = ".", quiet = FALSE, verbose = FALSE)
+
+fill_fits(main = ".", quiet = FALSE, verbose = FALSE)
 
 fill_models(
   main = ".",
@@ -55,56 +77,40 @@ fill_models(
   verbose = FALSE,
   arg_checks = TRUE
 )
-
-fill_casts(
-  main = ".",
-  control_files = files_control(),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
-
-fill_fits(
-  main = ".",
-  control_files = files_control(),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
-
-fill_raw(
-  main = ".",
-  downloads = zenodo_downloads(c("1215988", "833438")),
-  only_if_missing = FALSE,
-  control_files = files_control(),
-  quiet = FALSE,
-  arg_checks = TRUE
-)
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value defining the main component of the 
+portalcasting directory tree. Default value (\code{"."}) 
+puts the directory in the present location.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to 
-include.}
+\item{PortalData_source, PortalData_version}{\code{character} values for the
+source and version of the Portal Data to download. 
+\cr \cr 
+Default values retrieve the latest data from github.
+\cr \cr 
+See \code{\link[portalr]{download_observations}}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
+\item{portalPredictions_source, portalPredictions_version}{\code{character} 
+values for the source and version of the archive to download.
+\cr \cr 
+Default values point to github, but \code{version = NULL} indicates
+no download.
+\cr \cr 
+See \code{\link{download_archive}}.}
 
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
+\item{models}{\code{vector} of models to be written via 
+\code{\link{write_model}}.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
+\item{data_sets}{\code{list} of data_sets to be created using 
+\code{\link{do.call}} on the defined functions. 
+\cr \cr
+For example, \code{\link{prefab_data_sets}} use 
+\code{\link{prepare_rodent_data}}.}
 
-\item{confidence_level}{\code{numeric} confidence level used in 
-summarizing model output. Must be between \code{0} and \code{1}.}
+\item{quiet}{\code{logical} indicator if messages should be quieted.}
 
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
+\item{verbose}{\code{logical} indicator if detailed messages should be
+printed.}
 
 \item{controls_model}{Additional controls for models not in the prefab 
 set. \cr 
@@ -128,6 +134,28 @@ the model from the element \code{name} will be used to name the model's
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
 
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the last sample to be included. Default value is \code{NULL}, which 
+equates to the most recently included sample.}
+
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the first sample to be included. Default value is \code{217}, 
+corresponding to \code{1995-01-01}.}
+
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
+number of timesteps forward a cast will cover.}
+
+\item{confidence_level}{\code{numeric} confidence level used in 
+summarizing model output. Must be between \code{0} and \code{1}.}
+
+\item{cast_date}{\code{Date} from which future is defined (the origin of
+the cast). In the recurring forecasting, is set to today's date
+using \code{\link{Sys.Date}}.}
+
 \item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
@@ -136,61 +164,42 @@ rodents tables. See \code{\link{rodents_controls}} for details.}
 which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
 \code{\link{climate_dl_control}}.}
 
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
-for raw file downloading.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or not (and thus just the tidy messages).}
-
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
 
-\item{only_if_missing}{\code{logical} indicator if the     -  should
-be filled only if it is missing. Only used in \code{fill_raw}, where
-missingness is determined by \code{\link{verify_raw_data}}. Default
-is \code{FALSE}, which allows for control via \code{link{files_control}}'s
-\code{overwrite} argument. Only accessed and changed to \code{FALSE} 
-within \code{\link{portalcast}}.}
+\item{climate_source, climate_version}{\code{character} values for the
+source and version of the climate forecasts to download.
+\cr \cr 
+Default values retrieve the current day's forecast from the
+Northwest Knowledge Network's North American Multi-Model Ensemble 
+(NMME) climate forecasts.
+\cr \cr 
+See \code{\link{download_climate_forecasts}}.}
 }
 \value{
-All \code{fill_} functions return \code{NULL}.
+\code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Fill the directory with foundational components. \cr \cr
- \code{fill_dir} combines \code{fill_raw}, \code{fill_casts},
-  \code{fill_models}, and \code{fill_data}.
- \code{fill_raw} downloads the raw data and archive and updates the 
-  directory configuration metadata accordingly. \cr \cr
- \code{fill_casts} moves the historic casts from the archive into the 
-  current directory. \cr \cr
- \code{fill_fits} moves the historic fits from the archive into the 
-  current directory. \cr \cr
- \code{fill_models} writes out the model scripts to the models
-  subdirectory. \cr \cr
- \code{fill_data} prepares model-ready data from the raw data.
-}
-\details{
-Arguments input directly here take precedence over those in the 
- \code{downloads} \code{list}.
+Fill the directory with components including (optionally) 
+             the raw data (\code{\link[portalr]{download_observations}}), 
+             portalPredictions archive (\code{\link{download_archive}}), 
+             climate forecasts (\code{\link{download_climate_forecasts}}), 
+             models (\code{\link{write_model}}), 
+             and model-ready data (\code{\link{prepare_rodent_data}}).
 }
 \examples{
  \donttest{
-  create_dir()
-  fill_dir()
-  fill_raw()
-  fill_casts()
-  fill_fits()
-  fill_models()
-  fill_data()
+
+  create_dir("./portalcasting")
+  fill_dir("./portalcasting")
+
+  create_dir("./pc")
+  fill_raw("./pc")
+  fill_casts("./pc")
+  fill_fits("./pc")
+  fill_models("./pc")
  }
 
 }

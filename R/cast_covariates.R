@@ -102,10 +102,9 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
     control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
     control_climate_dl <- update_list(control_climate_dl, start = win$start, 
                                      end = win$end)
-    download_climate_casts(main = main, 
-                           control_climate_dl = control_climate_dl, 
-                           quiet = quiet, verbose = verbose, 
-                           arg_checks = arg_checks)
+    download_climate_forecasts(main = main, 
+                           source = "NMME", 
+                           quiet = quiet, verbose = verbose)
 
     cast_cov <- read_climate_casts(main = main, 
                                    control_climate_dl = control_climate_dl, 
@@ -200,15 +199,29 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
   tz <- format(date_made, "%Z")
   new_cast$date_made <- paste0(date_made, " ", tz)
 
-  hist_cast <- read_covariate_casts(main = main, 
-                                    control_files = control_files,
-                                    quiet = quiet, verbose = verbose, 
-                                    arg_checks = arg_checks)
-  if(!("date" %in% colnames(hist_cast))){
-    hist_cast$date <- NA
-  }
+  arch_path <- paste0(control_files$directory, "/data/", 
+                      control_files$filename_cov_casts)
+  arch_path <- file_path(main = main, sub = "raw", files = arch_path,
+                         arg_checks = arg_checks)
+  arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
+
+  if (file.exists(arch_path) | file.exists(arch_path2)) {
+    hist_cast <- read_covariate_casts(main = main, 
+                                      control_files = control_files,
+                                      quiet = quiet, verbose = verbose, 
+                                      arg_checks = arg_checks)
+    if(!("date" %in% colnames(hist_cast))){
+      hist_cast$date <- NA
+    }
   
-  out <- rbind(hist_cast, new_cast)
+    out <- rbind(hist_cast, new_cast)
+
+  } else {
+
+   out <- new_cast
+
+  }
+
   out$date <- as.character(out$date)
   out_path <- file_path(main = main, sub = "data", 
                         files = control_files$filename_cov_casts,
@@ -352,7 +365,7 @@ read_climate_casts <- function(main = ".",
   dat_list <- vector("list", length(control_climate_dl$data))
   ndatas <- length(control_climate_dl$data)
   for(i in 1:ndatas){
-    csv_path <- paste0("cov_casts/",  names(urls)[i], ".csv")
+    csv_path <- paste0("/NMME/",  names(urls)[i], ".csv")
     fpath <- file_path(main = main, sub = "raw", files = csv_path, 
                        arg_checks = arg_checks)
     dat_list[[i]] <- read.csv(fpath)
