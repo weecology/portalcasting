@@ -37,10 +37,6 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param control_climate_dl \code{list} of specifications for the climate 
-#'  download. Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
-#'  \code{\link{climate_dl_control}}.
-#'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
 #'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
@@ -80,7 +76,6 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
                                  control_files = files_control(),
-                                 control_climate_dl = climate_dl_control(),
                                  quiet = TRUE, verbose = FALSE, 
                                  arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -99,15 +94,11 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
     win <- cast_window(main = main, moons = moons, cast_date = cast_date,
                        lead_time = lead_time, min_lag = 6,
                        arg_checks = arg_checks)
-    control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
-    control_climate_dl <- update_list(control_climate_dl, start = win$start, 
-                                     end = win$end)
     download_climate_forecasts(main = main, 
-                           source = "NMME", 
+                           source = "NMME",  version = win$start,
                            quiet = quiet, verbose = verbose)
 
     cast_cov <- read_climate_casts(main = main, 
-                                   control_climate_dl = control_climate_dl, 
                                    arg_checks = arg_checks)
     win_vec <- seq(win$start, win$end, 1)
     win_length <- length(win_vec)
@@ -232,146 +223,27 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
   cast_cov
 }
 
-#' @title Download and read covariate casts (presently only the NMME)
-#'
-#' @description Given the details specified in \code{control_cdl}, download
-#'  climate forecasts from the
-#'  \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network}'s (NKN)
-#'  \href{https://bit.ly/2tCP8NX}{simple API} to the 
-#'  \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
-#'  and them ready for analyses. \cr \cr
-#'  \code{download_climate_casts}: downloads the files from the server.
-#'  \cr \cr
-#'  \code{read_climate_casts}: reads the downloaded files into R and does
-#'  some minimal tidying: makes sure \code{-9999}s become \code{NA}s, 
-#'  makes sure the \code{date} column is named as such and is actually a 
-#'  \code{Date}, and converts the temperatures to C and the precipitation
-#'  to mm. \cr \cr
-#'  \code{climate_dl_control}: manages the control list for the URL generation
-#'  via \code{\link{NMME_urls}}.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#'
-#' @param control_climate_dl \code{list} of specifications for the download, 
-#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs.
-#'
-#' @param start,end \code{Date} for the start and end of the cast.
-#'
-#' @param model \code{character} value of the model, one of \code{"ENSMEAN"},
-#'  (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"}
-#'  (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
-#'  \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). \cr \cr
-#'  Presently can only take one value.
-#'
-#' @param lat,lon \code{numeric} latitude and longitude values used to 
-#'  downscale the model.  \cr \cr
-#'  Presently can only take one value for each.
-#'
-#' @param freq \code{character} value of the frequency of the data, can 
-#'  be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a
-#'  number between \code{1} and \code{7}. \cr \cr
-#'  Presently can only take one value.
-#'
-#' @param data \code{character} value of the type of data, one of 
-#'  \code{"tasmin"} (minimum temperature),  \code{"tasmean"}
-#'  (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"}
-#'  (precipitation), \code{"dps"} (dew point), \code{"rsds"}
-#'  (shortwave radiation; sun intensity), \code{"was"} (wind speed).
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'  shown.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @return Named \code{character} vector of URLs, or \code{NULL} if
-#'  \code{data}, \code{freq}, or \code{model} is \code{NULL}.
-#'
-#' @return 
-#'  \code{download_climate_casts}: downloads the files and returns a
-#'   \code{character} vector of URLs where the downloads came from,
-#'   as generated by \code{\link{NMME_urls}}. \cr \cr
-#'  \code{read_climate_casts}: \code{data.frame} of the downloaded data
-#'   formatted for casting. \cr \cr
-#'  \code{climate_dl_control}: a \code{list} of control arguments to pass
-#'   to \code{\link{NMME_urls}} to generate the URLs for downloading.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   download_climate_casts()
-#'   read_climate_casts()
-#'  }
-#'
-#' @export
-#'
-download_climate_casts <- function(main = ".", 
-                                   control_climate_dl = climate_dl_control(), 
-                                   quiet = TRUE, verbose = FALSE,
-                                   arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
-  urls <- do.call(NMME_urls, control_climate_dl)
-  return_if_null(urls)
-  cov_cast_path <- file_path(main = main, sub = "raw", files = "cov_casts",
-                             arg_checks = arg_checks)
-  create(paths = cov_cast_path, arg_checks = arg_checks)
-
-  for(i in 1:length(control_climate_dl$data)){
-    dl_name <- paste0("cov_casts/", names(urls)[i])
-    download(name = dl_name, type = "url", url = urls[i], main = main, 
-             sep_char = "=", quiet = !verbose, return_version = FALSE,
-             arg_checks = arg_checks, NULLname = TRUE)
-  }
-  urls
-}
-
-#' @rdname download_climate_casts
-#'
-#' @export
-#'
-climate_dl_control <- function(start = Sys.Date(), 
-                               end = as.Date("2050-01-01"),
-                               model = "ENSMEAN", lat = 31.9555, 
-                               lon = -109.0744, freq = "daily",
-                               data = c(mintemp = "tasmin", 
-                                        meantemp = "tasmean", 
-                                        maxtemp = "tasmax", 
-                                        precipitation = "pr"), 
-                                arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  list(start = start, end = end, model = model, lat = lat, lon = lon, 
-       freq = freq, data = data)
-}
-
-#' @rdname download_climate_casts
-#'
-#' @export
-#'
 read_climate_casts <- function(main = ".", 
-                               control_climate_dl = climate_dl_control(), 
+                                
                                arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  control_climate_dl <- do.call(climate_dl_control, control_climate_dl)
-  urls <- do.call(NMME_urls, control_climate_dl)
-  return_if_null(urls)
 
-  dat_list <- vector("list", length(control_climate_dl$data))
-  ndatas <- length(control_climate_dl$data)
+datas = c(mintemp = "tasmin", 
+                                        meantemp = "tasmean", 
+                                        maxtemp = "tasmax", 
+                                        precipitation = "pr")
+
+
+  dat_list <- vector("list", length(datas))
+  ndatas <- length(datas)
   for(i in 1:ndatas){
-    csv_path <- paste0("/NMME/",  names(urls)[i], ".csv")
+    csv_path <- paste0("/NMME/",  datas[i], ".csv")
     fpath <- file_path(main = main, sub = "raw", files = csv_path, 
                        arg_checks = arg_checks)
     dat_list[[i]] <- read.csv(fpath)
   }
   dat_tab <- dat_list[[1]]
-  colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate_dl$data)[1]
+  colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[1]
   colnames(dat_tab)[1] <- "date"
   dat_tab[,1] <- as.Date(dat_tab[,1])
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
@@ -381,7 +253,7 @@ read_climate_casts <- function(main = ".",
       dat_tab_i <- dat_list[[i]]
       x <- dat_tab_i[ , ncol(dat_tab_i)]
       dat_tab <- data.frame(dat_tab, x)
-      colnames(dat_tab)[ncol(dat_tab)] <- names(control_climate_dl$data)[i]
+      colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[i]
     }
   }
   for(i in 2:ncol(dat_tab)){

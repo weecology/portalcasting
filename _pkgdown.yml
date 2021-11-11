@@ -226,7 +226,6 @@ reference:
       - download_archive
       - download_climate_forecasts
       - NMME_urls
-      - climate_dl_control
   - title: "Figures"
     desc: "Functions to make standard figures"
     contents:

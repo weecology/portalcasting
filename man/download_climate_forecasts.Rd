@@ -26,6 +26,9 @@ Only \code{"NMME"} presently available.}
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
 
+\item{verbose}{\code{logical} indicator if detailed messages should be
+printed.}
+
 \item{timeout}{\code{numeric} value passed to \code{\link[base]{options}}
 to dictate the download timeout limit.}
 }

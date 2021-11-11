@@ -181,6 +181,9 @@ download_archive <- function(main    = ".",
 #' @param quiet \code{logical} indicator if progress messages should be
 #'              quieted.
 #'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'                printed.
+#'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
 #' @export

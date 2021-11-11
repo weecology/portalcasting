@@ -4,8 +4,7 @@
 #'              the raw data (\code{\link[portalr]{download_observations}}), 
 #'              portalPredictions archive (\code{\link{download_archive}}), 
 #'              climate forecasts (\code{\link{download_climate_forecasts}}), 
-#'              models (\code{\link{write_model}}), 
-#'              and model-ready data (\code{\link{prepare_rodent_data}}).
+#'              models (\code{\link{write_model}}).
 #'             
 #' @param main \code{character} value defining the main component of the 
 #'              portalcasting directory tree. Default value (\code{"."}) 
@@ -26,8 +25,10 @@
 #'        \cr \cr 
 #'        See \code{\link{download_archive}}.
 #'
-#' @param climate_source,climate_version  \code{character} values for the
-#'        source and version of the climate forecasts to download.
+#'
+#' @param climate_forecast_source,climate_forecast_version  \code{character} 
+#'        values for the source and version of the climate forecasts to
+#'        download.
 #'        \cr \cr 
 #'        Default values retrieve the current day's forecast from the
 #'        Northwest Knowledge Network's North American Multi-Model Ensemble 
@@ -40,9 +41,6 @@
 #'
 #' @param data_sets \code{list} of data_sets to be created using 
 #'        \code{\link{do.call}} on the defined functions. 
-#'        \cr \cr
-#'        For example, \code{\link{prefab_data_sets}} use 
-#'        \code{\link{prepare_rodent_data}}.
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
@@ -128,10 +126,6 @@
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
-#' @param control_climate_dl \code{list} of specifications for the download, 
-#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-#'  \code{\link{climate_dl_control}}.
-#'
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -172,7 +166,6 @@ fill_dir <- function (main  = ".",
                         end_moon = NULL, start_moon = 217, lead_time = 12,
                         confidence_level = 0.95, cast_date = Sys.Date(), 
                         controls_rodents = rodents_controls(), 
-                        control_climate_dl = climate_dl_control(),
                         arg_checks = TRUE) {
 
   messageq("Filling directory with requested content",
@@ -213,7 +206,6 @@ fill_dir <- function (main  = ".",
             cast_date = cast_date,
                       controls_model = controls_model,
                       controls_rodents = controls_rodents, 
-                      control_climate_dl = control_climate_dl,
                       control_files = control_files, 
                       arg_checks = arg_checks,
             data_sets = data_sets,
@@ -234,7 +226,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                       confidence_level = 0.95, cast_date = Sys.Date(), 
                       controls_model = NULL,
                       controls_rodents = rodents_controls(), 
-                      control_climate_dl = climate_dl_control(),
+
                       control_files = files_control(), 
                       data_sets = prefab_data_sets(),
                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
@@ -259,7 +251,6 @@ fill_data <- function(main = ".", models = prefab_models(),
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
                             start_moon = start_moon, lead_time = lead_time, 
                             min_lag = min_lag, cast_date = cast_date, 
-                            control_climate_dl = control_climate_dl,
                             quiet = quiet, control_files = control_files,
                             arg_checks = arg_checks)
   prep_metadata(main = main, models = models,

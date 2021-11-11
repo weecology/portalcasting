@@ -74,10 +74,6 @@
 #'  made or not. For toggling separately from the more general \code{quiet}
 #'  argument. 
 #'
-#' @param control_climate_dl \code{list} of specifications for the download, 
-#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-#'  \code{\link{climate_dl_control}}.
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -118,8 +114,9 @@
 #'        \cr \cr 
 #'        See \code{\link{download_archive}}.
 #'
-#' @param climate_source,climate_version  \code{character} values for the
-#'        source and version of the climate forecasts to download.
+#' @param climate_forecast_source,climate_forecast_version  \code{character} 
+#'        values for the source and version of the climate forecasts to
+#'        download.
 #'        \cr \cr 
 #'        Default values retrieve the current day's forecast from the
 #'        Northwest Knowledge Network's North American Multi-Model Ensemble 
@@ -143,7 +140,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                        confidence_level = 0.95, cast_date = Sys.Date(),
                        controls_model = NULL, 
                        controls_rodents = rodents_controls(),
-                       control_climate_dl = climate_dl_control(),
+
                        control_files = files_control(),
                       PortalData_source = "gitub",
                       PortalData_version = "latest",
@@ -181,7 +178,6 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
          start_moon = start_moon, lead_time = lead_time, 
          confidence_level = confidence_level, cast_date = cast_date, 
          controls_model = controls_model, controls_rodents = controls_rodents, 
-         control_climate_dl = control_climate_dl, 
          control_files = control_files, 
                  PortalData_version = PortalData_version,
                  PortalData_source = PortalData_source,
@@ -201,7 +197,6 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
               confidence_level = confidence_level, 
               controls_rodents = controls_rodents,
               controls_model = controls_model, 
-              control_climate_dl = control_climate_dl, 
               control_files = control_files,
               quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
   }
@@ -217,7 +212,7 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
                  start_moon = 217, lead_time = 12, confidence_level = 0.95, 
                  cast_date = Sys.Date(), controls_model = NULL, 
                  controls_rodents = rodents_controls(),
-                 control_climate_dl = climate_dl_control(),
+
                  control_files = files_control(),
                       PortalData_source = "gitub",
                       PortalData_version = "latest",
@@ -237,7 +232,6 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
             start_moon = start_moon, confidence_level = confidence_level, 
             controls_rodents = controls_rodents,
             controls_model = controls_model, 
-            control_climate_dl = control_climate_dl, 
             control_files = control_files,
             quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
 

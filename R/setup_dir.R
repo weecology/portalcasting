@@ -55,15 +55,9 @@
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
-#' @param control_climate_dl \code{list} of specifications for the download, 
-#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-#'  \code{\link{climate_dl_control}}.
 #'
 #' @param data_sets \code{list} of data_sets to be created using 
 #'        \code{\link{do.call}} on the defined functions. 
-#'        \cr \cr
-#'        For example, \code{\link{prefab_data_sets}} use 
-#'        \code{\link{prepare_rodent_data}}.
 #'
 #' @param PortalData_source,PortalData_version \code{character} values for the
 #'        source and version of the Portal Data to download. 
@@ -80,8 +74,10 @@
 #'        \cr \cr 
 #'        See \code{\link{download_archive}}.
 #'
-#' @param climate_source,climate_version  \code{character} values for the
-#'        source and version of the climate forecasts to download.
+#'
+#' @param climate_forecast_source,climate_forecast_version  \code{character} 
+#'        values for the source and version of the climate forecasts to
+#'        download.
 #'        \cr \cr 
 #'        Default values retrieve the current day's forecast from the
 #'        Northwest Knowledge Network's North American Multi-Model Ensemble 
@@ -123,7 +119,6 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       confidence_level = 0.95, cast_date = Sys.Date(),
                       controls_model = NULL, 
                       controls_rodents = rodents_controls(),
-                      control_climate_dl = climate_dl_control(),
                       control_files = files_control(),
                       PortalData_source = "gitub",
                       PortalData_version = "latest",
@@ -161,7 +156,6 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            confidence_level = confidence_level, 
 
            controls_rodents = controls_rodents, 
-           control_climate_dl = control_climate_dl, 
            quiet = quiet, verbose = verbose, 
            arg_checks = arg_checks)
   setup_completion_message(bline = bline, quiet = quiet, 
@@ -179,7 +173,7 @@ setup_production <- function(main = ".", models = prefab_models(),
                              lead_time = 12, confidence_level = 0.95, 
                              cast_date = Sys.Date(), controls_model = NULL,
                              controls_rodents = rodents_controls(),
-                             control_climate_dl = climate_dl_control(),
+
                              control_files = files_control(), 
                       PortalData_source = "gitub",
                       PortalData_version = "latest",
@@ -197,7 +191,6 @@ setup_production <- function(main = ".", models = prefab_models(),
             confidence_level = confidence_level, 
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 
-            control_climate_dl = control_climate_dl, 
             quiet = quiet, verbose = verbose, 
                       data_sets = data_sets,
                  PortalData_version = PortalData_version,
@@ -219,7 +212,7 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           confidence_level = 0.95, cast_date = Sys.Date(), 
                           controls_model = NULL,
                           controls_rodents = rodents_controls(),
-                          control_climate_dl = climate_dl_control(),
+
                           control_files = files_control(),
                       PortalData_source = "gitub",
                       PortalData_version = "latest",
@@ -237,7 +230,6 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
             confidence_level = confidence_level, 
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 
-            control_climate_dl = control_climate_dl, 
                              PortalData_version = PortalData_version,
                       data_sets = data_sets,
                  PortalData_source = PortalData_source,

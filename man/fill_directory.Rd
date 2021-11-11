@@ -30,7 +30,6 @@ fill_dir(
   confidence_level = 0.95,
   cast_date = Sys.Date(),
   controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
   arg_checks = TRUE
 )
 
@@ -44,7 +43,6 @@ fill_data(
   cast_date = Sys.Date(),
   controls_model = NULL,
   controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
   control_files = files_control(),
   data_sets = prefab_data_sets(),
   quiet = FALSE,
@@ -98,14 +96,21 @@ no download.
 \cr \cr 
 See \code{\link{download_archive}}.}
 
+\item{climate_forecast_source, climate_forecast_version}{\code{character} 
+values for the source and version of the climate forecasts to
+download.
+\cr \cr 
+Default values retrieve the current day's forecast from the
+Northwest Knowledge Network's North American Multi-Model Ensemble 
+(NMME) climate forecasts.
+\cr \cr 
+See \code{\link{download_climate_forecasts}}.}
+
 \item{models}{\code{vector} of models to be written via 
 \code{\link{write_model}}.}
 
 \item{data_sets}{\code{list} of data_sets to be created using 
-\code{\link{do.call}} on the defined functions. 
-\cr \cr
-For example, \code{\link{prefab_data_sets}} use 
-\code{\link{prepare_rodent_data}}.}
+\code{\link{do.call}} on the defined functions.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
 
@@ -160,23 +165,10 @@ using \code{\link{Sys.Date}}.}
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
 
-\item{control_climate_dl}{\code{list} of specifications for the download, 
-which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-\code{\link{climate_dl_control}}.}
-
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
-
-\item{climate_source, climate_version}{\code{character} values for the
-source and version of the climate forecasts to download.
-\cr \cr 
-Default values retrieve the current day's forecast from the
-Northwest Knowledge Network's North American Multi-Model Ensemble 
-(NMME) climate forecasts.
-\cr \cr 
-See \code{\link{download_climate_forecasts}}.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
@@ -186,8 +178,7 @@ Fill the directory with components including (optionally)
              the raw data (\code{\link[portalr]{download_observations}}), 
              portalPredictions archive (\code{\link{download_archive}}), 
              climate forecasts (\code{\link{download_climate_forecasts}}), 
-             models (\code{\link{write_model}}), 
-             and model-ready data (\code{\link{prepare_rodent_data}}).
+             models (\code{\link{write_model}}).
 }
 \examples{
  \donttest{

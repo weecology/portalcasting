@@ -15,7 +15,6 @@ prep_cast_covariates(
   min_lag = 6,
   cast_date = Sys.Date(),
   control_files = files_control(),
-  control_climate_dl = climate_dl_control(),
   quiet = TRUE,
   verbose = FALSE,
   arg_checks = TRUE
@@ -57,10 +56,6 @@ be \code{\link{Sys.Date}}.}
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{control_climate_dl}{\code{list} of specifications for the climate 
-download. Sent to \code{\link{NMME_urls}} to create the specific URLs. See 
-\code{\link{climate_dl_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
