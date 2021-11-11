@@ -190,6 +190,25 @@ prep_hist_covariates <- function(main = ".", moons = NULL,
   out <- out[ , colnames(out) %in% cols_in]
   out <- summarize_daily_weather_by_moon(out)
   out$source <- "hist"
+
+#
+# patching NDVI 
+#
+
+  na_ndvi <- is.na(out$ndvi)
+
+  if (na_ndvi[nrow(out)]) {
+
+    last_good <- max(which(!na_ndvi))
+    full_length <- nrow(out)
+    window_length <- full_length - last_good
+
+    ndvi_fit <- auto.arima(out$ndvi)
+    ndvi_cast <- forecast(ndvi_fit, h = window_length)
+    out$ndvi[(last_good + 1):full_length] <- as.numeric(ndvi_cast$mean)
+
+  }
+
   data.frame(out)
 }
 

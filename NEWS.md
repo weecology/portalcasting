@@ -2,6 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+
+# [portalcasting 0.23.0](https://github.com/weecology/portalcasting/releases/tag/v0.23.0)
+*2021-11-10*
+
+### patching issue with ndvi preparation
+* the ndvi data stream is not filling in with new content, resulting in NAs for the latter half of 2021
+* using a forecast call to fill in the missing values as a temporary patch 
+
+
 # [portalcasting 0.22.0](https://github.com/weecology/portalcasting/releases/tag/v0.22.0)
 *2021-11-09*
 
