@@ -256,3 +256,9 @@ files_control <- function(directory = "portalPredictions",
        source_name = source_name, append_cast_csv = append_cast_csv)
 
 }
+
+normalized_file_path <- function (..., fsep = .Platform$file.sep, 
+                                  winslash = "\\", mustWork = NA) {
+    normalizePath(path = file.path(..., fsep = fsep), winslash = winslash, 
+        mustWork = mustWork)
+}
