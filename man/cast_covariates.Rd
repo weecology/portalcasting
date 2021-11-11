@@ -95,7 +95,7 @@ If forecasting from the current newmoon, casts the covariates
  \donttest{
   setup_dir()
   hist_cov <- prep_hist_covariates()
-  prep_cast_covariates(hist_cov = hist_cov)
+  cast_cov <- prep_cast_covariates(hist_cov = hist_cov)
   save_cast_cov_csv(cast_cov = cast_cov)
  }
 
