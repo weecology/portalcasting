@@ -50,7 +50,7 @@ If an interpolated data set is used to fit a model,
 \examples{
  \donttest{
   setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+  portalcast(models = c("AutoArima", "NaiveArima"))
   cast_tab <- read_cast_tab(cast_id = 1)
   add_lead_to_cast_tab(cast_tab = cast_tab)
   add_obs_to_cast_tab(cast_tab = cast_tab)

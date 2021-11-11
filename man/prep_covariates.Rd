@@ -12,7 +12,6 @@ prep_covariates(
   lead_time = 12,
   min_lag = 6,
   cast_date = Sys.Date(),
-  control_climate_dl = climate_dl_control(),
   control_files = files_control(),
   quiet = TRUE,
   verbose = FALSE,
@@ -42,10 +41,6 @@ covariate lag time used in any model.}
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
-
-\item{control_climate_dl}{\code{list} of specifications for the download, 
-which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-\code{\link{climate_dl_control}}.}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).

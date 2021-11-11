@@ -213,7 +213,6 @@ Argument details used for checking are produced simply via
 
  Must be \code{list}s, can be any length, can be \code{NULL}, but cannot 
  be \code{NA}:
-  \code{control_climate_dl},
   \code{control_files},
   \code{control_list},
   \code{control_model},

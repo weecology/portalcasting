@@ -74,13 +74,6 @@
 #'  made or not. For toggling separately from the more general \code{quiet}
 #'  argument. 
 #'
-#' @param control_climate_dl \code{list} of specifications for the download, 
-#'  which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-#'  \code{\link{climate_dl_control}}.
-#'
-#' @param downloads \code{list} of arguments to pass to \code{\link{download}}
-#'  for raw file downloading. 
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -105,6 +98,31 @@
 #'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
 #'  many/most/all enclosed functions to not check any arguments using 
 #'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
+#'
+#' @param PortalData_source,PortalData_version \code{character} values for the
+#'        source and version of the Portal Data to download. 
+#'        \cr \cr 
+#'        Default values retrieve the latest data from github.
+#'        \cr \cr 
+#'        See \code{\link[portalr]{download_observations}}.
+#'
+#' @param portalPredictions_source,portalPredictions_version \code{character} 
+#'        values for the source and version of the archive to download.
+#'        \cr \cr 
+#'        Default values point to github, but \code{version = NULL} indicates
+#'        no download.
+#'        \cr \cr 
+#'        See \code{\link{download_archive}}.
+#'
+#' @param climate_forecast_source,climate_forecast_version  \code{character} 
+#'        values for the source and version of the climate forecasts to
+#'        download.
+#'        \cr \cr 
+#'        Default values retrieve the current day's forecast from the
+#'        Northwest Knowledge Network's North American Multi-Model Ensemble 
+#'        (NMME) climate forecasts.
+#'        \cr \cr 
+#'        See \code{\link{download_climate_forecasts}}.
 #' 
 #' @return Results are saved to files, \code{NULL} is returned.
 #'
@@ -122,9 +140,14 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                        confidence_level = 0.95, cast_date = Sys.Date(),
                        controls_model = NULL, 
                        controls_rodents = rodents_controls(),
-                       control_climate_dl = climate_dl_control(),
+
                        control_files = files_control(),
-                       downloads = zenodo_downloads(c("1215988", "833438")), 
+                      PortalData_source = "gitub",
+                      PortalData_version = "latest",
+                      portalPredictions_source = "github",
+                      portalPredictions_version = NULL,
+                      climate_forecast_source = "NMME",
+                      climate_forecast_version = Sys.Date(),                       
                        update_prefab_models = FALSE, bline = TRUE, 
                        quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
@@ -138,9 +161,15 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                 arg_checks = arg_checks)
   verify_models(main = main, models = models, quiet = quiet, 
                 arg_checks = arg_checks)
-  fill_raw(main = main, downloads = downloads, only_if_missing = TRUE, 
-           quiet = quiet, control_files = control_files, 
-           arg_checks = arg_checks)
+#  fill_raw(main = main, 
+#                 PortalData_version = PortalData_version,
+#                 PortalData_source = PortalData_source,
+#                 portalPredictions_version = portalPredictions_version,
+#                 portalPredictions_source = portalPredictions_source,
+#                 climate_forecast_version = climate_forecast_version,
+#                 climate_forecast_source = climate_forecast_source,
+#                 quiet = quiet, verbose = verbose)
+
   last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
   end_moons <- ifnull(end_moons, last)
   nend_moons <- length(end_moons)
@@ -149,8 +178,14 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
          start_moon = start_moon, lead_time = lead_time, 
          confidence_level = confidence_level, cast_date = cast_date, 
          controls_model = controls_model, controls_rodents = controls_rodents, 
-         control_climate_dl = control_climate_dl, 
-         control_files = control_files, downloads = downloads, 
+         control_files = control_files, 
+                 PortalData_version = PortalData_version,
+                 PortalData_source = PortalData_source,
+                 portalPredictions_version = portalPredictions_version,
+                 portalPredictions_source = portalPredictions_source,
+                 climate_forecast_version = climate_forecast_version,
+                 climate_forecast_source = climate_forecast_source,
+ 
          quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   }
   if(end_moons[nend_moons] != last){
@@ -162,8 +197,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
               confidence_level = confidence_level, 
               controls_rodents = controls_rodents,
               controls_model = controls_model, 
-              control_climate_dl = control_climate_dl, 
-              downloads = downloads, control_files = control_files,
+              control_files = control_files,
               quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
   }
   portalcast_goodbye(bline = bline, quiet = quiet, arg_checks = arg_checks)
@@ -178,9 +212,15 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
                  start_moon = 217, lead_time = 12, confidence_level = 0.95, 
                  cast_date = Sys.Date(), controls_model = NULL, 
                  controls_rodents = rodents_controls(),
-                 control_climate_dl = climate_dl_control(),
+
                  control_files = files_control(),
-                 downloads = zenodo_downloads(c("1215988", "833438")), 
+                      PortalData_source = "gitub",
+                      PortalData_version = "latest",
+                      portalPredictions_source = "github",
+                      portalPredictions_version = NULL,
+                      climate_forecast_source = "NMME",
+                      climate_forecast_version = Sys.Date(),
+
                  bline = TRUE, quiet = FALSE, verbose = FALSE,
                  arg_checks = TRUE){
 
@@ -192,8 +232,7 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
             start_moon = start_moon, confidence_level = confidence_level, 
             controls_rodents = controls_rodents,
             controls_model = controls_model, 
-            control_climate_dl = control_climate_dl, 
-            downloads = downloads, control_files = control_files,
+            control_files = control_files,
             quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
 
   clear_tmp(main = main, quiet = quiet, cleanup = control_files$cleanup,

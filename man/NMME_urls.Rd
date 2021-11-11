@@ -2,8 +2,8 @@
 % Please edit documentation in R/download.R
 \name{NMME_urls}
 \alias{NMME_urls}
-\title{Provide URLs for the Northwest Knowledge Network's North American
- Multi-Model Ensemble (NMME) climate forecasts}
+\title{URLs for the Northwest Knowledge Network's North American
+       Multi-Model Ensemble (NMME) climate forecasts}
 \usage{
 NMME_urls(
   start = Sys.Date(),
@@ -12,54 +12,55 @@ NMME_urls(
   lat = 31.9555,
   lon = -109.0744,
   freq = "daily",
-  data = c("tasmin", "tasmean", "tasmax", "pr"),
-  arg_checks = TRUE
+  data = c("tasmin", "tasmean", "tasmax", "pr")
 )
 }
 \arguments{
 \item{start, end}{\code{Date} for the start and end of the cast.}
 
-\item{model}{\code{character} value of the model, one of \code{"ENSMEAN"},
-(Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"}
-(CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
-\code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). \cr \cr
+\item{model}{\code{character} value of the model to use, one of 
+\code{"ENSMEAN"}, (Multi-Model Mean), 
+\code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), 
+\code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
+\code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} 
+(NCAR-CCSM4). 
+\cr \cr
 Presently can only take one value.}
 
 \item{lat, lon}{\code{numeric} latitude and longitude values used to 
-downscale the model. \cr \cr
+downscale the model. 
+\cr \cr
 Presently can only take one value for each.}
 
 \item{freq}{\code{character} value of the frequency of the data, can 
-be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a
-number between \code{1} and \code{7}. \cr \cr
+be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} 
+is a number between \code{1} and \code{7}. 
+\cr \cr
 Presently can only take one value.}
 
 \item{data}{\code{character} value of the type of data, one of 
-\code{"tasmin"} (minimum temperature),  \code{"tasmean"}
-(mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"}
-(precipitation), \code{"dps"} (dew point), \code{"rsds"}
-(shortwave radiation; sun intensity), \code{"was"} (wind speed).}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\code{"tasmin"} (minimum temperature), \code{"tasmean"}
+(mean temperature), \code{"tasmax"} (maximum temperature),
+\code{"pr"} (precipitation), \code{"dps"} (dew point), 
+\code{"rsds"} (shortwave radiation; sun intensity), 
+\code{"was"} (wind speed).}
 }
 \value{
 Named \code{character} vector of URLs, or \code{NULL} if
- \code{data}, \code{freq}, or \code{model} is \code{NULL}.
+        \code{data}, \code{freq}, or \code{model} is \code{NULL}.
 }
 \description{
-The 
- \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at
- at the University of Idaho provides a 
- \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled
- climate forecasts using the 
- \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME)
- set. This function generates the URL for specific request based on all
- possible user inputs including, time window, location, model,
- frequency of data, and data type. Given the construction of the URL,
- \strong{only \code{data} is vectorized}. See arguments for specifics.
+Generate the URL for a specific request to the NMME API based 
+             on parameters. See arguments for specifics and \code{Details}
+             for links.
+}
+\details{
+The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} 
+         (NKN) at the University of Idaho provides a 
+         \href{https://bit.ly/2tCP8NX}{simple API} to download 
+         downscaled climate forecasts using the 
+         \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} 
+         (NMME) set.
 }
 \examples{
   NMME_urls()

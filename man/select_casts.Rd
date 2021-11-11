@@ -65,7 +65,7 @@ Determines the casts that match user specifications. \cr
 \examples{
  \donttest{
   setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+  portalcast(models = c("AutoArima", "NaiveArima"))
   select_casts(models = "AutoArima")
 }
 

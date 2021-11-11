@@ -15,9 +15,13 @@ portalcast(
   cast_date = Sys.Date(),
   controls_model = NULL,
   controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = NULL,
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
   update_prefab_models = FALSE,
   bline = TRUE,
   quiet = FALSE,
@@ -35,9 +39,13 @@ cast(
   cast_date = Sys.Date(),
   controls_model = NULL,
   controls_rodents = rodents_controls(),
-  control_climate_dl = climate_dl_control(),
   control_files = files_control(),
-  downloads = zenodo_downloads(c("1215988", "833438")),
+  PortalData_source = "gitub",
+  PortalData_version = "latest",
+  portalPredictions_source = "github",
+  portalPredictions_version = NULL,
+  climate_forecast_source = "NMME",
+  climate_forecast_version = Sys.Date(),
   bline = TRUE,
   quiet = FALSE,
   verbose = FALSE,
@@ -98,16 +106,34 @@ element \code{list} must be named according to the model and the
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
 
-\item{control_climate_dl}{\code{list} of specifications for the download, 
-which are sent to \code{\link{NMME_urls}} to create the specific URLs. See
-\code{\link{climate_dl_control}}.}
-
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
-\item{downloads}{\code{list} of arguments to pass to \code{\link{download}}
-for raw file downloading.}
+\item{PortalData_source, PortalData_version}{\code{character} values for the
+source and version of the Portal Data to download. 
+\cr \cr 
+Default values retrieve the latest data from github.
+\cr \cr 
+See \code{\link[portalr]{download_observations}}.}
+
+\item{portalPredictions_source, portalPredictions_version}{\code{character} 
+values for the source and version of the archive to download.
+\cr \cr 
+Default values point to github, but \code{version = NULL} indicates
+no download.
+\cr \cr 
+See \code{\link{download_archive}}.}
+
+\item{climate_forecast_source, climate_forecast_version}{\code{character} 
+values for the source and version of the climate forecasts to
+download.
+\cr \cr 
+Default values retrieve the current day's forecast from the
+Northwest Knowledge Network's North American Multi-Model Ensemble 
+(NMME) climate forecasts.
+\cr \cr 
+See \code{\link{download_climate_forecasts}}.}
 
 \item{update_prefab_models}{\code{logical} indicator if all of the models'
 scripts should be updated, even if they do not have an explicit change

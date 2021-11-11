@@ -13,7 +13,7 @@ sets are \code{"all"}, \code{"all_interp"}, \code{"controls"},
 \code{"controls_interp"}, \code{"exclosures_interp"}, 
 \code{"exclosures"} and \code{"dm_controls"}.}
 
-\item{controls_rodents}{Additional controls for datasets not in the 
+\item{controls_rodents}{Additional controls for data_sets not in the 
 prefab set. \cr
 A \code{list} of a single dataset's controls or a \code{list} of 
 \code{list}s, each of which is a single dataset's controls. \cr \cr
@@ -99,7 +99,7 @@ Given the number of arguments into
  \code{\link{prep_rodents_table}}, it helps to have a control \code{list}  
  to organize them. \cr \cr
  \code{rodents_controls} produces the \code{list}s for any user-requested
- datasets from the prefab datasets (\code{\link{prefab_data_sets}}) and any 
+ data_sets from the prefab data_sets (\code{\link{prefab_data_sets}}) and any 
  user-defined sets. \code{\link{rodents_control}} provides a template
  for the controls \code{list} which can be used to define the specific 
  arguments for a user's novel data set.

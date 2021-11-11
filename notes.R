@@ -9,8 +9,8 @@ devtools::load_all()
 
 
 main <- "./testing"
-setup_production(main)
-portalcast(main)
+setup_dir(main)
+portalcast(main, models = "ESSS")
 
 plot_cast_ts(main = main, data_set = "controls")
 plot_cast_point(main = main, data_set = "controls")

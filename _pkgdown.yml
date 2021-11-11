@@ -63,7 +63,6 @@ reference:
       - portalcast
       - cast
       - verify_models
-      - verify_raw_data
       - models_to_cast
       - read_cast_tab
       - select_casts
@@ -224,18 +223,9 @@ reference:
   - title: "Download functions"
     desc: "Functions for creating API URLs, retrieving, and managing downloaded components"
     contents:
-      - download
-      - download_url
-      - download_climate_casts
-      - download_destin
-      - unzip_destins
-      - unzip_download
-      - name_from_url
+      - download_archive
+      - download_climate_forecasts
       - NMME_urls
-      - zenodo_downloads
-      - zenodo_url
-      - zenodo_versions
-      - climate_dl_control
   - title: "Figures"
     desc: "Functions to make standard figures"
     contents:
