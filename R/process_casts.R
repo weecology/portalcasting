@@ -79,7 +79,7 @@ cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   portalcast(models = c("AutoArima", "NaiveArima"))
 #'   cast_tab <- read_cast_tab(cast_id = 1)
 #'   cast_tab <- add_lead_to_cast_tab(cast_tab = cast_tab)
 #'   cast_tab <- add_obs_to_cast_tab(cast_tab = cast_tab)
@@ -158,7 +158,7 @@ measure_cast_level_error <- function(cast_tab = NULL, arg_checks = TRUE){
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   portalcast(models = c("AutoArima", "NaiveArima"))
 #'   cast_tab <- read_cast_tab(cast_id = 1)
 #'   add_lead_to_cast_tab(cast_tab = cast_tab)
 #'   add_obs_to_cast_tab(cast_tab = cast_tab)
@@ -280,7 +280,7 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   portalcast(models = c("AutoArima", "NaiveArima"))
 #'   read_cast_tab(cast_id = 1)
 #'   read_cast_tabs(cast_ids = 1:2)
 #'   read_cast_metadata(cast_id = 1)
@@ -439,7 +439,7 @@ read_model_casts <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
+#'   portalcast(models = c("AutoArima", "NaiveArima"))
 #'   select_casts(models = "AutoArima")
 #' }
 #'
