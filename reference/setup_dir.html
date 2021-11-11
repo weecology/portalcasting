@@ -21,7 +21,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.23.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.24.0</span>
       </span>
     </div>
 
@@ -96,9 +96,14 @@
   cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
   controls_model <span class="op">=</span> <span class="cn">NULL</span>,
   controls_rodents <span class="op">=</span> <span class="fu"><a href="rodents_controls.html">rodents_controls</a></span><span class="op">(</span><span class="op">)</span>,
-  control_climate_dl <span class="op">=</span> <span class="fu"><a href="download_climate_casts.html">climate_dl_control</a></span><span class="op">(</span><span class="op">)</span>,
   control_files <span class="op">=</span> <span class="fu"><a href="files_control.html">files_control</a></span><span class="op">(</span><span class="op">)</span>,
-  downloads <span class="op">=</span> <span class="fu"><a href="zenodo_downloads.html">zenodo_downloads</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1215988"</span>, <span class="st">"833438"</span><span class="op">)</span><span class="op">)</span>,
+  PortalData_source <span class="op">=</span> <span class="st">"gitub"</span>,
+  PortalData_version <span class="op">=</span> <span class="st">"latest"</span>,
+  portalPredictions_source <span class="op">=</span> <span class="st">"github"</span>,
+  portalPredictions_version <span class="op">=</span> <span class="cn">NULL</span>,
+  climate_forecast_source <span class="op">=</span> <span class="st">"NMME"</span>,
+  climate_forecast_version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
+  data_sets <span class="op">=</span> <span class="fu"><a href="prefab_data_sets.html">prefab_data_sets</a></span><span class="op">(</span><span class="op">)</span>,
   bline <span class="op">=</span> <span class="cn">TRUE</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
   verbose <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -115,11 +120,16 @@
   cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
   controls_model <span class="op">=</span> <span class="cn">NULL</span>,
   controls_rodents <span class="op">=</span> <span class="fu"><a href="rodents_controls.html">rodents_controls</a></span><span class="op">(</span><span class="op">)</span>,
-  control_climate_dl <span class="op">=</span> <span class="fu"><a href="download_climate_casts.html">climate_dl_control</a></span><span class="op">(</span><span class="op">)</span>,
   control_files <span class="op">=</span> <span class="fu"><a href="files_control.html">files_control</a></span><span class="op">(</span><span class="op">)</span>,
-  downloads <span class="op">=</span> <span class="fu"><a href="zenodo_downloads.html">zenodo_downloads</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1215988"</span>, <span class="st">"833438"</span><span class="op">)</span><span class="op">)</span>,
+  PortalData_source <span class="op">=</span> <span class="st">"gitub"</span>,
+  PortalData_version <span class="op">=</span> <span class="st">"latest"</span>,
+  portalPredictions_source <span class="op">=</span> <span class="st">"github"</span>,
+  portalPredictions_version <span class="op">=</span> <span class="st">"latest"</span>,
+  climate_forecast_source <span class="op">=</span> <span class="st">"NMME"</span>,
+  climate_forecast_version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>,
+  data_sets <span class="op">=</span> <span class="fu"><a href="prefab_data_sets.html">prefab_data_sets</a></span><span class="op">(</span><span class="op">)</span>,
   arg_checks <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 
@@ -133,9 +143,14 @@
   cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
   controls_model <span class="op">=</span> <span class="cn">NULL</span>,
   controls_rodents <span class="op">=</span> <span class="fu"><a href="rodents_controls.html">rodents_controls</a></span><span class="op">(</span><span class="op">)</span>,
-  control_climate_dl <span class="op">=</span> <span class="fu"><a href="download_climate_casts.html">climate_dl_control</a></span><span class="op">(</span><span class="op">)</span>,
   control_files <span class="op">=</span> <span class="fu"><a href="files_control.html">files_control</a></span><span class="op">(</span><span class="op">)</span>,
-  downloads <span class="op">=</span> <span class="fu"><a href="zenodo_downloads.html">zenodo_downloads</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1215988"</span>, <span class="st">"833438"</span><span class="op">)</span><span class="op">)</span>,
+  PortalData_source <span class="op">=</span> <span class="st">"gitub"</span>,
+  PortalData_version <span class="op">=</span> <span class="st">"latest"</span>,
+  portalPredictions_source <span class="op">=</span> <span class="st">"github"</span>,
+  portalPredictions_version <span class="op">=</span> <span class="cn">NULL</span>,
+  climate_forecast_source <span class="op">=</span> <span class="st">"NMME"</span>,
+  climate_forecast_version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
+  data_sets <span class="op">=</span> <span class="fu"><a href="prefab_data_sets.html">prefab_data_sets</a></span><span class="op">(</span><span class="op">)</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>,
   arg_checks <span class="op">=</span> <span class="cn">FALSE</span>
@@ -189,17 +204,38 @@ element <code>list</code> must be named according to the model and the
 <dd><p>Control <code>list</code> or <code>list</code> of <code>list</code>s 
 (from <code><a href="rodents_controls.html">rodents_controls</a></code>) specifying the structuring of the 
 rodents tables. See <code><a href="rodents_controls.html">rodents_controls</a></code> for details.</p></dd>
-<dt>control_climate_dl</dt>
-<dd><p><code>list</code> of specifications for the download, 
-which are sent to <code><a href="NMME_urls.html">NMME_urls</a></code> to create the specific URLs. See
-<code><a href="download_climate_casts.html">climate_dl_control</a></code>.</p></dd>
 <dt>control_files</dt>
 <dd><p><code>list</code> of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See <code><a href="files_control.html">files_control</a></code>.</p></dd>
-<dt>downloads</dt>
-<dd><p><code>list</code> of arguments to pass to <code><a href="download.html">download</a></code>
-for raw file downloading.</p></dd>
+<dt>PortalData_source, PortalData_version</dt>
+<dd><p><code>character</code> values for the
+source and version of the Portal Data to download. 
+<br><br> 
+Default values retrieve the latest data from github.
+<br><br> 
+See <code><a href="https://weecology.github.io/portalr/reference/download_observations.html" class="external-link">download_observations</a></code>.</p></dd>
+<dt>portalPredictions_source, portalPredictions_version</dt>
+<dd><p><code>character</code> 
+values for the source and version of the archive to download.
+<br><br> 
+Default values point to github, but <code>version = NULL</code> indicates
+no download.
+<br><br> 
+See <code><a href="download_archive.html">download_archive</a></code>.</p></dd>
+<dt>climate_forecast_source, climate_forecast_version</dt>
+<dd><p><code>character</code> 
+values for the source and version of the climate forecasts to
+download.
+<br><br> 
+Default values retrieve the current day's forecast from the
+Northwest Knowledge Network's North American Multi-Model Ensemble 
+(NMME) climate forecasts.
+<br><br> 
+See <code><a href="download_climate_forecasts.html">download_climate_forecasts</a></code>.</p></dd>
+<dt>data_sets</dt>
+<dd><p><code>list</code> of data_sets to be created using 
+<code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></code> on the defined functions.</p></dd>
 <dt>bline</dt>
 <dd><p><code>logical</code> indicator if a horizontal break lines should be
 included in messages.</p></dd>

@@ -22,7 +22,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.23.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.24.0</span>
       </span>
     </div>
 
@@ -98,7 +98,6 @@
   min_lag <span class="op">=</span> <span class="fl">6</span>,
   cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
   control_files <span class="op">=</span> <span class="fu"><a href="files_control.html">files_control</a></span><span class="op">(</span><span class="op">)</span>,
-  control_climate_dl <span class="op">=</span> <span class="fu"><a href="download_climate_casts.html">climate_dl_control</a></span><span class="op">(</span><span class="op">)</span>,
   quiet <span class="op">=</span> <span class="cn">TRUE</span>,
   verbose <span class="op">=</span> <span class="cn">FALSE</span>,
   arg_checks <span class="op">=</span> <span class="cn">TRUE</span>
@@ -143,10 +142,6 @@ be <code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sy
 <dd><p><code>list</code> of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See <code><a href="files_control.html">files_control</a></code>.</p></dd>
-<dt>control_climate_dl</dt>
-<dd><p><code>list</code> of specifications for the climate 
-download. Sent to <code><a href="NMME_urls.html">NMME_urls</a></code> to create the specific URLs. See 
-<code><a href="download_climate_casts.html">climate_dl_control</a></code>.</p></dd>
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be
 quieted.</p></dd>
@@ -182,7 +177,7 @@ formatted correctly and provides directed error messages if not.</p></dd>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
   <span class="fu"><a href="setup_dir.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
   <span class="va">hist_cov</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_historical_covariates.html">prep_hist_covariates</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">prep_cast_covariates</span><span class="op">(</span>hist_cov <span class="op">=</span> <span class="va">hist_cov</span><span class="op">)</span>
+  <span class="va">cast_cov</span> <span class="op">&lt;-</span> <span class="fu">prep_cast_covariates</span><span class="op">(</span>hist_cov <span class="op">=</span> <span class="va">hist_cov</span><span class="op">)</span>
   <span class="fu">save_cast_cov_csv</span><span class="op">(</span>cast_cov <span class="op">=</span> <span class="va">cast_cov</span><span class="op">)</span>
  <span class="co"># }</span>
 

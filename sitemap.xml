@@ -85,10 +85,10 @@
     <loc>https://weecology.github.io/portalcasting/reference/directory_creation.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/download.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/download_archive.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/download_climate_casts.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/download_climate_forecasts.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/ensemble_casts.html</loc>
@@ -149,9 +149,6 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/na_conformer.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/name_from_url.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/named_null_list.html</loc>
@@ -268,18 +265,9 @@
     <loc>https://weecology.github.io/portalcasting/reference/verify_models.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/verify_raw_data.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/write_data.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/write_model.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/zenodo_downloads.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/zenodo_url.html</loc>
   </url>
 </urlset>
