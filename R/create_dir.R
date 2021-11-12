@@ -22,9 +22,6 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param bline \code{logical} indicator if a horizontal break lines should be
-#'  included in messages.
-#'
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree. Default value (\code{"."}) puts the forecasting
 #'  directory in the present locations. Nesting the forecasting directory
@@ -33,11 +30,6 @@
 #'
 #' @param filename_config \code{character} value of the path to the directory
 #'  config YAML.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not.
 #'
 #' @return All \code{create_} functions return \code{NULL}.
 #'
@@ -59,37 +51,33 @@ NULL
 #' @export
 #'
 create_dir <- function(main = ".", filename_config = "dir_config.yaml", 
-                       bline = FALSE, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  creation_message(main = main, bline = bline, quiet = quiet, 
-                   arg_checks = arg_checks)
-  create_main(main = main, arg_checks = arg_checks)
-  create_subs(main = main, arg_checks = arg_checks)
+                       quiet = FALSE){
+  creation_message(main = main, quiet = quiet)
+  create_main(main = main)
+  create_subs(main = main)
   write_directory_config(main = main, filename_config = filename_config, 
-                         quiet = quiet, arg_checks = arg_checks)
+                         quiet = quiet)
 }
 
 #' @rdname directory_creation
 #'
 #' @export
 #'
-create_main <- function(main = ".", arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  mainp <- main_path(main = main, arg_checks = arg_checks)
-  create(paths = mainp, arg_checks = arg_checks)
+create_main <- function(main = "."){
+  mainp <- main_path(main = main)
+  create(paths = mainp)
 }
 
 #' @rdname directory_creation
 #'
 #' @export
 #'
-create_subs <- function(main = ".", arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+create_subs <- function(main = "."){
   subs <- c("casts", "fits", "models", "raw", "data", "tmp")
-  mainp <- main_path(main = main, arg_checks = arg_checks)
-  subsp <- sub_path(main = main, subs = subs, arg_checks = arg_checks)
-  verify(paths = mainp, arg_checks = arg_checks)
-  create(paths = subsp, arg_checks = arg_checks)
+  mainp <- main_path(main = main)
+  subsp <- sub_path(main = main, subs = subs)
+  verify(paths = mainp)
+  create(paths = subsp)
 }
 
 #' @title Verify that folders exist and create folders 
@@ -100,12 +88,6 @@ create_subs <- function(main = ".", arg_checks = TRUE){
 #'  \code{create} creates a requested folder if it does not already exist.
 #'
 #' @param paths \code{character} vector of the folder paths.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @return 
 #'  \code{verify}: throws an error if any of the folders do not exist, 
 #'  otherwise \code{NULL}.
@@ -126,8 +108,7 @@ NULL
 #'
 #' @export
 #'
-verify <- function(paths = NULL, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+verify <- function(paths = NULL){
   return_if_null(paths)
   misses <- NULL
   for(i in 1:length(paths)){
@@ -154,8 +135,7 @@ verify <- function(paths = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-create <- function(paths = NULL, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+create <- function(paths = NULL){
   return_if_null(paths)
   for(i in 1:length(paths)){
     if(!dir.exists(paths[i])){

@@ -13,8 +13,7 @@ prep_rodents(
   control_files = files_control(),
   ref_species = all_species(),
   quiet = TRUE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{

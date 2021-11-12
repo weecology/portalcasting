@@ -4,7 +4,7 @@
 \alias{rodents_controls}
 \title{Create control lists for generating rodents data tables}
 \usage{
-rodents_controls(data_sets = NULL, controls_rodents = NULL, arg_checks = TRUE)
+rodents_controls(data_sets = NULL, controls_rodents = NULL)
 }
 \arguments{
 \item{data_sets}{\code{character} value(s) of the rodent data set name(s) 

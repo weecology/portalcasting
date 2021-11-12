@@ -4,6 +4,10 @@ devtools::load_all()
 
 
 main <- "./testing"
+
+create_dir(main)
+
+
 setup_dir(main)
 portalcast(main, models = "ESSS")
 

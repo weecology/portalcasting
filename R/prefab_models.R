@@ -118,21 +118,19 @@ NULL
 #' @export
 #'
 AutoArima <- function(main = ".", data_set = "all",  
-                      control_files = files_control(), quiet = FALSE, 
-                      verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
+                      quiet = FALSE, 
+                      verbose = FALSE){
+
   data_set <- tolower(data_set)
 
-  messageq(paste0("  -AutoArima for ", data_set), quiet)
+  messageq("  -AutoArima for ", data_set, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set,
-                                      arg_checks = arg_checks)
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, control_files = control_files,
-                            arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
   moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
@@ -148,7 +146,7 @@ AutoArima <- function(main = ".", data_set = "all",
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq("   -", ss, quiet = !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -174,8 +172,7 @@ AutoArima <- function(main = ".", data_set = "all",
   }
   metadata <- update_list(metadata, models = "AutoArima",
                               data_sets = data_set,
-                              controls_r = data_set_controls,
-                              arg_checks = arg_checks)
+                              controls_r = data_set_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }

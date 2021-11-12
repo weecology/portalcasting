@@ -17,69 +17,39 @@
 \alias{fill_fits_message}
 \title{Specific message functions}
 \usage{
-version_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
+version_message(quiet = FALSE)
 
-portalcast_welcome(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
+portalcast_welcome(quiet = FALSE)
 
-portalcast_goodbye(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
+portalcast_goodbye(quiet = FALSE)
 
-sandbox_welcome(main = ".", quiet = FALSE, arg_checks = TRUE)
+sandbox_welcome(main = ".", quiet = FALSE)
 
-creation_message(main = ".", bline = TRUE, quiet = FALSE, arg_checks = TRUE)
+creation_message(main = ".", quiet = FALSE)
 
-setup_completion_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
+setup_completion_message(quiet = FALSE)
 
-data_readying_message(
-  end_moon = NULL,
-  bline = TRUE,
-  quiet = FALSE,
-  arg_checks = TRUE
-)
+data_readying_message(end_moon = NULL, quiet = FALSE)
 
-data_resetting_message(bline = TRUE, quiet = FALSE, arg_checks = TRUE)
+data_resetting_message(quiet = FALSE)
 
-models_running_message(
-  end_moon = NULL,
-  bline = TRUE,
-  quiet = FALSE,
-  arg_checks = TRUE
-)
+models_running_message(end_moon = NULL, quiet = FALSE)
 
-model_running_message(model = NULL, quiet = FALSE, arg_checks = TRUE)
+model_running_message(model = NULL, quiet = FALSE)
 
-model_done_message(
-  model = NULL,
-  run_status = NULL,
-  quiet = FALSE,
-  arg_checks = TRUE
-)
+model_done_message(model = NULL, run_status = NULL, quiet = FALSE)
 
 fill_casts_message(
   files = NULL,
   movedTF = NULL,
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
-fill_fits_message(
-  files = NULL,
-  movedTF = NULL,
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
+fill_fits_message(files = NULL, movedTF = NULL, quiet = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{bline}{\code{logical} indicator if horizontal break lines should be
-included.}
-
 \item{quiet}{\code{logical} indicator if message should be quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}

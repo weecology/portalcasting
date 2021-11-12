@@ -277,16 +277,14 @@ read_data <- function(main = ".", data_name = NULL, data_set = "all",
 #'
 #' @export
 #'
-read_rodents_table <- function(main = ".", data_set = "all", 
-                               arg_checks = TRUE){
-  check_args(arg_checks)
+read_rodents_table <- function(main = ".", data_set = "all"){
+
+
   data_set <- tolower(data_set)
   lpath <- paste0("rodents_", data_set, ".csv") 
-  fpath <- file_path(main = main, sub = "data", files = lpath, 
-                     arg_checks = arg_checks)
+  fpath <- file_path(main = main, sub = "data", files = lpath)
   if(!file.exists(fpath)){
-    rodents <- prep_rodents(main = main, data_sets = data_set, 
-                            arg_checks = arg_checks)
+    rodents <- prep_rodents(main = main, data_sets = data_set)
     rodents_tab <- rodents[[1]]
     return(rodents_tab)
   }

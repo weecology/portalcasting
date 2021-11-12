@@ -6,17 +6,12 @@
 \alias{create}
 \title{Verify that folders exist and create folders}
 \usage{
-verify(paths = NULL, arg_checks = TRUE)
+verify(paths = NULL)
 
-create(paths = NULL, arg_checks = TRUE)
+create(paths = NULL)
 }
 \arguments{
 \item{paths}{\code{character} vector of the folder paths.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{verify}: throws an error if any of the folders do not exist, 

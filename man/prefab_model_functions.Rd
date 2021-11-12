@@ -22,14 +22,7 @@ jags_RW(
   arg_checks = TRUE
 )
 
-AutoArima(
-  main = ".",
-  data_set = "all",
-  control_files = files_control(),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
+AutoArima(main = ".", data_set = "all", quiet = FALSE, verbose = FALSE)
 
 NaiveArima(
   main = ".",

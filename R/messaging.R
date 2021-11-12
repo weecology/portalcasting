@@ -1,56 +1,58 @@
 #' @title Optionally generate a message based on a logical input
 #'
-#' @description Given the input to \code{quiet}, generate the message(s) 
-#'   in \code{msg} or not.
+#' @description A wrapper on \code{\link[base]{message}} that, given the
+#'              input to \code{quiet}, generates the message(s) in \code{...}
+#'              or not.
 #'
-#' @param msg \code{character} vector of the message(s) to generate or 
-#'   \code{NULL}. If more than one element is contained in \code{msg}, they
-#'   are concatenated with a newline between.
+#' @param ... zero or more objects that can be coerced to \code{character}
+#'            and are concatenated with no separator added, or a single 
+#'            condition object.
+#'            \cr \cr
+#'            See \code{\link[base]{message}}.
 #'
-#' @param quiet \code{logical} indicator controlling if the message is
-#'   generated. If \code{NULL}, it is as if \code{TRUE}.
+#' @param quiet \code{logical} indicator if the message should be generated. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
+#' @param domain The domain for the translation. If \code{NA}, messages will
+#'               not be translated.
+#'               \cr \cr
+#'               See \code{\link[base]{message}} and 
+#'               \code{\link[base]{gettext}}.
+#'
+#' @param appendLF \code{logical} indicator if messages given as a 
+#'                 \code{character} string should have a newline appended.
+#'                 \cr \cr
+#'                 See \code{\link[base]{message}}.
 #'
 #' @return A message is given, and \code{NULL} returned.
 #'
-#' @examples
-#'  messageq("Hello world", FALSE)
-#'  messageq("Hello world", TRUE)
-#'
 #' @export
 #'
-messageq <- function(msg = NULL, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  return_if_null(msg)
-  return_if_null(quiet)
-  if (!quiet){
-    msg2 <- paste(msg, collapse = "\n")
-    message(msg2)
-  }
-  invisible(NULL)
-}
+messageq <- function (..., 
+                      quiet    = FALSE, 
+                      domain   = NULL, 
+                      appendLF = TRUE) {
 
+  if (!quiet) {
+
+    message(...,
+            domain   = domain,
+            appendLF = appendLF)
+
+  }
+
+  invisible()
+}
 
 
 #' @title Produce a horizontal break line for messaging
 #'
-#' @description Optionally creates and returns a message that is a
-#'  horizontal break line of dashes.
+#' @description Creates a horizontal line of characters for messages.
 #'
-#' @param bline \code{logical} indicator if horizontal break lines should be
-#'  made or not. For toggling separately from the more general \code{quiet}
-#'  argument. 
+#' @param char \code{character} value to repeated \code{reps} times to form
+#'             the break. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
-#' @param quiet \code{logical} indicator if messages should be quieted.
+#' @param reps \code{integer}-conformable value for number of times
+#'             \code{char} is replicated.
 #' 
 #' @return \code{NULL} (message is put out to console).
 #'
@@ -59,13 +61,11 @@ messageq <- function(msg = NULL, quiet = FALSE, arg_checks = TRUE){
 #'
 #' @export
 #'
-messageq_break <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  if(!bline){
-    return()
-  }
-  msg <- paste(rep("-", 60), collapse = "") 
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+message_break <- function(char = "-", reps = 60){
+  
+
+  paste(rep(char, reps), collapse = "") 
+
 }
 
 #' @title Specific message functions
@@ -95,9 +95,6 @@ messageq_break <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
 #'
 #' @param quiet \code{logical} indicator if message should be quieted.
 #'
-#' @param bline \code{logical} indicator if horizontal break lines should be
-#'  included.
-#'
 #' @param end_moon \code{integer} (or integer \code{numeric}) 
 #'  newmoon number of the last sample(s) to be included.
 #'
@@ -116,11 +113,6 @@ messageq_break <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
 #' @param model \code{character} value of the model name or model script path.
 #'  Will be stripped of all excess path components and the extension to
 #'  give just the name of the model itself. 
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
 #' 
 #' @return Message is put to the console; \code{NULL} is returned.
 #'
@@ -150,13 +142,12 @@ NULL
 #'
 #' @export
 #' 
-version_message <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+version_message <- function(quiet = FALSE){
+  
   version_number <- packageDescription("portalcasting", fields = "Version")
-  msg <- paste0("This is portalcasting v", version_number)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
+  messageq(message_break(), quiet = quiet)
+  messageq("This is portalcasting v", version_number, quiet = quiet)
+  messageq(message_break(), quiet = quiet)
   invisible(NULL)
 }
 
@@ -166,28 +157,26 @@ version_message <- function(bline = TRUE, quiet = FALSE, arg_checks = TRUE){
 #'
 #' @export
 #' 
-portalcast_welcome <- function(bline = TRUE, quiet = FALSE,
-                               arg_checks = TRUE){
-  check_args(arg_checks)
-  version_message(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  msg <- "Preparing directory for casting"
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
+portalcast_welcome <- function(quiet = FALSE){
+
+  version_message(quiet = quiet)
+  messageq("Preparing directory for casting", quiet = quiet)
+  messageq(message_break(), quiet = quiet)
   invisible(NULL)
+
 }
 
 #' @rdname portalcast_messages
 #'
 #' @export
 #'
-portalcast_goodbye <- function(bline = TRUE, quiet = FALSE,
-                               arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  msg <- "Casting complete"
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  messageq(msg, quiet)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
+portalcast_goodbye <- function(quiet = FALSE){
+  
+  messageq(message_break(), quiet = quiet)
+  messageq("Casting complete", quiet)
+  messageq(message_break(), quiet = quiet)
   invisible(NULL)
+
 }
 
 
@@ -195,10 +184,9 @@ portalcast_goodbye <- function(bline = TRUE, quiet = FALSE,
 #'
 #' @export
 #' 
-sandbox_welcome <-function(main = ".", quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
+sandbox_welcome <-function(main = ".", quiet = FALSE){
 
-  main <- main_path(main = main, arg_checks = arg_checks)
+  main <- main_path(main = main)
   castle <- "
                                          ____
              /\\                         / -- )   
@@ -216,20 +204,29 @@ sandbox_welcome <-function(main = ".", quiet = FALSE, arg_checks = TRUE){
 "
   succ <- "sanbox directory successfully set up at \n  "
   happy <- "\nHappy portalcasting!"
-  msg <- paste0(castle, succ, main, happy)
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+  messageq(castle, succ, main, happy, quiet = quiet)
 }
 
 #' @rdname portalcast_messages
 #'
 #' @export
 #' 
-creation_message <- function(main = ".", bline = TRUE, quiet = FALSE, 
-                             arg_checks = TRUE){
-  main_path <- main_path(main = main, arg_checks = arg_checks)
-  msg <- paste0("Establishing portalcasting directory at\n ", main_path)
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
+creation_message <- function(main = ".", quiet = FALSE){
+  mpath <- main_path(main = main)
+  messageq("Establishing portalcasting directory at\n ", mpath, quiet = quiet)
+  messageq(message_break(), quiet = quiet)
+  invisible()
+}
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+setup_completion_message <- function(quiet = FALSE){
+  
+  messageq(message_break(), quiet = quiet)
+  messageq("Directory successfully instantiated", quiet = quiet)
+  messageq(message_break(), quiet = quiet)
   invisible(NULL)
 }
 
@@ -237,27 +234,13 @@ creation_message <- function(main = ".", bline = TRUE, quiet = FALSE,
 #'
 #' @export
 #' 
-setup_completion_message <- function(bline = TRUE, quiet = FALSE, 
-                                     arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  msg <- "Directory successfully instantiated"
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  invisible(NULL)
-}
-
-#' @rdname portalcast_messages
-#'
-#' @export
-#' 
-data_readying_message <- function(end_moon = NULL, bline = TRUE, 
-                                  quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+data_readying_message <- function(end_moon = NULL,  
+                                  quiet = FALSE){
+  
   return_if_null(end_moon)
-  msg <- paste0("Readying data for forecast origin newmoon ", end_moon)
 
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+  messageq("Readying data for forecast origin newmoon ", end_moon, 
+quiet = quiet)
   invisible(NULL)
 }
 
@@ -266,13 +249,12 @@ data_readying_message <- function(end_moon = NULL, bline = TRUE,
 #'
 #' @export
 #' 
-data_resetting_message <- function(bline = TRUE, quiet = FALSE,
-                                   arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  msg <- "Resetting data to the most up-to-date versions"
+data_resetting_message <- function(quiet = FALSE){
+  
+  msg <- 
 
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+  messageq(message_break(), quiet = quiet)
+  messageq("Resetting data to the most up-to-date versions", quiet = quiet)
   invisible(NULL)
 }
 
@@ -283,13 +265,13 @@ data_resetting_message <- function(bline = TRUE, quiet = FALSE,
 #'
 #' @export
 #' 
-models_running_message <- function(end_moon = NULL, bline = TRUE, 
-                                   quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+models_running_message <- function(end_moon = NULL,  
+                                   quiet = FALSE){
+  
   return_if_null(end_moon)
-  msg <- paste0("Running models for forecast origin newmoon ", end_moon)
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks)
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+  messageq(message_break(), quiet = quiet)
+  messageq("Running models for forecast origin newmoon ", end_moon, 
+           quiet = quiet)
   invisible(NULL)
 }
 
@@ -297,33 +279,32 @@ models_running_message <- function(end_moon = NULL, bline = TRUE,
 #'
 #' @export
 #' 
-model_running_message <- function(model = NULL, quiet = FALSE, 
-                                  arg_checks = TRUE){
+model_running_message <- function(model = NULL, quiet = FALSE){
 
-  check_args(arg_checks = arg_checks)
+  
   return_if_null(model)
   modelname <- path_no_ext(basename(model))
-  messageq(paste0(" -Running ", modelname), quiet)
+  messageq(" -Running ", modelname, quiet = quiet)
 }
 
 #' @rdname portalcast_messages
 #'
 #' @export
 #' 
-model_done_message <- function(model = NULL, run_status = NULL, quiet = FALSE, 
-                               arg_checks = TRUE){
+model_done_message <- function(model = NULL, run_status = NULL, 
+                              quiet = FALSE){
 
-  check_args(arg_checks = arg_checks)
+  
   return_if_null(model)
   return_if_null(run_status)
   modelname <- path_no_ext(basename(model))
 
   if(all(is.na(run_status))){
-    msg <- paste0("  |----| ", modelname, " failed |----|")
+    messageq("  |----| ", modelname, " failed |----|", quiet = quiet)
   } else{
-    msg <- paste0("  |++++| ", modelname, " successful |++++|")
+    messageq("  |++++| ", modelname, " successful |++++|", quiet = quiet)
   }
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+
 }
 
 #' @rdname portalcast_messages
@@ -331,9 +312,9 @@ model_done_message <- function(model = NULL, run_status = NULL, quiet = FALSE,
 #' @export
 #' 
 fill_casts_message <- function(files = NULL, movedTF = NULL, quiet = FALSE,
-                               verbose = FALSE, arg_checks = TRUE){
+                               verbose = FALSE){
 
-  check_args(arg_checks = arg_checks)
+  
   return_if_null(files)
   moved <- basename(files[movedTF])
   not_moved <- basename(files[!movedTF])
@@ -356,8 +337,7 @@ fill_casts_message <- function(files = NULL, movedTF = NULL, quiet = FALSE,
     msg1 <- NULL 
   }
   
-  msg <- c(msg1, paste0("   **", msg2, "**"))
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+  messageq(msg1, "   **", msg2, "**", quiet = quiet)
 }
 
 
@@ -367,9 +347,9 @@ fill_casts_message <- function(files = NULL, movedTF = NULL, quiet = FALSE,
 #' @export
 #' 
 fill_fits_message <- function(files = NULL, movedTF = NULL, quiet = FALSE,
-                              verbose = FALSE, arg_checks = TRUE){
+                              verbose = FALSE){
 
-  check_args(arg_checks = arg_checks)
+  
   return_if_null(files)
   moved <- basename(files[movedTF])
   not_moved <- basename(files[!movedTF])
@@ -392,7 +372,6 @@ fill_fits_message <- function(files = NULL, movedTF = NULL, quiet = FALSE,
     msg1 <- NULL 
   }
   
-  msg <- c(msg1, paste0("   **", msg2, "**"))
-  messageq(msg = msg, quiet = quiet, arg_checks = arg_checks)
+  messageq(msg1, "   **", msg2, "**", quiet = quiet)
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_models.R
 \name{prefab_models}
 \alias{prefab_models}
-\title{Provide the names of the prefab models}
+\title{Provide the Names of the Prefabricated Models}
 \usage{
 prefab_models()
 }
@@ -11,11 +11,12 @@ prefab_models()
 }
 \description{
 Create a \code{character} vector of the names of the models
- to be included including the pre-fabricated (prefab) models, extracting
- them from the \code{prefab_model_controls} internal function. \cr \cr
- The currently prefabricated models include \code{"AutoArima"}, 
- \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, \code{"nbsGARCH"}, 
- \code{"pevGARCH"}.
+             to be included including the pre-fabricated (prefab) models.
+             \cr \cr
+             The currently prefabricated models include \code{"AutoArima"}, 
+             \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, 
+             \code{"nbsGARCH"}, \code{"pevGARCH"}, 
+             and \code{"jags_RW"}.
 }
 \examples{
  prefab_models()

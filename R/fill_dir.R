@@ -73,11 +73,6 @@
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @param controls_model Additional controls for models not in the prefab 
 #'  set. \cr 
 #'  A \code{list} of a single model's script-writing controls or a
@@ -165,20 +160,19 @@ fill_dir <- function (main  = ".",
                         control_files = files_control(), 
                         end_moon = NULL, start_moon = 217, lead_time = 12,
                         confidence_level = 0.95, cast_date = Sys.Date(), 
-                        controls_rodents = rodents_controls(), 
-                        arg_checks = TRUE) {
+                        controls_rodents = rodents_controls()) {
 
   messageq("Filling directory with requested content",
            quiet = quiet)
 
   fill_raw(main = main, 
-                 PortalData_version = PortalData_version,
-                 PortalData_source = PortalData_source,
-                 portalPredictions_version = portalPredictions_version,
-                 portalPredictions_source = portalPredictions_source,
-                 climate_forecast_version = climate_forecast_version,
-                 climate_forecast_source = climate_forecast_source,
-                 quiet = quiet, verbose = verbose)
+           PortalData_version = PortalData_version,
+           PortalData_source = PortalData_source,
+           portalPredictions_version = portalPredictions_version,
+           portalPredictions_source = portalPredictions_source,
+           climate_forecast_version = climate_forecast_version,
+           climate_forecast_source = climate_forecast_source,
+           quiet = quiet, verbose = verbose)
 
   fill_casts(main = main, 
              quiet = quiet, 
@@ -190,24 +184,11 @@ fill_dir <- function (main  = ".",
 
   fill_models(main = main, 
               models = models, 
-              controls_model = controls_model, 
-              control_files = control_files, 
               quiet = quiet, 
-              verbose = verbose, 
-              arg_checks = arg_checks)
+              verbose = verbose)
 
 
   fill_data(main = main, 
-            models = models,
-            end_moon = end_moon,
-            start_moon = start_moon,
-            lead_time = lead_time,
-            confidence_level = confidence_level,
-            cast_date = cast_date,
-                      controls_model = controls_model,
-                      controls_rodents = controls_rodents, 
-                      control_files = control_files, 
-                      arg_checks = arg_checks,
             data_sets = data_sets,
             quiet = quiet, 
             verbose = verbose)
@@ -229,30 +210,26 @@ fill_data <- function(main = ".", models = prefab_models(),
 
                       control_files = files_control(), 
                       data_sets = prefab_data_sets(),
-                      quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                      quiet = FALSE, verbose = FALSE){
 
   min_lag <- extract_min_lag(models = models, 
                              controls_model = controls_model, 
-                             quiet = quiet, arg_checks = arg_checks)
+                             quiet = quiet)
 
   messageq(" -Adding data files to data subdirectory", quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
                        cast_date = cast_date, 
                        quiet = quiet, verbose = verbose,
-                       control_files = control_files, 
-                       arg_checks = arg_checks)
+                       control_files = control_files)
   data_r <- prep_rodents(main = main, moons = data_m, 
                          data_sets = data_sets, end_moon = end_moon, 
                          controls_rodents = controls_rodents,
                          quiet = quiet, verbose = verbose, 
-                         control_files = control_files, 
-                         arg_checks = arg_checks)
+                         control_files = control_files)
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
                             start_moon = start_moon, lead_time = lead_time, 
                             min_lag = min_lag, cast_date = cast_date, 
-                            quiet = quiet, control_files = control_files,
-                            arg_checks = arg_checks)
+                            quiet = quiet, control_files = control_files)
   prep_metadata(main = main, models = models,
                 data_sets = data_sets, moons = data_m, 
                 rodents = data_r, covariates = data_c, end_moon = end_moon, 
@@ -261,7 +238,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                 confidence_level = confidence_level, 
                 controls_model = controls_model,
                 controls_rodents = controls_rodents, quiet = quiet, 
-                control_files = control_files, arg_checks = arg_checks)
+                control_files = control_files)
 
   invisible(NULL)
 }
@@ -271,14 +248,14 @@ fill_data <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 fill_raw <- function (main  = ".",
-                            PortalData_version = "latest",
-                            PortalData_source = "gitub",
-                            portalPredictions_version = NULL,
-                            portalPredictions_source = "github",
-                            climate_forecast_version = Sys.Date(),
-                            climate_forecast_source = "NMME",
-                            quiet = FALSE,
-                            verbose = FALSE) {
+                      PortalData_version = "latest",
+                      PortalData_source = "gitub",
+                      portalPredictions_version = NULL,
+                      portalPredictions_source = "github",
+                      climate_forecast_version = Sys.Date(),
+                      climate_forecast_source = "NMME",
+                      quiet = FALSE,
+                      verbose = FALSE) {
 
   messageq("Downloading resources...",
            quiet = quiet)
@@ -404,25 +381,21 @@ fill_fits <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 #'
 fill_models <- function (main = ".", 
                          models = prefab_models(), 
-                        controls_model = NULL, 
-                        control_files = files_control(), quiet = FALSE, 
-                        verbose = FALSE, arg_checks = TRUE) {
+                         quiet = FALSE, 
+                         verbose = FALSE) {
 
-
-  check_args(arg_checks = arg_checks)
   return_if_null(models)
-  controls_model <- model_controls(models = models, 
-                                    controls_model = controls_model,
-                                    quiet = quiet, arg_checks = arg_checks)
-  messageq(" -Writing model scripts", quiet)
+
+  messageq(" -Writing model scripts", quiet = quiet)
   nmodels <- length(models)
-  for(i in 1:nmodels){
-    write_model(main = main, quiet = quiet, verbose = verbose, 
-                control_files = control_files, 
-                control_model = controls_model[[models[i]]], 
-                arg_checks = arg_checks)
+
+  for (i in 1:nmodels) {
+    write_model(main = main, 
+                model = models[i], 
+                quiet = !verbose)
   } 
-  invisible(NULL)
+
+  invisible()
 
 }
 

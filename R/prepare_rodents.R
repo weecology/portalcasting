@@ -197,9 +197,8 @@ prefab_rodents_controls <- function(){
 #'
 #' @export
 #'
-rodents_controls <- function(data_sets = NULL, controls_rodents = NULL, 
-                             arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+rodents_controls <- function(data_sets = NULL, controls_rodents = NULL){
+
   return_if_null(data_sets)
   if(list_depth(controls_rodents) == 1){
     controls_rodents <- list(controls_rodents)
@@ -352,9 +351,8 @@ rodents_control <- function(name = "name", species = base_species(),
                                                     treatment = TRUE,
                                                     site = TRUE),
                             effort = FALSE,
-                            filename = paste0("rodents_", name, ".csv"),
-                            arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                            filename = paste0("rodents_", name, ".csv")){
+
   return_if_null(name)
   list(name = name, species = species, total = total, 
        interpolate = interpolate, clean = clean, type = type, level = level, 
@@ -427,16 +425,14 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
                          end_moon = NULL, controls_rodents = NULL, 
                          control_files = files_control(), 
                          ref_species = all_species(), quiet = TRUE,
-                         verbose = FALSE,  arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                         verbose = FALSE){
+
   data_sets <- ifnull(data_sets, prefab_data_sets())
   messageq("  -rodents data files", quiet)
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+                                    control_files = control_files))
   controls_rodents <- rodents_controls(data_sets = data_sets, 
-                                 controls_rodents = controls_rodents, 
-                                 arg_checks = arg_checks)
+                                 controls_rodents = controls_rodents)
   rodents <- named_null_list(data_sets)
   ndata_sets <- length(rodents)
   for(i in 1:ndata_sets){

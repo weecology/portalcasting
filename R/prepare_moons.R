@@ -77,27 +77,25 @@ NULL
 #' 
 prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(), 
                        control_files = files_control(), 
-                       quiet = TRUE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                       quiet = TRUE, verbose = FALSE){
+
   raw_data_present <- verify_raw_data(main = main, 
-                                      raw_data = control_files$raw_data,
-                                      arg_checks = arg_checks)
+                                      raw_data = control_files$raw_data)
   if(!raw_data_present){
     fill_raw(main = main, quiet = quiet)
   }
   messageq("  -lunar data file", quiet)
-  raw_path <- raw_path(main = main, arg_checks = arg_checks)
+  raw_path <- raw_path(main = main)
   traps_in <- load_trapping_data(path = raw_path, download_if_missing = FALSE,
                                  clean = FALSE, quiet = !verbose)
   moons_in <- traps_in[["newmoons_table"]]
   moons <- add_future_moons(main = main, moons = moons_in, 
-                            lead_time = lead_time, cast_date = cast_date, 
-                            arg_checks = arg_checks)
+                            lead_time = lead_time, cast_date = cast_date)
   moons_out <- format_moons(moons)
   write_data(dfl = moons_out, main = main, save = control_files$save, 
              filename = control_files$filename_moons, 
              overwrite = control_files$overwrite, 
-             quiet = !verbose, arg_checks = arg_checks)
+             quiet = !verbose)
 } 
 
 #' @rdname prepare_moons

@@ -19,7 +19,7 @@ read_data(
   arg_checks = TRUE
 )
 
-read_rodents_table(main = ".", data_set = "all", arg_checks = TRUE)
+read_rodents_table(main = ".", data_set = "all")
 
 read_rodents(main = ".", data_sets = c("all", "controls"), arg_checks = TRUE)
 

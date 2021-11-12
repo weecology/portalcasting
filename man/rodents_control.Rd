@@ -23,8 +23,7 @@ rodents_control(
   na_drop = FALSE,
   zero_drop = switch(tolower(level), plot = FALSE, treatment = TRUE, site = TRUE),
   effort = FALSE,
-  filename = paste0("rodents_", name, ".csv"),
-  arg_checks = TRUE
+  filename = paste0("rodents_", name, ".csv")
 )
 }
 \arguments{

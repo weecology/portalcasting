@@ -10,6 +10,12 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Streamlining arguments to fill functions
 *
 
+### Model filling is now basically a copy and paste of the function
+
+### Changes in `messageq`
+* Function redesigned to align with `message` directly argument for argument with the addition of the `quiet` argument.
+* Now allows for multiple message arguments via `...` that become pasted together
+
 
 # [portalcasting 0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0)
 *2021-11-11*

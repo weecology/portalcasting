@@ -29,8 +29,7 @@ fill_dir(
   lead_time = 12,
   confidence_level = 0.95,
   cast_date = Sys.Date(),
-  controls_rodents = rodents_controls(),
-  arg_checks = TRUE
+  controls_rodents = rodents_controls()
 )
 
 fill_data(
@@ -46,8 +45,7 @@ fill_data(
   control_files = files_control(),
   data_sets = prefab_data_sets(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 fill_raw(
@@ -69,11 +67,8 @@ fill_fits(main = ".", quiet = FALSE, verbose = FALSE)
 fill_models(
   main = ".",
   models = prefab_models(),
-  controls_model = NULL,
-  control_files = files_control(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -164,11 +159,6 @@ using \code{\link{Sys.Date}}.}
 \item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
 rodents tables. See \code{\link{rodents_controls}} for details.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.

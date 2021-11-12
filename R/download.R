@@ -109,16 +109,25 @@ download_archive <- function(main    = ".",
 
   }
   
-  if (!quiet) {
-    message("Downloading version `", version, "` of the archive...")
-  }
+  messageq("Downloading archive version `", version, "`...", quiet = quiet)
 
   temp <- normalized_file_path(tempdir(), "portalPredictions.zip", 
                                mustWork = FALSE)
   final <- normalized_file_path(main, "raw", "portalPredictions", 
                                 mustWork = FALSE)
 
-  download.file(zipball_url, temp, quiet = !verbose, mode = "wb")
+  result <- tryCatch(
+              download.file(zipball_url, temp, quiet = !verbose, mode = "wb"),
+              error = function(x){NA})
+
+  if (is.na(result)) {
+
+    warning("Archive could not be downloaded", call. = FALSE)
+    return(NULL)
+
+  }
+
+
 
   if (file.exists(final)) {
 
@@ -212,9 +221,9 @@ download_climate_forecasts <- function(main    = ".",
     dests <- normalized_file_path(main, "raw", source, file_names, 
                                   mustWork = FALSE)
 
-    if (!quiet) {
-      message("Downloading version `", version, "` of climate forcasts...")
-    }
+    messageq("Downloading climate forcasts version `", version, "`...",
+             quiet = quiet)
+    
 
     mapply(FUN = download.file,
            url = urls,
