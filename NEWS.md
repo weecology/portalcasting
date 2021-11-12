@@ -3,6 +3,14 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+
+# portalcasting 0.25.0
+*In Progress*
+
+### Streamlining arguments to fill functions
+*
+
+
 # [portalcasting 0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0)
 *2021-11-11*
 
