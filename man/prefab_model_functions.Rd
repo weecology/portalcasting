@@ -13,7 +13,7 @@
 \usage{
 jags_RW(
   main = ".",
-  data_set = "all",
+  dataset = "all",
   control_files = files_control(),
   control_runjags = runjags_control(),
   lag = NA,
@@ -21,11 +21,17 @@ jags_RW(
   verbose = FALSE
 )
 
-AutoArima(main = ".", data_set = "all", quiet = FALSE, verbose = FALSE)
+AutoArima(
+  main = ".",
+  dataset = "all",
+  quiet = FALSE,
+  verbose = FALSE,
+  control_files = files_control()
+)
 
 NaiveArima(
   main = ".",
-  data_set = "all",
+  dataset = "all",
   control_files = files_control(),
   quiet = FALSE,
   verbose = FALSE
@@ -33,7 +39,7 @@ NaiveArima(
 
 ESSS(
   main = ".",
-  data_set = "all_interp",
+  dataset = "all_interp",
   control_files = files_control(),
   quiet = FALSE,
   verbose = FALSE
@@ -41,7 +47,7 @@ ESSS(
 
 nbGARCH(
   main = ".",
-  data_set = "all_interp",
+  dataset = "all_interp",
   control_files = files_control(),
   quiet = FALSE,
   verbose = FALSE
@@ -49,7 +55,7 @@ nbGARCH(
 
 nbsGARCH(
   main = ".",
-  data_set = "all_interp",
+  dataset = "all_interp",
   control_files = files_control(),
   quiet = FALSE,
   verbose = FALSE
@@ -57,7 +63,7 @@ nbsGARCH(
 
 pevGARCH(
   main = ".",
-  data_set = "all_interp",
+  dataset = "all_interp",
   lag = 6,
   control_files = files_control(),
   quiet = FALSE,
@@ -68,7 +74,7 @@ pevGARCH(
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{data_set}{\code{character} value name of the rodent data set, such as 
+\item{dataset}{\code{character} value name of the rodent data set, such as 
 (\code{"all"} or \code{"controls"}).}
 
 \item{control_files}{\code{list} of names of the folders and files within

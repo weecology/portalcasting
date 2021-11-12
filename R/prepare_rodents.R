@@ -1,3 +1,67 @@
+#' @title Determine if columns in a table are species columns
+#'
+#' @description Given a table, returns a \code{logical} vector indicating
+#'  if each column is a species' column or not.
+#'
+#' @param rodents_tab \code{data.frame} of columns to be checked. 
+#'
+#' @param species \code{character} vector indicating species names to 
+#'  use in determining if columns are species columns. Defaults to
+#'  \code{\link{all_species}}.
+#'
+#' @param total \code{logical} indicator if the total should be included.
+#'
+#' @param arg_checks \code{logical} value of if the arguments should be
+#'  checked using standard protocols via \code{\link{check_args}}. The 
+#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+#'  formatted correctly and provides directed error messages if not. 
+#'
+#' @param nadot \code{logical} indicator if the dot should be added to the 
+#'   \code{"NA"} species name. Defaults to \code{FALSE}.
+#'
+#' @return 
+#'  \code{is_sp_col}: \code{logical} vector indicating if each column is a 
+#'  species' column or not. \cr \cr
+#'  \code{species_from_table}: \code{character} vector of species names from
+#'  the column names in the \code{rodents_tab} data table. 
+#'  
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_raw()
+#'   rodents_tab <- prep_rodents_table()
+#'   is_sp_col(rodents_tab)
+#'   species_from_table(rodents_tab)
+#'  }
+#'
+#' @name species_in_tables
+#'
+NULL 
+
+#' @rdname species_in_tables
+#'
+#' @export
+#'
+is_sp_col <- function(rodents_tab, species = NULL, total = FALSE, 
+                      nadot = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  species <- ifnull(species, all_species(total = total, nadot = nadot))
+  colnames(rodents_tab) %in% species
+}
+
+#' @rdname species_in_tables
+#'
+#' @export
+#'
+species_from_table <- function(rodents_tab = NULL, total = FALSE, 
+                               nadot = FALSE, arg_checks = TRUE){
+  check_args(arg_checks = arg_checks)
+  sp_col <- is_sp_col(rodents_tab = rodents_tab, total = total, nadot = nadot,
+                      arg_checks = arg_checks)
+  colnames(rodents_tab)[sp_col]
+}
+
 #' @title Provide the List of Prefabricated Rodent Datasets
 #'
 #' @description Create a \code{list} of dataset lists, each used to create

@@ -366,13 +366,12 @@ read_moons <- function(main = ".", control_files = files_control()){
 read_metadata <- function(main = ".", control_files = files_control()){
   
   fpath <- file_path(main = main, sub = "data", 
-                     files = control_files$filename_meta, 
-)
+                     files = control_files$filename_meta)
   if(!file.exists(fpath)){
     md <- prep_metadata(main = main)
     return(md)
   }
-  yaml.load_file(fpath) 
+  yaml.load_file(fpath, eval.exp = TRUE) 
 }
 
 

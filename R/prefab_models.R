@@ -43,7 +43,7 @@
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param data_set \code{character} value name of the rodent data set, such as 
+#' @param dataset \code{character} value name of the rodent data set, such as 
 #'  (\code{"all"} or \code{"controls"}).
 #'
 #' @param quiet \code{logical} value indicating if the function should be 
@@ -114,15 +114,15 @@ NULL
 #'
 #' @export
 #'
-AutoArima <- function(main = ".", data_set = "all",  
+AutoArima <- function(main = ".", dataset = "all",  
                       quiet = FALSE, 
-                      verbose = FALSE){
+                      verbose = FALSE, control_files = files_control()){
 
-  data_set <- tolower(data_set)
+  dataset <- tolower(dataset)
 
-  messageq("  -AutoArima for ", data_set, quiet = quiet)
+  messageq("  -AutoArima for ", dataset, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
   nspecies <- length(species)
@@ -130,12 +130,13 @@ AutoArima <- function(main = ".", data_set = "all",
   metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_r[[data_set]]
+  dataset_controls <- metadata$controls_r[[dataset]]
   mods <- named_null_list(species)
   casts <- named_null_list(species)
   cast_tab <- data.frame()
@@ -156,8 +157,8 @@ AutoArima <- function(main = ".", data_set = "all",
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
-                             currency = data_set_controls$output,
-                             model = "AutoArima", data_set = data_set, 
+                             currency = dataset_controls$args$output,
+                             model = "AutoArima", dataset = dataset, 
                              species = ss, 
                              estimate = casts[[i]][ ,"Point.Forecast"], 
                              lower_pi = casts[[i]][ ,paste0("Lo.", CL * 100)], 
@@ -168,8 +169,8 @@ AutoArima <- function(main = ".", data_set = "all",
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
   metadata <- update_list(metadata, models = "AutoArima",
-                              data_sets = data_set,
-                              controls_r = data_set_controls)
+                              datasets = dataset,
+                              controls_r = dataset_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -182,15 +183,15 @@ AutoArima <- function(main = ".", data_set = "all",
 #'
 #' @export
 #'
-NaiveArima <- function(main = ".", data_set = "all",  
+NaiveArima <- function(main = ".", dataset = "all",  
                        control_files = files_control(), quiet = FALSE, 
                        verbose = FALSE){
   
-  data_set <- tolower(data_set)
+  dataset <- tolower(dataset)
 
-  messageq("  -NaiveArima for ", data_set, quiet = quiet)
+  messageq("  -NaiveArima for ", dataset, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
   nspecies <- length(species)
@@ -198,12 +199,13 @@ NaiveArima <- function(main = ".", data_set = "all",
   metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_rodents[[data_set]]
+  dataset_controls <- metadata$controls_rodents[[dataset]]
 
   mods <- named_null_list(species)
   casts <- named_null_list(species)
@@ -225,8 +227,8 @@ NaiveArima <- function(main = ".", data_set = "all",
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
-                             currency = data_set_controls$output,
-                             model = "NaiveArima", data_set = data_set, 
+                             currency = dataset_controls$args$output,
+                             model = "NaiveArima", dataset = dataset, 
                              species = ss, 
                              estimate = casts[[i]][ ,"Point.Forecast"], 
                              lower_pi = casts[[i]][ ,paste0("Lo.", CL * 100)], 
@@ -237,8 +239,8 @@ NaiveArima <- function(main = ".", data_set = "all",
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
   metadata <- update_list(metadata, models = "NaiveArima",
-                              data_sets = data_set,
-                              controls_r = data_set_controls)
+                              datasets = dataset,
+                              controls_r = dataset_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -250,14 +252,14 @@ NaiveArima <- function(main = ".", data_set = "all",
 #' 
 #' @export
 #'
-ESSS <- function(main = ".", data_set = "all_interp", 
+ESSS <- function(main = ".", dataset = "all_interp", 
                  control_files = files_control(), quiet = FALSE,
                  verbose = FALSE){
   
-  data_set <- tolower(data_set)
-  messageq("  -ESSS for ", data_set, quiet = quiet)
+  dataset <- tolower(dataset)
+  messageq("  -ESSS for ", dataset, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
   nspecies <- length(species)
@@ -265,12 +267,13 @@ ESSS <- function(main = ".", data_set = "all_interp",
   metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_rodents[[data_set]]
+  dataset_controls <- metadata$controls_rodents[[dataset]]
 
   mods <- named_null_list(species)
   casts <- named_null_list(species)
@@ -294,8 +297,8 @@ ESSS <- function(main = ".", data_set = "all_interp",
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
-                             currency = data_set_controls$output,
-                             model = "ESSS", data_set = data_set, 
+                             currency = dataset_controls$args$output,
+                             model = "ESSS", dataset = dataset, 
                              species = ss, 
                              estimate = casts[[i]][ ,"Point.Forecast"], 
                              lower_pi = casts[[i]][ ,paste0("Lo.", CL * 100)],
@@ -306,8 +309,8 @@ ESSS <- function(main = ".", data_set = "all_interp",
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
   metadata <- update_list(metadata, models = "ESSS",
-                              data_sets = data_set,
-                              controls_r = data_set_controls)
+                              datasets = dataset,
+                              controls_r = dataset_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -317,14 +320,14 @@ ESSS <- function(main = ".", data_set = "all_interp",
 #'
 #' @export
 #'
-nbGARCH <- function(main = ".", data_set = "all_interp",  
+nbGARCH <- function(main = ".", dataset = "all_interp",  
                     control_files = files_control(), quiet = FALSE,
                     verbose = FALSE){
   
-  data_set <- tolower(data_set)
-  messageq("  -nbGARCH for ", data_set, quiet = quiet)
+  dataset <- tolower(dataset)
+  messageq("  -nbGARCH for ", dataset, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
   nspecies <- length(species)
@@ -332,12 +335,13 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
   metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_rodents[[data_set]]
+  dataset_controls <- metadata$controls_rodents[[dataset]]
 
   mods <- named_null_list(species)
   casts <- named_null_list(species)
@@ -377,8 +381,8 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
-                             currency = data_set_controls$output,
-                             model = "nbGARCH", data_set = data_set, 
+                             currency = dataset_controls$args$output,
+                             model = "nbGARCH", dataset = dataset, 
                              species = ss, 
                              estimate = estimate, 
                              lower_pi = lower_pi, 
@@ -390,8 +394,8 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
   metadata <- update_list(metadata, models = "nbGARCH",
-                              data_sets = data_set,
-                              controls_r = data_set_controls)
+                              datasets = dataset,
+                              controls_r = dataset_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -400,13 +404,13 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
 #'
 #' @export
 #'
-nbsGARCH <- function(main = ".", data_set = "all_interp",  
+nbsGARCH <- function(main = ".", dataset = "all_interp",  
                      control_files = files_control(), quiet = FALSE,
                      verbose = FALSE){
   
-  data_set <- tolower(data_set)
-  messageq("  -nbsGARCH for ", data_set, quiet = quiet)
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  dataset <- tolower(dataset)
+  messageq("  -nbsGARCH for ", dataset, quiet = quiet)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
   nspecies <- length(species)
@@ -414,7 +418,9 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
   metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
+
   rodents_table <- rodents_table[moon_in, ]
   moons <- read_moons(main = main, control_files = control_files)
   moon_foys <- foy(dates = moons$moondate)
@@ -424,7 +430,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
-  data_set_controls <- metadata$controls_rodents[[data_set]]
+  dataset_controls <- metadata$controls_rodents[[dataset]]
 
   for_hist <- which(moons$moon %in% rodents_table$moon)
   for_cast <- which(moons$moon %in% cast_moons) 
@@ -471,8 +477,8 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
-                             currency = data_set_controls$output,
-                             model = "nbsGARCH", data_set = data_set, 
+                             currency = dataset_controls$args$output,
+                             model = "nbsGARCH", dataset = dataset, 
                              species = ss, 
                              estimate = estimate, 
                              lower_pi = lower_pi, 
@@ -484,8 +490,8 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
   metadata <- update_list(metadata, models = "nbsGARCH",
-                              data_sets = data_set,
-                              controls_r = data_set_controls)
+                              datasets = dataset,
+                              controls_r = dataset_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -495,14 +501,14 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
 #' 
 #' @export
 #'
-pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,  
+pevGARCH <- function(main = ".", dataset = "all_interp", lag = 6,  
                      control_files = files_control(), quiet = FALSE, 
                      verbose = FALSE){
   
-  data_set <- tolower(data_set)
-  messageq("  -pevGARCH for ", data_set, quiet = quiet)
+  dataset <- tolower(dataset)
+  messageq("  -pevGARCH for ", dataset, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
   nspecies <- length(species)
@@ -510,7 +516,8 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   cast_moons <- metadata$rodent_cast_moons
   nmoons <- length(cast_moons)
@@ -537,7 +544,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   mods <- named_null_list(species)
   casts <- named_null_list(species)
   cast_tab <- data.frame()
-  data_set_controls <- metadata$controls_rodents[[data_set]]      
+  dataset_controls <- metadata$controls_rodents[[dataset]]      
   models <- covariate_models("pevGARCH")
   nmodels <- length(models)
 
@@ -597,8 +604,8 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons,
-                             currency = data_set_controls$output,
-                             model = "pevGARCH", data_set = data_set, 
+                             currency = dataset_controls$args$output,
+                             model = "pevGARCH", dataset = dataset, 
                              species = ss, 
                              estimate = estimate, 
                              lower_pi = lower_pi, 
@@ -610,8 +617,8 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
   metadata <- update_list(metadata, models = "pevGARCH",
-                              data_sets = data_set,
-                              controls_r = data_set_controls)
+                              datasets = dataset,
+                              controls_r = dataset_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }

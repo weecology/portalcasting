@@ -43,29 +43,6 @@
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param controls_model Additional controls for models not in the prefab 
-#'  set or for overriding controls of a prefab model (for example when 
-#'  applying a model to a new data set). \cr 
-#'  A \code{list} of a single model's script-writing controls or a
-#'  \code{list} of \code{list}s, each of which is a single model's 
-#'  script-writing controls. \cr 
-#'  Presently, each model's script writing controls should include four 
-#'  elements: 
-#'  \itemize{
-#'   \item \code{name}: a \code{character} value of the model name.
-#'   \item \code{data_sets}: a \code{character} vector of the data set names
-#'    that the model is applied to. 
-#'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
-#'    model needs covariates.
-#'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
-#'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
-#'  }
-#'  If only a single model's controls are included, the name of 
-#'  the model from the element \code{name} will be used to name the model's
-#'  \code{list} in the larger \code{list}. If multiple models are added, each
-#'  element \code{list} must be named according to the model and the
-#'  \code{name} element. \cr 
-#'
 #' @param controls_rodents Control \code{list} or \code{list} of \code{list}s 
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details.  
@@ -130,8 +107,6 @@
 portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL, 
                        start_moon = 217, lead_time = 12, 
                        confidence_level = 0.95, cast_date = Sys.Date(),
-                       controls_model = NULL, 
-                       controls_rodents = rodents_controls(),
 
                        control_files = files_control(),
                       PortalData_source = "gitub",
@@ -147,18 +122,11 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
   mainp <- main_path(main = main)
   verify(paths = mainp)
   portalcast_welcome(quiet = quiet)
-  update_models(main = main, models = models, controls_model = controls_model, 
+  update_models(main = main, models = models,  
                 update_prefab_models = update_prefab_models, quiet = quiet,
                 verbose = verbose, control_files = control_files)
   verify_models(main = main, models = models, quiet = quiet)
-#  fill_raw(main = main, 
-#                 PortalData_version = PortalData_version,
-#                 PortalData_source = PortalData_source,
-#                 portalPredictions_version = portalPredictions_version,
-#                 portalPredictions_source = portalPredictions_source,
-#                 climate_forecast_version = climate_forecast_version,
-#                 climate_forecast_source = climate_forecast_source,
-#                 quiet = quiet, verbose = verbose)
+
 
   last <- last_moon(main = main, date = cast_date)
   end_moons <- ifnull(end_moons, last)
@@ -179,7 +147,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
          quiet = quiet, verbose = verbose)
   }
   if(end_moons[nend_moons] != last){
-    data_resetting_message(bline = bline, quiet = quiet)
+    data_resetting_message(quiet = quiet)
     fill_data(main = main, models = models, 
               end_moon = NULL, lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 
@@ -213,13 +181,10 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
                  bline = TRUE, quiet = FALSE, verbose = FALSE){
 
   
-  data_readying_message(end_moon = end_moon, bline = bline, 
-                        quiet = quiet)
+  data_readying_message(end_moon = end_moon, quiet = quiet)
   fill_data(main = main, models = models, end_moon = end_moon, 
             lead_time = lead_time, cast_date = cast_date, 
             start_moon = start_moon, confidence_level = confidence_level, 
-            controls_rodents = controls_rodents,
-            controls_model = controls_model, 
             control_files = control_files,
             quiet = !verbose, verbose = verbose)
 
@@ -228,7 +193,7 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
   last <- last_moon(main = main, date = cast_date)
   end_moon <- ifnull(end_moon, last)
 
-  models_running_message(end_moon = end_moon, bline = bline, quiet = quiet)
+  models_running_message(end_moon = end_moon, quiet = quiet)
   models_scripts <- models_to_cast(main = main, models = models)
   nmodels <- length(models)
   for(i in 1:nmodels){

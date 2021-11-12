@@ -2,13 +2,13 @@
 #'
 #' @export
 #'
-jags_RW <- function(main = ".", data_set = "all",  
+jags_RW <- function(main = ".", dataset = "all",  
                     control_files = files_control(), 
                     control_runjags = runjags_control(), lag = NA, 
                     quiet = FALSE, verbose = FALSE){
   
-  data_set <- tolower(data_set)
-  messageq("  -jags_RW for ", data_set, quiet = quiet)
+  dataset <- tolower(dataset)
+  messageq("  -jags_RW for ", dataset, quiet = quiet)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
   monitor <- c("mu", "tau")
   inits <- function(data = NULL){
@@ -81,7 +81,7 @@ jags_RW <- function(main = ".", data_set = "all",
       count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
     }
   }"
-  jags_ss(main = main, data_set = data_set, control_files = control_files,
+  jags_ss(main = main, dataset = dataset, control_files = control_files,
           control_runjags = control_runjags, jags_model = jags_model,
           monitor = monitor, inits = inits, lag = lag, quiet = quiet, 
           verbose = verbose)
@@ -112,7 +112,7 @@ jags_RW <- function(main = ".", data_set = "all",
 #' @param main \code{character} value of the name of the main component of
 #'  the directory tree.
 #'
-#' @param data_set \code{character} value name of the rodent data set, such as 
+#' @param dataset \code{character} value name of the rodent data set, such as 
 #'  (\code{"all"} or \code{"controls"}).
 #'
 #' @param quiet \code{logical} value indicating if the function should be 
@@ -242,7 +242,7 @@ jags_RW <- function(main = ".", data_set = "all",
 #'
 #' @export
 #'
-jags_ss <- function(main = ".", data_set = "all",  
+jags_ss <- function(main = ".", dataset = "all",  
                     control_files = files_control(),
                     control_runjags = runjags_control(),
                     jags_model = NULL, monitor = NULL, inits = NULL, lag = NA, 
@@ -251,10 +251,10 @@ jags_ss <- function(main = ".", data_set = "all",
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
   runjags.options(silent.jags = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
 
   metadata <- read_metadata(main = main, control_files = control_files)
-  data_set_controls <- metadata$controls_r[[data_set]]
+  dataset_controls <- metadata$controls_r[[dataset]]
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
   true_count_lead <- length(metadata$rodent_cast_moons)
@@ -265,12 +265,12 @@ jags_ss <- function(main = ".", data_set = "all",
     covar <- read_covariates(main = main, control_files = control_files)
     covar_lag <- lag_covariates(covariates = covar, lag = lag, 
                                 tail = TRUE)
-    covar_moon_in <- which(covar_lag$moon >= start_moon & 
-                           covar_lag$moon <= last_cc_moon)
+    covar_moon_in <- which(covar_lag$newmoonnumber >= start_moon & 
+                           covar_lag$newmoonnumber <= last_cc_moon)
     col_in <- which(colnames(covar_lag) != "source")
     covar_in <- as.matrix(covar_lag[covar_moon_in, col_in])
 
-    past_covar_moon_in <- which(covar_lag$moon < start_moon)
+    past_covar_moon_in <- which(covar_lag$newmoonnumber < start_moon)
     past_covar_in <- as.matrix(covar_lag[covar_moon_in, col_in])
   }
 
@@ -285,8 +285,8 @@ jags_ss <- function(main = ".", data_set = "all",
     ss <- gsub("NA.", "NA", s)
     messageq("   -", ss, quiet = !verbose)
 
-    moon_in <- which(rodents_table$moon >= start_moon & 
-                     rodents_table$moon <= end_moon)
+    moon_in <- which(rodents_table$newmoonnumber >= start_moon & 
+                     rodents_table$newmoonnumber <= end_moon)
     past_moon_in <- which(rodents_table$moon < start_moon)
     moon <- rodents_table[moon_in, "moon"] 
     moon <- c(moon, metadata$rodent_cast_moons)
@@ -369,8 +369,8 @@ jags_ss <- function(main = ".", data_set = "all",
                                cast_month = metadata$rodent_cast_months,
                                cast_year = metadata$rodent_cast_years, 
                                moon = metadata$rodent_cast_moons,
-                               currency = data_set_controls$output,
-                               model = "jags_RW", data_set = data_set, 
+                               currency = dataset_controls$args$output,
+                               model = "jags_RW", dataset = dataset, 
                                species = ss, 
                                estimate = point_forecast,
                                lower_pi = lower_cl, 
@@ -382,8 +382,8 @@ jags_ss <- function(main = ".", data_set = "all",
     }
   }
   metadata <- update_list(metadata, models = "jags_RW",
-                              data_sets = data_set,
-                              controls_r = data_set_controls)
+                              datasets = dataset,
+                              controls_r = dataset_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)  
 }

@@ -2,23 +2,23 @@
 # 
 # @export
 #
-simplexEDM <- function(main = ".", data_set = "all_interp", 
+simplexEDM <- function(main = ".", dataset = "all_interp", 
                        control_files = files_control(), 
                        quiet = FALSE, 
                        verbose = FALSE, 
                        max_E = 7 )
 {
   
-  data_set <- tolower(data_set)
+  dataset <- tolower(dataset)
   model_name <- "simplexEDM"
   
-  messageq("  -", model_name, " model for ", data_set, quiet = quiet)
+  messageq("  -", model_name, " model for ", dataset, quiet = quiet)
   
   #### determine args and settings for making forecasts
   metadata <- read_metadata(main = main, 
                             control_files = control_files)
   E_range <- seq(from = 1, to = max_E)
-  data_set_controls <- metadata$controls_rodents[[data_set]]
+  dataset_controls <- metadata$controls_rodents[[dataset]]
   moons_to_cast <- metadata$rodent_cast_moons
   num_moons <- length(moons_to_cast)
   CL <- metadata$confidence_level
@@ -30,11 +30,11 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   pr_for_CL <- 0.5 + CL/2
   
   #### get the data
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & 
-    rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
@@ -95,9 +95,9 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons, 
-                             currency = data_set_controls$output, 
+                             currency = dataset_controls$args$output, 
                              model = model_name, 
-                             data_set = data_set, 
+                             dataset = dataset, 
                              species = species_name, 
                              estimate = preds$estimate, 
                              lower_pi = preds$lower_pi, 
@@ -124,8 +124,8 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   # generate output to save
   metadata <- update_list(metadata, 
                           models = model_name, 
-                          data_sets = data_set, 
-                          controls_rodents = data_set_controls)
+                          datasets = dataset, 
+                          controls_rodents = dataset_controls)
   cast_out <- list(metadata = metadata, 
                    cast_tab = cast_tab, 
                    model_fits = NULL, 
@@ -136,23 +136,23 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
 # 
 # @export
 #
-GPEDM <- function(main = ".", data_set = "all_interp", 
+GPEDM <- function(main = ".", dataset = "all_interp", 
                   control_files = files_control(), 
                   quiet = FALSE, 
                   verbose = FALSE, 
                   max_E = 7)
 {
   
-  data_set <- tolower(data_set)
+  dataset <- tolower(dataset)
   model_name <- "GPEDM"
   
-  messageq("  -", model_name, " model for ", data_set, quiet = quiet)
+  messageq("  -", model_name, " model for ", dataset, quiet = quiet)
   
   #### determine args and settings for making forecasts
   metadata <- read_metadata(main = main, 
                             control_files = control_files)
   E_range <- seq(from = 1, to = max_E)
-  data_set_controls <- metadata$controls_rodents[[data_set]]
+  dataset_controls <- metadata$controls_rodents[[dataset]]
   moons_to_cast <- metadata$rodent_cast_moons
   num_moons <- length(moons_to_cast)
   CL <- metadata$confidence_level
@@ -164,11 +164,11 @@ GPEDM <- function(main = ".", data_set = "all_interp",
   pr_for_CL <- 0.5 + CL/2
   
   #### get the data
-  rodents_table <- read_rodents_table(main = main, data_set = data_set)
+  rodents_table <- read_rodents_table(main = main, dataset = dataset)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
-  moon_in <- rodents_table$moon >= start_moon & 
-    rodents_table$moon <= end_moon
+  moon_in <- rodents_table$newmoonnumber >= start_moon & 
+             rodents_table$newmoonnumber <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
@@ -242,9 +242,9 @@ GPEDM <- function(main = ".", data_set = "all_interp",
                              cast_month = metadata$rodent_cast_months,
                              cast_year = metadata$rodent_cast_years, 
                              moon = metadata$rodent_cast_moons, 
-                             currency = data_set_controls$output, 
+                             currency = dataset_controls$args$output, 
                              model = model_name, 
-                             data_set = data_set, 
+                             dataset = dataset, 
                              species = species_name, 
                              estimate = preds$estimate, 
                              lower_pi = preds$lower_pi,
@@ -260,8 +260,8 @@ GPEDM <- function(main = ".", data_set = "all_interp",
   # generate output to save
   metadata <- update_list(metadata, 
                           models = model_name, 
-                          data_sets = data_set, 
-                          controls_rodents = data_set_controls)
+                          datasets = dataset, 
+                          controls_rodents = dataset_controls)
   cast_out <- list(metadata = metadata, 
                    cast_tab = cast_tab, 
                    model_fits = NULL, 

@@ -6,7 +6,7 @@
 \usage{
 jags_ss(
   main = ".",
-  data_set = "all",
+  dataset = "all",
   control_files = files_control(),
   control_runjags = runjags_control(),
   jags_model = NULL,
@@ -21,7 +21,7 @@ jags_ss(
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{data_set}{\code{character} value name of the rodent data set, such as 
+\item{dataset}{\code{character} value name of the rodent data set, such as 
 (\code{"all"} or \code{"controls"}).}
 
 \item{control_files}{\code{list} of names of the folders and files within
