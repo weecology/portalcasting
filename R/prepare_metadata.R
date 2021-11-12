@@ -45,11 +45,6 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param controls_rodents Control \code{list} or \code{list} of control 
-#'  \code{list}s from \code{\link{rodents_controls}} specifying the 
-#'  structuring of the rodents tables. See \code{\link{rodents_controls}} for 
-#'  details. 
-#'
 #' @param controls_model Additional controls for models not in the prefab
 #'  set. \cr 
 #'  A \code{list} of a single model's script-writing controls or a
@@ -94,7 +89,6 @@ prep_metadata <- function(main = ".", models = prefab_models(),
                           start_moon = 217, lead_time = 12, min_lag = 6, 
                           cast_date = Sys.Date(), confidence_level = 0.95, 
                           controls_model = NULL, 
-                          controls_rodents = NULL,
                           control_files = files_control(),
                           quiet = TRUE, verbose = FALSE){
   filename_config <- control_files$filename_config
@@ -107,15 +101,13 @@ prep_metadata <- function(main = ".", models = prefab_models(),
                                            datasets = datasets))
   covariates <- ifnull(covariates, read_covariates(main = main, 
                                                control_files = control_files))
-  controls_r <- rodents_controls(datasets = datasets, 
-                                 controls_rodents = controls_rodents)
   messageq("  -metadata file", quiet = quiet)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date)
   end_moon <- ifnull(end_moon, last_moon)
   ncontrols_r <- length(rodents)
   last_rodent_moon <- 0
   for(i in 1:ncontrols_r){
-    rodent_moon_i <- rodents[[i]]$moon
+    rodent_moon_i <- rodents[[i]]$newmoonnumber
     last_rodent_moon_i <- max(rodent_moon_i[rodent_moon_i <= end_moon], 
                               na.rm = TRUE)
     last_rodent_moon <- max(c(last_rodent_moon, last_rodent_moon_i, 
@@ -152,7 +144,7 @@ prep_metadata <- function(main = ".", models = prefab_models(),
 
   out <- list(cast_group = cast_group, models = models, datasets = datasets, 
               directory_configuration = config,
-              controls_rodents = controls_r,
+              controls_rodents = datasets,
               cast_type = cast_type, start_moon = start_moon, 
               end_moon = end_moon, last_moon = last_moon, 
               lead_time = lead_time, min_lag = min_lag, 

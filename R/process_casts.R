@@ -593,10 +593,6 @@ save_cast_output <- function(cast = NULL, main = ".",
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-
-
-
-#'  formatted correctly and provides directed error messages if not.
 #'  
 #' @return Data requested.
 #' 
@@ -613,7 +609,7 @@ read_casts_metadata <- function(main = ".", quiet = FALSE){
   meta_path <- file_path(main = main, sub = "casts", 
                          files = "casts_metadata.csv")
   if(!file.exists(meta_path)){
-    messageq("  **creating cast_metadata.csv**", quiet)
+    messageq("  **creating cast_metadata.csv**", quiet = quiet)
     casts_meta <- data.frame(cast_id = 0, cast_group = 0, 
                              cast_date = NA, start_moon = NA, end_moon = NA,
                              lead_time = NA, model = NA, data_set = NA,

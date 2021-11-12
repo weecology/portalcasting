@@ -44,8 +44,7 @@ test_that("model_controls creates control lists", {
                                           covariates = FALSE, lag = NA)))
   mm <- list(ESSS = model_control("ESSS"), xx = model_control("xx"))
   expect_error(model_controls(c("xx", "ESSS"), controls_model = mm))
-  expect_is(model_controls(c("xx", "ESSS"), controls_model = mm,
-                           arg_checks = FALSE),
+  expect_is(model_controls(c("xx", "ESSS"), controls_model = mm),
            "list")
 
   expect_message(model_controls("xx"))

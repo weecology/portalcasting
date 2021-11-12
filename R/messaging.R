@@ -57,7 +57,7 @@ messageq <- function (...,
 #' @return \code{NULL} (message is put out to console).
 #'
 #' @examples
-#'  messageq_break()
+#'  message_break()
 #'
 #' @export
 #'

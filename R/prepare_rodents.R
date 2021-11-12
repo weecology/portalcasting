@@ -334,14 +334,16 @@ prepare_rodent_datasets <- function (main  = ".",
   messageq("   -Rodents Datasets", quiet = quiet)
 
   ndatasets <- length(datasets)
+  out <- vector("list", ndatasets)
   for (i in 1:ndatasets) {
 
     args <- update_list(datasets[[i]]$args, 
                         main = main, quiet = quiet, verbose = verbose)
-    do.call(datasets[[i]]$fun, args)
+    out[[i]] <- do.call(datasets[[i]]$fun, args)
   
   }
-
+  names(out) <- names(datasets)
+  out
 }
 
 
@@ -413,7 +415,7 @@ prepare_rodent_dataset <- function(name = NULL,
              filename = filename, 
              overwrite = overwrite, 
              quiet = !verbose)
-
+  out
 }
 
 

@@ -11,9 +11,7 @@ read_casts_metadata(main = ".", quiet = FALSE)
 the directory tree.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
- quieted.
-
- formatted correctly and provides directed error messages if not.}
+quieted.}
 }
 \value{
 Data requested.

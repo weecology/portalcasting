@@ -29,8 +29,7 @@ fill_dir(
   lead_time = 12,
   min_lag = 6,
   confidence_level = 0.95,
-  cast_date = Sys.Date(),
-  controls_rodents = rodents_controls()
+  cast_date = Sys.Date()
 )
 
 fill_data(
@@ -159,10 +158,6 @@ summarizing model output. Must be between \code{0} and \code{1}.}
 \item{cast_date}{\code{Date} from which future is defined (the origin of
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
-
-\item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
-(from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_controls}} for details.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.

@@ -278,8 +278,8 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
   if(!cleanup){
     return()
   }
-  messageq_break(bline = bline, quiet = quiet)
-  messageq("Clearing tmp subdirectory", quiet)
+  message_break(quiet = !bline)
+  messageq("Clearing tmp subdirectory", quiet = quiet)
 
   if(tmp_exist){
     if(ntmp_files > 0){
@@ -293,7 +293,7 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
   } else{
     msg <- "    *tmp subdirectory not present for clearing*"
   }
-  messageq(msg, !verbose)
+  messageq(msg, quiet = !verbose)
   NULL
 }
 

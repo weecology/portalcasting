@@ -118,10 +118,6 @@ read_directory_config <- function(main = ".",
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
-
-
-
-
 #'
 #' @return \code{dfl} as input.
 #'
@@ -201,10 +197,6 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-
-
-
-#'  formatted correctly and provides directed error messages if not.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or just tidy messages. 
@@ -274,7 +266,7 @@ read_rodents_table <- function(main = ".", dataset = "all"){
   lpath <- paste0("rodents_", dataset, ".csv") 
   fpath <- file_path(main = main, sub = "data", files = lpath)
   if(!file.exists(fpath)){
-    rodents <- prep_rodents(main = main, datasets = dataset)
+    rodents <- prepare_rodent_datasets(main = main, datasets = dataset)
     rodents_tab <- rodents[[1]]
     return(rodents_tab)
   }

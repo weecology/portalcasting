@@ -20,6 +20,6 @@ the break.}
 Creates a horizontal line of characters for messages.
 }
 \examples{
- messageq_break()
+ message_break()
 
 }

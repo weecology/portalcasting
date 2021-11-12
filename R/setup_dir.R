@@ -51,11 +51,6 @@
 #'  element \code{list} must be named according to the model and the
 #'  \code{name} element. \cr 
 #'
-#' @param controls_rodents Control \code{list} or \code{list} of \code{list}s 
-#'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
-#'  rodents tables. See \code{\link{rodents_controls}} for details. 
-#'
-#'
 #' @param datasets \code{list} of datasets to be created using 
 #'        \code{\link{do.call}} on the defined functions. 
 #'
@@ -109,7 +104,6 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       start_moon = 217, lead_time = 12, 
                       confidence_level = 0.95, cast_date = Sys.Date(),
                       controls_model = NULL, 
-                      controls_rodents = rodents_controls(),
                       control_files = files_control(),
                       PortalData_source = "gitub",
                       PortalData_version = "latest",
@@ -143,8 +137,6 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            end_moon = end_moon, lead_time = lead_time, 
            cast_date = cast_date, start_moon = start_moon, 
            confidence_level = confidence_level, 
-
-           controls_rodents = controls_rodents, 
            quiet = quiet, verbose = verbose)
   setup_completion_message(quiet = quiet)
 }
@@ -159,7 +151,6 @@ setup_production <- function(main = ".", models = prefab_models(),
                              end_moon = NULL, start_moon = 217, 
                              lead_time = 12, confidence_level = 0.95, 
                              cast_date = Sys.Date(), controls_model = NULL,
-                             controls_rodents = rodents_controls(),
 
                              control_files = files_control(), 
                       PortalData_source = "gitub",
@@ -175,7 +166,6 @@ setup_production <- function(main = ".", models = prefab_models(),
             cast_date = cast_date, start_moon = start_moon, 
             confidence_level = confidence_level, 
             controls_model = controls_model, 
-            controls_rodents = controls_rodents, 
             quiet = quiet, verbose = verbose, 
                       datasets = datasets,
                  PortalData_version = PortalData_version,
@@ -196,7 +186,6 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           end_moon = NULL, start_moon = 217, lead_time = 12, 
                           confidence_level = 0.95, cast_date = Sys.Date(), 
                           controls_model = NULL,
-                          controls_rodents = rodents_controls(),
 
                           control_files = files_control(),
                       PortalData_source = "gitub",
@@ -212,7 +201,6 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
             cast_date = cast_date, start_moon = start_moon, 
             confidence_level = confidence_level, 
             controls_model = controls_model, 
-            controls_rodents = controls_rodents, 
                              PortalData_version = PortalData_version,
                       datasets = datasets,
                  PortalData_source = PortalData_source,

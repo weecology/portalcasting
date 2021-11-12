@@ -84,10 +84,6 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
 
     win <- cast_window(main = main, moons = moons, cast_date = cast_date,
                        lead_time = lead_time, min_lag = min_lag)
-    download_climate_forecasts(main = main, 
-                           source = "NMME",  version = win$start,
-                           quiet = quiet, verbose = verbose)
-
     cast_cov <- read_climate_casts(main = main)
     win_vec <- seq(win$start, win$end, 1)
     win_length <- length(win_vec)

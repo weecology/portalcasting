@@ -8,7 +8,7 @@ jags_RW <- function(main = ".", data_set = "all",
                     quiet = FALSE, verbose = FALSE){
   
   data_set <- tolower(data_set)
-  messageq(paste0("  -jags_RW for ", data_set), quiet)
+  messageq("  -jags_RW for ", data_set, quiet = quiet)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
   monitor <- c("mu", "tau")
   inits <- function(data = NULL){
@@ -283,7 +283,7 @@ jags_ss <- function(main = ".", data_set = "all",
   for(i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq("   -", ss, quiet = !verbose)
 
     moon_in <- which(rodents_table$moon >= start_moon & 
                      rodents_table$moon <= end_moon)

@@ -18,7 +18,6 @@ prep_metadata(
   cast_date = Sys.Date(),
   confidence_level = 0.95,
   controls_model = NULL,
-  controls_rodents = NULL,
   control_files = files_control(),
   quiet = TRUE,
   verbose = FALSE
@@ -78,11 +77,6 @@ the model from the element \code{name} will be used to name the model's
 \code{list} in the larger \code{list}. If multiple models are added, each
 element \code{list} must be named according to the model and the
 \code{name} element. \cr}
-
-\item{controls_rodents}{Control \code{list} or \code{list} of control 
-\code{list}s from \code{\link{rodents_controls}} specifying the 
-structuring of the rodents tables. See \code{\link{rodents_controls}} for 
-details.}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).

@@ -188,7 +188,7 @@ NaiveArima <- function(main = ".", data_set = "all",
   
   data_set <- tolower(data_set)
 
-  messageq(paste0("  -NaiveArima for ", data_set), quiet)
+  messageq("  -NaiveArima for ", data_set, quiet = quiet)
 
   rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
@@ -212,7 +212,7 @@ NaiveArima <- function(main = ".", data_set = "all",
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq("   -", ss, quiet = !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -255,7 +255,7 @@ ESSS <- function(main = ".", data_set = "all_interp",
                  verbose = FALSE){
   
   data_set <- tolower(data_set)
-  messageq(paste0("  -ESSS for ", data_set), quiet)
+  messageq("  -ESSS for ", data_set, quiet = quiet)
 
   rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
@@ -279,7 +279,7 @@ ESSS <- function(main = ".", data_set = "all_interp",
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq("   -", ss, quiet = !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -322,7 +322,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
                     verbose = FALSE){
   
   data_set <- tolower(data_set)
-  messageq(paste0("  -nbGARCH for ", data_set), quiet)
+  messageq("  -nbGARCH for ", data_set, quiet = quiet)
 
   rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
@@ -346,7 +346,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq("   -", ss, quiet = !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -405,7 +405,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
                      verbose = FALSE){
   
   data_set <- tolower(data_set)
-  messageq(paste0("  -nbsGARCH for ", data_set), quiet)
+  messageq("  -nbsGARCH for ", data_set, quiet = quiet)
   rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
                                 nadot = TRUE)
@@ -438,7 +438,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq("   -", ss, !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -500,7 +500,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
                      verbose = FALSE){
   
   data_set <- tolower(data_set)
-  messageq(paste0("  -pevGARCH for ", data_set), quiet)
+  messageq("  -pevGARCH for ", data_set, quiet = quiet)
 
   rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
@@ -544,7 +544,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   for (i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq("   -", ss, !verbose)
     abund_s <- rodents_table[ , s]
     if(sum(abund_s, na.rm = TRUE) == 0){
       next()
@@ -559,7 +559,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
       m <- models[j]
       model_name <- paste(m[[1]], collapse = ", ")
       model_name <- ifnull(model_name, "<intercept only>")
-      messageq(paste0("    -", j, ": ", model_name), !verbose)
+      messageq("    -", j, ": ", model_name, !verbose)
       predictors <- NULL
       cast_predictors <- NULL
       if (!(is.null(unlist(m)))){

@@ -50,10 +50,8 @@ name(s) used to define the rodents. Standard options are \code{"all"} and
 \code{datasets} is not restricted in length.}
 
 \item{control_files}{\code{list} of names of the folders and files within
- the sub directories and saving strategies (save, overwrite, append, etc.).
- Generally shouldn't need to be edited. See \code{\link{files_control}}.
-
- formatted correctly and provides directed error messages if not.}
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

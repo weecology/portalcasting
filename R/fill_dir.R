@@ -117,10 +117,6 @@
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
 #'
-#' @param controls_rodents Control \code{list} or \code{list} of \code{list}s 
-#'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
-#'  rodents tables. See \code{\link{rodents_controls}} for details. 
-#'
 #' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
 #'  covariate lag time used in any model.
 #'
@@ -163,8 +159,7 @@ fill_dir <- function (main  = ".",
                         control_files = files_control(), 
                         end_moon = NULL, start_moon = 217, lead_time = 12,
  min_lag = 6, 
-                        confidence_level = 0.95, cast_date = Sys.Date(), 
-                        controls_rodents = rodents_controls()) {
+                        confidence_level = 0.95, cast_date = Sys.Date()) {
 
   messageq("Filling directory with requested content",
            quiet = quiet)
@@ -205,7 +200,6 @@ models = models,
             confidence_level = confidence_level,
             cast_date = cast_date,
                       controls_model = controls_model,
-                      controls_rodents = controls_rodents, 
                       control_files = control_files
 )
 
@@ -240,7 +234,7 @@ fill_data <- function (main  = ".",
                           verbose = verbose)
 
 
-  messageq(" -Adding data files to data subdirectory", quiet)
+  messageq(" -Adding data files to data subdirectory", quiet = quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
                        cast_date = cast_date, 
                        quiet = quiet, verbose = verbose,
@@ -258,7 +252,7 @@ fill_data <- function (main  = ".",
                 cast_date = cast_date, start_moon = start_moon, 
                 confidence_level = confidence_level, 
                 controls_model = controls_model,
-                controls_rodents = controls_rodents, quiet = quiet, 
+                quiet = quiet, 
                 control_files = control_files)
 
   invisible(NULL)
