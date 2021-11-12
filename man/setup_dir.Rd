@@ -23,11 +23,10 @@ setup_dir(
   portalPredictions_version = NULL,
   climate_forecast_source = "NMME",
   climate_forecast_version = Sys.Date(),
-  data_sets = prefab_data_sets(),
+  datasets = prefab_rodent_datasets(),
   bline = TRUE,
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 setup_production(
@@ -49,8 +48,7 @@ setup_production(
   climate_forecast_version = Sys.Date(),
   quiet = FALSE,
   verbose = TRUE,
-  data_sets = prefab_data_sets(),
-  arg_checks = TRUE
+  datasets = prefab_rodent_datasets()
 )
 
 setup_sandbox(
@@ -70,10 +68,9 @@ setup_sandbox(
   portalPredictions_version = NULL,
   climate_forecast_source = "NMME",
   climate_forecast_version = Sys.Date(),
-  data_sets = prefab_data_sets(),
+  datasets = prefab_rodent_datasets(),
   quiet = FALSE,
-  verbose = TRUE,
-  arg_checks = FALSE
+  verbose = TRUE
 )
 }
 \arguments{
@@ -151,7 +148,7 @@ Northwest Knowledge Network's North American Multi-Model Ensemble
 \cr \cr 
 See \code{\link{download_climate_forecasts}}.}
 
-\item{data_sets}{\code{list} of data_sets to be created using 
+\item{datasets}{\code{list} of datasets to be created using 
 \code{\link{do.call}} on the defined functions.}
 
 \item{bline}{\code{logical} indicator if a horizontal break lines should be
@@ -162,15 +159,6 @@ quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{NULL}

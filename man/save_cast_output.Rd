@@ -4,7 +4,7 @@
 \alias{save_cast_output}
 \title{Save cast output to files}
 \usage{
-save_cast_output(cast = NULL, main = ".", quiet = FALSE, arg_checks = TRUE)
+save_cast_output(cast = NULL, main = ".", quiet = FALSE)
 }
 \arguments{
 \item{cast}{Output from a model function (e.g., 
@@ -19,11 +19,6 @@ the directory tree.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 Relevant elements are saved to external files, and \code{NULL} is

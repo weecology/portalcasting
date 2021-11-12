@@ -23,11 +23,6 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not.
-#'
 #' @param downloads_versions \code{character} vector returned from 
 #'  \code{fill_raw} of the successfully downloaded versions of
 #'  \code{downloads}.
@@ -47,8 +42,8 @@ NULL
 #'
 write_directory_config <- function(main = ".", 
                                    filename_config = "dir_config.yaml",
-                                   quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                                   quiet = FALSE){
+  
   subs <- c("casts", "models", "raw", "data", "tmp")
   config_path <- file_path(main = main, files = filename_config)
   pc_version <- packageDescription("portalcasting", fields = "Version")
@@ -72,12 +67,12 @@ write_directory_config <- function(main = ".",
 update_directory_config <- function(main = ".", 
                                    filename_config = "dir_config.yaml",
                                     downloads_versions = NULL, 
-                                    quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                                    quiet = FALSE){
+  
   config_path <- file_path(main = main, files = filename_config)
   config <- read_directory_config(main = main, 
                                  filename_config = filename_config,
-                                 quiet = quiet, arg_checks = arg_checks)
+                                 quiet = quiet)
   if(!is.null(downloads_versions)){
     config$downloads_versions <- downloads_versions
   }
@@ -94,10 +89,9 @@ update_directory_config <- function(main = ".",
 #'
 read_directory_config <- function(main = ".", 
                                   filename_config = "dir_config.yaml",
-                                  quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  config_path <- file_path(main = main, files = filename_config,
-                           arg_checks = arg_checks)
+                                  quiet = FALSE){
+  
+  config_path <- file_path(main = main, files = filename_config)
   if(!file.exists(config_path)){
     stop("dir_config.yaml file is missing, recreate directory", call. = FALSE)
   }
@@ -124,25 +118,24 @@ read_directory_config <- function(main = ".",
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
+
+
+
+
 #'
 #' @return \code{dfl} as input.
 #'
 #' @export
 #'
 write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL, 
-                       overwrite = TRUE, quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                       overwrite = TRUE, quiet = FALSE){
+  
   return_if_null(dfl)
   return_if_null(filename)
   save_it <- FALSE
   if(save){
     fext <- file_ext(filename)
-    full_path <- file_path(main = main, sub = "data", files = filename,
-                           arg_checks = arg_checks)
+    full_path <- file_path(main = main, sub = "data", files = filename)
     f_exists <- file.exists(full_path)
     if(f_exists){
       if(overwrite){
@@ -157,7 +150,7 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
       save_it <- TRUE
       msg <- paste0("    **", filename, " saved**")
     }
-    messageq(msg, quiet)
+    messageq(msg, quiet = quiet)
     if( save_it){
         if(fext == "csv"){
           write.csv(dfl, full_path, row.names = FALSE)
@@ -196,10 +189,10 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
 #'  \code{"metadata"}.
 #'
-#' @param data_set,data_sets \code{character} representation of the grouping
+#' @param dataset,datasets \code{character} representation of the grouping
 #'  name(s) used to define the rodents. Standard options are \code{"all"} and 
-#'  \code{"controls"}. \code{data_set} can only be length 1, 
-#'  \code{data_sets} is not restricted in length.
+#'  \code{"controls"}. \code{dataset} can only be length 1, 
+#'  \code{datasets} is not restricted in length.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -208,9 +201,9 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
+
+
+
 #'  formatted correctly and provides directed error messages if not.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out
@@ -223,7 +216,7 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  setup_dir()
 #'  read_data(data_name = "rodents")
 #'  read_data(data_name = "rodents_table")
-#'  read_data(data_name = "rodents_table", data_set = "controls")
+#'  read_data(data_name = "rodents_table", dataset = "controls")
 #'  read_data(data_name = "covariates")
 #'  read_data(data_name = "covariate_casts")
 #'  read_data(data_name = "moons")
@@ -239,36 +232,33 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'
 #' @export
 #'
-read_data <- function(main = ".", data_name = NULL, data_set = "all", 
-                      data_sets = c("all", "controls"), 
-                      control_files = files_control(), arg_checks = TRUE){
-  check_args(arg_checks)
+read_data <- function(main = ".", data_name = NULL, dataset = "all", 
+                      datasets = c("all", "controls"), 
+                      control_files = files_control()){
+  
   return_if_null(data_name)
   data_name <- tolower(data_name)
-  data_set <- tolower(data_set)
-  data_sets <- tolower(data_sets)
+  dataset <- tolower(dataset)
+  datasets <- tolower(datasets)
   if (data_name == "rodents"){
-    data <- read_rodents(main = main, data_sets = data_sets, 
-                         arg_checks = arg_checks)
+    data <- read_rodents(main = main, datasets = datasets)
   }
   if (data_name == "rodents_table"){
-    data <- read_rodents_table(main = main, data_set, arg_checks = arg_checks)
+    data <- read_rodents_table(main = main, dataset)
   }
   if (data_name == "covariates"){
-    data <- read_covariates(main = main, control_files = control_files, 
-                            arg_checks = arg_checks)
+    data <- read_covariates(main = main, control_files = control_files)
   }
   if (data_name == "covariate_casts"){
-    data <- read_covariate_casts(main = main, control_files = control_files, 
-                                 arg_checks = arg_checks)
+    data <- read_covariate_casts(main = main, control_files = control_files)
   }
   if (data_name == "moons"){
-    data <- read_moons(main = main, control_files = control_files, 
-                       arg_checks = arg_checks)
+    data <- read_moons(main = main, control_files = control_files)
+
   }
   if (data_name == "metadata"){
-    data <- read_metadata(main = main, control_files = control_files, 
-                          arg_checks = arg_checks)
+    data <- read_metadata(main = main, control_files = control_files)
+
   }
   data
 }
@@ -277,14 +267,14 @@ read_data <- function(main = ".", data_name = NULL, data_set = "all",
 #'
 #' @export
 #'
-read_rodents_table <- function(main = ".", data_set = "all"){
+read_rodents_table <- function(main = ".", dataset = "all"){
 
 
-  data_set <- tolower(data_set)
-  lpath <- paste0("rodents_", data_set, ".csv") 
+  dataset <- tolower(dataset)
+  lpath <- paste0("rodents_", dataset, ".csv") 
   fpath <- file_path(main = main, sub = "data", files = lpath)
   if(!file.exists(fpath)){
-    rodents <- prep_rodents(main = main, data_sets = data_set)
+    rodents <- prep_rodents(main = main, datasets = dataset)
     rodents_tab <- rodents[[1]]
     return(rodents_tab)
   }
@@ -295,18 +285,16 @@ read_rodents_table <- function(main = ".", data_set = "all"){
 #'
 #' @export
 #'
-read_rodents <- function(main = ".", data_sets = c("all", "controls"), 
-                         arg_checks = TRUE){
-  check_args(arg_checks)
-  return_if_null(data_sets)
-  data_sets <- tolower(data_sets)
-  ndata_sets <- length(data_sets)
-  rodents <- vector("list", length = ndata_sets)
-  for(i in 1:ndata_sets){
-    rodents[[i]] <- read_rodents_table(main = main, data_set = data_sets[i], 
-                                       arg_checks = arg_checks)
+read_rodents <- function(main = ".", datasets = c("all", "controls")){
+  
+  return_if_null(datasets)
+  datasets <- tolower(datasets)
+  ndatasets <- length(datasets)
+  rodents <- vector("list", length = ndatasets)
+  for(i in 1:ndatasets){
+    rodents[[i]] <- read_rodents_table(main = main, dataset = datasets[i])
   }
-  names(rodents) <- data_sets
+  names(rodents) <- datasets
   rodents
 }
 
@@ -315,14 +303,12 @@ read_rodents <- function(main = ".", data_sets = c("all", "controls"),
 #'
 #' @export
 #'
-read_covariates <- function(main = ".", control_files = files_control(),
-                            arg_checks = TRUE){
-  check_args(arg_checks)
+read_covariates <- function(main = ".", control_files = files_control()){
+  
   fpath <- file_path(main = main, sub = "data", 
-                     files = control_files$filename_cov, 
-                     arg_checks = arg_checks)
+                     files = control_files$filename_cov)
   if(!file.exists(fpath)){
-    return(prep_covariates(main = main, arg_checks = arg_checks))
+    return(prep_covariates(main = main))
   }
   read.csv(fpath, stringsAsFactors = FALSE) 
 }
@@ -332,17 +318,15 @@ read_covariates <- function(main = ".", control_files = files_control(),
 #' @export
 #'
 read_covariate_casts <- function(main = ".", control_files = files_control(),
-                           quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                           quiet = FALSE, verbose = FALSE){
+  
   curr_path <- file_path(main = main, sub = "data", 
-                         files = control_files$filename_cov_casts, 
-                         arg_checks = arg_checks)
+                         files = control_files$filename_cov_casts)
   curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
 
   arch_path <- paste0(control_files$directory, "/data/", 
                       control_files$filename_cov_casts)
-  arch_path <- file_path(main = main, sub = "raw", files = arch_path,
-                         arg_checks = arg_checks)
+  arch_path <- file_path(main = main, sub = "raw", files = arch_path)
   arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
 
   if(file.exists(curr_path)){
@@ -373,14 +357,12 @@ read_covariate_casts <- function(main = ".", control_files = files_control(),
 #'
 #' @export
 #'
-read_moons <- function(main = ".", control_files = files_control(),
-                       arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+read_moons <- function(main = ".", control_files = files_control()){
+  
   fpath <- file_path(main = main, sub = "data", 
-                     files = control_files$filename_moons, 
-                     arg_checks = arg_checks)
+                     files = control_files$filename_moons)
   if(!file.exists(fpath)){
-    return(prep_moons(main = main, arg_checks = arg_checks))
+    return(prep_moons(main = main))
   }
   read.csv(fpath, stringsAsFactors = FALSE)
 }
@@ -389,14 +371,13 @@ read_moons <- function(main = ".", control_files = files_control(),
 #'
 #' @export
 #'
-read_metadata <- function(main = ".", control_files = files_control(),
-                          arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+read_metadata <- function(main = ".", control_files = files_control()){
+  
   fpath <- file_path(main = main, sub = "data", 
                      files = control_files$filename_meta, 
-                     arg_checks = arg_checks)
+)
   if(!file.exists(fpath)){
-    md <- prep_metadata(main = main, arg_checks = arg_checks)
+    md <- prep_metadata(main = main)
     return(md)
   }
   yaml.load_file(fpath) 

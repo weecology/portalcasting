@@ -16,8 +16,7 @@ plot_cast_point(
   moon = NULL,
   with_census = FALSE,
   control_files = files_control(),
-  quiet = FALSE,
-  arg_checks = TRUE
+  quiet = FALSE
 )
 }
 \arguments{
@@ -67,11 +66,6 @@ Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{NULL}. Plot is generated.

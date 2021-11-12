@@ -11,16 +11,14 @@ target_moons(
   end_moon = NULL,
   lead_time = 12,
   date = Sys.Date(),
-  control_files = files_control(),
-  arg_checks = TRUE
+  control_files = files_control()
 )
 
 last_moon(
   main = ".",
   moons = NULL,
   date = Sys.Date(),
-  control_files = files_control(),
-  arg_checks = TRUE
+  control_files = files_control()
 )
 }
 \arguments{
@@ -42,11 +40,6 @@ subsequent to the date) or a previous moon (before or on the date).}
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{target_moons}: \code{numeric} vector of the moon numbers 

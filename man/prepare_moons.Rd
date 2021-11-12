@@ -17,18 +17,17 @@ prep_moons(
   verbose = FALSE
 )
 
-format_moons(moons, arg_checks = TRUE)
+format_moons(moons)
 
 add_future_moons(
   main = ".",
   moons = NULL,
   lead_time = 12,
   cast_date = Sys.Date(),
-  control_files = files_control(),
-  arg_checks = TRUE
+  control_files = files_control()
 )
 
-add_extra_future_moons(moons, cast_date = Sys.Date(), arg_checks = TRUE)
+add_extra_future_moons(moons, cast_date = Sys.Date())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -50,11 +49,6 @@ Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 all of the information or not (and thus just the tidy messages).}
 
 \item{moons}{Moons \code{data.frame}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 All functions here return some version of a moons \code{data.frame}

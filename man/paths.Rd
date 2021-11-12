@@ -13,39 +13,36 @@
 \alias{file_path}
 \title{Determine the path for a specific level of a forecasting directory}
 \usage{
-main_path(main = ".", arg_checks = TRUE)
+main_path(main = ".")
 
-sub_path(main = ".", subs = NULL, arg_checks = TRUE)
+sub_path(main = ".", subs = NULL)
 
-raw_path(main = ".", arg_checks = TRUE)
+raw_path(main = ".")
 
-casts_path(main = ".", arg_checks = TRUE)
+casts_path(main = ".")
 
-fits_path(main = ".", arg_checks = TRUE)
+fits_path(main = ".")
 
-data_path(main = ".", arg_checks = TRUE)
+data_path(main = ".")
 
-models_path(main = ".", arg_checks = TRUE)
+models_path(main = ".")
 
-tmp_path(main = ".", arg_checks = TRUE)
+tmp_path(main = ".")
 
-file_path(main = ".", sub = NULL, files = NULL, arg_checks = TRUE)
+file_path(main = ".", sub = NULL, files = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 
 \item{sub, subs}{\code{character} of the name(s) of the sub component(s) of
 the directory tree to get the path of. \code{sub} can only take a single
 value, \code{subs} can take a vector of multiple values.}
 
 \item{files}{\code{character} file path(s) within the \code{main}
-level of the portalcasting directory.}
+  level of the portalcasting directory.
+
+ formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{character} value normalized paths 

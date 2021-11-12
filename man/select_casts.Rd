@@ -12,8 +12,7 @@ select_casts(
   models = NULL,
   data_sets = NULL,
   quiet = FALSE,
-  include_interp = FALSE,
-  arg_checks = TRUE
+  include_interp = FALSE
 )
 }
 \arguments{
@@ -47,11 +46,6 @@ quieted.}
 
 \item{include_interp}{\code{logical} indicator of if the basic data set
 names should also be inclusive of the associated interpolated data sets.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{data.frame} of the \code{cast_tab}.

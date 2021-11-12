@@ -4,22 +4,13 @@
 \alias{append_csv}
 \title{Save data out to a csv, appending the file if it already exists}
 \usage{
-append_csv(df, filename, arg_checks = TRUE)
+append_csv(df, filename)
 }
 \arguments{
 \item{df}{\code{data.frame} table to be written out.}
 
 \item{filename}{\code{character} filename of existing \code{.csv} to be 
 appended.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
 }
 \value{
 \code{NULL}.

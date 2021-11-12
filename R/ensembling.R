@@ -46,10 +46,6 @@
 #' @param include_interp \code{logical} indicator of if the basic data set
 #'  names should also be inclusive of the associated interpolated data sets.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @param species \code{character} vector of the species code(s) 
 #'  or \code{"total"} for the total across species) to be plotted 
@@ -72,28 +68,27 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
                            cast_tab = NULL, end_moon = NULL, 
                            models = NULL, data_set = NULL, 
                            include_interp = TRUE,
-                           species = NULL, arg_checks = TRUE){
+                           species = NULL){
 
-  check_args(arg_checks = arg_checks)
+  
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moon, 
                                  data_sets = data_set, 
-                                 include_interp = include_interp,
-                                 arg_checks = arg_checks)
+                                 include_interp = include_interp)
     if(NROW(cast_choices) == 0){
       stop("no casts available for request", call. = FALSE)
     }else{
-      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
-                                 arg_checks = arg_checks)
-      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
-                                      arg_checks = arg_checks)
-      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab,
-                                      arg_checks = arg_checks)
-      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab,
-                                       arg_checks = arg_checks)
-      cast_tab <- add_covered_to_cast_tab(main = main, cast_tab = cast_tab,
-                                          arg_checks = arg_checks)
+      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id)
+
+      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
+
+      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab)
+
+      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab)
+
+      cast_tab <- add_covered_to_cast_tab(main = main, cast_tab = cast_tab)
+
     }
   }
   cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
@@ -101,7 +96,7 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
   models <- ifnull(models, unique(cast_tab$model))
   data_set <- ifnull(data_set, "controls")
   species <- ifnull(species, 
-                    base_species(total = TRUE, arg_checks = arg_checks)) 
+                    base_species(total = TRUE)) 
   end_moon <- ifnull(end_moon, max(unique(na.omit(cast_tab)$end_moon))) 
   cast_groups <- ifnull(cast_groups, unique(cast_tab$cast_group))
   cast_id_in <- cast_tab$cast_id %in% cast_ids

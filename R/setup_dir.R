@@ -56,7 +56,7 @@
 #'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
 #'
-#' @param data_sets \code{list} of data_sets to be created using 
+#' @param datasets \code{list} of datasets to be created using 
 #'        \code{\link{do.call}} on the defined functions. 
 #'
 #' @param PortalData_source,PortalData_version \code{character} values for the
@@ -94,15 +94,6 @@
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages).
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
 #' @return \code{NULL}
 #'
 #' @examples
@@ -126,15 +117,13 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       portalPredictions_version = NULL,
                       climate_forecast_source = "NMME",
                       climate_forecast_version = Sys.Date(),
-                      data_sets = prefab_data_sets(),
+                      datasets = prefab_rodent_datasets(),
 
-                      bline = TRUE, quiet = FALSE, verbose = FALSE, 
-                      arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                      bline = TRUE, quiet = FALSE, verbose = FALSE){
 
-  version_message(bline = bline, quiet = quiet, arg_checks = arg_checks)
+  version_message(quiet = !bline | quiet)
   create_dir(main = main, filename_config = control_files$filename_config,
-             bline = TRUE, quiet = quiet, arg_checks = arg_checks)
+             quiet = quiet)
 
 
 
@@ -147,7 +136,7 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                  climate_forecast_source = climate_forecast_source,
                  climate_forecast_version = climate_forecast_version,
                models = models, 
-                      data_sets = data_sets,
+                      datasets = datasets,
            controls_model = controls_model, 
            control_files = control_files, 
 
@@ -156,10 +145,8 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            confidence_level = confidence_level, 
 
            controls_rodents = controls_rodents, 
-           quiet = quiet, verbose = verbose, 
-           arg_checks = arg_checks)
-  setup_completion_message(bline = bline, quiet = quiet, 
-                           arg_checks = arg_checks)
+           quiet = quiet, verbose = verbose)
+  setup_completion_message(quiet = quiet)
 }
 
 
@@ -182,9 +169,7 @@ setup_production <- function(main = ".", models = prefab_models(),
                       climate_forecast_source = "NMME",
                       climate_forecast_version = Sys.Date(),
                              quiet = FALSE, verbose = TRUE, 
-                      data_sets = prefab_data_sets(),
-                             arg_checks = TRUE){
-  check_args(arg_checks)
+                      datasets = prefab_rodent_datasets()){
   setup_dir(main = main, models = models, 
             end_moon = end_moon, lead_time = lead_time, 
             cast_date = cast_date, start_moon = start_moon, 
@@ -192,14 +177,14 @@ setup_production <- function(main = ".", models = prefab_models(),
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 
             quiet = quiet, verbose = verbose, 
-                      data_sets = data_sets,
+                      datasets = datasets,
                  PortalData_version = PortalData_version,
                  PortalData_source = PortalData_source,
                  portalPredictions_version = portalPredictions_version,
                  portalPredictions_source = portalPredictions_source,
                  climate_forecast_source = climate_forecast_source,
                  climate_forecast_version = climate_forecast_version,
-            control_files = control_files, arg_checks = arg_checks)
+            control_files = control_files)
 }
 
 
@@ -220,10 +205,8 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                       portalPredictions_version = NULL,
                       climate_forecast_source = "NMME",
                       climate_forecast_version = Sys.Date(),
-                      data_sets = prefab_data_sets(),
-                          quiet = FALSE, verbose = TRUE, 
-                          arg_checks = FALSE){
-  check_args(arg_checks)
+                      datasets = prefab_rodent_datasets(),
+                          quiet = FALSE, verbose = TRUE){
   setup_dir(main = main, models = models, 
             end_moon = end_moon, lead_time = lead_time, 
             cast_date = cast_date, start_moon = start_moon, 
@@ -231,14 +214,14 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 
                              PortalData_version = PortalData_version,
-                      data_sets = data_sets,
+                      datasets = datasets,
                  PortalData_source = PortalData_source,
                  portalPredictions_version = portalPredictions_version,
                  portalPredictions_source = portalPredictions_source,
                  climate_forecast_source = climate_forecast_source,
                  climate_forecast_version = climate_forecast_version,
 quiet = quiet, verbose = verbose, 
-            control_files = control_files, arg_checks = arg_checks)
-  sandbox_welcome(main = main, quiet = quiet, arg_checks = arg_checks)
+            control_files = control_files)
+  sandbox_welcome(main = main, quiet = quiet)
 }
 

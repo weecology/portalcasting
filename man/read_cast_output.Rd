@@ -9,24 +9,19 @@
 \alias{read_model_casts}
 \title{Read in cast output from a given cast}
 \usage{
-read_cast_tab(main = ".", cast_id = NULL, arg_checks = TRUE)
+read_cast_tab(main = ".", cast_id = NULL)
 
-read_cast_tabs(main = ".", cast_ids = NULL, arg_checks = TRUE)
+read_cast_tabs(main = ".", cast_ids = NULL)
 
-read_cast_metadata(main = ".", cast_id = NULL, arg_checks = TRUE)
+read_cast_metadata(main = ".", cast_id = NULL)
 
-read_model_fits(main = ".", cast_id = NULL, arg_checks = TRUE)
+read_model_fits(main = ".", cast_id = NULL)
 
-read_model_casts(main = ".", cast_id = NULL, arg_checks = TRUE)
+read_model_casts(main = ".", cast_id = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 
 \item{cast_ids, cast_id}{\code{integer} (or integer \code{numeric}) value(s) 
 representing the cast(s) of interest, as indexed within the directory in

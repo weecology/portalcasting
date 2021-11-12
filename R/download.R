@@ -1,8 +1,6 @@
-verify_raw_data <- function(main = ".", raw_data = "PortalData", 
-                            arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  full <- file_path(main = main, sub = "raw", files = raw_data, 
-                    arg_checks = arg_checks) 
+verify_raw_data <- function(main = ".", raw_data = "PortalData"){
+  
+  full <- file_path(main = main, sub = "raw", files = raw_data)
   file.exists(full)
 }
 

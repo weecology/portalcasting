@@ -15,7 +15,7 @@
 #'
 #' @param rodents Rodents \code{list}. See \code{\link{prep_rodents}},
 #'  
-#' @param data_sets \code{character} vector of the rodent data set names
+#' @param datasets \code{character} vector of the rodent data set names
 #'  that the model is applied to. 
 #'
 #' @param covariates Covariates \code{data.frame}. See 
@@ -44,11 +44,6 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @param controls_rodents Control \code{list} or \code{list} of control 
 #'  \code{list}s from \code{\link{rodents_controls}} specifying the 
@@ -94,42 +89,28 @@
 #' @export
 #'
 prep_metadata <- function(main = ".", models = prefab_models(),
-                          data_sets = NULL, moons = NULL, rodents = NULL,
+                          datasets = NULL, moons = NULL, rodents = NULL,
                           covariates = NULL, end_moon = NULL, 
-                          start_moon = 217, lead_time = 12, min_lag = NULL, 
+                          start_moon = 217, lead_time = 12, min_lag = 6, 
                           cast_date = Sys.Date(), confidence_level = 0.95, 
                           controls_model = NULL, 
                           controls_rodents = NULL,
                           control_files = files_control(),
-                          quiet = TRUE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
+                          quiet = TRUE, verbose = FALSE){
   filename_config <- control_files$filename_config
   filename_meta <- control_files$filename_meta
-  min_lag_e <- extract_min_lag(models = models,
-                               controls_model = controls_model, 
-                               arg_checks = arg_checks)
-  data_sets_e <- extract_data_sets(models = models, 
-                                   controls_model = controls_model, 
-                                   arg_checks = arg_checks)
 
-  min_lag <- ifnull(min_lag, min_lag_e)
-  data_sets <- ifnull(data_sets, data_sets_e)
 
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+                                    control_files = control_files))
   rodents  <- ifnull(rodents, read_rodents(main = main, 
-                                           data_sets = data_sets, 
-                                           arg_checks = arg_checks))
+                                           datasets = datasets))
   covariates <- ifnull(covariates, read_covariates(main = main, 
-                                               control_files = control_files,
-                                               arg_checks = arg_checks))
-  controls_r <- rodents_controls(data_sets = data_sets, 
-                                 controls_rodents = controls_rodents, 
-                                 arg_checks = arg_checks)
-  messageq("  -metadata file", quiet)
-  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
-                         arg_checks = arg_checks)
+                                               control_files = control_files))
+  controls_r <- rodents_controls(datasets = datasets, 
+                                 controls_rodents = controls_rodents)
+  messageq("  -metadata file", quiet = quiet)
+  last_moon <- last_moon(main = main, moons = moons, date = cast_date)
   end_moon <- ifnull(end_moon, last_moon)
   ncontrols_r <- length(rodents)
   last_rodent_moon <- 0
@@ -160,17 +141,16 @@ prep_metadata <- function(main = ".", models = prefab_models(),
 
   cast_type <- ifelse(end_moon == last_moon, "forecast", "hindcast")
 
-  cast_meta <- read_casts_metadata(main = main, quiet = quiet,
-                                   arg_checks = arg_checks)
+  cast_meta <- read_casts_metadata(main = main, quiet = quiet)
   cast_group <- max(cast_meta$cast_group) + 1
 
   config <- read_directory_config(main = main, 
                                   filename_config = 
                                     control_files$filename_config,
-                                  quiet = quiet, arg_checks = arg_checks)
+                                  quiet = quiet)
 
 
-  out <- list(cast_group = cast_group, models = models, data_sets = data_sets, 
+  out <- list(cast_group = cast_group, models = models, datasets = datasets, 
               directory_configuration = config,
               controls_rodents = controls_r,
               cast_type = cast_type, start_moon = start_moon, 
@@ -186,6 +166,5 @@ prep_metadata <- function(main = ".", models = prefab_models(),
               confidence_level = confidence_level)
   write_data(out, main = main, save = control_files$save, 
              filename = control_files$filename_meta, 
-             overwrite = control_files$overwrite, quiet = !verbose, 
-             arg_checks = arg_checks)
+             overwrite = control_files$overwrite, quiet = !verbose)
 }

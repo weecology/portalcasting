@@ -90,14 +90,6 @@
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages). 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
 #'
 #' @param PortalData_source,PortalData_version \code{character} values for the
 #'        source and version of the Portal Data to download. 
@@ -149,18 +141,16 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                       climate_forecast_source = "NMME",
                       climate_forecast_version = Sys.Date(),                       
                        update_prefab_models = FALSE, bline = TRUE, 
-                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                       quiet = FALSE, verbose = FALSE){
+  
   return_if_null(models)
-  mainp <- main_path(main = main, arg_checks = arg_checks)
-  verify(paths = mainp, arg_checks = arg_checks)
-  portalcast_welcome(quiet = quiet, arg_checks = arg_checks)
+  mainp <- main_path(main = main)
+  verify(paths = mainp)
+  portalcast_welcome(quiet = quiet)
   update_models(main = main, models = models, controls_model = controls_model, 
                 update_prefab_models = update_prefab_models, quiet = quiet,
-                verbose = verbose, control_files = control_files, 
-                arg_checks = arg_checks)
-  verify_models(main = main, models = models, quiet = quiet, 
-                arg_checks = arg_checks)
+                verbose = verbose, control_files = control_files)
+  verify_models(main = main, models = models, quiet = quiet)
 #  fill_raw(main = main, 
 #                 PortalData_version = PortalData_version,
 #                 PortalData_source = PortalData_source,
@@ -170,7 +160,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
 #                 climate_forecast_source = climate_forecast_source,
 #                 quiet = quiet, verbose = verbose)
 
-  last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
+  last <- last_moon(main = main, date = cast_date)
   end_moons <- ifnull(end_moons, last)
   nend_moons <- length(end_moons)
   for(i in 1:nend_moons){
@@ -186,11 +176,10 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                  climate_forecast_version = climate_forecast_version,
                  climate_forecast_source = climate_forecast_source,
  
-         quiet = quiet, verbose = verbose, arg_checks = arg_checks)
+         quiet = quiet, verbose = verbose)
   }
   if(end_moons[nend_moons] != last){
-    data_resetting_message(bline = bline, quiet = quiet, 
-                           arg_checks = arg_checks)
+    data_resetting_message(bline = bline, quiet = quiet)
     fill_data(main = main, models = models, 
               end_moon = NULL, lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 
@@ -198,9 +187,9 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
               controls_rodents = controls_rodents,
               controls_model = controls_model, 
               control_files = control_files,
-              quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
+              quiet = !verbose, verbose = verbose)
   }
-  portalcast_goodbye(bline = bline, quiet = quiet, arg_checks = arg_checks)
+  portalcast_goodbye(bline = bline, quiet = quiet)
 } 
 
 
@@ -221,44 +210,38 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       climate_forecast_source = "NMME",
                       climate_forecast_version = Sys.Date(),
 
-                 bline = TRUE, quiet = FALSE, verbose = FALSE,
-                 arg_checks = TRUE){
+                 bline = TRUE, quiet = FALSE, verbose = FALSE){
 
-  check_args(arg_checks = arg_checks)
+  
   data_readying_message(end_moon = end_moon, bline = bline, 
-                        quiet = quiet, arg_checks = arg_checks)
+                        quiet = quiet)
   fill_data(main = main, models = models, end_moon = end_moon, 
             lead_time = lead_time, cast_date = cast_date, 
             start_moon = start_moon, confidence_level = confidence_level, 
             controls_rodents = controls_rodents,
             controls_model = controls_model, 
             control_files = control_files,
-            quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
+            quiet = !verbose, verbose = verbose)
 
-  clear_tmp(main = main, quiet = quiet, cleanup = control_files$cleanup,
-            arg_checks = arg_checks)
+  clear_tmp(main = main, quiet = quiet, cleanup = control_files$cleanup)
 
-  last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
+  last <- last_moon(main = main, date = cast_date)
   end_moon <- ifnull(end_moon, last)
 
-  models_running_message(end_moon = end_moon, bline = bline, quiet = quiet, 
-                         arg_checks = arg_checks)
-  models_scripts <- models_to_cast(main = main, models = models,
-                                   arg_checks = arg_checks)
+  models_running_message(end_moon = end_moon, bline = bline, quiet = quiet)
+  models_scripts <- models_to_cast(main = main, models = models)
   nmodels <- length(models)
   for(i in 1:nmodels){
     model <- models_scripts[i]
-    model_running_message(model = model, quiet = quiet,
-                          arg_checks = arg_checks)
+    model_running_message(model = model, quiet = quiet)
     run_status <- tryCatch(
                      source(model),
                      error = function(x){NA}                     
                   )
-    model_done_message(model = model, run_status = run_status, quiet = quiet,
-                       arg_checks = arg_checks)
+    model_done_message(model = model, run_status = run_status, quiet = quiet)
   }
   clear_tmp(main = main, quiet = quiet, verbose = verbose, 
-            cleanup = control_files$cleanup, arg_checks = arg_checks)
+            cleanup = control_files$cleanup)
 }
 
 
@@ -276,15 +259,6 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
 #' @return \code{character} vector of the path(s) of the R script file(s) to 
 #'   be run.
 #'
@@ -297,10 +271,9 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #'
 #' @export
 #'
-models_to_cast <- function(main = ".", models = prefab_models(), 
-                           arg_checks = TRUE){
-  check_args(arg_checks)
-  models_path <- models_path(main = main, arg_checks = arg_checks)
+models_to_cast <- function(main = ".", models = prefab_models()){
+  
+  models_path <- models_path(main = main)
   file_names <- paste0(models, ".R")
   torun <- (list.files(models_path) %in% file_names)
   torun_paths <- list.files(models_path, full.names = TRUE)[torun] 

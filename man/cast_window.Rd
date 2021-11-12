@@ -10,8 +10,7 @@ cast_window(
   cast_date = Sys.Date(),
   lead_time = 12,
   min_lag = 6,
-  control_files = files_control(),
-  arg_checks = TRUE
+  control_files = files_control()
 )
 }
 \arguments{
@@ -33,11 +32,6 @@ covariate lag time used in any model.}
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 Named \code{list} with elements \code{start} and \code{end},

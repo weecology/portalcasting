@@ -3,7 +3,7 @@ devtools::document()
 devtools::load_all()
 
 
-main <- "./testing"
+main <- "./testing2"
 
 create_dir(main)
 

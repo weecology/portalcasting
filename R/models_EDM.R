@@ -6,10 +6,9 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
                        control_files = files_control(), 
                        quiet = FALSE, 
                        verbose = FALSE, 
-                       max_E = 7, 
-                       arg_checks = TRUE)
+                       max_E = 7 )
 {
-  check_args(arg_checks)
+  
   data_set <- tolower(data_set)
   model_name <- "simplexEDM"
   
@@ -17,8 +16,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   
   #### determine args and settings for making forecasts
   metadata <- read_metadata(main = main, 
-                            control_files = control_files, 
-                            arg_checks = arg_checks)
+                            control_files = control_files)
   E_range <- seq(from = 1, to = max_E)
   data_set_controls <- metadata$controls_rodents[[data_set]]
   moons_to_cast <- metadata$rodent_cast_moons
@@ -39,7 +37,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
     rodents_table$moon <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
 
   cast_tab <- data.frame()
   #  aic <- data.frame()
@@ -127,8 +125,7 @@ simplexEDM <- function(main = ".", data_set = "all_interp",
   metadata <- update_list(metadata, 
                           models = model_name, 
                           data_sets = data_set, 
-                          controls_rodents = data_set_controls, 
-                          arg_checks = arg_checks)
+                          controls_rodents = data_set_controls)
   cast_out <- list(metadata = metadata, 
                    cast_tab = cast_tab, 
                    model_fits = NULL, 
@@ -143,10 +140,9 @@ GPEDM <- function(main = ".", data_set = "all_interp",
                   control_files = files_control(), 
                   quiet = FALSE, 
                   verbose = FALSE, 
-                  max_E = 7, 
-                  arg_checks = TRUE)
+                  max_E = 7)
 {
-  check_args(arg_checks)
+  
   data_set <- tolower(data_set)
   model_name <- "GPEDM"
   
@@ -154,8 +150,7 @@ GPEDM <- function(main = ".", data_set = "all_interp",
   
   #### determine args and settings for making forecasts
   metadata <- read_metadata(main = main, 
-                            control_files = control_files, 
-                            arg_checks = arg_checks)
+                            control_files = control_files)
   E_range <- seq(from = 1, to = max_E)
   data_set_controls <- metadata$controls_rodents[[data_set]]
   moons_to_cast <- metadata$rodent_cast_moons
@@ -176,7 +171,7 @@ GPEDM <- function(main = ".", data_set = "all_interp",
     rodents_table$moon <= end_moon
   rodents_table <- rodents_table[moon_in, ]
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   
   cast_tab <- data.frame()
   model_casts <- data.frame()
@@ -266,8 +261,7 @@ GPEDM <- function(main = ".", data_set = "all_interp",
   metadata <- update_list(metadata, 
                           models = model_name, 
                           data_sets = data_set, 
-                          controls_rodents = data_set_controls, 
-                          arg_checks = arg_checks)
+                          controls_rodents = data_set_controls)
   cast_out <- list(metadata = metadata, 
                    cast_tab = cast_tab, 
                    model_fits = NULL, 

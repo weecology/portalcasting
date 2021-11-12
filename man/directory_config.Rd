@@ -10,23 +10,20 @@
 write_directory_config(
   main = ".",
   filename_config = "dir_config.yaml",
-  quiet = FALSE,
-  arg_checks = TRUE
+  quiet = FALSE
 )
 
 update_directory_config(
   main = ".",
   filename_config = "dir_config.yaml",
   downloads_versions = NULL,
-  quiet = FALSE,
-  arg_checks = TRUE
+  quiet = FALSE
 )
 
 read_directory_config(
   main = ".",
   filename_config = "dir_config.yaml",
-  quiet = FALSE,
-  arg_checks = TRUE
+  quiet = FALSE
 )
 }
 \arguments{
@@ -38,11 +35,6 @@ config YAML.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 
 \item{downloads_versions}{\code{character} vector returned from 
 \code{fill_raw} of the successfully downloaded versions of

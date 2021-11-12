@@ -7,22 +7,21 @@
 prep_metadata(
   main = ".",
   models = prefab_models(),
-  data_sets = NULL,
+  datasets = NULL,
   moons = NULL,
   rodents = NULL,
   covariates = NULL,
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
-  min_lag = NULL,
+  min_lag = 6,
   cast_date = Sys.Date(),
   confidence_level = 0.95,
   controls_model = NULL,
   controls_rodents = NULL,
   control_files = files_control(),
   quiet = TRUE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -32,7 +31,7 @@ the directory tree.}
 \item{models}{\code{character} vector of name(s) of model(s) to 
 include.}
 
-\item{data_sets}{\code{character} vector of the rodent data set names
+\item{datasets}{\code{character} vector of the rodent data set names
 that the model is applied to.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
@@ -94,11 +93,6 @@ quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{list} of casting metadata, which is also saved out as a 

@@ -8,8 +8,7 @@ combine_hist_and_cast(
   hist_tab = NULL,
   cast_tab = NULL,
   winner = "hist",
-  column = "date",
-  arg_checks = TRUE
+  column = "date"
 )
 }
 \arguments{
@@ -24,11 +23,6 @@ this will be overriden to use the entry that has no missing entries.}
 
 \item{column}{\code{character} indicating the column to use for identifying
 entries in combining.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.

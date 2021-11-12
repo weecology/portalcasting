@@ -5,8 +5,8 @@
 jags_RW <- function(main = ".", data_set = "all",  
                     control_files = files_control(), 
                     control_runjags = runjags_control(), lag = NA, 
-                    quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                    quiet = FALSE, verbose = FALSE){
+  
   data_set <- tolower(data_set)
   messageq(paste0("  -jags_RW for ", data_set), quiet)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
@@ -84,7 +84,7 @@ jags_RW <- function(main = ".", data_set = "all",
   jags_ss(main = main, data_set = data_set, control_files = control_files,
           control_runjags = control_runjags, jags_model = jags_model,
           monitor = monitor, inits = inits, lag = lag, quiet = quiet, 
-          verbose = verbose, arg_checks = arg_checks)
+          verbose = verbose)
 }
 
 
@@ -140,9 +140,6 @@ jags_RW <- function(main = ".", data_set = "all",
 #'  values (including random number generation components) for initializing
 #'  runs of the model. See \code{Examples} and 
 #'  \code{\link[runjags]{run.jags}}.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. 
 #'
 #' @return \code{list} of [1] model metadata \code{list} (\code{"metadata"}), 
 #'  [2] cast summary \code{data.frame} (\code{"cast_tab"}),
@@ -249,16 +246,14 @@ jags_ss <- function(main = ".", data_set = "all",
                     control_files = files_control(),
                     control_runjags = runjags_control(),
                     jags_model = NULL, monitor = NULL, inits = NULL, lag = NA, 
-                    quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                    quiet = FALSE, verbose = FALSE){
+  
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
   runjags.options(silent.jags = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
-  rodents_table <- read_rodents_table(main = main, data_set = data_set, 
-                                      arg_checks = arg_checks)
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
 
-  metadata <- read_metadata(main = main, control_files = control_files,
-                            arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files)
   data_set_controls <- metadata$controls_r[[data_set]]
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
@@ -267,10 +262,9 @@ jags_ss <- function(main = ".", data_set = "all",
 
   if(covariatesTF){
     last_cc_moon <- max(metadata$covariate_cast_moons)
-    covar <- read_covariates(main = main, control_files = control_files,
-                             arg_checks = arg_checks)
+    covar <- read_covariates(main = main, control_files = control_files)
     covar_lag <- lag_covariates(covariates = covar, lag = lag, 
-                                tail = TRUE, arg_checks = arg_checks)
+                                tail = TRUE)
     covar_moon_in <- which(covar_lag$moon >= start_moon & 
                            covar_lag$moon <= last_cc_moon)
     col_in <- which(colnames(covar_lag) != "source")
@@ -281,7 +275,7 @@ jags_ss <- function(main = ".", data_set = "all",
   }
 
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   nspecies <- length(species)
   mods <- named_null_list(species)
   casts <- named_null_list(species)
@@ -389,8 +383,7 @@ jags_ss <- function(main = ".", data_set = "all",
   }
   metadata <- update_list(metadata, models = "jags_RW",
                               data_sets = data_set,
-                              controls_r = data_set_controls,
-                              arg_checks = arg_checks)
+                              controls_r = data_set_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)  
 }
@@ -443,9 +436,6 @@ jags_ss <- function(main = ".", data_set = "all",
 #' @param silent_jags \code{logical} value for quieting the output from the
 #'  runjags function, including the underlying JAGS output. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. 
-#'
 #' @return \code{list} of controls. 
 #'
 #' @references 
@@ -468,9 +458,8 @@ jags_ss <- function(main = ".", data_set = "all",
 runjags_control <- function(nchains = 2, adapt = 1e4, burnin = 1e4, 
                             sample = 1e4, thin = 1, modules = "", 
                             method = "interruptible", factories = "", 
-                            mutate = NA, cast_obs = TRUE, silent_jags = TRUE,
-                            arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                            mutate = NA, cast_obs = TRUE, silent_jags = TRUE){
+  
   list(nchains = nchains, adapt = adapt, burnin = burnin, sample = sample,
        thin = thin, modules = modules, method = method, factories = factories,
        mutate = mutate, cast_obs = cast_obs, silent_jags = silent_jags)

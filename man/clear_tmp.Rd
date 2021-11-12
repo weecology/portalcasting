@@ -9,8 +9,7 @@ clear_tmp(
   bline = TRUE,
   quiet = FALSE,
   verbose = FALSE,
-  cleanup = TRUE,
-  arg_checks = TRUE
+  cleanup = TRUE
 )
 }
 \arguments{
@@ -29,11 +28,6 @@ all of the information or just tidy messages.}
 
 \item{cleanup}{\code{logical} indicator if any files put into the tmp
 subdirectory should be removed at the end of the process.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{NULL}, with the tmp subdirectory's files removed.

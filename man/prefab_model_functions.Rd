@@ -18,8 +18,7 @@ jags_RW(
   control_runjags = runjags_control(),
   lag = NA,
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 AutoArima(main = ".", data_set = "all", quiet = FALSE, verbose = FALSE)
@@ -29,8 +28,7 @@ NaiveArima(
   data_set = "all",
   control_files = files_control(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 ESSS(
@@ -38,8 +36,7 @@ ESSS(
   data_set = "all_interp",
   control_files = files_control(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 nbGARCH(
@@ -47,8 +44,7 @@ nbGARCH(
   data_set = "all_interp",
   control_files = files_control(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 nbsGARCH(
@@ -56,8 +52,7 @@ nbsGARCH(
   data_set = "all_interp",
   control_files = files_control(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 pevGARCH(
@@ -66,8 +61,7 @@ pevGARCH(
   lag = 6,
   control_files = files_control(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -92,9 +86,6 @@ quiet.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}.}
 }
 \value{
 \code{list} of [1] model metadata \code{list} (\code{"metadata"}), 

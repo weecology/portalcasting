@@ -37,11 +37,6 @@
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not.
-#'
 #' @param verbose \code{logical} indicator if detailed messages should be
 #'  shown.
 #'
@@ -76,30 +71,24 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
                                  lead_time = 12, min_lag = 6, 
                                  cast_date = Sys.Date(), 
                                  control_files = files_control(),
-                                 quiet = TRUE, verbose = FALSE, 
-                                 arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                                 quiet = TRUE, verbose = FALSE){
+
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
-  last_moon <- last_moon(main = main, moons = moons, date = cast_date, 
-                         arg_checks = arg_checks)
+                                    control_files = control_files))
+  last_moon <- last_moon(main = main, moons = moons, date = cast_date)
   end_moon <- ifnull(end_moon, last_moon)
   min_lag <- ifna(min_lag, 0)
   hist_cov <- ifnull(hist_cov, prep_hist_covariates(main = main,
-                                                    quiet = quiet,
-                                                    arg_checks = arg_checks)) 
+                                                    quiet = quiet)) 
   if(last_moon == end_moon){
 
     win <- cast_window(main = main, moons = moons, cast_date = cast_date,
-                       lead_time = lead_time, min_lag = 6,
-                       arg_checks = arg_checks)
+                       lead_time = lead_time, min_lag = min_lag)
     download_climate_forecasts(main = main, 
                            source = "NMME",  version = win$start,
                            quiet = quiet, verbose = verbose)
 
-    cast_cov <- read_climate_casts(main = main, 
-                                   arg_checks = arg_checks)
+    cast_cov <- read_climate_casts(main = main)
     win_vec <- seq(win$start, win$end, 1)
     win_length <- length(win_vec)
     ndvi_fit <- auto.arima(hist_cov$ndvi)
@@ -111,8 +100,7 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
     incl <- win_vec %in% cast_cov$date
     cast_cov$ndvi[spots] <- ndvi_cast[incl]
 
-    cast_cov <- add_moons_from_date(df = cast_cov, moons = moons, 
-                                   arg_checks = arg_checks)
+    cast_cov <- add_moons_from_date(df = cast_cov, moons = moons)
     cast_cov_tab <- summarize_daily_weather_by_moon(cast_cov)
     cast_cov$cast_moon <- end_moon
 
@@ -123,8 +111,7 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
     out <- save_cast_cov_csv(main = main, moons = moons, end_moon = end_moon, 
                            cast_date = cast_date, cast_cov = cast_cov,
                            control_files = control_files,
-                           quiet = quiet, verbose = verbose,
-                           arg_checks = arg_checks)
+                           quiet = quiet, verbose = verbose)
     
     out <- covariates_tab[1:lagged_lead, ]
 
@@ -133,11 +120,10 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
 
     target_moons <- target_moons(main = main, moons = moons,
                                  end_moon = end_moon, lead_time = lead_time, 
-                                 date = cast_date, arg_checks = arg_checks)
+                                 date = cast_date)
     cov_cast <- read_covariate_casts(main = main, 
                                      control_files = control_files,
-                                     quiet = quiet, verbose = verbose,
-                                     arg_checks = arg_checks)
+                                     quiet = quiet, verbose = verbose)
 
     target_in <- cov_cast$moon %in% target_moons
     origin_in <- cov_cast$cast_moon %in% end_moon 
@@ -170,15 +156,12 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
                               end_moon = NULL, cast_date = Sys.Date(),
                               cast_cov = NULL, 
                               control_files = files_control(),
-                              quiet = TRUE, verbose = FALSE, 
-                              arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                              quiet = TRUE, verbose = FALSE){
+
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+                                    control_files = control_files))
   return_if_null(cast_cov)
-  last_moon <- last_moon(main = main, moons = moons, date = cast_date,
-                         arg_checks = arg_checks)
+  last_moon <- last_moon(main = main, moons = moons, date = cast_date)
   end_moon <- ifnull(end_moon, last_moon)
   if(!control_files$save | !control_files$append_cast_csv | 
      !control_files$overwrite | end_moon != last_moon){
@@ -192,15 +175,13 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 
   arch_path <- paste0(control_files$directory, "/data/", 
                       control_files$filename_cov_casts)
-  arch_path <- file_path(main = main, sub = "raw", files = arch_path,
-                         arg_checks = arg_checks)
+  arch_path <- file_path(main = main, sub = "raw", files = arch_path)
   arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
 
   if (file.exists(arch_path) | file.exists(arch_path2)) {
     hist_cast <- read_covariate_casts(main = main, 
                                       control_files = control_files,
-                                      quiet = quiet, verbose = verbose, 
-                                      arg_checks = arg_checks)
+                                      quiet = quiet, verbose = verbose)
     if(!("date" %in% colnames(hist_cast))){
       hist_cast$date <- NA
     }
@@ -215,18 +196,14 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
 
   out$date <- as.character(out$date)
   out_path <- file_path(main = main, sub = "data", 
-                        files = control_files$filename_cov_casts,
-                        arg_checks = arg_checks)
+                        files = control_files$filename_cov_casts)
   msg <- "    **covariates_casts.csv saved**"
-  messageq(msg, !verbose)
+  messageq(msg, quiet = !verbose)
   write.csv(out, out_path, row.names = FALSE)
   cast_cov
 }
 
-read_climate_casts <- function(main = ".", 
-                                
-                               arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+read_climate_casts <- function(main = "."){
 
 datas = c(mintemp = "tasmin", 
                                         meantemp = "tasmean", 
@@ -238,8 +215,7 @@ datas = c(mintemp = "tasmin",
   ndatas <- length(datas)
   for(i in 1:ndatas){
     csv_path <- paste0("/NMME/",  datas[i], ".csv")
-    fpath <- file_path(main = main, sub = "raw", files = csv_path, 
-                       arg_checks = arg_checks)
+    fpath <- file_path(main = main, sub = "raw", files = csv_path)
     dat_list[[i]] <- read.csv(fpath)
   }
   dat_tab <- dat_list[[1]]

@@ -39,7 +39,7 @@
 #' @param models \code{vector} of models to be written via 
 #'        \code{\link{write_model}}.
 #'
-#' @param data_sets \code{list} of data_sets to be created using 
+#' @param datasets \code{list} of datasets to be created using 
 #'        \code{\link{do.call}} on the defined functions. 
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
@@ -56,7 +56,7 @@
 #'  elements: 
 #'  \itemize{
 #'   \item \code{name}: a \code{character} value of the model name.
-#'   \item \code{data_sets}: a \code{character} vector of the data set names
+#'   \item \code{datasets}: a \code{character} vector of the data set names
 #'    that the model is applied to. 
 #'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
 #'    model needs covariates.
@@ -82,7 +82,7 @@
 #'  elements: 
 #'  \itemize{
 #'   \item \code{name}: a \code{character} value of the model name.
-#'   \item \code{data_sets}: a \code{character} vector of the data set names
+#'   \item \code{datasets}: a \code{character} vector of the data set names
 #'    that the model is applied to. 
 #'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
 #'    model needs covariates.
@@ -121,6 +121,9 @@
 #'  (from \code{\link{rodents_controls}}) specifying the structuring of the 
 #'  rodents tables. See \code{\link{rodents_controls}} for details. 
 #'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -153,12 +156,13 @@ fill_dir <- function (main  = ".",
                       climate_forecast_source = "NMME",
                       climate_forecast_version = Sys.Date(),
                       models = prefab_models(),
-                      data_sets = prefab_data_sets(),
+                      datasets = prefab_rodent_datasets(),
                       quiet = FALSE,
                       verbose = TRUE,
                         controls_model = NULL, 
                         control_files = files_control(), 
                         end_moon = NULL, start_moon = 217, lead_time = 12,
+ min_lag = 6, 
                         confidence_level = 0.95, cast_date = Sys.Date(), 
                         controls_rodents = rodents_controls()) {
 
@@ -189,9 +193,21 @@ fill_dir <- function (main  = ".",
 
 
   fill_data(main = main, 
-            data_sets = data_sets,
+            datasets = datasets,
             quiet = quiet, 
-            verbose = verbose)
+            verbose = verbose,
+
+
+models = models,
+            end_moon = end_moon,
+            start_moon = start_moon,
+            lead_time = lead_time, min_lag = min_lag,
+            confidence_level = confidence_level,
+            cast_date = cast_date,
+                      controls_model = controls_model,
+                      controls_rodents = controls_rodents, 
+                      control_files = control_files
+)
 
   invisible()
 
@@ -202,36 +218,41 @@ fill_dir <- function (main  = ".",
 #'
 #' @export
 #'
-fill_data <- function(main = ".", models = prefab_models(),
-                      end_moon = NULL, start_moon = 217, lead_time = 12,
-                      confidence_level = 0.95, cast_date = Sys.Date(), 
-                      controls_model = NULL,
-                      controls_rodents = rodents_controls(), 
 
-                      control_files = files_control(), 
-                      data_sets = prefab_data_sets(),
-                      quiet = FALSE, verbose = FALSE){
+fill_data <- function (main  = ".",
+ models = prefab_models(),
+                        controls_model = NULL, 
+                        control_files = files_control(), 
+                        end_moon = NULL, start_moon = 217, lead_time = 12, 
+                        min_lag = 6, 
+                        confidence_level = 0.95, cast_date = Sys.Date(), 
+                       datasets = prefab_rodent_datasets(),
+                       quiet = FALSE,
+                       verbose = TRUE) {
 
-  min_lag <- extract_min_lag(models = models, 
-                             controls_model = controls_model, 
-                             quiet = quiet)
+
+
+  messageq(" -Writing data files", quiet = quiet)
+
+  data_r <- prepare_rodent_datasets(main = main,
+                          datasets = datasets,
+                          quiet = quiet,
+                          verbose = verbose)
+
 
   messageq(" -Adding data files to data subdirectory", quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
                        cast_date = cast_date, 
                        quiet = quiet, verbose = verbose,
                        control_files = control_files)
-  data_r <- prep_rodents(main = main, moons = data_m, 
-                         data_sets = data_sets, end_moon = end_moon, 
-                         controls_rodents = controls_rodents,
-                         quiet = quiet, verbose = verbose, 
-                         control_files = control_files)
+
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
                             start_moon = start_moon, lead_time = lead_time, 
                             min_lag = min_lag, cast_date = cast_date, 
                             quiet = quiet, control_files = control_files)
+
   prep_metadata(main = main, models = models,
-                data_sets = data_sets, moons = data_m, 
+                datasets = datasets, moons = data_m, 
                 rodents = data_r, covariates = data_c, end_moon = end_moon, 
                 lead_time = lead_time, min_lag = min_lag, 
                 cast_date = cast_date, start_moon = start_moon, 

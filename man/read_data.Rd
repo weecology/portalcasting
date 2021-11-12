@@ -13,29 +13,27 @@
 read_data(
   main = ".",
   data_name = NULL,
-  data_set = "all",
-  data_sets = c("all", "controls"),
-  control_files = files_control(),
-  arg_checks = TRUE
+  dataset = "all",
+  datasets = c("all", "controls"),
+  control_files = files_control()
 )
 
-read_rodents_table(main = ".", data_set = "all")
+read_rodents_table(main = ".", dataset = "all")
 
-read_rodents(main = ".", data_sets = c("all", "controls"), arg_checks = TRUE)
+read_rodents(main = ".", datasets = c("all", "controls"))
 
-read_covariates(main = ".", control_files = files_control(), arg_checks = TRUE)
+read_covariates(main = ".", control_files = files_control())
 
 read_covariate_casts(
   main = ".",
   control_files = files_control(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
-read_moons(main = ".", control_files = files_control(), arg_checks = TRUE)
+read_moons(main = ".", control_files = files_control())
 
-read_metadata(main = ".", control_files = files_control(), arg_checks = TRUE)
+read_metadata(main = ".", control_files = files_control())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -46,19 +44,16 @@ Current options include \code{"rodents"}, \code{"rodents_table"},
 \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
 \code{"metadata"}.}
 
-\item{data_set, data_sets}{\code{character} representation of the grouping
+\item{dataset, datasets}{\code{character} representation of the grouping
 name(s) used to define the rodents. Standard options are \code{"all"} and 
-\code{"controls"}. \code{data_set} can only be length 1, 
-\code{data_sets} is not restricted in length.}
+\code{"controls"}. \code{dataset} can only be length 1, 
+\code{datasets} is not restricted in length.}
 
 \item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+ the sub directories and saving strategies (save, overwrite, append, etc.).
+ Generally shouldn't need to be edited. See \code{\link{files_control}}.
 
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+ formatted correctly and provides directed error messages if not.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
@@ -88,7 +83,7 @@ Read in a specified data file. \cr \cr
  setup_dir()
  read_data(data_name = "rodents")
  read_data(data_name = "rodents_table")
- read_data(data_name = "rodents_table", data_set = "controls")
+ read_data(data_name = "rodents_table", dataset = "controls")
  read_data(data_name = "covariates")
  read_data(data_name = "covariate_casts")
  read_data(data_name = "moons")

@@ -15,8 +15,7 @@ runjags_control(
   factories = "",
   mutate = NA,
   cast_obs = TRUE,
-  silent_jags = TRUE,
-  arg_checks = TRUE
+  silent_jags = TRUE
 )
 }
 \arguments{
@@ -57,9 +56,6 @@ of uses).}
 
 \item{silent_jags}{\code{logical} value for quieting the output from the
 runjags function, including the underlying JAGS output.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}.}
 }
 \value{
 \code{list} of controls.

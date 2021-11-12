@@ -43,10 +43,6 @@
 #' @param include_interp \code{logical} indicator of if the models fit using
 #'  interpolated data should be included with the models that did not.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @param species \code{character} vector of the species code(s) 
 #'  or \code{"total"} for the total across species) to be plotted 
@@ -68,27 +64,22 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
                                 cast_tab = NULL, end_moons = NULL, 
                                 models = NULL, ensemble = TRUE, 
                                 data_set = NULL, include_interp = TRUE,
-                                species = NULL, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                                species = NULL){
+  
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moons, 
                                  data_sets = data_set, 
-                                 include_interp = include_interp,
-                                 arg_checks = arg_checks)
+                                 include_interp = include_interp)
     if(NROW(cast_choices) == 0){
       stop("no casts available for requested plot", call. = FALSE)
     }else{
-      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
-                                 arg_checks = arg_checks)
-      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
-                                      arg_checks = arg_checks)
-      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab,
-                                      arg_checks = arg_checks)
-      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab,
-                                       arg_checks = arg_checks)
-      cast_tab <- add_covered_to_cast_tab(main = main, cast_tab = cast_tab,
-                                          arg_checks = arg_checks)
+      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id)
+      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
+      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab)
+      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab)
+      cast_tab <- add_covered_to_cast_tab(main = main, cast_tab = cast_tab)
+
     }
   }
 
@@ -96,7 +87,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
   cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models <- ifnull(models, unique(cast_tab$model))
   data_set <- ifnull(data_set, unique(cast_tab$data_set)[1])
-  species <- ifnull(species, evalplot_species(arg_checks = arg_checks)) 
+  species <- ifnull(species, evalplot_species()) 
   end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in <- cast_tab$cast_id %in% cast_ids
   model_in <- cast_tab$model %in% models
@@ -122,16 +113,14 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
                          ensemble_casts(main = main, cast_tab = cast_tab,
                                         end_moon = end_moons[i],
                                         models = models, data_set = data_set,
-                                        species = species, 
-                                        arg_checks = arg_checks))
+                                        species = species))
     }
     ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
     models <- c(models, as.character(unique(ecast_tab$model)))
     cast_tab <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
     cast_tab <- rbind(cast_tab, ecast_tab)
   }
-  cast_level_errs <- measure_cast_level_error(cast_tab = cast_tab,
-                                              arg_checks = arg_checks)
+  cast_level_errs <- measure_cast_level_error(cast_tab = cast_tab)
   nmodels <- length(models)
   nspecies <- length(species)
 
@@ -279,10 +268,10 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
 #'  Default value is \code{NULL}, which equates to no selection with 
 #'  respect to \code{data_set}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
+
+
+
+
 #'
 #' @param ensemble \code{logical} indicator of if an ensemble should be
 #'  included. Presently only the unweighted average. See 
@@ -311,32 +300,28 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
                                 cast_tab = NULL, end_moons = NULL, 
                                 models = NULL, ensemble = TRUE, 
                                 data_set = "controls", include_interp = TRUE,
-                                species = NULL, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                                species = NULL){
+  
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moons, 
                                  data_sets = data_set, 
-                                 include_interp = include_interp,
-                                 arg_checks = arg_checks)
+                                 include_interp = include_interp)
     if(NROW(cast_choices) == 0){
       stop("no casts available for requested plot", call. = FALSE)
     }else{
-      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id,
-                                 arg_checks = arg_checks)
-      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
-                                      arg_checks = arg_checks)
-      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab,
-                                      arg_checks = arg_checks)
-      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab,
-                                       arg_checks = arg_checks)
+      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id)
+      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
+      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab)
+      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab)
+
     }
   }
   cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
   cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models <- ifnull(models, unique(cast_tab$model))
   data_set <- ifnull(data_set, unique(cast_tab$data_set)[1])
-  species <- ifnull(species, evalplot_species(arg_checks = arg_checks)) 
+  species <- ifnull(species, evalplot_species()) 
   end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in <- cast_tab$cast_id %in% cast_ids
   model_in <- cast_tab$model %in% models
@@ -361,8 +346,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
                          ensemble_casts(main = main, cast_tab = cast_tab,
                                         end_moon = end_moons[i],
                                         models = models, data_set = data_set,
-                                        species = species, 
-                                        arg_checks = arg_checks))
+                                        species = species))
     }
     ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) %in% 
                                      c("var", "covered"))]
@@ -562,10 +546,10 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'  the \code{casts} sub folder. See the casts metadata file 
 #'  (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
+
+
+
+
 #'
 #' @param species \code{character} vector of the species codes (or 
 #'  \code{"total"} for the total across species) to be plotted or 
@@ -602,14 +586,13 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
                             species = NULL, highlight_sp = NULL,
                             moon = NULL, with_census = FALSE, 
                             control_files = files_control(),
-                            quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  moons <- read_moons(main = main, control_files = control_files,
-                      arg_checks = arg_checks)
-  last_census_date <- last_census(main = main, arg_checks = arg_checks)
+                            quiet = FALSE){
+  
+  moons <- read_moons(main = main, control_files = control_files)
+  last_census_date <- last_census(main = main)
   which_last_census_moon <- which(moons$censusdate == last_census_date)
   last_census_moon <- moons$moon[which_last_census_moon]
-  last_moon <- last_moon(main = main, moons = moons, arg_checks = arg_checks)
+  last_moon <- last_moon(main = main, moons = moons)
   alt_moon <- ifelse(with_census, last_census_moon, last_moon + 1)
   moon <- ifnull(moon, alt_moon)
   model <- ifnull(model, "Ensemble")
@@ -620,7 +603,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   casts_meta <- select_casts(main = main, cast_ids = cast_id,
                              end_moons = end_moon, models = model2, 
                              data_sets = data_set, 
-                             quiet = quiet, arg_checks = arg_checks)
+                             quiet = quiet)
 
   if(with_census){
     casts_meta_moon1 <- casts_meta$end_moon + 1
@@ -639,8 +622,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
 
   max_obs <- 0
   if(with_census){
-    obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
-                              arg_checks = arg_checks)
+    obs <- read_rodents_table(main = main, data_set = casts_meta$data_set)
     colnames(obs) <- gsub("\\.", "", colnames(obs))
     sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species <- ifnull(species, colnames(obs)[sp_col])
@@ -656,12 +638,10 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     data_set <- gsub("_interp", "", data_set)
     preds <- ensemble_casts(main = main, cast_groups = cast_groups,
                             end_moon = casts_meta$end_moon, 
-                            data_set = data_set, species = species,
-                            arg_checks = arg_checks)
+                            data_set = data_set, species = species)
 
   } else{
-    preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
-                           arg_checks = arg_checks)
+    preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id) 
   }
   preds <- na_conformer(preds, "species")
   species <- ifnull(species, unique(preds$species))
@@ -695,8 +675,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   mtext(title, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
 
   lpath <- file_path(main = main, sub = "raw",  
-                     files = "PortalData/Rodents/Portal_rodent_species.csv",
-                     arg_checks = arg_checks)
+                     files = "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -802,10 +781,10 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
 #'  of the cast group to combine with an ensemble. If \code{NULL} (default),
 #'  the most recent cast group is ensembled. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
+
+
+
+
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -829,8 +808,8 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
                          data_set = NULL, model = NULL, end_moon = NULL, 
                          species = "total", start_moon = 217, 
                          control_files = files_control(), 
-                         quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                         quiet = FALSE){
+  
   model <- ifnull(model, "Ensemble")
   model2 <- model
   if(!is.null(model) && tolower(model) == "ensemble"){
@@ -838,8 +817,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   }
   casts_meta <- select_casts(main = main, cast_ids = cast_id,
                              end_moons = end_moon, models = model2, 
-                             data_sets = data_set, quiet = quiet, 
-                             arg_checks = arg_checks)
+                             data_sets = data_set, quiet = quiet)
   if(NROW(casts_meta) > 1){
     which_max <- which.max(casts_meta$cast_id)
     casts_meta <- casts_meta[which_max, ]
@@ -848,8 +826,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     stop("no casts available for requested plot", call. = FALSE)
   }
 
-  obs <- read_rodents_table(main = main, data_set = casts_meta$data_set, 
-                            arg_checks = arg_checks)
+  obs <- read_rodents_table(main = main, data_set = casts_meta$data_set)
   colnames(obs) <- gsub("\\.", "", colnames(obs))
 
   sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
@@ -864,11 +841,9 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
     data_set <- gsub("_interp", "", data_set)
     preds <- ensemble_casts(main = main, cast_groups = cast_groups,
                             end_moon = casts_meta$end_moon, 
-                            data_set = data_set, species = species,
-                            arg_checks = arg_checks)
+                            data_set = data_set, species = species)
   } else{
-    preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id, 
-                           arg_checks = arg_checks)
+    preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id)
   }
   species <- ifnull(species, unique(preds$species))
   match_sp <- (preds$species %in% species)
@@ -889,8 +864,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
 
-  moons <- read_moons(main = main, control_files = control_files,
-                      arg_checks = arg_checks)
+  moons <- read_moons(main = main, control_files = control_files)
   minx <- as.character(moons$moondate[moons$moon == rangex[1]])
   maxx <- as.character(moons$moondate[moons$moon == rangex[2]])
   minx_yr <- as.numeric(format(as.Date(minx), "%Y"))

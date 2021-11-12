@@ -14,8 +14,7 @@ ensemble_casts(
   models = NULL,
   data_set = NULL,
   include_interp = TRUE,
-  species = NULL,
-  arg_checks = TRUE
+  species = NULL
 )
 }
 \arguments{
@@ -59,11 +58,6 @@ names should also be inclusive of the associated interpolated data sets.}
 or \code{"total"} for the total across species) to be plotted 
 \code{NULL} translates to the species defined by  
 \code{evalplot_species}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{NULL}. Plot is generated.

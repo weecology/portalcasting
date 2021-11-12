@@ -4,16 +4,11 @@
 \alias{measure_cast_level_error}
 \title{Measure error/fit metrics for forecasts}
 \usage{
-measure_cast_level_error(cast_tab = NULL, arg_checks = TRUE)
+measure_cast_level_error(cast_tab = NULL)
 }
 \arguments{
 \item{cast_tab}{A \code{data.frame} of a cast's output. See 
 \code{\link{read_cast_tab}}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{data.frame} of metrics for each cast for each species.

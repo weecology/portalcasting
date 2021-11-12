@@ -43,11 +43,6 @@
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @return All functions here return some version of a moons \code{data.frame}
 #'  \cr \cr. 
 #'  \code{prep_moons}, \code{format_moons}: fully appended and formatted 
@@ -84,7 +79,7 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
   if(!raw_data_present){
     fill_raw(main = main, quiet = quiet)
   }
-  messageq("  -lunar data file", quiet)
+  messageq("  -lunar data file", quiet = quiet)
   raw_path <- raw_path(main = main)
   traps_in <- load_trapping_data(path = raw_path, download_if_missing = FALSE,
                                  clean = FALSE, quiet = !verbose)
@@ -102,8 +97,8 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
 #'
 #' @export
 #'
-format_moons <- function(moons, arg_checks = TRUE){
-  check_args(arg_checks)
+format_moons <- function(moons){
+
   moons$year <- as.numeric(format(as.Date(moons$newmoondate), "%Y"))
   moons$month <- as.numeric(format(as.Date(moons$newmoondate), "%m"))
   moons$newmoondate <- as.Date(moons$newmoondate)
@@ -119,12 +114,9 @@ format_moons <- function(moons, arg_checks = TRUE){
 #'
 add_future_moons <- function(main = ".", moons = NULL, lead_time = 12, 
                              cast_date = Sys.Date(), 
-                             control_files = files_control(),
-                             arg_checks = TRUE){
+                             control_files = files_control()){
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
-  check_args(arg_checks)
+                                    control_files = control_files))
   if(lead_time == 0){
     return(moons)
   }
@@ -138,9 +130,8 @@ add_future_moons <- function(main = ".", moons = NULL, lead_time = 12,
 #'
 #' @export
 #'
-add_extra_future_moons <- function(moons, cast_date = Sys.Date(), 
-                                   arg_checks = TRUE){
-  check_args(arg_checks)
+add_extra_future_moons <- function(moons, cast_date = Sys.Date()){
+
   n_extra_future_moons <- length(which(moons$newmoondate < cast_date))
   if (n_extra_future_moons > 0){
     extra_moons <- get_future_moons(moons, n_extra_future_moons)
@@ -168,15 +159,6 @@ add_extra_future_moons <- function(moons, cast_date = Sys.Date(),
 #'
 #' @param target_cols \code{character} vector of columns to retain.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
 #' @return \code{moons} and a \code{data.frame} but trimmed.
 #' 
 #' @examples
@@ -191,9 +173,8 @@ add_extra_future_moons <- function(moons, cast_date = Sys.Date(),
 trim_moons <- function(moons = NULL, target_moons = NULL, 
                        retain_target_moons = TRUE,
                        target_cols = c("moon", "moondate", 
-                                       "period", "censusdate"), 
-                       arg_checks = TRUE){
-  check_args(arg_checks)
+                                       "period", "censusdate")){
+
   return_if_null(moons)
   moons <- moons[, target_cols]
   new_moons <- moons
@@ -218,11 +199,6 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'  named \code{date}.
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#' 
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{data.frame} \code{x} with column of \code{newmoonnumber}s 
 #'  added.
@@ -239,8 +215,8 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'
 #' @export
 #'
-add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
+add_moons_from_date <- function(df, moons = NULL){
+
   return_if_null(moons, df)
   moon_number <- moons$moon[-1]
   moon_start <- as.Date(moons$moondate[-nrow(moons)])
@@ -284,11 +260,6 @@ add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the
 #'  number of timesteps forward a cast will cover.
 #'
@@ -312,14 +283,10 @@ add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
 #'
 target_moons <- function(main = ".", moons = NULL, end_moon = NULL, 
                          lead_time = 12, date = Sys.Date(), 
-                         control_files = files_control(),
-                         arg_checks = TRUE){
+                         control_files = files_control()){
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
-  check_args(arg_checks)
-  last_moon <- last_moon(main = main, moons = moons, date = date, 
-                            arg_checks = arg_checks)
+                                    control_files = control_files))
+  last_moon <- last_moon(main = main, moons = moons, date = date)
   end_moon <- ifnull(end_moon, last_moon)
   (end_moon + 1):(end_moon + lead_time)
 }
@@ -329,11 +296,10 @@ target_moons <- function(main = ".", moons = NULL, end_moon = NULL,
 #' @export
 #'
 last_moon <- function(main = ".", moons = NULL, date = Sys.Date(), 
-                      control_files = files_control(), arg_checks = TRUE){
-  check_args(arg_checks)
+                      control_files = files_control()){
+
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+                                    control_files = control_files))
   which_last_moon <- max(which(moons$moondate < date))
   moons$moon[which_last_moon]
 }

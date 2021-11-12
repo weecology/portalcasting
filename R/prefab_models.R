@@ -66,9 +66,6 @@
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. 
-#'
 #' @return \code{list} of [1] model metadata \code{list} (\code{"metadata"}), 
 #'  [2] cast summary \code{data.frame} (\code{"cast_tab"}),
 #'  [3] \code{list} of model fit objects (\code{"model_fits"}), and 
@@ -187,20 +184,18 @@ AutoArima <- function(main = ".", data_set = "all",
 #'
 NaiveArima <- function(main = ".", data_set = "all",  
                        control_files = files_control(), quiet = FALSE, 
-                       verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                       verbose = FALSE){
+  
   data_set <- tolower(data_set)
 
   messageq(paste0("  -NaiveArima for ", data_set), quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set,
-                                      arg_checks = arg_checks)
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, control_files = control_files,
-                            arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
   moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
@@ -243,8 +238,7 @@ NaiveArima <- function(main = ".", data_set = "all",
   }
   metadata <- update_list(metadata, models = "NaiveArima",
                               data_sets = data_set,
-                              controls_r = data_set_controls,
-                              arg_checks = arg_checks)
+                              controls_r = data_set_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -258,19 +252,17 @@ NaiveArima <- function(main = ".", data_set = "all",
 #'
 ESSS <- function(main = ".", data_set = "all_interp", 
                  control_files = files_control(), quiet = FALSE,
-                 verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                 verbose = FALSE){
+  
   data_set <- tolower(data_set)
   messageq(paste0("  -ESSS for ", data_set), quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set,
-                                      arg_checks = arg_checks)
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, control_files = control_files,
-                            arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
   moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
@@ -315,8 +307,7 @@ ESSS <- function(main = ".", data_set = "all_interp",
   }
   metadata <- update_list(metadata, models = "ESSS",
                               data_sets = data_set,
-                              controls_r = data_set_controls,
-                              arg_checks = arg_checks)
+                              controls_r = data_set_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -328,19 +319,17 @@ ESSS <- function(main = ".", data_set = "all_interp",
 #'
 nbGARCH <- function(main = ".", data_set = "all_interp",  
                     control_files = files_control(), quiet = FALSE,
-                    verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                    verbose = FALSE){
+  
   data_set <- tolower(data_set)
   messageq(paste0("  -nbGARCH for ", data_set), quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set,
-                                      arg_checks = arg_checks)
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, control_files = control_files,
-                            arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
   moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
@@ -402,8 +391,7 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
   }
   metadata <- update_list(metadata, models = "nbGARCH",
                               data_sets = data_set,
-                              controls_r = data_set_controls,
-                              arg_checks = arg_checks)
+                              controls_r = data_set_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -414,25 +402,22 @@ nbGARCH <- function(main = ".", data_set = "all_interp",
 #'
 nbsGARCH <- function(main = ".", data_set = "all_interp",  
                      control_files = files_control(), quiet = FALSE,
-                     verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                     verbose = FALSE){
+  
   data_set <- tolower(data_set)
   messageq(paste0("  -nbsGARCH for ", data_set), quiet)
-  rodents_table <- read_rodents_table(main = main, data_set = data_set,
-                                      arg_checks = arg_checks)
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, control_files = control_files,
-                            arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
   moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
   rodents_table <- rodents_table[moon_in, ]
-  moons <- read_moons(main = main, control_files = control_files,
-                      arg_checks = arg_checks)
-  moon_foys <- foy(dates = moons$moondate, arg_checks = arg_checks)
+  moons <- read_moons(main = main, control_files = control_files)
+  moon_foys <- foy(dates = moons$moondate)
   sin2pifoy <- sin(2 * pi * moon_foys)
   cos2pifoy <- cos(2 * pi * moon_foys)
   fouriers <- data.frame(sin2pifoy, cos2pifoy)
@@ -500,8 +485,7 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
   }
   metadata <- update_list(metadata, models = "nbsGARCH",
                               data_sets = data_set,
-                              controls_r = data_set_controls,
-                              arg_checks = arg_checks)
+                              controls_r = data_set_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }
@@ -513,19 +497,17 @@ nbsGARCH <- function(main = ".", data_set = "all_interp",
 #'
 pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,  
                      control_files = files_control(), quiet = FALSE, 
-                     verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
+                     verbose = FALSE){
+  
   data_set <- tolower(data_set)
   messageq(paste0("  -pevGARCH for ", data_set), quiet)
 
-  rodents_table <- read_rodents_table(main = main, data_set = data_set,
-                                      arg_checks = arg_checks)
+  rodents_table <- read_rodents_table(main = main, data_set = data_set)
   species <- species_from_table(rodents_tab = rodents_table, total = TRUE, 
-                                nadot = TRUE, arg_checks = arg_checks)
+                                nadot = TRUE)
   nspecies <- length(species)
 
-  metadata <- read_metadata(main = main, control_files = control_files,
-                            arg_checks = arg_checks)
+  metadata <- read_metadata(main = main, control_files = control_files)
   start_moon <- metadata$start_moon
   end_moon <- metadata$end_moon
   moon_in <- rodents_table$moon >= start_moon & rodents_table$moon <= end_moon
@@ -534,8 +516,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   nmoons <- length(cast_moons)
   CL <- metadata$confidence_level
 
-  covariates <- read_covariates(main = main, control_files = control_files,
-                                arg_checks = arg_checks)
+  covariates <- read_covariates(main = main, control_files = control_files)
   covar_lag <- lag_covariates(covariates, lag, tail = TRUE)
   for_hist <- which(covar_lag$moon %in% rodents_table$moon)
   for_cast <- which(covar_lag$moon %in% cast_moons) 
@@ -545,8 +526,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   } else {
     covariate_casts <- read_covariate_casts(main = main, 
                                             control_files = control_files,
-                                            quiet = quiet, verbose = verbose,
-                                            arg_checks = arg_checks)
+                                            quiet = quiet, verbose = verbose)
     covar_casts_lag <- lag_covariates(covariate_casts, lag, tail = TRUE)
     last_cov_nm <- max(covar_hist$moon) - lag
     nm_in <- covar_casts_lag$cast_moon == last_cov_nm
@@ -631,8 +611,7 @@ pevGARCH <- function(main = ".", data_set = "all_interp", lag = 6,
   }
   metadata <- update_list(metadata, models = "pevGARCH",
                               data_sets = data_set,
-                              controls_r = data_set_controls,
-                              arg_checks = arg_checks)
+                              controls_r = data_set_controls)
   list(metadata = metadata, cast_tab = cast_tab, model_fits = mods, 
        model_casts = casts)
 }

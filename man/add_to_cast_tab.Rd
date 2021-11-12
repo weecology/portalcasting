@@ -8,13 +8,13 @@
 \alias{add_obs_to_cast_tab}
 \title{Add the associated values to a cast tab}
 \usage{
-add_lead_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
+add_lead_to_cast_tab(main = ".", cast_tab = NULL)
 
-add_err_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
+add_err_to_cast_tab(main = ".", cast_tab = NULL)
 
-add_covered_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
+add_covered_to_cast_tab(main = ".", cast_tab = NULL)
 
-add_obs_to_cast_tab(main = ".", cast_tab = NULL, arg_checks = TRUE)
+add_obs_to_cast_tab(main = ".", cast_tab = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
@@ -22,11 +22,6 @@ the directory tree.}
 
 \item{cast_tab}{A \code{data.frame} of a cast's output. See 
 \code{\link{read_cast_tab}}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{data.frame} of \code{cast_tab} with an additional column or

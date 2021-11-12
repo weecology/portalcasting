@@ -16,8 +16,7 @@ prep_cast_covariates(
   cast_date = Sys.Date(),
   control_files = files_control(),
   quiet = TRUE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 save_cast_cov_csv(
@@ -28,8 +27,7 @@ save_cast_cov_csv(
   cast_cov = NULL,
   control_files = files_control(),
   quiet = TRUE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -62,11 +60,6 @@ quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 
 \item{cast_cov}{\code{data.frame} of cast covariates. See
 \code{\link{cast_covariates}}.}

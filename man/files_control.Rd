@@ -16,8 +16,7 @@ files_control(
   overwrite = TRUE,
   cleanup = TRUE,
   source_name = "current_archive",
-  append_cast_csv = TRUE,
-  arg_checks = TRUE
+  append_cast_csv = TRUE
 )
 }
 \arguments{
@@ -57,11 +56,6 @@ given the source name \code{"retroactive"}.}
 
 \item{append_cast_csv}{\code{logical} indicator controlling if the new 
 cast covariates should be appended to the historical casts later use.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
 Named \code{list} of names of the folders and files within the

@@ -19,7 +19,7 @@ fill_dir(
   climate_forecast_source = "NMME",
   climate_forecast_version = Sys.Date(),
   models = prefab_models(),
-  data_sets = prefab_data_sets(),
+  datasets = prefab_rodent_datasets(),
   quiet = FALSE,
   verbose = TRUE,
   controls_model = NULL,
@@ -27,6 +27,7 @@ fill_dir(
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
+  min_lag = 6,
   confidence_level = 0.95,
   cast_date = Sys.Date(),
   controls_rodents = rodents_controls()
@@ -35,17 +36,17 @@ fill_dir(
 fill_data(
   main = ".",
   models = prefab_models(),
+  controls_model = NULL,
+  control_files = files_control(),
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
+  min_lag = 6,
   confidence_level = 0.95,
   cast_date = Sys.Date(),
-  controls_model = NULL,
-  controls_rodents = rodents_controls(),
-  control_files = files_control(),
-  data_sets = prefab_data_sets(),
+  datasets = prefab_rodent_datasets(),
   quiet = FALSE,
-  verbose = FALSE
+  verbose = TRUE
 )
 
 fill_raw(
@@ -104,7 +105,7 @@ See \code{\link{download_climate_forecasts}}.}
 \item{models}{\code{vector} of models to be written via 
 \code{\link{write_model}}.}
 
-\item{data_sets}{\code{list} of data_sets to be created using 
+\item{datasets}{\code{list} of datasets to be created using 
 \code{\link{do.call}} on the defined functions.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
@@ -121,7 +122,7 @@ Presently, each model's script writing controls should include four
 elements: 
 \itemize{
  \item \code{name}: a \code{character} value of the model name.
- \item \code{data_sets}: a \code{character} vector of the data set names
+ \item \code{datasets}: a \code{character} vector of the data set names
   that the model is applied to. 
  \item \code{covariatesTF}: a \code{logical} indicator of if the 
   model needs covariates.
@@ -148,6 +149,9 @@ corresponding to \code{1995-01-01}.}
 
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}
+
+\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
+covariate lag time used in any model.}
 
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
