@@ -4,10 +4,15 @@
 \alias{directory_settings}
 \title{Create a Directory Settings List}
 \usage{
-directory_settings(directory_config_file = "dir_config.yaml")
+directory_settings(
+  directory_config_file = "dir_config.yaml",
+  subdirectories = c("casts", "fits", "models", "raw", "data", "tmp")
+)
 }
 \arguments{
 \item{directory_config_file}{\code{character} value of the path to the directory config YAML.}
+
+\item{subdirectories}{\code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}.}
 }
 \value{
 Named \code{list} of settings for the directory.

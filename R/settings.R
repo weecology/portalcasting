@@ -4,18 +4,19 @@
 #'
 #' @param directory_config_file \code{character} value of the path to the directory config YAML.
 #'
+#' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}. 
+#'
 #' @return Named \code{list} of settings for the directory.
 #'
 #' @export
 #'
-
-
-directory_settings <- function(directory_config_file = "dir_config.yaml"){
+directory_settings <- function(directory_config_file = "dir_config.yaml",
+                               subdirectories = c("casts", "fits", "models", "raw", "data", "tmp")){
 
   list(
 
     files = list(directory_config = directory_config_file),
-    subs  = c("casts", "fits", "models", "raw", "data", "tmp")
+    subs  = subdirectories
   )
 
 }
