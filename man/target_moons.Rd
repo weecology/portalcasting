@@ -5,26 +5,11 @@
 \alias{last_moon}
 \title{Determine specific newmoon numbers}
 \usage{
-target_moons(
-  main = ".",
-  moons = NULL,
-  end_moon = NULL,
-  lead_time = 12,
-  date = Sys.Date(),
-  control_files = files_control()
-)
+target_moons(moons = NULL, end_moon = NULL, lead_time = 12, date = Sys.Date())
 
-last_moon(
-  main = ".",
-  moons = NULL,
-  date = Sys.Date(),
-  control_files = files_control()
-)
+last_moon(moons = NULL, date = Sys.Date())
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
-
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
@@ -36,6 +21,9 @@ number of timesteps forward a cast will cover.}
 
 \item{date}{\code{Date} used for defining a window (starting with moons
 subsequent to the date) or a previous moon (before or on the date).}
+
+\item{main}{\code{character} value of the name of the main component of
+the directory tree.}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).

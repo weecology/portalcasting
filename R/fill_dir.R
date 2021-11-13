@@ -112,21 +112,20 @@ fill_data <- function (main      = ".",
                 cast_date = cast_date, 
                 settings  = settings,
                 quiet     = quiet, 
-                verbose = verbose)
+                verbose   = verbose)
 
 
-###
-#
-# working here
-#
 
 
-  data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
-                            start_moon = start_moon, lead_time = lead_time, 
-                            min_lag = min_lag, cast_date = cast_date, 
-                            quiet = quiet, control_files = control_files)
 
-  prep_metadata(main = main, models = models,
+  prepare_covariates(main      = main, 
+                lead_time = lead_time, 
+                cast_date = cast_date, 
+                settings  = settings,
+                quiet     = quiet, 
+                verbose   = verbose)
+
+  prepare_metadata(main = main, models = models,
                 datasets = datasets, moons = data_m, 
                 rodents = data_r, covariates = data_c, end_moon = end_moon, 
                 lead_time = lead_time, min_lag = min_lag, 

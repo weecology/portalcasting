@@ -66,16 +66,17 @@
 #'
 #' @export
 #'
-prep_cast_covariates <- function(main = ".", moons = NULL,
-                                 hist_cov = NULL, end_moon = NULL, 
-                                 lead_time = 12, min_lag = 6, 
-                                 cast_date = Sys.Date(), 
-                                 control_files = files_control(),
-                                 quiet = TRUE, verbose = FALSE){
+prepare_forecast_covariates <- function (main      = ".", 
+                                         lead_time = 12,
+                                         cast_date = Sys.Date(), 
+                                         settings  = directory_settings(), 
+                                         quiet     = TRUE,
+                                         verbose   = FALSE) {
 
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files))
-  last_moon <- last_moon(main = main, moons = moons, date = cast_date)
+  moons <- read_moons(main = main, settings = settings)
+
+  last_moon <- last_moon(moons = moons, date = cast_date)
+
   end_moon <- ifnull(end_moon, last_moon)
   min_lag <- ifna(min_lag, 0)
   hist_cov <- ifnull(hist_cov, prep_hist_covariates(main = main,
@@ -84,7 +85,10 @@ prep_cast_covariates <- function(main = ".", moons = NULL,
 
     win <- cast_window(main = main, moons = moons, cast_date = cast_date,
                        lead_time = lead_time, min_lag = min_lag)
-    cast_cov <- read_climate_casts(main = main)
+
+    cast_cov <- read_climate_forecasts(main = main)
+
+
     win_vec <- seq(win$start, win$end, 1)
     win_length <- length(win_vec)
     ndvi_fit <- auto.arima(hist_cov$ndvi)
@@ -197,48 +201,4 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
   messageq(msg, quiet = !verbose)
   write.csv(out, out_path, row.names = FALSE)
   cast_cov
-}
-
-read_climate_casts <- function(main = "."){
-
-datas = c(mintemp = "tasmin", 
-                                        meantemp = "tasmean", 
-                                        maxtemp = "tasmax", 
-                                        precipitation = "pr")
-
-
-  dat_list <- vector("list", length(datas))
-  ndatas <- length(datas)
-  for(i in 1:ndatas){
-    csv_path <- paste0("/NMME/",  datas[i], ".csv")
-    fpath <- file_path(main = main, sub = "raw", files = csv_path)
-    dat_list[[i]] <- read.csv(fpath)
-  }
-  dat_tab <- dat_list[[1]]
-  colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[1]
-  colnames(dat_tab)[1] <- "date"
-  dat_tab[,1] <- as.Date(dat_tab[,1])
-  dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
-  
-  if(ndatas > 1){
-    for(i in 2:ndatas){
-      dat_tab_i <- dat_list[[i]]
-      x <- dat_tab_i[ , ncol(dat_tab_i)]
-      dat_tab <- data.frame(dat_tab, x)
-      colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[i]
-    }
-  }
-  for(i in 2:ncol(dat_tab)){
-    if(grepl("temp", colnames(dat_tab)[i])){
-      x <- dat_tab[ , i]
-      x[x == -9999] <- NA
-      dat_tab[ , i] <- (x - 32) * 5 / 9      
-    } else if (grepl("precip", colnames(dat_tab)[i])){
-      x <- dat_tab[ , i]
-      x[x == -9999] <- NA
-      x[x < 0] <- 0
-      dat_tab[ , i] <- x * 25.4
-    }
-  }
-  dat_tab
 }

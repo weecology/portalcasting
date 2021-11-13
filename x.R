@@ -1,3 +1,178 @@
+                                   min_lag = min_lag, 
+
+
+#
+# patching NDVI 
+#
+
+  na_ndvi <- is.na(out$ndvi)
+
+  if (na_ndvi[nrow(out)]) {
+
+    last_good <- max(which(!na_ndvi))
+    full_length <- nrow(out)
+    window_length <- full_length - last_good
+
+    ndvi_fit <- auto.arima(out$ndvi)
+    ndvi_cast <- forecast(ndvi_fit, h = window_length)
+    out$ndvi[(last_good + 1):full_length] <- as.numeric(ndvi_cast$mean)
+
+  }
+
+  data.frame(out)
+
+
+ moons = data_m, end_moon = end_moon, 
+                            start_moon = start_moon, lead_time = lead_time, 
+                            min_lag = min_lag, cast_date = cast_date, 
+                            quiet = quiet, control_files = control_files)
+
+#' @title Prepare historical covariates data
+#'
+#' @description 
+
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @param moons Lunar data \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#'
+#' @return 
+#'  \code{prep_hist_covariates}: daily historical covariate data table as a 
+#'   \code{data.frame}. 
+#'
+#' @examples
+#'  \donttest{   
+#'   create_dir()
+#'   fill_raw()
+#'   prep_hist_covariates()
+#'  }
+#'
+#' @name prepare_historical_covariates
+#'
+NULL
+
+
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'  shown.
+#'
+#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the first sample to be included. Default value is \code{217}, 
+#'  corresponding to \code{1995-01-01}.
+#'
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+
+
+\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions. 
+
+#'              If the requested data do not exist, an effort is made to prepare them using the associated \code{prep_<data_name>} functions (like \code{prep_moons}).\cr \cr
+
+names(prefab_rodent_datasets())
+names(prefab_rodent_datasets())
+
+ main = ".", models = prefab_models(),
+                          datasets = NULL, moons = NULL, rodents = NULL,
+                          covariates = NULL, end_moon = NULL, 
+                          start_moon = 217, lead_time = 12, min_lag = 6, 
+                          cast_date = Sys.Date(), confidence_level = 0.95, 
+                          controls_model = NULL, 
+                          control_files = files_control(),
+                          quiet = TRUE, verbose = FALSE
+#'
+#' @param models \code{character} vector of name(s) of model(s) to 
+#'  include.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @param rodents Rodents \code{list}. See \code{\link{prep_rodents}},
+#'  
+#' @param datasets \code{character} vector of the rodent data set names
+#'  that the model is applied to. 
+#'
+#' @param covariates Covariates \code{data.frame}. See 
+#'  \code{\link{prep_covariates}}.
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
+#'  covariate lag time used in any model.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the first sample to be included. Default value is \code{217}, 
+#'  corresponding to \code{1995-01-01}.
+#'
+#' @param confidence_level \code{numeric} confidence level used in 
+#'   summarizing model output. Must be between \code{0} and \code{1}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param controls_model Additional controls for models not in the prefab
+#'  set. \cr 
+#'  A \code{list} of a single model's script-writing controls or a
+#'  \code{list} of \code{list}s, each of which is a single model's 
+#'  script-writing controls. \cr 
+#'  Presently, each model's script writing controls
+#'  should include three elements: \code{name} (a \code{character} value of 
+#'  the model name), \code{covariates} (a \code{logical} indicator of if the 
+#'  model needs covariates), and \code{lag} (an \code{integer}-conformable 
+#'  value of the lag to use with the covariates or \code{NA} if 
+#'  \code{covariates = FALSE}). \cr 
+#'  If only a single model is added, the name of 
+#'  the model from the element \code{name} will be used to name the model's
+#'  \code{list} in the larger \code{list}. If multiple models are added, each
+#'  element \code{list} must be named according to the model and the
+#'  \code{name} element. \cr 
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be
+#'  shown.
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+
+
+
+
 lead_time = 12, cast_date = Sys.Date(), 
                        control_files = files_control()
 
@@ -29,6 +204,7 @@ lead_time = 12, cast_date = Sys.Date(),
 #'        no download.
 #'        \cr \cr 
 #'        See \code{\link{download_archive}}.
+
 #'
 #'
 #' @param climate_forecast_source,climate_forecast_version  \code{character} 

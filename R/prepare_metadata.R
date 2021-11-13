@@ -1,108 +1,61 @@
-#' @title Prepare a model-running metadata list
+#' @title Prepare a Model-Running Metadata List
 #'
-#' @description Sets up the metadata used for casting, in particular the 
-#'  matching of time period across the data sets. This should always be run
-#'  after \code{\link{prep_moons}}, \code{\link{prep_rodents}}, and 
-#'  \code{\link{prep_covariates}} before any model is run.
+#' @description Sets up the metadata used for casting, in particular the matching of time period across the data sets. This should always be run after \code{\link{prep_moons}}, \code{\link{prep_rodents}}, and \code{\link{prep_covariates}} before any model is run.
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to 
-#'  include.
+#' @param models \code{character} vector of name(s) of model(s) to include.
 #'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#' @param datasets \code{character} vector of name(s) of dataset(s) to include.
 #'
-#' @param rodents Rodents \code{list}. See \code{\link{prep_rodents}},
-#'  
-#' @param datasets \code{character} vector of the rodent data set names
-#'  that the model is applied to. 
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param covariates Covariates \code{data.frame}. See 
-#'  \code{\link{prep_covariates}}.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
 #'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
-#'  covariate lag time used in any model.
+#' @param cast_date \code{Date} of the cast, typically today's date (set using \code{\link{Sys.Date}}).
 #'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
-#'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the first sample to be included. Default value is \code{217}, 
-#'  corresponding to \code{1995-01-01}.
-#'
-#' @param confidence_level \code{numeric} confidence level used in 
-#'   summarizing model output. Must be between \code{0} and \code{1}.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @param controls_model Additional controls for models not in the prefab
-#'  set. \cr 
-#'  A \code{list} of a single model's script-writing controls or a
-#'  \code{list} of \code{list}s, each of which is a single model's 
-#'  script-writing controls. \cr 
-#'  Presently, each model's script writing controls
-#'  should include three elements: \code{name} (a \code{character} value of 
-#'  the model name), \code{covariates} (a \code{logical} indicator of if the 
-#'  model needs covariates), and \code{lag} (an \code{integer}-conformable 
-#'  value of the lag to use with the covariates or \code{NA} if 
-#'  \code{covariates = FALSE}). \cr 
-#'  If only a single model is added, the name of 
-#'  the model from the element \code{name} will be used to name the model's
-#'  \code{list} in the larger \code{list}. If multiple models are added, each
-#'  element \code{list} must be named according to the model and the
-#'  \code{name} element. \cr 
-#'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'  shown.
-#'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
-#'
-#' @return \code{list} of casting metadata, which is also saved out as a 
-#'  YAML file (\code{.yaml}) if desired.
+#' @return \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 #' 
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   moons <- prep_moons()
-#'   rodents <- prep_rodents(moons = moons)
-#'   covariates <- prep_covariates(moons = moons)
-#'   prep_metadata(moons = moons, rodents = rodents, covariates = covariates)
+#'   prepare_metadata()
 #'  }
 #' 
 #' @export
 #'
-prep_metadata <- function(main = ".", models = prefab_models(),
-                          datasets = NULL, moons = NULL, rodents = NULL,
-                          covariates = NULL, end_moon = NULL, 
-                          start_moon = 217, lead_time = 12, min_lag = 6, 
-                          cast_date = Sys.Date(), confidence_level = 0.95, 
-                          controls_model = NULL, 
-                          control_files = files_control(),
-                          quiet = TRUE, verbose = FALSE){
-  filename_config <- control_files$filename_config
-  filename_meta <- control_files$filename_meta
+prepare_metadata <- function (main      = ".",
+                              models    = c("AutoArima", "ESSS", "NaiveArima", "nbGARCH", "nbsGARCH", "pevGARCH", "jags_RW"), 
+                              datasets  = c("all", "all_interp", "controls", "controls_interp", "exclosures", "exclosures_interp", "dm_controls", "dm_controls_interp"),
+                              lead_time = 12,
+                              cast_date = Sys.Date(), 
+                              settings  = directory_settings(), 
+                              quiet     = FALSE, 
+                              verbose   = FALSE) {
 
 
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files))
-  rodents  <- ifnull(rodents, read_rodents(main = main, 
-                                           datasets = datasets))
-  covariates <- ifnull(covariates, read_covariates(main = main, 
-                                               control_files = control_files))
+
+
+  moons      <- read_moons(main     = main,
+                           settings = settings)
+
+  rodents    <- read_rodents(main     = main,
+                             datasets = datasets)
+
+  covariates <- read_covariates(main     = main,
+                                settings = settings)
+
+return()
+
+
   messageq("  -metadata file", quiet = quiet)
+
   last_moon <- last_moon(main = main, moons = moons, date = cast_date)
+
   end_moon <- ifnull(end_moon, last_moon)
   ncontrols_r <- length(rodents)
   last_rodent_moon <- 0
@@ -135,6 +88,11 @@ prep_metadata <- function(main = ".", models = prefab_models(),
 
   cast_meta <- read_casts_metadata(main = main, quiet = quiet)
   cast_group <- max(cast_meta$cast_group) + 1
+
+
+  filename_config <- settings$files$directory_config
+  filename_meta <- settings$files$metadata
+
 
   config <- read_directory_config(main = main, 
                                   filename_config = 

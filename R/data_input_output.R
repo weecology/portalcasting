@@ -24,75 +24,81 @@
 #'
 #' @export
 #'
-write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL, 
-                       overwrite = TRUE, quiet = FALSE){
+write_data <- function (dfl       = NULL, 
+                        main      = ".", 
+                        save      = TRUE, 
+                        filename  = NULL, 
+                        overwrite = TRUE, 
+                        quiet     = FALSE) {
   
   return_if_null(dfl)
+
   return_if_null(filename)
+
   save_it <- FALSE
-  if(save){
-    fext <- file_ext(filename)
+
+  if (save) {
+
     full_path <- file.path(main, "data", filename)
-    f_exists <- file.exists(full_path)
-    if(f_exists){
-      if(overwrite){
+
+    if (file.exists(full_path)) {
+
+      if (overwrite) {
+
         save_it <- TRUE
-        msg <- paste0("    **", filename, 
-                      " exists and overwrite = TRUE; file saved**")
+
+        messageq("    **", filename, " exists and overwrite = TRUE; file saved**", quiet = quiet)
+
       } else {
-        msg <- paste0("    **", filename, 
-                      " exists and overwrite = FALSE; not saved***") 
+
+        messageq("    **", filename, " exists and overwrite = FALSE; not saved***", quiet = quiet) 
       }
-    } else{
+
+    } else {
+
       save_it <- TRUE
-      msg <- paste0("    **", filename, " saved**")
+
+      messageq("    **", filename, " saved**", quiet = quiet)
+
     }
-    messageq(msg, quiet = quiet)
-    if( save_it){
-        if(fext == "csv"){
-          write.csv(dfl, full_path, row.names = FALSE)
-      } else if (fext == "yaml"){
-          yams <- as.yaml(dfl)
-          writeLines(yams, con = full_path)
-      } else{
+
+    if (save_it) {
+
+      if (file_ext(filename) == "csv") {
+
+        write.csv(dfl, full_path, row.names = FALSE)
+
+      } else if (file_ext(filename) == "yaml"){
+
+        write_yaml(dfl, file = full_path)
+
+      } else {
+
         stop("file type not supported", call. = FALSE)
+
       }
+
     }
    
   }
+
   dfl
+
 }
 
-#' @title Read in a data file and format it for specific class
+#' @title Read in and Format a Portalcasting Data File 
 #'
 #' @description Read in a specified data file. \cr \cr
-#'  Current options include \code{"rodents"} (produces a list), 
-#'  \code{"rodents_table"} (produces a rodents table), \code{"covariates"},
-#'  \code{"covariate_casts"}, \code{"moons"}, and \code{"metadata"}, which
-#'  are available as calls to \code{read_data} with a specified 
-#'  \code{data_name} or as calls to the specific \code{read_<data_name>} 
-#'  functions (like \code{read_moons}). \cr \cr
-#'  If the requested data do not exist, an effort is made to prepare them
-#'  using the associated \code{prep_<data_name>} functions (like
-#'  \code{prep_moons}).\cr \cr
-#'  \code{read_cov_casts} reads in the current or (if no current version)
-#'  local archived version of the covariate casts.
+#'              Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"covariate_casts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
+#'              \code{read_cov_casts} reads in the current or (if no current version) local archived version of the covariate casts.
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'  
-#' @param data_name \code{character} representation of the data needed.
-#'  Current options include \code{"rodents"}, \code{"rodents_table"}, 
-#'  \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
-#'  \code{"metadata"}.
+#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
 #'
-#' @param dataset,datasets \code{character} representation of the grouping
-#'  name(s) used to define the rodents. Standard options are \code{"all"} and 
-#'  \code{"controls"}. \code{dataset} can only be length 1, 
-#'  \code{datasets} is not restricted in length.
+#' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
@@ -118,6 +124,7 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'  read_rodents()
 #'  read_rodents_table()
 #'  read_covariates()
+#'  read_climate_forecasts()
 #'  read_covariate_casts()
 #'  read_moons()
 #'  read_metadata()
@@ -125,91 +132,161 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
 #'
 #' @export
 #'
-read_data <- function(main = ".", data_name = NULL, dataset = "all", 
-                      datasets = c("all", "controls"), 
-                      control_files = files_control()){
+read_data <- function (main      = ".", 
+                       data_name = NULL, 
+                       dataset   = "all", 
+                       datasets  = c("all", "controls"), 
+                       settings  = directory_settings()){
   
   return_if_null(data_name)
+
   data_name <- tolower(data_name)
-  dataset <- tolower(dataset)
-  datasets <- tolower(datasets)
-  if (data_name == "rodents"){
-    data <- read_rodents(main = main, datasets = datasets)
-  }
-  if (data_name == "rodents_table"){
-    data <- read_rodents_table(main = main, dataset)
-  }
-  if (data_name == "covariates"){
-    data <- read_covariates(main = main, control_files = control_files)
-  }
-  if (data_name == "covariate_casts"){
-    data <- read_covariate_casts(main = main, control_files = control_files)
-  }
-  if (data_name == "moons"){
-    data <- read_moons(main = main, control_files = control_files)
+
+  if (data_name == "rodents") {
+
+    read_rodents(main = main, datasets = datasets)
 
   }
-  if (data_name == "metadata"){
-    data <- read_metadata(main = main, control_files = control_files)
+
+  if (data_name == "rodents_table") { 
+
+    read_rodents_table(main = main, dataset)
 
   }
-  data
+
+  if (data_name == "covariates") {
+
+    read_covariates(main = main, settings = settings)
+
+  }
+
+  if (data_name == "covariate_casts") {
+
+    read_covariate_casts(main = main, settings = settings)
+
+  }
+
+  if (data_name == "moons") {
+
+    read_moons(main = main, settings = settings)
+
+  }
+  if (data_name == "metadata") {
+
+    read_metadata(main = main, settings = settings)
+
+  }
+
 }
 
 #' @rdname read_data
 #'
 #' @export
 #'
-read_rodents_table <- function(main = ".", dataset = "all"){
+read_rodents_table <- function (main    = ".", 
+                                dataset = "all") {
 
+  return_if_null(dataset)
+  read.csv(file.path(main, "data", paste0("rodents_", tolower(dataset), ".csv"))) 
 
-  dataset <- tolower(dataset)
-  lpath <- paste0("rodents_", dataset, ".csv") 
-  fpath <- file.path(main, "data", lpath)
-  if(!file.exists(fpath)){
-    rodents <- prepare_rodent_datasets(main = main, datasets = dataset)
-    rodents_tab <- rodents[[1]]
-    return(rodents_tab)
-  }
-  read.csv(fpath, stringsAsFactors = FALSE) 
 }
 
 #' @rdname read_data
 #'
 #' @export
 #'
-read_rodents <- function(main = ".", datasets = c("all", "controls")){
+read_rodents <- function (main     = ".", 
+                          datasets = c("all", "controls")) {
   
   return_if_null(datasets)
-  datasets <- tolower(datasets)
-  ndatasets <- length(datasets)
-  rodents <- vector("list", length = ndatasets)
-  for(i in 1:ndatasets){
-    rodents[[i]] <- read_rodents_table(main = main, dataset = datasets[i])
-  }
-  names(rodents) <- datasets
-  rodents
-}
 
+  mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
+
+}
 
 #' @rdname read_data
 #'
 #' @export
 #'
-read_covariates <- function(main = ".", control_files = files_control()){
+read_moons <- function(main     = ".", 
+                       settings = directory_settings()){
   
-  fpath <- file.path(main, "data", control_files$filename_cov)
-  if(!file.exists(fpath)){
-    return(prep_covariates(main = main))
-  }
-  read.csv(fpath, stringsAsFactors = FALSE) 
+  read.csv(file.path(main, "data", settings$files$moons))
+
 }
 
 #' @rdname read_data
 #'
 #' @export
 #'
-read_covariate_casts <- function(main = ".", control_files = files_control(),
+read_covariates <- function (main     = ".",
+                             settings = directory_settings()) {
+
+  read.csv(file.path(main, "data", settings$files$covariates))
+
+}
+
+
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_climate_forecasts <- function (main = ".") {
+
+  datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
+
+  dat_list <- mapply(FUN = read.csv, file.path(main, "raw", files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
+
+  dat_tab <- dat_list[[1]]
+  dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
+  colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[1]
+  
+  if (ndatas > 1) {
+
+    for (i in 2:ndatas) {
+
+      dat_tab_i <- dat_list[[i]]
+      x         <- dat_tab_i[ , ncol(dat_tab_i)]
+      dat_tab   <- data.frame(dat_tab, x)
+      colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[i]
+
+    }
+
+  }
+
+  colnames(dat_tab)[1] <- "date"
+  dat_tab[ , 1]        <- as.Date(dat_tab[,1])
+
+  for (i in 2:ncol(dat_tab)) {
+
+    if(grepl("temp", colnames(dat_tab)[i])) {
+
+      x             <- dat_tab[ , i]
+      x[x == -9999] <- NA
+      dat_tab[ , i] <- (x - 32) * 5 / 9  
+    
+    } else if (grepl("precip", colnames(dat_tab)[i])) {
+
+      x             <- dat_tab[ , i]
+      x[x == -9999] <- NA
+      x[x < 0]      <- 0
+      dat_tab[ , i] <- x * 25.4
+
+    }
+
+  }
+
+  dat_tab
+}
+
+
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_covariate_casts <- function(main = ".", settings = directory_settings(),
                            quiet = FALSE, verbose = FALSE){
   
   curr_path <- file.path(main, "data", control_files$filename_cov_casts)
@@ -244,24 +321,13 @@ read_covariate_casts <- function(main = ".", control_files = files_control(),
   cov_cast
 }
 
-#' @rdname read_data
-#'
-#' @export
-#'
-read_moons <- function(main = ".", control_files = files_control()){
-  
-  fpath <- file.path(main, "data", control_files$filename_moons)
-  if(!file.exists(fpath)){
-    return(prep_moons(main = main))
-  }
-  read.csv(fpath, stringsAsFactors = FALSE)
-}
+
 
 #' @rdname read_data
 #'
 #' @export
 #'
-read_metadata <- function(main = ".", control_files = files_control()){
+read_metadata <- function(main = ".", settings = directory_settings()){
   
   fpath <- file.path(main, "data", control_files$filename_meta)
   if(!file.exists(fpath)){

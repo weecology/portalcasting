@@ -2,32 +2,18 @@
 % Please edit documentation in R/prepare_moons.R
 \name{add_moons_from_date}
 \alias{add_moons_from_date}
-\title{Add a newmoon number to a table that has the date}
+\title{Add a Newmoon Number to a Table that has a Date}
 \usage{
 add_moons_from_date(df, moons = NULL)
 }
 \arguments{
-\item{df}{\code{data.frame} with column of newmoon \code{Date}s 
-named \code{date}.}
+\item{df}{\code{data.frame} with column of \code{date}s.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 }
 \value{
-\code{data.frame} \code{x} with column of \code{newmoonnumber}s 
- added.
+\code{data.frame} \code{df} with column of \code{newmoonnumber}s added.
 }
 \description{
-Add a \code{moon} (newmoon number) column to a table that has 
- a \code{date} (as a \code{Date}) column.
-}
-\examples{
- \donttest{
-  create_dir()
-  fill_dir()
-  moons <- prep_moons()
-  raw_path <- raw_path()
-  weather <- portalr::weather("daily", fill = TRUE, path = raw_path)
-  add_moons_from_date(weather, moons)
- }
-
+Add a \code{newmoonnumber} column to a table that has a \code{date} column.
 }

@@ -4,77 +4,63 @@
 \alias{read_data}
 \alias{read_rodents_table}
 \alias{read_rodents}
-\alias{read_covariates}
-\alias{read_covariate_casts}
 \alias{read_moons}
+\alias{read_covariates}
+\alias{read_climate_forecasts}
+\alias{read_covariate_casts}
 \alias{read_metadata}
-\title{Read in a data file and format it for specific class}
+\title{Read in and Format a Portalcasting Data File}
 \usage{
 read_data(
   main = ".",
   data_name = NULL,
   dataset = "all",
   datasets = c("all", "controls"),
-  control_files = files_control()
+  settings = directory_settings()
 )
 
 read_rodents_table(main = ".", dataset = "all")
 
 read_rodents(main = ".", datasets = c("all", "controls"))
 
-read_covariates(main = ".", control_files = files_control())
+read_moons(main = ".", settings = directory_settings())
+
+read_covariates(main = ".", settings = directory_settings())
+
+read_climate_forecasts(main = ".")
 
 read_covariate_casts(
   main = ".",
-  control_files = files_control(),
+  settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
 
-read_moons(main = ".", control_files = files_control())
-
-read_metadata(main = ".", control_files = files_control())
+read_metadata(main = ".", settings = directory_settings())
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{data_name}{\code{character} representation of the data needed.
-Current options include \code{"rodents"}, \code{"rodents_table"}, 
-\code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and 
-\code{"metadata"}.}
+\item{data_name}{\code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.}
 
-\item{dataset, datasets}{\code{character} representation of the grouping
-name(s) used to define the rodents. Standard options are \code{"all"} and 
-\code{"controls"}. \code{dataset} can only be length 1, 
-\code{datasets} is not restricted in length.}
+\item{dataset, datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out
+all of the information or just tidy messages.}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or just tidy messages.}
 }
 \value{
 Data requested.
 }
 \description{
 Read in a specified data file. \cr \cr
- Current options include \code{"rodents"} (produces a list), 
- \code{"rodents_table"} (produces a rodents table), \code{"covariates"},
- \code{"covariate_casts"}, \code{"moons"}, and \code{"metadata"}, which
- are available as calls to \code{read_data} with a specified 
- \code{data_name} or as calls to the specific \code{read_<data_name>} 
- functions (like \code{read_moons}). \cr \cr
- If the requested data do not exist, an effort is made to prepare them
- using the associated \code{prep_<data_name>} functions (like
- \code{prep_moons}).\cr \cr
- \code{read_cov_casts} reads in the current or (if no current version)
- local archived version of the covariate casts.
+             Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"covariate_casts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
+             \code{read_cov_casts} reads in the current or (if no current version) local archived version of the covariate casts.
 }
 \examples{
 \donttest{
@@ -90,6 +76,7 @@ Read in a specified data file. \cr \cr
  read_rodents()
  read_rodents_table()
  read_covariates()
+ read_climate_forecasts()
  read_covariate_casts()
  read_moons()
  read_metadata()

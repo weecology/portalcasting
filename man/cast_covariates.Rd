@@ -2,19 +2,15 @@
 % Please edit documentation in R/cast_covariates.R
 \name{cast_covariates}
 \alias{cast_covariates}
-\alias{prep_cast_covariates}
+\alias{prepare_forecast_covariates}
 \alias{save_cast_cov_csv}
 \title{Cast the covariates}
 \usage{
-prep_cast_covariates(
+prepare_forecast_covariates(
   main = ".",
-  moons = NULL,
-  hist_cov = NULL,
-  end_moon = NULL,
   lead_time = 12,
-  min_lag = 6,
   cast_date = Sys.Date(),
-  control_files = files_control(),
+  settings = directory_settings(),
   quiet = TRUE,
   verbose = FALSE
 )
@@ -33,27 +29,11 @@ save_cast_cov_csv(
 \arguments{
 \item{main}{\code{character} name of the main directory tree component.}
 
-\item{moons}{Lunar data \code{data.frame}. See \code{\link{prep_moons}}.}
-
-\item{hist_cov}{\code{data.frame} of historic covariates. See 
-\code{\link{prep_hist_covariates}}.}
-
-\item{end_moon}{Forecast origin. \code{integer}-conformable newmoon number 
-or \code{NULL}, which equates to the most recently included census'
-newmoon number.}
-
 \item{lead_time}{\code{integer}-conformable number of timesteps forward 
 a cast will proceed.}
 
-\item{min_lag}{\code{integer}-conformable minimum non-0 covariate lag time 
-used in any model.}
-
 \item{cast_date}{\code{Date} on which the cast happens. Generally should
 be \code{\link{Sys.Date}}.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
@@ -61,8 +41,24 @@ quieted.}
 \item{verbose}{\code{logical} indicator if detailed messages should be
 shown.}
 
+\item{moons}{Lunar data \code{data.frame}. See \code{\link{prep_moons}}.}
+
+\item{end_moon}{Forecast origin. \code{integer}-conformable newmoon number 
+or \code{NULL}, which equates to the most recently included census'
+newmoon number.}
+
 \item{cast_cov}{\code{data.frame} of cast covariates. See
 \code{\link{cast_covariates}}.}
+
+\item{control_files}{\code{list} of names of the folders and files within
+the sub directories and saving strategies (save, overwrite, append, etc.).
+Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+
+\item{hist_cov}{\code{data.frame} of historic covariates. See 
+\code{\link{prep_hist_covariates}}.}
+
+\item{min_lag}{\code{integer}-conformable minimum non-0 covariate lag time 
+used in any model.}
 }
 \value{
 \code{prep_cast_covariates}: \code{data.frame} of the cast covariates

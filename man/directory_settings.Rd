@@ -7,6 +7,10 @@
 directory_settings(
   directory_config_file = "dir_config.yaml",
   moons_file = "moon_dates.csv",
+  covariates_file = "covariates.csv",
+  historical_covariates_file = "historical_covariates.csv",
+  forecast_covariates_file = "forecast_covariates.csv",
+  metadata_file = "metadata.yaml",
   subdirectories = c("casts", "fits", "models", "raw", "data", "tmp"),
   PortalData = list(source = "github", version = "latest"),
   portalPredictions = list(source = "github", version = NULL),
@@ -21,6 +25,10 @@ directory_settings(
 \item{directory_config_file}{\code{character} value of the path to the directory config YAML.}
 
 \item{moons_file}{\code{character} name of the file for saving the moons data.}
+
+\item{covariates_file, historical_covariates_file, forecast_covariates_file}{\code{character} name of the files for saving the covariate data (combined historical and forecast) and each component.}
+
+\item{metadata_file}{\code{character} name of the file for saving the forecast metadata.}
 
 \item{subdirectories}{\code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}.}
 

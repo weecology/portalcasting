@@ -6,6 +6,10 @@
 #'
 #' @param moons_file \code{character} name of the file for saving the moons data.
 #'
+#' @param covariates_file,historical_covariates_file,forecast_covariates_file \code{character} name of the files for saving the covariate data (combined historical and forecast) and each component.
+#'
+#' @param metadata_file \code{character} name of the file for saving the forecast metadata.
+#'
 #' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}. 
 #'
 #' @param PortalData \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. \cr \cr
@@ -27,21 +31,29 @@
 #'
 #' @export
 #'
-directory_settings <- function (directory_config_file = "dir_config.yaml",
-                                moons_file            = "moon_dates.csv",
-                                subdirectories        = c("casts", "fits", "models", "raw", "data", "tmp"),
-                                PortalData            = list(source = "github", version = "latest"),
-                                portalPredictions     = list(source = "github", version = NULL),
-                                climate_forecast      = list(source = "NMME", version = Sys.Date(), data = c("tasmin", "tasmean", "tasmax", "pr")),
-                                save                  = TRUE,
-                                overwrite             = TRUE, 
-                                cleanup               = TRUE) {
+directory_settings <- function (directory_config_file      = "dir_config.yaml",
+                                moons_file                 = "moon_dates.csv",
+                                covariates_file            = "covariates.csv",
+                                historical_covariates_file = "historical_covariates.csv",
+                                forecast_covariates_file   = "forecast_covariates.csv",
+                                metadata_file              = "metadata.yaml",
+                                subdirectories             = c("casts", "fits", "models", "raw", "data", "tmp"),
+                                PortalData                 = list(source = "github", version = "latest"),
+                                portalPredictions          = list(source = "github", version = NULL),
+                                climate_forecast           = list(source = "NMME", version = Sys.Date(), data = c("tasmin", "tasmean", "tasmax", "pr")),
+                                save                       = TRUE,
+                                overwrite                  = TRUE, 
+                                cleanup                    = TRUE) {
 
   list(
 
     files     = list(
-                  directory_config = directory_config_file,
-                  moons            = moons_file),
+                  directory_config      = directory_config_file,
+                  moons                 = moons_file,
+                  covariates            = covariates_file,
+                  historical_covariates = historical_covariates_file,
+                  forecast_covariates   = forecast_covariates_file,
+                  metadata              = metadata_file),
 
     subs      = subdirectories,
 
