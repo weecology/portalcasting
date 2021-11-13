@@ -21,4 +21,3 @@ directory_settings <- function(directory_config_file = "dir_config.yaml",
 
 }
 
-                        

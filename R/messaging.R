@@ -212,7 +212,7 @@ sandbox_welcome <-function(main = ".", quiet = FALSE){
 #' @export
 #' 
 creation_message <- function(main = ".", quiet = FALSE){
-  mpath <- main_path(main = main)
+  mpath <- normalizePath(file.path(main = main), mustWork = FALSE)
   messageq("Establishing portalcasting directory at\n ", mpath, quiet = quiet)
   messageq(message_break(), quiet = quiet)
   invisible()

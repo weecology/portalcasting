@@ -4,26 +4,13 @@
 \alias{setup_dir}
 \alias{setup_production}
 \alias{setup_sandbox}
-\title{Create and fill a forecasting directory}
+\title{Create and Fill a Forecasting Directory}
 \usage{
 setup_dir(
   main = ".",
+  settings = directory_settings(),
   models = prefab_models(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
-  cast_date = Sys.Date(),
-  controls_model = NULL,
-  control_files = files_control(),
-  PortalData_source = "gitub",
-  PortalData_version = "latest",
-  portalPredictions_source = "github",
-  portalPredictions_version = NULL,
-  climate_forecast_source = "NMME",
-  climate_forecast_version = Sys.Date(),
   datasets = prefab_rodent_datasets(),
-  bline = TRUE,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -71,97 +58,25 @@ setup_sandbox(
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to 
-include.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
+\item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
+\item{datasets}{\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{confidence_level}{\code{numeric} confidence level used in 
-summarizing model output. Must be between \code{0} and \code{1}.}
-
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
-
-\item{controls_model}{Additional controls for models not in the prefab
-set. \cr 
-A \code{list} of a single model's script-writing controls or a
-\code{list} of \code{list}s, each of which is a single model's 
-script-writing controls. \cr 
-Presently, each model's script writing controls
-should include three elements: \code{name} (a \code{character} value of 
-the model name), \code{covariates} (a \code{logical} indicator of if the 
-model needs covariates), and \code{lag} (an \code{integer}-conformable 
-value of the lag to use with the covariates or \code{NA} if 
-\code{covariates = FALSE}). \cr 
-If only a single model is added, the name of 
-the model from the element \code{name} will be used to name the model's
-\code{list} in the larger \code{list}. If multiple models are added, each
-element \code{list} must be named according to the model and the
-\code{name} element. \cr}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{PortalData_source, PortalData_version}{\code{character} values for the
-source and version of the Portal Data to download. 
-\cr \cr 
-Default values retrieve the latest data from github.
-\cr \cr 
-See \code{\link[portalr]{download_observations}}.}
-
-\item{portalPredictions_source, portalPredictions_version}{\code{character} 
-values for the source and version of the archive to download.
-\cr \cr 
-Default values point to github, but \code{version = NULL} indicates
-no download.
-\cr \cr 
-See \code{\link{download_archive}}.}
-
-\item{climate_forecast_source, climate_forecast_version}{\code{character} 
-values for the source and version of the climate forecasts to
-download.
-\cr \cr 
-Default values retrieve the current day's forecast from the
-Northwest Knowledge Network's North American Multi-Model Ensemble 
-(NMME) climate forecasts.
-\cr \cr 
-See \code{\link{download_climate_forecasts}}.}
-
-\item{datasets}{\code{list} of datasets to be created using 
-\code{\link{do.call}} on the defined functions.}
-
-\item{bline}{\code{logical} indicator if a horizontal break lines should be
-included in messages.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or not (and thus just the tidy messages).}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
 \code{NULL}
 }
 \description{
-Combines \code{\link{create_dir}} and \code{\link{fill_dir}}
- to create a ready-to-run (via \code{\link{portalcast}}) directory where
- indicated. \cr \cr
- \code{setup_production} creates a standard production directory. \cr \cr
- \code{setup_sandbox} creates a sandboxing directory. \cr \cr
+Combines \code{\link{create_dir}} and \code{\link{fill_dir}} to create a ready-to-run (via \code{\link{portalcast}}) directory where indicated. \cr \cr
+             \code{setup_production} creates a standard production directory. \cr \cr
+             \code{setup_sandbox} creates a sandboxing directory. \cr \cr
 }
 \examples{
 \donttest{

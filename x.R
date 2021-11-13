@@ -1,3 +1,83 @@
+end_moon = NULL, 
+                      start_moon = 217, lead_time = 12, 
+                      confidence_level = 0.95, cast_date = Sys.Date(),
+                      controls_model = NULL, 
+                      control_files = files_control(),
+                      PortalData_source = "gitub",
+                      PortalData_version = "latest",
+                      portalPredictions_source = "github",
+                      portalPredictions_version = NULL,
+                      climate_forecast_source = "NMME",
+                      climate_forecast_version = Sys.Date(),
+
+#'
+#' @param PortalData_source,PortalData_version \code{character} values for the
+#'        source and version of the Portal Data to download. 
+#'        \cr \cr 
+#'        Default values retrieve the latest data from github.
+#'        \cr \cr 
+#'        See \code{\link[portalr]{download_observations}}.
+#'
+#' @param portalPredictions_source,portalPredictions_version \code{character} 
+#'        values for the source and version of the archive to download.
+#'        \cr \cr 
+#'        Default values point to github, but \code{version = NULL} indicates
+#'        no download.
+#'        \cr \cr 
+#'        See \code{\link{download_archive}}.
+#'
+#'
+#' @param climate_forecast_source,climate_forecast_version  \code{character} 
+#'        values for the source and version of the climate forecasts to
+#'        download.
+#'        \cr \cr 
+#'        Default values retrieve the current day's forecast from the
+#'        Northwest Knowledge Network's North American Multi-Model Ensemble 
+#'        (NMME) climate forecasts.
+#'        \cr \cr 
+#'        See \code{\link{download_climate_forecasts}}.
+                        
+#'
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the last sample to be included. Default value is \code{NULL}, which 
+#'  equates to the most recently included sample. 
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
+#'  number of timesteps forward a cast will cover.
+#'
+#' @param cast_date \code{Date} from which future is defined (the origin of
+#'  the cast). In the recurring forecasting, is set to today's date
+#'  using \code{\link{Sys.Date}}.
+#'
+#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#'  of the first sample to be included. Default value is \code{217}, 
+#'  corresponding to \code{1995-01-01}.
+#'
+#' @param confidence_level \code{numeric} confidence level used in 
+#'   summarizing model output. Must be between \code{0} and \code{1}.
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @param controls_model Additional controls for models not in the prefab
+#'  set. \cr 
+#'  A \code{list} of a single model's script-writing controls or a
+#'  \code{list} of \code{list}s, each of which is a single model's 
+#'  script-writing controls. \cr 
+#'  Presently, each model's script writing controls
+#'  should include three elements: \code{name} (a \code{character} value of 
+#'  the model name), \code{covariates} (a \code{logical} indicator of if the 
+#'  model needs covariates), and \code{lag} (an \code{integer}-conformable 
+#'  value of the lag to use with the covariates or \code{NA} if 
+#'  \code{covariates = FALSE}). \cr 
+#'  If only a single model is added, the name of 
+#'  the model from the element \code{name} will be used to name the model's
+#'  \code{list} in the larger \code{list}. If multiple models are added, each
+#'  element \code{list} must be named according to the model and the
+#'  \code{name} element. \cr 
+
+
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
 #' @param filename \code{character} value of the path to the directory config YAML.
