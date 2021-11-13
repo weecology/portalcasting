@@ -186,7 +186,6 @@ portalcast_goodbye <- function(quiet = FALSE){
 #' 
 sandbox_welcome <-function(main = ".", quiet = FALSE){
 
-  main <- main_path(main = main)
   castle <- "
                                          ____
              /\\                         / -- )   
@@ -202,9 +201,10 @@ sandbox_welcome <-function(main = ".", quiet = FALSE){
    |      |      |      |  / /      / /  
 ~~~~~~~~~~~~~~~~~~~~~~~~~~------------~~~~~~~~~~~~~~
 "
-  succ <- "sanbox directory successfully set up at \n  "
-  happy <- "\nHappy portalcasting!"
-  messageq(castle, succ, main, happy, quiet = quiet)
+  succ <- "Sandbox directory successfully set up at \n\n  "
+  happy <- "\n\nHappy portalcasting!"
+  mpath <- normalizePath(file.path(main = main), mustWork = FALSE)
+  messageq(castle, succ, mpath, happy, quiet = quiet)
 }
 
 #' @rdname portalcast_messages

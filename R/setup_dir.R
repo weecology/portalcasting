@@ -28,9 +28,9 @@
 #' @export
 #'
 setup_dir <- function (main     = ".",
-                       settings = directory_settings(), 
                        models   = prefab_models(), 
                        datasets = prefab_rodent_datasets(),
+                       settings = directory_settings(), 
                        quiet    = FALSE, 
                        verbose  = FALSE){
 
@@ -40,26 +40,15 @@ setup_dir <- function (main     = ".",
              settings = settings,
              quiet    = quiet)
 
+  fill_dir(main     = main,
+           models   = models,
+           datasets = datasets,
+           settings = settings,
+           quiet    = quiet,
+           verbose  = verbose)
 
-
-  fill_dir(main = main,
-
-                 PortalData_version = PortalData_version,
-                 PortalData_source = PortalData_source,
-                 portalPredictions_version = portalPredictions_version,
-                 portalPredictions_source = portalPredictions_source,
-                 climate_forecast_source = climate_forecast_source,
-                 climate_forecast_version = climate_forecast_version,
-               models = models, 
-                      datasets = datasets,
-           controls_model = controls_model, 
-           control_files = control_files, 
-
-           end_moon = end_moon, lead_time = lead_time, 
-           cast_date = cast_date, start_moon = start_moon, 
-           confidence_level = confidence_level, 
-           quiet = quiet, verbose = verbose)
   setup_completion_message(quiet = quiet)
+
 }
 
 
@@ -68,34 +57,20 @@ setup_dir <- function (main     = ".",
 #'
 #' @export
 #'
-setup_production <- function(main = ".", models = prefab_models(), 
-                             end_moon = NULL, start_moon = 217, 
-                             lead_time = 12, confidence_level = 0.95, 
-                             cast_date = Sys.Date(), controls_model = NULL,
+setup_production <- function (main     = ".",
+                              models   = prefab_models(), 
+                              datasets = prefab_rodent_datasets(),
+                              settings = directory_settings(portalPredictions_version = "latest"), 
+                              quiet    = FALSE, 
+                              verbose  = FALSE){
 
-                             control_files = files_control(), 
-                      PortalData_source = "gitub",
-                      PortalData_version = "latest",
-                      portalPredictions_source = "github",
-                      portalPredictions_version = "latest",
-                      climate_forecast_source = "NMME",
-                      climate_forecast_version = Sys.Date(),
-                             quiet = FALSE, verbose = TRUE, 
-                      datasets = prefab_rodent_datasets()){
-  setup_dir(main = main, models = models, 
-            end_moon = end_moon, lead_time = lead_time, 
-            cast_date = cast_date, start_moon = start_moon, 
-            confidence_level = confidence_level, 
-            controls_model = controls_model, 
-            quiet = quiet, verbose = verbose, 
-                      datasets = datasets,
-                 PortalData_version = PortalData_version,
-                 PortalData_source = PortalData_source,
-                 portalPredictions_version = portalPredictions_version,
-                 portalPredictions_source = portalPredictions_source,
-                 climate_forecast_source = climate_forecast_source,
-                 climate_forecast_version = climate_forecast_version,
-            control_files = control_files)
+  setup_dir(main     = main,
+            models   = models,
+            datasets = datasets,
+            settings = settings,
+            quiet    = quiet,
+            verbose  = verbose)
+
 }
 
 
@@ -103,34 +78,22 @@ setup_production <- function(main = ".", models = prefab_models(),
 #'
 #' @export
 #'
-setup_sandbox <- function(main = ".", models = prefab_models(), 
-                          end_moon = NULL, start_moon = 217, lead_time = 12, 
-                          confidence_level = 0.95, cast_date = Sys.Date(), 
-                          controls_model = NULL,
+setup_sandbox <- function (main     = ".",
+                           settings = directory_settings(), 
+                           models   = prefab_models(), 
+                           datasets = prefab_rodent_datasets(),
+                           quiet    = FALSE, 
+                           verbose  = FALSE){
 
-                          control_files = files_control(),
-                      PortalData_source = "gitub",
-                      PortalData_version = "latest",
-                      portalPredictions_source = "github",
-                      portalPredictions_version = NULL,
-                      climate_forecast_source = "NMME",
-                      climate_forecast_version = Sys.Date(),
-                      datasets = prefab_rodent_datasets(),
-                          quiet = FALSE, verbose = TRUE){
-  setup_dir(main = main, models = models, 
-            end_moon = end_moon, lead_time = lead_time, 
-            cast_date = cast_date, start_moon = start_moon, 
-            confidence_level = confidence_level, 
-            controls_model = controls_model, 
-                             PortalData_version = PortalData_version,
-                      datasets = datasets,
-                 PortalData_source = PortalData_source,
-                 portalPredictions_version = portalPredictions_version,
-                 portalPredictions_source = portalPredictions_source,
-                 climate_forecast_source = climate_forecast_source,
-                 climate_forecast_version = climate_forecast_version,
-quiet = quiet, verbose = verbose, 
-            control_files = control_files)
-  sandbox_welcome(main = main, quiet = quiet)
+  setup_dir(main     = main,
+            models   = models,
+            datasets = datasets,
+            settings = settings,
+            quiet    = quiet,
+            verbose  = verbose)
+
+  sandbox_welcome(main  = main,
+                  quiet = quiet)
+
 }
 

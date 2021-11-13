@@ -8,9 +8,9 @@
 \usage{
 setup_dir(
   main = ".",
-  settings = directory_settings(),
   models = prefab_models(),
   datasets = prefab_rodent_datasets(),
+  settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
@@ -18,53 +18,29 @@ setup_dir(
 setup_production(
   main = ".",
   models = prefab_models(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
-  cast_date = Sys.Date(),
-  controls_model = NULL,
-  control_files = files_control(),
-  PortalData_source = "gitub",
-  PortalData_version = "latest",
-  portalPredictions_source = "github",
-  portalPredictions_version = "latest",
-  climate_forecast_source = "NMME",
-  climate_forecast_version = Sys.Date(),
+  datasets = prefab_rodent_datasets(),
+  settings = directory_settings(portalPredictions_version = "latest"),
   quiet = FALSE,
-  verbose = TRUE,
-  datasets = prefab_rodent_datasets()
+  verbose = FALSE
 )
 
 setup_sandbox(
   main = ".",
+  settings = directory_settings(),
   models = prefab_models(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
-  cast_date = Sys.Date(),
-  controls_model = NULL,
-  control_files = files_control(),
-  PortalData_source = "gitub",
-  PortalData_version = "latest",
-  portalPredictions_source = "github",
-  portalPredictions_version = NULL,
-  climate_forecast_source = "NMME",
-  climate_forecast_version = Sys.Date(),
   datasets = prefab_rodent_datasets(),
   quiet = FALSE,
-  verbose = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
-
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions.}
+
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
