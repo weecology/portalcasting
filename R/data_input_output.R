@@ -32,7 +32,7 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
   save_it <- FALSE
   if(save){
     fext <- file_ext(filename)
-    full_path <- file_path(main = main, sub = "data", files = filename)
+    full_path <- file.path(main, "data", filename)
     f_exists <- file.exists(full_path)
     if(f_exists){
       if(overwrite){
@@ -165,7 +165,7 @@ read_rodents_table <- function(main = ".", dataset = "all"){
 
   dataset <- tolower(dataset)
   lpath <- paste0("rodents_", dataset, ".csv") 
-  fpath <- file_path(main = main, sub = "data", files = lpath)
+  fpath <- file.path(main, "data", lpath)
   if(!file.exists(fpath)){
     rodents <- prepare_rodent_datasets(main = main, datasets = dataset)
     rodents_tab <- rodents[[1]]
@@ -198,8 +198,7 @@ read_rodents <- function(main = ".", datasets = c("all", "controls")){
 #'
 read_covariates <- function(main = ".", control_files = files_control()){
   
-  fpath <- file_path(main = main, sub = "data", 
-                     files = control_files$filename_cov)
+  fpath <- file.path(main, "data", control_files$filename_cov)
   if(!file.exists(fpath)){
     return(prep_covariates(main = main))
   }
@@ -213,13 +212,12 @@ read_covariates <- function(main = ".", control_files = files_control()){
 read_covariate_casts <- function(main = ".", control_files = files_control(),
                            quiet = FALSE, verbose = FALSE){
   
-  curr_path <- file_path(main = main, sub = "data", 
-                         files = control_files$filename_cov_casts)
+  curr_path <- file.path(main, "data", control_files$filename_cov_casts)
   curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
 
   arch_path <- paste0(control_files$directory, "/data/", 
                       control_files$filename_cov_casts)
-  arch_path <- file_path(main = main, sub = "raw", files = arch_path)
+  arch_path <- file.path(main, "raw", arch_path)
   arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
 
   if(file.exists(curr_path)){
@@ -252,8 +250,7 @@ read_covariate_casts <- function(main = ".", control_files = files_control(),
 #'
 read_moons <- function(main = ".", control_files = files_control()){
   
-  fpath <- file_path(main = main, sub = "data", 
-                     files = control_files$filename_moons)
+  fpath <- file.path(main, "data", control_files$filename_moons)
   if(!file.exists(fpath)){
     return(prep_moons(main = main))
   }
@@ -266,8 +263,7 @@ read_moons <- function(main = ".", control_files = files_control()){
 #'
 read_metadata <- function(main = ".", control_files = files_control()){
   
-  fpath <- file_path(main = main, sub = "data", 
-                     files = control_files$filename_meta)
+  fpath <- file.path(main, "data", control_files$filename_meta)
   if(!file.exists(fpath)){
     md <- prep_metadata(main = main)
     return(md)

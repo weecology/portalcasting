@@ -4,49 +4,27 @@
 \alias{species_in_tables}
 \alias{is_sp_col}
 \alias{species_from_table}
-\title{Determine if columns in a table are species columns}
+\title{Determine if Columns in a Table are Species Columns}
 \usage{
-is_sp_col(
-  rodents_tab,
-  species = NULL,
-  total = FALSE,
-  nadot = FALSE,
-  arg_checks = TRUE
-)
+is_sp_col(rodents_tab = NULL, species = NULL, total = FALSE, nadot = FALSE)
 
-species_from_table(
-  rodents_tab = NULL,
-  total = FALSE,
-  nadot = FALSE,
-  arg_checks = TRUE
-)
+species_from_table(rodents_tab = NULL, total = FALSE, nadot = FALSE)
 }
 \arguments{
 \item{rodents_tab}{\code{data.frame} of columns to be checked.}
 
-\item{species}{\code{character} vector indicating species names to 
-use in determining if columns are species columns. Defaults to
-\code{\link{all_species}}.}
+\item{species}{\code{character} vector indicating species names to use in determining if columns are species columns. Defaults to \code{\link{all_species}}.}
 
 \item{total}{\code{logical} indicator if the total should be included.}
 
-\item{nadot}{\code{logical} indicator if the dot should be added to the 
-\code{"NA"} species name. Defaults to \code{FALSE}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{nadot}{\code{logical} indicator if the dot should be added to the \code{"NA"} species name. Defaults to \code{FALSE}.}
 }
 \value{
-\code{is_sp_col}: \code{logical} vector indicating if each column is a 
- species' column or not. \cr \cr
- \code{species_from_table}: \code{character} vector of species names from
- the column names in the \code{rodents_tab} data table.
+\code{is_sp_col}: \code{logical} vector indicating if each column is a species' column or not. \cr \cr
+ \code{species_from_table}: \code{character} vector of species names from the column names in the \code{rodents_tab} data table.
 }
 \description{
-Given a table, returns a \code{logical} vector indicating
- if each column is a species' column or not.
+Given a table, returns a \code{logical} vector indicating if each column is a species' column or not.
 }
 \examples{
  \donttest{

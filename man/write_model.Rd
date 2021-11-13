@@ -7,26 +7,16 @@
 write_model(main = ".", model = NULL, quiet = FALSE)
 }
 \arguments{
-\item{main}{\code{character} value defining the main component of the 
-portalcasting directory tree.}
+\item{main}{\code{character} value defining the main component of the portalcasting directory tree.}
 
-\item{model}{\code{character} name of a model function, the \code{function}
-itself, or its symbol (backquoted name).}
+\item{model}{\code{character} name of a model function, the \code{function} itself, or its symbol (backquoted name).}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{verbose}{\code{logical} indicator if detailed messages should be
-printed.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Writes a model's function as a script into the 
-             defined directory. 
-             \cr \cr
-             \code{model} can be input as a \code{character} string,
-             symbol (backquoted name), or \code{function}, 
-             as \code{\link{match.fun}}
+Writes a model's function as a script into the defined directory. \cr \cr
+             \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
 }

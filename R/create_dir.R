@@ -49,8 +49,6 @@ create_dir <- function(main     = ".",
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param resources \code{list} of information about the downloaded resources to be stored within the configuration file.
-#'
 #' @return \code{list} of directory configurations. 
 #'
 #' @name directory_config
@@ -91,7 +89,6 @@ write_directory_config <- function (main     = ".",
 #'
 update_directory_config <- function (main      = ".", 
                                      settings  = directory_settings(), 
-                                     resources = NULL, 
                                      quiet     = FALSE){
   
   config <- read_directory_config(main = main, 
@@ -99,9 +96,9 @@ update_directory_config <- function (main      = ".",
                                   quiet = quiet)
 
 
-  if (!is.null(resources)) {
+  if (!is.null(settings$resources)) {
 
-    config$resources <- resources
+    config$resources <- settings$resources
 
   }
 

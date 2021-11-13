@@ -13,31 +13,22 @@ all_species(species = NULL, nadot = FALSE, total = FALSE)
 
 base_species(species = NULL, nadot = FALSE, total = FALSE)
 
-evalplot_species(species = NULL, nadot = FALSE, total = TRUE)
+evalplot_species(species = NULL, nadot = FALSE, total = FALSE)
 }
 \arguments{
 \item{species}{\code{character}-valued vector of species names to include.}
 
-\item{set}{\code{character} input of a specified set of species. 
-Default entry (\code{"base"}) returns the standard set of all 
-species included. Other options include \code{"wtotal"} (same as 
-\code{"base"} but with "total" as well) and \code{"evalplot"} 
-which only returns a subset of common species to be included 
-in the evaluations plots.}
+\item{set}{\code{character} input of a specified set of species. Default entry (\code{"base"}) returns the standard set of all species included. Other options include \code{"wtotal"} (same as \code{"base"} but with "total" as well) and \code{"evalplot"} which only returns a subset of common species to be included in the evaluations plots.}
 
-\item{nadot}{\code{logical} indicator if the dot should be added to the 
-\code{"NA"} species name. Defaults to \code{FALSE}.}
+\item{nadot}{\code{logical} indicator if the dot should be added to the \code{"NA"} species name. Defaults to \code{FALSE}.}
 
-\item{total}{\code{logical} value indicating if \code{"total"} should be 
-added or not.}
+\item{total}{\code{logical} value indicating if \code{"total"} should be added or not.}
 }
 \value{
 \code{character} vector of species abbreviations.
 }
 \description{
-Creates a simple \code{character} vector of abbreviations for
-             the Portal 
-             \href{https://portal.naturecast.org/profiles.html}{Rodents}.
+Creates a simple \code{character} vector of abbreviations for the Portal \href{https://portal.naturecast.org/profiles.html}{Rodents}.
 }
 \examples{
  rodent_species()

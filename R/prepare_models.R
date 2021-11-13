@@ -1,5 +1,3 @@
-
-
 #' @title Update models based on user input controls
 #'
 #' @description Update model scripts based on the user-defined model control
@@ -146,30 +144,20 @@ prefab_models <- function () {
 
 #' @title Write Model Function Script into Directory
 #'
-#' @description Writes a model's function as a script into the 
-#'              defined directory. 
-#'              \cr \cr
-#'              \code{model} can be input as a \code{character} string,
-#'              symbol (backquoted name), or \code{function}, 
-#'              as \code{\link{match.fun}}
+#' @description Writes a model's function as a script into the defined directory. \cr \cr
+#'              \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
 #'
-#' @param main \code{character} value defining the main component of the 
-#'              portalcasting directory tree. 
+#' @param main \code{character} value defining the main component of the portalcasting directory tree. 
 #'
-#' @param model \code{character} name of a model function, the \code{function}
-#'              itself, or its symbol (backquoted name).
+#' @param model \code{character} name of a model function, the \code{function} itself, or its symbol (backquoted name).
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'              quieted.
-#'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'                printed.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
-write_model <- function (main = ".", 
+write_model <- function (main  = ".", 
                          model = NULL, 
                          quiet = FALSE){
 
@@ -182,7 +170,7 @@ write_model <- function (main = ".",
   out <- c(paste0(model, " <- "), FUN_char)
 
   model_file <- paste0(model, ".R")
-  dest <- normalized_file_path(main, "models", model_file, mustWork = FALSE)
+  dest <- file.path(main, "models", model_file)
 
   write(out, dest)
 

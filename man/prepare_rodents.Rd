@@ -54,109 +54,61 @@ process_rodent_dataset(
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator if detailed messages should be
-shown.}
+\item{verbose}{\code{logical} indicator if detailed messages should be shown.}
 
 \item{name}{\code{character} name of the data set.}
 
-\item{clean}{\code{logical} indicator of if only the rodent data
-that passed QA/QC (\code{clean = TRUE}) or if all data 
-(\code{clean = FALSE}) should be loaded.}
+\item{clean}{\code{logical} indicator of if only the rodent data that passed QA/QC (\code{clean = TRUE}) or if all data (\code{clean = FALSE}) should be loaded.}
 
-\item{level}{\code{character} indicating the type of summary:
-\code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 
-directly to \code{\link[portalr]{summarize_rodent_data}}.}
+\item{level}{\code{character} indicating the type of summary: \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes directly to \code{\link[portalr]{summarize_rodent_data}}.}
 
-\item{type}{\code{character} value of the rodent data set type, according 
-to pre-existing definitions. An alternative toggle to 
-\code{species}. 
-\cr \cr
-Either all species (\code{type = "Rodents"}) or only 
-granivoes (\code{type = "Granivores"}).}
+\item{type}{\code{character} value of the rodent data set type, according to pre-existing definitions. An alternative toggle to \code{species}. \cr \cr
+Either all species (\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}).}
 
-\item{plots}{Specification of subset of plots. Can be a vector of 
-\code{numeric} plots indicators or specific sets indicated by
-\code{character} values: \code{"all"} plots or 
-\code{"Longterm"} plots (plots that have had the same 
-treatment for the entire time series).}
+\item{plots}{Specification of subset of plots. Can be a vector of \code{numeric} plots indicators or specific sets indicated by \code{character} values: \code{"all"} plots or \code{"Longterm"} plots (plots that have had the same treatment for the entire time series).}
 
-\item{unknowns}{\code{logical} indicator to either remove all 
-individuals not identified to species 
-(\code{unknowns = FALSE}) or sum them in an additional 
-column (\code{unknowns = TRUE}.}
+\item{unknowns}{\code{logical} indicator to either remove all individuals not identified to species (\code{unknowns = FALSE}) or sum them in an additional column (\code{unknowns = TRUE}.}
 
-\item{shape}{\code{character} value indicating a "crosstab" or "flat" 
-output.}
+\item{shape}{\code{character} value indicating a "crosstab" or "flat" output.}
 
-\item{time}{\code{character} value specifying the format of the time index 
-in the output. Options are \code{"period"} (sequential Portal
-surveys), \code{"newmoon"} (lunar cycle numbering), and 
-\code{"date"} (calendar date). 
-\cr \cr
-The default \code{time = "newmoon"} produces an equispaced 
-observation timestep, a common format format for discrete-time 
-modeling.}
+\item{time}{\code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr \cr
+The default \code{time = "newmoon"} produces an equispaced observation timestep, a common format format for discrete-time modeling.}
 
-\item{output}{\code{character} indicating the type of data:
-\code{"abundance"}, \code{"biomass"}, or \code{"energy"}.}
+\item{output}{\code{character} indicating the type of data: \code{"abundance"}, \code{"biomass"}, or \code{"energy"}.}
 
-\item{fillweight}{\code{logical} specifier of whether to fill in unknown 
-weights with other records from that individual or 
-species, where possible.}
+\item{fillweight}{\code{logical} specifier of whether to fill in unknown weights with other records from that individual or species, where possible.}
 
-\item{treatment}{\code{character} indicating the specific 
-treatment(s) to trim to if \code{level = "Treatment"}: 
-\code{"control"}, \code{"exclosure"}, \code{"removal"}, 
-or \code{"spectabs"}}
+\item{treatment}{\code{character} indicating the specific treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"}, \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"}}
 
-\item{na_drop}{\code{logical} indicator of if \code{NA} values 
-(representing insufficient sampling) should be dropped.}
+\item{na_drop}{\code{logical} indicator of if \code{NA} values (representing insufficient sampling) should be dropped.}
 
-\item{zero_drop}{\code{logical} indicator of if \code{0} values 
-(representing sufficient sampling but no detection)
-should be dropped.}
+\item{zero_drop}{\code{logical} indicator of if \code{0} values (representing sufficient sampling but no detection) should be dropped.}
 
-\item{min_traps}{\code{integer} (or integer \code{numeric}) of the 
-minimum number of traps collected for a plot to be used.}
+\item{min_traps}{\code{integer} (or integer \code{numeric}) of the minimum number of traps collected for a plot to be used.}
 
-\item{min_plots}{\code{integer} (or integer \code{numeric}) of the 
-minimum number of plots surveyed for a survey to be used.}
+\item{min_plots}{\code{integer} (or integer \code{numeric}) of the minimum number of plots surveyed for a survey to be used.}
 
-\item{effort}{\code{logical} indicator of if the effort columns should
-be included in the output.}
+\item{effort}{\code{logical} indicator of if the effort columns should be included in the output.}
 
-\item{species}{\code{character}-valued vector of species names 
-to include.}
+\item{species}{\code{character}-valued vector of species names to include.}
 
-\item{total}{\code{logical} value indicating if a total (sum across species
-should be added or not. Only available if more than 
-one species is included.}
+\item{total}{\code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included.}
 
-\item{interpolate}{\code{logical} value indicating if the data should be
-interpolated to fill in \code{NA} values (using 
-\code{\link[forecast]{na.interp}}).}
+\item{interpolate}{\code{logical} value indicating if the data should be interpolated to fill in \code{NA} values (using \code{\link[forecast]{na.interp}}).}
 
-\item{save}{\code{logical} indicator controlling if the output should 
-be saved out.}
+\item{save}{\code{logical} indicator controlling if the output should be saved out.}
 
-\item{overwrite}{\code{logical} indicator of whether or not the existing
-files should be updated (most users should leave as
-\code{TRUE}).}
+\item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
 
-\item{rodents_tab}{Rodents \code{data.frame} data table from 
-\code{\link[portalr]{summarize_rodent_data}}.}
+\item{rodents_tab}{Rodents \code{data.frame} data table from \code{\link[portalr]{summarize_rodent_data}}.}
 }
 \value{
 \code{data.frame} for the specified data set.
 }
 \description{
-Wraps around \code{\link[portalr]{summarize_rodent_data}} to 
-             produce a \code{data.frame} associated with a set of data 
-             specifications.
+Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications.
 }

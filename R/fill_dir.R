@@ -51,35 +51,25 @@ fill_dir <- function (main     = ".",
            quiet    = quiet, 
            verbose  = verbose)
 
-  fill_casts(main = main, 
-             quiet = quiet, 
+  fill_casts(main    = main, 
+             quiet   = quiet, 
              verbose = verbose)
 
-  fill_fits(main = main, 
-            quiet = quiet, 
-            verbose = verbose)
+  fill_fits(main     = main, 
+            quiet    = quiet, 
+            verbose  = verbose)
 
-  fill_models(main = main, 
-              models = models, 
-              quiet = quiet, 
+  fill_models(main    = main, 
+              models  = models, 
+              quiet   = quiet, 
               verbose = verbose)
 
-
-  fill_data(main = main, 
+  fill_data(main     = main, 
             datasets = datasets,
-            quiet = quiet, 
-            verbose = verbose,
-
-
-models = models,
-            end_moon = end_moon,
-            start_moon = start_moon,
-            lead_time = lead_time, min_lag = min_lag,
-            confidence_level = confidence_level,
-            cast_date = cast_date,
-                      controls_model = controls_model,
-                      control_files = control_files
-)
+            models  = models, 
+            settings = settings,
+            quiet    = quiet, 
+            verbose  = verbose)
 
   invisible()
 
@@ -91,26 +81,27 @@ models = models,
 #' @export
 #'
 
-fill_data <- function (main  = ".",
- models = prefab_models(),
-                        controls_model = NULL, 
-                        control_files = files_control(), 
-                        end_moon = NULL, start_moon = 217, lead_time = 12, 
-                        min_lag = 6, 
-                        confidence_level = 0.95, cast_date = Sys.Date(), 
+fill_data <- function (main     = ".",
+                       models   = prefab_models(), 
                        datasets = prefab_rodent_datasets(),
-                       quiet = FALSE,
-                       verbose = TRUE) {
+                       settings = directory_settings(), 
+                       quiet    = FALSE, 
+                       verbose  = FALSE) {
 
 
 
   messageq(" -Writing data files", quiet = quiet)
 
-  data_r <- prepare_rodent_datasets(main = main,
-                          datasets = datasets,
-                          quiet = quiet,
-                          verbose = verbose)
+  data_r <- prepare_rodent_datasets(main     = main,
+                                    datasets = datasets,
+                                    quiet    = quiet,
+                                    verbose  = verbose)
 
+
+###
+#
+# working here
+#
 
   messageq(" -Adding data files to data subdirectory", quiet = quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
@@ -165,6 +156,10 @@ fill_raw <- function (main     = ".",
                              quiet   = quiet,
                              verbose = verbose)
 
+  update_directory_config(main     = main,
+                          settings = settings,
+                          quiet    = quiet)
+
   messageq("\n  ... downloads complete.", quiet = quiet)
   
   invisible()
@@ -177,17 +172,14 @@ fill_raw <- function (main     = ".",
 #'
 fill_casts <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 
-  archive <- normalized_file_path(main, "raw", "portalPredictions", 
-                                  mustWork = FALSE)
+  archive <- file.path(main, "raw", "portalPredictions")
 
-  casts <- normalized_file_path(main, "raw", "portalPredictions", 
-                                "casts",  mustWork = FALSE)
+  casts <- file.path(main, "raw", "portalPredictions", "casts")
   files <- list.files(casts, full.names = TRUE)
 
   if (length(files) == 0) {
 
-    casts <- normalized_file_path(main, "raw", "portalPredictions", 
-                                  "predictions",  mustWork = FALSE)
+    casts <- file.path(main, "raw", "portalPredictions", "predictions")
     files <- list.files(casts, full.names = TRUE)    
 
   }  
@@ -198,7 +190,7 @@ fill_casts <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 
   }
 
-  dest <- normalized_file_path(main, "casts",  mustWork = FALSE)
+  dest <- file.path(main, "casts")
  
   fc <- file.copy(from = files, to = dest, recursive = TRUE)
 
@@ -225,11 +217,9 @@ fill_casts <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 #'
 fill_fits <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 
-  archive <- normalized_file_path(main, "raw", "portalPredictions", 
-                                  mustWork = FALSE)
+  archive <- file.path(main, "raw", "portalPredictions")
 
-  fits <- normalized_file_path(main, "raw", "portalPredictions", 
-                                "fits",  mustWork = FALSE)
+  fits <- file.path(main, "raw", "portalPredictions", "fits")
   files <- list.files(fits, full.names = TRUE)
   files[grepl("README", files)] <- NA
   files <- na.omit(files)
@@ -240,7 +230,7 @@ fill_fits <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 
   }
 
-  dest <- normalized_file_path(main, "fits",  mustWork = FALSE)
+  dest <- file.path(main, "fits")
  
   fc <- file.copy(from = files, to = dest, recursive = TRUE)
 
@@ -266,9 +256,9 @@ fill_fits <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 #'
 #' @export
 #'
-fill_models <- function (main = ".", 
-                         models = prefab_models(), 
-                         quiet = FALSE, 
+fill_models <- function (main    = ".", 
+                         models  = prefab_models(), 
+                         quiet   = FALSE, 
                          verbose = FALSE) {
 
   return_if_null(models)

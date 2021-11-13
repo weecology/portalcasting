@@ -22,17 +22,10 @@ fill_dir(
 fill_data(
   main = ".",
   models = prefab_models(),
-  controls_model = NULL,
-  control_files = files_control(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  min_lag = 6,
-  confidence_level = 0.95,
-  cast_date = Sys.Date(),
   datasets = prefab_rodent_datasets(),
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = TRUE
+  verbose = FALSE
 )
 
 fill_raw(

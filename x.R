@@ -1,3 +1,14 @@
+
+
+            end_moon = end_moon,
+            start_moon = start_moon,
+            lead_time = lead_time, min_lag = min_lag,
+            confidence_level = confidence_level,
+            cast_date = cast_date,
+                      controls_model = controls_model,
+                      control_files = control_files
+)
+
 #' @param main \code{character} value defining the main component of the 
 #'              portalcasting directory tree. Default value (\code{"."}) 
 #'              puts the directory in the present location. 

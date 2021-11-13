@@ -7,19 +7,11 @@
 prefab_rodent_datasets()
 }
 \value{
-\code{list} of dataset lists, each containing \code{metadata},
-        \code{fun}, and \code{args} elements -- the latter two of which
-        are used in \code{\link{do.call}} to create data files.
+\code{list} of dataset lists, each containing \code{metadata}, \code{fun}, and \code{args} elements -- the latter two of which are used in \code{\link{do.call}} to create data files.
 }
 \description{
-Create a \code{list} of dataset lists, each used to create
-             a dataset in \code{\link{fill_data}}.
-             \cr \cr
-             The currently prefabricated datasets include
-             \code{"all"}, \code{"all_interp"}, 
-             \code{"controls"}, \code{"controls_interp"}, 
-             \code{"exclosures"}, \code{"exclosures_interp"}, 
-             \code{"dm_controls"}, and \code{"dm_controls_interp"}.
+Create a \code{list} of dataset lists, each used to create a dataset in \code{\link{fill_data}}. \cr \cr
+             The currently prefabricated datasets include \code{"all"}, \code{"all_interp"}, \code{"controls"}, \code{"controls_interp"}, \code{"exclosures"}, \code{"exclosures_interp"}, \code{"dm_controls"}, and \code{"dm_controls_interp"}.
 }
 \examples{
  prefab_datasets()
