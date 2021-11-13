@@ -60,7 +60,7 @@ setup_dir <- function (main     = ".",
 setup_production <- function (main     = ".",
                               models   = prefab_models(), 
                               datasets = prefab_rodent_datasets(),
-                              settings = directory_settings(portalPredictions_version = "latest"), 
+                              settings = directory_settings(portalPredictions = list(source = "gitub", version = "latest")), 
                               quiet    = FALSE, 
                               verbose  = FALSE){
 
