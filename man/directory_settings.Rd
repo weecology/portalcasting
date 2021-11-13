@@ -6,15 +6,21 @@
 \usage{
 directory_settings(
   directory_config_file = "dir_config.yaml",
+  moons_file = "moon_dates.csv",
   subdirectories = c("casts", "fits", "models", "raw", "data", "tmp"),
   PortalData = list(source = "github", version = "latest"),
   portalPredictions = list(source = "github", version = NULL),
   climate_forecast = list(source = "NMME", version = Sys.Date(), data = c("tasmin",
-    "tasmean", "tasmax", "pr"))
+    "tasmean", "tasmax", "pr")),
+  save = TRUE,
+  overwrite = TRUE,
+  cleanup = TRUE
 )
 }
 \arguments{
 \item{directory_config_file}{\code{character} value of the path to the directory config YAML.}
+
+\item{moons_file}{\code{character} name of the file for saving the moons data.}
 
 \item{subdirectories}{\code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}.}
 
@@ -26,6 +32,12 @@ See \code{\link{download_archive}}.}
 
 \item{climate_forecast}{\code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the climate forecasts to download. Default values retrieve the current day's forecast from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts. \cr \cr 
 See \code{\link{download_climate_forecasts}}.}
+
+\item{save}{\code{logical} indicator controlling if the output should be saved out.}
+
+\item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
+
+\item{cleanup}{\code{logical} indicator of whether or not the tmp files should be cleaned up.}
 }
 \value{
 Named \code{list} of settings for the directory.

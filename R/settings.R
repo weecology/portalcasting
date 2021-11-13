@@ -4,6 +4,8 @@
 #'
 #' @param directory_config_file \code{character} value of the path to the directory config YAML.
 #'
+#' @param moons_file \code{character} name of the file for saving the moons data.
+#'
 #' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}. 
 #'
 #' @param PortalData \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. \cr \cr
@@ -15,27 +17,45 @@
 #' @param climate_forecast \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the climate forecasts to download. Default values retrieve the current day's forecast from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts. \cr \cr 
 #'                         See \code{\link{download_climate_forecasts}}.
 #'
+#' @param save \code{logical} indicator controlling if the output should be saved out.
+#'
+#' @param overwrite \code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).
+#'
+#' @param cleanup \code{logical} indicator of whether or not the tmp files should be cleaned up.
+#'
 #' @return Named \code{list} of settings for the directory.
 #'
 #' @export
 #'
 directory_settings <- function (directory_config_file = "dir_config.yaml",
+                                moons_file            = "moon_dates.csv",
                                 subdirectories        = c("casts", "fits", "models", "raw", "data", "tmp"),
                                 PortalData            = list(source = "github", version = "latest"),
                                 portalPredictions     = list(source = "github", version = NULL),
-                                climate_forecast      = list(source = "NMME", version = Sys.Date(), data = c("tasmin", "tasmean", "tasmax", "pr"))){
+                                climate_forecast      = list(source = "NMME", version = Sys.Date(), data = c("tasmin", "tasmean", "tasmax", "pr")),
+                                save                  = TRUE,
+                                overwrite             = TRUE, 
+                                cleanup               = TRUE) {
 
   list(
 
     files     = list(
-                  directory_config = directory_config_file),
+                  directory_config = directory_config_file,
+                  moons            = moons_file),
 
     subs      = subdirectories,
 
     resources = list(
                   PortalData        = PortalData,
                   portalPredictions = portalPredictions,
-                  climate_forecast  = climate_forecast) 
+                  climate_forecast  = climate_forecast),
+
+    save      = save, 
+
+    overwrite = overwrite, 
+
+    cleanup   = cleanup
+ 
 
   )
 

@@ -1,3 +1,5 @@
+lead_time = 12, cast_date = Sys.Date(), 
+                       control_files = files_control()
 
 
             end_moon = end_moon,
@@ -309,7 +311,7 @@ _dir <- function (main  = ".",
 
 files_control <- function(directory = "portalPredictions",
                           raw_data = "PortalData",
-                          filename_moons = "moon_dates.csv",
+                          filename_moons = ,
                           filename_config = "dir_config.yaml", 
                           filename_cov = "covariates.csv", 
                           filename_cov_casts = "covariate_casts.csv",
@@ -335,9 +337,7 @@ files_control <- function(directory = "portalPredictions",
 #'                  data directory. A standard portalcasting directory
 #'                  downloads the raw data files into from the PortalData 
 #'                  repository, so \code{raw_data = "PortalData"}.
-#'
-#' @param moons \code{character} name of the file for saving the 
-#'                        moons data.
+
 #'
 #' @param filename_cov_casts \code{character} filename for saving the 
 #'  covariate casts output.
@@ -349,15 +349,7 @@ files_control <- function(directory = "portalPredictions",
 #'
 #' @param filename_cov \code{character} filename for saving the output.
 #'
-#'
-#' @param save \code{logical} indicator controlling if the output should 
-#'   be saved out.
-#'
-#' @param overwrite \code{logical} indicator of whether or not the existing
-#'  files should be updated (most users should leave as \code{TRUE}).
-#'
-#' @param cleanup \code{logical} indicator of whether or not the tmp files
-#'  should be cleaned up.
+
 #'
 #' @param append_cast_csv \code{logical} indicator controlling if the new 
 #'  cast covariates should be appended to the historical casts later use.

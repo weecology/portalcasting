@@ -14,6 +14,10 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).
 #'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
+#'
+#' @param cast_date \code{Date} of the cast, typically today's date (set using \code{\link{Sys.Date}}).
+#'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
 #' @examples
@@ -37,12 +41,14 @@ NULL
 #'
 #' @export
 #'
-fill_dir <- function (main     = ".",
-                      models   = prefab_models(), 
-                      datasets = prefab_rodent_datasets(),
-                      settings = directory_settings(), 
-                      quiet    = FALSE, 
-                      verbose  = FALSE) {
+fill_dir <- function (main      = ".",
+                      models    = prefab_models(), 
+                      datasets  = prefab_rodent_datasets(),
+                      lead_time = 12,
+                      cast_date = Sys.Date(), 
+                      settings  = directory_settings(), 
+                      quiet     = FALSE, 
+                      verbose   = FALSE) {
 
   messageq("Filling directory with requested content", quiet = quiet)
 
@@ -64,12 +70,14 @@ fill_dir <- function (main     = ".",
               quiet   = quiet, 
               verbose = verbose)
 
-  fill_data(main     = main, 
-            datasets = datasets,
-            models  = models, 
-            settings = settings,
-            quiet    = quiet, 
-            verbose  = verbose)
+  fill_data(main      = main, 
+            datasets  = datasets,
+            models    = models, 
+            lead_time = lead_time, 
+            cast_date = cast_date, 
+            settings  = settings,
+            quiet     = quiet, 
+            verbose   = verbose)
 
   invisible()
 
@@ -81,21 +89,30 @@ fill_dir <- function (main     = ".",
 #' @export
 #'
 
-fill_data <- function (main     = ".",
-                       models   = prefab_models(), 
-                       datasets = prefab_rodent_datasets(),
-                       settings = directory_settings(), 
-                       quiet    = FALSE, 
-                       verbose  = FALSE) {
+fill_data <- function (main      = ".",
+                       models    = prefab_models(), 
+                       datasets  = prefab_rodent_datasets(),
+                       lead_time = 12,
+                       cast_date = Sys.Date(), 
+                       settings  = directory_settings(), 
+                       quiet     = FALSE, 
+                       verbose   = FALSE) {
 
 
 
   messageq(" -Writing data files", quiet = quiet)
 
-  data_r <- prepare_rodent_datasets(main     = main,
-                                    datasets = datasets,
-                                    quiet    = quiet,
-                                    verbose  = verbose)
+  prepare_rodent_datasets(main     = main,
+                          datasets = datasets,
+                          quiet    = quiet,
+                          verbose  = verbose)
+
+  prepare_moons(main      = main, 
+                lead_time = lead_time, 
+                cast_date = cast_date, 
+                settings  = settings,
+                quiet     = quiet, 
+                verbose = verbose)
 
 
 ###
@@ -103,11 +120,6 @@ fill_data <- function (main     = ".",
 # working here
 #
 
-  messageq(" -Adding data files to data subdirectory", quiet = quiet)
-  data_m <- prep_moons(main = main, lead_time = lead_time, 
-                       cast_date = cast_date, 
-                       quiet = quiet, verbose = verbose,
-                       control_files = control_files)
 
   data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
                             start_moon = start_moon, lead_time = lead_time, 

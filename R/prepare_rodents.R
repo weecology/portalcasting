@@ -73,54 +73,67 @@ species_from_table <- function(rodents_tab = NULL,
 #'
 prefab_rodent_datasets <- function () {
 
-  list(all = 
-         list(metadata = list(),
-              fun      = prepare_rodent_dataset,
-              args     = list(
-                          name = "all",
-                          clean = FALSE,
-                          level = "Site",
-                          type = "Rodents",
-                          plots = "all",
-                          treatment = NULL,
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = base_species(),
-                          total = TRUE,
-                          effort = TRUE,
-                          interpolate = FALSE)),
+  list(
 
-       all_interp = 
-         list(metadata = list(),
-              fun = prepare_rodent_dataset,
-              args = list(name = "all_interp",
-                          clean = FALSE,
-                          level = "Site",
-                          type = "Rodents",
-                          plots = "all",
-                          treatment = NULL,
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = base_species(),
-                          total = TRUE,
-                          effort = TRUE,
-                          interpolate = TRUE)),
+    all = list(
 
-       controls = 
+            metadata = list(
+                         name        = "all",
+                         description = "classic dataset, all plots combined"),
+
+            fun      = prepare_rodent_dataset,
+
+            args     = list(
+                         name        = "all",
+                         clean       = FALSE,
+                         level       = "Site",
+                         type        = "Rodents",
+                         plots       = "all",
+                         treatment   = NULL,
+                         unknowns    = FALSE,
+                         shape       = "crosstab",
+                         time        = "newmoon",
+                         output      = "abundance",
+                         fillweight  = FALSE,
+                         na_drop     = FALSE,
+                         zero_drop   = FALSE,
+                         min_traps   = 1,
+                         min_plots   = 24,
+                         species     = base_species(),
+                         total       = TRUE,
+                         effort      = TRUE,
+                         interpolate = FALSE)),
+
+    all_interp = list(
+
+
+            metadata = list(
+                         name        = "all_interp",
+                         description = "classic dataset, all plots combined, interpolated for models that cannot have missing data"),
+
+            fun      = prepare_rodent_dataset,
+
+            args     = list(
+                         name        = "all_interp",
+                         clean       = FALSE,
+                         level       = "Site",
+                         type        = "Rodents",
+                         plots       = "all",
+                         treatment   = NULL,
+                         unknowns    = FALSE,
+                         shape       = "crosstab",
+                         time        = "newmoon",
+                         output      = "abundance",
+                         fillweight  = FALSE,
+                         na_drop     = FALSE,
+                         zero_drop   = FALSE,
+                         min_traps   = 1,
+                         min_plots   = 24,
+                         species     = base_species(),
+                         total       = TRUE,
+                         effort      = TRUE,
+                         interpolate = TRUE)),
+    controls = 
          list(metadata = list(),
               fun = prepare_rodent_dataset,
               args = list(name = "controls",
@@ -143,7 +156,7 @@ prefab_rodent_datasets <- function () {
                           effort = TRUE,
                           interpolate = FALSE)),
 
-       controls_interp = 
+    controls_interp = 
          list(metadata = list(),
               fun = prepare_rodent_dataset,
               args = list(name = "controls_interp",
@@ -166,7 +179,7 @@ prefab_rodent_datasets <- function () {
                           effort = TRUE,
                           interpolate = TRUE)),
 
-       exclosures = 
+    exclosures = 
          list(metadata = list(),
               fun = prepare_rodent_dataset,
               args = list(name = "exclosures",
@@ -189,7 +202,7 @@ prefab_rodent_datasets <- function () {
                           effort = TRUE,
                           interpolate = FALSE)),
 
-       exclosures_interp = 
+    exclosures_interp = 
          list(metadata = list(),
               fun = prepare_rodent_dataset,
               args = list(name = "exclosures_interp",
@@ -213,7 +226,7 @@ prefab_rodent_datasets <- function () {
                           interpolate = TRUE)),
 
 
-       dm_controls = 
+    dm_controls = 
          list(metadata = list(),
               fun = prepare_rodent_dataset,
               args = list(name = "dm_controls",
@@ -236,7 +249,7 @@ prefab_rodent_datasets <- function () {
                           effort = TRUE,
                           interpolate = FALSE)),
 
-       dm_controls_interp = 
+    dm_controls_interp = 
          list(metadata = list(),
               fun = prepare_rodent_dataset,
               args = list(name = "dm_controls_interp",
@@ -351,7 +364,8 @@ prepare_rodent_datasets <- function (main     = ".",
   
   }
   names(out) <- names(datasets)
-  out
+  invisible(out)
+
 }
 
 

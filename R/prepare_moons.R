@@ -1,65 +1,32 @@
-#' @title Prepare lunar data for the portalcasting repository
+#' @title Prepare Lunar Data for the Portalcasting Repository
 #'
-#' @description A set of functions that get time information (calendar dates, 
-#'  census periods, and newmoon numbers) associated with trapping events 
-#'  (achieved and missed) based on a lunar survey schedule. If needed, 
-#'  additional moons will be added to both the in-use and raw versions of 
-#'  the data table. \cr \cr
-#'  \code{add_future_moons} adds future moon dates to the moon table, counting 
-#'  forward from \code{cast_date}. Because the \code{moons} table might not 
-#'  have the most recent moons, more rows than \code{lead_time} may need to 
-#'  be added to the table. \cr \cr. \cr \cr
-#'  \code{add_extra_future_moons} adds more more moons to accomplish required
-#'  data for \code{lead_time}. Because the moon table might not have the most 
-#'  recent moons, more rows than initially requested may need to be added to 
-#'  the table for it to cover \code{lead_time} .\cr \cr
-#'  \code{format_moons} formats the final output table with \code{year} and
-#'  \code{month} columns formatted accordingly, and the \code{moondate}
-#'  column formatted as a \code{\link{Date}}. 
+#' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. If needed, additional moons will be added to both the in-use and raw versions of the data table. \cr \cr
+#'              \code{add_future_moons} adds future moon dates to the moon table, counting forward from \code{cast_date}. Because the \code{moons} table might not have the most recent moons, more rows than \code{lead_time} may need to be added to the table. \cr \cr. 
+#'              \code{get_cast_future_moons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional moons needed to achieve the full \code{lead_time} from \code{cast_date}. \cr \cr
 #'
-#' @details Sometimes the raw moon data table is not fully up-to-date. Because
-#'  the \code{portalr} functions \code{\link[portalr]{weather}} and 
-#'  \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table
-#'  needs to be updated to produce the correct current data table for 
-#'  casting. 
+#' @details Sometimes the raw moon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the raw moons data, that table needs to be updated to produce the correct current data table for casting. 
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out
-#'  all of the information or not (and thus just the tidy messages). 
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
 #'
-#' @param cast_date \code{Date} of the cast, typically today's date (set 
-#'  using \code{\link{Sys.Date}}).
+#' @param cast_date \code{Date} of the cast, typically today's date (set using \code{\link{Sys.Date}}).
 #'
-#' @param moons Moons \code{data.frame}.
+#' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#' 
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
 #'
-#' @return All functions here return some version of a moons \code{data.frame}
-#'  \cr \cr. 
-#'  \code{prep_moons}, \code{format_moons}: fully appended and formatted 
-#'  \code{data.frame} (also saved out if \code{save = TRUE}). \cr \cr
-#'  \code{add_future_moons} and \code{add_extra_future_moons}: appropriately 
-#'  appended moons
-#'  \code{data.frame}.
+#' @return Some version of a moons \code{data.frame}. \cr \cr. 
+#'         \code{prepare_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{save = TRUE}). \cr 
+#'         \code{add_future_moons} and \code{add_extra_future_moons}: appropriately appended moons \code{data.frame}.
 #'   
 #' @examples
 #'  \donttest{
 #'   create_dir()
 #'   fill_raw()
-#'   prep_moons()
-#'   pth <- file_path(files = "raw/PortalData/Rodents/moon_dates.csv")
-#'   moons <- read.csv(pth, stringsAsFactors = FALSE)
-#'   moons <- add_future_moons(moons)
-#'   format_moons(moons)
+#'   prepare_moons()
 #'  }
 #'
 #' @name prepare_moons
@@ -70,74 +37,102 @@ NULL
 #'
 #' @export
 #' 
-prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(), 
-                       control_files = files_control(), 
-                       quiet = TRUE, verbose = FALSE){
+prepare_moons <- function (main      = ".", 
+                           lead_time = 12,
+                           cast_date = Sys.Date(), 
+                           settings  = directory_settings(), 
+                           quiet     = TRUE,
+                           verbose   = FALSE) {
 
-  raw_data_present <- verify_raw_data(main = main, 
-                                      raw_data = control_files$raw_data)
-  if(!raw_data_present){
-    fill_raw(main = main, quiet = quiet)
+  
+  PD <- file.path(main, "raw", "PortalData")
+  
+  if (!file.exists(PD)) {
+
+    download_observations(path        = file.path(main, "raw"), 
+                          version     = settings$resources$PortalData$version,
+                          from_zenodo = settings$resources$PortalData$source == "zenodo",
+                          quiet       = quiet)
+
   }
+
   messageq("  -lunar data file", quiet = quiet)
-  raw_path <- raw_path(main = main)
-  traps_in <- load_trapping_data(path = raw_path, download_if_missing = FALSE,
-                                 clean = FALSE, quiet = !verbose)
+
+  traps_in <- load_trapping_data(path                = file.path(main, "raw"), 
+                                 download_if_missing = FALSE,
+                                 clean               = FALSE, 
+                                 quiet               = !verbose)
+
   moons_in <- traps_in[["newmoons_table"]]
-  moons <- add_future_moons(main = main, moons = moons_in, 
-                            lead_time = lead_time, cast_date = cast_date)
-  moons_out <- format_moons(moons)
-  write_data(dfl = moons_out, main = main, save = control_files$save, 
-             filename = control_files$filename_moons, 
-             overwrite = control_files$overwrite, 
-             quiet = !verbose)
+
+  moons_out <- add_future_moons(main      = main, 
+                                moons     = moons_in, 
+                                lead_time = lead_time, 
+                                cast_date = cast_date)
+
+  write_data(dfl       = moons_out, 
+             main      = main, 
+             save      = settings$save, 
+             filename  = settings$files$moons, 
+             overwrite = settings$overwrite, 
+             quiet     = !verbose)
+
 } 
 
 #' @rdname prepare_moons
 #'
 #' @export
 #'
-format_moons <- function(moons){
+add_future_moons <- function (main      = ".", 
+                              moons     = NULL, 
+                              lead_time = 12, 
+                              cast_date = Sys.Date(), 
+                              settings  = directory_settings()) {
 
-  moons$year <- as.numeric(format(as.Date(moons$newmoondate), "%Y"))
-  moons$month <- as.numeric(format(as.Date(moons$newmoondate), "%m"))
-  moons$newmoondate <- as.Date(moons$newmoondate)
-  colnames(moons)[which(colnames(moons) == "newmoonnumber")] <- "moon"
-  colnames(moons)[which(colnames(moons) == "newmoondate")] <- "moondate"
+  moons <- ifnull(moons, read_moons(main     = main, 
+                                    settings = settings))
 
-  moons
-}
+  if (lead_time == 0) {
 
-#' @rdname prepare_moons
-#'
-#' @export
-#'
-add_future_moons <- function(main = ".", moons = NULL, lead_time = 12, 
-                             cast_date = Sys.Date(), 
-                             control_files = files_control()){
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files))
-  if(lead_time == 0){
     return(moons)
+
   }
-  future_moons <- get_future_moons(moons, lead_time)
-  future_moons <- add_extra_future_moons(future_moons, cast_date)
+
+
+
+  future_moons <- get_cast_future_moons(moons     = moons, 
+                                        lead_time = lead_time,
+                                        cast_date = cast_date)
+
   future_moons$newmoondate <- as.character(future_moons$newmoondate)
   rbind(moons, future_moons)
+
 }
 
 #' @rdname prepare_moons
 #'
 #' @export
 #'
-add_extra_future_moons <- function(moons, cast_date = Sys.Date()){
+get_cast_future_moons <- function (moons     = NULL, 
+                                   lead_time = 12, 
+                                   cast_date = Sys.Date()) {
 
-  n_extra_future_moons <- length(which(moons$newmoondate < cast_date))
+  future_moons <- get_future_moons(moons            = moons, 
+                                   num_future_moons = lead_time)
+
+
+  n_extra_future_moons <- length(which(future_moons$newmoondate < cast_date))
+
   if (n_extra_future_moons > 0){
-    extra_moons <- get_future_moons(moons, n_extra_future_moons)
-    moons <- rbind(moons, extra_moons)
+
+    extra_moons  <- get_future_moons(moons            = future_moons, 
+                                     num_future_moons = n_extra_future_moons)
+    future_moons <- rbind(future_moons, extra_moons)
+
   } 
-  moons
+
+  future_moons
+
 }
 
 #' @title Trim a moons table based on target moons

@@ -1,9 +1,3 @@
-verify_raw_data <- function(main = ".", raw_data = "PortalData"){
-  
-  full <- file_path(main = main, sub = "raw", files = raw_data)
-  file.exists(full)
-}
-
 #' @title Download the Portal Predictions Repository Archive
 #'
 #' @description Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/raw} sub.

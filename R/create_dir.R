@@ -8,7 +8,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @return The \code{list} of directory settings \code{\link{invisible}}-ly.
+#' @return The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 #'
 #' @examples
 #'  \donttest{
