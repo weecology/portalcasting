@@ -13,8 +13,6 @@ portalcast(
   lead_time = 12,
   confidence_level = 0.95,
   cast_date = Sys.Date(),
-  controls_model = NULL,
-  controls_rodents = rodents_controls(),
   control_files = files_control(),
   PortalData_source = "gitub",
   PortalData_version = "latest",
@@ -77,33 +75,6 @@ summarizing model output. Must be between \code{0} and \code{1}.}
 the cast). In the recurring forecasting, is set to today's date
 using \code{\link{Sys.Date}}.}
 
-\item{controls_model}{Additional controls for models not in the prefab 
-set or for overriding controls of a prefab model (for example when 
-applying a model to a new data set). \cr 
-A \code{list} of a single model's script-writing controls or a
-\code{list} of \code{list}s, each of which is a single model's 
-script-writing controls. \cr 
-Presently, each model's script writing controls should include four 
-elements: 
-\itemize{
- \item \code{name}: a \code{character} value of the model name.
- \item \code{data_sets}: a \code{character} vector of the data set names
-  that the model is applied to. 
- \item \code{covariatesTF}: a \code{logical} indicator of if the 
-  model needs covariates.
- \item \code{lag}: an \code{integer}-conformable value of the lag to use 
-  with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
-}
-If only a single model's controls are included, the name of 
-the model from the element \code{name} will be used to name the model's
-\code{list} in the larger \code{list}. If multiple models are added, each
-element \code{list} must be named according to the model and the
-\code{name} element. \cr}
-
-\item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
-(from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_controls}} for details.}
-
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
@@ -152,6 +123,10 @@ quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
+
+\item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
+(from \code{\link{rodents_controls}}) specifying the structuring of the 
+rodents tables. See \code{\link{rodents_controls}} for details.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned.

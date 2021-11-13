@@ -1,35 +1,12 @@
-#' @title Create the structure of a forecasting directory
+#' @title Create the Structure of a Forecasting Directory
 #'
-#' @description This suite of functions creates the necessary folder structure
-#'  for a forecasting directory as well as a YAML file that tracks the
-#'  setup configurations. At each level of the hierarchy, the more
-#'  basal folders are required to be present (verified using 
-#'  \code{\link{verify}}) and the relevant folders at that level are created 
-#'  if not present (using \code{\link{create}}). \cr \cr
-#'  \code{create_dir} creates a full directory or any missing parts
-#'  and writes the configuration file at \code{filename_config} using
-#'  \code{\link{write_directory_config}}. \cr \cr
-#'  \code{create_main} creates the main folder of the directory.\cr \cr
-#'  \code{create_subs} creates the sub folders of the directory 
-#'  (\code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, 
-#'  and \code{casts}).
+#' @description Instantiates the necessary folder structure for a forecasting directory and writes a YAML file that tracks the setup configurations. 
 #'
-#' @details Folder paths are created internally using  
-#'  \code{\link{main_path}} and \code{\link{sub_path}}, such that the user 
-#'  only needs to input the main folder's standard \code{main} name input. \cr
-#'  The subdirectories are presently hardcoded. 
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
+#' @param main \code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) puts the forecasting directory in the present locations. Nesting the forecasting directory in a folder can be done by simply adding to the \code{main} input (see \code{Examples}).
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. Default value (\code{"."}) puts the forecasting
-#'  directory in the present locations. Nesting the forecasting directory
-#'  in a folder can be done by simply adding to the \code{main} input (see
-#'  \code{Examples}).
-#'
-#' @param filename_config \code{character} value of the path to the directory
-#'  config YAML.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return All \code{create_} functions return \code{NULL}.
 #'
@@ -37,109 +14,122 @@
 #'  \donttest{
 #'   create_dir()
 #'   create_dir(main = "./main_folder")
-#'   create_dir(main = ".\\main_folder")
-#'   create_main()
-#'   create_subs()
 #'  }
 #'
-#' @name directory_creation
-#'
-NULL
-
 #' @rdname directory_creation
 #'
 #' @export
 #'
-create_dir <- function(main = ".", filename_config = "dir_config.yaml", 
-                       quiet = FALSE){
+create_dir <- function(main     = ".", 
+                       settings = directory_settings(), 
+                       quiet    = FALSE){
+
   creation_message(main = main, quiet = quiet)
-  create_main(main = main)
-  create_subs(main = main)
-  write_directory_config(main = main, filename_config = filename_config, 
-                         quiet = quiet)
+
+  mapply(dir.create, path         = file.path(main, settings$subs),
+                     recursive    = TRUE,
+                     showWarnings = FALSE)
+
+  write_directory_config(main = main, settings = settings, quiet = quiet)
+
 }
 
-#' @rdname directory_creation
-#'
-#' @export
-#'
-create_main <- function(main = "."){
-  mainp <- main_path(main = main)
-  create(paths = mainp)
-}
 
-#' @rdname directory_creation
+#' @title Create, Update, and Read the Directory Configuration File
+#' 
+#' @description The directory configuration file is a special file within the portalcasting directory setup and has its own set of functions. \cr \cr
+#'              \code{write_directory_config} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{create_dir}}, as it captures information about the compute environment used to create the directory. \cr \cr
+#'              \code{update_directory_config} adds key components to the file; currently only adding the versions of the downloaded resources from within \code{\link{fill_raw}} (presently the only place it is and should be called from). \cr \cr
+#'              \code{read_directory_config} reads the YAML config file into the R session.
 #'
-#' @export
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-create_subs <- function(main = "."){
-  subs <- c("casts", "fits", "models", "raw", "data", "tmp")
-  mainp <- main_path(main = main)
-  subsp <- sub_path(main = main, subs = subs)
-  verify(paths = mainp)
-  create(paths = subsp)
-}
-
-#' @title Verify that folders exist and create folders 
+#' @param main \code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) puts the forecasting directory in the present locations. Nesting the forecasting directory in a folder can be done by simply adding to the \code{main} input (see \code{Examples}).
 #'
-#' @description 
-#'  \code{verify} throws an error if any of the folders (specified by 
-#'  \code{path} and named by \code{level}) do not exist. \cr \cr
-#'  \code{create} creates a requested folder if it does not already exist.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param paths \code{character} vector of the folder paths.
-#' @return 
-#'  \code{verify}: throws an error if any of the folders do not exist, 
-#'  otherwise \code{NULL}.
-#'  \code{create}: \code{NULL}.
+#' @param resources \code{list} of information about the downloaded resources to be stored within the configuration file.
 #'
-#' @examples
-#'  \donttest{
-#'   mainp <- main_path()
-#'   create(mainp, "main")
-#'   verify(mainp, "main")
-#'  }
+#' @return \code{list} of directory configurations. 
 #'
-#' @name verify_and_create
+#' @name directory_config
 #'
 NULL
 
-#' @rdname verify_and_create
+#' @rdname directory_config
 #'
 #' @export
 #'
-verify <- function(paths = NULL){
-  return_if_null(paths)
-  misses <- NULL
-  for(i in 1:length(paths)){
-    if (!dir.exists(paths[i])){
-      misses <- c(misses, paths[i])
-    }
-  }
-  nmisses <- length(misses)
-  if (nmisses == 0){
-    return(invisible(NULL))
-  } 
-  if (nmisses == 1){
-    msg <- paste0("\n Folder does not exist at ", misses)
-  } else{
-    msg_m <- paste(misses, collapse = ", ")
-    msg <- paste0("\n Folders do not exist at ", msg_m)
-  }
-  msg2 <- c("Missing directory components", msg, 
-             "\n Run `create_dir` to create directory")
-  stop(msg2, call. = FALSE)
+write_directory_config <- function (main     = ".", 
+                                    settings = directory_settings(), 
+                                    quiet    = FALSE){
+
+  config <- list(
+
+              setup      = list(
+                             date                  = as.character(Sys.Date()),
+                             R_version             = sessionInfo()$R.version,
+                             portalcasting_version = packageDescription("portalcasting", fields = "Version")),
+
+              tree       = list(
+                             main = main, 
+                             subs = settings$subs),
+ 
+              resources  = NULL
+
+            ) 
+
+  write_yaml(config, file = file.path(main, settings$files$directory_config))
+  config
+
 }
 
-#' @rdname verify_and_create
+#' @rdname directory_config
 #'
 #' @export
 #'
-create <- function(paths = NULL){
-  return_if_null(paths)
-  for(i in 1:length(paths)){
-    if(!dir.exists(paths[i])){
-      dir.create(paths[i])
-    }
+update_directory_config <- function (main      = ".", 
+                                     settings  = directory_settings(), 
+                                     resources = NULL, 
+                                     quiet     = FALSE){
+  
+  config <- read_directory_config(main = main, 
+                                  settings = settings,
+                                  quiet = quiet)
+
+
+  if (!is.null(resources)) {
+
+    config$resources <- resources
+
   }
+
+  write_yaml(config, file = file.path(main, settings$files$directory_config))
+  config
+
 }
+
+
+
+#' @rdname directory_config
+#'
+#' @export
+#'
+read_directory_config <- function (main     = ".", 
+                                   settings = directory_settings(), 
+                                   quiet    = FALSE){
+  
+  config <- tryCatch(
+              read_yaml(file.path(main, settings$files$directory_config)),
+              error = function(x){NA}, warning = function(x){NA})
+  
+  if (length(config) == 1 && is.na(config)) {
+
+    stop("directory configuration file is corrupted or missing", call. = FALSE)
+
+  }
+
+  config
+
+}
+
