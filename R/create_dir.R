@@ -26,9 +26,10 @@ create_dir <- function(main     = ".",
 
   creation_message(main = main, quiet = quiet)
 
-  mapply(dir.create, path         = file.path(main, settings$subs),
-                     recursive    = TRUE,
-                     showWarnings = FALSE)
+  mapply(FUN          = dir.create, 
+         path         = file.path(main, settings$subs),
+         recursive    = TRUE,
+         showWarnings = FALSE)
 
   invisible(write_directory_config(main = main, settings = settings, quiet = quiet))
   

@@ -21,9 +21,9 @@
 #'
 directory_settings <- function (directory_config_file = "dir_config.yaml",
                                 subdirectories        = c("casts", "fits", "models", "raw", "data", "tmp"),
-                                PortalData            = list(source = "gitub", version = "latest"),
-                                portalPredictions     = list(source = "gitub", version = NULL),
-                                climate_forecast      = list("NMME", version = Sys.Date())){
+                                PortalData            = list(source = "github", version = "latest"),
+                                portalPredictions     = list(source = "github", version = NULL),
+                                climate_forecast      = list(source = "NMME", version = Sys.Date(), data = c("tasmin", "tasmean", "tasmax", "pr"))){
 
   list(
 
