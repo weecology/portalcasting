@@ -33,56 +33,34 @@ navbar:
       icon: fa-github
       href: https://github.com/weecology
 reference:
+  - title: "Overview"
+    desc: "Package overview documentation"
+    contents:
+      - portalcasting  
   - title: "Directory setup"
-    desc: "Functions that combine directory creation and filling"
+    desc: "Combine directory creation and filling"
     contents:
       - setup_dir
       - setup_sandbox
       - setup_production
+      - directory_settings
   - title: "Directory creation"
-    desc: "Functions that instantiate a portalcasting directory"
+    desc: "Instantiate a portalcasting directory"
     contents:
       - create_dir
-      - create_main
-      - create_subs
-      - create
-      - verify
   - title: "Directory filling"
-    desc: "Functions that add the files to each of the component subdirectories"
+    desc: "Add the files to each of the component subdirectories"
     contents:
       - fill_dir
-      - fill_raw
-      - fill_casts
+      - fill_resources
+      - fill_output
       - fill_models
       - fill_data
-      - extract_min_lag
-      - extract_data_sets
-  - title: "Casting functions"
-    desc: "Functions for fitting models and making predictions into the future"
-    contents:
-      - portalcast
-      - cast
-      - verify_models
-      - models_to_cast
-      - read_cast_tab
-      - select_casts
-      - update_models
-  - title: "Cast processing functions"
-    desc: "Functions for processing, evaluating, and combining casts"
-    contents:
-      - save_cast_output
-      - ensemble_casts
-      - measure_cast_level_error
-      - add_lead_to_cast_tab
-      - add_err_to_cast_tab
-      - add_covered_to_cast_tab
-      - add_obs_to_cast_tab
   - title: "Data IO"
-    desc: "Functions for reading and writing data"
+    desc: "Read and write data"
     contents:
-      - read_casts_metadata
-      - read_climate_casts
-      - read_covariate_casts
+      - read_metadata
+      - read_climate_forecasts
       - read_covariates
       - read_data
       - read_metadata
@@ -90,150 +68,65 @@ reference:
       - read_rodents
       - read_rodents_table
       - write_data
-      - save_cast_cov_csv
-  - title: "Metadata management"
-    desc: "Functions for managing metadata"
+  - title: "Directory metadata"
+    desc: "Manage directory metadata"
     contents:
-      - prep_metadata
       - read_directory_config
       - write_directory_config
-      - update_directory_config
-      - read_casts_metadata
-  - title: "Covariate data management"
-    desc: "Functions for preparing covariate data"
+  - title: "Forecast metadata"
+    desc: "Prepare forecast metadata"
     contents:
-      - prep_covariates
-      - cast_covariates
-      - cast_ndvi
-      - cast_weather
-      - prep_cast_covariates
-      - prep_hist_covariates
-      - summarize_daily_weather_by_moon
-  - title: "Rodent data functions"
-    desc: "Functions that facilitate use of the Portal rodents data"
+      - prepare_metadata
+  - title: "Covariate data"
+    desc: "Prepare covariate data"
     contents:
-      - prep_rodents
-      - prep_rodents_table
-      - process_rodent_data
-      - prefab_data_sets
+      - prepare_covariates
+      - prepare_forecast_covariates
+      - prepare_historic_covariates
+
+  - title: "Rodent datasets"
+    desc: "Prepare Portal rodents data"
+    contents:
+      - prepare_rodents
+      - prefabricated_rodent_datasets
+      - rodent_dataset_controls
+      - prepare_rodent_dataset
+  - title: "Moon data"
+    desc: "Prepare the lunar temporal data"
+    contents:
+      - prepare_moons
+      - add_future_moons
+      - get_forecast_future_moons
+  - title: "Rodent species"
+    desc: "Facilitate use of rodent datasets via species names"
+    contents:
+      - is_sp_col
+      - species_from_table
       - rodent_species
       - evalplot_species
       - all_species
       - base_species
-      - is_sp_col
       - na_conformer
-      - rodents_control
-      - rodents_controls
-      - remove_incompletes
-      - last_census
-      - species_from_table
-      - most_abundant_species
-  - title: "Lunar data functions"
-    desc: "Functions for managing the lunar temporal data"
+  - title: "Model generation"
+    desc: "Prepare model-running scripts"
     contents:
-      - prep_moons
-      - last_moon
-      - format_moons
-      - add_future_moons
-      - add_extra_future_moons
-      - add_moons_from_date
-      - trim_moons
-      - target_moons
-  - title: "Model generating functions"
-    desc: "Functions for formatting model-running scripts"
-    contents:
-      - model_control
-      - model_controls
       - write_model
-      - model_template
-      - control_list_arg
-      - prefab_models
-  - title: "Prefabricated models"
-    desc: "Functions used to run the prefab models"
-    contents:
-      - AutoArima
-      - ESSS
-      - jags_RW
-      - nbGARCH
-      - nbsGARCH
-      - NaiveArima
-      - pevGARCH
-  - title: "Model helpers"
-    desc: "Functions that help reduce code within model functions"
-    contents:
-      - covariate_models
-      - lag_covariates
-      - jags_ss 
-      - runjags_control
-  - title: "Utility functions"
-    desc: "Range of functionalities"
-    contents:
-      - check_args
-      - check_arg
-      - check_arg_list
-      - error_if_deep
-      - ifnull
-      - ifna
-      - list_depth
-      - return_if_null
-      - named_null_list
-      - clear_tmp
-      - update_list
-      - append_csv
-      - combine_hist_and_cast
-      - match.call.defaults
-  - title: "Messenger functions"
-    desc: "Functions that provide messages to the user"
-    contents:
-      - download_message
-      - fill_casts_message
-      - messageq
-      - messageq_break
-      - portalcast_welcome
-      - sandbox_welcome
-      - portalcast_goodbye
-      - creation_message
-      - data_readying_message
-      - data_resetting_message
-      - model_done_message
-      - model_running_message
-      - models_running_message
-      - setup_completion_message
-      - version_message
-  - title: "Date formatting"
-    desc: "Functions to format dates and date components"
-    contents:
-      - foy
-      - add_date_from_components
-      - cast_window
-  - title: "Path management"
-    desc: "Utilities for quickly retrieving and generally formatting folder and file paths and saving conditions"
-    contents:
-      - main_path
-      - sub_path
-      - file_path
-      - raw_path
-      - data_path
-      - casts_path
-      - tmp_path
-      - models_path
-      - file_ext
-      - path_no_ext
-      - files_control
-  - title: "Download functions"
-    desc: "Functions for creating API URLs, retrieving, and managing downloaded components"
+      - prefabricated_models
+  - title: "Downloads"
+    desc: "Create API URLs, retrieve, and manage directory components"
     contents:
       - download_archive
       - download_climate_forecasts
       - NMME_urls
-  - title: "Figures"
-    desc: "Functions to make standard figures"
+  - title: "Utilities"
+    desc: "Small helpers"
     contents:
-      - plot_cast_point
-      - plot_cast_ts
-      - plot_casts_cov_RMSE
-      - plot_casts_err_lead
-  - title: "Overview"
-    desc: "Package overview documentation"
-    contents:
-      - portalcasting  
+      - return_if_null
+      - named_null_list
+      - add_newmoonnumbers_from_dates
+      - update_list
+      - file_ext
+      - path_no_ext
+      - messageq
+      - message_break
+

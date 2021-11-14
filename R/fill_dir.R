@@ -29,8 +29,8 @@ NULL
 #' @export
 #'
 fill_dir <- function (main      = ".",
-                      models    = prefab_models(), 
-                      datasets  = prefab_rodent_datasets(),
+                      models    = prefabricated_models(), 
+                      datasets  = prefabricated_rodent_datasets(),
                       lead_time = 12,
                       origin    = Sys.Date(), 
                       settings  = directory_settings(), 
@@ -74,8 +74,8 @@ fill_dir <- function (main      = ".",
 #' @export
 #'
 fill_data <- function (main      = ".",
-                       models    = prefab_models(), 
-                       datasets  = prefab_rodent_datasets(),
+                       models    = prefabricated_models(), 
+                       datasets  = prefabricated_rodent_datasets(),
                        lead_time = 12,
                        origin    = Sys.Date(), 
                        settings  = directory_settings(), 
@@ -199,7 +199,7 @@ fill_output <- function (main    = ".",
 #' @export
 #'
 fill_models <- function (main    = ".", 
-                         models  = prefab_models(), 
+                         models  = prefabricated_models(), 
                          quiet   = FALSE, 
                          verbose = FALSE) {
 

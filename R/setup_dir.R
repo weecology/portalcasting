@@ -21,13 +21,13 @@
 #' @export
 #'
 setup_dir <- function (main     = ".",
-                       models   = prefab_models(), 
-                       datasets = prefab_rodent_datasets(),
+                       models   = prefabricated_models(), 
+                       datasets = prefabricated_rodent_datasets(),
                        settings = directory_settings(), 
                        quiet    = FALSE, 
                        verbose  = FALSE){
 
-  version_message(quiet = quiet)
+  messageq(message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
 
   create_dir(main     = main, 
              settings = settings,
@@ -44,7 +44,7 @@ setup_dir <- function (main     = ".",
            quiet    = quiet,
            verbose  = verbose)
 
-  setup_completion_message(quiet = quiet)
+  messageq(message_break(), "\nDirectory successfully instantiated\n", message_break(), quiet = quiet)
 
   invisible(config)
 
@@ -57,8 +57,8 @@ setup_dir <- function (main     = ".",
 #' @export
 #'
 setup_production <- function (main     = ".",
-                              models   = prefab_models(), 
-                              datasets = prefab_rodent_datasets(),
+                              models   = prefabricated_models(), 
+                              datasets = prefabricated_rodent_datasets(),
                               settings = directory_settings(portalPredictions = list(source = "github", version = "latest")), 
                               quiet    = FALSE, 
                               verbose  = FALSE){
@@ -79,8 +79,8 @@ setup_production <- function (main     = ".",
 #'
 setup_sandbox <- function (main     = ".",
                            settings = directory_settings(), 
-                           models   = prefab_models(), 
-                           datasets = prefab_rodent_datasets(),
+                           models   = prefabricated_models(), 
+                           datasets = prefabricated_rodent_datasets(),
                            quiet    = FALSE, 
                            verbose  = FALSE){
 
@@ -91,8 +91,22 @@ setup_sandbox <- function (main     = ".",
             quiet    = quiet,
             verbose  = verbose)
 
-  sandbox_welcome(main  = main,
-                  quiet = quiet)
+  castle <- "
+                                            
+             /\\                         
+            /  \\                          ____
+           /|  |\\                        / -- )   
+          /_|__|_\\                      (_--_/ 
+          |      |                       / /              
+ __    __ |      | __    __             / / 
+[  ]__[  ].      .[  ]__[  ]           / /  
+|__         ____         __|      ____/ /__ 
+   |      .|    |.      |        / .-----  )
+   |      |      |      |       / /     / / 
+   |      |      |      |      / /     / /  
+~~~~~~~~~~~~~~~~~~~~~~~~~~------------~~~~~~~~~~~~~~
+"
+  messageq(castle, "Sandbox directory successfully set up at \n\n  ", normalizePath(file.path(main = main)), "\n\nHappy portalcasting!", quiet = quiet)
 
 }
 

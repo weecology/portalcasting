@@ -11,8 +11,8 @@
 \usage{
 fill_dir(
   main = ".",
-  models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
   lead_time = 12,
   origin = Sys.Date(),
   settings = directory_settings(),
@@ -22,8 +22,8 @@ fill_dir(
 
 fill_data(
   main = ".",
-  models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
   lead_time = 12,
   origin = Sys.Date(),
   settings = directory_settings(),
@@ -42,7 +42,7 @@ fill_output(main = ".", quiet = FALSE, verbose = FALSE)
 
 fill_models(
   main = ".",
-  models = prefab_models(),
+  models = prefabricated_models(),
   quiet = FALSE,
   verbose = FALSE
 )

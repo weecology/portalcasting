@@ -2,18 +2,14 @@
 % Please edit documentation in R/prefab_rodent_datasets.R
 \name{prefabricated_rodent_datasets}
 \alias{prefabricated_rodent_datasets}
-\alias{prefab_rodent_dataset_controls}
-\alias{prefab_rodent_datasets}
 \title{Prefabricated Rodent Datasets}
 \usage{
-prefab_rodent_dataset_controls()
-
-prefab_rodent_datasets()
+prefabricated_rodent_datasets()
 }
 \value{
-\code{prefab_rodent_datasets_controls}: \code{list} of the data set controls. \cr \cr
-        \code{prefab_rodent_datasets}: \code{character} names of the data sets.
+\code{character} names of the data sets.
 }
 \description{
-Extract the prefabricated datasets from the \code{\link{rodent_datasets}} data file. The currently prefabricated datasets include \code{"all"}, \code{"all_interp"}, \code{"controls"}, \code{"controls_interp"}, \code{"exclosures"}, \code{"exclosures_interp"}, \code{"dm_controls"}, and \code{"dm_controls_interp"}.
+Extract the names of the prefabricated datasets from the \code{\link{rodent_dataset_controls}}. \cr \cr 
+             The currently prefabricated datasets include \code{"all"}, \code{"all_interp"}, \code{"controls"}, \code{"controls_interp"}, \code{"exclosures"}, \code{"exclosures_interp"}, \code{"dm_controls"}, and \code{"dm_controls_interp"}.
 }

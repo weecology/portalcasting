@@ -19,19 +19,12 @@
 #' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @return \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
-#'
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   prepare_metadata()
-#'  }
 #' 
 #' @export
 #'
 prepare_metadata <- function (main      = ".",
-                              models    = prefab_models(), 
-                              datasets  = prefab_rodent_datasets(),
+                              models    = prefabricated_models(), 
+                              datasets  = prefabricated_rodent_datasets(),
                               lead_time = 12,
                               origin    = Sys.Date(), 
                               settings  = directory_settings(), 

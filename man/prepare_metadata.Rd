@@ -6,8 +6,8 @@
 \usage{
 prepare_metadata(
   main = ".",
-  models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
   lead_time = 12,
   origin = Sys.Date(),
   settings = directory_settings(),
@@ -37,11 +37,4 @@ prepare_metadata(
 }
 \description{
 Sets up the metadata used for casting, in particular the matching of time period across the data sets. This should always be run after \code{\link{prep_moons}}, \code{\link{prep_rodents}}, and \code{\link{prep_covariates}} before any model is run.
-}
-\examples{
- \donttest{
-  setup_dir()
-  prepare_metadata()
- }
-
 }

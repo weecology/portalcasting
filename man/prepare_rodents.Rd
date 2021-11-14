@@ -6,7 +6,7 @@
 \usage{
 prepare_rodents(
   main = ".",
-  datasets = prefab_rodent_datasets(),
+  datasets = prefabricated_rodent_datasets(),
   quiet = FALSE,
   verbose = FALSE
 )

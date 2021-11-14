@@ -1,3 +1,180 @@
+  - title: "Date formatting"
+    desc: "Functions to format dates and date components"
+    contents:
+      - foy
+      - add_date_from_components
+      - cast_window
+
+      - clear_tmp
+
+      - append_csv
+      - combine_hist_and_cast
+      - match.call.defaults
+  - title: "Casting functions"
+    desc: "Functions for fitting models and making predictions into the future"
+    contents:
+      - portalcast
+      - cast
+      - verify_models
+      - models_to_cast
+      - read_cast_tab
+      - select_casts
+      - update_models
+  - title: "Cast processing functions"
+    desc: "Functions for processing, evaluating, and combining casts"
+    contents:
+      - save_cast_output
+      - ensemble_casts
+      - measure_cast_level_error
+      - add_lead_to_cast_tab
+      - add_err_to_cast_tab
+      - add_covered_to_cast_tab
+      - add_obs_to_cast_tab
+
+
+  - title: "Model helpers"
+    desc: "Functions that help reduce code within model functions"
+    contents:
+      - covariate_models
+      - lag_covariates
+      - jags_ss 
+      - runjags_control
+
+  - title: "Prefabricated models"
+    desc: "Functions of the pre-existing models"
+    contents:
+      - AutoArima
+      - ESSS
+      - jags_RW
+      - nbGARCH
+      - nbsGARCH
+      - NaiveArima
+      - pevGARCH
+
+
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+portalcast_welcome <- function (quiet = FALSE) {
+
+  version_message(quiet = quiet)
+  messageq("Preparing directory for casting", quiet = quiet)
+  messageq(message_break(), quiet = quiet)
+
+}
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#'
+portalcast_goodbye <- function (quiet = FALSE) {
+  
+  messageq(message_break(), quiet = quiet)
+  messageq("Casting complete", quiet = quiet)
+  messageq(message_break(), quiet = quiet)
+
+}
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+data_readying_message <- function (end_moon = NULL,  
+                                   quiet    = FALSE) {
+  
+  return_if_null(end_moon)
+  messageq("Readying data for forecast origin newmoon ", end_moon, quiet = quiet)
+
+}
+
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+data_resetting_message <- function (quiet = FALSE) {
+  
+  messageq(message_break(), quiet = quiet)
+  messageq("Resetting data to the most up-to-date versions", quiet = quiet)
+
+}
+
+
+
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+models_running_message <- function (end_moon = NULL,  
+                                    quiet    = FALSE) {
+  
+  return_if_null(end_moon)
+  messageq(message_break(), quiet = quiet)
+  messageq("Running models for forecast origin newmoon ", end_moon, quiet = quiet)
+
+}
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+model_running_message <- function (model = NULL,
+                                   quiet = FALSE) {
+
+  return_if_null(model)
+  messageq(" - Running ", path_no_ext(basename(model)), quiet = quiet)
+
+}
+
+#' @rdname portalcast_messages
+#'
+#' @export
+#' 
+model_done_message <- function (model      = NULL,
+                                run_status = NULL, 
+                                quiet      = FALSE){
+
+  return_if_null(model)
+  return_if_null(run_status)
+
+  modelname <- path_no_ext(basename(model))
+
+  if (all(is.na(run_status))) {
+
+    messageq("  |----| ", modelname, " failed |----|", quiet = quiet)
+
+  } else {
+
+    messageq("  |++++| ", modelname, " successful |++++|", quiet = quiet)
+
+  }
+
+}
+
+  - title: "Path management"
+    desc: "Utilities for quickly retrieving and generally formatting folder and file paths and saving conditions"
+    contents:
+      - main_path
+      - sub_path
+      - file_path
+      - raw_path
+      - data_path
+      - casts_path
+      - tmp_path
+      - models_path
+
+      - files_control
+
+  - title: "Figures"
+    desc: "Functions to make standard figures"
+    contents:
+      - plot_cast_point
+      - plot_cast_ts
+      - plot_casts_cov_RMSE
+      - plot_casts_err_lead
 
 #' @title Replace a value with an alternative if it is NULL or if it is NA
 #'

@@ -4,7 +4,7 @@
 
 #' @title Provide the Names of the Prefabricated Models
 #'
-#' @description Create a \code{character} vector of the names of the models to be included including the pre-fabricated (prefab) models. \cr \cr
+#' @description Create a \code{character} vector of the prefabricated models. \cr \cr
 #'
 #' @return \code{character} vector of model names.
 #'
@@ -13,7 +13,7 @@
 #'
 #' @export
 #'
-prefab_models <- function () {
+prefabricated_models <- function () {
 
   NULL
 

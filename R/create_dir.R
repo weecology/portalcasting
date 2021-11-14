@@ -18,7 +18,7 @@ create_dir <- function(main     = ".",
                        settings = directory_settings(), 
                        quiet    = FALSE){
 
-  creation_message(main = main, quiet = quiet)
+  messageq(message_break(), "\nEstablishing portalcasting directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", message_break(), quiet = quiet)
 
   mapply(FUN          = dir.create, 
          path         = file.path(main, settings$subs),

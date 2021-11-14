@@ -8,8 +8,8 @@
 \usage{
 setup_dir(
   main = ".",
-  models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -17,8 +17,8 @@ setup_dir(
 
 setup_production(
   main = ".",
-  models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
   settings = directory_settings(portalPredictions = list(source = "github", version =
     "latest")),
   quiet = FALSE,
@@ -28,8 +28,8 @@ setup_production(
 setup_sandbox(
   main = ".",
   settings = directory_settings(),
-  models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
   quiet = FALSE,
   verbose = FALSE
 )
