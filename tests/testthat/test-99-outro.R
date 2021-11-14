@@ -8,6 +8,6 @@ test_that("placeholder", {
 
 })
 
-  unlink(main_path(main = main), recursive = TRUE, force = TRUE)
+  unlink(file.path(main = main), recursive = TRUE, force = TRUE)
   #unlink(main_path(main = "./sand"), recursive = TRUE, force = TRUE)
   #unlink(main_path(main = "./prod"), recursive = TRUE, force = TRUE)

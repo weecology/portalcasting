@@ -31,8 +31,9 @@ create_dir <- function(main     = ".",
          recursive    = TRUE,
          showWarnings = FALSE)
 
-  invisible(write_directory_config(main = main, settings = settings, quiet = quiet))
-  
+  config <- write_directory_config(main = main, settings = settings, quiet = quiet)
+  invisible(config)
+
 }
 
 
@@ -87,9 +88,9 @@ write_directory_config <- function (main     = ".",
 #'
 #' @export
 #'
-update_directory_config <- function (main      = ".", 
-                                     settings  = directory_settings(), 
-                                     quiet     = FALSE){
+update_directory_config <- function (main     = ".", 
+                                     settings = directory_settings(), 
+                                     quiet    = FALSE){
   
   config <- read_directory_config(main = main, 
                                   settings = settings,

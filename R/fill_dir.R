@@ -16,7 +16,7 @@
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
 #'
-#' @param cast_date \code{Date} of the cast, typically today's date (set using \code{\link{Sys.Date}}).
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -45,7 +45,7 @@ fill_dir <- function (main      = ".",
                       models    = prefab_models(), 
                       datasets  = prefab_rodent_datasets(),
                       lead_time = 12,
-                      cast_date = Sys.Date(), 
+                      origin    = Sys.Date(), 
                       settings  = directory_settings(), 
                       quiet     = FALSE, 
                       verbose   = FALSE) {
@@ -74,7 +74,7 @@ fill_dir <- function (main      = ".",
             datasets  = datasets,
             models    = models, 
             lead_time = lead_time, 
-            cast_date = cast_date, 
+            origin    = origin, 
             settings  = settings,
             quiet     = quiet, 
             verbose   = verbose)
@@ -93,7 +93,7 @@ fill_data <- function (main      = ".",
                        models    = prefab_models(), 
                        datasets  = prefab_rodent_datasets(),
                        lead_time = 12,
-                       cast_date = Sys.Date(), 
+                       origin    = Sys.Date(), 
                        settings  = directory_settings(), 
                        quiet     = FALSE, 
                        verbose   = FALSE) {
@@ -102,40 +102,35 @@ fill_data <- function (main      = ".",
 
   messageq(" -Writing data files", quiet = quiet)
 
-  prepare_rodent_datasets(main     = main,
-                          datasets = datasets,
-                          quiet    = quiet,
-                          verbose  = verbose)
+  prepare_rodents(main     = main,
+                  datasets = datasets,
+                  quiet    = quiet,
+                  verbose  = verbose)
 
   prepare_moons(main      = main, 
                 lead_time = lead_time, 
-                cast_date = cast_date, 
+                origin    = origin, 
                 settings  = settings,
                 quiet     = quiet, 
                 verbose   = verbose)
-
-
-
-
 
   prepare_covariates(main      = main, 
-                lead_time = lead_time, 
-                cast_date = cast_date, 
-                settings  = settings,
-                quiet     = quiet, 
-                verbose   = verbose)
+                     origin    = origin, 
+                     settings  = settings,
+                     quiet     = quiet, 
+                     verbose   = verbose)
 
-  prepare_metadata(main = main, models = models,
-                datasets = datasets, moons = data_m, 
-                rodents = data_r, covariates = data_c, end_moon = end_moon, 
-                lead_time = lead_time, min_lag = min_lag, 
-                cast_date = cast_date, start_moon = start_moon, 
-                confidence_level = confidence_level, 
-                controls_model = controls_model,
-                quiet = quiet, 
-                control_files = control_files)
+  prepare_metadata(main      = main, 
+                   datasets  = datasets,
+                   models    = models, 
+                   lead_time = lead_time, 
+                   origin    = origin, 
+                   settings  = settings,
+                   quiet     = quiet, 
+                   verbose   = verbose)
 
-  invisible(NULL)
+  invisible()
+
 }
 
 #' @rdname fill_directory

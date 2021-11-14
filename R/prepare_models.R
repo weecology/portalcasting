@@ -117,14 +117,8 @@ verify_models <- function(main = ".", models = prefab_models(),
 
 #' @title Provide the Names of the Prefabricated Models
 #'
-#' @description Create a \code{character} vector of the names of the models
-#'              to be included including the pre-fabricated (prefab) models.
-#'              \cr \cr
-#'              The currently prefabricated models include \code{"AutoArima"}, 
-#'              \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, 
-#'              \code{"nbsGARCH"}, \code{"pevGARCH"}, 
-#               \code{"simplexEDM"}, \code{"GPEDM"}, 
-#'              and \code{"jags_RW"}. 
+#' @description Create a \code{character} vector of the names of the models to be included including the pre-fabricated (prefab) models. \cr \cr
+#'              The currently prefabricated models include \code{"AutoArima"}, \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, \code{"nbsGARCH"}, \code{"pevGARCH"}, and \code{"jags_RW"}. 
 #'
 #' @return \code{character} vector of model names.
 #'
@@ -135,9 +129,7 @@ verify_models <- function(main = ".", models = prefab_models(),
 #'
 prefab_models <- function () {
 
-  c("AutoArima", "ESSS", "NaiveArima", "nbGARCH", "nbsGARCH", "pevGARCH",
-#    "simplexEDM", "GPEDM", 
-    "jags_RW")
+  c("AutoArima", "ESSS", "NaiveArima", "nbGARCH", "nbsGARCH", "pevGARCH", "jags_RW")
 
 }
 

@@ -235,7 +235,7 @@ read_covariates <- function (main     = ".",
 read_climate_forecasts <- function (main = ".") {
 
   datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
-
+  ndatas <- length(datas)
   dat_list <- mapply(FUN = read.csv, file.path(main, "raw", files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
 
   dat_tab <- dat_list[[1]]

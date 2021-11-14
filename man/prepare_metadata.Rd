@@ -6,12 +6,10 @@
 \usage{
 prepare_metadata(
   main = ".",
-  models = c("AutoArima", "ESSS", "NaiveArima", "nbGARCH", "nbsGARCH", "pevGARCH",
-    "jags_RW"),
-  datasets = c("all", "all_interp", "controls", "controls_interp", "exclosures",
-    "exclosures_interp", "dm_controls", "dm_controls_interp"),
+  models = prefab_models(),
+  datasets = prefab_rodent_datasets(),
   lead_time = 12,
-  cast_date = Sys.Date(),
+  origin = Sys.Date(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -26,7 +24,7 @@ prepare_metadata(
 
 \item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
 
-\item{cast_date}{\code{Date} of the cast, typically today's date (set using \code{\link{Sys.Date}}).}
+\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

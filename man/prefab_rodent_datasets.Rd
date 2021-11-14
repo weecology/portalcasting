@@ -2,18 +2,18 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{prefab_rodent_datasets}
 \alias{prefab_rodent_datasets}
-\title{Provide the List of Prefabricated Rodent Datasets}
+\title{Provide the Names of the Prefabricated Rodent Datasets}
 \usage{
 prefab_rodent_datasets()
 }
 \value{
-\code{list} of dataset lists, each containing \code{metadata}, \code{fun}, and \code{args} elements -- the latter two of which are used in \code{\link{do.call}} to create data files.
+\code{character} vector of model names.
 }
 \description{
-Create a \code{list} of dataset lists, each used to create a dataset in \code{\link{fill_data}}. \cr \cr
+Create a \code{character} vector of the names of the datasets included including the prefabricated (prefab) set. \cr \cr
              The currently prefabricated datasets include \code{"all"}, \code{"all_interp"}, \code{"controls"}, \code{"controls_interp"}, \code{"exclosures"}, \code{"exclosures_interp"}, \code{"dm_controls"}, and \code{"dm_controls_interp"}.
 }
 \examples{
- prefab_datasets()
+ prefab_models()
 
 }

@@ -16,9 +16,10 @@
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
 #'
-#' @param cast_date \code{Date} of the cast, typically today's date (set using \code{\link{Sys.Date}}).
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @return \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
+#'
 #' 
 #' @examples
 #'  \donttest{
@@ -29,15 +30,13 @@
 #' @export
 #'
 prepare_metadata <- function (main      = ".",
-                              models    = c("AutoArima", "ESSS", "NaiveArima", "nbGARCH", "nbsGARCH", "pevGARCH", "jags_RW"), 
-                              datasets  = c("all", "all_interp", "controls", "controls_interp", "exclosures", "exclosures_interp", "dm_controls", "dm_controls_interp"),
+                              models    = prefab_models(), 
+                              datasets  = prefab_rodent_datasets(),
                               lead_time = 12,
-                              cast_date = Sys.Date(), 
+                              origin    = Sys.Date(), 
                               settings  = directory_settings(), 
                               quiet     = FALSE, 
                               verbose   = FALSE) {
-
-
 
 
   moons      <- read_moons(main     = main,
@@ -49,72 +48,43 @@ prepare_metadata <- function (main      = ".",
   covariates <- read_covariates(main     = main,
                                 settings = settings)
 
-return()
-
 
   messageq("  -metadata file", quiet = quiet)
 
-  last_moon <- last_moon(main = main, moons = moons, date = cast_date)
 
-  end_moon <- ifnull(end_moon, last_moon)
-  ncontrols_r <- length(rodents)
-  last_rodent_moon <- 0
-  for(i in 1:ncontrols_r){
-    rodent_moon_i <- rodents[[i]]$newmoonnumber
-    last_rodent_moon_i <- max(rodent_moon_i[rodent_moon_i <= end_moon], 
-                              na.rm = TRUE)
-    last_rodent_moon <- max(c(last_rodent_moon, last_rodent_moon_i, 
-                            na.rm = TRUE))
-  }
-
-  last_covar_moon <- max(c(covariates$moon, covariates$moon),
-                         na.rm = TRUE)
-  first_cast_covar_moon <- last_covar_moon + 1
-  first_cast_rodent_moon <- last_rodent_moon + 1
-  last_cast_moon <- end_moon + lead_time
-  rodent_cast_moons <- first_cast_rodent_moon:last_cast_moon
-  which_r_nms <- which(moons$moon %in% rodent_cast_moons)
-  rodent_nm_dates <- as.Date(moons$moondate[which_r_nms])
-  rodent_cast_months <- as.numeric(format(rodent_nm_dates, "%m"))
-  rodent_cast_years <- as.numeric(format(rodent_nm_dates, "%Y"))
-
-  covar_cast_moons <- first_cast_covar_moon:last_cast_moon
-  which_c_nms <- which(moons$moon %in% covar_cast_moons)
-  covar_nm_dates <- as.Date(moons$moondate[which_c_nms])
-  covar_cast_months <- as.numeric(format(covar_nm_dates, "%m"))
-  covar_cast_years <- as.numeric(format(covar_nm_dates, "%Y"))
-
-  cast_type <- ifelse(end_moon == last_moon, "forecast", "hindcast")
-
-  cast_meta <- read_casts_metadata(main = main, quiet = quiet)
-  cast_group <- max(cast_meta$cast_group) + 1
+  # COMMENT TO ADD TO DOCUMENTATION
+  #
+  # the origin newmoonnumber is the moon from which the forecast is made
+  #   ideally it would be the most recent moon
+  #   in reality, however, there are often moons for which there were no censuses, which require starting at an earlier origin than ideal
+  #
 
 
-  filename_config <- settings$files$directory_config
-  filename_meta <- settings$files$metadata
+  ideal_origin_newmoonnumber  <- moons$newmoonnumber[max(which(moons$newmoondate < origin))]
+  census_origin_newmoonnumber <- moons$newmoonnumber[max(which(moons$censusdate < origin))]
+  rodent_origin_newmoonnumber <- max(unlist(lapply(mapply(FUN = getElement, object = rodents, name = "newmoonnumber"), max)))
+  true_origin_newmoonnumber   <- min(c(census_origin_newmoonnumber, rodent_origin_newmoonnumber))
+
+# how have we handled the gap here?? for the covariates i mean?
+
+  covariates_origin_date <- max(covariates$date[covariates$source == "historic"])
+
+  config <- read_directory_config(main     = main, 
+                                  settings = settings,
+                                  quiet    = quiet)
 
 
-  config <- read_directory_config(main = main, 
-                                  filename_config = 
-                                    control_files$filename_config,
-                                  quiet = quiet)
+  out <- list(
+           models                  = models, 
+           datasets                = datasets, 
+           directory_configuration = config,
+           controls_rodents        = prefab_rodent_datasets_list)
 
+  write_data(dfl       = out, 
+             main      = main, 
+             save      = settings$save, 
+             filename  = settings$files$metadata, 
+             overwrite = settings$overwrite, 
+             quiet     = !verbose)
 
-  out <- list(cast_group = cast_group, models = models, datasets = datasets, 
-              directory_configuration = config,
-              controls_rodents = datasets,
-              cast_type = cast_type, start_moon = start_moon, 
-              end_moon = end_moon, last_moon = last_moon, 
-              lead_time = lead_time, min_lag = min_lag, 
-              cast_date = as.character(cast_date), 
-              covariate_cast_moons = covar_cast_moons, 
-              covariate_cast_months = covar_cast_months, 
-              covariate_cast_years = covar_cast_years,
-              rodent_cast_moons = rodent_cast_moons, 
-              rodent_cast_months = rodent_cast_months, 
-              rodent_cast_years = rodent_cast_years,
-              confidence_level = confidence_level)
-  write_data(out, main = main, save = control_files$save, 
-             filename = control_files$filename_meta, 
-             overwrite = control_files$overwrite, quiet = !verbose)
 }

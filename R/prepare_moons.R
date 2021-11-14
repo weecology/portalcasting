@@ -14,7 +14,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param cast_date \code{Date} of the cast, typically today's date (set using \code{\link{Sys.Date}}).
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
 #'
@@ -39,7 +39,7 @@ NULL
 #' 
 prepare_moons <- function (main      = ".", 
                            lead_time = 12,
-                           cast_date = Sys.Date(), 
+                           origin    = Sys.Date(), 
                            settings  = directory_settings(), 
                            quiet     = TRUE,
                            verbose   = FALSE) {
@@ -68,7 +68,7 @@ prepare_moons <- function (main      = ".",
   moons_out <- add_future_moons(main      = main, 
                                 moons     = moons_in, 
                                 lead_time = lead_time, 
-                                cast_date = cast_date)
+                                origin    = origin)
 
   write_data(dfl       = moons_out, 
              main      = main, 
@@ -86,11 +86,10 @@ prepare_moons <- function (main      = ".",
 add_future_moons <- function (main      = ".", 
                               moons     = NULL, 
                               lead_time = 12, 
-                              cast_date = Sys.Date(), 
+                              origin    = Sys.Date(), 
                               settings  = directory_settings()) {
 
-  moons <- ifnull(moons, read_moons(main     = main, 
-                                    settings = settings))
+  return_if_null(moons)
 
   if (lead_time == 0) {
 
@@ -98,11 +97,9 @@ add_future_moons <- function (main      = ".",
 
   }
 
-
-
-  future_moons <- get_cast_future_moons(moons     = moons, 
-                                        lead_time = lead_time,
-                                        cast_date = cast_date)
+  future_moons <- get_forecast_future_moons(moons     = moons, 
+                                            lead_time = lead_time,
+                                            origin    = origin)
 
   future_moons$newmoondate <- as.character(future_moons$newmoondate)
   rbind(moons, future_moons)
@@ -113,15 +110,17 @@ add_future_moons <- function (main      = ".",
 #'
 #' @export
 #'
-get_cast_future_moons <- function (moons     = NULL, 
-                                   lead_time = 12, 
-                                   cast_date = Sys.Date()) {
+get_forecast_future_moons <- function (moons     = NULL, 
+                                       lead_time = 12, 
+                                       origin    = Sys.Date()) {
+
+  return_if_null(moons)
 
   future_moons <- get_future_moons(moons            = moons, 
                                    num_future_moons = lead_time)
 
 
-  n_extra_future_moons <- length(which(future_moons$newmoondate < cast_date))
+  n_extra_future_moons <- length(which(future_moons$newmoondate < origin))
 
   if (n_extra_future_moons > 0){
 
@@ -135,57 +134,7 @@ get_cast_future_moons <- function (moons     = NULL,
 
 }
 
-#' @title Trim a moons table based on target moons
-#'
-#' @description Some functions require that a data table of time (the moons)
-#'  table only includes specific time stamps (newmoon numbers). This function
-#'  is a simple utility to reduce the moons table to that as well as the 
-#'  columns.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @param target_moons \code{integer}-conformable newmoon numbers, usually
-#'  made through \code{\link{target_moons}} of the moons to either 
-#'  drop or retain based on \code{retain_target_moons}. 
-#' 
-#' @param retain_target_moons \code{logical} value that dictates if 
-#'  \code{target_moons} are to be dropped (\code{retain_target_moons = FALSE}
-#'  or retained (\code{retain_target_moons = TRUE})
-#'
-#' @param target_cols \code{character} vector of columns to retain.
-#'
-#' @return \code{moons} and a \code{data.frame} but trimmed.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   moons <- prep_moons()
-#'   trim_moons(moons, 300:310)
-#'  }
-#'
-#' @export
-#'
-trim_moons <- function(moons = NULL, target_moons = NULL, 
-                       retain_target_moons = TRUE,
-                       target_cols = c("moon", "moondate", 
-                                       "period", "censusdate")){
-
-  return_if_null(moons)
-  moons <- moons[, target_cols]
-  new_moons <- moons
-  which_target_moons <- which(moons$moon %in% target_moons)
-  ntarget_moons <- length(which_target_moons)
-  if (ntarget_moons > 0){
-    if(retain_target_moons){
-      new_moons <- new_moons[which_target_moons, ]
-    } else{
-      new_moons <- new_moons[-which_target_moons, ]
-    }
-  }
-  new_moons
-}
-
-#' @title Add a Newmoon Number to a Table that has a Date
+#' @title Add a Newmoon Number Column to a Table that has a Date Column 
 #' 
 #' @description Add a \code{newmoonnumber} column to a table that has a \code{date} column.
 #' 
@@ -197,7 +146,7 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 #'
 #' @export
 #'
-add_moons_from_date <- function(df, moons = NULL){
+add_newmoonnumbers_from_dates <- function (df, moons = NULL) {
 
   return_if_null(moons, df)
 
@@ -206,91 +155,28 @@ add_moons_from_date <- function(df, moons = NULL){
     df <- add_date_from_components(df)
   }
 
-  moon_number <- moons$newmoonnumber[-1]
-  moon_start <- as.Date(moons$newmoondate[-nrow(moons)])
-  moon_end <- as.Date(moons$newmoondate[-1])
+  moon_number       <- moons$newmoonnumber[-1]
+  moon_start        <- as.Date(moons$newmoondate[-nrow(moons)])
+  moon_end          <- as.Date(moons$newmoondate[-1])
   moon_match_number <- NULL
-  moon_match_date <- NULL
+  moon_match_date   <- NULL
 
   for (i in seq(moon_number)) {
 
-    temp_dates <- seq.Date(moon_start[i] + 1, moon_end[i], 1)
-    temp_dates <- as.character(temp_dates)
-    temp_numbers <- rep(moon_number[i], length(temp_dates))
-    moon_match_date <- c(moon_match_date, temp_dates)
+    temp_dates        <- seq.Date(moon_start[i] + 1, moon_end[i], 1)
+    temp_dates        <- as.character(temp_dates)
+    temp_numbers      <- rep(moon_number[i], length(temp_dates))
+    moon_match_date   <- c(moon_match_date, temp_dates)
     moon_match_number <- c(moon_match_number, temp_numbers)
 
   }
 
-  moon_match_date <- as.Date(moon_match_date)
-  moon_matches    <- match(df$date, moon_match_date)
-  df$moon         <- moon_match_number[moon_matches]
+  moon_match_date  <- as.Date(moon_match_date)
+  moon_matches     <- match(df$date, moon_match_date)
+  df$newmoonnumber <- moon_match_number[moon_matches]
 
   df
 
 }
 
-#' @title Determine specific newmoon numbers
-#'
-#' @description 
-#'  \code{target_moons} determines which moons are in a window, based on a
-#'  date and window width. \cr \cr
-#'  \code{last_moon} determines the most recently passed newmoon, based on
-#'  a date.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @param date \code{Date} used for defining a window (starting with moons
-#'  subsequent to the date) or a previous moon (before or on the date).
-#'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
-#'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
-#'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
-#'
-#' @return 
-#'  \code{target_moons}: \code{numeric} vector of the moon numbers 
-#'  targeted by the date window.
-#'  \code{last_newmoon}:  \code{numeric} value of the last moon number.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   target_moons()
-#'   last_moon()
-#'  }
-#'
-#' @export
-#'
-target_moons <- function(moons = NULL, end_moon = NULL, 
-                         lead_time = 12, date = Sys.Date()){
-
-  return_if_null(moons)
-
-  end_moon <- ifnull(end_moon, last_moon(moons = moons, date = date))
-
-  (end_moon + 1):(end_moon + lead_time)
-
-}
-
-#' @rdname target_moons
-#'
-#' @export
-#'
-last_moon <- function(moons = NULL, date = Sys.Date()){
-
-  return_if_null(moons)
-  
-  moons$newmoonnumber[max(which(moons$newmoondate < date))]
-
-}
 

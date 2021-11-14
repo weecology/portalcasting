@@ -10,13 +10,8 @@ prefab_models()
 \code{character} vector of model names.
 }
 \description{
-Create a \code{character} vector of the names of the models
-             to be included including the pre-fabricated (prefab) models.
-             \cr \cr
-             The currently prefabricated models include \code{"AutoArima"}, 
-             \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, 
-             \code{"nbsGARCH"}, \code{"pevGARCH"}, 
-             and \code{"jags_RW"}.
+Create a \code{character} vector of the names of the models to be included including the pre-fabricated (prefab) models. \cr \cr
+             The currently prefabricated models include \code{"AutoArima"}, \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, \code{"nbsGARCH"}, \code{"pevGARCH"}, and \code{"jags_RW"}.
 }
 \examples{
  prefab_models()
