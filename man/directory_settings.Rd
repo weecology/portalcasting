@@ -18,7 +18,9 @@ directory_settings(
     "tasmean", "tasmax", "pr")),
   save = TRUE,
   overwrite = TRUE,
-  cleanup = TRUE
+  cleanup = TRUE,
+  unzip_pause = 30,
+  download_timeout = getOption("timeout")
 )
 }
 \arguments{
@@ -46,6 +48,10 @@ See \code{\link{download_climate_forecasts}}.}
 \item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
 
 \item{cleanup}{\code{logical} indicator of whether or not the tmp files should be cleaned up.}
+
+\item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment.}
+
+\item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 }
 \value{
 Named \code{list} of settings for the directory.

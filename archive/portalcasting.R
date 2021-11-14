@@ -1,8 +1,19 @@
-#' @importFrom forecast auto.arima forecast na.interp
+#' @importFrom coda as.mcmc HPDinterval
+#' @importFrom forecast Arima auto.arima ets forecast na.interp
+#' @importFrom graphics abline axis mtext par plot points polygon rect text
+#' @importFrom grDevices grey rgb
 #' @importFrom httr content GET stop_for_status
+#' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
 #' @importFrom portalr download_observations get_future_moons load_trapping_data ndvi summarize_rodent_data weather
-#' @importFrom utils download.file read.csv unzip
+#' @importFrom runjags run.jags runjags.options
+#' @importFrom rEDM simplex tde_gp
+#' @importFrom scoringRules crps_sample
+#' @importFrom stats AIC lm na.omit predict qnorm quantile rgamma rnorm runif sd
+#' @importFrom tscount tsglm
+#' @importFrom utils download.file packageDescription read.csv sessionInfo tail unzip write.csv write.table
+#' @importFrom viridis viridis
 #' @importFrom yaml read_yaml write_yaml
+
 
 #' @title Functions for Portalcasting (Forecasting Portal Rodents)
 #'

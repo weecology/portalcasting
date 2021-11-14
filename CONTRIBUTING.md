@@ -73,8 +73,4 @@ For more info, see the [GitHub repo](https://github.com/hadley/devtools) for the
 
 ## Attribution 
 
-This document is based on the [CONTRIBUTING 
-file](https://github.com/weecology/portalr/blob/master/CONTRIBUTING.md)
-associated with the Beta release of the 
-[**portalr**](https://github.com/weecology/portalr/) package
-and is used under the MIT License.
+This document is based on the [CONTRIBUTING file](https://github.com/weecology/portalr/blob/master/CONTRIBUTING.md) associated with the Beta release of the [**portalr**](https://github.com/weecology/portalr/) package and is used under the MIT License.

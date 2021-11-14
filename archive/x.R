@@ -1,4 +1,531 @@
 
+#' @title Replace a value with an alternative if it is NULL or if it is NA
+#'
+#' @description 
+#'  \code{ifnull} replaces the focal input with the alternative value if it
+#'   is \code{NULL}. \cr \cr
+#'  \code{ifna} replaces the focal input with the alternative value if it
+#'   is \code{NA}.
+#'
+#' @param x Focal input.
+#'
+#' @param alt Alternative value.
+#'
+#' @return 
+#'  \code{ifnull}: \code{x} if not \code{NULL}, \code{alt} otherwise. \cr \cr
+#'  \code{ifna}:  \code{x} if not \code{NA}, \code{alt} otherwise. 
+#' 
+#' @examples
+#'  ifnull(NULL, 123)
+#'  ifnull(TRUE, 123)
+#'  ifnull(FALSE, 123)
+#'  ifna(NA, 123)
+#'  ifna(FALSE, 123)
+#'  ifna(NA, NA)
+#'
+#' @name alternative_values
+#'
+NULL
+
+#' @rdname alternative_values
+#'
+#' @export 
+#'
+ifnull <- function (x = NULL, alt = NULL) {
+
+  if(is.null(x)){
+    x <- alt
+  }
+  x
+
+}
+
+#' @rdname alternative_values
+#'
+#' @export 
+#'
+ifna <- function (x = NULL, alt = NA) {
+
+  ifelse(is.na(x), alt, x)
+
+}
+
+
+#' @title Save data out to a csv, appending the file if it already exists
+#'
+#' @description Appending a \code{.csv} without re-writing the header of the
+#'  file. If the doesn't exist, it will be created.
+#'
+#' @param df \code{data.frame} table to be written out.
+#'
+#' @param filename \code{character} filename of existing \code{.csv} to be 
+#'  appended.
+#'
+#' @return \code{NULL}.
+#'
+#' @examples
+#'  \donttest{
+#'   df <- data.frame(x = 1:10)
+#'   fpath <- file_path(files = "xx.csv")
+#'   append_csv(df, fpath)
+#'  }
+#'
+#' @export
+#'
+append_csv <- function(df, filename){
+  
+  write.table(df, filename, sep = ",", row.names = FALSE, 
+    col.names = !file.exists(filename), append = file.exists(filename))
+  NULL
+}
+
+#' @title Calculate the fraction of the year from a date
+#' 
+#' @description Based on the year in which the date occurred, determine the
+#'   fraction of the year (foy) for the date (in relation to New Year's Eve
+#'   in that year). 
+#'
+#' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be 
+#'   converted to the fraction of the year.
+#'
+#' @return \code{numeric} value(s) of the fraction of the year.
+#'
+#' @examples
+#'  foy(Sys.Date())
+#'
+#' @export
+#'
+foy <- function(dates = NULL){
+  return_if_null(dates)
+  
+  dates <- as.Date(dates)
+  jday <- as.numeric(format(dates, "%j"))
+  nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
+  nyejday <- as.numeric(format(nye, "%j"))
+  round(jday / nyejday, 3)
+}
+
+#' @title Remove files from the tmp subdirectory
+#'
+#' @description Clear the files from the tmp subdirectory.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree. 
+#'
+#' @param cleanup \code{logical} indicator if any files put into the tmp
+#'  subdirectory should be removed at the end of the process. 
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'   all of the information or just tidy messages. 
+#'
+#' @param bline \code{logical} indicator if horizontal break lines should be
+#'  made or not. For toggling separately from the more general \code{quiet}
+#'  argument. 
+#'
+#'
+#' @return \code{NULL}, with the tmp subdirectory's files removed.
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   clear_tmp
+#'  }
+#'
+#' @export
+#'
+clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE, 
+                      verbose = FALSE, cleanup = TRUE){
+  
+  tmp_path <- tmp_path(main = main)
+  tmp_exist <- dir.exists(tmp_path)
+  tmp_files <- list.files(tmp_path)
+  ntmp_files <- length(tmp_files)
+  if(!cleanup){
+    return()
+  }
+  messageq(message_break(), quiet = quiet)
+  messageq("Clearing tmp subdirectory", quiet = quiet)
+
+  if(tmp_exist){
+    if(ntmp_files > 0){
+      tmp_files_full_paths <- file_path(main = main, sub = "tmp", 
+                                        files = tmp_files)
+      unlink(tmp_files_full_paths, force = TRUE, recursive = TRUE)
+      msg <- "    *temporary files cleared from tmp subdirectory*"
+    } else {
+      msg <- "    *tmp subdirectory already clear*"
+    }
+  } else{
+    msg <- "    *tmp subdirectory not present for clearing*"
+  }
+  messageq(msg, quiet = !verbose)
+  NULL
+}
+
+
+
+#' @title Combine a historical table and a cast table
+#'
+#' @description A simple utility for combining a table of historical data
+#'  and a table of cast data that might need to be assigned to either one
+#'  or the other.
+#'
+#' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns
+#'  including a code{date} column of \code{Date}s, which is used to align 
+#'  them.
+#'
+#' @param winner \code{character} value either {"hist"} or \code{"cast"} to
+#'  decide who wins any ties. In the typical portalcasting space, this is 
+#'  kept at its default value throughout. In the case of \code{NA} values,
+#'  this will be overriden to use the entry that has no missing entries.
+#'
+#' @param column \code{character} indicating the column to use for identifying
+#'  entries in combining.
+#'
+#'
+#' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
+#' 
+#' @examples
+#'  hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
+#'  cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1),
+#'                         x = 101:106)
+#'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
+#'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
+#'
+#' @export
+#'
+combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
+                                  winner = "hist", column = "date"){
+  
+  return_if_null(hist_tab, cast_tab)
+  return_if_null(cast_tab, hist_tab)
+
+  hist_tab$x_source <- "hist"
+  cast_tab$x_source <- "cast"
+  out <- rbind(hist_tab, cast_tab)
+  in_out <- rep(TRUE, NROW(out))
+  dupes <- names(which(table(out[,column]) > 1))
+
+  ndupes <- length(dupes) 
+  if(ndupes > 0){
+    for(i in 1:ndupes){
+      which_duped <- which(out$moon == dupes[i])
+
+      which_duped_hist <- which(as.character(out[,column]) == dupes[i] &
+                                out$x_source == "hist")
+      which_duped_cast <- which(as.character(out[,column]) == dupes[i] &
+                                out$x_source == "cast") 
+
+      hist_dupe_NA <- any(is.na(out[which_duped_hist, ]))
+      cast_dupe_NA <- any(is.na(out[which_duped_cast, ]))
+
+      if(winner == "hist"){
+        if(!hist_dupe_NA){
+          in_out[which_duped_cast] <- FALSE
+        } else{
+          in_out[which_duped_hist] <- FALSE   
+        }
+      } else if(winner == "cast"){
+        if(!cast_dupe_NA){
+          in_out[which_duped_hist] <- FALSE
+        } else{
+          in_out[which_duped_cast] <- FALSE   
+        }
+      }
+    }
+  }
+  out <- out[ , -which(colnames(out) == "x_source")]
+  out[in_out, ]
+}
+
+#' @title Add a date to a table that has the year month and day as components 
+#' 
+#' @description Add a date (as a \code{Date}) column to a table that has the 
+#'  year month and day as components.
+#' 
+#' @param df \code{data.frame} with columns named \code{year}, \code{month},
+#'  and \code{day}. 
+#'
+#'
+#' @return \code{data.frame} \code{df} with column of \code{Date}s 
+#'  named \code{date} added.
+#'
+#' @examples
+#'  df <- data.frame(year = 2010, month = 2, day = 1:10)
+#'  add_date_from_components(df)
+#'
+#' @export
+#'
+add_date_from_components <- function(df){
+  
+  yrs <- df$year
+  mns <- df$month
+  dys <- df$day
+  df$date <- as.Date(paste(yrs, mns, dys, sep = "-"))
+  df
+}
+
+
+
+
+#' @title Remove any specific incomplete entries as noted by an NA
+#'
+#' @description Remove any incomplete entries in a table, as determined by
+#'  the presence of an \code{NA} entry in a specific column 
+#'  (\code{colname}).
+#'
+#' @param df \code{data.frame} table to be written out.
+#'
+#' @param colname A single \code{character} value of the column to use
+#'  to remove incomplete entries. 
+#'
+#' @return \code{df} without any incomplete entries. 
+#'
+#' @examples
+#'  df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)
+#'  remove_incompletes(df, "c1")
+#'
+#' @export
+#'
+remove_incompletes <- function(df, colname){
+  
+  incompletes <- which(is.na(df[ , colname]))
+  if (length(incompletes) > 0){
+    df <- df[-incompletes, ]
+  }
+  df
+}
+
+#' @title Determine the depth of a list
+#'
+#' @description Evaluate an input for the depth of its nesting. 
+#'
+#' @details If \code{xlist = list()}, then technically the input value is a 
+#'  list, but is empty (of length \code{0}), so depth is returned as \code{0}.
+#'
+#' @param xlist Focal input \code{list}.
+#'
+#' @return \code{integer} value of the depth of the list.
+#' 
+#' @examples
+#'  list_depth("a")
+#'  list_depth(list())
+#'  list_depth(list("a"))
+#'  list_depth(list(list("a")))
+#'
+#' @export 
+#'
+list_depth <- function(xlist){
+  xx <- match.call()
+  xxx <- deparse(xx[[2]])
+  if(xxx == "list()"){
+    0L
+  } else if (is.list(xlist)){
+    1L + max(sapply(xlist, list_depth))
+  } else {
+    0L
+  }
+}
+
+
+
+#' @title Argument matching with defaults
+#'
+#' @description Expansion of \code{\link[base]{match.call}} to include
+#'  default formal values.
+#'
+#' @param definition A \code{function}, by default the function from which 
+#'  \code{match.call.defaults} is called. 
+#'
+#' @param call An unevaluated \code{call} to the function specified by 
+#'  \code{definition}, as generated by \code{\link[base]{call}}.
+#'
+#' @param expand.dots \code{logical} defining if arguments matching 
+#'  \code{...} in the call be included or left as a \code{...} argument
+#'
+#' @param envir An \code{environment}, from which the \code{...} in 
+#'  \code{call} are retrieved, if any.
+#'
+#' @references 
+#'  DesignLibrary's \code{match.call.defaults} function. \cr
+#'  Stack overflow post reply by Roland. \href{https://bit.ly/2PtEgy1}{URL}
+#'
+#' @examples
+#'  fun <- function(arg1 = "ok", ...) {
+#'    match.call.defaults()
+#'  }
+#'  fun()
+#'  fun(arg2 = "hi")
+#'
+#' @export
+#'
+match.call.defaults <- function(definition = sys.function(sys.parent()), 
+                                call = sys.call(sys.parent()), 
+                                expand.dots = TRUE, envir = parent.frame(2L)){
+  call <- match.call(definition = definition, call = call, 
+                     expand.dots = expand.dots, envir = envir)
+  formals <- formals(fun = definition)
+  if (expand.dots && "..." %in% names(formals)){
+      formals[["..."]] <- NULL
+  }
+  diffs <- setdiff(names(formals), names(call))
+  for (i in diffs){
+    call[i] <- list(formals[[i]])
+  }
+  match.call(definition = definition, call = call, expand.dots = TRUE, 
+             envir = envir)
+}
+
+#' @title Error if a function's request is deeper than can be handled
+#'
+#' @description Produces an informative error message when a function 
+#'  that should only be called inside of other functions is called outside
+#'  of a function (hence the request to the function is too deep for
+#'  what it can handle).
+#' 
+#' @param lev The number of frames back in the stack where the request needs
+#'  to be able to be evaluated.
+#'
+#' @return Throws an error if the function is called in a place where it 
+#'  cannot operate and returns \code{NULL} otherwise.
+#'
+#' @examples
+#'  \dontrun{
+#'  # will error:
+#'  # error_if_deep(-10)
+#'  }
+#'  error_if_deep(0)
+#'
+#' @export
+#'
+error_if_deep <- function(lev){
+  lev2 <- lev - 1
+  too_deep <- tryCatch(sys.call(lev2), error = function(x){NA})
+  if(!is.null(too_deep) && !is.call(too_deep) && is.na(too_deep)){
+    msg <- "too deep; function should only be called inside other functions"
+    stop(msg, call. = FALSE)
+  } 
+}
+
+
+
+#' @title Update models based on user input controls
+#'
+#' @description Update model scripts based on the user-defined model control
+#'  inputs. This allows users to define their own models or re-define prefab
+#'  models within the \code{\link{portalcast}} pipeline.
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param models \code{character} vector of name(s) of model(s) to update.
+#'
+#' @param control_files \code{list} of names of the folders and files within
+#'  the sub directories and saving strategies (save, overwrite, append, etc.).
+#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out
+#'  all of the information or not (and thus just the tidy messages). 
+#'
+#' @param update_prefab_models \code{logical} indicator if all of the models'
+#'  scripts should be updated, even if they do not have an explicit change
+#'  to their model options via \code{controls_model}. Default is
+#'  \code{FALSE}, which leads to only the models in \code{controls_model}
+#'  having their scripts re-written. Switching to \code{TRUE} results in the
+#'  models listed in \code{models} having their scripts re-written. \cr \cr
+#'  This is particularly helpful when one is changing the global (with respect
+#'  to the models) options \code{main}, \code{quiet}, \code{verbose}, or
+#'  \code{control_files}.
+#'
+#' @return \code{NULL}. 
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   cm <- model_control(name = "AutoArima", data_sets = "all")
+#'   update_models(controls_model = cm)
+#'  }
+#'
+#' @export
+#'
+update_models <- function(main = ".", models = NULL,
+                          update_prefab_models = FALSE, 
+                          control_files = files_control(),
+                          quiet = FALSE, verbose = FALSE){
+
+  if(update_prefab_models){
+    models <- unique(c(models, prefab_models()))
+  } 
+  return_if_null(models)
+
+  messageq("Updating model scripts", quiet = quiet)
+  nmodels <- length(models)
+  for(i in 1:nmodels){
+    write_model(main = main, quiet = quiet, 
+                model = models[i])
+  }
+  messageq(message_break(), quiet = quiet) 
+  invisible(NULL)
+}
+
+
+
+#' @title Verify that models requested to cast with exist
+#'
+#' @description Verify that models requested have scripts in the models 
+#'   subdirectory. 
+#'
+#' @param main \code{character} value of the name of the main component of
+#'  the directory tree.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be
+#'  quieted.
+#'
+#' @param models \code{character} vector of the names of models to verify.
+#'
+#' @return \code{NULL} with messaging. 
+#'
+#' @examples
+#'  \donttest{
+#'   create_dir()
+#'   fill_models()
+#'   verify_models()
+#'  }
+#'
+#' @export
+#'
+verify_models <- function(main = ".", models = prefab_models(), 
+                          quiet = FALSE){
+  messageq("Checking model availability", quiet = quiet)
+  model_dir <- sub_path(main = main, subs = "models")
+  if (!dir.exists(model_dir)){
+    stop("Models subidrectory does not exist", call. = FALSE)
+  }
+  available <- list.files(model_dir)
+  if (models[1] != "all"){
+    modelnames <- paste0(models, ".R")
+    torun <- (modelnames %in% available)  
+    if (any(torun == FALSE)){
+      missmod <- paste(models[which(torun == FALSE)], collapse = ", ")
+      msg <- paste0("Requested model(s) ", missmod, " not in directory \n")
+      stop(msg, call. = FALSE)
+    }
+  }
+  messageq(" *All requested models available*", quiet = quiet)
+  messageq(message_break(), quiet = quiet)
+  invisible(NULL)
+}
+
+
+
+
+
 #' @rdname read_data
 #'
 #' @export

@@ -21,13 +21,6 @@
 #' @return Some version of a moons \code{data.frame}. \cr \cr. 
 #'         \code{prepare_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{save = TRUE}). \cr 
 #'         \code{add_future_moons} and \code{add_extra_future_moons}: appropriately appended moons \code{data.frame}.
-#'   
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   fill_resources()
-#'   prepare_moons()
-#'  }
 #'
 #' @name prepare_moons
 #'
@@ -133,50 +126,4 @@ get_forecast_future_moons <- function (moons     = NULL,
   future_moons
 
 }
-
-#' @title Add a Newmoon Number Column to a Table that has a Date Column 
-#' 
-#' @description Add a \code{newmoonnumber} column to a table that has a \code{date} column.
-#' 
-#' @param df \code{data.frame} with column of \code{date}s.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @return \code{data.frame} \code{df} with column of \code{newmoonnumber}s added.
-#'
-#' @export
-#'
-add_newmoonnumbers_from_dates <- function (df, moons = NULL) {
-
-  return_if_null(moons, df)
-
-  if (is.null(df$date)) {
-
-    df <- add_date_from_components(df)
-  }
-
-  moon_number       <- moons$newmoonnumber[-1]
-  moon_start        <- as.Date(moons$newmoondate[-nrow(moons)])
-  moon_end          <- as.Date(moons$newmoondate[-1])
-  moon_match_number <- NULL
-  moon_match_date   <- NULL
-
-  for (i in seq(moon_number)) {
-
-    temp_dates        <- seq.Date(moon_start[i] + 1, moon_end[i], 1)
-    temp_dates        <- as.character(temp_dates)
-    temp_numbers      <- rep(moon_number[i], length(temp_dates))
-    moon_match_date   <- c(moon_match_date, temp_dates)
-    moon_match_number <- c(moon_match_number, temp_numbers)
-
-  }
-
-  moon_match_date  <- as.Date(moon_match_date)
-  moon_matches     <- match(df$date, moon_match_date)
-  df$newmoonnumber <- moon_match_number[moon_matches]
-
-  df
-
-}
-
 

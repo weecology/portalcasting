@@ -27,6 +27,10 @@
 #'
 #' @param cleanup \code{logical} indicator of whether or not the tmp files should be cleaned up.
 #'
+#' @param unzip_pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment. 
+#'
+#' @param download_timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
+#'
 #' @return Named \code{list} of settings for the directory.
 #'
 #' @export
@@ -43,32 +47,36 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
                                 climate_forecast           = list(source = "NMME", version = Sys.Date(), data = c("tasmin", "tasmean", "tasmax", "pr")),
                                 save                       = TRUE,
                                 overwrite                  = TRUE, 
-                                cleanup                    = TRUE) {
+                                cleanup                    = TRUE,
+                                unzip_pause                = 30,
+                                download_timeout           = getOption("timeout")) {
 
   list(
 
-    files     = list(
-                  directory_config      = directory_config_file,
-                  moons                 = moons_file,
-                  covariates            = covariates_file,
-                  historical_covariates = historical_covariates_file,
-                  forecast_covariates   = forecast_covariates_file,
-                  metadata              = metadata_file),
+    files            = list(
+                         directory_config      = directory_config_file,
+                         moons                 = moons_file,
+                         covariates            = covariates_file,
+                         historical_covariates = historical_covariates_file,
+                         forecast_covariates   = forecast_covariates_file,
+                         metadata              = metadata_file),
 
-    subs      = subdirectories,
+    subs             = subdirectories,
 
-    resources = list(
-                  PortalData        = PortalData,
-                  portalPredictions = portalPredictions,
-                  climate_forecast  = climate_forecast),
+    resources        = list(
+                         PortalData        = PortalData,
+                         portalPredictions = portalPredictions,
+                         climate_forecast  = climate_forecast),
 
-    save      = save, 
+    save             = save, 
 
-    overwrite = overwrite, 
+    overwrite        = overwrite, 
 
-    cleanup   = cleanup
+    cleanup          = cleanup,
  
-
+    unzip_pause      = 30,
+ 
+    download_timeout = download_timeout
   )
 
 }

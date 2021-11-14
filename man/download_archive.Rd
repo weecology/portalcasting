@@ -10,6 +10,7 @@ download_archive(
   source = "github",
   quiet = FALSE,
   verbose = FALSE,
+  pause = 30,
   timeout = getOption("timeout")
 )
 }
@@ -24,7 +25,9 @@ download_archive(
 
 \item{verbose}{\code{logical} indicator if detailed messages should be printed.}
 
-\item{timeout}{\code{numeric} value passed to \code{\link[base]{options}} to dictate the download timeout limit.}
+\item{pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment.}
+
+\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
@@ -33,5 +36,5 @@ download_archive(
 Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/resources} sub.
 }
 \note{
-There are two calls to \code{link[base]{Sys.sleep}} for 30 seconds each to allow for the file unzipping, copying, and such to catch up.
+There are two calls to \code{link[base]{Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
 }

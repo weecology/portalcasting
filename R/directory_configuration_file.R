@@ -11,7 +11,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @return \code{list} of directory configurations. 
+#' @return \code{list} of directory configurations, \code{\link[base]{invisible}}-ly.
 #'
 #' @name directory_configuration_file
 #'
@@ -41,7 +41,7 @@ write_directory_config <- function (main     = ".",
             ) 
 
   write_yaml(config, file = file.path(main, settings$files$directory_config))
-  config
+  invisible(config)
 
 }
 
@@ -65,7 +65,7 @@ read_directory_config <- function (main     = ".",
 
   }
 
-  config
+  invisible(config)
 
 }
 

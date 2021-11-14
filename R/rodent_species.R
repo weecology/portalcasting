@@ -174,6 +174,43 @@ evalplot_species <- function (species = NULL,
 }
 
 
+#' @title Conform NA entries to "NA" entries
+#'
+#' @description Given the species abbreviation NA, when data are read in, there can be an \code{NA} when it should be an \code{"NA"}. This function conforms the entries to be proper character values. 
+#'
+#' @param dfv Either [1] a \code{data.frame} containing \code{colname} as a column with \code{NA}s that need to be conformed to \code{"NA"}s or [2] a vector with \code{NA}s that need to be conformed to \code{"NA"}s.
+#'
+#' @param colname \code{character} value of the column name in \code{tab} to conform the \code{NA}s to \code{"NA"}s.
+#'
+#' @return \code{x} with any \code{NA} in \code{colname} replaced with \code{"NA"}.
+#'
+#' @examples
+#'  na_conformer(c("a", "b", NA, "c"))
+#'
+#' @export
+#'
+na_conformer <- function(dfv, colname = "species"){
+  
+  if (is.vector(dfv)) {
+
+    naentries <- which(is.na(dfv))
+    dfv[naentries] <- "NA"
+
+  } else if (is.data.frame(dfv)) {
+
+    nasppname <- which(is.na(dfv[ , colname]))
+
+    if (length(nasppname) > 0) {
+
+      dfv[nasppname, colname] <- "NA"
+
+    }
+
+  } 
+
+  dfv
+
+}
 
 
 

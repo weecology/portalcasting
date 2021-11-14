@@ -131,16 +131,19 @@ fill_resources <- function (main     = ".",
                         from_zenodo = settings$resources$PortalData$source == "zenodo",
                         quiet       = quiet)
 
-  download_archive(main = main, 
+  download_archive(main    = main, 
                    version = settings$resources$portalPredictions$version,
-                   source = settings$resources$portalPredictions$source,
-                   quiet = quiet,
+                   source  = settings$resources$portalPredictions$source,
+                   pause   = settings$unzip_pause,
+                   timeout = settings$download_timeout,
+                   quiet   = quiet,
                    verbose = verbose)
 
   download_climate_forecasts(main    = main, 
                              source  = settings$resources$climate_forecast$source,  
                              version = settings$resources$climate_forecast$version, 
                              data    = settings$resources$climate_forecast$data, 
+                             timeout = settings$download_timeout,
                              quiet   = quiet,
                              verbose = verbose)
 

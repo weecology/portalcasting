@@ -25,7 +25,7 @@ download_climate_forecasts(
 
 \item{verbose}{\code{logical} indicator if detailed messages should be printed.}
 
-\item{timeout}{\code{numeric} value passed to \code{\link[base]{options}} to dictate the download timeout limit.}
+\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.

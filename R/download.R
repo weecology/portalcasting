@@ -8,13 +8,15 @@
 #'
 #' @param source \code{character} indicator of the source for the download. Either \code{"github"} (defualt) or \code{"github"}.
 #'
-#' @param timeout \code{numeric} value passed to \code{\link[base]{options}} to dictate the download timeout limit.
+#' @param pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment. 
+#'
+#' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be printed.
 #'
-#' @note There are two calls to \code{link[base]{Sys.sleep}} for 30 seconds each to allow for the file unzipping, copying, and such to catch up.
+#' @note There are two calls to \code{link[base]{Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -25,6 +27,7 @@ download_archive <- function(main    = ".",
                              source  = "github",
                              quiet   = FALSE,
                              verbose = FALSE,
+                             pause   = 30,
                              timeout = getOption("timeout")) {
 
   return_if_null(version)
@@ -35,24 +38,26 @@ download_archive <- function(main    = ".",
 
   if (tolower(source) == "zenodo") {
 
-    base_url <- "https://zenodo.org/api/records/" 
+    base_url <-  
 
-    got <- GET(base_url, query = list(q = "conceptrecid:833438",
-                                      size = 9999, 
-                                      all_versions = "true"))
+    got <- GET(url   = "https://zenodo.org/api/records/", 
+               query = list(q            = "conceptrecid:833438",
+                            size         = 9999, 
+                            all_versions = "true"))
 
-    stop_for_status(got, task = paste0("locate Zenodo concept record"))
+    stop_for_status(x    = got,
+                    task = paste0("locate Zenodo concept record"))
 
-    contents <- content(got)    
+    contents <- content(x = got)    
 
-    metadata <- lapply(FUN = getElement, 
-                       X = contents, 
+    metadata <- lapply(FUN  = getElement, 
+                       X    = contents, 
                        name = "metadata")
-    versions <- sapply(FUN = getElement, 
-                       X = metadata, 
+    versions <- sapply(FUN  = getElement, 
+                       X    = metadata, 
                        name = "version")
-    pub_date <- sapply(FUN = getElement, 
-                       X = metadata, 
+    pub_date <- sapply(FUN  = getElement, 
+                       X    = metadata, 
                        name = "publication_date")
 
     selected <- ifelse(version == "latest",
@@ -71,14 +76,13 @@ download_archive <- function(main    = ".",
 
   } else if (tolower(source) == "github") {
 
-    base_url <- "https://api.github.com/repos/weecology/portalPredictions/" 
     url <- ifelse(version == "latest", 
-                  paste0(base_url, "releases/latest"),
-                  paste0(base_url, "releases/tags/", version))
+                  "https://api.github.com/repos/weecology/portalPredictions/releases/latest",
+                  paste0("https://api.github.com/repos/weecology/portalPredictions/releases/tags/", version))
 
-    got <- GET(url)
+    got <- GET(url = url)
 
-    stop_for_status(got, 
+    stop_for_status(x    = got, 
                     task = paste0("locate version `", version, "` on GitHub"))
 
     zipball_url <- content(got)$zipball_url      
@@ -93,33 +97,36 @@ download_archive <- function(main    = ".",
   
   messageq("Downloading archive version `", version, "`...", quiet = quiet)
 
-  temp <- file.path(tempdir(), "portalPredictions.zip")
+  temp  <- file.path(tempdir(), "portalPredictions.zip")
   final <- file.path(main, "resources", "portalPredictions")
 
   result <- tryCatch(
-              download.file(zipball_url, temp, quiet = !verbose, mode = "wb"),
+              download.file(url      = zipball_url, 
+                            destfile = temp, 
+                            quiet    = !verbose, 
+                            mode     = "wb"),
               error = function(x){NA})
 
   if (is.na(result)) {
 
     warning("Archive could not be downloaded", call. = FALSE)
-    return(NULL)
+    return(invisible())
 
   }
 
 
-
   if (file.exists(final)) {
 
-    old_files <- list.files(final,
+    old_files <- list.files(path         = final,
                             full.names   = TRUE,
                             all.files    = TRUE,
                             recursive    = TRUE,
                             include.dirs = FALSE)
 
-    file.remove(normalizePath(old_files))
+    file.remove(old_files)
 
-    unlink(final, recursive = TRUE)
+    unlink(x         = final, 
+           recursive = TRUE)
 
   }
 
@@ -129,7 +136,7 @@ download_archive <- function(main    = ".",
 
   unzip(temp, exdir = file.path(main, "resources"))
 
-  Sys.sleep(30)
+  Sys.sleep(pause)
 
   dir.create(final)
 
@@ -137,7 +144,7 @@ download_archive <- function(main    = ".",
             final, 
             recursive = TRUE)
 
-  Sys.sleep(30)
+  Sys.sleep(pause)
 
   unlink(temp_unzip, recursive = TRUE)
   file.remove(temp)
@@ -158,7 +165,7 @@ download_archive <- function(main    = ".",
 #'
 #' @param version \code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).
 #'
-#' @param timeout \code{numeric} value passed to \code{\link[base]{options}} to dictate the download timeout limit.
+#' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'

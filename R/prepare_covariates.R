@@ -140,6 +140,7 @@ prepare_forecast_covariates <- function (main      = ".",
 
     # removed for the time being
     stop(" retrieval of pre-existing covariate data not presently available!")
+
   }
 
   out$source      <- "forecast" 

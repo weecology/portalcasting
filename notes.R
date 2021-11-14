@@ -3,9 +3,9 @@ devtools::document()
 devtools::load_all()
 
 
-main <- "./testing"
+main <- "./testinga"
 
-setup_dir(main, portalPredictions_version = "latest")
+setup_production(main)
 
 
 

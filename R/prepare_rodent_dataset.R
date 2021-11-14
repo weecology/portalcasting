@@ -1,6 +1,7 @@
 #' @title Prepare Rodents Data Tables for Forecasting
 #'
-#' @description Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
+#' @description Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
+#'              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
 #'              Ready for implementation via \code{\link{prepare_rodents}}.
 #'
 #' @param name \code{character} name of the data set.
@@ -132,7 +133,7 @@ prepare_rodent_dataset <- function(name        = NULL,
 
   if (interpolate) {
 
-    for(i in 1:nspecies) {
+    for (i in 1:nspecies) {
 
       col_in         <- which(colnames(out) == species[i])
       out[ , col_in] <- na.interp(out[ , col_in])

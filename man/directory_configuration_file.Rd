@@ -26,7 +26,7 @@ read_directory_config(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
-\code{list} of directory configurations.
+\code{list} of directory configurations, \code{\link[base]{invisible}}-ly.
 }
 \description{
 The directory configuration file is a special file within the portalcasting directory setup and has its own set of functions. \cr \cr
