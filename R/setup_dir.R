@@ -16,14 +16,7 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).
 #'
-#' @return \code{NULL}
-#'
-#' @examples
-#' \donttest{
-#'  setup_dir()
-#'  setup_sandbox()
-#'  setup_production()
-#' }
+#' @return The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
