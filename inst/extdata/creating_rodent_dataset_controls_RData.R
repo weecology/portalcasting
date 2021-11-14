@@ -12,8 +12,7 @@
 #
 #  New datasets can be made available within the package by adding additional entries to the yaml file 
 # 
-#  To add a dataset to the "prefab" set, include prefab = "yes" within the metadata element
-#           
+        
 
 # dependencies: yaml
 

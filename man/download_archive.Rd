@@ -30,7 +30,7 @@ download_archive(
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/raw} sub.
+Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/resources} sub.
 }
 \note{
 There are two calls to \code{link[base]{Sys.sleep}} for 30 seconds each to allow for the file unzipping, copying, and such to catch up.

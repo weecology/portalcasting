@@ -5,10 +5,15 @@ devtools::load_all()
 
 main <- "./testing"
 
+setup_dir(main, portalPredictions_version = "latest")
+
+
+
+
 create_dir(main)
 fill_dir(main)
 
-setup_dir(main, portalPredictions_version = "latest")
+
 portalcast(main, models = "ESSS")
 
 plot_cast_ts(main = main, data_set = "controls")

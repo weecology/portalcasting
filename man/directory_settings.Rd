@@ -11,7 +11,7 @@ directory_settings(
   historical_covariates_file = "historical_covariates.csv",
   forecast_covariates_file = "forecast_covariates.csv",
   metadata_file = "metadata.yaml",
-  subdirectories = c("casts", "fits", "models", "raw", "data", "tmp"),
+  subdirectories = c("output", "models", "resources", "data", "tmp"),
   PortalData = list(source = "github", version = "latest"),
   portalPredictions = list(source = "github", version = NULL),
   climate_forecast = list(source = "NMME", version = Sys.Date(), data = c("tasmin",
@@ -30,7 +30,7 @@ directory_settings(
 
 \item{metadata_file}{\code{character} name of the file for saving the forecast metadata.}
 
-\item{subdirectories}{\code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}.}
+\item{subdirectories}{\code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{resources}, \code{data}, \code{models}, and \code{output}.}
 
 \item{PortalData}{\code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. \cr \cr
 See \code{\link[portalr]{download_observations}}.}

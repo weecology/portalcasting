@@ -27,14 +27,7 @@ prefab_rodent_dataset_controls <- function () {
 
   envr <- environment()
   data(rodent_dataset_controls, envir = envr)
-
-  prefabs <- names(which(mapply(FUN    = getElement,
-                                object = mapply(FUN      = getElement, 
-                                                object   = rodent_dataset_controls,
-                                                name     = "metadata",
-                                                SIMPLIFY = FALSE),
-                                 name   = "prefab")))
-  rodent_dataset_controls[prefabs]
+  rodent_dataset_controls
 
 }
 
@@ -44,14 +37,6 @@ prefab_rodent_dataset_controls <- function () {
 #'
 prefab_rodent_datasets <- function () {
 
-  envr <- environment()
-  data(rodent_dataset_controls, envir = envr)
-
-  names(which(mapply(FUN    = getElement,
-                     object = mapply(FUN      = getElement, 
-                                     object   = rodent_dataset_controls,
-                                     name     = "metadata",
-                                     SIMPLIFY = FALSE),
-                     name   = "prefab")))  
+  names(prefab_rodent_dataset_controls())  
 
 }

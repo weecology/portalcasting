@@ -1,3 +1,6 @@
+
+
+
 #' @title Prepare Rodents Data for the Portalcasting Repository
 #'
 #' @description Create specified \code{datasets} using their associated function and arguments.
@@ -27,32 +30,28 @@ prepare_rodents <- function (main     = ".",
                              quiet    = FALSE,
                              verbose  = FALSE) {
 
-
   return_if_null(datasets)
 
   envr <- environment()
-  data(rodent_datasets, envir = envr)
+  data(rodent_dataset_controls, envir = envr)
   
+  datasets_list <- rodent_dataset_controls[datasets]
 
-  datasets_list <- rodent_datasets[datasets]
+  messageq("  - rodents", quiet = quiet)
+ 
 
+  out <- named_null_list(element_names = datasets)
 
+  for (i in 1:length(datasets_list)) {
 
-  messageq(" - rodents datasets", quiet = quiet)
-
-  ndatasets <- length(datasets_list)
-  out <- vector("list", ndatasets)
-  for (i in 1:ndatasets) {
-
-    args <- update_list(orig_list = datasets_list[[i]]$args, 
-                        main      = main, 
-                        quiet     = quiet, 
-                        verbose   = verbose)
-
-    out[[i]] <- do.call(datasets_list[[i]]$fun, args)
+    out[[i]] <- do.call(what = datasets_list[[i]]$fun, 
+                        args = update_list(list      = datasets_list[[i]]$args, 
+                                           main      = main, 
+                                           quiet     = quiet, 
+                                           verbose   = verbose))
   
   }
-  names(out) <- datasets
+
   invisible(out)
 
 }

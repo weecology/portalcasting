@@ -2,7 +2,6 @@ all:
   metadata:
     name: all
     description: classic dataset, all plots combined
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: all
@@ -48,7 +47,6 @@ all_interp:
   metadata:
     name: all_interp
     description: classic dataset, all plots combined, interpolated for models that cannot have missing data
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: all_interp
@@ -94,7 +92,6 @@ controls:
   metadata: 
     name: controls
     description: classic dataset, control plots combined
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: controls
@@ -140,7 +137,6 @@ controls_interp:
   metadata: 
     name: controls_interp
     description: classic dataset, control plots combined, interpolated for models that cannot have missing data
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: controls_interp
@@ -186,7 +182,6 @@ exclosures:
   metadata: 
     name: exclosures
     description: classic dataset, exclosure plots combined
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: exclosures
@@ -232,7 +227,6 @@ exclosures_interp:
   metadata: 
     name: exclosures_interp
     description: classic dataset, exclosure plots combined, interpolated for models that cannot have missing data
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: exclosures_interp
@@ -278,7 +272,6 @@ dm_controls:
   metadata: 
     name: dm_controls
     description: DM only, control plots combined
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: dm_controls
@@ -304,7 +297,6 @@ dm_controls_interp:
   metadata:
     name: dm_controls
     description: DM only, control plots combined, interpolated for models that cannot have missing data
-    prefab: yes
   fun: prepare_rodent_dataset
   args:
     name: dm_controls_interp

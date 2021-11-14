@@ -33,14 +33,16 @@ setup_dir <- function (main     = ".",
              settings = settings,
              quiet    = quiet)
 
+  config <- write_directory_config(main     = main, 
+                                   settings = settings, 
+                                   quiet    = quiet)
+
   fill_dir(main     = main,
            models   = models,
            datasets = datasets,
            settings = settings,
            quiet    = quiet,
            verbose  = verbose)
-
-  config <- write_directory_config(main = main, settings = settings, quiet = quiet)
 
   setup_completion_message(quiet = quiet)
 
@@ -57,7 +59,7 @@ setup_dir <- function (main     = ".",
 setup_production <- function (main     = ".",
                               models   = prefab_models(), 
                               datasets = prefab_rodent_datasets(),
-                              settings = directory_settings(portalPredictions = list(source = "gitub", version = "latest")), 
+                              settings = directory_settings(portalPredictions = list(source = "github", version = "latest")), 
                               quiet    = FALSE, 
                               verbose  = FALSE){
 

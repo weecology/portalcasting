@@ -4,9 +4,8 @@
 \alias{fill_directory}
 \alias{fill_dir}
 \alias{fill_data}
-\alias{fill_raw}
-\alias{fill_casts}
-\alias{fill_fits}
+\alias{fill_resources}
+\alias{fill_output}
 \alias{fill_models}
 \title{Fill a Portalcasting Directory with Basic Components}
 \usage{
@@ -32,16 +31,14 @@ fill_data(
   verbose = FALSE
 )
 
-fill_raw(
+fill_resources(
   main = ".",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
 
-fill_casts(main = ".", quiet = FALSE, verbose = FALSE)
-
-fill_fits(main = ".", quiet = FALSE, verbose = FALSE)
+fill_output(main = ".", quiet = FALSE, verbose = FALSE)
 
 fill_models(
   main = ".",
@@ -71,5 +68,5 @@ fill_models(
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Fill the directory with components including (optionally) the raw data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
+Fill the directory with components including (optionally) the resources data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
 }

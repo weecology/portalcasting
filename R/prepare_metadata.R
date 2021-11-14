@@ -49,7 +49,7 @@ prepare_metadata <- function (main      = ".",
                                 settings = settings)
 
 
-  messageq(" - metadata file", quiet = quiet)
+  messageq("  - metadata file", quiet = quiet)
 
 
   # COMMENT TO ADD TO DOCUMENTATION
@@ -77,8 +77,7 @@ prepare_metadata <- function (main      = ".",
   out <- list(
            models                  = models, 
            datasets                = datasets, 
-           directory_configuration = config,
-           controls_rodents        = prefab_rodent_datasets_list)
+           directory_configuration = config)
 
   write_data(dfl       = out, 
              main      = main, 

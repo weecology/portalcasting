@@ -1,6 +1,6 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
-#' @description Fill the directory with components including (optionally) the raw data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
+#' @description Fill the directory with components including (optionally) the resources data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
 #'             
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -39,18 +39,14 @@ fill_dir <- function (main      = ".",
 
   messageq("Filling directory with content: \n", quiet = quiet)
 
-  fill_raw(main     = main, 
-           settings = settings, 
-           quiet    = quiet, 
-           verbose  = verbose)
+  fill_resources(main     = main, 
+                 settings = settings, 
+                 quiet    = quiet, 
+                 verbose  = verbose)
 
-  fill_casts(main    = main, 
-             quiet   = quiet, 
-             verbose = verbose)
-
-  fill_fits(main     = main, 
-            quiet    = quiet, 
-            verbose  = verbose)
+  fill_output(main     = main, 
+              quiet    = quiet, 
+              verbose  = verbose)
 
   fill_models(main    = main, 
               models  = models, 
@@ -66,7 +62,7 @@ fill_dir <- function (main      = ".",
             quiet     = quiet, 
             verbose   = verbose)
 
-  messageq("\n\nDirectory filling complete.", quiet = quiet)
+  messageq("\nDirectory filling complete.", quiet = quiet)
 
   invisible()
 
@@ -86,9 +82,7 @@ fill_data <- function (main      = ".",
                        quiet     = FALSE, 
                        verbose   = FALSE) {
 
-
-
-  messageq("Writing data files ... \n", quiet = quiet)
+  messageq(" Writing data files ... ", quiet = quiet)
 
   prepare_rodents(main     = main,
                   datasets = datasets,
@@ -117,10 +111,7 @@ fill_data <- function (main      = ".",
                    quiet     = quiet, 
                    verbose   = verbose)
 
-  messageq("\n  ... data preparing complete.", quiet = quiet)
-
-
-  invisible()
+  messageq("  ... data preparing complete.", quiet = quiet)
 
 }
 
@@ -128,14 +119,14 @@ fill_data <- function (main      = ".",
 #'
 #' @export
 #'
-fill_raw <- function (main     = ".",
-                      settings = directory_settings(),
-                      quiet    = FALSE,
-                      verbose  = FALSE) {
+fill_resources <- function (main     = ".",
+                            settings = directory_settings(),
+                            quiet    = FALSE,
+                            verbose  = FALSE) {
 
-  messageq("Downloading resources... \n ", quiet = quiet)
+  messageq(" Downloading resources ... ", quiet = quiet)
 
-  download_observations(path        = file.path(main, "raw"), 
+  download_observations(path        = file.path(main, "resources"), 
                         version     = settings$resources$PortalData$version,
                         from_zenodo = settings$resources$PortalData$source == "zenodo",
                         quiet       = quiet)
@@ -153,13 +144,7 @@ fill_raw <- function (main     = ".",
                              quiet   = quiet,
                              verbose = verbose)
 
-  update_directory_config(main     = main,
-                          settings = settings,
-                          quiet    = quiet)
-
-  messageq("\n  ... downloads complete.", quiet = quiet)
-  
-  invisible()
+  messageq("  ... downloads complete. ", quiet = quiet)
 
 }
 
@@ -167,20 +152,16 @@ fill_raw <- function (main     = ".",
 #'
 #' @export
 #'
-fill_casts <- function (main    = ".", 
-                        quiet   = FALSE, 
-                        verbose = FALSE) { 
+fill_output <- function (main    = ".", 
+                         quiet   = FALSE, 
+                         verbose = FALSE) { 
 
+  output_folders <- c("casts", "fits", "output", "predictions")
 
-  casts <- file.path(main, "raw", "portalPredictions", "casts")
-  files <- list.files(casts, full.names = TRUE)
-
-  if (length(files) == 0) {
-
-    casts <- file.path(main, "raw", "portalPredictions", "predictions")
-    files <- list.files(casts, full.names = TRUE)    
-
-  }  
+  files <- unlist(mapply(FUN        = list.files,
+                         path       = mapply(FUN = file.path, 
+                                                   main, "resources", "portalPredictions", output_folders),
+                         full.names = TRUE))
 
   if (length(files) == 0) {
 
@@ -188,69 +169,25 @@ fill_casts <- function (main    = ".",
 
   }
 
-  messageq("Unpacking and moving cast files ... \n ", quiet = quiet)
+  messageq(paste0(" Located ", length(files), " output files ... \n  ... moving ..."), quiet = quiet)
 
-  dest <- file.path(main, "casts")
- 
-  fc <- file.copy(from = files, to = dest, recursive = TRUE)
+  copied <- file.copy(from      = files, 
+                      to        = file.path(main, "output"), 
+                      recursive = TRUE)
 
-  messageq(paste0(" ... ", sum(fc), " of ", length(fc), " cast files moved"),
-           quiet = quiet)
-
-  messageq(paste(ifelse(sum(fc) > 0, 
-                   paste("  moved:", basename(files[fc]), collapse = "\n   "),
+  messageq(paste(ifelse(sum(copied) > 0, 
+                   paste("  moved:", basename(files[copied]), collapse = "\n   "),
                    ""),
-                 ifelse(sum(!fc) > 0, 
-                   paste("  not moved:", basename(files[!fc]), collapse = "\n   "),
+                 ifelse(sum(!copied) > 0, 
+                   paste("  not moved:", basename(files[!copied]), collapse = "\n   "),
                    ""),
                  collapse = "\n"),
            quiet = !verbose)
 
-  invisible()
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
 
 }
 
-
-#' @rdname fill_directory
-#'
-#' @export
-#'
-fill_fits <- function (main    = ".", 
-                       quiet   = FALSE, 
-                       verbose = FALSE) { 
-
-  fits <- file.path(main, "raw", "portalPredictions", "fits")
-  files <- list.files(fits, full.names = TRUE)
-  files[grepl("README", files)] <- NA
-  files <- na.omit(files)
-
-  if (length(files) == 0) {
-
-    return(invisible())
-
-  }
-
-  messageq("Unpacking and moving fit files ... \n ", quiet = quiet)
-
-  dest <- file.path(main, "fits")
- 
-  fc <- file.copy(from = files, to = dest, recursive = TRUE)
-
-  messageq(paste0(" ... ", sum(fc), " of ", length(fc), " fit files moved"),
-           quiet = quiet)
-
-  messageq(paste(ifelse(sum(fc) > 0, 
-                   paste("  moved:", basename(files[fc]), collapse = "\n   "),
-                   ""),
-                 ifelse(sum(!fc) > 0, 
-                   paste("  not moved:", basename(files[!fc]), collapse = "\n   "),
-                   ""),
-                 collapse = "\n"),
-           quiet = !verbose)
-
-  invisible()
-
-}
 
 
 
@@ -265,16 +202,15 @@ fill_models <- function (main    = ".",
 
   return_if_null(models)
 
-  messageq("Writing model scripts", quiet = quiet)
-  nmodels <- length(models)
+  messageq(" Writing model scripts ... ", quiet = quiet)
+  
 
-  for (i in 1:nmodels) {
-    write_model(main = main, 
-                model = models[i], 
-                quiet = !verbose)
-  } 
+  mapply(FUN   = write_model,
+         main  = main, 
+         model = models, 
+         quiet = !verbose)
 
-  invisible()
+  messageq("  ... done. ", quiet = quiet)
 
 }
 

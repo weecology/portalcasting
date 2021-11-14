@@ -31,5 +31,5 @@ download_climate_forecasts(
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/raw} sub.
+Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/resources} sub.
 }

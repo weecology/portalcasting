@@ -84,9 +84,9 @@ prepare_rodent_dataset <- function(name        = NULL,
 
   return_if_null(name)
 
-  messageq("   - ", name, quiet = quiet)
+  messageq("    - ", name, quiet = quiet)
 
-  rodents_table <- summarize_rodent_data(path       = file.path(main, "raw"), 
+  rodents_table <- summarize_rodent_data(path       = file.path(main, "resources"), 
                                          clean      = clean, 
                                          level      = level, 
                                          type       = type, 

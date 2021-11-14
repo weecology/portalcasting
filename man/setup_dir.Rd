@@ -19,7 +19,7 @@ setup_production(
   main = ".",
   models = prefab_models(),
   datasets = prefab_rodent_datasets(),
-  settings = directory_settings(portalPredictions = list(source = "gitub", version =
+  settings = directory_settings(portalPredictions = list(source = "github", version =
     "latest")),
   quiet = FALSE,
   verbose = FALSE

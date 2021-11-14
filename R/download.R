@@ -1,6 +1,6 @@
 #' @title Download the Portal Predictions Repository Archive
 #'
-#' @description Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/raw} sub.
+#' @description Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/resources} sub.
 #'
 #' @param main \code{character} value defining the main component of the portalcasting directory tree. 
 #'
@@ -94,7 +94,7 @@ download_archive <- function(main    = ".",
   messageq("Downloading archive version `", version, "`...", quiet = quiet)
 
   temp <- file.path(tempdir(), "portalPredictions.zip")
-  final <- file.path(main, "raw", "portalPredictions")
+  final <- file.path(main, "resources", "portalPredictions")
 
   result <- tryCatch(
               download.file(zipball_url, temp, quiet = !verbose, mode = "wb"),
@@ -125,9 +125,9 @@ download_archive <- function(main    = ".",
 
   folder_name <- unzip(temp, list = TRUE)$Name[1]
 
-  temp_unzip <- file.path(main, "raw", folder_name)
+  temp_unzip <- file.path(main, "resources", folder_name)
 
-  unzip(temp, exdir = file.path(main, "raw"))
+  unzip(temp, exdir = file.path(main, "resources"))
 
   Sys.sleep(30)
 
@@ -150,7 +150,7 @@ download_archive <- function(main    = ".",
 
 #' @title Download Climate Forecasts
 #'
-#' @description Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/raw} sub.
+#' @description Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/resources} sub.
 #'
 #' @param main \code{character} value defining the main component of the portalcasting directory tree. 
 #'
@@ -184,7 +184,7 @@ download_climate_forecasts <- function (main    = ".",
 
   if (tolower(source) == "nmme") {
 
-    dir.create(path         = file.path(main, "raw", source),
+    dir.create(path         = file.path(main, "resources", source),
                showWarnings = FALSE)
 
     messageq("Downloading climate forcasts version `", version, "`...", quiet = quiet)
@@ -192,7 +192,7 @@ download_climate_forecasts <- function (main    = ".",
 
     mapply(FUN      = download.file,
            url      = NMME_urls(start = version, data = data),
-           destfile = file.path(main, "raw", source, paste0(data, ".csv")), 
+           destfile = file.path(main, "resources", source, paste0(data, ".csv")), 
            mode     = "wb",
            quiet    = !verbose)
 

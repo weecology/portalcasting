@@ -1,3 +1,73 @@
+#' @title Update a list's elements
+#'
+#' @description Update a list with new values for elements
+#'
+#' @param list \code{list} to be updated with \code{...}. 
+#'
+#' @param ... Named elements to update in \code{list}
+#'
+#' @return Updated \code{list}.
+#'
+#' @examples
+#'  orig_list <- list(a = 1, b = 3, c = 4)
+#'  update_list(orig_list)
+#'  update_list(orig_list, a = "a")
+#'  update_list(orig_list, a = 10, b = NULL)
+#'
+#' @export
+#'
+update_list <- function (list = list(),
+                                ...) {
+
+  if (!is.list(list)) {
+
+    stop("`list` must be a list")
+
+  } 
+
+  update_elems <- list(...)
+
+  nupdate_elems <- length(update_elems)
+  norig_elems   <- length(list)
+
+  updated_list <- named_null_list(element_names = names(list))
+
+  if (norig_elems > 0) {
+
+    for (i in 1:norig_elems) {
+
+      if (!is.null(list[[i]])) {
+
+        updated_list[[i]] <- list[[i]]
+
+      }
+
+    }
+
+  }
+
+  if (nupdate_elems > 0) {
+
+    names_update_elems <- names(update_elems)
+
+    for (i in 1:nupdate_elems) {
+
+      if (!is.null(update_elems[[i]])) {
+
+        updated_list[[names_update_elems[i]]] <- update_elems[[i]]
+
+      }
+
+    }
+
+  }
+
+  updated_list
+
+}
+
+
+
 #' @title Argument matching with defaults
 #'
 #' @description Expansion of \code{\link[base]{match.call}} to include
@@ -100,50 +170,6 @@ error_if_deep <- function(lev){
 
 
 
-#' @title Update a list's elements
-#'
-#' @description Update a list with new values for elements
-#'
-#' @param orig_list \code{list} to be updated with \code{...}. 
-#'
-#' @param ... Named elements to update in \code{orig_list}
-#'
-#' @return Updated \code{list}.
-#'
-#' @examples
-#'  orig_list <- list(a = 1, b = 3, c = 4)
-#'  update_list(orig_list)
-#'  update_list(orig_list, a = "a")
-#'  update_list(orig_list, a = 10, b = NULL)
-#'
-#' @export
-#'
-update_list <- function(orig_list = list(), ...){
-  if(!is.list(orig_list)){
-    stop("orig_list must be a list", call. = FALSE)
-  } 
-  update_elems <- list(...)
-  nupdate_elems <- length(update_elems)
-  norig_elems <- length(orig_list)
-  update_list <- vector("list", length = norig_elems)
-  names(update_list) <- names(orig_list)
-  if(norig_elems > 0){
-    for(i in 1:norig_elems){
-      if(!is.null(orig_list[[i]])){
-        update_list[[i]] <- orig_list[[i]]
-      }
-    }
-  }
-  if(nupdate_elems > 0){
-    names_update_elems <- names(update_elems)
-    for(i in 1:nupdate_elems){
-      if(!is.null(update_elems[[i]])){
-        update_list[[names_update_elems[i]]] <- update_elems[[i]]
-      }
-    }
-  }
-  update_list
-}
 
 
 
