@@ -1,8 +1,4 @@
 
-# to update the in-package version
-rodent_dataset_controls <- read_yaml("./inst/extdata/rodent_dataset_controls.yaml")
-save(rodent_dataset_controls = rodent_dataset_controls, file = "data/rodent_dataset_controls.RData")
-
 devtools::document()
 devtools::load_all()
 

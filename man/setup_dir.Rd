@@ -48,18 +48,10 @@ setup_sandbox(
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
-\code{NULL}
+The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 }
 \description{
 Combines \code{\link{create_dir}} and \code{\link{fill_dir}} to create a ready-to-run (via \code{\link{portalcast}}) directory where indicated. \cr \cr
              \code{setup_production} creates a standard production directory. \cr \cr
              \code{setup_sandbox} creates a sandboxing directory. \cr \cr
-}
-\examples{
-\donttest{
- setup_dir()
- setup_sandbox()
- setup_production()
-}
-
 }
