@@ -47,7 +47,11 @@ setup_dir <- function (main     = ".",
            quiet    = quiet,
            verbose  = verbose)
 
+  config <- write_directory_config(main = main, settings = settings, quiet = quiet)
+
   setup_completion_message(quiet = quiet)
+
+  invisible(config)
 
 }
 

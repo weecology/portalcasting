@@ -1,202 +1,57 @@
+#' @title Rodent Dataset List
+#'
+#' @description \code{list} of the rodent datasets available for use via \code{\link{prepare_rodents}}. 
+#'
+#' @details The currently prefabricated datasets include \code{"all"}, \code{"all_interp"}, \code{"controls"}, \code{"controls_interp"}, \code{"exclosures"}, \code{"exclosures_interp"}, \code{"dm_controls"}, and \code{"dm_controls_interp"}. 
+#'
+#' @format \code{list} of control \code{list}s, each corresponding to a dataset. 
+#'
+"rodent_dataset_controls"
 
+#' @title Prefabricated Rodent Datasets
+#'
+#' @description Extract the prefabricated datasets from the \code{\link{rodent_datasets}} data file. The currently prefabricated datasets include \code{"all"}, \code{"all_interp"}, \code{"controls"}, \code{"controls_interp"}, \code{"exclosures"}, \code{"exclosures_interp"}, \code{"dm_controls"}, and \code{"dm_controls_interp"}. 
+#'             
+#' @return \code{prefab_rodent_datasets_controls}: \code{list} of the data set controls. \cr \cr
+#'         \code{prefab_rodent_datasets}: \code{character} names of the data sets.
+#'
+#' @name prefabricated_rodent_datasets
+#'
+NULL
 
-prefab_rodent_datasets_list <- function(){
-  list(
+#' @rdname prefabricated_rodent_datasets
+#'
+#' @export
+#'
+prefab_rodent_dataset_controls <- function () {
 
-    all = list(
+  envr <- environment()
+  data(rodent_dataset_controls, envir = envr)
 
-            metadata = list(
-                         name        = "all",
-                         description = "classic dataset, all plots combined"),
+  prefabs <- names(which(mapply(FUN    = getElement,
+                                object = mapply(FUN      = getElement, 
+                                                object   = rodent_dataset_controls,
+                                                name     = "metadata",
+                                                SIMPLIFY = FALSE),
+                                 name   = "prefab")))
+  rodent_dataset_controls[prefabs]
 
-            fun      = prepare_rodent_dataset,
+}
 
-            args     = list(
-                         name        = "all",
-                         clean       = FALSE,
-                         level       = "Site",
-                         type        = "Rodents",
-                         plots       = "all",
-                         treatment   = NULL,
-                         unknowns    = FALSE,
-                         shape       = "crosstab",
-                         time        = "newmoon",
-                         output      = "abundance",
-                         fillweight  = FALSE,
-                         na_drop     = FALSE,
-                         zero_drop   = FALSE,
-                         min_traps   = 1,
-                         min_plots   = 24,
-                         species     = base_species(),
-                         total       = TRUE,
-                         effort      = TRUE,
-                         interpolate = FALSE)),
+#' @rdname prefabricated_rodent_datasets
+#'
+#' @export
+#'
+prefab_rodent_datasets <- function () {
 
-    all_interp = list(
+  envr <- environment()
+  data(rodent_dataset_controls, envir = envr)
 
+  names(which(mapply(FUN    = getElement,
+                     object = mapply(FUN      = getElement, 
+                                     object   = rodent_dataset_controls,
+                                     name     = "metadata",
+                                     SIMPLIFY = FALSE),
+                     name   = "prefab")))  
 
-            metadata = list(
-                         name        = "all_interp",
-                         description = "classic dataset, all plots combined, interpolated for models that cannot have missing data"),
-
-            fun      = prepare_rodent_dataset,
-
-            args     = list(
-                         name        = "all_interp",
-                         clean       = FALSE,
-                         level       = "Site",
-                         type        = "Rodents",
-                         plots       = "all",
-                         treatment   = NULL,
-                         unknowns    = FALSE,
-                         shape       = "crosstab",
-                         time        = "newmoon",
-                         output      = "abundance",
-                         fillweight  = FALSE,
-                         na_drop     = FALSE,
-                         zero_drop   = FALSE,
-                         min_traps   = 1,
-                         min_plots   = 24,
-                         species     = base_species(),
-                         total       = TRUE,
-                         effort      = TRUE,
-                         interpolate = TRUE)),
-    controls = 
-         list(metadata = list(),
-              fun = prepare_rodent_dataset,
-              args = list(name = "controls",
-                          clean = FALSE,
-                          level = "Treatment",
-                          type = "Rodents",
-                          plots = "Longterm",
-                          treatment = "control",
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = base_species(),
-                          total = TRUE,
-                          effort = TRUE,
-                          interpolate = FALSE)),
-
-    controls_interp = 
-         list(metadata = list(),
-              fun = prepare_rodent_dataset,
-              args = list(name = "controls_interp",
-                          clean = FALSE,
-                          level = "Treatment",
-                          type = "Rodents",
-                          plots = "Longterm",
-                          treatment = "control",
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = base_species(),
-                          total = TRUE,
-                          effort = TRUE,
-                          interpolate = TRUE)),
-
-    exclosures = 
-         list(metadata = list(),
-              fun = prepare_rodent_dataset,
-              args = list(name = "exclosures",
-                          clean = FALSE,
-                          level = "Treatment",
-                          type = "Rodents",
-                          plots = "Longterm",
-                          treatment = "exclosure",
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = base_species(),
-                          total = TRUE,
-                          effort = TRUE,
-                          interpolate = FALSE)),
-
-    exclosures_interp = 
-         list(metadata = list(),
-              fun = prepare_rodent_dataset,
-              args = list(name = "exclosures_interp",
-                          clean = FALSE,
-                          level = "Treatment",
-                          type = "Rodents",
-                          plots = "Longterm",
-                          treatment = "exclosure",
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = base_species(),
-                          total = TRUE,
-                          effort = TRUE,
-                          interpolate = TRUE)),
-
-
-    dm_controls = 
-         list(metadata = list(),
-              fun = prepare_rodent_dataset,
-              args = list(name = "dm_controls",
-                          clean = FALSE,
-                          level = "Treatment",
-                          type = "Rodents",
-                          plots = "Longterm",
-                          treatment = "control",
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = "DM",
-                          total = FALSE,
-                          effort = TRUE,
-                          interpolate = FALSE)),
-
-    dm_controls_interp = 
-         list(metadata = list(),
-              fun = prepare_rodent_dataset,
-              args = list(name = "dm_controls_interp",
-                          clean = FALSE,
-                          level = "Treatment",
-                          type = "Rodents",
-                          plots = "Longterm",
-                          treatment = "control",
-                          unknowns = FALSE,
-                          shape = "crosstab",
-                          time = "newmoon",
-                          output = "abundance",
-                          fillweight = FALSE,
-                          na_drop = FALSE,
-                          zero_drop = FALSE,
-                          min_traps = 1,
-                          min_plots = 24,
-                          species = "DM",
-                          total = FALSE,
-                          effort = TRUE,
-                          interpolate = TRUE)))
 }

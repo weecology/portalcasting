@@ -20,19 +20,6 @@
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
-#' @examples
-#'  \donttest{
-#'
-#'   create_dir("./portalcasting")
-#'   fill_dir("./portalcasting")
-#'
-#'   create_dir("./pc")
-#'   fill_raw("./pc")
-#'   fill_casts("./pc")
-#'   fill_fits("./pc")
-#'   fill_models("./pc")
-#'  }
-#'
 #' @name fill_directory
 #'
 NULL
@@ -50,7 +37,7 @@ fill_dir <- function (main      = ".",
                       quiet     = FALSE, 
                       verbose   = FALSE) {
 
-  messageq("Filling directory with requested content", quiet = quiet)
+  messageq("Filling directory with content: \n", quiet = quiet)
 
   fill_raw(main     = main, 
            settings = settings, 
@@ -79,6 +66,8 @@ fill_dir <- function (main      = ".",
             quiet     = quiet, 
             verbose   = verbose)
 
+  messageq("\n\nDirectory filling complete.", quiet = quiet)
+
   invisible()
 
 }
@@ -88,7 +77,6 @@ fill_dir <- function (main      = ".",
 #'
 #' @export
 #'
-
 fill_data <- function (main      = ".",
                        models    = prefab_models(), 
                        datasets  = prefab_rodent_datasets(),
@@ -100,7 +88,7 @@ fill_data <- function (main      = ".",
 
 
 
-  messageq(" -Writing data files", quiet = quiet)
+  messageq("Writing data files ... \n", quiet = quiet)
 
   prepare_rodents(main     = main,
                   datasets = datasets,
@@ -128,6 +116,9 @@ fill_data <- function (main      = ".",
                    settings  = settings,
                    quiet     = quiet, 
                    verbose   = verbose)
+
+  messageq("\n  ... data preparing complete.", quiet = quiet)
+
 
   invisible()
 
@@ -176,9 +167,10 @@ fill_raw <- function (main     = ".",
 #'
 #' @export
 #'
-fill_casts <- function (main = ".", quiet = FALSE, verbose = FALSE) {
+fill_casts <- function (main    = ".", 
+                        quiet   = FALSE, 
+                        verbose = FALSE) { 
 
-  archive <- file.path(main, "raw", "portalPredictions")
 
   casts <- file.path(main, "raw", "portalPredictions", "casts")
   files <- list.files(casts, full.names = TRUE)
@@ -196,18 +188,20 @@ fill_casts <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 
   }
 
+  messageq("Unpacking and moving cast files ... \n ", quiet = quiet)
+
   dest <- file.path(main, "casts")
  
   fc <- file.copy(from = files, to = dest, recursive = TRUE)
 
-  messageq(paste0(sum(fc), " of ", length(fc), " cast files moved"),
+  messageq(paste0(" ... ", sum(fc), " of ", length(fc), " cast files moved"),
            quiet = quiet)
 
   messageq(paste(ifelse(sum(fc) > 0, 
-                   paste("moved:", basename(files[fc]), collapse = "\n"),
+                   paste("  moved:", basename(files[fc]), collapse = "\n   "),
                    ""),
                  ifelse(sum(!fc) > 0, 
-                   paste("not moved:", basename(files[!fc]), collapse = "\n"),
+                   paste("  not moved:", basename(files[!fc]), collapse = "\n   "),
                    ""),
                  collapse = "\n"),
            quiet = !verbose)
@@ -221,9 +215,9 @@ fill_casts <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 #'
 #' @export
 #'
-fill_fits <- function (main = ".", quiet = FALSE, verbose = FALSE) {
-
-  archive <- file.path(main, "raw", "portalPredictions")
+fill_fits <- function (main    = ".", 
+                       quiet   = FALSE, 
+                       verbose = FALSE) { 
 
   fits <- file.path(main, "raw", "portalPredictions", "fits")
   files <- list.files(fits, full.names = TRUE)
@@ -236,18 +230,20 @@ fill_fits <- function (main = ".", quiet = FALSE, verbose = FALSE) {
 
   }
 
+  messageq("Unpacking and moving fit files ... \n ", quiet = quiet)
+
   dest <- file.path(main, "fits")
  
   fc <- file.copy(from = files, to = dest, recursive = TRUE)
 
-  messageq(paste0(sum(fc), " of ", length(fc), " fit files moved"),
+  messageq(paste0(" ... ", sum(fc), " of ", length(fc), " fit files moved"),
            quiet = quiet)
 
   messageq(paste(ifelse(sum(fc) > 0, 
-                   paste("moved:", basename(files[fc]), collapse = "\n"),
+                   paste("  moved:", basename(files[fc]), collapse = "\n   "),
                    ""),
                  ifelse(sum(!fc) > 0, 
-                   paste("not moved:", basename(files[!fc]), collapse = "\n"),
+                   paste("  not moved:", basename(files[!fc]), collapse = "\n   "),
                    ""),
                  collapse = "\n"),
            quiet = !verbose)
@@ -269,7 +265,7 @@ fill_models <- function (main    = ".",
 
   return_if_null(models)
 
-  messageq(" -Writing model scripts", quiet = quiet)
+  messageq("Writing model scripts", quiet = quiet)
   nmodels <- length(models)
 
   for (i in 1:nmodels) {

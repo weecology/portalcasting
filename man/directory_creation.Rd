@@ -14,15 +14,8 @@ create_dir(main = ".", settings = directory_settings(), quiet = FALSE)
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
-The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
+\code{NULL} \code{\link[base]{invisible}}-ly.
 }
 \description{
 Instantiates the necessary folder structure for a forecasting directory and writes a YAML file that tracks the setup configurations.
-}
-\examples{
- \donttest{
-  create_dir()
-  create_dir(main = "./main_folder")
- }
-
 }

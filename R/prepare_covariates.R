@@ -28,7 +28,7 @@ prepare_covariates <- function (main     = ".",
                                 verbose  = FALSE) {
 
 
-  messageq("  -covariate data files", quiet = quiet)
+  messageq(" - covariate data files", quiet = quiet)
 
   historic_covariates <- prepare_historic_covariates(main     = main, 
                                                      settings = settings, 

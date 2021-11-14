@@ -53,8 +53,6 @@
 #'
 #' @param save \code{logical} indicator controlling if the output should be saved out.
 #'
-#' @param rodents_tab Rodents \code{data.frame} data table from \code{\link[portalr]{summarize_rodent_data}}.
-#'
 #' @return \code{data.frame} for the specified data set.
 #'
 #' @export
@@ -86,7 +84,7 @@ prepare_rodent_dataset <- function(name        = NULL,
 
   return_if_null(name)
 
-  messageq("   -", name, quiet = quiet)
+  messageq("   - ", name, quiet = quiet)
 
   rodents_table <- summarize_rodent_data(path       = file.path(main, "raw"), 
                                          clean      = clean, 
@@ -113,7 +111,7 @@ prepare_rodent_dataset <- function(name        = NULL,
   sp_col           <- colnames(rodents_table) %in% all_species()
   which_sp_col     <- which(sp_col)
   which_not_sp_col <- which(!sp_col)
-  sp_col_in        <- colnames(rodents_tab)[sp_col] %in% species
+  sp_col_in        <- colnames(rodents_table)[sp_col] %in% species
   cols_in          <- c(which_not_sp_col, which_sp_col[sp_col_in])
   out              <- rodents_table[ , cols_in, drop = FALSE] 
 

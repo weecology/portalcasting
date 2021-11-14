@@ -56,7 +56,7 @@ prepare_moons <- function (main      = ".",
 
   }
 
-  messageq("  -lunar data file", quiet = quiet)
+  messageq(" - moons data file", quiet = quiet)
 
   traps_in <- load_trapping_data(path                = file.path(main, "raw"), 
                                  download_if_missing = FALSE,

@@ -25,14 +25,20 @@ NULL
 prepare_rodents <- function (main     = ".",
                              datasets = prefab_rodent_datasets(),
                              quiet    = FALSE,
-                             verbose  = TRUE) {
+                             verbose  = FALSE) {
 
 
   return_if_null(datasets)
 
-  datasets_list <- prefab_rodent_datasets_list()
+  envr <- environment()
+  data(rodent_datasets, envir = envr)
+  
 
-  messageq("   -Rodents Datasets", quiet = quiet)
+  datasets_list <- rodent_datasets[datasets]
+
+
+
+  messageq(" - rodents datasets", quiet = quiet)
 
   ndatasets <- length(datasets_list)
   out <- vector("list", ndatasets)
@@ -50,28 +56,6 @@ prepare_rodents <- function (main     = ".",
   invisible(out)
 
 }
-
-
-
-
-#' @title Provide the Names of the Prefabricated Rodent Datasets
-#'
-#' @description Create a \code{character} vector of the names of the datasets included including the prefabricated (prefab) set. \cr \cr
-#'              The currently prefabricated datasets include \code{"all"}, \code{"all_interp"}, \code{"controls"}, \code{"controls_interp"}, \code{"exclosures"}, \code{"exclosures_interp"}, \code{"dm_controls"}, and \code{"dm_controls_interp"}. 
-#'
-#' @return \code{character} vector of model names.
-#'
-#' @examples
-#'  prefab_models()
-#'
-#' @export
-#'
-prefab_rodent_datasets <- function () {
-
-  names(prefab_rodent_datasets_list())
-
-}
-
 
 
 

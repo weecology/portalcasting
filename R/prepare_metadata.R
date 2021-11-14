@@ -49,7 +49,7 @@ prepare_metadata <- function (main      = ".",
                                 settings = settings)
 
 
-  messageq("  -metadata file", quiet = quiet)
+  messageq(" - metadata file", quiet = quiet)
 
 
   # COMMENT TO ADD TO DOCUMENTATION

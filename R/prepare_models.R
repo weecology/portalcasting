@@ -155,7 +155,7 @@ write_model <- function (main  = ".",
 
   return_if_null(model)
 
-  messageq("   -", model, quiet = quiet)
+  messageq(" - ", model, quiet = quiet)
 
   FUN <- match.fun(model)
   FUN_char <- format(FUN)

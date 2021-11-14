@@ -19,7 +19,6 @@
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
-#'
 #' @return \code{dfl} as input.
 #'
 #' @export
@@ -89,7 +88,7 @@ write_data <- function (dfl       = NULL,
 #' @title Read in and Format a Portalcasting Data File 
 #'
 #' @description Read in a specified data file. \cr \cr
-#'              Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"covariate_casts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
+#'              Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"climate_forecasts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
 #'              \code{read_cov_casts} reads in the current or (if no current version) local archived version of the covariate casts.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
@@ -100,36 +99,10 @@ write_data <- function (dfl       = NULL,
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
-#'
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out
-#'   all of the information or just tidy messages. 
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or just tidy messages. 
 #'  
 #' @return Data requested.
 #' 
-#' @examples
-#' \donttest{
-#'  setup_dir()
-#'  read_data(data_name = "rodents")
-#'  read_data(data_name = "rodents_table")
-#'  read_data(data_name = "rodents_table", dataset = "controls")
-#'  read_data(data_name = "covariates")
-#'  read_data(data_name = "covariate_casts")
-#'  read_data(data_name = "moons")
-#'  read_data(data_name = "metadata")
-#'
-#'  read_rodents()
-#'  read_rodents_table()
-#'  read_covariates()
-#'  read_climate_forecasts()
-#'  read_covariate_casts()
-#'  read_moons()
-#'  read_metadata()
-#' }
-#'
 #' @export
 #'
 read_data <- function (main      = ".", 
@@ -160,9 +133,9 @@ read_data <- function (main      = ".",
 
   }
 
-  if (data_name == "covariate_casts") {
+  if (data_name == "climate_forecasts") {
 
-    read_covariate_casts(main = main, settings = settings)
+    read_climate_forecasts(main = main, settings = settings)
 
   }
 
@@ -199,7 +172,6 @@ read_rodents <- function (main     = ".",
                           datasets = c("all", "controls")) {
   
   return_if_null(datasets)
-
   mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
 
 }
@@ -278,48 +250,9 @@ read_climate_forecasts <- function (main = ".") {
   }
 
   dat_tab
+
 }
 
-
-
-#' @rdname read_data
-#'
-#' @export
-#'
-read_covariate_casts <- function(main = ".", settings = directory_settings(),
-                           quiet = FALSE, verbose = FALSE){
-  
-  curr_path <- file.path(main, "data", control_files$filename_cov_casts)
-  curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
-
-  arch_path <- paste0(control_files$directory, "/data/", 
-                      control_files$filename_cov_casts)
-  arch_path <- file.path(main, "raw", arch_path)
-  arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
-
-  if(file.exists(curr_path)){
-    cov_cast <- read.csv(curr_path, stringsAsFactors = FALSE)
-  } else if (file.exists(curr_path2)){
-    cov_cast <- read.csv(curr_path2, stringsAsFactors = FALSE)
-  } else {
-    if(file.exists(arch_path)){
-      cov_cast <- read.csv(arch_path, stringsAsFactors = FALSE)
-    } else if (file.exists(arch_path2)){
-      cov_cast <- read.csv(arch_path2, stringsAsFactors = FALSE)
-    } else {
-      msg <- "current and archive versions missing, run `fill_raw`"
-      stop(msg, call. = FALSE)
-    }
-  }
-  if(any(grepl("forecast_newmoon", colnames(cov_cast)))){
-    colnames(cov_cast) <- gsub("forecast_newmoon", "cast_moon", 
-                                colnames(cov_cast))
-  }
-  if(any(grepl("newmoonnumber", colnames(cov_cast)))){
-    colnames(cov_cast) <- gsub("newmoonnumber", "moon", colnames(cov_cast))
-  } 
-  cov_cast
-}
 
 
 

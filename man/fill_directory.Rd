@@ -73,17 +73,3 @@ fill_models(
 \description{
 Fill the directory with components including (optionally) the raw data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
 }
-\examples{
- \donttest{
-
-  create_dir("./portalcasting")
-  fill_dir("./portalcasting")
-
-  create_dir("./pc")
-  fill_raw("./pc")
-  fill_casts("./pc")
-  fill_fits("./pc")
-  fill_models("./pc")
- }
-
-}

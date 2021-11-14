@@ -1,4 +1,46 @@
 
+#' @rdname read_data
+#'
+#' @export
+#'
+read_covariate_casts <- function(main = ".", settings = directory_settings(),
+                           quiet = FALSE, verbose = FALSE){
+  
+  curr_path <- file.path(main, "data", control_files$filename_cov_casts)
+  curr_path2 <- gsub("covariate_casts", "covariate_forecasts", curr_path)
+
+  arch_path <- paste0(control_files$directory, "/data/", 
+                      control_files$filename_cov_casts)
+  arch_path <- file.path(main, "raw", arch_path)
+  arch_path2 <- gsub("covariate_casts", "covariate_forecasts", arch_path)
+
+  if(file.exists(curr_path)){
+    cov_cast <- read.csv(curr_path, stringsAsFactors = FALSE)
+  } else if (file.exists(curr_path2)){
+    cov_cast <- read.csv(curr_path2, stringsAsFactors = FALSE)
+  } else {
+    if(file.exists(arch_path)){
+      cov_cast <- read.csv(arch_path, stringsAsFactors = FALSE)
+    } else if (file.exists(arch_path2)){
+      cov_cast <- read.csv(arch_path2, stringsAsFactors = FALSE)
+    } else {
+      msg <- "current and archive versions missing, run `fill_raw`"
+      stop(msg, call. = FALSE)
+    }
+  }
+  if(any(grepl("forecast_newmoon", colnames(cov_cast)))){
+    colnames(cov_cast) <- gsub("forecast_newmoon", "cast_moon", 
+                                colnames(cov_cast))
+  }
+  if(any(grepl("newmoonnumber", colnames(cov_cast)))){
+    colnames(cov_cast) <- gsub("newmoonnumber", "moon", colnames(cov_cast))
+  } 
+  cov_cast
+}
+
+
+\code{"covariate_casts"}, 
+
 head(covariates)
 
 

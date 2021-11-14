@@ -8,7 +8,7 @@ prepare_rodents(
   main = ".",
   datasets = prefab_rodent_datasets(),
   quiet = FALSE,
-  verbose = TRUE
+  verbose = FALSE
 )
 }
 \arguments{

@@ -7,7 +7,6 @@
 \alias{read_moons}
 \alias{read_covariates}
 \alias{read_climate_forecasts}
-\alias{read_covariate_casts}
 \alias{read_metadata}
 \title{Read in and Format a Portalcasting Data File}
 \usage{
@@ -29,13 +28,6 @@ read_covariates(main = ".", settings = directory_settings())
 
 read_climate_forecasts(main = ".")
 
-read_covariate_casts(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
-
 read_metadata(main = ".", settings = directory_settings())
 }
 \arguments{
@@ -47,39 +39,13 @@ read_metadata(main = ".", settings = directory_settings())
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or just tidy messages.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just tidy messages.}
 }
 \value{
 Data requested.
 }
 \description{
 Read in a specified data file. \cr \cr
-             Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"covariate_casts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
+             Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"climate_forecasts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
              \code{read_cov_casts} reads in the current or (if no current version) local archived version of the covariate casts.
-}
-\examples{
-\donttest{
- setup_dir()
- read_data(data_name = "rodents")
- read_data(data_name = "rodents_table")
- read_data(data_name = "rodents_table", dataset = "controls")
- read_data(data_name = "covariates")
- read_data(data_name = "covariate_casts")
- read_data(data_name = "moons")
- read_data(data_name = "metadata")
-
- read_rodents()
- read_rodents_table()
- read_covariates()
- read_climate_forecasts()
- read_covariate_casts()
- read_moons()
- read_metadata()
-}
-
 }

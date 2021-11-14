@@ -7,30 +7,17 @@
 messageq(..., quiet = FALSE, domain = NULL, appendLF = TRUE)
 }
 \arguments{
-\item{...}{zero or more objects that can be coerced to \code{character}
-and are concatenated with no separator added, or a single 
-condition object.
-\cr \cr
-See \code{\link[base]{message}}.}
+\item{...}{zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base]{message}}.}
 
 \item{quiet}{\code{logical} indicator if the message should be generated.}
 
-\item{domain}{The domain for the translation. If \code{NA}, messages will
-not be translated.
-\cr \cr
-See \code{\link[base]{message}} and 
-\code{\link[base]{gettext}}.}
+\item{domain}{The domain for the translation. If \code{NA}, messages will not be translated. See \code{\link[base]{message}} and \code{\link[base]{gettext}}.}
 
-\item{appendLF}{\code{logical} indicator if messages given as a 
-\code{character} string should have a newline appended.
-\cr \cr
-See \code{\link[base]{message}}.}
+\item{appendLF}{\code{logical} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base]{message}}.}
 }
 \value{
 A message is given, and \code{NULL} returned.
 }
 \description{
-A wrapper on \code{\link[base]{message}} that, given the
-             input to \code{quiet}, generates the message(s) in \code{...}
-             or not.
+A wrapper on \code{\link[base]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not.
 }

@@ -81,8 +81,6 @@ The default \code{time = "newmoon"} produces an equispaced observation timestep,
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be shown.}
-
-\item{rodents_tab}{Rodents \code{data.frame} data table from \code{\link[portalr]{summarize_rodent_data}}.}
 }
 \value{
 \code{data.frame} for the specified data set.
