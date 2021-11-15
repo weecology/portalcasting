@@ -1,3 +1,11 @@
+# in the thick of a major refactor again now
+# may not want to go full on but will need to very soon for a variety of reasons
+# at this point, currently have a working AutoArima set up within the model construction space
+#
+# push pause here to think about end user design space now
+# will need to mull on the endpoints specifically
+# what are the tools that the user wants at the command line?
+
 
 devtools::document()
 devtools::load_all()
