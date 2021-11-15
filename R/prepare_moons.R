@@ -1,8 +1,8 @@
 #' @title Prepare Lunar Data for the Portalcasting Repository
 #'
 #' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. If needed, additional moons will be added to both the in-use and resources versions of the data table. \cr \cr
-#'              \code{add_future_moons} adds future moon dates to the moon table, counting forward from \code{cast_date}. Because the \code{moons} table might not have the most recent moons, more rows than \code{lead_time} may need to be added to the table. \cr \cr. 
-#'              \code{get_cast_future_moons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional moons needed to achieve the full \code{lead_time} from \code{cast_date}. \cr \cr
+#'              \code{add_future_moons} adds future moon dates to the moon table, counting forward from \code{cast_date}. Because the \code{moons} table might not have the most recent moons, more rows than \code{lead} may need to be added to the table. \cr \cr. 
+#'              \code{get_cast_future_moons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional moons needed to achieve the full \code{lead} from \code{cast_date}. \cr \cr
 #'
 #' @details Sometimes the resources moon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the resources moons data, that table needs to be updated to produce the correct current data table for casting. 
 #'
@@ -16,11 +16,12 @@
 #'
 #' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
+#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
 #'
 #' @return Some version of a moons \code{data.frame}. \cr \cr. 
 #'         \code{prepare_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{save = TRUE}). \cr 
-#'         \code{add_future_moons} and \code{add_extra_future_moons}: appropriately appended moons \code{data.frame}.
+#'         \code{add_future_moons}: fully appended and formatted \code{data.frame}. \cr 
+#'         \code{forecast_future_moons}: moons \code{data.frame} to append to the existing \code{moons}.
 #'
 #' @name prepare_moons
 #'
@@ -30,12 +31,12 @@ NULL
 #'
 #' @export
 #' 
-prepare_moons <- function (main      = ".", 
-                           lead_time = 12,
-                           origin    = Sys.Date(), 
-                           settings  = directory_settings(), 
-                           quiet     = TRUE,
-                           verbose   = FALSE) {
+prepare_moons <- function (main     = ".", 
+                           lead     = 365,
+                           origin   = Sys.Date(), 
+                           settings = directory_settings(), 
+                           quiet    = TRUE,
+                           verbose  = FALSE) {
 
   
   PD <- file.path(main, "resources", "PortalData")
@@ -58,10 +59,10 @@ prepare_moons <- function (main      = ".",
 
   moons_in <- traps_in[["newmoons_table"]]
 
-  moons_out <- add_future_moons(main      = main, 
-                                moons     = moons_in, 
-                                lead_time = lead_time, 
-                                origin    = origin)
+  moons_out <- add_future_moons(main   = main, 
+                                moons  = moons_in, 
+                                lead   = lead, 
+                                origin = origin)
 
   write_data(dfl       = moons_out, 
              main      = main, 
@@ -78,24 +79,22 @@ prepare_moons <- function (main      = ".",
 #'
 add_future_moons <- function (main      = ".", 
                               moons     = NULL, 
-                              lead_time = 12, 
+                              lead = 365, 
                               origin    = Sys.Date(), 
                               settings  = directory_settings()) {
 
   return_if_null(moons)
 
-  if (lead_time == 0) {
+  if (lead == 0) {
 
     return(moons)
 
   }
-
-  future_moons <- get_forecast_future_moons(moons     = moons, 
-                                            lead_time = lead_time,
-                                            origin    = origin)
-
-  future_moons$newmoondate <- as.character(future_moons$newmoondate)
-  rbind(moons, future_moons)
+ 
+  rbind(moons, 
+        forecast_future_moons(moons  = moons, 
+                              lead   = lead, 
+                              origin = origin))
 
 }
 
@@ -103,14 +102,16 @@ add_future_moons <- function (main      = ".",
 #'
 #' @export
 #'
-get_forecast_future_moons <- function (moons     = NULL, 
-                                       lead_time = 12, 
-                                       origin    = Sys.Date()) {
+forecast_future_moons <- function (moons  = NULL, 
+                                   lead   = 365, 
+                                   origin = Sys.Date()) {
 
   return_if_null(moons)
 
+  num_future_moons <- floor(lead / mean(as.numeric(diff(as.Date(moons$newmoondate))), na.rm = TRUE))
+
   future_moons <- get_future_moons(moons            = moons, 
-                                   num_future_moons = lead_time)
+                                   num_future_moons = num_future_moons)
 
 
   n_extra_future_moons <- length(which(future_moons$newmoondate < origin))
@@ -122,6 +123,8 @@ get_forecast_future_moons <- function (moons     = NULL,
     future_moons <- rbind(future_moons, extra_moons)
 
   } 
+
+  future_moons$newmoondate <- as.character(future_moons$newmoondate)
 
   future_moons
 

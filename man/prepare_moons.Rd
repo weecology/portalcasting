@@ -3,12 +3,12 @@
 \name{prepare_moons}
 \alias{prepare_moons}
 \alias{add_future_moons}
-\alias{get_forecast_future_moons}
+\alias{forecast_future_moons}
 \title{Prepare Lunar Data for the Portalcasting Repository}
 \usage{
 prepare_moons(
   main = ".",
-  lead_time = 12,
+  lead = 365,
   origin = Sys.Date(),
   settings = directory_settings(),
   quiet = TRUE,
@@ -18,17 +18,17 @@ prepare_moons(
 add_future_moons(
   main = ".",
   moons = NULL,
-  lead_time = 12,
+  lead = 365,
   origin = Sys.Date(),
   settings = directory_settings()
 )
 
-get_forecast_future_moons(moons = NULL, lead_time = 12, origin = Sys.Date())
+forecast_future_moons(moons = NULL, lead = 365, origin = Sys.Date())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
 
 \item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
 
@@ -41,12 +41,13 @@ get_forecast_future_moons(moons = NULL, lead_time = 12, origin = Sys.Date())
 \value{
 Some version of a moons \code{data.frame}. \cr \cr. 
         \code{prepare_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{save = TRUE}). \cr 
-        \code{add_future_moons} and \code{add_extra_future_moons}: appropriately appended moons \code{data.frame}.
+        \code{add_future_moons}: fully appended and formatted \code{data.frame}. \cr 
+        \code{forecast_future_moons}: moons \code{data.frame} to append to the existing \code{moons}.
 }
 \description{
 Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. If needed, additional moons will be added to both the in-use and resources versions of the data table. \cr \cr
-             \code{add_future_moons} adds future moon dates to the moon table, counting forward from \code{cast_date}. Because the \code{moons} table might not have the most recent moons, more rows than \code{lead_time} may need to be added to the table. \cr \cr. 
-             \code{get_cast_future_moons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional moons needed to achieve the full \code{lead_time} from \code{cast_date}. \cr \cr
+             \code{add_future_moons} adds future moon dates to the moon table, counting forward from \code{cast_date}. Because the \code{moons} table might not have the most recent moons, more rows than \code{lead} may need to be added to the table. \cr \cr. 
+             \code{get_cast_future_moons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional moons needed to achieve the full \code{lead} from \code{cast_date}. \cr \cr
 }
 \details{
 Sometimes the resources moon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the resources moons data, that table needs to be updated to produce the correct current data table for casting.

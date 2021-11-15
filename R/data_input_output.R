@@ -1,25 +1,21 @@
 
-#' @title Save data out to a file and return it	
+#' @title Save Data Out to a File and Return It	Invisibly
 #'
-#' @description Save inputted data out to a data file if requested and 
-#'  return it to the console.
+#' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..
 #'
 #' @param dfl \code{data.frame} or YAML \code{list} to be written out.
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
+#' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
-#' @param save \code{logical} indicator controlling if \code{x} should 
-#'   be saved out.
+#' @param save \code{logical} indicator controlling if \code{x} should be saved out.
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
 #'
-#' @param overwrite \code{logical} indicator of if the file should be
-#'  overwritten if it exists.
+#' @param overwrite \code{logical} indicator of if the file should be overwritten if it exists.
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
-#' @return \code{dfl} as input.
+#' @return \code{dfl} as input, \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
@@ -81,7 +77,7 @@ write_data <- function (dfl       = NULL,
    
   }
 
-  dfl
+  invisible(dfl)
 
 }
 
@@ -117,13 +113,13 @@ read_data <- function (main      = ".",
 
   if (data_name == "rodents") {
 
-    read_rodents(main = main, datasets = datasets)
+    read_rodents(main = main, datasets = datasets, settings = settings)
 
   }
 
   if (data_name == "rodents_table") { 
 
-    read_rodents_table(main = main, dataset)
+    read_rodents_table(main = main, dataset = dataset, settings = settings)
 
   }
 
@@ -156,8 +152,9 @@ read_data <- function (main      = ".",
 #'
 #' @export
 #'
-read_rodents_table <- function (main    = ".", 
-                                dataset = "all") {
+read_rodents_table <- function (main     = ".", 
+                                dataset  = "all", 
+                                settings = directory_settings()) {
 
   return_if_null(dataset)
   read.csv(file.path(main, "data", paste0("rodents_", tolower(dataset), ".csv"))) 
@@ -169,7 +166,8 @@ read_rodents_table <- function (main    = ".",
 #' @export
 #'
 read_rodents <- function (main     = ".", 
-                          datasets = c("all", "controls")) {
+                          datasets = c("all", "controls"), 
+                          settings = directory_settings()) {
   
   return_if_null(datasets)
   mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
@@ -262,12 +260,8 @@ read_climate_forecasts <- function (main = ".") {
 #'
 read_metadata <- function(main = ".", settings = directory_settings()){
   
-  fpath <- file.path(main, "data", control_files$filename_meta)
-  if(!file.exists(fpath)){
-    md <- prep_metadata(main = main)
-    return(md)
-  }
-  yaml.load_file(fpath, eval.exp = TRUE) 
+  read_yaml(file.path(main, "data", settings$files$metadata))
+
 }
 
 

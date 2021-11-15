@@ -1,6 +1,6 @@
 ############################################################################################################################
 # 
-#  Purpose: To edit the rodent_dataset_control internal data file available within the package
+#  Purpose: To edit the rodent_dataset_controls internal data file available within the package
 #  
 #  The controls for the rodents datasets are organized according to lists with three elements: 
 #

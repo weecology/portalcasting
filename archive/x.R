@@ -1,4 +1,21 @@
-  - title: "Date formatting"
+  # COMMENT TO ADD TO DOCUMENTATION
+  #
+  # the origin newmoonnumber is the moon from which the forecast is made
+  #   ideally it would be the most recent moon
+  #   in reality, however, there are often moons for which there were no censuses, which require starting at an earlier origin than ideal
+  #
+
+
+  ideal_origin_newmoonnumber  <- moons$newmoonnumber[max(which(moons$newmoondate < origin))]
+  census_origin_newmoonnumber <- moons$newmoonnumber[max(which(moons$censusdate < origin))]
+  rodent_origin_newmoonnumber <- max(unlist(lapply(mapply(FUN = getElement, object = rodents, name = "newmoonnumber"), max)))
+  true_origin_newmoonnumber   <- min(c(census_origin_newmoonnumber, rodent_origin_newmoonnumber))
+
+# how have we handled the gap here?? for the covariates i mean?
+  
+
+
+- title: "Date formatting"
     desc: "Functions to format dates and date components"
     contents:
       - foy
@@ -176,47 +193,11 @@ model_done_message <- function (model      = NULL,
       - plot_casts_cov_RMSE
       - plot_casts_err_lead
 
-#' @title Replace a value with an alternative if it is NULL or if it is NA
-#'
-#' @description 
-#'  \code{ifnull} replaces the focal input with the alternative value if it
-#'   is \code{NULL}. \cr \cr
+
 #'  \code{ifna} replaces the focal input with the alternative value if it
 #'   is \code{NA}.
-#'
-#' @param x Focal input.
-#'
-#' @param alt Alternative value.
-#'
-#' @return 
 #'  \code{ifnull}: \code{x} if not \code{NULL}, \code{alt} otherwise. \cr \cr
-#'  \code{ifna}:  \code{x} if not \code{NA}, \code{alt} otherwise. 
-#' 
-#' @examples
-#'  ifnull(NULL, 123)
-#'  ifnull(TRUE, 123)
-#'  ifnull(FALSE, 123)
-#'  ifna(NA, 123)
-#'  ifna(FALSE, 123)
-#'  ifna(NA, NA)
-#'
-#' @name alternative_values
-#'
-NULL
-
-#' @rdname alternative_values
-#'
-#' @export 
-#'
-ifnull <- function (x = NULL, alt = NULL) {
-
-  if(is.null(x)){
-    x <- alt
-  }
-  x
-
-}
-
+#'  \code{ifna}:  \code{x} if not \code{NA}, \code{alt} otherwise.
 #' @rdname alternative_values
 #'
 #' @export 

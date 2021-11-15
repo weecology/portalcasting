@@ -53,8 +53,7 @@ species_from_table <- function(rodents_tab = NULL,
 
   sp_col <- is_sp_col(rodents_tab = rodents_tab,
                       total       = total, 
-                      nadot       = nadot,
-                      arg_checks  = arg_checks)
+                      nadot       = nadot)
 
   colnames(rodents_tab)[sp_col]
 

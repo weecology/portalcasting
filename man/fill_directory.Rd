@@ -13,8 +13,9 @@ fill_dir(
   main = ".",
   models = prefabricated_models(),
   datasets = prefabricated_rodent_datasets(),
-  lead_time = 12,
+  lead = 365,
   origin = Sys.Date(),
+  t1 = as.Date("1995-01-01"),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -24,8 +25,9 @@ fill_data(
   main = ".",
   models = prefabricated_models(),
   datasets = prefabricated_rodent_datasets(),
-  lead_time = 12,
+  lead = 365,
   origin = Sys.Date(),
+  t1 = as.Date("1995-01-01"),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -54,9 +56,11 @@ fill_models(
 
 \item{datasets}{\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
 
 \item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
+
+\item{t1}{\code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

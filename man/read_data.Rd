@@ -18,9 +18,17 @@ read_data(
   settings = directory_settings()
 )
 
-read_rodents_table(main = ".", dataset = "all")
+read_rodents_table(
+  main = ".",
+  dataset = "all",
+  settings = directory_settings()
+)
 
-read_rodents(main = ".", datasets = c("all", "controls"))
+read_rodents(
+  main = ".",
+  datasets = c("all", "controls"),
+  settings = directory_settings()
+)
 
 read_moons(main = ".", settings = directory_settings())
 

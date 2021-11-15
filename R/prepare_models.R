@@ -1,28 +1,7 @@
 
-
-
-
-#' @title Provide the Names of the Prefabricated Models
-#'
-#' @description Create a \code{character} vector of the prefabricated models. \cr \cr
-#'
-#' @return \code{character} vector of model names.
-#'
-#' @examples
-#'  prefab_models()
-#'
-#' @export
-#'
-prefabricated_models <- function () {
-
-  NULL
-
-}
-
-
 #' @title Write Model Function Script into Directory
 #'
-#' @description Writes a model's function as a script into the defined directory. \cr \cr
+#' @description Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr
 #'              \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
 #'
 #' @param main \code{character} value defining the main component of the portalcasting directory tree. 

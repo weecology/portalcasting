@@ -1,3 +1,42 @@
+
+#' @title Replace a value with an alternative if it is NULL or if it is NA
+#'
+#' @description 
+#'  \code{ifnull} replaces the focal input with the alternative value if it
+#'   is \code{NULL}. \cr \cr
+#'
+#' @param x Focal input.
+#'
+#' @param alt Alternative value.
+#'
+#' @return \code{x} if not \code{NULL}, \code{alt} otherwise.  
+#' 
+#' @examples
+#'  ifnull(NULL, 123)
+#'  ifnull(TRUE, 123)
+#'  ifnull(FALSE, 123)
+#'  ifna(NA, 123)
+#'  ifna(FALSE, 123)
+#'  ifna(NA, NA)
+#'
+#' @name alternative_values
+#'
+NULL
+
+#' @rdname alternative_values
+#'
+#' @export 
+#'
+ifnull <- function (x = NULL, alt = NULL) {
+
+  if(is.null(x)){
+    x <- alt
+  }
+  x
+
+}
+
+
 #' @title Optionally generate a message based on a logical input
 #'
 #' @description A wrapper on \code{\link[base]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not.

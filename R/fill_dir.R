@@ -14,9 +14,11 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
+#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
 #'
 #' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
+#'
+#' @param t1 \code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -31,8 +33,9 @@ NULL
 fill_dir <- function (main      = ".",
                       models    = prefabricated_models(), 
                       datasets  = prefabricated_rodent_datasets(),
-                      lead_time = 12,
+                      lead      = 365,
                       origin    = Sys.Date(), 
+                      t1        = as.Date("1995-01-01"),
                       settings  = directory_settings(), 
                       quiet     = FALSE, 
                       verbose   = FALSE) {
@@ -53,14 +56,15 @@ fill_dir <- function (main      = ".",
               quiet   = quiet, 
               verbose = verbose)
 
-  fill_data(main      = main, 
-            datasets  = datasets,
-            models    = models, 
-            lead_time = lead_time, 
-            origin    = origin, 
-            settings  = settings,
-            quiet     = quiet, 
-            verbose   = verbose)
+  fill_data(main     = main, 
+            datasets = datasets,
+            models   = models, 
+            lead     = lead, 
+            origin   = origin, 
+            t1       = t1,
+            settings = settings,
+            quiet    = quiet, 
+            verbose  = verbose)
 
   messageq("\nDirectory filling complete.", quiet = quiet)
 
@@ -76,8 +80,9 @@ fill_dir <- function (main      = ".",
 fill_data <- function (main      = ".",
                        models    = prefabricated_models(), 
                        datasets  = prefabricated_rodent_datasets(),
-                       lead_time = 12,
+                       lead      = 365,
                        origin    = Sys.Date(), 
+                       t1        = as.Date("1995-01-01"),
                        settings  = directory_settings(), 
                        quiet     = FALSE, 
                        verbose   = FALSE) {
@@ -90,7 +95,7 @@ fill_data <- function (main      = ".",
                   verbose  = verbose)
 
   prepare_moons(main      = main, 
-                lead_time = lead_time, 
+                lead      = lead, 
                 origin    = origin, 
                 settings  = settings,
                 quiet     = quiet, 
@@ -105,8 +110,9 @@ fill_data <- function (main      = ".",
   prepare_metadata(main      = main, 
                    datasets  = datasets,
                    models    = models, 
-                   lead_time = lead_time, 
+                   lead      = lead, 
                    origin    = origin, 
+                   t1        = t1,
                    settings  = settings,
                    quiet     = quiet, 
                    verbose   = verbose)

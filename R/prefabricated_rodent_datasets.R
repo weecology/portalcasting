@@ -1,4 +1,4 @@
-#' @title Rodent Dataset List
+#' @title Rodent Dataset Controls List
 #'
 #' @description \code{list} of the rodent datasets available for use via \code{\link{prepare_rodents}}. 
 #'
