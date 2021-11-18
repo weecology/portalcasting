@@ -9,7 +9,7 @@ target_moons(
   main = ".",
   moons = NULL,
   end_moon = NULL,
-  lead_time = 12,
+  lead = 365,
   date = Sys.Date(),
   control_files = files_control(),
   arg_checks = TRUE
@@ -33,7 +33,7 @@ the directory tree.}
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the
 number of timesteps forward a cast will cover.}
 
 \item{date}{\code{Date} used for defining a window (starting with moons

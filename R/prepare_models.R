@@ -28,7 +28,7 @@ prefab_model_controls <- function(){
     pevGARCH = list(name = "pevGARCH",  
                     data_sets = c("all_interp", "controls_interp", 
                                   "exclosures_interp", "dm_controls_interp"),
-                    covariatesTF = TRUE, lag = 6), 
+                    covariatesTF = TRUE, lag = 183), 
 #    simplexEDM = list(name = "simplexEDM", 
 #                      data_sets = c("all_interp", "controls_interp", 
 #                                    "exclosures_interp", 

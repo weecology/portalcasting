@@ -3,43 +3,37 @@
 \name{prepare_moons}
 \alias{prepare_moons}
 \alias{prep_moons}
-\alias{format_moons}
 \alias{add_future_moons}
-\alias{add_extra_future_moons}
+\alias{forecast_future_moons}
 \title{Prepare lunar data for the portalcasting repository}
 \usage{
 prep_moons(
   main = ".",
-  lead_time = 12,
-  cast_date = Sys.Date(),
+  lead = 365,
+  origin = Sys.Date(),
   control_files = files_control(),
   quiet = TRUE,
   verbose = FALSE,
   arg_checks = TRUE
 )
 
-format_moons(moons, arg_checks = TRUE)
-
 add_future_moons(
   main = ".",
   moons = NULL,
-  lead_time = 12,
-  cast_date = Sys.Date(),
-  control_files = files_control(),
-  arg_checks = TRUE
+  lead = 365,
+  origin = Sys.Date(),
+  settings = directory_settings()
 )
 
-add_extra_future_moons(moons, cast_date = Sys.Date(), arg_checks = TRUE)
+forecast_future_moons(moons = NULL, lead = 365, origin = Sys.Date())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
 
-\item{cast_date}{\code{Date} of the cast, typically today's date (set 
-using \code{\link{Sys.Date}}).}
+\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
@@ -74,12 +68,12 @@ A set of functions that get time information (calendar dates,
  the data table. \cr \cr
  \code{add_future_moons} adds future moon dates to the moon table, counting 
  forward from \code{cast_date}. Because the \code{moons} table might not 
- have the most recent moons, more rows than \code{lead_time} may need to 
+ have the most recent moons, more rows than \code{lead} may need to 
  be added to the table. \cr \cr. \cr \cr
  \code{add_extra_future_moons} adds more more moons to accomplish required
- data for \code{lead_time}. Because the moon table might not have the most 
+ data for \code{lead}. Because the moon table might not have the most 
  recent moons, more rows than initially requested may need to be added to 
- the table for it to cover \code{lead_time} .\cr \cr
+ the table for it to cover \code{lead} .\cr \cr
  \code{format_moons} formats the final output table with \code{year} and
  \code{month} columns formatted accordingly, and the \code{moondate}
  column formatted as a \code{\link{Date}}.

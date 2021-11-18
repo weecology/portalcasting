@@ -402,9 +402,7 @@ rodents_control <- function(name = "name", species = base_species(),
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @param arg_checks \code{logical} value of if the arguments should be
 #'  checked using standard protocols via \code{\link{check_args}}. The 
@@ -424,7 +422,7 @@ rodents_control <- function(name = "name", species = base_species(),
 #' @export
 #'
 prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
-                         end_moon = NULL, controls_rodents = NULL, 
+                         origin = NULL, controls_rodents = NULL, 
                          control_files = files_control(), 
                          ref_species = all_species(), quiet = TRUE,
                          verbose = FALSE,  arg_checks = TRUE){
@@ -445,7 +443,7 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
 
 
     rodents[[i]] <- prep_rodents_table(main = main, moons = moons, 
-                                       end_moon = end_moon, 
+                                       origin = origin, 
                                        species = ctrl_r_i[["species"]],
                                        total = ctrl_r_i[["total"]],
                                        interpolate = 
@@ -491,7 +489,7 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
 #' @param species \code{character}-valued vector of species names 
 #'  to include. 
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
+#' @param origin \code{integer} (or integer \code{numeric}) newmoon number 
 #'  of the last sample to be included. Default value is \code{NULL}, which 
 #'  equates to the most recently included sample. 
 #'
@@ -617,7 +615,7 @@ NULL
 #'
 #' @export
 #'
-prep_rodents_table <- function(main = ".", moons = NULL, end_moon = NULL, 
+prep_rodents_table <- function(main = ".", moons = NULL, origin = NULL, 
                                species = base_species(), total = TRUE, 
                                interpolate = TRUE,
                                clean = FALSE, type = "Rodents", 
@@ -657,7 +655,7 @@ prep_rodents_table <- function(main = ".", moons = NULL, end_moon = NULL,
                                        min_plots = min_plots, effort = effort, 
                                        quiet = !verbose) 
   out <- process_rodent_data(rodents_tab = rodents_tab, main = main, 
-                             moons = moons, end_moon = end_moon,
+                             moons = moons, origin = origin,
                             species = species, total = total, 
                             interpolate = interpolate, clean = clean, 
                             level = level, treatment = treatment, 
@@ -673,7 +671,7 @@ prep_rodents_table <- function(main = ".", moons = NULL, end_moon = NULL,
 #' @export
 #'
 process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
-                                end_moon = NULL, species = base_species(), 
+                                origin = NULL, species = base_species(), 
                                 total = TRUE, interpolate = FALSE,
                                 clean = FALSE, level = "Site", 
                                 treatment = NULL, na_drop = FALSE,
@@ -731,9 +729,9 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
                                        1, sum)
     }
 
-
-    end_moon <- ifnull(end_moon, max(rodents_tab$moon))
-    last_moon_in <- min(c(end_moon, max(rodents_tab$moon)))
+    origin <- ifnull(origin, Sys.Date())
+    origin_moon <- max(moons$newmoonnumber[moons$newmoondate < origin])
+    last_moon_in <- min(c(origin_moon, max(rodents_tab$moon)))
     rows_in <- rodents_tab$moon <= last_moon_in
     rodents_tab <- rodents_tab[rows_in, ]
     messageq("    data trimmed according to moon window", !verbose)

@@ -12,20 +12,11 @@
 #' @param models \code{character} vector of name(s) of model(s) to 
 #'  include.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
+#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
-#'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the first sample to be included. Default value is \code{217}, 
-#'  corresponding to \code{1995-01-01}.
+#' @param t1 \code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.
 #'
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
@@ -114,9 +105,9 @@
 #'
 #' @export
 #'
-setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL, 
-                      start_moon = 217, lead_time = 12, 
-                      confidence_level = 0.95, cast_date = Sys.Date(),
+setup_dir <- function(main = ".", models = prefab_models(), origin = Sys.Date(), 
+                      t1 = as.Date("1995-01-01"), lead = 365, 
+                      confidence_level = 0.95, 
                       controls_model = NULL, 
                       controls_rodents = rodents_controls(),
                       control_files = files_control(),
@@ -151,8 +142,8 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            controls_model = controls_model, 
            control_files = control_files, 
 
-           end_moon = end_moon, lead_time = lead_time, 
-           cast_date = cast_date, start_moon = start_moon, 
+           origin = origin, lead = lead, 
+t1 = t1, 
            confidence_level = confidence_level, 
 
            controls_rodents = controls_rodents, 
@@ -169,9 +160,9 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #' @export
 #'
 setup_production <- function(main = ".", models = prefab_models(), 
-                             end_moon = NULL, start_moon = 217, 
-                             lead_time = 12, confidence_level = 0.95, 
-                             cast_date = Sys.Date(), controls_model = NULL,
+                             origin = Sys.Date(), t1 = as.Date("1995-01-01"), 
+                             lead = 365, confidence_level = 0.95, 
+controls_model = NULL,
                              controls_rodents = rodents_controls(),
 
                              control_files = files_control(), 
@@ -186,8 +177,8 @@ setup_production <- function(main = ".", models = prefab_models(),
                              arg_checks = TRUE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
-            end_moon = end_moon, lead_time = lead_time, 
-            cast_date = cast_date, start_moon = start_moon, 
+            origin = origin, lead = lead, 
+t1 = t1, 
             confidence_level = confidence_level, 
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 
@@ -208,8 +199,8 @@ setup_production <- function(main = ".", models = prefab_models(),
 #' @export
 #'
 setup_sandbox <- function(main = ".", models = prefab_models(), 
-                          end_moon = NULL, start_moon = 217, lead_time = 12, 
-                          confidence_level = 0.95, cast_date = Sys.Date(), 
+                          origin = Sys.Date(), t1 = as.Date("1995-01-01"), lead = 365, 
+                          confidence_level = 0.95, 
                           controls_model = NULL,
                           controls_rodents = rodents_controls(),
 
@@ -225,8 +216,8 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                           arg_checks = FALSE){
   check_args(arg_checks)
   setup_dir(main = main, models = models, 
-            end_moon = end_moon, lead_time = lead_time, 
-            cast_date = cast_date, start_moon = start_moon, 
+            origin = origin, lead = lead, 
+t1 = t1, 
             confidence_level = confidence_level, 
             controls_model = controls_model, 
             controls_rodents = controls_rodents, 

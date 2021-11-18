@@ -9,7 +9,7 @@
 prep_rodents_table(
   main = ".",
   moons = NULL,
-  end_moon = NULL,
+  origin = NULL,
   species = base_species(),
   total = TRUE,
   interpolate = TRUE,
@@ -42,7 +42,7 @@ process_rodent_data(
   rodents_tab,
   main = ".",
   moons = NULL,
-  end_moon = NULL,
+  origin = NULL,
   species = base_species(),
   total = TRUE,
   interpolate = FALSE,
@@ -63,7 +63,7 @@ the directory tree.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+\item{origin}{\code{integer} (or integer \code{numeric}) newmoon number 
 of the last sample to be included. Default value is \code{NULL}, which 
 equates to the most recently included sample.}
 

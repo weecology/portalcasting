@@ -104,20 +104,11 @@
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
+#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
-#'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the first sample to be included. Default value is \code{217}, 
-#'  corresponding to \code{1995-01-01}.
+#' @param t1 \code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.
 #'
 #' @param confidence_level \code{numeric} confidence level used in 
 #'   summarizing model output. Must be between \code{0} and \code{1}.
@@ -163,8 +154,8 @@ fill_dir <- function (main  = ".",
                       verbose = TRUE,
                         controls_model = NULL, 
                         control_files = files_control(), 
-                        end_moon = NULL, start_moon = 217, lead_time = 12,
-                        confidence_level = 0.95, cast_date = Sys.Date(), 
+                        origin = NULL, t1 = as.Date("1995-01-01"), lead = 365,
+                        confidence_level = 0.95, 
                         controls_rodents = rodents_controls(), 
                         arg_checks = TRUE) {
 
@@ -199,11 +190,10 @@ fill_dir <- function (main  = ".",
 
   fill_data(main = main, 
             models = models,
-            end_moon = end_moon,
-            start_moon = start_moon,
-            lead_time = lead_time,
+            origin = origin,
+            t1 = t1,
+            lead = lead,
             confidence_level = confidence_level,
-            cast_date = cast_date,
                       controls_model = controls_model,
                       controls_rodents = controls_rodents, 
                       control_files = control_files, 
@@ -222,8 +212,8 @@ fill_dir <- function (main  = ".",
 #' @export
 #'
 fill_data <- function(main = ".", models = prefab_models(),
-                      end_moon = NULL, start_moon = 217, lead_time = 12,
-                      confidence_level = 0.95, cast_date = Sys.Date(), 
+                      origin = NULL, t1 = as.Date("1995-01-01"), lead = 365,
+                      confidence_level = 0.95,
                       controls_model = NULL,
                       controls_rodents = rodents_controls(), 
 
@@ -237,27 +227,29 @@ fill_data <- function(main = ".", models = prefab_models(),
                              quiet = quiet, arg_checks = arg_checks)
 
   messageq(" -Adding data files to data subdirectory", quiet)
-  data_m <- prep_moons(main = main, lead_time = lead_time, 
-                       cast_date = cast_date, 
+  data_m <- prep_moons(main = main, lead = lead, origin = origin, 
                        quiet = quiet, verbose = verbose,
                        control_files = control_files, 
                        arg_checks = arg_checks)
   data_r <- prep_rodents(main = main, moons = data_m, 
-                         data_sets = data_sets, end_moon = end_moon, 
+                         data_sets = data_sets, origin = origin, 
                          controls_rodents = controls_rodents,
                          quiet = quiet, verbose = verbose, 
                          control_files = control_files, 
                          arg_checks = arg_checks)
-  data_c <- prep_covariates(main = main, moons = data_m, end_moon = end_moon, 
-                            start_moon = start_moon, lead_time = lead_time, 
+
+
+
+  data_c <- prep_covariates(main = main, moons = data_m, origin = origin, 
+                            t1 = t1, lead = lead, 
                             min_lag = min_lag, cast_date = cast_date, 
                             quiet = quiet, control_files = control_files,
                             arg_checks = arg_checks)
   prep_metadata(main = main, models = models,
                 data_sets = data_sets, moons = data_m, 
-                rodents = data_r, covariates = data_c, end_moon = end_moon, 
-                lead_time = lead_time, min_lag = min_lag, 
-                cast_date = cast_date, start_moon = start_moon, 
+                rodents = data_r, covariates = data_c, origin = origin, 
+                lead = lead, min_lag = min_lag, 
+t1 = t1, 
                 confidence_level = confidence_level, 
                 controls_model = controls_model,
                 controls_rodents = controls_rodents, quiet = quiet, 

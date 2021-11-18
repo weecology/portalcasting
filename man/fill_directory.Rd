@@ -24,11 +24,10 @@ fill_dir(
   verbose = TRUE,
   controls_model = NULL,
   control_files = files_control(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
+  origin = NULL,
+  t1 = as.Date("1995-01-01"),
+  lead = 365,
   confidence_level = 0.95,
-  cast_date = Sys.Date(),
   controls_rodents = rodents_controls(),
   arg_checks = TRUE
 )
@@ -36,11 +35,10 @@ fill_dir(
 fill_data(
   main = ".",
   models = prefab_models(),
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
+  origin = NULL,
+  t1 = as.Date("1995-01-01"),
+  lead = 365,
   confidence_level = 0.95,
-  cast_date = Sys.Date(),
   controls_model = NULL,
   controls_rodents = rodents_controls(),
   control_files = files_control(),
@@ -143,23 +141,14 @@ element \code{list} must be named according to the model and the
 the sub directories and saving strategies (save, overwrite, append, etc.).
 Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
+\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
 
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
+\item{t1}{\code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
 
 \item{confidence_level}{\code{numeric} confidence level used in 
 summarizing model output. Must be between \code{0} and \code{1}.}
-
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
 
 \item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
 (from \code{\link{rodents_controls}}) specifying the structuring of the 
