@@ -10,7 +10,6 @@ test_that("prep_moons pulls in moons or throws error", {
 
   moons <- prep_moons(main = main)
   expect_is(moons, "data.frame")
-  expect_error(prep_moons("ok"))
 
 })
 
