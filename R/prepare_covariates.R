@@ -10,19 +10,14 @@
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
+#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
+#'
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
+#'
+#' @param t1 \code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.
 #'
 #' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
 #'  covariate lag time used in any model.
-#'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
-#'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -55,9 +50,10 @@
 #'  
 #' @export
 #'
-prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL, 
-                            start_moon = 217, lead_time = 12, min_lag = 6, 
-                            cast_date = Sys.Date(),
+prep_covariates <- function(main = ".", moons = NULL, 
+min_lag = 183, 
+                        origin = NULL, t1 = as.Date("1995-01-01"), lead = 365,
+
 
                             control_files = files_control(),
                             quiet = TRUE, verbose = FALSE, 
@@ -73,9 +69,8 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
 
   cast_cov <- prep_cast_covariates(main = main, moons = moons, 
                                    hist_cov = hist_cov,
-                                   end_moon = end_moon, 
-                                   lead_time = lead_time, min_lag = min_lag, 
-                                   cast_date = cast_date, 
+                                   lead = lead, min_lag = min_lag, 
+                                   origin = origin, 
                                    control_files = control_files,
                                    quiet = quiet, verbose = verbose, 
                                    arg_checks = arg_checks)
@@ -83,7 +78,7 @@ prep_covariates <- function(main = ".", moons = NULL, end_moon = NULL,
                                column = "moon", arg_checks = arg_checks)
 
   na_rows <- apply(is.na(out), 1, sum) > 0
-  moon_in <- out$moon >= start_moon
+  moon_in <- out$moon >= t1
   which_na_rows <- which(na_rows & moon_in)
   nna_rows <- length(which_na_rows)
   if(nna_rows > 0){
