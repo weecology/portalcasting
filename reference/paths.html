@@ -83,7 +83,7 @@
     <p>Produce paths for a forecasting directory. <br><br><code>main_path</code> returns the path for the <code>main</code> folder. <br><br><code>sub_path</code> returns the path(s) for the <code>sub</code> folder(s). <br><br><code>file_path</code> returns the path(s) for the <code>files</code>. <br><br></p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">main_path</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">main_path</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu">sub_path</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, subs <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
@@ -99,9 +99,8 @@
 
 <span class="fu">tmp_path</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="fu">file_path</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, sub <span class="op">=</span> <span class="cn">NULL</span>, files <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="fu">file_path</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, sub <span class="op">=</span> <span class="cn">NULL</span>, files <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
@@ -125,11 +124,10 @@ level of the portalcasting directory.</p></dd>
     <p><code>character</code> value normalized paths 
  (see <code><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></code>) . <br><br><code>main_path</code> normalized path of the <code>main</code> folder. <br><br><code>subs_path</code> normalized paths of the <code>sub</code> folder(s). <br><br><code>file_path</code> normalized paths of the <code>files</code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
   <span class="fu"><a href="directory_creation.html">create_dir</a></span><span class="op">(</span><span class="op">)</span>
   <span class="fu">main_path</span><span class="op">(</span><span class="op">)</span>
   <span class="fu">sub_path</span><span class="op">(</span><span class="op">)</span>

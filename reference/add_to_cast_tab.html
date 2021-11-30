@@ -90,15 +90,14 @@
  if the observation was within the prediction interval.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">add_lead_to_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_tab <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_lead_to_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_tab <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu">add_err_to_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_tab <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu">add_covered_to_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_tab <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="fu">add_obs_to_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_tab <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="fu">add_obs_to_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_tab <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
@@ -124,11 +123,10 @@ formatted correctly and provides directed error messages if not.</p></dd>
  <code>add_obs_to_cast_tab</code> adds the true (non-interpolated) observations
  so that model predictions are all compared to the same data.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
   <span class="fu"><a href="setup_dir.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
   <span class="fu"><a href="portalcast.html">portalcast</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span><span class="op">)</span>
   <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_cast_output.html">read_cast_tab</a></span><span class="op">(</span>cast_id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>

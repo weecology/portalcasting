@@ -86,9 +86,8 @@
  what it can handle).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">error_if_deep</span><span class="op">(</span><span class="va">lev</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">error_if_deep</span><span class="op">(</span><span class="va">lev</span><span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>lev</dt>
@@ -100,11 +99,10 @@ to be able to be evaluated.</p></dd>
     <p>Throws an error if the function is called in a place where it 
  cannot operate and returns <code>NULL</code> otherwise.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code> <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
  <span class="co"># will error:</span>
  <span class="co"># error_if_deep(-10)</span>
  <span class="op">}</span>

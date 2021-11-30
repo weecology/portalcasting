@@ -83,11 +83,10 @@
  <code>path</code> and named by <code>level</code>) do not exist. <br><br><code>create</code> creates a requested folder if it does not already exist.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">verify</span><span class="op">(</span>paths <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">verify</span><span class="op">(</span>paths <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="fu">create</span><span class="op">(</span>paths <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="fu">create</span><span class="op">(</span>paths <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>paths</dt>
@@ -104,11 +103,10 @@ formatted correctly and provides directed error messages if not.</p></dd>
  otherwise <code>NULL</code>.
 <code>create</code>: <code>NULL</code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
   <span class="va">mainp</span> <span class="op">&lt;-</span> <span class="fu"><a href="paths.html">main_path</a></span><span class="op">(</span><span class="op">)</span>
   <span class="fu">create</span><span class="op">(</span><span class="va">mainp</span>, <span class="st">"main"</span><span class="op">)</span>
   <span class="fu">verify</span><span class="op">(</span><span class="va">mainp</span>, <span class="st">"main"</span><span class="op">)</span>
