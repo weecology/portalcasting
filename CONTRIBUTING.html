@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.24.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.25.0</span>
       </span>
     </div>
 
@@ -76,21 +76,29 @@
 
 <div id="guidelines-for-contributing" class="section level1">
 
-<p>Thanks for checking out our project! If you haven’t already, please check out the <a href="README.html">readme</a> for general info about this project.</p>
+<p>Thanks for checking out our project! If you haven’t already, please check out the <a href="https://weecology.github.io/portalcasting/articles/getting_started.html">getting stated</a> for general info about setting up the project.</p>
 <div class="section level2">
 <h2 id="contributor-code-of-conduct">Contributor Code of Conduct<a class="anchor" aria-label="anchor" href="#contributor-code-of-conduct"></a></h2>
 <p>All contributors will be expected to follow our <a href="CODE_OF_CONDUCT.html">code of conduct</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="for-the-general-public">For the General Public<a class="anchor" aria-label="anchor" href="#for-the-general-public"></a></h2>
+<h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a></h2>
+<div class="section level4">
+<h4 id="for-the-general-public">For the General Public<a class="anchor" aria-label="anchor" href="#for-the-general-public"></a></h4>
 <p>If you’re not a member of the Weecology lab, we ask that you use one of the following two methods for contributing:</p>
 <ol style="list-style-type: decimal"><li><p>Create an issue – if you spot any typos, bugs, or have general suggestions, etc. You can also use this to participate in ongoing discussions. For more info, please check out this Github <a href="https://guides.github.com/features/issues/" class="external-link">guide</a>.</p></li>
-<li><p>Fork and create a pull request – if you have suggested bugfixes or changes. For more info, please check out this Github <a href="https://help.github.com/articles/about-pull-requests/" class="external-link">guide</a>. We ask that you follow our guidelines below on documentation and testing.</p></li>
-</ol></div>
-<div class="section level2">
-<h2 id="weecologists">Weecologists<a class="anchor" aria-label="anchor" href="#weecologists"></a></h2>
+<li><p>Fork weecology/portalcasting and clone your copy. Use a branch to add contributions and create a pull request – if you have suggested bugfixes or changes. For more info, please check out this Github <a href="https://help.github.com/articles/about-pull-requests/" class="external-link">guide</a>. We ask that you follow our guidelines below on documentation and testing.</p></li>
+</ol><p>We use the R package <code>devtools</code> to install, build, and test the changes in the repository:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"."</span>, repos <span class="op">=</span> <span class="cn">NULL</span>, type<span class="op">=</span><span class="st">"source"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://weecology.github.io/portalcasting">portalcasting</a></span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="weecologists">Weecologists<a class="anchor" aria-label="anchor" href="#weecologists"></a></h4>
 <p>If you’re actively working on this repo, then you should have write access to create branches for any new features or bugfixes. Please see the lab-wiki for info on using branches in a shared repository.</p>
 <p>If you don’t have write access and you would like to, please contact @gmyenni for access.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a></h2>
@@ -113,19 +121,19 @@
 <p>Note that you can also include links to other functions, math formatting, and more. For more details, see the <a href="http://r-pkgs.had.co.nz/man.html" class="external-link">chapter on documentation</a> in Hadley Wickham’s book for R packages.</p>
 </div>
 <div class="section level2">
-<h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>If you are adding new functionality, please include automated tests to verify that some of the basic functionality is correct.</p>
-<p>Automated testing uses R scripts, that live in the <code>tests/testthat/</code> subfolder for the package. If you are adding a new file, please name it as <code>test-{concept}.R</code>.</p>
-<p>As a general rule, you don’t need to test all possible inputs and outputs for a function, but you should test some important aspects: * outputs are the correct format (including dimensions and components) * sample input produces the correct sample output</p>
-<p>You can see the existing tests as examples of how to organize your tests, but note that there are several different kinds of <code>expect_</code> functions that test for different things. For more details, see the <a href="http://r-pkgs.had.co.nz/tests.html" class="external-link">chapter on testing</a> in Hadley Wickham’s book for R packages.</p>
-</div>
-<div class="section level2">
 <h2 id="building">Building<a class="anchor" aria-label="anchor" href="#building"></a></h2>
 <p>To fully build the package, including documentation, running-tests, you will need the <code>roxygen2</code>, the <code>testthat</code>, and the <code>devtools</code> package.</p>
 <p>Specific operations are then done by calling the appropriate functions from within R, while your working directory is somewhere in the package folder.</p>
 <p>The suggested workflow is: 1. Write code, documentation, and tests. 2. Run <code>devtools::document()</code> to generate the documentation files and update the <code>NAMESPACE</code> file. 3. Run <code>devtools::install()</code> to install the new version of the package. 4. Run <code>devtools::test()</code> to run the test scripts on the new version of the package.</p>
 <p>If you are also prepping the package as a whole, then you will also want to run <code>devtools::check()</code> and/or <code>devtools::check_cran()</code> to make sure that the package is complete. Note that you need an up-to-date TeX/LaTeX distribution for running <code>devtools::check()</code> and/or <code>devtools::check_cran()</code> due to the rendering of the package manual.</p>
 <p>For more info, see the <a href="https://github.com/hadley/devtools" class="external-link">GitHub repo</a> for the <code>devtools</code> package.</p>
+</div>
+<div class="section level2">
+<h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
+<p>If you are adding new functionality, please include automated tests to verify that some of the basic functionality is correct.</p>
+<p>Automated testing uses R scripts, that live in the <code>tests/testthat/</code> subfolder for the package. If you are adding a new file, please name it as <code>test-{concept}.R</code>.</p>
+<p>As a general rule, you don’t need to test all possible inputs and outputs for a function, but you should test some important aspects: * outputs are the correct format (including dimensions and components) * sample input produces the correct sample output</p>
+<p>You can see the existing tests as examples of how to organize your tests, but note that there are several different kinds of <code>expect_</code> functions that test for different things. For more details, see the <a href="http://r-pkgs.had.co.nz/tests.html" class="external-link">chapter on testing</a> in Hadley Wickham’s book for R packages.</p>
 </div>
 <div class="section level2">
 <h2 id="attribution">Attribution<a class="anchor" aria-label="anchor" href="#attribution"></a></h2>

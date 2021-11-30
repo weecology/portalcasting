@@ -12,11 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Functions Used in Predicting Portal Rodent Dynamics">
-<meta property="og:description" content="Create a directory, populate it with data, build 
-  models, forecast rodent populations, and visualize the results.
-  This package provides the functionality underlying the
-  Portal Predictions Project &lt;https://github.com/weecology/portalpredictions&gt; 
-  as well as support for exploring and developing new models in sandbox environments.">
+<meta property="og:description" content="Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project &lt;https://github.com/weecology/portalpredictions&gt; as well as support for exploring and developing new models in sandbox environments.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -37,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.24.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.25.0</span>
       </span>
     </div>
 
@@ -138,8 +134,14 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>Get started with the <a href="https://weecology.github.io/portalcasting/articles/getting_started.html">“how to set up a Portal Predictions directory” vignette</a></p>
+<p>Get started with the <a href="https://weecology.github.io/portalcasting/articles/getting_started.html">“how to set up a Portal Predictions directory” vignette</a>.</p>
 <p>If you are interested in adding a model to the preloaded <a href="https://weecology.github.io/portalcasting/articles/current_models.html">set of models</a>, see the <a href="https://weecology.github.io/portalcasting/articles/adding_model_and_data.html">“adding a model” vignette</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="developer-and-contributor-notes">Developer and Contributor notes<a class="anchor" aria-label="anchor" href="#developer-and-contributor-notes"></a>
+</h2>
+<p>We welcome any contributions in form of models or pipeline changes.</p>
+<p>For the workflow, please checkout the <a href="CONTRIBUTING.html">contribution</a> and <a href="CODE_OF_CONDUCT.html">code of conduct</a> pages.</p>
 </div>
 <div class="section level2">
 <h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
@@ -150,7 +152,7 @@
 <div class="section level2">
 <h2 id="author-contributions">Author Contributions<a class="anchor" aria-label="anchor" href="#author-contributions"></a>
 </h2>
-<p>All authors conceived the ideas, designed methodology, and developed the automated forecasting system. J. L. Simonis led the transition of code from the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions repo</a> to <code>portalcasting</code>. S. K. M. Ernest coded the <code>NaiveArima</code> model, H. Ye coded the <code>simplexEDM</code> model, and J. L. Simonis coded the <code>jags_RW</code> model.</p>
+<p>All authors conceived the ideas, designed methodology, and developed the automated forecasting system. J. L. Simonis led the transition of code from the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions repo</a> to <code>portalcasting</code>. S. K. M. Ernest coded the <code>NaiveArima</code> model, H. Ye coded the <code>simplexEDM</code> and <code>GPEDM</code> models, and J. L. Simonis coded the <code>jags_RW</code> model.</p>
 </div>
 </div>
   </div>
