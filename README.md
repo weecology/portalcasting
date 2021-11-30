@@ -55,6 +55,13 @@ Get started with the ["how to set up a Portal Predictions directory" vignette](h
 
 If you are interested in adding a model to the preloaded [set of models](https://weecology.github.io/portalcasting/articles/current_models.html), see the ["adding a model" vignette](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html). 
 
+
+## Developer and Contributor notes
+
+We welcome any contributions in form of models or pipeline changes.  
+For the workflow, Please checkout the [getting started](https://weecology.github.io/portalcasting/articles/getting_started.html) and the [contribution](CONTRIBUTING.md) page. 
+
+
 ## Acknowledgements 
 
 The motivating study—the Portal Project—has been funded nearly continuously since 1977 by the [National Science Foundation](http://nsf.gov/), most recently by [DEB-1622425](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1622425) to S. K. M. Ernest. Much of the computational work was supported by the [Gordon and Betty Moore Foundation’s Data-Driven Discovery Initiative](http://www.moore.org/programs/science/data-driven-discovery) through [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to E. P. White. 
