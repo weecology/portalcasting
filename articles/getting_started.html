@@ -141,16 +141,16 @@
 <div class="section level2">
 <h2 id="plotting-the-results">Plotting the results<a class="anchor" aria-label="anchor" href="#plotting-the-results"></a>
 </h2>
-<p>Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for casts. The functions for both of these figure types point directly to the cast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run). By default, they select the most recent cast, which will be NaiveArima on controls.</p>
+<p>Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for casts. The functions for both of these figure types point directly to the cast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run).</p>
 <p>Time series plots are constructed using <code>plot_cast_ts</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="imgs/getting_started_fig1.jpg" width="600" alt=""><p class="caption">Time series plot of the total rodents forecast (mean with 95% CI) on the control plots</p>
 </div>
 <p>Point-in-time prediction plots are constructed using <code>plot_cast_point</code>, and default to the next step ahead in time:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="imgs/getting_started_fig2.jpg" width="600" alt=""><p class="caption">Point-in-time forecast (mean with 95% CI) for all species and total rodents on the control plots</p>
 </div>
@@ -158,7 +158,7 @@
 <div class="section level2">
 <h2 id="going-back-in-time">Going back in time<a class="anchor" aria-label="anchor" href="#going-back-in-time"></a>
 </h2>
-<p>We can step back to an earlier date by simply setting the <code>end_moons</code> or <code>end_moon</code> (depending on the function, some can take more than one value) to earlier than the present time.</p>
+<p>We can then step back to an earlier date by simply setting the <code>end_moons</code> or <code>end_moon</code> (depending on the function, some can take more than one value) to earlier than the present time.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESSS"</span>, <span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span>, end_moons <span class="op">=</span> <span class="fl">512</span><span class="op">)</span></code></pre></div>
 <p>Because the output from this run of <code>portalcast</code> is most recent, the plot functions default to them, although it is also simple to point to them directly using the arguments available (<code><a href="../reference/plot_cast_ts.html">?plot_cast_ts</a></code> and <code><a href="../reference/plot_cast_point.html">?plot_cast_point</a></code>).</p>
@@ -227,7 +227,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.9000.</p>
 </div>
 
       </footer>
