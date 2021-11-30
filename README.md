@@ -51,9 +51,17 @@ from a shell on a computer with [Docker](https://www.docker.com/) installed. A t
 
 ## Usage
 
-Get started with the ["how to set up a Portal Predictions directory" vignette](https://weecology.github.io/portalcasting/articles/getting_started.html)
+Get started with the ["how to set up a Portal Predictions directory" vignette](https://weecology.github.io/portalcasting/articles/getting_started.html).
 
 If you are interested in adding a model to the preloaded [set of models](https://weecology.github.io/portalcasting/articles/current_models.html), see the ["adding a model" vignette](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html). 
+
+
+## Developer and Contributor notes
+
+We welcome any contributions in form of models or pipeline changes.  
+
+For the workflow, please checkout the [contribution](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) pages. 
+
 
 ## Acknowledgements 
 
@@ -63,4 +71,4 @@ We thank Henry Senyondo for help with continuous integration, Heather Bradley fo
 
 ## Author Contributions
 
-All authors conceived the ideas, designed methodology, and developed the automated forecasting system. J. L. Simonis led the transition of code from the [Portal Predictions repo](https://github.com/weecology/portalPredictions) to `portalcasting`. S. K. M. Ernest coded the `NaiveArima` model, H. Ye coded the `simplexEDM` model, and J. L. Simonis coded the `jags_RW` model.
+All authors conceived the ideas, designed methodology, and developed the automated forecasting system. J. L. Simonis led the transition of code from the [Portal Predictions repo](https://github.com/weecology/portalPredictions) to `portalcasting`. S. K. M. Ernest coded the `NaiveArima` model, H. Ye coded the `simplexEDM` and `GPEDM` models, and J. L. Simonis coded the `jags_RW` model.
