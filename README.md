@@ -12,7 +12,7 @@
 
 ## Overview
 
-The `portalcasting` package contains the functions used for continuous analysis and forecasting of [Portal rodent populations](https://portal.weecology.org/) ([code repository](https://github.com/weecology/portalPredictions), [output website](http://portal.naturecast.org/), [Zenodo archive](https://doi.org/10.5281/zenodo.833438)).
+The `portalcasting` package provides a model development, deployment, and evaluation system for forecasting how ecological systems change through time, with a focus on a widely used long-term study of mammal population and community dynamics, the [Portal Project](https://portal.weecology.org/). It combines the [Portal  Data Repository](https://github.com/weecology/PortalData) and [portalr data management package](https://github.com/weecology/portalr) in a pipeline to automate weekly forecasting. Forecasts are archived on [GitHub](https://github.com/weecology/portalPredictions) and [Zenodo](https://doi.org/10.5281/zenodo.833438). The [Portal Forecasting website](http://portal.naturecast.org/) provides a dynamic view of the results.
 
 `portalcasting`'s functions are also portable, allowing users to set up a fully-functional replica repository on a local or remote machine. This facilitates development and testing of new models
 via a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(software_development)) approach. 
@@ -51,9 +51,17 @@ from a shell on a computer with [Docker](https://www.docker.com/) installed. A t
 
 ## Usage
 
-Get started with the ["how to set up a Portal Predictions directory" vignette](https://weecology.github.io/portalcasting/articles/getting_started.html)
+Get started with the ["how to set up a Portal Predictions directory" vignette](https://weecology.github.io/portalcasting/articles/getting_started.html).
 
 If you are interested in adding a model to the preloaded [set of models](https://weecology.github.io/portalcasting/articles/current_models.html), see the ["adding a model" vignette](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html). 
+
+
+## Developer and Contributor notes
+
+We welcome any contributions in form of models or pipeline changes.  
+
+For the workflow, please checkout the [contribution](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) pages. 
+
 
 ## Acknowledgements 
 
@@ -63,4 +71,4 @@ We thank Henry Senyondo for help with continuous integration, Heather Bradley fo
 
 ## Author Contributions
 
-All authors conceived the ideas, designed methodology, and developed the automated forecasting system. J. L. Simonis led the transition of code from the [Portal Predictions repo](https://github.com/weecology/portalPredictions) to `portalcasting`. S. K. M. Ernest coded the `NaiveArima` model, H. Ye coded the `simplexEDM` model, and J. L. Simonis coded the `jags_RW` model.
+All authors conceived the ideas, designed methodology, and developed the automated forecasting system. J. L. Simonis led the transition of code from the [Portal Predictions repo](https://github.com/weecology/portalPredictions) to `portalcasting`. S. K. M. Ernest coded the `NaiveArima` model, H. Ye coded the `simplexEDM` and `GPEDM` models, and J. L. Simonis coded the `jags_RW` model.

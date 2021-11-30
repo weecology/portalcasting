@@ -1,18 +1,27 @@
 # Guidelines for Contributing
 
-Thanks for checking out our project! If you haven't already, please check out the [readme](README.md) for general info about this project.
+Thanks for checking out our project! If you haven't already, please check out the [getting stated](https://weecology.github.io/portalcasting/articles/getting_started.html) for general info about setting up the project.
 
 ## Contributor Code of Conduct
 All contributors will be expected to follow our [code of conduct](CODE_OF_CONDUCT.md).
 
-## For the General Public
+## Workflow
+####  For the General Public
 If you're not a member of the Weecology lab, we ask that you use one of the following two methods for contributing:
 
 1. Create an issue -- if you spot any typos, bugs, or have general suggestions, etc. You can also use this to participate in ongoing discussions. For more info, please check out this Github [guide](https://guides.github.com/features/issues/).
 
-2. Fork and create a pull request -- if you have suggested bugfixes or changes. For more info, please check out this Github [guide](https://help.github.com/articles/about-pull-requests/). We ask that you follow our guidelines below on documentation and testing.
+2. Fork weecology/portalcasting and clone your copy. Use a branch to add contributions and create a pull request -- if you have suggested bugfixes or changes. For more info, please check out this Github [guide](https://help.github.com/articles/about-pull-requests/). We ask that you follow our guidelines below on documentation and testing.  
 
-## Weecologists
+We use the R package `devtools` to install, build, and test the changes in the repository: 
+
+```r
+install.packages("devtools")
+install.packages(".", repos = NULL, type="source", quiet = FALSE, verbose = TRUE)
+library(portalcasting)
+```
+
+#### Weecologists
 
 If you're actively working on this repo, then you should have write access to create branches for any new features or bugfixes. Please see the lab-wiki for info on using branches in a shared repository. 
 
@@ -42,17 +51,6 @@ newfunc <- function() ...
 
 Note that you can also include links to other functions, math formatting, and more. For more details, see the [chapter on documentation ](http://r-pkgs.had.co.nz/man.html) in Hadley Wickham's book for R packages.
 
-## Testing
-
-If you are adding new functionality, please include automated tests to verify that some of the basic functionality is correct.
-
-Automated testing uses R scripts, that live in the `tests/testthat/` subfolder for the package. If you are adding a new file, please name it as `test-{concept}.R`. 
-
-As a general rule, you don't need to test all possible inputs and outputs for a function, but you should test some important aspects:
-* outputs are the correct format (including dimensions and components)
-* sample input produces the correct sample output
-
-You can see the existing tests as examples of how to organize your tests, but note that there are several different kinds of `expect_` functions that test for different things. For more details, see the [chapter on testing ](http://r-pkgs.had.co.nz/tests.html) in Hadley Wickham's book for R packages.
 
 ## Building
 
@@ -70,6 +68,18 @@ If you are also prepping the package as a whole, then you will also want to run 
 Note that you need an up-to-date TeX/LaTeX distribution for running `devtools::check()` and/or `devtools::check_cran()` due to the rendering of the package manual.
 
 For more info, see the [GitHub repo](https://github.com/hadley/devtools) for the `devtools` package. 
+
+## Testing
+
+If you are adding new functionality, please include automated tests to verify that some of the basic functionality is correct.
+
+Automated testing uses R scripts, that live in the `tests/testthat/` subfolder for the package. If you are adding a new file, please name it as `test-{concept}.R`. 
+
+As a general rule, you don't need to test all possible inputs and outputs for a function, but you should test some important aspects:
+* outputs are the correct format (including dimensions and components)
+* sample input produces the correct sample output
+
+You can see the existing tests as examples of how to organize your tests, but note that there are several different kinds of `expect_` functions that test for different things. For more details, see the [chapter on testing ](http://r-pkgs.had.co.nz/tests.html) in Hadley Wickham's book for R packages.
 
 ## Attribution 
 
