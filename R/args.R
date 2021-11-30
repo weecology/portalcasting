@@ -78,6 +78,7 @@
 #'
 #'  Must be length-1 \code{character} values, can be \code{NULL}, but cannot 
 #'  be \code{NA}:
+#'   \code{climate_forecast_source}, 
 #'   \code{colname}, 
 #'   \code{data_name}, 
 #'   \code{data_set}, 
@@ -105,6 +106,10 @@
 #'   \code{path},
 #'   \code{plots} (if not \code{NULL}, must be \code{"all"} or 
 #'    \code{"longterm"}),
+#'   \code{portalPredictions_source}, 
+#'   \code{portalPredictions_version}, 
+#'   \code{PortalData_source}, 
+#'   \code{PortalData_version}, 
 #'   \code{raw_data}, 
 #'   \code{sep_char}, 
 #'   \code{set},
@@ -198,6 +203,7 @@
 #'  Must be length-1 \code{Date}-conformable values, can be \code{NULL}, 
 #'  but cannot be \code{NA}:
 #'   \code{cast_date},
+#'   \code{climate_forecast_version}, 
 #'   \code{date}
 #'   \code{end},
 #'   \code{from_date},
@@ -584,6 +590,8 @@ check_arg_list <- function(){
     casts = arg_df(),
     clean = arg_logical(),
     cleanup = arg_logical(),
+climate_forecast_source = arg_character(),
+climate_forecast_version = arg_date(),
     colname = arg_character(),
     colnames = arg_character(length = NULL),
     column = arg_character(length = 1, null = FALSE, na = FALSE),
@@ -674,6 +682,10 @@ check_arg_list <- function(){
     overwrite = arg_logical(),
     path = arg_character(),
     paths = arg_character(length = NULL),
+PortalData_source = arg_character(),
+PortalData_version = arg_character(),
+portalPredictions_source = arg_character(),
+portalPredictions_version = arg_character(),
     plots = arg_character(vals = avail_plots),
     preds = arg_df(),
     quiet = arg_logical(),

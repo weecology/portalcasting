@@ -111,6 +111,7 @@ Argument details used for checking are produced simply via
 
  Must be length-1 \code{character} values, can be \code{NULL}, but cannot 
  be \code{NA}:
+  \code{climate_forecast_source}, 
   \code{colname}, 
   \code{data_name}, 
   \code{data_set}, 
@@ -138,6 +139,10 @@ Argument details used for checking are produced simply via
   \code{path},
   \code{plots} (if not \code{NULL}, must be \code{"all"} or 
    \code{"longterm"}),
+  \code{portalPredictions_source}, 
+  \code{portalPredictions_version}, 
+  \code{PortalData_source}, 
+  \code{PortalData_version}, 
   \code{raw_data}, 
   \code{sep_char}, 
   \code{set},
@@ -231,6 +236,7 @@ Argument details used for checking are produced simply via
  Must be length-1 \code{Date}-conformable values, can be \code{NULL}, 
  but cannot be \code{NA}:
   \code{cast_date},
+  \code{climate_forecast_version}, 
   \code{date}
   \code{end},
   \code{from_date},

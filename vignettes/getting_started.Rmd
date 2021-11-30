@@ -63,12 +63,12 @@ If the user does not specify the models, all of the prefab models are run. Note 
 
 ## Plotting the results
 
-Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for casts. The functions for both of these figure types point directly to the cast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run). By default, they select the most recent cast, which will be NaiveArima on controls.
+Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for casts. The functions for both of these figure types point directly to the cast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run). 
 
 Time series plots are constructed using `plot_cast_ts`:
 
 ```{r, eval=FALSE}
-plot_cast_ts(main = main)
+plot_cast_ts(main = main, data_set = "controls")
 ```
 
 ![Time series plot of the total rodents forecast (mean with 95% CI) on the control plots](imgs/getting_started_fig1.jpg){width=600px}  
@@ -76,13 +76,15 @@ plot_cast_ts(main = main)
 Point-in-time prediction plots are constructed using `plot_cast_point`, and default to the next step ahead in time:
 
 ```{r, eval=FALSE}
-plot_cast_point(main = main)
+plot_cast_point(main = main, data_set = "controls")
 ```
 ![Point-in-time forecast (mean with 95% CI) for all species and total rodents on the control plots](imgs/getting_started_fig2.jpg){width=600px} 
 
 ## Going back in time
 
-We can step back to an earlier date by simply setting the `end_moons` or `end_moon` (depending on the function, some can take more than one value) to earlier than the present time. 
+
+
+We can then step back to an earlier date by simply setting the `end_moons` or `end_moon` (depending on the function, some can take more than one value) to earlier than the present time. 
 
 
 ```{r, eval=FALSE}
