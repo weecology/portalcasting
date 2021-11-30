@@ -3,6 +3,16 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+
+# [portalcasting 0.25.0](https://github.com/weecology/portalcasting/releases/tag/v0.25.0)
+*2021-11-30*
+
+### Tidying for JOSS ms
+* adding source and version args to check args
+* software context added to ms
+* overview added to readme
+
+
 # [portalcasting 0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0)
 *2021-11-11*
 
