@@ -17,14 +17,12 @@
 #' @param cast_cov \code{data.frame} of cast covariates. See
 #'  \code{\link{cast_covariates}}.
 #'
-#' @param lead_time \code{integer}-conformable number of timesteps forward 
-#'  a cast will proceed.
-#'
 #' @param min_lag \code{integer}-conformable minimum non-0 covariate lag time 
 #'  used in any model.
 #'
-#' @param cast_date \code{Date} on which the cast happens. Generally should
-#'  be \code{\link{Sys.Date}}.
+#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
+#'
+#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @param end_moon Forecast origin. \code{integer}-conformable newmoon number 
 #'  or \code{NULL}, which equates to the most recently included census'
@@ -73,8 +71,8 @@
 #'
 prep_cast_covariates <- function(main = ".", moons = NULL,
                                  hist_cov = NULL, end_moon = NULL, 
-                                 lead_time = 12, min_lag = 6, 
-                                 cast_date = Sys.Date(), 
+                                 lead = 365, min_lag = 183, 
+                                 origin = Sys.Date(), 
                                  control_files = files_control(),
                                  quiet = TRUE, verbose = FALSE, 
                                  arg_checks = TRUE){

@@ -11,9 +11,9 @@ prep_cast_covariates(
   moons = NULL,
   hist_cov = NULL,
   end_moon = NULL,
-  lead_time = 12,
-  min_lag = 6,
-  cast_date = Sys.Date(),
+  lead = 365,
+  min_lag = 183,
+  origin = Sys.Date(),
   control_files = files_control(),
   quiet = TRUE,
   verbose = FALSE,
@@ -44,14 +44,12 @@ save_cast_cov_csv(
 or \code{NULL}, which equates to the most recently included census'
 newmoon number.}
 
-\item{lead_time}{\code{integer}-conformable number of timesteps forward 
-a cast will proceed.}
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
 
 \item{min_lag}{\code{integer}-conformable minimum non-0 covariate lag time 
 used in any model.}
 
-\item{cast_date}{\code{Date} on which the cast happens. Generally should
-be \code{\link{Sys.Date}}.}
+\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).

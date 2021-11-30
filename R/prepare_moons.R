@@ -252,9 +252,9 @@ trim_moons <- function(moons = NULL, target_moons = NULL,
 add_moons_from_date <- function(df, moons = NULL, arg_checks = TRUE){
   check_args(arg_checks)
   return_if_null(moons, df)
-  moon_number <- moons$moon[-1]
-  moon_start <- as.Date(moons$moondate[-nrow(moons)])
-  moon_end <- as.Date(moons$moondate[-1])
+  moon_number <- moons$newmoonnumber[-1]
+  moon_start <- as.Date(moons$newmoondate[-nrow(moons)])
+  moon_end <- as.Date(moons$newmoondate[-1])
   moon_match_number <- NULL
   moon_match_date <- NULL
 

@@ -240,6 +240,7 @@ Argument details used for checking are produced simply via
   \code{date}
   \code{end},
   \code{from_date},
+  \code{origin},
   \code{start}.
 
  Must be \code{Date}-conformable values, can be any length, can be

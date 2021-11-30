@@ -50,11 +50,8 @@
 #'  
 #' @export
 #'
-prep_covariates <- function(main = ".", moons = NULL, 
-min_lag = 183, 
-                        origin = NULL, t1 = as.Date("1995-01-01"), lead = 365,
-
-
+prep_covariates <- function(main = ".", moons = NULL, min_lag = 183, 
+                            origin = Sys.Date(), t1 = as.Date("1995-01-01"), lead = 365,
                             control_files = files_control(),
                             quiet = TRUE, verbose = FALSE, 
                             arg_checks = TRUE){
@@ -175,6 +172,7 @@ prep_hist_covariates <- function(main = ".", moons = NULL,
   spots <- na.omit(match(ndvi_data$date, weather_data$date))
   incl <- ndvi_data$date %in% weather_data$date
   out$ndvi[spots] <- ndvi_data$ndvi[incl]
+
   out <- add_moons_from_date(df = out, moons = moons, arg_checks = arg_checks)
   cols_in <- c("date", "moon", 
                "mintemp", "maxtemp", "meantemp", "precipitation", "ndvi")

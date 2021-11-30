@@ -12,6 +12,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * software context added to ms
 * overview added to readme
 
+### User control of times of interest
+* shift from user controlling by new moon number to use of date
+* shift from `moon` to `newmoon` (as in `newmoonnumber` `newmoondate`) to realign with `portalr`
 
 # [portalcasting 0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0)
 *2021-11-11*

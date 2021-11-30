@@ -207,6 +207,7 @@
 #'   \code{date}
 #'   \code{end},
 #'   \code{from_date},
+#'   \code{origin},
 #'   \code{start}.
 #'
 #'  Must be \code{Date}-conformable values, can be any length, can be
@@ -678,6 +679,7 @@ climate_forecast_version = arg_date(),
     NULLname = arg_logical(),
     obs = arg_df(),
     only_if_missing = arg_logical(null = FALSE),
+    origin = arg_date(),
     output = arg_character(vals = avail_outputs),
     overwrite = arg_logical(),
     path = arg_character(),

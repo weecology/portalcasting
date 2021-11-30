@@ -7,11 +7,10 @@
 prep_covariates(
   main = ".",
   moons = NULL,
-  end_moon = NULL,
-  start_moon = 217,
-  lead_time = 12,
-  min_lag = 6,
-  cast_date = Sys.Date(),
+  min_lag = 183,
+  origin = Sys.Date(),
+  t1 = as.Date("1995-01-01"),
+  lead = 365,
   control_files = files_control(),
   quiet = TRUE,
   verbose = FALSE,
@@ -24,23 +23,14 @@ the directory tree.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
-
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
-
 \item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
 covariate lag time used in any model.}
 
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
+\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
+
+\item{t1}{\code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.}
+
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
 
 \item{control_files}{\code{list} of names of the folders and files within
 the sub directories and saving strategies (save, overwrite, append, etc.).
@@ -56,6 +46,10 @@ shown.}
 checked using standard protocols via \code{\link{check_args}}. The 
 default (\code{arg_checks = TRUE}) ensures that all inputs are 
 formatted correctly and provides directed error messages if not.}
+
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
+of the first sample to be included. Default value is \code{217}, 
+corresponding to \code{1995-01-01}.}
 }
 \value{
 \code{data.frame} of historical and -casted covariates, combined
