@@ -4,182 +4,73 @@
 \alias{fill_directory}
 \alias{fill_dir}
 \alias{fill_data}
-\alias{fill_raw}
-\alias{fill_casts}
-\alias{fill_fits}
+\alias{fill_resources}
+\alias{fill_output}
 \alias{fill_models}
 \title{Fill a Portalcasting Directory with Basic Components}
 \usage{
 fill_dir(
   main = ".",
-  PortalData_source = "gitub",
-  PortalData_version = "latest",
-  portalPredictions_source = "github",
-  portalPredictions_version = NULL,
-  climate_forecast_source = "NMME",
-  climate_forecast_version = Sys.Date(),
-  models = prefab_models(),
-  data_sets = prefab_data_sets(),
-  quiet = FALSE,
-  verbose = TRUE,
-  controls_model = NULL,
-  control_files = files_control(),
-  origin = NULL,
-  t1 = as.Date("1995-01-01"),
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
   lead = 365,
-  confidence_level = 0.95,
-  controls_rodents = rodents_controls(),
-  arg_checks = TRUE
-)
-
-fill_data(
-  main = ".",
-  models = prefab_models(),
-  origin = NULL,
+  origin = Sys.Date(),
   t1 = as.Date("1995-01-01"),
-  lead = 365,
-  confidence_level = 0.95,
-  controls_model = NULL,
-  controls_rodents = rodents_controls(),
-  control_files = files_control(),
-  data_sets = prefab_data_sets(),
-  quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
-)
-
-fill_raw(
-  main = ".",
-  PortalData_version = "latest",
-  PortalData_source = "gitub",
-  portalPredictions_version = NULL,
-  portalPredictions_source = "github",
-  climate_forecast_version = Sys.Date(),
-  climate_forecast_source = "NMME",
+  settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
 
-fill_casts(main = ".", quiet = FALSE, verbose = FALSE)
+fill_data(
+  main = ".",
+  models = prefabricated_models(),
+  datasets = prefabricated_rodent_datasets(),
+  lead = 365,
+  origin = Sys.Date(),
+  t1 = as.Date("1995-01-01"),
+  settings = directory_settings(),
+  quiet = FALSE,
+  verbose = FALSE
+)
 
-fill_fits(main = ".", quiet = FALSE, verbose = FALSE)
+fill_resources(
+  main = ".",
+  settings = directory_settings(),
+  quiet = FALSE,
+  verbose = FALSE
+)
+
+fill_output(main = ".", quiet = FALSE, verbose = FALSE)
 
 fill_models(
   main = ".",
-  models = prefab_models(),
-  controls_model = NULL,
-  control_files = files_control(),
+  models = prefabricated_models(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
-\item{main}{\code{character} value defining the main component of the 
-portalcasting directory tree. Default value (\code{"."}) 
-puts the directory in the present location.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{PortalData_source, PortalData_version}{\code{character} values for the
-source and version of the Portal Data to download. 
-\cr \cr 
-Default values retrieve the latest data from github.
-\cr \cr 
-See \code{\link[portalr]{download_observations}}.}
+\item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{portalPredictions_source, portalPredictions_version}{\code{character} 
-values for the source and version of the archive to download.
-\cr \cr 
-Default values point to github, but \code{version = NULL} indicates
-no download.
-\cr \cr 
-See \code{\link{download_archive}}.}
+\item{datasets}{\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions.}
 
-\item{climate_forecast_source, climate_forecast_version}{\code{character} 
-values for the source and version of the climate forecasts to
-download.
-\cr \cr 
-Default values retrieve the current day's forecast from the
-Northwest Knowledge Network's North American Multi-Model Ensemble 
-(NMME) climate forecasts.
-\cr \cr 
-See \code{\link{download_climate_forecasts}}.}
-
-\item{models}{\code{vector} of models to be written via 
-\code{\link{write_model}}.}
-
-\item{data_sets}{\code{list} of data_sets to be created using 
-\code{\link{do.call}} on the defined functions.}
-
-\item{quiet}{\code{logical} indicator if messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator if detailed messages should be
-printed.}
-
-\item{controls_model}{Additional controls for models not in the prefab 
-set. \cr 
-A \code{list} of a single model's script-writing controls or a
-\code{list} of \code{list}s, each of which is a single model's 
-script-writing controls. \cr 
-Presently, each model's script writing controls should include four 
-elements: 
-\itemize{
- \item \code{name}: a \code{character} value of the model name.
- \item \code{data_sets}: a \code{character} vector of the data set names
-  that the model is applied to. 
- \item \code{covariatesTF}: a \code{logical} indicator of if the 
-  model needs covariates.
- \item \code{lag}: an \code{integer}-conformable value of the lag to use 
-  with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
-} 
-If only a single model is added, the name of 
-the model from the element \code{name} will be used to name the model's
-\code{list} in the larger \code{list}. If multiple models are added, each
-element \code{list} must be named according to the model and the
-\code{name} element. \cr}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
 
 \item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
 
 \item{t1}{\code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.}
 
-\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{confidence_level}{\code{numeric} confidence level used in 
-summarizing model output. Must be between \code{0} and \code{1}.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s 
-(from \code{\link{rodents_controls}}) specifying the structuring of the 
-rodents tables. See \code{\link{rodents_controls}} for details.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Fill the directory with components including (optionally) 
-             the raw data (\code{\link[portalr]{download_observations}}), 
-             portalPredictions archive (\code{\link{download_archive}}), 
-             climate forecasts (\code{\link{download_climate_forecasts}}), 
-             models (\code{\link{write_model}}).
-}
-\examples{
- \donttest{
-
-  create_dir("./portalcasting")
-  fill_dir("./portalcasting")
-
-  create_dir("./pc")
-  fill_raw("./pc")
-  fill_casts("./pc")
-  fill_fits("./pc")
-  fill_models("./pc")
- }
-
+Fill the directory with components including (optionally) the resources data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
 }

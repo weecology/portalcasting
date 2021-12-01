@@ -1,0 +1,11 @@
+AutoArima:
+  metadata:
+    name: AutoArima
+    description: classic model, all plots combined
+  fun: AutoArima
+  args: ~
+  datasets:
+  - all
+  - controls
+  - exclosures
+  - dm_controls

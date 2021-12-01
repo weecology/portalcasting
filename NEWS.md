@@ -4,8 +4,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
 
-# [portalcasting 0.25.0](https://github.com/weecology/portalcasting/releases/tag/v0.25.0)
-*2021-11-30*
+# portalcasting 0.25.0
+*In Progress*
 
 ### Tidying for JOSS ms
 * adding source and version args to check args
@@ -15,6 +15,11 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### User control of times of interest
 * shift from user controlling by new moon number to use of date
 * shift from `moon` to `newmoon` (as in `newmoonnumber` `newmoondate`) to realign with `portalr`
+
+### Changes in messageq
+
+* Function redesigned to align with `message` directly argument for argument with the addition of the `quiet` argument.
+* Now allows for multiple message arguments via `...` that become pasted together
 
 # [portalcasting 0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0)
 *2021-11-11*

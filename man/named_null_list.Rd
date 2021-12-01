@@ -2,20 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{named_null_list}
 \alias{named_null_list}
-\title{Create a named empty list}
+\title{Create a Named Empty List}
 \usage{
 named_null_list(element_names = NULL)
 }
 \arguments{
-\item{element_names}{\code{character} vector of names for the elements
-in the list.}
+\item{element_names}{\code{character} vector of names for the elements in the list.}
 }
 \value{
-\code{list} with names \code{element_names} and values \code{NULL}.
+\code{list} of \code{length(element_names)} elements with names \code{element_names} and values \code{NULL}.
 }
 \description{
-Produces a list with \code{NULL} for each element named 
- according to \code{element_names}.
+Produces a \code{list} with \code{NULL} for each element that is named according to \code{element_names}.
 }
 \examples{
  named_null_list(c("a", "b", "c"))
