@@ -11,7 +11,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * adding source and version args to check args
 * software context added to ms
 * overview added to readme
-
+* updating the getting started vignette to use production to allow for historical uses
 
 # [portalcasting 0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0)
 *2021-11-11*
