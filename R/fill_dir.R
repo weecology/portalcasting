@@ -252,7 +252,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                             start_moon = start_moon, lead_time = lead_time, 
                             min_lag = min_lag, cast_date = cast_date, 
                             quiet = quiet, control_files = control_files,
-                            arg_checks = arg_checks)
+                            arg_checks = arg_checks, verbose = verbose)
   prep_metadata(main = main, models = models,
                 data_sets = data_sets, moons = data_m, 
                 rodents = data_r, covariates = data_c, end_moon = end_moon, 
