@@ -2,7 +2,11 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.25.1](https://github.com/weecology/portalcasting/releases/tag/v0.25.1)
+*2021-12-08*
 
+### Getting latest version of portalr
+* tagging to update Docker image with portalr 0.3.9
 
 # [portalcasting 0.25.0](https://github.com/weecology/portalcasting/releases/tag/v0.25.0)
 *2021-11-30*

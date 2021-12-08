@@ -25,7 +25,7 @@ over from the [predictions repository](https://github.com/weecology/portalPredic
 We leverage a [software container](https://en.wikipedia.org/wiki/Operating-system-level_virtualization) to enable reproducibility of the [predictions repository](https://github.com/weecology/portalPredictions). Presently, we use a [Docker](https://hub.docker.com/r/weecology/portalcasting) image of the software environment to create a container for running the code. The image is automatically rebuilt when there is a new `portalcasting` release, tagged with both the `latest` and version-specific (`vX.X.X`) tags, and pushed to [DockerHub](https://hub.docker.com/r/weecology/portalcasting). 
 
 
-Because the `latest` image is updated with releases, the current master branch code in `portalcasting` is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). Rather, the most recent release is what is currently being executed. Presently, the `latest` image is built using `portalcasting` [v0.24.0](https://github.com/weecology/portalcasting/releases/tag/v0.24.0).
+Because the `latest` image is updated with releases, the current master branch code in `portalcasting` is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). Rather, the most recent release is what is currently being executed. Presently, the `latest` image is built using `portalcasting` [v0.25.1](https://github.com/weecology/portalcasting/releases/tag/v0.25.1).
 
 A development image (`dev`) is built from the master branch of `portalcasting` at every push to facilitate testing and should not be considered stable.
 
