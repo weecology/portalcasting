@@ -12,6 +12,7 @@ jobs:
   test-coverage:
     runs-on: ubuntu-20.04
     env:
+      R_DEFAULT_INTERNET_TIMEOUT: 300
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CRAN_REPO: https://packagemanager.rstudio.com/all/__linux__/focal/latest
     steps:
