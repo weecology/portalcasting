@@ -20,6 +20,12 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * `model_controls` and `rodent_dataset_controls` are `yaml` files that retain the control lists that used to be written into the source code. 
 * They are used to create `RData` files via `R` scripts in `inst/extdata`. **Still needs to be done by hand** 
 
+### Changes in messageq
+
+* Function redesigned to align with `message` directly argument for argument with the addition of the `quiet` argument.
+* Now allows for multiple message arguments via `...` that become pasted together
+
+
 # [portalcasting 0.25.1](https://github.com/weecology/portalcasting/releases/tag/v0.25.1)
 *2021-12-08*
 
