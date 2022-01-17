@@ -1,0 +1,320 @@
+all:
+  metadata:
+    name: all
+    description: classic dataset, all plots combined
+  fun: prepare_rodent_dataset
+  args:
+    name: all
+    clean: no
+    level: Site
+    type: Rodents
+    plots: all
+    treatment: ~
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species:
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    total: yes
+    effort: yes
+    interpolate: no
+all_interp:
+  metadata:
+    name: all_interp
+    description: classic dataset, all plots combined, interpolated for models that cannot have missing data
+  fun: prepare_rodent_dataset
+  args:
+    name: all_interp
+    clean: no
+    level: Site
+    type: Rodents
+    plots: all
+    treatment: ~
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species:
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    total: yes
+    effort: yes
+    interpolate: yes
+controls:
+  metadata: 
+    name: controls
+    description: classic dataset, control plots combined
+  fun: prepare_rodent_dataset
+  args:
+    name: controls
+    clean: no
+    level: Treatment
+    type: Rodents
+    plots: Longterm
+    treatment: control
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species:
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    total: yes
+    effort: yes
+    interpolate: no
+controls_interp:
+  metadata: 
+    name: controls_interp
+    description: classic dataset, control plots combined, interpolated for models that cannot have missing data
+  fun: prepare_rodent_dataset
+  args:
+    name: controls_interp
+    clean: no
+    level: Treatment
+    type: Rodents
+    plots: Longterm
+    treatment: control
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species:
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    total: yes
+    effort: yes
+    interpolate: yes
+exclosures:
+  metadata: 
+    name: exclosures
+    description: classic dataset, exclosure plots combined
+  fun: prepare_rodent_dataset
+  args:
+    name: exclosures
+    clean: no
+    level: Treatment
+    type: Rodents
+    plots: Longterm
+    treatment: exclosure
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species:
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    total: yes
+    effort: yes
+    interpolate: no
+exclosures_interp:
+  metadata: 
+    name: exclosures_interp
+    description: classic dataset, exclosure plots combined, interpolated for models that cannot have missing data
+  fun: prepare_rodent_dataset
+  args:
+    name: exclosures_interp
+    clean: no
+    level: Treatment
+    type: Rodents
+    plots: Longterm
+    treatment: exclosure
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species:
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    total: yes
+    effort: yes
+    interpolate: yes
+dm_controls:
+  metadata: 
+    name: dm_controls
+    description: DM only, control plots combined
+  fun: prepare_rodent_dataset
+  args:
+    name: dm_controls
+    clean: no
+    level: Treatment
+    type: Rodents
+    plots: Longterm
+    treatment: control
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species: DM
+    total: no
+    effort: yes
+    interpolate: no
+dm_controls_interp:
+  metadata:
+    name: dm_controls
+    description: DM only, control plots combined, interpolated for models that cannot have missing data
+  fun: prepare_rodent_dataset
+  args:
+    name: dm_controls_interp
+    clean: no
+    level: Treatment
+    type: Rodents
+    plots: Longterm
+    treatment: control
+    unknowns: no
+    shape: crosstab
+    time: newmoon
+    output: abundance
+    fillweight: no
+    na_drop: no
+    zero_drop: no
+    min_traps: 1.0
+    min_plots: 24.0
+    species: DM
+    total: no
+    effort: yes
+    interpolate: yes

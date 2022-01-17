@@ -2,6 +2,24 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.26.0
+
+### Naming scheme updates
+* `prefab` -> `prefabricated`
+* `prep` -> `prepare`
+
+### Settings list
+* `setup_dir` now takes a `settings` argument that is a `list` of the arguments 
+* `directory_settings` function now quickly and cleanly collapses the settings that go into `setup_dir`
+
+### Codebase formatting
+* No longer concerned about the 80 char line limit
+* long argument lists, etc. are now formatted for quick top-to-bottom reading, via alignment on the `(` and `=` 
+
+### Internal data control lists for data and model
+* `model_controls` and `rodent_dataset_controls` are `yaml` files that retain the control lists that used to be written into the source code. 
+* They are used to create `RData` files via `R` scripts in `inst/extdata`. **Still needs to be done by hand** 
+
 # [portalcasting 0.25.1](https://github.com/weecology/portalcasting/releases/tag/v0.25.1)
 *2021-12-08*
 
