@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_input_output.R
 \name{write_data}
 \alias{write_data}
-\title{Save data out to a file and return it}
+\title{Save Data Out to a File and Return It	Invisibly}
 \usage{
 write_data(
   dfl = NULL,
@@ -10,35 +10,25 @@ write_data(
   save = TRUE,
   filename = NULL,
   overwrite = TRUE,
-  quiet = FALSE,
-  arg_checks = TRUE
+  quiet = FALSE
 )
 }
 \arguments{
 \item{dfl}{\code{data.frame} or YAML \code{list} to be written out.}
 
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{save}{\code{logical} indicator controlling if \code{x} should 
-be saved out.}
+\item{save}{\code{logical} indicator controlling if \code{x} should be saved out.}
 
 \item{filename}{\code{character} name of the file for saving \code{x}.}
 
-\item{overwrite}{\code{logical} indicator of if the file should be
-overwritten if it exists.}
+\item{overwrite}{\code{logical} indicator of if the file should be overwritten if it exists.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
 }
 \value{
-\code{dfl} as input.
+\code{dfl} as input, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Save inputted data out to a data file if requested and 
- return it to the console.
+Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..
 }

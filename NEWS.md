@@ -7,6 +7,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Naming scheme updates
 * `prefab` -> `prefabricated`
 * `prep` -> `prepare`
+* `raw` -> `resources`
+* `casts` -> `output`
 
 ### Settings list
 * `setup_dir` now takes a `settings` argument that is a `list` of the arguments 

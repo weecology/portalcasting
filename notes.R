@@ -10,6 +10,12 @@ devtools::load_all()
 
 main <- "./testing"
 setup_dir(main)
+
+
+setup_production(main)
+
+
+
 portalcast(main, models = "ESSS")
 
 plot_cast_ts(main = main, data_set = "controls")

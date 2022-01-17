@@ -1,38 +1,22 @@
-verify_raw_data <- function(main = ".", raw_data = "PortalData", 
-                            arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  full <- file_path(main = main, sub = "raw", files = raw_data, 
-                    arg_checks = arg_checks) 
-  file.exists(full)
-}
-
 #' @title Download the Portal Predictions Repository Archive
 #'
-#' @description Downloads a specific \code{version} of the Portal Predictions 
-#'              repository from either GitHub or Zenodo (based on 
-#'              \code{source}) into the \code{<main>/raw} sub.
+#' @description Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/resources} sub.
 #'
-#' @param main \code{character} value defining the main component of the 
-#'              portalcasting directory tree. 
+#' @param main \code{character} value defining the main component of the portalcasting directory tree. 
 #'
-#' @param version \code{character} version of the data to download. Default 
-#'                \code{"latest"} downloads the most recent (by date 
-#'                published).
+#' @param version \code{character} version of the data to download. Default \code{"latest"} downloads the most recent (by date published). \code{NULL} means no download. 
 #'
-#' @param source \code{character} indicator of the source for the download. 
-#'                Either \code{"github"} (defualt) or \code{"github"}.
+#' @param source \code{character} indicator of the source for the download. Either \code{"github"} (defualt) or \code{"github"}.
 #'
-#' @param timeout \code{numeric} value passed to \code{\link[base]{options}}
-#'                to dictate the download timeout limit.
+#' @param pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment. 
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'              quieted.
+#' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'                printed.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @note There are two calls to \code{link[base]{Sys.sleep}} for 30 seconds 
-#'       each to allow for the file unzipping, copying, and such to catch up.
+#' @param verbose \code{logical} indicator if detailed messages should be printed.
+#'
+#' @note There are two calls to \code{link[base]{Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -42,7 +26,8 @@ download_archive <- function(main    = ".",
                              version = "latest", 
                              source  = "github",
                              quiet   = FALSE,
-                             verbose   = FALSE,
+                             verbose = FALSE,
+                             pause   = 30,
                              timeout = getOption("timeout")) {
 
   return_if_null(version)
@@ -53,24 +38,26 @@ download_archive <- function(main    = ".",
 
   if (tolower(source) == "zenodo") {
 
-    base_url <- "https://zenodo.org/api/records/" 
+    base_url <-  
 
-    got <- GET(base_url, query = list(q = "conceptrecid:833438",
-                                      size = 9999, 
-                                      all_versions = "true"))
+    got <- GET(url   = "https://zenodo.org/api/records/", 
+               query = list(q            = "conceptrecid:833438",
+                            size         = 9999, 
+                            all_versions = "true"))
 
-    stop_for_status(got, task = paste0("locate Zenodo concept record"))
+    stop_for_status(x    = got,
+                    task = paste0("locate Zenodo concept record"))
 
-    contents <- content(got)    
+    contents <- content(x = got)    
 
-    metadata <- lapply(FUN = getElement, 
-                       X = contents, 
+    metadata <- lapply(FUN  = getElement, 
+                       X    = contents, 
                        name = "metadata")
-    versions <- sapply(FUN = getElement, 
-                       X = metadata, 
+    versions <- sapply(FUN  = getElement, 
+                       X    = metadata, 
                        name = "version")
-    pub_date <- sapply(FUN = getElement, 
-                       X = metadata, 
+    pub_date <- sapply(FUN  = getElement, 
+                       X    = metadata, 
                        name = "publication_date")
 
     selected <- ifelse(version == "latest",
@@ -89,14 +76,13 @@ download_archive <- function(main    = ".",
 
   } else if (tolower(source) == "github") {
 
-    base_url <- "https://api.github.com/repos/weecology/portalPredictions/" 
     url <- ifelse(version == "latest", 
-                  paste0(base_url, "releases/latest"),
-                  paste0(base_url, "releases/tags/", version))
+                  "https://api.github.com/repos/weecology/portalPredictions/releases/latest",
+                  paste0("https://api.github.com/repos/weecology/portalPredictions/releases/tags/", version))
 
-    got <- GET(url)
+    got <- GET(url = url)
 
-    stop_for_status(got, 
+    stop_for_status(x    = got, 
                     task = paste0("locate version `", version, "` on GitHub"))
 
     zipball_url <- content(got)$zipball_url      
@@ -109,39 +95,48 @@ download_archive <- function(main    = ".",
 
   }
   
-  if (!quiet) {
-    message("Downloading version `", version, "` of the archive...")
+  messageq("Downloading archive version `", version, "` ...", quiet = quiet)
+
+  temp  <- file.path(tempdir(), "portalPredictions.zip")
+  final <- file.path(main, "resources", "portalPredictions")
+
+  result <- tryCatch(
+              download.file(url      = zipball_url, 
+                            destfile = temp, 
+                            quiet    = !verbose, 
+                            mode     = "wb"),
+              error = function(x){NA})
+
+  if (is.na(result)) {
+
+    warning("Archive could not be downloaded", call. = FALSE)
+    return(invisible())
+
   }
 
-  temp <- normalized_file_path(tempdir(), "portalPredictions.zip", 
-                               mustWork = FALSE)
-  final <- normalized_file_path(main, "raw", "portalPredictions", 
-                                mustWork = FALSE)
-
-  download.file(zipball_url, temp, quiet = !verbose, mode = "wb")
 
   if (file.exists(final)) {
 
-    old_files <- list.files(final,
-                            full.names = TRUE,
-                            all.files = TRUE,
-                            recursive = TRUE,
+    old_files <- list.files(path         = final,
+                            full.names   = TRUE,
+                            all.files    = TRUE,
+                            recursive    = TRUE,
                             include.dirs = FALSE)
 
-    file.remove(normalizePath(old_files))
+    file.remove(old_files)
 
-    unlink(final, recursive = TRUE)
+    unlink(x         = final, 
+           recursive = TRUE)
 
   }
 
   folder_name <- unzip(temp, list = TRUE)$Name[1]
 
-  temp_unzip <- normalized_file_path(main, "raw", folder_name,
-                                     mustWork = FALSE)
+  temp_unzip <- file.path(main, "resources", folder_name)
 
-  unzip(temp, exdir = normalized_file_path(main, "raw"))
+  unzip(temp, exdir = file.path(main, "resources"))
 
-  Sys.sleep(30)
+  Sys.sleep(pause)
 
   dir.create(final)
 
@@ -149,7 +144,7 @@ download_archive <- function(main    = ".",
             final, 
             recursive = TRUE)
 
-  Sys.sleep(30)
+  Sys.sleep(pause)
 
   unlink(temp_unzip, recursive = TRUE)
   file.remove(temp)
@@ -158,42 +153,33 @@ download_archive <- function(main    = ".",
 
 }
 
-
-
 #' @title Download Climate Forecasts
 #'
-#' @description Downloads climate forecasts, presently only from NMME 
-#'              (see \code{\link{NMME_urls}}) into the
-#'               \code{<main>/raw} sub.
+#' @description Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/resources} sub.
 #'
-#' @param main \code{character} value defining the main component of the 
-#'              portalcasting directory tree. 
+#' @param main \code{character} value defining the main component of the portalcasting directory tree. 
 #'
-#' @param source \code{character} indicator of the source for the download. 
-#'                Only \code{"NMME"} presently available.
+#' @param source \code{character} indicator of the source for the download. Only \code{"NMME"} presently available.
 #'
-#' @param version \code{Date}-coercible start of the climate cast. See
-#'                \code{\link{NMME_urls}} (used as \code{start}).
+#' @param version \code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).
 #'
-#' @param timeout \code{numeric} value passed to \code{\link[base]{options}}
-#'                to dictate the download timeout limit.
+#' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'              quieted.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'                printed.
+#' @param verbose \code{logical} indicator if detailed messages should be printed.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
-download_climate_forecasts <- function(main    = ".",
-                                       version = Sys.Date(), 
-                                       source  = "NMME",
-                                       quiet   = FALSE,
-                                       verbose = FALSE,
-                                       timeout = getOption("timeout")) {
+download_climate_forecasts <- function (main    = ".",
+                                        version = Sys.Date(), 
+                                        source  = "NMME",
+                                        data    = c("tasmin", "tasmean", "tasmax", "pr"),
+                                        quiet   = FALSE,
+                                        verbose = FALSE,
+                                        timeout = getOption("timeout")){
 
   return_if_null(version)
 
@@ -203,24 +189,17 @@ download_climate_forecasts <- function(main    = ".",
 
   if (tolower(source) == "nmme") {
 
-    dir.create(path = normalized_file_path(main, "raw", source, 
-                                           mustWork = FALSE),
+    dir.create(path         = file.path(main, "resources", source),
                showWarnings = FALSE)
 
-    urls <- NMME_urls(start = version)
-    file_names <- paste0(names(urls), ".csv")
-    dests <- normalized_file_path(main, "raw", source, file_names, 
-                                  mustWork = FALSE)
+    messageq("Downloading climate forcasts version `", version, "` ...", quiet = quiet)
+    
 
-    if (!quiet) {
-      message("Downloading version `", version, "` of climate forcasts...")
-    }
-
-    mapply(FUN = download.file,
-           url = urls,
-           destfile = dests, 
-           mode = "wb",
-           quiet = !verbose)
+    mapply(FUN      = download.file,
+           url      = NMME_urls(start = version, data = data),
+           destfile = file.path(main, "resources", source, paste0(data, ".csv")), 
+           mode     = "wb",
+           quiet    = !verbose)
 
 
   } else {
@@ -233,51 +212,23 @@ download_climate_forecasts <- function(main    = ".",
 
 }
 
-#' @title URLs for the Northwest Knowledge Network's North American
-#'        Multi-Model Ensemble (NMME) climate forecasts
+#' @title URLs for the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts
 #'
-#' @description Generate the URL for a specific request to the NMME API based 
-#'              on parameters. See arguments for specifics and \code{Details}
-#'              for links. 
+#' @description Generate the URL for a specific request to the NMME API based on parameters. See arguments for specifics and \code{Details} for links. 
 #'
 #' @param start,end \code{Date} for the start and end of the cast.
 #'
-#' @param model \code{character} value of the model to use, one of 
-#'               \code{"ENSMEAN"}, (Multi-Model Mean), 
-#'               \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), 
-#'               \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
-#'               \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} 
-#'               (NCAR-CCSM4). 
-#'               \cr \cr
-#'               Presently can only take one value.
+#' @param model \code{character} value of the model to use, one of \code{"ENSMEAN"}, (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1), \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). Presently can only take one value.
 #'
-#' @param lat,lon \code{numeric} latitude and longitude values used to 
-#'                downscale the model. 
-#'                \cr \cr
-#'                Presently can only take one value for each.
+#' @param lat,lon \code{numeric} latitude and longitude values used to downscale the model. Presently can only take one value for each.
 #'
-#' @param freq \code{character} value of the frequency of the data, can 
-#'             be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} 
-#'             is a number between \code{1} and \code{7}. 
-#'             \cr \cr
-#'             Presently can only take one value.
+#' @param freq \code{character} value of the frequency of the data, can be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a number between \code{1} and \code{7}. Presently can only take one value.
 #'
-#' @param data \code{character} value of the type of data, one of 
-#'             \code{"tasmin"} (minimum temperature), \code{"tasmean"}
-#'             (mean temperature), \code{"tasmax"} (maximum temperature),
-#'             \code{"pr"} (precipitation), \code{"dps"} (dew point), 
-#'             \code{"rsds"} (shortwave radiation; sun intensity), 
-#'             \code{"was"} (wind speed).
+#' @param data \code{character} value of the type of data, one of \code{"tasmin"} (minimum temperature), \code{"tasmean"} (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"} (precipitation), \code{"dps"} (dew point), \code{"rsds"} (shortwave radiation; sun intensity), \code{"was"} (wind speed).
 #'
-#' @details The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} 
-#'          (NKN) at the University of Idaho provides a 
-#'          \href{https://bit.ly/2tCP8NX}{simple API} to download 
-#'          downscaled climate forecasts using the 
-#'          \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} 
-#'          (NMME) set. 
+#' @details The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set. 
 #'
-#' @return Named \code{character} vector of URLs, or \code{NULL} if
-#'         \code{data}, \code{freq}, or \code{model} is \code{NULL}.
+#' @return Named \code{character} vector of URLs, or \code{NULL} if \code{data}, \code{freq}, or \code{model} is \code{NULL}.
 #'
 #' @examples
 #'   NMME_urls()

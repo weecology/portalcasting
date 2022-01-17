@@ -130,7 +130,7 @@ fill_resources <- function (main     = ".",
                             quiet    = FALSE,
                             verbose  = FALSE) {
 
-  messageq(" Downloading resources ... ", quiet = quiet)
+  messageq("Downloading resources ... ", quiet = quiet)
 
   download_observations(path        = file.path(main, "resources"), 
                         version     = settings$resources$PortalData$version,
