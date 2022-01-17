@@ -64,46 +64,6 @@ write_directory_config <- function(main = ".",
   writeLines(yams, con = config_path)
   invisible(NULL)
 }
-
-#' @rdname directory_config
-#'
-#' @export
-#'
-update_directory_config <- function(main = ".", 
-                                   filename_config = "dir_config.yaml",
-                                    downloads_versions = NULL, 
-                                    quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  config_path <- file_path(main = main, files = filename_config)
-  config <- read_directory_config(main = main, 
-                                 filename_config = filename_config,
-                                 quiet = quiet, arg_checks = arg_checks)
-  if(!is.null(downloads_versions)){
-    config$downloads_versions <- downloads_versions
-  }
-  yams <- as.yaml(config)
-  writeLines(yams, con = config_path)  
-  invisible(NULL)
-}
-
-
-
-#' @rdname directory_config
-#'
-#' @export
-#'
-read_directory_config <- function(main = ".", 
-                                  filename_config = "dir_config.yaml",
-                                  quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  config_path <- file_path(main = main, files = filename_config,
-                           arg_checks = arg_checks)
-  if(!file.exists(config_path)){
-    stop("dir_config.yaml file is missing, recreate directory", call. = FALSE)
-  }
-  yaml.load_file(config_path)  
-}
-
 #' @title Save data out to a file and return it	
 #'
 #' @description Save inputted data out to a data file if requested and 

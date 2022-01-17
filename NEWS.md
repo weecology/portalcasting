@@ -25,6 +25,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Function redesigned to align with `message` directly argument for argument with the addition of the `quiet` argument.
 * Now allows for multiple message arguments via `...` that become pasted together
 
+### Simplified directory creation function pipeline
+* Now just `create_dir`
+
 
 # [portalcasting 0.25.1](https://github.com/weecology/portalcasting/releases/tag/v0.25.1)
 *2021-12-08*

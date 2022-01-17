@@ -3,41 +3,23 @@
 \name{directory_config}
 \alias{directory_config}
 \alias{write_directory_config}
-\alias{update_directory_config}
-\alias{read_directory_config}
 \title{Create, update, and read the directory configuration file}
 \usage{
 write_directory_config(
   main = ".",
-  filename_config = "dir_config.yaml",
-  quiet = FALSE,
-  arg_checks = TRUE
-)
-
-update_directory_config(
-  main = ".",
-  filename_config = "dir_config.yaml",
-  downloads_versions = NULL,
-  quiet = FALSE,
-  arg_checks = TRUE
-)
-
-read_directory_config(
-  main = ".",
-  filename_config = "dir_config.yaml",
-  quiet = FALSE,
-  arg_checks = TRUE
+  settings = directory_settings(),
+  quiet = FALSE
 )
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
 
-\item{filename_config}{\code{character} value of the path to the directory
-config YAML.}
-
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}
+
+\item{filename_config}{\code{character} value of the path to the directory
+config YAML.}
 
 \item{arg_checks}{\code{logical} value of if the arguments should be
 checked using standard protocols via \code{\link{check_args}}. The 
