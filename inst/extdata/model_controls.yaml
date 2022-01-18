@@ -5,6 +5,75 @@ AutoArima:
   fun: AutoArima
   args: ~
   datasets:
+  - all_interp
+  - controls_interp
+  - exclosures_interp
+  - dm_controls_interp
+ESSS:
+  metadata:
+    name: ESSS
+    description: classic model, all plots combined
+  fun: ESSS
+  args: ~
+  datasets:
+  - all
+  - controls
+  - exclosures
+  - dm_controls
+NaiveArima:
+  metadata:
+    name: NaiveArima
+    description: classic model, all plots combined
+  fun: NaiveArima
+  args: ~
+  datasets:
+  - all
+  - controls
+  - exclosures
+  - dm_controls
+nbGARCH:
+  metadata:
+    name: nbGARCH
+    description: classic model, all plots combined
+  fun: nbGARCH
+  args: ~
+  datasets:
+  - all_interp
+  - controls_interp
+  - exclosures_interp
+  - dm_controls_interp
+nbsGARCH:
+  metadata:
+    name: nbsGARCH
+    description: classic model, all plots combined
+  fun: nbsGARCH
+  args: ~
+  datasets:
+  - all_interp
+  - controls_interp
+  - exclosures_interp
+  - dm_controls_interp
+pevGARCH:
+  metadata:
+    name: pevGARCH
+    description: classic model, all plots combined
+  fun: pevGARCH
+  args: 
+    covariates: TRUE
+    lag: 6
+  datasets:
+  - all_interp
+  - controls_interp
+  - exclosures_interp
+  - dm_controls_interp
+jags_RW:
+  metadata:
+    name: jags_RW
+    description: classic model, all plots combined
+  fun: jags_RW
+  args: 
+    control_runjags: runjags_control()
+  datasets:
   - all
   - controls
   - exclosures

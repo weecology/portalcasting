@@ -22,3 +22,16 @@ if (!dir.exists("data")) {
   dir.create("data")
 }
 save(model_controls = model_controls, file = "data/model_controls.RData")
+
+
+# Currently not included
+#
+#    simplexEDM = list(name = "simplexEDM", 
+#                      data_sets = c("all_interp", "controls_interp", 
+#                                    "exclosures_interp", 
+#                                     "dm_controls_interp"), 
+#                      covariatesTF = FALSE, lag = NA, max_E = 7),
+#    GPEDM = list(name = "GPEDM", 
+#                 data_sets = c("all_interp", "controls_interp", 
+#                               "exclosures_interp", "dm_controls_interp"), 
+#                 covariatesTF = FALSE, lag = NA, max_E = 7),

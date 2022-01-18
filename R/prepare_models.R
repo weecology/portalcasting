@@ -27,55 +27,6 @@ write_model <- function (main  = ".",
   invisible()
 
 }
-prefab_model_controls <- function(){
-  list(
-    AutoArima = list(name = "AutoArima", 
-                     data_sets = c("all", "controls", "exclosures",
-                                   "dm_controls"),
-                     covariatesTF = FALSE, 
-                     lag = NA), 
-    ESSS = list(name = "ESSS", 
-                data_sets = c("all_interp", "controls_interp", 
-                              "exclosures_interp", "dm_controls_interp"),
-                covariatesTF = FALSE, 
-                lag = NA), 
-    NaiveArima = list(name = "NaiveArima", 
-                      data_sets = c("all", "controls", "exclosures",
-                                    "dm_controls"),
-                      covariatesTF = FALSE, 
-                      lag = NA), 
-    nbGARCH = list(name = "nbGARCH", 
-                   data_sets = c("all_interp", "controls_interp", 
-                                 "exclosures_interp", "dm_controls_interp"),
-                   covariatesTF = FALSE, 
-                   lag = NA), 
-    nbsGARCH = list(name = "nbsGARCH", 
-                    data_sets = c("all_interp", "controls_interp", 
-                                  "exclosures_interp", "dm_controls_interp"),
-                    covariatesTF = FALSE, 
-                    lag = NA), 
-    pevGARCH = list(name = "pevGARCH",  
-                    data_sets = c("all_interp", "controls_interp", 
-                                  "exclosures_interp", "dm_controls_interp"),
-                    covariatesTF = TRUE, lag = 6), 
-#    simplexEDM = list(name = "simplexEDM", 
-#                      data_sets = c("all_interp", "controls_interp", 
-#                                    "exclosures_interp", 
-#                                     "dm_controls_interp"), 
-#                      covariatesTF = FALSE, lag = NA, max_E = 7),
-#    GPEDM = list(name = "GPEDM", 
-#                 data_sets = c("all_interp", "controls_interp", 
-#                               "exclosures_interp", "dm_controls_interp"), 
-#                 covariatesTF = FALSE, lag = NA, max_E = 7),
-    
-    jags_RW = list(name = "jags_RW", 
-                   data_sets = c("all", "controls", "exclosures",
-                                 "dm_controls"), 
-                   covariatesTF = FALSE, lag = NA,
-                   control_runjags = runjags_control())
-  )
-}
-
 
 #' @title Produce the control lists for models
 #' 

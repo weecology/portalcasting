@@ -8,12 +8,16 @@ devtools::document()
 devtools::load_all()
 
 
-main <- "./testing"
+main <- "./testing_dir"
 setup_dir(main)
 
-
+main <- "./testing"
 setup_production(main)
 
+
+#
+# at this point, can set up the directory 
+#
 
 
 portalcast(main, models = "ESSS")
