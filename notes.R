@@ -16,9 +16,10 @@ setup_production(main)
 
 
 #
-# at this point, can set up the directory 
+# at this point, can set up the directory, filled properly
 #
-
+# working within portalcast... need to determine how best to enact the models before digging into that coding
+#  
 
 portalcast(main, models = "ESSS")
 

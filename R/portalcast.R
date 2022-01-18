@@ -150,25 +150,18 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                       climate_forecast_version = Sys.Date(),                       
                        update_prefab_models = FALSE, bline = TRUE, 
                        quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+
   return_if_null(models)
-  mainp <- main_path(main = main, arg_checks = arg_checks)
-  verify(paths = mainp, arg_checks = arg_checks)
-  portalcast_welcome(quiet = quiet, arg_checks = arg_checks)
+
+  messageq(message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
+
   update_models(main = main, models = models, controls_model = controls_model, 
                 update_prefab_models = update_prefab_models, quiet = quiet,
                 verbose = verbose, control_files = control_files, 
                 arg_checks = arg_checks)
   verify_models(main = main, models = models, quiet = quiet, 
                 arg_checks = arg_checks)
-#  fill_raw(main = main, 
-#                 PortalData_version = PortalData_version,
-#                 PortalData_source = PortalData_source,
-#                 portalPredictions_version = portalPredictions_version,
-#                 portalPredictions_source = portalPredictions_source,
-#                 climate_forecast_version = climate_forecast_version,
-#                 climate_forecast_source = climate_forecast_source,
-#                 quiet = quiet, verbose = verbose)
+
 
   last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
   end_moons <- ifnull(end_moons, last)
