@@ -2,6 +2,19 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.25.3](https://github.com/weecology/portalcasting/releases/tag/v0.25.3)
+*2022-01-26*
+
+### Further removal of vestigial rEDM code
+* Commenting out as needed to prevent build breaks
+
+
+# [portalcasting 0.25.2](https://github.com/weecology/portalcasting/releases/tag/v0.25.2)
+*2022-01-19*
+
+### Updating title to match JOSS 
+
+
 # [portalcasting 0.25.1](https://github.com/weecology/portalcasting/releases/tag/v0.25.1)
 *2021-12-08*
 
