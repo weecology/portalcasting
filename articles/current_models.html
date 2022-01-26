@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.25.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.25.3</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
       <h1 data-toc-skip>Current Models</h1>
                         <h4 data-toc-skip class="author">Juniper L. Simonis, Hao Ye, and S. K. Morgan Ernest</h4>
             
-            <h4 data-toc-skip class="date">15 December, 2021</h4>
+            <h4 data-toc-skip class="date">26 January, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/current_models.Rmd" class="external-link"><code>vignettes/current_models.Rmd</code></a></small>
       <div class="hidden name"><code>current_models.Rmd</code></div>
@@ -178,7 +178,7 @@
 <h3 id="gpedm">GPEDM<a class="anchor" aria-label="anchor" href="#gpedm"></a>
 </h3>
 <p>GPEDM (Gaussian processes using Empirical Dynamic Modeling) is a state-space reconstruction model adapted for forecasting and fit to the interpolated data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. . The method uses time-delay embedding to reconstruct a state-space for the dynamics underlying a time series <span class="citation">(Packard et al. 1980, @Takens1981)</span>. The forecast function is approximate using Gaussian processes.</p>
-<p>As with <code>simplexEDM()</code>, many of the parameters are fit automatically, such as the length-scale, and variance parameters (see <code><a href="https://rdrr.io/pkg/rEDM/man/deprecated.html" class="external-link">rEDM::block_gp()</a></code> for details). One exception is the dimension of the time-delay embedding. Here, the embedding dimension (<span class="math inline">\(E\)</span>) is selected as the value (between <code>1</code> and the <code>max_E</code> argument to <code>GPEDM()</code>) that minimizes the mean absolute error over the in-sample portion of the data.</p>
+<p>As with <code>simplexEDM()</code>, many of the parameters are fit automatically, such as the length-scale, and variance parameters (see <code>rEDM::block_gp()</code> for details). One exception is the dimension of the time-delay embedding. Here, the embedding dimension (<span class="math inline">\(E\)</span>) is selected as the value (between <code>1</code> and the <code>max_E</code> argument to <code>GPEDM()</code>) that minimizes the mean absolute error over the in-sample portion of the data.</p>
 </div>
 </div>
 <div class="section level2 unnumbered">
@@ -239,7 +239,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer>
