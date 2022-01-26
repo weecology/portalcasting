@@ -28,7 +28,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-
+    env:
+      R_DEFAULT_INTERNET_TIMEOUT: 300
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
