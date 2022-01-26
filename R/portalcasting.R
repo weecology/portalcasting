@@ -7,7 +7,7 @@
 #' @importFrom portalr download_observations get_future_moons 
 #'  load_trapping_data ndvi summarize_rodent_data weather
 #' @importFrom runjags run.jags runjags.options
-##' @importFrom rEDM simplex tde_gp
+#### @importFrom rEDM simplex tde_gp
 #' @importFrom scoringRules crps_sample
 #' @importFrom stats AIC lm na.omit predict qnorm quantile rgamma rnorm runif
 #'  sd
