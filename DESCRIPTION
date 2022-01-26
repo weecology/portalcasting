@@ -24,7 +24,7 @@ URL: https://weecology.github.io/portalcasting, https://github.com/weecology/por
 BugReports: https://github.com/weecology/portalcasting/issues
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
-LazyData: true
+LazyData: false
 Imports:
     coda,
     forecast,
