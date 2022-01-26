@@ -31,7 +31,6 @@ Imports:
     httr,
     jsonlite,
     portalr,
-    rEDM,
     runjags,
     scoringRules,
     tscount,
