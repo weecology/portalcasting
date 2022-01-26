@@ -105,9 +105,9 @@ prefab_model_controls <- function(){
 #'  } 
 #'  In addition, some models require additional specific elements: 
 #'  \itemize{
-#'   \item \code{max_E}: \code{integer} (or integer \code{numeric}) 
-#'    maximum embedding dimension to search amongst for EDM models. See 
-#'    \code{\link[rEDM]{simplex}} for more information.
+#   \item \code{max_E}: \code{integer} (or integer \code{numeric}) 
+#    maximum embedding dimension to search amongst for EDM models. See 
+#    \code{\link[rEDM]{simplex}} for more information.
 #'   \item \code{control_runjags}: \code{list} of arguments passed to 
 #'    \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}. 
 #'  }
@@ -317,8 +317,8 @@ prefab_models <- function(){
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'  
 #' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
-#'  embedding dimension to search amongst for EDM models. See 
-#'  \code{\link[rEDM]{simplex}} for more information.
+#'  embedding dimension to search amongst for EDM models. Not currently used.  
+#   See \code{\link[rEDM]{simplex}} for more information.
 #'
 #' @param control_runjags \code{list} of arguments passed to 
 #'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.

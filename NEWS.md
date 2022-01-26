@@ -2,6 +2,11 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.25.4](https://github.com/weecology/portalcasting/releases/tag/v0.25.4)
+*2022-01-26*
+
+### Docker build check issues
+
 # [portalcasting 0.25.3](https://github.com/weecology/portalcasting/releases/tag/v0.25.3)
 *2022-01-26*
 
