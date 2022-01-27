@@ -27,6 +27,7 @@ jobs:
     # Copy of the R-CMD-check workflow to make sure that build passes before pushing container on new tag
     runs-on: ubuntu-20.04
     env:
+      R_DEFAULT_INTERNET_TIMEOUT: 300
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CRAN_REPO: https://packagemanager.rstudio.com/all/__linux__/focal/latest
     steps:
@@ -52,14 +53,13 @@ jobs:
           rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
 
-  build:
+  build-docker-image:
     needs: R-CMD-check
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    env:
-      R_DEFAULT_INTERNET_TIMEOUT: 300
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
