@@ -22,7 +22,7 @@ t2 <- ts[-1]
 t2_t1 <- t2 - t1
 Rbar <- Rt2 / t2_t1
 
-hist(Rbar)
+plot(density(Rbar))
 
 mod <- nls(Rbar ~ log(rm) - c * Nt1, start = list(rm = 0.5, c = 1))
 summary(mod)
