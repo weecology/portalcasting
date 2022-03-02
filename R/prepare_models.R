@@ -43,8 +43,13 @@ prefab_model_controls <- function(){
                    data_sets = c("all", "controls", "exclosures",
                                  "dm_controls"), 
                    covariatesTF = FALSE, lag = NA,
-                   control_runjags = runjags_control())
-  )
+                   control_runjags = runjags_control()),
+    
+    jags_logistic = list(name = "jags_logistic", 
+                   data_sets = c("dm_controls"), 
+                   covariatesTF = FALSE, lag = NA,
+                   control_runjags = runjags_control()))
+
 }
 
 
@@ -66,7 +71,7 @@ prefab_model_controls <- function(){
 #'
 #' @details Any model that is part of the \code{prefab} set 
 #'  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
-#'  "pevGARCH", "jags_RW")}) 
+#'  "pevGARCH", "jags_RW", "jags_logistic")}) 
 #'  has its script-writing controls already included internally
 #'  via the non-exported function \code{prefab_model_controls}. Users 
 #'  only need to include controls for non-prefab \code{models}. \cr \cr

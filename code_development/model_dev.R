@@ -50,7 +50,9 @@ data_set <- "DM_controls"
   past_N       <- length(past_count)
   all_count    <- rodents_table[ , species_in]
  
-
+  moon0        <- start_moon - 1
+  moon0_in     <- which(rodents_table$moon == moon0)
+  count0       <- rodents_table[moon0_in, species_in]
 
   log_past_count      <- log(past_count + 1 / past_ntraps)
   mean_log_past_count <- mean(log_past_count, na.rm = TRUE)

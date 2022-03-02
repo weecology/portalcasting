@@ -26,6 +26,9 @@
 #  approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson 
 #'  observation process using JAGS (Just Another Gibbs Sampler; 
+#'  Plummer 2003) hierarchical Bayesian inference. \cr \cr
+#'  \code{jags_logistic} fits a log-scale density logistic-growth (r-K) model 
+#'  with a Poisson observation process using JAGS (Just Another Gibbs Sampler; 
 #'  Plummer 2003) hierarchical Bayesian inference. 
 #'
 #' @details 
@@ -107,6 +110,7 @@
 #'   nbsGARCH()
 #'   pevGARCH()
 #'   jags_RW()
+#'   jags_logistic()
 #'  }
 #'
 #' @name prefab_model_functions

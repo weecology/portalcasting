@@ -154,6 +154,7 @@ reference:
       - AutoArima
       - ESSS
       - jags_RW
+      - jags_logistic
       - nbGARCH
       - nbsGARCH
       - NaiveArima

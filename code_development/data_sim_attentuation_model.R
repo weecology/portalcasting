@@ -1,10 +1,9 @@
-# working here! getting a sim up and running to verify!
-#  looking good so far. next thing is to get the K parameter off of the integer poisson
-#
+
 
     r      <- 0.6
     K      <- 40
     nmoons <- 335
+    a      <- 1.2
     seed   <- 1312
 
     set.seed(seed)
@@ -25,6 +24,7 @@
     for (i in 2:nmoons) {
 
       X[i] <- X[i-1] * exp(r * (1 - (X[i - 1] / K)))
+#      X[i] <- X[i-1] * exp(r * (1 - ((X[i - 1] ^ a) / K)))
 
       Y[i] <- rpois(1, X[i])
 
@@ -50,6 +50,7 @@
   jags_model <- "model {
 
     r  ~ dnorm(0, 10)
+    a  ~ dnorm(1, 50)
 
     log_K   ~ dnorm(log_bonus_max_count, 1 / log_bonus_max_count)
     K       <- exp(log_K)
@@ -83,13 +84,14 @@
            .RNG.seed = sample(1:1e+06, 1),
            log_X0    = log(rnorm(1, data$log_X0_mean, sqrt(1 / data$log_X0_precision))),
            r         = rnorm(1, 0, 1),
+           a         = runif(1, 0.5, 1.5),
            log_K     = log(rnorm(1, data$log_bonus_max_count, 0.1 * sqrt( data$log_bonus_max_count) )))
 
     }
 
   }
 
-  monitor <- c("r", "K", "X0")
+  monitor <- c("r", "a", "K", "X0")
 
   model_fit <- run.jags(model     = jags_model, 
                         monitor   = monitor, 
