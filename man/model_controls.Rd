@@ -94,7 +94,7 @@ The models are written and managed using generalized functions
 \details{
 Any model that is part of the \code{prefab} set 
  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
- "pevGARCH", "jags_RW")}) 
+ "pevGARCH", "jags_RW", "jags_logistic")}) 
  has its script-writing controls already included internally
  via the non-exported function \code{prefab_model_controls}. Users 
  only need to include controls for non-prefab \code{models}. \cr \cr

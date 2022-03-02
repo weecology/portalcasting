@@ -287,7 +287,6 @@ jags_RW <- function(main = ".", data_set = "all",
 }
 ```
 
-Running this model in the forecasting pipeline produces standard output (allowing it to be integrated with the other cast output) and highlights the starting point for more mechanistic time series models.
-
+Running this model in the forecasting pipeline produces standard output (allowing it to be integrated with the other cast output) and highlights the starting point for more mechanistic time series models, starting with the logistic growth model (`jags_logistic`)
 
 ## References

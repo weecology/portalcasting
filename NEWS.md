@@ -2,6 +2,14 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.26.0](https://github.com/weecology/portalcasting/releases/tag/v0.26.0)
+*2022-03-02*
+
+### jags_logistic model added
+* invoked as `jags_logistic` like `jags_RW`, applied to `DM` controls dataset.
+* Building upon the jags_RW model, jags_logistic expands upon the "process model" underlying the Poisson observations. 
+* There are four process parameters: mu (the density of the species at the beginning of the time series) and tau (the precision (inverse variance) of the random walk, which is Gaussian on the log scale) for the starting value and r (growth rate) and K (carrying capacity) of the dynamic population. The observation model has no additional parameters. 
+
 # [portalcasting 0.25.4](https://github.com/weecology/portalcasting/releases/tag/v0.25.4)
 *2022-01-26*
 

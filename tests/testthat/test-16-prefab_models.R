@@ -253,3 +253,21 @@ test_that("jags_RW model", {
   expect_is(f_e, "list")
 
 })
+
+test_that("jags_logistic model", {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  # check for JAGS installation on system
+
+    check_jags() 
+
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  expect_message(f_a <- jags_logistic(main = main, control_runjags = rjc,
+                                data_set = "dm_controls", quiet = FALSE))
+  expect_is(f_a, "list")
+
+
+})
