@@ -6,6 +6,7 @@
 \usage{
 jags_ss(
   main = ".",
+  model_name = NULL,
   data_set = "all",
   control_files = files_control(),
   control_runjags = runjags_control(),
@@ -21,6 +22,8 @@ jags_ss(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of
 the directory tree.}
+
+\item{model_name}{\code{character} value name of the model name to save in the cast tab.}
 
 \item{data_set}{\code{character} value name of the rodent data set, such as 
 (\code{"all"} or \code{"controls"}).}

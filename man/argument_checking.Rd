@@ -134,6 +134,7 @@ Argument details used for checking are produced simply via
    \code{"background"}, \code{"bgparallel"}, or \code{"snow"}),
   \code{model} (inputted values are checked via 
    \code{\link{verify_models}}), 
+  \code{model_name}, 
   \code{name}, 
   \code{output} (if not \code{NULL}, must be \code{"abundance"}),
   \code{path},

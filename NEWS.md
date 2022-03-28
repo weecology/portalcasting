@@ -2,7 +2,9 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.26.0
+
+# portalcasting 0.26.1
+
 
 ### Naming scheme updates
 * `prefab` -> `prefabricated`
@@ -29,6 +31,32 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### Simplified directory creation function pipeline
 * Now just `create_dir`
+
+# [portalcasting 0.26.0](https://github.com/weecology/portalcasting/releases/tag/v0.26.0)
+*2022-03-02*
+
+### jags_logistic model added
+* invoked as `jags_logistic` like `jags_RW`, applied to `DM` controls dataset.
+* Building upon the jags_RW model, jags_logistic expands upon the "process model" underlying the Poisson observations. 
+* There are four process parameters: mu (the density of the species at the beginning of the time series) and tau (the precision (inverse variance) of the random walk, which is Gaussian on the log scale) for the starting value and r (growth rate) and K (carrying capacity) of the dynamic population. The observation model has no additional parameters. 
+
+# [portalcasting 0.25.4](https://github.com/weecology/portalcasting/releases/tag/v0.25.4)
+*2022-01-26*
+
+### Docker build check issues
+
+# [portalcasting 0.25.3](https://github.com/weecology/portalcasting/releases/tag/v0.25.3)
+*2022-01-26*
+
+### Further removal of vestigial rEDM code
+* Commenting out as needed to prevent build breaks
+
+
+# [portalcasting 0.25.2](https://github.com/weecology/portalcasting/releases/tag/v0.25.2)
+*2022-01-19*
+
+### Updating title to match JOSS 
+
 
 
 # [portalcasting 0.25.1](https://github.com/weecology/portalcasting/releases/tag/v0.25.1)

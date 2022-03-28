@@ -56,9 +56,6 @@ elements:
 } 
 In addition, some models require additional specific elements: 
 \itemize{
- \item \code{max_E}: \code{integer} (or integer \code{numeric}) 
-  maximum embedding dimension to search amongst for EDM models. See 
-  \code{\link[rEDM]{simplex}} for more information.
  \item \code{control_runjags}: \code{list} of arguments passed to 
   \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}. 
 }
@@ -107,7 +104,7 @@ The currently prefabricated models include \code{"AutoArima"}
 
 Any model that is part of the \code{prefab} set 
  (\code{c("AutoArima", "NaiveArima", "ESSS", "nbGARCH", "nbsGARCH", 
- "pevGARCH", "jags_RW")}) 
+ "pevGARCH", "jags_RW", "jags_logistic")}) 
  has its script-writing controls already included internally
  via the non-exported function \code{prefab_model_controls}. Users 
  only need to include controls for non-prefab \code{models}. \cr \cr
