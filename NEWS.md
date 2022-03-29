@@ -2,6 +2,12 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.27.0](https://github.com/weecology/portalcasting/releases/tag/v0.27.0)
+*2022-03-28*
+
+### Simplified directory creation function pipeline
+* Now just `create_dir`
+
 # [portalcasting 0.26.0](https://github.com/weecology/portalcasting/releases/tag/v0.26.0)
 *2022-03-02*
 

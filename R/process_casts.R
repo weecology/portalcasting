@@ -451,7 +451,6 @@ select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
                          arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   subp <- sub_path(main = main, subs = "casts", arg_checks = arg_checks)
-  verify(paths = subp, arg_checks = arg_checks)
   casts_metadata <- read_casts_metadata(main = main, quiet = quiet, 
                                         arg_checks = arg_checks)
 
