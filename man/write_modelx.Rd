@@ -50,8 +50,7 @@ Generally shouldn't need to be edited. See \code{\link{files_control}}.}
 \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.}
 
 \item{max_E}{\code{integer} (or integer \code{numeric}) for the maximum 
-embedding dimension to search amongst for EDM models. See 
-\code{\link[rEDM]{simplex}} for more information.}
+embedding dimension to search amongst for EDM models. Not currently used.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
