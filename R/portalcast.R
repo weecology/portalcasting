@@ -153,7 +153,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
   check_args(arg_checks = arg_checks)
   return_if_null(models)
   mainp <- main_path(main = main, arg_checks = arg_checks)
-  portalcast_welcome(quiet = quiet, arg_checks = arg_checks)
+  messageq(message_break(), "\nPreparing directory for casting", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
   update_models(main = main, models = models, controls_model = controls_model, 
                 update_prefab_models = update_prefab_models, quiet = quiet,
                 verbose = verbose, control_files = control_files, 
@@ -188,8 +188,8 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
          quiet = quiet, verbose = verbose, arg_checks = arg_checks)
   }
   if(end_moons[nend_moons] != last){
-    data_resetting_message(bline = bline, quiet = quiet, 
-                           arg_checks = arg_checks)
+    messageq(message_break(), "\nResetting data to most up-to-date versions", message_break(), quiet = quiet)
+
     fill_data(main = main, models = models, 
               end_moon = NULL, lead_time = lead_time, 
               cast_date = cast_date, start_moon = start_moon, 
@@ -199,7 +199,7 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
               control_files = control_files,
               quiet = !verbose, verbose = verbose, arg_checks = arg_checks)
   }
-  portalcast_goodbye(bline = bline, quiet = quiet, arg_checks = arg_checks)
+  messageq(message_break(), "\nCasting complete", message_break(), quiet = quiet)
 } 
 
 
@@ -224,8 +224,12 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
                  arg_checks = TRUE){
 
   check_args(arg_checks = arg_checks)
-  data_readying_message(end_moon = end_moon, bline = bline, 
-                        quiet = quiet, arg_checks = arg_checks)
+
+  last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
+  end_moon <- ifnull(end_moon, last)
+
+  messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, message_break(), quiet = quiet)
+
   fill_data(main = main, models = models, end_moon = end_moon, 
             lead_time = lead_time, cast_date = cast_date, 
             start_moon = start_moon, confidence_level = confidence_level, 
@@ -237,24 +241,27 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
   clear_tmp(main = main, quiet = quiet, cleanup = control_files$cleanup,
             arg_checks = arg_checks)
 
-  last <- last_moon(main = main, date = cast_date, arg_checks = arg_checks)
-  end_moon <- ifnull(end_moon, last)
 
-  models_running_message(end_moon = end_moon, bline = bline, quiet = quiet, 
-                         arg_checks = arg_checks)
+
+  messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, message_break(), quiet = quiet)
+
   models_scripts <- models_to_cast(main = main, models = models,
                                    arg_checks = arg_checks)
   nmodels <- length(models)
   for(i in 1:nmodels){
     model <- models_scripts[i]
-    model_running_message(model = model, quiet = quiet,
-                          arg_checks = arg_checks)
+  messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), message_break(), quiet = quiet)
+
     run_status <- tryCatch(
                      source(model),
                      error = function(x){NA}                     
                   )
-    model_done_message(model = model, run_status = run_status, quiet = quiet,
-                       arg_checks = arg_checks)
+    if(all(is.na(run_status))){
+      messageq("  |----| ", path_no_ext(basename(model)), " failed |----|", quiet = quiet)
+    } else{
+      messageq("  |++++| ", path_no_ext(basename(model)), " successful |++++|", quiet = quiet)
+    }
+
   }
   clear_tmp(main = main, quiet = quiet, verbose = verbose, 
             cleanup = control_files$cleanup, arg_checks = arg_checks)

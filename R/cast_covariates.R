@@ -218,7 +218,7 @@ save_cast_cov_csv <- function(main = ".", moons = NULL,
                         files = control_files$filename_cov_casts,
                         arg_checks = arg_checks)
   msg <- "    **covariates_casts.csv saved**"
-  messageq(msg, !verbose)
+  messageq(msg, quiet = !verbose)
   write.csv(out, out_path, row.names = FALSE)
   cast_cov
 }

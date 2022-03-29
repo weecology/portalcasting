@@ -127,7 +127,7 @@ prep_metadata <- function(main = ".", models = prefab_models(),
   controls_r <- rodents_controls(data_sets = data_sets, 
                                  controls_rodents = controls_rodents, 
                                  arg_checks = arg_checks)
-  messageq("  -metadata file", quiet)
+  messageq("  -metadata file", quiet = quiet)
   last_moon <- last_moon(main = main, moons = moons, date = cast_date,
                          arg_checks = arg_checks)
   end_moon <- ifnull(end_moon, last_moon)

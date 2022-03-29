@@ -175,7 +175,7 @@ model_controls <- function(models = NULL, controls_model = NULL,
     all_missing <- paste(which_missing, collapse = ", ")
     msg <- paste0("  ~no controls input for ", all_missing)
     msg <- c(msg, "  **assuming controls follow `model_control()`**")  
-    messageq(msg, quiet)
+    messageq(msg, quiet = quiet)
     nadd <- length(controls_model)
     for(i in 1:nmissing_controls){
       mod_name <- models[which_missing_controls[i]]
@@ -198,7 +198,7 @@ model_controls <- function(models = NULL, controls_model = NULL,
     all_conflicting <- paste(which_conflicting, collapse = ", ")
     msg <- paste0("conflicting copies of model(s): ", all_conflicting)
     msg2 <- c(msg, " using first user-defined input for each")
-    messageq(msg2, quiet)
+    messageq(msg2, quiet = quiet)
     umods <- unique(names(controls_model))
     nmods <- length(umods)
     controls_model2 <- vector("list", length = nmods)
@@ -424,8 +424,8 @@ write_model <- function(name = NULL, data_sets = NULL,
     write(mod_template, mod_path)
   } 
   if(!is.null(msgM)){
-    messageq(msg, !verbose)
-    messageq(msgM, quiet)
+    messageq(msg, quiet = !verbose)
+    messageq(msgM, quiet = quiet)
   }
 }
 
@@ -597,7 +597,7 @@ model_control <- function(name = "model",
 verify_models <- function(main = ".", models = prefab_models(), 
                           quiet = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
-  messageq("Checking model availability", quiet)
+  messageq("Checking model availability", quiet = quiet)
   model_dir <- sub_path(main = main, subs = "models", arg_checks = arg_checks)
   if (!dir.exists(model_dir)){
     stop("Models subidrectory does not exist", call. = FALSE)
@@ -612,8 +612,8 @@ verify_models <- function(main = ".", models = prefab_models(),
       stop(msg, call. = FALSE)
     }
   }
-  messageq(" *All requested models available*", quiet)
-  messageq_break(quiet = quiet, arg_checks = arg_checks)
+  messageq(" *All requested models available*", quiet = quiet)
+  messageq(message_break(), quiet = quiet)
   invisible(NULL)
 }
 
@@ -712,7 +712,7 @@ update_models <- function(main = ".", models = NULL,
   }
   return_if_null(c(controls_model, models))
   models <- unique(c(models, names(controls_model)))
-  messageq("Updating model scripts", quiet)
+  messageq("Updating model scripts", quiet = quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){
     write_model(main = main, quiet = quiet, verbose = verbose, 
@@ -720,7 +720,7 @@ update_models <- function(main = ".", models = NULL,
                 control_model = controls_model[[models[i]]], 
                 arg_checks = arg_checks)
   }
-  messageq_break(bline = bline, quiet = quiet, arg_checks = arg_checks) 
+  messageq(message_break(), quiet = quiet)
   invisible(NULL)
 }
 

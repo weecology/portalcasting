@@ -430,7 +430,7 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
                          verbose = FALSE,  arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_sets <- ifnull(data_sets, prefab_data_sets())
-  messageq("  -rodents data files", quiet)
+  messageq("  -rodents data files", quiet = quiet)
   moons <- ifnull(moons, read_moons(main = main, 
                                     control_files = control_files,
                                     arg_checks = arg_checks))
@@ -441,7 +441,7 @@ prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
   ndata_sets <- length(rodents)
   for(i in 1:ndata_sets){
     ctrl_r_i <- controls_rodents[[data_sets[i]]]
-    messageq(paste0("   -", data_sets[i]), quiet)
+    messageq(paste0("   -", data_sets[i]), quiet = quiet)
 
 
     rodents[[i]] <- prep_rodents_table(main = main, moons = moons, 
@@ -690,13 +690,13 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
     rodents_tab <- rodents_tab[ , cols_in] 
     spp <- paste(drop_species, collapse = ", ")
     msg <- paste0("    removing species: ", spp)
-    messageq(msg, !verbose)
+    messageq(msg, quiet = !verbose)
   }
   if(total){
     spp_col <- is_sp_col(rodents_tab = rodents_tab, species = ref_species,
                          arg_checks = arg_checks)
     rodents_tab$total <- rowSums(rodents_tab[ , spp_col])
-    messageq("    adding total column", !verbose)
+    messageq("    adding total column", quiet = !verbose)
   }
   if(level == "Treatment"){
     rows_in <- rodents_tab$treatment %in% treatment
@@ -736,9 +736,9 @@ process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
     last_moon_in <- min(c(end_moon, max(rodents_tab$moon)))
     rows_in <- rodents_tab$moon <= last_moon_in
     rodents_tab <- rodents_tab[rows_in, ]
-    messageq("    data trimmed according to moon window", !verbose)
+    messageq("    data trimmed according to moon window", quiet = !verbose)
   } else{
-    messageq("    no time processing conducted", !verbose)
+    messageq("    no time processing conducted", quiet = !verbose)
   }
   rodents_tab
 }

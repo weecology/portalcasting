@@ -157,7 +157,7 @@ write_data <- function(dfl = NULL, main = ".", save = TRUE, filename = NULL,
       save_it <- TRUE
       msg <- paste0("    **", filename, " saved**")
     }
-    messageq(msg, quiet)
+    messageq(msg, quiet = quiet)
     if( save_it){
         if(fext == "csv"){
           write.csv(dfl, full_path, row.names = FALSE)

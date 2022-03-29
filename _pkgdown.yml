@@ -43,10 +43,6 @@ reference:
     desc: "Functions that instantiate a portalcasting directory"
     contents:
       - create_dir
-      - create_main
-      - create_subs
-      - create
-      - verify
   - title: "Directory filling"
     desc: "Functions that add the files to each of the component subdirectories"
     contents:
@@ -183,24 +179,8 @@ reference:
       - append_csv
       - combine_hist_and_cast
       - match.call.defaults
-  - title: "Messenger functions"
-    desc: "Functions that provide messages to the user"
-    contents:
-      - download_message
-      - fill_casts_message
       - messageq
-      - messageq_break
-      - portalcast_welcome
-      - sandbox_welcome
-      - portalcast_goodbye
-      - creation_message
-      - data_readying_message
-      - data_resetting_message
-      - model_done_message
-      - model_running_message
-      - models_running_message
-      - setup_completion_message
-      - version_message
+      - message_break
   - title: "Date formatting"
     desc: "Functions to format dates and date components"
     contents:

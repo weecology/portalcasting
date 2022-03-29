@@ -648,7 +648,7 @@ read_casts_metadata <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
                          files = "casts_metadata.csv",
                          arg_checks = arg_checks)
   if(!file.exists(meta_path)){
-    messageq("  **creating cast_metadata.csv**", quiet)
+    messageq("  **creating cast_metadata.csv**", quiet = quiet)
     casts_meta <- data.frame(cast_id = 0, cast_group = 0, 
                              cast_date = NA, start_moon = NA, end_moon = NA,
                              lead_time = NA, model = NA, data_set = NA,

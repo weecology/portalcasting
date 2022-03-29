@@ -28,9 +28,8 @@ create_dir <- function(main            = ".",
                        arg_checks      = TRUE){
 
   check_args(arg_checks = arg_checks)
-  creation_message(main       = main, 
-                   quiet      = quiet, 
-                   arg_checks = arg_checks)
+  messageq(message_break(), "\nEstablishing portalcasting directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", message_break(), quiet = quiet)
+
   subs <- c("casts", "fits", "models", "raw", "data", "tmp")
 
   mapply(FUN          = dir.create, 

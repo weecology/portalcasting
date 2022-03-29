@@ -236,7 +236,7 @@ fill_data <- function(main = ".", models = prefab_models(),
                              controls_model = controls_model, 
                              quiet = quiet, arg_checks = arg_checks)
 
-  messageq(" -Adding data files to data subdirectory", quiet)
+  messageq(" -Adding data files to data subdirectory", quiet = quiet)
   data_m <- prep_moons(main = main, lead_time = lead_time, 
                        cast_date = cast_date, 
                        quiet = quiet, verbose = verbose,
@@ -414,7 +414,7 @@ fill_models <- function (main = ".",
   controls_model <- model_controls(models = models, 
                                     controls_model = controls_model,
                                     quiet = quiet, arg_checks = arg_checks)
-  messageq(" -Writing model scripts", quiet)
+  messageq(" -Writing model scripts", quiet = quiet)
   nmodels <- length(models)
   for(i in 1:nmodels){
     write_model(main = main, quiet = quiet, verbose = verbose, 
