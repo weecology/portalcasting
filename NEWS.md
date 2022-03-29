@@ -2,6 +2,16 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.28.0](https://github.com/weecology/portalcasting/releases/tag/v0.28.0)
+*2022-03-28*
+
+### `messageq` 
+* Function redesigned to align with `message` directly argument for argument with the addition of the `quiet` argument.
+* Now allows for multiple message arguments via `...` that become pasted together
+
+### Removal of specialized message functions
+* Minimize unnecessary functions
+
 # [portalcasting 0.27.0](https://github.com/weecology/portalcasting/releases/tag/v0.27.0)
 *2022-03-28*
 

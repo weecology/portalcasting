@@ -13,7 +13,7 @@
 #  data_set <- tolower(data_set)
 #  model_name <- "simplexEDM"
 #  
-#  messageq(paste0("  -", model_name, " model for ", data_set), quiet)
+#  messageq(paste0("  -", model_name, " model for ", data_set), quiet = quiet)
 #  
 #  #### determine args and settings for making forecasts
 #  metadata <- read_metadata(main = main, 
@@ -49,7 +49,7 @@
 #  for (s in species)
 #  {
 #    species_name <- gsub("NA.", "NA", s)
-#    messageq(paste0("   -", species_name), !verbose)
+#    messageq(paste0("   -", species_name), quiet = !verbose)
 #
 #    abund_s <- rodents_table[, c("moon", s)]
 #    
@@ -150,7 +150,7 @@
 #  data_set <- tolower(data_set)
 #  model_name <- "GPEDM"
 #  
-#  messageq(paste0("  -", model_name, " model for ", data_set), quiet)
+#  messageq(paste0("  -", model_name, " model for ", data_set), quiet = quiet)
 #  
 #  #### determine args and settings for making forecasts
 #  metadata <- read_metadata(main = main, 
@@ -184,7 +184,7 @@
 #  for (s in species)
 #  {
 #    species_name <- gsub("NA.", "NA", s)
-#    messageq(paste0("   -", species_name), !verbose)
+#    messageq(paste0("   -", species_name), quiet = !verbose)
 #    
 #    abund_s <- rodents_table[, c("moon", s)]
 #    preds <- data.frame(moon = moons_to_cast, 

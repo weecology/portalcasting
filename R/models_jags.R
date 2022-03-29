@@ -16,7 +16,7 @@ jags_logistic <- function (main            = ".",
   data_set     <- tolower(data_set)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
 
-  messageq(paste0("  -jags_logistic for ", data_set), quiet)
+  messageq(paste0("  -jags_logistic for ", data_set), quiet = quiet)
 
 
   monitor <- c("mu", "tau", "r", "K")
@@ -136,7 +136,7 @@ jags_RW <- function(main = ".", data_set = "all",
                     quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
   data_set <- tolower(data_set)
-  messageq(paste0("  -jags_RW for ", data_set), quiet)
+  messageq(paste0("  -jags_RW for ", data_set), quiet = quiet)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
   monitor <- c("mu", "tau")
   inits <- function(data = NULL){
@@ -419,7 +419,7 @@ jags_ss <- function(main = ".", model_name = NULL, data_set = "all",
   for(i in 1:nspecies){
     s <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), !verbose)
+    messageq(paste0("   -", ss), quiet = !verbose)
 
     moon_in <- which(rodents_table$moon >= start_moon & 
                      rodents_table$moon <= end_moon)

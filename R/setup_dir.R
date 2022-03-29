@@ -132,7 +132,8 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
 
-  version_message(bline = bline, quiet = quiet, arg_checks = arg_checks)
+  messageq(message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
+
   create_dir(main = main, filename_config = control_files$filename_config,
              bline = TRUE, quiet = quiet, arg_checks = arg_checks)
 
@@ -158,8 +159,9 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
            controls_rodents = controls_rodents, 
            quiet = quiet, verbose = verbose, 
            arg_checks = arg_checks)
-  setup_completion_message(bline = bline, quiet = quiet, 
-                           arg_checks = arg_checks)
+
+  messageq(message_break(), "\nDirectory successfully instantiated\n", message_break(), quiet = quiet)
+
 }
 
 
@@ -239,6 +241,23 @@ setup_sandbox <- function(main = ".", models = prefab_models(),
                  climate_forecast_version = climate_forecast_version,
 quiet = quiet, verbose = verbose, 
             control_files = control_files, arg_checks = arg_checks)
-  sandbox_welcome(main = main, quiet = quiet, arg_checks = arg_checks)
+
+  castle <- "
+                                            
+             /\\                         
+            /  \\                          ____
+           /|  |\\                        / -- )   
+          /_|__|_\\                      (_--_/ 
+          |      |                       / /              
+ __    __ |      | __    __             / / 
+[  ]__[  ].      .[  ]__[  ]           / /  
+|__         ____         __|      ____/ /__ 
+   |      .|    |.      |        / .-----  )
+   |      |      |      |       / /     / / 
+   |      |      |      |      / /     / /  
+~~~~~~~~~~~~~~~~~~~~~~~~~~------------~~~~~~~~~~~~~~
+"
+  messageq(castle, "Sandbox directory successfully set up at \n\n  ", normalizePath(file.path(main = main)), "\n\nHappy portalcasting!", quiet = quiet)
+
 }
 

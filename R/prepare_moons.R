@@ -85,7 +85,7 @@ prep_moons <- function(main = ".", lead_time = 12, cast_date = Sys.Date(),
   if(!raw_data_present){
     fill_raw(main = main, quiet = quiet)
   }
-  messageq("  -lunar data file", quiet)
+  messageq("  -lunar data file", quiet = quiet)
   raw_path <- raw_path(main = main, arg_checks = arg_checks)
   traps_in <- load_trapping_data(path = raw_path, download_if_missing = FALSE,
                                  clean = FALSE, quiet = !verbose)
