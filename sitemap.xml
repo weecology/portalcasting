@@ -130,10 +130,10 @@
     <loc>https://weecology.github.io/portalcasting/reference/measure_cast_level_error.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/messageq.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/message_break.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/messageq_break.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/messageq.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/model_control.html</loc>
@@ -170,9 +170,6 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/portalcast.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/portalcast_messages.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/portalcasting.html</loc>
