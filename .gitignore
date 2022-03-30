@@ -10,6 +10,7 @@ tests/testthat/prod/*
 tests/testthat/sand/*
 tests/testthat/test/*
 model_testing/*
+test/* 
 testing/* 
 testing_dir/* 
 *.bak
