@@ -24,7 +24,6 @@ setup_dir(
   climate_forecast_source = "NMME",
   climate_forecast_version = Sys.Date(),
   data_sets = prefab_data_sets(),
-  bline = TRUE,
   quiet = FALSE,
   verbose = FALSE,
   arg_checks = TRUE
@@ -153,9 +152,6 @@ See \code{\link{download_climate_forecasts}}.}
 
 \item{data_sets}{\code{list} of data_sets to be created using 
 \code{\link{do.call}} on the defined functions.}
-
-\item{bline}{\code{logical} indicator if a horizontal break lines should be
-included in messages.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

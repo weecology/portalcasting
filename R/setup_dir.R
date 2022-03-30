@@ -85,9 +85,6 @@
 #'        \cr \cr 
 #'        See \code{\link{download_climate_forecasts}}.
 #'
-#' @param bline \code{logical} indicator if a horizontal break lines should be
-#'  included in messages.
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -128,14 +125,14 @@ setup_dir <- function(main = ".", models = prefab_models(), end_moon = NULL,
                       climate_forecast_version = Sys.Date(),
                       data_sets = prefab_data_sets(),
 
-                      bline = TRUE, quiet = FALSE, verbose = FALSE, 
+                      quiet = FALSE, verbose = FALSE, 
                       arg_checks = TRUE){
   check_args(arg_checks = arg_checks)
 
   messageq(message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
 
   create_dir(main = main, filename_config = control_files$filename_config,
-             bline = TRUE, quiet = quiet, arg_checks = arg_checks)
+             quiet = quiet, arg_checks = arg_checks)
 
 
 
