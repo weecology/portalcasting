@@ -211,7 +211,6 @@ prep_rodent_dataset <- function(name        = "all",
 }
 
 
-
 #' @title Determine the most recent data collection
 #'
 #' @description Determine the most recent census.

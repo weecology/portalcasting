@@ -258,9 +258,10 @@ read_climate_forecasts <- function (main = ".") {
 #'
 #' @export
 #'
-read_metadata <- function(main = ".", settings = directory_settings()){
+read_metadata <- function(main     = ".", 
+                          settings = directory_settings()){
   
-  read_yaml(file.path(main, "data", settings$files$metadata))
+  read_yaml(file.path(main, "data", settings$files$metadata), eval.expr = TRUE)
 
 }
 

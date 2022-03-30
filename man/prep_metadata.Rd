@@ -8,9 +8,11 @@ prep_metadata(
   main = ".",
   models = prefab_models(),
   datasets = prefab_rodent_datasets(),
-  lead = 365,
-  origin = Sys.Date(),
-  t1 = as.Date("1995-01-01"),
+  end_moon = NULL,
+  start_moon = 217,
+  lead_time = 12,
+  cast_date = Sys.Date(),
+  confidence_level = 0.95,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -23,11 +25,15 @@ prep_metadata(
 
 \item{datasets}{\code{character} vector of name(s) of dataset(s) to include.}
 
-\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the last sample to be included. Default value is \code{NULL}, which equates to the most recently included sample.}
 
-\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.}
 
-\item{t1}{\code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.}
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
+
+\item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
+
+\item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

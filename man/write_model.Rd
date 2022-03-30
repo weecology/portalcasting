@@ -17,6 +17,7 @@ write_model(
 model_template(
   main = ".",
   model = NULL,
+  datasets = prefab_rodent_datasets(interpolate = FALSE),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE

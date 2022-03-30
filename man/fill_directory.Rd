@@ -13,7 +13,7 @@
 fill_dir(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_data_sets(),
+  datasets = prefab_rodent_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE

@@ -40,7 +40,7 @@ NULL
 #'
 fill_dir <- function (main     = ".",
                       models   = prefab_models(), 
-                      datasets = prefab_data_sets(),
+                      datasets = prefab_rodent_datasets(),
                       settings = directory_settings(), 
                       quiet    = FALSE, 
                       verbose  = FALSE) {
@@ -265,11 +265,17 @@ fill_models <- function (main     = ".",
 
   messageq(" Writing model scripts ... ", quiet = quiet)
 
-  mapply(FUN      = write_model,
-         main     = main, 
-         settings = settings,
-         model    = models, 
-         quiet    = !verbose)
+  nmodels <- length(models)
+
+  for (i in 1:nmodels) {
+
+    write_model(main     = main, 
+                model    = models[i], 
+                settings = settings, 
+                quiet    = quiet, 
+                verbose  = verbose)
+
+  }
 
   messageq("  ... done. ", quiet = quiet)
 

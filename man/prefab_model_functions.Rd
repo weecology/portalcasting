@@ -36,130 +36,90 @@ jags_RW(
 
 AutoArima(
   main = ".",
-  data_set = "all",
-  control_files = files_control(),
+  dataset = "all",
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 NaiveArima(
   main = ".",
-  data_set = "all",
-  control_files = files_control(),
+  dataset = "all",
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 ESSS(
   main = ".",
-  data_set = "all_interp",
-  control_files = files_control(),
+  dataset = "all",
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 nbGARCH(
   main = ".",
-  data_set = "all_interp",
-  control_files = files_control(),
+  dataset = "all",
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 nbsGARCH(
   main = ".",
-  data_set = "all_interp",
-  control_files = files_control(),
+  dataset = "all",
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 pevGARCH(
   main = ".",
-  data_set = "all_interp",
-  lag = 6,
-  control_files = files_control(),
+  dataset = "all",
+  lag = 1,
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{data_set}{\code{character} value name of the rodent data set, such as 
-(\code{"all"} or \code{"controls"}).}
+\item{control_runjags}{\code{list} of arguments passed to \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.}
 
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+\item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to use for the covariates.}
 
-\item{control_runjags}{\code{list} of arguments passed to 
-\code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.}
+\item{quiet}{\code{logical} value indicating if the function should be quiet.}
 
-\item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to
-use for the covariates.}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 
-\item{quiet}{\code{logical} value indicating if the function should be 
-quiet.}
+\item{arg_checks}{\code{logical} value of if the arguments should be checked using standard protocols via \code{\link{check_args}}.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or not (and thus just the tidy messages).}
+\item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
 
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 }
 \value{
-\code{list} of [1] model metadata \code{list} (\code{"metadata"}), 
- [2] cast summary \code{data.frame} (\code{"cast_tab"}),
- [3] \code{list} of model fit objects (\code{"model_fits"}), and 
- [4] \code{list} of model cast objects (\code{"model_casts"}).
+\code{list} of [1] model metadata \code{list} (\code{"metadata"}), cast summary \code{data.frame} (\code{"cast_tab"}), \code{list} of model fit objects (\code{"model_fits"}), and \code{list} of model cast objects (\code{"model_casts"}).
 }
 \description{
-Functions used for fitting the prefab models. For detailed
- descriptions of the models, see the
- \href{https://bit.ly/2xP9jKI}{model vignette}. \cr \cr
- \code{AutoArima} fits a flexible auto-regressive integrated 
- moving average model using \code{\link[forecast]{auto.arima}}. \cr \cr
- \code{NaiveArima} fits a baseline random walk with no drift model as an
- ARIMA(0,1,0) using \code{\link[forecast]{Arima}}. \cr \cr
- \code{ESSS} fits a flexible exponential smoothing state space 
- model with the possibility of multiplicative trends using 
- \code{\link[forecast]{ets}}. \cr \cr
- \code{nbGARCH} fits a generalized autoregresive conditional 
- heteroscedasticity model with overdispersion (\emph{i.e.}, a negative 
- binomial response variable) using \code{\link[tscount]{tsglm}}. \cr \cr
- \code{nbsGARCH} fits a seasonal generalized autoregresive conditional 
- heteroscedasticity model with overdispersion (\emph{i.e.}, a negative 
- binomial response variable) using \code{\link[tscount]{tsglm}}. \cr \cr
- \code{pevGARCH} fits a set of generalized autoregressive conditional
- heteroscedasticity models with Poisson response variables and 
- environmental covariates (max temp, mean temp, min temp, precipitation,
- and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
- \code{jags_RW} fits a log-scale density random walk with a Poisson 
- observation process using JAGS (Just Another Gibbs Sampler; 
- Plummer 2003) hierarchical Bayesian inference. \cr \cr
- \code{jags_logistic} fits a log-scale density logistic-growth (r-K) model 
- with a Poisson observation process using JAGS (Just Another Gibbs Sampler; 
- Plummer 2003) hierarchical Bayesian inference.
+Functions used for fitting the prefab models. For detailed descriptions of the models, see the \href{https://bit.ly/2xP9jKI}{model vignette}. \cr \cr
+ \code{AutoArima} fits a flexible auto-regressive integrated moving average model using \code{\link[forecast]{auto.arima}}. \cr \cr
+ \code{NaiveArima} fits a baseline random walk with no drift model as an ARIMA(0,1,0) using \code{\link[forecast]{Arima}}. \cr \cr
+ \code{ESSS} fits a flexible exponential smoothing state space model with the possibility of multiplicative trends using \code{\link[forecast]{ets}}. \cr \cr
+ \code{nbGARCH} fits a generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}. \cr \cr
+ \code{nbsGARCH} fits a seasonal generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}. \cr \cr
+ \code{pevGARCH} fits a set of generalized autoregressive conditional heteroscedasticity models with Poisson response variables and  environmental covariates (max temp, mean temp, min temp, precipitation, and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
+ \code{jags_RW} fits a log-scale density random walk with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. \cr \cr
+ \code{jags_logistic} fits a log-scale density logistic-growth (r-K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference.
 }
 \details{
 \code{AutoArima} \cr
- Because the seasonality and sampling occurring with different 
- frequencies, which \code{\link[forecast]{auto.arima}} cannot accommodate,
- seasonal AutoArima models are not included.  \cr \cr
+ Because the seasonality and sampling occurring with different frequencies, which \code{\link[forecast]{auto.arima}} cannot accommodate, seasonal AutoArima models are not included.  \cr \cr
  \code{pevGARCH} \cr
- Environmental predictors have an optional \code{lag} time, which is 
- currently structured to impact all covariates the same and defaults to
- \code{6}. \cr
- All covariate models are fit and the best model (by AIC) is selected for
- use.
+ Environmental predictors have an optional \code{lag} time, which is currently structured to impact all covariates the same and defaults to \code{6}. \cr
+ All covariate models are fit and the best model (by AIC) is selected for use.
 }
 \examples{
  \donttest{
@@ -176,23 +136,9 @@ Functions used for fitting the prefab models. For detailed
 
 }
 \references{
-Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., 
- Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. 
- forecast: Forecasting functions for time series and linear models. 
- R package version 8.3. \href{http://pkg.robjhyndman.com/forecast}{URL}. 
+Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. forecast: Forecasting functions for time series and linear models. R package version 8.3. \href{http://pkg.robjhyndman.com/forecast}{URL}. 
 
- Liboschik, T., Fokianos, K., and Fried, R. 2017. tscount: An R Package for 
- Analysis of Count Time Series Following Generalized Linear Models. 
- \emph{Journal of Statistical Software} \strong{82}:5, 1-51. 
- \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
+ Liboschik, T., Fokianos, K., and Fried, R. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. \emph{Journal of Statistical Software} \strong{82}:5, 1-51. \href{http://doi.org/10.18637/jss.v082.i05}{URL}. 
  
- Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical 
- models using Gibbs Sampling. Proceedings of the 3rd International 
- \href{https://bit.ly/33aQ37Y}{URL}.
-
- Ye, H., Clark, A., Deyle, E., Munch, S., Cai, J., Cowles, J., Daon, Y., 
- Edwards, A., Keyes, O., Stagge, J., Ushio, M., White, E., and Sugihara G. 
- 2018. rEDM: Applications of Empirical Dynamic Modeling from Time Series. 
- Zenodo. R package version0.7.4 
- \href{http://doi.org/10.5281/zenodo.1935847}{URL}.
+ Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
 }
