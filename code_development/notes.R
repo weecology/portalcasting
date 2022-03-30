@@ -10,7 +10,8 @@ main <- "./test"
 
 # updating to working with the settings list
 # minimizing other changes to the degree possible
-# currently in fill data and fill models
+
+# currently in write_model and model_template to allow for additional arguments
 
 ##############################################
 
