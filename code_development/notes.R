@@ -1,11 +1,27 @@
 # working here on portalcasting, 
 
+
+devtools::document()
+devtools::load_all()
+
+main <- "./test"
+
+
+
+# updating to working with the settings list
+# minimizing other changes to the degree possible
+# currently in fill data and fill models
+
+##############################################
+
+
+
+
+
 ####   roll through all the code front to back for use
 ####    then update tests
 
 
-devtools::document()
-devtools::load_all()
 
 
 main <- "./testing"

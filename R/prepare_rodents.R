@@ -1,81 +1,210 @@
-prefab_rodents_controls <- function(){
-  list(
-    "all" = list(name = "all", species = base_species(), total = TRUE,
-                 interpolate = FALSE, clean = FALSE, type = "Rodents", 
-                 level = "Site", plots = "all", treatment = NULL, 
-                 min_plots = 24, min_traps = 1, output = "abundance", 
-                 fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
-                 na_drop = FALSE, zero_drop = TRUE, effort = TRUE,
-                 filename = "rodents_all.csv"),
-    "all_interp" = list(name = "all_interp", species = base_species(), 
-                        total = TRUE, interpolate = TRUE, clean = FALSE, 
-                        type = "Rodents", level = "Site", plots = "all", 
-                        treatment = NULL, min_plots = 24, min_traps = 1,
-                        output = "abundance", fillweight = FALSE, 
-                        unknowns = FALSE, time = "newmoon", na_drop = TRUE, 
-                        zero_drop = TRUE, effort = TRUE, 
-                        filename = "rodents_all_interp.csv"),
-    "controls" = list(name = "controls", species = base_species(), 
-                      total = TRUE, interpolate = FALSE, clean = FALSE, 
-                      type = "Rodents", level = "Treatment", 
-                      plots = "Longterm", treatment = "control", 
-                      min_plots = 24, min_traps = 1, output = "abundance", 
-                      fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
-                      na_drop = FALSE, zero_drop = TRUE, effort = TRUE, 
-                      filename = "rodents_controls.csv"),
-    "controls_interp" = list(name = "controls_interp", 
-                             species = base_species(), 
-                             total = TRUE, interpolate = TRUE, clean = FALSE, 
-                             type = "Rodents", level = "Treatment", 
-                             plots = "Longterm", treatment = "control", 
-                             min_plots = 24, min_traps = 1, 
-                             output = "abundance", fillweight = FALSE, 
-                             unknowns = FALSE, time = "newmoon", 
-                             na_drop = FALSE, zero_drop = TRUE, 
-                             effort = TRUE, 
-                             filename = "rodents_controls_interp.csv"),
-    "exclosures" = list(name = "exclosures", species = base_species(), 
-                        total = TRUE, interpolate = FALSE, clean = FALSE, 
-                        type = "Rodents", level = "Treatment", 
-                        plots = "Longterm", treatment = "exclosure", 
-                        min_plots = 24, min_traps = 1, output = "abundance", 
-                       fillweight = FALSE, unknowns = FALSE, time = "newmoon", 
-                        na_drop = FALSE, zero_drop = TRUE, effort = TRUE, 
-                        filename = "rodents_exclosures.csv"),
-    "exclosures_interp" = list(name = "exclosures_interp", 
-                               species = base_species(), total = TRUE, 
-                               interpolate = TRUE, clean = FALSE, 
-                               type = "Rodents", level = "Treatment", 
-                               plots = "Longterm", treatment = "exclosure", 
-                               min_plots = 24, min_traps = 1, 
-                               output = "abundance", fillweight = FALSE, 
-                               unknowns = FALSE, time = "newmoon", 
-                               na_drop = FALSE, zero_drop = TRUE, 
-                               effort = TRUE, 
-                               filename = "rodents_exclosures_interp.csv"),
-    "dm_controls" = list(name = "dm_controls", species = "DM", total = FALSE, 
-                             interpolate = FALSE, clean = FALSE, 
-                             type = "Rodents", level = "Treatment", 
-                             plots = "Longterm", treatment = "control", 
-                             min_plots = 24, min_traps = 1, 
-                             output = "abundance", fillweight = FALSE, 
-                             unknowns = FALSE, time = "newmoon", 
-                             na_drop = FALSE, zero_drop = TRUE, 
-                             effort = TRUE, 
-                             filename = "rodents_dm_controls.csv"),
-    "dm_controls_interp" = list(name = "dm_controls_interp", species = "DM", 
-                                total = FALSE, interpolate = TRUE, 
-                                clean = FALSE, 
-                             type = "Rodents", level = "Treatment", 
-                             plots = "Longterm", treatment = "control", 
-                             min_plots = 24, min_traps = 1, 
-                             output = "abundance", fillweight = FALSE, 
-                             unknowns = FALSE, time = "newmoon", 
-                             na_drop = FALSE, zero_drop = TRUE, 
-                             effort = TRUE, 
-                             filename = "rodents_dm_controls_interp.csv")  
-   )
+#' @title Prepare Rodents Data for the Portalcasting Repository
+#'
+#' @description Create specified \code{datasets} using their associated function and arguments.
+#'
+#' @param quiet \code{logical} indicator controlling if messages are printed.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree. 
+#'
+#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#'
+#' @return \code{list} of prepared \code{datasets}.
+#'   
+#' @export
+#'
+prep_rodents <- function (main     = ".",
+                          datasets = prefab_rodent_datasets(),
+                          settings = directory_settings(), 
+                          quiet    = FALSE,
+                          verbose  = FALSE) {
+
+  return_if_null(datasets)
+
+  envr <- environment()
+  data(rodent_dataset_controls, envir = envr)
+  
+  datasets_list <- rodent_dataset_controls[datasets]
+
+  messageq("  - rodents", quiet = quiet)
+ 
+
+  out <- named_null_list(element_names = datasets)
+
+  for (i in 1:length(datasets_list)) {
+
+    out[[i]] <- do.call(what = datasets_list[[i]]$fun, 
+                        args = update_list(list      = datasets_list[[i]]$args, 
+                                           main      = main, 
+                                           quiet     = quiet, 
+                                           verbose   = verbose))
+  
+  }
+
+  invisible(out)
+
 }
+
+#' @title Prepare Rodents Data Tables for Forecasting
+#'
+#' @description Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
+#'              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
+#'              Ready for implementation via \code{\link{prepare_rodents}}.
+#'
+#' @param name \code{character} name of the data set.
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree.
+#'
+#' @param species \code{character}-valued vector of species names to include. 
+#'
+#' @param total \code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included. 
+#'
+#' @param interpolate \code{logical} value indicating if the data should be interpolated to fill in \code{NA} values (using \code{\link[forecast]{na.interp}}). 
+#'
+#' @param clean \code{logical} indicator of if only the rodent data that passed QA/QC (\code{clean = TRUE}) or if all data (\code{clean = FALSE}) should be loaded.
+#'
+#' @param type \code{character} value of the rodent data set type, according to pre-existing definitions. An alternative toggle to \code{species}. \cr \cr
+#'             Either all species (\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}). 
+#'
+#' @param level \code{character} indicating the type of summary: \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes directly to \code{\link[portalr]{summarize_rodent_data}}.
+#'
+#' @param plots Specification of subset of plots. Can be a vector of \code{numeric} plots indicators or specific sets indicated by \code{character} values: \code{"all"} plots or \code{"Longterm"} plots (plots that have had the same treatment for the entire time series).
+#'
+#' @param treatment \code{character} indicating the specific treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"}, \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"} 
+#'
+#' @param min_plots \code{integer} (or integer \code{numeric}) of the minimum number of plots surveyed for a survey to be used. 
+#'
+#' @param min_traps \code{integer} (or integer \code{numeric}) of the minimum number of traps collected for a plot to be used.
+#'
+#' @param output \code{character} indicating the type of data: \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. 
+#'
+#' @param fillweight \code{logical} specifier of whether to fill in unknown weights with other records from that individual or species, where possible.
+#'
+#' @param shape \code{character} value indicating a "crosstab" or "flat" output. 
+#'
+#' @param verbose \code{logical} indicator if detailed messages should be shown.
+#'
+#' @param unknowns \code{logical} indicator to either remove all individuals not identified to species (\code{unknowns = FALSE}) or sum them in an additional column (\code{unknowns = TRUE}.
+#'
+#' @param time \code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr \cr
+#'             The default \code{time = "newmoon"} produces an equispaced observation timestep, a common format format for discrete-time modeling. 
+#'
+#' @param na_drop \code{logical} indicator of if \code{NA} values (representing insufficient sampling) should be dropped.
+#'
+#' @param zero_drop \code{logical} indicator of if \code{0} values (representing sufficient sampling but no detection) should be dropped.
+#'
+#' @param effort \code{logical} indicator of if the effort columns should be included in the output.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#'
+#' @param overwrite \code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).
+#'
+#' @param save \code{logical} indicator controlling if the output should be saved out.
+#'
+#' @return \code{data.frame} for the specified data set.
+#'
+#' @export
+#'
+prep_rodent_dataset <- function(name        = NULL,
+                                main        = ".",
+                                clean       = FALSE,
+                                level       = "Site",
+                                type        = "Rodents",
+                                plots       = "all",
+                                unknowns    = FALSE,
+                                shape       = "crosstab",
+                                time        = "newmoon",
+                                output      = "abundance",
+                                fillweight  = FALSE,
+                                treatment   = NULL,
+                                na_drop     = FALSE,
+                                zero_drop   = FALSE,
+                                min_traps   = 1,
+                                min_plots   = 24,
+                                effort      = TRUE,
+                                species     = base_species(),
+                                total       = TRUE,
+                                interpolate = FALSE,
+                                save        = TRUE,
+                                overwrite   = TRUE,
+                                quiet       = FALSE,
+                                verbose     = FALSE) {
+
+  return_if_null(name)
+
+  messageq("    - ", name, quiet = quiet)
+
+  rodents_table <- summarize_rodent_data(path       = file.path(main, "resources"), 
+                                         clean      = clean, 
+                                         level      = level, 
+                                         type       = type, 
+                                         plots      = plots, 
+                                         unknowns   = unknowns,
+                                         shape      = shape, 
+                                         time       = time, 
+                                         output     = output,
+                                         fillweight = fillweight, 
+                                         na_drop    = na_drop,
+                                         zero_drop  = zero_drop, 
+                                         min_traps  = min_traps,
+                                         min_plots  = min_plots, 
+                                         effort     = effort, 
+                                         quiet      = !verbose) 
+
+
+  nspecies <- length(species)
+
+  total <- ifelse(nspecies == 1, FALSE, total)
+
+  sp_col           <- colnames(rodents_table) %in% all_species()
+  which_sp_col     <- which(sp_col)
+  which_not_sp_col <- which(!sp_col)
+  sp_col_in        <- colnames(rodents_table)[sp_col] %in% species
+  cols_in          <- c(which_not_sp_col, which_sp_col[sp_col_in])
+  out              <- rodents_table[ , cols_in, drop = FALSE] 
+
+  if (total) {
+ 
+    out$total <- rowSums(rodents_table[ , which_sp_col[sp_col_in], drop = FALSE])
+
+  }
+
+
+  if (level == "Treatment") {
+
+    rows_in <- out$treatment %in% treatment
+    cols_in <- colnames(out) != "treatment"
+    out     <- out[rows_in, cols_in, drop = FALSE]
+
+  }
+
+  if (interpolate) {
+
+    for (i in 1:nspecies) {
+
+      col_in         <- which(colnames(out) == species[i])
+      out[ , col_in] <- na.interp(out[ , col_in])
+
+    }
+
+    out$total <- na.interp(out$total)
+
+  }
+
+  write_data(dfl       = out, 
+             main      = main, 
+             save      = save, 
+             filename  = paste0("rodents_", name, ".csv"), 
+             overwrite = overwrite, 
+             quiet     = !verbose)
+
+  out
+
+}
+
 
 #' @title Create control lists for generating rodents data tables
 #'
@@ -365,575 +494,6 @@ rodents_control <- function(name = "name", species = base_species(),
 }
 
 
-
-#' @title Prepare a list of rodents data tables for forecasting
-#'
-#' @description This function loops around \code{\link{prep_rodents_table}},
-#'  which wraps around \code{\link[portalr]{summarize_rodent_data}} to 
-#'  produce a list of rodents \code{data.frame}s associated with multiple
-#'  sets of specifications. The default settings are for a general 
-#'  portalcasting directory, which models the "all" and "controls" data 
-#'  subsets.
-#'
-#' @param controls_rodents Control \code{list} or \code{list} of control 
-#'  \code{list}s from \code{\link{rodents_controls}} specifying the 
-#'  structuring of the rodents tables. See \code{\link{rodents_controls}}. 
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
-#'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'  shown.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#
-#' @param data_sets \code{character} values of the treatment 
-#'  types. If left as \code{NULL} (default), it is replaced with
-#'  the output from \code{\link{prefab_data_sets}}. \cr
-#'  Used to set arguments for \code{\link{prep_rodents_table}}.
-#'
-#' @param ref_species \code{character}-valued vector of all possible species 
-#'  names that could be used. Should be set up via \code{\link{all_species}}.
-#'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
-#'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
-#' @return \code{list} of \code{data.frame}s, one for each data subset
-#'  specified, as generated by \code{\link{prep_rodents_table}}.
-#'
-#' @examples
-#'  \donttest{
-#'    create_dir()
-#'    fill_raw()
-#'    prep_rodents()
-#'  }
-#'
-#' @export
-#'
-prep_rodents <- function(main = ".", moons = NULL, data_sets = NULL,
-                         end_moon = NULL, controls_rodents = NULL, 
-                         control_files = files_control(), 
-                         ref_species = all_species(), quiet = TRUE,
-                         verbose = FALSE,  arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  data_sets <- ifnull(data_sets, prefab_data_sets())
-  messageq("  -rodents data files", quiet = quiet)
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
-  controls_rodents <- rodents_controls(data_sets = data_sets, 
-                                 controls_rodents = controls_rodents, 
-                                 arg_checks = arg_checks)
-  rodents <- named_null_list(data_sets)
-  ndata_sets <- length(rodents)
-  for(i in 1:ndata_sets){
-    ctrl_r_i <- controls_rodents[[data_sets[i]]]
-    messageq(paste0("   -", data_sets[i]), quiet = quiet)
-
-
-    rodents[[i]] <- prep_rodents_table(main = main, moons = moons, 
-                                       end_moon = end_moon, 
-                                       species = ctrl_r_i[["species"]],
-                                       total = ctrl_r_i[["total"]],
-                                       interpolate = 
-                                         ctrl_r_i[["interpolate"]],
-                                       clean = ctrl_r_i[["clean"]],
-                                       type = ctrl_r_i[["type"]],
-                                       level = ctrl_r_i[["level"]],
-                                       plots = ctrl_r_i[["plots"]],
-                                       treatment = ctrl_r_i[["treatment"]],
-                                       min_plots = ctrl_r_i[["min_plots"]],
-                                       min_traps = ctrl_r_i[["min_traps"]],
-                                       output = ctrl_r_i[["output"]],
-                                       fillweight = ctrl_r_i[["fillweight"]],
-                                       unknowns = ctrl_r_i[["unknowns"]],
-                                       time = ctrl_r_i[["time"]],
-                                       na_drop = ctrl_r_i[["na_drop"]],
-                                       zero_drop = ctrl_r_i[["zero_drop"]],
-                                       ref_species = ref_species,
-                                       effort = ctrl_r_i[["effort"]],
-                                       quiet = quiet,
-                                       verbose = verbose,
-                                       save = control_files$save,
-                                       overwrite = control_files$overwrite,
-                                       filename = ctrl_r_i[["filename"]],
-                                       arg_checks = arg_checks)
-  }
-  rodents
-}
-
-
-#' @title Prepare a rodents data tables for forecasting
-#'
-#' @description This function wraps around 
-#'  \code{\link[portalr]{summarize_rodent_data}} to 
-#'  produce a \code{data.frame}s associated with a set of data 
-#'  specifications. 
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @param species \code{character}-valued vector of species names 
-#'  to include. 
-#'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number 
-#'  of the last sample to be included. Default value is \code{NULL}, which 
-#'  equates to the most recently included sample. 
-#'
-#' @param total \code{logical} value indicating if a total 
-#'  (sum across species) should be added or not. Only available if more than 
-#'  one species is included. 
-#'
-#' @param interpolate \code{logical} value indicating if the data should be
-#'  interpolated to fill in \code{NA} values (using 
-#'  \code{\link[forecast]{na.interp}}). 
-#'
-#' @param clean \code{logical} indicator of if only the rodent data
-#'  that passed QA/QC (\code{clean = TRUE}) or if all data 
-#'  (\code{clean = FALSE}) should be loaded.
-#'
-#' @param type \code{character} value of the rodent data set type, according 
-#'  to pre-existing definitions. An alternative toggle to \code{species}. \cr
-#'  Either all species 
-#'  (\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}). 
-#'
-#' @param level \code{character} indicating the type of summary:
-#'  \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes 
-#'  directly to \code{\link[portalr]{summarize_rodent_data}}.
-#'
-#' @param plots Specification of subset of plots. Can be a vector of 
-#'  \code{numeric} plots indicators or specific sets indicated by
-#'  \code{character} values: \code{"all"} plots or \code{"Longterm"} plots
-#'  (plots that have had the same treatment for the entire time series).
-#'
-#' @param treatment \code{character} indicating the specific 
-#'  treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"},
-#'  \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"} 
-#'
-#' @param min_plots \code{integer} (or integer \code{numeric}) of the 
-#'  minimum number of plots surveyed for a survey to be used. Pipes 
-#'  directly to \code{\link[portalr]{summarize_rodent_data}}.
-#'
-#' @param min_traps \code{integer} (or integer \code{numeric}) of the 
-#'  minimum number of traps collected for a plot to be used. Pipes directly
-#'  to \code{\link[portalr]{summarize_rodent_data}}.
-#'
-#' @param output \code{character} indicating the type of data:
-#'  \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. Pipes 
-#'  directly to \code{\link[portalr]{summarize_rodent_data}}.
-#'
-#' @param fillweight \code{logical} specifier of whether to fill in unknown 
-#'  weights with other records from that individual or species, where 
-#'  possible.
-#'
-#' @param shape \code{character} value indicating a "crosstab" or "flat" 
-#'  output. 
-#'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'  shown.
-#'
-#' @param unknowns \code{logical} indicator to either remove all 
-#'  individuals not identified to species (\code{unknowns = FALSE}) or 
-#'  sum them in an additional column (\code{unknowns = TRUE}.
-#'
-#' @param time \code{character} value specifying the format of the time index 
-#'  in the output. Options are \code{"period"} (sequential Portal surveys), 
-#'  \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar 
-#'  date). \cr
-#'  The default \code{time = "newmoon"} produces an equispaced observation 
-#'  timestep, a common format format for discrete-time modeling. 
-#'
-#' @param na_drop \code{logical} indicator of if \code{NA} values 
-#'  (representing insufficient sampling) should be dropped.
-#'
-#' @param zero_drop \code{logical} indicator of if \code{0} values 
-#'  (representing sufficient sampling but no detection) should be dropped.
-#'
-#' @param effort \code{logical} indicator of if the effort columns should
-#'  be included in the output.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @param overwrite \code{logical} indicator of whether or not the existing
-#'  files should be updated (most users should leave as \code{TRUE}).
-#'
-#' @param save \code{logical} indicator controlling if the output should 
-#'  be saved out.
-#'
-#' @param ref_species \code{character} vector of the reference species. Sets
-#'  a boundary outside of the species included in the model.
-#'
-#' @param rodents_tab Rodents \code{data.frame} data table.
-#'
-#' @param filename \code{character} name of the file for saving the 
-#'  output. The extension of the filename may be used for identifying
-#'  object requirements (for example, if the extension of \code{filename} is
-#'  \code{".csv"}, it will trigger use of \code{\link[utils]{write.csv}}).
-#'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}. 
-#'  Only used here to point to the moons data.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}. 
-#'
-#' @return \code{data.frame} for the specified data set.
-#'
-#' @examples
-#'  \donttest{
-#'    create_dir()
-#'    fill_raw()
-#'    prep_rodents_table()
-#'  }
-#'
-#' @name prepare_rodents_table
-#'
-NULL
-
-#' @rdname prepare_rodents_table
-#'
-#' @export
-#'
-prep_rodents_table <- function(main = ".", moons = NULL, end_moon = NULL, 
-                               species = base_species(), total = TRUE, 
-                               interpolate = TRUE,
-                               clean = FALSE, type = "Rodents", 
-                               level = "Site", plots = "all", 
-                               treatment = NULL,
-                               min_plots = 24, min_traps = 1, 
-                               output = "abundance", shape = "crosstab",
-                               fillweight = (output != "abundance"),
-                               unknowns = FALSE, time = "newmoon",
-                               na_drop = FALSE, 
-                               zero_drop = switch(tolower(level), 
-                                                  plot = FALSE, 
-                                                  treatment = TRUE,
-                                                  site = TRUE),
-                               ref_species = all_species(),
-                               effort = FALSE,  quiet = TRUE, 
-                               verbose = FALSE,
-                               control_files = files_control(),
-                               save = TRUE, overwrite = TRUE, 
-                               filename = "rodents_all.csv", 
-                               arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  return_if_null(species) 
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
-  raw_path <- raw_path(main = main, arg_checks = arg_checks)
-  rodents_tab <- summarize_rodent_data(path = raw_path, clean = clean, 
-                                       level = level, type = type, 
-                                       plots = plots, unknowns = unknowns,
-                                       shape = shape, time = time, 
-                                       output = output,
-                                       fillweight = fillweight, 
-                                       na_drop = na_drop,
-                                       zero_drop = zero_drop, 
-                                       min_traps = min_traps,
-                                       min_plots = min_plots, effort = effort, 
-                                       quiet = !verbose) 
-  out <- process_rodent_data(rodents_tab = rodents_tab, main = main, 
-                             moons = moons, end_moon = end_moon,
-                            species = species, total = total, 
-                            interpolate = interpolate, clean = clean, 
-                            level = level, treatment = treatment, 
-                            na_drop = na_drop, time = time, 
-                            ref_species = ref_species, quiet = quiet, 
-                            verbose = verbose, arg_checks = arg_checks) 
-  write_data(out, main = main, save = save, filename = filename, 
-             overwrite = overwrite, quiet = !verbose, arg_checks = arg_checks)
-}
-
-#' @rdname prepare_rodents_table
-#'
-#' @export
-#'
-process_rodent_data <- function(rodents_tab, main = ".", moons = NULL,
-                                end_moon = NULL, species = base_species(), 
-                                total = TRUE, interpolate = FALSE,
-                                clean = FALSE, level = "Site", 
-                                treatment = NULL, na_drop = FALSE,
-                                time = "newmoon",
-                                ref_species = all_species(),
-                                quiet = TRUE, verbose = FALSE,
-                                arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  nspecies <- length(species)
-  total <- ifelse(nspecies == 1, FALSE, total)
-  drop_species <- ref_species[which(ref_species %in% species == FALSE)]
-  if(length(drop_species) > 0){
-    cols_in <- !(colnames(rodents_tab) %in% drop_species)
-    rodents_tab <- rodents_tab[ , cols_in] 
-    spp <- paste(drop_species, collapse = ", ")
-    msg <- paste0("    removing species: ", spp)
-    messageq(msg, quiet = !verbose)
-  }
-  if(total){
-    spp_col <- is_sp_col(rodents_tab = rodents_tab, species = ref_species,
-                         arg_checks = arg_checks)
-    rodents_tab$total <- rowSums(rodents_tab[ , spp_col])
-    messageq("    adding total column", quiet = !verbose)
-  }
-  if(level == "Treatment"){
-    rows_in <- rodents_tab$treatment %in% treatment
-    cols_in <- colnames(rodents_tab) != "treatment"
-    rodents_tab <- rodents_tab[rows_in, cols_in]
-  }
-  if(time == "newmoon"){
-    newmoon_col <- which(colnames(rodents_tab) == "newmoonnumber")
-    colnames(rodents_tab)[newmoon_col] <- "moon" 
-    if(!na_drop){ 
-      present_moons <- rodents_tab[ , "moon"]
-      range_moons <- range(present_moons, na.rm = TRUE)
-      seq_moons <- seq(range_moons[1], range_moons[2], by = 1)
-      needed_moons <- !(seq_moons %in% present_moons)
-      which_needed_moons <- seq_moons[needed_moons]
-      nneeded_rows <- length(which_needed_moons)
-      ndf_moons <- ncol(rodents_tab)
-      needed_rows <- matrix(NA, nrow = nneeded_rows, ncol = ndf_moons)
-      colnames(needed_rows) <- colnames(rodents_tab)
-      needed_rows[ , "moon"] <- seq_moons[needed_moons]
-      rodents_tab <- rbind(rodents_tab, needed_rows)
-      rodents_tab_ord <- order(rodents_tab[ , "moon"])
-      rodents_tab <- rodents_tab[rodents_tab_ord, ]
-    }
-    if(interpolate){
-      for(i in 1:nspecies){
-        interped <- round(na.interp(rodents_tab[ , species[i]]))
-        rodents_tab[ , species[i]] <- interped
-
-      }
-      rodents_tab[ , "total"] <- apply(rodents_tab[ , species, drop = FALSE],
-                                       1, sum)
-    }
-
-
-    end_moon <- ifnull(end_moon, max(rodents_tab$moon))
-    last_moon_in <- min(c(end_moon, max(rodents_tab$moon)))
-    rows_in <- rodents_tab$moon <= last_moon_in
-    rodents_tab <- rodents_tab[rows_in, ]
-    messageq("    data trimmed according to moon window", quiet = !verbose)
-  } else{
-    messageq("    no time processing conducted", quiet = !verbose)
-  }
-  rodents_tab
-}
-
-#' @title Determine if columns in a table are species columns
-#'
-#' @description Given a table, returns a \code{logical} vector indicating
-#'  if each column is a species' column or not.
-#'
-#' @param rodents_tab \code{data.frame} of columns to be checked. 
-#'
-#' @param species \code{character} vector indicating species names to 
-#'  use in determining if columns are species columns. Defaults to
-#'  \code{\link{all_species}}.
-#'
-#' @param total \code{logical} indicator if the total should be included.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
-#' @param nadot \code{logical} indicator if the dot should be added to the 
-#'   \code{"NA"} species name. Defaults to \code{FALSE}.
-#'
-#' @return 
-#'  \code{is_sp_col}: \code{logical} vector indicating if each column is a 
-#'  species' column or not. \cr \cr
-#'  \code{species_from_table}: \code{character} vector of species names from
-#'  the column names in the \code{rodents_tab} data table. 
-#'  
-#'
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   fill_raw()
-#'   rodents_tab <- prep_rodents_table()
-#'   is_sp_col(rodents_tab)
-#'   species_from_table(rodents_tab)
-#'  }
-#'
-#' @name species_in_tables
-#'
-NULL 
-
-#' @rdname species_in_tables
-#'
-#' @export
-#'
-is_sp_col <- function(rodents_tab, species = NULL, total = FALSE, 
-                      nadot = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  species <- ifnull(species, all_species(total = total, nadot = nadot))
-  colnames(rodents_tab) %in% species
-}
-
-#' @rdname species_in_tables
-#'
-#' @export
-#'
-species_from_table <- function(rodents_tab = NULL, total = FALSE, 
-                               nadot = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  sp_col <- is_sp_col(rodents_tab = rodents_tab, total = total, nadot = nadot,
-                      arg_checks = arg_checks)
-  colnames(rodents_tab)[sp_col]
-}
-
-#' @title Rodent species abbreviations
-#'
-#' @description Creates a simple \code{character} vector of abbreviations for
-#'   the \href{https://portal.naturecast.org/profiles.html}{Portal Rodents}.
-#'
-#' @param set \code{character} input of a specified set of species. 
-#'   Default entry (\code{"base"}) returns the standard set of all species 
-#'   included. Other options include \code{"wtotal"} (same as \code{"base"} 
-#'   but with "total" as well) and \code{"evalplot"} which only returns a 
-#'   subset of common species to be included in the evaluations plots.
-#'
-#' @param nadot \code{logical} indicator if the dot should be added to the 
-#'   \code{"NA"} species name. Defaults to \code{FALSE}.
-#'
-#' @param species \code{character}-valued vector of species names to include.
-#'
-#' @param total \code{logical} value indicating if \code{"total"} should be 
-#'  added or not.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return \code{character} vector of species abbreviations.
-#' 
-#' @examples 
-#'  rodent_species()
-#'  rodent_species(set = "all")
-#'  rodent_species("BA")
-#'  rodent_species("BA", set = "all")
-#'  all_species()
-#'  all_species(nadot = TRUE)
-#'  all_species(total = TRUE)
-#'  base_species()
-#'  evalplot_species()
-#'
-#' @export
-#'
-rodent_species <- function(species = NULL, set = NULL, nadot = FALSE, 
-                           total = FALSE, arg_checks = TRUE){
-  return_if_null(c(species, set))
-  out <- NULL
-  if(!is.null(set) && set == "all"){
-    out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", 
-             "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
-  } else if(!is.null(set) && set == "base"){
-    out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", 
-             "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
-  } else if(!is.null(set) && set == "evalplot"){
-    out <- c("BA", "DM", "DO", "PP", "OT", "NA")
-  }
-  if(total){
-    out <- c(out, "total")
-  }
-  if(nadot){
-    out[which(out == "NA")] <- "NA."
-  }
-  unique(c(species, out))
-}
-
-#' @rdname rodent_species
-#'
-#' @export
-#'
-all_species <- function(species = NULL, nadot = FALSE, total = FALSE,
-                        arg_checks = TRUE){
-  rodent_species(species, set = "all", nadot, total)
-}
-
-
-#' @rdname rodent_species
-#'
-#' @export
-#'
-base_species <- function(species = NULL, nadot = FALSE, total = FALSE,
-                         arg_checks = TRUE){
-  rodent_species(species, "base", nadot, total)
-}
-
-#' @rdname rodent_species
-#'
-#' @export
-#'
-evalplot_species <- function(species = NULL, nadot = FALSE, total = TRUE,
-                             arg_checks = TRUE){
-  rodent_species(species, "evalplot", nadot, total)
-}
-
-
-
-
-#' @title Provide the names of the prefab data sets
-#'
-#' @description Create a \code{character} vector of the names of the rodents
-#'  data sets to be included including the pre-fabricated (prefab) data sets,
-#'  extracting them from the \code{prefab_rodents_controls} internal 
-#'  function. \cr \cr
-#'  The currently prefabricated options include (\code{"all"}, 
-#'  \code{"controls"}, \code{"all_interp"}, and \code{"controls_interp"}). 
-#'
-#' @param interpolate \code{logical} value indicating if the interpolated data
-#'  only should be listed (\code{interpolate = TRUE}), if the non-interpolated
-#'  data only should be listed (\code{interpolate = FALSE}), or if both
-#'  should be listed (\code{interpolate = NULL}, default).  
-#'
-#' @return \code{character} vector of data set names.
-#'
-#' @examples
-#'  prefab_data_sets()
-#'
-#' @export
-#'
-prefab_data_sets <- function(interpolate = NULL){
-  dsnames <- names(prefab_rodents_controls())
-  return_if_null(interpolate, dsnames)
-  if(interpolate){
-    dsnames <- dsnames[grepl("_interp", dsnames)]
-  }else{
-    dsnames <- dsnames[!grepl("_interp", dsnames)]
-  }
-  dsnames
-}
 
 
 #' @title Determine the most recent data collection

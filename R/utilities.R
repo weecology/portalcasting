@@ -147,50 +147,6 @@ update_list <- function(orig_list = list(), ...){
 
 
 
-#' @title Conform NA entries to "NA" entries
-#'
-#' @description Given the species abbreviation NA, when data are read in, 
-#'  there can be an \code{NA} when it should be an \code{"NA"}. This function
-#'  conforms the entries to be proper character values. 
-#'
-#' @param dfv Either [1] a \code{data.frame} containing \code{colname} as a 
-#'  column with \code{NA}s that need to be conformed to \code{"NA"}s or [2]
-#'  a vector with \code{NA}s that need to be conformed to \code{"NA"}s.
-#'
-#' @param colname \code{character} value of the column name in \code{tab} to 
-#'  conform the \code{NA}s to \code{"NA"}s.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
-#' @return \code{x} with any \code{NA} in \code{colname} replaced with 
-#'  \code{"NA"}.
-#'
-#' @examples
-#'  na_conformer(c("a", "b", NA, "c"))
-#'
-#' @export
-#'
-na_conformer <- function(dfv, colname = "species", arg_checks = TRUE){
-  check_args(arg_checks)
-  if (is.vector(dfv)){
-    naentries <- which(is.na(dfv))
-    dfv[naentries] <- "NA"
-  } else if (is.data.frame(dfv)){
-    nasppname <- which(is.na(dfv[ , colname]))
-    if (length(nasppname) > 0){
-      dfv[nasppname, colname] <- "NA"
-    }
-  } 
-  dfv
-}
-
 
 #' @title Save data out to a csv, appending the file if it already exists
 #'

@@ -96,6 +96,7 @@ fill_data <- function (main     = ".",
   messageq(" Writing data files ... ", quiet = quiet)
 
   prep_rodents(main     = main,
+               settings  = settings,
                datasets = datasets,
                quiet    = quiet,
                verbose  = verbose)
