@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.29.0](https://github.com/weecology/portalcasting/releases/tag/v0.29.0)
+*2022-03-29*
+
+### Settings list
+* `setup_dir` now takes a `settings` argument that is a `list` of the arguments 
+* `directory_settings` function now quickly and cleanly collapses the settings that go into `setup_dir`
+
 # [portalcasting 0.28.0](https://github.com/weecology/portalcasting/releases/tag/v0.28.0)
 *2022-03-28*
 

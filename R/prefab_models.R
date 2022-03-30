@@ -1,3 +1,64 @@
+#' @title Provide the names or controls for the prefab models
+#'
+#' @description Create a \code{character} vector of the names of the pre-fabricated (prefab) models or a \code{list} of their controls
+#'
+#' @return \code{prefab_models}: \code{character} vector of model names. \cr
+#'         \code{prefab_model_controls}: \code{list} vector of model controls. \cr
+#'
+#' @examples
+#'  prefab_models()
+#'  prefab_model_controls()
+#'
+#' @name prefabricated_models
+#'
+NULL
+
+#' @rdname prefabricated_models
+#'
+#' @export
+#'
+prefab_model_controls <- function( ) {
+  list(
+    AutoArima     = list(name            = "AutoArima", 
+                         data_sets       = c("all", "controls", "exclosures", "dm_controls")), 
+    ESSS          = list(name            = "ESSS", 
+                         data_sets       = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp")),
+    NaiveArima    = list(name            = "NaiveArima", 
+                         data_sets       = c("all", "controls", "exclosures", "dm_controls")), 
+    nbGARCH       = list(name            = "nbGARCH", 
+                         data_sets       = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp")), 
+    nbsGARCH      = list(name            = "nbsGARCH", 
+                         data_sets       = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp")), 
+    pevGARCH      = list(name            = "pevGARCH",  
+                         data_sets       = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp"),
+                         covariatesTF    = TRUE, 
+                         lag             = 6), 
+#    simplexEDM    = list(name            = "simplexEDM", 
+#                         data_sets       = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp"), 
+#                         max_E           = 7),
+#    GPEDM         = list(name            = "GPEDM", 
+#                         data_sets       = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp"), 
+#                         max_E           = 7),
+    jags_RW       = list(name            = "jags_RW", 
+                         data_sets       = c("all", "controls", "exclosures", "dm_controls"), 
+                         control_runjags = runjags_control()),
+    jags_logistic = list(name            = "jags_logistic", 
+                         data_sets       = c("dm_controls"), 
+                         control_runjags = runjags_control()))
+
+}
+
+#' @rdname prefabricated_models
+#'
+#' @export
+#'
+prefab_models <- function( ) {
+
+  names(prefab_model_controls())
+
+}
+
+
 #' @title Functions for the prefab portalcasting models
 #'
 #' @description Functions used for fitting the prefab models. For detailed

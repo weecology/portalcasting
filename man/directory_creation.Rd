@@ -4,32 +4,18 @@
 \alias{create_dir}
 \title{Create the Structure of a Forecasting Directory}
 \usage{
-create_dir(
-  main = ".",
-  quiet = FALSE,
-  filename_config = "dir_config.yaml",
-  arg_checks = TRUE
-)
+create_dir(main = ".", settings = directory_settings(), quiet = FALSE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) puts the forecasting directory in the present locations. Nesting the forecasting directory in a folder can be done by simply adding to the \code{main} input (see \code{Examples}).}
 
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{filename_config}{\code{character} value of the path to the directory
-config YAML.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be checked using standard protocols via \code{\link{check_args}}. The default (\code{arg_checks = TRUE}) ensures that all inputs are formatted correctly and provides directed error messages if not.}
 }
 \value{
 \code{NULL} \code{\link[base]{invisible}}-ly.
 }
 \description{
 Instantiates the necessary folder structure for a forecasting directory and writes a YAML file that tracks the setup configurations.
-}
-\examples{
- \donttest{
-  create_dir()
- }
-
 }

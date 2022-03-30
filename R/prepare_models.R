@@ -1,56 +1,4 @@
-prefab_model_controls <- function(){
-  list(
-    AutoArima = list(name = "AutoArima", 
-                     data_sets = c("all", "controls", "exclosures",
-                                   "dm_controls"),
-                     covariatesTF = FALSE, 
-                     lag = NA), 
-    ESSS = list(name = "ESSS", 
-                data_sets = c("all_interp", "controls_interp", 
-                              "exclosures_interp", "dm_controls_interp"),
-                covariatesTF = FALSE, 
-                lag = NA), 
-    NaiveArima = list(name = "NaiveArima", 
-                      data_sets = c("all", "controls", "exclosures",
-                                    "dm_controls"),
-                      covariatesTF = FALSE, 
-                      lag = NA), 
-    nbGARCH = list(name = "nbGARCH", 
-                   data_sets = c("all_interp", "controls_interp", 
-                                 "exclosures_interp", "dm_controls_interp"),
-                   covariatesTF = FALSE, 
-                   lag = NA), 
-    nbsGARCH = list(name = "nbsGARCH", 
-                    data_sets = c("all_interp", "controls_interp", 
-                                  "exclosures_interp", "dm_controls_interp"),
-                    covariatesTF = FALSE, 
-                    lag = NA), 
-    pevGARCH = list(name = "pevGARCH",  
-                    data_sets = c("all_interp", "controls_interp", 
-                                  "exclosures_interp", "dm_controls_interp"),
-                    covariatesTF = TRUE, lag = 6), 
-#    simplexEDM = list(name = "simplexEDM", 
-#                      data_sets = c("all_interp", "controls_interp", 
-#                                    "exclosures_interp", 
-#                                     "dm_controls_interp"), 
-#                      covariatesTF = FALSE, lag = NA, max_E = 7),
-#    GPEDM = list(name = "GPEDM", 
-#                 data_sets = c("all_interp", "controls_interp", 
-#                               "exclosures_interp", "dm_controls_interp"), 
-#                 covariatesTF = FALSE, lag = NA, max_E = 7),
-    
-    jags_RW = list(name = "jags_RW", 
-                   data_sets = c("all", "controls", "exclosures",
-                                 "dm_controls"), 
-                   covariatesTF = FALSE, lag = NA,
-                   control_runjags = runjags_control()),
-    
-    jags_logistic = list(name = "jags_logistic", 
-                   data_sets = c("dm_controls"), 
-                   covariatesTF = FALSE, lag = NA,
-                   control_runjags = runjags_control()))
 
-}
 
 
 #' @title Produce the control lists for models
@@ -253,86 +201,21 @@ extract_data_sets <- function(models = prefab_models(),
   data_sets
 }
 
-#' @title Provide the names of the prefab models
-#'
-#' @description Create a \code{character} vector of the names of the models
-#'  to be included including the pre-fabricated (prefab) models, extracting
-#'  them from the \code{prefab_model_controls} internal function. \cr \cr
-#'  The currently prefabricated models include \code{"AutoArima"}, 
-#'  \code{"ESSS"}, \code{"NaiveArima"}, \code{"nbGARCH"}, \code{"nbsGARCH"}, 
-#'  \code{"pevGARCH"}. 
-#'
-#' @return \code{character} vector of model names.
-#'
-#' @examples
-#'  prefab_models()
-#'
-#' @export
-#'
-prefab_models <- function(){
-  names(prefab_model_controls())
-}
 
-#' @title Write the template for a model into model subdirectory
+
+#' @title Write Model Function Script into Directory
 #'
-#' @description 
-#'  \code{write_model} creates a template script (as written by 
-#'  \code{model_template}) for a given model. \cr \cr
-#'  \code{model_template} creates the \code{character}-valued
-#'  text for a model script to be housed in the model directory, as written
-#'  out by \code{write_model}. \cr \cr
-#'  \code{control_list_arg} creates the \code{character}-valued
-#'  text for a specific list argument into model function within a model
-#'  script to be housed in the model directory.
+#' @description Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree. 
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param name \code{character} value of the name of the model.
+#' @param model \code{character} name of a model function, the \code{function} itself, or its symbol (backquoted name).
 #'
-#' @param control_model \code{list} of model-level controls, including
-#'  \code{name}, a \code{character} value of the model's name;
-#'  \code{covariatesTF}, a \code{logical} indicator for if the model requires 
-#'  covariates; and \code{lag}, a \code{integer} (or integer \code{numeric}) 
-#'  lag time used for the covariates or \code{NA} if 
-#'  \code{covariatesTF = FALSE}. Only used if the specific valued argument
-#'  is \code{NULL}.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param covariatesTF \code{logical} indicator for if the model requires 
-#'  covariates.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param lag \code{integer} (or integer \code{numeric}) lag time used for the
-#'   covariates or \code{NULL} if \code{covariatesTF} is \code{FALSE}.
-#'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
-#'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  
-#' @param data_sets \code{character} vector of the rodent data set names
-#'  that the model is applied to. 
-#'
-#' @param verbose \code{logical} indicator if detailed messages should be
-#'  shown.
-#'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
-#'  
-#' @param max_E \code{integer} (or integer \code{numeric}) for the maximum 
-#'  embedding dimension to search amongst for EDM models. Not currently used.  
-#   See \code{\link[rEDM]{simplex}} for more information.
-#'
-#' @param control_runjags \code{list} of arguments passed to 
-#'  \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.
-#'
-#' @param control_list \code{list} of arguments passed to 
-#'  \code{list_function}.
-#'
-#' @param list_function \code{character} value name of the function to 
-#'  send \code{control_list} arguments to within the model script.
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
 #'
 #' @return \code{write_mode} \code{\link{write}}s the model script out
 #'  and returns \code{NULL}. \cr \cr
@@ -351,64 +234,37 @@ prefab_models <- function(){
 #'
 #' @export
 #'
-write_model <- function(name = NULL, data_sets = NULL, 
-                        covariatesTF = NULL, lag = NULL, main = ".", 
-                        control_model = NULL, control_files = files_control(),
-                        control_runjags = NULL, max_E = NULL, quiet = FALSE, 
-                        verbose = TRUE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  name <- ifnull(name, control_model$name)
-  prefab_control <- tryCatch(prefab_model_controls()[[name]],
-                             error = function(x){NULL})
-  control_model <- ifnull(control_model, prefab_control[[name]])
-  covariatesTF <- ifnull(covariatesTF, control_model$covariatesTF)
-  lag <- ifnull(lag, control_model$lag)
-  control_runjags <- ifnull(control_runjags, control_model$control_runjags)
-  lag <- ifnull(lag, control_model$lag)
-  data_sets <- ifnull(data_sets, control_model$data_sets)
-  return_if_null(name)
-  if(verbose){
-    message(" -Writing model scripts")
-  }
+write_model <- function (main     = ".", 
+                         model    = NULL, 
+                         settings = directory_settings(), 
+                         quiet    = FALSE, 
+                         verbose  = FALSE) {
+
+
+  return_if_null(model)
+  
+  control_model   <- tryCatch(prefab_model_controls()[[model]],
+                              error = function(x){NULL})
+  covariatesTF    <- control_model$covariatesTF
+  lag             <- control_model$lag
+  control_runjags <- control_model$control_runjags
+  data_sets       <- control_model$data_sets
+
+  
   msg <- NULL
   msg1 <- NULL
-  if((is.null(covariatesTF) & is.null(lag))){
-    msg1 <- paste0("   ~covariatesTF and lag = NULL for ", name)
-    msg2 <- "    **assuming covariatesTF = FALSE, lag = 0**"
-    msg <- c(msg, msg1, msg2)
-    covariatesTF <- FALSE
-    lag <- 0
-  } 
-  if((!is.null(covariatesTF) & covariatesTF && is.null(lag))){
-    msg1 <- paste0("    ~lag = NULL for ", name)
-    msg2 <- "    **assuming lag = 0**"
-    msg <- c(msg, msg1, msg2)
-    lag <- 0
-  } 
-  if((is.null(covariatesTF) & !is.null(lag))){
-    if (is.na(lag)){
-      msg1 <- paste0("  ~covariatesTF = NULL for ", name)
-      msg2 <- "    **assuming covariatesTF = FALSE**"
-      msg <- c(msg, msg1, msg2)
-      covariatesTF <- FALSE
-    } else if (is.numeric(lag)){
-      msg1 <- paste0("   ~covariatesTF = NULL for ", name)
-      msg2 <- "    **assuming covariatesTF = TRUE**"
-      msg <- c(msg, msg1, msg2)
-      covariatesTF <- TRUE
-    }
-  }
+
   if(is.null(data_sets)){
-    msg1 <- paste0("   ~data_sets = NULL for ", name)
+    msg1 <- paste0("   ~data_sets = NULL for ", model)
     msg2 <- "    **assuming data_sets = prefab_data_sets()**"
     msg <- c(msg, msg1, msg2)
     data_sets <- prefab_data_sets()
   }
 
-  model_file <- paste0(name, ".R")
+  model_file <- paste0(model, ".R")
   mod_path <- file_path(main = main, sub = "models", files = model_file,
                         arg_checks = arg_checks)
-  mod_template <- model_template(name = name, data_sets = data_sets, 
+  mod_template <- model_template(model = model, data_sets = data_sets, 
                                  covariatesTF = covariatesTF, lag = lag, 
                                  main = main, control_files = control_files,
                                  control_runjags = control_runjags,
@@ -427,22 +283,32 @@ write_model <- function(name = NULL, data_sets = NULL,
     messageq(msg, quiet = !verbose)
     messageq(msgM, quiet = quiet)
   }
+
 }
 
 #' @rdname write_model
 #'
 #' @export
 #'
-model_template <- function(name = NULL, data_sets = NULL,
-                           covariatesTF = FALSE, lag = NULL, main = ".", 
-                           control_files = files_control(), max_E = NULL,
-                           control_runjags = NULL,
-                           quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  return_if_null(name)
+model_template <- function (main     = ".", 
+                            model    = NULL, 
+                            settings = directory_settings(), 
+                            quiet    = FALSE, 
+                            verbose  = FALSE) {
+
+  return_if_null(model)
+
+  control_model   <- tryCatch(prefab_model_controls()[[model]],
+                              error = function(x){NULL})
+  covariatesTF    <- control_model$covariatesTF
+  lag             <- control_model$lag
+  max_E           <- control_model$max_E
+  control_runjags <- control_model$control_runjags
+  data_sets       <- control_model$data_sets
+  
+
   data_sets <- ifnull(data_sets,  
-                      model_controls(models = name, 
-                              arg_checks = arg_checks)[[name]]$data_sets)
+                      model_controls(models = model)[[model]]$data_sets)
   return_if_null(data_sets)
   main_arg <- paste0(', main = "', main, '"')
   quiet_arg <- paste0(', quiet = ', quiet)
@@ -460,8 +326,8 @@ model_template <- function(name = NULL, data_sets = NULL,
                                           list_function = "runjags_control",
                                           arg_checks = arg_checks)
   
-  control_files_arg <- control_list_arg(control_list = control_files,
-                                        list_function = "files_control",
+  settings_arg <- control_list_arg(control_list = settings,
+                                   list_function = "directory_settings",
                                         arg_checks = arg_checks)
   
   ds_args <- paste0('data_set = "', data_sets, '"')
@@ -472,7 +338,7 @@ model_template <- function(name = NULL, data_sets = NULL,
     model_args <- paste0(ds_args[i], lag_arg, main_arg, control_files_arg,
                          control_runjags_arg, max_E_arg, quiet_arg,
                          verbose_arg, arg_checks_arg) 
-    model_fun <- paste0(name, '(', model_args, ');')
+    model_fun <- paste0(model, '(', model_args, ');')
     model_line <- paste0(resp, ' <- ', model_fun)
     save_args <- paste0(resp, main_arg, quiet_arg, arg_checks_arg)
     save_fun <- paste0('save_cast_output(', save_args, ');')

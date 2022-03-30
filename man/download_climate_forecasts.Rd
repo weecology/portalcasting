@@ -8,35 +8,28 @@ download_climate_forecasts(
   main = ".",
   version = Sys.Date(),
   source = "NMME",
+  data = c("tasmin", "tasmean", "tasmax", "pr"),
   quiet = FALSE,
   verbose = FALSE,
   timeout = getOption("timeout")
 )
 }
 \arguments{
-\item{main}{\code{character} value defining the main component of the 
-portalcasting directory tree.}
+\item{main}{\code{character} value defining the main component of the portalcasting directory tree.}
 
-\item{version}{\code{Date}-coercible start of the climate cast. See
-\code{\link{NMME_urls}} (used as \code{start}).}
+\item{version}{\code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).}
 
-\item{source}{\code{character} indicator of the source for the download. 
-Only \code{"NMME"} presently available.}
+\item{source}{\code{character} indicator of the source for the download. Only \code{"NMME"} presently available.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator if detailed messages should be
-printed.}
+\item{verbose}{\code{logical} indicator if detailed messages should be printed.}
 
-\item{timeout}{\code{numeric} value passed to \code{\link[base]{options}}
-to dictate the download timeout limit.}
+\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Downloads climate forecasts, presently only from NMME 
-             (see \code{\link{NMME_urls}}) into the
-              \code{<main>/raw} sub.
+Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/raw} sub.
 }
