@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+
+# [portalcasting 0.29.0](https://github.com/weecology/portalcasting/releases/tag/v0.29.0)
+*2022-03-30*
+
+### Patch `bline` bug
+* Argument needed to be removed still
+
 # [portalcasting 0.28.0](https://github.com/weecology/portalcasting/releases/tag/v0.28.0)
 *2022-03-28*
 
