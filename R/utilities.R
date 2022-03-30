@@ -104,9 +104,9 @@ error_if_deep <- function(lev){
 #'
 #' @description Update a list with new values for elements
 #'
-#' @param orig_list \code{list} to be updated with \code{...}. 
+#' @param list \code{list} to be updated with \code{...}. 
 #'
-#' @param ... Named elements to update in \code{orig_list}
+#' @param ... Named elements to update in \code{list}
 #'
 #' @return Updated \code{list}.
 #'
@@ -118,33 +118,55 @@ error_if_deep <- function(lev){
 #'
 #' @export
 #'
-update_list <- function(orig_list = list(), ...){
-  if(!is.list(orig_list)){
-    stop("orig_list must be a list", call. = FALSE)
-  } 
-  update_elems <- list(...)
-  nupdate_elems <- length(update_elems)
-  norig_elems <- length(orig_list)
-  update_list <- vector("list", length = norig_elems)
-  names(update_list) <- names(orig_list)
-  if(norig_elems > 0){
-    for(i in 1:norig_elems){
-      if(!is.null(orig_list[[i]])){
-        update_list[[i]] <- orig_list[[i]]
-      }
-    }
-  }
-  if(nupdate_elems > 0){
-    names_update_elems <- names(update_elems)
-    for(i in 1:nupdate_elems){
-      if(!is.null(update_elems[[i]])){
-        update_list[[names_update_elems[i]]] <- update_elems[[i]]
-      }
-    }
-  }
-  update_list
-}
+update_list <- function (list = list(),
+                                ...) {
 
+  if (!is.list(list)) {
+
+    stop("`list` must be a list")
+
+  } 
+
+  update_elems <- list(...)
+
+  nupdate_elems <- length(update_elems)
+  norig_elems   <- length(list)
+
+  updated_list <- named_null_list(element_names = names(list))
+
+  if (norig_elems > 0) {
+
+    for (i in 1:norig_elems) {
+
+      if (!is.null(list[[i]])) {
+
+        updated_list[[i]] <- list[[i]]
+
+      }
+
+    }
+
+  }
+
+  if (nupdate_elems > 0) {
+
+    names_update_elems <- names(update_elems)
+
+    for (i in 1:nupdate_elems) {
+
+      if (!is.null(update_elems[[i]])) {
+
+        updated_list[[names_update_elems[i]]] <- update_elems[[i]]
+
+      }
+
+    }
+
+  }
+
+  updated_list
+
+}
 
 
 
@@ -602,5 +624,51 @@ message_break <- function(char = "-",
                           reps = 60){
   
   paste(rep(char, reps), collapse = "") 
+
+}
+
+
+#' @title Add a Newmoon Number Column to a Table that has a Date Column 
+#' 
+#' @description Add a \code{newmoonnumber} column to a table that has a \code{date} column.
+#' 
+#' @param df \code{data.frame} with column of \code{date}s.
+#'
+#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#'
+#' @return \code{data.frame} \code{df} with column of \code{newmoonnumber}s added.
+#'
+#' @export
+#'
+add_newmoonnumbers_from_dates <- function (df, moons = NULL) {
+
+  return_if_null(moons, df)
+
+  if (is.null(df$date)) {
+
+    df <- add_date_from_components(df)
+  }
+
+  moon_number       <- moons$newmoonnumber[-1]
+  moon_start        <- as.Date(moons$newmoondate[-nrow(moons)])
+  moon_end          <- as.Date(moons$newmoondate[-1])
+  moon_match_number <- NULL
+  moon_match_date   <- NULL
+
+  for (i in seq(moon_number)) {
+
+    temp_dates        <- seq.Date(moon_start[i] + 1, moon_end[i], 1)
+    temp_dates        <- as.character(temp_dates)
+    temp_numbers      <- rep(moon_number[i], length(temp_dates))
+    moon_match_date   <- c(moon_match_date, temp_dates)
+    moon_match_number <- c(moon_match_number, temp_numbers)
+
+  }
+
+  moon_match_date  <- as.Date(moon_match_date)
+  moon_matches     <- match(df$date, moon_match_date)
+  df$newmoonnumber <- moon_match_number[moon_matches]
+
+  df
 
 }

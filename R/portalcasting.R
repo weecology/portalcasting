@@ -15,7 +15,7 @@
 #' @importFrom utils download.file packageDescription read.csv sessionInfo
 #'  tail unzip write.csv write.table
 #' @importFrom viridis viridis
-#' @importFrom yaml as.yaml yaml.load_file write_yaml
+#' @importFrom yaml as.yaml read_yaml yaml.load_file write_yaml
 
 #' @title Functions for Portalcasting (Forecasting Portal Rodents)
 #'

@@ -5,8 +5,9 @@
 \title{Prepare Rodents Data Tables for Forecasting}
 \usage{
 prep_rodent_dataset(
-  name = NULL,
+  name = "all",
   main = ".",
+  filename = "rodents_all.csv",
   clean = FALSE,
   level = "Site",
   type = "Rodents",
@@ -35,6 +36,8 @@ prep_rodent_dataset(
 \item{name}{\code{character} name of the data set.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
+
+\item{filename}{\code{character} value of the file for saving the output.}
 
 \item{clean}{\code{logical} indicator of if only the rodent data that passed QA/QC (\code{clean = TRUE}) or if all data (\code{clean = FALSE}) should be loaded.}
 

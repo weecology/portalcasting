@@ -62,18 +62,18 @@ fill_dir <- function (main     = ".",
             quiet    = quiet, 
             verbose  = verbose)
 
-  fill_models(main     = main, 
-              settings = settings, 
-              models   = models, 
-              quiet    = quiet, 
-              verbose  = verbose)
-
   fill_data(main     = main, 
             datasets = datasets,
             models   = models,
             settings = settings,
             quiet    = quiet, 
             verbose  = verbose)
+
+  fill_models(main     = main, 
+              settings = settings, 
+              models   = models, 
+              quiet    = quiet, 
+              verbose  = verbose)
 
   messageq("\nDirectory filling complete.", quiet = quiet)
 
