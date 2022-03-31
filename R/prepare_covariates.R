@@ -19,11 +19,7 @@
 #'   prep_covariates()
 #'  }
 #'  
-#' @name prepare_covariates
-#'
-NULL
-
-#' @rdname prepare_covariates
+#' @name prepare covariates
 #'
 #' @export
 #'
@@ -56,7 +52,7 @@ prep_covariates <- function (main     = ".",
 }
 
 
-#' @rdname prepare_covariates
+#' @rdname prepare-covariates
 #'
 #' @export
 #'
@@ -65,8 +61,8 @@ prep_historic_covariates <- function (main     = ".",
                                       quiet    = TRUE, 
                                       verbose  = FALSE) {
 
-  weather_data   <- weather(level = "daily", fill = TRUE, path = file.path(main, "raw"))
-  ndvi_data      <- ndvi(level = "daily", path = file.path(main, "raw"))
+  weather_data   <- weather(level = "daily", fill = TRUE, path = file.path(main, settings$subs$resources))
+  ndvi_data      <- ndvi(level = "daily", path = file.path(main, settings$subs$resources))
   ndvi_data$date <- as.Date(ndvi_data$date)
 
   out             <- weather_data
@@ -95,7 +91,7 @@ prep_historic_covariates <- function (main     = ".",
 
 }
 
-#' @rdname prepare_covariates
+#' @rdname prepare-covariates
 #'
 #' @export
 #'
@@ -109,7 +105,7 @@ prep_forecast_covariates <- function (main      = ".",
 
     climate_forecasts <- read_climate_forecasts(main = main)
 
-    ndvi_data      <- ndvi(level = "daily", path = file.path(main, "raw"))
+    ndvi_data      <- ndvi(level = "daily", path = file.path(main, settings$subs$resources))
     ndvi_data$date <- as.Date(ndvi_data$date)
  
     date_fit     <- ndvi_data$date
@@ -163,4 +159,49 @@ prep_forecast_covariates <- function (main      = ".",
 
 }
 
+#' @title Lag covariate data
+#'
+#' @description Lag the covariate data together based on the new moons
+#'
+#' @param covariates \code{data.frame} of covariate data to be lagged. 
+#'  
+#' @param lag \code{integer} lag between rodent census and covariate data, in new moons.
+#'  
+#' @param tail \code{logical} indicator if the data lagged to the tail end should be retained.
+#'
+#' @return \code{data.frame} with a \code{newmoonnumber} column reflecting the lag.
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   covariate_casts <- read_covariate_casts()
+#'   covar_casts_lag <- lag_covariates(covariate_casts, lag = 2, tail = TRUE)
+#'  }
+#'
+#' @export
+#'
+lag_covariates <- function (covariates, 
+                            lag, 
+                            tail = FALSE){
+
+  covariates$moon_lag <- covariates$newmoonnumber + lag
+  
+  if (tail == FALSE) {
+
+    oldest_included_moon     <- covariates$newmoonnumber[1]
+    most_recent_moon         <- covariates$newmoonnumber[nrow(covariates)]
+    hist_moons               <- oldest_included_moon:most_recent_moon
+    moon_match               <- match(covariates$moon_lag, hist_moons)
+    covariates$newmoonnumber <- hist_moons[moon_match]
+    if (lag > 0) {
+      covariates <- covariates[-(1:lag), ]
+    }
+
+  }
+
+  covariates$newmoonnumber <- covariates$moon_lag
+  covariates$moon_lag      <- NULL
+  covariates
+
+}
 

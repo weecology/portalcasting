@@ -19,8 +19,7 @@ jags_logistic(
   control_runjags = runjags_control(),
   lag = NA,
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 jags_RW(
@@ -30,8 +29,7 @@ jags_RW(
   control_runjags = runjags_control(),
   lag = NA,
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 
 AutoArima(
@@ -52,7 +50,7 @@ NaiveArima(
 
 ESSS(
   main = ".",
-  dataset = "all",
+  dataset = "all_interp",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -60,7 +58,7 @@ ESSS(
 
 nbGARCH(
   main = ".",
-  dataset = "all",
+  dataset = "all_interp",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -68,7 +66,7 @@ nbGARCH(
 
 nbsGARCH(
   main = ".",
-  dataset = "all",
+  dataset = "all_interp",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -76,8 +74,8 @@ nbsGARCH(
 
 pevGARCH(
   main = ".",
-  dataset = "all",
-  lag = 1,
+  dataset = "all_interp",
+  lag = 6,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -93,8 +91,6 @@ pevGARCH(
 \item{quiet}{\code{logical} value indicating if the function should be quiet.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be checked using standard protocols via \code{\link{check_args}}.}
 
 \item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
 

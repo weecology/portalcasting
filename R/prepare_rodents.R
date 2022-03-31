@@ -13,7 +13,15 @@
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{list} of prepared \code{datasets}.
-#'   
+#'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   prep_rodents()
+#'  }
+#'  
+#' @name prepare rodents
+#'
 #' @export
 #'
 prep_rodents <- function (main     = ".",
@@ -24,11 +32,11 @@ prep_rodents <- function (main     = ".",
 
   return_if_null(datasets)
 
-  rodent_dataset_controls <- prefab_rodent_dataset_controls()
-
   #
   # need a way here to access user-generated control lists  
   #
+
+  rodent_dataset_controls <- prefab_rodent_dataset_controls()
 
   datasets_list <- rodent_dataset_controls[datasets]
 
@@ -110,6 +118,14 @@ prep_rodents <- function (main     = ".",
 #'
 #' @return \code{data.frame} for the specified data set.
 #'
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   prep_rodent_dataset()
+#'  }
+#'  
+#' @name prepare rodent dataset
+#'
 #' @export
 #'
 prep_rodent_dataset <- function(name        = "all",
@@ -142,7 +158,7 @@ prep_rodent_dataset <- function(name        = "all",
 
   messageq("    - ", name, quiet = quiet)
 
-  rodents_table <- summarize_rodent_data(path       = file.path(main, "raw"), 
+  rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subs$resources), 
                                          clean      = clean, 
                                          level      = level, 
                                          type       = type, 
@@ -219,8 +235,6 @@ prep_rodent_dataset <- function(name        = "all",
 #'
 #' @param control_files \code{list} of names of the folders and files within the sub directories and saving strategies (save, overwrite, append, etc.). Generally shouldn't need to be edited. See \code{\link{files_control}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be checked using standard protocols via \code{\link{check_args}}. The default (\code{arg_checks = TRUE}) ensures that all inputs are formatted correctly and provides directed error messages if not. 
-#'
 #' @return \code{Date} of the last census.
 #'
 #' @examples
@@ -232,12 +246,10 @@ prep_rodent_dataset <- function(name        = "all",
 #' @export
 #'
 last_census <- function (main          = ".", 
-                         control_files = files_control(), 
-                         arg_checks    = TRUE) {
+                         control_files = files_control()) {
 
-  check_args(arg_checks)
-  moons <- read_moons(main = main, control_files = control_files,
-                      arg_checks = arg_checks)
+  
+  moons <- read_moons(main = main, control_files = control_files)
   as.Date(max(moons$censusdate, na.rm = TRUE))
 }
 

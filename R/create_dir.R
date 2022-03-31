@@ -10,7 +10,12 @@
 #'
 #' @return \code{NULL} \code{\link[base]{invisible}}-ly.
 #'
-#' @rdname directory_creation
+#' @name directory creation
+#'
+#' @examples
+#' \donttest{
+#'  create_dir()
+#' }
 #'
 #' @export
 #'

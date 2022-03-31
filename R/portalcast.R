@@ -90,15 +90,6 @@
 #' @param verbose \code{logical} indicator of whether or not to print out
 #'   all of the information or not (and thus just the tidy messages). 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. \cr
-#'  However, in sandboxing, it is often desirable to be able to deviate from 
-#'  strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'  many/most/all enclosed functions to not check any arguments using 
-#'  \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
 #' @param PortalData_source,PortalData_version \code{character} values for the
 #'        source and version of the Portal Data to download. 
 #'        \cr \cr 
@@ -149,8 +140,8 @@ portalcast <- function(main = ".", models = prefab_models(), end_moons = NULL,
                       climate_forecast_source = "NMME",
                       climate_forecast_version = Sys.Date(),                       
                        update_prefab_models = FALSE, bline = TRUE, 
-                       quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                       quiet = FALSE, verbose = FALSE){
+
   return_if_null(models)
   mainp <- main_path(main = main, arg_checks = arg_checks)
   messageq(message_break(), "\nPreparing directory for casting", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
@@ -305,7 +296,7 @@ cast <- function(main = ".", models = prefab_models(), end_moon = NULL,
 #'
 models_to_cast <- function(main = ".", models = prefab_models(), 
                            arg_checks = TRUE){
-  check_args(arg_checks)
+  
   models_path <- models_path(main = main, arg_checks = arg_checks)
   file_names <- paste0(models, ".R")
   torun <- (list.files(models_path) %in% file_names)

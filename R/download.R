@@ -20,6 +20,13 @@
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
+#' @examples
+#'  \donttest{
+#'
+#'   create_dir(main = "./portalcasting")
+#'   download_archive(main = "./portalcasting")
+#'  } 
+#'
 #' @export
 #'
 download_archive <- function(main    = ".",
@@ -98,7 +105,7 @@ download_archive <- function(main    = ".",
   messageq("Downloading archive version `", version, "` ...", quiet = quiet)
 
   temp  <- file.path(tempdir(), "portalPredictions.zip")
-  final <- file.path(main, "raw", "portalPredictions")
+  final <- file.path(main, settings$subs$resources, "portalPredictions")
 
   result <- tryCatch(
               download.file(url      = zipball_url, 
@@ -132,9 +139,9 @@ download_archive <- function(main    = ".",
 
   folder_name <- unzip(temp, list = TRUE)$Name[1]
 
-  temp_unzip <- file.path(main, "raw", folder_name)
+  temp_unzip <- file.path(main, settings$subs$resources, folder_name)
 
-  unzip(temp, exdir = file.path(main, "raw"))
+  unzip(temp, exdir = file.path(main, settings$subs$resources))
 
   Sys.sleep(pause)
 
@@ -171,6 +178,13 @@ download_archive <- function(main    = ".",
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
+#' @examples
+#'  \donttest{
+#'
+#'   create_dir(main = "./portalcasting")
+#'   download_climate_forecasts(main = "./portalcasting")
+#'  } 
+#'
 #' @export
 #'
 download_climate_forecasts <- function (main    = ".",
@@ -189,7 +203,7 @@ download_climate_forecasts <- function (main    = ".",
 
   if (tolower(source) == "nmme") {
 
-    dir.create(path         = file.path(main, "raw", source),
+    dir.create(path         = file.path(main, settings$subs$resources, source),
                showWarnings = FALSE)
 
     messageq("Downloading climate forcasts version `", version, "` ...", quiet = quiet)
@@ -197,7 +211,7 @@ download_climate_forecasts <- function (main    = ".",
 
     mapply(FUN      = download.file,
            url      = NMME_urls(start = version, data = data),
-           destfile = file.path(main, "raw", source, paste0(data, ".csv")), 
+           destfile = file.path(main, settings$subs$resources, source, paste0(data, ".csv")), 
            mode     = "wb",
            quiet    = !verbose)
 

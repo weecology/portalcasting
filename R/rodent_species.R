@@ -220,8 +220,6 @@ na_conformer <- function(dfv, colname = "species"){
 #'
 #' @param data_set \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be checked using standard protocols via \code{\link{check_args}}. The default (\code{arg_checks = TRUE}) ensures that all inputs are formatted correctly and provides directed error messages if not.
-#'
 #' @param topx Positive \code{integer} (or \code{integer}-conformable) value of how many species to include.
 #'  
 #' @return \code{character} vector of the species identifiers.
@@ -236,17 +234,15 @@ na_conformer <- function(dfv, colname = "species"){
 #'
 most_abundant_species <- function (main       = ".", 
                                    data_set   = "all", 
-                                   topx       = 3,
-                                   arg_checks = TRUE) {
+                                   topx       = 3) {
 
-  check_args(arg_checks = arg_checks)
-  rodents_tab <- read_rodents_table(main = main, data_set = data_set, 
-                                    arg_checks = arg_checks)
-  col_keep <- which(colnames(rodents_tab) %in% all_species())
+  rodents_tab <- read_rodents_table(main = main, data_set = data_set)
+  col_keep    <- which(colnames(rodents_tab) %in% all_species())
   rodents_tab <- rodents_tab[ , col_keep]
-  tots <- apply(rodents_tab, 2, sum, na.rm = TRUE)
-  tots_order <- order(tots)
+  tots        <- apply(rodents_tab, 2, sum, na.rm = TRUE)
+  tots_order  <- order(tots)
   names(tots) <- colnames(rodents_tab)
   names(sort(tots, decreasing = TRUE)[1:topx])
+
 }
 

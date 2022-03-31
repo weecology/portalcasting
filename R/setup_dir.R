@@ -25,6 +25,9 @@
 #'  setup_production()
 #' }
 #'
+#' @name directory setup
+#'
+#'
 #' @export
 #'
 setup_dir <- function (main     = ".",
@@ -59,7 +62,7 @@ setup_dir <- function (main     = ".",
 
 
 
-#' @rdname setup_dir
+#' @rdname directory-setup
 #'
 #' @export
 #'
@@ -80,7 +83,7 @@ setup_production <- function (main     = ".",
 }
 
 
-#' @rdname setup_dir
+#' @rdname directory-setup
 #'
 #' @export
 #'

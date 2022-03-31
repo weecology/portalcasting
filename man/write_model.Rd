@@ -3,7 +3,6 @@
 \name{write_model}
 \alias{write_model}
 \alias{model_template}
-\alias{control_list_arg}
 \title{Write Model Function Script into Directory}
 \usage{
 write_model(
@@ -17,13 +16,11 @@ write_model(
 model_template(
   main = ".",
   model = NULL,
-  datasets = prefab_rodent_datasets(interpolate = FALSE),
+  datasets = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
-
-control_list_arg(control_list = NULL, list_function = NULL, arg_checks = TRUE)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}

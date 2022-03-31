@@ -19,11 +19,6 @@
 #'  the cast). In the recurring forecasting, is set to today's date
 #'  using \code{\link{Sys.Date}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @param control_files \code{list} of names of the folders and files within
 #'  the sub directories and saving strategies (save, overwrite, append, etc.).
 #'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
@@ -42,11 +37,10 @@
 #'
 cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
                         lead_time = 12, min_lag = 6,
-                        control_files = files_control(), arg_checks = TRUE){
-  check_args(arg_checks)
+                        control_files = files_control()){
+  
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files,
-                                    arg_checks = arg_checks))
+                                    control_files = control_files))
   lagged_lead <- lead_time - min_lag
   moons0 <- moons[moons$moondate < cast_date, ]
   last_moon <- tail(moons0, 1)
@@ -69,11 +63,6 @@ cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
 #' @param cast_tab A \code{data.frame} of a cast's output. See 
 #'  \code{\link{read_cast_tab}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @return \code{data.frame} of metrics for each cast for each species. 
 #' 
 #' @examples
@@ -90,8 +79,9 @@ cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
 #'
 #' @export
 #'
-measure_cast_level_error <- function(cast_tab = NULL, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+measure_cast_level_error <- function(cast_tab = NULL){
+
+
   return_if_null(cast_tab)
 
   ucast_ids <- unique(cast_tab$cast_id)
@@ -147,10 +137,6 @@ measure_cast_level_error <- function(cast_tab = NULL, arg_checks = TRUE){
 #' @param cast_tab A \code{data.frame} of a cast's output. See 
 #'  \code{\link{read_cast_tab}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
 #'
 #' @return \code{data.frame} of \code{cast_tab} with an additional column or
 #'  columns if needed. 
@@ -174,9 +160,8 @@ NULL
 #'
 #' @export
 #'
-add_lead_to_cast_tab <- function(main = ".", cast_tab = NULL,
-                                arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+add_lead_to_cast_tab <- function(main = ".", cast_tab = NUL){
+
   return_if_null(cast_tab)
   cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
   cast_tab
@@ -186,9 +171,9 @@ add_lead_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'
 #' @export
 #'
-add_err_to_cast_tab <- function(main = ".", cast_tab = NULL,
-                                arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+add_err_to_cast_tab <- function(main = ".", cast_tab = NULL) {
+
+
   return_if_null(cast_tab)
   if(is.null(cast_tab$obs)){
   cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
@@ -202,9 +187,8 @@ add_err_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'
 #' @export
 #'
-add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL,
-                                    arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL){
+
   return_if_null(cast_tab)
   if(is.null(cast_tab$obs)){
   cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
@@ -220,9 +204,8 @@ add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'
 #' @export
 #'
-add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL, 
-                                arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
+
   return_if_null(cast_tab)
   cast_tab$obs <- NA
   cast_data_set <- gsub("_interp", "", cast_tab$data_set)
@@ -264,11 +247,6 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL,
 #'  \code{cast_ids} can be NULL, one value, or more than one values,
 #'  \code{cast_id} can only be NULL or one value.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @return 
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
 #'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with
@@ -296,38 +274,36 @@ NULL
 #'
 #' @export
 #'
-read_cast_tab <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
+read_cast_tab <- function(main = ".", cast_id = NULL){
+  
   if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    casts_meta <- select_casts(main = main)
     cast_id <- max(casts_meta$cast_id)
   }
   lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
-  cpath <- file_path(main, "casts", lpath, arg_checks)
+  cpath <- file_path(main, "casts", lpath)
   if(!file.exists(cpath)){
     stop("cast_id does not have a cast_table", call. = FALSE)
   }
   out <- read.csv(cpath, stringsAsFactors = FALSE) 
-  na_conformer(out, arg_checks = arg_checks)
+  na_conformer(out)
 }
 
 #' @rdname read_cast_output
 #'
 #' @export
 #'
-read_cast_tabs <- function(main = ".", cast_ids = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
+read_cast_tabs <- function(main = ".", cast_ids = NULL){
+  
   if(is.null(cast_ids)){
-    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    casts_meta <- select_casts(main = main)
     cast_ids <- max(casts_meta$cast_id)
   }
-  cast_tab <- read_cast_tab(main = main, cast_id = cast_ids[1],
-                            arg_checks = arg_checks)
+  cast_tab <- read_cast_tab(main = main, cast_id = cast_ids[1])
   ncasts <- length(cast_ids)
   if(ncasts > 1){
     for(i in 2:ncasts){
-      cast_tab_i <- read_cast_tab(main = main, cast_id = cast_ids[i],
-                                  arg_checks = arg_checks)
+      cast_tab_i <- read_cast_tab(main = main, cast_id = cast_ids[i])
       cast_tab <- rbind(cast_tab, cast_tab_i)
     }
   }
@@ -338,14 +314,14 @@ read_cast_tabs <- function(main = ".", cast_ids = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
+read_cast_metadata <- function(main = ".", cast_id = NULL){
+  
   if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    casts_meta <- select_casts(main = main)
     cast_id <- max(casts_meta$cast_id)
   }
   lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
-  cpath <- file_path(main, "casts", lpath, arg_checks)
+  cpath <- file_path(main, "casts", lpath)
   if(!file.exists(cpath)){
     stop("cast_id does not have a cast_metadata file", call. = FALSE)
   }
@@ -357,14 +333,14 @@ read_cast_metadata <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-read_model_fits <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
+read_model_fits <- function(main = ".", cast_id = NULL){
+  
   if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    casts_meta <- select_casts(main = main)
     cast_id <- max(casts_meta$cast_id)
   }
   lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath <- file_path(main, "fits", lpath, arg_checks)
+  cpath <- file_path(main, "fits", lpath)
   if(!file.exists(cpath)){
     stop("cast_id does not have a model_fits file", call. = FALSE)
   }
@@ -376,14 +352,14 @@ read_model_fits <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'
 #' @export
 #'
-read_model_casts <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
-  check_args(arg_checks)
+read_model_casts <- function(main = ".", cast_id = NULL){
+  
   if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main, arg_checks = arg_checks)
+    casts_meta <- select_casts(main = main)
     cast_id <- max(casts_meta$cast_id)
   }
   lpath <- paste0("cast_id_", cast_id, "_model_casts.json")
-  cpath <- file_path(main, "casts", lpath, arg_checks)
+  cpath <- file_path(main, "casts", lpath)
   if(!file.exists(cpath)){
     stop("cast_id does not have a model_casts file", call. = FALSE)
   }
@@ -429,11 +405,6 @@ read_model_casts <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #' @param include_interp \code{logical} indicator of if the basic data set
 #'  names should also be inclusive of the associated interpolated data sets.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not.
-#'
 #' @return \code{data.frame} of the \code{cast_tab}.
 #' 
 #' @examples
@@ -447,12 +418,9 @@ read_model_casts <- function(main = ".", cast_id = NULL, arg_checks = TRUE){
 #'
 select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
                          end_moons = NULL, models = NULL, data_sets = NULL,
-                         quiet = FALSE, include_interp = FALSE,
-                         arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  subp <- sub_path(main = main, subs = "casts", arg_checks = arg_checks)
-  casts_metadata <- read_casts_metadata(main = main, quiet = quiet, 
-                                        arg_checks = arg_checks)
+                         quiet = FALSE, include_interp = FALSE){
+  subp <- sub_path(main = main, subs = "casts")
+  casts_metadata <- read_casts_metadata(main = main, quiet = quiet)
 
   ucast_ids <- unique(casts_metadata$cast_id)
   cast_ids <- ifnull(cast_ids, ucast_ids)
@@ -528,11 +496,6 @@ select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not.
-#'
 #' @return Relevant elements are saved to external files, and \code{NULL} is
 #'  returned.
 #'
@@ -546,10 +509,8 @@ select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
 #' @export
 #'
 save_cast_output <- function(cast = NULL, main = ".", 
-                             quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  cast_meta <- read_casts_metadata(main = main, quiet = quiet, 
-                                   arg_checks = arg_checks)
+                             quiet = FALSE){
+  cast_meta <- read_casts_metadata(main = main, quiet = quiet)
   cast_ids <- cast_meta$cast_id
   if(all(is.na(cast_ids))){
     next_cast_id <- 1
@@ -571,22 +532,19 @@ save_cast_output <- function(cast = NULL, main = ".",
                               QAQC = TRUE, notes = NA)
   cast_meta <- rbind(cast_meta, new_cast_meta)
   meta_path <- file_path(main = main, sub = "casts", 
-                         files = "casts_metadata.csv", 
-                         arg_checks = arg_checks)
+                         files = "casts_metadata.csv")
   write.csv(cast_meta, meta_path, row.names = FALSE)
 
   if(!is.null(cast$metadata)){
     meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
-    meta_path <- file_path(main = main, sub = "casts", files = meta_filename,
-                           arg_checks = arg_checks)
+    meta_path <- file_path(main = main, sub = "casts", files = meta_filename)
     yams <- as.yaml(cast$metadata)
     writeLines(yams, con = meta_path)
   }
   if(!is.null(cast$cast_tab)){
     cast_tab_filename <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
     cast_tab_path <- file_path(main = main, sub = "casts", 
-                               files = cast_tab_filename,
-                               arg_checks = arg_checks)
+                               files = cast_tab_filename)
     cast_tab <- cast$cast_tab
     cast_tab$cast_id <- next_cast_id
     cast_tab$cast_group <- cast$metadata$cast_group
@@ -597,8 +555,7 @@ save_cast_output <- function(cast = NULL, main = ".",
     model_fits_filename <- paste0("cast_id_", next_cast_id, 
                                   "_model_fits.json") 
     model_fits_path <- file_path(main = main, sub = "fits", 
-                                 files = model_fits_filename,
-                                 arg_checks = arg_checks)
+                                 files = model_fits_filename)
     model_fits <- cast$model_fits
     model_fits <- serializeJSON(model_fits)
     write_json(model_fits, path = model_fits_path)
@@ -607,8 +564,7 @@ save_cast_output <- function(cast = NULL, main = ".",
     model_casts_filename <- paste0("cast_id_", next_cast_id, 
                                    "_model_casts.json") 
     model_casts_path <- file_path(main = main, sub = "casts", 
-                                  files = model_casts_filename, 
-                                  arg_checks = arg_checks)
+                                  files = model_casts_filename)
     model_casts <- cast$model_casts
     model_casts <- serializeJSON(model_casts)
     write_json(model_casts, path = model_casts_path)
@@ -627,11 +583,6 @@ save_cast_output <- function(cast = NULL, main = ".",
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not.
-#'  
 #' @return Data requested.
 #' 
 #' @examples
@@ -642,11 +593,10 @@ save_cast_output <- function(cast = NULL, main = ".",
 #'
 #' @export
 #'
-read_casts_metadata <- function(main = ".", quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks)
+read_casts_metadata <- function(main = ".", quiet = FALSE){
+  
   meta_path <- file_path(main = main, sub = "casts", 
-                         files = "casts_metadata.csv",
-                         arg_checks = arg_checks)
+                         files = "casts_metadata.csv")
   if(!file.exists(meta_path)){
     messageq("  **creating cast_metadata.csv**", quiet = quiet)
     casts_meta <- data.frame(cast_id = 0, cast_group = 0, 

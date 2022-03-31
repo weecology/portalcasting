@@ -72,7 +72,7 @@ ensemble_casts <- function(main = ".", method = "unwtavg",
                            cast_tab = NULL, end_moon = NULL, 
                            models = NULL, data_set = NULL, 
                            include_interp = TRUE,
-                           species = NULL, arg_checks = TRUE){
+                           species = NULL){
 
   check_args(arg_checks = arg_checks)
   if(is.null(cast_tab)){

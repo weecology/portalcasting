@@ -6,10 +6,9 @@
 #                       control_files = files_control(), 
 #                       quiet = FALSE, 
 #                       verbose = FALSE, 
-#                       max_E = 7, 
-#                       arg_checks = TRUE)
+#                       max_E = 7)
 #{
-#  check_args(arg_checks)
+#  
 #  data_set <- tolower(data_set)
 #  model_name <- "simplexEDM"
 #  
@@ -143,10 +142,9 @@
 #                  control_files = files_control(), 
 #                  quiet = FALSE, 
 #                  verbose = FALSE, 
-#                  max_E = 7, 
-#                  arg_checks = TRUE)
+#                  max_E = 7)
 #{
-#  check_args(arg_checks)
+#  
 #  data_set <- tolower(data_set)
 #  model_name <- "GPEDM"
 #  

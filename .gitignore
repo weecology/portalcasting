@@ -5,6 +5,7 @@ doc
 .RData
 docs/*
 inst/doc
+portalcasting/*
 test/* 
 tests/testthat/testing/*
 tests/testthat/prod/*

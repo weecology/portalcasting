@@ -15,8 +15,7 @@ jags_ss(
   inits = NULL,
   lag = NA,
   quiet = FALSE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -53,9 +52,6 @@ quiet.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out
 all of the information or not (and thus just the tidy messages).}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}.}
 }
 \value{
 \code{list} of [1] model metadata \code{list} (\code{"metadata"}), 

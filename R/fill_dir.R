@@ -1,6 +1,6 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
-#' @description Fill the directory with components including (optionally) the resources data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
+#' @description Fill the directory with components including (optionally) the raw data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
 #'             
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -29,12 +29,8 @@
 #'   fill_models("./pc")
 #'  }
 #'
-#' @name fill_directory
+#' @name directory filling
 #'
-NULL
-
-
-#' @rdname fill_directory
 #'
 #' @export
 #'
@@ -82,7 +78,7 @@ fill_dir <- function (main     = ".",
 }
 
 
-#' @rdname fill_directory
+#' @rdname directory-filling
 #'
 #' @export
 #'
@@ -124,7 +120,7 @@ fill_data <- function (main     = ".",
 
 
 
-#' @rdname fill_directory
+#' @rdname directory-filling
 #'
 #' @export
 #'
@@ -135,23 +131,23 @@ fill_raw <- function (main     = ".",
 
   messageq("Downloading resources ... ", quiet = quiet)
 
-  download_observations(path        = file.path(main, "raw"), 
-                        version     = settings$raw$PortalData$version,
-                        from_zenodo = settings$raw$PortalData$source == "zenodo",
+  download_observations(path        = file.path(main, settings$subs["resources"]), 
+                        version     = settings$resources$PortalData$version,
+                        from_zenodo = settings$resources$PortalData$source == "zenodo",
                         quiet       = quiet)
 
   download_archive(main    = main, 
-                   version = settings$raw$portalPredictions$version,
-                   source  = settings$raw$portalPredictions$source,
+                   version = settings$resources$portalPredictions$version,
+                   source  = settings$resources$portalPredictions$source,
                    pause   = settings$unzip_pause,
                    timeout = settings$download_timeout,
                    quiet   = quiet,
                    verbose = verbose)
 
   download_climate_forecasts(main    = main, 
-                             source  = settings$raw$climate_forecast$source,  
-                             version = settings$raw$climate_forecast$version, 
-                             data    = settings$raw$climate_forecast$data, 
+                             source  = settings$resources$climate_forecast$source,  
+                             version = settings$resources$climate_forecast$version, 
+                             data    = settings$resources$climate_forecast$data, 
                              timeout = settings$download_timeout,
                              quiet   = quiet,
                              verbose = verbose)
@@ -162,7 +158,7 @@ fill_raw <- function (main     = ".",
 
 }
 
-#' @rdname fill_directory
+#' @rdname directory-filling
 #'
 #' @export
 #'
@@ -175,7 +171,7 @@ fill_casts <- function (main     = ".",
 
   files <- unlist(mapply(FUN        = list.files,
                          path       = mapply(FUN = file.path, 
-                                                   main, "raw", "portalPredictions", output_folders),
+                                                   main, settings$subs["resources"], settings$repository, output_folders),
                          full.names = TRUE))
 
   if (length(files) == 0) {
@@ -187,7 +183,7 @@ fill_casts <- function (main     = ".",
   messageq(paste0(" Located ", length(files), " cast files ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, "casts"), 
+                      to        = file.path(main, settings$subs["forecasts"]), 
                       recursive = TRUE)
 
   messageq(paste(ifelse(sum(copied) > 0, 
@@ -206,7 +202,7 @@ fill_casts <- function (main     = ".",
 }
 
 
-#' @rdname fill_directory
+#' @rdname directory-filling
 #'
 #' @export
 #'
@@ -219,7 +215,7 @@ fill_fits <- function (main     = ".",
 
   files <- unlist(mapply(FUN        = list.files,
                          path       = mapply(FUN = file.path, 
-                                                   main, "raw", "portalPredictions", output_folders),
+                                                   main, settings$subs["resources"], settings$repository, output_folders),
                          full.names = TRUE))
 
   if (length(files) == 0) {
@@ -231,7 +227,7 @@ fill_fits <- function (main     = ".",
   messageq(paste0(" Located ", length(files), " fit files ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, "fits"), 
+                      to        = file.path(main, settings$subs["model fits"]), 
                       recursive = TRUE)
 
   messageq(paste(ifelse(sum(copied) > 0, 
@@ -251,7 +247,7 @@ fill_fits <- function (main     = ".",
 
 
 
-#' @rdname fill_directory
+#' @rdname directory-filling
 #'
 #' @export
 #'

@@ -11,7 +11,8 @@ directory_settings(
   historical_covariates_file = "historical_covariates.csv",
   forecast_covariates_file = "forecast_covariates.csv",
   metadata_file = "metadata.yaml",
-  subdirectories = c("casts", "fits", "models", "raw", "data", "tmp"),
+  subdirectories = list(forecasts = "casts", `model fits` = "fits", `model scripts` =
+    "models", resources = "raw", data = "data", tmp = "tmp"),
   PortalData = list(source = "github", version = "latest"),
   portalPredictions = list(source = "github", version = NULL),
   climate_forecast = list(source = "NMME", version = as.character(Sys.Date()), data =

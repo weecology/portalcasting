@@ -180,15 +180,6 @@ update_list <- function (list = list(),
 #' @param filename \code{character} filename of existing \code{.csv} to be 
 #'  appended.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
 #' @return \code{NULL}.
 #'
 #' @examples
@@ -200,8 +191,8 @@ update_list <- function (list = list(),
 #'
 #' @export
 #'
-append_csv <- function(df, filename, arg_checks = TRUE){
-  check_args(arg_checks)
+append_csv <- function(df, filename){
+  
   write.table(df, filename, sep = ",", row.names = FALSE, 
     col.names = !file.exists(filename), append = file.exists(filename))
   NULL
@@ -216,15 +207,6 @@ append_csv <- function(df, filename, arg_checks = TRUE){
 #' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be 
 #'   converted to the fraction of the year.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
 #' @return \code{numeric} value(s) of the fraction of the year.
 #'
 #' @examples
@@ -232,9 +214,9 @@ append_csv <- function(df, filename, arg_checks = TRUE){
 #'
 #' @export
 #'
-foy <- function(dates = NULL, arg_checks = TRUE){
+foy <- function(dates = NULL){
   return_if_null(dates)
-  check_args(arg_checks)
+  
   dates <- as.Date(dates)
   jday <- as.numeric(format(dates, "%j"))
   nye <- as.Date(paste0(format(dates, "%Y"), "-12-31"))
@@ -262,11 +244,6 @@ foy <- function(dates = NULL, arg_checks = TRUE){
 #'  made or not. For toggling separately from the more general \code{quiet}
 #'  argument. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @return \code{NULL}, with the tmp subdirectory's files removed.
 #'
 #' @examples
@@ -278,9 +255,9 @@ foy <- function(dates = NULL, arg_checks = TRUE){
 #' @export
 #'
 clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE, 
-                      verbose = FALSE, cleanup = TRUE, arg_checks = TRUE){
-  check_args(arg_checks)
-  tmp_path <- tmp_path(main = main, arg_checks = arg_checks)
+                      verbose = FALSE, cleanup = TRUE){
+  
+  tmp_path <- tmp_path(main = main)
   tmp_exist <- dir.exists(tmp_path)
   tmp_files <- list.files(tmp_path)
   ntmp_files <- length(tmp_files)
@@ -293,8 +270,7 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
   if(tmp_exist){
     if(ntmp_files > 0){
       tmp_files_full_paths <- file_path(main = main, sub = "tmp", 
-                                        files = tmp_files, 
-                                        arg_checks = arg_checks)
+                                        files = tmp_files)
       unlink(tmp_files_full_paths, force = TRUE, recursive = TRUE)
       msg <- "    *temporary files cleared from tmp subdirectory*"
     } else {
@@ -327,11 +303,6 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
 #' @param column \code{character} indicating the column to use for identifying
 #'  entries in combining.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
 #' 
 #' @examples
@@ -344,9 +315,8 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
 #' @export
 #'
 combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL, 
-                                  winner = "hist", column = "date",
-                                  arg_checks = TRUE){
-  check_args(arg_checks)
+                                  winner = "hist", column = "date"){
+  
   return_if_null(hist_tab, cast_tab)
   return_if_null(cast_tab, hist_tab)
 
@@ -396,15 +366,6 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
 #' @param df \code{data.frame} with columns named \code{year}, \code{month},
 #'  and \code{day}. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'   checked using standard protocols via \code{\link{check_args}}. The 
-#'   default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'   formatted correctly and provides directed error messages if not. \cr
-#'   However, in sandboxing, it is often desirable to be able to deviate from 
-#'   strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-#'   many/most/all enclosed functions to not check any arguments using 
-#'   \code{\link{check_args}}, and as such, \emph{caveat emptor}.
-#'
 #' @return \code{data.frame} \code{df} with column of \code{Date}s 
 #'  named \code{date} added.
 #'
@@ -414,8 +375,8 @@ combine_hist_and_cast <- function(hist_tab = NULL, cast_tab = NULL,
 #'
 #' @export
 #'
-add_date_from_components <- function(df, arg_checks = TRUE){
-  check_args(arg_checks)
+add_date_from_components <- function(df){
+  
   yrs <- df$year
   mns <- df$month
   dys <- df$day
@@ -437,11 +398,6 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #' @param colname A single \code{character} value of the column to use
 #'  to remove incomplete entries. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @return \code{df} without any incomplete entries. 
 #'
 #' @examples
@@ -450,8 +406,8 @@ add_date_from_components <- function(df, arg_checks = TRUE){
 #'
 #' @export
 #'
-remove_incompletes <- function(df, colname, arg_checks = TRUE){
-  check_args(arg_checks)
+remove_incompletes <- function(df, colname){
+  
   incompletes <- which(is.na(df[ , colname]))
   if (length(incompletes) > 0){
     df <- df[-incompletes, ]

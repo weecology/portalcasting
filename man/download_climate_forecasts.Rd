@@ -33,3 +33,11 @@ download_climate_forecasts(
 \description{
 Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/raw} sub.
 }
+\examples{
+ \donttest{
+
+  create_dir(main = "./portalcasting")
+  download_climate_forecasts(main = "./portalcasting")
+ } 
+
+}

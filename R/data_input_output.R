@@ -34,7 +34,7 @@ write_data <- function (dfl       = NULL,
 
   if (save) {
 
-    full_path <- file.path(main, "data", filename)
+    full_path <- file.path(main, settings$subs$data, filename)
 
     if (file.exists(full_path)) {
 
@@ -157,7 +157,7 @@ read_rodents_table <- function (main     = ".",
                                 settings = directory_settings()) {
 
   return_if_null(dataset)
-  read.csv(file.path(main, "data", paste0("rodents_", tolower(dataset), ".csv"))) 
+  read.csv(file.path(main, settings$subs$data, paste0("rodents_", tolower(dataset), ".csv"))) 
 
 }
 
@@ -181,7 +181,7 @@ read_rodents <- function (main     = ".",
 read_moons <- function(main     = ".", 
                        settings = directory_settings()){
   
-  read.csv(file.path(main, "data", settings$files$moons))
+  read.csv(file.path(main, settings$subs$data, settings$files$moons))
 
 }
 
@@ -192,7 +192,7 @@ read_moons <- function(main     = ".",
 read_covariates <- function (main     = ".",
                              settings = directory_settings()) {
 
-  read.csv(file.path(main, "data", settings$files$covariates))
+  read.csv(file.path(main, settings$subs$data, settings$files$covariates))
 
 }
 
@@ -206,7 +206,7 @@ read_climate_forecasts <- function (main = ".") {
 
   datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
   ndatas <- length(datas)
-  dat_list <- mapply(FUN = read.csv, file.path(main, "raw", files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
+  dat_list <- mapply(FUN = read.csv, file.path(main, settings$subs$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
 
   dat_tab <- dat_list[[1]]
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
@@ -261,9 +261,10 @@ read_climate_forecasts <- function (main = ".") {
 read_metadata <- function(main     = ".", 
                           settings = directory_settings()){
   
-  read_yaml(file.path(main, "data", settings$files$metadata), eval.expr = TRUE)
+  read_yaml(file.path(main, settings$subs$data, settings$files$metadata), eval.expr = TRUE)
 
 }
 
 
   
+

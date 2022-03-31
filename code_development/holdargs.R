@@ -1,3 +1,5 @@
+
+
 #' @title Check a function's arguments' values for validity
 #'
 #' @description Provides toggle-able argument checking for nearly all 

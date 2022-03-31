@@ -43,11 +43,6 @@
 #' @param include_interp \code{logical} indicator of if the models fit using
 #'  interpolated data should be included with the models that did not.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @param species \code{character} vector of the species code(s) 
 #'  or \code{"total"} for the total across species) to be plotted 
 #'  \code{NULL} translates to the species defined by  
@@ -68,8 +63,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
                                 cast_tab = NULL, end_moons = NULL, 
                                 models = NULL, ensemble = TRUE, 
                                 data_set = NULL, include_interp = TRUE,
-                                species = NULL, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                                species = NULL){
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moons, 
@@ -111,7 +105,7 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
 
 
 
-  lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
+  lp <- file_path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -279,11 +273,6 @@ plot_casts_cov_RMSE <- function(main = ".", cast_ids = NULL,
 #'  Default value is \code{NULL}, which equates to no selection with 
 #'  respect to \code{data_set}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @param ensemble \code{logical} indicator of if an ensemble should be
 #'  included. Presently only the unweighted average. See 
 #'  \code{\link{ensemble_casts}}.
@@ -311,8 +300,8 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
                                 cast_tab = NULL, end_moons = NULL, 
                                 models = NULL, ensemble = TRUE, 
                                 data_set = "controls", include_interp = TRUE,
-                                species = NULL, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                                species = NULL){
+
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moons, 
@@ -350,7 +339,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 
 
   cast_tab <- cast_tab[all_in, ]
-  lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
+  lp <- file_path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -562,11 +551,6 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'  the \code{casts} sub folder. See the casts metadata file 
 #'  (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @param species \code{character} vector of the species codes (or 
 #'  \code{"total"} for the total across species) to be plotted or 
 #'  \code{NULL} (default) to plot all species in \code{data_set}.
@@ -602,8 +586,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
                             species = NULL, highlight_sp = NULL,
                             moon = NULL, with_census = FALSE, 
                             control_files = files_control(),
-                            quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                            quiet = FALSE){
   moons <- read_moons(main = main, control_files = control_files,
                       arg_checks = arg_checks)
   last_census_date <- last_census(main = main, arg_checks = arg_checks)
@@ -694,7 +677,7 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
   mtext(title, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
 
-  lpath <- file_path(main = main, sub = "raw",  
+  lpath <- file_path(main = main, sub = settings$subs$resources,  
                      files = "PortalData/Rodents/Portal_rodent_species.csv",
                      arg_checks = arg_checks)
   sptab <- read.csv(lpath, stringsAsFactors = FALSE) 
@@ -802,11 +785,6 @@ plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
 #'  of the cast group to combine with an ensemble. If \code{NULL} (default),
 #'  the most recent cast group is ensembled. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. The 
-#'  default (\code{arg_checks = TRUE}) ensures that all inputs are 
-#'  formatted correctly and provides directed error messages if not. 
-#'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
 #'
@@ -829,8 +807,8 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
                          data_set = NULL, model = NULL, end_moon = NULL, 
                          species = "total", start_moon = 217, 
                          control_files = files_control(), 
-                         quiet = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                         quiet = FALSE){
+
   model <- ifnull(model, "Ensemble")
   model2 <- model
   if(!is.null(model) && tolower(model) == "ensemble"){
@@ -911,7 +889,7 @@ plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
   axis(1, at = loc, labels = FALSE, tck = -0.005)  
 
   lab <- list(text = "", font = 1)
-  lp <- file_path(main, "raw", "PortalData/Rodents/Portal_rodent_species.csv")
+  lp <- file_path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
   if (species == "total"){

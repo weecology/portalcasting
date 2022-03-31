@@ -23,11 +23,13 @@
 #'         \code{add_future_moons}: fully appended and formatted \code{data.frame}. \cr 
 #'         \code{forecast_future_moons}: moons \code{data.frame} to append to the existing \code{moons}.
 #'
-#' @name prepare_moons
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   prep_moons()
+#'  }
 #'
-NULL
-
-#' @rdname prepare_moons
+#' @name prepare moons
 #'
 #' @export
 #' 
@@ -39,11 +41,11 @@ prep_moons <- function (main     = ".",
                         verbose  = FALSE) {
 
   
-  PD <- file.path(main, "raw", "PortalData")
+  PD <- file.path(main, settings$subs$resources, "PortalData")
   
   if (!file.exists(PD)) {
 
-    download_observations(path        = file.path(main, "raw"), 
+    download_observations(path        = file.path(main, settings$subs["resources"]), 
                           version     = settings$resources$PortalData$version,
                           from_zenodo = settings$resources$PortalData$source == "zenodo",
                           quiet       = quiet)
@@ -52,7 +54,7 @@ prep_moons <- function (main     = ".",
 
   messageq("  - moons data file", quiet = quiet)
 
-  traps_in <- load_trapping_data(path                = file.path(main, "raw"), 
+  traps_in <- load_trapping_data(path                = file.path(main, settings$subs["resources"]), 
                                  download_if_missing = FALSE,
                                  clean               = FALSE, 
                                  quiet               = !verbose)
@@ -73,7 +75,7 @@ prep_moons <- function (main     = ".",
 
 } 
 
-#' @rdname prepare_moons
+#' @rdname prepare-moons
 #'
 #' @export
 #'
@@ -98,7 +100,7 @@ add_future_moons <- function (main      = ".",
 
 }
 
-#' @rdname prepare_moons
+#' @rdname prepare-moons
 #'
 #' @export
 #'

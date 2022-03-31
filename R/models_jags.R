@@ -4,14 +4,12 @@
 #'
 jags_logistic <- function (main            = ".", 
                            data_set        = "dm_controls",  
-                           control_files   = files_control(), 
+                           settings        = directory_settings(), 
                            control_runjags = runjags_control(), 
                            lag             = NA, 
                            quiet           = FALSE, 
-                           verbose         = FALSE, 
-                           arg_checks      = TRUE) {
+                           verbose         = FALSE) {
 
-  check_args(arg_checks = arg_checks)
 
   data_set     <- tolower(data_set)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
@@ -133,8 +131,8 @@ jags_logistic <- function (main            = ".",
 jags_RW <- function(main = ".", data_set = "all",  
                     control_files = files_control(), 
                     control_runjags = runjags_control(), lag = NA, 
-                    quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                    quiet = FALSE, verbose = FALSE){
+
   data_set <- tolower(data_set)
   messageq(paste0("  -jags_RW for ", data_set), quiet = quiet)
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
@@ -271,9 +269,6 @@ jags_RW <- function(main = ".", data_set = "all",
 #'  runs of the model. See \code{Examples} and 
 #'  \code{\link[runjags]{run.jags}}.
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. 
-#'
 #' @return \code{list} of [1] model metadata \code{list} (\code{"metadata"}), 
 #'  [2] cast summary \code{data.frame} (\code{"cast_tab"}),
 #'  [3] \code{list} of model fit objects (\code{"model_fits"}), and 
@@ -379,8 +374,8 @@ jags_ss <- function(main = ".", model_name = NULL, data_set = "all",
                     control_files = files_control(),
                     control_runjags = runjags_control(),
                     jags_model = NULL, monitor = NULL, inits = NULL, lag = NA, 
-                    quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                    quiet = FALSE, verbose = FALSE){
+  
   covariatesTF <- ifelse(is.na(lag), FALSE, TRUE)
   runjags.options(silent.jags = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
@@ -573,9 +568,6 @@ jags_ss <- function(main = ".", model_name = NULL, data_set = "all",
 #' @param silent_jags \code{logical} value for quieting the output from the
 #'  runjags function, including the underlying JAGS output. 
 #'
-#' @param arg_checks \code{logical} value of if the arguments should be
-#'  checked using standard protocols via \code{\link{check_args}}. 
-#'
 #' @return \code{list} of controls. 
 #'
 #' @references 
@@ -598,9 +590,8 @@ jags_ss <- function(main = ".", model_name = NULL, data_set = "all",
 runjags_control <- function(nchains = 2, adapt = 1e4, burnin = 1e4, 
                             sample = 1e4, thin = 1, modules = "", 
                             method = "interruptible", factories = "", 
-                            mutate = NA, cast_obs = TRUE, silent_jags = TRUE,
-                            arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
+                            mutate = NA, cast_obs = TRUE, silent_jags = TRUE){
+
   list(nchains = nchains, adapt = adapt, burnin = burnin, sample = sample,
        thin = thin, modules = modules, method = method, factories = factories,
        mutate = mutate, cast_obs = cast_obs, silent_jags = silent_jags)

@@ -14,8 +14,7 @@ ensemble_casts(
   models = NULL,
   data_set = NULL,
   include_interp = TRUE,
-  species = NULL,
-  arg_checks = TRUE
+  species = NULL
 )
 }
 \arguments{

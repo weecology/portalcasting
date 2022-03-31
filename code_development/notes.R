@@ -11,7 +11,8 @@ main <- "./test"
 # updating to working with the settings list
 # minimizing other changes to the degree possible
 
-# currently in write_model and model_template to allow for additional arguments
+# updating prefab model functions in pevgarch now 
+# dealing with covariate forecasts
 
 ##############################################
 

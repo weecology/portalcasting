@@ -1,3 +1,13 @@
+    covariate_casts <- read_forecast_covariates(main = main)
+
+    covar_casts_lag <- lag_covariates(covariate_casts, lag, tail = TRUE)
+    last_cov_nm <- max(covar_hist$moon) - lag
+    nm_in <- covar_casts_lag$cast_moon == last_cov_nm
+    s_in <- covar_casts_lag$source == metadata$covariate_source
+    dm_in <- covar_casts_lag$date_made == metadata$covariate_date_made
+    covar_cast <- covar_casts_lag[nm_in & dm_in & s_in, ]
+
+
 #' @title Cast the covariates
 #'
 #' @description Cast the covariates for a model run. \cr \cr
