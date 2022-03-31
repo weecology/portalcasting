@@ -202,7 +202,8 @@ read_covariates <- function (main     = ".",
 #'
 #' @export
 #'
-read_climate_forecasts <- function (main = ".") {
+read_climate_forecasts <- function (main     = ".",
+                                    settings = directory_settings()) {
 
   datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
   ndatas <- length(datas)

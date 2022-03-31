@@ -34,7 +34,7 @@ read_moons(main = ".", settings = directory_settings())
 
 read_covariates(main = ".", settings = directory_settings())
 
-read_climate_forecasts(main = ".")
+read_climate_forecasts(main = ".", settings = directory_settings())
 
 read_metadata(main = ".", settings = directory_settings())
 }

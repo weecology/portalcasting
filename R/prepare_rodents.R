@@ -233,7 +233,7 @@ prep_rodent_dataset <- function(name        = "all",
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param control_files \code{list} of names of the folders and files within the sub directories and saving strategies (save, overwrite, append, etc.). Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{Date} of the last census.
 #'
@@ -245,12 +245,14 @@ prep_rodent_dataset <- function(name        = "all",
 #'
 #' @export
 #'
-last_census <- function (main          = ".", 
-                         control_files = files_control()) {
+last_census <- function (main     = ".", 
+                         settings = directory_settings()) {
 
   
-  moons <- read_moons(main = main, control_files = control_files)
+  moons <- read_moons(main     = main, 
+                      settings = settings)
   as.Date(max(moons$censusdate, na.rm = TRUE))
+
 }
 
 

@@ -547,7 +547,7 @@ nbsGARCH <- function (main     = ".",
 
   start_moon       <- metadata$time$start_moon
   end_moon         <- metadata$time$end_moon
-  moon_foys        <- foy(dates = moons$moondate, arg_checks = arg_checks)
+  moon_foys        <- foy(dates = moons$moondate)
   sin2pifoy        <- sin(2 * pi * moon_foys)
   cos2pifoy        <- cos(2 * pi * moon_foys)
   fouriers         <- data.frame(sin2pifoy, cos2pifoy)

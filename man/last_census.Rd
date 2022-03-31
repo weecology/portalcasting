@@ -4,12 +4,12 @@
 \alias{last_census}
 \title{Determine the most recent data collection}
 \usage{
-last_census(main = ".", control_files = files_control())
+last_census(main = ".", settings = directory_settings())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{control_files}{\code{list} of names of the folders and files within the sub directories and saving strategies (save, overwrite, append, etc.). Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 }
 \value{
 \code{Date} of the last census.

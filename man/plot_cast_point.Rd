@@ -15,7 +15,7 @@ plot_cast_point(
   highlight_sp = NULL,
   moon = NULL,
   with_census = FALSE,
-  control_files = files_control(),
+  settings = directory_settings(),
   quiet = FALSE
 )
 }
@@ -60,9 +60,7 @@ the plot.}
 \item{with_census}{\code{logical} toggle if the plot should include the
 observed data collected during the predicted census.}
 
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

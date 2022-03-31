@@ -61,26 +61,16 @@ prep_historic_covariates <- function (main     = ".",
                                       quiet    = TRUE, 
                                       verbose  = FALSE) {
 
-  weather_data   <- weather(level = "daily", fill = TRUE, path = file.path(main, settings$subs$resources))
-  ndvi_data      <- ndvi(level = "daily", path = file.path(main, settings$subs$resources))
-  ndvi_data$date <- as.Date(ndvi_data$date)
+  weather_data <- weather(level = "newmoon", fill = TRUE, path = file.path(main, settings$subs$resources))
+  ndvi_data    <- ndvi(level = "newmoon", fill = TRUE, path = file.path(main, settings$subs$resources))
 
-  out             <- weather_data
-  out$source      <- "historic"
-  out$ndvi        <- NA
-  out$ndvi_source <- NA
+  out                  <- weather_data
+  out$source           <- "historic"
+  out$ndvi             <- NA
+  moon_match           <- match(ndvi_data$newmoonnumber, out$newmoonnumber)
+  out$ndvi[moon_match] <- ndvi_data$ndvi
 
-  ndvi_dates_in_weather <- na.omit(match(ndvi_data$date, weather_data$date))
-  ndvi_dates_to_keep    <- ndvi_data$date %in% weather_data$date
-
-  out$ndvi[ndvi_dates_in_weather]        <- ndvi_data$ndvi[ndvi_dates_to_keep]
-  out$ndvi_source[ndvi_dates_in_weather] <- ndvi_data$source[ndvi_dates_to_keep]
-
-  moons <- read_moons(main = main, settings = settings)
-
-  out <- add_newmoonnumbers_from_dates(df = out, moons = moons)
-
-  cols_to_keep <- c("date", "mintemp", "maxtemp", "meantemp", "precipitation", "source", "ndvi", "ndvi_source", "newmoonnumber")
+  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "ndvi", "source")
 
   write_data(dfl       = out[ , cols_to_keep], 
              main      = main, 
@@ -103,7 +93,8 @@ prep_forecast_covariates <- function (main      = ".",
 
   if (origin == Sys.Date()) {
 
-    climate_forecasts <- read_climate_forecasts(main = main)
+    climate_forecasts <- read_climate_forecasts(main     = main,
+                                                settings = settings)
 
     ndvi_data      <- ndvi(level = "daily", path = file.path(main, settings$subs$resources))
     ndvi_data$date <- as.Date(ndvi_data$date)
@@ -136,7 +127,6 @@ prep_forecast_covariates <- function (main      = ".",
 
     climate_forecasts$ndvi <- as.numeric(ndvi_forecast$mean)
 
-    out <- climate_forecasts 
 
   } else {
 
@@ -145,12 +135,48 @@ prep_forecast_covariates <- function (main      = ".",
 
   }
 
-  out$source      <- "forecast" 
-  out$ndvi_source <- "forecast" 
-  moons           <- read_moons(main = main, settings = settings)
-  out             <- add_newmoonnumbers_from_dates(df = out, moons = moons)
 
-  write_data(dfl       = out, 
+  # forces things onto moons still for the time being
+
+  moons <- read_moons(main = main, settings = settings)
+
+  climate_forecasts <- add_newmoonnumbers_from_dates(climate_forecasts, moons)
+  
+  hist_time_obs <- climate_forecasts$newmoonnumber
+  min_hist_time <- min(hist_time_obs)
+  max_hist_time <- max(hist_time_obs)
+  hist_time     <- min_hist_time:max_hist_time
+  nhist_time    <- length(hist_time)
+
+  mintemps       <- rep(NA, nhist_time)
+  maxtemps       <- rep(NA, nhist_time)
+  meantemps      <- rep(NA, nhist_time)
+  precipitations <- rep(NA, nhist_time)
+  ndvis          <- rep(NA, nhist_time)
+
+  for (i in 1:nhist_time) {
+
+    days_in           <- climate_forecasts$newmoonnumber == hist_time[i]
+    mintemps[i]       <- min(climate_forecasts$mintemp[days_in], na.rm = TRUE)
+    maxtemps[i]       <- max(climate_forecasts$maxtemp[days_in], na.rm = TRUE)
+    meantemps[i]      <- mean(climate_forecasts$meantemp[days_in], na.rm = TRUE)
+    precipitations[i] <- sum(climate_forecasts$precipitation[days_in], na.rm = TRUE)
+    ndvis[i]          <- mean(climate_forecasts$ndvi[days_in], na.rm = TRUE)
+  
+  }
+
+  hist_climate_forecasts <- data.frame(newmoonnumber = hist_time, 
+                                       date          = moons$newmoondate[match(hist_time, moons$newmoonnumber)],
+                                       mintemp       = mintemps,
+                                       maxtemp       = maxtemps,
+                                       meantemp      = meantemps,
+                                       precipitation = precipitations,
+                                       ndvi          = ndvis, 
+                                       source        = "forecast")
+
+
+
+  write_data(dfl       = hist_climate_forecasts, 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$forecast_covariates, 

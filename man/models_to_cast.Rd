@@ -4,32 +4,25 @@
 \alias{models_to_cast}
 \title{Determine the paths to the scripts for models to cast with}
 \usage{
-models_to_cast(main = ".", models = prefab_models(), arg_checks = TRUE)
+models_to_cast(
+  main = ".",
+  models = prefab_models(),
+  settings = directory_settings()
+)
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to 
-include.}
+\item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 }
 \value{
 \code{character} vector of the path(s) of the R script file(s) to 
   be run.
 }
 \description{
-Translate a \code{character} vector of model name(s) into a 
- \code{character} vector of file path(s) corresponding to the model 
- scripts.
+Translate a \code{character} vector of model name(s) into a \code{character} vector of file path(s) corresponding to the model scripts.
 }
 \examples{
  \donttest{

@@ -185,7 +185,7 @@ update_list <- function (list = list(),
 #' @examples
 #'  \donttest{
 #'   df <- data.frame(x = 1:10)
-#'   fpath <- file_path(files = "xx.csv")
+#'   fpath <- file.path("xx.csv")
 #'   append_csv(df, fpath)
 #'  }
 #'
@@ -269,8 +269,7 @@ clear_tmp <- function(main = ".", bline = TRUE, quiet = FALSE,
 
   if(tmp_exist){
     if(ntmp_files > 0){
-      tmp_files_full_paths <- file_path(main = main, sub = "tmp", 
-                                        files = tmp_files)
+      tmp_files_full_paths <- file.path(main, "tmp", tmp_files)
       unlink(tmp_files_full_paths, force = TRUE, recursive = TRUE)
       msg <- "    *temporary files cleared from tmp subdirectory*"
     } else {

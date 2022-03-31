@@ -22,7 +22,7 @@ Appending a \code{.csv} without re-writing the header of the
 \examples{
  \donttest{
   df <- data.frame(x = 1:10)
-  fpath <- file_path(files = "xx.csv")
+  fpath <- file.path("xx.csv")
   append_csv(df, fpath)
  }
 

@@ -13,7 +13,7 @@ plot_cast_ts(
   end_moon = NULL,
   species = "total",
   start_moon = 217,
-  control_files = files_control(),
+  settings = directory_settings(),
   quiet = FALSE
 )
 }
@@ -52,9 +52,7 @@ newmoon number of the forecast origin. Default value is
 number for the beginning of the x-axis of the plot. \cr
 Does not influence the fit of the models, just the presentation.}
 
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

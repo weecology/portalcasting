@@ -166,8 +166,7 @@ add_err_to_cast_tab <- function(main = ".", cast_tab = NULL) {
 
   return_if_null(cast_tab)
   if(is.null(cast_tab$obs)){
-  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
-                                  arg_checks = arg_checks)
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
   }
   cast_tab$error <- cast_tab$estimate - cast_tab$obs
   cast_tab
@@ -181,8 +180,7 @@ add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL){
 
   return_if_null(cast_tab)
   if(is.null(cast_tab$obs)){
-  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab,
-                                  arg_checks = arg_checks)
+  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
   }
   cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & 
                       cast_tab$obs <= cast_tab$upper_pi 
@@ -202,8 +200,7 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
   ucast_data_set <- unique(cast_data_set)
   ncast_data_sets <- length(ucast_data_set)
   for(j in 1:ncast_data_sets){
-    obs <- read_rodents_table(main = main, data_set = ucast_data_set[j],
-                             arg_checks = arg_checks)
+    obs <- read_rodents_table(main = main, data_set = ucast_data_set[j])
     matches <- which(cast_data_set == ucast_data_set[j])
     nmatches <- length(matches)
     obs_cols <- gsub("NA.", "NA", colnames(obs))
