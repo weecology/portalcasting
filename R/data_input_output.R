@@ -69,7 +69,7 @@ write_data <- function (dfl       = NULL,
 
       } else {
 
-        stop("file type not supported", call. = FALSE)
+        stop("file type not supported")
 
       }
 
@@ -267,4 +267,52 @@ read_metadata <- function(main     = ".",
 
 
   
+#' @title Read in the Casts Metadata File
+#'
+#' @description Read in the casts metadata file. If the data file does not exist, an effort is made to create the file.
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#'
+#' @return Data requested.
+#' 
+#' @examples
+#'  \donttest{
+#'   setup_dir()
+#'   read_casts_metadata()
+#'  }
+#'
+#' @export
+#'
+read_casts_metadata <- function (main     = ".",
+                                 settings = directory_settings(), 
+                                 quiet    = FALSE){
+  
+  meta_path <- file.path(main, settings$subs$forecasts, "casts_metadata.csv")
 
+  if (!file.exists(meta_path)) {
+
+    messageq("  **creating cast_metadata.csv**", quiet = quiet)
+
+    casts_meta <- data.frame(cast_id               = 0, 
+                             cast_group            = 0, 
+                             cast_date             = NA, 
+                             start_moon            = NA, 
+                             end_moon              = NA,
+                             lead_time             = NA, 
+                             model                 = NA, 
+                             data_set              = NA,
+                             portalcasting_version = NA,
+                             QAQC                  = FALSE, 
+                             notes                 = NA)
+
+    write.csv(casts_meta, meta_path, row.names = FALSE)
+
+  }
+
+  read.csv(meta_path)
+
+}

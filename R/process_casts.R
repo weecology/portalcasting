@@ -1,30 +1,20 @@
 #' @title Determine the start and end calendar dates for a cast window
 #'
-#' @description Based on the cast origin (\code{cast_date}), lead time
-#'  (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
-#'  the dates bracketing the requested window.
+#' @description Based on the cast origin (\code{cast_date}), lead time (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines the dates bracketing the requested window.
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'
 #' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the
-#'  number of timesteps forward a cast will cover.
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
 #'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum 
-#'  covariate lag time used in any model.
+#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum covariate lag time used in any model.
 #'
-#' @param cast_date \code{Date} from which future is defined (the origin of
-#'  the cast). In the recurring forecasting, is set to today's date
-#'  using \code{\link{Sys.Date}}.
+#' @param cast_date \code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.
 #'
-#' @param control_files \code{list} of names of the folders and files within
-#'  the sub directories and saving strategies (save, overwrite, append, etc.).
-#'  Generally shouldn't need to be edited. See \code{\link{files_control}}.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @return Named \code{list} with elements \code{start} and \code{end},
-#'  which are both \code{Dates}.
+#' @return Named \code{list} with elements \code{start} and \code{end}, which are both \code{Dates}.
 #'
 #' @examples
 #'  \donttest{
@@ -37,10 +27,10 @@
 #'
 cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
                         lead_time = 12, min_lag = 6,
-                        control_files = files_control()){
+                        settings = directory_settings()){
   
   moons <- ifnull(moons, read_moons(main = main, 
-                                    control_files = control_files))
+                                    settings = settings))
   lagged_lead <- lead_time - min_lag
   moons0 <- moons[moons$moondate < cast_date, ]
   last_moon <- tail(moons0, 1)
@@ -231,26 +221,20 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
 
 
 
-#' @title Read in cast output from a given cast
+#' @title Read in Cast Output From a Given Cast
 #'
-#' @description Read in the various output files of a cast or casts in the 
-#'  casts sub directory. 
+#' @description Read in the various output files of a cast or casts in the casts sub directory. 
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids,cast_id \code{integer} (or integer \code{numeric}) value(s) 
-#'  representing the cast(s) of interest, as indexed within the directory in
-#'  the \code{casts} sub folder. See the casts metadata file 
-#'  (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the
-#'  default), the most recently generated cast's output is read in. \cr
-#'  \code{cast_ids} can be NULL, one value, or more than one values,
-#'  \code{cast_id} can only be NULL or one value.
+#' @param cast_ids,cast_id \code{integer} (or integer \code{numeric}) value(s) representing the cast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated cast's output is read in. \cr 
+#'  \code{cast_ids} can be NULL, one value, or more than one values, \code{cast_id} can only be NULL or one value.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return 
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
-#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with
-#'  a \code{cast_id} column added to distinguish among casts. \cr \cr
+#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
 #'  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
 #'  \code{read_model_fits}: \code{list} of \code{model_fits}. \cr \cr
 #'  \code{read_model_casts}: \code{list} of \code{model_casts}.
@@ -266,106 +250,160 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
 #'   read_model_casts(cast_id = 1)
 #' }
 #'
-#' @name read_cast_output
-#'
-NULL
-
-#' @rdname read_cast_output
+#' @name read cast output
 #'
 #' @export
 #'
-read_cast_tab <- function(main = ".", cast_id = NULL){
+read_cast_tab <- function (main     = ".", 
+                           settings = directory_settings(), 
+                           cast_id  = NULL) {
   
-  if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main)
-    cast_id <- max(casts_meta$cast_id)
+  if (is.null(cast_id) ){
+
+    casts_meta <- select_casts(main     = main,
+                               settings = settings)
+    cast_id    <- max(casts_meta$cast_id)
+
   }
+
   lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
-  cpath <- file_path(main, "casts", lpath)
-  if(!file.exists(cpath)){
-    stop("cast_id does not have a cast_table", call. = FALSE)
+  cpath <- file.path(main, settings$subs$forecasts, lpath)
+
+  if (!file.exists(cpath)) {
+
+    stop("cast_id does not have a cast_table")
+
   }
-  out <- read.csv(cpath, stringsAsFactors = FALSE) 
+
+  out <- read.csv(cpath) 
   na_conformer(out)
+
 }
 
-#' @rdname read_cast_output
+#' @rdname read-cast-output
 #'
 #' @export
 #'
-read_cast_tabs <- function(main = ".", cast_ids = NULL){
+read_cast_tabs <- function (main     = ".", 
+                            settings = directory_settings(), 
+                            cast_ids  = NULL) {
   
-  if(is.null(cast_ids)){
-    casts_meta <- select_casts(main = main)
-    cast_ids <- max(casts_meta$cast_id)
+  if (is.null(cast_ids)) {
+
+    casts_meta <- select_casts(main     = main,
+                               settings = settings)
+    cast_ids   <- max(casts_meta$cast_id)
+
   }
-  cast_tab <- read_cast_tab(main = main, cast_id = cast_ids[1])
-  ncasts <- length(cast_ids)
-  if(ncasts > 1){
-    for(i in 2:ncasts){
-      cast_tab_i <- read_cast_tab(main = main, cast_id = cast_ids[i])
-      cast_tab <- rbind(cast_tab, cast_tab_i)
+
+  cast_tab <- read_cast_tab(main     = main,
+                            settings = settings,
+                            cast_id  = cast_ids[1])
+  ncasts   <- length(cast_ids)
+
+  if (ncasts > 1) {
+
+    for (i in 2:ncasts) {
+
+      cast_tab_i <- read_cast_tab(main     = main, 
+                                  settings = settings,
+                                  cast_id  = cast_ids[i])
+      cast_tab   <- rbind(cast_tab, cast_tab_i)
+
     }
+
   }
+
   cast_tab
+
 }
 
-#' @rdname read_cast_output
+#' @rdname read-cast-output
 #'
 #' @export
 #'
-read_cast_metadata <- function(main = ".", cast_id = NULL){
+read_cast_metadata <- function (main     = ".", 
+                                settings = directory_settings(), 
+                                cast_id  = NULL) {
   
-  if(is.null(cast_id)){
+  if (is.null(cast_id)) {
+
     casts_meta <- select_casts(main = main)
-    cast_id <- max(casts_meta$cast_id)
+    cast_id    <- max(casts_meta$cast_id)
+
   }
+
   lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
-  cpath <- file_path(main, "casts", lpath)
-  if(!file.exists(cpath)){
-    stop("cast_id does not have a cast_metadata file", call. = FALSE)
+  cpath <- file.path(main, settings$subs$forecasts, lpath)
+
+  if (!file.exists(cpath)) {
+
+    stop("cast_id does not have a cast_metadata file")
+
   }
+
   yaml.load_file(cpath) 
+
 }
 
 
-#' @rdname read_cast_output
+#' @rdname read-cast-output
 #'
 #' @export
 #'
-read_model_fits <- function(main = ".", cast_id = NULL){
+read_model_fits <- function (main     = ".", 
+                             settings = directory_settings(), 
+                             cast_id  = NULL) {
   
-  if(is.null(cast_id)){
+  if (is.null(cast_id)) {
+
     casts_meta <- select_casts(main = main)
     cast_id <- max(casts_meta$cast_id)
+
   }
+
   lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath <- file_path(main, "fits", lpath)
-  if(!file.exists(cpath)){
-    stop("cast_id does not have a model_fits file", call. = FALSE)
+  cpath <- file.path(main, settings$subs$`model fits`, lpath)
+
+  if (!file.exists(cpath)) {
+
+    stop("cast_id does not have a model_fits file")
+
   }
+
+  read_in_json <- fromJSON(readLines(cpath))
+  unserializeJSON(read_in_json)
+
+}
+
+#' @rdname read-cast-output
+#'
+#' @export
+#'
+read_model_casts <- function (main     = ".", 
+                              settings = directory_settings(), 
+                              cast_id  = NULL) {
+  
+  if (is.null(cast_id)) {
+
+    casts_meta <- select_casts(main = main)
+    cast_id    <- max(casts_meta$cast_id)
+
+  }
+
+  lpath <- paste0("cast_id_", cast_id, "_model_casts.json")
+  cpath <- file.path(main, settings$subs$forecasts, lpath)
+
+  if (!file.exists(cpath)) {
+
+    stop("cast_id does not have a model_casts file")
+
+  }
+
   read_in_json <- fromJSON(readLines(cpath))
   unserializeJSON(read_in_json)
 }
 
-#' @rdname read_cast_output
-#'
-#' @export
-#'
-read_model_casts <- function(main = ".", cast_id = NULL){
-  
-  if(is.null(cast_id)){
-    casts_meta <- select_casts(main = main)
-    cast_id <- max(casts_meta$cast_id)
-  }
-  lpath <- paste0("cast_id_", cast_id, "_model_casts.json")
-  cpath <- file_path(main, "casts", lpath)
-  if(!file.exists(cpath)){
-    stop("cast_id does not have a model_casts file", call. = FALSE)
-  }
-  read_in_json <- fromJSON(readLines(cpath))
-  unserializeJSON(read_in_json)
-}
 
 #' @title Find casts that fit specifications
 #'
@@ -531,20 +569,18 @@ save_cast_output <- function(cast = NULL, main = ".",
                               portalcasting_version = pc_version,
                               QAQC = TRUE, notes = NA)
   cast_meta <- rbind(cast_meta, new_cast_meta)
-  meta_path <- file_path(main = main, sub = "casts", 
-                         files = "casts_metadata.csv")
+  meta_path <- file.path(main, "casts", "casts_metadata.csv")
   write.csv(cast_meta, meta_path, row.names = FALSE)
 
   if(!is.null(cast$metadata)){
     meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
-    meta_path <- file_path(main = main, sub = "casts", files = meta_filename)
+    meta_path <- file.path(main, "casts", meta_filename)
     yams <- as.yaml(cast$metadata)
     writeLines(yams, con = meta_path)
   }
   if(!is.null(cast$cast_tab)){
     cast_tab_filename <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
-    cast_tab_path <- file_path(main = main, sub = "casts", 
-                               files = cast_tab_filename)
+    cast_tab_path <- file.path(main, "casts", cast_tab_filename)
     cast_tab <- cast$cast_tab
     cast_tab$cast_id <- next_cast_id
     cast_tab$cast_group <- cast$metadata$cast_group
@@ -554,8 +590,7 @@ save_cast_output <- function(cast = NULL, main = ".",
   if(!is.null(cast$model_fits)){
     model_fits_filename <- paste0("cast_id_", next_cast_id, 
                                   "_model_fits.json") 
-    model_fits_path <- file_path(main = main, sub = "fits", 
-                                 files = model_fits_filename)
+    model_fits_path <- file.path(main, "fits", model_fits_filename)
     model_fits <- cast$model_fits
     model_fits <- serializeJSON(model_fits)
     write_json(model_fits, path = model_fits_path)
@@ -563,8 +598,7 @@ save_cast_output <- function(cast = NULL, main = ".",
   if(!is.null(cast$model_casts)){
     model_casts_filename <- paste0("cast_id_", next_cast_id, 
                                    "_model_casts.json") 
-    model_casts_path <- file_path(main = main, sub = "casts", 
-                                  files = model_casts_filename)
+    model_casts_path <- file.path(main, "casts", model_casts_filename)
     model_casts <- cast$model_casts
     model_casts <- serializeJSON(model_casts)
     write_json(model_casts, path = model_casts_path)
@@ -572,40 +606,5 @@ save_cast_output <- function(cast = NULL, main = ".",
   invisible(NULL)
 }
 
-#' @title Read in the casts metadata file
-#'
-#' @description Read in the casts metadata file. If the data file does not
-#'  exist, an effort is made to create the file.
-#'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
-#'
-#' @return Data requested.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   read_casts_metadata()
-#'  }
-#'
-#' @export
-#'
-read_casts_metadata <- function(main = ".", quiet = FALSE){
-  
-  meta_path <- file_path(main = main, sub = "casts", 
-                         files = "casts_metadata.csv")
-  if(!file.exists(meta_path)){
-    messageq("  **creating cast_metadata.csv**", quiet = quiet)
-    casts_meta <- data.frame(cast_id = 0, cast_group = 0, 
-                             cast_date = NA, start_moon = NA, end_moon = NA,
-                             lead_time = NA, model = NA, data_set = NA,
-                             portalcasting_version = NA,
-                             QAQC = FALSE, notes = NA)
-    write.csv(casts_meta, meta_path, row.names = FALSE)
-  }
-  read.csv(meta_path, stringsAsFactors = FALSE)
-}
+
 

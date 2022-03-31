@@ -15,9 +15,8 @@
 jags_logistic(
   main = ".",
   data_set = "dm_controls",
-  control_files = files_control(),
+  settings = directory_settings(),
   control_runjags = runjags_control(),
-  lag = NA,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -25,9 +24,8 @@ jags_logistic(
 jags_RW(
   main = ".",
   data_set = "all",
-  control_files = files_control(),
+  settings = directory_settings(),
   control_runjags = runjags_control(),
-  lag = NA,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -84,9 +82,9 @@ pevGARCH(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{control_runjags}{\code{list} of arguments passed to \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to use for the covariates.}
+\item{control_runjags}{\code{list} of arguments passed to \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.}
 
 \item{quiet}{\code{logical} value indicating if the function should be quiet.}
 
@@ -94,7 +92,7 @@ pevGARCH(
 
 \item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to use for the covariates.}
 }
 \value{
 \code{list} of [1] model metadata \code{list} (\code{"metadata"}), cast summary \code{data.frame} (\code{"cast_tab"}), \code{list} of model fit objects (\code{"model_fits"}), and \code{list} of model cast objects (\code{"model_casts"}).

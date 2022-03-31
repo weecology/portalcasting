@@ -53,7 +53,7 @@ read_directory_config <- function (main     = ".",
   
   if (length(config) == 1 && is.na(config)) {
 
-    stop("Directory configuration file is corrupted or missing", call. = FALSE)
+    stop("Directory configuration file is corrupted or missing")
 
   }
 

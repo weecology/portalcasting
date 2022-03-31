@@ -10,37 +10,27 @@ cast_window(
   cast_date = Sys.Date(),
   lead_time = 12,
   min_lag = 6,
-  control_files = files_control()
+  settings = directory_settings()
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
 \item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
 
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
+\item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
 
-\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
-covariate lag time used in any model.}
+\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum covariate lag time used in any model.}
 
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 }
 \value{
-Named \code{list} with elements \code{start} and \code{end},
- which are both \code{Dates}.
+Named \code{list} with elements \code{start} and \code{end}, which are both \code{Dates}.
 }
 \description{
-Based on the cast origin (\code{cast_date}), lead time
- (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines
- the dates bracketing the requested window.
+Based on the cast origin (\code{cast_date}), lead time (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines the dates bracketing the requested window.
 }
 \examples{
  \donttest{

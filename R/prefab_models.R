@@ -48,8 +48,7 @@ prefab_model_controls <- function( ) {
                                                 descriptor      = "classic model, all species, foal species"),  
                          fun             = pevGARCH,
                          datasets        = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp"),
-                         args            = list(covariates = TRUE,
-                                                lag        = 6)), 
+                         args            = list(lag = 6)), 
 #    simplexEDM    = list(metadata        = list(name            = "simplexEDM",  
 #                                                descriptor      = "population model, all species, focal species"),
 #                         fun             = simplexEDM,
@@ -660,6 +659,12 @@ pevGARCH <- function (main     = ".",
                             settings = settings)
   covariates <- read_covariates(main     = main,
                             settings = settings)
+
+#
+# covariates at this point are daily now!! need to make sure they align properly with the model
+#
+
+
   covar_lag <- lag_covariates(covariates = covariates, 
                               lag        = lag,
                               tail       = TRUE)

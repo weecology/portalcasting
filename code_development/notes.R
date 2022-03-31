@@ -4,7 +4,7 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./test"
+main <- "./portalcasting"
 
 
 
@@ -13,6 +13,10 @@ main <- "./test"
 
 # updating prefab model functions in pevgarch now 
 # dealing with covariate forecasts
+#
+# still really working in pevGARCH right now
+# doing wraparound work, but circle back there to start
+# the covariates are daily. this will be a snag to work through
 
 ##############################################
 

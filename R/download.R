@@ -116,7 +116,7 @@ download_archive <- function(main    = ".",
 
   if (is.na(result)) {
 
-    warning("Archive could not be downloaded", call. = FALSE)
+    warning("Archive could not be downloaded")
     return(invisible())
 
   }
@@ -263,17 +263,17 @@ NMME_urls <- function (start = Sys.Date(),
 
   mods <- c("ENSMEAN", "CMC1", "CMC2", "CFCSv2", "GFDL", "GFDL-FLOR", "NCAR")
   if(any(!(model %in% mods))){
-    stop("model not in available options", call. = FALSE)
+    stop("model not in available options")
   }
 
   datas <- c("tasmin", "tasmean", "tasmax", "pr", "dps", "rsds", "was")
   if(any(!(data %in% datas))){
-    stop("at least one data set not in available options", call. = FALSE)
+    stop("at least one data set not in available options")
   }
 
   freqs <- c("daily", paste0(1:7, "monthAverage"))
   if(any(!(freq %in% freqs))){
-    stop("frequency of predictions requested not available", call. = FALSE)
+    stop("frequency of predictions requested not available")
   }
   
   thredds <- "https://tds-proxy.nkn.uidaho.edu/thredds/"

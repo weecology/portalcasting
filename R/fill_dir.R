@@ -84,7 +84,7 @@ fill_dir <- function (main     = ".",
 #'
 fill_data <- function (main     = ".",
                        models   = prefab_models(), 
-                       datasets = prefab_data_sets(),
+                       datasets = prefab_rodent_datasets(),
                        settings = directory_settings(), 
                        quiet    = FALSE, 
                        verbose  = FALSE) {

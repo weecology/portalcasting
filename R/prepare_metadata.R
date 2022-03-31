@@ -41,9 +41,13 @@ prep_metadata <- function (main             = ".",
                            verbose          = FALSE) {
 
 
-  moons      <- read_moons(main = main, settings = settings)
-  rodents    <- read_rodents(main = main, datasets = datasets, settings = settings)
-  covariates <- read_covariates(main = main, settings = settings)
+  moons      <- read_moons(main     = main, 
+                           settings = settings)
+  rodents    <- read_rodents(main     = main, 
+                             datasets = datasets, 
+                             settings = settings)
+  covariates <- read_covariates(main     = main, 
+                                settings = settings)
 
   rodent_dataset_controls <- prefab_rodent_dataset_controls()
 
@@ -54,7 +58,6 @@ prep_metadata <- function (main             = ".",
   controls_r <- rodent_dataset_controls[datasets]
 
   messageq("  - metadata file", quiet = quiet)
-
 
 
 
@@ -93,8 +96,9 @@ prep_metadata <- function (main             = ".",
   covar_cast_years  <- as.numeric(format(covar_nm_dates, "%Y"))
 
   cast_type  <- ifelse(end_moon == last_moon, "forecast", "hindcast")
-  cast_meta  <- read_casts_metadata(main  = main, 
-                                    quiet = quiet)
+  cast_meta  <- read_casts_metadata(main     = main, 
+                                    settings = settings,
+                                    quiet    = quiet)
   cast_group <- max(cast_meta$cast_group) + 1
 
 

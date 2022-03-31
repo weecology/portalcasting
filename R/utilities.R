@@ -94,7 +94,7 @@ error_if_deep <- function(lev){
   too_deep <- tryCatch(sys.call(lev2), error = function(x){NA})
   if(!is.null(too_deep) && !is.call(too_deep) && is.na(too_deep)){
     msg <- "too deep; function should only be called inside other functions"
-    stop(msg, call. = FALSE)
+    stop(msg)
   } 
 }
 
