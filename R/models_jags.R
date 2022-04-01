@@ -3,16 +3,16 @@
 #' @export
 #'
 jags_logistic <- function (main            = ".", 
-                           data_set        = "dm_controls",  
+                           dataset         = "dm_controls",  
                            settings        = directory_settings(), 
                            control_runjags = runjags_control(), 
                            quiet           = FALSE, 
                            verbose         = FALSE) {
 
 
-  data_set     <- tolower(data_set)
+  dataset     <- tolower(dataset)
 
-  messageq(paste0("  -jags_logistic for ", data_set), quiet = quiet)
+  messageq(paste0("  -jags_logistic for ", dataset), quiet = quiet)
 
 
   monitor <- c("mu", "tau", "r", "K")
@@ -55,6 +55,7 @@ jags_logistic <- function (main            = ".",
 
     }
   }
+
   jags_model <- "model {  
 
     # priors
@@ -114,9 +115,10 @@ jags_logistic <- function (main            = ".",
     }
 
   }"
+
   jags_ss(main            = main, 
           model_name      = "jags_logistic", 
-          data_set        = data_set, 
+          dataset         = dataset, 
           settings        = settings,
           control_runjags = control_runjags, 
           jags_model      = jags_model,
@@ -124,6 +126,7 @@ jags_logistic <- function (main            = ".",
           inits           = inits, 
           quiet           = quiet, 
           verbose         = verbose)
+
 }
 
 
@@ -133,88 +136,117 @@ jags_logistic <- function (main            = ".",
 #' @export
 #'
 jags_RW <- function (main            = ".", 
-                     data_set        = "all",  
+                     dataset         = "all",  
                      settings        = directory_settings(),
                      control_runjags = runjags_control(), 
                      quiet           = FALSE, 
                      verbose         = FALSE){
  
-  data_set <- tolower(data_set)
-  messageq(paste0("  -jags_RW for ", data_set), quiet = quiet)
+  dataset <- tolower(dataset)
+  messageq(paste0("  -jags_RW for ", dataset), quiet = quiet)
 
   monitor <- c("mu", "tau")
-  inits <- function(data = NULL){
-    rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
-    past_N <- data$past_N 
-    past_count <- data$past_count 
-    past_moon <- data$past_moon
 
-    log_past_count <- log(past_count + 0.1)
+  inits <- function (data = NULL) {
+
+    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
+    past_N     <- data$past_N 
+    past_count <- data$past_count 
+    past_moon  <- data$past_moon
+
+    log_past_count      <- log(past_count + 0.1)
     mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    sd_log_past_count   <- max(c(sd(log_past_count) * sqrt(2), 0.01))
     diff_log_past_count <- rep(NA, past_N - 1)
-    for(i in 1:(past_N - 1)){
-      diff_count <- log_past_count[i + 1] - log_past_count[i]
-      diff_time <- past_moon[i + 1] - past_moon[i] 
+
+    for (i in 1:(past_N - 1)) {
+
+      diff_count             <- log_past_count[i + 1] - log_past_count[i]
+      diff_time              <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count / diff_time
+
     }
-    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
-    var_diff_log_past_count <- sd_diff_log_past_count^2
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count       <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-    rate <- 0.1
+
+    rate  <- 0.1
     shape <- precision_diff_log_past_count * rate
 
-    function(chain = chain){
+    function (chain = chain) {
+
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
-            mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
-            tau = rgamma(1, shape = shape, rate = rate))
+            mu       = rnorm(1, mean_log_past_count, sd_log_past_count), 
+            tau      = rgamma(1, shape = shape, rate = rate))
+
     }
+
   }
-  jags_model <- "model {  
+
+  jags_model <- "model { 
+ 
     # priors
-    log_past_count <- log(past_count + 0.1)
-    mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
-    var_log_past_count <- sd_log_past_count^2
+
+    log_past_count           <- log(past_count + 0.1)
+    mean_log_past_count      <- mean(log_past_count)
+    sd_log_past_count        <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    var_log_past_count       <- sd_log_past_count^2
     precision_log_past_count <- 1/(var_log_past_count)
 
-    diff_count[1] <- log_past_count[2] - log_past_count[1]
-    diff_time[1] <- past_moon[2] - past_moon[1] 
+    diff_count[1]          <- log_past_count[2] - log_past_count[1]
+    diff_time[1]           <- past_moon[2] - past_moon[1] 
     diff_log_past_count[1] <- diff_count[1] / diff_time[1]
-    for(i in 2:(past_N - 1)){
-      diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
-      diff_time[i] <- past_moon[i + 1] - past_moon[i] 
+
+    for (i in 2:(past_N - 1)) {
+
+      diff_count[i]          <- log_past_count[i + 1] - log_past_count[i]
+      diff_time[i]           <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+
     }    
-    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
-    var_diff_log_past_count <- sd_diff_log_past_count^2
+
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count       <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-    rate <- 0.1
+
+    rate  <- 0.1
     shape <- precision_diff_log_past_count * rate
 
-    mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
+    mu  ~ dnorm(mean_log_past_count, precision_log_past_count); 
     tau ~ dgamma(shape, rate); 
    
+
     # initial state
-    X[1] <- mu;
+
+    X[1]          <- mu;
     pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
-    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+
+
     # through time
+
     for(i in 2:N) {
+
       # Process model
-      predX[i] <- X[i-1];
-      checkX[i] ~ dnorm(predX[i], tau); 
-      X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
+
+      predX[i]      <- X[i-1];
+      checkX[i]     ~  dnorm(predX[i], tau); 
+      X[i]          <- min(c(checkX[i], log(ntraps[i] + 1))); 
       pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
    
+
       # observation model
+
       count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+
     }
+
   }"
+
   jags_ss(main            = main, 
           model_name      = "jags_RW", 
-          data_set        = data_set, 
+          dataset         = dataset, 
           settings        = settings,
           control_runjags = control_runjags, 
           jags_model      = jags_model,
@@ -235,7 +267,7 @@ jags_RW <- function (main            = ".",
 #'
 #' @param model_name \code{character} value name of the model name to save in the cast tab.
 #'
-#' @param data_set \code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).
+#' @param dataset \code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).
 #'
 #' @param quiet \code{logical} value indicating if the function should be quiet.
 #'
@@ -262,7 +294,7 @@ jags_RW <- function (main            = ".",
 #'
 jags_ss <- function (main            = ".", 
                      model_name      = NULL, 
-                     data_set        = "all",  
+                     dataset        = "all",  
                      settings        = directory_settings(),
                      control_runjags = runjags_control(),
                      jags_model      = NULL, 
@@ -272,19 +304,19 @@ jags_ss <- function (main            = ".",
                      verbose         = FALSE) {
   
 
-  runjags.options(silent.jags    = control_runjags$silent_jags, 
-                  silent.runjags = control_runjags$silent_jags)
+  runjags.options(silent.jags    = FALSE,#control_runjags$silent_jags, 
+                  silent.runjags = FALSE)#control_runjags$silent_jags)
 
   rodents_table <- read_rodents_table(main     = main,
-                                      data_set = data_set, 
+                                      dataset = dataset, 
                                       settings = settings) 
   metadata      <- read_metadata(main     = main,
                                  settings = settings)
 
-  data_set_controls <- metadata$controls_r[[data_set]]
-  start_moon        <- metadata$start_moon
-  end_moon          <- metadata$end_moon
-  true_count_lead   <- length(metadata$rodent_cast_moons)
+  dataset_controls  <- metadata$controls_r[[dataset]]
+  start_moon        <- metadata$time$start_moon
+  end_moon          <- metadata$time$end_moon
+  true_count_lead   <- length(metadata$time$rodent_cast_moons)
   CL                <- metadata$confidence_level
 
   species <- species_from_table(rodents_tab = rodents_table, 
@@ -301,11 +333,11 @@ jags_ss <- function (main            = ".",
     ss <- gsub("NA.", "NA", s)
     messageq(paste0("   -", ss), quiet = !verbose)
 
-    moon_in      <- which(rodents_table$moon >= start_moon & rodents_table$moon <= end_moon)
-    past_moon_in <- which(rodents_table$moon < start_moon)
-    moon         <- rodents_table[moon_in, "moon"] 
-    moon         <- c(moon, metadata$rodent_cast_moons)
-    past_moon    <- rodents_table[past_moon_in, "moon"]
+    moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
+    past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
+    moon         <- rodents_table[moon_in, "newmoonnumber"] 
+    moon         <- c(moon, metadata$time$rodent_cast_moons)
+    past_moon    <- rodents_table[past_moon_in, "newmoonnumber"]
 
     ntraps           <- rodents_table[moon_in, "ntraps"] 
     na_traps         <- which(is.na(ntraps) == TRUE)
@@ -327,9 +359,14 @@ jags_ss <- function (main            = ".",
     count       <- c(count, cast_count)
     past_count  <- rodents_table[past_moon_in, species_in]
     no_count    <- which(is.na(past_count) == TRUE)
-    past_moon   <- past_moon[-no_count]
-    past_count  <- past_count[-no_count]
-    past_ntraps <- past_ntraps[-no_count]
+
+    if (length(no_count) > 0) {
+
+      past_moon   <- past_moon[-no_count]
+      past_count  <- past_count[-no_count]
+      past_ntraps <- past_ntraps[-no_count]
+
+    }
 
     data <- list(count       = count, 
                  ntraps      = ntraps, 
@@ -340,14 +377,8 @@ jags_ss <- function (main            = ".",
                  past_ntraps = past_ntraps, 
                  past_N      = length(past_count))
 
-    if (covariatesTF) {
-
-      data[["covariates"]] <- covar_in
-
-    }
-
-    obs_pred_times      <- metadata$rodent_cast_moons 
-    obs_pred_times_spot <- obs_pred_times - metadata$start_moon
+    obs_pred_times      <- metadata$time$rodent_cast_moons 
+    obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
 
     train_text <- paste0("train: ", metadata$start_moon, " to ", metadata$end_moon)
     test_text  <- paste0("test: ",  metadata$end_moon + 1, " to ", metadata$end_moon + metadata$lead)
@@ -410,9 +441,9 @@ jags_ss <- function (main            = ".",
                                cast_month = metadata$rodent_cast_months,
                                cast_year  = metadata$rodent_cast_years, 
                                moon       = metadata$rodent_cast_moons,
-                               currency   = data_set_controls$output,
+                               currency   = dataset_controls$output,
                                model      = model_name, 
-                               data_set   = data_set, 
+                               dataset   = dataset, 
                                species    = ss, 
                                estimate   = point_forecast,
                                lower_pi   = lower_cl, 
@@ -428,8 +459,8 @@ jags_ss <- function (main            = ".",
 
   metadata <- update_list(metadata,
                           models     = "jags_RW",
-                          data_sets  = data_set,
-                          controls_r = data_set_controls)
+                          datasets  = dataset,
+                          controls_r = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 

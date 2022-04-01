@@ -202,16 +202,36 @@ prep_rodent_dataset <- function(name        = "all",
 
   }
 
+  # assuming newmoon with na_drop rodents
+
+  present_moons                   <- out[ , "newmoonnumber"]
+  range_moons                     <- range(present_moons, na.rm = TRUE)
+  seq_moons                       <- seq(range_moons[1], range_moons[2], by = 1)
+  needed_moons                    <- !(seq_moons %in% present_moons)
+  which_needed_moons              <- seq_moons[needed_moons]
+  nneeded_rows                    <- length(which_needed_moons)
+  ndf_moons                       <- ncol(out)
+  needed_rows                     <- matrix(NA, nrow = nneeded_rows, ncol = ndf_moons)
+  colnames(needed_rows)           <- colnames(out)
+  needed_rows[ , "newmoonnumber"] <- seq_moons[needed_moons]
+  out                             <- rbind(out, needed_rows)
+  out_ord                         <- order(out[ , "newmoonnumber"])
+  out                             <- out[out_ord, ]
+
   if (interpolate) {
 
     for (i in 1:nspecies) {
 
       col_in         <- which(colnames(out) == species[i])
-      out[ , col_in] <- na.interp(out[ , col_in])
+      out[ , col_in] <- round(na.interp(out[ , col_in]))
 
     }
 
-    out$total <- na.interp(out$total)
+    if (total) {
+
+      out$total <- round(na.interp(out$total))
+
+    }
 
   }
 

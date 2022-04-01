@@ -14,7 +14,7 @@
 \usage{
 jags_logistic(
   main = ".",
-  data_set = "dm_controls",
+  dataset = "dm_controls",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -23,7 +23,7 @@ jags_logistic(
 
 jags_RW(
   main = ".",
-  data_set = "all",
+  dataset = "all",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -82,6 +82,8 @@ pevGARCH(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
+\item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
+
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{control_runjags}{\code{list} of arguments passed to \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.}
@@ -89,8 +91,6 @@ pevGARCH(
 \item{quiet}{\code{logical} value indicating if the function should be quiet.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
-
-\item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
 
 \item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to use for the covariates.}
 }

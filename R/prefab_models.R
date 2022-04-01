@@ -660,11 +660,6 @@ pevGARCH <- function (main     = ".",
   covariates <- read_covariates(main     = main,
                             settings = settings)
 
-#
-# covariates at this point are daily now!! need to make sure they align properly with the model
-#
-
-
   covar_lag <- lag_covariates(covariates = covariates, 
                               lag        = lag,
                               tail       = TRUE)
@@ -677,7 +672,7 @@ pevGARCH <- function (main     = ".",
   CL               <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
-  for_hist         <- which(covar_lag$newmoonnumber %in% rodents_table$newmoonnumber)
+  for_hist         <- which(covar_lag$newmoonnumber %in% rodents_table$newmoonnumber & covar_lag$newmoonnumber >= start_moon)
   for_cast         <- which(covar_lag$newmoonnumber %in% cast_moons) 
   covar_hist       <- covar_lag[for_hist, ]
 
@@ -696,7 +691,7 @@ pevGARCH <- function (main     = ".",
   casts            <- named_null_list(species)
   cast_tab         <- data.frame()
   dataset_controls <- metadata$controls_rodents[[dataset]]      
-  models           <- covariate_models("pevGARCH")
+  models           <- covariate_models(model = "pevGARCH")
   nmodels          <- length(models)
 
 
