@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{list_depth}
 \alias{list_depth}
-\title{Determine the depth of a list}
+\title{Determine the Depth of a List}
 \usage{
 list_depth(xlist)
 }
@@ -16,8 +16,7 @@ list_depth(xlist)
 Evaluate an input for the depth of its nesting.
 }
 \details{
-If \code{xlist = list()}, then technically the input value is a 
- list, but is empty (of length \code{0}), so depth is returned as \code{0}.
+If \code{xlist = list()}, then technically the input value is a list, but is empty (of length \code{0}), so depth is returned as \code{0}.
 }
 \examples{
  list_depth("a")

@@ -4,23 +4,16 @@
 \alias{covariate_models}
 \title{Create a covariate model list}
 \usage{
-covariate_models(model = "pevGARCH", arg_checks = TRUE)
+covariate_models(model = "pevGARCH")
 }
 \arguments{
-\item{model}{\code{character} name for covariate models. Currently only 
-\code{"pevGARCH"} is supported.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{model}{\code{character} name for covariate models. Currently only \code{"pevGARCH"} is supported.}
 }
 \value{
 \code{list} of covariate model structures.
 }
 \description{
-Convenience function for creating covariate model 
- \code{list}s.
+Convenience function for creating covariate model \code{list}s.
 }
 \examples{
  covariate_models()

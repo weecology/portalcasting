@@ -1,15 +1,25 @@
-context("content downloading functions")
+context(desc = "content downloading functions")
 
 # given the directory was created in test-03
 
 main <- "./testing"
 
 
+test_that(desc = "download_climate_forecasts retrieves files", {
 
-test_that("download_archive downloads the archive", {
+  # downloads take too long for cran checks
 
+    skip_on_cran() 
 
-expect_equal(download_archive(main), NULL)
+  dlcc <- download_climate_forecasts(main = main)
+  expect_equal((dlcc), NULL)
+
+})
+
+test_that(desc = "download_archive downloads the archive",
+          code = {
+
+  expect_equal(download_archive(main), NULL)
 
 })
 

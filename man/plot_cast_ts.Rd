@@ -2,93 +2,54 @@
 % Please edit documentation in R/figures.R
 \name{plot_cast_ts}
 \alias{plot_cast_ts}
-\title{Visualize a time series cast of a species}
+\title{Visualize a Time Series Cast of a Species}
 \usage{
 plot_cast_ts(
   main = ".",
+  settings = directory_settings(),
   cast_id = NULL,
   cast_groups = NULL,
-  data_set = NULL,
+  dataset = NULL,
   model = NULL,
   end_moon = NULL,
   species = "total",
   start_moon = 217,
-  control_files = files_control(),
-  quiet = FALSE,
-  arg_checks = TRUE
+  quiet = FALSE
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_id}{\code{integer} (or integer \code{numeric}) value 
-representing the cast of interest, as indexed within the directory in
-the \code{casts} sub folder. See the casts metadata file 
-(\code{casts_metadata.csv}) for summary information.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value
-of the cast group to combine with an ensemble. If \code{NULL} (default),
-the most recent cast group is ensembled.}
+\item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
-\item{data_set}{\code{character} value of the rodent data set to include
-Default value is \code{NULL}, which equates to no selection with 
-respect to \code{data_set}.}
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
 
-\item{model}{\code{character} value of the name of the model to 
-include. Default value is \code{NULL}, which equates to \code{"Ensemble"}
-or an unweighted combination of the most recent cast group's models via 
-\code{\link{ensemble_casts}}.}
+\item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) 
-newmoon number of the forecast origin. Default value is 
-\code{NULL}, which equates to no selection with respect to 
-\code{end_moon}.}
+\item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to \code{"Ensemble"} or an unweighted combination of the most recent cast group's models via  \code{\link{ensemble_casts}}.}
 
-\item{species}{\code{character} value of the species codes (or 
-\code{"total"} for the total across species) to be plotted. 
-\code{NULL} (default) also gives the total.}
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon 
-number for the beginning of the x-axis of the plot. \cr
+\item{species}{\code{character} value of the species codes (or \code{"total"} for the total across species) to be plotted. \code{NULL} (default) also gives the total.}
+
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
 Does not influence the fit of the models, just the presentation.}
 
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
 \code{NULL}. Plot is generated.
 }
 \description{
-Plot an observed timeseries and cast timeseries with a 
- prediction interval. \cr
- Casts can be selected either by supplying a 
- \code{cast_id} number or any combination of \code{data_set},
- \code{model}, and \code{end_moon}, which filter the available casts in
- unison. This plot type can only handle output from a single cast, so
- if multiple casts still remain, the one with the highest number is 
- selected. To be more certain about cast selection, use the \code{cast_id}
- input.
+Plot an observed timeseries and cast timeseries with a prediction interval. \cr
+ Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{end_moon}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
 }
 \details{
-The resulting plot shows observations as a solid black line 
- and predictions as a blue polygon with the bounds represent the error
- given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line
- representing the \code{estimate} in the \code{cast_table} saved output 
- from a model. \cr
- As of \code{portalcasting v0.9.0}, 
- this represents the mean and the 95\% prediction interval. \cr
- Observations that occurred after the cast are shown connected directly
- to the pre-cast observation data (as the black solid line).
+The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line representing the \code{estimate} in the \code{cast_table} saved output from a model. \cr
+ As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. \cr
+ Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
 }
 \examples{
  \donttest{

@@ -2,83 +2,54 @@
 % Please edit documentation in R/ensembling.R
 \name{ensemble_casts}
 \alias{ensemble_casts}
-\title{Combine (ensemble) casts}
+\title{Combine (Ensemble) Casts}
 \usage{
 ensemble_casts(
   main = ".",
+  settings = directory_settings(),
   method = "unwtavg",
   cast_groups = NULL,
   cast_ids = NULL,
   cast_tab = NULL,
   end_moon = NULL,
   models = NULL,
-  data_set = NULL,
+  dataset = NULL,
   include_interp = TRUE,
-  species = NULL,
-  arg_checks = TRUE
+  species = NULL
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{method}{\code{character} value of the name of the ensemble method
-to use. Presently, only \code{"unwtavg"} (unweighted average) is allowed.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value
-of the cast group to combine with an ensemble. If \code{NULL} (default),
-the most recent cast group is ensembled.}
+\item{method}{\code{character} value of the name of the ensemble method to use. Presently, only \code{"unwtavg"} (unweighted average) is allowed.}
 
-\item{cast_ids}{\code{integer} (or integer \code{numeric}) values 
-representing the casts of interest for restricting ensembling, as indexed
-within the directory in the \code{casts} sub folder. 
-See the casts metadata file (\code{casts_metadata.csv}) for summary
-information.}
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
 
-\item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not
-input, will be loaded.}
+\item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) 
-newmoon number of the forecast origin. Default value is 
-\code{NULL}, which equates to no selection with respect to 
-\code{end_moon}.}
+\item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not input, will be loaded.}
 
-\item{models}{\code{character} value(s) of the name of the model to 
-include. Default value is \code{NULL}, which equates to no selection with 
-respect to \code{model}. \code{NULL} translates to all \code{models}
-in the table.}
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
-\item{data_set}{\code{character} value of the rodent data set to include
-Default value is \code{NULL}, which equates to the first data set 
-encountered.}
+\item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 
-\item{include_interp}{\code{logical} indicator of if the basic data set
-names should also be inclusive of the associated interpolated data sets.}
+\item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.}
 
-\item{species}{\code{character} vector of the species code(s) 
-or \code{"total"} for the total across species) to be plotted 
-\code{NULL} translates to the species defined by  
-\code{evalplot_species}.}
+\item{include_interp}{\code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.}
 
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{evalplot_species}.}
 }
 \value{
-\code{NULL}. Plot is generated.
+\code{data.frame} of ensembled casts.
 }
 \description{
-Combine multiple casts' output into a single ensemble. 
- Presently, only a general average ensemble is available.
+Combine multiple casts' output into a single ensemble. Presently, only a general average ensemble is available.
 }
 \details{
-A pre-loaded table of casts can be input, but if not (default), 
- the table will be efficiently (as defined by the inputs) loaded and 
- trimmed. \cr 
- The casts can be trimmed specifically using the \code{cast_ids} input,
- otherwise, all relevant casts from the stated \code{cast_groups}
- will be included.
+A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
+ The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts from the stated \code{cast_groups} will be included.
 }
 \examples{
  \donttest{

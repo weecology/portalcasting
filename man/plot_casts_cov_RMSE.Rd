@@ -2,78 +2,51 @@
 % Please edit documentation in R/figures.R
 \name{plot_casts_cov_RMSE}
 \alias{plot_casts_cov_RMSE}
-\title{Plot the forecast coverage and RMSE}
+\title{Plot the Forecast Coverage and RMSE}
 \usage{
 plot_casts_cov_RMSE(
   main = ".",
+  settings = directory_settings(),
   cast_ids = NULL,
   cast_tab = NULL,
   end_moons = NULL,
   models = NULL,
   ensemble = TRUE,
-  data_set = NULL,
+  dataset = NULL,
   include_interp = TRUE,
-  species = NULL,
-  arg_checks = TRUE
+  species = NULL
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_ids}{\code{integer} (or integer \code{numeric}) values 
-representing the casts of interest for restricting plotting, as indexed
-within the directory in the \code{casts} sub folder. 
-See the casts metadata file (\code{casts_metadata.csv}) for summary
-information.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not
-input, will be loaded.}
+\item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
-\item{end_moons}{\code{integer} (or integer \code{numeric}) 
-newmoon numbers of the forecast origin. Default value is 
-\code{NULL}, which equates to no selection with respect to 
-\code{end_moon}.}
+\item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not input, will be loaded.}
 
-\item{models}{\code{character} value(s) of the name of the model to 
-include. Default value is \code{NULL}, which equates to no selection with 
-respect to \code{model}. \code{NULL} translates to all \code{models}
-in the table.}
+\item{end_moons}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
-\item{ensemble}{\code{logical} indicator of if an ensemble should be
-included. Presently only the unweighted average. See 
-\code{\link{ensemble_casts}}.}
+\item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 
-\item{data_set}{\code{character} value of the rodent data set to include
-Default value is \code{NULL}, which equates to no selection with 
-respect to \code{data_set}.}
+\item{ensemble}{\code{logical} indicator of if an ensemble should be included. Presently only the unweighted average. See \code{\link{ensemble_casts}}.}
 
-\item{include_interp}{\code{logical} indicator of if the models fit using
-interpolated data should be included with the models that did not.}
+\item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
-\item{species}{\code{character} vector of the species code(s) 
-or \code{"total"} for the total across species) to be plotted 
-\code{NULL} translates to the species defined by  
-\code{evalplot_species}.}
+\item{include_interp}{\code{logical} indicator of if the models fit using interpolated data should be included with the models that did not.}
 
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{evalplot_species}.}
 }
 \value{
 \code{NULL}. Plot is generated.
 }
 \description{
-Plot the coverage (fraction of predictions within the CI) and
- RMSE (root mean squared error) of each model among multiple species.
+Plot the coverage (fraction of predictions within the CI) and RMSE (root mean squared error) of each model among multiple species.
 }
 \details{
-A pre-loaded table of casts can be input, but if not (default), 
- the table will be efficiently (as defined by the inputs) loaded and 
- trimmed. \cr 
- The casts can be trimmed specifically using the \code{cast_ids} input,
- otherwise, all relevant casts will be plotted.
+A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
+ The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts will be plotted.
 }
 \examples{
  \donttest{

@@ -1,8 +1,9 @@
-context("data input and output functions")
+context(desc = "data input and output functions")
 
 main <- "./testing"
 
-test_that("read_directory_config works but errors out of directory", {
+
+test_that(desc = "read_directory_config works but errors out of directory", {
 
   dc <- read_directory_config(main)
   expect_is(dc, "list")
@@ -10,15 +11,8 @@ test_that("read_directory_config works but errors out of directory", {
 
 })
 
-test_that("update_directory_config runs through", {
 
-  dc <- update_directory_config(main)
-  expect_equal(dc, NULL)
-
-})
-
-
-test_that("write_data works if overwriting or not", {
+test_that(desc = "write_data works if overwriting or not", {
 
   # downloads take too long for cran checks
 
@@ -36,7 +30,7 @@ test_that("write_data works if overwriting or not", {
 
 
 
-test_that("read_data works when the data are present or not", {
+test_that(desc = "read_data works when the data are present", {
 
   # downloads take too long for cran checks
 
@@ -51,32 +45,13 @@ test_that("read_data works when the data are present or not", {
   expect_is(controls, "list")
   expect_silent(covariates <- read_data(main, "covariates"))
   expect_is(covariates , "data.frame")
-  expect_silent(covariate_casts <- read_data(main, "covariate_casts"))
+  expect_silent(covariate_casts <- read_data(main, "climate_forecasts"))
   expect_is(covariate_casts , "data.frame")
   expect_silent(moons <- read_data(main, "moons"))
   expect_is(moons, "data.frame")
   expect_silent(metadata <- read_data(main, "metadata"))
   expect_is(metadata, "list")
 
-
-  # wipe the files, then read again to do the prep backup
-
-    unlink(list.files(data_path(main = main), full.names = TRUE))
-
-  expect_silent(moons <- read_moons(main))
-  expect_is(moons, "data.frame")
-  expect_silent(all <- read_data(main, "rodents_table", "all"))
-  expect_is(all, "data.frame")
-  expect_silent(controls <- read_data(main, "rodents_table", "controls"))
-  expect_is(controls, "data.frame")
-  expect_silent(controls <- read_data(main, "rodents", "controls"))
-  expect_is(controls, "list")
-  expect_silent(covariates <- read_data(main, "covariates"))
-  expect_is(covariates , "data.frame")
-  expect_silent(covariate_casts <- read_data(main, "covariate_casts"))
-  expect_is(covariate_casts , "data.frame")
-  expect_silent(metadata <- read_data(main, "metadata"))
-  expect_is(metadata, "list")
 
 
 })

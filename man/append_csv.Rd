@@ -2,36 +2,25 @@
 % Please edit documentation in R/utilities.R
 \name{append_csv}
 \alias{append_csv}
-\title{Save data out to a csv, appending the file if it already exists}
+\title{Save Data Out to a csv, Appending the File if it Already Exists}
 \usage{
-append_csv(df, filename, arg_checks = TRUE)
+append_csv(df, filename)
 }
 \arguments{
 \item{df}{\code{data.frame} table to be written out.}
 
-\item{filename}{\code{character} filename of existing \code{.csv} to be 
-appended.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+\item{filename}{\code{character} filename of existing \code{.csv} to be appended.}
 }
 \value{
 \code{NULL}.
 }
 \description{
-Appending a \code{.csv} without re-writing the header of the
- file. If the doesn't exist, it will be created.
+Appending a \code{.csv} without re-writing the header of the file. If the doesn't exist, it will be created.
 }
 \examples{
  \donttest{
   df <- data.frame(x = 1:10)
-  fpath <- file_path(files = "xx.csv")
+  fpath <- file.path("xx.csv")
   append_csv(df, fpath)
  }
 

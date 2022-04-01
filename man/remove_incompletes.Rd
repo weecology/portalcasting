@@ -2,28 +2,20 @@
 % Please edit documentation in R/utilities.R
 \name{remove_incompletes}
 \alias{remove_incompletes}
-\title{Remove any specific incomplete entries as noted by an NA}
+\title{Remove any Specific Incomplete Entries as Noted by an NA}
 \usage{
-remove_incompletes(df, colname, arg_checks = TRUE)
+remove_incompletes(df, colname)
 }
 \arguments{
 \item{df}{\code{data.frame} table to be written out.}
 
-\item{colname}{A single \code{character} value of the column to use
-to remove incomplete entries.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{colname}{A single \code{character} value of the column to use to remove incomplete entries.}
 }
 \value{
 \code{df} without any incomplete entries.
 }
 \description{
-Remove any incomplete entries in a table, as determined by
- the presence of an \code{NA} entry in a specific column 
- (\code{colname}).
+Remove any incomplete entries in a table, as determined by the presence of an \code{NA} entry in a specific column (\code{colname}).
 }
 \examples{
  df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)

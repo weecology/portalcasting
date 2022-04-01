@@ -2,30 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{add_date_from_components}
 \alias{add_date_from_components}
-\title{Add a date to a table that has the year month and day as components}
+\title{Add a Date to a Table That has the Year, Month, and Day as Components}
 \usage{
-add_date_from_components(df, arg_checks = TRUE)
+add_date_from_components(df)
 }
 \arguments{
-\item{df}{\code{data.frame} with columns named \code{year}, \code{month},
-and \code{day}.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. \cr
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting \code{arg_checks = FALSE} triggers
-many/most/all enclosed functions to not check any arguments using 
-\code{\link{check_args}}, and as such, \emph{caveat emptor}.}
+\item{df}{\code{data.frame} with columns named \code{year}, \code{month}, and \code{day}.}
 }
 \value{
-\code{data.frame} \code{df} with column of \code{Date}s 
- named \code{date} added.
+\code{data.frame} \code{df} with column of \code{Date}s named \code{date} added.
 }
 \description{
-Add a date (as a \code{Date}) column to a table that has the 
- year month and day as components.
+Add a date (as a \code{Date}) column to a table that has the year month and day as components.
 }
 \examples{
  df <- data.frame(year = 2010, month = 2, day = 1:10)

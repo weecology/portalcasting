@@ -2,6 +2,25 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.30.0](https://github.com/weecology/portalcasting/releases/tag/v0.30.0)
+* in progress *
+
+### Settings list
+* `setup_dir` now takes a `settings` argument that is a `list` of the arguments 
+* `directory_settings` function now quickly and cleanly collapses the settings that go into `setup_dir`
+
+### Generalized functionality for models and rodent data sets
+* Control lists are now structured for use with `do.call`
+
+### Codebase formatting [work in progress]
+* No longer concerned about the 80 char line limit
+* Long argument lists, etc. are now formatted for quick top-to-bottom reading, via alignment on the `(` and `=` 
+
+### Removal of superfluous `_path` functions
+* Use of base R functions is sufficient
+
+### `arg_checks` removed
+* Internalized auto-checking relieves user of need to dictate checking
 
 # [portalcasting 0.29.0](https://github.com/weecology/portalcasting/releases/tag/v0.29.0)
 *2022-03-30*

@@ -2,121 +2,48 @@
 % Please edit documentation in R/prepare_metadata.R
 \name{prep_metadata}
 \alias{prep_metadata}
-\title{Prepare a model-running metadata list}
+\title{Prepare a Model-Running Metadata List}
 \usage{
 prep_metadata(
   main = ".",
   models = prefab_models(),
-  data_sets = NULL,
-  moons = NULL,
-  rodents = NULL,
-  covariates = NULL,
+  datasets = prefab_rodent_datasets(),
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
-  min_lag = NULL,
   cast_date = Sys.Date(),
   confidence_level = 0.95,
-  controls_model = NULL,
-  controls_rodents = NULL,
-  control_files = files_control(),
-  quiet = TRUE,
-  verbose = FALSE,
-  arg_checks = TRUE
+  settings = directory_settings(),
+  quiet = FALSE,
+  verbose = FALSE
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to 
-include.}
+\item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{data_sets}{\code{character} vector of the rodent data set names
-that the model is applied to.}
+\item{datasets}{\code{character} vector of name(s) of dataset(s) to include.}
 
-\item{moons}{Moons \code{data.frame}. See \code{\link{prep_moons}}.}
+\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the last sample to be included. Default value is \code{NULL}, which equates to the most recently included sample.}
 
-\item{rodents}{Rodents \code{list}. See \code{\link{prep_rodents}},}
+\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.}
 
-\item{covariates}{Covariates \code{data.frame}. See 
-\code{\link{prep_covariates}}.}
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the last sample to be included. Default value is \code{NULL}, which 
-equates to the most recently included sample.}
+\item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
 
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number 
-of the first sample to be included. Default value is \code{217}, 
-corresponding to \code{1995-01-01}.}
+\item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the
-number of timesteps forward a cast will cover.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{min_lag}{\code{integer} (or integer \code{numeric}) of the minimum 
-covariate lag time used in any model.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{cast_date}{\code{Date} from which future is defined (the origin of
-the cast). In the recurring forecasting, is set to today's date
-using \code{\link{Sys.Date}}.}
-
-\item{confidence_level}{\code{numeric} confidence level used in 
-summarizing model output. Must be between \code{0} and \code{1}.}
-
-\item{controls_model}{Additional controls for models not in the prefab
-set. \cr 
-A \code{list} of a single model's script-writing controls or a
-\code{list} of \code{list}s, each of which is a single model's 
-script-writing controls. \cr 
-Presently, each model's script writing controls
-should include three elements: \code{name} (a \code{character} value of 
-the model name), \code{covariates} (a \code{logical} indicator of if the 
-model needs covariates), and \code{lag} (an \code{integer}-conformable 
-value of the lag to use with the covariates or \code{NA} if 
-\code{covariates = FALSE}). \cr 
-If only a single model is added, the name of 
-the model from the element \code{name} will be used to name the model's
-\code{list} in the larger \code{list}. If multiple models are added, each
-element \code{list} must be named according to the model and the
-\code{name} element. \cr}
-
-\item{controls_rodents}{Control \code{list} or \code{list} of control 
-\code{list}s from \code{\link{rodents_controls}} specifying the 
-structuring of the rodents tables. See \code{\link{rodents_controls}} for 
-details.}
-
-\item{control_files}{\code{list} of names of the folders and files within
-the sub directories and saving strategies (save, overwrite, append, etc.).
-Generally shouldn't need to be edited. See \code{\link{files_control}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
-
-\item{verbose}{\code{logical} indicator if detailed messages should be
-shown.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
-\code{list} of casting metadata, which is also saved out as a 
- YAML file (\code{.yaml}) if desired.
+\code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 }
 \description{
-Sets up the metadata used for casting, in particular the 
- matching of time period across the data sets. This should always be run
- after \code{\link{prep_moons}}, \code{\link{prep_rodents}}, and 
- \code{\link{prep_covariates}} before any model is run.
-}
-\examples{
- \donttest{
-  setup_dir()
-  moons <- prep_moons()
-  rodents <- prep_rodents(moons = moons)
-  covariates <- prep_covariates(moons = moons)
-  prep_metadata(moons = moons, rodents = rodents, covariates = covariates)
- }
-
+Sets up the metadata used for casting, in particular the matching of time period across the data sets. This should always be run after \code{\link{prep_moons}}, \code{\link{prep_rodents}}, and \code{\link{prep_covariates}} before any model is run.
 }

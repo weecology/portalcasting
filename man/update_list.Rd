@@ -2,14 +2,14 @@
 % Please edit documentation in R/utilities.R
 \name{update_list}
 \alias{update_list}
-\title{Update a list's elements}
+\title{Update a List's Elements}
 \usage{
-update_list(orig_list = list(), ...)
+update_list(list = list(), ...)
 }
 \arguments{
-\item{orig_list}{\code{list} to be updated with \code{...}.}
+\item{list}{\code{list} to be updated with \code{...}.}
 
-\item{...}{Named elements to update in \code{orig_list}}
+\item{...}{Named elements to update in \code{list}}
 }
 \value{
 Updated \code{list}.

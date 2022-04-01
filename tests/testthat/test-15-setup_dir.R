@@ -1,8 +1,8 @@
-context("directory setting up functions")
+context(desc = "directory setting up functions")
 
 
 
-test_that("specialized setup_dirs work", {
+test_that(desc = "specialized setup_dirs work", {
 
   # downloads take too long for cran checks
 

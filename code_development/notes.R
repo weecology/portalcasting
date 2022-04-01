@@ -1,29 +1,20 @@
 # working here on portalcasting, 
 
-####   roll through all the code front to back for use
-####    then update tests
-
 
 devtools::document()
 devtools::load_all()
 
+main <- "./portalcasting"
 
-main <- "./testing"
-setup_dir(main)
-portalcast(main, models = "ESSS")
+setup_production(main)
+portalcast(main)
 
-plot_cast_ts(main = main, data_set = "controls")
-plot_cast_point(main = main, data_set = "controls")
-most_ab <- most_abundant_species(main = main, data_set = "controls")
-for(i in 1:3){
-  plot_cast_ts(main = main, data_set = "controls", species = most_ab[i])
-}
-plot_casts_err_lead(main = main)
-plot_casts_cov_RMSE(main = main)
+# updating to working with the settings list
+# minimizing other changes to the degree possible
 
+# all functions in production work as used!
 
-devtools::build()
-devtools::test()
+####    updating tests ... should be good for a full run
 
 
 

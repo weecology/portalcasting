@@ -1,7 +1,8 @@
-context("general utilities")
+context(desc = "general utilities")
 
 
-test_that("match.call.defaults operates within functions", {
+test_that(desc = "match.call.defaults operates within functions",
+          code = {
 
   fun <- function(arg1 = "ok", ...) {
     match.call.defaults()
@@ -14,10 +15,12 @@ test_that("match.call.defaults operates within functions", {
   # elipsis input
 
     expect_is(fun(arg2 = "hi"), "call")
+
 })
 
 
-test_that("named_null_list produces a proper list", {
+test_that(desc = "named_null_list produces a proper list",
+          code = {
 
   nnl <- named_null_list(c("a", "b", "c"))
 
@@ -31,7 +34,8 @@ test_that("named_null_list produces a proper list", {
 })
 
 
-test_that("error_if_deep catches deep but not shallow", {
+test_that(desc = "error_if_deep catches deep but not shallow",
+          code = {
 
   expect_error(error_if_deep(-1e4))
   expect_equal(error_if_deep(0), NULL)
@@ -39,7 +43,8 @@ test_that("error_if_deep catches deep but not shallow", {
 })
 
 
-test_that("update_list updates lists appropriately", {
+test_that(desc = "update_list updates lists appropriately",
+          code = {
 
   orig_list <- list(a = 1, b = 3, c = 4)
   orig_list_same <- update_list(orig_list)
@@ -58,7 +63,8 @@ test_that("update_list updates lists appropriately", {
 })
 
 
-test_that("na_conformer makes NA into `NA` in vectors and data frames", {
+test_that(desc = "na_conformer makes NA into `NA` in vectors and data frames",
+          code = {
 
   # work on vectors
 
@@ -73,7 +79,8 @@ test_that("na_conformer makes NA into `NA` in vectors and data frames", {
 })
 
 
-test_that("append_csv properly appends and saves a csv, even if absent", {
+test_that(desc = "append_csv properly appends and saves a csv, even if absent",
+          code = {
 
   # nothing present yet
 
@@ -96,7 +103,8 @@ test_that("append_csv properly appends and saves a csv, even if absent", {
 })
 
 
-test_that("foy calculates the fraction of the year ", {
+test_that(desc = "foy calculates the fraction of the year ",
+          code = {
 
   expect_equal(foy("2020-01-01"), 0.003)
   expect_equal(foy("2020-07-30"), 0.579)
@@ -106,7 +114,8 @@ test_that("foy calculates the fraction of the year ", {
 
 
 
-test_that("clear_tmp clears out the temp directory", {
+test_that(desc = "clear_tmp clears out the temp directory",
+          code = {
 
   # this is weird because the nuances are in the second message reported, not
   # the first one, and i can't quite figure out how to check that right
@@ -118,7 +127,7 @@ test_that("clear_tmp clears out the temp directory", {
 
   # allow for short circuit
 
-    expect_equal(clear_tmp(cleanup = FALSE), NULL)
+    expect_equal(clear_tmp(settings = directory_settings(cleanup = FALSE)), NULL)
 
   # clear, with messaging verbose and double clearing
 
@@ -138,7 +147,8 @@ test_that("clear_tmp clears out the temp directory", {
 
 })
 
-test_that("combine_hist_and_cast correctly combines overlapping dataframes", {
+test_that(desc = "combine_hist_and_cast correctly combines overlapping dataframes",
+          code = {
 
   hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
   cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1),
@@ -156,10 +166,13 @@ test_that("combine_hist_and_cast correctly combines overlapping dataframes", {
 
   # errors properly with incorrect winner
 
-    expect_error(combine_hist_and_cast(hist_tab, cast_tab, "c123")) 
+    expect_error(combine_hist_and_cast(hist_tab, cast_tab, winner = "c123")) 
+
 })
 
-test_that("add_date_from_components combines parts into date", {
+test_that(desc = "add_date_from_components combines parts into date",
+          code = {
+
   df <- data.frame(year = 2010, month = 2, day = 1:10)
   df2 <- add_date_from_components(df)
   expect_is(df2, "data.frame")
@@ -171,7 +184,8 @@ test_that("add_date_from_components combines parts into date", {
 })
 
 
-test_that("remove_incompletes does remove them", {
+test_that(desc = "remove_incompletes does remove them",
+          code = {
   df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)
   df2 <- remove_incompletes(df, "c1")
   expect_is(df2, "data.frame")
@@ -179,14 +193,16 @@ test_that("remove_incompletes does remove them", {
 })
 
 
-test_that("list_depth properly measures the depth of a list", {
+test_that(desc = "list_depth properly measures the depth of a list",
+          code = {
   expect_equal(list_depth("a"), 0)
   expect_equal(list_depth(list("a")), 1)
   expect_equal(list_depth(list()), 0)
   expect_equal(list_depth(list(list("a"))), 2)
 })
 
-test_that("return_if_null properly returns for a new function", {
+test_that(desc = "return_if_null properly returns for a new function",
+          code = {
   ff <- function(x = 1, null_return = "hello"){
     return_if_null(x, null_return)
     x
@@ -195,12 +211,14 @@ test_that("return_if_null properly returns for a new function", {
   expect_equal(ff(NULL), "hello")
 })
 
-test_that("ifnull toggles based on input", {
+test_that(desc = "ifnull toggles based on input",
+          code = {
   expect_equal(ifnull(NULL, 123), 123)
   expect_equal(ifnull(TRUE, 123), TRUE)
 })
 
-test_that("ifna toggles based on input", {
+test_that(desc = "ifna toggles based on input",
+          code = {
   expect_equal(ifna(NA, 123), 123)
   expect_equal(ifna(FALSE, 123), FALSE)
   expect_equal(ifna(NA, NA), NA)

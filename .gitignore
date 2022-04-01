@@ -5,12 +5,13 @@ doc
 .RData
 docs/*
 inst/doc
+portalcasting/*
+test/* 
 tests/testthat/testing/*
 tests/testthat/prod/*
 tests/testthat/sand/*
 tests/testthat/test/*
 model_testing/*
-test/* 
 testing/* 
 testing_dir/* 
 *.bak

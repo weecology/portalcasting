@@ -2,46 +2,31 @@
 % Please edit documentation in R/utilities.R
 \name{combine_hist_and_cast}
 \alias{combine_hist_and_cast}
-\title{Combine a historical table and a cast table}
+\title{Combine a Historical Table and a Cast Table}
 \usage{
 combine_hist_and_cast(
   hist_tab = NULL,
   cast_tab = NULL,
   winner = "hist",
-  column = "date",
-  arg_checks = TRUE
+  column = "date"
 )
 }
 \arguments{
-\item{hist_tab, cast_tab}{A pair of \code{data.frame}s with the same columns
-including a code{date} column of \code{Date}s, which is used to align 
-them.}
+\item{hist_tab, cast_tab}{A pair of \code{data.frame}s with the same columns including a code{date} column of \code{Date}s, which is used to align them.}
 
-\item{winner}{\code{character} value either {"hist"} or \code{"cast"} to
-decide who wins any ties. In the typical portalcasting space, this is 
-kept at its default value throughout. In the case of \code{NA} values,
-this will be overriden to use the entry that has no missing entries.}
+\item{winner}{\code{character} value either {"hist"} or \code{"cast"} to decide who wins any ties. In the typical portalcasting space, this is kept at its default value throughout. In the case of \code{NA} values, this will be overriden to use the entry that has no missing entries.}
 
-\item{column}{\code{character} indicating the column to use for identifying
-entries in combining.}
-
-\item{arg_checks}{\code{logical} value of if the arguments should be
-checked using standard protocols via \code{\link{check_args}}. The 
-default (\code{arg_checks = TRUE}) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.}
+\item{column}{\code{character} indicating the column to use for identifying entries in combining.}
 }
 \value{
 \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
 }
 \description{
-A simple utility for combining a table of historical data
- and a table of cast data that might need to be assigned to either one
- or the other.
+A simple utility for combining a table of historical data and a table of cast data that might need to be assigned to either one or the other.
 }
 \examples{
  hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
- cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1),
-                        x = 101:106)
+ cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1), x = 101:106)
  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
 

@@ -1,18 +1,21 @@
-context("Figure functions")
+context(desc = "Figure functions")
 
 main <- "./testing"
 
-test_that("plot_cast_point", {
+test_that(desc = "plot_cast_point", {
 
   # download is held back on cran
 
     skip_on_cran() 
 
+
   fill_data(main = main)
   moons <- read_moons(main = main)
-  last_census_date <- last_census(main = main)
+  
+
+  last_census_date <- max(moons$censusdate, na.rm = TRUE)
   which_last_census_moon <- which(moons$censusdate == last_census_date)
-  last_census_moon <- moons$moon[which_last_census_moon]
+  last_census_moon <- moons$newmoonnumber[which_last_census_moon]
 
   expect_silent(plot_cast_point(main = main))
   expect_silent(plot_cast_point(main = main, highlight_sp = "DM"))
@@ -20,11 +23,12 @@ test_that("plot_cast_point", {
   expect_silent(plot_cast_point(main = main, model = "AutoArima", moon = last_census_moon, with_census = TRUE))
   expect_error(plot_cast_point(main = main, cast_id = 1e10))
 
+
 })
 
 
 
-test_that("plot_cast_ts", {
+test_that(desc = "plot_cast_ts", {
 
   # download is held back on cran
 
@@ -39,7 +43,7 @@ test_that("plot_cast_ts", {
 })
 
 
-test_that("plot_casts_err_lead", {
+test_that(desc = "plot_casts_err_lead", {
 
   # download is held back on cran
 
@@ -48,10 +52,10 @@ test_that("plot_casts_err_lead", {
   expect_silent(plot_casts_err_lead(main = main))
   expect_silent(plot_casts_err_lead(main = main, models = "AutoArima", 
                                     ensemble = FALSE, species = "total", 
-                                    data_set = "all"))
+                                    dataset = "all"))
   expect_silent(plot_casts_err_lead(main = main, models = "AutoArima", 
                                     ensemble = FALSE,
-                                   species = "BA", data_set = "all"))
+                                   species = "BA", dataset = "all"))
   cast_tab <- read_cast_tabs(main = main)
   expect_error(plot_casts_err_lead(main = main, cast_tab = cast_tab,
                                    cast_id = 1e10))
@@ -60,7 +64,7 @@ test_that("plot_casts_err_lead", {
 })
 
 
-test_that("plot_casts_cov_RMSE", {
+test_that(desc = "plot_casts_cov_RMSE", {
 
   # download is held back on cran
 

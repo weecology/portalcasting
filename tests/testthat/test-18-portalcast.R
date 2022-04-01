@@ -1,8 +1,8 @@
-context("portalcast functions")
+context(desc = "portalcast functions")
 
 main <- "./testing"
 
-test_that("portalcast works as basic", {
+test_that(desc = "portalcast works as basic", {
 
   # download is held back on cran
 

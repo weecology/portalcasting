@@ -2,8 +2,7 @@
 % Please edit documentation in R/download.R
 \name{NMME_urls}
 \alias{NMME_urls}
-\title{URLs for the Northwest Knowledge Network's North American
-       Multi-Model Ensemble (NMME) climate forecasts}
+\title{URLs for the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts}
 \usage{
 NMME_urls(
   start = Sys.Date(),
@@ -18,49 +17,22 @@ NMME_urls(
 \arguments{
 \item{start, end}{\code{Date} for the start and end of the cast.}
 
-\item{model}{\code{character} value of the model to use, one of 
-\code{"ENSMEAN"}, (Multi-Model Mean), 
-\code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), 
-\code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1),
-\code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} 
-(NCAR-CCSM4). 
-\cr \cr
-Presently can only take one value.}
+\item{model}{\code{character} value of the model to use, one of \code{"ENSMEAN"}, (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1), \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). Presently can only take one value.}
 
-\item{lat, lon}{\code{numeric} latitude and longitude values used to 
-downscale the model. 
-\cr \cr
-Presently can only take one value for each.}
+\item{lat, lon}{\code{numeric} latitude and longitude values used to downscale the model. Presently can only take one value for each.}
 
-\item{freq}{\code{character} value of the frequency of the data, can 
-be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} 
-is a number between \code{1} and \code{7}. 
-\cr \cr
-Presently can only take one value.}
+\item{freq}{\code{character} value of the frequency of the data, can be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a number between \code{1} and \code{7}. Presently can only take one value.}
 
-\item{data}{\code{character} value of the type of data, one of 
-\code{"tasmin"} (minimum temperature), \code{"tasmean"}
-(mean temperature), \code{"tasmax"} (maximum temperature),
-\code{"pr"} (precipitation), \code{"dps"} (dew point), 
-\code{"rsds"} (shortwave radiation; sun intensity), 
-\code{"was"} (wind speed).}
+\item{data}{\code{character} value of the type of data, one of \code{"tasmin"} (minimum temperature), \code{"tasmean"} (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"} (precipitation), \code{"dps"} (dew point), \code{"rsds"} (shortwave radiation; sun intensity), \code{"was"} (wind speed).}
 }
 \value{
-Named \code{character} vector of URLs, or \code{NULL} if
-        \code{data}, \code{freq}, or \code{model} is \code{NULL}.
+Named \code{character} vector of URLs, or \code{NULL} if \code{data}, \code{freq}, or \code{model} is \code{NULL}.
 }
 \description{
-Generate the URL for a specific request to the NMME API based 
-             on parameters. See arguments for specifics and \code{Details}
-             for links.
+Generate the URL for a specific request to the NMME API based on parameters. See arguments for specifics and \code{Details} for links.
 }
 \details{
-The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} 
-         (NKN) at the University of Idaho provides a 
-         \href{https://bit.ly/2tCP8NX}{simple API} to download 
-         downscaled climate forecasts using the 
-         \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} 
-         (NMME) set.
+The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set.
 }
 \examples{
   NMME_urls()
