@@ -2,23 +2,26 @@
 % Please edit documentation in R/ensembling.R
 \name{ensemble_casts}
 \alias{ensemble_casts}
-\title{Combine (ensemble) casts}
+\title{Combine (Ensemble) Casts}
 \usage{
 ensemble_casts(
   main = ".",
+  settings = directory_settings(),
   method = "unwtavg",
   cast_groups = NULL,
   cast_ids = NULL,
   cast_tab = NULL,
   end_moon = NULL,
   models = NULL,
-  data_set = NULL,
+  dataset = NULL,
   include_interp = TRUE,
   species = NULL
 )
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
+
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{method}{\code{character} value of the name of the ensemble method to use. Presently, only \code{"unwtavg"} (unweighted average) is allowed.}
 
@@ -32,14 +35,14 @@ ensemble_casts(
 
 \item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 
-\item{data_set}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.}
+\item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.}
 
 \item{include_interp}{\code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.}
 
 \item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{evalplot_species}.}
 }
 \value{
-\code{NULL}. Plot is generated.
+\code{data.frame} of ensembled casts.
 }
 \description{
 Combine multiple casts' output into a single ensemble. Presently, only a general average ensemble is available.

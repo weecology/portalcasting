@@ -1,4 +1,4 @@
-#' @title Combine (ensemble) casts
+#' @title Combine (Ensemble) Casts
 #'
 #' @description Combine multiple casts' output into a single ensemble. Presently, only a general average ensemble is available.
 #'
@@ -19,13 +19,15 @@
 #'
 #' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
 #'
-#' @param data_set \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.
+#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.
 #'
 #' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
 #'
 #' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{evalplot_species}.
 #'
-#' @return \code{NULL}. Plot is generated.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#'
+#' @return \code{data.frame} of ensembled casts.
 #' 
 #' @examples
 #'  \donttest{
@@ -37,23 +39,25 @@
 #' @export
 #'
 ensemble_casts <- function (main           = ".", 
+                            settings       = directory_settings(), 
                             method         = "unwtavg", 
                             cast_groups    = NULL, 
                             cast_ids       = NULL, 
                             cast_tab       = NULL, 
                             end_moon       = NULL, 
                             models         = NULL, 
-                            data_set       = NULL, 
+                            dataset        = NULL, 
                             include_interp = TRUE,
                             species        = NULL) {
 
   if (is.null(cast_tab)) {
 
     cast_choices <- select_casts(main           = main, 
+                                 settings       = settings,
                                  cast_ids       = cast_ids, 
                                  models         = models, 
                                  end_moons      = end_moon, 
-                                 data_sets      = data_set, 
+                                 datasets       = dataset, 
                                  include_interp = include_interp)
 
     if (NROW(cast_choices) == 0) {
@@ -62,7 +66,9 @@ ensemble_casts <- function (main           = ".",
 
     } else {
 
-      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id)
+      cast_tab <- read_cast_tabs(main     = main, 
+                                 settings = settings,
+                                 cast_ids = cast_choices$cast_id)
       cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
       cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab)
       cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab)
@@ -76,17 +82,17 @@ ensemble_casts <- function (main           = ".",
 
   cast_ids      <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models        <- ifnull(models, unique(cast_tab$model))
-  data_set      <- ifnull(data_set, "controls")
+  dataset       <- ifnull(dataset, "controls")
   species       <- ifnull(species, base_species(total = TRUE)) 
   end_moon      <- ifnull(end_moon, max(unique(na.omit(cast_tab)$end_moon))) 
   cast_groups   <- ifnull(cast_groups, unique(cast_tab$cast_group))
   cast_id_in    <- cast_tab$cast_id %in% cast_ids
   model_in      <- cast_tab$model %in% models
-  data_set_in   <- cast_tab$data_set == data_set
+  dataset_in    <- cast_tab$data_set == dataset
   species_in    <- cast_tab$species %in% species
   end_moon_in   <- cast_tab$end_moon %in% end_moon
   cast_group_in <- cast_tab$cast_group %in% cast_groups
-  all_in        <- cast_id_in & model_in & data_set_in & species_in & end_moon_in &cast_group_in
+  all_in        <- cast_id_in & model_in & dataset_in & species_in & end_moon_in & cast_group_in
 
   if (sum(all_in) == 0) {
 
@@ -173,7 +179,7 @@ ensemble_casts <- function (main           = ".",
              error    = error, 
              end_moon = end_moon_id, 
              lead     = lead, 
-             data_set = data_set,
+             dataset  = dataset,
              cast_id  = ecast_id,
              covered  = covered)
  

@@ -2,10 +2,11 @@
 % Please edit documentation in R/process_casts.R
 \name{select_casts}
 \alias{select_casts}
-\title{Find casts that fit specifications}
+\title{Find Casts that Fit Specifications}
 \usage{
 select_casts(
   main = ".",
+  settings = directory_settings(),
   cast_ids = NULL,
   cast_groups = NULL,
   end_moons = NULL,
@@ -16,45 +17,30 @@ select_casts(
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_ids}{\code{integer} (or integer \code{numeric}) values 
-representing the casts of interest, as indexed within the directory in
-the \code{casts} sub folder. See the casts metadata file 
-(\code{casts_metadata.csv}) for summary information.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value
-of the cast group to combine with an ensemble. If \code{NULL} (default),
-the most recent cast group is ensembled.}
+\item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
-\item{end_moons}{\code{integer} (or integer \code{numeric}) 
-newmoon numbers of the forecast origin. Default value is 
-\code{NULL}, which equates to no selection with respect to 
-\code{end_moon}.}
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
 
-\item{models}{\code{character} values of the names of the models to 
-include. Default value is \code{NULL}, which equates to no selection with 
-respect to \code{model}.}
+\item{end_moons}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
-\item{datasets}{\code{character} values of the rodent data sets to include
-Default value is \code{NULL}, which equates to no selection with 
-respect to \code{dataset}.}
+\item{models}{\code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
+\item{datasets}{\code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
-\item{include_interp}{\code{logical} indicator of if the basic data set
-names should also be inclusive of the associated interpolated data sets.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+
+\item{include_interp}{\code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.}
 }
 \value{
 \code{data.frame} of the \code{cast_tab}.
 }
 \description{
 Determines the casts that match user specifications. \cr
- Functionally, a wrapper on \code{\link{read_casts_metadata}} with 
- filtering for specifications that provides a simple user interface to
- the large set of available casts via the metadata.
+ Functionally, a wrapper on \code{\link{read_casts_metadata}} with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata.
 }
 \examples{
  \donttest{

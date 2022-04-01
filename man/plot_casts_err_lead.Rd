@@ -11,7 +11,7 @@ plot_casts_err_lead(
   end_moons = NULL,
   models = NULL,
   ensemble = TRUE,
-  data_set = "controls",
+  dataset = "controls",
   include_interp = TRUE,
   species = NULL
 )
@@ -43,9 +43,9 @@ in the table.}
 included. Presently only the unweighted average. See 
 \code{\link{ensemble_casts}}.}
 
-\item{data_set}{\code{character} value of the rodent data set to include
+\item{dataset}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to no selection with 
-respect to \code{data_set}.}
+respect to \code{dataset}.}
 
 \item{include_interp}{\code{logical} indicator of if the models fit using
 interpolated data should be included with the models that did not.}

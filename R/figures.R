@@ -16,7 +16,7 @@
 #'
 #' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
 #'
-#' @param data_set \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{data_set}.
+#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
 #' @param ensemble \code{logical} indicator of if an ensemble should be included. Presently only the unweighted average. See \code{\link{ensemble_casts}}.
 #'
@@ -41,7 +41,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
                                  end_moons      = NULL, 
                                  models         = NULL, 
                                  ensemble       = TRUE, 
-                                 data_set       = NULL, 
+                                 dataset       = NULL, 
                                  include_interp = TRUE,
                                  species        = NULL) {
 
@@ -51,7 +51,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
                                  cast_ids       = cast_ids, 
                                  models         = models, 
                                  end_moons      = end_moons, 
-                                 data_sets      = data_set, 
+                                 datasets      = dataset, 
                                  include_interp = include_interp)
 
     if (NROW(cast_choices) == 0) {
@@ -76,18 +76,18 @@ plot_casts_cov_RMSE <- function (main           = ".",
 
   }
 
-  cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
+  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
   cast_ids          <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models            <- ifnull(models, unique(cast_tab$model))
-  data_set          <- ifnull(data_set, unique(cast_tab$data_set)[1])
+  dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species           <- ifnull(species, evalplot_species()) 
   end_moons         <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in        <- cast_tab$cast_id %in% cast_ids
   model_in          <- cast_tab$model %in% models
-  data_set_in       <- cast_tab$data_set == data_set
+  dataset_in       <- cast_tab$dataset == dataset
   species_in        <- cast_tab$species %in% species
   end_moon_in       <- cast_tab$end_moon %in% end_moons
-  all_in            <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
+  all_in            <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
 
   if (sum(all_in) == 0) {
 
@@ -111,7 +111,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
                                         cast_tab = cast_tab,
                                         end_moon = end_moons[i],
                                         models   = models, 
-                                        data_set = data_set,
+                                        dataset = dataset,
                                         species  = species))
     }
     ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
@@ -265,9 +265,9 @@ plot_casts_cov_RMSE <- function (main           = ".",
 #'  respect to \code{model}. \code{NULL} translates to all \code{models}
 #'  in the table.
 #'
-#' @param data_set \code{character} value of the rodent data set to include
+#' @param dataset \code{character} value of the rodent data set to include
 #'  Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{data_set}.
+#'  respect to \code{dataset}.
 #'
 #' @param ensemble \code{logical} indicator of if an ensemble should be
 #'  included. Presently only the unweighted average. See 
@@ -295,13 +295,13 @@ plot_casts_cov_RMSE <- function (main           = ".",
 plot_casts_err_lead <- function(main = ".", cast_ids = NULL, 
                                 cast_tab = NULL, end_moons = NULL, 
                                 models = NULL, ensemble = TRUE, 
-                                data_set = "controls", include_interp = TRUE,
+                                dataset = "controls", include_interp = TRUE,
                                 species = NULL){
 
   if(is.null(cast_tab)){
     cast_choices <- select_casts(main = main, cast_ids = cast_ids, 
                                  models = models, end_moons = end_moons, 
-                                 data_sets = data_set, 
+                                 datasets = dataset, 
                                  include_interp = include_interp)
     if(NROW(cast_choices) == 0){
       stop("no casts available for requested plot")
@@ -312,18 +312,18 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
       cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab)
     }
   }
-  cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
+  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
   cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models <- ifnull(models, unique(cast_tab$model))
-  data_set <- ifnull(data_set, unique(cast_tab$data_set)[1])
+  dataset <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species <- ifnull(species, evalplot_species( )) 
   end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in <- cast_tab$cast_id %in% cast_ids
   model_in <- cast_tab$model %in% models
-  data_set_in <- cast_tab$data_set == data_set
+  dataset_in <- cast_tab$dataset == dataset
   species_in <- cast_tab$species %in% species
   end_moon_in <- cast_tab$end_moon %in% end_moons
-  all_in <- cast_id_in & model_in & data_set_in & species_in & end_moon_in
+  all_in <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
   if(sum(all_in) == 0){
     stop("no casts available for requested plot")
   }
@@ -340,7 +340,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
       ecast_tab <- rbind(ecast_tab, 
                          ensemble_casts(main = main, cast_tab = cast_tab,
                                         end_moon = end_moons[i],
-                                        models = models, data_set = data_set,
+                                        models = models, dataset = dataset,
                                         species = species))
     }
     ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) %in% 
@@ -384,14 +384,14 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 
     if (species == "total"){
       spp <- "total abundance"
-      title <- paste0(models, ", ", data_set, ", ", spp)
+      title <- paste0(models, ", ", dataset, ", ", spp)
     } else{
       sppmatch <- which(sptab[ , "speciescode"] == species)
       spp <- sptab[sppmatch , "scientificname"]
       title <- eval(substitute(
                       expression(
-                        paste(models_i, ", ", data_set, ", ", italic(spp))), 
-                      env = list(spp = spp, data_set = data_set,  
+                        paste(models_i, ", ", dataset, ", ", italic(spp))), 
+                      env = list(spp = spp, dataset = dataset,  
                                  models_i = models)))
     }
     mtext(title, side = 3, cex = 1.25, line = 0.5, at = xrange[1], adj = 0)
@@ -425,12 +425,12 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
         } else{
           cast_id_in <- cast_tab$cast_id %in% cast_ids
         }
-        data_set_in <- cast_tab$data_set == data_set
+        dataset_in <- cast_tab$dataset == dataset
         model_in <- cast_tab$model %in% models[i]
         species_in <- cast_tab$species %in% species[j]
         end_moon_in <- cast_tab$end_moon %in% end_moons
 
-        all_in <- cast_id_in & model_in & data_set_in & species_in & 
+        all_in <- cast_id_in & model_in & dataset_in & species_in & 
                   end_moon_in
         pcast_tab <- cast_tab[all_in, ]
         par(bty = "L", mar = c(0.5, 0.5, 0.25, 0.25), 
@@ -497,7 +497,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'
 #' @description Plot the point value with confidence interval for a time point
 #'  across multiple species. Casts can be selected either by supplying a 
-#'  \code{cast_id} number or any combination of \code{data_set},
+#'  \code{cast_id} number or any combination of \code{dataset},
 #'  \code{model}, and \code{end_moon}, which filter the available casts in
 #'  unison. This plot type can only handle output from a single cast, so
 #'  if multiple casts still remain, the one with the highest number is 
@@ -526,9 +526,9 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'  respect to \code{model}. Also available is \code{"Ensemble"}, which
 #'  combines the models via \code{\link{ensemble_casts}}. 
 #'
-#' @param data_set \code{character} value of the rodent data set to include
+#' @param dataset \code{character} value of the rodent data set to include
 #'  Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{data_set}.
+#'  respect to \code{dataset}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -543,7 +543,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #'
 #' @param species \code{character} vector of the species codes (or 
 #'  \code{"total"} for the total across species) to be plotted or 
-#'  \code{NULL} (default) to plot all species in \code{data_set}.
+#'  \code{NULL} (default) to plot all species in \code{dataset}.
 #' 
 #' @param highlight_sp \code{character} vector of the species codes (or 
 #'  \code{"total"} for the total across species) to be highlighted or 
@@ -570,7 +570,7 @@ plot_casts_err_lead <- function(main = ".", cast_ids = NULL,
 #' @export
 #'
 plot_cast_point <- function(main = ".", cast_id = NULL, cast_groups = NULL,
-                            data_set = NULL, model = NULL, end_moon = NULL, 
+                            dataset = NULL, model = NULL, end_moon = NULL, 
                             species = NULL, highlight_sp = NULL,
                             moon = NULL, with_census = FALSE, 
 settings = directory_settings(),
@@ -589,7 +589,7 @@ settings = directory_settings(),
   }
   casts_meta <- select_casts(main = main, cast_ids = cast_id,
                              end_moons = end_moon, models = model2, 
-                             data_sets = data_set, 
+                             datasets = dataset, 
                              quiet = quiet)
 
   if(with_census){
@@ -609,7 +609,7 @@ settings = directory_settings(),
 
   max_obs <- 0
   if(with_census){
-    obs <- read_rodents_table(main = main, data_set = casts_meta$data_set)
+    obs <- read_rodents_table(main = main, dataset = casts_meta$dataset)
     colnames(obs) <- gsub("\\.", "", colnames(obs))
     sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species <- ifnull(species, colnames(obs)[sp_col])
@@ -620,12 +620,12 @@ settings = directory_settings(),
     } 
     max_obs <- max(as.numeric(obs), na.rm = TRUE)
   }
-  data_set <- casts_meta$data_set
+  dataset <- casts_meta$dataset
   if(!is.null(model) && tolower(model) == "ensemble"){
-    data_set <- gsub("_interp", "", data_set)
+    dataset <- gsub("_interp", "", dataset)
     preds <- ensemble_casts(main = main, cast_groups = cast_groups,
                             end_moon = casts_meta$end_moon, 
-                            data_set = data_set, species = species)
+                            dataset = dataset, species = species)
 
   } else{
     preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id)
@@ -642,9 +642,9 @@ settings = directory_settings(),
   moon_month <- moons$month[moons$moon == moon]
   moon_year <- moons$year[moons$moon == moon]
   title_date <- paste(month.abb[moon_month], moon_year, sep = " ")
-  data_set_name <- gsub("_interp", " (interpolated)", data_set)
+  dataset_name <- gsub("_interp", " (interpolated)", dataset)
   model_name <- ifnull(model, casts_meta$model)
-  title <- paste0(title_date, ", " , model_name, ", ", data_set_name)
+  title <- paste0(title_date, ", " , model_name, ", ", dataset_name)
 
   preds <- preds[order(preds$estimate, decreasing = TRUE), ]
   species <- preds$species
@@ -712,64 +712,33 @@ settings = directory_settings(),
 
 
 
-#' @title Visualize a time series cast of a species
+#' @title Visualize a Time Series Cast of a Species
 #'
-#' @description Plot an observed timeseries and cast timeseries with a 
-#'  prediction interval. \cr
-#'  Casts can be selected either by supplying a 
-#'  \code{cast_id} number or any combination of \code{data_set},
-#'  \code{model}, and \code{end_moon}, which filter the available casts in
-#'  unison. This plot type can only handle output from a single cast, so
-#'  if multiple casts still remain, the one with the highest number is 
-#'  selected. To be more certain about cast selection, use the \code{cast_id}
-#'  input.
+#' @description Plot an observed timeseries and cast timeseries with a prediction interval. \cr
+#'  Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{end_moon}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
 #'
-#' @details The resulting plot shows observations as a solid black line 
-#'  and predictions as a blue polygon with the bounds represent the error
-#'  given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line
-#'  representing the \code{estimate} in the \code{cast_table} saved output 
-#'  from a model. \cr
-#'  As of \code{portalcasting v0.9.0}, 
-#'  this represents the mean and the 95\% prediction interval. \cr
-#'  Observations that occurred after the cast are shown connected directly
-#'  to the pre-cast observation data (as the black solid line).
+#' @details The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line representing the \code{estimate} in the \code{cast_table} saved output from a model. \cr
+#'  As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. \cr
+#'  Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) 
-#'  newmoon number of the forecast origin. Default value is 
-#'  \code{NULL}, which equates to no selection with respect to 
-#'  \code{end_moon}.
+#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
-#' @param model \code{character} value of the name of the model to 
-#'  include. Default value is \code{NULL}, which equates to \code{"Ensemble"}
-#'  or an unweighted combination of the most recent cast group's models via 
-#'  \code{\link{ensemble_casts}}. 
+#' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to \code{"Ensemble"} or an unweighted combination of the most recent cast group's models via  \code{\link{ensemble_casts}}. 
 #'
-#' @param data_set \code{character} value of the rodent data set to include
-#'  Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{data_set}.
+#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
-#' @param cast_id \code{integer} (or integer \code{numeric}) value 
-#'  representing the cast of interest, as indexed within the directory in
-#'  the \code{casts} sub folder. See the casts metadata file 
-#'  (\code{casts_metadata.csv}) for summary information.
+#' @param cast_id \code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param species \code{character} value of the species codes (or 
-#'  \code{"total"} for the total across species) to be plotted. 
-#'  \code{NULL} (default) also gives the total.
+#' @param species \code{character} value of the species codes (or \code{"total"} for the total across species) to be plotted. \code{NULL} (default) also gives the total.
 #'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon 
-#'  number for the beginning of the x-axis of the plot. \cr
-#'  Does not influence the fit of the models, just the presentation.
+#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
+#'  Does not influence the fit of the models, just the presentation. 
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value
-#'  of the cast group to combine with an ensemble. If \code{NULL} (default),
-#'  the most recent cast group is ensembled. 
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled. 
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
@@ -784,131 +753,199 @@ settings = directory_settings(),
 #'
 #' @export
 #'
-plot_cast_ts <- function(main = ".", cast_id = NULL, cast_groups = NULL,
-                         data_set = NULL, model = NULL, end_moon = NULL, 
-                         species = "total", start_moon = 217, 
-settings = directory_settings(),
-                         quiet = FALSE){
+plot_cast_ts <- function (main        = ".", 
+                          settings    = directory_settings(), 
+                          cast_id     = NULL, 
+                          cast_groups = NULL,
+                          dataset     = NULL, 
+                          model       = NULL, 
+                          end_moon    = NULL, 
+                          species     = "total", 
+                          start_moon  = 217, 
+                          quiet       = FALSE){
 
-  model <- ifnull(model, "Ensemble")
+  model  <- ifnull(model, "Ensemble")
   model2 <- model
-  if(!is.null(model) && tolower(model) == "ensemble"){
+
+  if (!is.null(model) && tolower(model) == "ensemble") {
+
     model2 <- NULL
-  }
-  casts_meta <- select_casts(main = main, cast_ids = cast_id,
-                             end_moons = end_moon, models = model2, 
-                             data_sets = data_set, quiet = quiet)
-  if(NROW(casts_meta) > 1){
-    which_max <- which.max(casts_meta$cast_id)
-    casts_meta <- casts_meta[which_max, ]
-  }
-  if(NROW(casts_meta) == 0){
-    stop("no casts available for requested plot")
+
   }
 
-  obs <- read_rodents_table(main = main, data_set = casts_meta$data_set)
+  casts_meta <- select_casts(main      = main, 
+                             settings  = settings, 
+                             cast_ids  = cast_id,
+                             end_moons = end_moon, 
+                             models    = model2, 
+                             datasets  = dataset, 
+                             quiet     = quiet)
+
+  if (NROW(casts_meta) > 1) {
+
+    which_max  <- which.max(casts_meta$cast_id)
+    casts_meta <- casts_meta[which_max, ]
+
+  }
+
+  if (NROW(casts_meta) == 0) {
+
+    stop("no casts available for requested plot")
+
+  }
+
+  obs           <- read_rodents_table(main     = main, 
+                                      settings = settings, 
+                                      dataset  = casts_meta$data_set)
   colnames(obs) <- gsub("\\.", "", colnames(obs))
 
-  sp_col <- is_sp_col(obs, nadot = TRUE, total = TRUE)
+  sp_col  <- is_sp_col(obs, nadot = TRUE, total = TRUE)
   species <- ifnull(species, colnames(obs)[sp_col])
 
-  if(!all(species %in% colnames(obs))){
+  if (!all(species %in% colnames(obs))) {
+
     stop("cast not available for requested species")
+
   }
-  obs <- obs[ , c("moon", species)]
-  data_set <- casts_meta$data_set
-  if(!is.null(model) && tolower(model) == "ensemble"){
-    data_set <- gsub("_interp", "", data_set)
-    preds <- ensemble_casts(main = main, cast_groups = cast_groups,
-                            end_moon = casts_meta$end_moon, 
-                            data_set = data_set, species = species)
-  } else{
-    preds <- read_cast_tab(main = main, cast_id = casts_meta$cast_id)
+
+  obs     <- obs[ , c("newmoonnumber", species)]
+  dataset <- casts_meta$data_set
+
+  if (!is.null(model) && tolower(model) == "ensemble") {
+
+    dataset <- gsub("_interp", "", dataset)
+    preds   <- ensemble_casts(main        = main, 
+                              cast_groups = cast_groups,
+                              end_moon    = casts_meta$end_moon, 
+                              dataset     = dataset, 
+                              species     = species)
+
+  } else {
+
+    preds <- read_cast_tab(main     = main, 
+                           settings = settings,
+                           cast_id  = casts_meta$cast_id)
+
   }
-  species <- ifnull(species, unique(preds$species))
-  match_sp <- (preds$species %in% species)
-  colnames <- c("moon", "estimate", "lower_pi", "upper_pi")
+
+  species   <- ifnull(species, unique(preds$species))
+  match_sp  <- (preds$species %in% species)
+  colnames  <- c("moon", "estimate", "lower_pi", "upper_pi")
   match_col <- (colnames(preds) %in% colnames)
-  preds <- preds[match_sp, match_col]
+  preds     <- preds[match_sp, match_col]
 
   max_moon <- max(preds$moon)
-  rangex <- c(start_moon, max_moon)
-  obs_sp <- obs[ , species]
-  obs_nm <- obs[ , "moon"]
-  maxy <- max(c(preds$UpperPI, obs_sp), na.rm = TRUE)
-  rangey <- c(0, maxy)
+  rangex   <- c(start_moon, max_moon)
+  obs_sp   <- obs[ , species]
+  obs_nm   <- obs[ , "newmoonnumber"]
+  maxy     <- max(c(preds$UpperPI, obs_sp), na.rm = TRUE)
+  rangey   <- c(0, maxy)
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   par(mar = c(3, 4.5, 2, 1))
-  plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", xaxt= "n", 
-       las = 1, xlim = rangex, ylim = rangey)
+  plot(x    = 1, 
+       y    = 1, 
+       type = "n", 
+       bty  = "L", 
+       xlab = "", 
+       ylab = "", 
+       xaxt = "n", 
+       las  = 1, 
+       xlim = rangex, 
+       ylim = rangey)
 
-  moons <- read_moons(main = main, control_files = control_files)
-  minx <- as.character(moons$moondate[moons$moon == rangex[1]])
-  maxx <- as.character(moons$moondate[moons$moon == rangex[2]])
-  minx_yr <- as.numeric(format(as.Date(minx), "%Y"))
-  maxx_yr <- as.numeric(format(as.Date(maxx), "%Y"))
+  moons <- read_moons(main     = main, 
+                      settings = settings)
+  minx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
+  maxx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
+  minx_yr  <- as.numeric(format(as.Date(minx), "%Y"))
+  maxx_yr  <- as.numeric(format(as.Date(maxx), "%Y"))
   minx_yr2 <- ceiling(minx_yr/ 5) * 5
   maxx_yr2 <- floor(maxx_yr/ 5) * 5
-  yrs <- seq(minx_yr2, maxx_yr2, 5)
-  txt <- yrs
-  nyd <- paste0(yrs, "-01-01")
-  dx <- as.Date(as.character(moons$moondate))
-  dy <- moons$moon
-  dmod <- lm(dy ~ dx)
-  loc <- predict(dmod, newdata = list(dx = as.Date(nyd)))
-  axis(1, at = loc, labels = txt)
-  yrs <- seq(minx_yr, maxx_yr, 1)
-  nyd <- paste0(yrs, "-01-01")
-  loc <- predict(dmod, newdata = list(dx = as.Date(nyd)))
-  axis(1, at = loc, labels = FALSE, tck = -0.005)  
+  yrs      <- seq(minx_yr2, maxx_yr2, 5)
+  txt      <- yrs
+  nyd      <- paste0(yrs, "-01-01")
+  dx       <- as.Date(as.character(moons$newmoondate))
+  dy       <- moons$newmoonnumber 
+  dmod     <- lm(dy ~ dx)
+  loc      <- predict(dmod, newdata = list(dx = as.Date(nyd)))
+  axis(side   = 1, 
+       at     = loc, 
+       labels = txt)
+  yrs      <- seq(minx_yr, maxx_yr, 1)
+  nyd      <- paste0(yrs, "-01-01")
+  loc      <- predict(dmod, newdata = list(dx = as.Date(nyd)))
+  axis(side   = 1, 
+       at     = loc, 
+       labels = FALSE, 
+       tck    = -0.005)  
 
-  lab <- list(text = "", font = 1)
-  lp <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lp, stringsAsFactors = FALSE)  
+  lab   <- list(text = "", font = 1)
+  lp    <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lp)
   sptab <- na_conformer(sptab, "speciescode")
-  if (species == "total"){
+
+  if (species == "total") {
+
     lab$text <- "Total Abundance"
     lab$font <- 1
-  } else{
+
+  } else {
+
     sppmatch <- which(sptab[ , "speciescode"] == species)
     lab$text <- sptab[sppmatch , "scientificname"]
     lab$font <- 3
+
   }
+
   mtext(lab$text, side = 2, font = lab$font, cex = 1.5, line = 3)
 
-  o_x <- obs_nm
-  o_y <- obs_sp
+  o_x   <- obs_nm
+  o_y   <- obs_sp
   p_y_m <- preds[ , "estimate"]
   p_y_l <- preds[ , "lower_pi"]
   p_y_u <- preds[ , "upper_pi"]
-  p_x <- preds[ , "moon"]
-  for(i in 1:length(p_y_l)){
+  p_x   <- preds[ , "moon"]
+
+  for (i in 1:length(p_y_l)) {
+
     p_y_l[i] <- max(c(0, p_y_l[i]))
+
   }
+
   first_pred <- min(p_x)
-  last_o_x <- max(o_x[!is.na(o_y) & o_x < first_pred])
-  last_o_y <- o_y[o_x == last_o_x]
+  last_o_x   <- max(o_x[!is.na(o_y) & o_x < first_pred])
+  last_o_y   <- o_y[o_x == last_o_x]
 
   poly_x <- c(last_o_x, p_x, p_x[length(p_x):1], last_o_x)
   poly_y <- c(last_o_y, p_y_l, p_y_u[length(p_y_u):1], last_o_y)
-  polygon(poly_x, poly_y, col = rgb(0.6757, 0.8438, 0.8984), border = NA)
-  points(c(last_o_x, p_x), c(last_o_y, p_y_m), type = "l", lwd = 2, lty = 1,
-         col = rgb(0.2, 0.5, 0.9))
+
+  polygon(x      = poly_x, 
+          y      = poly_y, 
+          col    = rgb(0.6757, 0.8438, 0.8984), 
+          border = NA)
+  points(x    = c(last_o_x, p_x), 
+         y    = c(last_o_y, p_y_m), 
+         type = "l", 
+         lwd  = 2, 
+         lty  = 1,
+         col  = rgb(0.2, 0.5, 0.9))
 
   o_x_1 <- o_x[!is.na(o_y) & o_x < first_pred]
   o_y_1 <- o_y[!is.na(o_y) & o_x < first_pred]
   n_o_1 <- length(o_x_1)
   o_x_2 <- c(o_x_1[n_o_1], o_x[!is.na(o_y) & o_x >= first_pred])
   o_y_2 <- c(o_y_1[n_o_1], o_y[!is.na(o_y) & o_x >= first_pred])
+
   points(o_x_1, o_y_1, type = "l", lwd = 2)
   points(o_x_2, o_y_2, type = "l", lwd = 2)
 
-  model_name <- ifnull(model, casts_meta$model)
-  data_set_name <- gsub("_interp", " (interpolated)", data_set)
-  title <- paste0(model_name, ", ", data_set_name)
-  mtext(title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
+  model_name   <- ifnull(model, casts_meta$model)
+  dataset_name <- gsub("_interp", " (interpolated)", dataset)
+  title        <- paste0(model_name, ", ", dataset_name)
+
+  mtext(text = title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
 
 }
 

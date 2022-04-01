@@ -196,10 +196,12 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
 
   return_if_null(cast_tab)
   cast_tab$obs <- NA
-  cast_dataset <- gsub("_interp", "", cast_tab$dataset)
+  cast_dataset <- gsub("_interp", "", cast_tab$data_set)
   ucast_dataset <- unique(cast_dataset)
   ncast_datasets <- length(ucast_dataset)
-  for(j in 1:ncast_datasets){
+
+  for (j in 1:ncast_datasets) {
+
     obs <- read_rodents_table(main = main, dataset = ucast_dataset[j])
     matches <- which(cast_dataset == ucast_dataset[j])
     nmatches <- length(matches)
@@ -254,7 +256,7 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
 read_cast_tab <- function (main     = ".", 
                            settings = directory_settings(), 
                            cast_id  = NULL) {
-  
+
   if (is.null(cast_id) ){
 
     casts_meta <- select_casts(main     = main,
@@ -305,6 +307,10 @@ read_cast_tabs <- function (main     = ".",
       cast_tab_i <- read_cast_tab(main     = main, 
                                   settings = settings,
                                   cast_id  = cast_ids[i])
+      # patch
+      colnames(cast_tab_i)[grepl("dataset", colnames(cast_tab_i))] <- "data_set"
+      # patch
+
       cast_tab   <- rbind(cast_tab, cast_tab_i)
 
     }
@@ -402,43 +408,28 @@ read_model_casts <- function (main     = ".",
 }
 
 
-#' @title Find casts that fit specifications
+#' @title Find Casts that Fit Specifications
 #'
 #' @description Determines the casts that match user specifications. \cr
-#'  Functionally, a wrapper on \code{\link{read_casts_metadata}} with 
-#'  filtering for specifications that provides a simple user interface to
-#'  the large set of available casts via the metadata. 
+#'  Functionally, a wrapper on \code{\link{read_casts_metadata}} with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids \code{integer} (or integer \code{numeric}) values 
-#'  representing the casts of interest, as indexed within the directory in
-#'  the \code{casts} sub folder. See the casts metadata file 
-#'  (\code{casts_metadata.csv}) for summary information.
+#' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param end_moons \code{integer} (or integer \code{numeric}) 
-#'  newmoon numbers of the forecast origin. Default value is 
-#'  \code{NULL}, which equates to no selection with respect to 
-#'  \code{end_moon}.
+#' @param end_moons \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value
-#'  of the cast group to combine with an ensemble. If \code{NULL} (default),
-#'  the most recent cast group is ensembled. 
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled. 
 #'
-#' @param models \code{character} values of the names of the models to 
-#'  include. Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{model}.
+#' @param models \code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.
 #'
-#' @param datasets \code{character} values of the rodent data sets to include
-#'  Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{dataset}.
+#' @param datasets \code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param include_interp \code{logical} indicator of if the basic data set
-#'  names should also be inclusive of the associated interpolated data sets.
+#' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{data.frame} of the \code{cast_tab}.
 #' 
@@ -451,39 +442,48 @@ read_model_casts <- function (main     = ".",
 #'
 #' @export
 #'
-select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
-                         end_moons = NULL, models = NULL, datasets = NULL,
-                         quiet = FALSE, include_interp = FALSE){
-  subp <- sub_path(main = main, subs = "casts")
-  casts_metadata <- read_casts_metadata(main = main, quiet = quiet)
+select_casts <- function (main           = ".", 
+                          settings       = directory_settings(), 
+                          cast_ids       = NULL, 
+                          cast_groups    = NULL,
+                          end_moons      = NULL, 
+                          models         = NULL, 
+                          datasets       = NULL,
+                          quiet          = FALSE, 
+                          include_interp = FALSE) {
 
-  ucast_ids <- unique(casts_metadata$cast_id)
-  cast_ids <- ifnull(cast_ids, ucast_ids)
-  match_id <- casts_metadata$cast_id %in% cast_ids
 
-  ucast_groups <- unique(casts_metadata$cast_group)
-  cast_groups <- ifnull(cast_groups, ucast_groups)
-  match_group <- casts_metadata$cast_group %in% cast_groups
+  casts_metadata <- read_casts_metadata(main     = main,
+                                        settings = settings,
+                                        quiet    = quiet)
 
-  uend_moons <- unique(casts_metadata$end_moon)
-  end_moons <- ifnull(end_moons, uend_moons)
+  ucast_ids <- unique(casts_metadata$cast_id[casts_metadata$QAQC])
+  cast_ids  <- ifnull(cast_ids, ucast_ids)
+  match_id  <- casts_metadata$cast_id %in% cast_ids
+
+  ucast_groups <- unique(casts_metadata$cast_group[casts_metadata$QAQC])
+  cast_groups  <- ifnull(cast_groups, ucast_groups)
+  match_group  <- casts_metadata$cast_group %in% cast_groups
+
+  uend_moons     <- unique(casts_metadata$end_moon[casts_metadata$QAQC])
+  end_moons      <- ifnull(end_moons, uend_moons)
   match_end_moon <- casts_metadata$end_moon %in% end_moons
 
-  umodels <- unique(casts_metadata$model)
-  models <- ifnull(models, umodels)
+  umodels     <- unique(casts_metadata$model[casts_metadata$QAQC])
+  models      <- ifnull(models, umodels)
   match_model <- casts_metadata$model %in% models
   
-  udatasets <- unique(casts_metadata$dataset)
-  datasets <- ifnull(datasets, udatasets)
-  if(include_interp){
-    datasets <- unique(c(datasets, paste0(datasets, "_interp")))
-  }
-  match_dataset <- casts_metadata$dataset %in% datasets
+  udatasets     <- unique(casts_metadata$data_set[casts_metadata$QAQC])
+  datasets      <- ifnull(datasets, udatasets)
+  datasets      <- ifelse(include_interp,
+                          yes            = unique(c(datasets, paste0(datasets, "_interp"))),
+                          no             = datasets) 
+  match_dataset <- casts_metadata$data_set %in% datasets
   
   QAQC <- casts_metadata$QAQC
 
-  match_all <- match_id & match_end_moon & match_model & match_dataset & QAQC
-  casts_metadata[match_all, ]
+  casts_metadata[match_id & match_end_moon & match_model & match_dataset & QAQC, ]
+
 }
 
 

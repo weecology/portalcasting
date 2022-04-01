@@ -8,7 +8,7 @@ plot_cast_point(
   main = ".",
   cast_id = NULL,
   cast_groups = NULL,
-  data_set = NULL,
+  dataset = NULL,
   model = NULL,
   end_moon = NULL,
   species = NULL,
@@ -32,9 +32,9 @@ the \code{casts} sub folder. See the casts metadata file
 of the cast group to combine with an ensemble. If \code{NULL} (default),
 the most recent cast group is ensembled.}
 
-\item{data_set}{\code{character} value of the rodent data set to include
+\item{dataset}{\code{character} value of the rodent data set to include
 Default value is \code{NULL}, which equates to no selection with 
-respect to \code{data_set}.}
+respect to \code{dataset}.}
 
 \item{model}{\code{character} value of the name of the model to 
 include. Default value is \code{NULL}, which equates to no selection with 
@@ -48,7 +48,7 @@ newmoon number of the forecast origin. Default value is
 
 \item{species}{\code{character} vector of the species codes (or 
 \code{"total"} for the total across species) to be plotted or 
-\code{NULL} (default) to plot all species in \code{data_set}.}
+\code{NULL} (default) to plot all species in \code{dataset}.}
 
 \item{highlight_sp}{\code{character} vector of the species codes (or 
 \code{"total"} for the total across species) to be highlighted or 
@@ -71,7 +71,7 @@ quieted.}
 \description{
 Plot the point value with confidence interval for a time point
  across multiple species. Casts can be selected either by supplying a 
- \code{cast_id} number or any combination of \code{data_set},
+ \code{cast_id} number or any combination of \code{dataset},
  \code{model}, and \code{end_moon}, which filter the available casts in
  unison. This plot type can only handle output from a single cast, so
  if multiple casts still remain, the one with the highest number is 
