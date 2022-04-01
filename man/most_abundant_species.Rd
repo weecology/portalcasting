@@ -4,14 +4,21 @@
 \alias{most_abundant_species}
 \title{Select the most abundant species from a data set}
 \usage{
-most_abundant_species(main = ".", data_set = "all", topx = 3)
+most_abundant_species(
+  main = ".",
+  settings = directory_settings(),
+  dataset = "all",
+  topx = 3
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{data_set}{\code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{topx}{Positive \code{integer} (or \code{integer}-conformable) value of how many species to include.}
+
+\item{data_set}{\code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.}
 }
 \value{
 \code{character} vector of the species identifiers.

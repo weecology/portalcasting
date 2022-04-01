@@ -98,6 +98,8 @@ write_data <- function (dfl       = NULL,
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or just tidy messages. 
 #'  
 #' @return Data requested.
