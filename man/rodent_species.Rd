@@ -13,7 +13,7 @@ all_species(species = NULL, nadot = FALSE, total = FALSE)
 
 base_species(species = NULL, nadot = FALSE, total = FALSE)
 
-evalplot_species(species = NULL, nadot = FALSE, total = FALSE)
+evalplot_species(species = NULL, nadot = FALSE, total = TRUE)
 }
 \arguments{
 \item{species}{\code{character}-valued vector of species names to include.}

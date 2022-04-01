@@ -14,14 +14,7 @@ portalcast(main)
 
 # all functions in production work as used!
 
-##############################################
-
-
-
-
-
-####   roll through all the code front to back for use
-####    then update tests
+####    updating tests
 
 
 

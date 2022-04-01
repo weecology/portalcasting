@@ -9,5 +9,5 @@ test_that(desc = "placeholder",
 
 })
 
-unlink(main_path(main = main), recursive = TRUE, force = TRUE)
+unlink(file.path(main), recursive = TRUE, force = TRUE)
 

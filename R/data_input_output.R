@@ -118,39 +118,53 @@ read_data <- function (main      = ".",
 
   if (data_name == "rodents") {
 
-    read_rodents(main = main, datasets = datasets, settings = settings)
+    out <- read_rodents(main = main, datasets = datasets, settings = settings)
 
   }
 
   if (data_name == "rodents_table") { 
 
-    read_rodents_table(main = main, dataset = dataset, settings = settings)
+    out <- read_rodents_table(main = main, dataset = dataset, settings = settings)
 
   }
 
   if (data_name == "covariates") {
 
-    read_covariates(main = main, settings = settings)
+    out <- read_covariates(main = main, settings = settings)
 
   }
 
   if (data_name == "climate_forecasts") {
 
-    read_climate_forecasts(main = main, settings = settings)
+    out <- read_climate_forecasts(main = main, settings = settings)
 
   }
 
   if (data_name == "moons") {
 
-    read_moons(main = main, settings = settings)
+    out <- read_moons(main = main, settings = settings)
 
   }
+
   if (data_name == "metadata") {
 
-    read_metadata(main = main, settings = settings)
+    out <- read_metadata(main = main, settings = settings)
 
   }
 
+  if (data_name == "forecast_covariates") {
+
+    out <- read_forecast_covariates(main = main, settings = settings)
+
+  }
+
+  if (data_name == "historical") {
+
+    out <- read_historical_covariates(main = main, settings = settings)
+
+  }
+
+  out
 }
 
 #' @rdname read_data
@@ -198,6 +212,28 @@ read_covariates <- function (main     = ".",
                              settings = directory_settings()) {
 
   read.csv(file.path(main, settings$subs$data, settings$files$covariates))
+
+}
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_forecast_covariates <- function (main     = ".",
+                                      settings = directory_settings()) {
+
+  read.csv(file.path(main, settings$subs$data, settings$files$forecast_covariates))
+
+}
+
+#' @rdname read_data
+#'
+#' @export
+#'
+read_historical_covariates <- function (main     = ".",
+                                       settings = directory_settings()) {
+
+  read.csv(file.path(main, settings$subs$data, settings$files$historical_covariates))
 
 }
 

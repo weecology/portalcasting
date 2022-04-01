@@ -8,17 +8,21 @@ test_that(desc = "plot_cast_point", {
 
     skip_on_cran() 
 
+
   fill_data(main = main)
   moons <- read_moons(main = main)
-  last_census_date <- last_census(main = main)
+  
+
+  last_census_date <- max(moons$censusdate, na.rm = TRUE)
   which_last_census_moon <- which(moons$censusdate == last_census_date)
-  last_census_moon <- moons$moon[which_last_census_moon]
+  last_census_moon <- moons$newmoonnumber[which_last_census_moon]
 
   expect_silent(plot_cast_point(main = main))
   expect_silent(plot_cast_point(main = main, highlight_sp = "DM"))
   expect_silent(plot_cast_point(main = main, model = "AutoArima"))
   expect_silent(plot_cast_point(main = main, model = "AutoArima", moon = last_census_moon, with_census = TRUE))
   expect_error(plot_cast_point(main = main, cast_id = 1e10))
+
 
 })
 
@@ -48,10 +52,10 @@ test_that(desc = "plot_casts_err_lead", {
   expect_silent(plot_casts_err_lead(main = main))
   expect_silent(plot_casts_err_lead(main = main, models = "AutoArima", 
                                     ensemble = FALSE, species = "total", 
-                                    data_set = "all"))
+                                    dataset = "all"))
   expect_silent(plot_casts_err_lead(main = main, models = "AutoArima", 
                                     ensemble = FALSE,
-                                   species = "BA", data_set = "all"))
+                                   species = "BA", dataset = "all"))
   cast_tab <- read_cast_tabs(main = main)
   expect_error(plot_casts_err_lead(main = main, cast_tab = cast_tab,
                                    cast_id = 1e10))

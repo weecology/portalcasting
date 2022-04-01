@@ -163,7 +163,7 @@ base_species <- function (species = NULL,
 #'
 evalplot_species <- function (species = NULL, 
                               nadot   = FALSE, 
-                              total   = FALSE) {
+                              total   = TRUE) {
 
   rodent_species(species = species, 
                  set     = "evalplot", 

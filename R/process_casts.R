@@ -323,7 +323,7 @@ read_cast_metadata <- function (main     = ".",
 
   }
 
-  yaml.load_file(cpath) 
+  read_yaml(cpath, eval.expr = TRUE) 
 
 }
 

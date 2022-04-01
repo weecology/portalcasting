@@ -9,10 +9,25 @@ test_that(desc = "prep_covariates", {
     skip_on_cran() 
 
   moons <- prep_moons(main = main)
-  rodents <- prep_rodents(main = main, moons = moons)
-  covariates <- prep_covariates(main = main, moons = moons)
-  md <- prep_metadata(main = main, moons = moons, rodents = rodents, 
-                          covariates = covariates)
+  rodents <- prep_rodents(main = main)
+  covariates <- prep_covariates(main = main)
+
+})
+
+
+context(desc = "metadata prepping functions")
+
+main <- "./testing"
+
+test_that(desc = "prep_metadata", {
+
+  # downloads take too long for cran checks
+
+    skip_on_cran() 
+
+
+  md <- prep_metadata(main = main)
   expect_is(md, "list")
 
 })
+

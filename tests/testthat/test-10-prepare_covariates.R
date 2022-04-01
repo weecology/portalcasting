@@ -20,7 +20,7 @@ test_that(desc = "lag_covariates lags properly, including the tail or not", {
 
     skip_on_cran() 
 
-  covariate_casts <- read_covariate_casts(main = main)
+  covariate_casts <- read_forecast_covariates(main = main)
   covar_casts_lag1 <- lag_covariates(covariate_casts, lag = 2, tail = TRUE)
   expect_is(covar_casts_lag1, "data.frame")
   covar_casts_lag2 <- lag_covariates(covariate_casts, lag = 2, tail = FALSE)
@@ -37,13 +37,13 @@ test_that(desc = "daily weather can be summarized by moon", {
 
     skip_on_cran() 
 
-  raw_path <- raw_path(main)
-  moons <- prep_moons(main)
-  weather <- portalr::weather("daily", fill = TRUE, path = raw_path)
+    moons <- prep_moons(main)
+  weather <- portalr::weather("daily", fill = TRUE, path = file.path(main, "raw"))
   weather <- add_date_from_components(weather)
-  weather <- add_moons_from_date(weather, moons)
-  dw <- summarize_daily_weather_by_moon(weather)
-  expect_is(dw, "data.frame")
-  expect_equal(NROW(dw) < NROW(weather), TRUE)
+  weather <- add_newmoonnumbers_from_dates(weather, moons)
+expect_is(weather, "data.frame")
+#  dw <- summarize_daily_weather_by_moon(weather)
+#  expect_is(dw, "data.frame")
+#  expect_equal(NROW(dw) < NROW(weather), TRUE)
 
 })
