@@ -1,10 +1,10 @@
-context("directory filling functions")
+context(desc = "directory filling functions")
 
 # given the directory was created in test-03
 
 main <- "./testing"
 
-test_that("fill_raw fills raw but doesn't when not missing and told not to", {
+test_that(desc = "fill_raw fills raw but doesn't when not missing and told not to", {
 
   # download is held back on cran
 
@@ -15,7 +15,7 @@ test_that("fill_raw fills raw but doesn't when not missing and told not to", {
 })
 
 
-test_that("fill_data sets up the data sub", {
+test_that(desc = "fill_data sets up the data sub", {
 
   # download is held back on cran
 
@@ -32,7 +32,7 @@ test_that("fill_data sets up the data sub", {
 
 
 
-test_that("fill_models adds the models to their folder", {
+test_that(desc = "fill_models adds the models to their folder", {
 
   expect_message(fill_models(main = main))
   prefabs <- paste0(prefab_models(), ".R")
@@ -43,7 +43,7 @@ test_that("fill_models adds the models to their folder", {
 })
 
 
-test_that("fill_casts fills the casts folder", {
+test_that(desc = "fill_casts fills the casts folder", {
 
   # download is held back on cran
 

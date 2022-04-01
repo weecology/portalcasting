@@ -1,15 +1,15 @@
-context("rodent prep functions")
+context(desc = "rodent prep functions")
 
 main <- "./testing"
 
-test_that("rodents_control creates a proper list", {
+test_that(desc = "rodents_control creates a proper list", {
 
   rc <- rodents_control("all_PPonly", species = "PP")
   expect_is(rc, "list")
 
 })
 
-test_that("prep_rodents_table makes the table for moons or dates", {
+test_that(desc = "prep_rodents_table makes the table for moons or dates", {
 
   # downloads take too long for cran checks
 
@@ -28,7 +28,7 @@ test_that("prep_rodents_table makes the table for moons or dates", {
   
 })
 
-test_that("prep_rodents preps all the rodents", {
+test_that(desc = "prep_rodents preps all the rodents", {
 
   # downloads take too long for cran checks
 
@@ -45,7 +45,7 @@ test_that("prep_rodents preps all the rodents", {
 
 })
 
-test_that("last_census finds it", {
+test_that(desc = "last_census finds it", {
 
   # downloads take too long for cran checks
 
@@ -55,7 +55,7 @@ test_that("last_census finds it", {
 
 })
 
-test_that("rodents_controls creates lists or throws errors",{
+test_that(desc = "rodents_controls creates lists or throws errors",{
 
   expect_is(rodents_controls(c("all", "controls")), "list")
   controls_r <- rodents_controls("all")[[1]]
@@ -68,7 +68,7 @@ test_that("rodents_controls creates lists or throws errors",{
 
 })
 
-test_that("rodents_species creates a vector of IDs as needed", {
+test_that(desc = "rodents_species creates a vector of IDs as needed", {
 
   x1 <- rodent_species()
   x2 <- rodent_species(set = "all")
@@ -101,7 +101,7 @@ test_that("rodents_species creates a vector of IDs as needed", {
 
 })
 
-test_that("most_abundant_species finds them", {
+test_that(desc = "most_abundant_species finds them", {
 
   # downloads take too long for cran checks
 
@@ -116,7 +116,7 @@ test_that("most_abundant_species finds them", {
 })
 
 
-test_that("prefab_data_sets names the proper sets", {
+test_that(desc = "prefab_data_sets names the proper sets", {
 
   pds1 <- prefab_data_sets()
   pds2 <- prefab_data_sets(interpolate = TRUE)

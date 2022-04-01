@@ -1,8 +1,8 @@
-context("ensembling functions")
+context(desc = "ensembling functions")
 
 main <- "./testing"
 
-test_that("ensemble_casts ensembles accordingly", {
+test_that(desc = "ensemble_casts ensembles accordingly", {
 
   # download is held back on cran
 

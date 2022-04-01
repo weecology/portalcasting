@@ -382,6 +382,13 @@ combine_hist_and_cast <- function (hist_tab = NULL,
 
   out    <- rbind(hist_tab, cast_tab)
   in_out <- rep(TRUE, NROW(out))
+
+  if (!(winner %in% c("hist", "cast"))) {
+
+    stop("`winner` must be `hist` or `cast`")
+
+  }
+
   dupes  <- names(which(table(out[,column]) > 1))
   ndupes <- length(dupes) 
 

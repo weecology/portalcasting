@@ -1,8 +1,8 @@
-context("model preparation functions")
+context(desc = "model preparation functions")
 
 main <- "./testing"
 
-test_that("covariate_models constructs the submodels", {
+test_that(desc = "covariate_models constructs the submodels", {
 
   ref <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),
               c("maxtemp", "mintemp", "precipitation", "ndvi"),
@@ -21,7 +21,7 @@ test_that("covariate_models constructs the submodels", {
 
 })
 
-test_that("verify_models verifies that models or present or throws errors", {
+test_that(desc = "verify_models verifies that models or present or throws errors", {
 
   fill_models(main = main)
   expect_message(verify_models(main = main))
@@ -30,7 +30,7 @@ test_that("verify_models verifies that models or present or throws errors", {
 
 })
 
-test_that("model_controls creates control lists", {
+test_that(desc = "model_controls creates control lists", {
 
   expect_is(model_controls(prefab_models()), "list")
   expect_equal(length(model_controls(prefab_models())), 8)
@@ -52,7 +52,7 @@ test_that("model_controls creates control lists", {
 
 })
 
-test_that("prefab_models creates a vector of model names", {
+test_that(desc = "prefab_models creates a vector of model names", {
 
   pfm <- prefab_models()
   expect_equal(length(pfm), 8)
@@ -61,7 +61,7 @@ test_that("prefab_models creates a vector of model names", {
 })
 
 
-test_that("write_model constructs model file", {
+test_that(desc = "write_model constructs model file", {
 
   expect_message(write_model("AutoArima", main = main))
   expect_message(write_model("AutoArima", main = main, 
@@ -75,14 +75,14 @@ test_that("write_model constructs model file", {
 
 })
 
-test_that("update_models updates a script", {
+test_that(desc = "update_models updates a script", {
 
    cm <- model_control(name = "AutoArima", data_sets = c("all", "controls"))
    expect_message(update_models(main = main, controls_model = cm))
 
 })
 
-test_that("model_template produces lines for a model script", {
+test_that(desc = "model_template produces lines for a model script", {
 
   temp1 <- model_template("AutoArima", main = main)
   expect_is(temp1, "character")
@@ -94,7 +94,7 @@ test_that("model_template produces lines for a model script", {
 
 })
 
-test_that("control_list_arg creates args for model scripts", {
+test_that(desc = "control_list_arg creates args for model scripts", {
 
   expect_is(control_list_arg(runjags_control(nchains = 3), "runjags_control"),
             "character")

@@ -1,9 +1,9 @@
-context("Test prepare_covariates functions")
+context(desc = "Test prepare_covariates functions")
 
 main <- "./testing"
 
 
-test_that("prep_covariates", {
+test_that(desc = "prep_covariates", {
 
   # downloads take too long for cran checks
 
@@ -14,7 +14,7 @@ test_that("prep_covariates", {
 
 })
 
-test_that("lag_covariates lags properly, including the tail or not", {
+test_that(desc = "lag_covariates lags properly, including the tail or not", {
 
   # downloads take too long for cran checks
 
@@ -31,7 +31,7 @@ test_that("lag_covariates lags properly, including the tail or not", {
 
 
 
-test_that("daily weather can be summarized by moon", {
+test_that(desc = "daily weather can be summarized by moon", {
 
   # downloads take too long for cran checks
 

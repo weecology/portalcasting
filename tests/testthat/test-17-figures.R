@@ -1,8 +1,8 @@
-context("Figure functions")
+context(desc = "Figure functions")
 
 main <- "./testing"
 
-test_that("plot_cast_point", {
+test_that(desc = "plot_cast_point", {
 
   # download is held back on cran
 
@@ -24,7 +24,7 @@ test_that("plot_cast_point", {
 
 
 
-test_that("plot_cast_ts", {
+test_that(desc = "plot_cast_ts", {
 
   # download is held back on cran
 
@@ -39,7 +39,7 @@ test_that("plot_cast_ts", {
 })
 
 
-test_that("plot_casts_err_lead", {
+test_that(desc = "plot_casts_err_lead", {
 
   # download is held back on cran
 
@@ -60,7 +60,7 @@ test_that("plot_casts_err_lead", {
 })
 
 
-test_that("plot_casts_cov_RMSE", {
+test_that(desc = "plot_casts_cov_RMSE", {
 
   # download is held back on cran
 

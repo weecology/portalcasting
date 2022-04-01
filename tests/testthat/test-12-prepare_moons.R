@@ -1,8 +1,8 @@
-context("moons prepping functions")
+context(desc = "moons prepping functions")
 
 main <- "./testing"
 
-test_that("prep_moons pulls in moons or throws error", {
+test_that(desc = "prep_moons pulls in moons or throws error", {
 
   # downloads take too long for cran checks
 
@@ -13,7 +13,7 @@ test_that("prep_moons pulls in moons or throws error", {
 
 })
 
-test_that("add_future_moons skips for 0 or adds specifically extra more", {
+test_that(desc = "add_future_moons skips for 0 or adds specifically extra more", {
 
   # downloads take too long for cran checks
 
@@ -39,7 +39,7 @@ test_that("add_future_moons skips for 0 or adds specifically extra more", {
 })
 
 
-test_that("trim_moons trims off the end of the data frame", {
+test_that(desc = "trim_moons trims off the end of the data frame", {
 
   # downloads take too long for cran checks
 
@@ -52,7 +52,7 @@ test_that("trim_moons trims off the end of the data frame", {
 
 })
 
-test_that("add_moons_from_date adds moons on to weather", {
+test_that(desc = "add_moons_from_date adds moons on to weather", {
 
   # downloads take too long for cran checks
 
@@ -67,7 +67,7 @@ test_that("add_moons_from_date adds moons on to weather", {
 
 })
 
-test_that("target_moons produces integer output", {
+test_that(desc = "target_moons produces integer output", {
 
   # downloads take too long for cran checks
 

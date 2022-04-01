@@ -1,9 +1,9 @@
 
-context("Functions for casting covariates")
+context(desc = "Functions for casting covariates")
 
 main <- "./testing"
 
-test_that("cast_covariates properly forecasts", {
+test_that(desc = "cast_covariates properly forecasts", {
 
   # downloads take too long for cran checks
 
@@ -29,7 +29,7 @@ test_that("cast_covariates properly forecasts", {
 
 
 
-test_that("download_climate_forecasts retrieves files", {
+test_that(desc = "download_climate_forecasts retrieves files", {
 
   # downloads take too long for cran checks
 
@@ -41,7 +41,7 @@ test_that("download_climate_forecasts retrieves files", {
 })
 
 
-test_that("read_climate_forecasts reads them in right", {
+test_that(desc = "read_climate_forecasts reads them in right", {
 
   # downloads take too long for cran checks
 

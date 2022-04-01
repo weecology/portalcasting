@@ -1,19 +1,12 @@
-context("directory creating functions")
+context(desc = "directory creating functions")
 
 main <- "./testing"
 
 
-test_that("create_dir fully creates the folder structure", {
+test_that(desc = "create_dir fully creates the folder structure",
+          code = {
 
   expect_message(create_dir(main = main))
-
-  expect_true(file.exists(casts_path(main)))
-  expect_true(file.exists(data_path(main)))
-  expect_true(file.exists(fits_path(main)))
-  expect_true(file.exists(models_path(main)))
-  expect_true(file.exists(raw_path(main)))
-  expect_true(file.exists(tmp_path(main)))
-
   expect_is(read_directory_config(main), "list")
 
 })

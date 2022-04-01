@@ -1,4 +1,4 @@
-context("prefab model functions")
+context(desc = "prefab model functions")
 
 main <- "./testing"
 
@@ -61,7 +61,7 @@ main <- "./testing"
   
 
 
-test_that("AutoArima model", {
+test_that(desc = "AutoArima model", {
 
   # download is held back on cran
 
@@ -79,7 +79,7 @@ test_that("AutoArima model", {
 
 })
 
-test_that("NaiveArima model", {
+test_that(desc = "NaiveArima model", {
 
   # download is held back on cran
 
@@ -100,7 +100,7 @@ test_that("NaiveArima model", {
 
 
 
-test_that("ESSS model", {
+test_that(desc = "ESSS model", {
 
   # download is held back on cran
 
@@ -121,7 +121,7 @@ test_that("ESSS model", {
 
 
 
-test_that("nbGARCH model", {
+test_that(desc = "nbGARCH model", {
 
   # download is held back on cran
 
@@ -141,7 +141,7 @@ test_that("nbGARCH model", {
 
 })
 
-test_that("nbsGARCH model", {
+test_that(desc = "nbsGARCH model", {
 
   # download is held back on cran
 
@@ -162,7 +162,7 @@ test_that("nbsGARCH model", {
 })
 
 
-test_that("pevGARCH model", {
+test_that(desc = "pevGARCH model", {
 
   # download is held back on cran
 
@@ -183,7 +183,7 @@ test_that("pevGARCH model", {
 
 })
 
-#test_that("simplexEDM model", {
+#test_that(desc = "simplexEDM model", {
 
   # download is held back on cran
 
@@ -204,7 +204,7 @@ test_that("pevGARCH model", {
 
 #})
 
-#test_that("GPEDM model", {
+#test_that(desc = "GPEDM model", {
 
   # download is held back on cran
 
@@ -231,7 +231,7 @@ check_jags <- function(){
   }
 }
 
-test_that("jags_RW model", {
+test_that(desc = "jags_RW model", {
 
   # download is held back on cran
 
@@ -254,7 +254,7 @@ test_that("jags_RW model", {
 
 })
 
-test_that("jags_logistic model", {
+test_that(desc = "jags_logistic model", {
 
   # download is held back on cran
 

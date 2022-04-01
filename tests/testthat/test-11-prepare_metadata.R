@@ -1,8 +1,8 @@
-context("covariates prepping functions")
+context(desc = "covariates prepping functions")
 
 main <- "./testing"
 
-test_that("prep_covariates", {
+test_that(desc = "prep_covariates", {
 
   # downloads take too long for cran checks
 

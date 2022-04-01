@@ -1,8 +1,8 @@
-context("cast processing functions")
+context(desc = "cast processing functions")
 
 main <- "./testing"
 
-test_that("read_cast_tab reads in a cast tab", {
+test_that(desc = "read_cast_tab reads in a cast tab", {
 
   # download is held back on cran
 
@@ -13,7 +13,7 @@ test_that("read_cast_tab reads in a cast tab", {
 
 })
 
-test_that("read_cast_tabs reads in multiple cast tabs", {
+test_that(desc = "read_cast_tabs reads in multiple cast tabs", {
 
   # download is held back on cran
 
@@ -24,7 +24,7 @@ test_that("read_cast_tabs reads in multiple cast tabs", {
 
 })
 
-test_that("read_cast_metadata reads in the metadat", {
+test_that(desc = "read_cast_metadata reads in the metadat", {
 
   # download is held back on cran
 
@@ -35,7 +35,7 @@ test_that("read_cast_metadata reads in the metadat", {
 
 })
 
-test_that("read_model_fits reads in model fits", {
+test_that(desc = "read_model_fits reads in model fits", {
 
   # download is held back on cran
 
@@ -46,7 +46,7 @@ test_that("read_model_fits reads in model fits", {
 
 })
 
-test_that("read_model_casts reads in model casts", {
+test_that(desc = "read_model_casts reads in model casts", {
 
   # download is held back on cran
 
@@ -57,7 +57,7 @@ test_that("read_model_casts reads in model casts", {
 
 })
 
-test_that("add_XXX_to_cast_tab functions add properly", {
+test_that(desc = "add_XXX_to_cast_tab functions add properly", {
 
   # download is held back on cran
 
@@ -75,7 +75,7 @@ test_that("add_XXX_to_cast_tab functions add properly", {
 
 })
 
-test_that("measure_cast_level_error", {
+test_that(desc = "measure_cast_level_error", {
 
   # download is held back on cran
 
