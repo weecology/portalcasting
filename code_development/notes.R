@@ -11,8 +11,7 @@ setup_production(main)
 # updating to working with the settings list
 # minimizing other changes to the degree possible
 
-# models work through portalcast
-# next to do are figures
+# remaining figures are in figs script
 
 portalcast(main)
 

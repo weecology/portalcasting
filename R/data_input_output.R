@@ -110,7 +110,7 @@ read_data <- function (main      = ".",
                        data_name = NULL, 
                        dataset   = "all", 
                        datasets  = c("all", "controls"), 
-                       settings  = directory_settings()){
+                       settings  = directory_settings()) {
   
   return_if_null(data_name)
 
