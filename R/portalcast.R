@@ -39,6 +39,8 @@
 #'
 #' @param controls_rodents Control \code{list} or \code{list} of \code{list}s (from \code{\link{rodents_controls}}) specifying the structuring of the rodents tables. See \code{\link{rodents_controls}} for details.  
 #'
+#' @param datasets \code{character} vector of dataset names be created. 
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
@@ -56,6 +58,7 @@
 #'
 portalcast <- function (main             = ".", 
                         models           = prefab_models(), 
+                        datasets         = prefab_rodent_datasets(),
                         end_moons        = NULL, 
                         start_moon       = 217, 
                         lead_time        = 12, 
@@ -63,7 +66,7 @@ portalcast <- function (main             = ".",
                         cast_date        = Sys.Date(),
                         controls_model   = NULL, 
                         controls_rodents = rodents_controls(),
-                        settings         = directory_settings(),                       
+                        settings         = directory_settings(),
                         quiet            = FALSE,
                         verbose          = FALSE){
 
@@ -82,6 +85,7 @@ portalcast <- function (main             = ".",
   for (i in 1:nend_moons) {
 
     cast(main             = main, 
+         datasets         = datasets,
          models           = models, 
          end_moon         = end_moons[i], 
          start_moon       = start_moon, 
@@ -120,6 +124,7 @@ portalcast <- function (main             = ".",
 #'
 cast <- function (main             = ".", 
                   models           = prefab_models(), 
+                  datasets         = prefab_rodent_datasets(),
                   end_moon         = NULL, 
                   start_moon       = 217, 
                   lead_time        = 12, 
@@ -130,6 +135,9 @@ cast <- function (main             = ".",
                   settings         = directory_settings(), 
                   quiet            = FALSE, 
                   verbose          = FALSE) {
+
+  moons <- read_moons(main     = main,
+                      settings = settings)
 
   which_last_moon <- max(which(moons$newmoondate < cast_date))
   last_moon       <- moons$newmoonnumber[which_last_moon]

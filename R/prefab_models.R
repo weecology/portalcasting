@@ -544,10 +544,12 @@ nbsGARCH <- function (main     = ".",
 
   metadata <- read_metadata(main     = main,
                             settings = settings)
+  moons <- read_moons(main     = main,
+                            settings = settings)
 
   start_moon       <- metadata$time$start_moon
   end_moon         <- metadata$time$end_moon
-  moon_foys        <- foy(dates = moons$moondate)
+  moon_foys        <- foy(dates = moons$newmoondate)
   sin2pifoy        <- sin(2 * pi * moon_foys)
   cos2pifoy        <- cos(2 * pi * moon_foys)
   fouriers         <- data.frame(sin2pifoy, cos2pifoy)
@@ -557,8 +559,8 @@ nbsGARCH <- function (main     = ".",
   CL               <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
-  for_hist         <- which(moons$moon %in% rodents_table$moon)
-  for_cast         <- which(moons$moon %in% cast_moons) 
+  for_hist         <- which(moons$newmoonnumber %in% rodents_table$newmoonnumber & moons$newmoonnumber >= start_moon)
+  for_cast         <- which(moons$newmoonnumber %in% cast_moons) 
   predictors       <- fouriers[for_hist, ]
   cast_predictors  <- fouriers[for_cast, ]
 
@@ -584,21 +586,31 @@ nbsGARCH <- function (main     = ".",
 
     past <- list(past_obs = 1, past_mean = 12)
     mods[[i]] <- tryCatch(
-                   tsglm(abund_s, model = past, distr = "nbinom", 
-                         xreg = predictors, link = "log"),
+                   tsglm(ts    = abund_s, 
+                         model = past, 
+                         distr = "nbinom", 
+                         xreg  = predictors, 
+                         link  = "log"),
                    warning = function(x){NA}, 
-                   error = function(x){NA})
-    if(all(is.na(mods[[i]])) || AIC(mods[[i]]) == Inf){
+                   error   = function(x){NA})
+
+    if (all(is.na(mods[[i]])) || AIC(mods[[i]]) == Inf) {
+
       mods[[i]] <- tryCatch(
-                     tsglm(abund_s, model = past, distr = "poisson", 
-                           xreg = predictors, link = "log"),
+                     tsglm(ts    = abund_s, 
+                           model = past, 
+                           distr = "poisson", 
+                           xreg  = predictors, 
+                           link  = "log"),
                      warning = function(x){NA}, 
-                     error = function(x){NA})
+                     error   = function(x){NA})
     }
-    if(!all(is.na(mods[[i]]))){
-      casts[[i]] <- predict(mods[[i]], nmoons, level = CL,
+    if (!all(is.na(mods[[i]]))) {
+
+      casts[[i]] <- predict(object = mods[[i]], nmoons, level = CL,
                             newxreg = cast_predictors)
       casts[[i]]$moon <- cast_moons
+
     }    
 
 

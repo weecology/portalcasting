@@ -40,7 +40,7 @@ setup_sandbox(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{datasets}{\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions.}
+\item{datasets}{\code{character} vector of dataset names be created.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

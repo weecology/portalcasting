@@ -304,8 +304,8 @@ jags_ss <- function (main            = ".",
                      verbose         = FALSE) {
   
 
-  runjags.options(silent.jags    = FALSE,#control_runjags$silent_jags, 
-                  silent.runjags = FALSE)#control_runjags$silent_jags)
+  runjags.options(silent.jags    = control_runjags$silent_jags, 
+                  silent.runjags = control_runjags$silent_jags)
 
   rodents_table <- read_rodents_table(main     = main,
                                       dataset = dataset, 
@@ -437,19 +437,19 @@ jags_ss <- function (main            = ".",
       rownames(casts_i)      <- NULL
       casts[[i]]             <- casts_i
 
-      cast_tab_i <- data.frame(cast_date  = metadata$cast_date, 
-                               cast_month = metadata$rodent_cast_months,
-                               cast_year  = metadata$rodent_cast_years, 
-                               moon       = metadata$rodent_cast_moons,
-                               currency   = dataset_controls$output,
+      cast_tab_i <- data.frame(cast_date  = metadata$time$cast_date, 
+                               cast_month = metadata$time$rodent_cast_months,
+                               cast_year  = metadata$time$rodent_cast_years, 
+                               moon       = metadata$time$rodent_cast_moons,
+                               currency   = dataset_controls$args$output,
                                model      = model_name, 
-                               dataset   = dataset, 
+                               dataset    = dataset, 
                                species    = ss, 
                                estimate   = point_forecast,
                                lower_pi   = lower_cl, 
                                upper_pi   = upper_cl,
-                               start_moon = metadata$start_moon,
-                               end_moon   = metadata$end_moon)
+                               start_moon = metadata$time$start_moon,
+                               end_moon   = metadata$time$end_moon)
 
       cast_tab <- rbind(cast_tab, cast_tab_i)
 
@@ -465,7 +465,8 @@ jags_ss <- function (main            = ".",
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
        model_fits  = mods, 
-       model_casts = casts)  
+       model_casts = casts) 
+ 
 }
 
 #' @title Create a control list for a runjags JAGS model run

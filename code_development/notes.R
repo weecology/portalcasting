@@ -4,16 +4,17 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./test"
+main <- "./portalcasting"
 
 setup_production(main)
 
 # updating to working with the settings list
 # minimizing other changes to the degree possible
 
-# the models through them all portalcast should be good to go now
-# leaving the figures to do of the active codebase
+# models work through portalcast
+# next to do are figures
 
+portalcast(main)
 
 ##############################################
 
