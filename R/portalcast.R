@@ -35,8 +35,7 @@
 #'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
 #'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
 #'  }
-#'  If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each
-#'  element \code{list} must be named according to the model and the\code{name} element. 
+#'  If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each element \code{list} must be named according to the model and the\code{name} element. 
 #'
 #' @param controls_rodents Control \code{list} or \code{list} of \code{list}s (from \code{\link{rodents_controls}}) specifying the structuring of the rodents tables. See \code{\link{rodents_controls}} for details.  
 #'
@@ -44,7 +43,7 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
 #'
-#' @return Results are saved to files, \code{NULL} is returned.
+#' @return Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
 #'
 #' @examples
 #'  \donttest{
@@ -55,28 +54,28 @@
 #'
 #' @export
 #'
-portalcast <- function (main                 = ".", 
-                        models               = prefab_models(), 
-                        end_moons            = NULL, 
-                        start_moon           = 217, 
-                        lead_time            = 12, 
-                        confidence_level     = 0.95, 
-                        cast_date            = Sys.Date(),
-                        controls_model       = NULL, 
-                        controls_rodents     = rodents_controls(),
-                        settings             = directory_settings(),                       
-                        quiet                = FALSE,
-                        verbose              = FALSE){
+portalcast <- function (main             = ".", 
+                        models           = prefab_models(), 
+                        end_moons        = NULL, 
+                        start_moon       = 217, 
+                        lead_time        = 12, 
+                        confidence_level = 0.95, 
+                        cast_date        = Sys.Date(),
+                        controls_model   = NULL, 
+                        controls_rodents = rodents_controls(),
+                        settings         = directory_settings(),                       
+                        quiet            = FALSE,
+                        verbose          = FALSE){
 
   return_if_null(models)
 
-  messageq(message_break(), "\nPreparing directory for casting", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
+  messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
 
   moons <- read_moons(main     = main,
                       settings = settings)
 
   which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon       <- moons$moon[which_last_moon]
+  last_moon       <- moons$newmoonnumber[which_last_moon]
   end_moons       <- ifnull(end_moons, last_moon)
   nend_moons      <- length(end_moons)
 
@@ -96,9 +95,10 @@ portalcast <- function (main                 = ".",
          verbose          = verbose)
 
   }
+
   if (end_moons[nend_moons] != last_moon) {
 
-    messageq(message_break(), "\nResetting data to most up-to-date versions", message_break(), quiet = quiet)
+    messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
 
     fill_data(main     = main, 
               datasets = datasets,
@@ -109,7 +109,7 @@ portalcast <- function (main                 = ".",
 
   }
 
-  messageq(message_break(), "\nCasting complete", message_break(), quiet = quiet)
+  messageq(message_break(), "\nCasting complete\n", message_break(), quiet = quiet)
 
 } 
 
@@ -131,10 +131,11 @@ cast <- function (main             = ".",
                   quiet            = FALSE, 
                   verbose          = FALSE) {
 
-  last <- last_moon(main = main, date = cast_date)
-  end_moon <- ifnull(end_moon, last)
+  which_last_moon <- max(which(moons$newmoondate < cast_date))
+  last_moon       <- moons$newmoonnumber[which_last_moon]
+  end_moon        <- ifnull(end_moon, last_moon)
 
-  messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, message_break(), quiet = quiet)
+  messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
 
   fill_data(main     = main, 
             datasets = datasets,
@@ -148,7 +149,7 @@ cast <- function (main             = ".",
             quiet    = quiet, 
             verbose  = verbose)
 
-  messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, message_break(), quiet = quiet)
+  messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
 
   models_scripts <- models_to_cast(main     = main, 
                                    models   = models,
@@ -160,7 +161,7 @@ cast <- function (main             = ".",
 
     model <- models_scripts[i]
 
-    messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), message_break(), quiet = quiet)
+    messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), "\n", message_break(), quiet = quiet)
 
     run_status <- tryCatch(source(model),
                            error = function(x){NA})
@@ -180,12 +181,13 @@ cast <- function (main             = ".",
             settings = settings, 
             quiet    = quiet, 
             verbose  = verbose)
+
 }
 
 
 
 
-#' @title Determine the paths to the scripts for models to cast with
+#' @title Determine the Paths to the Scripts for Models to Cast with
 #'
 #' @description Translate a \code{character} vector of model name(s) into a \code{character} vector of file path(s) corresponding to the model scripts. 
 #'
@@ -195,8 +197,7 @@ cast <- function (main             = ".",
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @return \code{character} vector of the path(s) of the R script file(s) to 
-#'   be run.
+#' @return \code{character} vector of the path(s) of the R script file(s) to be run.
 #'
 #' @examples
 #'  \donttest{
@@ -217,4 +218,5 @@ models_to_cast <- function (main     = ".",
   torun_paths <- list.files(models_path, full.names = TRUE)[torun] 
 
   normalizePath(torun_paths)
+
 }

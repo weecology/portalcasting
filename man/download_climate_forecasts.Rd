@@ -6,6 +6,7 @@
 \usage{
 download_climate_forecasts(
   main = ".",
+  resources_sub = "raw",
   version = Sys.Date(),
   source = "NMME",
   data = c("tasmin", "tasmean", "tasmax", "pr"),
@@ -16,6 +17,8 @@ download_climate_forecasts(
 }
 \arguments{
 \item{main}{\code{character} value defining the main component of the portalcasting directory tree.}
+
+\item{resources_sub}{\code{character} value defining the resources subdirectory of the portalcasting directory tree.}
 
 \item{version}{\code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).}
 

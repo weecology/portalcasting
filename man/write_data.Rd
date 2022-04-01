@@ -7,6 +7,7 @@
 write_data(
   dfl = NULL,
   main = ".",
+  data_sub = "data",
   save = TRUE,
   filename = NULL,
   overwrite = TRUE,
@@ -17,6 +18,8 @@ write_data(
 \item{dfl}{\code{data.frame} or YAML \code{list} to be written out.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
+
+\item{data_sub}{\code{character} value defining the data subdirectory of the portalcasting directory tree.}
 
 \item{save}{\code{logical} indicator controlling if \code{x} should be saved out.}
 

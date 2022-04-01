@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{message_break}
 \alias{message_break}
-\title{Produce a horizontal break line for messaging}
+\title{Produce a Horizontal Break Line for Messaging}
 \usage{
 message_break(char = "-", reps = 60)
 }

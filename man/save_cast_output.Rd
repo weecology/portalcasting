@@ -2,37 +2,34 @@
 % Please edit documentation in R/process_casts.R
 \name{save_cast_output}
 \alias{save_cast_output}
-\title{Save cast output to files}
+\title{Save Cast Output to Files}
 \usage{
-save_cast_output(cast = NULL, main = ".", quiet = FALSE)
+save_cast_output(
+  cast = NULL,
+  main = ".",
+  settings = directory_settings(),
+  quiet = FALSE
+)
 }
 \arguments{
-\item{cast}{Output from a model function (e.g., 
-\code{\link{AutoArima}}) run on any rodents data set. Required to be a 
-\code{list}, but otherwise has minimal strict requirements. \cr
-Names of the elements of the list (such as \code{"metadat"}) indicate the 
-specific saving procedures that happens to each of them. 
-See \code{Details} section for specifics.}
+\item{cast}{Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents data set. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
+Names of the elements of the list (such as \code{"metadat"}) indicate the specific saving procedures that happens to each of them. See \code{Details} section for specifics.}
 
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
-Relevant elements are saved to external files, and \code{NULL} is
- returned.
+Relevant elements are saved to external files, and \code{NULL} is returned.
 }
 \description{
-Save out any output from a cast of a model for a data set and
- update the cast metadata file accordingly to track the saved output. \cr
- Most users will want to at least save out model metadata and a table of
- predictions.
+Save out any output from a cast of a model for a data set and update the cast metadata file accordingly to track the saved output. \cr
+ Most users will want to at least save out model metadata and a table of predictions.
 }
 \details{
-Currently, four generalized output components are recognized and
- indicated by the names of the elements of \code{cast}. 
+Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
  \itemize{
   \item \code{"metadata"}: saved out with \code{\link[yaml]{as.yaml}}. Will
    typically be the model-specific metadata from the 

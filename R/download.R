@@ -4,6 +4,8 @@
 #'
 #' @param main \code{character} value defining the main component of the portalcasting directory tree. 
 #'
+#' @param resources_sub \code{character} value defining the resources subdirectory of the portalcasting directory tree. 
+#'
 #' @param version \code{character} version of the data to download. Default \code{"latest"} downloads the most recent (by date published). \code{NULL} means no download. 
 #'
 #' @param source \code{character} indicator of the source for the download. Either \code{"github"} (defualt) or \code{"github"}.
@@ -29,13 +31,15 @@
 #'
 #' @export
 #'
-download_archive <- function(main    = ".",
-                             version = "latest", 
-                             source  = "github",
-                             quiet   = FALSE,
-                             verbose = FALSE,
-                             pause   = 30,
-                             timeout = getOption("timeout")) {
+download_archive <- function(main          = ".",
+                             resources_sub = "raw",
+                             version       = "latest", 
+                             source        = "github",
+                             quiet         = FALSE,
+                             verbose       = FALSE,
+                             pause         = 30,
+                             timeout       = getOption("timeout")) {
+
 
   return_if_null(version)
 
@@ -105,7 +109,7 @@ download_archive <- function(main    = ".",
   messageq("Downloading archive version `", version, "` ...", quiet = quiet)
 
   temp  <- file.path(tempdir(), "portalPredictions.zip")
-  final <- file.path(main, settings$subs$resources, "portalPredictions")
+  final <- file.path(main, resources_sub, "portalPredictions")
 
   result <- tryCatch(
               download.file(url      = zipball_url, 
@@ -139,9 +143,9 @@ download_archive <- function(main    = ".",
 
   folder_name <- unzip(temp, list = TRUE)$Name[1]
 
-  temp_unzip <- file.path(main, settings$subs$resources, folder_name)
+  temp_unzip <- file.path(main, resources_sub, folder_name)
 
-  unzip(temp, exdir = file.path(main, settings$subs$resources))
+  unzip(temp, exdir = file.path(main, resources_sub))
 
   Sys.sleep(pause)
 
@@ -166,6 +170,8 @@ download_archive <- function(main    = ".",
 #'
 #' @param main \code{character} value defining the main component of the portalcasting directory tree. 
 #'
+#' @param resources_sub \code{character} value defining the resources subdirectory of the portalcasting directory tree. 
+#'
 #' @param source \code{character} indicator of the source for the download. Only \code{"NMME"} presently available.
 #'
 #' @param version \code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).
@@ -187,13 +193,14 @@ download_archive <- function(main    = ".",
 #'
 #' @export
 #'
-download_climate_forecasts <- function (main    = ".",
-                                        version = Sys.Date(), 
-                                        source  = "NMME",
-                                        data    = c("tasmin", "tasmean", "tasmax", "pr"),
-                                        quiet   = FALSE,
-                                        verbose = FALSE,
-                                        timeout = getOption("timeout")){
+download_climate_forecasts <- function (main          = ".",
+                                        resources_sub = "raw",
+                                        version       = Sys.Date(), 
+                                        source        = "NMME",
+                                        data          = c("tasmin", "tasmean", "tasmax", "pr"),
+                                        quiet         = FALSE,
+                                        verbose       = FALSE,
+                                        timeout       = getOption("timeout")) {
 
   return_if_null(version)
 
@@ -203,7 +210,7 @@ download_climate_forecasts <- function (main    = ".",
 
   if (tolower(source) == "nmme") {
 
-    dir.create(path         = file.path(main, settings$subs$resources, source),
+    dir.create(path         = file.path(main, resources_sub, source),
                showWarnings = FALSE)
 
     messageq("Downloading climate forcasts version `", version, "` ...", quiet = quiet)
@@ -211,7 +218,7 @@ download_climate_forecasts <- function (main    = ".",
 
     mapply(FUN      = download.file,
            url      = NMME_urls(start = version, data = data),
-           destfile = file.path(main, settings$subs$resources, source, paste0(data, ".csv")), 
+           destfile = file.path(main, resources_sub, source, paste0(data, ".csv")), 
            mode     = "wb",
            quiet    = !verbose)
 

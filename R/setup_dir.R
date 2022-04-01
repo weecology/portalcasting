@@ -32,7 +32,7 @@
 #'
 setup_dir <- function (main     = ".",
                        models   = prefab_models(), 
-                       datasets = prefab_data_sets(),
+                       datasets = prefab_rodent_datasets(),
                        settings = directory_settings(), 
                        quiet    = FALSE, 
                        verbose  = FALSE){
@@ -68,7 +68,7 @@ setup_dir <- function (main     = ".",
 #'
 setup_production <- function (main     = ".",
                               models   = prefab_models(), 
-                              datasets = prefab_data_sets(),
+                              datasets = prefab_rodent_datasets(),
                               settings = directory_settings(portalPredictions = list(source = "github", version = "latest")), 
                               quiet    = FALSE, 
                               verbose  = FALSE){
@@ -90,7 +90,7 @@ setup_production <- function (main     = ".",
 setup_sandbox <- function (main     = ".",
                            settings = directory_settings(), 
                            models   = prefab_models(), 
-                           datasets = prefab_data_sets(),
+                           datasets = prefab_rodent_datasets(),
                            quiet    = FALSE, 
                            verbose  = FALSE){
 

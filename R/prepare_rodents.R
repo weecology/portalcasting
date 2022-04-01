@@ -49,6 +49,7 @@ prep_rodents <- function (main     = ".",
     out[[i]] <- do.call(what = datasets_list[[i]]$fun, 
                         args = update_list(list      = datasets_list[[i]]$args, 
                                            main      = main, 
+                                           settings  = settings, 
                                            quiet     = quiet, 
                                            verbose   = verbose))
   
@@ -67,6 +68,8 @@ prep_rodents <- function (main     = ".",
 #' @param name \code{character} name of the data set.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @param species \code{character}-valued vector of species names to include. 
 #'
@@ -130,6 +133,7 @@ prep_rodents <- function (main     = ".",
 #'
 prep_rodent_dataset <- function(name        = "all",
                                 main        = ".",
+                                settings    = directory_settings(),
                                 filename    = "rodents_all.csv",
                                 clean       = FALSE,
                                 level       = "Site",
@@ -237,6 +241,7 @@ prep_rodent_dataset <- function(name        = "all",
 
   write_data(dfl       = out, 
              main      = main, 
+             data_sub  = settings$subs$data,
              save      = save, 
              filename  = filename, 
              overwrite = overwrite, 

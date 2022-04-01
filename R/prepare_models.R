@@ -55,7 +55,7 @@ write_model <- function (main     = ".",
   mod_path   <- file.path(main, settings$subs$`model scripts`, model_file)
 
 
-  mod_template <- model_template(main     = ".", 
+  mod_template <- model_template(main     = main, 
                                  model    = model, 
                                  datasets = prefab_rodent_datasets(interpolate = FALSE),
                                  settings = directory_settings(), 
@@ -129,7 +129,7 @@ model_template <- function (main     = ".",
 
     model_fun  <- paste0(model, '(', model_args, ');')
     model_line <- paste0(resp, ' <- ', model_fun)
-    save_args  <- paste0(resp, main_arg, quiet_arg)
+    save_args  <- paste0(resp, main_arg, settings_arg, quiet_arg)
     save_fun   <- paste0('save_cast_output(', save_args, ');')
     save_line  <- save_fun
     newout     <- c(model_line, save_line)

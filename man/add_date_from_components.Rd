@@ -2,21 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{add_date_from_components}
 \alias{add_date_from_components}
-\title{Add a date to a table that has the year month and day as components}
+\title{Add a Date to a Table That has the Year, Month, and Day as Components}
 \usage{
 add_date_from_components(df)
 }
 \arguments{
-\item{df}{\code{data.frame} with columns named \code{year}, \code{month},
-and \code{day}.}
+\item{df}{\code{data.frame} with columns named \code{year}, \code{month}, and \code{day}.}
 }
 \value{
-\code{data.frame} \code{df} with column of \code{Date}s 
- named \code{date} added.
+\code{data.frame} \code{df} with column of \code{Date}s named \code{date} added.
 }
 \description{
-Add a date (as a \code{Date}) column to a table that has the 
- year month and day as components.
+Add a date (as a \code{Date}) column to a table that has the year month and day as components.
 }
 \examples{
  df <- data.frame(year = 2010, month = 2, day = 1:10)

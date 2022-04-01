@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{update_list}
 \alias{update_list}
-\title{Update a list's elements}
+\title{Update a List's Elements}
 \usage{
 update_list(list = list(), ...)
 }

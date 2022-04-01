@@ -7,6 +7,8 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
+#' @param data_sub \code{character} value defining the data subdirectory of the portalcasting directory tree. 
+#'
 #' @param save \code{logical} indicator controlling if \code{x} should be saved out.
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
@@ -21,6 +23,7 @@
 #'
 write_data <- function (dfl       = NULL, 
                         main      = ".", 
+                        data_sub  = "data",
                         save      = TRUE, 
                         filename  = NULL, 
                         overwrite = TRUE, 
@@ -34,7 +37,7 @@ write_data <- function (dfl       = NULL,
 
   if (save) {
 
-    full_path <- file.path(main, settings$subs$data, filename)
+    full_path <- file.path(main, data_sub, filename)
 
     if (file.exists(full_path)) {
 
@@ -305,7 +308,7 @@ read_casts_metadata <- function (main     = ".",
                              end_moon              = NA,
                              lead_time             = NA, 
                              model                 = NA, 
-                             data_set              = NA,
+                             dataset               = NA,
                              portalcasting_version = NA,
                              QAQC                  = FALSE, 
                              notes                 = NA)

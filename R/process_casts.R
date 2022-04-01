@@ -196,12 +196,12 @@ add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
 
   return_if_null(cast_tab)
   cast_tab$obs <- NA
-  cast_data_set <- gsub("_interp", "", cast_tab$data_set)
-  ucast_data_set <- unique(cast_data_set)
-  ncast_data_sets <- length(ucast_data_set)
-  for(j in 1:ncast_data_sets){
-    obs <- read_rodents_table(main = main, data_set = ucast_data_set[j])
-    matches <- which(cast_data_set == ucast_data_set[j])
+  cast_dataset <- gsub("_interp", "", cast_tab$dataset)
+  ucast_dataset <- unique(cast_dataset)
+  ncast_datasets <- length(ucast_dataset)
+  for(j in 1:ncast_datasets){
+    obs <- read_rodents_table(main = main, dataset = ucast_dataset[j])
+    matches <- which(cast_dataset == ucast_dataset[j])
     nmatches <- length(matches)
     obs_cols <- gsub("NA.", "NA", colnames(obs))
     for(i in 1:nmatches){
@@ -430,9 +430,9 @@ read_model_casts <- function (main     = ".",
 #'  include. Default value is \code{NULL}, which equates to no selection with 
 #'  respect to \code{model}.
 #'
-#' @param data_sets \code{character} values of the rodent data sets to include
+#' @param datasets \code{character} values of the rodent data sets to include
 #'  Default value is \code{NULL}, which equates to no selection with 
-#'  respect to \code{data_set}.
+#'  respect to \code{dataset}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be
 #'  quieted.
@@ -452,7 +452,7 @@ read_model_casts <- function (main     = ".",
 #' @export
 #'
 select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
-                         end_moons = NULL, models = NULL, data_sets = NULL,
+                         end_moons = NULL, models = NULL, datasets = NULL,
                          quiet = FALSE, include_interp = FALSE){
   subp <- sub_path(main = main, subs = "casts")
   casts_metadata <- read_casts_metadata(main = main, quiet = quiet)
@@ -473,37 +473,30 @@ select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
   models <- ifnull(models, umodels)
   match_model <- casts_metadata$model %in% models
   
-  udata_sets <- unique(casts_metadata$data_set)
-  data_sets <- ifnull(data_sets, udata_sets)
+  udatasets <- unique(casts_metadata$dataset)
+  datasets <- ifnull(datasets, udatasets)
   if(include_interp){
-    data_sets <- unique(c(data_sets, paste0(data_sets, "_interp")))
+    datasets <- unique(c(datasets, paste0(datasets, "_interp")))
   }
-  match_data_set <- casts_metadata$data_set %in% data_sets
+  match_dataset <- casts_metadata$dataset %in% datasets
   
   QAQC <- casts_metadata$QAQC
 
-  match_all <- match_id & match_end_moon & match_model & match_data_set & QAQC
+  match_all <- match_id & match_end_moon & match_model & match_dataset & QAQC
   casts_metadata[match_all, ]
 }
 
 
 
-#' @title Save cast output to files
+#' @title Save Cast Output to Files
 #'
-#' @description Save out any output from a cast of a model for a data set and
-#'  update the cast metadata file accordingly to track the saved output. \cr
-#'  Most users will want to at least save out model metadata and a table of
-#'  predictions.
+#' @description Save out any output from a cast of a model for a data set and update the cast metadata file accordingly to track the saved output. \cr
+#'  Most users will want to at least save out model metadata and a table of predictions.
 #'
-#' @param cast Output from a model function (e.g., 
-#'  \code{\link{AutoArima}}) run on any rodents data set. Required to be a 
-#'  \code{list}, but otherwise has minimal strict requirements. \cr
-#'  Names of the elements of the list (such as \code{"metadat"}) indicate the 
-#'  specific saving procedures that happens to each of them. 
-#'  See \code{Details} section for specifics. 
+#' @param cast Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents data set. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
+#'  Names of the elements of the list (such as \code{"metadat"}) indicate the specific saving procedures that happens to each of them. See \code{Details} section for specifics. 
 #'
-#' @details Currently, four generalized output components are recognized and
-#'  indicated by the names of the elements of \code{cast}. 
+#' @details Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
 #'  \itemize{
 #'   \item \code{"metadata"}: saved out with \code{\link[yaml]{as.yaml}}. Will
 #'    typically be the model-specific metadata from the 
@@ -525,14 +518,13 @@ select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
 #'    of predictions across multiple instances of the model.
 #'  }
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be
-#'  quieted.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @return Relevant elements are saved to external files, and \code{NULL} is
-#'  returned.
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#'
+#' @return Relevant elements are saved to external files, and \code{NULL} is returned.
 #'
 #' @examples
 #'  \donttest{
@@ -543,64 +535,87 @@ select_casts <- function(main = ".", cast_ids = NULL, cast_groups = NULL,
 #'
 #' @export
 #'
-save_cast_output <- function(cast = NULL, main = ".", 
-                             quiet = FALSE){
-  cast_meta <- read_casts_metadata(main = main, quiet = quiet)
-  cast_ids <- cast_meta$cast_id
-  if(all(is.na(cast_ids))){
+save_cast_output <- function (cast     = NULL, 
+                              main     = ".", 
+                              settings = directory_settings(), 
+                              quiet    = FALSE) {
+
+  cast_meta <- read_casts_metadata(main     = main, 
+                                   settings = settings,
+                                   quiet    = quiet)
+  cast_ids  <- cast_meta$cast_id
+
+  if (all(is.na(cast_ids))) {
+
     next_cast_id <- 1
-  } else{
+
+  } else {
+
     next_cast_id <- max(cast_ids) + 1
+
   }
 
-  dir_config <- cast$metadata$directory_configuration
-  pc_version <- dir_config$setup_portalcasting_version
-  new_cast_meta <- data.frame(cast_id = next_cast_id,
-                              cast_group = cast$metadata$cast_group,
-                              cast_date = cast$metadata$cast_date,
-                              model = cast$metadata$models,
-                              data_set = cast$metadata$data_sets,
-                              end_moon = cast$metadata$end_moon,
-                              start_moon = cast$metadata$start_moon,
-                              lead_time = cast$metadata$lead_time,
+  dir_config    <- cast$metadata$directory_configuration
+  pc_version    <- dir_config$setup$portalcasting_version
+  new_cast_meta <- data.frame(cast_id               = next_cast_id,
+                              cast_group            = cast$metadata$cast_group,
+                              cast_date             = cast$metadata$time$cast_date,
+                              start_moon            = cast$metadata$time$start_moon,
+                              end_moon              = cast$metadata$time$end_moon,
+                              lead_time             = cast$metadata$time$lead_time,
+                              model                 = cast$metadata$models,
+                              dataset               = cast$metadata$datasets,
                               portalcasting_version = pc_version,
-                              QAQC = TRUE, notes = NA)
-  cast_meta <- rbind(cast_meta, new_cast_meta)
-  meta_path <- file.path(main, "casts", "casts_metadata.csv")
+                              QAQC                  = TRUE,
+                              notes                 = NA)
+  cast_meta     <- rbind(cast_meta, new_cast_meta)
+  meta_path     <- file.path(main, settings$subs$forecasts, "casts_metadata.csv")
+ 
   write.csv(cast_meta, meta_path, row.names = FALSE)
 
-  if(!is.null(cast$metadata)){
+  if (!is.null(cast$metadata)) {
+
     meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
-    meta_path <- file.path(main, "casts", meta_filename)
-    yams <- as.yaml(cast$metadata)
+    meta_path     <- file.path(main, settings$subs$forecasts, meta_filename)
+    yams          <- as.yaml(cast$metadata)
     writeLines(yams, con = meta_path)
+
   }
-  if(!is.null(cast$cast_tab)){
-    cast_tab_filename <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
-    cast_tab_path <- file.path(main, "casts", cast_tab_filename)
-    cast_tab <- cast$cast_tab
-    cast_tab$cast_id <- next_cast_id
-    cast_tab$cast_group <- cast$metadata$cast_group
+
+  if (!is.null(cast$cast_tab)) {
+
+    cast_tab_filename         <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
+    cast_tab_path             <- file.path(main, settings$subs$forecasts, cast_tab_filename)
+    cast_tab                  <- cast$cast_tab
+    cast_tab$cast_id          <- next_cast_id
+    cast_tab$cast_group       <- cast$metadata$cast_group
     cast_tab$confidence_level <- cast$metadata$confidence_level
     write.csv(cast_tab, cast_tab_path, row.names = FALSE)
+
   }
-  if(!is.null(cast$model_fits)){
-    model_fits_filename <- paste0("cast_id_", next_cast_id, 
-                                  "_model_fits.json") 
-    model_fits_path <- file.path(main, "fits", model_fits_filename)
-    model_fits <- cast$model_fits
-    model_fits <- serializeJSON(model_fits)
+
+  if (!is.null(cast$model_fits)) {
+
+    model_fits_filename <- paste0("cast_id_", next_cast_id, "_model_fits.json") 
+    model_fits_path     <- file.path(main, settings$subs$`model fits`, model_fits_filename)
+    model_fits          <- cast$model_fits
+    model_fits          <- serializeJSON(model_fits)
     write_json(model_fits, path = model_fits_path)
+
   }
-  if(!is.null(cast$model_casts)){
-    model_casts_filename <- paste0("cast_id_", next_cast_id, 
-                                   "_model_casts.json") 
-    model_casts_path <- file.path(main, "casts", model_casts_filename)
-    model_casts <- cast$model_casts
-    model_casts <- serializeJSON(model_casts)
+
+  if (!is.null(cast$model_casts)) {
+
+    model_casts_filename <- paste0("cast_id_", next_cast_id, "_model_casts.json") 
+    model_casts_path     <- file.path(main, settings$subs$forecasts, model_casts_filename)
+    model_casts          <- cast$model_casts
+    model_casts          <- serializeJSON(model_casts)
     write_json(model_casts, path = model_casts_path)
+
   }
+
   invisible(NULL)
+
 }
 
 

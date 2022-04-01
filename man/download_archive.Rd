@@ -6,6 +6,7 @@
 \usage{
 download_archive(
   main = ".",
+  resources_sub = "raw",
   version = "latest",
   source = "github",
   quiet = FALSE,
@@ -16,6 +17,8 @@ download_archive(
 }
 \arguments{
 \item{main}{\code{character} value defining the main component of the portalcasting directory tree.}
+
+\item{resources_sub}{\code{character} value defining the resources subdirectory of the portalcasting directory tree.}
 
 \item{version}{\code{character} version of the data to download. Default \code{"latest"} downloads the most recent (by date published). \code{NULL} means no download.}
 

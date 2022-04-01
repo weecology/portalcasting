@@ -63,8 +63,7 @@ Presently, each model's script writing controls should include four elements:
  \item \code{lag}: an \code{integer}-conformable value of the lag to use 
   with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
 }
-If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each
-element \code{list} must be named according to the model and the\code{name} element.}
+If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each element \code{list} must be named according to the model and the\code{name} element.}
 
 \item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s (from \code{\link{rodents_controls}}) specifying the structuring of the rodents tables. See \code{\link{rodents_controls}} for details.}
 
@@ -75,7 +74,7 @@ element \code{list} must be named according to the model and the\code{name} elem
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
-Results are saved to files, \code{NULL} is returned.
+Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
 }
 \description{
 Cast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr

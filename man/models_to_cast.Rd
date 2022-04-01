@@ -2,7 +2,7 @@
 % Please edit documentation in R/portalcast.R
 \name{models_to_cast}
 \alias{models_to_cast}
-\title{Determine the paths to the scripts for models to cast with}
+\title{Determine the Paths to the Scripts for Models to Cast with}
 \usage{
 models_to_cast(
   main = ".",
@@ -18,8 +18,7 @@ models_to_cast(
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 }
 \value{
-\code{character} vector of the path(s) of the R script file(s) to 
-  be run.
+\code{character} vector of the path(s) of the R script file(s) to be run.
 }
 \description{
 Translate a \code{character} vector of model name(s) into a \code{character} vector of file path(s) corresponding to the model scripts.

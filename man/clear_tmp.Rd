@@ -2,35 +2,26 @@
 % Please edit documentation in R/utilities.R
 \name{clear_tmp}
 \alias{clear_tmp}
-\title{Remove files from the tmp subdirectory}
+\title{Remove Files from the tmp Subdirectory}
 \usage{
 clear_tmp(
   main = ".",
-  bline = TRUE,
+  settings = directory_settings(),
   quiet = FALSE,
-  verbose = FALSE,
-  cleanup = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of
-the directory tree.}
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{bline}{\code{logical} indicator if horizontal break lines should be
-made or not. For toggling separately from the more general \code{quiet}
-argument.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be
-quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out
-all of the information or just tidy messages.}
-
-\item{cleanup}{\code{logical} indicator if any files put into the tmp
-subdirectory should be removed at the end of the process.}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just tidy messages.}
 }
 \value{
-\code{NULL}, with the tmp subdirectory's files removed.
+\code{NULL} \code{\link[base]{invisible}}-ly, with the tmp subdirectory's files removed.
 }
 \description{
 Clear the files from the tmp subdirectory.

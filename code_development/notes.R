@@ -4,19 +4,16 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./portalcasting"
+main <- "./test"
 
-
+setup_production(main)
 
 # updating to working with the settings list
 # minimizing other changes to the degree possible
 
-# updating prefab model functions in pevgarch now 
-# dealing with covariate forecasts
-#
-# still really working in pevGARCH right now
-# doing wraparound work, but circle back there to start
-# the covariates are daily. this will be a snag to work through
+# the models through them all portalcast should be good to go now
+# leaving the figures to do of the active codebase
+
 
 ##############################################
 

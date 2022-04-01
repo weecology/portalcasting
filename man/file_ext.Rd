@@ -3,7 +3,7 @@
 \name{file_ext}
 \alias{file_ext}
 \alias{path_no_ext}
-\title{Determine a file's extension or remove the extension from the file path}
+\title{Determine a File's Extension or Remove the Extension from the File Path}
 \usage{
 file_ext(path, sep_char = ".")
 

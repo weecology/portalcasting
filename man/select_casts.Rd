@@ -10,7 +10,7 @@ select_casts(
   cast_groups = NULL,
   end_moons = NULL,
   models = NULL,
-  data_sets = NULL,
+  datasets = NULL,
   quiet = FALSE,
   include_interp = FALSE
 )
@@ -37,9 +37,9 @@ newmoon numbers of the forecast origin. Default value is
 include. Default value is \code{NULL}, which equates to no selection with 
 respect to \code{model}.}
 
-\item{data_sets}{\code{character} values of the rodent data sets to include
+\item{datasets}{\code{character} values of the rodent data sets to include
 Default value is \code{NULL}, which equates to no selection with 
-respect to \code{data_set}.}
+respect to \code{dataset}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be
 quieted.}

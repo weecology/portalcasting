@@ -8,6 +8,7 @@
 prep_rodent_dataset(
   name = "all",
   main = ".",
+  settings = directory_settings(),
   filename = "rodents_all.csv",
   clean = FALSE,
   level = "Site",
@@ -37,6 +38,8 @@ prep_rodent_dataset(
 \item{name}{\code{character} name of the data set.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
+
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{filename}{\code{character} value of the file for saving the output.}
 
