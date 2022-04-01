@@ -614,7 +614,7 @@ save_cast_output <- function (cast     = NULL,
 
   }
 
-  invisible(NULL)
+  invisible()
 
 }
 

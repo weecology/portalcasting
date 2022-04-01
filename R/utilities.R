@@ -343,7 +343,7 @@ clear_tmp <- function(main     = ".",
 
   }
 
-  invisible(NULL)
+  invisible()
 
 }
 

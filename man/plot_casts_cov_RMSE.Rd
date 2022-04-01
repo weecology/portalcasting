@@ -2,10 +2,11 @@
 % Please edit documentation in R/figures.R
 \name{plot_casts_cov_RMSE}
 \alias{plot_casts_cov_RMSE}
-\title{Plot the forecast coverage and RMSE}
+\title{Plot the Forecast Coverage and RMSE}
 \usage{
 plot_casts_cov_RMSE(
   main = ".",
+  settings = directory_settings(),
   cast_ids = NULL,
   cast_tab = NULL,
   end_moons = NULL,
@@ -18,6 +19,8 @@ plot_casts_cov_RMSE(
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
+
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 

@@ -13,7 +13,7 @@ portalcast(main)
 # minimizing other changes to the degree possible
 
 # remaining figures are in figs script
-
+# cast tab adding obs etc isnt working
 
 
 ##############################################
