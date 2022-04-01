@@ -252,32 +252,5 @@ prep_rodent_dataset <- function(name        = "all",
 }
 
 
-#' @title Determine the most recent data collection
-#'
-#' @description Determine the most recent census.
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @return \code{Date} of the last census.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   last_census()
-#'  }
-#'
-#' @export
-#'
-last_census <- function (main     = ".", 
-                         settings = directory_settings()) {
-
-  
-  moons <- read_moons(main     = main, 
-                      settings = settings)
-  as.Date(max(moons$censusdate, na.rm = TRUE))
-
-}
 
 
