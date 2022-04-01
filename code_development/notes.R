@@ -7,13 +7,14 @@ devtools::load_all()
 main <- "./portalcasting"
 
 setup_production(main)
+portalcast(main)
 
 # updating to working with the settings list
 # minimizing other changes to the degree possible
 
 # remaining figures are in figs script
 
-portalcast(main)
+
 
 ##############################################
 
