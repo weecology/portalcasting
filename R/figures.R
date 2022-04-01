@@ -67,28 +67,32 @@ plot_casts_cov_RMSE <- function (main           = ".",
       cast_tab <- read_cast_tabs(main     = main, 
                                  settings = settings,
                                  cast_ids = cast_choices$cast_id)
-      cast_tab <- add_obs_to_cast_tab(main     = main, 
+      cast_tab <- add_obs_to_cast_tab(main     = main,  
+                                      settings = settings,
                                       cast_tab = cast_tab)
-      cast_tab <- add_err_to_cast_tab(main     = main, 
+      cast_tab <- add_err_to_cast_tab(main     = main,  
+                                      settings = settings,
                                       cast_tab = cast_tab)
-      cast_tab <- add_lead_to_cast_tab(main     = main, 
+      cast_tab <- add_lead_to_cast_tab(main     = main,  
+                                       settings = settings,
                                        cast_tab = cast_tab)
-      cast_tab <- add_covered_to_cast_tab(main     = main, 
+      cast_tab <- add_covered_to_cast_tab(main     = main,  
+                                          settings = settings,
                                           cast_tab = cast_tab)
 
     }
 
   }
 
-  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
+  cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
   cast_ids          <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models            <- ifnull(models, unique(cast_tab$model))
-  dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
+  dataset          <- ifnull(dataset, unique(cast_tab$data_set)[1])
   species           <- ifnull(species, evalplot_species()) 
   end_moons         <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in        <- cast_tab$cast_id %in% cast_ids
   model_in          <- cast_tab$model %in% models
-  dataset_in       <- cast_tab$dataset == dataset
+  dataset_in       <- cast_tab$data_set == dataset
   species_in        <- cast_tab$species %in% species
   end_moon_in       <- cast_tab$end_moon %in% end_moons
   all_in            <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
@@ -109,19 +113,28 @@ plot_casts_cov_RMSE <- function (main           = ".",
   if (ensemble) {
 
     ecast_tab <- data.frame()
-    for(i in 1:length(end_moons)){
+
+    for (i in 1:length(end_moons)) {
+
       ecast_tab <- rbind(ecast_tab, 
                          ensemble_casts(main     = main, 
+                                        settings = settings,
                                         cast_tab = cast_tab,
                                         end_moon = end_moons[i],
                                         models   = models, 
                                         dataset = dataset,
                                         species  = species))
+
     }
+
+    # patch
+    colnames(ecast_tab)[colnames(ecast_tab) == "dataset"] <- "data_set"
+    # patch
+
     ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
-    models <- c(models, as.character(unique(ecast_tab$model)))
-    cast_tab <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
-    cast_tab <- rbind(cast_tab, ecast_tab)
+    models    <- c(models, as.character(unique(ecast_tab$model)))
+    cast_tab  <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
+    cast_tab  <- rbind(cast_tab, ecast_tab)
 
   }
 
@@ -283,7 +296,7 @@ plot_casts_err_lead <- function (main           = ".",
                                  include_interp = TRUE,
                                  species        = NULL) {
 
-  if(is.null(cast_tab)){
+  if (is.null(cast_tab)) {
 
     cast_choices <- select_casts(main           = main, 
                                  settings       = settings,
@@ -299,27 +312,39 @@ plot_casts_err_lead <- function (main           = ".",
 
     } else {
 
-      cast_tab <- read_cast_tabs(main = main, cast_ids = cast_choices$cast_id)
-      cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
-      cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab)
-      cast_tab <- add_lead_to_cast_tab(main = main, cast_tab = cast_tab)
+      cast_tab <- read_cast_tabs(main     = main, 
+                                 settings = settings,
+                                 cast_ids = cast_choices$cast_id)
+      cast_tab <- add_obs_to_cast_tab(main     = main,  
+                                      settings = settings,
+                                      cast_tab = cast_tab)
+      cast_tab <- add_err_to_cast_tab(main     = main,  
+                                      settings = settings,
+                                      cast_tab = cast_tab)
+      cast_tab <- add_lead_to_cast_tab(main     = main,  
+                                       settings = settings,
+                                       cast_tab = cast_tab)
+      cast_tab <- add_covered_to_cast_tab(main     = main,  
+                                          settings = settings,
+                                          cast_tab = cast_tab)
 
     }
 
   }
 
-  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
-  cast_ids <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models <- ifnull(models, unique(cast_tab$model))
-  dataset <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species <- ifnull(species, evalplot_species( )) 
-  end_moons <- ifnull(end_moons, unique(cast_tab$end_moon)) 
-  cast_id_in <- cast_tab$cast_id %in% cast_ids
-  model_in <- cast_tab$model %in% models
-  dataset_in <- cast_tab$dataset == dataset
-  species_in <- cast_tab$species %in% species
-  end_moon_in <- cast_tab$end_moon %in% end_moons
-  all_in <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
+
+  cast_tab$data_set <- gsub("_interp", "", cast_tab$data_set)
+  cast_ids          <- ifnull(cast_ids, unique(cast_tab$cast_id))
+  models            <- ifnull(models, unique(cast_tab$model))
+  dataset          <- ifnull(dataset, unique(cast_tab$data_set)[1])
+  species           <- ifnull(species, evalplot_species()) 
+  end_moons         <- ifnull(end_moons, unique(cast_tab$end_moon)) 
+  cast_id_in        <- cast_tab$cast_id %in% cast_ids
+  model_in          <- cast_tab$model %in% models
+  dataset_in       <- cast_tab$data_set == dataset
+  species_in        <- cast_tab$species %in% species
+  end_moon_in       <- cast_tab$end_moon %in% end_moons
+  all_in            <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
 
   if (sum(all_in) == 0) {
 
@@ -327,27 +352,42 @@ plot_casts_err_lead <- function (main           = ".",
 
   }
 
-
   cast_tab <- cast_tab[all_in, ]
-  lp <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
+
+
+  lp    <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
 
-  if(ensemble){
+
+  if (ensemble) {
+
     ecast_tab <- data.frame()
-    for(i in 1:length(end_moons)){
+
+    for (i in 1:length(end_moons)) {
+
       ecast_tab <- rbind(ecast_tab, 
-                         ensemble_casts(main = main, cast_tab = cast_tab,
+                         ensemble_casts(main     = main, 
+                                        settings = settings,
+                                        cast_tab = cast_tab,
                                         end_moon = end_moons[i],
-                                        models = models, dataset = dataset,
-                                        species = species))
+                                        models   = models, 
+                                        dataset = dataset,
+                                        species  = species))
+
     }
-    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) %in% 
-                                     c("var", "covered"))]
-    models <- c(models, as.character(unique(ecast_tab$model)))
-    cast_tab <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
-    cast_tab <- rbind(cast_tab, ecast_tab)
+
+    # patch
+    colnames(ecast_tab)[colnames(ecast_tab) == "dataset"] <- "data_set"
+    # patch
+
+    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
+    models    <- c(models, as.character(unique(ecast_tab$model)))
+    cast_tab  <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
+    cast_tab  <- rbind(cast_tab, ecast_tab)
+
   }
+
   nmodels <- length(models) 
   nspecies <- length(species)
 

@@ -1,48 +1,3 @@
-#' @title Determine the start and end calendar dates for a cast window
-#'
-#' @description Based on the cast origin (\code{cast_date}), lead time (\code{lead_time}), and minimum non-0 lag (\code{min_lag}), determines the dates bracketing the requested window.
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
-#'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
-#'
-#' @param min_lag \code{integer} (or integer \code{numeric}) of the minimum covariate lag time used in any model.
-#'
-#' @param cast_date \code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @return Named \code{list} with elements \code{start} and \code{end}, which are both \code{Dates}.
-#'
-#' @examples
-#'  \donttest{
-#'    create_dir()
-#'    fill_raw()
-#'    cast_window()
-#'  }
-#'
-#' @export
-#'
-cast_window <- function(main = ".", moons = NULL, cast_date = Sys.Date(),
-                        lead_time = 12, min_lag = 6,
-                        settings = directory_settings()){
-  
-  moons <- ifnull(moons, read_moons(main = main, 
-                                    settings = settings))
-  lagged_lead <- lead_time - min_lag
-  moons0 <- moons[moons$moondate < cast_date, ]
-  last_moon <- tail(moons0, 1)
-  last_moon$moondate <- as.Date(last_moon$moondate)
-  moons0x <- moons0
-  colnames(moons0x)[which(colnames(moons0x) == "moon")] <- "newmoonnumber"
-  colnames(moons0x)[which(colnames(moons0x) == "moondate")] <- "newmoondate"
-  future_moons <- get_future_moons(moons0x, num_future_moons = lead_time)
-  start_day <- as.Date(last_moon$moondate) + 1
-  end_day <- as.Date(future_moons$newmoondate[lead_time])
-  list(start = start_day, end = end_day)
-}
 
 #' @title Measure error/fit metrics for forecasts
 #' 
@@ -108,28 +63,21 @@ measure_cast_level_error <- function(cast_tab = NULL){
 
 #' @title Add the associated values to a cast tab
 #' 
-#' @description Add values to a cast's cast tab. If necessary components are
-#'  missing (such as no observations added yet and the user requests errors),
-#'  the missing components are added. \cr \cr
+#' @description Add values to a cast's cast tab. If necessary components are missing (such as no observations added yet and the user requests errors), the missing components are added. \cr \cr
 #'  \code{add_lead_to_cast_tab} adds a column of lead times. \cr \cr
 #'  \code{add_obs_to_cast_tab} appends a column of observations. \cr \cr
 #'  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
-#'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating
-#'  if the observation was within the prediction interval. 
+#'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating if the observation was within the prediction interval. 
 #'
-#' @details If an interpolated data set is used to fit a model, 
-#'  \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations
-#'  so that model predictions are all compared to the same data.
+#' @details If an interpolated data set is used to fit a model, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
 #'
-#' @param main \code{character} value of the name of the main component of
-#'  the directory tree.
+#' @param main \code{character} value of the name of the main component of the directory tree.
 #' 
-#' @param cast_tab A \code{data.frame} of a cast's output. See 
-#'  \code{\link{read_cast_tab}}.
+#' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
 #'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @return \code{data.frame} of \code{cast_tab} with an additional column or
-#'  columns if needed. 
+#' @return \code{data.frame} of \code{cast_tab} with an additional column or columns if needed. 
 #' 
 #' @examples
 #'  \donttest{
@@ -142,80 +90,110 @@ measure_cast_level_error <- function(cast_tab = NULL){
 #'   add_covered_to_cast_tab(cast_tab = cast_tab)
 #' }
 #'
-#' @name add_to_cast_tab
-#'
-NULL
-
-#' @rdname add_to_cast_tab
+#' @name add to cast tab
 #'
 #' @export
 #'
-add_lead_to_cast_tab <- function(main = ".", cast_tab = NUL){
+add_lead_to_cast_tab <- function (main     = ".", 
+                                  settings = directory_settings(), 
+                                  cast_tab = NULL) {
 
   return_if_null(cast_tab)
   cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
   cast_tab
+
 }
 
-#' @rdname add_to_cast_tab
+#' @rdname add-to-cast-tab
 #'
 #' @export
 #'
-add_err_to_cast_tab <- function(main = ".", cast_tab = NULL) {
+add_err_to_cast_tab <- function (main     = ".", 
+                                 settings = directory_settings(), 
+                                 cast_tab = NULL) {
 
 
   return_if_null(cast_tab)
-  if(is.null(cast_tab$obs)){
-  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
+  if (is.null(cast_tab$obs)) {
+
+    cast_tab <- add_obs_to_cast_tab(main     = main,
+                                    settings = settings,
+                                    cast_tab = cast_tab)
   }
+
   cast_tab$error <- cast_tab$estimate - cast_tab$obs
   cast_tab
+
 }
 
-#' @rdname add_to_cast_tab
+#' @rdname add-to-cast-tab
 #'
 #' @export
 #'
-add_covered_to_cast_tab <- function(main = ".", cast_tab = NULL){
+add_covered_to_cast_tab <- function (main     = ".", 
+                                     settings = directory_settings(), 
+                                     cast_tab = NULL) {
+
 
   return_if_null(cast_tab)
-  if(is.null(cast_tab$obs)){
-  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
+  if (is.null(cast_tab$obs)) {
+
+    cast_tab <- add_obs_to_cast_tab(main     = main,
+                                    settings = settings,
+                                    cast_tab = cast_tab)
+
   }
-  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & 
-                      cast_tab$obs <= cast_tab$upper_pi 
+
+  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
   cast_tab$covered[is.na(cast_tab$obs)] <- NA
   cast_tab
+
 }
 
-#' @rdname add_to_cast_tab
+#' @rdname add-to-cast-tab
 #'
 #' @export
 #'
-add_obs_to_cast_tab <- function(main = ".", cast_tab = NULL){
+add_obs_to_cast_tab <- function (main     = ".", 
+                                 settings = directory_settings(),
+                                 cast_tab = NULL) {
 
   return_if_null(cast_tab)
-  cast_tab$obs <- NA
-  cast_dataset <- gsub("_interp", "", cast_tab$data_set)
-  ucast_dataset <- unique(cast_dataset)
+
+  cast_tab$obs   <- NA
+  cast_dataset   <- gsub("_interp", "", cast_tab$data_set)
+  ucast_dataset  <- unique(cast_dataset)
   ncast_datasets <- length(ucast_dataset)
 
   for (j in 1:ncast_datasets) {
 
-    obs <- read_rodents_table(main = main, dataset = ucast_dataset[j])
+    obs <- read_rodents_table(main     = main, 
+                              settings = settings,
+                              dataset   = ucast_dataset[j])
+
+
     matches <- which(cast_dataset == ucast_dataset[j])
     nmatches <- length(matches)
     obs_cols <- gsub("NA.", "NA", colnames(obs))
-    for(i in 1:nmatches){
-      spot <- matches[i]
-      obs_moon <- which(obs$moon == cast_tab$moon[spot])
+
+    for (i in 1:nmatches) {
+
+      spot        <- matches[i]
+      obs_moon    <- which(obs$newmoonnumber == cast_tab$moon[spot])
       obs_species <- which(obs_cols == cast_tab$species[spot])
-      if(length(obs_moon) == 1 & length(obs_species) == 1){
+
+      if (length(obs_moon) == 1 & length(obs_species) == 1) {
+
         cast_tab$obs[spot] <- obs[obs_moon, obs_species]
+
       }
+
     }
+
   }
+
   cast_tab 
+
 }
 
 
