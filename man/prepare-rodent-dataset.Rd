@@ -95,7 +95,7 @@ The default \code{time = "newmoon"} produces an equispaced observation timestep,
 \description{
 Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
-             Ready for implementation via \code{\link{prepare_rodents}}.
+             Ready for implementation via \code{\link{prep_rodents}}.
 }
 \examples{
  \donttest{

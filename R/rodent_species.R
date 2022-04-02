@@ -218,7 +218,7 @@ na_conformer <- function(dfv, colname = "species"){
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param data_set \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
+#' @param dataset \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'

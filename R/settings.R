@@ -31,12 +31,6 @@
 #'
 #' @param download_timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
-#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
-#'
-#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
-#'
-#' @param t1 \code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.
-#'
 #' @return Named \code{list} of settings for the directory.
 #'
 #' @export

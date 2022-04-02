@@ -53,12 +53,6 @@ See \code{\link{download_climate_forecasts}}.}
 \item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment.}
 
 \item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
-
-\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
-
-\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
-
-\item{t1}{\code{Date} for the beginning of the rodent time series to include within the model, typically \code{1995-01-01}, corresponding to \code{newmoonnumber = 217}.}
 }
 \value{
 Named \code{list} of settings for the directory.
