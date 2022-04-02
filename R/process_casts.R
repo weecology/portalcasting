@@ -244,6 +244,10 @@ read_cast_tabs <- function (main     = ".",
                             cast_id  = cast_ids[1])
   ncasts   <- length(cast_ids)
 
+      # patch
+      colnames(cast_tab)[grepl("dataset", colnames(cast_tab))] <- "data_set"
+      # patch
+
   if (ncasts > 1) {
 
     for (i in 2:ncasts) {
