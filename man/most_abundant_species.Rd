@@ -16,20 +16,13 @@ most_abundant_species(
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{topx}{Positive \code{integer} (or \code{integer}-conformable) value of how many species to include.}
+\item{dataset}{\code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.}
 
-\item{data_set}{\code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.}
+\item{topx}{Positive \code{integer} (or \code{integer}-conformable) value of how many species to include.}
 }
 \value{
 \code{character} vector of the species identifiers.
 }
 \description{
 Not including the total, determine the most abundant rodent species within a data set.
-}
-\examples{
-\donttest{
- setup_dir()
- most_abundant_species()
-}
-
 }

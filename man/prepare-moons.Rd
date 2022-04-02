@@ -38,6 +38,8 @@ forecast_future_moons(moons = NULL, lead = 365, origin = Sys.Date())
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
+
+\item{moons}{\code{data.frame} of moon data.}
 }
 \value{
 Some version of a moons \code{data.frame}. \cr \cr. 

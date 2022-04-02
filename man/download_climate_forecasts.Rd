@@ -24,6 +24,8 @@ download_climate_forecasts(
 
 \item{source}{\code{character} indicator of the source for the download. Only \code{"NMME"} presently available.}
 
+\item{data}{\code{character} vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (\code{c("tasmin", "tasmean", "tasmax", "pr")}).}
+
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be printed.}

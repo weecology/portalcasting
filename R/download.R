@@ -174,6 +174,8 @@ download_archive <- function(main          = ".",
 #'
 #' @param source \code{character} indicator of the source for the download. Only \code{"NMME"} presently available.
 #'
+#' @param data \code{character} vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (\code{c("tasmin", "tasmean", "tasmax", "pr")}).
+#'
 #' @param version \code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).
 #'
 #' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.

@@ -14,6 +14,8 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
+#' @param moons \code{data.frame} of moon data.
+#'
 #' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
 #' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.

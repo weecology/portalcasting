@@ -15,16 +15,6 @@
 #'  \code{is_sp_col}: \code{logical} vector indicating if each column is a species' column or not. \cr \cr
 #'  \code{species_from_table}: \code{character} vector of species names from the column names in the \code{rodents_tab} data table. 
 #'  
-#'
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   fill_raw()
-#'   rodents_tab <- prep_rodents_table()
-#'   is_sp_col(rodents_tab)
-#'   species_from_table(rodents_tab)
-#'  }
-#'
 #' @name species_in_tables
 #'
 NULL 
@@ -218,7 +208,7 @@ na_conformer <- function(dfv, colname = "species"){
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param data_set \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
+#' @param dataset \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
@@ -226,12 +216,6 @@ na_conformer <- function(dfv, colname = "species"){
 #'  
 #' @return \code{character} vector of the species identifiers.
 #' 
-#' @examples
-#' \donttest{
-#'  setup_dir()
-#'  most_abundant_species()
-#' }
-#'
 #' @export
 #'
 most_abundant_species <- function (main     = ".", 

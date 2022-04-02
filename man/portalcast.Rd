@@ -15,7 +15,6 @@ portalcast(
   confidence_level = 0.95,
   cast_date = Sys.Date(),
   controls_model = NULL,
-  controls_rodents = rodents_controls(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -31,7 +30,6 @@ cast(
   confidence_level = 0.95,
   cast_date = Sys.Date(),
   controls_model = NULL,
-  controls_rodents = rodents_controls(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -42,7 +40,7 @@ cast(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{datasets}{\code{character} vector of dataset names be created.}
+\item{datasets}{\code{character} vector of dataset names to be created.}
 
 \item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
 \strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.}
@@ -69,8 +67,6 @@ Presently, each model's script writing controls should include four elements:
 }
 If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each element \code{list} must be named according to the model and the\code{name} element.}
 
-\item{controls_rodents}{Control \code{list} or \code{list} of \code{list}s (from \code{\link{rodents_controls}}) specifying the structuring of the rodents tables. See \code{\link{rodents_controls}} for details.}
-
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
@@ -91,7 +87,7 @@ Multiple models can be run together on the multiple, varying data sets for a sin
 \examples{
  \donttest{
   setup_dir()
-  portalcast()
+  portalcast(models = "ESSS")
   cast()
  }
 

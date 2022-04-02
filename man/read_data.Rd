@@ -52,10 +52,6 @@ read_metadata(main = ".", settings = directory_settings())
 \item{dataset, datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just tidy messages.}
 }
 \value{
 Data requested.

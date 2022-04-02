@@ -13,12 +13,6 @@
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{list} of prepared \code{datasets}.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   prep_rodents()
-#'  }
 #'  
 #' @name prepare rodents
 #'
@@ -63,7 +57,7 @@ prep_rodents <- function (main     = ".",
 #'
 #' @description Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
 #'              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
-#'              Ready for implementation via \code{\link{prepare_rodents}}.
+#'              Ready for implementation via \code{\link{prep_rodents}}.
 #'
 #' @param name \code{character} name of the data set.
 #'
@@ -121,12 +115,6 @@ prep_rodents <- function (main     = ".",
 #'
 #' @return \code{data.frame} for the specified data set.
 #'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   prep_rodent_dataset()
-#'  }
-#'  
 #' @name prepare rodent dataset
 #'
 #' @export

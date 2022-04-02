@@ -26,13 +26,3 @@ species_from_table(rodents_tab = NULL, total = FALSE, nadot = FALSE)
 \description{
 Given a table, returns a \code{logical} vector indicating if each column is a species' column or not.
 }
-\examples{
- \donttest{
-  create_dir()
-  fill_raw()
-  rodents_tab <- prep_rodents_table()
-  is_sp_col(rodents_tab)
-  species_from_table(rodents_tab)
- }
-
-}

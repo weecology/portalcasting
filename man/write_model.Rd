@@ -32,14 +32,13 @@ model_template(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
+
+\item{datasets}{\code{character} vector of dataset names for the model.}
 }
 \value{
-\code{write_mode} \code{\link{write}}s the model script out
- and returns \code{NULL}. \cr \cr
- \code{model_template}: \code{character}-valued text for a model script 
- to be housed in the model directory. \cr \cr
- \code{control_list_arg}: \code{character}-valued text for part of a 
- model script. \cr \cr
+\code{write_mode} \code{\link{write}}s the model script out and returns \code{NULL}. \cr \cr
+ \code{model_template}: \code{character}-valued text for a model script to be housed in the model directory. \cr \cr
+ \code{control_list_arg}: \code{character}-valued text for part of a model script. \cr \cr
 }
 \description{
 Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}

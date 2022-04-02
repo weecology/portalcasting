@@ -37,9 +37,7 @@
 #'  }
 #'  If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each element \code{list} must be named according to the model and the\code{name} element. 
 #'
-#' @param controls_rodents Control \code{list} or \code{list} of \code{list}s (from \code{\link{rodents_controls}}) specifying the structuring of the rodents tables. See \code{\link{rodents_controls}} for details.  
-#'
-#' @param datasets \code{character} vector of dataset names be created. 
+#' @param datasets \code{character} vector of dataset names to be created. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -50,7 +48,7 @@
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   portalcast()
+#'   portalcast(models = "ESSS")
 #'   cast()
 #'  }
 #'
@@ -65,7 +63,6 @@ portalcast <- function (main             = ".",
                         confidence_level = 0.95, 
                         cast_date        = Sys.Date(),
                         controls_model   = NULL, 
-                        controls_rodents = rodents_controls(),
                         settings         = directory_settings(),
                         quiet            = FALSE,
                         verbose          = FALSE){
@@ -93,7 +90,6 @@ portalcast <- function (main             = ".",
          confidence_level = confidence_level, 
          cast_date        = cast_date, 
          controls_model   = controls_model, 
-         controls_rodents = controls_rodents, 
          settings         = settings,
          quiet            = quiet, 
          verbose          = verbose)
@@ -131,7 +127,6 @@ cast <- function (main             = ".",
                   confidence_level = 0.95, 
                   cast_date        = Sys.Date(), 
                   controls_model   = NULL, 
-                  controls_rodents = rodents_controls(),
                   settings         = directory_settings(), 
                   quiet            = FALSE, 
                   verbose          = FALSE) {

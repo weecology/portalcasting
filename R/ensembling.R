@@ -29,13 +29,6 @@
 #'
 #' @return \code{data.frame} of ensembled casts.
 #' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = c("AutoArima", "ESSS"), end_moon = 515)
-#'   ensemble_casts()
-#' }
-#'
 #' @export
 #'
 ensemble_casts <- function (main           = ".", 
