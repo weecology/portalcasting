@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.28.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
       </span>
     </div>
 
@@ -33,9 +33,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
     </li>
     <li>
       <a href="../articles/jags_models.html">JAGS modeling</a>
@@ -81,7 +78,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lag_covariates</span><span class="op">(</span><span class="va">covariates</span>, <span class="va">lag</span>, tail <span class="op">=</span> <span class="cn">FALSE</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lag_covariates</span><span class="op">(</span><span class="va">covariates</span>, <span class="va">lag</span>, tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -89,37 +86,15 @@
     <dl><dt>covariates</dt>
 <dd><p><code>data.frame</code> of covariate data to be lagged.</p></dd>
 <dt>lag</dt>
-<dd><p><code>integer</code> lag between rodent census and covariate data, in
-new moons.</p></dd>
+<dd><p><code>integer</code> lag between rodent census and covariate data, in new moons.</p></dd>
 <dt>tail</dt>
-<dd><p><code>logical</code> indicator if the data lagged to the tail end 
-should be retained.</p></dd>
-<dt>arg_checks</dt>
-<dd><p><code>logical</code> value of if the arguments should be
-checked using standard protocols via <code><a href="argument_checking.html">check_args</a></code>. The 
-default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
-formatted correctly and provides directed error messages if not. <br>
-However, in sandboxing, it is often desirable to be able to deviate from 
-strict argument expectations. Setting <code>arg_checks = FALSE</code> triggers
-many/most/all enclosed functions to not check any arguments using 
-<code><a href="argument_checking.html">check_args</a></code>, and as such, <em>caveat emptor</em>.</p></dd>
+<dd><p><code>logical</code> indicator if the data lagged to the tail end should be retained.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>data.frame</code> with a <code>newmoonnumber</code> column reflecting
- the lag.</p>
+    <p><code>data.frame</code> with a <code>newmoonnumber</code> column reflecting the lag.</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-  <span class="fu"><a href="setup_dir.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="va">covariate_casts</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_data.html">read_covariate_casts</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="va">covar_casts_lag</span> <span class="op">&lt;-</span> <span class="fu">lag_covariates</span><span class="op">(</span><span class="va">covariate_casts</span>, lag <span class="op">=</span> <span class="fl">2</span>, tail <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
- <span class="co"># }</span>
-
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.28.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
       </span>
     </div>
 
@@ -35,9 +35,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
     </li>
     <li>
       <a href="../articles/jags_models.html">JAGS modeling</a>
@@ -85,40 +82,20 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">measure_cast_level_error</span><span class="op">(</span>cast_tab <span class="op">=</span> <span class="cn">NULL</span>, arg_checks <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">measure_cast_level_error</span><span class="op">(</span>cast_tab <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>cast_tab</dt>
 <dd><p>A <code>data.frame</code> of a cast's output. See 
-<code><a href="read_cast_output.html">read_cast_tab</a></code>.</p></dd>
-<dt>arg_checks</dt>
-<dd><p><code>logical</code> value of if the arguments should be
-checked using standard protocols via <code><a href="argument_checking.html">check_args</a></code>. The 
-default (<code>arg_checks = TRUE</code>) ensures that all inputs are 
-formatted correctly and provides directed error messages if not.</p></dd>
+<code><a href="read-cast-output.html">read_cast_tab</a></code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p><code>data.frame</code> of metrics for each cast for each species.</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-  <span class="fu"><a href="setup_dir.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu"><a href="portalcast.html">portalcast</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_cast_output.html">read_cast_tab</a></span><span class="op">(</span>cast_id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_to_cast_tab.html">add_lead_to_cast_tab</a></span><span class="op">(</span>cast_tab <span class="op">=</span> <span class="va">cast_tab</span><span class="op">)</span>
-  <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_to_cast_tab.html">add_obs_to_cast_tab</a></span><span class="op">(</span>cast_tab <span class="op">=</span> <span class="va">cast_tab</span><span class="op">)</span>
-  <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_to_cast_tab.html">add_err_to_cast_tab</a></span><span class="op">(</span>cast_tab <span class="op">=</span> <span class="va">cast_tab</span><span class="op">)</span>
-  <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_to_cast_tab.html">add_covered_to_cast_tab</a></span><span class="op">(</span>cast_tab <span class="op">=</span> <span class="va">cast_tab</span><span class="op">)</span>
-  <span class="fu">measure_cast_level_error</span><span class="op">(</span>cast_tab <span class="op">=</span> <span class="va">cast_tab</span><span class="op">)</span>
-<span class="co"># }</span>
-
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

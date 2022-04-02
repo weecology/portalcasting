@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.28.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
       </span>
     </div>
 
@@ -33,9 +33,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
     </li>
     <li>
       <a href="../articles/jags_models.html">JAGS modeling</a>
@@ -79,29 +76,29 @@
           <p class="section-desc"></p><p>Functions that combine directory creation and filling</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="setup_dir.html">setup_dir()</a></code> <code><a href="setup_dir.html">setup_production()</a></code> <code><a href="setup_dir.html">setup_sandbox()</a></code> </p>
+          <p><code><a href="directory-setup.html">setup_dir()</a></code> <code><a href="directory-setup.html">setup_production()</a></code> <code><a href="directory-setup.html">setup_sandbox()</a></code> </p>
         </td>
-        <td><p>Create and fill a forecasting directory</p></td>
+        <td><p>Create and Fill a Forecasting Directory</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="directory-creation">Directory creation <a href="#directory-creation" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions that instantiate a portalcasting directory</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="directory_creation.html">create_dir()</a></code> </p>
+          <p><code><a href="directory-creation.html">create_dir()</a></code> </p>
         </td>
         <td><p>Create the Structure of a Forecasting Directory</p></td>
+      </tr><tr><td>
+          <p><code><a href="directory_settings.html">directory_settings()</a></code> </p>
+        </td>
+        <td><p>Create a Directory Settings List</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="directory-filling">Directory filling <a href="#directory-filling" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions that add the files to each of the component subdirectories</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="fill_directory.html">fill_dir()</a></code> <code><a href="fill_directory.html">fill_data()</a></code> <code><a href="fill_directory.html">fill_raw()</a></code> <code><a href="fill_directory.html">fill_casts()</a></code> <code><a href="fill_directory.html">fill_fits()</a></code> <code><a href="fill_directory.html">fill_models()</a></code> </p>
+          <p><code><a href="directory-filling.html">fill_dir()</a></code> <code><a href="directory-filling.html">fill_data()</a></code> <code><a href="directory-filling.html">fill_raw()</a></code> <code><a href="directory-filling.html">fill_casts()</a></code> <code><a href="directory-filling.html">fill_fits()</a></code> <code><a href="directory-filling.html">fill_models()</a></code> </p>
         </td>
         <td><p>Fill a Portalcasting Directory with Basic Components</p></td>
-      </tr><tr><td>
-          <p><code><a href="model_controls.html">model_controls()</a></code> <code><a href="model_controls.html">extract_min_lag()</a></code> <code><a href="model_controls.html">extract_data_sets()</a></code> </p>
-        </td>
-        <td><p>Produce the control lists for models</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="casting-functions">Casting functions <a href="#casting-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for fitting models and making predictions into the future</p>
@@ -109,27 +106,19 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="portalcast.html">portalcast()</a></code> <code><a href="portalcast.html">cast()</a></code> </p>
         </td>
-        <td><p>Cast Portal rodents models</p></td>
-      </tr><tr><td>
-          <p><code><a href="verify_models.html">verify_models()</a></code> </p>
-        </td>
-        <td><p>Verify that models requested to cast with exist</p></td>
+        <td><p>Cast Portal Rodents Models</p></td>
       </tr><tr><td>
           <p><code><a href="models_to_cast.html">models_to_cast()</a></code> </p>
         </td>
-        <td><p>Determine the paths to the scripts for models to cast with</p></td>
+        <td><p>Determine the Paths to the Scripts for Models to Cast with</p></td>
       </tr><tr><td>
-          <p><code><a href="read_cast_output.html">read_cast_tab()</a></code> <code><a href="read_cast_output.html">read_cast_tabs()</a></code> <code><a href="read_cast_output.html">read_cast_metadata()</a></code> <code><a href="read_cast_output.html">read_model_fits()</a></code> <code><a href="read_cast_output.html">read_model_casts()</a></code> </p>
+          <p><code><a href="read-cast-output.html">read_cast_tab()</a></code> <code><a href="read-cast-output.html">read_cast_tabs()</a></code> <code><a href="read-cast-output.html">read_cast_metadata()</a></code> <code><a href="read-cast-output.html">read_model_fits()</a></code> <code><a href="read-cast-output.html">read_model_casts()</a></code> </p>
         </td>
-        <td><p>Read in cast output from a given cast</p></td>
+        <td><p>Read in Cast Output From a Given Cast</p></td>
       </tr><tr><td>
           <p><code><a href="select_casts.html">select_casts()</a></code> </p>
         </td>
-        <td><p>Find casts that fit specifications</p></td>
-      </tr><tr><td>
-          <p><code><a href="update_models.html">update_models()</a></code> </p>
-        </td>
-        <td><p>Update models based on user input controls</p></td>
+        <td><p>Find Casts that Fit Specifications</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="cast-processing-functions">Cast processing functions <a href="#cast-processing-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for processing, evaluating, and combining casts</p>
@@ -137,17 +126,17 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="save_cast_output.html">save_cast_output()</a></code> </p>
         </td>
-        <td><p>Save cast output to files</p></td>
+        <td><p>Save Cast Output to Files</p></td>
       </tr><tr><td>
           <p><code><a href="ensemble_casts.html">ensemble_casts()</a></code> </p>
         </td>
-        <td><p>Combine (ensemble) casts</p></td>
+        <td><p>Combine (Ensemble) Casts</p></td>
       </tr><tr><td>
           <p><code><a href="measure_cast_level_error.html">measure_cast_level_error()</a></code> </p>
         </td>
         <td><p>Measure error/fit metrics for forecasts</p></td>
       </tr><tr><td>
-          <p><code><a href="add_to_cast_tab.html">add_lead_to_cast_tab()</a></code> <code><a href="add_to_cast_tab.html">add_err_to_cast_tab()</a></code> <code><a href="add_to_cast_tab.html">add_covered_to_cast_tab()</a></code> <code><a href="add_to_cast_tab.html">add_obs_to_cast_tab()</a></code> </p>
+          <p><code><a href="add-to-cast-tab.html">add_lead_to_cast_tab()</a></code> <code><a href="add-to-cast-tab.html">add_err_to_cast_tab()</a></code> <code><a href="add-to-cast-tab.html">add_covered_to_cast_tab()</a></code> <code><a href="add-to-cast-tab.html">add_obs_to_cast_tab()</a></code> </p>
         </td>
         <td><p>Add the associated values to a cast tab</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
@@ -157,19 +146,15 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="read_casts_metadata.html">read_casts_metadata()</a></code> </p>
         </td>
-        <td><p>Read in the casts metadata file</p></td>
+        <td><p>Read in the Casts Metadata File</p></td>
       </tr><tr><td>
-          <p><code><a href="read_data.html">read_data()</a></code> <code><a href="read_data.html">read_rodents_table()</a></code> <code><a href="read_data.html">read_rodents()</a></code> <code><a href="read_data.html">read_covariates()</a></code> <code><a href="read_data.html">read_covariate_casts()</a></code> <code><a href="read_data.html">read_moons()</a></code> <code><a href="read_data.html">read_metadata()</a></code> </p>
+          <p><code><a href="read_data.html">read_data()</a></code> <code><a href="read_data.html">read_rodents_table()</a></code> <code><a href="read_data.html">read_rodents()</a></code> <code><a href="read_data.html">read_moons()</a></code> <code><a href="read_data.html">read_covariates()</a></code> <code><a href="read_data.html">read_forecast_covariates()</a></code> <code><a href="read_data.html">read_historical_covariates()</a></code> <code><a href="read_data.html">read_climate_forecasts()</a></code> <code><a href="read_data.html">read_metadata()</a></code> </p>
         </td>
-        <td><p>Read in a data file and format it for specific class</p></td>
+        <td><p>Read in and Format a Portalcasting Data File</p></td>
       </tr><tr><td>
           <p><code><a href="write_data.html">write_data()</a></code> </p>
         </td>
-        <td><p>Save data out to a file and return it</p></td>
-      </tr><tr><td>
-          <p><code><a href="cast_covariates.html">prep_cast_covariates()</a></code> <code><a href="cast_covariates.html">save_cast_cov_csv()</a></code> </p>
-        </td>
-        <td><p>Cast the covariates</p></td>
+        <td><p>Save Data Out to a File and Return It	Invisibly</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="metadata-management">Metadata management <a href="#metadata-management" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for managing metadata</p>
@@ -177,51 +162,39 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="prep_metadata.html">prep_metadata()</a></code> </p>
         </td>
-        <td><p>Prepare a model-running metadata list</p></td>
+        <td><p>Prepare a Model-Running Metadata List</p></td>
       </tr><tr><td>
-          <p><code><a href="directory_config.html">write_directory_config()</a></code> <code><a href="directory_config.html">update_directory_config()</a></code> <code><a href="directory_config.html">read_directory_config()</a></code> </p>
+          <p><code><a href="directory_configuration_file.html">write_directory_config()</a></code> <code><a href="directory_configuration_file.html">read_directory_config()</a></code> <code><a href="directory_configuration_file.html">update_directory_config()</a></code> </p>
         </td>
-        <td><p>Create, update, and read the directory configuration file</p></td>
+        <td><p>Create, Update, and Read the Directory Configuration File</p></td>
       </tr><tr><td>
           <p><code><a href="read_casts_metadata.html">read_casts_metadata()</a></code> </p>
         </td>
-        <td><p>Read in the casts metadata file</p></td>
+        <td><p>Read in the Casts Metadata File</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="covariate-data-management">Covariate data management <a href="#covariate-data-management" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for preparing covariate data</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="prep_covariates.html">prep_covariates()</a></code> </p>
+          <p><code><a href="prepare-covariates.html">prep_covariates()</a></code> <code><a href="prepare-covariates.html">prep_historic_covariates()</a></code> <code><a href="prepare-covariates.html">prep_forecast_covariates()</a></code> </p>
         </td>
-        <td><p>Prepare covariate data for casting</p></td>
-      </tr><tr><td>
-          <p><code><a href="cast_covariates.html">prep_cast_covariates()</a></code> <code><a href="cast_covariates.html">save_cast_cov_csv()</a></code> </p>
-        </td>
-        <td><p>Cast the covariates</p></td>
-      </tr><tr><td>
-          <p><code><a href="prepare_historical_covariates.html">prep_hist_covariates()</a></code> </p>
-        </td>
-        <td><p>Prepare historical covariates data</p></td>
-      </tr><tr><td>
-          <p><code><a href="summarize_daily_weather_by_moon.html">summarize_daily_weather_by_moon()</a></code> </p>
-        </td>
-        <td><p>Summarize a daily weather table by newmoons</p></td>
+        <td><p>Prepare Covariate Data for Casting</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="rodent-data-functions">Rodent data functions <a href="#rodent-data-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions that facilitate use of the Portal rodents data</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="prep_rodents.html">prep_rodents()</a></code> </p>
+          <p><code><a href="prepare-rodents.html">prep_rodents()</a></code> </p>
         </td>
-        <td><p>Prepare a list of rodents data tables for forecasting</p></td>
+        <td><p>Prepare Rodents Data for the Portalcasting Repository</p></td>
       </tr><tr><td>
-          <p><code><a href="prepare_rodents_table.html">prep_rodents_table()</a></code> <code><a href="prepare_rodents_table.html">process_rodent_data()</a></code> </p>
+          <p><code><a href="prepare-rodent-dataset.html">prep_rodent_dataset()</a></code> </p>
         </td>
-        <td><p>Prepare a rodents data tables for forecasting</p></td>
+        <td><p>Prepare Rodents Data Tables for Forecasting</p></td>
       </tr><tr><td>
-          <p><code><a href="prefab_data_sets.html">prefab_data_sets()</a></code> </p>
+          <p><code><a href="prefabricated_rodent_datasets.html">prefab_rodent_datasets()</a></code> <code><a href="prefabricated_rodent_datasets.html">prefab_rodent_dataset_controls()</a></code> </p>
         </td>
-        <td><p>Provide the names of the prefab data sets</p></td>
+        <td><p>Provide the names or controls for the prefab rodents datasets</p></td>
       </tr><tr><td>
           <p><code><a href="rodent_species.html">rodent_species()</a></code> <code><a href="rodent_species.html">all_species()</a></code> <code><a href="rodent_species.html">base_species()</a></code> <code><a href="rodent_species.html">evalplot_species()</a></code> </p>
         </td>
@@ -229,27 +202,15 @@
       </tr><tr><td>
           <p><code><a href="species_in_tables.html">is_sp_col()</a></code> <code><a href="species_in_tables.html">species_from_table()</a></code> </p>
         </td>
-        <td><p>Determine if columns in a table are species columns</p></td>
+        <td><p>Determine if Columns in a Table are Species Columns</p></td>
       </tr><tr><td>
           <p><code><a href="na_conformer.html">na_conformer()</a></code> </p>
         </td>
         <td><p>Conform NA entries to "NA" entries</p></td>
       </tr><tr><td>
-          <p><code><a href="rodents_control.html">rodents_control()</a></code> </p>
-        </td>
-        <td><p>Create a control lists for generating a rodents data table</p></td>
-      </tr><tr><td>
-          <p><code><a href="rodents_controls.html">rodents_controls()</a></code> </p>
-        </td>
-        <td><p>Create control lists for generating rodents data tables</p></td>
-      </tr><tr><td>
           <p><code><a href="remove_incompletes.html">remove_incompletes()</a></code> </p>
         </td>
-        <td><p>Remove any specific incomplete entries as noted by an NA</p></td>
-      </tr><tr><td>
-          <p><code><a href="last_census.html">last_census()</a></code> </p>
-        </td>
-        <td><p>Determine the most recent data collection</p></td>
+        <td><p>Remove any Specific Incomplete Entries as Noted by an NA</p></td>
       </tr><tr><td>
           <p><code><a href="most_abundant_species.html">most_abundant_species()</a></code> </p>
         </td>
@@ -259,41 +220,25 @@
           <p class="section-desc"></p><p>Functions for managing the lunar temporal data</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="prepare_moons.html">prep_moons()</a></code> <code><a href="prepare_moons.html">format_moons()</a></code> <code><a href="prepare_moons.html">add_future_moons()</a></code> <code><a href="prepare_moons.html">add_extra_future_moons()</a></code> </p>
+          <p><code><a href="prepare-moons.html">prep_moons()</a></code> <code><a href="prepare-moons.html">add_future_moons()</a></code> <code><a href="prepare-moons.html">forecast_future_moons()</a></code> </p>
         </td>
-        <td><p>Prepare lunar data for the portalcasting repository</p></td>
+        <td><p>Prepare Lunar Data for the Portalcasting Repository</p></td>
       </tr><tr><td>
-          <p><code><a href="target_moons.html">target_moons()</a></code> <code><a href="target_moons.html">last_moon()</a></code> </p>
+          <p><code><a href="add_newmoonnumbers_from_dates.html">add_newmoonnumbers_from_dates()</a></code> </p>
         </td>
-        <td><p>Determine specific newmoon numbers</p></td>
-      </tr><tr><td>
-          <p><code><a href="add_moons_from_date.html">add_moons_from_date()</a></code> </p>
-        </td>
-        <td><p>Add a newmoon number to a table that has the date</p></td>
-      </tr><tr><td>
-          <p><code><a href="trim_moons.html">trim_moons()</a></code> </p>
-        </td>
-        <td><p>Trim a moons table based on target moons</p></td>
+        <td><p>Add a Newmoon Number Column to a Table that has a Date Column</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="model-generating-functions">Model generating functions <a href="#model-generating-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for formatting model-running scripts</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="model_control.html">model_control()</a></code> </p>
+          <p><code><a href="write_model.html">write_model()</a></code> <code><a href="write_model.html">model_template()</a></code> </p>
         </td>
-        <td><p>Create a control list for a model</p></td>
+        <td><p>Write Model Function Script into Directory</p></td>
       </tr><tr><td>
-          <p><code><a href="model_controls.html">model_controls()</a></code> <code><a href="model_controls.html">extract_min_lag()</a></code> <code><a href="model_controls.html">extract_data_sets()</a></code> </p>
+          <p><code><a href="prefabricated_models.html">prefab_model_controls()</a></code> <code><a href="prefabricated_models.html">prefab_models()</a></code> </p>
         </td>
-        <td><p>Produce the control lists for models</p></td>
-      </tr><tr><td>
-          <p><code><a href="write_model.html">write_model()</a></code> <code><a href="write_model.html">model_template()</a></code> <code><a href="write_model.html">control_list_arg()</a></code> </p>
-        </td>
-        <td><p>Write the template for a model into model subdirectory</p></td>
-      </tr><tr><td>
-          <p><code><a href="prefab_models.html">prefab_models()</a></code> </p>
-        </td>
-        <td><p>Provide the names of the prefab models</p></td>
+        <td><p>Provide the names or controls for the prefab models</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="prefabricated-models">Prefabricated models <a href="#prefabricated-models" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions used to run the prefab models</p>
@@ -327,49 +272,45 @@
           <p class="section-desc"></p><p>Range of functionalities</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="argument_checking.html">check_args()</a></code> <code><a href="argument_checking.html">check_arg()</a></code> <code><a href="argument_checking.html">check_arg_list()</a></code> </p>
-        </td>
-        <td><p>Check a function's arguments' values for validity</p></td>
-      </tr><tr><td>
           <p><code><a href="error_if_deep.html">error_if_deep()</a></code> </p>
         </td>
-        <td><p>Error if a function's request is deeper than can be handled</p></td>
+        <td><p>Error if a Function's Request is Deeper than can be Handled</p></td>
       </tr><tr><td>
-          <p><code><a href="alternative_values.html">ifnull()</a></code> <code><a href="alternative_values.html">ifna()</a></code> </p>
+          <p><code><a href="alternative-values.html">ifnull()</a></code> <code><a href="alternative-values.html">ifna()</a></code> </p>
         </td>
-        <td><p>Replace a value with an alternative if it is NULL or if it is NA</p></td>
+        <td><p>Replace a Value with an Alternative if it is NULL or if it is NA</p></td>
       </tr><tr><td>
           <p><code><a href="list_depth.html">list_depth()</a></code> </p>
         </td>
-        <td><p>Determine the depth of a list</p></td>
+        <td><p>Determine the Depth of a List</p></td>
       </tr><tr><td>
           <p><code><a href="return_if_null.html">return_if_null()</a></code> </p>
         </td>
-        <td><p>If a value is NULL, trigger the parent function's return</p></td>
+        <td><p>If a Value is NULL, Trigger the Parent Function's Return</p></td>
       </tr><tr><td>
           <p><code><a href="named_null_list.html">named_null_list()</a></code> </p>
         </td>
-        <td><p>Create a named empty list</p></td>
+        <td><p>Create a Named Empty List</p></td>
       </tr><tr><td>
           <p><code><a href="clear_tmp.html">clear_tmp()</a></code> </p>
         </td>
-        <td><p>Remove files from the tmp subdirectory</p></td>
+        <td><p>Remove Files from the tmp Subdirectory</p></td>
       </tr><tr><td>
           <p><code><a href="update_list.html">update_list()</a></code> </p>
         </td>
-        <td><p>Update a list's elements</p></td>
+        <td><p>Update a List's Elements</p></td>
       </tr><tr><td>
           <p><code><a href="append_csv.html">append_csv()</a></code> </p>
         </td>
-        <td><p>Save data out to a csv, appending the file if it already exists</p></td>
+        <td><p>Save Data Out to a csv, Appending the File if it Already Exists</p></td>
       </tr><tr><td>
           <p><code><a href="combine_hist_and_cast.html">combine_hist_and_cast()</a></code> </p>
         </td>
-        <td><p>Combine a historical table and a cast table</p></td>
+        <td><p>Combine a Historical Table and a Cast Table</p></td>
       </tr><tr><td>
           <p><code><a href="match.call.defaults.html">match.call.defaults()</a></code> </p>
         </td>
-        <td><p>Argument matching with defaults</p></td>
+        <td><p>Argument Matching with Defaults</p></td>
       </tr><tr><td>
           <p><code><a href="messageq.html">messageq()</a></code> </p>
         </td>
@@ -377,40 +318,19 @@
       </tr><tr><td>
           <p><code><a href="message_break.html">message_break()</a></code> </p>
         </td>
-        <td><p>Produce a horizontal break line for messaging</p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="date-formatting">Date formatting <a href="#date-formatting" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Functions to format dates and date components</p>
-        </th>
-      </tr></tbody><tbody><tr><td>
+        <td><p>Produce a Horizontal Break Line for Messaging</p></td>
+      </tr><tr><td>
           <p><code><a href="foy.html">foy()</a></code> </p>
         </td>
-        <td><p>Calculate the fraction of the year from a date</p></td>
+        <td><p>Calculate the Fraction of the Year from a Date</p></td>
       </tr><tr><td>
           <p><code><a href="add_date_from_components.html">add_date_from_components()</a></code> </p>
         </td>
-        <td><p>Add a date to a table that has the year month and day as components</p></td>
-      </tr><tr><td>
-          <p><code><a href="cast_window.html">cast_window()</a></code> </p>
-        </td>
-        <td><p>Determine the start and end calendar dates for a cast window</p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="path-management">Path management <a href="#path-management" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Utilities for quickly retrieving and generally formatting folder and file paths and saving conditions</p>
-        </th>
-      </tr></tbody><tbody><tr><td>
-          <p><code><a href="paths.html">main_path()</a></code> <code><a href="paths.html">sub_path()</a></code> <code><a href="paths.html">raw_path()</a></code> <code><a href="paths.html">casts_path()</a></code> <code><a href="paths.html">fits_path()</a></code> <code><a href="paths.html">data_path()</a></code> <code><a href="paths.html">models_path()</a></code> <code><a href="paths.html">tmp_path()</a></code> <code><a href="paths.html">file_path()</a></code> </p>
-        </td>
-        <td><p>Determine the path for a specific level of a forecasting directory</p></td>
+        <td><p>Add a Date to a Table That has the Year, Month, and Day as Components</p></td>
       </tr><tr><td>
           <p><code><a href="file_ext.html">file_ext()</a></code> <code><a href="file_ext.html">path_no_ext()</a></code> </p>
         </td>
-        <td><p>Determine a file's extension or remove the extension from the
- file path</p></td>
-      </tr><tr><td>
-          <p><code><a href="files_control.html">files_control()</a></code> </p>
-        </td>
-        <td><p>Create a control list for files</p></td>
+        <td><p>Determine a File's Extension or Remove the Extension from the File Path</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="download-functions">Download functions <a href="#download-functions" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for creating API URLs, retrieving, and managing downloaded components</p>
@@ -426,8 +346,7 @@
       </tr><tr><td>
           <p><code><a href="NMME_urls.html">NMME_urls()</a></code> </p>
         </td>
-        <td><p>URLs for the Northwest Knowledge Network's North American
-       Multi-Model Ensemble (NMME) climate forecasts</p></td>
+        <td><p>URLs for the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="figures">Figures <a href="#figures" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to make standard figures</p>
@@ -435,19 +354,19 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="plot_cast_point.html">plot_cast_point()</a></code> </p>
         </td>
-        <td><p>Plot predictions for a given point in time across multiple species</p></td>
+        <td><p>Plot Predictions for a Given Point in Time Across Multiple Species</p></td>
       </tr><tr><td>
           <p><code><a href="plot_cast_ts.html">plot_cast_ts()</a></code> </p>
         </td>
-        <td><p>Visualize a time series cast of a species</p></td>
+        <td><p>Visualize a Time Series Cast of a Species</p></td>
       </tr><tr><td>
           <p><code><a href="plot_casts_cov_RMSE.html">plot_casts_cov_RMSE()</a></code> </p>
         </td>
-        <td><p>Plot the forecast coverage and RMSE</p></td>
+        <td><p>Plot the Forecast Coverage and RMSE</p></td>
       </tr><tr><td>
           <p><code><a href="plot_casts_err_lead.html">plot_casts_err_lead()</a></code> </p>
         </td>
-        <td><p>Plot the forecast error as a function of lead time</p></td>
+        <td><p>Plot the Forecast Error as a Function of Lead Time</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="overview">Overview <a href="#overview" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Package overview documentation</p>

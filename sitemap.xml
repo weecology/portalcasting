@@ -16,9 +16,6 @@
     <loc>https://weecology.github.io/portalcasting/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/articles/adding_model_and_data.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/articles/codebase.html</loc>
   </url>
   <url>
@@ -46,28 +43,19 @@
     <loc>https://weecology.github.io/portalcasting/reference/NMME_urls.html</loc>
   </url>
   <url>
+    <loc>https://weecology.github.io/portalcasting/reference/add-to-cast-tab.html</loc>
+  </url>
+  <url>
     <loc>https://weecology.github.io/portalcasting/reference/add_date_from_components.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/add_moons_from_date.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/add_newmoonnumbers_from_dates.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/add_to_cast_tab.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/alternative_values.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/alternative-values.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/append_csv.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/argument_checking.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/cast_covariates.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/cast_window.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/clear_tmp.html</loc>
@@ -79,10 +67,19 @@
     <loc>https://weecology.github.io/portalcasting/reference/covariate_models.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory_config.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/directory-creation.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory_creation.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/directory-filling.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/directory-setup.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/directory_configuration_file.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/directory_settings.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/download_archive.html</loc>
@@ -100,12 +97,6 @@
     <loc>https://weecology.github.io/portalcasting/reference/file_ext.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/files_control.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/fill_directory.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/foy.html</loc>
   </url>
   <url>
@@ -116,9 +107,6 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/lag_covariates.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/last_census.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/list_depth.html</loc>
@@ -136,12 +124,6 @@
     <loc>https://weecology.github.io/portalcasting/reference/messageq.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/model_control.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/model_controls.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/models_to_cast.html</loc>
   </url>
   <url>
@@ -152,9 +134,6 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/named_null_list.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/paths.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/plot_cast_point.html</loc>
@@ -175,34 +154,31 @@
     <loc>https://weecology.github.io/portalcasting/reference/portalcasting.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prefab_data_sets.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/prefab_model_functions.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prefab_models.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prefabricated_models.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prep_covariates.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prefabricated_rodent_datasets.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/prep_metadata.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prep_rodents.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prepare-covariates.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare_historical_covariates.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prepare-moons.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare_moons.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prepare-rodent-dataset.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare_rodents_table.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prepare-rodents.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/read_cast_output.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/read-cast-output.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/read_casts_metadata.html</loc>
@@ -220,12 +196,6 @@
     <loc>https://weecology.github.io/portalcasting/reference/rodent_species.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/rodents_control.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/rodents_controls.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/runjags_control.html</loc>
   </url>
   <url>
@@ -235,28 +205,10 @@
     <loc>https://weecology.github.io/portalcasting/reference/select_casts.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/setup_dir.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/species_in_tables.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/summarize_daily_weather_by_moon.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/target_moons.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/trim_moons.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/update_list.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/update_models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/verify_models.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/write_data.html</loc>

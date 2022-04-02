@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.28.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
       </span>
     </div>
 
@@ -51,9 +51,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/adding_model_and_data.html">Adding a model and data</a>
     </li>
     <li>
       <a href="../articles/jags_models.html">JAGS modeling</a>
@@ -99,7 +96,7 @@
       <h1 data-toc-skip>portalcasting Codebase</h1>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">30 March, 2022</h4>
+            <h4 data-toc-skip class="date">02 April, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/codebase.Rmd" class="external-link"><code>vignettes/codebase.Rmd</code></a></small>
       <div class="hidden name"><code>codebase.Rmd</code></div>
@@ -108,7 +105,7 @@
 
     
     
-<p>This vignette outlines the codebase and functionality of the <strong>portalcasting</strong> package (v0.28.0), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions production pipeline</a>. <strong>portalcasting</strong> has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.</p>
+<p>This vignette outlines the codebase and functionality of the <strong>portalcasting</strong> package (v0.31.0), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions production pipeline</a>. <strong>portalcasting</strong> has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -152,7 +149,7 @@
 <div class="section level3">
 <h3 id="creating">Creating<a class="anchor" aria-label="anchor" href="#creating"></a>
 </h3>
-<p>The directory is established using <code>create_dir</code>, which takes <code>main</code> as an argument and in sequence creates each of the levels’ folders if they do not already exist. This occurs through calls to <code>create_main</code> and <code>create_subs</code>. A typical user is likely to want to change the <code>main</code> input (to locate the forecasting directory where they would like it), but general users should not alter the <code>subs</code> structure, and so that option is not available through the <code>create</code> functions.</p>
+<p>The directory is established using <code>create_dir</code>, which takes <code>main</code> as an argument and in sequence creates each of the levels’ folders if they do not already exist. A typical user is likely to want to change the <code>main</code> input (to locate the forecasting directory where they would like it), but general users should not alter the <code>subs</code> structure, and so that option is not easily available. If needed, the <code>subs</code> can be altered via the <code>directory_settings</code> controls.</p>
 <p><code>create_dir</code> also initializes the <code>dir_config.yaml</code> file, which is held within <code>main</code> and contains metadata about the directory setting up process.</p>
 </div>
 <div class="section level3">
@@ -163,7 +160,9 @@
 <li>
 <code>fill_raw</code> downloads each of the raw components for the directory, which presently include the source data and previous forecasts’ archive. Upon completion of the downloads, <code>fill_raw</code> updates <code>dir_config.yaml</code> with download versions.</li>
 <li>
-<code>fill_casts</code> moves the existing model output files from the <code>raw</code> subdirectory to the <code>casts</code> subdirectory.</li>
+<code>fill_casts</code> moves the existing model cast output files from the <code>raw</code> subdirectory to the <code>casts</code> subdirectory.</li>
+<li>
+<code>fill_fits</code> moves the existing model fit files from the <code>raw</code> subdirectory to the <code>fits</code> subdirectory.</li>
 <li>
 <code>fill_models</code> writes the model scripts into the <code>models</code> subdirectory.</li>
 <li>
@@ -191,13 +190,6 @@
 <li>
 <code>portalcast</code> is the overarching function that controls casting of the Portal data
 <ul>
-<li>
-<code>verify_models</code> ensures that all of the models requested have scripts present in the <code>models</code> subdirectory.</li>
-<li>
-<code>verify_raw_data</code> ensures that the base Portal data are present in the <code>raw</code> subdirectory</li>
-<li>
-<code>extract_min_lag</code> determines the minimum non-0 lag used with covariate data across the models, for input into <code>prep_data</code>
-</li>
 <li>
 <code>read_moons</code> brings the lunar data in to the function and <code>last_newmoon</code> determines the most recently passed newmoon, which is used to set the forecast origin (<code>end_moons</code>, note that here the plural in <code>end_moons</code> indicates that multiple forecast origins can be input to <code>portalcast</code>) if it wasn’t set by the user.</li>
 <li>For each <code>end_moons</code> value, <code>portalcast</code> runs:
@@ -228,30 +220,14 @@
 <div class="section level3">
 <h3 id="file-paths">File paths<a class="anchor" aria-label="anchor" href="#file-paths"></a>
 </h3>
-<p>Given the reliance of files located in a variety of subdirectories that could be operating on multiple platforms, we constructed some simple functions for managing and point to particular folders or files.</p>
-<ul>
-<li>
-<code>file_ext</code> determines the file extension, based on the separating character (<code>sep_char</code>), which facilitates use with generalized URL APIs</li>
-<li>
-<code>path_no_ext</code> provides extension-removing services.</li>
-<li>
-<code>main_path</code>, <code>sub_path</code>, and <code>file_path</code> all provide normalized paths to the named components.</li>
-</ul>
+<p><code>file_ext</code> determines the file extension, based on the separating character (<code>sep_char</code>), which facilitates use with generalized URL APIs. <code>path_no_ext</code> provides extension-removing services.</p>
 </div>
 <div class="section level3">
 <h3 id="data-io">Data IO<a class="anchor" aria-label="anchor" href="#data-io"></a>
 </h3>
-<p><strong>portalcasting</strong> has a generalized <code>read_data</code> function that allows for toggling among <code>read_rodents</code>, <code>read_rodents_table</code>, <code>read_covariates</code>, <code>read_covariate_casts</code>, <code>read_moons</code>, and <code>read_metadata</code>, which each have specific loading procedures in place and, in the case that the requested file does not exist, an attempt is made (through the corresponding <code>prep_</code> function) to create the data file. Similar to the <code>read_data</code> functions, <code>read_casts</code> provides a simple user interface for reading the cast files into the R session.</p>
+<p><strong>portalcasting</strong> has a generalized <code>read_data</code> function that allows for toggling among <code>read_rodents</code>, <code>read_rodents_table</code>, <code>read_covariates</code>, <code>read_historical_covariates</code>, <code>read_forecast_covariates</code>, <code>read_moons</code>, and <code>read_metadata</code>, which each have specific loading procedures in place. Similar to the <code>read_data</code> functions, <code>read_casts</code> provides a simple user interface for reading the cast files into the R session.</p>
 <p>For saving out, <code>write_data</code> provides a simple means for interfacing with potentially pre-existing data files, with logical inputs for saving generally and overwriting a pre-existing file specifically, and flexible file naming. The type of data saved out is currently restricted to <code>.csv</code> and <code>.yaml</code>, which is extracted from the filename given.</p>
 <p>The directory configuration file is a special file, and has its own IO functions separate from the rest: <code>write_directory_config</code> creates the file (from within <code>create_dir</code>, <code>update_directory_config</code> adds downloads information (from inside <code>fill_raw</code>) <code>read_directory_config</code> brings the information from the file into the R session.</p>
-</div>
-<div class="section level3">
-<h3 id="argument-checking">Argument checking<a class="anchor" aria-label="anchor" href="#argument-checking"></a>
-</h3>
-<p><strong>portalcasting</strong> provides tidy and toggle-able argument checking via <code>check_arg</code>, <code>check_args</code>, and <code>check_arg_list</code>. They check the validity of inputted values for arguments, variably (depending on the argument) including the class, length, and values. It extracts the boolean checking code that would normally be within each function, placing it instead within <code>check_arg</code> which is called for each argument by <code>check_args</code>.</p>
-<p>A key aspect to the <strong>portalcasting</strong> pipeline’s ability to connect pieces is tied directly to argument checking: argument names should not be re-used in different functions unless they are for the same type of object with the same value options.</p>
-<p>Some base <strong>portalcasting</strong> utilities cannot use <code>check_args</code> however, and so have their own specific internal checking. For example, <code>list_depth</code>’s recursive nature prevents its use, and <code>check_arg</code> cannot use <code>check_args</code> itself.</p>
-<p><code>check_args</code> provides important backstopping and error checking of a standard <strong>portalcasting</strong> production pipeline. However, it is likely that a user in development spaces (a.k.a. sandboxes) would like to deviate from the standard behavior to leverage, for example, the ability to construct novel rodent data sets. To that end, we include an argument <code>arg_checks</code> that is in nearly every function throughout the codebase, which flips a switch and turns off the vast majority of the <strong>portalcasting</strong>-generated errors. In this space, the user will be able to create a much broader array of directory components and actions, but will likely be first informed of errors through more base (and thus obtuse) functions. To that end, in default sandboxing mode, we set <code>arg_checks = FALSE</code> (minimal checking from <strong>portalcasting</strong>) and <code>verbose = TRUE</code> (maximum feedback from underlying functions).</p>
 </div>
 <div class="section level3">
 <h3 id="messageq">
