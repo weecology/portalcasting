@@ -4,9 +4,9 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./portalcasting"
+main <- "./testing"
 
-setup_production(main)
+setup_dir(main)
 portalcast(main)
 
 # updating to working with the settings list

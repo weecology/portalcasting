@@ -61,3 +61,38 @@ read_directory_config <- function (main     = ".",
 
 }
 
+
+#' @rdname directory_configuration_file
+#'
+#' @export
+#'
+update_directory_config <- function (main     = ".", 
+                                     settings = directory_settings(), 
+                                     quiet    = FALSE){
+  
+  config <- read_directory_config(main     = main, 
+                                  settings = settings,
+                                  quiet    = quiet)
+
+  # fix this so it grabs the actual values when `latest`
+
+  config$raw$PortalData_version       <- settings$resources$PortalData$version
+  config$raw$archive_version          <- ifnull(settings$resources$portalPredictions$version, "")
+  config$raw$climate_forecast_version <- settings$resources$climate_forecast$version
+
+  if (config$raw$PortalData_version == "latest") {
+
+    config$raw$PortalData_version <- scan(file  = file.path(main, settings$subs$resources, "PortalData", "version.txt"),
+                                          what  = "character", 
+                                          quiet = TRUE)
+
+  }
+
+
+
+  yams <- as.yaml(config)
+  writeLines(yams, con = file.path(main, settings$files$directory_config))  
+  invisible()
+
+}
+

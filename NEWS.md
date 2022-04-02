@@ -3,7 +3,7 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 # [portalcasting 0.30.0](https://github.com/weecology/portalcasting/releases/tag/v0.30.0)
-* in progress *
+*2022-04-01*
 
 ### Settings list
 * `setup_dir` now takes a `settings` argument that is a `list` of the arguments 
@@ -21,6 +21,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### `arg_checks` removed
 * Internalized auto-checking relieves user of need to dictate checking
+
+### Temporary removal of "adding a model and data" vignette
+* Need to update with new API
+* Also need to add alt-text to all images
 
 # [portalcasting 0.29.0](https://github.com/weecology/portalcasting/releases/tag/v0.29.0)
 *2022-03-30*
