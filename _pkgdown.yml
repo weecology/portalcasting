@@ -14,8 +14,6 @@ navbar:
          href: articles/getting_started.html
        - text: "Current models"
          href: articles/current_models.html
-       - text: "Adding a model and data"
-         href: articles/adding_model_and_data.html
        - text: "JAGS modeling"
          href: articles/jags_models.html
        - text: "portalcasting codebase"

@@ -158,7 +158,7 @@ read_data <- function (main      = ".",
 
   }
 
-  if (data_name == "historical") {
+  if (data_name == "historical_covariates") {
 
     out <- read_historical_covariates(main = main, settings = settings)
 

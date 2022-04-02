@@ -156,6 +156,10 @@ fill_raw <- function (main     = ".",
 
   messageq("  ... downloads complete. ", quiet = quiet)
   
+  update_directory_config(main     = main,
+                          settings = settings,
+                          quiet    = quiet)
+
   invisible()
 
 }

@@ -62,22 +62,30 @@ The usage of `jags_SS` is exemplified by the `jags_RW` model, which is a "simple
 The time series is then modeled using an initial state (`1`) based only on `mu` and subsequent states (`2` to `N`) based on the previous state and `tau` with a truncated Poisson observation:
 
 ```{r, eval=FALSE}
-# initial state
-X[1] <- mu;
-pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
-count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0,ntraps[1]);
+    # initial state
 
-# through time
-for(i in 2:N) {
-  # Process model
-  predX[i] <- X[i-1];
-  checkX[i] ~ dnorm(predX[i], tau); 
-  X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-  pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
+    X[1]          <- mu;
+    pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
+    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+
+
+    # through time
+
+    for(i in 2:N) {
+
+      # Process model
+
+      predX[i]      <- X[i-1];
+      checkX[i]     ~  dnorm(predX[i], tau); 
+      X[i]          <- min(c(checkX[i], log(ntraps[i] + 1))); 
+      pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
    
-  # observation model
-  count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
-}
+
+      # observation model
+
+      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+
+    }
 ```
 
 where `X` is used to track the state, `predX` is the mean/predicted value for the next step, `checkX` is the initial draw from the process model that has an overflow check on it (the `min` call) before passing the value to `X`, and `pred_count` is the natural-scale mean density, used as the parameter for the observation process. The offset (`0.1`) is removed here after being added in the priors (see below), and the `max` ensures that the parameter remains positive after the offset is removed.
@@ -87,110 +95,142 @@ The truncation and overflow protection are especially important here, as a log-s
 The two model parameters (`mu` and `tau`) are assumed to be distributed according to the available data that are from before `start_moon` (the start of the time series used to fit the model. In particular, `mu`, which is the log-scale density of rodents at time step 1 is considered to be drawn from a normal distribution with a mean equal to the prior average log-scale density of rodents and with a variance that is twice as large as the variance among prior log-scale density observations. Also, `tau` (the precision of the random walk) has a prior that is gamma distributed with a fixed rate of 0.1 and a rate-scaled shape equal to the mean of the distribution, which was set as the precision of the prior counts. 
 
 ```{r, eval=FALSE}
-# priors
-  log_past_count <- log(past_count + 0.1)
-  mean_log_past_count <- mean(log_past_count)
-  sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
-  var_log_past_count <- sd_log_past_count^2
-  precision_log_past_count <- 1/(var_log_past_count)
+    # priors
 
-  diff_count[1] <- log_past_count[2] - log_past_count[1]
-  diff_time[1] <- past_moon[2] - past_moon[1] 
-  diff_log_past_count[1] <- diff_count[1] / diff_time[1]
-  for(i in 2:(past_N - 1)){
-    diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
-    diff_time[i] <- past_moon[i + 1] - past_moon[i] 
-    diff_log_past_count[i] <- diff_count[i] / diff_time[i]
-  }    
-  sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
-  var_diff_log_past_count <- sd_diff_log_past_count^2
-  precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-  rate <- 0.1
-  shape <- precision_diff_log_past_count * rate
+    log_past_count           <- log(past_count + 0.1)
+    mean_log_past_count      <- mean(log_past_count)
+    sd_log_past_count        <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    var_log_past_count       <- sd_log_past_count^2
+    precision_log_past_count <- 1/(var_log_past_count)
 
-  mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
-  tau ~ dgamma(shape, rate); 
+    diff_count[1]          <- log_past_count[2] - log_past_count[1]
+    diff_time[1]           <- past_moon[2] - past_moon[1] 
+    diff_log_past_count[1] <- diff_count[1] / diff_time[1]
+
+    for (i in 2:(past_N - 1)) {
+
+      diff_count[i]          <- log_past_count[i + 1] - log_past_count[i]
+      diff_time[i]           <- past_moon[i + 1] - past_moon[i] 
+      diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+
+    }    
+
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count       <- sd_diff_log_past_count^2
+    precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+
+    rate  <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
+    mu  ~ dnorm(mean_log_past_count, precision_log_past_count); 
+    tau ~ dgamma(shape, rate); 
 ```
 
 The priors and time series components are then combined into a single character value for input:
 
 ```{r, eval=FALSE}
-jags_model <- "model {  
-  # priors
-  log_past_count <- log(past_count + 0.1)
-  mean_log_past_count <- mean(log_past_count)
-  sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
-   var_log_past_count <- sd_log_past_count^2
-  precision_log_past_count <- 1/(var_log_past_count)
+  jags_model <- "model { 
+ 
+    # priors
 
-  diff_count[1] <- log_past_count[2] - log_past_count[1]
-  diff_time[1] <- past_moon[2] - past_moon[1] 
-  diff_log_past_count[1] <- diff_count[1] / diff_time[1]
-  for(i in 2:(past_N - 1)){
-    diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
-    diff_time[i] <- past_moon[i + 1] - past_moon[i] 
-    diff_log_past_count[i] <- diff_count[i] / diff_time[i]
-  }    
-  sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
-  var_diff_log_past_count <- sd_diff_log_past_count^2
-  precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-  rate <- 0.1
-  shape <- precision_diff_log_past_count * rate
+    log_past_count           <- log(past_count + 0.1)
+    mean_log_past_count      <- mean(log_past_count)
+    sd_log_past_count        <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    var_log_past_count       <- sd_log_past_count^2
+    precision_log_past_count <- 1/(var_log_past_count)
 
-  mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
-  tau ~ dgamma(shape, rate); 
+    diff_count[1]          <- log_past_count[2] - log_past_count[1]
+    diff_time[1]           <- past_moon[2] - past_moon[1] 
+    diff_log_past_count[1] <- diff_count[1] / diff_time[1]
+
+    for (i in 2:(past_N - 1)) {
+
+      diff_count[i]          <- log_past_count[i + 1] - log_past_count[i]
+      diff_time[i]           <- past_moon[i + 1] - past_moon[i] 
+      diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+
+    }    
+
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count       <- sd_diff_log_past_count^2
+    precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+
+    rate  <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
+    mu  ~ dnorm(mean_log_past_count, precision_log_past_count); 
+    tau ~ dgamma(shape, rate); 
    
-  # initial state
-  X[1] <- mu;
-  pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
-  count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
-  # through time
-  for(i in 2:N) {
-    # Process model
-    predX[i] <- X[i-1];
-    checkX[i] ~ dnorm(predX[i], tau); 
-    X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
-    pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
-   
-    # observation model
-    count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
-  }
-}"
 
+    # initial state
+
+    X[1]          <- mu;
+    pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
+    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+
+
+    # through time
+
+    for(i in 2:N) {
+
+      # Process model
+
+      predX[i]      <- X[i-1];
+      checkX[i]     ~  dnorm(predX[i], tau); 
+      X[i]          <- min(c(checkX[i], log(ntraps[i] + 1))); 
+      pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
+   
+
+      # observation model
+
+      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+
+    }
+
+  }"
 ```
 
 As a starting point, we used an initializer function (`inits`) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The `inits` function takes the data provided as input, thus allowing use of the prior data, and returns a function that can be used within `runjags::run.jags` for a given chain:
 
 ```{r, eval=FALSE}
-inits <- function(data = NULL){
-  rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
-            "base::Super-Duper", "base::Mersenne-Twister")
-  past_N <- data$past_N 
-  past_count <- data$past_count 
-  past_moon <- data$past_moon
 
-  log_past_count <- log(past_count + 0.1)
-  mean_log_past_count <- mean(log_past_count)
-  sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
-  diff_log_past_count <- rep(NA, past_N - 1)
-  for(i in 1:(past_N - 1)){
-    diff_count <- log_past_count[i + 1] - log_past_count[i]
-    diff_time <- past_moon[i + 1] - past_moon[i] 
-    diff_log_past_count[i] <- diff_count / diff_time
-  }
-  sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
-  var_diff_log_past_count <- sd_diff_log_past_count^2
-  precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-  rate <- 0.1
-  shape <- precision_diff_log_past_count * rate
+  inits <- function (data = NULL) {
 
-  function(chain = chain){
-    list(.RNG.name = sample(rngs, 1),
-         .RNG.seed = sample(1:1e+06, 1),
-          mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
-          tau = rgamma(1, shape = shape, rate = rate))
+    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
+    past_N     <- data$past_N 
+    past_count <- data$past_count 
+    past_moon  <- data$past_moon
+
+    log_past_count      <- log(past_count + 0.1)
+    mean_log_past_count <- mean(log_past_count)
+    sd_log_past_count   <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    diff_log_past_count <- rep(NA, past_N - 1)
+
+    for (i in 1:(past_N - 1)) {
+
+      diff_count             <- log_past_count[i + 1] - log_past_count[i]
+      diff_time              <- past_moon[i + 1] - past_moon[i] 
+      diff_log_past_count[i] <- diff_count / diff_time
+
+    }
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count       <- sd_diff_log_past_count^2
+    precision_diff_log_past_count <- 1/(var_diff_log_past_count)
+
+    rate  <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
+    function (chain = chain) {
+
+      list(.RNG.name = sample(rngs, 1),
+           .RNG.seed = sample(1:1e+06, 1),
+            mu       = rnorm(1, mean_log_past_count, sd_log_past_count), 
+            tau      = rgamma(1, shape = shape, rate = rate))
+
+    }
+
   }
-}
+
 ```
 
 Finally, we tell the software to track both parameters through the `monitor` vector:
@@ -202,89 +242,127 @@ Finally, we tell the software to track both parameters through the `monitor` vec
 These components can then be combined within a function (like `jags_RW`) to leverage the internal functionality of `jags_ss` and flexibility of `runjags_control`. Because `jags_ss` process and packages the output for the casting standards, nothing in particular needs to be added in the wrapper function `jags_RW` after calling `jags_ss`:
 
 ```{r, eval=FALSE}
-jags_RW <- function(main = ".", data_set = "all",  
-                    control_files = files_control(), 
-                    control_runjags = runjags_control(), lag = NA, 
-                    quiet = FALSE, verbose = FALSE, arg_checks = TRUE){
-  check_args(arg_checks = arg_checks)
-  data_set <- tolower(data_set)
-  
-  monitor <- c("mu", "tau")
-  inits <- function(data = NULL){
-    rngs <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry",
-              "base::Super-Duper", "base::Mersenne-Twister")
-    past_N <- data$past_N 
-    past_count <- data$past_count 
-    past_moon <- data$past_moon
+jags_RW <- function (main            = ".", 
+                     dataset         = "all",  
+                     settings        = directory_settings(),
+                     control_runjags = runjags_control(), 
+                     quiet           = FALSE, 
+                     verbose         = FALSE){
+ 
+  dataset <- tolower(dataset)
+  messageq(paste0("  -jags_RW for ", dataset), quiet = quiet)
 
-    log_past_count <- log(past_count + 0.1)
+  monitor <- c("mu", "tau")
+
+  inits <- function (data = NULL) {
+
+    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
+    past_N     <- data$past_N 
+    past_count <- data$past_count 
+    past_moon  <- data$past_moon
+
+    log_past_count      <- log(past_count + 0.1)
     mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    sd_log_past_count   <- max(c(sd(log_past_count) * sqrt(2), 0.01))
     diff_log_past_count <- rep(NA, past_N - 1)
-    for(i in 1:(past_N - 1)){
-      diff_count <- log_past_count[i + 1] - log_past_count[i]
-      diff_time <- past_moon[i + 1] - past_moon[i] 
+
+    for (i in 1:(past_N - 1)) {
+
+      diff_count             <- log_past_count[i + 1] - log_past_count[i]
+      diff_time              <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count / diff_time
+
     }
-    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
-    var_diff_log_past_count <- sd_diff_log_past_count^2
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count       <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-    rate <- 0.1
+
+    rate  <- 0.1
     shape <- precision_diff_log_past_count * rate
 
-    function(chain = chain){
+    function (chain = chain) {
+
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
-            mu = rnorm(1, mean_log_past_count, sd_log_past_count), 
-            tau = rgamma(1, shape = shape, rate = rate))
+            mu       = rnorm(1, mean_log_past_count, sd_log_past_count), 
+            tau      = rgamma(1, shape = shape, rate = rate))
+
     }
+
   }
-  jags_model <- "model {  
+
+  jags_model <- "model { 
+ 
     # priors
-    log_past_count <- log(past_count + 0.1)
-    mean_log_past_count <- mean(log_past_count)
-    sd_log_past_count <- max(c(sd(log_past_count) * sqrt(2), 0.01))
-    var_log_past_count <- sd_log_past_count^2
+
+    log_past_count           <- log(past_count + 0.1)
+    mean_log_past_count      <- mean(log_past_count)
+    sd_log_past_count        <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    var_log_past_count       <- sd_log_past_count^2
     precision_log_past_count <- 1/(var_log_past_count)
 
-    diff_count[1] <- log_past_count[2] - log_past_count[1]
-    diff_time[1] <- past_moon[2] - past_moon[1] 
+    diff_count[1]          <- log_past_count[2] - log_past_count[1]
+    diff_time[1]           <- past_moon[2] - past_moon[1] 
     diff_log_past_count[1] <- diff_count[1] / diff_time[1]
-    for(i in 2:(past_N - 1)){
-      diff_count[i] <- log_past_count[i + 1] - log_past_count[i]
-      diff_time[i] <- past_moon[i + 1] - past_moon[i] 
+
+    for (i in 2:(past_N - 1)) {
+
+      diff_count[i]          <- log_past_count[i + 1] - log_past_count[i]
+      diff_time[i]           <- past_moon[i + 1] - past_moon[i] 
       diff_log_past_count[i] <- diff_count[i] / diff_time[i]
+
     }    
-    sd_diff_log_past_count <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
-    var_diff_log_past_count <- sd_diff_log_past_count^2
+
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    var_diff_log_past_count       <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-    rate <- 0.1
+
+    rate  <- 0.1
     shape <- precision_diff_log_past_count * rate
 
-    mu ~ dnorm(mean_log_past_count, precision_log_past_count); 
+    mu  ~ dnorm(mean_log_past_count, precision_log_past_count); 
     tau ~ dgamma(shape, rate); 
    
+
     # initial state
-    X[1] <- mu;
+
+    X[1]          <- mu;
     pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
-    count[1] ~ dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+
+
     # through time
+
     for(i in 2:N) {
+
       # Process model
-      predX[i] <- X[i-1];
-      checkX[i] ~ dnorm(predX[i], tau); 
-      X[i] <- min(c(checkX[i], log(ntraps[i] + 1))); 
+
+      predX[i]      <- X[i-1];
+      checkX[i]     ~  dnorm(predX[i], tau); 
+      X[i]          <- min(c(checkX[i], log(ntraps[i] + 1))); 
       pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
    
+
       # observation model
+
       count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+
     }
+
   }"
-  jags_ss(main = main, data_set = data_set, control_files = control_files,
-          control_runjags = control_runjags, jags_model = jags_model,
-          monitor = monitor, inits = inits, lag = lag, quiet = quiet, 
-          verbose = verbose, arg_checks = arg_checks)
+
+  jags_ss(main            = main, 
+          model_name      = "jags_RW", 
+          dataset         = dataset, 
+          settings        = settings,
+          control_runjags = control_runjags, 
+          jags_model      = jags_model,
+          monitor         = monitor, 
+          inits           = inits, 
+          quiet           = quiet, 
+          verbose         = verbose)
 }
+
 ```
 
 Running this model in the forecasting pipeline produces standard output (allowing it to be integrated with the other cast output) and highlights the starting point for more mechanistic time series models, starting with the logistic growth model (`jags_logistic`)

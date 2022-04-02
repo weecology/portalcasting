@@ -4,6 +4,7 @@
 \alias{directory_configuration_file}
 \alias{write_directory_config}
 \alias{read_directory_config}
+\alias{update_directory_config}
 \title{Create, Update, and Read the Directory Configuration File}
 \usage{
 write_directory_config(
@@ -13,6 +14,12 @@ write_directory_config(
 )
 
 read_directory_config(
+  main = ".",
+  settings = directory_settings(),
+  quiet = FALSE
+)
+
+update_directory_config(
   main = ".",
   settings = directory_settings(),
   quiet = FALSE
