@@ -159,6 +159,7 @@ reference:
       - combine_hist_and_cast
       - match.call.defaults
       - messageq
+      - message_break
       - foy
       - add_date_from_components
       - path_no_ext
