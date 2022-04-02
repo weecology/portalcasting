@@ -26,10 +26,3 @@ most_abundant_species(
 \description{
 Not including the total, determine the most abundant rodent species within a data set.
 }
-\examples{
-\donttest{
- setup_dir()
- most_abundant_species()
-}
-
-}

@@ -37,15 +37,3 @@ read_model_casts(main = ".", settings = directory_settings(), cast_id = NULL)
 \description{
 Read in the various output files of a cast or casts in the casts sub directory.
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"))
-  read_cast_tab(cast_id = 1)
-  read_cast_tabs(cast_ids = 1:2)
-  read_cast_metadata(cast_id = 1)
-  read_model_fits(cast_id = 1)
-  read_model_casts(cast_id = 1)
-}
-
-}

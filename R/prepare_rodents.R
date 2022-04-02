@@ -13,12 +13,6 @@
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{list} of prepared \code{datasets}.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   prep_rodents()
-#'  }
 #'  
 #' @name prepare rodents
 #'
@@ -121,12 +115,6 @@ prep_rodents <- function (main     = ".",
 #'
 #' @return \code{data.frame} for the specified data set.
 #'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   prep_rodent_dataset()
-#'  }
-#'  
 #' @name prepare rodent dataset
 #'
 #' @export

@@ -48,7 +48,7 @@
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   portalcast()
+#'   portalcast(models = "ESSS")
 #'   cast()
 #'  }
 #'

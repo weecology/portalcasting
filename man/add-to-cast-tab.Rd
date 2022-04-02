@@ -52,15 +52,3 @@ Add values to a cast's cast tab. If necessary components are missing (such as no
 \details{
 If an interpolated data set is used to fit a model, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"))
-  cast_tab <- read_cast_tab(cast_id = 1)
-  add_lead_to_cast_tab(cast_tab = cast_tab)
-  add_obs_to_cast_tab(cast_tab = cast_tab)
-  add_err_to_cast_tab(cast_tab = cast_tab)
-  add_covered_to_cast_tab(cast_tab = cast_tab)
-}
-
-}

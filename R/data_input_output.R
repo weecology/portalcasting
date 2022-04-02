@@ -316,12 +316,6 @@ read_metadata <- function(main     = ".",
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return Data requested.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   read_casts_metadata()
-#'  }
 #'
 #' @export
 #'

@@ -42,11 +42,3 @@ select_casts(
 Determines the casts that match user specifications. \cr
  Functionally, a wrapper on \code{\link{read_casts_metadata}} with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata.
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"))
-  select_casts(models = "AutoArima")
-}
-
-}

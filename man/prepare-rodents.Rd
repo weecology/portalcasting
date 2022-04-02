@@ -30,10 +30,3 @@ prep_rodents(
 \description{
 Create specified \code{datasets} using their associated function and arguments.
 }
-\examples{
- \donttest{
-  setup_dir()
-  prep_rodents()
- }
- 
-}

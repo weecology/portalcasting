@@ -97,10 +97,3 @@ Workhorse function for creating portalcasting rodent datasets using existing fun
              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
              Ready for implementation via \code{\link{prep_rodents}}.
 }
-\examples{
- \donttest{
-  setup_dir()
-  prep_rodent_dataset()
- }
- 
-}

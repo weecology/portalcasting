@@ -9,18 +9,6 @@
 #'  \code{\link{read_cast_tab}}.
 #'
 #' @return \code{data.frame} of metrics for each cast for each species. 
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"))
-#'   cast_tab <- read_cast_tab(cast_id = 1)
-#'   cast_tab <- add_lead_to_cast_tab(cast_tab = cast_tab)
-#'   cast_tab <- add_obs_to_cast_tab(cast_tab = cast_tab)
-#'   cast_tab <- add_err_to_cast_tab(cast_tab = cast_tab)
-#'   cast_tab <- add_covered_to_cast_tab(cast_tab = cast_tab)
-#'   measure_cast_level_error(cast_tab = cast_tab)
-#' }
 #'
 #' @export
 #'
@@ -78,17 +66,6 @@ measure_cast_level_error <- function(cast_tab = NULL){
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{data.frame} of \code{cast_tab} with an additional column or columns if needed. 
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"))
-#'   cast_tab <- read_cast_tab(cast_id = 1)
-#'   add_lead_to_cast_tab(cast_tab = cast_tab)
-#'   add_obs_to_cast_tab(cast_tab = cast_tab)
-#'   add_err_to_cast_tab(cast_tab = cast_tab)
-#'   add_covered_to_cast_tab(cast_tab = cast_tab)
-#' }
 #'
 #' @name add to cast tab
 #'
@@ -215,17 +192,6 @@ add_obs_to_cast_tab <- function (main     = ".",
 #'  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
 #'  \code{read_model_fits}: \code{list} of \code{model_fits}. \cr \cr
 #'  \code{read_model_casts}: \code{list} of \code{model_casts}.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"))
-#'   read_cast_tab(cast_id = 1)
-#'   read_cast_tabs(cast_ids = 1:2)
-#'   read_cast_metadata(cast_id = 1)
-#'   read_model_fits(cast_id = 1)
-#'   read_model_casts(cast_id = 1)
-#' }
 #'
 #' @name read cast output
 #'
@@ -410,13 +376,6 @@ read_model_casts <- function (main     = ".",
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{data.frame} of the \code{cast_tab}.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"))
-#'   select_casts(models = "AutoArima")
-#' }
 #'
 #' @export
 #'

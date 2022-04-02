@@ -18,16 +18,3 @@ Summarize the cast-level errors or fits to the observations.
  \cr 
  Presently included are root mean square error and coverage.
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"))
-  cast_tab <- read_cast_tab(cast_id = 1)
-  cast_tab <- add_lead_to_cast_tab(cast_tab = cast_tab)
-  cast_tab <- add_obs_to_cast_tab(cast_tab = cast_tab)
-  cast_tab <- add_err_to_cast_tab(cast_tab = cast_tab)
-  cast_tab <- add_covered_to_cast_tab(cast_tab = cast_tab)
-  measure_cast_level_error(cast_tab = cast_tab)
-}
-
-}

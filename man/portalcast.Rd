@@ -87,7 +87,7 @@ Multiple models can be run together on the multiple, varying data sets for a sin
 \examples{
  \donttest{
   setup_dir()
-  portalcast()
+  portalcast(models = "ESSS")
   cast()
  }
 

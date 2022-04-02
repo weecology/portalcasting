@@ -51,11 +51,3 @@ Combine multiple casts' output into a single ensemble. Presently, only a general
 A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
  The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts from the stated \code{cast_groups} will be included.
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = c("AutoArima", "ESSS"), end_moon = 515)
-  ensemble_casts()
-}
-
-}
