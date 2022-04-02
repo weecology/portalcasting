@@ -41,6 +41,7 @@ reference:
     desc: "Functions that instantiate a portalcasting directory"
     contents:
       - create_dir
+      - directory_settings
   - title: "Directory filling"
     desc: "Functions that add the files to each of the component subdirectories"
     contents:
@@ -117,6 +118,7 @@ reference:
     contents:
       - prep_moons
       - add_future_moons
+      - add_newmoonnumbers_from_dates
   - title: "Model generating functions"
     desc: "Functions for formatting model-running scripts"
     contents:
