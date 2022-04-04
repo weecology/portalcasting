@@ -1,6 +1,21 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
-#' @description Fill the directory with components including (optionally) the raw data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
+#' @description Fill the directory with components including \enumerate{
+#'   \item{Resources (\code{\link{fill_raw}}): \itemize{
+#'     \item{raw data (\code{\link[portalr]{download_observations}})}
+#'     \item{directory archive (\code{\link{download_archive}})}
+#'     \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
+#'   \item{Output: \itemize{
+#'     \item{forecasts (\code{\link{fill_casts}})}
+#'     \item{model fits (\code{\link{fill_fits}})}}}
+#'   \item{Data (\code{\link{fill_data}}):  \itemize{
+#'     \item{rodent datasets (\code{\link{prep_rodents}})}
+#'     \item{temporal (lunar) data (\code{\link{prep_moons}})}
+#'     \item{covariates (\code{\link{prep_covariates}})}
+#'     \item{metadata (\code{\link{prep_metadata}})}
+#'   }}
+#'   \item{Models (\code{\link{fill_models}})}
+#'  }
 #'             
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -8,7 +23,7 @@
 #'
 #' @param datasets \code{list} of datasets to be created using \code{\link{do.call}} on the defined functions. 
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -177,7 +192,7 @@ fill_casts <- function (main     = ".",
 
   files <- unlist(mapply(FUN        = list.files,
                          path       = mapply(FUN = file.path, 
-                                                   main, settings$subs["resources"], settings$repository, output_folders),
+                                                   main, settings$subs$resources, settings$repository, output_folders),
                          full.names = TRUE))
 
   if (length(files) == 0) {
@@ -189,7 +204,7 @@ fill_casts <- function (main     = ".",
   messageq(paste0(" Located ", length(files), " cast files ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subs["forecasts"]), 
+                      to        = file.path(main, settings$subs$forecasts), 
                       recursive = TRUE)
 
   messageq(paste(ifelse(sum(copied) > 0, 
@@ -221,7 +236,7 @@ fill_fits <- function (main     = ".",
 
   files <- unlist(mapply(FUN        = list.files,
                          path       = mapply(FUN = file.path, 
-                                                   main, settings$subs["resources"], settings$repository, output_folders),
+                                                   main, settings$subs$resources, settings$repository, output_folders),
                          full.names = TRUE))
 
   if (length(files) == 0) {
@@ -233,7 +248,7 @@ fill_fits <- function (main     = ".",
   messageq(paste0(" Located ", length(files), " fit files ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subs["model fits"]), 
+                      to        = file.path(main, settings$subs$`model fits`), 
                       recursive = TRUE)
 
   messageq(paste(ifelse(sum(copied) > 0, 

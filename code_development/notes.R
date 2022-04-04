@@ -4,7 +4,7 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./testing"
+main <- "./portalcasting"
 
 setup_dir(main)
 portalcast(main)

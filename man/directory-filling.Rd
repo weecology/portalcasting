@@ -64,7 +64,7 @@ fill_models(
 
 \item{datasets}{\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
@@ -74,7 +74,22 @@ fill_models(
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Fill the directory with components including (optionally) the raw data (\code{\link[portalr]{download_observations}}), portalPredictions archive (\code{\link{download_archive}}), climate forecasts (\code{\link{download_climate_forecasts}}), models (\code{\link{write_model}}).
+Fill the directory with components including \enumerate{
+  \item{Resources (\code{\link{fill_raw}}): \itemize{
+    \item{raw data (\code{\link[portalr]{download_observations}})}
+    \item{directory archive (\code{\link{download_archive}})}
+    \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
+  \item{Output: \itemize{
+    \item{forecasts (\code{\link{fill_casts}})}
+    \item{model fits (\code{\link{fill_fits}})}}}
+  \item{Data (\code{\link{fill_data}}):  \itemize{
+    \item{rodent datasets (\code{\link{prep_rodents}})}
+    \item{temporal (lunar) data (\code{\link{prep_moons}})}
+    \item{covariates (\code{\link{prep_covariates}})}
+    \item{metadata (\code{\link{prep_metadata}})}
+  }}
+  \item{Models (\code{\link{fill_models}})}
+ }
 }
 \examples{
  \donttest{

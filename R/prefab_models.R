@@ -18,58 +18,10 @@ NULL
 #' @export
 #'
 prefab_model_controls <- function( ) {
-  list(
-    AutoArima     = list(metadata        = list(name            = "AutoArima",  
-                                                descriptor      = "classic model, all species, foal species"),
-                         fun             = AutoArima,
-                         args            = NULL,
-                         datasets        = c("all", "controls", "exclosures", "dm_controls")), 
-    ESSS          = list(metadata        = list(name            = "ESSS",  
-                                                descriptor      = "classic model, all species, foal species"),
-                         fun             = ESSS,
-                         args            = NULL,
-                         datasets        = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp")),
-    NaiveArima    = list(metadata        = list(name            = "NaiveArima",  
-                                                descriptor      = "classic model, all species, foal species"),
-                         fun             = NaiveArima,
-                         args            = NULL,
-                         datasets        = c("all", "controls", "exclosures", "dm_controls")), 
-    nbGARCH       = list(metadata        = list(name            = "nbGARCH",  
-                                                descriptor      = "classic model, all species, foal species"),
-                         fun             = nbGARCH,
-                         args            = NULL,
-                         datasets        = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp")), 
-    nbsGARCH      = list(metadata        = list(name            = "nbsGARCH",  
-                                                descriptor      = "classic model, all species, foal species"),
-                         fun             = nbsGARCH,
-                         args            = NULL,
-                         datasets        = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp")), 
-    pevGARCH      = list(metadata        = list(name            = "pevGARCH", 
-                                                descriptor      = "classic model, all species, foal species"),  
-                         fun             = pevGARCH,
-                         datasets        = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp"),
-                         args            = list(lag = 6)), 
-#    simplexEDM    = list(metadata        = list(name            = "simplexEDM",  
-#                                                descriptor      = "population model, all species, focal species"),
-#                         fun             = simplexEDM,
-#                         datasets        = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp"), 
-#                         args            = list(max_E           = 7)),
-#    GPEDM         = list(metadata        = list(name            = "GPEDM",  
-#                                                descriptor      = "population model, all species, focal species"),
-#                         fun             = GPEDM,
-#                         datasets        = c("all_interp", "controls_interp", "exclosures_interp", "dm_controls_interp"), 
-#                         args            = list(max_E           = 7)),
-    jags_RW       = list(metadata        = list(name            = "jags_RW",  
-                                                descriptor      = "population model, focal species"),
-                         fun             = jags_RW,
-                         datasets        = c("dm_controls"), 
-                         args            = list(control_runjags = runjags_control())),
-    jags_logistic = list(metadata =        list(name            = "jags_logistic", 
-                                                descriptor      = "population model, focal species"),
-                         fun             = jags_logistic,
-                         datasets        = c("dm_controls"), 
-                         args            = list(control_runjags = runjags_control())))
 
+  prefab_controls_file <- system.file("extdata", "prefab_model_controls.yaml", package = "portalcasting")
+
+  read_yaml(prefab_controls_file)
 }
 
 #' @rdname prefabricated_models

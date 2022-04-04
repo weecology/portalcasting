@@ -1,7 +1,7 @@
 #' @title Create and Fill a Forecasting Directory
 #'
 #' @description Combines \code{\link{create_dir}} and \code{\link{fill_dir}} to create a ready-to-run (via \code{\link{portalcast}}) directory where indicated. \cr \cr
-#'              \code{setup_production} creates a standard production directory. \cr \cr
+#'              \code{setup_production} creates a standard production directory, which includes downloading the most recent archive of the directory. \cr \cr
 #'              \code{setup_sandbox} creates a sandboxing directory. \cr \cr
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
@@ -10,7 +10,7 @@
 #'
 #' @param datasets \code{character} vector of dataset names be created. 
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -43,10 +43,6 @@ setup_dir <- function (main     = ".",
              settings = settings,
              quiet    = quiet)
 
-  config <- write_directory_config(main     = main, 
-                                   settings = settings, 
-                                   quiet    = quiet)
-
   fill_dir(main     = main,
            models   = models,
            datasets = datasets,
@@ -56,7 +52,9 @@ setup_dir <- function (main     = ".",
 
   messageq(message_break(), "\nDirectory successfully instantiated\n", message_break(), quiet = quiet)
 
-  invisible(config)
+  read_directory_config(main     = main,
+                        settings = settings,
+                        quiet    = quiet)
 
 }
 

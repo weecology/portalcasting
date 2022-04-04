@@ -42,7 +42,7 @@ setup_sandbox(
 
 \item{datasets}{\code{character} vector of dataset names be created.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
@@ -53,7 +53,7 @@ The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 }
 \description{
 Combines \code{\link{create_dir}} and \code{\link{fill_dir}} to create a ready-to-run (via \code{\link{portalcast}}) directory where indicated. \cr \cr
-             \code{setup_production} creates a standard production directory. \cr \cr
+             \code{setup_production} creates a standard production directory, which includes downloading the most recent archive of the directory. \cr \cr
              \code{setup_sandbox} creates a sandboxing directory. \cr \cr
 }
 \examples{

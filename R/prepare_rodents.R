@@ -10,7 +10,7 @@
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{list} of prepared \code{datasets}.
 #'  

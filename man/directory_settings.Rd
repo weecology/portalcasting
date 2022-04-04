@@ -10,6 +10,8 @@ directory_settings(
   covariates_file = "covariates.csv",
   historical_covariates_file = "historical_covariates.csv",
   forecast_covariates_file = "forecast_covariates.csv",
+  rodent_dataset_controls_file = "rodent_dataset_controls.yaml",
+  model_controls_file = "model_controls.yaml",
   metadata_file = "metadata.yaml",
   subdirectories = list(forecasts = "casts", `model fits` = "fits", `model scripts` =
     "models", resources = "raw", data = "data", tmp = "tmp"),
@@ -30,6 +32,10 @@ directory_settings(
 \item{moons_file}{\code{character} name of the file for saving the moons data.}
 
 \item{covariates_file, historical_covariates_file, forecast_covariates_file}{\code{character} name of the files for saving the covariate data (combined historical and forecast) and each component.}
+
+\item{rodent_dataset_controls_file}{\code{character} name of the file for saving the rodent dataset controls.}
+
+\item{model_controls_file}{\code{character} name of the file for saving the model controls.}
 
 \item{metadata_file}{\code{character} name of the file for saving the forecast metadata.}
 
