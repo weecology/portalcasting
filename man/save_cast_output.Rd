@@ -31,7 +31,7 @@ Save out any output from a cast of a model for a data set and update the cast me
 \details{
 Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
  \itemize{
-  \item \code{"metadata"}: saved out with \code{\link[yaml]{as.yaml}}. Will
+  \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
    typically be the model-specific metadata from the 
    \code{data/metadata.yaml} file, but can more generally be any 
    appropriate object (typically a \code{list}).  

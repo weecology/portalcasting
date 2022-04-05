@@ -49,9 +49,9 @@ prep_metadata <- function (main             = ".",
   covariates <- read_covariates(main     = main, 
                                 settings = settings)
 
-  dataset_controls_list <- read_dataset_controls(main     = main, 
-                                                 settings = settings, 
-                                                 datasets = datasets)
+  dataset_controls_list <- dataset_controls(main     = main, 
+                                            settings = settings, 
+                                            datasets = datasets)
 
 
   messageq("  - metadata file", quiet = quiet)

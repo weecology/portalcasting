@@ -310,7 +310,8 @@ read_model_fits <- function (main     = ".",
   
   if (is.null(cast_id)) {
 
-    casts_meta <- select_casts(main = main)
+    casts_meta <- select_casts(main     = main,
+                               settings = settings)
     cast_id <- max(casts_meta$cast_id)
 
   }
@@ -339,8 +340,9 @@ read_model_casts <- function (main     = ".",
   
   if (is.null(cast_id)) {
 
-    casts_meta <- select_casts(main = main)
-    cast_id    <- max(casts_meta$cast_id)
+    casts_meta <- select_casts(main     = main,
+                               settings = settings)
+    cast_id <- max(casts_meta$cast_id)
 
   }
 
@@ -355,6 +357,7 @@ read_model_casts <- function (main     = ".",
 
   read_in_json <- fromJSON(readLines(cpath))
   unserializeJSON(read_in_json)
+
 }
 
 
@@ -449,7 +452,7 @@ select_casts <- function (main           = ".",
 #'
 #' @details Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
 #'  \itemize{
-#'   \item \code{"metadata"}: saved out with \code{\link[yaml]{as.yaml}}. Will
+#'   \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
 #'    typically be the model-specific metadata from the 
 #'    \code{data/metadata.yaml} file, but can more generally be any 
 #'    appropriate object (typically a \code{list}).  
@@ -515,7 +518,7 @@ save_cast_output <- function (cast     = NULL,
                               end_moon              = cast$metadata$time$end_moon,
                               lead_time             = cast$metadata$time$lead_time,
                               model                 = cast$metadata$models,
-                              dataset        = cast$metadata$datasets,
+                              dataset               = cast$metadata$datasets,
                               portalcasting_version = pc_version,
                               QAQC                  = TRUE,
                               notes                 = NA)
@@ -528,8 +531,9 @@ save_cast_output <- function (cast     = NULL,
 
     meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
     meta_path     <- file.path(main, settings$subs$forecasts, meta_filename)
-    yams          <- as.yaml(cast$metadata)
-    writeLines(yams, con = meta_path)
+
+    write_yaml(x    = cast$metadata,
+               file = meta_path)
 
   }
 
@@ -541,7 +545,10 @@ save_cast_output <- function (cast     = NULL,
     cast_tab$cast_id          <- next_cast_id
     cast_tab$cast_group       <- cast$metadata$cast_group
     cast_tab$confidence_level <- cast$metadata$confidence_level
-    write.csv(cast_tab, cast_tab_path, row.names = FALSE)
+
+    write.csv(x         = cast_tab,
+              file      = cast_tab_path, 
+              row.names = FALSE)
 
   }
 
@@ -551,7 +558,9 @@ save_cast_output <- function (cast     = NULL,
     model_fits_path     <- file.path(main, settings$subs$`model fits`, model_fits_filename)
     model_fits          <- cast$model_fits
     model_fits          <- serializeJSON(model_fits)
-    write_json(model_fits, path = model_fits_path)
+
+    write_json(x    = model_fits, 
+               path = model_fits_path)
 
   }
 
@@ -561,7 +570,9 @@ save_cast_output <- function (cast     = NULL,
     model_casts_path     <- file.path(main, settings$subs$forecasts, model_casts_filename)
     model_casts          <- cast$model_casts
     model_casts          <- serializeJSON(model_casts)
-    write_json(model_casts, path = model_casts_path)
+
+    write_json(x    = model_casts, 
+               path = model_casts_path)
 
   }
 
