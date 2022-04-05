@@ -18,7 +18,7 @@ end_moon <- max(casts_metadata$end_moon)
                            end_moon = end_moon,
                            models   = NULL, 
                            rodent_dataset = NULL,
-                           species  = species), "data.frame")
+                           species  = NULL), "data.frame")
 
 
   expect_error(ensemble_casts(main = main, cast_id = 1e10))
