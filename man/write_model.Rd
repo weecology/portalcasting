@@ -16,7 +16,7 @@ write_model(
 model_template(
   main = ".",
   model = NULL,
-  rodent_datasets = NULL,
+  datasets = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE

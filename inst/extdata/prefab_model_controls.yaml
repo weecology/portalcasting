@@ -4,7 +4,7 @@ AutoArima:
     descriptor: classic model, all species, focal species
   fun: AutoArima
   args: ~
-  rodent_datasets:
+  datasets:
   - all
   - controls
   - exclosures
@@ -15,7 +15,7 @@ ESSS:
     descriptor: classic model, all species, focal species
   fun: ESSS
   args: ~
-  rodent_datasets:
+  datasets:
   - all_interp
   - controls_interp
   - exclosures_interp
@@ -26,7 +26,7 @@ NaiveArima:
     descriptor: classic model, all species, focal species
   fun: NaiveArima
   args: ~
-  rodent_datasets:
+  datasets:
   - all
   - controls
   - exclosures
@@ -37,7 +37,7 @@ nbGARCH:
     descriptor: classic model, all species, focal species
   fun: nbGARCH
   args: ~
-  rodent_datasets:
+  datasets:
   - all_interp
   - controls_interp
   - exclosures_interp
@@ -48,7 +48,7 @@ nbsGARCH:
     descriptor: classic model, all species, focal species
   fun: nbsGARCH
   args: ~
-  rodent_datasets:
+  datasets:
   - all_interp
   - controls_interp
   - exclosures_interp
@@ -58,7 +58,7 @@ pevGARCH:
     name: pevGARCH
     descriptor: classic model, all species, focal species
   fun: pevGARCH
-  rodent_datasets:
+  datasets:
   - all_interp
   - controls_interp
   - exclosures_interp
@@ -70,7 +70,7 @@ jags_RW:
     name: jags_RW
     descriptor: population model, focal species
   fun: jags_RW
-  rodent_datasets: dm_controls
+  datasets: dm_controls
   args:
     control_runjags:
       nchains: 2.0
@@ -89,7 +89,7 @@ jags_logistic:
     name: jags_logistic
     descriptor: population model, focal species
   fun: jags_logistic
-  rodent_datasets: dm_controls
+  datasets: dm_controls
   args:
     control_runjags:
       nchains: 2.0

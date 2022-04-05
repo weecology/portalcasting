@@ -8,7 +8,7 @@
 portalcast(
   main = ".",
   models = prefab_models(),
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   end_moons = NULL,
   start_moon = 217,
   lead_time = 12,
@@ -22,7 +22,7 @@ portalcast(
 cast(
   main = ".",
   models = prefab_models(),
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
@@ -38,7 +38,7 @@ cast(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{rodent_datasets}{\code{character} vector of dataset names to be created.}
+\item{datasets}{\code{character} vector of dataset names to be created.}
 
 \item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
 \strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.}

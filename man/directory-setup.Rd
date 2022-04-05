@@ -10,7 +10,7 @@
 setup_dir(
   main = ".",
   models = prefab_models(),
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -19,7 +19,7 @@ setup_dir(
 setup_production(
   main = ".",
   models = prefab_models(),
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(portalPredictions = list(source = "github", version =
     "latest")),
   quiet = FALSE,
@@ -29,7 +29,7 @@ setup_production(
 setup_sandbox(
   main = ".",
   models = prefab_models(),
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -40,7 +40,7 @@ setup_sandbox(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{rodent_datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
@@ -48,7 +48,7 @@ setup_sandbox(
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
 
-\item{new_rodent_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets}.}
+\item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets}.}
 
 \item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models}.}
 }

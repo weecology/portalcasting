@@ -4,35 +4,35 @@
 #'
 #' @param interpolate \code{logical} value indicating if the interpolated data only should be listed (\code{interpolate = TRUE}), if the non-interpolated data only should be listed (\code{interpolate = FALSE}), or if both should be listed (\code{interpolate = NULL}, default).  
 #'
-#' @return \code{prefab_rodent_datasets}: \code{character} vector of dataset names. \cr
-#'         \code{prefab_rodent_dataset_controls}: \code{list} vector of dataset controls. \cr
+#' @return \code{prefab_datasets}: \code{character} vector of dataset names. \cr
+#'         \code{prefab_dataset_controls}: \code{list} vector of dataset controls. \cr
 #'
 #' @examples
-#'  prefab_rodent_datasets()
-#'  prefab_rodent_dataset_controls()
+#'  prefab_datasets()
+#'  prefab_dataset_controls()
 #'
-#' @name prefabricated_rodent_datasets
+#' @name prefabricated_datasets
 #'
 NULL
 
-#' @rdname prefabricated_rodent_datasets
+#' @rdname prefabricated_datasets
 #'
 #' @export
 #'
-prefab_rodent_datasets <- function(interpolate = NULL){
+prefab_datasets <- function(interpolate = NULL){
 
-  names(prefab_rodent_dataset_controls(interpolate = interpolate))
+  names(prefab_dataset_controls(interpolate = interpolate))
 
 }
 
 
-#' @rdname prefabricated_rodent_datasets
+#' @rdname prefabricated_datasets
 #'
 #' @export
 #'
-prefab_rodent_dataset_controls <- function (interpolate = NULL) {
+prefab_dataset_controls <- function (interpolate = NULL) {
 
-  prefab_controls_file <- system.file("extdata", "prefab_rodent_dataset_controls.yaml", package = "portalcasting")
+  prefab_controls_file <- system.file("extdata", "prefab_dataset_controls.yaml", package = "portalcasting")
 
   out <- read_yaml(prefab_controls_file)
 

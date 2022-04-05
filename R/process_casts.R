@@ -136,22 +136,22 @@ add_obs_to_cast_tab <- function (main     = ".",
   return_if_null(cast_tab)
 
   # patch
-  colnames(cast_tab)[colnames(cast_tab) %in% c("data_set", "dataset")] <- "rodent_dataset"
+  colnames(cast_tab)[colnames(cast_tab) == "data_set"] <- "dataset"
   # patch
 
   cast_tab$obs   <- NA
-  cast_rodent_dataset   <- gsub("_interp", "", cast_tab$rodent_dataset)
-  ucast_rodent_dataset  <- unique(cast_rodent_dataset)
-  ncast_rodent_datasets <- length(ucast_rodent_dataset)
+  cast_dataset   <- gsub("_interp", "", cast_tab$dataset)
+  ucast_dataset  <- unique(cast_dataset)
+  ncast_datasets <- length(ucast_dataset)
 
-  for (j in 1:ncast_rodent_datasets) {
+  for (j in 1:ncast_datasets) {
 
     obs <- read_rodents_table(main           = main, 
                               settings       = settings,
-                              rodent_dataset = ucast_rodent_dataset[j])
+                              dataset = ucast_dataset[j])
 
 
-    matches <- which(cast_rodent_dataset == ucast_rodent_dataset[j])
+    matches <- which(cast_dataset == ucast_dataset[j])
     nmatches <- length(matches)
     obs_cols <- gsub("NA.", "NA", colnames(obs))
 
@@ -224,7 +224,7 @@ read_cast_tab <- function (main     = ".",
 
 
   # patch
-  colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "rodent_dataset"
+  colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "dataset"
   # patch
 
   na_conformer(out)
@@ -373,7 +373,7 @@ read_model_casts <- function (main     = ".",
 #'
 #' @param models \code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.
 #'
-#' @param rodent_datasets \code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{rodent_dataset}.
+#' @param datasets \code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -385,15 +385,15 @@ read_model_casts <- function (main     = ".",
 #'
 #' @export
 #'
-select_casts <- function (main            = ".", 
-                          settings        = directory_settings(), 
-                          cast_ids        = NULL, 
-                          cast_groups     = NULL,
-                          end_moons       = NULL, 
-                          models          = NULL, 
-                          rodent_datasets = NULL,
-                          quiet           = FALSE, 
-                          include_interp  = FALSE) {
+select_casts <- function (main           = ".", 
+                          settings       = directory_settings(), 
+                          cast_ids       = NULL, 
+                          cast_groups    = NULL,
+                          end_moons      = NULL, 
+                          models         = NULL, 
+                          datasets       = NULL,
+                          quiet          = FALSE, 
+                          include_interp = FALSE) {
 
 
   casts_metadata <- read_casts_metadata(main     = main,
@@ -416,24 +416,24 @@ select_casts <- function (main            = ".",
   models      <- ifnull(models, umodels)
   match_model <- casts_metadata$model %in% models
   
-  urodent_datasets <- unique(casts_metadata$rodent_dataset[casts_metadata$QAQC])
-  rodent_datasets  <- ifnull(rodent_datasets, urodent_datasets)
+  udatasets <- unique(casts_metadata$dataset[casts_metadata$QAQC])
+  datasets  <- ifnull(datasets, udatasets)
 
   if (include_interp) {
 
-    rodent_datasets <- unique(c(rodent_datasets, paste0(rodent_datasets, "_interp")))
+    datasets <- unique(c(datasets, paste0(datasets, "_interp")))
 
   } else {
 
-    rodent_datasets <- rodent_datasets[!grepl("interp", rodent_datasets)]
+    datasets <- datasets[!grepl("interp", datasets)]
 
   }
 
-  match_rodent_dataset <- casts_metadata$rodent_dataset %in% rodent_datasets
+  match_dataset <- casts_metadata$dataset %in% datasets
   
   QAQC <- casts_metadata$QAQC
 
-  casts_metadata[match_id & match_end_moon & match_model & match_rodent_dataset & QAQC, ]
+  casts_metadata[match_id & match_end_moon & match_model & match_dataset & QAQC, ]
 
 }
 
@@ -515,7 +515,7 @@ save_cast_output <- function (cast     = NULL,
                               end_moon              = cast$metadata$time$end_moon,
                               lead_time             = cast$metadata$time$lead_time,
                               model                 = cast$metadata$models,
-                              rodent_dataset        = cast$metadata$rodent_datasets,
+                              dataset        = cast$metadata$datasets,
                               portalcasting_version = pc_version,
                               QAQC                  = TRUE,
                               notes                 = NA)

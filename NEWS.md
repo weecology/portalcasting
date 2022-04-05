@@ -9,8 +9,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Moved from source code scripts to `.yaml` files in `inst/extdata`
 * `read_` and `write` functions for both rodent and model controls lists
 
-### Terminology update
-* `dataset` -> `rodent_dataset`
+
 
 # [portalcasting 0.31.0](https://github.com/weecology/portalcasting/releases/tag/v0.31.0)
 *2022-04-01*

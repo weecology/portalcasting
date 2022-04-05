@@ -7,7 +7,7 @@
 most_abundant_species(
   main = ".",
   settings = directory_settings(),
-  rodent_dataset = "all",
+  dataset = "all",
   topx = 3
 )
 }
@@ -16,7 +16,7 @@ most_abundant_species(
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
-\item{rodent_dataset}{\code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.}
+\item{dataset}{\code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.}
 
 \item{topx}{Positive \code{integer} (or \code{integer}-conformable) value of how many species to include.}
 }

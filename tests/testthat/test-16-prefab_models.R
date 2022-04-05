@@ -68,11 +68,11 @@ test_that(desc = "AutoArima model", {
     skip_on_cran() 
 
   expect_message(f_a <- AutoArima(main = main, 
-                                  rodent_dataset = "All", quiet = FALSE))
+                                  dataset = "All", quiet = FALSE))
   expect_message(f_c <- AutoArima(main = main, 
-                                  rodent_dataset = "Controls", quiet = FALSE))
+                                  dataset = "Controls", quiet = FALSE))
   expect_message(f_e <- AutoArima(main = main, 
-                                  rodent_dataset = "Exclosures", quiet = FALSE)) 
+                                  dataset = "Exclosures", quiet = FALSE)) 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
   expect_is(f_e, "list")
@@ -86,11 +86,11 @@ test_that(desc = "NaiveArima model", {
     skip_on_cran() 
 
   expect_message(f_c <- NaiveArima(main = main,  
-                                   rodent_dataset = "Controls", quiet = FALSE))
+                                   dataset = "Controls", quiet = FALSE))
   expect_message(f_a <- NaiveArima(main = main, 
-                                   rodent_dataset = "All", quiet = FALSE))
+                                   dataset = "All", quiet = FALSE))
   expect_message(f_e <- NaiveArima(main = main, 
-                                   rodent_dataset = "Exclosures", quiet = FALSE))
+                                   dataset = "Exclosures", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
@@ -107,11 +107,11 @@ test_that(desc = "ESSS model", {
     skip_on_cran() 
 
   expect_message(f_c <- ESSS(main = main,  
-                             rodent_dataset = "Controls_interp", quiet = FALSE))
+                             dataset = "Controls_interp", quiet = FALSE))
   expect_message(f_a <- ESSS(main = main, 
-                             rodent_dataset = "All_interp", quiet = FALSE))
+                             dataset = "All_interp", quiet = FALSE))
   expect_message(f_e <- ESSS(main = main, 
-                             rodent_dataset = "Exclosures_interp", quiet = FALSE))
+                             dataset = "Exclosures_interp", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
@@ -128,11 +128,11 @@ test_that(desc = "nbGARCH model", {
     skip_on_cran() 
 
   expect_message(f_c <- nbGARCH(main = main,  
-                                rodent_dataset = "Controls_interp", quiet = FALSE))
+                                dataset = "Controls_interp", quiet = FALSE))
   expect_message(f_a <- nbGARCH(main = main, 
-                                rodent_dataset = "All_interp", quiet = FALSE))
+                                dataset = "All_interp", quiet = FALSE))
   expect_message(f_e <- nbGARCH(main = main, 
-                                rodent_dataset = "Exclosures_interp", 
+                                dataset = "Exclosures_interp", 
                                 quiet = FALSE))
 
   expect_is(f_a, "list")
@@ -148,11 +148,11 @@ test_that(desc = "nbsGARCH model", {
     skip_on_cran() 
 
   expect_message(f_c <- nbsGARCH(main = main,  
-                                 rodent_dataset = "Controls_interp", quiet = FALSE))
+                                 dataset = "Controls_interp", quiet = FALSE))
   expect_message(f_a <- nbsGARCH(main = main, 
-                                 rodent_dataset = "All_interp", quiet = FALSE))
+                                 dataset = "All_interp", quiet = FALSE))
   expect_message(f_e <- nbsGARCH(main = main, 
-                                 rodent_dataset = "Exclosures_interp", 
+                                 dataset = "Exclosures_interp", 
                                  quiet = FALSE))
   
   expect_is(f_a, "list")
@@ -170,11 +170,11 @@ test_that(desc = "pevGARCH model", {
 
 
   expect_message(f_a <- pevGARCH(main = main, lag = 6, 
-                                  rodent_dataset = "All_interp", quiet = FALSE))
+                                  dataset = "All_interp", quiet = FALSE))
   expect_message(f_c <- pevGARCH(main = main, lag = 6, 
-                              rodent_dataset = "Controls_interp", quiet = FALSE))
+                              dataset = "Controls_interp", quiet = FALSE))
   expect_message(f_e <- pevGARCH(main = main, lag = 6, 
-                                 rodent_dataset = "Exclosures_interp",  
+                                 dataset = "Exclosures_interp",  
                                  quiet = FALSE))
 
   expect_is(f_a, "list")
@@ -202,7 +202,7 @@ test_that(desc = "jags_RW model", {
 
   rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
   expect_message(f_a <- jags_RW(main = main, control_runjags = rjc,
-                                rodent_dataset = "dm_controls", quiet = FALSE))
+                                dataset = "dm_controls", quiet = FALSE))
   expect_is(f_a, "list")
 
 })
@@ -219,7 +219,7 @@ test_that(desc = "jags_logistic model", {
 
   rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
   expect_message(f_a <- jags_logistic(main = main, control_runjags = rjc,
-                                rodent_dataset = "dm_controls", quiet = FALSE))
+                                dataset = "dm_controls", quiet = FALSE))
   expect_is(f_a, "list")
 
 

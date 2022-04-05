@@ -7,7 +7,7 @@
 jags_ss(
   main = ".",
   model_name = NULL,
-  rodent_dataset = "all",
+  dataset = "all",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   jags_model = NULL,
@@ -22,7 +22,7 @@ jags_ss(
 
 \item{model_name}{\code{character} value name of the model name to save in the cast tab.}
 
-\item{rodent_dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
+\item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

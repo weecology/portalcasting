@@ -19,7 +19,7 @@
 #'
 #' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
 #'
-#' @param rodent_dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.
+#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.
 #'
 #' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
 #'
@@ -39,19 +39,19 @@ ensemble_casts <- function (main           = ".",
                             cast_tab       = NULL, 
                             end_moon       = NULL, 
                             models         = NULL, 
-                            rodent_dataset = NULL, 
+                            dataset        = NULL, 
                             include_interp = TRUE,
                             species        = NULL) {
 
   if (is.null(cast_tab)) {
 
-    cast_choices <- select_casts(main            = main, 
-                                 settings        = settings,
-                                 cast_ids        = cast_ids, 
-                                 models          = models, 
-                                 end_moons       = end_moon, 
-                                 rodent_datasets = rodent_dataset, 
-                                 include_interp  = include_interp)
+    cast_choices <- select_casts(main           = main, 
+                                 settings       = settings,
+                                 cast_ids       = cast_ids, 
+                                 models         = models, 
+                                 end_moons      = end_moon, 
+                                 datasets       = dataset, 
+                                 include_interp = include_interp)
 
     if (NROW(cast_choices) == 0) {
 
@@ -79,18 +79,18 @@ ensemble_casts <- function (main           = ".",
 
   }
 
-  cast_tab$rodent_dataset <- gsub("_interp", "", cast_tab$rodent_dataset)
+  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, unique(cast_tab$model))
-  rodent_dataset          <- ifnull(rodent_dataset, unique(cast_tab$rodent_dataset)[1])
+  dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species                 <- ifnull(species, evalplot_species()) 
   end_moon                <- ifnull(end_moon, max(unique(cast_tab$end_moon)))
   cast_id_in              <- cast_tab$cast_id %in% cast_ids
   model_in                <- cast_tab$model %in% models
-  rodent_dataset_in       <- cast_tab$rodent_dataset == rodent_dataset
+  dataset_in       <- cast_tab$dataset == dataset
   species_in              <- cast_tab$species %in% species
   end_moon_in             <- cast_tab$end_moon %in% end_moon
-  all_in                  <- cast_id_in & model_in & rodent_dataset_in & species_in & end_moon_in
+  all_in                  <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
 
   if (sum(all_in) == 0) {
 
@@ -167,23 +167,23 @@ ensemble_casts <- function (main           = ".",
 
   lead <- moon_id - end_moon_id
 
-  data.frame(cast_date      = Sys.Date(),
-             cast_month     = as.numeric(format(Sys.Date(), "%m")),
-             cast_year      = as.numeric(format(Sys.Date(), "%Y")),
-             currency       = "abundance",
-             model          = ensemble_name, 
-             moon           = moon_id, 
-             species        = species_id,
-             estimate       = estimate, 
-             var            = mvar, 
-             lower_pi       = l_pi, 
-             upper_pi       = u_pi, 
-             obs            = obs, 
-             error          = error, 
-             end_moon       = end_moon_id, 
-             lead           = lead, 
-             rodent_dataset = rodent_dataset,
-             cast_id        = ecast_id,
-             covered        = covered)
+  data.frame(cast_date  = Sys.Date(),
+             cast_month = as.numeric(format(Sys.Date(), "%m")),
+             cast_year  = as.numeric(format(Sys.Date(), "%Y")),
+             currency   = "abundance",
+             model      = ensemble_name, 
+             moon       = moon_id, 
+             species    = species_id,
+             estimate   = estimate, 
+             var        = mvar, 
+             lower_pi   = l_pi, 
+             upper_pi   = u_pi, 
+             obs        = obs, 
+             error      = error, 
+             end_moon   = end_moon_id, 
+             lead       = lead, 
+             dataset    = dataset,
+             cast_id    = ecast_id,
+             covered    = covered)
  
 }

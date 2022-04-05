@@ -7,7 +7,7 @@
 \usage{
 prep_rodents(
   main = ".",
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -16,7 +16,7 @@ prep_rodents(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{rodent_datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
@@ -24,7 +24,7 @@ prep_rodents(
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 
-\item{new_rodent_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{dataset}.}
+\item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{dataset}.}
 }
 \value{
 \code{list} of prepared \code{datasets}.

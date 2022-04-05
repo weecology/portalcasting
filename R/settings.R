@@ -10,7 +10,7 @@
 #'
 #' @param metadata_file \code{character} name of the file for saving the forecast metadata.
 #'
-#' @param rodent_dataset_controls_file \code{character} name of the file for saving the rodent dataset controls.
+#' @param dataset_controls_file \code{character} name of the file for saving the rodent dataset controls.
 #'
 #' @param model_controls_file \code{character} name of the file for saving the model controls.
 #'
@@ -39,36 +39,36 @@
 #'
 #' @export
 #'
-directory_settings <- function (directory_config_file        = "dir_config.yaml",
-                                moons_file                   = "moon_dates.csv",
-                                covariates_file              = "covariates.csv",
-                                historical_covariates_file   = "historical_covariates.csv",
-                                forecast_covariates_file     = "forecast_covariates.csv",
-                                rodent_dataset_controls_file = "data/rodent_dataset_controls.yaml",
-                                model_controls_file          = "models/model_controls.yaml",
-                                metadata_file                = "metadata.yaml",
-                                subdirectories               = list("forecasts" = "casts", "model fits" = "fits", "model scripts" = "models", "resources" = "raw", "data" = "data", "tmp" = "tmp"),
-                                PortalData                   = list(source = "github", version = "latest"),
-                                portalPredictions            = list(source = "github", version = NULL),
-                                climate_forecast             = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),
-                                save                         = TRUE,
-                                overwrite                    = TRUE, 
-                                cleanup                      = TRUE,
-                                unzip_pause                  = 30,
-                                download_timeout             = getOption("timeout")) {
+directory_settings <- function (directory_config_file      = "dir_config.yaml",
+                                moons_file                 = "moon_dates.csv",
+                                covariates_file            = "covariates.csv",
+                                historical_covariates_file = "historical_covariates.csv",
+                                forecast_covariates_file   = "forecast_covariates.csv",
+                                dataset_controls_file      = "data/dataset_controls.yaml",
+                                model_controls_file        = "models/model_controls.yaml",
+                                metadata_file              = "metadata.yaml",
+                                subdirectories             = list("forecasts" = "casts", "model fits" = "fits", "model scripts" = "models", "resources" = "raw", "data" = "data", "tmp" = "tmp"),
+                                PortalData                 = list(source = "github", version = "latest"),
+                                portalPredictions          = list(source = "github", version = NULL),
+                                climate_forecast           = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),
+                                save                       = TRUE,
+                                overwrite                  = TRUE, 
+                                cleanup                    = TRUE,
+                                unzip_pause                = 30,
+                                download_timeout           = getOption("timeout")) {
 
-  list(files            = list(directory_config        = directory_config_file,
-                               moons                   = moons_file,
-                               covariates              = covariates_file,
-                               historical_covariates   = historical_covariates_file,
-                               forecast_covariates     = forecast_covariates_file,
-                               rodent_dataset_controls = rodent_dataset_controls_file,
-                               model_controls          = model_controls_file,
-                               metadata                = metadata_file),
+  list(files            = list(directory_config      = directory_config_file,
+                               moons                 = moons_file,
+                               covariates            = covariates_file,
+                               historical_covariates = historical_covariates_file,
+                               forecast_covariates   = forecast_covariates_file,
+                               dataset_controls      = dataset_controls_file,
+                               model_controls        = model_controls_file,
+                               metadata              = metadata_file),
        subs             = subdirectories,
-       resources        = list(PortalData              = PortalData,
-                               portalPredictions       = portalPredictions,
-                               climate_forecast        = climate_forecast),
+       resources        = list(PortalData            = PortalData,
+                               portalPredictions     = portalPredictions,
+                               climate_forecast      = climate_forecast),
        repository       = "portalPredictions",
        save             = save, 
        overwrite        = overwrite, 

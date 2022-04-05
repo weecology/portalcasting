@@ -13,7 +13,7 @@
 fill_dir(
   main = ".",
   models = prefab_models(),
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -22,7 +22,7 @@ fill_dir(
 fill_data(
   main = ".",
   models = prefab_models(),
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -62,7 +62,7 @@ fill_models(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{rodent_datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 

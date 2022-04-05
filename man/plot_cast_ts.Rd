@@ -9,7 +9,7 @@ plot_cast_ts(
   settings = directory_settings(),
   cast_id = NULL,
   cast_groups = NULL,
-  rodent_dataset = NULL,
+  dataset = NULL,
   model = NULL,
   end_moon = NULL,
   species = "total",
@@ -26,7 +26,7 @@ plot_cast_ts(
 
 \item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
 
-\item{rodent_dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{rodent_dataset}.}
+\item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
 \item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to \code{"Ensemble"} or an unweighted combination of the most recent cast group's models via  \code{\link{ensemble_casts}}.}
 
@@ -44,7 +44,7 @@ Does not influence the fit of the models, just the presentation.}
 }
 \description{
 Plot an observed timeseries and cast timeseries with a prediction interval. \cr
- Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{rodent_dataset}, \code{model}, and \code{end_moon}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
+ Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{end_moon}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
 }
 \details{
 The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line representing the \code{estimate} in the \code{cast_table} saved output from a model. \cr

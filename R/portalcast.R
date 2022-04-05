@@ -23,7 +23,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param rodent_datasets \code{character} vector of dataset names to be created. 
+#' @param datasets \code{character} vector of dataset names to be created. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -42,7 +42,7 @@
 #'
 portalcast <- function (main             = ".", 
                         models           = prefab_models(), 
-                        rodent_datasets  = prefab_rodent_datasets(),
+                        datasets         = prefab_datasets(),
                         end_moons        = NULL, 
                         start_moon       = 217, 
                         lead_time        = 12, 
@@ -67,7 +67,7 @@ portalcast <- function (main             = ".",
   for (i in 1:nend_moons) {
 
     cast(main             = main, 
-         rodent_datasets  = rodent_datasets,
+         datasets         = datasets,
          models           = models, 
          end_moon         = end_moons[i], 
          start_moon       = start_moon, 
@@ -84,12 +84,12 @@ portalcast <- function (main             = ".",
 
     messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
 
-    fill_data(main            = main, 
-              rodent_datasets = rodent_datasets,
-              models          = models,
-              settings        = settings,
-              quiet           = quiet, 
-              verbose         = verbose)
+    fill_data(main     = main, 
+              datasets = datasets,
+              models   = models,
+              settings = settings,
+              quiet    = quiet, 
+              verbose  = verbose)
 
   }
 
@@ -104,7 +104,7 @@ portalcast <- function (main             = ".",
 #'
 cast <- function (main             = ".", 
                   models           = prefab_models(), 
-                  rodent_datasets  = prefab_rodent_datasets(),
+                  datasets         = prefab_datasets(),
                   end_moon         = NULL, 
                   start_moon       = 217, 
                   lead_time        = 12, 
@@ -125,12 +125,12 @@ cast <- function (main             = ".",
 
   # this fill_data should only run if needed
 
-  fill_data(main            = main, 
-            rodent_datasets = rodent_datasets,
-            models          = models,
-            settings        = settings,
-            quiet           = quiet, 
-            verbose         = verbose)
+  fill_data(main     = main, 
+            datasets = datasets,
+            models   = models,
+            settings = settings,
+            quiet    = quiet, 
+            verbose  = verbose)
 
   clear_tmp(main     = main, 
             settings = settings, 

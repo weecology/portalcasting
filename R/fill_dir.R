@@ -20,7 +20,7 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to include.
 #'
-#' @param rodent_datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
+#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
@@ -48,12 +48,12 @@
 #'
 #' @export
 #'
-fill_dir <- function (main            = ".",
-                      models          = prefab_models(), 
-                      rodent_datasets = prefab_rodent_datasets(),
-                      settings        = directory_settings(), 
-                      quiet           = FALSE, 
-                      verbose         = FALSE) {
+fill_dir <- function (main     = ".",
+                      models   = prefab_models(), 
+                      datasets = prefab_datasets(),
+                      settings = directory_settings(), 
+                      quiet    = FALSE, 
+                      verbose  = FALSE) {
 
   messageq("Filling directory with content: \n", quiet = quiet)
 
@@ -72,12 +72,12 @@ fill_dir <- function (main            = ".",
             quiet    = quiet, 
             verbose  = verbose)
 
-  fill_data(main            = main, 
-            rodent_datasets = rodent_datasets,
-            models          = models,
-            settings        = settings,
-            quiet           = quiet, 
-            verbose         = verbose)
+  fill_data(main     = main, 
+            datasets = datasets,
+            models   = models,
+            settings = settings,
+            quiet    = quiet, 
+            verbose  = verbose)
 
 
   write_model_controls(main     = main, 
@@ -102,25 +102,25 @@ fill_dir <- function (main            = ".",
 #'
 #' @export
 #'
-fill_data <- function (main            = ".",
-                       models          = prefab_models(),
-                       rodent_datasets = prefab_rodent_datasets(),
-                       settings        = directory_settings(), 
-                       quiet           = FALSE,
-                       verbose         = FALSE) {
+fill_data <- function (main     = ".",
+                       models   = prefab_models(),
+                       datasets = prefab_datasets(),
+                       settings = directory_settings(), 
+                       quiet    = FALSE,
+                       verbose  = FALSE) {
 
   messageq(" Writing data files ... ", quiet = quiet)
 
-  write_rodent_dataset_controls(main            = main, 
-                                settings        = settings, 
-                                rodent_datasets = rodent_datasets, 
-                                quiet           = FALSE)
+  write_dataset_controls(main     = main, 
+                         settings = settings, 
+                         datasets = datasets, 
+                         quiet    = FALSE)
 
-  prep_rodents(main            = main,
-               settings        = settings,
-               rodent_datasets = rodent_datasets,
-               quiet           = quiet,
-               verbose         = verbose)
+  prep_rodents(main     = main,
+               settings = settings,
+               datasets = datasets,
+               quiet    = quiet,
+               verbose  = verbose)
 
   prep_moons(main      = main,  
              settings  = settings,
@@ -132,12 +132,12 @@ fill_data <- function (main            = ".",
                   quiet     = quiet, 
                   verbose   = verbose)
 
-  prep_metadata(main             = main, 
-                rodent_datasets  = rodent_datasets,
-                models           = models, 
-                settings         = settings,
-                quiet            = quiet, 
-                verbose          = verbose)
+  prep_metadata(main     = main, 
+                datasets = datasets,
+                models   = models, 
+                settings = settings,
+                quiet    = quiet, 
+                verbose  = verbose)
 
   messageq("  ... data preparing complete.", quiet = quiet)
 

@@ -11,7 +11,7 @@ select_casts(
   cast_groups = NULL,
   end_moons = NULL,
   models = NULL,
-  rodent_datasets = NULL,
+  datasets = NULL,
   quiet = FALSE,
   include_interp = FALSE
 )
@@ -29,7 +29,7 @@ select_casts(
 
 \item{models}{\code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.}
 
-\item{rodent_datasets}{\code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{rodent_dataset}.}
+\item{datasets}{\code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 

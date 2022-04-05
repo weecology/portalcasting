@@ -103,12 +103,12 @@ write_model <- function (main     = ".",
   
   control_model   <- tryCatch(prefab_model_controls()[[model]],
                               error = function(x){NULL})
-  rodent_datasets <- control_model$rodent_datasets
+  datasets <- control_model$datasets
 
-  if (is.null(rodent_datasets)) {
+  if (is.null(datasets)) {
 
-    messageq("   ~rodent_datasets = NULL for ", model, "\n    **assuming rodent_datasets = prefab_rodent_datasets(interpolate = FALSE)**", quiet = quiet)
-    rodent_datasets <- prefab_rodent_datasets(interpolate = FALSE)
+    messageq("   ~datasets = NULL for ", model, "\n    **assuming datasets = prefab_datasets(interpolate = FALSE)**", quiet = quiet)
+    datasets <- prefab_datasets(interpolate = FALSE)
 
   }
 
@@ -116,12 +116,12 @@ write_model <- function (main     = ".",
   mod_path   <- file.path(main, settings$subs$`model scripts`, model_file)
 
 
-  mod_template <- model_template(main            = main, 
-                                 model           = model, 
-                                 rodent_datasets = prefab_rodent_datasets(interpolate = FALSE),
-                                 settings        = directory_settings(), 
-                                 quiet           = FALSE, 
-                                 verbose         = FALSE)
+  mod_template <- model_template(main     = main, 
+                                 model    = model, 
+                                 datasets = prefab_datasets(interpolate = FALSE),
+                                 settings = directory_settings(), 
+                                 quiet    = FALSE, 
+                                 verbose  = FALSE)
 
   if (file.exists(mod_path) & settings$overwrite) {
 
@@ -144,28 +144,28 @@ write_model <- function (main     = ".",
 #'
 #' @export
 #'
-model_template <- function (main            = ".", 
-                            model           = NULL, 
-                            rodent_datasets = NULL,
-                            settings        = directory_settings(), 
-                            quiet           = FALSE, 
-                            verbose         = FALSE) {
+model_template <- function (main     = ".", 
+                            model    = NULL, 
+                            datasets = NULL,
+                            settings = directory_settings(), 
+                            quiet    = FALSE, 
+                            verbose  = FALSE) {
 
   return_if_null(model)
 
   control_model   <- tryCatch(prefab_model_controls()[[model]],
                               error = function(x){NULL})
 
-  rodent_datasets <- control_model$rodent_datasets
-  nds             <- length(rodent_datasets)
+  datasets <- control_model$datasets
+  nds             <- length(datasets)
   
-  return_if_null(rodent_datasets)
+  return_if_null(datasets)
 
 
   main_arg     <- paste0(', main = "', main, '"')
   quiet_arg    <- paste0(', quiet = ', quiet)
   verbose_arg  <- paste0(', verbose = ', verbose)
-  ds_args      <- paste0('rodent_dataset = "', rodent_datasets, '"')
+  ds_args      <- paste0('dataset = "', datasets, '"')
   settings_arg <- paste0(', settings = directory_settings()')
 
   additional_args <- NULL
@@ -186,7 +186,7 @@ model_template <- function (main            = ".",
   out <- NULL
   for(i in 1:nds){
 
-    resp <- paste0('cast_', rodent_datasets[i])
+    resp <- paste0('cast_', datasets[i])
 
     model_args <- paste0(ds_args[i], main_arg, settings_arg, quiet_arg, verbose_arg, additional_args)
 

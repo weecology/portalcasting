@@ -2,20 +2,20 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{read and write rodent dataset controls}
 \alias{read and write rodent dataset controls}
-\alias{read_rodent_dataset_controls}
-\alias{write_rodent_dataset_controls}
+\alias{read_dataset_controls}
+\alias{write_dataset_controls}
 \title{Read and Write Rodent Dataset Control Lists}
 \usage{
-read_rodent_dataset_controls(
+read_dataset_controls(
   main = ".",
-  rodent_datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings()
 )
 
-write_rodent_dataset_controls(
+write_dataset_controls(
   main = ".",
-  new_rodent_dataset_controls = NULL,
-  rodent_datasets = prefab_rodent_datasets(),
+  new_dataset_controls = NULL,
+  datasets = prefab_datasets(),
   settings = directory_settings(),
   quiet = FALSE
 )
@@ -23,16 +23,16 @@ write_rodent_dataset_controls(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{rodent_datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
-\item{new_rodent_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
+\item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }
 \value{
-\code{list} of \code{datasets}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_rodent_dataset_controls}.
+\code{list} of \code{datasets}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_dataset_controls}.
 }
 \description{
 Input/Output functions for dataset control lists.

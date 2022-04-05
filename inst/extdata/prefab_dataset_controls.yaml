@@ -2,7 +2,7 @@ all:
   metadata:
     name: all
     descriptor: classic dataset, all plots combined
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: all
     species:
@@ -48,7 +48,7 @@ all_interp:
     name: all_interp
     descriptor: classic dataset, all plots combined, interpolated for models that
       cannot have missing data
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: all_interp
     species:
@@ -93,7 +93,7 @@ controls:
   metadata:
     name: controls
     descriptor: classic dataset, control plots combined
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: controls
     species:
@@ -139,7 +139,7 @@ controls_interp:
     name: controls_interp
     descriptor: classic dataset, control plots combined, interpolated for models that
       cannot have missing data
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: controls_interp
     species:
@@ -184,7 +184,7 @@ exclosures:
   metadata:
     name: exclosures
     descriptor: classic dataset, exclosure plots combined
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: exclosures
     species:
@@ -230,7 +230,7 @@ exclosures_interp:
     name: exclosures_interp
     descriptor: classic dataset, exclosure plots combined, interpolated for models
       that cannot have missing data
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: exclosures_interp
     species:
@@ -275,7 +275,7 @@ dm_controls:
   metadata:
     name: dm_controls
     descriptor: DM only, control plots combined
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: dm_controls
     species: DM
@@ -301,7 +301,7 @@ dm_controls_interp:
     name: dm_controls_interp
     descriptor: DM only, control plots combined, interpolated for models that cannot
       have missing data
-  fun: prep_rodent_dataset
+  fun: prep_dataset
   args:
     name: dm_controls_interp
     species: DM
