@@ -137,8 +137,8 @@ all_species <- function (species = NULL,
 #' @export
 #'
 base_species <- function (species = NULL, 
-                         nadot   = FALSE, 
-                         total   = FALSE) {
+                          nadot   = FALSE, 
+                          total   = FALSE) {
 
   rodent_species(species = species, 
                  set     = "base", 
@@ -208,7 +208,7 @@ na_conformer <- function(dfv, colname = "species"){
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param dataset \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
+#' @param rodent_dataset \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
@@ -218,14 +218,14 @@ na_conformer <- function(dfv, colname = "species"){
 #' 
 #' @export
 #'
-most_abundant_species <- function (main     = ".", 
-                                   settings = directory_settings(), 
-                                   dataset  = "all", 
-                                   topx     = 3) {
+most_abundant_species <- function (main           = ".", 
+                                   settings       = directory_settings(), 
+                                   rodent_dataset = "all", 
+                                   topx           = 3) {
 
-  rodents_tab <- read_rodents_table(main     = main, 
-                                    settings = settings,
-                                    dataset  = dataset)
+  rodents_tab <- read_rodents_table(main           = main, 
+                                    settings       = settings,
+                                    rodent_dataset = rodent_dataset)
   col_keep    <- which(colnames(rodents_tab) %in% all_species())
   rodents_tab <- rodents_tab[ , col_keep]
   tots        <- apply(rodents_tab, 2, sum, na.rm = TRUE)

@@ -11,7 +11,7 @@ test_that(desc = "ensemble_casts ensembles accordingly", {
 end_moons <- NULL
   cast_ids <- NULL
   models <- NULL
-dataset <- NULL
+rodent_dataset <- NULL
 include_interp <- TRUE
 species <- NULL
 
@@ -19,7 +19,7 @@ species <- NULL
                                  cast_ids       = cast_ids, 
                                  models         = models, 
                                  end_moons      = end_moons, 
-                                 datasets       = dataset, 
+                                 rodent_datasets       = rodent_dataset, 
                                  include_interp = include_interp)
 
 
@@ -45,10 +45,10 @@ species <- NULL
   end_moons         <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in        <- cast_tab$cast_id %in% cast_ids
   model_in          <- cast_tab$model %in% models
-  dataset_in       <- cast_tab$data_set == dataset
+  rodent_dataset_in       <- cast_tab$rodent_dataset == dataset
   species_in        <- cast_tab$species %in% species
   end_moon_in       <- cast_tab$end_moon %in% end_moons
-  all_in            <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
+  all_in            <- cast_id_in & model_in & rodent_dataset_in & species_in & end_moon_in
 
   cast_tab <- cast_tab[all_in, ]
 
@@ -59,7 +59,7 @@ species <- NULL
                            cast_tab = cast_tab,
                            end_moon = end_moons[1],
                            models   = models, 
-                           dataset = dataset,
+                           rodent_dataset = rodent_dataset,
                            species  = species), "data.frame")
 
 

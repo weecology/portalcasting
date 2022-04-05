@@ -10,7 +10,7 @@ test_that(desc = "prep_rodents preps all the rodents", {
     skip_on_cran() 
 
   r1 <- prep_rodents(main = main)
-  r2 <- prep_rodents(main = main, datasets = "all")
+  r2 <- prep_rodents(main = main, rodent_datasets = "all")
 
   expect_is(r1, "list")
   expect_equal(length(r1), length(prefab_rodent_datasets()))

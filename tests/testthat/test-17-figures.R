@@ -52,10 +52,10 @@ test_that(desc = "plot_casts_err_lead", {
   expect_silent(plot_casts_err_lead(main = main))
   expect_silent(plot_casts_err_lead(main = main, models = "AutoArima", 
                                     ensemble = FALSE, species = "total", 
-                                    dataset = "all"))
+                                    rodent_dataset = "all"))
   expect_silent(plot_casts_err_lead(main = main, models = "AutoArima", 
                                     ensemble = FALSE,
-                                   species = "BA", dataset = "all"))
+                                   species = "BA", rodent_dataset = "all"))
   cast_tab <- read_cast_tabs(main = main)
   expect_error(plot_casts_err_lead(main = main, cast_tab = cast_tab,
                                    cast_id = 1e10))

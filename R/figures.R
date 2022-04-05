@@ -751,7 +751,7 @@ plot_cast_point <- function (main           = ".",
 
     obs           <- read_rodents_table(main           = main, 
                                         settings       = settings,
-                                        rodent_dataset = casts_meta$data_set)
+                                        rodent_dataset = casts_meta$rodent_dataset)
     colnames(obs) <- gsub("\\.", "", colnames(obs))
     sp_col        <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species       <- ifnull(species, colnames(obs)[sp_col])
@@ -768,7 +768,7 @@ plot_cast_point <- function (main           = ".",
 
   }
 
-  rodent_dataset <- casts_meta$data_set
+  rodent_dataset <- casts_meta$rodent_dataset
 
   if (!is.null(model) && tolower(model) == "ensemble") {
 
@@ -972,7 +972,7 @@ plot_cast_ts <- function (main           = ".",
 
   obs           <- read_rodents_table(main           = main, 
                                       settings       = settings, 
-                                      rodent_dataset = casts_meta$data_set)
+                                      rodent_dataset = casts_meta$rodent_dataset)
   colnames(obs) <- gsub("\\.", "", colnames(obs))
 
   sp_col  <- is_sp_col(obs, nadot = TRUE, total = TRUE)
@@ -985,7 +985,7 @@ plot_cast_ts <- function (main           = ".",
   }
 
   obs     <- obs[ , c("newmoonnumber", species)]
-  rodent_dataset <- casts_meta$data_set
+  rodent_dataset <- casts_meta$rodent_dataset
 
   if (!is.null(model) && tolower(model) == "ensemble") {
 
@@ -1116,6 +1116,8 @@ plot_cast_ts <- function (main           = ".",
 
   points(o_x_1, o_y_1, type = "l", lwd = 2)
   points(o_x_2, o_y_2, type = "l", lwd = 2)
+
+  # pull the nice model name from the model controls yaml file based on settings list
 
   model_name   <- ifnull(model, casts_meta$model)
   rodent_dataset_name <- gsub("_interp", " (interpolated)", rodent_dataset)
