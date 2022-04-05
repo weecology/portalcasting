@@ -75,7 +75,7 @@ prefab_models <- function( ) {
 #'   \item{model metadata \code{list} (\code{"metadata"})}
 #'   \item{cast summary \code{data.frame} (\code{"cast_tab"})}
 #'   \item{\code{list} of model fit objects (\code{"model_fits"})}
-#'   \item{\code{list} of model cast objects (\code{"model_casts"})}
+#'   \item{\code{list} of model cast objects (\code{"model_casts"})}}
 #'
 #' @references 
 #'  Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. forecast: Forecasting functions for time series and linear models. R package version 8.3. \href{http://pkg.robjhyndman.com/forecast}{URL}. 
@@ -133,7 +133,7 @@ AutoArima <- function (main     = ".",
   cast_moons       <- metadata$time$rodent_cast_moons
 
   confidence_level <- metadata$confidence_level
-  dataset_controls <- metadata$controls_rodents[[dataset]]
+  dataset_controls <- metadata$dataset_controls[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
   rodents_table    <- rodents_table[moon_in, ]
@@ -178,7 +178,7 @@ AutoArima <- function (main     = ".",
 
   metadata <- update_list(metadata, models           = "AutoArima",
                                     datasets         = dataset,
-                                    controls_rodents = dataset_controls)
+                                    dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
@@ -223,7 +223,7 @@ NaiveArima <- function (main     = ".",
   cast_moons       <- metadata$time$rodent_cast_moons
 
   confidence_level <- metadata$confidence_level
-  dataset_controls <- metadata$controls_rodents[[dataset]]
+  dataset_controls <- metadata$dataset_controls[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
   rodents_table    <- rodents_table[moon_in, ]
@@ -268,7 +268,7 @@ NaiveArima <- function (main     = ".",
 
   metadata <- update_list(metadata, models           = "NaiveArima",
                                     datasets         = dataset,
-                                    controls_rodents = dataset_controls)
+                                    dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
@@ -313,7 +313,7 @@ ESSS <- function (main     = ".",
   cast_moons       <- metadata$time$rodent_cast_moons
 
   confidence_level <- metadata$confidence_level
-  dataset_controls <- metadata$controls_rodents[[dataset]]
+  dataset_controls <- metadata$dataset_controls[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
   rodents_table    <- rodents_table[moon_in, ]
@@ -359,7 +359,7 @@ ESSS <- function (main     = ".",
 
   metadata <- update_list(metadata, models           = "ESSS",
                                     datasets         = dataset,
-                                    controls_rodents = dataset_controls)
+                                    dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
@@ -402,7 +402,7 @@ nbGARCH <- function (main     = ".",
   cast_moons       <- metadata$time$rodent_cast_moons
 
   confidence_level <- metadata$confidence_level
-  dataset_controls <- metadata$controls_rodents[[dataset]]
+  dataset_controls <- metadata$dataset_controls[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
   rodents_table    <- rodents_table[moon_in, ]
@@ -462,7 +462,7 @@ nbGARCH <- function (main     = ".",
 
   metadata <- update_list(metadata, models           = "nbGARCH",
                                     datasets         = dataset,
-                                    controls_rodents = dataset_controls)
+                                    dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
@@ -510,7 +510,7 @@ nbsGARCH <- function (main     = ".",
   cast_moons       <- metadata$time$rodent_cast_moons
 
   confidence_level <- metadata$confidence_level
-  dataset_controls <- metadata$controls_rodents[[dataset]]
+  dataset_controls <- metadata$dataset_controls[[dataset]]
 
   for_hist         <- which(moons$newmoonnumber %in% rodents_table$newmoonnumber & moons$newmoonnumber >= start_moon)
   for_cast         <- which(moons$newmoonnumber %in% cast_moons) 
@@ -586,7 +586,7 @@ nbsGARCH <- function (main     = ".",
 
   metadata <- update_list(metadata, models           = "nbsGARCH",
                                     datasets         = dataset,
-                                    controls_rodents = dataset_controls)
+                                    dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
@@ -635,7 +635,7 @@ pevGARCH <- function (main     = ".",
   cast_moons       <- metadata$time$rodent_cast_moons
 
   confidence_level <- metadata$confidence_level
-  dataset_controls <- metadata$controls_rodents[[dataset]]
+  dataset_controls <- metadata$dataset_controls[[dataset]]
 
   for_hist         <- which(covar_lag$newmoonnumber %in% rodents_table$newmoonnumber & covar_lag$newmoonnumber >= start_moon)
   for_cast         <- which(covar_lag$newmoonnumber %in% cast_moons) 
@@ -655,7 +655,7 @@ pevGARCH <- function (main     = ".",
   mods             <- named_null_list(species)
   casts            <- named_null_list(species)
   cast_tab         <- data.frame()
-  dataset_controls <- metadata$controls_rodents[[dataset]]      
+  dataset_controls <- metadata$dataset_controls[[dataset]]      
   models           <- covariate_models(model = "pevGARCH")
   nmodels          <- length(models)
 
@@ -747,7 +747,7 @@ pevGARCH <- function (main     = ".",
 
   metadata <- update_list(metadata, models           = "pevGARCH",
                                     datasets         = dataset,
-                                    controls_rodents = dataset_controls)
+                                    dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 

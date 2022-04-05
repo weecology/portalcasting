@@ -460,7 +460,7 @@ jags_ss <- function (main            = ".",
   metadata <- update_list(metadata,
                           models           = "jags_RW",
                           datasets         = dataset,
-                          controls_rodents = dataset_controls)
+                          dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 

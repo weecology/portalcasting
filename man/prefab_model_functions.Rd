@@ -95,7 +95,11 @@ pevGARCH(
 \item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to use for the covariates.}
 }
 \value{
-\code{list} of [1] model metadata \code{list} (\code{"metadata"}), cast summary \code{data.frame} (\code{"cast_tab"}), \code{list} of model fit objects (\code{"model_fits"}), and \code{list} of model cast objects (\code{"model_casts"}).
+\code{list} of \enumerate{
+  \item{model metadata \code{list} (\code{"metadata"})}
+  \item{cast summary \code{data.frame} (\code{"cast_tab"})}
+  \item{\code{list} of model fit objects (\code{"model_fits"})}
+  \item{\code{list} of model cast objects (\code{"model_casts"})}}
 }
 \description{
 Functions used for fitting the prefab models. For detailed descriptions of the models, see the \href{https://bit.ly/2xP9jKI}{model vignette}. \cr \cr
