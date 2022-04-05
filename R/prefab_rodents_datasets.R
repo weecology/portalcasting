@@ -1,4 +1,4 @@
-#' @title Provide the names or controls for the prefab rodents datasets
+#' @title Provide the Names or Controls for the Prefab Rodent Datasets
 #'
 #' @description Create a \code{character} vector of the names of the pre-fabricated (prefab) rodent datasets or a \code{list} of their controls
 #'

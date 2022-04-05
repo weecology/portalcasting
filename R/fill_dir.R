@@ -12,8 +12,7 @@
 #'     \item{rodent datasets (\code{\link{prep_rodents}})}
 #'     \item{temporal (lunar) data (\code{\link{prep_moons}})}
 #'     \item{covariates (\code{\link{prep_covariates}})}
-#'     \item{metadata (\code{\link{prep_metadata}})}
-#'   }}
+#'     \item{metadata (\code{\link{prep_metadata}})}}}
 #'   \item{Models (\code{\link{fill_models}})}
 #'  }
 #'             
@@ -21,7 +20,7 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to include.
 #'
-#' @param datasets \code{list} of datasets to be created using \code{\link{do.call}} on the defined functions. 
+#' @param rodent_datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
@@ -49,12 +48,12 @@
 #'
 #' @export
 #'
-fill_dir <- function (main     = ".",
-                      models   = prefab_models(), 
-                      datasets = prefab_rodent_datasets(),
-                      settings = directory_settings(), 
-                      quiet    = FALSE, 
-                      verbose  = FALSE) {
+fill_dir <- function (main            = ".",
+                      models          = prefab_models(), 
+                      rodent_datasets = prefab_rodent_datasets(),
+                      settings        = directory_settings(), 
+                      quiet           = FALSE, 
+                      verbose         = FALSE) {
 
   messageq("Filling directory with content: \n", quiet = quiet)
 
@@ -73,15 +72,21 @@ fill_dir <- function (main     = ".",
             quiet    = quiet, 
             verbose  = verbose)
 
-  fill_data(main     = main, 
-            datasets = datasets,
-            models   = models,
-            settings = settings,
-            quiet    = quiet, 
-            verbose  = verbose)
+  fill_data(main            = main, 
+            rodent_datasets = rodent_datasets,
+            models          = models,
+            settings        = settings,
+            quiet           = quiet, 
+            verbose         = verbose)
+
+
+  write_model_controls(main     = main, 
+                       settings = settings, 
+                       models   = models, 
+                       quiet    = quiet)
 
   fill_models(main     = main, 
-              settings = settings, 
+              settings = settings,
               models   = models, 
               quiet    = quiet, 
               verbose  = verbose)
@@ -97,20 +102,25 @@ fill_dir <- function (main     = ".",
 #'
 #' @export
 #'
-fill_data <- function (main     = ".",
-                       models   = prefab_models(), 
-                       datasets = prefab_rodent_datasets(),
-                       settings = directory_settings(), 
-                       quiet    = FALSE, 
-                       verbose  = FALSE) {
+fill_data <- function (main            = ".",
+                       models          = prefab_models(),
+                       rodent_datasets = prefab_rodent_datasets(),
+                       settings        = directory_settings(), 
+                       quiet           = FALSE,
+                       verbose         = FALSE) {
 
   messageq(" Writing data files ... ", quiet = quiet)
 
-  prep_rodents(main     = main,
-               settings  = settings,
-               datasets = datasets,
-               quiet    = quiet,
-               verbose  = verbose)
+  write_rodent_dataset_controls(main            = main, 
+                                settings        = settings, 
+                                rodent_datasets = rodent_datasets, 
+                                quiet           = FALSE)
+
+  prep_rodents(main            = main,
+               settings        = settings,
+               rodent_datasets = rodent_datasets,
+               quiet           = quiet,
+               verbose         = verbose)
 
   prep_moons(main      = main,  
              settings  = settings,
@@ -122,12 +132,12 @@ fill_data <- function (main     = ".",
                   quiet     = quiet, 
                   verbose   = verbose)
 
-  prep_metadata(main      = main, 
-                datasets  = datasets,
-                models    = models, 
-                settings  = settings,
-                quiet     = quiet, 
-                verbose   = verbose)
+  prep_metadata(main             = main, 
+                rodent_datasets  = rodent_datasets,
+                models           = models, 
+                settings         = settings,
+                quiet            = quiet, 
+                verbose          = verbose)
 
   messageq("  ... data preparing complete.", quiet = quiet)
 
@@ -280,9 +290,15 @@ fill_models <- function (main     = ".",
 
   return_if_null(models)
 
+  model_controls_list <- read_model_controls(main     = main, 
+                                             settings = settings, 
+                                             models   = models)
+
+
+
   messageq(" Writing model scripts ... ", quiet = quiet)
 
-  nmodels <- length(models)
+  nmodels <- length(model_controls_list)
 
   for (i in 1:nmodels) {
 

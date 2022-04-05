@@ -6,7 +6,7 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to include.
 #'
-#' @param datasets \code{character} vector of name(s) of dataset(s) to include.
+#' @param rodent_datasets \code{character} vector of name(s) of dataset(s) to include.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
@@ -30,7 +30,7 @@
 #'
 prep_metadata <- function (main             = ".",
                            models           = prefab_models(), 
-                           datasets         = prefab_rodent_datasets(),
+                           rodent_datasets  = prefab_rodent_datasets(),
                            end_moon         = NULL, 
                            start_moon       = 217, 
                            lead_time        = 12,
@@ -43,23 +43,18 @@ prep_metadata <- function (main             = ".",
 
   moons      <- read_moons(main     = main, 
                            settings = settings)
-  rodents    <- read_rodents(main     = main, 
-                             datasets = datasets, 
-                             settings = settings)
+  rodents    <- read_rodents(main            = main, 
+                             rodent_datasets = rodent_datasets, 
+                             settings        = settings)
   covariates <- read_covariates(main     = main, 
                                 settings = settings)
 
-  rodent_dataset_controls <- prefab_rodent_dataset_controls()
+  rodent_dataset_controls_list <- read_rodent_dataset_controls(main            = main, 
+                                                               settings        = settings, 
+                                                               rodent_datasets = rodent_datasets)
 
-  #
-  # need a way here to access user-generated control lists  
-  #
-
-  controls_r <- rodent_dataset_controls[datasets]
 
   messageq("  - metadata file", quiet = quiet)
-
-
 
    
   which_last_moon <- max(which(moons$newmoondate < cast_date))
@@ -116,8 +111,8 @@ prep_metadata <- function (main             = ".",
   out <- list(cast_group              = cast_group,
               cast_type               = cast_type,
               models                  = models, 
-              datasets                = datasets, 
-              controls_rodents        = controls_r,
+              rodent_datasets         = rodent_datasets, 
+              controls_rodents        = rodent_dataset_controls_list,
               time                    = list(start_moon            = start_moon,
                                              end_moon              = end_moon,
                                              last_moon             = last_moon,

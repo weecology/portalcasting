@@ -4,7 +4,7 @@
 \alias{prefabricated_rodent_datasets}
 \alias{prefab_rodent_datasets}
 \alias{prefab_rodent_dataset_controls}
-\title{Provide the names or controls for the prefab rodents datasets}
+\title{Provide the Names or Controls for the Prefab Rodent Datasets}
 \usage{
 prefab_rodent_datasets(interpolate = NULL)
 

@@ -8,13 +8,12 @@
 portalcast(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  rodent_datasets = prefab_rodent_datasets(),
   end_moons = NULL,
   start_moon = 217,
   lead_time = 12,
   confidence_level = 0.95,
   cast_date = Sys.Date(),
-  controls_model = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -23,13 +22,12 @@ portalcast(
 cast(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  rodent_datasets = prefab_rodent_datasets(),
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
   confidence_level = 0.95,
   cast_date = Sys.Date(),
-  controls_model = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -40,7 +38,7 @@ cast(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{datasets}{\code{character} vector of dataset names to be created.}
+\item{rodent_datasets}{\code{character} vector of dataset names to be created.}
 
 \item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
 \strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.}
@@ -52,20 +50,6 @@ cast(
 \item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
 
 \item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
-
-\item{controls_model}{Additional controls for models not in the prefab set or for overriding controls of a prefab model (for example when applying a model to a new data set). \cr 
-A \code{list} of a single model's script-writing controls or a \code{list} of \code{list}s, each of which is a single model's script-writing controls. \cr 
-Presently, each model's script writing controls should include four elements: 
-\itemize{
- \item \code{name}: a \code{character} value of the model name.
- \item \code{data_sets}: a \code{character} vector of the data set names
-  that the model is applied to. 
- \item \code{covariatesTF}: a \code{logical} indicator of if the 
-  model needs covariates.
- \item \code{lag}: an \code{integer}-conformable value of the lag to use 
-  with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
-}
-If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each element \code{list} must be named according to the model and the\code{name} element.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

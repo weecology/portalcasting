@@ -14,7 +14,7 @@
 \usage{
 jags_logistic(
   main = ".",
-  dataset = "dm_controls",
+  rodent_dataset = "dm_controls",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -23,7 +23,7 @@ jags_logistic(
 
 jags_RW(
   main = ".",
-  dataset = "all",
+  rodent_dataset = "all",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -32,7 +32,7 @@ jags_RW(
 
 AutoArima(
   main = ".",
-  dataset = "all",
+  rodent_dataset = "all",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -40,7 +40,7 @@ AutoArima(
 
 NaiveArima(
   main = ".",
-  dataset = "all",
+  rodent_dataset = "all",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -48,7 +48,7 @@ NaiveArima(
 
 ESSS(
   main = ".",
-  dataset = "all_interp",
+  rodent_dataset = "all_interp",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -56,7 +56,7 @@ ESSS(
 
 nbGARCH(
   main = ".",
-  dataset = "all_interp",
+  rodent_dataset = "all_interp",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -64,7 +64,7 @@ nbGARCH(
 
 nbsGARCH(
   main = ".",
-  dataset = "all_interp",
+  rodent_dataset = "all_interp",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -72,7 +72,7 @@ nbsGARCH(
 
 pevGARCH(
   main = ".",
-  dataset = "all_interp",
+  rodent_dataset = "all_interp",
   lag = 6,
   settings = directory_settings(),
   quiet = FALSE,
@@ -82,7 +82,7 @@ pevGARCH(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
+\item{rodent_dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

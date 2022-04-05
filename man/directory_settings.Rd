@@ -10,8 +10,8 @@ directory_settings(
   covariates_file = "covariates.csv",
   historical_covariates_file = "historical_covariates.csv",
   forecast_covariates_file = "forecast_covariates.csv",
-  rodent_dataset_controls_file = "rodent_dataset_controls.yaml",
-  model_controls_file = "model_controls.yaml",
+  rodent_dataset_controls_file = "data/rodent_dataset_controls.yaml",
+  model_controls_file = "models/model_controls.yaml",
   metadata_file = "metadata.yaml",
   subdirectories = list(forecasts = "casts", `model fits` = "fits", `model scripts` =
     "models", resources = "raw", data = "data", tmp = "tmp"),

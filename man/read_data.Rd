@@ -15,20 +15,20 @@
 read_data(
   main = ".",
   data_name = NULL,
-  dataset = "all",
-  datasets = c("all", "controls"),
+  rodent_dataset = "all",
+  rodent_datasets = c("all", "controls"),
   settings = directory_settings()
 )
 
 read_rodents_table(
   main = ".",
-  dataset = "all",
+  rodent_dataset = "all",
   settings = directory_settings()
 )
 
 read_rodents(
   main = ".",
-  datasets = c("all", "controls"),
+  rodent_datasets = c("all", "controls"),
   settings = directory_settings()
 )
 
@@ -49,7 +49,7 @@ read_metadata(main = ".", settings = directory_settings())
 
 \item{data_name}{\code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.}
 
-\item{dataset, datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
+\item{rodent_dataset, rodent_datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 }

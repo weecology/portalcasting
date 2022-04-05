@@ -94,7 +94,7 @@ write_data <- function (dfl       = NULL,
 #'  
 #' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
 #'
-#' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
+#' @param rodent_dataset,rodent_datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
@@ -102,11 +102,11 @@ write_data <- function (dfl       = NULL,
 #' 
 #' @export
 #'
-read_data <- function (main      = ".", 
-                       data_name = NULL, 
-                       dataset   = "all", 
-                       datasets  = c("all", "controls"), 
-                       settings  = directory_settings()) {
+read_data <- function (main            = ".", 
+                       data_name       = NULL, 
+                       rodent_dataset  = "all", 
+                       rodent_datasets = c("all", "controls"), 
+                       settings        = directory_settings()) {
   
   return_if_null(data_name)
 
@@ -114,13 +114,13 @@ read_data <- function (main      = ".",
 
   if (data_name == "rodents") {
 
-    out <- read_rodents(main = main, datasets = datasets, settings = settings)
+    out <- read_rodents(main = main, rodent_datasets = rodent_datasets, settings = settings)
 
   }
 
   if (data_name == "rodents_table") { 
 
-    out <- read_rodents_table(main = main, dataset = dataset, settings = settings)
+    out <- read_rodents_table(main = main, rodent_dataset = rodent_dataset, settings = settings)
 
   }
 
@@ -167,12 +167,12 @@ read_data <- function (main      = ".",
 #'
 #' @export
 #'
-read_rodents_table <- function (main     = ".", 
-                                dataset  = "all", 
-                                settings = directory_settings()) {
+read_rodents_table <- function (main           = ".", 
+                                rodent_dataset = "all", 
+                                settings       = directory_settings()) {
 
-  return_if_null(dataset)
-  read.csv(file.path(main, settings$subs$data, paste0("rodents_", tolower(dataset), ".csv"))) 
+  return_if_null(rodent_dataset)
+  read.csv(file.path(main, settings$subs$data, paste0("rodents_", tolower(rodent_dataset), ".csv"))) 
 
 }
 
@@ -180,12 +180,12 @@ read_rodents_table <- function (main     = ".",
 #'
 #' @export
 #'
-read_rodents <- function (main     = ".", 
-                          datasets = c("all", "controls"), 
-                          settings = directory_settings()) {
+read_rodents <- function (main            = ".", 
+                          rodent_datasets = c("all", "controls"), 
+                          settings        = directory_settings()) {
   
-  return_if_null(datasets)
-  mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
+  return_if_null(rodent_datasets)
+  mapply(FUN = read_rodents_table, rodent_dataset = rodent_datasets, main = main, SIMPLIFY = FALSE)
 
 }
 
@@ -336,7 +336,7 @@ read_casts_metadata <- function (main     = ".",
                              end_moon              = NA,
                              lead_time             = NA, 
                              model                 = NA, 
-                             data_set              = NA,
+                             rodent_dataset        = NA,
                              portalcasting_version = NA,
                              QAQC                  = FALSE, 
                              notes                 = NA)
@@ -345,6 +345,12 @@ read_casts_metadata <- function (main     = ".",
 
   }
 
-  read.csv(meta_path)
+  out <- read.csv(meta_path)
+
+  # patch
+  colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "rodent_dataset"
+  # patch
+
+  out[out$cast_group != 0, ]
 
 }

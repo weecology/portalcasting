@@ -1,3 +1,66 @@
+#' @title Read and Write Rodent Dataset Control Lists
+#'
+#' @description Input/Output functions for dataset control lists.
+#'
+#' @param quiet \code{logical} indicator controlling if messages are printed.
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree. 
+#'
+#' @param rodent_datasets \code{character} vector of name(s) of rodent dataset(s) to include.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#'
+#' @param new_rodent_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
+#'
+#' @return \code{list} of \code{datasets}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_rodent_dataset_controls}.
+#'  
+#' @name read and write rodent dataset controls
+#'
+#' @export
+#'
+read_rodent_dataset_controls <- function (main            = ".",
+                                          rodent_datasets = prefab_rodent_datasets(),
+                                          settings        = directory_settings()) {
+
+  read_yaml(file.path(main, settings$files$rodent_dataset_controls))[rodent_datasets]
+
+}
+
+#' @rdname read-and-write-rodent-dataset-controls
+#'
+#' @export
+#'
+write_rodent_dataset_controls <- function (main                        = ".",
+                                           new_rodent_dataset_controls = NULL,
+                                           rodent_datasets             = prefab_rodent_datasets(),
+                                           settings                    = directory_settings(),
+                                           quiet                       = FALSE) {
+
+  rodent_dataset_controls <- prefab_rodent_dataset_controls()
+  nrodent_datasets        <- length(rodent_dataset_controls)
+  nnew_rodent_datasets    <- length(new_rodent_dataset_controls)
+
+  if (nnew_rodent_datasets > 0) {
+
+    for (i in 1:nnew_rodent_datasets) {
+
+      rodent_dataset_controls <- update_list(rodent_dataset_controls, 
+                                             x = new_rodent_dataset_controls[[i]])
+
+      names(rodent_dataset_controls)[nrodent_datasets + i] <- names(new_rodent_dataset_controls)[i]
+
+    }
+
+  }
+
+  write_yaml(x    = rodent_dataset_controls,
+             file = file.path(main, settings$files$rodent_dataset_controls))
+
+  invisible(rodent_dataset_controls)
+
+}
+
+
 #' @title Prepare Rodents Data for the Portalcasting Repository
 #'
 #' @description Create specified \code{datasets} using their associated function and arguments.
@@ -8,9 +71,11 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
+#' @param rodent_datasets \code{character} vector of name(s) of rodent dataset(s) to include.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#'
+#' @param new_rodent_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{dataset}.
 #'
 #' @return \code{list} of prepared \code{datasets}.
 #'  
@@ -18,30 +83,26 @@
 #'
 #' @export
 #'
-prep_rodents <- function (main     = ".",
-                          datasets = prefab_rodent_datasets(),
-                          settings = directory_settings(), 
-                          quiet    = FALSE,
-                          verbose  = FALSE) {
+prep_rodents <- function (main            = ".",
+                          rodent_datasets = prefab_rodent_datasets(),
+                          settings        = directory_settings(), 
+                          quiet           = FALSE,
+                          verbose         = FALSE) {
 
-  return_if_null(datasets)
+  return_if_null(rodent_datasets)
 
-  #
-  # need a way here to access user-generated control lists  
-  #
-
-  rodent_dataset_controls <- prefab_rodent_dataset_controls()
-
-  datasets_list <- rodent_dataset_controls[datasets]
+  rodent_dataset_controls_list <- read_rodent_dataset_controls(main            = main, 
+                                                               settings        = settings, 
+                                                               rodent_datasets = rodent_datasets)
 
   messageq("  - rodents", quiet = quiet)
 
-  out <- named_null_list(element_names = datasets)
+  out <- named_null_list(element_names = rodent_datasets)
 
-  for (i in 1:length(datasets_list)) {
+  for (i in 1:length(rodent_dataset_controls_list)) {
 
-    out[[i]] <- do.call(what = datasets_list[[i]]$fun, 
-                        args = update_list(list      = datasets_list[[i]]$args, 
+    out[[i]] <- do.call(what = rodent_dataset_controls_list[[i]]$fun, 
+                        args = update_list(list      = rodent_dataset_controls_list[[i]]$args, 
                                            main      = main, 
                                            settings  = settings, 
                                            quiet     = quiet, 
@@ -52,6 +113,12 @@ prep_rodents <- function (main     = ".",
   invisible(out)
 
 }
+
+
+
+
+
+
 
 #' @title Prepare Rodents Data Tables for Forecasting
 #'

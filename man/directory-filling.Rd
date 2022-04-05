@@ -13,7 +13,7 @@
 fill_dir(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  rodent_datasets = prefab_rodent_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -22,7 +22,7 @@ fill_dir(
 fill_data(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  rodent_datasets = prefab_rodent_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -62,7 +62,7 @@ fill_models(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{datasets}{\code{list} of datasets to be created using \code{\link{do.call}} on the defined functions.}
+\item{rodent_datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
@@ -86,8 +86,7 @@ Fill the directory with components including \enumerate{
     \item{rodent datasets (\code{\link{prep_rodents}})}
     \item{temporal (lunar) data (\code{\link{prep_moons}})}
     \item{covariates (\code{\link{prep_covariates}})}
-    \item{metadata (\code{\link{prep_metadata}})}
-  }}
+    \item{metadata (\code{\link{prep_metadata}})}}}
   \item{Models (\code{\link{fill_models}})}
  }
 }

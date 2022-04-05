@@ -7,7 +7,7 @@
 prep_metadata(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  rodent_datasets = prefab_rodent_datasets(),
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,
@@ -23,7 +23,7 @@ prep_metadata(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{datasets}{\code{character} vector of name(s) of dataset(s) to include.}
+\item{rodent_datasets}{\code{character} vector of name(s) of dataset(s) to include.}
 
 \item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the last sample to be included. Default value is \code{NULL}, which equates to the most recently included sample.}
 

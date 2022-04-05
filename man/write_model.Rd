@@ -16,7 +16,7 @@ write_model(
 model_template(
   main = ".",
   model = NULL,
-  datasets = NULL,
+  rodent_datasets = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -36,7 +36,7 @@ model_template(
 \item{datasets}{\code{character} vector of dataset names for the model.}
 }
 \value{
-\code{write_mode} \code{\link{write}}s the model script out and returns \code{NULL}. \cr \cr
+\code{write_mode} \code{\link{write}}s the model script out and returns \code{NULL}, \code{\link[base]{invisible}}-ly.. \cr \cr
  \code{model_template}: \code{character}-valued text for a model script to be housed in the model directory. \cr \cr
  \code{control_list_arg}: \code{character}-valued text for part of a model script. \cr \cr
 }

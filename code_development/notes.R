@@ -6,15 +6,13 @@ devtools::load_all()
 
 main <- "./portalcasting"
 
-setup_dir(main)
-portalcast(main)
 
-# updating to working with the settings list
-# minimizing other changes to the degree possible
 
-# all functions in production work as used!
+# the change from dataset to rodent_dataset in the plot_cast functions
+#  they are used in the website, which will need to be updated accordingly
 
-####    updating tests ... should be good for a full run
+
+
 
 
 
