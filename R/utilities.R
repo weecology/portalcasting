@@ -172,7 +172,7 @@ error_if_deep <- function (lev) {
 #' @export
 #'
 update_list <- function (list = list(),
-                                ...) {
+                                ..., new_list = NULL) {
 
   if (!is.list(list)) {
 
@@ -182,6 +182,28 @@ update_list <- function (list = list(),
 
   update_elems <- list(...)
 
+  if(is.list(new_list)){
+
+    nnew_elems <- length(new_list)
+
+    if(nnew_elems > 0){
+
+      new_update_elems <- names(new_list)
+
+      for(i in 1:nnew_elems){
+
+        if(!is.null(new_list[[i]])){
+
+          update_elems[[new_update_elems[i]]] <- new_list[[i]]
+
+        }
+
+      }
+
+    }
+
+  }
+  
   nupdate_elems <- length(update_elems)
   norig_elems   <- length(list)
 
