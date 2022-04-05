@@ -141,6 +141,8 @@ fill_data <- function (main            = ".",
 
   messageq("  ... data preparing complete.", quiet = quiet)
 
+  invisible()
+
 }
 
 
@@ -311,6 +313,8 @@ fill_models <- function (main     = ".",
   }
 
   messageq("  ... done. ", quiet = quiet)
+
+  invisible()
 
 }
 
