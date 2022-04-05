@@ -62,15 +62,15 @@ portalcast <- function (main       = ".",
 
   for (i in 1:nend_moons) {
 
-    cast(main             = main, 
-         datasets         = datasets,
-         models           = models, 
-         end_moon         = end_moons[i], 
-         start_moon       = start_moon, 
-         cast_date        = cast_date, 
-         settings         = settings,
-         quiet            = quiet, 
-         verbose          = verbose)
+    cast(main       = main, 
+         datasets   = datasets,
+         models     = models, 
+         end_moon   = end_moons[i], 
+         start_moon = start_moon, 
+         cast_date  = cast_date, 
+         settings   = settings,
+         quiet      = quiet, 
+         verbose    = verbose)
 
   }
 
@@ -116,7 +116,7 @@ cast <- function (main       = ".",
 
   messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
 
-  if (end_moons[nend_moons] != last_moon) {
+  if (end_moon != last_moon) {
 
     fill_data(main     = main, 
               datasets = datasets,

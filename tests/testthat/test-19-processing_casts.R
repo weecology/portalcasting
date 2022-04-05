@@ -35,25 +35,25 @@ test_that(desc = "read_cast_metadata reads in the metadat", {
 
 })
 
-test_that(desc = "read_model_fits reads in model fits", {
+test_that(desc = "read_model_fit reads in model fits", {
 
   # download is held back on cran
 
     skip_on_cran() 
 
-  expect_is(read_model_fits(main = main, cast_id = NULL), "list")
-  expect_error(read_model_fits(main = main, cast_id = 1e10))
+  expect_is(read_model_fit(main = main, cast_id = NULL), "list")
+  expect_error(read_model_fit(main = main, cast_id = 1e10))
 
 })
 
-test_that(desc = "read_model_casts reads in model casts", {
+test_that(desc = "read_model_cast reads in model casts", {
 
   # download is held back on cran
 
     skip_on_cran() 
 
-  expect_is(read_model_casts(main = main, cast_id = NULL), "list")
-  expect_error(read_model_casts(main = main, cast_id = 1e10))
+  expect_is(read_model_cast(main = main, cast_id = NULL), "list")
+  expect_error(read_model_cast(main = main, cast_id = 1e10))
 
 })
 

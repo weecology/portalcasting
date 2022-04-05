@@ -192,8 +192,8 @@ add_obs_to_cast_tab <- function (main     = ".",
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
 #'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
 #'  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
-#'  \code{read_model_fits}: \code{list} of \code{model_fits}. \cr \cr
-#'  \code{read_model_casts}: \code{list} of \code{model_casts}.
+#'  \code{read_model_fit}: a model fit \code{list}. \cr \cr
+#'  \code{read_model_cast}: a model cast \code{list}.
 #'
 #' @name read cast output
 #'
@@ -304,9 +304,9 @@ read_cast_metadata <- function (main     = ".",
 #'
 #' @export
 #'
-read_model_fits <- function (main     = ".", 
-                             settings = directory_settings(), 
-                             cast_id  = NULL) {
+read_model_fit <- function (main     = ".", 
+                            settings = directory_settings(), 
+                            cast_id  = NULL) {
   
   if (is.null(cast_id)) {
 
@@ -334,9 +334,9 @@ read_model_fits <- function (main     = ".",
 #'
 #' @export
 #'
-read_model_casts <- function (main     = ".", 
-                              settings = directory_settings(), 
-                              cast_id  = NULL) {
+read_model_cast <- function (main     = ".", 
+                             settings = directory_settings(), 
+                             cast_id  = NULL) {
   
   if (is.null(cast_id)) {
 

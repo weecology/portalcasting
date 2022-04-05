@@ -11,8 +11,6 @@ portalcast(
   datasets = prefab_datasets(),
   end_moons = NULL,
   start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
   cast_date = Sys.Date(),
   settings = directory_settings(),
   quiet = FALSE,
@@ -25,8 +23,6 @@ cast(
   datasets = prefab_datasets(),
   end_moon = NULL,
   start_moon = 217,
-  lead_time = 12,
-  confidence_level = 0.95,
   cast_date = Sys.Date(),
   settings = directory_settings(),
   quiet = FALSE,
@@ -45,10 +41,6 @@ cast(
 
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
-
-\item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
-
 \item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
@@ -56,6 +48,8 @@ cast(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
+
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
