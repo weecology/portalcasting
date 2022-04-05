@@ -3,10 +3,13 @@
 \name{read and write model controls}
 \alias{read and write model controls}
 \alias{read_model_controls}
+\alias{model_controls}
 \alias{write_model_controls}
 \title{Read and Write Model Control Lists}
 \usage{
-read_model_controls(
+read_model_controls(main = ".", settings = directory_settings())
+
+model_controls(
   main = ".",
   models = prefab_models(),
   settings = directory_settings()

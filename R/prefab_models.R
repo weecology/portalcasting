@@ -71,7 +71,11 @@ prefab_models <- function( ) {
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @return \code{list} of [1] model metadata \code{list} (\code{"metadata"}), cast summary \code{data.frame} (\code{"cast_tab"}), \code{list} of model fit objects (\code{"model_fits"}), and \code{list} of model cast objects (\code{"model_casts"}).
+#' @return \code{list} of \enumerate{
+#'   \item{model metadata \code{list} (\code{"metadata"})}
+#'   \item{cast summary \code{data.frame} (\code{"cast_tab"})}
+#'   \item{\code{list} of model fit objects (\code{"model_fits"})}
+#'   \item{\code{list} of model cast objects (\code{"model_casts"})}
 #'
 #' @references 
 #'  Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. forecast: Forecasting functions for time series and linear models. R package version 8.3. \href{http://pkg.robjhyndman.com/forecast}{URL}. 
@@ -128,7 +132,7 @@ AutoArima <- function (main     = ".",
 
   cast_moons       <- metadata$time$rodent_cast_moons
 
-  CL               <- metadata$confidence_level
+  confidence_level <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
@@ -152,7 +156,7 @@ AutoArima <- function (main     = ".",
     }
 
     mods[[i]]  <- auto.arima(abund_s)
-    casts[[i]] <- forecast(mods[[i]], h = nmoons, level = CL)
+    casts[[i]] <- forecast(mods[[i]], h = nmoons, level = confidence_level)
     casts[[i]] <- data.frame(casts[[i]], moon = cast_moons)
 
     cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
@@ -163,9 +167,9 @@ AutoArima <- function (main     = ".",
                              model      = "AutoArima", 
                              dataset    = dataset, 
                              species    = ss, 
-                             estimate   = casts[[i]][ ,"Point.Forecast"], 
-                             lower_pi   = casts[[i]][ ,paste0("Lo.", CL * 100)], 
-                             upper_pi   = casts[[i]][ ,paste0("Hi.", CL * 100)], 
+                             estimate   = casts[[i]][ , "Point.Forecast"], 
+                             lower_pi   = casts[[i]][ , paste0("Lo.", confidence_level * 100)], 
+                             upper_pi   = casts[[i]][ , paste0("Hi.", confidence_level * 100)], 
                              start_moon = metadata$time$start_moon,
                              end_moon   = metadata$time$end_moon)
 
@@ -218,7 +222,7 @@ NaiveArima <- function (main     = ".",
 
   cast_moons       <- metadata$time$rodent_cast_moons
 
-  CL               <- metadata$confidence_level
+  confidence_level <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
@@ -242,7 +246,7 @@ NaiveArima <- function (main     = ".",
     }
 
     mods[[i]]  <- Arima(abund_s, order = c(0, 1, 0))
-    casts[[i]] <- forecast(mods[[i]], h = nmoons, level = CL)
+    casts[[i]] <- forecast(mods[[i]], h = nmoons, level = confidence_level)
     casts[[i]] <- data.frame(casts[[i]], moon = cast_moons)
 
     cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
@@ -254,8 +258,8 @@ NaiveArima <- function (main     = ".",
                              dataset    = dataset, 
                              species    = ss, 
                              estimate   = casts[[i]][ ,"Point.Forecast"], 
-                             lower_pi   = casts[[i]][ ,paste0("Lo.", CL * 100)], 
-                             upper_pi   = casts[[i]][ ,paste0("Hi.", CL * 100)], 
+                             lower_pi   = casts[[i]][ ,paste0("Lo.", confidence_level * 100)], 
+                             upper_pi   = casts[[i]][ ,paste0("Hi.", confidence_level * 100)], 
                              start_moon = metadata$time$start_moon,
                              end_moon   = metadata$time$end_moon)
 
@@ -308,7 +312,7 @@ ESSS <- function (main     = ".",
 
   cast_moons       <- metadata$time$rodent_cast_moons
 
-  CL               <- metadata$confidence_level
+  confidence_level <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
@@ -332,7 +336,7 @@ ESSS <- function (main     = ".",
     }
 
     mods[[i]]  <- ets(abund_s)
-    casts[[i]] <- forecast(mods[[i]], h = nmoons, level = CL,
+    casts[[i]] <- forecast(mods[[i]], h = nmoons, level = confidence_level,
                            allow.multiplicative.trend = TRUE)
     casts[[i]] <- data.frame(casts[[i]], moon = cast_moons)
 
@@ -344,9 +348,9 @@ ESSS <- function (main     = ".",
                              model      = "ESSS", 
                              dataset    = dataset, 
                              species    = ss, 
-                             estimate   = casts[[i]][ ,"Point.Forecast"], 
-                             lower_pi   = casts[[i]][ ,paste0("Lo.", CL * 100)], 
-                             upper_pi   = casts[[i]][ ,paste0("Hi.", CL * 100)], 
+                             estimate   = casts[[i]][ , "Point.Forecast"], 
+                             lower_pi   = casts[[i]][ , paste0("Lo.", confidence_level * 100)], 
+                             upper_pi   = casts[[i]][ , paste0("Hi.", confidence_level * 100)], 
                              start_moon = metadata$time$start_moon,
                              end_moon   = metadata$time$end_moon)
 
@@ -397,7 +401,7 @@ nbGARCH <- function (main     = ".",
 
   cast_moons       <- metadata$time$rodent_cast_moons
 
-  CL               <- metadata$confidence_level
+  confidence_level <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
   moon_in          <- rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon
@@ -434,7 +438,7 @@ nbGARCH <- function (main     = ".",
                      error = function(x){NA})
     }
     if(!all(is.na(mods[[i]]))){
-      casts[[i]] <- predict(mods[[i]], nmoons, level = CL)
+      casts[[i]] <- predict(mods[[i]], nmoons, level = confidence_level)
       casts[[i]]$moon <- cast_moons
     }    
 
@@ -505,7 +509,7 @@ nbsGARCH <- function (main     = ".",
 
   cast_moons       <- metadata$time$rodent_cast_moons
 
-  CL               <- metadata$confidence_level
+  confidence_level <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
   for_hist         <- which(moons$newmoonnumber %in% rodents_table$newmoonnumber & moons$newmoonnumber >= start_moon)
@@ -556,7 +560,7 @@ nbsGARCH <- function (main     = ".",
     }
     if (!all(is.na(mods[[i]]))) {
 
-      casts[[i]] <- predict(object = mods[[i]], nmoons, level = CL,
+      casts[[i]] <- predict(object = mods[[i]], nmoons, level = confidence_level,
                             newxreg = cast_predictors)
       casts[[i]]$moon <- cast_moons
 
@@ -630,7 +634,7 @@ pevGARCH <- function (main     = ".",
 
   cast_moons       <- metadata$time$rodent_cast_moons
 
-  CL               <- metadata$confidence_level
+  confidence_level <- metadata$confidence_level
   dataset_controls <- metadata$controls_rodents[[dataset]]
 
   for_hist         <- which(covar_lag$newmoonnumber %in% rodents_table$newmoonnumber & covar_lag$newmoonnumber >= start_moon)
@@ -706,7 +710,7 @@ pevGARCH <- function (main     = ".",
                              warning = function(x){NA}, 
                               error = function(x) {NA})
       if(!all(is.na(mods_i[[j]]))){
-        casts_i[[j]] <-  tryCatch(predict(mods_i[[j]], nmoons, level = CL, 
+        casts_i[[j]] <-  tryCatch(predict(mods_i[[j]], nmoons, level = confidence_level, 
                                           newxreg = cast_predictors),
                                  warning = function(x){NA}, 
                                   error = function(x) {NA})

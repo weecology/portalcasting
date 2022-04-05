@@ -317,7 +317,7 @@ jags_ss <- function (main            = ".",
   start_moon        <- metadata$time$start_moon
   end_moon          <- metadata$time$end_moon
   true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  CL                <- metadata$confidence_level
+  confidence_level                <- metadata$confidence_level
 
   species <- species_from_table(rodents_tab = rodents_table, 
                                 total       = TRUE, 
@@ -433,7 +433,7 @@ jags_ss <- function (main            = ".",
                                    upper_cl       = upper_cl,
                                    moon           = obs_pred_times)
 
-      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), CL * 100)
+      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), confidence_level * 100)
       rownames(casts_i)      <- NULL
       casts[[i]]             <- casts_i
 

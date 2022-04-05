@@ -19,10 +19,22 @@
 #' @export
 #'
 read_dataset_controls <- function (main     = ".",
+                                   settings = directory_settings()) {
+
+  read_yaml(file.path(main, settings$files$dataset_controls))
+
+}
+
+#' @rdname read-and-write-rodent-dataset-controls
+#'
+#' @export
+#'
+dataset_controls <- function (main     = ".",
                                    datasets = prefab_datasets(),
                                    settings = directory_settings()) {
 
-  read_yaml(file.path(main, settings$files$dataset_controls))[datasets]
+  read_dataset_controls(main     = main,
+                        settings = settings)[datasets]
 
 }
 
@@ -91,9 +103,9 @@ prep_rodents <- function (main     = ".",
 
   return_if_null(datasets)
 
-  dataset_controls_list <- read_dataset_controls(main     = main, 
-                                                 settings = settings, 
-                                                 datasets = datasets)
+  dataset_controls_list <- dataset_controls(main     = main, 
+                                            settings = settings, 
+                                            datasets = datasets)
 
   messageq("  - rodents", quiet = quiet)
 

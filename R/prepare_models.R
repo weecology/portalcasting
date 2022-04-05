@@ -19,10 +19,23 @@
 #' @export
 #'
 read_model_controls <- function (main     = ".",
-                                 models   = prefab_models(),
                                  settings = directory_settings()) {
 
-  read_yaml(file.path(main, settings$files$model_controls))[models]
+  read_yaml(file.path(main, settings$files$model_controls))
+
+}
+
+
+#' @rdname read-and-write-model-controls
+#'
+#' @export
+#'
+model_controls <- function (main     = ".",
+                            models   = prefab_models(),
+                            settings = directory_settings()) {
+
+  read_model_controls(main     = main, 
+                      settings = settings)[models]
 
 }
 

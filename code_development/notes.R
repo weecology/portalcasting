@@ -8,14 +8,6 @@ main <- "./portalcasting"
 
 
 
-# the change from dataset to rodent_dataset in the plot_cast functions
-#  they are used in the website, which will need to be updated accordingly
-
-
-
-
-
-
 list.files("tests/testthat")
 devtools::test(filter = "01")
 devtools::test(filter = "02")

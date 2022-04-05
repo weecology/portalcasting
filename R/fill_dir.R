@@ -292,9 +292,9 @@ fill_models <- function (main     = ".",
 
   return_if_null(models)
 
-  model_controls_list <- read_model_controls(main     = main, 
-                                             settings = settings, 
-                                             models   = models)
+  model_controls_list <- model_controls(main     = main, 
+                                        settings = settings, 
+                                        models   = models)
 
 
 
