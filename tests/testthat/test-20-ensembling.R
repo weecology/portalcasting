@@ -17,7 +17,7 @@ end_moon <- max(casts_metadata$end_moon)
                            cast_tab = NULL,
                            end_moon = end_moon,
                            models   = NULL, 
-                           rodent_dataset = rodent_dataset,
+                           rodent_dataset = NULL,
                            species  = species), "data.frame")
 
 
