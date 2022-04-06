@@ -6,7 +6,7 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
-#' @param datasets \code{character} vector of name(s) of model(s) to include.
+#' @param models \code{character} vector of name(s) of model(s) to include.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'

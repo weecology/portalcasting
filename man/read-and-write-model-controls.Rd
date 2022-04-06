@@ -28,11 +28,11 @@ write_model_controls(
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
+\item{models}{\code{character} vector of name(s) of model(s) to include.}
+
 \item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
-
-\item{datasets}{\code{character} vector of name(s) of model(s) to include.}
 }
 \value{
 \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_model_controls}.
