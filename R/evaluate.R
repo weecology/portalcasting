@@ -89,5 +89,9 @@ evaluate_casts <- function (main           = ".",
   cast_tab
 
 
+  # working here! now need to set up evaluate_cast (singular) and then loop
+
 
 }
+
+
