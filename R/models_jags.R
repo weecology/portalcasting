@@ -317,7 +317,8 @@ jags_ss <- function (main            = ".",
   start_moon        <- metadata$time$start_moon
   end_moon          <- metadata$time$end_moon
   true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  confidence_level                <- metadata$confidence_level
+  confidence_level  <- metadata$confidence_level
+  dataset_controls  <- metadata$dataset_controls[[dataset]]
 
   species <- species_from_table(rodents_tab = rodents_table, 
                                 total       = TRUE, 
@@ -437,19 +438,21 @@ jags_ss <- function (main            = ".",
       rownames(casts_i)      <- NULL
       casts[[i]]             <- casts_i
 
-      cast_tab_i <- data.frame(cast_date  = metadata$time$cast_date, 
-                               cast_month = metadata$time$rodent_cast_months,
-                               cast_year  = metadata$time$rodent_cast_years, 
-                               moon       = metadata$time$rodent_cast_moons,
-                               currency   = dataset_controls$args$output,
-                               model      = model_name, 
-                               dataset    = dataset, 
-                               species    = ss, 
-                               estimate   = point_forecast,
-                               lower_pi   = lower_cl, 
-                               upper_pi   = upper_cl,
-                               start_moon = metadata$time$start_moon,
-                               end_moon   = metadata$time$end_moon)
+      cast_tab_i <- data.frame(cast_date        = metadata$time$cast_date, 
+                               cast_month       = metadata$time$rodent_cast_months,
+                               cast_year        = metadata$time$rodent_cast_years, 
+                               moon             = metadata$time$rodent_cast_moons,
+                               currency         = dataset_controls$args$output,
+                               model            = model_name, 
+                               dataset          = dataset, 
+                               species          = ss, 
+                               estimate         = point_forecast,
+                               lower_pi         = lower_cl, 
+                               upper_pi         = upper_cl,
+                               cast_group       = metadata$cast_group,
+                               confidence_level = metadata$confidence_level,
+                               start_moon       = metadata$time$start_moon,
+                               end_moon         = metadata$time$end_moon)
 
       cast_tab <- rbind(cast_tab, cast_tab_i)
 

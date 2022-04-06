@@ -124,7 +124,7 @@ prep_metadata <- function (main             = ".",
                                              rodent_cast_moons     = rodent_cast_moons, 
                                              rodent_cast_months    = rodent_cast_months, 
                                              rodent_cast_years     = rodent_cast_years),
-              confidence_level        = 0.95,
+              confidence_level        = confidence_level,
               directory_configuration = config)
 
   write_data(dfl       = out, 

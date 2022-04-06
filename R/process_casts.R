@@ -17,34 +17,55 @@ measure_cast_level_error <- function (cast_tab = NULL) {
 
   ucast_ids <- unique(cast_tab$cast_id)
   ncast_ids <- length(ucast_ids)
-  uspecies <- unique(cast_tab$species)
-  nspecies <- length(uspecies)
-  RMSE <- rep(NA, ncast_ids * nspecies)
-  coverage <- rep(NA, ncast_ids * nspecies)
-  model <- rep(NA, ncast_ids * nspecies)
-  counter <- 1
-  for(i in 1:ncast_ids){
-    for(j in 1:nspecies){
-      ij <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
+  uspecies  <- unique(cast_tab$species)
+  nspecies  <- length(uspecies)
+  RMSE      <- rep(NA, ncast_ids * nspecies)
+  coverage  <- rep(NA, ncast_ids * nspecies)
+  model     <- rep(NA, ncast_ids * nspecies)
+  counter   <- 1
+
+  for (i in 1:ncast_ids) {
+
+    for (j in 1:nspecies) {
+
+      ij          <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
       cast_tab_ij <- cast_tab[ij, ]
-      err <- cast_tab_ij$err
-      if(!is.null(err)){
+      err         <- cast_tab_ij$err
+
+      if (!is.null(err)) {
+
         RMSE[counter] <- sqrt(mean(err^2, na.rm = TRUE))
+
       }
+
       covered <- cast_tab_ij$covered
-      if(!is.null(covered)){
+
+      if (!is.null(covered)) {
+
         coverage[counter] <- mean(covered, na.rm = TRUE)            
+
       }
-      if(length(cast_tab_ij$model) > 0){
+
+      if (length(cast_tab_ij$model) > 0) {
+
         model[counter] <- unique(cast_tab_ij$model)
+
       }
+
       counter <- counter + 1
+
     }
+
   }
+
   ids <- rep(ucast_ids, each = nspecies)
   spp <- rep(uspecies, ncast_ids)
-  data.frame(cast_id = ids, species = spp, model = model, 
-             RMSE = RMSE, coverage = coverage)
+
+  data.frame(cast_id  = ids, 
+             species  = spp, 
+             model    = model, 
+             RMSE     = RMSE, 
+             coverage = coverage)
 }
 
 #' @title Add the Associated Values to a Cast Tab
@@ -543,8 +564,6 @@ save_cast_output <- function (cast     = NULL,
     cast_tab_path             <- file.path(main, settings$subs$forecasts, cast_tab_filename)
     cast_tab                  <- cast$cast_tab
     cast_tab$cast_id          <- next_cast_id
-    cast_tab$cast_group       <- cast$metadata$cast_group
-    cast_tab$confidence_level <- cast$metadata$confidence_level
 
     write.csv(x         = cast_tab,
               file      = cast_tab_path, 

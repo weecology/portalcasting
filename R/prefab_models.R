@@ -159,19 +159,21 @@ AutoArima <- function (main     = ".",
     casts[[i]] <- forecast(mods[[i]], h = nmoons, level = confidence_level)
     casts[[i]] <- data.frame(casts[[i]], moon = cast_moons)
 
-    cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
-                             cast_month = metadata$time$rodent_cast_months,
-                             cast_year  = metadata$time$rodent_cast_years, 
-                             moon       = metadata$time$rodent_cast_moons,
-                             currency   = dataset_controls$args$output,
-                             model      = "AutoArima", 
-                             dataset    = dataset, 
-                             species    = ss, 
-                             estimate   = casts[[i]][ , "Point.Forecast"], 
-                             lower_pi   = casts[[i]][ , paste0("Lo.", confidence_level * 100)], 
-                             upper_pi   = casts[[i]][ , paste0("Hi.", confidence_level * 100)], 
-                             start_moon = metadata$time$start_moon,
-                             end_moon   = metadata$time$end_moon)
+    cast_tab_s <- data.frame(cast_date        = metadata$time$cast_date, 
+                             cast_month       = metadata$time$rodent_cast_months,
+                             cast_year        = metadata$time$rodent_cast_years, 
+                             moon             = metadata$time$rodent_cast_moons,
+                             currency         = dataset_controls$args$output,
+                             model            = "AutoArima", 
+                             dataset          = dataset, 
+                             species          = ss, 
+                             cast_group       = metadata$cast_group,
+                             confidence_level = metadata$confidence_level,
+                             estimate         = casts[[i]][ , "Point.Forecast"], 
+                             lower_pi         = casts[[i]][ , paste0("Lo.", confidence_level * 100)], 
+                             upper_pi         = casts[[i]][ , paste0("Hi.", confidence_level * 100)], 
+                             start_moon       = metadata$time$start_moon,
+                             end_moon         = metadata$time$end_moon)
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
@@ -249,19 +251,21 @@ NaiveArima <- function (main     = ".",
     casts[[i]] <- forecast(mods[[i]], h = nmoons, level = confidence_level)
     casts[[i]] <- data.frame(casts[[i]], moon = cast_moons)
 
-    cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
-                             cast_month = metadata$time$rodent_cast_months,
-                             cast_year  = metadata$time$rodent_cast_years, 
-                             moon       = metadata$time$rodent_cast_moons,
-                             currency   = dataset_controls$args$output,
-                             model      = "NaiveArima", 
-                             dataset    = dataset, 
-                             species    = ss, 
-                             estimate   = casts[[i]][ ,"Point.Forecast"], 
-                             lower_pi   = casts[[i]][ ,paste0("Lo.", confidence_level * 100)], 
-                             upper_pi   = casts[[i]][ ,paste0("Hi.", confidence_level * 100)], 
-                             start_moon = metadata$time$start_moon,
-                             end_moon   = metadata$time$end_moon)
+    cast_tab_s <- data.frame(cast_date        = metadata$time$cast_date, 
+                             cast_month       = metadata$time$rodent_cast_months,
+                             cast_year        = metadata$time$rodent_cast_years, 
+                             moon             = metadata$time$rodent_cast_moons,
+                             currency         = dataset_controls$args$output,
+                             model            = "NaiveArima", 
+                             dataset          = dataset, 
+                             species          = ss, 
+                             cast_group       = metadata$cast_group,
+                             confidence_level = metadata$confidence_level,
+                             estimate         = casts[[i]][ ,"Point.Forecast"], 
+                             lower_pi         = casts[[i]][ ,paste0("Lo.", confidence_level * 100)], 
+                             upper_pi         = casts[[i]][ ,paste0("Hi.", confidence_level * 100)], 
+                             start_moon       = metadata$time$start_moon,
+                             end_moon         = metadata$time$end_moon)
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
@@ -340,19 +344,21 @@ ESSS <- function (main     = ".",
                            allow.multiplicative.trend = TRUE)
     casts[[i]] <- data.frame(casts[[i]], moon = cast_moons)
 
-    cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
-                             cast_month = metadata$time$rodent_cast_months,
-                             cast_year  = metadata$time$rodent_cast_years, 
-                             moon       = metadata$time$rodent_cast_moons,
-                             currency   = dataset_controls$args$output,
-                             model      = "ESSS", 
-                             dataset    = dataset, 
-                             species    = ss, 
-                             estimate   = casts[[i]][ , "Point.Forecast"], 
-                             lower_pi   = casts[[i]][ , paste0("Lo.", confidence_level * 100)], 
-                             upper_pi   = casts[[i]][ , paste0("Hi.", confidence_level * 100)], 
-                             start_moon = metadata$time$start_moon,
-                             end_moon   = metadata$time$end_moon)
+    cast_tab_s <- data.frame(cast_date        = metadata$time$cast_date, 
+                             cast_month       = metadata$time$rodent_cast_months,
+                             cast_year        = metadata$time$rodent_cast_years, 
+                             moon             = metadata$time$rodent_cast_moons,
+                             currency         = dataset_controls$args$output,
+                             model            = "ESSS", 
+                             cast_group       = metadata$cast_group,
+                             confidence_level = metadata$confidence_level,
+                             dataset          = dataset, 
+                             species          = ss, 
+                             estimate         = casts[[i]][ , "Point.Forecast"], 
+                             lower_pi         = casts[[i]][ , paste0("Lo.", confidence_level * 100)], 
+                             upper_pi         = casts[[i]][ , paste0("Hi.", confidence_level * 100)], 
+                             start_moon       = metadata$time$start_moon,
+                             end_moon         = metadata$time$end_moon)
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
@@ -443,19 +449,21 @@ nbGARCH <- function (main     = ".",
     }    
 
 
-    cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
-                             cast_month = metadata$time$rodent_cast_months,
-                             cast_year  = metadata$time$rodent_cast_years, 
-                             moon       = metadata$time$rodent_cast_moons,
-                             currency   = dataset_controls$args$output,
-                             model      = "nbGARCH", 
-                             dataset    = dataset, 
-                             species    = ss, 
-                             estimate   = as.numeric(casts[[i]]$pred), 
-                             lower_pi   = as.numeric(casts[[i]]$interval[ , 1]), 
-                             upper_pi   = as.numeric(casts[[i]]$interval[ , 2]), 
-                             start_moon = metadata$time$start_moon,
-                             end_moon   = metadata$time$end_moon)
+    cast_tab_s <- data.frame(cast_date        = metadata$time$cast_date, 
+                             cast_month       = metadata$time$rodent_cast_months,
+                             cast_year        = metadata$time$rodent_cast_years, 
+                             moon             = metadata$time$rodent_cast_moons,
+                             currency         = dataset_controls$args$output,
+                             model            = "nbGARCH", 
+                             cast_group       = metadata$cast_group,
+                             confidence_level = metadata$confidence_level,
+                             dataset          = dataset, 
+                             species          = ss, 
+                             estimate         = as.numeric(casts[[i]]$pred), 
+                             lower_pi         = as.numeric(casts[[i]]$interval[ , 1]), 
+                             upper_pi         = as.numeric(casts[[i]]$interval[ , 2]), 
+                             start_moon       = metadata$time$start_moon,
+                             end_moon         = metadata$time$end_moon)
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
@@ -567,19 +575,21 @@ nbsGARCH <- function (main     = ".",
     }    
 
 
-    cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
-                             cast_month = metadata$time$rodent_cast_months,
-                             cast_year  = metadata$time$rodent_cast_years, 
-                             moon       = metadata$time$rodent_cast_moons,
-                             currency   = dataset_controls$args$output,
-                             model      = "nbsGARCH", 
-                             dataset    = dataset, 
-                             species    = ss, 
-                             estimate   = as.numeric(casts[[i]]$pred), 
-                             lower_pi   = as.numeric(casts[[i]]$interval[ , 1]), 
-                             upper_pi   = as.numeric(casts[[i]]$interval[ , 2]), 
-                             start_moon = metadata$time$start_moon,
-                             end_moon   = metadata$time$end_moon)
+    cast_tab_s <- data.frame(cast_date        = metadata$time$cast_date, 
+                             cast_month       = metadata$time$rodent_cast_months,
+                             cast_year        = metadata$time$rodent_cast_years, 
+                             moon             = metadata$time$rodent_cast_moons,
+                             currency         = dataset_controls$args$output,
+                             model            = "nbsGARCH", 
+                             cast_group       = metadata$cast_group,
+                             confidence_level = metadata$confidence_level,
+                             dataset          = dataset, 
+                             species          = ss, 
+                             estimate         = as.numeric(casts[[i]]$pred), 
+                             lower_pi         = as.numeric(casts[[i]]$interval[ , 1]), 
+                             upper_pi         = as.numeric(casts[[i]]$interval[ , 2]), 
+                             start_moon       = metadata$time$start_moon,
+                             end_moon         = metadata$time$end_moon)
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
@@ -728,19 +738,21 @@ pevGARCH <- function (main     = ".",
     casts[[i]]$moon <- cast_moons
 
 
-    cast_tab_s <- data.frame(cast_date  = metadata$time$cast_date, 
-                             cast_month = metadata$time$rodent_cast_months,
-                             cast_year  = metadata$time$rodent_cast_years, 
-                             moon       = metadata$time$rodent_cast_moons,
-                             currency   = dataset_controls$args$output,
-                             model      = "pevGARCH", 
-                             dataset    = dataset, 
-                             species    = ss, 
-                             estimate   = as.numeric(casts[[i]]$pred), 
-                             lower_pi   = as.numeric(casts[[i]]$interval[ , 1]), 
-                             upper_pi   = as.numeric(casts[[i]]$interval[ , 2]), 
-                             start_moon = metadata$time$start_moon,
-                             end_moon   = metadata$time$end_moon)
+    cast_tab_s <- data.frame(cast_date        = metadata$time$cast_date, 
+                             cast_month       = metadata$time$rodent_cast_months,
+                             cast_year        = metadata$time$rodent_cast_years, 
+                             moon             = metadata$time$rodent_cast_moons,
+                             currency         = dataset_controls$args$output,
+                             model            = "pevGARCH", 
+                             dataset          = dataset, 
+                             species          = ss, 
+                             cast_group       = metadata$cast_group,
+                             confidence_level = metadata$confidence_level,
+                             estimate         = as.numeric(casts[[i]]$pred), 
+                             lower_pi         = as.numeric(casts[[i]]$interval[ , 1]), 
+                             upper_pi         = as.numeric(casts[[i]]$interval[ , 2]), 
+                             start_moon       = metadata$time$start_moon,
+                             end_moon         = metadata$time$end_moon)
 
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
