@@ -48,8 +48,6 @@ cast(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
-
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.

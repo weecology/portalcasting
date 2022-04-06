@@ -16,10 +16,6 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
 #'
-#' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets}.
-#'
-#' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models}.
-#'
 #' @return The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 #'
 #' @examples
