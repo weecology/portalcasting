@@ -9,6 +9,7 @@ AutoArima:
   - controls
   - exclosures
   - dm_controls
+  link: normal
 ESSS:
   metadata:
     name: ESSS
@@ -20,6 +21,7 @@ ESSS:
   - controls_interp
   - exclosures_interp
   - dm_controls_interp
+  link: normal
 NaiveArima:
   metadata:
     name: NaiveArima
@@ -31,6 +33,7 @@ NaiveArima:
   - controls
   - exclosures
   - dm_controls
+  link: normal
 nbGARCH:
   metadata:
     name: nbGARCH
@@ -42,6 +45,7 @@ nbGARCH:
   - controls_interp
   - exclosures_interp
   - dm_controls_interp
+  link: negative_binomial
 nbsGARCH:
   metadata:
     name: nbsGARCH
@@ -53,6 +57,7 @@ nbsGARCH:
   - controls_interp
   - exclosures_interp
   - dm_controls_interp
+  link: negative_binomial
 pevGARCH:
   metadata:
     name: pevGARCH
@@ -65,6 +70,7 @@ pevGARCH:
   - dm_controls_interp
   args:
     lag: 6.0
+  link: poisson
 jags_RW:
   metadata:
     name: jags_RW
@@ -84,6 +90,7 @@ jags_RW:
       mutate: .na
       cast_obs: yes
       silent_jags: yes
+  link: poisson
 jags_logistic:
   metadata:
     name: jags_logistic
@@ -103,3 +110,4 @@ jags_logistic:
       mutate: .na
       cast_obs: yes
       silent_jags: yes
+  link: poisson
