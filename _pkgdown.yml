@@ -101,9 +101,12 @@ reference:
     desc: "Functions that facilitate use of the Portal rodents data"
     contents:
       - prep_rodents
-      - prep_rodent_dataset
-      - prefab_rodent_datasets
-      - prefab_rodent_dataset_controls
+      - prep_dataset
+      - prefab_datasets
+      - prefab_dataset_controls
+      - dataset_controls
+      - write_dataset_controls
+      - read_dataset_controls
       - rodent_species
       - evalplot_species
       - all_species
@@ -126,6 +129,9 @@ reference:
       - model_template
       - prefab_models
       - prefab_model_controls
+      - model_controls
+      - write_model_controls
+      - read_model_controls
   - title: "Prefabricated models"
     desc: "Functions used to run the prefab models"
     contents:
@@ -163,7 +169,6 @@ reference:
       - foy
       - add_date_from_components
       - path_no_ext
-      - files_control
   - title: "Download functions"
     desc: "Functions for creating API URLs, retrieving, and managing downloaded components"
     contents:
