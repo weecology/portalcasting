@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.32.0</span>
       </span>
     </div>
 
@@ -83,13 +83,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">portalcast</span><span class="op">(</span>
   main <span class="op">=</span> <span class="st">"."</span>,
   models <span class="op">=</span> <span class="fu"><a href="prefabricated_models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,
-  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_rodent_datasets.html">prefab_rodent_datasets</a></span><span class="op">(</span><span class="op">)</span>,
+  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,
   end_moons <span class="op">=</span> <span class="cn">NULL</span>,
   start_moon <span class="op">=</span> <span class="fl">217</span>,
-  lead_time <span class="op">=</span> <span class="fl">12</span>,
-  confidence_level <span class="op">=</span> <span class="fl">0.95</span>,
   cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  controls_model <span class="op">=</span> <span class="cn">NULL</span>,
   settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
   verbose <span class="op">=</span> <span class="cn">FALSE</span>
@@ -98,13 +95,10 @@
 <span class="fu">cast</span><span class="op">(</span>
   main <span class="op">=</span> <span class="st">"."</span>,
   models <span class="op">=</span> <span class="fu"><a href="prefabricated_models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,
-  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_rodent_datasets.html">prefab_rodent_datasets</a></span><span class="op">(</span><span class="op">)</span>,
+  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,
   end_moon <span class="op">=</span> <span class="cn">NULL</span>,
   start_moon <span class="op">=</span> <span class="fl">217</span>,
-  lead_time <span class="op">=</span> <span class="fl">12</span>,
-  confidence_level <span class="op">=</span> <span class="fl">0.95</span>,
   cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  controls_model <span class="op">=</span> <span class="cn">NULL</span>,
   settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
   verbose <span class="op">=</span> <span class="cn">FALSE</span>
@@ -123,29 +117,16 @@
 <dd><p><code>integer</code> (or integer <code>numeric</code>) newmoon number(s) of the last sample(s) to be included. Default value is <code>NULL</code>, which equates to the most recently included sample. <br><strong><code>end_moons</code> allows for multiple moons, <code>end_moon</code> can only be one value</strong>.</p></dd>
 <dt>start_moon</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) newmoon number of the first sample to be included. Default value is <code>217</code>, corresponding to <code>1995-01-01</code>.</p></dd>
-<dt>lead_time</dt>
-<dd><p><code>integer</code> (or integer <code>numeric</code>) value for the number of timesteps forward a cast will cover.</p></dd>
-<dt>confidence_level</dt>
-<dd><p><code>numeric</code> confidence level used in summarizing model output. Must be between <code>0</code> and <code>1</code>.</p></dd>
 <dt>cast_date</dt>
 <dd><p><code>Date</code> from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using <code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></code>.</p></dd>
-<dt>controls_model</dt>
-<dd><p>Additional controls for models not in the prefab set or for overriding controls of a prefab model (for example when applying a model to a new data set). <br> 
-A <code>list</code> of a single model's script-writing controls or a <code>list</code> of <code>list</code>s, each of which is a single model's script-writing controls. <br> 
-Presently, each model's script writing controls should include four elements:</p><ul><li><p><code>name</code>: a <code>character</code> value of the model name.</p></li>
-<li><p><code>data_sets</code>: a <code>character</code> vector of the data set names
-  that the model is applied to.</p></li>
-<li><p><code>covariatesTF</code>: a <code>logical</code> indicator of if the 
-  model needs covariates.</p></li>
-<li><p><code>lag</code>: an <code>integer</code>-conformable value of the lag to use 
-  with the covariates or <code>NA</code> if <code>covariatesTF = FALSE</code>.</p></li>
-</ul><p>If only a single model's controls are included, the name of the model from the element <code>name</code> will be used to name the model's <code>list</code> in the larger <code>list</code>. If multiple models are added, each element <code>list</code> must be named according to the model and the<code>name</code> element.</p></dd>
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information or not (and thus just the tidy messages).</p></dd>
+<dt>lead_time</dt>
+<dd><p><code>integer</code> (or integer <code>numeric</code>) value for the number of timesteps forward a cast will cover.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

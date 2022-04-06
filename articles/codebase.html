@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.32.0</span>
       </span>
     </div>
 
@@ -96,7 +96,7 @@
       <h1 data-toc-skip>portalcasting Codebase</h1>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">02 April, 2022</h4>
+            <h4 data-toc-skip class="date">06 April, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/codebase.Rmd" class="external-link"><code>vignettes/codebase.Rmd</code></a></small>
       <div class="hidden name"><code>codebase.Rmd</code></div>
@@ -105,7 +105,7 @@
 
     
     
-<p>This vignette outlines the codebase and functionality of the <strong>portalcasting</strong> package (v0.31.0), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions production pipeline</a>. <strong>portalcasting</strong> has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.</p>
+<p>This vignette outlines the codebase and functionality of the <strong>portalcasting</strong> package (v0.32.0), which underlies the automated iterative forecasting within the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions production pipeline</a>. <strong>portalcasting</strong> has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -145,7 +145,7 @@
 <div class="section level2">
 <h2 id="instantiating-a-directory">Instantiating a Directory<a class="anchor" aria-label="anchor" href="#instantiating-a-directory"></a>
 </h2>
-<p>Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). These steps can be executed separately or in combination via a general <code>setup_dir</code> function or via specialized versions of <code>setup_dir</code>: <code>setup_sandbox</code> (for creating a pipeline with defaults to facilitate sandboxing) and <code>setup_production</code> (for creating a production pipeline). These functions are general and flexible, allowing for customization through a variety of arguments, but are designed to work well under default settings.</p>
+<p>Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). These steps can be executed separately or in combination via a general <code>setup_dir</code> function or via specialized versions of <code>setup_dir</code>: <code>setup_sandbox</code> (for creating a pipeline with defaults to facilitate sandboxing) and <code>setup_production</code> (for creating a production pipeline). These functions are general and flexible, but are designed to work well under default settings. To alter the directory configurations in <code>setup_&lt;&gt;</code> and <code>create_dir</code>, use the <code>settings</code> argument, which takes a list of inputs, condensed and detailed in <code>directory_settings</code>.</p>
 <div class="section level3">
 <h3 id="creating">Creating<a class="anchor" aria-label="anchor" href="#creating"></a>
 </h3>
@@ -158,7 +158,7 @@
 <p>The directory is filled (loaded with files for forecasting) using a series of subdirectory-specific functions that are combined in the overall <code>fill_dir</code> function:</p>
 <ul>
 <li>
-<code>fill_raw</code> downloads each of the raw components for the directory, which presently include the source data and previous forecasts’ archive. Upon completion of the downloads, <code>fill_raw</code> updates <code>dir_config.yaml</code> with download versions.</li>
+<code>fill_raw</code> downloads each of the raw components for the directory, which presently include the source data (rodents), covariate data (weather, NDVI), and previous forecasts’ archive. Upon completion of the downloads, <code>fill_raw</code> updates <code>dir_config.yaml</code> with download versions.</li>
 <li>
 <code>fill_casts</code> moves the existing model cast output files from the <code>raw</code> subdirectory to the <code>casts</code> subdirectory.</li>
 <li>

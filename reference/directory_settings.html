@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.32.0</span>
       </span>
     </div>
 
@@ -84,6 +84,8 @@
   covariates_file <span class="op">=</span> <span class="st">"covariates.csv"</span>,
   historical_covariates_file <span class="op">=</span> <span class="st">"historical_covariates.csv"</span>,
   forecast_covariates_file <span class="op">=</span> <span class="st">"forecast_covariates.csv"</span>,
+  dataset_controls_file <span class="op">=</span> <span class="st">"data/dataset_controls.yaml"</span>,
+  model_controls_file <span class="op">=</span> <span class="st">"models/model_controls.yaml"</span>,
   metadata_file <span class="op">=</span> <span class="st">"metadata.yaml"</span>,
   subdirectories <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>forecasts <span class="op">=</span> <span class="st">"casts"</span>, `model fits` <span class="op">=</span> <span class="st">"fits"</span>, `model scripts` <span class="op">=</span>
     <span class="st">"models"</span>, resources <span class="op">=</span> <span class="st">"raw"</span>, data <span class="op">=</span> <span class="st">"data"</span>, tmp <span class="op">=</span> <span class="st">"tmp"</span><span class="op">)</span>,
@@ -107,6 +109,10 @@
 <dd><p><code>character</code> name of the file for saving the moons data.</p></dd>
 <dt>covariates_file, historical_covariates_file, forecast_covariates_file</dt>
 <dd><p><code>character</code> name of the files for saving the covariate data (combined historical and forecast) and each component.</p></dd>
+<dt>dataset_controls_file</dt>
+<dd><p><code>character</code> name of the file for saving the rodent dataset controls.</p></dd>
+<dt>model_controls_file</dt>
+<dd><p><code>character</code> name of the file for saving the model controls.</p></dd>
 <dt>metadata_file</dt>
 <dd><p><code>character</code> name of the file for saving the forecast metadata.</p></dd>
 <dt>subdirectories</dt>
@@ -116,10 +122,10 @@
 See <code><a href="https://weecology.github.io/portalr/reference/download_observations.html" class="external-link">download_observations</a></code>.</p></dd>
 <dt>portalPredictions</dt>
 <dd><p><code>list</code> with <code>source</code> and <code>version</code> elements that are <code>character</code> values for the source and version of the archive to download. Default values point to github, but <code>version = NULL</code> indicates no download. <br><br> 
-See <code><a href="download_archive.html">download_archive</a></code>.</p></dd>
+See <code><a href="download-archive.html">download_archive</a></code>.</p></dd>
 <dt>climate_forecast</dt>
 <dd><p><code>list</code> with <code>source</code> and <code>version</code> elements that are <code>character</code> values for the source and version of the climate forecasts to download. Default values retrieve the current day's forecast from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts. <br><br> 
-See <code><a href="download_climate_forecasts.html">download_climate_forecasts</a></code>.</p></dd>
+See <code><a href="download-climate-forecasts.html">download_climate_forecasts</a></code>.</p></dd>
 <dt>save</dt>
 <dd><p><code>logical</code> indicator controlling if the output should be saved out.</p></dd>
 <dt>overwrite</dt>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.32.0</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
         </td>
         <td><p>Determine the Paths to the Scripts for Models to Cast with</p></td>
       </tr><tr><td>
-          <p><code><a href="read-cast-output.html">read_cast_tab()</a></code> <code><a href="read-cast-output.html">read_cast_tabs()</a></code> <code><a href="read-cast-output.html">read_cast_metadata()</a></code> <code><a href="read-cast-output.html">read_model_fits()</a></code> <code><a href="read-cast-output.html">read_model_casts()</a></code> </p>
+          <p><code><a href="read-cast-output.html">read_cast_tab()</a></code> <code><a href="read-cast-output.html">read_cast_tabs()</a></code> <code><a href="read-cast-output.html">read_cast_metadata()</a></code> <code><a href="read-cast-output.html">read_model_fit()</a></code> <code><a href="read-cast-output.html">read_model_cast()</a></code> </p>
         </td>
         <td><p>Read in Cast Output From a Given Cast</p></td>
       </tr><tr><td>
@@ -134,11 +134,11 @@
       </tr><tr><td>
           <p><code><a href="measure_cast_level_error.html">measure_cast_level_error()</a></code> </p>
         </td>
-        <td><p>Measure error/fit metrics for forecasts</p></td>
+        <td><p>Measure Error and Fit Metrics for Forecasts</p></td>
       </tr><tr><td>
           <p><code><a href="add-to-cast-tab.html">add_lead_to_cast_tab()</a></code> <code><a href="add-to-cast-tab.html">add_err_to_cast_tab()</a></code> <code><a href="add-to-cast-tab.html">add_covered_to_cast_tab()</a></code> <code><a href="add-to-cast-tab.html">add_obs_to_cast_tab()</a></code> </p>
         </td>
-        <td><p>Add the associated values to a cast tab</p></td>
+        <td><p>Add the Associated Values to a Cast Tab</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="data-io">Data IO <a href="#data-io" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for reading and writing data</p>
@@ -188,13 +188,17 @@
         </td>
         <td><p>Prepare Rodents Data for the Portalcasting Repository</p></td>
       </tr><tr><td>
-          <p><code><a href="prepare-rodent-dataset.html">prep_rodent_dataset()</a></code> </p>
+          <p><code><a href="prepare-rodent-dataset.html">prep_dataset()</a></code> </p>
         </td>
         <td><p>Prepare Rodents Data Tables for Forecasting</p></td>
       </tr><tr><td>
-          <p><code><a href="prefabricated_rodent_datasets.html">prefab_rodent_datasets()</a></code> <code><a href="prefabricated_rodent_datasets.html">prefab_rodent_dataset_controls()</a></code> </p>
+          <p><code><a href="prefabricated_datasets.html">prefab_datasets()</a></code> <code><a href="prefabricated_datasets.html">prefab_dataset_controls()</a></code> </p>
         </td>
-        <td><p>Provide the names or controls for the prefab rodents datasets</p></td>
+        <td><p>Provide the Names or Controls for the Prefab Rodent Datasets</p></td>
+      </tr><tr><td>
+          <p><code><a href="read-and-write-rodent-dataset-controls.html">read_dataset_controls()</a></code> <code><a href="read-and-write-rodent-dataset-controls.html">dataset_controls()</a></code> <code><a href="read-and-write-rodent-dataset-controls.html">write_dataset_controls()</a></code> </p>
+        </td>
+        <td><p>Read and Write Rodent Dataset Control Lists</p></td>
       </tr><tr><td>
           <p><code><a href="rodent_species.html">rodent_species()</a></code> <code><a href="rodent_species.html">all_species()</a></code> <code><a href="rodent_species.html">base_species()</a></code> <code><a href="rodent_species.html">evalplot_species()</a></code> </p>
         </td>
@@ -238,7 +242,11 @@
       </tr><tr><td>
           <p><code><a href="prefabricated_models.html">prefab_model_controls()</a></code> <code><a href="prefabricated_models.html">prefab_models()</a></code> </p>
         </td>
-        <td><p>Provide the names or controls for the prefab models</p></td>
+        <td><p>Provide the Names or Controls for the Prefab Models</p></td>
+      </tr><tr><td>
+          <p><code><a href="read-and-write-model-controls.html">read_model_controls()</a></code> <code><a href="read-and-write-model-controls.html">model_controls()</a></code> <code><a href="read-and-write-model-controls.html">write_model_controls()</a></code> </p>
+        </td>
+        <td><p>Read and Write Model Control Lists</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="prefabricated-models">Prefabricated models <a href="#prefabricated-models" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions used to run the prefab models</p>
@@ -336,15 +344,15 @@
           <p class="section-desc"></p><p>Functions for creating API URLs, retrieving, and managing downloaded components</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="download_archive.html">download_archive()</a></code> </p>
+          <p><code><a href="download-archive.html">download_archive()</a></code> </p>
         </td>
         <td><p>Download the Portal Predictions Repository Archive</p></td>
       </tr><tr><td>
-          <p><code><a href="download_climate_forecasts.html">download_climate_forecasts()</a></code> </p>
+          <p><code><a href="download-climate-forecasts.html">download_climate_forecasts()</a></code> </p>
         </td>
         <td><p>Download Climate Forecasts</p></td>
       </tr><tr><td>
-          <p><code><a href="NMME_urls.html">NMME_urls()</a></code> </p>
+          <p><code><a href="NMME-urls.html">NMME_urls()</a></code> </p>
         </td>
         <td><p>URLs for the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts</p></td>
       </tr></tbody><tbody><tr><th colspan="2">

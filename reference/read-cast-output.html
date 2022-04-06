@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.32.0</span>
       </span>
     </div>
 
@@ -84,9 +84,9 @@
 
 <span class="fu">read_cast_metadata</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
-<span class="fu">read_model_fits</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+<span class="fu">read_model_fit</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
-<span class="fu">read_model_casts</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu">read_model_cast</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -100,7 +100,7 @@
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>read_cast_tab</code>: <code>data.frame</code> of the <code>cast_tab</code>. <br><br><code>read_cast_tabs</code>: <code>data.frame</code> of the <code>cast_tab</code>s with a <code>cast_id</code> column added to distinguish among casts. <br><br><code>read_cast_metadata</code>: <code>list</code> of <code>cast_metadata</code>. <br><br><code>read_model_fits</code>: <code>list</code> of <code>model_fits</code>. <br><br><code>read_model_casts</code>: <code>list</code> of <code>model_casts</code>.</p>
+    <p><code>read_cast_tab</code>: <code>data.frame</code> of the <code>cast_tab</code>. <br><br><code>read_cast_tabs</code>: <code>data.frame</code> of the <code>cast_tab</code>s with a <code>cast_id</code> column added to distinguish among casts. <br><br><code>read_cast_metadata</code>: <code>list</code> of <code>cast_metadata</code>. <br><br><code>read_model_fit</code>: a model fit <code>list</code>. <br><br><code>read_model_cast</code>: a model cast <code>list</code>.</p>
     </div>
 
   </div>

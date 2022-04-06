@@ -40,7 +40,7 @@
     <loc>https://weecology.github.io/portalcasting/news/index.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/NMME_urls.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/NMME-urls.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/add-to-cast-tab.html</loc>
@@ -82,10 +82,10 @@
     <loc>https://weecology.github.io/portalcasting/reference/directory_settings.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/download_archive.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/download-archive.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/download_climate_forecasts.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/download-climate-forecasts.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/ensemble_casts.html</loc>
@@ -157,10 +157,10 @@
     <loc>https://weecology.github.io/portalcasting/reference/prefab_model_functions.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prefabricated_models.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prefabricated_datasets.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prefabricated_rodent_datasets.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/prefabricated_models.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/prep_metadata.html</loc>
@@ -176,6 +176,12 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/prepare-rodents.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/read-and-write-model-controls.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/read-and-write-rodent-dataset-controls.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/read-cast-output.html</loc>

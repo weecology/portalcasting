@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.31.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.32.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">prep_rodents</span><span class="op">(</span>
   main <span class="op">=</span> <span class="st">"."</span>,
-  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_rodent_datasets.html">prefab_rodent_datasets</a></span><span class="op">(</span><span class="op">)</span>,
+  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,
   settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
   verbose <span class="op">=</span> <span class="cn">FALSE</span>
@@ -94,11 +94,13 @@
 <dt>datasets</dt>
 <dd><p><code>character</code> vector of name(s) of rodent dataset(s) to include.</p></dd>
 <dt>settings</dt>
-<dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+<dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code>.</p></dd>
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator controlling if messages are printed.</p></dd>
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information or not (and thus just the tidy messages).</p></dd>
+<dt>new_dataset_controls</dt>
+<dd><p><code>list</code> of controls for any new datasets (not in the prefab datasets) listed in <code>dataset</code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
