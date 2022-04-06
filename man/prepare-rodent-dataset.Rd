@@ -2,10 +2,10 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{prepare rodent dataset}
 \alias{prepare rodent dataset}
-\alias{prep_rodent_dataset}
+\alias{prep_dataset}
 \title{Prepare Rodents Data Tables for Forecasting}
 \usage{
-prep_rodent_dataset(
+prep_dataset(
   name = "all",
   main = ".",
   settings = directory_settings(),

@@ -7,7 +7,7 @@
 prep_metadata(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   end_moon = NULL,
   start_moon = 217,
   lead_time = 12,

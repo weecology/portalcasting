@@ -4,7 +4,7 @@
 \alias{prefabricated_models}
 \alias{prefab_model_controls}
 \alias{prefab_models}
-\title{Provide the names or controls for the prefab models}
+\title{Provide the Names or Controls for the Prefab Models}
 \usage{
 prefab_model_controls()
 

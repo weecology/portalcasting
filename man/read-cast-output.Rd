@@ -5,8 +5,8 @@
 \alias{read_cast_tab}
 \alias{read_cast_tabs}
 \alias{read_cast_metadata}
-\alias{read_model_fits}
-\alias{read_model_casts}
+\alias{read_model_fit}
+\alias{read_model_cast}
 \title{Read in Cast Output From a Given Cast}
 \usage{
 read_cast_tab(main = ".", settings = directory_settings(), cast_id = NULL)
@@ -15,9 +15,9 @@ read_cast_tabs(main = ".", settings = directory_settings(), cast_ids = NULL)
 
 read_cast_metadata(main = ".", settings = directory_settings(), cast_id = NULL)
 
-read_model_fits(main = ".", settings = directory_settings(), cast_id = NULL)
+read_model_fit(main = ".", settings = directory_settings(), cast_id = NULL)
 
-read_model_casts(main = ".", settings = directory_settings(), cast_id = NULL)
+read_model_cast(main = ".", settings = directory_settings(), cast_id = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
@@ -31,8 +31,8 @@ read_model_casts(main = ".", settings = directory_settings(), cast_id = NULL)
 \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
- \code{read_model_fits}: \code{list} of \code{model_fits}. \cr \cr
- \code{read_model_casts}: \code{list} of \code{model_casts}.
+ \code{read_model_fit}: a model fit \code{list}. \cr \cr
+ \code{read_model_cast}: a model cast \code{list}.
 }
 \description{
 Read in the various output files of a cast or casts in the casts sub directory.

@@ -13,7 +13,7 @@ test_that(desc = "prep_rodents preps all the rodents", {
   r2 <- prep_rodents(main = main, datasets = "all")
 
   expect_is(r1, "list")
-  expect_equal(length(r1), length(prefab_rodent_datasets()))
+  expect_equal(length(r1), length(prefab_datasets()))
 
   expect_is(r2, "list")
   expect_equal(length(r2), 1)
@@ -69,11 +69,11 @@ test_that(desc = "most_abundant_species finds them", {
 })
 
 
-test_that(desc = "prefab_rodent_datasets names the proper sets", {
+test_that(desc = "prefab_datasets names the proper sets", {
 
-  pds1 <- prefab_rodent_datasets()
-  pds2 <- prefab_rodent_datasets(interpolate = TRUE)
-  pds3 <- prefab_rodent_datasets(interpolate = FALSE)
+  pds1 <- prefab_datasets()
+  pds2 <- prefab_datasets(interpolate = TRUE)
+  pds3 <- prefab_datasets(interpolate = FALSE)
 
   expect_is(pds1, "character")
   expect_is(pds2, "character")

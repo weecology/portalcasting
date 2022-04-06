@@ -4,17 +4,7 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./testing"
-
-setup_dir(main)
-portalcast(main)
-
-# updating to working with the settings list
-# minimizing other changes to the degree possible
-
-# all functions in production work as used!
-
-####    updating tests ... should be good for a full run
+main <- "./portalcasting"
 
 
 

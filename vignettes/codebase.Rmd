@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 author: "Juniper L. Simonis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 vignette: >
-  %\VignetteIndexEntry{portalcasting_codebase}
+  %\VignetteIndexEntry{portalcasting Codebase}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,7 +22,8 @@ vers <- packageVersion("portalcasting")
 today <- Sys.Date()
 ```
 
-This vignette outlines the codebase and functionality of the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions production pipeline](https://github.com/weecology/portalPredictions). **portalcasting** has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.
+This vignette outlines the codebase and functionality of the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions production pipeline](https://github.com/weecology/portalPredictions). 
+**portalcasting** has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.
 
 ## Installation
 
@@ -64,11 +65,16 @@ To group the project subfolders into a multi-leveled folder, simply add structur
 
 ## Instantiating a Directory
 
-Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). These steps can be executed separately or in combination via a general `setup_dir` function or via specialized versions of `setup_dir`: `setup_sandbox` (for creating a pipeline with defaults to facilitate sandboxing) and `setup_production` (for creating a production pipeline). These functions are general and flexible, allowing for customization through a variety of arguments, but are designed to work well under default settings.
+Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). 
+These steps can be executed separately or in combination via a general `setup_dir` function or via specialized versions of `setup_dir`: `setup_sandbox` (for creating a pipeline with defaults to facilitate sandboxing) and `setup_production` (for creating a production pipeline).
+These functions are general and flexible, but are designed to work well under default settings.
+To alter the directory configurations in `setup_<>` and `create_dir`, use the `settings` argument, which takes a list of inputs, condensed and detailed in `directory_settings`.
 
 ### Creating 
 
-The directory is established using `create_dir`, which takes `main` as an argument and in sequence creates each of the levels' folders if they do not already exist. A typical user is likely to want to change the `main` input (to locate the forecasting directory where they would like it), but general users should not alter the `subs` structure, and so that option is not easily available. If needed, the `subs` can be altered via the `directory_settings` controls.
+The directory is established using `create_dir`, which takes `main` as an argument and in sequence creates each of the levels' folders if they do not already exist. 
+A typical user is likely to want to change the `main` input (to locate the forecasting directory where they would like it), but general users should not alter the `subs` structure, and so that option is not easily available. 
+If needed, the `subs` can be altered via the `directory_settings` controls.
 
 `create_dir` also initializes the `dir_config.yaml` file, which is held within `main` and contains metadata about the directory setting up process.
 
@@ -76,7 +82,7 @@ The directory is established using `create_dir`, which takes `main` as an argume
 
 The directory is filled (loaded with files for forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir` function:
 
-* `fill_raw` downloads each of the raw components for the directory, which presently include the source data and previous forecasts' archive. Upon completion of the downloads, `fill_raw` updates `dir_config.yaml` with download versions.
+* `fill_raw` downloads each of the raw components for the directory, which presently include the source data (rodents), covariate data (weather, NDVI), and previous forecasts' archive. Upon completion of the downloads, `fill_raw` updates `dir_config.yaml` with download versions.
 * `fill_casts` moves the existing model cast output files from the `raw` subdirectory to the `casts` subdirectory.
 * `fill_fits` moves the existing model fit files from the `raw` subdirectory to the `fits` subdirectory.
 * `fill_models` writes the model scripts into the `models` subdirectory.

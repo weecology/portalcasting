@@ -10,7 +10,7 @@
 setup_dir(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -19,7 +19,7 @@ setup_dir(
 setup_production(
   main = ".",
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
   settings = directory_settings(portalPredictions = list(source = "github", version =
     "latest")),
   quiet = FALSE,
@@ -28,9 +28,9 @@ setup_production(
 
 setup_sandbox(
   main = ".",
-  settings = directory_settings(),
   models = prefab_models(),
-  datasets = prefab_rodent_datasets(),
+  datasets = prefab_datasets(),
+  settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
@@ -40,20 +40,24 @@ setup_sandbox(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{datasets}{\code{character} vector of dataset names be created.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether to print out all of the information or not (and thus just the tidy messages).}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
+
+\item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets}.}
+
+\item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models}.}
 }
 \value{
 The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 }
 \description{
 Combines \code{\link{create_dir}} and \code{\link{fill_dir}} to create a ready-to-run (via \code{\link{portalcast}}) directory where indicated. \cr \cr
-             \code{setup_production} creates a standard production directory. \cr \cr
+             \code{setup_production} creates a standard production directory, which includes downloading the most recent archive of the directory. \cr \cr
              \code{setup_sandbox} creates a sandboxing directory. \cr \cr
 }
 \examples{

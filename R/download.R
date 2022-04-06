@@ -29,6 +29,8 @@
 #'   download_archive(main = "./portalcasting")
 #'  } 
 #'
+#' @name download archive
+#'
 #' @export
 #'
 download_archive <- function(main          = ".",
@@ -47,7 +49,10 @@ download_archive <- function(main          = ".",
   on.exit(options(timeout = timeout_backup))
   options(timeout = timeout) 
 
-  if (tolower(source) == "zenodo") {
+  version <- tolower(version)
+  source  <- tolower(source)
+
+  if (source == "zenodo") {
 
     base_url <-  
 
@@ -71,21 +76,22 @@ download_archive <- function(main          = ".",
                        X    = metadata, 
                        name = "publication_date")
 
-    selected <- ifelse(version == "latest",
-                       which.max(as.Date(pub_date)),
-                       which(versions == version))
+    selected <- ifelse(test = version == "latest",
+                       yes  = which.max(as.Date(pub_date)),
+                       no   = which(versions == version))
 
     if (length(selected) == 0){
 
-      stop(paste0("Failed to locate version `", version, "` on Zenodo"))
+      stop("Failed to locate version `", version, "` on Zenodo")
    
     }
     
     zipball_url <- contents[[selected]]$files[[1]]$links$download     
-    version <- ifelse(version == "latest", 
-                      metadata[[selected]]$version, version)
+    version <- ifelse(test = version == "latest", 
+                      yes  = metadata[[selected]]$version,
+                      no   = version)
 
-  } else if (tolower(source) == "github") {
+  } else if (source == "github") {
 
     url <- ifelse(version == "latest", 
                   "https://api.github.com/repos/weecology/portalPredictions/releases/latest",
@@ -112,15 +118,15 @@ download_archive <- function(main          = ".",
   final <- file.path(main, resources_sub, "portalPredictions")
 
   result <- tryCatch(
-              download.file(url      = zipball_url, 
-                            destfile = temp, 
-                            quiet    = !verbose, 
-                            mode     = "wb"),
+              expr  = download.file(url      = zipball_url, 
+                                    destfile = temp, 
+                                    quiet    = !verbose, 
+                                    mode     = "wb"),
               error = function(x){NA})
 
   if (is.na(result)) {
 
-    warning("Archive could not be downloaded")
+    warning("Archive version `", version, "` could not be downloaded")
     return(invisible())
 
   }
@@ -193,6 +199,8 @@ download_archive <- function(main          = ".",
 #'   download_climate_forecasts(main = "./portalcasting")
 #'  } 
 #'
+#' @name download climate forecasts
+#'
 #' @export
 #'
 download_climate_forecasts <- function (main          = ".",
@@ -253,57 +261,68 @@ download_climate_forecasts <- function (main          = ".",
 #'
 #' @return Named \code{character} vector of URLs, or \code{NULL} if \code{data}, \code{freq}, or \code{model} is \code{NULL}.
 #'
+#' @name NMME urls
+#'
 #' @examples
 #'   NMME_urls()
 #'
 #' @export
 #'
 NMME_urls <- function (start = Sys.Date(), 
-                       end = as.Date("2050-01-01"),
+                       end   = as.Date("2050-01-01"),
                        model = "ENSMEAN", 
-                       lat = 31.9555, 
-                       lon = -109.0744, 
-                       freq = "daily",
-                       data = c("tasmin", "tasmean", "tasmax", "pr")) {
+                       lat   = 31.9555, 
+                       lon   = -109.0744, 
+                       freq  = "daily",
+                       data  = c("tasmin", "tasmean", "tasmax", "pr")) {
 
   return_if_null(data)
   return_if_null(freq)
   return_if_null(model)
 
   mods <- c("ENSMEAN", "CMC1", "CMC2", "CFCSv2", "GFDL", "GFDL-FLOR", "NCAR")
-  if(any(!(model %in% mods))){
-    stop("model not in available options")
+
+  if (any(!(model %in% mods))) {
+
+    stop("climate forecast model not in available options")
+
   }
 
   datas <- c("tasmin", "tasmean", "tasmax", "pr", "dps", "rsds", "was")
-  if(any(!(data %in% datas))){
-    stop("at least one data set not in available options")
+
+  if (any(!(data %in% datas))) {
+
+    stop("at least one climate forecast dataset not in available options")
+
   }
 
   freqs <- c("daily", paste0(1:7, "monthAverage"))
-  if(any(!(freq %in% freqs))){
+
+  if (any(!(freq %in% freqs))) {
+
     stop("frequency of predictions requested not available")
+
   }
   
-  thredds <- "https://tds-proxy.nkn.uidaho.edu/thredds/"
-  nwcsc <- "ncss/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/"
-  nmme <-  "bcsd-nmme/dailyForecasts/"
-  catalog <- paste0(thredds, nwcsc, nmme)
+  thredds     <- "https://tds-proxy.nkn.uidaho.edu/thredds/"
+  nwcsc       <- "ncss/NWCSC_INTEGRATED_SCENARIOS_ALL_CLIMATE/"
+  nmme        <-  "bcsd-nmme/dailyForecasts/"
+  catalog     <- paste0(thredds, nwcsc, nmme)
 
-  nc_model <- paste0("bcsd_nmme_metdata_", model, "_forecast_")
-  nc_data <- paste0(data, "_", freq, ".nc?var=", data)
-  og_nc_data <- paste0(nc_model, nc_data)
+  nc_model    <- paste0("bcsd_nmme_metdata_", model, "_forecast_")
+  nc_data    <- paste0(data, "_", freq, ".nc?var=", data)
+  og_nc_data  <- paste0(nc_model, nc_data)
 
-  start_time <- paste0(start, "T00%3A00%3A00Z")
-  end_time <- paste0(end, "T00%3A00%3A00Z")
-  locale <- paste0("&latitude=", lat, "&longitude=", lon)
-  times <- paste0("&time_start=", start_time, "&time_end=", end_time)
-  extension <- "&accept=csv"
-  specs <- paste0(locale, times, extension)
+  start_time  <- paste0(start, "T00%3A00%3A00Z")
+  end_time    <- paste0(end, "T00%3A00%3A00Z")
+  locale      <- paste0("&latitude=", lat, "&longitude=", lon)
+  times       <- paste0("&time_start=", start_time, "&time_end=", end_time)
+  extension   <- "&accept=csv"
+  specs       <- paste0(locale, times, extension)
 
-  full_urls <- paste0(catalog, og_nc_data, specs)
-  names(full_urls) <- data
-  full_urls
+  urls        <- paste0(catalog, og_nc_data, specs)
+  names(urls) <- data
+  urls
 
 }
 

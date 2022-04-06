@@ -137,8 +137,8 @@ all_species <- function (species = NULL,
 #' @export
 #'
 base_species <- function (species = NULL, 
-                         nadot   = FALSE, 
-                         total   = FALSE) {
+                          nadot   = FALSE, 
+                          total   = FALSE) {
 
   rodent_species(species = species, 
                  set     = "base", 

@@ -114,49 +114,60 @@ read_data <- function (main      = ".",
 
   if (data_name == "rodents") {
 
-    out <- read_rodents(main = main, datasets = datasets, settings = settings)
+    out <- read_rodents(main     = main, 
+                        datasets = datasets, 
+                        settings = settings)
 
   }
 
   if (data_name == "rodents_table") { 
 
-    out <- read_rodents_table(main = main, dataset = dataset, settings = settings)
+    out <- read_rodents_table(main     = main, 
+                              dataset  = dataset, 
+                              settings = settings)
+
 
   }
 
   if (data_name == "covariates") {
 
-    out <- read_covariates(main = main, settings = settings)
+    out <- read_covariates(main     = main, 
+                           settings = settings)
 
   }
 
   if (data_name == "climate_forecasts") {
 
-    out <- read_climate_forecasts(main = main, settings = settings)
+    out <- read_climate_forecasts(main     = main, 
+                                  settings = settings)
 
   }
 
   if (data_name == "moons") {
 
-    out <- read_moons(main = main, settings = settings)
+    out <- read_moons(main     = main, 
+                      settings = settings)
 
   }
 
   if (data_name == "metadata") {
 
-    out <- read_metadata(main = main, settings = settings)
+    out <- read_metadata(main     = main, 
+                         settings = settings)
 
   }
 
   if (data_name == "forecast_covariates") {
 
-    out <- read_forecast_covariates(main = main, settings = settings)
+    out <- read_forecast_covariates(main     = main, 
+                                    settings = settings)
 
   }
 
   if (data_name == "historical_covariates") {
 
-    out <- read_historical_covariates(main = main, settings = settings)
+    out <- read_historical_covariates(main     = main, 
+                                      settings = settings)
 
   }
 
@@ -170,6 +181,7 @@ read_data <- function (main      = ".",
 read_rodents_table <- function (main     = ".", 
                                 dataset  = "all", 
                                 settings = directory_settings()) {
+
 
   return_if_null(dataset)
   read.csv(file.path(main, settings$subs$data, paste0("rodents_", tolower(dataset), ".csv"))) 
@@ -226,7 +238,7 @@ read_forecast_covariates <- function (main     = ".",
 #'
 #' @export
 #'
-read_historical_covariates <- function (main     = ".",
+read_historical_covariates <- function (main    = ".",
                                        settings = directory_settings()) {
 
   read.csv(file.path(main, settings$subs$data, settings$files$historical_covariates))
@@ -336,7 +348,7 @@ read_casts_metadata <- function (main     = ".",
                              end_moon              = NA,
                              lead_time             = NA, 
                              model                 = NA, 
-                             data_set              = NA,
+                             dataset        = NA,
                              portalcasting_version = NA,
                              QAQC                  = FALSE, 
                              notes                 = NA)
@@ -345,6 +357,12 @@ read_casts_metadata <- function (main     = ".",
 
   }
 
-  read.csv(meta_path)
+  out <- read.csv(meta_path)
+
+  # patch
+  colnames(out)[colnames(out) == "data_set"] <- "dataset"
+  # patch
+
+  out[out$cast_group != 0, ]
 
 }

@@ -6,7 +6,7 @@
 \alias{add_err_to_cast_tab}
 \alias{add_covered_to_cast_tab}
 \alias{add_obs_to_cast_tab}
-\title{Add the associated values to a cast tab}
+\title{Add the Associated Values to a Cast Tab}
 \usage{
 add_lead_to_cast_tab(
   main = ".",

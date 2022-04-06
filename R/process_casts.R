@@ -1,55 +1,74 @@
 
-#' @title Measure error/fit metrics for forecasts
+#' @title Measure Error and Fit Metrics for Forecasts
 #' 
-#' @description Summarize the cast-level errors or fits to the observations. 
-#'  \cr 
+#' @description Summarize the cast-level errors or fits to the observations. \cr 
 #'  Presently included are root mean square error and coverage.
 #' 
-#' @param cast_tab A \code{data.frame} of a cast's output. See 
-#'  \code{\link{read_cast_tab}}.
+#' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
 #'
 #' @return \code{data.frame} of metrics for each cast for each species. 
 #'
 #' @export
 #'
-measure_cast_level_error <- function(cast_tab = NULL){
+measure_cast_level_error <- function (cast_tab = NULL) {
 
 
   return_if_null(cast_tab)
 
   ucast_ids <- unique(cast_tab$cast_id)
   ncast_ids <- length(ucast_ids)
-  uspecies <- unique(cast_tab$species)
-  nspecies <- length(uspecies)
-  RMSE <- rep(NA, ncast_ids * nspecies)
-  coverage <- rep(NA, ncast_ids * nspecies)
-  model <- rep(NA, ncast_ids * nspecies)
-  counter <- 1
-  for(i in 1:ncast_ids){
-    for(j in 1:nspecies){
-      ij <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
+  uspecies  <- unique(cast_tab$species)
+  nspecies  <- length(uspecies)
+  RMSE      <- rep(NA, ncast_ids * nspecies)
+  coverage  <- rep(NA, ncast_ids * nspecies)
+  model     <- rep(NA, ncast_ids * nspecies)
+  counter   <- 1
+
+  for (i in 1:ncast_ids) {
+
+    for (j in 1:nspecies) {
+
+      ij          <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
       cast_tab_ij <- cast_tab[ij, ]
-      err <- cast_tab_ij$err
-      if(!is.null(err)){
+      err         <- cast_tab_ij$err
+
+      if (!is.null(err)) {
+
         RMSE[counter] <- sqrt(mean(err^2, na.rm = TRUE))
+
       }
+
       covered <- cast_tab_ij$covered
-      if(!is.null(covered)){
+
+      if (!is.null(covered)) {
+
         coverage[counter] <- mean(covered, na.rm = TRUE)            
+
       }
-      if(length(cast_tab_ij$model) > 0){
+
+      if (length(cast_tab_ij$model) > 0) {
+
         model[counter] <- unique(cast_tab_ij$model)
+
       }
+
       counter <- counter + 1
+
     }
+
   }
+
   ids <- rep(ucast_ids, each = nspecies)
   spp <- rep(uspecies, ncast_ids)
-  data.frame(cast_id = ids, species = spp, model = model, 
-             RMSE = RMSE, coverage = coverage)
+
+  data.frame(cast_id  = ids, 
+             species  = spp, 
+             model    = model, 
+             RMSE     = RMSE, 
+             coverage = coverage)
 }
 
-#' @title Add the associated values to a cast tab
+#' @title Add the Associated Values to a Cast Tab
 #' 
 #' @description Add values to a cast's cast tab. If necessary components are missing (such as no observations added yet and the user requests errors), the missing components are added. \cr \cr
 #'  \code{add_lead_to_cast_tab} adds a column of lead times. \cr \cr
@@ -137,16 +156,20 @@ add_obs_to_cast_tab <- function (main     = ".",
 
   return_if_null(cast_tab)
 
+  # patch
+  colnames(cast_tab)[colnames(cast_tab) == "data_set"] <- "dataset"
+  # patch
+
   cast_tab$obs   <- NA
-  cast_dataset   <- gsub("_interp", "", cast_tab$data_set)
+  cast_dataset   <- gsub("_interp", "", cast_tab$dataset)
   ucast_dataset  <- unique(cast_dataset)
   ncast_datasets <- length(ucast_dataset)
 
   for (j in 1:ncast_datasets) {
 
-    obs <- read_rodents_table(main     = main, 
-                              settings = settings,
-                              dataset   = ucast_dataset[j])
+    obs <- read_rodents_table(main           = main, 
+                              settings       = settings,
+                              dataset = ucast_dataset[j])
 
 
     matches <- which(cast_dataset == ucast_dataset[j])
@@ -190,8 +213,8 @@ add_obs_to_cast_tab <- function (main     = ".",
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
 #'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
 #'  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
-#'  \code{read_model_fits}: \code{list} of \code{model_fits}. \cr \cr
-#'  \code{read_model_casts}: \code{list} of \code{model_casts}.
+#'  \code{read_model_fit}: a model fit \code{list}. \cr \cr
+#'  \code{read_model_cast}: a model cast \code{list}.
 #'
 #' @name read cast output
 #'
@@ -219,6 +242,12 @@ read_cast_tab <- function (main     = ".",
   }
 
   out <- read.csv(cpath) 
+
+
+  # patch
+  colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "dataset"
+  # patch
+
   na_conformer(out)
 
 }
@@ -244,9 +273,6 @@ read_cast_tabs <- function (main     = ".",
                             cast_id  = cast_ids[1])
   ncasts   <- length(cast_ids)
 
-      # patch
-      colnames(cast_tab)[grepl("dataset", colnames(cast_tab))] <- "data_set"
-      # patch
 
   if (ncasts > 1) {
 
@@ -255,9 +281,6 @@ read_cast_tabs <- function (main     = ".",
       cast_tab_i <- read_cast_tab(main     = main, 
                                   settings = settings,
                                   cast_id  = cast_ids[i])
-      # patch
-      colnames(cast_tab_i)[grepl("dataset", colnames(cast_tab_i))] <- "data_set"
-      # patch
 
       cast_tab   <- rbind(cast_tab, cast_tab_i)
 
@@ -302,13 +325,14 @@ read_cast_metadata <- function (main     = ".",
 #'
 #' @export
 #'
-read_model_fits <- function (main     = ".", 
-                             settings = directory_settings(), 
-                             cast_id  = NULL) {
+read_model_fit <- function (main     = ".", 
+                            settings = directory_settings(), 
+                            cast_id  = NULL) {
   
   if (is.null(cast_id)) {
 
-    casts_meta <- select_casts(main = main)
+    casts_meta <- select_casts(main     = main,
+                               settings = settings)
     cast_id <- max(casts_meta$cast_id)
 
   }
@@ -331,14 +355,15 @@ read_model_fits <- function (main     = ".",
 #'
 #' @export
 #'
-read_model_casts <- function (main     = ".", 
-                              settings = directory_settings(), 
-                              cast_id  = NULL) {
+read_model_cast <- function (main     = ".", 
+                             settings = directory_settings(), 
+                             cast_id  = NULL) {
   
   if (is.null(cast_id)) {
 
-    casts_meta <- select_casts(main = main)
-    cast_id    <- max(casts_meta$cast_id)
+    casts_meta <- select_casts(main     = main,
+                               settings = settings)
+    cast_id <- max(casts_meta$cast_id)
 
   }
 
@@ -353,6 +378,7 @@ read_model_casts <- function (main     = ".",
 
   read_in_json <- fromJSON(readLines(cpath))
   unserializeJSON(read_in_json)
+
 }
 
 
@@ -414,12 +440,20 @@ select_casts <- function (main           = ".",
   models      <- ifnull(models, umodels)
   match_model <- casts_metadata$model %in% models
   
-  udatasets     <- unique(casts_metadata$data_set[casts_metadata$QAQC])
-  datasets      <- ifnull(datasets, udatasets)
-  datasets      <- ifelse(include_interp,
-                          yes            = unique(c(datasets, paste0(datasets, "_interp"))),
-                          no             = datasets) 
-  match_dataset <- casts_metadata$data_set %in% datasets
+  udatasets <- unique(casts_metadata$dataset[casts_metadata$QAQC])
+  datasets  <- ifnull(datasets, udatasets)
+
+  if (include_interp) {
+
+    datasets <- unique(c(datasets, paste0(datasets, "_interp")))
+
+  } else {
+
+    datasets <- datasets[!grepl("interp", datasets)]
+
+  }
+
+  match_dataset <- casts_metadata$dataset %in% datasets
   
   QAQC <- casts_metadata$QAQC
 
@@ -439,7 +473,7 @@ select_casts <- function (main           = ".",
 #'
 #' @details Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
 #'  \itemize{
-#'   \item \code{"metadata"}: saved out with \code{\link[yaml]{as.yaml}}. Will
+#'   \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
 #'    typically be the model-specific metadata from the 
 #'    \code{data/metadata.yaml} file, but can more generally be any 
 #'    appropriate object (typically a \code{list}).  
@@ -505,7 +539,7 @@ save_cast_output <- function (cast     = NULL,
                               end_moon              = cast$metadata$time$end_moon,
                               lead_time             = cast$metadata$time$lead_time,
                               model                 = cast$metadata$models,
-                              data_set              = cast$metadata$datasets,
+                              dataset               = cast$metadata$datasets,
                               portalcasting_version = pc_version,
                               QAQC                  = TRUE,
                               notes                 = NA)
@@ -518,8 +552,9 @@ save_cast_output <- function (cast     = NULL,
 
     meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
     meta_path     <- file.path(main, settings$subs$forecasts, meta_filename)
-    yams          <- as.yaml(cast$metadata)
-    writeLines(yams, con = meta_path)
+
+    write_yaml(x    = cast$metadata,
+               file = meta_path)
 
   }
 
@@ -529,9 +564,10 @@ save_cast_output <- function (cast     = NULL,
     cast_tab_path             <- file.path(main, settings$subs$forecasts, cast_tab_filename)
     cast_tab                  <- cast$cast_tab
     cast_tab$cast_id          <- next_cast_id
-    cast_tab$cast_group       <- cast$metadata$cast_group
-    cast_tab$confidence_level <- cast$metadata$confidence_level
-    write.csv(cast_tab, cast_tab_path, row.names = FALSE)
+
+    write.csv(x         = cast_tab,
+              file      = cast_tab_path, 
+              row.names = FALSE)
 
   }
 
@@ -541,7 +577,9 @@ save_cast_output <- function (cast     = NULL,
     model_fits_path     <- file.path(main, settings$subs$`model fits`, model_fits_filename)
     model_fits          <- cast$model_fits
     model_fits          <- serializeJSON(model_fits)
-    write_json(model_fits, path = model_fits_path)
+
+    write_json(x    = model_fits, 
+               path = model_fits_path)
 
   }
 
@@ -551,7 +589,9 @@ save_cast_output <- function (cast     = NULL,
     model_casts_path     <- file.path(main, settings$subs$forecasts, model_casts_filename)
     model_casts          <- cast$model_casts
     model_casts          <- serializeJSON(model_casts)
-    write_json(model_casts, path = model_casts_path)
+
+    write_json(x    = model_casts, 
+               path = model_casts_path)
 
   }
 

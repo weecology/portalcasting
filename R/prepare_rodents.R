@@ -1,3 +1,78 @@
+#' @title Read and Write Rodent Dataset Control Lists
+#'
+#' @description Input/Output functions for dataset control lists.
+#'
+#' @param quiet \code{logical} indicator controlling if messages are printed.
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree. 
+#'
+#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#'
+#' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
+#'
+#' @return \code{list} of \code{datasets}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_dataset_controls}.
+#'  
+#' @name read and write rodent dataset controls
+#'
+#' @export
+#'
+read_dataset_controls <- function (main     = ".",
+                                   settings = directory_settings()) {
+
+  read_yaml(file.path(main, settings$files$dataset_controls))
+
+}
+
+#' @rdname read-and-write-rodent-dataset-controls
+#'
+#' @export
+#'
+dataset_controls <- function (main     = ".",
+                                   datasets = prefab_datasets(),
+                                   settings = directory_settings()) {
+
+  read_dataset_controls(main     = main,
+                        settings = settings)[datasets]
+
+}
+
+#' @rdname read-and-write-rodent-dataset-controls
+#'
+#' @export
+#'
+write_dataset_controls <- function (main                 = ".",
+                                    new_dataset_controls = NULL,
+                                    datasets             = prefab_datasets(),
+                                    settings             = directory_settings(),
+                                    quiet                = FALSE) {
+
+  dataset_controls <- prefab_dataset_controls()
+  ndatasets        <- length(dataset_controls)
+  nnew_datasets    <- length(new_dataset_controls)
+
+  if (nnew_datasets > 0) {
+
+    for (i in 1:nnew_datasets) {
+
+      dataset_controls <- update_list(dataset_controls, 
+                                             x = new_dataset_controls[[i]])
+
+      names(dataset_controls)[ndatasets + i] <- names(new_dataset_controls)[i]
+
+    }
+
+  }
+
+  write_yaml(x    = dataset_controls,
+             file = file.path(main, settings$files$dataset_controls))
+
+  invisible(dataset_controls)
+
+}
+
+
 #' @title Prepare Rodents Data for the Portalcasting Repository
 #'
 #' @description Create specified \code{datasets} using their associated function and arguments.
@@ -10,7 +85,9 @@
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#'
+#' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{dataset}.
 #'
 #' @return \code{list} of prepared \code{datasets}.
 #'  
@@ -19,29 +96,25 @@
 #' @export
 #'
 prep_rodents <- function (main     = ".",
-                          datasets = prefab_rodent_datasets(),
+                          datasets = prefab_datasets(),
                           settings = directory_settings(), 
                           quiet    = FALSE,
                           verbose  = FALSE) {
 
   return_if_null(datasets)
 
-  #
-  # need a way here to access user-generated control lists  
-  #
-
-  rodent_dataset_controls <- prefab_rodent_dataset_controls()
-
-  datasets_list <- rodent_dataset_controls[datasets]
+  dataset_controls_list <- dataset_controls(main     = main, 
+                                            settings = settings, 
+                                            datasets = datasets)
 
   messageq("  - rodents", quiet = quiet)
 
   out <- named_null_list(element_names = datasets)
 
-  for (i in 1:length(datasets_list)) {
+  for (i in 1:length(dataset_controls_list)) {
 
-    out[[i]] <- do.call(what = datasets_list[[i]]$fun, 
-                        args = update_list(list      = datasets_list[[i]]$args, 
+    out[[i]] <- do.call(what = dataset_controls_list[[i]]$fun, 
+                        args = update_list(list      = dataset_controls_list[[i]]$args, 
                                            main      = main, 
                                            settings  = settings, 
                                            quiet     = quiet, 
@@ -52,6 +125,12 @@ prep_rodents <- function (main     = ".",
   invisible(out)
 
 }
+
+
+
+
+
+
 
 #' @title Prepare Rodents Data Tables for Forecasting
 #'
@@ -119,32 +198,32 @@ prep_rodents <- function (main     = ".",
 #'
 #' @export
 #'
-prep_rodent_dataset <- function(name        = "all",
-                                main        = ".",
-                                settings    = directory_settings(),
-                                filename    = "rodents_all.csv",
-                                clean       = FALSE,
-                                level       = "Site",
-                                type        = "Rodents",
-                                plots       = "all",
-                                unknowns    = FALSE,
-                                shape       = "crosstab",
-                                time        = "newmoon",
-                                output      = "abundance",
-                                fillweight  = FALSE,
-                                treatment   = NULL,
-                                na_drop     = FALSE,
-                                zero_drop   = FALSE,
-                                min_traps   = 1,
-                                min_plots   = 24,
-                                effort      = TRUE,
-                                species     = base_species(),
-                                total       = TRUE,
-                                interpolate = FALSE,
-                                save        = TRUE,
-                                overwrite   = TRUE,
-                                quiet       = FALSE,
-                                verbose     = FALSE) {
+prep_dataset <- function(name        = "all",
+                         main        = ".",
+                         settings    = directory_settings(),
+                         filename    = "rodents_all.csv",
+                         clean       = FALSE,
+                         level       = "Site",
+                         type        = "Rodents",
+                         plots       = "all",
+                         unknowns    = FALSE,
+                         shape       = "crosstab",
+                         time        = "newmoon",
+                         output      = "abundance",
+                         fillweight  = FALSE,
+                         treatment   = NULL,
+                         na_drop     = FALSE,
+                         zero_drop   = FALSE,
+                         min_traps   = 1,
+                         min_plots   = 24,
+                         effort      = TRUE,
+                         species     = base_species(),
+                         total       = TRUE,
+                         interpolate = FALSE,
+                         save        = TRUE,
+                         overwrite   = TRUE,
+                         quiet       = FALSE,
+                         verbose     = FALSE) {
 
   return_if_null(name)
 

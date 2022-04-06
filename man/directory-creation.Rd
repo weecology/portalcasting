@@ -10,15 +10,15 @@ create_dir(main = ".", settings = directory_settings(), quiet = FALSE)
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) puts the forecasting directory in the present locations. Nesting the forecasting directory in a folder can be done by simply adding to the \code{main} input (see \code{Examples}).}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
-\code{NULL} \code{\link[base]{invisible}}-ly.
+The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 }
 \description{
-Instantiates the necessary folder structure for a forecasting directory and writes a YAML file that tracks the setup configurations.
+Instantiates the necessary folder structure for a forecasting directory and writes a YAML file that tracks the setup configurations (see \code{\link{write_directory_config}}).
 }
 \examples{
 \donttest{

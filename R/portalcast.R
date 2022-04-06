@@ -19,23 +19,7 @@
 #'
 #' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.
 #'
-#' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
-#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @param controls_model Additional controls for models not in the prefab set or for overriding controls of a prefab model (for example when applying a model to a new data set). \cr 
-#'  A \code{list} of a single model's script-writing controls or a \code{list} of \code{list}s, each of which is a single model's script-writing controls. \cr 
-#'  Presently, each model's script writing controls should include four elements: 
-#'  \itemize{
-#'   \item \code{name}: a \code{character} value of the model name.
-#'   \item \code{data_sets}: a \code{character} vector of the data set names
-#'    that the model is applied to. 
-#'   \item \code{covariatesTF}: a \code{logical} indicator of if the 
-#'    model needs covariates.
-#'   \item \code{lag}: an \code{integer}-conformable value of the lag to use 
-#'    with the covariates or \code{NA} if \code{covariatesTF = FALSE}.
-#'  }
-#'  If only a single model's controls are included, the name of the model from the element \code{name} will be used to name the model's \code{list} in the larger \code{list}. If multiple models are added, each element \code{list} must be named according to the model and the\code{name} element. 
 #'
 #' @param datasets \code{character} vector of dataset names to be created. 
 #'
@@ -54,18 +38,15 @@
 #'
 #' @export
 #'
-portalcast <- function (main             = ".", 
-                        models           = prefab_models(), 
-                        datasets         = prefab_rodent_datasets(),
-                        end_moons        = NULL, 
-                        start_moon       = 217, 
-                        lead_time        = 12, 
-                        confidence_level = 0.95, 
-                        cast_date        = Sys.Date(),
-                        controls_model   = NULL, 
-                        settings         = directory_settings(),
-                        quiet            = FALSE,
-                        verbose          = FALSE){
+portalcast <- function (main       = ".", 
+                        models     = prefab_models(), 
+                        datasets   = prefab_datasets(),
+                        end_moons  = NULL, 
+                        start_moon = 217, 
+                        cast_date  = Sys.Date(),
+                        settings   = directory_settings(),
+                        quiet      = FALSE,
+                        verbose    = FALSE){
 
   return_if_null(models)
 
@@ -81,18 +62,15 @@ portalcast <- function (main             = ".",
 
   for (i in 1:nend_moons) {
 
-    cast(main             = main, 
-         datasets         = datasets,
-         models           = models, 
-         end_moon         = end_moons[i], 
-         start_moon       = start_moon, 
-         lead_time        = lead_time, 
-         confidence_level = confidence_level, 
-         cast_date        = cast_date, 
-         controls_model   = controls_model, 
-         settings         = settings,
-         quiet            = quiet, 
-         verbose          = verbose)
+    cast(main       = main, 
+         datasets   = datasets,
+         models     = models, 
+         end_moon   = end_moons[i], 
+         start_moon = start_moon, 
+         cast_date  = cast_date, 
+         settings   = settings,
+         quiet      = quiet, 
+         verbose    = verbose)
 
   }
 
@@ -110,6 +88,7 @@ portalcast <- function (main             = ".",
   }
 
   messageq(message_break(), "\nCasting complete\n", message_break(), quiet = quiet)
+  invisible() 
 
 } 
 
@@ -118,18 +97,15 @@ portalcast <- function (main             = ".",
 #'
 #' @export
 #'
-cast <- function (main             = ".", 
-                  models           = prefab_models(), 
-                  datasets         = prefab_rodent_datasets(),
-                  end_moon         = NULL, 
-                  start_moon       = 217, 
-                  lead_time        = 12, 
-                  confidence_level = 0.95, 
-                  cast_date        = Sys.Date(), 
-                  controls_model   = NULL, 
-                  settings         = directory_settings(), 
-                  quiet            = FALSE, 
-                  verbose          = FALSE) {
+cast <- function (main       = ".", 
+                  models     = prefab_models(), 
+                  datasets   = prefab_datasets(),
+                  end_moon   = NULL, 
+                  start_moon = 217, 
+                  cast_date  = Sys.Date(), 
+                  settings   = directory_settings(), 
+                  quiet      = FALSE, 
+                  verbose    = FALSE) {
 
   moons <- read_moons(main     = main,
                       settings = settings)
@@ -140,17 +116,21 @@ cast <- function (main             = ".",
 
   messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
 
-  fill_data(main     = main, 
-            datasets = datasets,
-            models   = models,
-            settings = settings,
-            quiet    = quiet, 
-            verbose  = verbose)
+  if (end_moon != last_moon) {
 
-  clear_tmp(main     = main, 
-            settings = settings, 
-            quiet    = quiet, 
-            verbose  = verbose)
+    fill_data(main     = main, 
+              datasets = datasets,
+              models   = models,
+              settings = settings,
+              quiet    = quiet, 
+              verbose  = verbose)
+
+    clear_tmp(main     = main, 
+              settings = settings, 
+              quiet    = quiet, 
+              verbose  = verbose)
+
+  }
 
   messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
 
@@ -166,8 +146,9 @@ cast <- function (main             = ".",
 
     messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), "\n", message_break(), quiet = quiet)
 
-    run_status <- tryCatch(source(model),
+    run_status <- tryCatch(expr  = source(model),
                            error = function(x){NA})
+
     if (all(is.na(run_status))) {
 
       messageq("  |----| ", path_no_ext(basename(model)), " failed |----|", quiet = quiet)
@@ -184,6 +165,8 @@ cast <- function (main             = ".",
             settings = settings, 
             quiet    = quiet, 
             verbose  = verbose)
+
+  invisible()
 
 }
 

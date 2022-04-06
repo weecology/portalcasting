@@ -183,47 +183,6 @@ test_that(desc = "pevGARCH model", {
 
 })
 
-#test_that(desc = "simplexEDM model", {
-
-  # download is held back on cran
-
-    skip_on_cran() 
-
- 
- # expect_message(f_a <- simplexEDM(main = main, max_E = 7,
-  #                               dataset = "all_interp", quiet = FALSE))
-#  expect_message(f_c <- simplexEDM(main = main, max_E = 7,
- #                                dataset = "controls_interp", quiet = FALSE))
-  #expect_message(f_e <- simplexEDM(main = main, max_E = 7,
-   #                                dataset = "exclosures_interp",  
-    #                               quiet = FALSE))
-  
-#  expect_is(f_a, "list")
- # expect_is(f_c, "list")
-  #expect_is(f_e, "list")
-
-#})
-
-#test_that(desc = "GPEDM model", {
-
-  # download is held back on cran
-
- #   skip_on_cran() 
-
-
-  #expect_message(f_a <- GPEDM(main = main, max_E = 3,
-  #                            dataset = "all_interp", quiet = FALSE))
-  #expect_message(f_c <- GPEDM(main = main, max_E = 3,
-   #                           dataset = "controls_interp", quiet = FALSE))
-  #expect_message(f_e <- GPEDM(main = main, max_E = 3,
-   #                           dataset = "exclosures_interp", quiet = FALSE))
-  
-  #expect_is(f_a, "list")
-  #expect_is(f_c, "list")
-  #expect_is(f_e, "list")
-
-#})
-
 check_jags <- function(){
   result <- capture_condition(runjags::findjags())
   if (any(c("warning", "error") %in% attributes(result)$class)){

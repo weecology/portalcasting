@@ -12,7 +12,7 @@ jags_logistic <- function (main            = ".",
 
   dataset     <- tolower(dataset)
 
-  messageq(paste0("  -jags_logistic for ", dataset), quiet = quiet)
+  messageq("  -jags_logistic for ", dataset, quiet = quiet)
 
 
   monitor <- c("mu", "tau", "r", "K")
@@ -143,7 +143,7 @@ jags_RW <- function (main            = ".",
                      verbose         = FALSE){
  
   dataset <- tolower(dataset)
-  messageq(paste0("  -jags_RW for ", dataset), quiet = quiet)
+  messageq("  -jags_RW for ", dataset, quiet = quiet)
 
   monitor <- c("mu", "tau")
 
@@ -294,7 +294,7 @@ jags_RW <- function (main            = ".",
 #'
 jags_ss <- function (main            = ".", 
                      model_name      = NULL, 
-                     dataset        = "all",  
+                     dataset         = "all",  
                      settings        = directory_settings(),
                      control_runjags = runjags_control(),
                      jags_model      = NULL, 
@@ -317,7 +317,8 @@ jags_ss <- function (main            = ".",
   start_moon        <- metadata$time$start_moon
   end_moon          <- metadata$time$end_moon
   true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  CL                <- metadata$confidence_level
+  confidence_level  <- metadata$confidence_level
+  dataset_controls  <- metadata$dataset_controls[[dataset]]
 
   species <- species_from_table(rodents_tab = rodents_table, 
                                 total       = TRUE, 
@@ -331,7 +332,7 @@ jags_ss <- function (main            = ".",
 
     s  <- species[i]
     ss <- gsub("NA.", "NA", s)
-    messageq(paste0("   -", ss), quiet = !verbose)
+    messageq("   -", ss, quiet = !verbose)
 
     moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
     past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
@@ -433,23 +434,25 @@ jags_ss <- function (main            = ".",
                                    upper_cl       = upper_cl,
                                    moon           = obs_pred_times)
 
-      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), CL * 100)
+      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), confidence_level * 100)
       rownames(casts_i)      <- NULL
       casts[[i]]             <- casts_i
 
-      cast_tab_i <- data.frame(cast_date  = metadata$time$cast_date, 
-                               cast_month = metadata$time$rodent_cast_months,
-                               cast_year  = metadata$time$rodent_cast_years, 
-                               moon       = metadata$time$rodent_cast_moons,
-                               currency   = dataset_controls$args$output,
-                               model      = model_name, 
-                               dataset    = dataset, 
-                               species    = ss, 
-                               estimate   = point_forecast,
-                               lower_pi   = lower_cl, 
-                               upper_pi   = upper_cl,
-                               start_moon = metadata$time$start_moon,
-                               end_moon   = metadata$time$end_moon)
+      cast_tab_i <- data.frame(cast_date        = metadata$time$cast_date, 
+                               cast_month       = metadata$time$rodent_cast_months,
+                               cast_year        = metadata$time$rodent_cast_years, 
+                               moon             = metadata$time$rodent_cast_moons,
+                               currency         = dataset_controls$args$output,
+                               model            = model_name, 
+                               dataset          = dataset, 
+                               species          = ss, 
+                               estimate         = point_forecast,
+                               lower_pi         = lower_cl, 
+                               upper_pi         = upper_cl,
+                               cast_group       = metadata$cast_group,
+                               confidence_level = metadata$confidence_level,
+                               start_moon       = metadata$time$start_moon,
+                               end_moon         = metadata$time$end_moon)
 
       cast_tab <- rbind(cast_tab, cast_tab_i)
 
@@ -458,9 +461,9 @@ jags_ss <- function (main            = ".",
   }
 
   metadata <- update_list(metadata,
-                          models     = "jags_RW",
-                          datasets  = dataset,
-                          controls_r = dataset_controls)
+                          models           = "jags_RW",
+                          datasets         = dataset,
+                          dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 

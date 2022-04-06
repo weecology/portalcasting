@@ -2,6 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.32.0
+*In Progress*
+
+### Relocation of prefab controls 
+* Moved from source code scripts to `.yaml` files in `inst/extdata`
+* `read_` and `write` functions for both rodent and model controls lists
+
+
+
 # [portalcasting 0.31.0](https://github.com/weecology/portalcasting/releases/tag/v0.31.0)
 *2022-04-01*
 

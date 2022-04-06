@@ -30,7 +30,7 @@
 #'
 prep_metadata <- function (main             = ".",
                            models           = prefab_models(), 
-                           datasets         = prefab_rodent_datasets(),
+                           datasets         = prefab_datasets(),
                            end_moon         = NULL, 
                            start_moon       = 217, 
                            lead_time        = 12,
@@ -49,17 +49,12 @@ prep_metadata <- function (main             = ".",
   covariates <- read_covariates(main     = main, 
                                 settings = settings)
 
-  rodent_dataset_controls <- prefab_rodent_dataset_controls()
+  dataset_controls_list <- dataset_controls(main     = main, 
+                                            settings = settings, 
+                                            datasets = datasets)
 
-  #
-  # need a way here to access user-generated control lists  
-  #
-
-  controls_r <- rodent_dataset_controls[datasets]
 
   messageq("  - metadata file", quiet = quiet)
-
-
 
    
   which_last_moon <- max(which(moons$newmoondate < cast_date))
@@ -117,7 +112,7 @@ prep_metadata <- function (main             = ".",
               cast_type               = cast_type,
               models                  = models, 
               datasets                = datasets, 
-              controls_rodents        = controls_r,
+              dataset_controls        = dataset_controls_list,
               time                    = list(start_moon            = start_moon,
                                              end_moon              = end_moon,
                                              last_moon             = last_moon,
@@ -129,7 +124,7 @@ prep_metadata <- function (main             = ".",
                                              rodent_cast_moons     = rodent_cast_moons, 
                                              rodent_cast_months    = rodent_cast_months, 
                                              rodent_cast_years     = rodent_cast_years),
-              confidence_level        = 0.95,
+              confidence_level        = confidence_level,
               directory_configuration = config)
 
   write_data(dfl       = out, 

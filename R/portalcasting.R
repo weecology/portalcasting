@@ -4,18 +4,14 @@
 #' @importFrom grDevices grey rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
-#' @importFrom portalr download_observations get_future_moons 
-#'  load_trapping_data ndvi summarize_rodent_data weather
+#' @importFrom portalr download_observations get_future_moons load_trapping_data ndvi summarize_rodent_data weather
 #' @importFrom runjags run.jags runjags.options
-#### @importFrom rEDM simplex tde_gp
-#' @importFrom scoringRules crps_sample
-#' @importFrom stats AIC lm na.omit predict qnorm quantile rgamma rnorm runif
-#'  sd
+#' @importFrom scoringRules crps_nbinom crps_norm crps_pois crps_sample logs_sample logs_nbinom logs_norm logs_pois 
+#' @importFrom stats AIC lm na.omit predict qnorm quantile rgamma rnorm runif sd
 #' @importFrom tscount tsglm
-#' @importFrom utils download.file packageDescription read.csv sessionInfo
-#'  tail unzip write.csv write.table
+#' @importFrom utils download.file packageDescription read.csv sessionInfo tail unzip write.csv write.table
 #' @importFrom viridis viridis
-#' @importFrom yaml as.yaml read_yaml yaml.load_file write_yaml
+#' @importFrom yaml read_yaml write_yaml
 
 #' @title Functions for Portalcasting (Forecasting Portal Rodents)
 #'

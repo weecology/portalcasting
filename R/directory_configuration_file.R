@@ -32,7 +32,8 @@ write_directory_config <- function (main     = ".",
                               subs                  = settings$subs),
                  raw   = settings$raw)
 
-  write_yaml(config, file = file.path(main, settings$files$directory_config))
+  write_yaml(x    = config, 
+             file = file.path(main, settings$files$directory_config))
   invisible(config)
 
 }
@@ -90,9 +91,9 @@ update_directory_config <- function (main     = ".",
 
 
 
-  yams <- as.yaml(config)
-  writeLines(yams, con = file.path(main, settings$files$directory_config))  
-  invisible()
+  write_yaml(x    = config, 
+             file = file.path(main, settings$files$directory_config))
+  invisible(config)
 
 }
 
