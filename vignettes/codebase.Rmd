@@ -46,8 +46,6 @@ structured as
 ```
 main
 │
-└──tmp
-│   <temporary files>
 └──raw
 │   <stable version of raw components used to populate other folders>
 └──models
@@ -103,9 +101,7 @@ Models are run using a function pipeline similar to the creation and filling fun
   * For each `end_moons` value, `portalcast` runs:
     * `fill_data` which ensures that the data files in the `data` subdirectory are up-to-date for the specifics requested. 
     * `cast` runs ("casts") each of the requested models for the data
-      * `clear_tmp` clears the files in the `tmp` folder.
       * `models_to_cast` collects the file paths to the scripts in the `models` subdirectory, which are then run using `source`.
-      * `clear_tmp` clears the files in the `tmp` folder.
 
 
 
