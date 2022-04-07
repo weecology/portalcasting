@@ -41,6 +41,7 @@ evaluate_casts <- function (main           = ".",
                             quiet          = FALSE,
                             verbose        = FALSE) {
 
+# not convinced we want to keep this many arguments here
 
   if (is.null(cast_tab)) {
 
@@ -90,6 +91,8 @@ evaluate_casts <- function (main           = ".",
 
 
   # working here! now need to set up evaluate_cast (singular) and then loop
+
+  
 
 
 }

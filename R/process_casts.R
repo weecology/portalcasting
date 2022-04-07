@@ -221,8 +221,8 @@ add_obs_to_cast_tab <- function (main     = ".",
 #' @export
 #'
 read_cast_tab <- function (main     = ".", 
-                           settings = directory_settings(), 
-                           cast_id  = NULL) {
+                           cast_id  = NULL, 
+                           settings = directory_settings()) {
 
   if (is.null(cast_id) ){
 
@@ -257,8 +257,8 @@ read_cast_tab <- function (main     = ".",
 #' @export
 #'
 read_cast_tabs <- function (main     = ".", 
-                            settings = directory_settings(), 
-                            cast_ids  = NULL) {
+                            cast_ids  = NULL, 
+                            settings = directory_settings()) {
   
   if (is.null(cast_ids)) {
 
@@ -297,8 +297,8 @@ read_cast_tabs <- function (main     = ".",
 #' @export
 #'
 read_cast_metadata <- function (main     = ".", 
-                                settings = directory_settings(), 
-                                cast_id  = NULL) {
+                                cast_id  = NULL, 
+                                settings = directory_settings()) {
   
   if (is.null(cast_id)) {
 
@@ -326,8 +326,8 @@ read_cast_metadata <- function (main     = ".",
 #' @export
 #'
 read_model_fit <- function (main     = ".", 
-                            settings = directory_settings(), 
-                            cast_id  = NULL) {
+                            cast_id  = NULL, 
+                            settings = directory_settings()) {
   
   if (is.null(cast_id)) {
 
@@ -356,8 +356,8 @@ read_model_fit <- function (main     = ".",
 #' @export
 #'
 read_model_cast <- function (main     = ".", 
-                             settings = directory_settings(), 
-                             cast_id  = NULL) {
+                             cast_id  = NULL, 
+                             settings = directory_settings()) {
   
   if (is.null(cast_id)) {
 

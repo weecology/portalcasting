@@ -333,7 +333,7 @@ read_metadata <- function(main     = ".",
 #'
 read_casts_metadata <- function (main     = ".",
                                  settings = directory_settings(), 
-                                 quiet    = FALSE){
+                                 quiet    = FALSE) {
   
   meta_path <- file.path(main, settings$subs$forecasts, "casts_metadata.csv")
 
@@ -366,3 +366,5 @@ read_casts_metadata <- function (main     = ".",
   out[out$cast_group != 0, ]
 
 }
+
+  
