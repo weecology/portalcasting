@@ -14,7 +14,7 @@
 #'
 #' @param model_controls_file \code{character} name of the file for saving the model controls.
 #'
-#' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{resources}, \code{data}, \code{models}, and \code{output}. 
+#' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}. 
 #'
 #' @param PortalData \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. \cr \cr
 #'                   See \code{\link[portalr]{download_observations}}.
@@ -28,8 +28,6 @@
 #' @param save \code{logical} indicator controlling if the output should be saved out.
 #'
 #' @param overwrite \code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).
-#'
-#' @param cleanup \code{logical} indicator of whether or not the tmp files should be cleaned up.
 #'
 #' @param unzip_pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment. 
 #'
@@ -47,13 +45,12 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
                                 dataset_controls_file      = "data/dataset_controls.yaml",
                                 model_controls_file        = "models/model_controls.yaml",
                                 metadata_file              = "metadata.yaml",
-                                subdirectories             = list("forecasts" = "casts", "model fits" = "fits", "model scripts" = "models", "resources" = "raw", "data" = "data", "tmp" = "tmp"),
+                                subdirectories             = list("forecasts" = "casts", "model fits" = "fits", "model scripts" = "models", "resources" = "raw", "data" = "data"),
                                 PortalData                 = list(source = "github", version = "latest"),
                                 portalPredictions          = list(source = "github", version = NULL),
                                 climate_forecast           = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),
                                 save                       = TRUE,
                                 overwrite                  = TRUE, 
-                                cleanup                    = TRUE,
                                 unzip_pause                = 30,
                                 download_timeout           = getOption("timeout")) {
 
@@ -72,7 +69,6 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
        repository       = "portalPredictions",
        save             = save, 
        overwrite        = overwrite, 
-       cleanup          = cleanup,
        unzip_pause      = 30,
        download_timeout = download_timeout)
 
