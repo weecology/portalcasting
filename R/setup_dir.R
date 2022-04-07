@@ -69,7 +69,7 @@ setup_production <- function (main     = ".",
                               datasets = prefab_datasets(),
                               settings = directory_settings(portalPredictions = list(source = "github", version = "latest")), 
                               quiet    = FALSE, 
-                              verbose  = FALSE) {
+                              verbose  = TRUE) {
 
   setup_dir(main     = main,
             models   = models,

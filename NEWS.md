@@ -2,6 +2,14 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+
+# [portalcasting 0.33.0](https://github.com/weecology/portalcasting/releases/tag/v0.33.0)
+*2022-04-07*
+
+### `setup_production` defaults to `verbose = TRUE`
+* Facilitates fuller log
+
+
 # [portalcasting 0.32.0](https://github.com/weecology/portalcasting/releases/tag/v0.32.0)
 *2022-04-05*
 
