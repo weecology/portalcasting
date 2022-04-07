@@ -64,6 +64,7 @@ reference:
     desc: "Functions for processing, evaluating, and combining casts"
     contents:
       - save_cast_output
+      - evaluate_cast
       - evaluate_casts
       - ensemble_casts
       - measure_cast_level_error
