@@ -29,8 +29,6 @@
 #'
 #' @param overwrite \code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).
 #'
-#' @param cleanup \code{logical} indicator of whether or not the tmp files should be cleaned up.
-#'
 #' @param unzip_pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment. 
 #'
 #' @param download_timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
@@ -53,7 +51,6 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
                                 climate_forecast           = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),
                                 save                       = TRUE,
                                 overwrite                  = TRUE, 
-                                cleanup                    = TRUE,
                                 unzip_pause                = 30,
                                 download_timeout           = getOption("timeout")) {
 
@@ -72,7 +69,6 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
        repository       = "portalPredictions",
        save             = save, 
        overwrite        = overwrite, 
-       cleanup          = cleanup,
        unzip_pause      = 30,
        download_timeout = download_timeout)
 

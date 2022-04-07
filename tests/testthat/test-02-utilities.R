@@ -114,39 +114,6 @@ test_that(desc = "foy calculates the fraction of the year ",
 
 
 
-test_that(desc = "clear_tmp clears out the temp directory",
-          code = {
-
-  # this is weird because the nuances are in the second message reported, not
-  # the first one, and i can't quite figure out how to check that right
-
-  dir.create(file.path("tmp"))
-
-  df <- data.frame(x = 1:10, y = 11:20)
-  expect_silent(append_csv(df, file.path("tmp", "ok.csv")))  
-
-  # allow for short circuit
-
-    expect_equal(clear_tmp(settings = directory_settings(cleanup = FALSE)), NULL)
-
-  # clear, with messaging verbose and double clearing
-
-    expect_message(clear_tmp(), 
-                   "Clearing tmp subdirectory")
-    expect_silent(append_csv(df, file.path("tmp", "ok.csv")))  
-    expect_message(clear_tmp(verbose = TRUE), 
-                     "Clearing tmp subdirectory")
-    expect_message(clear_tmp(verbose = TRUE), 
-                     "Clearing tmp subdirectory")
-
-  # expect message when not present
-
-    unlink(file.path("tmp"), recursive = TRUE, force = TRUE)
-    expect_message(clear_tmp(verbose = TRUE), 
-                     "Clearing tmp subdirectory")
-
-})
-
 test_that(desc = "combine_hist_and_cast correctly combines overlapping dataframes",
           code = {
 

@@ -123,10 +123,6 @@ cast <- function (main       = ".",
               quiet    = quiet, 
               verbose  = verbose)
 
-    clear_tmp(main     = main, 
-              settings = settings, 
-              quiet    = quiet, 
-              verbose  = verbose)
 
   }
 
@@ -158,11 +154,6 @@ cast <- function (main       = ".",
     }
 
   }
-
-  clear_tmp(main     = main, 
-            settings = settings, 
-            quiet    = quiet, 
-            verbose  = verbose)
 
   invisible()
 
