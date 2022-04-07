@@ -3,15 +3,15 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
-# portalcasting 0.35.0
-*In Progress*
+# [portalcasting 0.35.0](https://github.com/weecology/portalcasting/releases/tag/v0.35.0)
+*2022-04-07*
 
 ### Updating model controls
 * `time`
 * `response` with `type` and `link` 
 
-### Developing evaluate
-* `evaluate_casts`
+### Developing evaluate functions
+* `evaluate_casts` and `evaluate_cast` currently just placeholders
 
 # [portalcasting 0.34.0](https://github.com/weecology/portalcasting/releases/tag/v0.34.0)
 *2022-04-07*
