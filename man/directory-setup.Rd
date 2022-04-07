@@ -23,7 +23,7 @@ setup_production(
   settings = directory_settings(portalPredictions = list(source = "github", version =
     "latest")),
   quiet = FALSE,
-  verbose = FALSE
+  verbose = TRUE
 )
 
 setup_sandbox(
