@@ -69,7 +69,7 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
        repository       = "portalPredictions",
        save             = save, 
        overwrite        = overwrite, 
-       unzip_pause      = 30,
+       unzip_pause      = unzip_pause,
        download_timeout = download_timeout)
 
 }
