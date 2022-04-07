@@ -92,7 +92,7 @@ evaluate_casts <- function (main           = ".",
 
   # working here! now need to set up evaluate_cast (singular) and then loop
 
-  
+  # evaluate casts should be working on casts not on cast tabs!
 
 
 }

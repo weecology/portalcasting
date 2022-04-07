@@ -6,6 +6,7 @@ devtools::load_all()
 
 main <- "./portalcasting"
 
+setup_production(main)
 
 
 list.files("tests/testthat")
