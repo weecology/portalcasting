@@ -3,6 +3,13 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.34.0](https://github.com/weecology/portalcasting/releases/tag/v0.34.0)
+*2022-04-07*
+
+### Removing `tmp` sub
+* No longer used, internal R code (e.g., `tempdir`) provides needed functionality
+* Also removing `clear_tmp`
+
 # [portalcasting 0.33.0](https://github.com/weecology/portalcasting/releases/tag/v0.33.0)
 *2022-04-07*
 
