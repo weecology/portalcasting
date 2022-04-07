@@ -10,6 +10,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * `time`
 * `response` with `type` and `link` 
 
+### Developing evaluate
+* `evaluate_casts`
+
 # [portalcasting 0.34.0](https://github.com/weecology/portalcasting/releases/tag/v0.34.0)
 *2022-04-07*
 
