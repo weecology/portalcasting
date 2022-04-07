@@ -212,6 +212,8 @@ download_climate_forecasts <- function (main          = ".",
                                         verbose       = FALSE,
                                         timeout       = getOption("timeout")) {
 
+# include overwrite or not?
+
   return_if_null(version)
 
   timeout_backup <- getOption("timeout")

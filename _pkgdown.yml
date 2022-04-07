@@ -159,7 +159,6 @@ reference:
       - list_depth
       - return_if_null
       - named_null_list
-      - clear_tmp
       - update_list
       - append_csv
       - combine_hist_and_cast

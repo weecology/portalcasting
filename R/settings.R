@@ -14,7 +14,7 @@
 #'
 #' @param model_controls_file \code{character} name of the file for saving the model controls.
 #'
-#' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{tmp}, \code{resources}, \code{data}, \code{models}, and \code{output}. 
+#' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{resources}, \code{data}, \code{models}, and \code{casts}. 
 #'
 #' @param PortalData \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. \cr \cr
 #'                   See \code{\link[portalr]{download_observations}}.
@@ -47,7 +47,7 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
                                 dataset_controls_file      = "data/dataset_controls.yaml",
                                 model_controls_file        = "models/model_controls.yaml",
                                 metadata_file              = "metadata.yaml",
-                                subdirectories             = list("forecasts" = "casts", "model fits" = "fits", "model scripts" = "models", "resources" = "raw", "data" = "data", "tmp" = "tmp"),
+                                subdirectories             = list("forecasts" = "casts", "models" = "models", "resources" = "raw", "data" = "data"),
                                 PortalData                 = list(source = "github", version = "latest"),
                                 portalPredictions          = list(source = "github", version = NULL),
                                 climate_forecast           = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),

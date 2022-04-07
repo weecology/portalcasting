@@ -15,6 +15,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### `evaluate` function suite development
 * `evaluate_casts` 
 
+### removing unused subdirectories
+* `tmp` and `model fits` are not being used, will not be
+
+
 # [portalcasting 0.32.0](https://github.com/weecology/portalcasting/releases/tag/v0.32.0)
 *2022-04-05*
 

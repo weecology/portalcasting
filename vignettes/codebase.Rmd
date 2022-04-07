@@ -46,18 +46,14 @@ structured as
 ```
 main
 │
-└──tmp
-│   <temporary files>
-└──raw
+└──resources
 │   <stable version of raw components used to populate other folders>
 └──models
 │   <model scripts>
 └──data
 │   <data used for a specific run of models>
 └──casts
-│   <previous and current model casts>
-└──fits
-│   <previous and current model fits>
+│   <previous and current model forecasts>
 └──dir_config.yaml
 ```
 
