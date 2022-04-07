@@ -12,7 +12,7 @@ save_cast_output(
 )
 }
 \arguments{
-\item{cast}{Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents data set. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
+\item{cast}{Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents dataset. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
 Names of the elements of the list (such as \code{"metadat"}) indicate the specific saving procedures that happens to each of them. See \code{Details} section for specifics.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
@@ -31,24 +31,10 @@ Save out any output from a cast of a model for a data set and update the cast me
 \details{
 Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
  \itemize{
-  \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
-   typically be the model-specific metadata from the 
-   \code{data/metadata.yaml} file, but can more generally be any 
-   appropriate object (typically a \code{list}).  
-  \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
-   assumed to be a table such as a \code{matrix} or \code{data.frame} 
-   or coercible to one. Used to summarize the output across instances
-   of the model (across multiple species, for example). 
-  \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
-   via \code{\link[jsonlite]{serializeJSON}} and 
-   \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
-   specific object structure. Saving out a \code{list} of the actual model
-   fit/return objects means that models do not need to be refit later.
-  \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
-   via \code{\link[jsonlite]{serializeJSON}} and 
-   \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
-   specific object structure. Is used to save \code{list}s
-   of predictions across multiple instances of the model.
+  \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will typically be the model-specific metadata from the \code{data/metadata.yaml} file, but can more generally be any appropriate object (typically a \code{list}).  
+  \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is assumed to be a table such as a \code{matrix} or \code{data.frame}  or coercible to one. Used to summarize the output across instances of the model (across multiple species, for example). 
+  \item \code{"model_fits"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite]{serializeJSON}} and  \code{\link[jsonlite]{write_json}}, so quite flexible with respect to specific object structure. Saving out a \code{list} of the actual model fit/return objects means that models do not need to be refit later.
+  \item \code{"model_casts"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite]{serializeJSON}} and \code{\link[jsonlite]{write_json}}, so quite flexible with respect to specific object structure. Is used to save \code{list}s of predictions across multiple instances of the model.
  }
 }
 \examples{
