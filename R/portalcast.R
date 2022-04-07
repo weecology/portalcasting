@@ -123,11 +123,6 @@ cast <- function (main       = ".",
               quiet    = quiet, 
               verbose  = verbose)
 
-    clear_tmp(main     = main, 
-              settings = settings, 
-              quiet    = quiet, 
-              verbose  = verbose)
-
   }
 
   messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
@@ -158,11 +153,6 @@ cast <- function (main       = ".",
     }
 
   }
-
-  clear_tmp(main     = main, 
-            settings = settings, 
-            quiet    = quiet, 
-            verbose  = verbose)
 
   invisible()
 
