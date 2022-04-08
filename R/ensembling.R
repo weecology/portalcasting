@@ -23,7 +23,7 @@
 #'
 #' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{evalplot_species}.
+#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
@@ -83,7 +83,7 @@ ensemble_casts <- function (main           = ".",
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, unique(cast_tab$model))
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                 <- ifnull(species, evalplot_species()) 
+  species                 <- ifnull(species, base_species()) 
   end_moon                <- ifnull(end_moon, max(unique(cast_tab$end_moon)))
   cast_id_in              <- cast_tab$cast_id %in% cast_ids
   model_in                <- cast_tab$model %in% models

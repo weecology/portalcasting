@@ -45,8 +45,8 @@ test_that(desc = "rodents_species creates a vector of IDs as needed", {
   expect_is(x8, "character")
   expect_is(x9, "character")
 
-  expect_error(rodent_species(type = "xxx")
-  expect_error(rodent_species(set = "xxx")
+  expect_error(rodent_species(type = "xxx"))
+  expect_error(rodent_species(set = "xxx"))
 
 })
 

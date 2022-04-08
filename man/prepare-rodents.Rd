@@ -23,8 +23,6 @@ prep_rodents(
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
-
-\item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{dataset}.}
 }
 \value{
 \code{list} of prepared \code{datasets}.
