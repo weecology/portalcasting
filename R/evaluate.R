@@ -38,8 +38,8 @@ evaluate_casts <- function (main        = ".",
 
   } else {
 
-    cast_ids   <- casts_to_evaluate$cast_id
-    ncasts_ids <- length(cast_ids)
+    cast_ids  <- casts_to_evaluate$cast_id
+    ncast_ids <- length(cast_ids)
 
   }
 
@@ -67,7 +67,6 @@ evaluate_cast <- function (main       = ".",
                            cast_id    = NULL,
                            quiet      = FALSE, 
                            verbose    = FALSE) {
-
 
 
   invisible()
