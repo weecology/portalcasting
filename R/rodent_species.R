@@ -89,17 +89,22 @@ rodent_species <- function (set   = NULL,
   type <- tolower(type)
 
 
-  if (!is.null(set) && set == "all") {
+  if (set == "all") {
 
     out_abb <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
     out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Chaetodipus intermedius", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
 
-  } else if (!is.null(set) && set == "base") {
+  } else if (set == "base") {
 
     out_abb <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
     out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
 
-  } 
+  } else {
+
+    stop ("`type` must be `NULL`, 'all', or 'base'")    
+ 
+
+  }
 
   if (nadot) {
 
