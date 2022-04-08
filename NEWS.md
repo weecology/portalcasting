@@ -8,7 +8,6 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### `rodent_species`
 * Now includes `type` argument with `abbreviation` or `Latin` options
-* No more `eval_plot` function, as we're not using it on the website.
 * No more `most_abundant_species` function, as we're not using it on the website.
 
 
