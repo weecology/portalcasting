@@ -21,16 +21,16 @@
 #'
 #' @export
 #'
-evaluate_casts <- function (main        = ".", 
-                            settings    = directory_settings(), 
-                            cast_ids    = NULL,
-                            quiet       = FALSE, 
-                            verbose     = FALSE) {
+evaluate_casts <- function (main     = ".", 
+                            settings = directory_settings(), 
+                            cast_ids = NULL,
+                            quiet    = FALSE, 
+                            verbose  = FALSE) {
 
 
-  casts_to_evaluate <- select_casts(main           = main, 
-                                    settings       = settings,
-                                    cast_ids       = cast_ids)
+  casts_to_evaluate <- select_casts(main     = main, 
+                                    settings = settings,
+                                    cast_ids = cast_ids)
 
   if (NROW(casts_to_evaluate) == 0) {
 
@@ -73,10 +73,32 @@ evaluate_cast <- function (main       = ".",
                                     settings = settings)
   casts_metadata <- read_casts_metadata(main     = main,
                                        settings = settings)
+  cast_model     <- casts_metadata$model[casts_metadata$cast_id == cast_id]
 
-  model <- casts_metadata$model[casts_metadata$cast_id == cast_id]
+  cast_model_controls <- model_controls(main     = main,
+                                        model    = model,
+                                        settings = settings)
+  cast_model_response <- cast_model_controls$response
 
-  
+  cast_tab <- read_cast_tab(main     = main, 
+                            settings = settings,
+                            cast_id  = cast_id)
+
+  cast_tab <- add_obs_to_cast_tab(main     = main,  
+                                  settings = settings,
+                                  cast_tab = cast_tab)
+  cast_tab <- add_err_to_cast_tab(main     = main,  
+                                  settings = settings,
+                                  cast_tab = cast_tab)
+  cast_tab <- add_lead_to_cast_tab(main     = main,  
+                                   settings = settings,
+                                   cast_tab = cast_tab)
+  cast_tab <- add_covered_to_cast_tab(main     = main,  
+                                      settings = settings,
+                                      cast_tab = cast_tab)
+  cast_err <- measure_cast_level_error(cast_tab = cast_tab)
+
+
 
   invisible()
 
