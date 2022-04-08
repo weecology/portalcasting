@@ -76,7 +76,7 @@ evaluate_cast <- function (main       = ".",
   cast_model     <- casts_metadata$model[casts_metadata$cast_id == cast_id]
 
   cast_model_controls <- model_controls(main     = main,
-                                        model    = model,
+                                        model    = cast_model,
                                         settings = settings)
   cast_model_response <- cast_model_controls$response
 
