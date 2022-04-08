@@ -33,6 +33,7 @@ test_that(desc = "rodents_species creates a vector of IDs as needed", {
   x8 <- all_species(nadot = TRUE)
   x9 <- all_species(total = TRUE)
   x0 <- base_species()
+  xa <- eval_species()
 
 
   expect_equal(x1, NULL)
@@ -44,6 +45,8 @@ test_that(desc = "rodents_species creates a vector of IDs as needed", {
   expect_is(x7, "character")
   expect_is(x8, "character")
   expect_is(x9, "character")
+  expect_is(x0, "character")
+  expect_is(xa, "character")
 
   expect_error(rodent_species(type = "xxx", set = "all"))
   expect_error(rodent_species(set = "xxx"))

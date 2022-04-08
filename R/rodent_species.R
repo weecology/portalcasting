@@ -74,6 +74,7 @@ species_from_table <- function(rodents_tab = NULL,
 #'  all_species(nadot = TRUE)
 #'  all_species(total = TRUE)
 #'  base_species()
+#'  eval_species()
 #'
 #' @export
 #'
@@ -99,9 +100,14 @@ rodent_species <- function (set   = NULL,
     out_abb <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
     out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
 
+  } else if (set == "eval") {
+
+    out_abb <- c("BA", "DM", "DO", "PP", "OT", "NA")
+    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Chaetodipus penicillatus", "Onychomys torridus", "Neotoma albigula")
+
   } else {
 
-    stop ("`type` must be `NULL`, 'all', or 'base'")    
+    stop ("`type` must be `NULL`, 'all', 'base', or 'eval'")    
  
 
   }
@@ -167,6 +173,22 @@ base_species <- function (nadot   = FALSE,
                           type    = "abbreviation") {
 
   rodent_species(set     = "base", 
+                 nadot   = nadot,
+                 total   = total,
+                 type    = type)
+
+}
+
+
+#' @rdname rodent_species
+#'
+#' @export
+#'
+eval_species <- function (nadot   = FALSE, 
+                          total   = FALSE,
+                          type    = "abbreviation") {
+
+  rodent_species(set     = "eval", 
                  nadot   = nadot,
                  total   = total,
                  type    = type)

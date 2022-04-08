@@ -4,6 +4,7 @@
 \alias{rodent_species}
 \alias{all_species}
 \alias{base_species}
+\alias{eval_species}
 \title{Rodent species abbreviations}
 \usage{
 rodent_species(set = NULL, nadot = FALSE, total = FALSE, type = "abbreviation")
@@ -11,6 +12,8 @@ rodent_species(set = NULL, nadot = FALSE, total = FALSE, type = "abbreviation")
 all_species(nadot = FALSE, total = FALSE, type = "abbreviation")
 
 base_species(nadot = FALSE, total = FALSE, type = "abbreviation")
+
+eval_species(nadot = FALSE, total = FALSE, type = "abbreviation")
 }
 \arguments{
 \item{set}{\code{character} input of a specified set of species. Options include \code{all} (all species included) and \code{base} (all but PI).}
@@ -37,5 +40,6 @@ Creates a simple \code{character} vector of abbreviations for the Portal \href{h
  all_species(nadot = TRUE)
  all_species(total = TRUE)
  base_species()
+ eval_species()
 
 }

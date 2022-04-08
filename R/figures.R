@@ -92,7 +92,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, unique(cast_tab$model))
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                 <- ifnull(species, base_species()) 
+  species                 <- ifnull(species, eval_species()) 
   end_moons               <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in              <- cast_tab$cast_id %in% cast_ids
   model_in                <- cast_tab$model %in% models
@@ -340,7 +340,7 @@ plot_casts_err_lead <- function (main           = ".",
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, unique(cast_tab$model))
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                 <- ifnull(species, base_species()) 
+  species                 <- ifnull(species, eval_species()) 
   end_moons               <- ifnull(end_moons, unique(cast_tab$end_moon)) 
   cast_id_in              <- cast_tab$cast_id %in% cast_ids
   model_in                <- cast_tab$model %in% models
