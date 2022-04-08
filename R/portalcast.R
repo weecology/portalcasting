@@ -46,6 +46,11 @@ portalcast <- function (main       = ".",
                         quiet      = FALSE,
                         verbose    = FALSE){
 
+#
+# the datasets here should come from the models selected
+#  and not as an argument
+# 
+
   return_if_null(models)
 
   messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)

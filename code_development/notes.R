@@ -7,6 +7,23 @@ devtools::load_all()
 main <- "./portalcasting"
 
 
+#
+# to do
+#
+#   in portalcast and cast
+#      datasets should come from the models' via their controls
+#
+
+
+
+
+
+
+
+
+
+
+
 
 list.files("tests/testthat")
 devtools::test(filter = "01")

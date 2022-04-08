@@ -68,6 +68,8 @@ evaluate_cast <- function (main       = ".",
                            quiet      = FALSE, 
                            verbose    = FALSE) {
 
+  return_if_null(cast_id)
+
   model_cast     <- read_model_cast(main     = main,
                                     cast_id  = cast_id,
                                     settings = settings)

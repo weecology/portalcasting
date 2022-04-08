@@ -381,6 +381,7 @@ read_model_cast <- function (main     = ".",
   
     } else {
 
+      model_casts <- NULL
       load(cpath_RData)
       model_casts
 
