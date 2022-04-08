@@ -78,25 +78,25 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rodent_species</span><span class="op">(</span>species <span class="op">=</span> <span class="cn">NULL</span>, set <span class="op">=</span> <span class="cn">NULL</span>, nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rodent_species</span><span class="op">(</span>set <span class="op">=</span> <span class="cn">NULL</span>, nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span>
 
-<span class="fu">all_species</span><span class="op">(</span>species <span class="op">=</span> <span class="cn">NULL</span>, nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">all_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span>
 
-<span class="fu">base_species</span><span class="op">(</span>species <span class="op">=</span> <span class="cn">NULL</span>, nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">base_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span>
 
-<span class="fu">evalplot_species</span><span class="op">(</span>species <span class="op">=</span> <span class="cn">NULL</span>, nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="fu">eval_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>species</dt>
-<dd><p><code>character</code>-valued vector of species names to include.</p></dd>
-<dt>set</dt>
-<dd><p><code>character</code> input of a specified set of species. Default entry (<code>"base"</code>) returns the standard set of all species included. Other options include <code>"wtotal"</code> (same as <code>"base"</code> but with "total" as well) and <code>"evalplot"</code> which only returns a subset of common species to be included in the evaluations plots.</p></dd>
+    <dl><dt>set</dt>
+<dd><p><code>character</code> input of a specified set of species. Options include <code>all</code> (all species included) and <code>base</code> (all but PI).</p></dd>
 <dt>nadot</dt>
 <dd><p><code>logical</code> indicator if the dot should be added to the <code>"NA"</code> species name. Defaults to <code>FALSE</code>.</p></dd>
 <dt>total</dt>
 <dd><p><code>logical</code> value indicating if <code>"total"</code> should be added or not.</p></dd>
+<dt>type</dt>
+<dd><p><code>character</code> value indicating the output type. Current options include <code>'abbreviation'</code> (default, two-letter abbreviation), <code>'Latin'</code> (full scientific names), and  <code>'table'</code> a <code>data.frame</code> of the abbreviations and Latin names.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -106,14 +106,15 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code> <span class="fu">rodent_species</span><span class="op">(</span><span class="op">)</span>
+ <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Latin"</span><span class="op">)</span>
+ <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span>
+ <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"table"</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
  <span class="fu">rodent_species</span><span class="op">(</span>set <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
- <span class="fu">rodent_species</span><span class="op">(</span><span class="st">"BA"</span><span class="op">)</span>
- <span class="fu">rodent_species</span><span class="op">(</span><span class="st">"BA"</span>, set <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
  <span class="fu">all_species</span><span class="op">(</span><span class="op">)</span>
  <span class="fu">all_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
  <span class="fu">all_species</span><span class="op">(</span>total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
  <span class="fu">base_species</span><span class="op">(</span><span class="op">)</span>
- <span class="fu">evalplot_species</span><span class="op">(</span><span class="op">)</span>
+ <span class="fu">eval_species</span><span class="op">(</span><span class="op">)</span>
 
 </code></pre></div>
     </div>
