@@ -36,7 +36,7 @@ plot_casts_err_lead(
 
 \item{include_interp}{\code{logical} indicator of if the models fit using interpolated data should be included with the models that did not.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{evalplot_species}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.}
 }
 \value{
 \code{NULL}. Plot is generated.

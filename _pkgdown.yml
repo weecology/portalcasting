@@ -110,14 +110,12 @@ reference:
       - write_dataset_controls
       - read_dataset_controls
       - rodent_species
-      - evalplot_species
       - all_species
       - base_species
       - is_sp_col
       - na_conformer
       - remove_incompletes
       - species_from_table
-      - most_abundant_species
   - title: "Lunar data functions"
     desc: "Functions for managing the lunar temporal data"
     contents:

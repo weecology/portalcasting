@@ -87,8 +87,6 @@ write_dataset_controls <- function (main                 = ".",
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
-#' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{dataset}.
-#'
 #' @return \code{list} of prepared \code{datasets}.
 #'  
 #' @name prepare rodents
