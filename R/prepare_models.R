@@ -35,7 +35,7 @@ model_controls <- function (main     = ".",
                             settings = directory_settings()) {
 
   read_model_controls(main     = main, 
-                      settings = settings)[[models]]
+                      settings = settings)[models]
 
 }
 

@@ -77,7 +77,7 @@ evaluate_cast <- function (main       = ".",
 
   cast_model_controls <- model_controls(main     = main,
                                         model    = cast_model,
-                                        settings = settings)
+                                        settings = settings)[[cast_model]]
   cast_model_response <- cast_model_controls$response
 
   cast_tab <- read_cast_tab(main     = main, 
