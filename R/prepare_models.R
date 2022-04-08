@@ -75,6 +75,10 @@ write_model_controls <- function (main               = ".",
 }
 
 
+
+
+
+
 #' @title Write Model Function Script into Directory
 #'
 #' @description Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}

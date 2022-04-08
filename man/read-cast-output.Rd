@@ -9,15 +9,15 @@
 \alias{read_model_cast}
 \title{Read in Cast Output From a Given Cast}
 \usage{
-read_cast_tab(main = ".", settings = directory_settings(), cast_id = NULL)
+read_cast_tab(main = ".", cast_id = NULL, settings = directory_settings())
 
-read_cast_tabs(main = ".", settings = directory_settings(), cast_ids = NULL)
+read_cast_tabs(main = ".", cast_ids = NULL, settings = directory_settings())
 
-read_cast_metadata(main = ".", settings = directory_settings(), cast_id = NULL)
+read_cast_metadata(main = ".", cast_id = NULL, settings = directory_settings())
 
-read_model_fit(main = ".", settings = directory_settings(), cast_id = NULL)
+read_model_fit(main = ".", cast_id = NULL, settings = directory_settings())
 
-read_model_cast(main = ".", settings = directory_settings(), cast_id = NULL)
+read_model_cast(main = ".", cast_id = NULL, settings = directory_settings())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}

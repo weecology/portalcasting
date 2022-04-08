@@ -68,6 +68,15 @@ evaluate_cast <- function (main       = ".",
                            quiet      = FALSE, 
                            verbose    = FALSE) {
 
+  model_cast     <- read_model_cast(main     = main,
+                                    cast_id  = cast_id,
+                                    settings = settings)
+  casts_metadata <- read_casts_metadata(main     = main,
+                                       settings = settings)
+
+  model <- casts_metadata$model[casts_metadata$cast_id == cast_id]
+
+  
 
   invisible()
 
