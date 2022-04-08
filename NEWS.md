@@ -3,6 +3,15 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.36.0](https://github.com/weecology/portalcasting/releases/tag/v0.36.0)
+*2022-04-08*
+
+### `rodent_species`
+* Now includes `type` argument with `abbreviation` or `Latin` options
+* No more `eval_plot` function, as we're not using it on the website.
+* No more `most_abundant_species` function, as we're not using it on the website.
+
+
 # [portalcasting 0.35.0](https://github.com/weecology/portalcasting/releases/tag/v0.35.0)
 *2022-04-07*
 

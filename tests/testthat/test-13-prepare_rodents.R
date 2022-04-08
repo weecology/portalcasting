@@ -54,19 +54,6 @@ test_that(desc = "rodents_species creates a vector of IDs as needed", {
 
 })
 
-test_that(desc = "most_abundant_species finds them", {
-
-  # downloads take too long for cran checks
-
-    skip_on_cran() 
-
-  topx <- 3
-  mas <- most_abundant_species(main = main, topx = topx)
-  expect_is(mas, "character")
-  expect_equal(length(mas), topx)
-  expect_equal(all(mas %in% rodent_species(set = "all")), TRUE)
-
-})
 
 
 test_that(desc = "prefab_datasets names the proper sets", {
