@@ -58,19 +58,18 @@ species_from_table <- function(rodents_tab = NULL,
 #'
 #' @param nadot \code{logical} indicator if the dot should be added to the \code{"NA"} species name. Defaults to \code{FALSE}.
 #'
-#' @param species \code{character}-valued vector of species names to include.
-#'
 #' @param total \code{logical} value indicating if \code{"total"} should be added or not.
 #'
-#' @param type \code{character} value indicating the output type. Current options include \code{abbreviation} (default, two-letter abbreviation) and \code{Latin} (full scientific names).
+#' @param type \code{character} value indicating the output type. Current options include \code{'abbreviation'} (default, two-letter abbreviation), \code{'Latin'} (full scientific names), and  \code{'table'} a \code{data.frame} of the abbreviations and Latin names.
 #'
 #' @return \code{character} vector of species abbreviations.
 #' 
 #' @examples 
 #'  rodent_species()
+#'  rodent_species(type = "Latin")
+#'  rodent_species(type = "table")
+#'  rodent_species(type = "table", total = TRUE)
 #'  rodent_species(set = "all")
-#'  rodent_species("BA")
-#'  rodent_species("BA", set = "all")
 #'  all_species()
 #'  all_species(nadot = TRUE)
 #'  all_species(total = TRUE)
@@ -78,62 +77,63 @@ species_from_table <- function(rodents_tab = NULL,
 #'
 #' @export
 #'
-rodent_species <- function (species = NULL, 
-                            set     = NULL, 
-                            nadot   = FALSE, 
-                            total   = FALSE,
-                            type    = "abbreviation") {
+rodent_species <- function (set   = NULL, 
+                            nadot = FALSE, 
+                            total = FALSE,
+                            type  = "abbreviation") {
 
-  return_if_null(c(species, set))
+  return_if_null(set)
 
   out <- NULL
 
   type <- tolower(type)
 
+
   if (!is.null(set) && set == "all") {
 
-    out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_abb <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Chaetodipus intermedius", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
 
   } else if (!is.null(set) && set == "base") {
 
-    out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_abb <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
 
   } 
 
   if (nadot) {
 
-    out[which(out == "NA")] <- "NA."
+    out_abb[which(out_abb == "NA")] <- "NA."
 
-  }
-
-  if (!(type %in% c("latin", "abbreviation"))) {
-
-    stop ("`type` must be 'abbreviation' or 'Latin'")    
-
-  } 
-
-  if (type == "latin") {
-
-    if (!is.null(set) && set == "all") {
-
-      out <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Chaetodipus intermedius", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
-
-
-    } else if (!is.null(set) && set == "base") {
-
-      out <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
-
-    } 
-  
   }
 
   if (total) {
 
-    out <- c(out, "total")
+    out_abb <- c(out_abb, "total")
+    out_lat <- c(out_lat, "total")
 
   }
 
-  unique(c(species, out))
+  
+  if (type == "latin") {
+
+    out <- out_lat
+
+  } else if (type == "abbreviation") {
+
+    out <- out_abb
+
+  } else if (type == "table") {
+
+    out <- data.frame(abbreviation = out_abb, Latin = out_lat)
+
+  } else {
+
+    stop ("`type` must be 'abbreviation', 'Latin', or 'table'")    
+
+  } 
+
+  out
 
 }
 
@@ -141,13 +141,11 @@ rodent_species <- function (species = NULL,
 #'
 #' @export
 #'
-all_species <- function (species = NULL, 
-                         nadot   = FALSE, 
+all_species <- function (nadot   = FALSE, 
                          total   = FALSE,
                          type    = "abbreviation") {
 
-  rodent_species(species = species, 
-                 set     = "all", 
+  rodent_species(set     = "all", 
                  nadot   = nadot,
                  total   = total,
                  type    = type)
@@ -159,13 +157,11 @@ all_species <- function (species = NULL,
 #'
 #' @export
 #'
-base_species <- function (species = NULL, 
-                          nadot   = FALSE, 
+base_species <- function (nadot   = FALSE, 
                           total   = FALSE,
                           type    = "abbreviation") {
 
-  rodent_species(species = species, 
-                 set     = "base", 
+  rodent_species(set     = "base", 
                  nadot   = nadot,
                  total   = total,
                  type    = type)
