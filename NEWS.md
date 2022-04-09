@@ -2,7 +2,6 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-
 # [portalcasting 0.36.0](https://github.com/weecology/portalcasting/releases/tag/v0.36.0)
 *2022-04-08*
 
