@@ -1,4 +1,4 @@
-# Supporting [automated forecasting](https://github.com/weecology/portalPredictions) of [rodent populations](https://portal.weecology.org/)
+# Supporting [automated forecasting](https://github.com/weecology/portalPredictions) of [desert rodent populations](https://portal.weecology.org/)
 [![R-CMD-check-release](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml)
 [![Docker](https://img.shields.io/docker/cloud/build/weecology/portalcasting.svg)](https://hub.docker.com/repository/docker/weecology/portalcasting)
 [![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/main.svg)](https://codecov.io/github/weecology/portalcasting/branch/main)
