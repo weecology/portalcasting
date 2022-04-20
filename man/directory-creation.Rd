@@ -13,6 +13,8 @@ create_dir(main = ".", settings = directory_settings(), quiet = FALSE)
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
 }
 \value{
 The \code{list} of directory settings \code{\link[base]{invisible}}-ly.

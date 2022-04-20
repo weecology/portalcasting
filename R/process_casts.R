@@ -498,12 +498,12 @@ select_casts <- function (main           = ".",
 #'    of the model (across multiple species, for example). 
 #'   \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
 #'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
+#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
 #'    specific object structure. Saving out a \code{list} of the actual model
 #'    fit/return objects means that models do not need to be refit later.
 #'   \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
 #'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
+#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
 #'    specific object structure. Is used to save \code{list}s
 #'    of predictions across multiple instances of the model.
 #'  }

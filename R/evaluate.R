@@ -62,11 +62,11 @@ evaluate_casts <- function (main     = ".",
 #'
 #' @export
 #'
-evaluate_cast <- function (main       = ".", 
-                           settings   = directory_settings(), 
-                           cast_id    = NULL,
-                           quiet      = FALSE, 
-                           verbose    = FALSE) {
+evaluate_cast <- function (main     = ".", 
+                           settings = directory_settings(), 
+                           cast_id  = NULL,
+                           quiet    = FALSE, 
+                           verbose  = FALSE) {
 
   return_if_null(cast_id)
 

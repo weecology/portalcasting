@@ -38,5 +38,5 @@ write_model_controls(
 \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_model_controls}.
 }
 \description{
-Input/Output functions for model control lists.
+Input/output functions for model control lists.
 }
