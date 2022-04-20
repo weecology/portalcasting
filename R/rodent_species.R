@@ -62,6 +62,8 @@ species_from_table <- function(rodents_tab = NULL,
 #'
 #' @param total \code{logical} value indicating if \code{"total"} should be added or not.
 #'
+#' @param type \code{character} value indicating the output type. Current options include \code{abbreviation} (default, two-letter abbreviation) and \code{Latin} (full scientific names).
+#'
 #' @return \code{character} vector of species abbreviations.
 #' 
 #' @examples 
@@ -80,35 +82,51 @@ species_from_table <- function(rodents_tab = NULL,
 rodent_species <- function (species = NULL, 
                             set     = NULL, 
                             nadot   = FALSE, 
-                            total   = FALSE) {
+                            total   = FALSE,
+                            type    = "abbreviation") {
 
   return_if_null(c(species, set))
 
   out <- NULL
 
-  if (!is.null(set) && set == "all") {
+  type <- tolower(type)
 
-    out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+  if (type == "abbreviation") {
 
-  } else if (!is.null(set) && set == "base") {
+    if (!is.null(set) && set == "all") {
 
-    out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+      out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
 
-  } else if (!is.null(set) && set == "evalplot") {
+    } else if (!is.null(set) && set == "base") {
 
-    out <- c("BA", "DM", "DO", "PP", "OT", "NA")
+      out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+
+    } else if (!is.null(set) && set == "evalplot") {
+
+      out <- c("BA", "DM", "DO", "PP", "OT", "NA")
+
+    }
+
+    if (nadot) {
+
+      out[which(out == "NA")] <- "NA."
+
+    }
+
+
+  } else if (type = "latin") {
+
+
+
+  } else {
+
+    stop ("`type` must be 'abbreviation' or 'Latin'")
 
   }
 
   if (total) {
 
     out <- c(out, "total")
-
-  }
-
-  if (nadot) {
-
-    out[which(out == "NA")] <- "NA."
 
   }
 
