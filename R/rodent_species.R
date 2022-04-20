@@ -5,7 +5,7 @@
 #'
 #' @param rodents_tab \code{data.frame} of columns to be checked. 
 #'
-#' @param species \code{character} vector indicating species names to use in determining if columns are species columns. Defaults to \code{\link{all_species}}.
+#' @param species \code{character} vector indicating species' name abbreviations to use in determining if columns are species columns. Defaults to \code{\link{all_species}}.
 #'
 #' @param total \code{logical} indicator if the total should be included.
 #'
@@ -54,83 +54,96 @@ species_from_table <- function(rodents_tab = NULL,
 #'
 #' @description Creates a simple \code{character} vector of abbreviations for the Portal \href{https://portal.naturecast.org/profiles.html}{Rodents}.
 #'
-#' @param set \code{character} input of a specified set of species. Default entry (\code{"base"}) returns the standard set of all species included. Other options include \code{"wtotal"} (same as \code{"base"} but with "total" as well) and \code{"evalplot"} which only returns a subset of common species to be included in the evaluations plots.
+#' @param set \code{character} input of a specified set of species. Options include \code{all} (all species included) and \code{base} (all but PI). 
 #'
 #' @param nadot \code{logical} indicator if the dot should be added to the \code{"NA"} species name. Defaults to \code{FALSE}.
 #'
-#' @param species \code{character}-valued vector of species names to include.
-#'
 #' @param total \code{logical} value indicating if \code{"total"} should be added or not.
 #'
-#' @param type \code{character} value indicating the output type. Current options include \code{abbreviation} (default, two-letter abbreviation) and \code{Latin} (full scientific names).
+#' @param type \code{character} value indicating the output type. Current options include \code{'abbreviation'} (default, two-letter abbreviation), \code{'Latin'} (full scientific names), and  \code{'table'} a \code{data.frame} of the abbreviations and Latin names.
 #'
 #' @return \code{character} vector of species abbreviations.
 #' 
 #' @examples 
 #'  rodent_species()
+#'  rodent_species(type = "Latin")
+#'  rodent_species(type = "table")
+#'  rodent_species(type = "table", total = TRUE)
 #'  rodent_species(set = "all")
-#'  rodent_species("BA")
-#'  rodent_species("BA", set = "all")
 #'  all_species()
 #'  all_species(nadot = TRUE)
 #'  all_species(total = TRUE)
 #'  base_species()
-#'  evalplot_species()
+#'  eval_species()
 #'
 #' @export
 #'
-rodent_species <- function (species = NULL, 
-                            set     = NULL, 
-                            nadot   = FALSE, 
-                            total   = FALSE,
-                            type    = "abbreviation") {
+rodent_species <- function (set   = NULL, 
+                            nadot = FALSE, 
+                            total = FALSE,
+                            type  = "abbreviation") {
 
-  return_if_null(c(species, set))
+  return_if_null(set)
 
   out <- NULL
 
   type <- tolower(type)
 
-  if (type == "abbreviation") {
 
-    if (!is.null(set) && set == "all") {
+  if (set == "all") {
 
-      out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_abb <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PI", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Chaetodipus intermedius", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
 
-    } else if (!is.null(set) && set == "base") {
+  } else if (set == "base") {
 
-      out <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_abb <- c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO")
+    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Dipodomys spectabilis", "Neotoma albigula", "Onychomys leucogaster", "Onychomys torridus", "Chaetodipus baileyi", "Peromyscus eremicus", "Perognathus flavus", "Chaetodipus hispidus", "Peromyscus leucopus", "Peromyscus maniculatus", "Chaetodipus penicillatus", "Reithrodontomys fulvescens", "Reithrodontomys megalotis", "Reithrodontomys montanus", "Sigmodon fulviventer", "Sigmodon hispidus", "Sigmodon ochrognathus")
 
-    } else if (!is.null(set) && set == "evalplot") {
+  } else if (set == "eval") {
 
-      out <- c("BA", "DM", "DO", "PP", "OT", "NA")
-
-    }
-
-    if (nadot) {
-
-      out[which(out == "NA")] <- "NA."
-
-    }
-
-
-  } else if (type = "latin") {
-
-
+    out_abb <- c("BA", "DM", "DO", "PP", "OT", "NA")
+    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Chaetodipus penicillatus", "Onychomys torridus", "Neotoma albigula")
 
   } else {
 
-    stop ("`type` must be 'abbreviation' or 'Latin'")
+    stop ("`type` must be `NULL`, 'all', 'base', or 'eval'")    
+ 
+  }
+
+  if (total) {
+
+    out_abb[which(out_abb == "NA")] <- "NA."
 
   }
 
   if (total) {
 
-    out <- c(out, "total")
+    out_abb <- c(out_abb, "total")
+    out_lat <- c(out_lat, "total")
 
   }
 
-  unique(c(species, out))
+  
+  if (type == "latin") {
+
+    out <- out_lat
+
+  } else if (type == "abbreviation") {
+
+    out <- out_abb
+
+  } else if (type == "table") {
+
+    out <- data.frame(abbreviation = out_abb, Latin = out_lat)
+
+  } else {
+
+    stop ("`type` must be 'abbreviation', 'Latin', or 'table'")    
+
+  } 
+
+  out
 
 }
 
@@ -138,14 +151,14 @@ rodent_species <- function (species = NULL,
 #'
 #' @export
 #'
-all_species <- function (species = NULL, 
-                         nadot   = FALSE, 
-                         total   = FALSE) {
+all_species <- function (nadot   = FALSE, 
+                         total   = FALSE,
+                         type    = "abbreviation") {
 
-  rodent_species(species = species, 
-                 set     = "all", 
+  rodent_species(set     = "all", 
                  nadot   = nadot,
-                 total   = total)
+                 total   = total,
+                 type    = type)
 
 }
 
@@ -154,31 +167,33 @@ all_species <- function (species = NULL,
 #'
 #' @export
 #'
-base_species <- function (species = NULL, 
-                          nadot   = FALSE, 
-                          total   = FALSE) {
+base_species <- function (nadot   = FALSE, 
+                          total   = FALSE,
+                          type    = "abbreviation") {
 
-  rodent_species(species = species, 
-                 set     = "base", 
+  rodent_species(set     = "base", 
                  nadot   = nadot,
-                 total   = total)
+                 total   = total,
+                 type    = type)
 
 }
+
 
 #' @rdname rodent_species
 #'
 #' @export
 #'
-evalplot_species <- function (species = NULL, 
-                              nadot   = FALSE, 
-                              total   = TRUE) {
+eval_species <- function (nadot   = FALSE, 
+                          total   = FALSE,
+                          type    = "abbreviation") {
 
-  rodent_species(species = species, 
-                 set     = "evalplot", 
+  rodent_species(set     = "eval", 
                  nadot   = nadot,
-                 total   = total)
+                 total   = total,
+                 type    = type)
 
 }
+
 
 
 #' @title Conform NA entries to "NA" entries
@@ -219,37 +234,4 @@ na_conformer <- function(dfv, colname = "species"){
 
 }
 
-
-#' @title Select the most abundant species from a data set
-#'
-#' @description Not including the total, determine the most abundant rodent species within a data set.
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param dataset \code{character} representation of the grouping name used to define the rodents. Standard options are \code{"all"} and \code{"controls"}.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @param topx Positive \code{integer} (or \code{integer}-conformable) value of how many species to include.
-#'  
-#' @return \code{character} vector of the species identifiers.
-#' 
-#' @export
-#'
-most_abundant_species <- function (main     = ".", 
-                                   settings = directory_settings(), 
-                                   dataset  = "all", 
-                                   topx     = 3) {
-
-  rodents_tab <- read_rodents_table(main     = main, 
-                                    settings = settings,
-                                    dataset  = dataset)
-  col_keep    <- which(colnames(rodents_tab) %in% all_species())
-  rodents_tab <- rodents_tab[ , col_keep]
-  tots        <- apply(rodents_tab, 2, sum, na.rm = TRUE)
-  tots_order  <- order(tots)
-  names(tots) <- colnames(rodents_tab)
-  names(sort(tots, decreasing = TRUE)[1:topx])
-
-}
 

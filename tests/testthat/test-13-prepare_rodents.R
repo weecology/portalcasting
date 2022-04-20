@@ -25,48 +25,34 @@ test_that(desc = "rodents_species creates a vector of IDs as needed", {
 
   x1 <- rodent_species()
   x2 <- rodent_species(set = "all")
-  x3 <- rodent_species("BA")
-  x4 <- rodent_species("BA", set = "all")
-  x5 <- all_species()
-  x6 <- all_species(nadot = TRUE)
-  x7 <- all_species(total = TRUE)
-  x8 <- base_species()
-  x9 <- evalplot_species()
+  x3 <- rodent_species(set = "base")
+  x4 <- all_species(type = "abbreviation")
+  x5 <- all_species(type = "Latin")
+  x6 <- all_species(type = "table")
+  x7 <- all_species()
+  x8 <- all_species(nadot = TRUE)
+  x9 <- all_species(total = TRUE)
+  x0 <- base_species()
+  xa <- eval_species()
+
 
   expect_equal(x1, NULL)
   expect_is(x2, "character")
   expect_is(x3, "character")
   expect_is(x4, "character")
   expect_is(x5, "character")
-  expect_is(x6, "character")
+  expect_is(x6, "data.frame")
   expect_is(x7, "character")
   expect_is(x8, "character")
   expect_is(x9, "character")
+  expect_is(x0, "character")
+  expect_is(xa, "character")
 
-  expect_equal(length(x2), 21)
-  expect_equal(length(x3), 1)
-  expect_equal(length(x4), 21)
-  expect_equal(length(x5), 21)
-  expect_equal(length(x6), 21)
-  expect_equal(length(x7), 22)
-  expect_equal(length(x8), 20)
-  expect_equal(length(x9), 7)
+  expect_error(rodent_species(type = "xxx", set = "all"))
+  expect_error(rodent_species(set = "xxx"))
 
 })
 
-test_that(desc = "most_abundant_species finds them", {
-
-  # downloads take too long for cran checks
-
-    skip_on_cran() 
-
-  topx <- 3
-  mas <- most_abundant_species(main = main, topx = topx)
-  expect_is(mas, "character")
-  expect_equal(length(mas), topx)
-  expect_equal(all(mas %in% rodent_species(set = "all")), TRUE)
-
-})
 
 
 test_that(desc = "prefab_datasets names the proper sets", {

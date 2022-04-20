@@ -4,25 +4,25 @@
 \alias{rodent_species}
 \alias{all_species}
 \alias{base_species}
-\alias{evalplot_species}
+\alias{eval_species}
 \title{Rodent species abbreviations}
 \usage{
-rodent_species(species = NULL, set = NULL, nadot = FALSE, total = FALSE)
+rodent_species(set = NULL, nadot = FALSE, total = FALSE, type = "abbreviation")
 
-all_species(species = NULL, nadot = FALSE, total = FALSE)
+all_species(nadot = FALSE, total = FALSE, type = "abbreviation")
 
-base_species(species = NULL, nadot = FALSE, total = FALSE)
+base_species(nadot = FALSE, total = FALSE, type = "abbreviation")
 
-evalplot_species(species = NULL, nadot = FALSE, total = TRUE)
+eval_species(nadot = FALSE, total = FALSE, type = "abbreviation")
 }
 \arguments{
-\item{species}{\code{character}-valued vector of species names to include.}
-
-\item{set}{\code{character} input of a specified set of species. Default entry (\code{"base"}) returns the standard set of all species included. Other options include \code{"wtotal"} (same as \code{"base"} but with "total" as well) and \code{"evalplot"} which only returns a subset of common species to be included in the evaluations plots.}
+\item{set}{\code{character} input of a specified set of species. Options include \code{all} (all species included) and \code{base} (all but PI).}
 
 \item{nadot}{\code{logical} indicator if the dot should be added to the \code{"NA"} species name. Defaults to \code{FALSE}.}
 
 \item{total}{\code{logical} value indicating if \code{"total"} should be added or not.}
+
+\item{type}{\code{character} value indicating the output type. Current options include \code{'abbreviation'} (default, two-letter abbreviation), \code{'Latin'} (full scientific names), and  \code{'table'} a \code{data.frame} of the abbreviations and Latin names.}
 }
 \value{
 \code{character} vector of species abbreviations.
@@ -32,13 +32,14 @@ Creates a simple \code{character} vector of abbreviations for the Portal \href{h
 }
 \examples{
  rodent_species()
+ rodent_species(type = "Latin")
+ rodent_species(type = "table")
+ rodent_species(type = "table", total = TRUE)
  rodent_species(set = "all")
- rodent_species("BA")
- rodent_species("BA", set = "all")
  all_species()
  all_species(nadot = TRUE)
  all_species(total = TRUE)
  base_species()
- evalplot_species()
+ eval_species()
 
 }

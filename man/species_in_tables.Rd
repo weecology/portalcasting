@@ -13,7 +13,7 @@ species_from_table(rodents_tab = NULL, total = FALSE, nadot = FALSE)
 \arguments{
 \item{rodents_tab}{\code{data.frame} of columns to be checked.}
 
-\item{species}{\code{character} vector indicating species names to use in determining if columns are species columns. Defaults to \code{\link{all_species}}.}
+\item{species}{\code{character} vector indicating species' name abbreviations to use in determining if columns are species columns. Defaults to \code{\link{all_species}}.}
 
 \item{total}{\code{logical} indicator if the total should be included.}
 

@@ -39,7 +39,7 @@ ensemble_casts(
 
 \item{include_interp}{\code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{evalplot_species}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.}
 }
 \value{
 \code{data.frame} of ensembled casts.
