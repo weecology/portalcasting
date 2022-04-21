@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.35.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.37.0</span>
       </span>
     </div>
 
@@ -75,6 +75,19 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="portalcasting-development-version">portalcasting (development version)<a class="anchor" aria-label="anchor" href="#portalcasting-development-version"></a></h2>
 <p>Version numbers follow <a href="https://semver.org/" class="external-link">Semantic Versioning</a>.</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.37.0" id="portalcasting-0370"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.37.0" class="external-link">portalcasting 0.37.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0370"></a></h2>
+<p><em>2022-04-21</em></p>
+<div class="section level4">
+<h4 id="building-out-evaluation-pipeline-0-37-0">Building out evaluation pipeline<a class="anchor" aria-label="anchor" href="#building-out-evaluation-pipeline-0-37-0"></a></h4>
+<ul><li>starting with what is already occurring, but formalizing as such as part of an <code>evaluate_casts</code> and <code>evaluate_cast</code> pair of functions</li>
+<li>
+<code>evaluate_casts</code> function now works automatically to evaluate all the casts using <code>evaluate_cast</code>, generating the error table as it does when being used, but nothing is saved out or updated.</li>
+<li>there is also no filter on evaluated casts by deafult, so the output from the forecasts without observations to evaluate is a table with a single row with NaN, and then they get wrapped up into the list.
+<ul><li>no errors, just noteworthy</li>
+</ul></li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.36.0" id="portalcasting-0360"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.36.0" class="external-link">portalcasting 0.36.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0360"></a></h2>
