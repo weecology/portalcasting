@@ -4,8 +4,10 @@
 devtools::document()
 devtools::load_all()
 
-main <- "./portalcasting"
+main <- "~/portalcasting"
 
+
+setup_production(main = main)
 
 #
 # to do

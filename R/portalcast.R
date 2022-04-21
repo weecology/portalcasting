@@ -48,7 +48,7 @@ portalcast <- function (main       = ".",
 
 #
 # the datasets here should come from the models selected
-#  and not as an argument
+#  and not as an argument ... or? maybe not? idk. think this out.
 # 
 
   return_if_null(models)
