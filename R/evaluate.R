@@ -13,7 +13,7 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
 #'
-#' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
+#' @return A \code{data.frame}, or \code{list} of \code{data.frame}s.
 #'
 #' @name evaluate forecasts
 #'
@@ -41,17 +41,19 @@ evaluate_casts <- function (main     = ".",
 
   }
 
+  out <- named_null_list(element_names = cast_ids)
+
   for (i in 1:ncast_ids) {
 
-    evaluate_cast(main     = main,
-                  settings = settings,
-                  cast_id  = cast_ids[i],
-                  quiet    = quiet,
-                  verbose  = verbose)
+    out[[i]] <- evaluate_cast(main     = main,
+                              settings = settings,
+                              cast_id  = cast_ids[i],
+                              quiet    = quiet,
+                              verbose  = verbose)
 
   }
 
-  invisible()
+  out
 
 }
 
@@ -96,11 +98,7 @@ evaluate_cast <- function (main     = ".",
   cast_tab <- add_covered_to_cast_tab(main     = main,  
                                       settings = settings,
                                       cast_tab = cast_tab)
-  cast_err <- measure_cast_level_error(cast_tab = cast_tab)
-
-
-
-  invisible()
+  measure_cast_level_error(cast_tab = cast_tab)
 
 }
 

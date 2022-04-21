@@ -35,7 +35,7 @@ evaluate_cast(
 \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}
 }
 \value{
-\code{NULL}, \code{\link[base]{invisible}}-ly.
+A \code{data.frame}, or \code{list} of \code{data.frame}s.
 }
 \description{
 Evaluate forecasts in the directory, based on id or group, or (if \code{cast_ids = NULL} and \code{cast_groups = NULL}, the default) \code{evaluate_casts} will evaluate all and (if \code{cast_id = NULL} and \code{cast_group = NULL}, the default), \code{evaluate_cast} will evaluate the most recent cast.
