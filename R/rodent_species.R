@@ -109,10 +109,9 @@ rodent_species <- function (set   = NULL,
 
     stop ("`type` must be `NULL`, 'all', 'base', or 'eval'")    
  
-
   }
 
-  if (nadot) {
+  if (total) {
 
     out_abb[which(out_abb == "NA")] <- "NA."
 

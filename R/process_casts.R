@@ -221,8 +221,8 @@ add_obs_to_cast_tab <- function (main     = ".",
 #' @export
 #'
 read_cast_tab <- function (main     = ".", 
-                           settings = directory_settings(), 
-                           cast_id  = NULL) {
+                           cast_id  = NULL, 
+                           settings = directory_settings()) {
 
   if (is.null(cast_id) ){
 
@@ -257,8 +257,8 @@ read_cast_tab <- function (main     = ".",
 #' @export
 #'
 read_cast_tabs <- function (main     = ".", 
-                            settings = directory_settings(), 
-                            cast_ids  = NULL) {
+                            cast_ids  = NULL, 
+                            settings = directory_settings()) {
   
   if (is.null(cast_ids)) {
 
@@ -269,8 +269,8 @@ read_cast_tabs <- function (main     = ".",
   }
 
   cast_tab <- read_cast_tab(main     = main,
-                            settings = settings,
-                            cast_id  = cast_ids[1])
+                            cast_id  = cast_ids[1],
+                            settings = settings)
   ncasts   <- length(cast_ids)
 
 
@@ -278,9 +278,9 @@ read_cast_tabs <- function (main     = ".",
 
     for (i in 2:ncasts) {
 
-      cast_tab_i <- read_cast_tab(main     = main, 
-                                  settings = settings,
-                                  cast_id  = cast_ids[i])
+      cast_tab_i <- read_cast_tab(main     = main,
+                                  cast_id  = cast_ids[i], 
+                                  settings = settings)
 
       cast_tab   <- rbind(cast_tab, cast_tab_i)
 
@@ -297,8 +297,8 @@ read_cast_tabs <- function (main     = ".",
 #' @export
 #'
 read_cast_metadata <- function (main     = ".", 
-                                settings = directory_settings(), 
-                                cast_id  = NULL) {
+                                cast_id  = NULL, 
+                                settings = directory_settings()) {
   
   if (is.null(cast_id)) {
 
@@ -326,8 +326,8 @@ read_cast_metadata <- function (main     = ".",
 #' @export
 #'
 read_model_fit <- function (main     = ".", 
-                            settings = directory_settings(), 
-                            cast_id  = NULL) {
+                            cast_id  = NULL, 
+                            settings = directory_settings()) {
   
   if (is.null(cast_id)) {
 
@@ -356,8 +356,8 @@ read_model_fit <- function (main     = ".",
 #' @export
 #'
 read_model_cast <- function (main     = ".", 
-                             settings = directory_settings(), 
-                             cast_id  = NULL) {
+                             cast_id  = NULL, 
+                             settings = directory_settings()) {
   
   if (is.null(cast_id)) {
 
@@ -367,17 +367,32 @@ read_model_cast <- function (main     = ".",
 
   }
 
-  lpath <- paste0("cast_id_", cast_id, "_model_casts.json")
-  cpath <- file.path(main, settings$subs$forecasts, lpath)
+  lpath_json  <- paste0("cast_id_", cast_id, "_model_casts.json")
+  cpath_json  <- file.path(main, settings$subs$forecasts, lpath_json)
 
-  if (!file.exists(cpath)) {
+  lpath_RData <- paste0("cast_id_", cast_id, "_model_casts.RData")
+  cpath_RData  <- file.path(main, settings$subs$forecasts, lpath_RData)
 
-    stop("cast_id does not have a model_casts file")
+  if (!file.exists(cpath_json)) {
+
+    if (!file.exists(cpath_RData)) {
+
+      stop("cast_id does not have a model_casts file")
+  
+    } else {
+
+      model_casts <- NULL
+      load(cpath_RData)
+      model_casts
+
+    }
+
+  } else {
+
+    read_in_json <- fromJSON(readLines(cpath_json))
+    unserializeJSON(read_in_json)
 
   }
-
-  read_in_json <- fromJSON(readLines(cpath))
-  unserializeJSON(read_in_json)
 
 }
 
@@ -483,12 +498,12 @@ select_casts <- function (main           = ".",
 #'    of the model (across multiple species, for example). 
 #'   \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
 #'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
+#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
 #'    specific object structure. Saving out a \code{list} of the actual model
 #'    fit/return objects means that models do not need to be refit later.
 #'   \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
 #'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite]{write_json}}, so quite flexible with respect to 
+#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
 #'    specific object structure. Is used to save \code{list}s
 #'    of predictions across multiple instances of the model.
 #'  }

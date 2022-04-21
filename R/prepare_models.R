@@ -1,6 +1,6 @@
 #' @title Read and Write Model Control Lists
 #'
-#' @description Input/Output functions for model control lists.
+#' @description Input/output functions for model control lists.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -73,6 +73,10 @@ write_model_controls <- function (main               = ".",
   invisible(model_controls)
 
 }
+
+
+
+
 
 
 #' @title Write Model Function Script into Directory

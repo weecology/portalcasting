@@ -2,6 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.37.0](https://github.com/weecology/portalcasting/releases/tag/v0.37.0)
+*2022-04-21*
+
+### Building out evaluation pipeline
+* starting with what is already occurring, but formalizing as such as part of an `evaluate_casts` and `evaluate_cast` pair of functions
+* `evaluate_casts` function now works automatically to evaluate all the casts using `evaluate_cast`, generating the error table as it does when being used, but nothing is saved out or updated.
+* there is also no filter on evaluated casts by deafult, so the output from the forecasts without observations to evaluate is a table with a single row with NaN, and then they get wrapped up into the list. 
+  * no errors, just noteworthy
+
 # [portalcasting 0.36.0](https://github.com/weecology/portalcasting/releases/tag/v0.36.0)
 *2022-04-08*
 
