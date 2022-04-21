@@ -48,6 +48,12 @@ plot_casts_cov_RMSE <- function (main           = ".",
                                  include_interp = TRUE,
                                  species        = NULL) {
 
+  if (length(models) == 1 && models != "ensemble") {
+
+    ensemble <- FALSE
+
+  }
+
   if (is.null(cast_tab)) {
 
     cast_choices <- select_casts(main           = main, 
@@ -295,6 +301,12 @@ plot_casts_err_lead <- function (main           = ".",
                                  dataset        = "controls", 
                                  include_interp = TRUE,
                                  species        = NULL) {
+
+  if (length(models) == 1 && models != "ensemble") {
+
+    ensemble <- FALSE
+
+  }
 
   if (is.null(cast_tab)) {
 

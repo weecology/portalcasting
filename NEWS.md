@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.38.0](https://github.com/weecology/portalcasting/releases/tag/v0.38.0)
+*2022-04-21*
+
+### If there's only one model, don't ensemble
+* Prevents warnings / errors 
+
+
 # [portalcasting 0.37.0](https://github.com/weecology/portalcasting/releases/tag/v0.37.0)
 *2022-04-21*
 
