@@ -109,8 +109,7 @@
 </h2>
 <p>The <code>portalcasting</code> package is deployed for use within the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions repository</a>, providing the underlying R code to populate the directory with up-to-date data, analyze the data, produce new forecasts, generate new output figures, and render a new version of the <a href="http://portal.naturecast.org/" class="external-link">website</a>. All of the code underlying the forecasting functionality has been migrated over from the <a href="https://github.com/weecology/portalPredictions" class="external-link">predictions repository</a>, which contains the code executed by the continuous integration. Having relocated the code here, the <code>portalcasting</code> package is the location for active development of the model set and additional functionality.</p>
 <p>We leverage a <a href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization" class="external-link">software container</a> to enable reproducibility of the <a href="https://github.com/weecology/portalPredictions" class="external-link">predictions repository</a>. Presently, we use a <a href="https://hub.docker.com/r/weecology/portalcasting" class="external-link">Docker</a> image of the software environment to create a container for running the code. The image is automatically rebuilt when there is a new <code>portalcasting</code> release, tagged with both the <code>latest</code> and version-specific (<code>vX.X.X</code>) tags, and pushed to <a href="https://hub.docker.com/r/weecology/portalcasting" class="external-link">DockerHub</a>.</p>
-<p>Because the <code>latest</code> image is updated with releases, the current master branch code in <code>portalcasting</code> is not necessarily always being executed within the <a href="https://github.com/weecology/portalPredictions" class="external-link">predictions repository</a>. Rather, the most recent release is what is currently being executed. Presently, the <code>latest</code> image is built using <code>portalcasting</code> <a href="https://github.com/weecology/portalcasting/releases/tag/v0.25.1" class="external-link">v0.25.1</a>.</p>
-<p>A development image (<code>dev</code>) is built from the master branch of <code>portalcasting</code> at every push to facilitate testing and should not be considered stable.</p>
+<p>Because the <code>latest</code> image is updated with releases, the current master branch code in <code>portalcasting</code> is not necessarily always being executed within the <a href="https://github.com/weecology/portalPredictions" class="external-link">predictions repository</a>. A development image (<code>dev</code>) is built from the master branch of <code>portalcasting</code> at every push to facilitate testing and should not be considered stable.</p>
 <p>The API is moderately well defined at this point, but is still evolving.</p>
 </div>
 <div class="section level2">
@@ -126,7 +125,7 @@
 </h2>
 <p>If you wish to spin up a local container from the <code>latest</code> <code>portalcasting</code> image (to ensure that you are using a copy of the current production environment for implementation of the <code>portalcasting</code> pipeline), you can run</p>
 <pre><code>sudo docker pull weecology/portalcasting</code></pre>
-<p>from a shell on a computer with <a href="https://www.docker.com/" class="external-link">Docker</a> installed. A tutorial on using the image to spin up a container is forthcoming.</p>
+<p>from a shell on a computer with <a href="https://www.docker.com/" class="external-link">Docker</a> installed.</p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -144,12 +143,7 @@
 <h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
 </h2>
 <p>The motivating study—the Portal Project—has been funded nearly continuously since 1977 by the <a href="http://nsf.gov/" class="external-link">National Science Foundation</a>, most recently by <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1622425" class="external-link">DEB-1622425</a> to S. K. M. Ernest. Much of the computational work was supported by the <a href="http://www.moore.org/programs/science/data-driven-discovery" class="external-link">Gordon and Betty Moore Foundation’s Data-Driven Discovery Initiative</a> through <a href="http://www.moore.org/grants/list/GBMF4563" class="external-link">Grant GBMF4563</a> to E. P. White.</p>
-<p>We thank Henry Senyondo for help with continuous integration, Heather Bradley for logistical support, John Abatzoglou for assistance with climate forecasts, and James Brown for establishing the Portal Project.</p>
-</div>
-<div class="section level2">
-<h2 id="author-contributions">Author Contributions<a class="anchor" aria-label="anchor" href="#author-contributions"></a>
-</h2>
-<p>All authors conceived the ideas, designed methodology, and developed the automated forecasting system. J. L. Simonis led the transition of code from the <a href="https://github.com/weecology/portalPredictions" class="external-link">Portal Predictions repo</a> to <code>portalcasting</code>. S. K. M. Ernest coded the <code>NaiveArima</code> model, H. Ye coded the <code>simplexEDM</code> and <code>GPEDM</code> models, and J. L. Simonis coded the <code>jags_RW</code> model.</p>
+<p>We thank Heather Bradley for logistical support, John Abatzoglou for assistance with climate forecasts, and James Brown for establishing the Portal Project.</p>
 </div>
 </div>
   </div>
