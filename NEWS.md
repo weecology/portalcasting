@@ -8,6 +8,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Argument / nomenclature updates
 * `dfl` arg to `x`
 
+### `read_rodents` default settings update
+* Now pulls all datasets using `prefab_datasets`
 
 # [portalcasting 0.38.0](https://github.com/weecology/portalcasting/releases/tag/v0.38.0)
 *2022-04-21*

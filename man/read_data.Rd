@@ -16,7 +16,7 @@ read_data(
   main = ".",
   data_name = NULL,
   dataset = "all",
-  datasets = c("all", "controls"),
+  datasets = prefab_datasets(),
   settings = directory_settings()
 )
 
@@ -28,7 +28,7 @@ read_rodents_table(
 
 read_rodents(
   main = ".",
-  datasets = c("all", "controls"),
+  datasets = prefab_datasets(),
   settings = directory_settings()
 )
 

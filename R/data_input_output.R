@@ -105,7 +105,7 @@ write_data <- function (x         = NULL,
 read_data <- function (main      = ".", 
                        data_name = NULL, 
                        dataset   = "all", 
-                       datasets  = c("all", "controls"), 
+                       datasets  = prefab_datasets(), 
                        settings  = directory_settings()) {
   
   return_if_null(data_name)
@@ -193,7 +193,7 @@ read_rodents_table <- function (main     = ".",
 #' @export
 #'
 read_rodents <- function (main     = ".", 
-                          datasets = c("all", "controls"), 
+                          datasets = prefab_datasets(), 
                           settings = directory_settings()) {
   
   return_if_null(datasets)
