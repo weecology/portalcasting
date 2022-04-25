@@ -42,7 +42,7 @@ prep_covariates <- function (main     = ".",
                                                   quiet    = quiet, 
                                                   verbose  = verbose)
 
-  write_data(dfl       = rbind(historic_covariates, forecast_covariates), 
+  write_data(x       = rbind(historic_covariates, forecast_covariates), 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$covariates, 
@@ -72,7 +72,7 @@ prep_historic_covariates <- function (main     = ".",
 
   cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "ndvi", "source")
 
-  write_data(dfl       = out[ , cols_to_keep], 
+  write_data(x       = out[ , cols_to_keep], 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$historical_covariates, 
@@ -176,7 +176,7 @@ prep_forecast_covariates <- function (main      = ".",
 
 
 
-  write_data(dfl       = hist_climate_forecasts, 
+  write_data(x       = hist_climate_forecasts, 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$forecast_covariates, 

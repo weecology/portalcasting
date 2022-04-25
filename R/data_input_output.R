@@ -3,7 +3,7 @@
 #'
 #' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..
 #'
-#' @param dfl \code{data.frame} or YAML \code{list} to be written out.
+#' @param x \code{data.frame} or YAML \code{list} to be written out.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
@@ -17,11 +17,11 @@
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
-#' @return \code{dfl} as input, \code{\link[base]{invisible}}-ly.
+#' @return \code{x} as input, \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
-write_data <- function (dfl       = NULL, 
+write_data <- function (x         = NULL, 
                         main      = ".", 
                         data_sub  = "data",
                         save      = TRUE, 
@@ -29,7 +29,7 @@ write_data <- function (dfl       = NULL,
                         overwrite = TRUE, 
                         quiet     = FALSE) {
   
-  return_if_null(dfl)
+  return_if_null(x)
 
   return_if_null(filename)
 
@@ -64,11 +64,11 @@ write_data <- function (dfl       = NULL,
 
       if (file_ext(filename) == "csv") {
 
-        write.csv(dfl, full_path, row.names = FALSE)
+        write.csv(x, full_path, row.names = FALSE)
 
       } else if (file_ext(filename) == "yaml"){
 
-        write_yaml(dfl, file = full_path)
+        write_yaml(x, file = full_path)
 
       } else {
 
@@ -80,7 +80,7 @@ write_data <- function (dfl       = NULL,
    
   }
 
-  invisible(dfl)
+  invisible(x)
 
 }
 
