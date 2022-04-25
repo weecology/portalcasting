@@ -14,7 +14,7 @@ combine_hist_and_cast(
 \arguments{
 \item{hist_tab, cast_tab}{A pair of \code{data.frame}s with the same columns including a code{date} column of \code{Date}s, which is used to align them.}
 
-\item{winner}{\code{character} value either {"hist"} or \code{"cast"} to decide who wins any ties. In the typical portalcasting space, this is kept at its default value throughout. In the case of \code{NA} values, this will be overriden to use the entry that has no missing entries.}
+\item{winner}{\code{character} value either {"hist"} or \code{"cast"} to decide who wins any ties. In the typical portalcasting space, this is kept at its default value throughout. In the case of \code{NA} values, this will be overridden to use the entry that has no missing entries.}
 
 \item{column}{\code{character} indicating the column to use for identifying entries in combining.}
 }

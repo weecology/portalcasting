@@ -53,7 +53,7 @@ See \code{\link{download_climate_forecasts}}.}
 
 \item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
 
-\item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment.}
+\item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
 \item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 }
