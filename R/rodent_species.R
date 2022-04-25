@@ -155,10 +155,10 @@ all_species <- function (nadot   = FALSE,
                          total   = FALSE,
                          type    = "abbreviation") {
 
-  rodent_species(set     = "all", 
-                 nadot   = nadot,
-                 total   = total,
-                 type    = type)
+  rodent_species(set   = "all", 
+                 nadot = nadot,
+                 total = total,
+                 type  = type)
 
 }
 
@@ -171,10 +171,10 @@ base_species <- function (nadot   = FALSE,
                           total   = FALSE,
                           type    = "abbreviation") {
 
-  rodent_species(set     = "base", 
-                 nadot   = nadot,
-                 total   = total,
-                 type    = type)
+  rodent_species(set   = "base", 
+                 nadot = nadot,
+                 total = total,
+                 type  = type)
 
 }
 
@@ -187,10 +187,10 @@ eval_species <- function (nadot   = FALSE,
                           total   = FALSE,
                           type    = "abbreviation") {
 
-  rodent_species(set     = "eval", 
-                 nadot   = nadot,
-                 total   = total,
-                 type    = type)
+  rodent_species(set   = "eval", 
+                 nadot = nadot,
+                 total = total,
+                 type  = type)
 
 }
 

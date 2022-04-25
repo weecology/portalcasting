@@ -47,7 +47,7 @@ read_metadata(main = ".", settings = directory_settings())
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{data_name}{\code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.}
+\item{data_name}{\code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.}
 
 \item{dataset, datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
 
@@ -57,7 +57,5 @@ read_metadata(main = ".", settings = directory_settings())
 Data requested.
 }
 \description{
-Read in a specified data file. \cr \cr
-             Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"climate_forecasts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
-             \code{read_cov_casts} reads in the current or (if no current version) local archived version of the covariate casts.
+Read in a specified data file.
 }
