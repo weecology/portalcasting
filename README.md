@@ -6,6 +6,7 @@
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3332973.svg)](https://doi.org/10.5281/zenodo.3332973)
 [![NSF-1929730](https://img.shields.io/badge/NSF-1929730-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1929730)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.03220/status.svg)](https://doi.org/10.21105/joss.03220)
 
 
 <img src="man/figures/portalcasting.png" alt="hexagon software logo, light grey blue background, basic lettering at the top says portalcasting, main image is a drawn all black rodent standing on two feet with a fishing rod in hand and a brown fishing hat on head, standing next to a tan and green tackle box." width="200px">   
