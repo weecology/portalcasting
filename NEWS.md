@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.39.0](https://github.com/weecology/portalcasting/releases/tag/v0.39.0)
+*2022-05-11*
+
+### `download_timeout` now set to default of 600 for `setup_production`
+* Allows download of larger directory archive without timeout 
+
+
 # [portalcasting 0.38.0](https://github.com/weecology/portalcasting/releases/tag/v0.38.0)
 *2022-04-21*
 
