@@ -21,7 +21,7 @@ setup_production(
   models = prefab_models(),
   datasets = prefab_datasets(),
   settings = directory_settings(portalPredictions = list(source = "github", version =
-    "latest")),
+    "latest"), download_timeout = 600),
   quiet = FALSE,
   verbose = TRUE
 )
