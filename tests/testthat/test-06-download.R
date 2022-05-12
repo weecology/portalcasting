@@ -19,7 +19,7 @@ test_that(desc = "download_climate_forecasts retrieves files", {
 test_that(desc = "download_archive downloads the archive",
           code = {
 
-  expect_equal(download_archive(main), NULL)
+  expect_equal(download_archive(main, timeout = 600), NULL)
 
 })
 
