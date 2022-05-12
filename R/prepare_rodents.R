@@ -66,7 +66,7 @@ write_dataset_controls <- function (main                 = ".",
   }
 
   write_yaml(x    = dataset_controls,
-             file = file.path(main, settings$files$dataset_controls))
+             file = file.path(main, settings$subs$data, settings$files$dataset_controls))
 
   invisible(dataset_controls)
 

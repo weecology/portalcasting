@@ -53,6 +53,21 @@ evaluate_casts <- function (main     = ".",
 
   }
 
+
+#
+# working here to save the file
+#
+#
+#  if (settings$save) {
+
+#    evaluations_file <- settings$files$cast_evaluations
+
+ #   if (file.exists())
+
+
+  #}
+
+
   out
 
 }

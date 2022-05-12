@@ -2,7 +2,7 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.39.0
+# portalcasting 0.40.0
 *In Progress*
 
 ### Argument / nomenclature updates

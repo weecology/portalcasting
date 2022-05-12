@@ -68,7 +68,7 @@ write_model_controls <- function (main               = ".",
   }
 
   write_yaml(x    = model_controls,
-             file = file.path(main, settings$files$model_controls))
+             file = file.path(main, settings$subs$models, settings$files$model_controls))
 
   invisible(model_controls)
 
