@@ -2,8 +2,9 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.40.0
-*In Progress*
+# [portalcasting 0.40.0](https://github.com/weecology/portalcasting/releases/tag/v0.40.0)
+*2022-05-12*
+
 
 ### Argument / nomenclature updates
 * `dfl` arg to `x`
