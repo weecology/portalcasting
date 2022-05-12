@@ -3,7 +3,7 @@
 #'
 #' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..
 #'
-#' @param dfl \code{data.frame} or YAML \code{list} to be written out.
+#' @param x \code{data.frame} or YAML \code{list} to be written out.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
@@ -17,11 +17,11 @@
 #'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
-#' @return \code{dfl} as input, \code{\link[base]{invisible}}-ly.
+#' @return \code{x} as input, \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
-write_data <- function (dfl       = NULL, 
+write_data <- function (x         = NULL, 
                         main      = ".", 
                         data_sub  = "data",
                         save      = TRUE, 
@@ -29,7 +29,7 @@ write_data <- function (dfl       = NULL,
                         overwrite = TRUE, 
                         quiet     = FALSE) {
   
-  return_if_null(dfl)
+  return_if_null(x)
 
   return_if_null(filename)
 
@@ -64,11 +64,11 @@ write_data <- function (dfl       = NULL,
 
       if (file_ext(filename) == "csv") {
 
-        write.csv(dfl, full_path, row.names = FALSE)
+        write.csv(x, full_path, row.names = FALSE)
 
       } else if (file_ext(filename) == "yaml"){
 
-        write_yaml(dfl, file = full_path)
+        write_yaml(x, file = full_path)
 
       } else {
 
@@ -80,19 +80,17 @@ write_data <- function (dfl       = NULL,
    
   }
 
-  invisible(dfl)
+  invisible(x)
 
 }
 
 #' @title Read in and Format a Portalcasting Data File 
 #'
-#' @description Read in a specified data file. \cr \cr
-#'              Current options include \code{"rodents"} (produces a list), \code{"rodents_table"} (produces a rodents table), \code{"covariates"}, \code{"climate_forecasts"}, \code{"moons"}, and \code{"metadata"}, which  are available as calls to \code{read_data} with a specified  \code{data_name} or as calls to the specific \code{read_<data_name>}  functions (like \code{read_moons}). \cr \cr
-#'              \code{read_cov_casts} reads in the current or (if no current version) local archived version of the covariate casts.
+#' @description Read in a specified data file.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'  
-#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
+#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
 #'
 #' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
 #'
@@ -105,7 +103,7 @@ write_data <- function (dfl       = NULL,
 read_data <- function (main      = ".", 
                        data_name = NULL, 
                        dataset   = "all", 
-                       datasets  = c("all", "controls"), 
+                       datasets  = prefab_datasets(), 
                        settings  = directory_settings()) {
   
   return_if_null(data_name)
@@ -193,7 +191,7 @@ read_rodents_table <- function (main     = ".",
 #' @export
 #'
 read_rodents <- function (main     = ".", 
-                          datasets = c("all", "controls"), 
+                          datasets = prefab_datasets(), 
                           settings = directory_settings()) {
   
   return_if_null(datasets)

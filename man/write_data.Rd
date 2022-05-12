@@ -5,7 +5,7 @@
 \title{Save Data Out to a File and Return It	Invisibly}
 \usage{
 write_data(
-  dfl = NULL,
+  x = NULL,
   main = ".",
   data_sub = "data",
   save = TRUE,
@@ -15,7 +15,7 @@ write_data(
 )
 }
 \arguments{
-\item{dfl}{\code{data.frame} or YAML \code{list} to be written out.}
+\item{x}{\code{data.frame} or YAML \code{list} to be written out.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
@@ -30,7 +30,7 @@ write_data(
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
 }
 \value{
-\code{dfl} as input, \code{\link[base]{invisible}}-ly.
+\code{x} as input, \code{\link[base]{invisible}}-ly.
 }
 \description{
 Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..

@@ -10,11 +10,12 @@ directory_settings(
   covariates_file = "covariates.csv",
   historical_covariates_file = "historical_covariates.csv",
   forecast_covariates_file = "forecast_covariates.csv",
-  dataset_controls_file = "data/dataset_controls.yaml",
-  model_controls_file = "models/model_controls.yaml",
+  dataset_controls_file = "dataset_controls.yaml",
+  model_controls_file = "model_controls.yaml",
+  cast_evaluations_file = "cast_evaluations.csv",
   metadata_file = "metadata.yaml",
-  subdirectories = list(forecasts = "casts", `model fits` = "fits", `model scripts` =
-    "models", resources = "raw", data = "data"),
+  subdirectories = list(forecasts = "casts", fits = "fits", models = "models",
+    resources = "raw", data = "data"),
   PortalData = list(source = "github", version = "latest"),
   portalPredictions = list(source = "github", version = NULL),
   climate_forecast = list(source = "NMME", version = as.character(Sys.Date()), data =
@@ -36,6 +37,8 @@ directory_settings(
 
 \item{model_controls_file}{\code{character} name of the file for saving the model controls.}
 
+\item{cast_evaluations_file}{\code{character} name of the file for saving the cast evaluations.}
+
 \item{metadata_file}{\code{character} name of the file for saving the forecast metadata.}
 
 \item{subdirectories}{\code{character} vector of the subdirectory names. Default includes \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}.}
@@ -53,7 +56,7 @@ See \code{\link{download_climate_forecasts}}.}
 
 \item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
 
-\item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delayment.}
+\item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
 \item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 }

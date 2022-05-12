@@ -2,6 +2,24 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.40.0](https://github.com/weecology/portalcasting/releases/tag/v0.40.0)
+*2022-05-12*
+
+
+### Argument / nomenclature updates
+* `dfl` arg to `x`
+
+### `read_rodents` default settings update
+* Now pulls all datasets using `prefab_datasets`
+
+### Subdirectory internal naming changed to remove spaces
+* `model fits` now back to `fits` and `model scripts` back to `models`
+
+### `cast_evaluations` file now saved
+* Flattened version of the generated list of evaluations
+* Rather crude options of saving or not and overwriting the whole file or not based on settings 
+* No file saving occurs when a single cast is evaluated
+
 # [portalcasting 0.39.0](https://github.com/weecology/portalcasting/releases/tag/v0.39.0)
 *2022-05-11*
 
@@ -22,7 +40,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Building out evaluation pipeline
 * starting with what is already occurring, but formalizing as such as part of an `evaluate_casts` and `evaluate_cast` pair of functions
 * `evaluate_casts` function now works automatically to evaluate all the casts using `evaluate_cast`, generating the error table as it does when being used, but nothing is saved out or updated.
-* there is also no filter on evaluated casts by deafult, so the output from the forecasts without observations to evaluate is a table with a single row with NaN, and then they get wrapped up into the list. 
+* there is also no filter on evaluated casts by default, so the output from the forecasts without observations to evaluate is a table with a single row with NaN, and then they get wrapped up into the list. 
   * no errors, just noteworthy
 
 # [portalcasting 0.36.0](https://github.com/weecology/portalcasting/releases/tag/v0.36.0)
@@ -289,7 +307,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### Change in format for saving out `model_fits` and `model_casts`
 * Saving `model_fits` and `model_casts` out as serialized `.json` files now instead of `.rData` files
-* More reliable and generlized.
+* More reliable and generalized.
 * Also added functions for reading them in (`read_model_casts` and `read_model_fits`).
 * [addresses](https://github.com/weecology/portalcasting/issues/164)
 
@@ -297,7 +315,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 *2019-12-18*
 
 ### Using github version of portalr
-* Due to backwards incompatable changes in portalr and it not being on CRAN yet
+* Due to backwards incompatible changes in portalr and it not being on CRAN yet
 
 
 # [portalcasting 0.15.1](https://github.com/weecology/portalcasting/releases/tag/v0.15.1)

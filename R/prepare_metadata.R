@@ -127,7 +127,7 @@ prep_metadata <- function (main             = ".",
               confidence_level        = confidence_level,
               directory_configuration = config)
 
-  write_data(dfl       = out, 
+  write_data(x       = out, 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$metadata, 

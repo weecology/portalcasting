@@ -68,7 +68,7 @@ prep_moons <- function (main     = ".",
                                 lead   = lead, 
                                 origin = origin)
 
-  write_data(dfl       = moons_out, 
+  write_data(x       = moons_out, 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$moons, 

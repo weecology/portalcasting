@@ -11,6 +11,8 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
+#' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
+#'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
 #'
 #' @return A \code{data.frame}, or \code{list} of \code{data.frame}s.
@@ -19,16 +21,18 @@
 #'
 #' @export
 #'
-evaluate_casts <- function (main     = ".", 
-                            settings = directory_settings(), 
-                            cast_ids = NULL,
-                            quiet    = FALSE, 
-                            verbose  = FALSE) {
+evaluate_casts <- function (main           = ".", 
+                            settings       = directory_settings(), 
+                            cast_ids       = NULL,
+                            quiet          = FALSE, 
+                            verbose        = FALSE, 
+                            include_interp = TRUE) {
 
 
-  casts_to_evaluate <- select_casts(main     = main, 
-                                    settings = settings,
-                                    cast_ids = cast_ids)
+  casts_to_evaluate <- select_casts(main           = main, 
+                                    settings       = settings,
+                                    cast_ids       = cast_ids, 
+                                    include_interp = include_interp)
 
   if (NROW(casts_to_evaluate) == 0) {
 
@@ -43,6 +47,8 @@ evaluate_casts <- function (main     = ".",
 
   out <- named_null_list(element_names = cast_ids)
 
+  messageq("Evaluating casts ...\n", quiet = quiet)
+
   for (i in 1:ncast_ids) {
 
     out[[i]] <- evaluate_cast(main     = main,
@@ -50,6 +56,47 @@ evaluate_casts <- function (main     = ".",
                               cast_id  = cast_ids[i],
                               quiet    = quiet,
                               verbose  = verbose)
+
+  }
+
+  messageq(" ... complete\n", quiet = quiet)
+
+  if (settings$save) {
+
+    out_flat <- data.frame(cast_id = names(out)[1], 
+                           out[[1]])
+
+    
+    if (ncast_ids > 1) {
+
+      for (i in 2:ncast_ids) { 
+
+        out_flat <- rbind(out_flat, 
+                          data.frame(cast_id = names(out)[i], 
+                                     out[[i]]))
+      
+      }
+
+    }
+    
+    evaluations_file <- file.path(main, settings$subs$forecasts, settings$files$cast_evaluations)
+
+    if (file.exists(evaluations_file)) {
+
+      if (settings$overwrite) {
+
+        messageq("cast evaluations file updated", quiet = quiet)
+        write.csv(out_flat, file = evaluations_file, row.names = FALSE)
+
+      }
+
+    } else {
+
+      messageq("cast evaluations file saved", quiet = quiet)
+      write.csv(out_flat, file = evaluations_file, row.names = FALSE)
+ 
+    }
+
 
   }
 
