@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.39.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.40.0</span>
       </span>
     </div>
 
@@ -84,11 +84,12 @@
   covariates_file <span class="op">=</span> <span class="st">"covariates.csv"</span>,
   historical_covariates_file <span class="op">=</span> <span class="st">"historical_covariates.csv"</span>,
   forecast_covariates_file <span class="op">=</span> <span class="st">"forecast_covariates.csv"</span>,
-  dataset_controls_file <span class="op">=</span> <span class="st">"data/dataset_controls.yaml"</span>,
-  model_controls_file <span class="op">=</span> <span class="st">"models/model_controls.yaml"</span>,
+  dataset_controls_file <span class="op">=</span> <span class="st">"dataset_controls.yaml"</span>,
+  model_controls_file <span class="op">=</span> <span class="st">"model_controls.yaml"</span>,
+  cast_evaluations_file <span class="op">=</span> <span class="st">"cast_evaluations.csv"</span>,
   metadata_file <span class="op">=</span> <span class="st">"metadata.yaml"</span>,
-  subdirectories <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>forecasts <span class="op">=</span> <span class="st">"casts"</span>, `model fits` <span class="op">=</span> <span class="st">"fits"</span>, `model scripts` <span class="op">=</span>
-    <span class="st">"models"</span>, resources <span class="op">=</span> <span class="st">"raw"</span>, data <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span>,
+  subdirectories <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>forecasts <span class="op">=</span> <span class="st">"casts"</span>, fits <span class="op">=</span> <span class="st">"fits"</span>, models <span class="op">=</span> <span class="st">"models"</span>,
+    resources <span class="op">=</span> <span class="st">"raw"</span>, data <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span>,
   PortalData <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"github"</span>, version <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>,
   portalPredictions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"github"</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,
   climate_forecast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"NMME"</span>, version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, data <span class="op">=</span>
@@ -112,6 +113,8 @@
 <dd><p><code>character</code> name of the file for saving the rodent dataset controls.</p></dd>
 <dt>model_controls_file</dt>
 <dd><p><code>character</code> name of the file for saving the model controls.</p></dd>
+<dt>cast_evaluations_file</dt>
+<dd><p><code>character</code> name of the file for saving the cast evaluations.</p></dd>
 <dt>metadata_file</dt>
 <dd><p><code>character</code> name of the file for saving the forecast metadata.</p></dd>
 <dt>subdirectories</dt>
@@ -130,7 +133,7 @@ See <code><a href="download-climate-forecasts.html">download_climate_forecasts</
 <dt>overwrite</dt>
 <dd><p><code>logical</code> indicator of whether or not the existing files should be updated (most users should leave as <code>TRUE</code>).</p></dd>
 <dt>unzip_pause</dt>
-<dd><p>Positive <code>integer</code> or integer <code>numeric</code> seconds for pausing during steps around unzipping that require time delayment.</p></dd>
+<dd><p>Positive <code>integer</code> or integer <code>numeric</code> seconds for pausing during steps around unzipping that require time delay.</p></dd>
 <dt>download_timeout</dt>
 <dd><p>Positive <code>integer</code> or integer <code>numeric</code> seconds for timeout on downloads. Temporarily overrides the <code>"timeout"</code> option in <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>.</p></dd>
 </dl></div>

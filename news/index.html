@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.39.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.40.0</span>
       </span>
     </div>
 
@@ -77,6 +77,32 @@
 <p>Version numbers follow <a href="https://semver.org/" class="external-link">Semantic Versioning</a>.</p>
 </div>
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.40.0" id="portalcasting-0400"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.40.0" class="external-link">portalcasting 0.40.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0400"></a></h2>
+<p><em>2022-05-12</em></p>
+<div class="section level4">
+<h4 id="argument--nomenclature-updates-0-40-0">Argument / nomenclature updates<a class="anchor" aria-label="anchor" href="#argument--nomenclature-updates-0-40-0"></a></h4>
+<ul><li>
+<code>dfl</code> arg to <code>x</code>
+</li></ul></div>
+<div class="section level4">
+<h4 id="read_rodents-default-settings-update-0-40-0">
+<code>read_rodents</code> default settings update<a class="anchor" aria-label="anchor" href="#read_rodents-default-settings-update-0-40-0"></a></h4>
+<ul><li>Now pulls all datasets using <code>prefab_datasets</code>
+</li></ul></div>
+<div class="section level4">
+<h4 id="subdirectory-internal-naming-changed-to-remove-spaces-0-40-0">Subdirectory internal naming changed to remove spaces<a class="anchor" aria-label="anchor" href="#subdirectory-internal-naming-changed-to-remove-spaces-0-40-0"></a></h4>
+<ul><li>
+<code>model fits</code> now back to <code>fits</code> and <code>model scripts</code> back to <code>models</code>
+</li></ul></div>
+<div class="section level4">
+<h4 id="cast_evaluations-file-now-saved-0-40-0">
+<code>cast_evaluations</code> file now saved<a class="anchor" aria-label="anchor" href="#cast_evaluations-file-now-saved-0-40-0"></a></h4>
+<ul><li>Flattened version of the generated list of evaluations</li>
+<li>Rather crude options of saving or not and overwriting the whole file or not based on settings</li>
+<li>No file saving occurs when a single cast is evaluated</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.39.0" id="portalcasting-0390"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.39.0" class="external-link">portalcasting 0.39.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0390"></a></h2>
 <p><em>2022-05-11</em></p>
 <div class="section level4">
@@ -100,7 +126,7 @@
 <ul><li>starting with what is already occurring, but formalizing as such as part of an <code>evaluate_casts</code> and <code>evaluate_cast</code> pair of functions</li>
 <li>
 <code>evaluate_casts</code> function now works automatically to evaluate all the casts using <code>evaluate_cast</code>, generating the error table as it does when being used, but nothing is saved out or updated.</li>
-<li>there is also no filter on evaluated casts by deafult, so the output from the forecasts without observations to evaluate is a table with a single row with NaN, and then they get wrapped up into the list.<ul><li>no errors, just noteworthy</li></ul></li>
+<li>there is also no filter on evaluated casts by default, so the output from the forecasts without observations to evaluate is a table with a single row with NaN, and then they get wrapped up into the list.<ul><li>no errors, just noteworthy</li></ul></li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -413,7 +439,7 @@
 <h4 id="change-in-format-for-saving-out-model_fits-and-model_casts-0-16-0">Change in format for saving out <code>model_fits</code> and <code>model_casts</code>
 <a class="anchor" aria-label="anchor" href="#change-in-format-for-saving-out-model_fits-and-model_casts-0-16-0"></a></h4>
 <ul><li>Saving <code>model_fits</code> and <code>model_casts</code> out as serialized <code>.json</code> files now instead of <code>.rData</code> files</li>
-<li>More reliable and generlized.</li>
+<li>More reliable and generalized.</li>
 <li>Also added functions for reading them in (<code>read_model_casts</code> and <code>read_model_fits</code>).</li>
 <li><a href="https://github.com/weecology/portalcasting/issues/164" class="external-link">addresses</a></li>
 </ul></div>
@@ -423,7 +449,7 @@
 <p><em>2019-12-18</em></p>
 <div class="section level4">
 <h4 id="using-github-version-of-portalr-0-15-2">Using github version of portalr<a class="anchor" aria-label="anchor" href="#using-github-version-of-portalr-0-15-2"></a></h4>
-<ul><li>Due to backwards incompatable changes in portalr and it not being on CRAN yet</li></ul></div>
+<ul><li>Due to backwards incompatible changes in portalr and it not being on CRAN yet</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.15.1" id="portalcasting-0151"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.15.1" class="external-link">portalcasting 0.15.1</a><a class="anchor" aria-label="anchor" href="#portalcasting-0151"></a></h2>

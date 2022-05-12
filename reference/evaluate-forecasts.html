@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.39.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.40.0</span>
       </span>
     </div>
 
@@ -83,7 +83,8 @@
   settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
   cast_ids <span class="op">=</span> <span class="cn">NULL</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
+  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
+  include_interp <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 
 <span class="fu">evaluate_cast</span><span class="op">(</span>
@@ -105,6 +106,8 @@
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information (and thus just the tidy messages).</p></dd>
+<dt>include_interp</dt>
+<dd><p><code>logical</code> indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.</p></dd>
 <dt>cast_id, cast_ids</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) value(s) representing the casts of interest for evaluating, as indexed within the directory in the <code>casts</code> sub folder. See the casts metadata file (<code>casts_metadata.csv</code>) for summary information. <br><code>cast_id</code> can only be a single value, whereas <code>cast_ids</code> can be multiple.</p></dd>
 </dl></div>
