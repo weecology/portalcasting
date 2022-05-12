@@ -338,7 +338,7 @@ read_model_fit <- function (main     = ".",
   }
 
   lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath <- file.path(main, settings$subs$`model fits`, lpath)
+  cpath <- file.path(main, settings$subs$fits, lpath)
 
   if (!file.exists(cpath)) {
 
@@ -589,7 +589,7 @@ save_cast_output <- function (cast     = NULL,
   if (!is.null(cast$model_fits)) {
 
     model_fits_filename <- paste0("cast_id_", next_cast_id, "_model_fits.json") 
-    model_fits_path     <- file.path(main, settings$subs$`model fits`, model_fits_filename)
+    model_fits_path     <- file.path(main, settings$subs$fits, model_fits_filename)
     model_fits          <- cast$model_fits
     model_fits          <- serializeJSON(model_fits)
 

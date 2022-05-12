@@ -11,6 +11,14 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### `read_rodents` default settings update
 * Now pulls all datasets using `prefab_datasets`
 
+### Subdirectory internal naming changed to remove spaces
+* `model fits` now back to `fits` and `model scripts` back to `models`
+
+### `cast_evaluations` file now saved
+* Flattened version of the generated list of evaluations
+* Rather crude options of saving or not and overwriting the whole file or not based on settings 
+* No file saving occurs when a single cast is evaluated
+
 # [portalcasting 0.39.0](https://github.com/weecology/portalcasting/releases/tag/v0.39.0)
 *2022-05-11*
 

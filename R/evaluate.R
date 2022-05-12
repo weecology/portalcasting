@@ -19,16 +19,18 @@
 #'
 #' @export
 #'
-evaluate_casts <- function (main     = ".", 
-                            settings = directory_settings(), 
-                            cast_ids = NULL,
-                            quiet    = FALSE, 
-                            verbose  = FALSE) {
+evaluate_casts <- function (main           = ".", 
+                            settings       = directory_settings(), 
+                            cast_ids       = NULL,
+                            quiet          = FALSE, 
+                            verbose        = FALSE, 
+                            include_interp = TRUE) {
 
 
-  casts_to_evaluate <- select_casts(main     = main, 
-                                    settings = settings,
-                                    cast_ids = cast_ids)
+  casts_to_evaluate <- select_casts(main           = main, 
+                                    settings       = settings,
+                                    cast_ids       = cast_ids, 
+                                    include_interp = include_interp)
 
   if (NROW(casts_to_evaluate) == 0) {
 
@@ -54,19 +56,44 @@ evaluate_casts <- function (main     = ".",
   }
 
 
-#
-# working here to save the file
-#
-#
-#  if (settings$save) {
+  if (settings$save) {
 
-#    evaluations_file <- settings$files$cast_evaluations
+    out_flat <- data.frame(cast_id = names(out)[1], 
+                           out[[1]])
 
- #   if (file.exists())
+    
+    if (ncast_ids > 1) {
+
+      for (i in 2:ncast_ids) { 
+
+        out_flat <- rbind(out_flat, 
+                          data.frame(cast_id = names(out)[i], 
+                                     out[[i]]))
+      
+      }
+
+    }
+    
+    evaluations_file <- file.path(main, settings$subs$forecasts, settings$files$cast_evaluations)
+
+    if (file.exists(evaluations_file)) {
+
+      if (settings$overwrite) {
+
+        messageq("cast evaluations file updated", quiet = quiet)
+        write.csv(out_flat, file = evaluations_file, row.names = FALSE)
+
+      }
+
+    } else {
+
+      messageq("cast evaluations file saved", quiet = quiet)
+      write.csv(out_flat, file = evaluations_file, row.names = FALSE)
+ 
+    }
 
 
-  #}
-
+  }
 
   out
 

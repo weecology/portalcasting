@@ -11,7 +11,8 @@ evaluate_casts(
   settings = directory_settings(),
   cast_ids = NULL,
   quiet = FALSE,
-  verbose = FALSE
+  verbose = FALSE,
+  include_interp = TRUE
 )
 
 evaluate_cast(

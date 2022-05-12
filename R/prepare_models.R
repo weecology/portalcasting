@@ -130,7 +130,7 @@ write_model <- function (main     = ".",
   }
 
   model_file <- paste0(model, ".R")
-  mod_path   <- file.path(main, settings$subs$`model scripts`, model_file)
+  mod_path   <- file.path(main, settings$subs$models, model_file)
 
 
   mod_template <- model_template(main     = main, 

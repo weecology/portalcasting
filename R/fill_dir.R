@@ -260,7 +260,7 @@ fill_fits <- function (main     = ".",
   messageq(paste0(" Located ", length(files), " fit files ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subs$`model fits`), 
+                      to        = file.path(main, settings$subs$fits), 
                       recursive = TRUE)
 
   messageq(paste(ifelse(sum(copied) > 0, 

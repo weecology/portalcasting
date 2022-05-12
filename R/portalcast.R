@@ -191,7 +191,7 @@ models_to_cast <- function (main     = ".",
                             models   = prefab_models(),
                             settings = directory_settings()) {
   
-  models_path <- file.path(main, settings$subs$`model scripts`)
+  models_path <- file.path(main, settings$subs$models)
   file_names  <- paste0(models, ".R")
   torun       <- list.files(models_path) %in% file_names
   torun_paths <- list.files(models_path, full.names = TRUE)[torun] 
