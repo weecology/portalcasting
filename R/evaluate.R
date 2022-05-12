@@ -11,6 +11,8 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
+#' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
+#'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
 #'
 #' @return A \code{data.frame}, or \code{list} of \code{data.frame}s.
@@ -45,6 +47,8 @@ evaluate_casts <- function (main           = ".",
 
   out <- named_null_list(element_names = cast_ids)
 
+  messageq("Evaluating casts ...\n", quiet = quiet)
+
   for (i in 1:ncast_ids) {
 
     out[[i]] <- evaluate_cast(main     = main,
@@ -55,6 +59,7 @@ evaluate_casts <- function (main           = ".",
 
   }
 
+  messageq(" ... complete\n", quiet = quiet)
 
   if (settings$save) {
 

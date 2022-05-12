@@ -6,7 +6,7 @@ devtools::load_all()
 main <- "~/portalcasting"
 
 
-# setup_production(main = main)
+setup_production(main = main)
 
 
 

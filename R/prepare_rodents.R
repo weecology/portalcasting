@@ -21,7 +21,7 @@
 read_dataset_controls <- function (main     = ".",
                                    settings = directory_settings()) {
 
-  read_yaml(file.path(main, settings$files$dataset_controls))
+  read_yaml(file.path(main, settings$subs$data, settings$files$dataset_controls))
 
 }
 
