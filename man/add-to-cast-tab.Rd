@@ -50,5 +50,5 @@ Add values to a cast's cast tab. If necessary components are missing (such as no
  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating if the observation was within the prediction interval.
 }
 \details{
-If an interpolated data set is used to fit a model, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
+If a model interpolated a data set, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
 }

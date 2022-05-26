@@ -58,14 +58,7 @@ test_that(desc = "rodents_species creates a vector of IDs as needed", {
 test_that(desc = "prefab_datasets names the proper sets", {
 
   pds1 <- prefab_datasets()
-  pds2 <- prefab_datasets(interpolate = TRUE)
-  pds3 <- prefab_datasets(interpolate = FALSE)
 
   expect_is(pds1, "character")
-  expect_is(pds2, "character")
-  expect_is(pds3, "character")
-
-  expect_equal(length(pds2) < length(pds1), TRUE)
-  expect_equal(length(pds3) < length(pds1), TRUE)
-
+  
 })

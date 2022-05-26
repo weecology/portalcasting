@@ -2,6 +2,14 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.41.0
+*In Progress*
+
+
+### Data interpolation moved from "dataset" to "within model"
+* Previously, datasets included, for example `all` and `all_interp`. Now, only `all` exists and models interpolate as needed.
+
+
 # [portalcasting 0.40.0](https://github.com/weecology/portalcasting/releases/tag/v0.40.0)
 *2022-05-12*
 

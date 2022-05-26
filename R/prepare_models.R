@@ -124,8 +124,8 @@ write_model <- function (main     = ".",
 
   if (is.null(datasets)) {
 
-    messageq("   ~datasets = NULL for ", model, "\n    **assuming datasets = prefab_datasets(interpolate = FALSE)**", quiet = quiet)
-    datasets <- prefab_datasets(interpolate = FALSE)
+    messageq("   ~datasets = NULL for ", model, quiet = quiet)
+    datasets <- prefab_datasets()
 
   }
 
@@ -135,7 +135,7 @@ write_model <- function (main     = ".",
 
   mod_template <- model_template(main     = main, 
                                  model    = model, 
-                                 datasets = prefab_datasets(interpolate = FALSE),
+                                 datasets = prefab_datasets(),
                                  settings = directory_settings(), 
                                  quiet    = FALSE, 
                                  verbose  = FALSE)

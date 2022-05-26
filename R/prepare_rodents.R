@@ -146,8 +146,6 @@ prep_rodents <- function (main     = ".",
 #'
 #' @param total \code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included. 
 #'
-#' @param interpolate \code{logical} value indicating if the data should be interpolated to fill in \code{NA} values (using \code{\link[forecast]{na.interp}}). 
-#'
 #' @param clean \code{logical} indicator of if only the rodent data that passed QA/QC (\code{clean = TRUE}) or if all data (\code{clean = FALSE}) should be loaded.
 #'
 #' @param type \code{character} value of the rodent data set type, according to pre-existing definitions. An alternative toggle to \code{species}. \cr \cr
@@ -217,7 +215,6 @@ prep_dataset <- function(name        = "all",
                          effort      = TRUE,
                          species     = base_species(),
                          total       = TRUE,
-                         interpolate = FALSE,
                          save        = TRUE,
                          overwrite   = TRUE,
                          quiet       = FALSE,
@@ -287,22 +284,6 @@ prep_dataset <- function(name        = "all",
   out_ord                         <- order(out[ , "newmoonnumber"])
   out                             <- out[out_ord, ]
 
-  if (interpolate) {
-
-    for (i in 1:nspecies) {
-
-      col_in         <- which(colnames(out) == species[i])
-      out[ , col_in] <- round(na.interp(out[ , col_in]))
-
-    }
-
-    if (total) {
-
-      out$total <- round(na.interp(out$total))
-
-    }
-
-  }
 
   write_data(x       = out, 
              main      = main, 
