@@ -161,6 +161,7 @@ add_obs_to_cast_tab <- function (main     = ".",
   # patch
 
   cast_tab$obs   <- NA
+  cast_dataset   <- cast_tab$dataset
   ucast_dataset  <- unique(cast_dataset)
   ncast_datasets <- length(ucast_dataset)
 

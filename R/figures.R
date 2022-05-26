@@ -1120,6 +1120,8 @@ plot_cast_ts <- function (main        = ".",
   # pull the nice model name from the model controls yaml file based on settings list
 
   model_name   <- ifnull(model, casts_meta$model)
+  dataset_name <- dataset
+
 
   title        <- paste0(model_name, ", ", dataset_name)
 
