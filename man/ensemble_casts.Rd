@@ -14,7 +14,6 @@ ensemble_casts(
   end_moon = NULL,
   models = NULL,
   dataset = NULL,
-  include_interp = TRUE,
   species = NULL
 )
 }
@@ -36,8 +35,6 @@ ensemble_casts(
 \item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.}
-
-\item{include_interp}{\code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.}
 
 \item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.}
 }

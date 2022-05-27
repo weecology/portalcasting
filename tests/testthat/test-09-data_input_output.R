@@ -18,7 +18,7 @@ test_that(desc = "write_data works if overwriting or not", {
 
     skip_on_cran() 
 
-  expect_silent(controls <- read_data(main, "rodents", "controls"))
+  expect_silent(controls <- read_data(main, "rodents_table", "controls"))
   expect_message(write_data(controls, main, save = TRUE, 
                             filename = "rodents_controls.csv",
                             overwrite = FALSE))

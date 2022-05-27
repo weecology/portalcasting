@@ -41,10 +41,10 @@ prefab_models <- function( ) {
 #' @description Functions used for fitting the prefab models. For detailed descriptions of the models, see the \href{https://bit.ly/2xP9jKI}{model vignette}. \cr \cr
 #'  \code{AutoArima} fits a flexible auto-regressive integrated moving average model using \code{\link[forecast]{auto.arima}}. \cr \cr
 #'  \code{NaiveArima} fits a baseline random walk with no drift model as an ARIMA(0,1,0) using \code{\link[forecast]{Arima}}. \cr \cr
-#'  \code{ESSS} fits a flexible exponential smoothing state space model with the possibility of multiplicative trends using \code{\link[forecast]{ets}}. \cr \cr
-#'  \code{nbGARCH} fits a generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}. \cr \cr
-#'  \code{nbsGARCH} fits a seasonal generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}. \cr \cr
-#'  \code{pevGARCH} fits a set of generalized autoregressive conditional heteroscedasticity models with Poisson response variables and  environmental covariates (max temp, mean temp, min temp, precipitation, and NDVI) using \code{\link[tscount]{tsglm}}. \cr \cr
+#'  \code{ESSS} fits a flexible exponential smoothing state space model with the possibility of multiplicative trends using \code{\link[forecast]{ets}}; requires interpolation of data. \cr \cr
+#'  \code{nbGARCH} fits a generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}; requires interpolation of data. \cr \cr
+#'  \code{nbsGARCH} fits a seasonal generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}; requires interpolation of data. \cr \cr
+#'  \code{pevGARCH} fits a set of generalized autoregressive conditional heteroscedasticity models with Poisson response variables and  environmental covariates (max temp, mean temp, min temp, precipitation, and NDVI) using \code{\link[tscount]{tsglm}}; requires interpolation of data. \cr \cr
 #  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" using \code{\link[rEDM]{simplex}}. \cr \cr
 #  \code{GPEDM} fits an EDM model using Gaussian Processes for function approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. \cr \cr
@@ -291,7 +291,7 @@ NaiveArima <- function (main     = ".",
 #'
 
 ESSS <- function (main     = ".", 
-                  dataset  = "all_interp",
+                  dataset  = "all",
                   settings = directory_settings(), 
                   quiet    = FALSE, 
                   verbose  = FALSE) {
@@ -333,7 +333,7 @@ ESSS <- function (main     = ".",
 
     messageq("   -", ss, quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abund_s <- round(na.interp(rodents_table[ , s]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -382,7 +382,7 @@ ESSS <- function (main     = ".",
 #'
 
 nbGARCH <- function (main     = ".", 
-                     dataset  = "all_interp",
+                     dataset  = "all",
                      settings = directory_settings(), 
                      quiet    = FALSE, 
                      verbose  = FALSE) {
@@ -424,7 +424,7 @@ nbGARCH <- function (main     = ".",
 
     messageq("   -", ss, quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abund_s <- round(na.interp(rodents_table[ , s]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -486,7 +486,7 @@ nbGARCH <- function (main     = ".",
 #'
 
 nbsGARCH <- function (main     = ".", 
-                      dataset  = "all_interp",
+                      dataset  = "all",
                       settings = directory_settings(), 
                       quiet    = FALSE, 
                       verbose  = FALSE) {
@@ -539,7 +539,7 @@ nbsGARCH <- function (main     = ".",
 
     messageq("   -", ss, quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abund_s <- round(na.interp(rodents_table[ , s]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -612,7 +612,7 @@ nbsGARCH <- function (main     = ".",
 #' @export
 #'
 pevGARCH <- function (main     = ".", 
-                      dataset  = "all_interp",
+                      dataset  = "all",
                       lag      = 6,
                       settings = directory_settings(), 
                       quiet    = FALSE, 
@@ -682,7 +682,7 @@ pevGARCH <- function (main     = ".",
 
     messageq(paste0("   -", ss), quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abund_s <- round(na.interp(rodents_table[ , s]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()

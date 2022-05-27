@@ -21,8 +21,6 @@
 #'
 #' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.
 #'
-#' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
-#'
 #' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
@@ -40,7 +38,6 @@ ensemble_casts <- function (main           = ".",
                             end_moon       = NULL, 
                             models         = NULL, 
                             dataset        = NULL, 
-                            include_interp = TRUE,
                             species        = NULL) {
 
   if (is.null(cast_tab)) {
@@ -50,8 +47,7 @@ ensemble_casts <- function (main           = ".",
                                  cast_ids       = cast_ids, 
                                  models         = models, 
                                  end_moons      = end_moon, 
-                                 datasets       = dataset, 
-                                 include_interp = include_interp)
+                                 datasets       = dataset)
 
     if (NROW(cast_choices) == 0) {
 
@@ -79,7 +75,6 @@ ensemble_casts <- function (main           = ".",
 
   }
 
-  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, unique(cast_tab$model))
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])

@@ -16,14 +16,15 @@ AutoArima:
 ESSS:
   metadata:
     name: ESSS
-    descriptor: classic model, all species, focal species
+    descriptor: classic model, all species, focal species, requires interpolation
   fun: ESSS
   args: ~
+  interpolate: yes
   datasets:
-  - all_interp
-  - controls_interp
-  - exclosures_interp
-  - dm_controls_interp
+  - all
+  - controls
+  - exclosures
+  - dm_controls
   response: 
     link: normal
     type: distribution
@@ -46,14 +47,15 @@ NaiveArima:
 nbGARCH:
   metadata:
     name: nbGARCH
-    descriptor: classic model, all species, focal species
+    descriptor: classic model, all species, focal species, requires interpolation
   fun: nbGARCH
   args: ~
+  interpolate: yes
   datasets:
-  - all_interp
-  - controls_interp
-  - exclosures_interp
-  - dm_controls_interp
+  - all
+  - controls
+  - exclosures
+  - dm_controls
   response: 
     link: negative_binomial
     type: distribution
@@ -61,14 +63,15 @@ nbGARCH:
 nbsGARCH:
   metadata:
     name: nbsGARCH
-    descriptor: classic model, all species, focal species
+    descriptor: classic model, all species, focal species, requires interpolation
   fun: nbsGARCH
   args: ~
+  interpolate: yes
   datasets:
-  - all_interp
-  - controls_interp
-  - exclosures_interp
-  - dm_controls_interp
+  - all
+  - controls
+  - exclosures
+  - dm_controls
   response: 
     link: negative_binomial
     type: distribution
@@ -76,13 +79,14 @@ nbsGARCH:
 pevGARCH:
   metadata:
     name: pevGARCH
-    descriptor: classic model, all species, focal species
+    descriptor: classic model, all species, focal species, requires interpolation
   fun: pevGARCH
   datasets:
-  - all_interp
-  - controls_interp
-  - exclosures_interp
-  - dm_controls_interp
+  - all
+  - controls
+  - exclosures
+  - dm_controls
+  interpolate: yes
   args:
     lag: 6.0
   response: 

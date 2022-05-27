@@ -34,30 +34,7 @@ main <- "./testing"
                                  "data", "rodents_exclosures.csv"), 
             row.names = FALSE)
 
-  all <- read_rodents_table(main = main, "all_interp")
-  rest_cols <- which(colnames(all) %in% keepers)
-  all2 <- all[, rest_cols]
-  write.csv(all2, file.path(main, "data", "rodents_all_interp.csv"), 
-             row.names = FALSE)
 
-  all2$BA <- 0
-  all2$DO <- c(rep(0, nrow(all2) - 1), 1)
-  write.csv(all2, file.path(main, "data", "rodents_all_interp2.csv"), 
-             row.names = FALSE)
-
-  controls <- read_rodents_table(main = main, "controls_interp")
-  rest_cols <- which(colnames(controls) %in% keepers)
-  controls2 <- controls[, rest_cols]
-  write.csv(controls2, file.path(main, 
-                                 "data", "rodents_controls_interp.csv"), 
-            row.names = FALSE)
-  
-  controls <- read_rodents_table(main = main, "exclosures_interp")
-  rest_cols <- which(colnames(controls) %in% keepers)
-  controls3 <- controls[, rest_cols]
-  write.csv(controls3, file.path(main, 
-                                 "data", "rodents_exclosures_interp.csv"), 
-            row.names = FALSE)
   
 
 
@@ -107,11 +84,11 @@ test_that(desc = "ESSS model", {
     skip_on_cran() 
 
   expect_message(f_c <- ESSS(main = main,  
-                             dataset = "Controls_interp", quiet = FALSE))
+                             dataset = "Controls", quiet = FALSE))
   expect_message(f_a <- ESSS(main = main, 
-                             dataset = "All_interp", quiet = FALSE))
+                             dataset = "All", quiet = FALSE))
   expect_message(f_e <- ESSS(main = main, 
-                             dataset = "Exclosures_interp", quiet = FALSE))
+                             dataset = "Exclosures", quiet = FALSE))
 
   expect_is(f_a, "list")
   expect_is(f_c, "list")
@@ -128,11 +105,11 @@ test_that(desc = "nbGARCH model", {
     skip_on_cran() 
 
   expect_message(f_c <- nbGARCH(main = main,  
-                                dataset = "Controls_interp", quiet = FALSE))
+                                dataset = "Controls", quiet = FALSE))
   expect_message(f_a <- nbGARCH(main = main, 
-                                dataset = "All_interp", quiet = FALSE))
+                                dataset = "All", quiet = FALSE))
   expect_message(f_e <- nbGARCH(main = main, 
-                                dataset = "Exclosures_interp", 
+                                dataset = "Exclosures", 
                                 quiet = FALSE))
 
   expect_is(f_a, "list")
@@ -148,11 +125,11 @@ test_that(desc = "nbsGARCH model", {
     skip_on_cran() 
 
   expect_message(f_c <- nbsGARCH(main = main,  
-                                 dataset = "Controls_interp", quiet = FALSE))
+                                 dataset = "Controls", quiet = FALSE))
   expect_message(f_a <- nbsGARCH(main = main, 
-                                 dataset = "All_interp", quiet = FALSE))
+                                 dataset = "All", quiet = FALSE))
   expect_message(f_e <- nbsGARCH(main = main, 
-                                 dataset = "Exclosures_interp", 
+                                 dataset = "Exclosures", 
                                  quiet = FALSE))
   
   expect_is(f_a, "list")
@@ -170,11 +147,11 @@ test_that(desc = "pevGARCH model", {
 
 
   expect_message(f_a <- pevGARCH(main = main, lag = 6, 
-                                  dataset = "All_interp", quiet = FALSE))
+                                  dataset = "All", quiet = FALSE))
   expect_message(f_c <- pevGARCH(main = main, lag = 6, 
-                              dataset = "Controls_interp", quiet = FALSE))
+                              dataset = "Controls", quiet = FALSE))
   expect_message(f_e <- pevGARCH(main = main, lag = 6, 
-                                 dataset = "Exclosures_interp",  
+                                 dataset = "Exclosures",  
                                  quiet = FALSE))
 
   expect_is(f_a, "list")
