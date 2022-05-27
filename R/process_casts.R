@@ -248,6 +248,10 @@ read_cast_tab <- function (main     = ".",
   colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "dataset"
   # patch
 
+  # patch
+  out$dataset <- gsub("_interp", "", out$dataset)
+  # patch
+
   na_conformer(out)
 
 }
