@@ -7,7 +7,8 @@ test_that(desc = "plot_cast_ts", {
   # download is held back on cran
 
     skip_on_cran() 
-
+  fill_data(main = main)
+  fill_models(main = main)
   portalcast(main = main, models = c("AutoArima", "NaiveArima"))
   expect_silent(plot_cast_ts(main = main, species = "DM", 
                              model = "AutoArima"))
