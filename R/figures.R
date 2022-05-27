@@ -90,6 +90,10 @@ plot_casts_cov_RMSE <- function (main           = ".",
   colnames(cast_tab)[colnames(cast_tab) %in% c("data_set", "dataset")] <- "dataset"
   # patch
 
+  # patch
+  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
+  # patch
+
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, unique(cast_tab$model))
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
@@ -337,6 +341,10 @@ plot_casts_err_lead <- function (main           = ".",
 
   # patch
   colnames(cast_tab)[colnames(cast_tab) %in% c("data_set", "dataset")] <- "dataset"
+  # patch
+
+  # patch
+  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
   # patch
 
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
@@ -753,7 +761,7 @@ plot_cast_point <- function (main         = ".",
 
     obs           <- read_rodents_table(main           = main, 
                                         settings       = settings,
-                                        dataset = casts_meta$dataset)
+                                        dataset = gsub("_interp", "", casts_meta$dataset))
     colnames(obs) <- gsub("\\.", "", colnames(obs))
     sp_col        <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species       <- ifnull(species, colnames(obs)[sp_col])
@@ -770,7 +778,7 @@ plot_cast_point <- function (main         = ".",
 
   }
 
-  dataset <- casts_meta$dataset
+  dataset <- gsub("_interp", "", casts_meta$dataset)
 
   if (!is.null(model) && tolower(model) == "ensemble") {
 
@@ -937,7 +945,7 @@ plot_cast_ts <- function (main        = ".",
                           dataset     = NULL, 
                           model       = NULL, 
                           end_moon    = NULL, 
-                          species     = "total", 
+                          species     = NULL, 
                           start_moon  = 217, 
                           quiet       = FALSE) {
 
@@ -973,7 +981,7 @@ plot_cast_ts <- function (main        = ".",
 
   obs           <- read_rodents_table(main     = main, 
                                       settings = settings, 
-                                      dataset  = casts_meta$dataset)
+                                        dataset = gsub("_interp", "", casts_meta$dataset))
   colnames(obs) <- gsub("\\.", "", colnames(obs))
 
   sp_col  <- is_sp_col(obs, nadot = TRUE, total = TRUE)
@@ -986,7 +994,7 @@ plot_cast_ts <- function (main        = ".",
   }
 
   obs     <- obs[ , c("newmoonnumber", species)]
-  dataset <- casts_meta$dataset
+  dataset <- gsub("_interp", "", casts_meta$dataset)
 
   if (!is.null(model) && tolower(model) == "ensemble") {
 

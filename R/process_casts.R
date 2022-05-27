@@ -161,7 +161,7 @@ add_obs_to_cast_tab <- function (main     = ".",
   # patch
 
   cast_tab$obs   <- NA
-  cast_dataset   <- cast_tab$dataset
+  cast_dataset   <- gsub("_interp", "", cast_tab$dataset)
   ucast_dataset  <- unique(cast_dataset)
   ncast_datasets <- length(ucast_dataset)
 
@@ -456,10 +456,10 @@ select_casts <- function (main           = ".",
   models      <- ifnull(models, umodels)
   match_model <- casts_metadata$model %in% models
   
-  udatasets <- unique(casts_metadata$dataset[casts_metadata$QAQC])
+  udatasets <- gsub("_interp", "", unique(casts_metadata$dataset[casts_metadata$QAQC]))
   datasets  <- ifnull(datasets, udatasets)
 
-  match_dataset <- casts_metadata$dataset %in% datasets
+  match_dataset <- gsub("_interp", "", casts_metadata$dataset) %in% datasets
   
   QAQC <- casts_metadata$QAQC
 
@@ -545,7 +545,7 @@ save_cast_output <- function (cast     = NULL,
                               end_moon              = cast$metadata$time$end_moon,
                               lead_time             = cast$metadata$time$lead_time,
                               model                 = cast$metadata$models,
-                              dataset               = cast$metadata$datasets,
+                              dataset               = gsub("_interp", "", cast$metadata$datasets),
                               portalcasting_version = pc_version,
                               QAQC                  = TRUE,
                               notes                 = NA)
