@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.40.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.41.0</span>
       </span>
     </div>
 
@@ -87,7 +87,6 @@
   models <span class="op">=</span> <span class="cn">NULL</span>,
   ensemble <span class="op">=</span> <span class="cn">TRUE</span>,
   dataset <span class="op">=</span> <span class="cn">NULL</span>,
-  include_interp <span class="op">=</span> <span class="cn">TRUE</span>,
   species <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -110,8 +109,6 @@
 <dd><p><code>logical</code> indicator of if an ensemble should be included. Presently only the unweighted average. See <code><a href="ensemble_casts.html">ensemble_casts</a></code>.</p></dd>
 <dt>dataset</dt>
 <dd><p><code>character</code> value of the rodent data set to include Default value is <code>NULL</code>, which equates to no selection with respect to <code>dataset</code>.</p></dd>
-<dt>include_interp</dt>
-<dd><p><code>logical</code> indicator of if the models fit using interpolated data should be included with the models that did not.</p></dd>
 <dt>species</dt>
 <dd><p><code>character</code> vector of the species code(s) or <code>"total"</code> for the total across species) to be plotted <code>NULL</code> translates to the species defined by <code>base_species</code>.</p></dd>
 </dl></div>

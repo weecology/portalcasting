@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.40.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.41.0</span>
       </span>
     </div>
 
@@ -104,7 +104,6 @@
   effort <span class="op">=</span> <span class="cn">TRUE</span>,
   species <span class="op">=</span> <span class="fu"><a href="rodent_species.html">base_species</a></span><span class="op">(</span><span class="op">)</span>,
   total <span class="op">=</span> <span class="cn">TRUE</span>,
-  interpolate <span class="op">=</span> <span class="cn">FALSE</span>,
   save <span class="op">=</span> <span class="cn">TRUE</span>,
   overwrite <span class="op">=</span> <span class="cn">TRUE</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -158,8 +157,6 @@ The default <code>time = "newmoon"</code> produces an equispaced observation tim
 <dd><p><code>character</code>-valued vector of species names to include.</p></dd>
 <dt>total</dt>
 <dd><p><code>logical</code> value indicating if a total (sum across species should be added or not. Only available if more than one species is included.</p></dd>
-<dt>interpolate</dt>
-<dd><p><code>logical</code> value indicating if the data should be interpolated to fill in <code>NA</code> values (using <code><a href="https://pkg.robjhyndman.com/forecast/reference/na.interp.html" class="external-link">na.interp</a></code>).</p></dd>
 <dt>save</dt>
 <dd><p><code>logical</code> indicator controlling if the output should be saved out.</p></dd>
 <dt>overwrite</dt>
