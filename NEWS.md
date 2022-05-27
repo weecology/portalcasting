@@ -2,8 +2,8 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.41.0
-*In Progress*
+# [portalcasting 0.41.0](https://github.com/weecology/portalcasting/releases/tag/v0.41.0)
+*2022-05-26*
 
 
 ### Data interpolation moved from "dataset" to "within model"
