@@ -1,15 +1,17 @@
-model_shell <- function (main     = ".", 
-                         model = NULL,
-                       dataset  = "all",
-                       settings = directory_settings(), 
-                       quiet    = FALSE, 
-                       verbose  = FALSE) {
+# working here and with the updated model controls yaml to streamline model construction
+
+classic_model_core <- function (main     = ".", 
+                                model = NULL,
+                                dataset  = "all",
+                                settings = directory_settings(), 
+                                quiet    = FALSE, 
+                                verbose  = FALSE) {
 
   return_if_null(model)
 
-  controls <- model_controls(main = main, 
-                 models = model,
-                 settings = settings)
+  controls <- model_controls(main     = main, 
+                             models   = model,
+                             settings = settings)
 
   dataset <- tolower(dataset)
 
@@ -23,9 +25,8 @@ model_shell <- function (main     = ".",
                                       nadot       = TRUE)
   nspecies      <- length(species)
 
-  metadata <- read_metadata(main     = main,
-                            settings = settings)
-
+  metadata         <- read_metadata(main     = main,
+                                    settings = settings)
   start_moon       <- metadata$time$start_moon
   end_moon         <- metadata$time$end_moon
 
@@ -54,16 +55,44 @@ model_shell <- function (main     = ".",
       next()
     }
 
-    mods[[i]]  <- auto.arima(abund_s)
-    casts[[i]] <- forecast(mods[[i]], h = nmoons, level = confidence_level)
-    casts[[i]] <- data.frame(casts[[i]], moon = cast_moons)
+    if (is.list(controls$args)) {
+
+      args <- controls$args
+
+    } else {
+
+      args <- list(controls$args)
+
+    }
+
+    if (controls$interpolate) {
+
+      args <- update_list(args, 
+                          y = round(na.interp(abund_s)))
+
+    }  else {
+
+      args <- update_list(args, 
+                          y = abund_s)
+
+    }
+
+    mods[[i]]  <- do.call(what = controls$fun, 
+                          args = args)
+
+    casts[[i]] <- forecast(object = mods[[i]], 
+                           h      = nmoons, 
+                           level  = confidence_level)
+
+    casts[[i]] <- data.frame(casts[[i]], 
+                             moon = cast_moons)
 
     cast_tab_s <- data.frame(cast_date        = metadata$time$cast_date, 
                              cast_month       = metadata$time$rodent_cast_months,
                              cast_year        = metadata$time$rodent_cast_years, 
                              moon             = metadata$time$rodent_cast_moons,
                              currency         = dataset_controls$args$output,
-                             model            = "AutoArima", 
+                             model            = controls$metadata$name, 
                              dataset          = dataset, 
                              species          = ss, 
                              cast_group       = metadata$cast_group,
@@ -74,11 +103,13 @@ model_shell <- function (main     = ".",
                              start_moon       = metadata$time$start_moon,
                              end_moon         = metadata$time$end_moon)
 
-    cast_tab <- rbind(cast_tab, cast_tab_s)
+    cast_tab <- rbind(cast_tab, 
+                      cast_tab_s)
+
   }
 
   metadata <- update_list(metadata, 
-                          models           = "AutoArima",
+                          models           = controls$metadata$name,
                           datasets         = dataset,
                           dataset_controls = dataset_controls)
 
