@@ -2,6 +2,7 @@ all:
   metadata:
     name: all
     descriptor: classic dataset, all plots combined
+    text: Twenty focal species and total abundance summed across all plots at the newmoon.
   fun: prep_dataset
   args:
     name: all
@@ -46,6 +47,7 @@ controls:
   metadata:
     name: controls
     descriptor: classic dataset, control plots combined
+    text: Twenty focal species and total abundance summed across control plots at the newmoon.
   fun: prep_dataset
   args:
     name: controls
@@ -90,6 +92,7 @@ exclosures:
   metadata:
     name: exclosures
     descriptor: classic dataset, exclosure plots combined
+    text: Twenty focal species and total abundance summed across exclosure plots at the newmoon.
   fun: prep_dataset
   args:
     name: exclosures
@@ -134,6 +137,7 @@ dm_controls:
   metadata:
     name: dm_controls
     descriptor: DM only, control plots combined
+    text: Dipodomys merriami only summed across control plots at the newmoon.
   fun: prep_dataset
   args:
     name: dm_controls

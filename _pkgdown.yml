@@ -19,7 +19,7 @@ navbar:
        - text: "portalcasting codebase"
          href: articles/codebase.html
     reference: 
-      text: "Functions"
+      text: "Reference"
       href: reference/index.html
     news: 
       text: "News"

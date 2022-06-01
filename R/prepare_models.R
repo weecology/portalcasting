@@ -34,8 +34,19 @@ model_controls <- function (main     = ".",
                             models   = prefab_models(),
                             settings = directory_settings()) {
 
-  read_model_controls(main     = main, 
-                      settings = settings)[models]
+  nmodels <- length(models)
+
+  if (nmodels == 1) {
+
+    read_model_controls(main     = main, 
+                        settings = settings)[[models]]
+
+  } else if (nmodels > 1) {
+
+    read_model_controls(main     = main, 
+                        settings = settings)[models]
+
+  }
 
 }
 

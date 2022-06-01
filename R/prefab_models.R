@@ -178,9 +178,10 @@ AutoArima <- function (main     = ".",
     cast_tab <- rbind(cast_tab, cast_tab_s)
   }
 
-  metadata <- update_list(metadata, models           = "AutoArima",
-                                    datasets         = dataset,
-                                    dataset_controls = dataset_controls)
+  metadata <- update_list(metadata, 
+                          models           = "AutoArima",
+                          datasets         = dataset,
+                          dataset_controls = dataset_controls)
 
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
