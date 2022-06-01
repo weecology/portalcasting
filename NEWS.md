@@ -2,6 +2,14 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.43.0](https://github.com/weecology/portalcasting/releases/tag/v0.43.0)
+*2022-05-31*
+
+
+### Trim text in model vignette
+* Vignette now pulls text from the the model list, and loops the model list, rather than have the raw text in the markdown doc.
+* This locates the description in a place that is accessible to other content generation (e.g., the portal forecast website)
+
 # [portalcasting 0.42.0](https://github.com/weecology/portalcasting/releases/tag/v0.42.0)
 *2022-05-27*
 
