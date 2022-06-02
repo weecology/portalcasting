@@ -31,7 +31,6 @@ Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a 
 }
 \examples{
   round_na.interp(x = c(1, 2, 3, NA, NA, 170))
- 
- 
+  round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
 
 }
