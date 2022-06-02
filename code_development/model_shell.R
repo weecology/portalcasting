@@ -1,11 +1,11 @@
 # working here and with the updated model controls yaml to streamline model construction
 
-classic_model_core <- function (main     = ".", 
-                                model = NULL,
-                                dataset  = "all",
-                                settings = directory_settings(), 
-                                quiet    = FALSE, 
-                                verbose  = FALSE) {
+site_model <- function (main     = ".", 
+                        model    = NULL,
+                        dataset  = "all",
+                        settings = directory_settings(), 
+                        quiet    = FALSE, 
+                        verbose  = FALSE) {
 
   return_if_null(model)
 
@@ -65,10 +65,11 @@ classic_model_core <- function (main     = ".",
 
     }
 
-    if (controls$interpolate) {
+    if (controls$interpolate$needed) {
 
       args <- update_list(args, 
-                          y = round(na.interp(abund_s)))
+                          y = do.call(what = controls$interpolate$fun,
+                                      args = list(abund_s)))
 
     }  else {
 

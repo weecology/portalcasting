@@ -1,3 +1,45 @@
+#' @title Round an Interpolated Series
+#'
+#' @description Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.
+#'
+#' @param x A time series passed directly to \code{\link[forecast]{na.interp}}.
+#'
+#' @param lambda Box-Cox transformation parameter passed directly to \code{\link[forecast]{na.interp}}.
+#'
+#' @param linear \code{logical} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast]{na.interp}}.
+#'
+#' @param digits \code{integer} or \code{numeric} integer of how many digits to round to. Passed directly to \code{\link{round}}.
+#'
+#' @param min_val \code{integer} or \code{numeric} integer of minimum value allowable in the series.
+#'
+#' @return \code{numeric} series.
+#' 
+#' @examples
+#'   round_na.interp(x = c(1, 2, 3, NA, NA, 170))
+#'   round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
+#'
+#' @export
+#'
+round_na.interp <- function (x,
+                             lambda  = NULL, 
+                             linear  = (frequency(x) <= 1 | sum(!is.na(x)) <= 2 * frequency(x)),
+                             digits  = 0,
+                             min_val = 0) {
+
+  xi <- na.interp(x      = x, 
+                  lambda = lambda,
+                  linear = linear)
+
+  xr <- round(x      = xi,
+              digits = digits)
+
+  pmax(... = min_val,
+       ... = xr)
+
+}
+
+
+
 #' @title Determine a File's Extension or Remove the Extension from the File Path
 #'
 #' @description Based on the separating character, \code{file_ext} determines the file extension and \code{path_no_ext} determines the file path without the extension.

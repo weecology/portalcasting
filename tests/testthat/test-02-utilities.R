@@ -1,6 +1,20 @@
 context(desc = "general utilities")
 
 
+test_that(desc = "round_na.interp does its job",
+          code = {
+
+  expect_is(round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1), "numeric")
+  expect_equal(min(round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)), 1)
+
+  expect_is(round_na.interp(x = c(-1, 2, 3, NA, NA, 170)), "numeric")
+  expect_equal(min(round_na.interp(x = c(-1, 2, 3, NA, NA, 170))), 0)
+
+  expect_equal(any(is.na(round_na.interp(x = c(-1, 2, 3, NA, NA, 170)))), FALSE)
+  expect_equal(all(round_na.interp(x = c(-1, 2, 3, NA, NA, 170)) %% 1 == 0), TRUE)
+})
+
+
 test_that(desc = "match.call.defaults operates within functions",
           code = {
 
