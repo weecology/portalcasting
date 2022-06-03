@@ -19,9 +19,11 @@ NULL
 #'
 prefab_model_controls <- function( ) {
 
-  prefab_controls_file <- system.file("extdata", "prefab_model_controls.yaml", package = "portalcasting")
+  prefab_controls_file <- system.file(...     = "extdata", 
+                                      ...     = "prefab_model_controls.yaml", 
+                                      package = "portalcasting")
 
-  read_yaml(prefab_controls_file)
+  read_yaml(file = prefab_controls_file)
 
 }
 
@@ -31,7 +33,7 @@ prefab_model_controls <- function( ) {
 #'
 prefab_models <- function( ) {
 
-  names(prefab_model_controls())
+  names(x = prefab_model_controls( ))
 
 }
 

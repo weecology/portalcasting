@@ -49,9 +49,9 @@ site_model <- function (main     = ".",
 
     messageq("   -", ss, quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abundance <- rodents_table[ , s]
 
-    if (sum(abund_s, na.rm = TRUE) == 0) {
+    if (sum(abundance, na.rm = TRUE) == 0) {
       next()
     }
 
@@ -65,16 +65,28 @@ site_model <- function (main     = ".",
 
     }
 
+    nargs <- length(args)
+
+    for (j in 1:nargs) {
+
+      if(grepl("quote", args[[j]])) {
+
+        args[[j]] <- eval(parse(text = args[[j]]))
+
+      }
+
+    }
+
     if (controls$interpolate$needed) {
 
       args <- update_list(args, 
                           y = do.call(what = controls$interpolate$fun,
-                                      args = list(abund_s)))
+                                      args = list(abundance)))
 
     }  else {
 
       args <- update_list(args, 
-                          y = abund_s)
+                          y = abundance)
 
     }
 
