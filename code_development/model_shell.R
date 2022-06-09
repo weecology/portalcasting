@@ -1,5 +1,9 @@
 # working here and with the updated model controls yaml to streamline model construction
 
+# right now stuck on addressing the fact that the model functions use different names for the response variable
+# y or ts or whatever
+
+
 site_model <- function (main     = ".", 
                         model    = NULL,
                         dataset  = "all",
