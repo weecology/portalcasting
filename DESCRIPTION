@@ -30,6 +30,7 @@ Imports:
     forecast,
     httr,
     jsonlite,
+    parallel,
     portalr,
     runjags,
     scoringRules,

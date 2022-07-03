@@ -52,6 +52,7 @@ fill_dir <- function (main     = ".",
                       models   = prefab_models(), 
                       datasets = prefab_datasets(),
                       settings = directory_settings(), 
+                      multiprocess  = FALSE,
                       quiet    = FALSE, 
                       verbose  = FALSE) {
 
@@ -76,6 +77,7 @@ fill_dir <- function (main     = ".",
             datasets = datasets,
             models   = models,
             settings = settings,
+            multiprocess = multiprocess,
             quiet    = quiet, 
             verbose  = verbose)
 
@@ -102,42 +104,86 @@ fill_dir <- function (main     = ".",
 #'
 #' @export
 #'
-fill_data <- function (main     = ".",
-                       models   = prefab_models(),
-                       datasets = prefab_datasets(),
-                       settings = directory_settings(), 
-                       quiet    = FALSE,
-                       verbose  = FALSE) {
+fill_data <- function (main         = ".",
+                       models       = prefab_models(),
+                       datasets     = prefab_datasets(),
+                       settings     = directory_settings(), 
+                       multiprocess = FALSE,
+                       quiet        = FALSE,
+                       verbose      = FALSE) {
 
   messageq(" Writing data files ... ", quiet = quiet)
 
-  write_dataset_controls(main     = main, 
+  write_data_set_controls_f <- function() {
+
+    write_dataset_controls(main     = main, 
                          settings = settings, 
                          datasets = datasets, 
                          quiet    = FALSE)
 
-  prep_rodents(main     = main,
+  }
+
+  prep_rodents_f <- function() {
+
+    prep_rodents(main     = main,
                settings = settings,
                datasets = datasets,
                quiet    = quiet,
                verbose  = verbose)
 
-  prep_moons(main      = main,  
+  }
+
+  prep_moons_f <- function() {
+
+    prep_moons(main      = main,  
              settings  = settings,
              quiet     = quiet, 
              verbose   = verbose)
 
-  prep_covariates(main      = main,  
+  }
+
+  prep_covariates_f <- function() {
+
+    prep_covariates(main      = main,  
                   settings  = settings,
                   quiet     = quiet, 
                   verbose   = verbose)
+    
+  }
 
-  prep_metadata(main     = main, 
+  prep_metadata_f <- function() {
+
+    prep_metadata(main     = main, 
                 datasets = datasets,
                 models   = models, 
                 settings = settings,
                 quiet    = quiet, 
                 verbose  = verbose)
+
+  }
+
+  if(multiprocess) {
+
+    write_data_set_controls_mc <- mcparallel(write_data_set_controls_f())
+    prep_rodents_mc <-  mcparallel(prep_rodents_f())
+    prep_moons_f_mc  <- mcparallel(prep_moons_f())
+    prep_covariates_mc <- mcparallel(prep_covariates_f())
+    prep_metadata_mc <- mcparallel(prep_metadata_f())
+    mccollect(list(
+      write_data_set_controls_mc,
+      prep_rodents_mc,
+      prep_moons_f_mc,
+      prep_covariates_mc,
+      prep_metadata_mc
+    ))
+
+  } else {
+    write_data_set_controls_f()
+    prep_rodents_f()
+    prep_moons_f()
+    prep_covariates_f()
+    prep_metadata_f()
+  }
 
   messageq("  ... data preparing complete.", quiet = quiet)
 

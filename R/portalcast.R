@@ -36,15 +36,16 @@
 #'
 #' @export
 #'
-portalcast <- function (main       = ".", 
-                        models     = prefab_models(), 
-                        datasets   = prefab_datasets(),
-                        end_moons  = NULL, 
-                        start_moon = 217, 
-                        cast_date  = Sys.Date(),
-                        settings   = directory_settings(),
-                        quiet      = FALSE,
-                        verbose    = FALSE){
+portalcast <- function (main         = ".", 
+                        models       = prefab_models(), 
+                        datasets     = prefab_datasets(),
+                        end_moons    = NULL, 
+                        start_moon   = 217, 
+                        cast_date    = Sys.Date(),
+                        settings     = directory_settings(),
+                        multiprocess = FALSE,
+                        quiet        = FALSE,
+                        verbose      = FALSE){
 
 #
 # the datasets here should come from the models selected
@@ -63,7 +64,7 @@ portalcast <- function (main       = ".",
   end_moons       <- ifnull(end_moons, last_moon)
   nend_moons      <- length(end_moons)
 
-  for (i in 1:nend_moons) {
+  cast_f <- function(i) {
 
     cast(main       = main, 
          datasets   = datasets,
@@ -72,21 +73,30 @@ portalcast <- function (main       = ".",
          start_moon = start_moon, 
          cast_date  = cast_date, 
          settings   = settings,
+         multiprocess = multiprocess,
          quiet      = quiet, 
          verbose    = verbose)
 
+  }
+
+  if(FALSE) {
+    #This is breaking as of now since it just overwrites preparatory data.
+    mclapply(1:nend_moons, cast_f, mc.cores = detectCores())
+  } else {
+    lapply(1:nend_moons, cast_f)
   }
 
   if (end_moons[nend_moons] != last_moon) {
  # this maybe should happen within cast?
     messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
 
-    fill_data(main     = main, 
-              datasets = datasets,
-              models   = models,
-              settings = settings,
-              quiet    = quiet, 
-              verbose  = verbose)
+    fill_data(main         = main, 
+              datasets     = datasets,
+              models       = models,
+              settings     = settings,
+              multiprocess = FALSE,
+              quiet        = quiet, 
+              verbose      = verbose)
 
   }
 
@@ -107,6 +117,7 @@ cast <- function (main       = ".",
                   start_moon = 217, 
                   cast_date  = Sys.Date(), 
                   settings   = directory_settings(), 
+                  multiprocess = FALSE,
                   quiet      = FALSE, 
                   verbose    = FALSE) {
 
@@ -138,7 +149,7 @@ cast <- function (main       = ".",
 
   nmodels <- length(models)
 
-  for (i in 1:nmodels) {
+  model_f <- function(i) {
 
     model <- models_scripts[i]
 
@@ -158,6 +169,25 @@ cast <- function (main       = ".",
     }
 
   }
+
+  if(multiprocess) {
+
+    models_list <- lapply(1:nmodels, function(i) {
+      mcparallel(model_f(i))
+    })
+
+    mccollect(models_list)
+
+  } else {
+
+    for (i in 1:nmodels) {
+
+      model_f(i)
+
+    }
+
+  }
+  
 
   invisible()
 

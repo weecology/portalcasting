@@ -34,6 +34,7 @@ setup_dir <- function (main     = ".",
                        models   = prefab_models(), 
                        datasets = prefab_datasets(),
                        settings = directory_settings(), 
+                       multiprocess = FALSE,
                        quiet    = FALSE, 
                        verbose  = FALSE) {
 
@@ -47,6 +48,7 @@ setup_dir <- function (main     = ".",
            models   = models,
            datasets = datasets,
            settings = settings,
+           multiprocess = multiprocess,
            quiet    = quiet,
            verbose  = verbose)
 
