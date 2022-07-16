@@ -103,7 +103,7 @@ fill_dir <- function (main     = ".",
 #' @rdname directory-filling
 #'
 #' @export
-#'
+#'library(portalcasting)
 fill_data <- function (main         = ".",
                        models       = prefab_models(),
                        datasets     = prefab_datasets(),
@@ -118,7 +118,8 @@ fill_data <- function (main         = ".",
 
     write_dataset_controls(main     = main, 
                          settings = settings, 
-                         datasets = datasets, 
+                         datasets = datasets,
+                         multiprocess = multiprocess, 
                          quiet    = FALSE)
 
   }
@@ -162,7 +163,7 @@ fill_data <- function (main         = ".",
 
   }
 
-  if(multiprocess) {
+  if(multiprocess == 'unix') {
 
     write_data_set_controls_mc <- mcparallel(write_data_set_controls_f())
     prep_rodents_mc <-  mcparallel(prep_rodents_f())
@@ -176,6 +177,24 @@ fill_data <- function (main         = ".",
       prep_covariates_mc,
       prep_metadata_mc
     ))
+
+  } else if (multiprocess == 'windows') {
+
+    clusters <- makeCluster(detectCores() - 1, outfile = "")
+
+    clusterExport(cl=clusters, varlist=c('main', 'datasets', 'models', 'settings', 'quiet', 'verbose', 'multiprocess'), envir=environment())
+
+    parLapply(clusters, list(
+      write_data_set_controls_f,
+      prep_rodents_f,
+      prep_moons_f,
+      prep_covariates_f,
+      prep_metadata_f
+    ), function(prep_function) {
+      prep_function()
+    })
+
+    stopCluster(clusters)
 
   } else {
     write_data_set_controls_f()

@@ -46,6 +46,7 @@ write_dataset_controls <- function (main                 = ".",
                                     new_dataset_controls = NULL,
                                     datasets             = prefab_datasets(),
                                     settings             = directory_settings(),
+                                    multiprocess         = FALSE,
                                     quiet                = FALSE) {
 
   dataset_controls <- prefab_dataset_controls()
@@ -54,13 +55,35 @@ write_dataset_controls <- function (main                 = ".",
 
   if (nnew_datasets > 0) {
 
-    for (i in 1:nnew_datasets) {
+    set_dataset_ctrl_f <- function(i) {
 
       dataset_controls <- update_list(dataset_controls, 
                                              x = new_dataset_controls[[i]])
 
       names(dataset_controls)[ndatasets + i] <- names(new_dataset_controls)[i]
 
+    }
+
+    if (multiprocess == 'unix') {
+
+      mclapply(1:nnew_datasets, set_dataset_ctrl_f, mc.cores = detectCores() - 1)
+    
+    } 
+    
+    else if (multiprocess == 'windows') {
+
+      clusters <- makeCluster(detectCores() - 1, outfile = "")
+
+      clusterExport(cl=clusters, varlist=c('dataset_controls', 'new_dataset_controls', 'ndatasets'), envir=environment())
+
+      parLapply(clusters, 1:nnew_datasets, set_dataset_ctrl_f)
+
+      stopCluster(clusters)
+
+    } else  {
+      
+      lapply(1:nnew_datasets, set_dataset_ctrl_f)
+    
     }
 
   }
@@ -95,7 +118,8 @@ write_dataset_controls <- function (main                 = ".",
 #'
 prep_rodents <- function (main     = ".",
                           datasets = prefab_datasets(),
-                          settings = directory_settings(), 
+                          settings = directory_settings(),
+                          multiprocess = FALSE, 
                           quiet    = FALSE,
                           verbose  = FALSE) {
 
@@ -109,7 +133,7 @@ prep_rodents <- function (main     = ".",
 
   out <- named_null_list(element_names = datasets)
 
-  for (i in 1:length(dataset_controls_list)) {
+  set_dataset_ctrl_f <- function(i) {
 
     out[[i]] <- do.call(what = dataset_controls_list[[i]]$fun, 
                         args = update_list(list      = dataset_controls_list[[i]]$args, 
@@ -117,7 +141,33 @@ prep_rodents <- function (main     = ".",
                                            settings  = settings, 
                                            quiet     = quiet, 
                                            verbose   = verbose))
-  
+
+  }
+
+  ndataset_controls_list <- length(dataset_controls_list)
+
+  if (ndataset_controls_list > 0 ) {
+
+    if (multiprocess == 'unix') {
+      
+      mclapply(1:ndataset_controls_list, set_dataset_ctrl_f, mc.cores = detectCores() - 1)
+    
+    } else if (multiprocess == 'windows') {
+
+      clusters <- makeCluster(detectCores() - 1, outfile = "")
+
+      clusterExport(cl=clusters, varlist=c('out', 'dataset_controls_list', 'main', 'settings', 'quiet', 'verbose'), envir=environment())
+
+      parLapply(clusters, 1:ndataset_controls_list, set_dataset_ctrl_f)
+
+      stopCluster(clusters)
+
+    } else  {
+      
+      lapply(1:ndataset_controls_list, set_dataset_ctrl_f)
+    
+    }
+
   }
 
   invisible(out)

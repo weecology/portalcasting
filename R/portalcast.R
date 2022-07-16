@@ -56,6 +56,9 @@ portalcast <- function (main         = ".",
 
   messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
 
+  systemType <- .Platform$OS.type
+  messageq("Running on a ", systemType, " system.")
+
   moons <- read_moons(main     = main,
                       settings = settings)
 
@@ -73,7 +76,7 @@ portalcast <- function (main         = ".",
          start_moon = start_moon, 
          cast_date  = cast_date, 
          settings   = settings,
-         multiprocess = multiprocess,
+         multiprocess = systemType,
          quiet      = quiet, 
          verbose    = verbose)
 
@@ -94,7 +97,7 @@ portalcast <- function (main         = ".",
               datasets     = datasets,
               models       = models,
               settings     = settings,
-              multiprocess = FALSE,
+              multiprocess = systemType,
               quiet        = quiet, 
               verbose      = verbose)
 
@@ -136,6 +139,7 @@ cast <- function (main       = ".",
               datasets = datasets,
               models   = models,
               settings = settings,
+              multiprocess = multiprocess,
               quiet    = quiet, 
               verbose  = verbose)
 
@@ -155,7 +159,7 @@ cast <- function (main       = ".",
 
     messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), "\n", message_break(), quiet = quiet)
 
-    run_status <- tryCatch(expr  = source(model),
+    run_status <- tryCatch(expr  = source(model, local=TRUE),
                            error = function(x){NA})
 
     if (all(is.na(run_status))) {
@@ -170,13 +174,26 @@ cast <- function (main       = ".",
 
   }
 
-  if(multiprocess) {
+  if(multiprocess == 'unix') {
 
     models_list <- lapply(1:nmodels, function(i) {
       mcparallel(model_f(i))
     })
 
     mccollect(models_list)
+
+
+  } else if (multiprocess == 'windows') {
+
+    clusters <- makeCluster(detectCores() - 1, outfile = "")
+
+    clusterExport(cl=clusters, varlist=c('models_scripts'), envir=environment())
+
+    parLapply(clusters, 1:nmodels, function(i) {
+      model_f(i)
+    })
+
+    stopCluster(clusters)
 
   } else {
 
