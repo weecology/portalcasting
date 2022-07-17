@@ -57,7 +57,18 @@ portalcast <- function (main         = ".",
   messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
 
   systemType <- .Platform$OS.type
-  messageq("Running on a ", systemType, " system.")
+
+  if (multiprocess != TRUE) {
+    systemType <- multiprocess
+  }
+  if (multiprocess != FALSE) {
+    messageq(message_break(), "Running on ", systemType, " System", message_break())
+    if(systemType == "unix") {
+      messageq("Will be using Forking approach for parallel processing.", message_break())
+    } else {
+      messageq("Will be using Socket approach for parallel processing.", message_break())
+    }
+  }
 
   moons <- read_moons(main     = main,
                       settings = settings)
