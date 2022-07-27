@@ -35,7 +35,8 @@ Imports:
     scoringRules,
     tscount,
     viridis,
-    yaml
+    yaml,
+    english
 Suggests:
   knitr,
   pkgdown,
