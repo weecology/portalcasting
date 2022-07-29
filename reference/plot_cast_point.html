@@ -78,52 +78,77 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_cast_point</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  cast_id <span class="op">=</span> <span class="cn">NULL</span>,
-  cast_groups <span class="op">=</span> <span class="cn">NULL</span>,
-  dataset <span class="op">=</span> <span class="cn">NULL</span>,
-  model <span class="op">=</span> <span class="cn">NULL</span>,
-  end_moon <span class="op">=</span> <span class="cn">NULL</span>,
-  species <span class="op">=</span> <span class="cn">NULL</span>,
-  highlight_sp <span class="op">=</span> <span class="cn">NULL</span>,
-  moon <span class="op">=</span> <span class="cn">NULL</span>,
-  with_census <span class="op">=</span> <span class="cn">FALSE</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_cast_point</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  cast_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cast_groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end_moon <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  species <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  highlight_sp <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  moon <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  with_census <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>cast_id</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) value representing the cast of interest, as indexed within the directory in the <code>casts</code> sub folder. See the casts metadata file (<code>casts_metadata.csv</code>) for summary information.</p></dd>
+
+
 <dt>cast_groups</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) value of the cast group to combine with an ensemble. If <code>NULL</code> (default), the most recent cast group is ensembled.</p></dd>
+
+
 <dt>dataset</dt>
 <dd><p><code>character</code> value of the rodent data set to include Default value is <code>NULL</code>, which equates to no selection with respect to <code>dataset</code>.</p></dd>
+
+
 <dt>model</dt>
 <dd><p><code>character</code> value of the name of the model to include. Default value is <code>NULL</code>, which equates to no selection with respect to <code>model</code>. Also available is <code>"Ensemble"</code>, which combines the models via <code><a href="ensemble_casts.html">ensemble_casts</a></code>.</p></dd>
+
+
 <dt>end_moon</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) newmoon number of the forecast origin. Default value is <code>NULL</code>, which equates to no selection with respect to <code>end_moon</code>.</p></dd>
+
+
 <dt>species</dt>
 <dd><p><code>character</code> vector of the species codes (or <code>"total"</code> for the total across species) to be plotted or <code>NULL</code> (default) to plot all species in <code>dataset</code>.</p></dd>
+
+
 <dt>highlight_sp</dt>
 <dd><p><code>character</code> vector of the species codes (or <code>"total"</code> for the total across species) to be highlighted or <code>NULL</code> (default) to not highlight anything.</p></dd>
+
+
 <dt>moon</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) newmoon number for the plot.</p></dd>
+
+
 <dt>with_census</dt>
 <dd><p><code>logical</code> toggle if the plot should include the observed data collected during the predicted census.</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>NULL</code>. Plot is generated.</p>
+    
+
+<p><code>NULL</code>. Plot is generated.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -133,13 +158,12 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu"><a href="portalcast.html">portalcast</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span>, end_moons <span class="op">=</span> <span class="fl">515</span><span class="op">:</span><span class="fl">520</span><span class="op">)</span>
-  <span class="fu">plot_cast_point</span><span class="op">(</span><span class="op">)</span>
-<span class="co"># }</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
+<span>  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="portalcast.html">portalcast</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span>, end_moons <span class="op">=</span> <span class="fl">515</span><span class="op">:</span><span class="fl">520</span><span class="op">)</span></span>
+<span>  <span class="fu">plot_cast_point</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -153,7 +177,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

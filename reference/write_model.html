@@ -78,54 +78,80 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">write_model</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  model <span class="op">=</span> <span class="cn">NULL</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">model_template</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  model <span class="op">=</span> <span class="cn">NULL</span>,
-  datasets <span class="op">=</span> <span class="cn">NULL</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">write_model</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">model_template</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>model</dt>
 <dd><p><code>character</code> name of a model function, the <code>function</code> itself, or its symbol (backquoted name).</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information (and thus just the tidy messages).</p></dd>
+
+
 <dt>datasets</dt>
 <dd><p><code>character</code> vector of dataset names for the model.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>write_mode</code><code><a href="https://rdrr.io/r/base/write.html" class="external-link">write</a></code>s the model script out and returns <code>NULL</code>, <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.. <br><br><code>model_template</code>: <code>character</code>-valued text for a model script to be housed in the model directory. <br><br><code>control_list_arg</code>: <code>character</code>-valued text for part of a model script. <br><br></p>
+    
+
+<p><code>write_mode</code></p>
+<p></p>
+<p><code><a href="https://rdrr.io/r/base/write.html" class="external-link">write</a></code>s the model script out and returns <code>NULL</code>, <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.. <br></p>
+<p></p>
+<p><br></p>
+<p></p>
+<p><code>model_template</code>: <code>character</code>-valued text for a model script to be housed in the model directory. <br></p>
+<p></p>
+<p><br></p>
+<p></p>
+<p><code>control_list_arg</code>: <code>character</code>-valued text for part of a model script. <br></p>
+<p></p>
+<p><br></p>
+
+
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-  <span class="fu"><a href="directory-creation.html">create_dir</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">write_model</span><span class="op">(</span><span class="st">"AutoArima"</span><span class="op">)</span>
-  <span class="fu">model_template</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">control_list_arg</span><span class="op">(</span><span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span>nchains <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, <span class="st">"runjags_control"</span><span class="op">)</span>
- <span class="co"># }</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
+<span>  <span class="fu"><a href="directory-creation.html">create_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">write_model</span><span class="op">(</span><span class="st">"AutoArima"</span><span class="op">)</span></span>
+<span>  <span class="fu">model_template</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">control_list_arg</span><span class="op">(</span><span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span>nchains <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, <span class="st">"runjags_control"</span><span class="op">)</span></span>
+<span> <span class="co"># }</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -139,7 +165,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

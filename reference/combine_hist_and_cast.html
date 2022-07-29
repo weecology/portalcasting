@@ -78,36 +78,42 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">combine_hist_and_cast</span><span class="op">(</span>
-  hist_tab <span class="op">=</span> <span class="cn">NULL</span>,
-  cast_tab <span class="op">=</span> <span class="cn">NULL</span>,
-  winner <span class="op">=</span> <span class="st">"hist"</span>,
-  column <span class="op">=</span> <span class="st">"date"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">combine_hist_and_cast</span><span class="op">(</span></span>
+<span>  hist_tab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cast_tab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  winner <span class="op">=</span> <span class="st">"hist"</span>,</span>
+<span>  column <span class="op">=</span> <span class="st">"date"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>hist_tab, cast_tab</dt>
 <dd><p>A pair of <code>data.frame</code>s with the same columns including a codedate column of <code>Date</code>s, which is used to align them.</p></dd>
+
+
 <dt>winner</dt>
 <dd><p><code>character</code> value either "hist" or <code>"cast"</code> to decide who wins any ties. In the typical portalcasting space, this is kept at its default value throughout. In the case of <code>NA</code> values, this will be overridden to use the entry that has no missing entries.</p></dd>
+
+
 <dt>column</dt>
 <dd><p><code>character</code> indicating the column to use for identifying entries in combining.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>data.frame</code> combining <code>hist_tab</code> and <code>cast_tab</code>.</p>
+    
+
+<p><code>data.frame</code> combining <code>hist_tab</code> and <code>cast_tab</code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="va">hist_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
- <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">101</span><span class="op">:</span><span class="fl">106</span><span class="op">)</span>
- <span class="fu">combine_hist_and_cast</span><span class="op">(</span><span class="va">hist_tab</span>, <span class="va">cast_tab</span>, <span class="st">"hist"</span><span class="op">)</span> 
- <span class="fu">combine_hist_and_cast</span><span class="op">(</span><span class="va">hist_tab</span>, <span class="va">cast_tab</span>, <span class="st">"cast"</span><span class="op">)</span>  
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="va">hist_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span> <span class="va">cast_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">101</span><span class="op">:</span><span class="fl">106</span><span class="op">)</span></span>
+<span> <span class="fu">combine_hist_and_cast</span><span class="op">(</span><span class="va">hist_tab</span>, <span class="va">cast_tab</span>, <span class="st">"hist"</span><span class="op">)</span> </span>
+<span> <span class="fu">combine_hist_and_cast</span><span class="op">(</span><span class="va">hist_tab</span>, <span class="va">cast_tab</span>, <span class="st">"cast"</span><span class="op">)</span>  </span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -121,7 +127,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

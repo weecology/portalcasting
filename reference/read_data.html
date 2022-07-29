@@ -78,53 +78,62 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_data</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  data_name <span class="op">=</span> <span class="cn">NULL</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">read_rodents_table</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">read_rodents</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">read_moons</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">read_covariates</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">read_forecast_covariates</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">read_historical_covariates</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">read_climate_forecasts</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">read_metadata</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_data</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  data_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_rodents_table</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_rodents</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_moons</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_covariates</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_forecast_covariates</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_historical_covariates</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_climate_forecasts</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_metadata</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>data_name</dt>
 <dd><p><code>character</code> representation of the data needed. Current options include <code>"rodents"</code>, <code>"rodents_table"</code>, <code>"covariates"</code>, <code>"forecast_covariates"</code>,  <code>"historical_covariates"</code>, <code>"covariate_forecasts"</code>, <code>"moons"</code>, and <code>"metadata"</code>.</p></dd>
+
+
 <dt>dataset, datasets</dt>
 <dd><p><code>character</code> representation of the grouping name(s) used to define the rodents. Standard options are <code>"all"</code> and <code>"controls"</code>. <code>dataset</code> can only be length 1, <code>datasets</code> is not restricted in length.</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Data requested.</p>
+    
+
+<p>Data requested.</p>
     </div>
 
   </div>
@@ -139,7 +148,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

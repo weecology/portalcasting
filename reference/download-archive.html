@@ -78,40 +78,57 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_archive</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  resources_sub <span class="op">=</span> <span class="st">"raw"</span>,
-  version <span class="op">=</span> <span class="st">"latest"</span>,
-  source <span class="op">=</span> <span class="st">"github"</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  pause <span class="op">=</span> <span class="fl">30</span>,
-  timeout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"timeout"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_archive</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  resources_sub <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span>  version <span class="op">=</span> <span class="st">"latest"</span>,</span>
+<span>  source <span class="op">=</span> <span class="st">"github"</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pause <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  timeout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"timeout"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value defining the main component of the portalcasting directory tree.</p></dd>
+
+
 <dt>resources_sub</dt>
 <dd><p><code>character</code> value defining the resources subdirectory of the portalcasting directory tree.</p></dd>
+
+
 <dt>version</dt>
 <dd><p><code>character</code> version of the data to download. Default <code>"latest"</code> downloads the most recent (by date published). <code>NULL</code> means no download.</p></dd>
+
+
 <dt>source</dt>
 <dd><p><code>character</code> indicator of the source for the download. Either <code>"github"</code> (default) or <code>"github"</code>.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator if detailed messages should be printed.</p></dd>
+
+
 <dt>pause</dt>
 <dd><p>Positive <code>integer</code> or integer <code>numeric</code> seconds for pausing during steps around unzipping that require time delay.</p></dd>
+
+
 <dt>timeout</dt>
 <dd><p>Positive <code>integer</code> or integer <code>numeric</code> seconds for timeout on downloads. Temporarily overrides the <code>"timeout"</code> option in <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>NULL</code>, <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.</p>
+    
+
+<p><code>NULL</code>, <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
@@ -120,13 +137,12 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-
-  <span class="fu"><a href="directory-creation.html">create_dir</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span>
-  <span class="fu">download_archive</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span>
- <span class="co"># } </span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
+<span></span>
+<span>  <span class="fu"><a href="directory-creation.html">create_dir</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span></span>
+<span>  <span class="fu">download_archive</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span></span>
+<span> <span class="co"># } </span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -140,7 +156,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

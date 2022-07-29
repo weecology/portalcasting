@@ -81,47 +81,69 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">prep_moons</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  lead <span class="op">=</span> <span class="fl">365</span>,
-  origin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">add_future_moons</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  moons <span class="op">=</span> <span class="cn">NULL</span>,
-  lead <span class="op">=</span> <span class="fl">365</span>,
-  origin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">forecast_future_moons</span><span class="op">(</span>moons <span class="op">=</span> <span class="cn">NULL</span>, lead <span class="op">=</span> <span class="fl">365</span>, origin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_moons</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  lead <span class="op">=</span> <span class="fl">365</span>,</span>
+<span>  origin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">add_future_moons</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  moons <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lead <span class="op">=</span> <span class="fl">365</span>,</span>
+<span>  origin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">forecast_future_moons</span><span class="op">(</span>moons <span class="op">=</span> <span class="cn">NULL</span>, lead <span class="op">=</span> <span class="fl">365</span>, origin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>lead</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) value for the number of days forward a cast will cover.</p></dd>
+
+
 <dt>origin</dt>
 <dd><p><code>Date</code> forecast origin, typically today's date (set using <code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></code>).</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator controlling if messages are printed.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information or not (and thus just the tidy messages).</p></dd>
+
+
 <dt>moons</dt>
 <dd><p><code>data.frame</code> of moon data.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Some version of a moons <code>data.frame</code>. <br><br>. 
-<code>prep_moons</code>: fully appended and formatted <code>data.frame</code> (also saved out if <code>save = TRUE</code>). <br><code>add_future_moons</code>: fully appended and formatted <code>data.frame</code>. <br><code>forecast_future_moons</code>: moons <code>data.frame</code> to append to the existing <code>moons</code>.</p>
+    
+
+<p>Some version of a moons <code>data.frame</code>. <br></p>
+<p></p>
+<p><br>.</p>
+<p></p>
+<p><code>prep_moons</code>: fully appended and formatted <code>data.frame</code> (also saved out if <code>save = TRUE</code>). <br></p>
+<p></p>
+<p><code>add_future_moons</code>: fully appended and formatted <code>data.frame</code>. <br></p>
+<p></p>
+<p><code>forecast_future_moons</code>: moons <code>data.frame</code> to append to the existing <code>moons</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -130,12 +152,11 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">prep_moons</span><span class="op">(</span><span class="op">)</span>
- <span class="co"># }</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
+<span>  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">prep_moons</span><span class="op">(</span><span class="op">)</span></span>
+<span> <span class="co"># }</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -149,7 +170,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -80,40 +80,57 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">select_casts</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  cast_ids <span class="op">=</span> <span class="cn">NULL</span>,
-  cast_groups <span class="op">=</span> <span class="cn">NULL</span>,
-  end_moons <span class="op">=</span> <span class="cn">NULL</span>,
-  models <span class="op">=</span> <span class="cn">NULL</span>,
-  datasets <span class="op">=</span> <span class="cn">NULL</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select_casts</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cast_ids <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cast_groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end_moons <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  models <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
+
 <dt>cast_ids</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) values representing the casts of interest, as indexed within the directory in the <code>casts</code> sub folder. See the casts metadata file (<code>casts_metadata.csv</code>) for summary information.</p></dd>
+
+
 <dt>cast_groups</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) value of the cast group to combine with an ensemble. If <code>NULL</code> (default), the most recent cast group is ensembled.</p></dd>
+
+
 <dt>end_moons</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) newmoon numbers of the forecast origin. Default value is <code>NULL</code>, which equates to no selection with respect to <code>end_moon</code>.</p></dd>
+
+
 <dt>models</dt>
 <dd><p><code>character</code> values of the names of the models to include. Default value is <code>NULL</code>, which equates to no selection with respect to <code>model</code>.</p></dd>
+
+
 <dt>datasets</dt>
 <dd><p><code>character</code> values of the rodent data sets to include Default value is <code>NULL</code>, which equates to no selection with respect to <code>dataset</code>.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>data.frame</code> of the <code>cast_tab</code>.</p>
+    
+
+<p><code>data.frame</code> of the <code>cast_tab</code>.</p>
     </div>
 
   </div>
@@ -128,7 +145,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

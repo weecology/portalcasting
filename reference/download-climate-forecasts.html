@@ -78,51 +78,67 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_climate_forecasts</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  resources_sub <span class="op">=</span> <span class="st">"raw"</span>,
-  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  source <span class="op">=</span> <span class="st">"NMME"</span>,
-  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tasmin"</span>, <span class="st">"tasmean"</span>, <span class="st">"tasmax"</span>, <span class="st">"pr"</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  timeout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"timeout"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_climate_forecasts</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  resources_sub <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  source <span class="op">=</span> <span class="st">"NMME"</span>,</span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tasmin"</span>, <span class="st">"tasmean"</span>, <span class="st">"tasmax"</span>, <span class="st">"pr"</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  timeout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"timeout"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value defining the main component of the portalcasting directory tree.</p></dd>
+
+
 <dt>resources_sub</dt>
 <dd><p><code>character</code> value defining the resources subdirectory of the portalcasting directory tree.</p></dd>
+
+
 <dt>version</dt>
 <dd><p><code>Date</code>-coercible start of the climate cast. See <code><a href="NMME-urls.html">NMME_urls</a></code> (used as <code>start</code>).</p></dd>
+
+
 <dt>source</dt>
 <dd><p><code>character</code> indicator of the source for the download. Only <code>"NMME"</code> presently available.</p></dd>
+
+
 <dt>data</dt>
 <dd><p><code>character</code> vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (<code>c("tasmin", "tasmean", "tasmax", "pr")</code>).</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator if detailed messages should be printed.</p></dd>
+
+
 <dt>timeout</dt>
 <dd><p>Positive <code>integer</code> or integer <code>numeric</code> seconds for timeout on downloads. Temporarily overrides the <code>"timeout"</code> option in <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>NULL</code>, <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.</p>
+    
+
+<p><code>NULL</code>, <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-
-  <span class="fu"><a href="directory-creation.html">create_dir</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span>
-  <span class="fu">download_climate_forecasts</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span>
- <span class="co"># } </span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
+<span></span>
+<span>  <span class="fu"><a href="directory-creation.html">create_dir</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span></span>
+<span>  <span class="fu">download_climate_forecasts</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"./portalcasting"</span><span class="op">)</span></span>
+<span> <span class="co"># } </span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -136,7 +152,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -96,7 +96,7 @@
       <h1 data-toc-skip>JAGS Models</h1>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">01 June, 2022</h4>
+            <h4 data-toc-skip class="date">29 July, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/jags_models.Rmd" class="external-link"><code>vignettes/jags_models.Rmd</code></a></small>
       <div class="hidden name"><code>jags_models.Rmd</code></div>
@@ -189,144 +189,258 @@
 <p>The truncation and overflow protection are especially important here, as a log-scale density on a random walk has the potential to explode (run to <code>Inf</code>). However, it is possible that any model fit using JAGS could encounter some iterations of the algorithm that run to <code>Inf</code> (even if exceedingly rare), and so it is suggested for users that build JAGS <strong>portalcasting</strong> models to retain these or similar edge protections.</p>
 <p>The two model parameters (<code>mu</code> and <code>tau</code>) are assumed to be distributed according to the available data that are from before <code>start_moon</code> (the start of the time series used to fit the model. In particular, <code>mu</code>, which is the log-scale density of rodents at time step 1 is considered to be drawn from a normal distribution with a mean equal to the prior average log-scale density of rodents and with a variance that is twice as large as the variance among prior log-scale density observations. Also, <code>tau</code> (the precision of the random walk) has a prior that is gamma distributed with a fixed rate of 0.1 and a rate-scaled shape equal to the mean of the distribution, which was set as the precision of the prior counts.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R">    <span class="co"># priors</span>
-
-    <span class="va">log_past_count</span>           <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">past_count</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span>
-    <span class="va">mean_log_past_count</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span>
-    <span class="va">sd_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">var_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_log_past_count</span><span class="op">^</span><span class="fl">2</span>
-    <span class="va">precision_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_log_past_count</span><span class="op">)</span>
-
-    <span class="va">diff_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>          <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
-    <span class="va">diff_time</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>           <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> 
-    <span class="va">diff_log_past_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="va">diff_time</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
-
-    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="op">(</span><span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-      <span class="va">diff_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>          <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
-      <span class="va">diff_time</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>           <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> 
-      <span class="va">diff_log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">/</span> <span class="va">diff_time</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
-
-    <span class="op">}</span>    
-
-    <span class="va">sd_diff_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">diff_log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">var_diff_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_diff_log_past_count</span><span class="op">^</span><span class="fl">2</span>
-    <span class="va">precision_diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_diff_log_past_count</span><span class="op">)</span>
-
-    <span class="va">rate</span>  <span class="op">&lt;-</span> <span class="fl">0.1</span>
-    <span class="va">shape</span> <span class="op">&lt;-</span> <span class="va">precision_diff_log_past_count</span> <span class="op">*</span> <span class="va">rate</span>
-
-    <span class="va">mu</span>  <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="va">mean_log_past_count</span>, <span class="va">precision_log_past_count</span><span class="op">)</span>; 
-    <span class="va">tau</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">dgamma</a></span><span class="op">(</span><span class="va">shape</span>, <span class="va">rate</span><span class="op">)</span>; </code></pre></div>
+<code class="sourceCode R"><span>    <span class="co"># priors</span></span>
+<span></span>
+<span>    <span class="va">log_past_count</span>           <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">past_count</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="va">mean_log_past_count</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span></span>
+<span>    <span class="va">sd_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">var_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_log_past_count</span><span class="op">^</span><span class="fl">2</span></span>
+<span>    <span class="va">precision_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_log_past_count</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">diff_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>          <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span>    <span class="va">diff_time</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>           <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> </span>
+<span>    <span class="va">diff_log_past_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="va">diff_time</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="op">(</span><span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>      <span class="va">diff_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>          <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>      <span class="va">diff_time</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>           <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> </span>
+<span>      <span class="va">diff_log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">/</span> <span class="va">diff_time</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span></span>
+<span>    <span class="op">}</span>    </span>
+<span></span>
+<span>    <span class="va">sd_diff_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">diff_log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">var_diff_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_diff_log_past_count</span><span class="op">^</span><span class="fl">2</span></span>
+<span>    <span class="va">precision_diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_diff_log_past_count</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">rate</span>  <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span>    <span class="va">shape</span> <span class="op">&lt;-</span> <span class="va">precision_diff_log_past_count</span> <span class="op">*</span> <span class="va">rate</span></span>
+<span></span>
+<span>    <span class="va">mu</span>  <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="va">mean_log_past_count</span>, <span class="va">precision_log_past_count</span><span class="op">)</span>; </span>
+<span>    <span class="va">tau</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">dgamma</a></span><span class="op">(</span><span class="va">shape</span>, <span class="va">rate</span><span class="op">)</span>; </span></code></pre></div>
 <p>The priors and time series components are then combined into a single character value for input:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">  <span class="va">jags_model</span> <span class="op">&lt;-</span> <span class="st">[1689 chars quoted with '"']</span></code></pre></div>
+<code class="sourceCode R"><span>  <span class="va">jags_model</span> <span class="op">&lt;-</span> <span class="st">"model { </span></span>
+<span><span class="st"> </span></span>
+<span><span class="st">    # priors</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    log_past_count           &lt;- log(past_count + 0.1)</span></span>
+<span><span class="st">    mean_log_past_count      &lt;- mean(log_past_count)</span></span>
+<span><span class="st">    sd_log_past_count        &lt;- max(c(sd(log_past_count) * sqrt(2), 0.01))</span></span>
+<span><span class="st">    var_log_past_count       &lt;- sd_log_past_count^2</span></span>
+<span><span class="st">    precision_log_past_count &lt;- 1/(var_log_past_count)</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    diff_count[1]          &lt;- log_past_count[2] - log_past_count[1]</span></span>
+<span><span class="st">    diff_time[1]           &lt;- past_moon[2] - past_moon[1] </span></span>
+<span><span class="st">    diff_log_past_count[1] &lt;- diff_count[1] / diff_time[1]</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    for (i in 2:(past_N - 1)) {</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      diff_count[i]          &lt;- log_past_count[i + 1] - log_past_count[i]</span></span>
+<span><span class="st">      diff_time[i]           &lt;- past_moon[i + 1] - past_moon[i] </span></span>
+<span><span class="st">      diff_log_past_count[i] &lt;- diff_count[i] / diff_time[i]</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    }    </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    sd_diff_log_past_count        &lt;- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))</span></span>
+<span><span class="st">    var_diff_log_past_count       &lt;- sd_diff_log_past_count^2</span></span>
+<span><span class="st">    precision_diff_log_past_count &lt;- 1/(var_diff_log_past_count)</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    rate  &lt;- 0.1</span></span>
+<span><span class="st">    shape &lt;- precision_diff_log_past_count * rate</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    mu  ~ dnorm(mean_log_past_count, precision_log_past_count); </span></span>
+<span><span class="st">    tau ~ dgamma(shape, rate); </span></span>
+<span><span class="st">   </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    # initial state</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    X[1]          &lt;- mu;</span></span>
+<span><span class="st">    pred_count[1] &lt;- max(c(exp(X[1]) - 0.1, 0.00001));</span></span>
+<span><span class="st">    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    # through time</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    for(i in 2:N) {</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      # Process model</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      predX[i]      &lt;- X[i-1];</span></span>
+<span><span class="st">      checkX[i]     ~  dnorm(predX[i], tau); </span></span>
+<span><span class="st">      X[i]          &lt;- min(c(checkX[i], log(ntraps[i] + 1))); </span></span>
+<span><span class="st">      pred_count[i] &lt;- max(c(exp(X[i]) - 0.1, 0.00001));</span></span>
+<span><span class="st">   </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      # observation model</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    }</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  }"</span></span></code></pre></div>
 <p>As a starting point, we used an initializer function (<code>inits</code>) that draws starting values for the MCMC from the prior distributions. In addition, because we anticipate multiple chains, we include random number generator and input components. The <code>inits</code> function takes the data provided as input, thus allowing use of the prior data, and returns a function that can be used within <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">runjags::run.jags</a></code> for a given chain:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-  <span class="va">inits</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">data</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span>
-
-    <span class="va">rngs</span>       <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"base::Wichmann-Hill"</span>, <span class="st">"base::Marsaglia-Multicarry"</span>, <span class="st">"base::Super-Duper"</span>, <span class="st">"base::Mersenne-Twister"</span><span class="op">)</span>
-    <span class="va">past_N</span>     <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_N</span> 
-    <span class="va">past_count</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_count</span> 
-    <span class="va">past_moon</span>  <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_moon</span>
-
-    <span class="va">log_past_count</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">past_count</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span>
-    <span class="va">mean_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span>
-    <span class="va">sd_log_past_count</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-
-    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-      <span class="va">diff_count</span>             <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
-      <span class="va">diff_time</span>              <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> 
-      <span class="va">diff_log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span> <span class="op">/</span> <span class="va">diff_time</span>
-
-    <span class="op">}</span>
-    <span class="va">sd_diff_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">diff_log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">var_diff_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_diff_log_past_count</span><span class="op">^</span><span class="fl">2</span>
-    <span class="va">precision_diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_diff_log_past_count</span><span class="op">)</span>
-
-    <span class="va">rate</span>  <span class="op">&lt;-</span> <span class="fl">0.1</span>
-    <span class="va">shape</span> <span class="op">&lt;-</span> <span class="va">precision_diff_log_past_count</span> <span class="op">*</span> <span class="va">rate</span>
-
-    <span class="kw">function</span> <span class="op">(</span><span class="va">chain</span> <span class="op">=</span> <span class="va">chain</span><span class="op">)</span> <span class="op">{</span>
-
-      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>.RNG.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">rngs</span>, <span class="fl">1</span><span class="op">)</span>,
-           .RNG.seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1e+06</span>, <span class="fl">1</span><span class="op">)</span>,
-            mu       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">mean_log_past_count</span>, <span class="va">sd_log_past_count</span><span class="op">)</span>, 
-            tau      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span><span class="fl">1</span>, shape <span class="op">=</span> <span class="va">shape</span>, rate <span class="op">=</span> <span class="va">rate</span><span class="op">)</span><span class="op">)</span>
-
-    <span class="op">}</span>
-
-  <span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span>  <span class="va">inits</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">data</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>    <span class="va">rngs</span>       <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"base::Wichmann-Hill"</span>, <span class="st">"base::Marsaglia-Multicarry"</span>, <span class="st">"base::Super-Duper"</span>, <span class="st">"base::Mersenne-Twister"</span><span class="op">)</span></span>
+<span>    <span class="va">past_N</span>     <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_N</span> </span>
+<span>    <span class="va">past_count</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_count</span> </span>
+<span>    <span class="va">past_moon</span>  <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_moon</span></span>
+<span></span>
+<span>    <span class="va">log_past_count</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">past_count</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="va">mean_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span></span>
+<span>    <span class="va">sd_log_past_count</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>      <span class="va">diff_count</span>             <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>      <span class="va">diff_time</span>              <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> </span>
+<span>      <span class="va">diff_log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span> <span class="op">/</span> <span class="va">diff_time</span></span>
+<span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">sd_diff_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">diff_log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">var_diff_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_diff_log_past_count</span><span class="op">^</span><span class="fl">2</span></span>
+<span>    <span class="va">precision_diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_diff_log_past_count</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">rate</span>  <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span>    <span class="va">shape</span> <span class="op">&lt;-</span> <span class="va">precision_diff_log_past_count</span> <span class="op">*</span> <span class="va">rate</span></span>
+<span></span>
+<span>    <span class="kw">function</span> <span class="op">(</span><span class="va">chain</span> <span class="op">=</span> <span class="va">chain</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>.RNG.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">rngs</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>           .RNG.seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1e+06</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>            mu       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">mean_log_past_count</span>, <span class="va">sd_log_past_count</span><span class="op">)</span>, </span>
+<span>            tau      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span><span class="fl">1</span>, shape <span class="op">=</span> <span class="va">shape</span>, rate <span class="op">=</span> <span class="va">rate</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="op">}</span></span>
+<span></span>
+<span>  <span class="op">}</span></span></code></pre></div>
 <p>Finally, we tell the software to track both parameters through the <code>monitor</code> vector:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">  <span class="va">monitor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span>  <span class="va">monitor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span></span></code></pre></div>
 <p>These components can then be combined within a function (like <code>jags_RW</code>) to leverage the internal functionality of <code>jags_ss</code> and flexibility of <code>runjags_control</code>. Because <code>jags_ss</code> process and packages the output for the casting standards, nothing in particular needs to be added in the wrapper function <code>jags_RW</code> after calling <code>jags_ss</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">jags_RW</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">main</span>            <span class="op">=</span> <span class="st">"."</span>, 
-                     <span class="va">dataset</span>         <span class="op">=</span> <span class="st">"all"</span>,  
-                     <span class="va">settings</span>        <span class="op">=</span> <span class="fu"><a href="../reference/directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-                     <span class="va">control_runjags</span> <span class="op">=</span> <span class="fu"><a href="../reference/runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>, 
-                     <span class="va">quiet</span>           <span class="op">=</span> <span class="cn">FALSE</span>, 
-                     <span class="va">verbose</span>         <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span>
- 
-  <span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span>
-  <span class="fu"><a href="../reference/messageq.html">messageq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"  -jags_RW for "</span>, <span class="va">dataset</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="va">quiet</span><span class="op">)</span>
-
-  <span class="va">monitor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span>
-
-  <span class="va">inits</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">data</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span>
-
-    <span class="va">rngs</span>       <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"base::Wichmann-Hill"</span>, <span class="st">"base::Marsaglia-Multicarry"</span>, <span class="st">"base::Super-Duper"</span>, <span class="st">"base::Mersenne-Twister"</span><span class="op">)</span>
-    <span class="va">past_N</span>     <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_N</span> 
-    <span class="va">past_count</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_count</span> 
-    <span class="va">past_moon</span>  <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_moon</span>
-
-    <span class="va">log_past_count</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">past_count</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span>
-    <span class="va">mean_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span>
-    <span class="va">sd_log_past_count</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-
-    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-      <span class="va">diff_count</span>             <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
-      <span class="va">diff_time</span>              <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> 
-      <span class="va">diff_log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span> <span class="op">/</span> <span class="va">diff_time</span>
-
-    <span class="op">}</span>
-    <span class="va">sd_diff_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">diff_log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">var_diff_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_diff_log_past_count</span><span class="op">^</span><span class="fl">2</span>
-    <span class="va">precision_diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_diff_log_past_count</span><span class="op">)</span>
-
-    <span class="va">rate</span>  <span class="op">&lt;-</span> <span class="fl">0.1</span>
-    <span class="va">shape</span> <span class="op">&lt;-</span> <span class="va">precision_diff_log_past_count</span> <span class="op">*</span> <span class="va">rate</span>
-
-    <span class="kw">function</span> <span class="op">(</span><span class="va">chain</span> <span class="op">=</span> <span class="va">chain</span><span class="op">)</span> <span class="op">{</span>
-
-      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>.RNG.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">rngs</span>, <span class="fl">1</span><span class="op">)</span>,
-           .RNG.seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1e+06</span>, <span class="fl">1</span><span class="op">)</span>,
-            mu       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">mean_log_past_count</span>, <span class="va">sd_log_past_count</span><span class="op">)</span>, 
-            tau      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span><span class="fl">1</span>, shape <span class="op">=</span> <span class="va">shape</span>, rate <span class="op">=</span> <span class="va">rate</span><span class="op">)</span><span class="op">)</span>
-
-    <span class="op">}</span>
-
-  <span class="op">}</span>
-
-  <span class="va">jags_model</span> <span class="op">&lt;-</span> <span class="st">[1689 chars quoted with '"']</span>
-
-  <span class="fu"><a href="../reference/jags_ss.html">jags_ss</a></span><span class="op">(</span>main            <span class="op">=</span> <span class="va">main</span>, 
-          model_name      <span class="op">=</span> <span class="st">"jags_RW"</span>, 
-          dataset         <span class="op">=</span> <span class="va">dataset</span>, 
-          settings        <span class="op">=</span> <span class="va">settings</span>,
-          control_runjags <span class="op">=</span> <span class="va">control_runjags</span>, 
-          jags_model      <span class="op">=</span> <span class="va">jags_model</span>,
-          monitor         <span class="op">=</span> <span class="va">monitor</span>, 
-          inits           <span class="op">=</span> <span class="va">inits</span>, 
-          quiet           <span class="op">=</span> <span class="va">quiet</span>, 
-          verbose         <span class="op">=</span> <span class="va">verbose</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">jags_RW</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">main</span>            <span class="op">=</span> <span class="st">"."</span>, </span>
+<span>                     <span class="va">dataset</span>         <span class="op">=</span> <span class="st">"all"</span>,  </span>
+<span>                     <span class="va">settings</span>        <span class="op">=</span> <span class="fu"><a href="../reference/directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                     <span class="va">control_runjags</span> <span class="op">=</span> <span class="fu"><a href="../reference/runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>                     <span class="va">quiet</span>           <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>                     <span class="va">verbose</span>         <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
+<span> </span>
+<span>  <span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/messageq.html">messageq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"  -jags_RW for "</span>, <span class="va">dataset</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="va">quiet</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">monitor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"tau"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">inits</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">data</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>    <span class="va">rngs</span>       <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"base::Wichmann-Hill"</span>, <span class="st">"base::Marsaglia-Multicarry"</span>, <span class="st">"base::Super-Duper"</span>, <span class="st">"base::Mersenne-Twister"</span><span class="op">)</span></span>
+<span>    <span class="va">past_N</span>     <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_N</span> </span>
+<span>    <span class="va">past_count</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_count</span> </span>
+<span>    <span class="va">past_moon</span>  <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">past_moon</span></span>
+<span></span>
+<span>    <span class="va">log_past_count</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">past_count</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="va">mean_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span></span>
+<span>    <span class="va">sd_log_past_count</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">past_N</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>      <span class="va">diff_count</span>             <span class="op">&lt;-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>      <span class="va">diff_time</span>              <span class="op">&lt;-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">past_moon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> </span>
+<span>      <span class="va">diff_log_past_count</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">diff_count</span> <span class="op">/</span> <span class="va">diff_time</span></span>
+<span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">sd_diff_log_past_count</span>        <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">diff_log_past_count</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">var_diff_log_past_count</span>       <span class="op">&lt;-</span> <span class="va">sd_diff_log_past_count</span><span class="op">^</span><span class="fl">2</span></span>
+<span>    <span class="va">precision_diff_log_past_count</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">var_diff_log_past_count</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">rate</span>  <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span>    <span class="va">shape</span> <span class="op">&lt;-</span> <span class="va">precision_diff_log_past_count</span> <span class="op">*</span> <span class="va">rate</span></span>
+<span></span>
+<span>    <span class="kw">function</span> <span class="op">(</span><span class="va">chain</span> <span class="op">=</span> <span class="va">chain</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>.RNG.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">rngs</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>           .RNG.seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1e+06</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>            mu       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">mean_log_past_count</span>, <span class="va">sd_log_past_count</span><span class="op">)</span>, </span>
+<span>            tau      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html" class="external-link">rgamma</a></span><span class="op">(</span><span class="fl">1</span>, shape <span class="op">=</span> <span class="va">shape</span>, rate <span class="op">=</span> <span class="va">rate</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="op">}</span></span>
+<span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">jags_model</span> <span class="op">&lt;-</span> <span class="st">"model { </span></span>
+<span><span class="st"> </span></span>
+<span><span class="st">    # priors</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    log_past_count           &lt;- log(past_count + 0.1)</span></span>
+<span><span class="st">    mean_log_past_count      &lt;- mean(log_past_count)</span></span>
+<span><span class="st">    sd_log_past_count        &lt;- max(c(sd(log_past_count) * sqrt(2), 0.01))</span></span>
+<span><span class="st">    var_log_past_count       &lt;- sd_log_past_count^2</span></span>
+<span><span class="st">    precision_log_past_count &lt;- 1/(var_log_past_count)</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    diff_count[1]          &lt;- log_past_count[2] - log_past_count[1]</span></span>
+<span><span class="st">    diff_time[1]           &lt;- past_moon[2] - past_moon[1] </span></span>
+<span><span class="st">    diff_log_past_count[1] &lt;- diff_count[1] / diff_time[1]</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    for (i in 2:(past_N - 1)) {</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      diff_count[i]          &lt;- log_past_count[i + 1] - log_past_count[i]</span></span>
+<span><span class="st">      diff_time[i]           &lt;- past_moon[i + 1] - past_moon[i] </span></span>
+<span><span class="st">      diff_log_past_count[i] &lt;- diff_count[i] / diff_time[i]</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    }    </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    sd_diff_log_past_count        &lt;- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))</span></span>
+<span><span class="st">    var_diff_log_past_count       &lt;- sd_diff_log_past_count^2</span></span>
+<span><span class="st">    precision_diff_log_past_count &lt;- 1/(var_diff_log_past_count)</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    rate  &lt;- 0.1</span></span>
+<span><span class="st">    shape &lt;- precision_diff_log_past_count * rate</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    mu  ~ dnorm(mean_log_past_count, precision_log_past_count); </span></span>
+<span><span class="st">    tau ~ dgamma(shape, rate); </span></span>
+<span><span class="st">   </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    # initial state</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    X[1]          &lt;- mu;</span></span>
+<span><span class="st">    pred_count[1] &lt;- max(c(exp(X[1]) - 0.1, 0.00001));</span></span>
+<span><span class="st">    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    # through time</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    for(i in 2:N) {</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      # Process model</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      predX[i]      &lt;- X[i-1];</span></span>
+<span><span class="st">      checkX[i]     ~  dnorm(predX[i], tau); </span></span>
+<span><span class="st">      X[i]          &lt;- min(c(checkX[i], log(ntraps[i] + 1))); </span></span>
+<span><span class="st">      pred_count[i] &lt;- max(c(exp(X[i]) - 0.1, 0.00001));</span></span>
+<span><span class="st">   </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      # observation model</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); </span></span>
+<span><span class="st"></span></span>
+<span><span class="st">    }</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  }"</span></span>
+<span></span>
+<span>  <span class="fu"><a href="../reference/jags_ss.html">jags_ss</a></span><span class="op">(</span>main            <span class="op">=</span> <span class="va">main</span>, </span>
+<span>          model_name      <span class="op">=</span> <span class="st">"jags_RW"</span>, </span>
+<span>          dataset         <span class="op">=</span> <span class="va">dataset</span>, </span>
+<span>          settings        <span class="op">=</span> <span class="va">settings</span>,</span>
+<span>          control_runjags <span class="op">=</span> <span class="va">control_runjags</span>, </span>
+<span>          jags_model      <span class="op">=</span> <span class="va">jags_model</span>,</span>
+<span>          monitor         <span class="op">=</span> <span class="va">monitor</span>, </span>
+<span>          inits           <span class="op">=</span> <span class="va">inits</span>, </span>
+<span>          quiet           <span class="op">=</span> <span class="va">quiet</span>, </span>
+<span>          verbose         <span class="op">=</span> <span class="va">verbose</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Running this model in the forecasting pipeline produces standard output (allowing it to be integrated with the other cast output) and highlights the starting point for more mechanistic time series models, starting with the logistic growth model (<code>jags_logistic</code>)</p>
 </div>
 </div>
@@ -362,7 +476,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer>

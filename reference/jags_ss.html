@@ -78,46 +78,67 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">jags_ss</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  model_name <span class="op">=</span> <span class="cn">NULL</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  control_runjags <span class="op">=</span> <span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>,
-  jags_model <span class="op">=</span> <span class="cn">NULL</span>,
-  monitor <span class="op">=</span> <span class="cn">NULL</span>,
-  inits <span class="op">=</span> <span class="cn">NULL</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">jags_ss</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  control_runjags <span class="op">=</span> <span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  jags_model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  monitor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inits <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>model_name</dt>
 <dd><p><code>character</code> value name of the model name to save in the cast tab.</p></dd>
+
+
 <dt>dataset</dt>
 <dd><p><code>character</code> value name of the rodent data set, such as (<code>"all"</code> or <code>"controls"</code>).</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
+
 <dt>control_runjags</dt>
 <dd><p><code>list</code> of arguments passed to <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></code> via <code><a href="runjags_control.html">runjags_control</a></code></p></dd>
+
+
 <dt>jags_model</dt>
 <dd><p><code>character</code> value of the model. See <code>Examples</code>.</p></dd>
+
+
 <dt>monitor</dt>
 <dd><p><code>character</code> vector of the names of the variables to monitor. See <code>Examples</code> and <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></code>.</p></dd>
+
+
 <dt>inits</dt>
 <dd><p><code>function</code>, <code>character</code> vector, or <code>list</code> of values (including random number generation components) for initializing runs of the model. See <code>Examples</code> and <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></code>.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> value indicating if the function should be quiet.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information or not (and thus just the tidy messages).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>list</code> of [1] model metadata <code>list</code> (<code>"metadata"</code>), [2] cast summary <code>data.frame</code> (<code>"cast_tab"</code>), [3] <code>list</code> of model fit objects (<code>"model_fits"</code>), and [4] <code>list</code> of model cast objects (<code>"model_casts"</code>).</p>
+    
+
+<p><code>list</code> of [1] model metadata <code>list</code> (<code>"metadata"</code>), [2] cast summary <code>data.frame</code> (<code>"cast_tab"</code>), [3] <code>list</code> of model fit objects (<code>"model_fits"</code>), and [4] <code>list</code> of model cast objects (<code>"model_casts"</code>).</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -141,7 +162,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

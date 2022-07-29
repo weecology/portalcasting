@@ -78,33 +78,44 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">NMME_urls</span><span class="op">(</span>
-  start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2050-01-01"</span><span class="op">)</span>,
-  model <span class="op">=</span> <span class="st">"ENSMEAN"</span>,
-  lat <span class="op">=</span> <span class="fl">31.9555</span>,
-  lon <span class="op">=</span> <span class="op">-</span><span class="fl">109.0744</span>,
-  freq <span class="op">=</span> <span class="st">"daily"</span>,
-  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tasmin"</span>, <span class="st">"tasmean"</span>, <span class="st">"tasmax"</span>, <span class="st">"pr"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMME_urls</span><span class="op">(</span></span>
+<span>  start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2050-01-01"</span><span class="op">)</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"ENSMEAN"</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fl">31.9555</span>,</span>
+<span>  lon <span class="op">=</span> <span class="op">-</span><span class="fl">109.0744</span>,</span>
+<span>  freq <span class="op">=</span> <span class="st">"daily"</span>,</span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tasmin"</span>, <span class="st">"tasmean"</span>, <span class="st">"tasmax"</span>, <span class="st">"pr"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>start, end</dt>
 <dd><p><code>Date</code> for the start and end of the cast.</p></dd>
+
+
 <dt>model</dt>
 <dd><p><code>character</code> value of the model to use, one of <code>"ENSMEAN"</code>, (Multi-Model Mean), <code>"CMC1"</code> (CMC1-CanCM3), <code>"CMC2"</code> (CMC2-CanCM4), <code>"CFCSv2"</code> (NCEP-CFSv2), <code>"GFDL"</code> (GFDL-CM2.1), <code>"GFDL-FLOR"</code> (GFDL-FLOR), or <code>"NCAR"</code> (NCAR-CCSM4). Presently can only take one value.</p></dd>
+
+
 <dt>lat, lon</dt>
 <dd><p><code>numeric</code> latitude and longitude values used to downscale the model. Presently can only take one value for each.</p></dd>
+
+
 <dt>freq</dt>
 <dd><p><code>character</code> value of the frequency of the data, can be <code>"daily"</code> or <code>"XmonthAverage"</code>, where <code>"X"</code> is a number between <code>1</code> and <code>7</code>. Presently can only take one value.</p></dd>
+
+
 <dt>data</dt>
 <dd><p><code>character</code> value of the type of data, one of <code>"tasmin"</code> (minimum temperature), <code>"tasmean"</code> (mean temperature), <code>"tasmax"</code> (maximum temperature), <code>"pr"</code> (precipitation), <code>"dps"</code> (dew point), <code>"rsds"</code> (shortwave radiation; sun intensity), <code>"was"</code> (wind speed).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Named <code>character</code> vector of URLs, or <code>NULL</code> if <code>data</code>, <code>freq</code>, or <code>model</code> is <code>NULL</code>.</p>
+    
+
+<p>Named <code>character</code> vector of URLs, or <code>NULL</code> if <code>data</code>, <code>freq</code>, or <code>model</code> is <code>NULL</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -113,9 +124,8 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>  <span class="fu">NMME_urls</span><span class="op">(</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span>  <span class="fu">NMME_urls</span><span class="op">(</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -129,7 +139,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

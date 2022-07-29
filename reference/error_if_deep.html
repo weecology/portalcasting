@@ -78,28 +78,30 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">error_if_deep</span><span class="op">(</span><span class="va">lev</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">error_if_deep</span><span class="op">(</span><span class="va">lev</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>lev</dt>
 <dd><p>The number of frames back in the stack where the request needs to be able to be evaluated.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Throws an error if the function is called in a place where it cannot operate and returns <code>NULL</code> otherwise.</p>
+    
+
+<p>Throws an error if the function is called in a place where it cannot operate and returns <code>NULL</code> otherwise.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
- <span class="co"># will error:</span>
- <span class="co"># error_if_deep(-10)</span>
- <span class="op">}</span>
- <span class="fu">error_if_deep</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span> <span class="co"># will error:</span></span>
+<span> <span class="co"># error_if_deep(-10)</span></span>
+<span> <span class="op">}</span></span>
+<span> <span class="fu">error_if_deep</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -113,7 +115,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -78,45 +78,53 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rodent_species</span><span class="op">(</span>set <span class="op">=</span> <span class="cn">NULL</span>, nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span>
-
-<span class="fu">all_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span>
-
-<span class="fu">base_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span>
-
-<span class="fu">eval_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rodent_species</span><span class="op">(</span>set <span class="op">=</span> <span class="cn">NULL</span>, nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">all_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">base_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">eval_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">FALSE</span>, total <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="st">"abbreviation"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>set</dt>
 <dd><p><code>character</code> input of a specified set of species. Options include <code>all</code> (all species included) and <code>base</code> (all but PI).</p></dd>
+
+
 <dt>nadot</dt>
 <dd><p><code>logical</code> indicator if the dot should be added to the <code>"NA"</code> species name. Defaults to <code>FALSE</code>.</p></dd>
+
+
 <dt>total</dt>
 <dd><p><code>logical</code> value indicating if <code>"total"</code> should be added or not.</p></dd>
+
+
 <dt>type</dt>
 <dd><p><code>character</code> value indicating the output type. Current options include <code>'abbreviation'</code> (default, two-letter abbreviation), <code>'Latin'</code> (full scientific names), and  <code>'table'</code> a <code>data.frame</code> of the abbreviations and Latin names.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>character</code> vector of species abbreviations.</p>
+    
+
+<p><code>character</code> vector of species abbreviations.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="fu">rodent_species</span><span class="op">(</span><span class="op">)</span>
- <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Latin"</span><span class="op">)</span>
- <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span>
- <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"table"</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
- <span class="fu">rodent_species</span><span class="op">(</span>set <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
- <span class="fu">all_species</span><span class="op">(</span><span class="op">)</span>
- <span class="fu">all_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
- <span class="fu">all_species</span><span class="op">(</span>total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
- <span class="fu">base_species</span><span class="op">(</span><span class="op">)</span>
- <span class="fu">eval_species</span><span class="op">(</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="fu">rodent_species</span><span class="op">(</span><span class="op">)</span></span>
+<span> <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Latin"</span><span class="op">)</span></span>
+<span> <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span></span>
+<span> <span class="fu">rodent_species</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"table"</span>, total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span> <span class="fu">rodent_species</span><span class="op">(</span>set <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
+<span> <span class="fu">all_species</span><span class="op">(</span><span class="op">)</span></span>
+<span> <span class="fu">all_species</span><span class="op">(</span>nadot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span> <span class="fu">all_species</span><span class="op">(</span>total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span> <span class="fu">base_species</span><span class="op">(</span><span class="op">)</span></span>
+<span> <span class="fu">eval_species</span><span class="op">(</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -130,7 +138,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -97,7 +97,7 @@
             <h3 data-toc-skip class="subtitle">Set Up and Use a Portal Predictions Directory</h3>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">01 June, 2022</h4>
+            <h4 data-toc-skip class="date">29 July, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/getting_started.Rmd" class="external-link"><code>vignettes/getting_started.Rmd</code></a></small>
       <div class="hidden name"><code>getting_started.Rmd</code></div>
@@ -112,9 +112,9 @@
 </h2>
 <p>First things first, make sure you have the current version of <strong>portalcasting</strong> installed from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"weecology/portalcasting"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://weecology.github.io/portalcasting">portalcasting</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"weecology/portalcasting"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://weecology.github.io/portalcasting">portalcasting</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="create-a-portal-predictions-directory">Create a Portal Predictions directory<a class="anchor" aria-label="anchor" href="#create-a-portal-predictions-directory"></a>
@@ -123,8 +123,8 @@
 <p>Specialized versions of <code>setup_dir</code> are tailored for local model exploration, development, and testing (“<code>setup_sandbox</code>”) and for use in the real-deal pipeline (“<code>setup_production</code>”). The settings are fairly similar, although <code>setup_sandbox</code> has extra rigid argument checking turned off and extra verbose messaging turned on. <code>setup_production</code> provides a robust starting point for a user interested in seeing the range of what the package can do, with specific error checking and verbose messaging, so we use it here. Note that downloading the full directory does take a few minutes.</p>
 <p>There are many arguments available for the user to tailor the setup of the directory, which can be found on the help page (<code><a href="../reference/directory-setup.html">?setup_dir</a></code>). Perhaps the most important argument is <code>main</code> which allows the user to point the directory to any particular location. The default is <code>main = "."</code>, which is basically “the present directory”. A common implementation would be to create a directory in the home directory of a computer (indicated by <code>"~"</code>) and within a named folder, say “portalcast_directory”, which would be done with <code>main = "~/portalcast_directory"</code>, or by setting <code>main &lt;- "~/portalcast_directory"</code> and then using <code>main = main</code> throughout the code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">main</span> <span class="op">&lt;-</span> <span class="st">"~/portalcast_directory"</span>
-<span class="fu"><a href="../reference/directory-setup.html">setup_production</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">main</span> <span class="op">&lt;-</span> <span class="st">"~/portalcast_directory"</span></span>
+<span><span class="fu"><a href="../reference/directory-setup.html">setup_production</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="run-a-cast-forecast-or-hindcast">Run a cast (forecast or hindcast)<a class="anchor" aria-label="anchor" href="#run-a-cast-forecast-or-hindcast"></a>
@@ -132,7 +132,7 @@
 <p>The <code><a href="../reference/portalcast.html">portalcast()</a></code> function controls the running of potentially multiple models across different data sets for multiple time steps. They can involve what we have classically called “forecasts” (from the present time step) and “hindcast” (from a time step before the current one). It will prepare the data (rodents, covariates, newmoons, metadata) as needed, verify that the requested models are available to run, run the models, and compile the output.</p>
 <p>Presently, the preloaded model set includes <a href="https://weecology.github.io/portalcasting/articles/models.html">eight models</a>: ESSS, AutoArima, NaiveArima, nbGARCH, nbsGARCH, pevGARCH, jags_logistic, and jagsRW. The jags and GARCH models all take a bit longer to run (nbGARCH less time than nbsGARCH less time than pevGARCH, all less than jagsRW), so for the purposes of illustration, we will only run ESS, AutoArima, and NaiveArima models, which we indicate through input to the <code>models</code> argument:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESSS"</span>, <span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESSS"</span>, <span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>If the user does not specify the models, all of the prefab models are run. Note that we need to point <code>portalcast</code> to the directory of interest via the <code>main</code> argument. This allows us to go between different directories from the same R session with relative ease, but it does mean that <code>main</code> is a key argument in nearly all functions.</p>
 </div>
 <div class="section level2">
@@ -141,13 +141,13 @@
 <p>Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for casts. The functions for both of these figure types point directly to the cast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run).</p>
 <p>Time series plots are constructed using <code>plot_cast_ts</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="imgs/getting_started_fig1.jpg" width="600" alt=""><p class="caption">Time series plot of the total rodents forecast (mean with 95% CI) on the control plots</p>
 </div>
 <p>Point-in-time prediction plots are constructed using <code>plot_cast_point</code>, and default to the next step ahead in time:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="imgs/getting_started_fig2.jpg" width="600" alt=""><p class="caption">Point-in-time forecast (mean with 95% CI) for all species and total rodents on the control plots</p>
 </div>
@@ -157,15 +157,15 @@
 </h2>
 <p>We can then step back to an earlier date by simply setting the <code>end_moons</code> or <code>end_moon</code> (depending on the function, some can take more than one value) to earlier than the present time.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESSS"</span>, <span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span>, end_moons <span class="op">=</span> <span class="fl">512</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/portalcast.html">portalcast</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESSS"</span>, <span class="st">"AutoArima"</span>, <span class="st">"NaiveArima"</span><span class="op">)</span>, end_moons <span class="op">=</span> <span class="fl">512</span><span class="op">)</span></span></code></pre></div>
 <p>Because the output from this run of <code>portalcast</code> is most recent, the plot functions default to them, although it is also simple to point to them directly using the arguments available (<code><a href="../reference/plot_cast_ts.html">?plot_cast_ts</a></code> and <code><a href="../reference/plot_cast_point.html">?plot_cast_point</a></code>).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_cast_ts.html">plot_cast_ts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="imgs/getting_started_fig3.jpg" width="600" alt=""><p class="caption">Time series plot of the total rodents forecast (mean with 95% CI) on the control plots with observations after the forecast origin</p>
 </div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span>, with_census <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_cast_point.html">plot_cast_point</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_set <span class="op">=</span> <span class="st">"controls"</span>, with_census <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="imgs/getting_started_fig4.jpg" width="600" alt=""><p class="caption">Point-in-time forecast (mean with 95% CI) for all species and total rodents on the control plots with observations (blue squares)</p>
 </div>
@@ -175,27 +175,27 @@
 </h2>
 <p>A series of <code>read_&lt;name&gt;</code> functions are available for simple loading of the data sets into R from the directory. A generalized <code>read_data</code> function includes an argument for which data set to load (“rodents” [and then which specific data set], “covariates”, “historical_covariates”, “forecast_covariates”, “climate_forecasts”, “moons”, or “metadata”), and each of those data sets also has a specific function, such as <code>read_moons</code>. <code>read_cast_metadata</code> has a function itself, but is not called via <code>read_data</code> currently.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"all_interp"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"controls_interp"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"covariates"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"historical_covariates"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"forecast_covariates"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"climate_forecasts"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"moons"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/read_data.html">read_rodents</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_rodents_table</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_covariates</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_historical_covariates</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_climate_forecasts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_forecast_covariates</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_moons</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read_data.html">read_metadata</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span>
-<span class="fu"><a href="../reference/read-cast-output.html">read_cast_metadata</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"controls"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"all_interp"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"rodents_table"</span>, data_set <span class="op">=</span> <span class="st">"controls_interp"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"covariates"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"historical_covariates"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"forecast_covariates"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"climate_forecasts"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"moons"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_data</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, data_name <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_rodents</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_rodents_table</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_covariates</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_historical_covariates</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_climate_forecasts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_forecast_covariates</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_moons</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_data.html">read_metadata</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read-cast-output.html">read_cast_metadata</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="reading-in-cast-output-to-the-r-console-from-the-directory">Reading in cast output to the R console from the directory<a class="anchor" aria-label="anchor" href="#reading-in-cast-output-to-the-r-console-from-the-directory"></a>
@@ -203,10 +203,10 @@
 <p>Presently, two functions are available for interfacing with saved cast output.</p>
 <p><code>select_casts</code> provides a simple interface to the cast metadata file with quick filtering:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/select_casts.html">select_casts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="st">"AutoArima"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_casts.html">select_casts</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, models <span class="op">=</span> <span class="st">"AutoArima"</span><span class="op">)</span></span></code></pre></div>
 <p>And <code>read_cast_tab</code> reads in the cast_tab output from a given cast, as indicated by its cast_id, which is displayed in the output from <code>select_casts</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/read-cast-output.html">read_cast_tab</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, cast_id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/read-cast-output.html">read_cast_tab</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span>, cast_id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -227,7 +227,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer>

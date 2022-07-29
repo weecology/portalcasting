@@ -80,55 +80,74 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">portalcast</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  models <span class="op">=</span> <span class="fu"><a href="prefabricated_models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,
-  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,
-  end_moons <span class="op">=</span> <span class="cn">NULL</span>,
-  start_moon <span class="op">=</span> <span class="fl">217</span>,
-  cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">cast</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  models <span class="op">=</span> <span class="fu"><a href="prefabricated_models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,
-  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,
-  end_moon <span class="op">=</span> <span class="cn">NULL</span>,
-  start_moon <span class="op">=</span> <span class="fl">217</span>,
-  cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">portalcast</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  models <span class="op">=</span> <span class="fu"><a href="prefabricated_models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  end_moons <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start_moon <span class="op">=</span> <span class="fl">217</span>,</span>
+<span>  cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cast</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  models <span class="op">=</span> <span class="fu"><a href="prefabricated_models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated_datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  end_moon <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start_moon <span class="op">=</span> <span class="fl">217</span>,</span>
+<span>  cast_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>models</dt>
 <dd><p><code>character</code> vector of name(s) of model(s) to include.</p></dd>
+
+
 <dt>datasets</dt>
 <dd><p><code>character</code> vector of dataset names to be created.</p></dd>
+
+
 <dt>end_moons, end_moon</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) newmoon number(s) of the last sample(s) to be included. Default value is <code>NULL</code>, which equates to the most recently included sample. <br><strong><code>end_moons</code> allows for multiple moons, <code>end_moon</code> can only be one value</strong>.</p></dd>
+
+
 <dt>start_moon</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) newmoon number of the first sample to be included. Default value is <code>217</code>, corresponding to <code>1995-01-01</code>.</p></dd>
+
+
 <dt>cast_date</dt>
 <dd><p><code>Date</code> from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using <code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></code>.</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> indicator if progress messages should be quieted.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information or not (and thus just the tidy messages).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Results are saved to files, <code>NULL</code> is returned <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.</p>
+    
+
+<p>Results are saved to files, <code>NULL</code> is returned <code><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></code>-ly.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -137,13 +156,12 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">portalcast</span><span class="op">(</span>models <span class="op">=</span> <span class="st">"ESSS"</span><span class="op">)</span>
-  <span class="fu">cast</span><span class="op">(</span><span class="op">)</span>
- <span class="co"># }</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
+<span>  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">portalcast</span><span class="op">(</span>models <span class="op">=</span> <span class="st">"ESSS"</span><span class="op">)</span></span>
+<span>  <span class="fu">cast</span><span class="op">(</span><span class="op">)</span></span>
+<span> <span class="co"># }</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -157,7 +175,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -86,94 +86,109 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">jags_logistic</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"dm_controls"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  control_runjags <span class="op">=</span> <span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">jags_RW</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  control_runjags <span class="op">=</span> <span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">AutoArima</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">NaiveArima</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">ESSS</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">nbGARCH</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">nbsGARCH</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">pevGARCH</span><span class="op">(</span>
-  main <span class="op">=</span> <span class="st">"."</span>,
-  dataset <span class="op">=</span> <span class="st">"all"</span>,
-  lag <span class="op">=</span> <span class="fl">6</span>,
-  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">jags_logistic</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"dm_controls"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  control_runjags <span class="op">=</span> <span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">jags_RW</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  control_runjags <span class="op">=</span> <span class="fu"><a href="runjags_control.html">runjags_control</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">AutoArima</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">NaiveArima</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ESSS</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">nbGARCH</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">nbsGARCH</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pevGARCH</span><span class="op">(</span></span>
+<span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  lag <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>main</dt>
 <dd><p><code>character</code> value of the name of the main component of the directory tree.</p></dd>
+
+
 <dt>dataset</dt>
 <dd><p><code>character</code> value name of the rodent data set, such as (<code>"all"</code> or <code>"controls"</code>).</p></dd>
+
+
 <dt>settings</dt>
 <dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+
+
 <dt>control_runjags</dt>
 <dd><p><code>list</code> of arguments passed to <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></code> via <code><a href="runjags_control.html">runjags_control</a></code>.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p><code>logical</code> value indicating if the function should be quiet.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator of whether or not to print out all of the information or not (and thus just the tidy messages).</p></dd>
+
+
 <dt>lag</dt>
 <dd><p><code>integer</code> (or integer <code>numeric</code>) of the lag time to use for the covariates.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>list</code> of</p><ol><li><p>model metadata <code>list</code> (<code>"metadata"</code>)</p></li>
+    
+
+<p><code>list</code> of</p><ol><li><p>model metadata <code>list</code> (<code>"metadata"</code>)</p></li>
 <li><p>cast summary <code>data.frame</code> (<code>"cast_tab"</code>)</p></li>
 <li><p><code>list</code> of model fit objects (<code>"model_fits"</code>)</p></li>
 <li><p><code>list</code> of model cast objects (<code>"model_casts"</code>)</p></li>
@@ -194,19 +209,18 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code> <span class="co"># \donttest{</span>
-  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">AutoArima</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">NaiveArima</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">ESSS</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">nbGARCH</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">nbsGARCH</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">pevGARCH</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">jags_RW</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">jags_logistic</span><span class="op">(</span><span class="op">)</span>
- <span class="co"># }</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
+<span>  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">AutoArima</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">NaiveArima</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">ESSS</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">nbGARCH</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">nbsGARCH</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">pevGARCH</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">jags_RW</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">jags_logistic</span><span class="op">(</span><span class="op">)</span></span>
+<span> <span class="co"># }</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -220,7 +234,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
