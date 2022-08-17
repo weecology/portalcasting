@@ -93,7 +93,7 @@ portalcast <- function (main         = ".",
 
   }
 
-  if(FALSE) {
+  if(multiprocess != FALSE) {
     #This is breaking as of now since it just overwrites preparatory data.
     mclapply(1:nend_moons, cast_f, mc.cores = detectCores())
   } else {
@@ -138,24 +138,7 @@ cast <- function (main       = ".",
   moons <- read_moons(main     = main,
                       settings = settings)
 
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon       <- moons$newmoonnumber[which_last_moon]
-  end_moon        <- ifnull(end_moon, last_moon)
-
-  messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
-
-  if (end_moon != last_moon) {
-
-    fill_data(main     = main, 
-              datasets = datasets,
-              models   = models,
-              settings = settings,
-              multiprocess = multiprocess,
-              quiet    = quiet, 
-              verbose  = verbose)
-
-  }
-
+  
   messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
 
   models_scripts <- models_to_cast(main     = main, 
