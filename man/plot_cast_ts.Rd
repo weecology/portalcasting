@@ -12,7 +12,7 @@ plot_cast_ts(
   dataset = NULL,
   model = NULL,
   end_moon = NULL,
-  species = "total",
+  species = NULL,
   start_moon = 217,
   quiet = FALSE
 )

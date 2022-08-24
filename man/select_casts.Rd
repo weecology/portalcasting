@@ -12,8 +12,7 @@ select_casts(
   end_moons = NULL,
   models = NULL,
   datasets = NULL,
-  quiet = FALSE,
-  include_interp = FALSE
+  quiet = FALSE
 )
 }
 \arguments{
@@ -32,8 +31,6 @@ select_casts(
 \item{datasets}{\code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{include_interp}{\code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.}
 }
 \value{
 \code{data.frame} of the \code{cast_tab}.

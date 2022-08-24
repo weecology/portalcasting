@@ -2,6 +2,29 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.43.0](https://github.com/weecology/portalcasting/releases/tag/v0.43.0)
+*2022-05-31*
+
+
+### Trim text in model vignette
+* Vignette now pulls text from the the model list, and loops the model list, rather than have the raw text in the markdown doc.
+* This locates the description in a place that is accessible to other content generation (e.g., the portal forecast website)
+
+# [portalcasting 0.42.0](https://github.com/weecology/portalcasting/releases/tag/v0.42.0)
+*2022-05-27*
+
+
+### Data interpolation moved from "dataset" to "within model"
+* Patching, not all hit with previous release
+
+# [portalcasting 0.41.0](https://github.com/weecology/portalcasting/releases/tag/v0.41.0)
+*2022-05-26*
+
+
+### Data interpolation moved from "dataset" to "within model"
+* Previously, datasets included, for example `all` and `all_interp`. Now, only `all` exists and models interpolate as needed.
+
+
 # [portalcasting 0.40.0](https://github.com/weecology/portalcasting/releases/tag/v0.40.0)
 *2022-05-12*
 

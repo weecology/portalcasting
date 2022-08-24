@@ -27,7 +27,6 @@ prep_dataset(
   effort = TRUE,
   species = base_species(),
   total = TRUE,
-  interpolate = FALSE,
   save = TRUE,
   overwrite = TRUE,
   quiet = FALSE,
@@ -78,8 +77,6 @@ The default \code{time = "newmoon"} produces an equispaced observation timestep,
 \item{species}{\code{character}-valued vector of species names to include.}
 
 \item{total}{\code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included.}
-
-\item{interpolate}{\code{logical} value indicating if the data should be interpolated to fill in \code{NA} values (using \code{\link[forecast]{na.interp}}).}
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
 

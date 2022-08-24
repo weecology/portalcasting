@@ -13,7 +13,6 @@ plot_casts_err_lead(
   models = NULL,
   ensemble = TRUE,
   dataset = "controls",
-  include_interp = TRUE,
   species = NULL
 )
 }
@@ -33,8 +32,6 @@ plot_casts_err_lead(
 \item{ensemble}{\code{logical} indicator of if an ensemble should be included. Presently only the unweighted average. See \code{\link{ensemble_casts}}.}
 
 \item{dataset}{\code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
-
-\item{include_interp}{\code{logical} indicator of if the models fit using interpolated data should be included with the models that did not.}
 
 \item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.}
 }

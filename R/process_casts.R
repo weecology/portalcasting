@@ -76,7 +76,7 @@ measure_cast_level_error <- function (cast_tab = NULL) {
 #'  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
 #'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating if the observation was within the prediction interval. 
 #'
-#' @details If an interpolated data set is used to fit a model, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
+#' @details If a model interpolated a data set, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #' 
@@ -248,6 +248,10 @@ read_cast_tab <- function (main     = ".",
   colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "dataset"
   # patch
 
+  # patch
+  out$dataset <- gsub("_interp", "", out$dataset)
+  # patch
+
   na_conformer(out)
 
 }
@@ -416,8 +420,6 @@ read_model_cast <- function (main     = ".",
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param include_interp \code{logical} indicator of if the basic data set names should also be inclusive of the associated interpolated data sets.
-#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{data.frame} of the \code{cast_tab}.
@@ -431,8 +433,7 @@ select_casts <- function (main           = ".",
                           end_moons      = NULL, 
                           models         = NULL, 
                           datasets       = NULL,
-                          quiet          = FALSE, 
-                          include_interp = FALSE) {
+                          quiet          = FALSE) {
 
 
   casts_metadata <- read_casts_metadata(main     = main,
@@ -455,20 +456,10 @@ select_casts <- function (main           = ".",
   models      <- ifnull(models, umodels)
   match_model <- casts_metadata$model %in% models
   
-  udatasets <- unique(casts_metadata$dataset[casts_metadata$QAQC])
+  udatasets <- gsub("_interp", "", unique(casts_metadata$dataset[casts_metadata$QAQC]))
   datasets  <- ifnull(datasets, udatasets)
 
-  if (include_interp) {
-
-    datasets <- unique(c(datasets, paste0(datasets, "_interp")))
-
-  } else {
-
-    datasets <- datasets[!grepl("interp", datasets)]
-
-  }
-
-  match_dataset <- casts_metadata$dataset %in% datasets
+  match_dataset <- gsub("_interp", "", casts_metadata$dataset) %in% datasets
   
   QAQC <- casts_metadata$QAQC
 
@@ -554,7 +545,7 @@ save_cast_output <- function (cast     = NULL,
                               end_moon              = cast$metadata$time$end_moon,
                               lead_time             = cast$metadata$time$lead_time,
                               model                 = cast$metadata$models,
-                              dataset               = cast$metadata$datasets,
+                              dataset               = gsub("_interp", "", cast$metadata$datasets),
                               portalcasting_version = pc_version,
                               QAQC                  = TRUE,
                               notes                 = NA)

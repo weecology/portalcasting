@@ -6,12 +6,9 @@
 \alias{prefab_dataset_controls}
 \title{Provide the Names or Controls for the Prefab Rodent Datasets}
 \usage{
-prefab_datasets(interpolate = NULL)
+prefab_datasets()
 
-prefab_dataset_controls(interpolate = NULL)
-}
-\arguments{
-\item{interpolate}{\code{logical} value indicating if the interpolated data only should be listed (\code{interpolate = TRUE}), if the non-interpolated data only should be listed (\code{interpolate = FALSE}), or if both should be listed (\code{interpolate = NULL}, default).}
+prefab_dataset_controls()
 }
 \value{
 \code{prefab_datasets}: \code{character} vector of dataset names. \cr
