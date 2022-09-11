@@ -21,6 +21,8 @@
 #'
 #' @param datasets \code{character} vector of dataset names to be created. 
 #'
+#' @param multiprocess \code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.
+#' 
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
@@ -36,15 +38,16 @@
 #'
 #' @export
 #'
-portalcast <- function (main       = ".", 
-                        models     = prefab_models(), 
-                        datasets   = prefab_datasets(),
-                        end_moons  = NULL, 
-                        start_moon = 217, 
-                        cast_date  = Sys.Date(),
-                        settings   = directory_settings(),
-                        quiet      = FALSE,
-                        verbose    = FALSE){
+portalcast <- function (main         = ".", 
+                        models       = prefab_models(), 
+                        datasets     = prefab_datasets(),
+                        end_moons    = NULL, 
+                        start_moon   = 217, 
+                        cast_date    = Sys.Date(),
+                        settings     = directory_settings(),
+                        multiprocess = FALSE,
+                        quiet        = FALSE,
+                        verbose      = FALSE){
 
 #
 # the datasets here should come from the models selected
@@ -55,6 +58,20 @@ portalcast <- function (main       = ".",
 
   messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
 
+  systemType <- .Platform$OS.type
+
+  if (multiprocess != TRUE) {
+    systemType <- multiprocess
+  }
+  if (multiprocess != FALSE) {
+    messageq(message_break(), "Running on ", systemType, " System", message_break())
+    if(systemType == "unix") {
+      messageq("Will be using Forking approach for parallel processing.", message_break())
+    } else {
+      messageq("Will be using Socket approach for parallel processing.", message_break())
+    }
+  }
+
   moons <- read_moons(main     = main,
                       settings = settings)
 
@@ -63,7 +80,7 @@ portalcast <- function (main       = ".",
   end_moons       <- ifnull(end_moons, last_moon)
   nend_moons      <- length(end_moons)
 
-  for (i in 1:nend_moons) {
+  cast_f <- function(i) {
 
     cast(main       = main, 
          datasets   = datasets,
@@ -72,21 +89,30 @@ portalcast <- function (main       = ".",
          start_moon = start_moon, 
          cast_date  = cast_date, 
          settings   = settings,
+         multiprocess = systemType,
          quiet      = quiet, 
          verbose    = verbose)
 
+  }
+
+  if(multiprocess != FALSE) {
+    #This is breaking as of now since it just overwrites preparatory data.
+    mclapply(1:nend_moons, cast_f, mc.cores = detectCores())
+  } else {
+    lapply(1:nend_moons, cast_f)
   }
 
   if (end_moons[nend_moons] != last_moon) {
  # this maybe should happen within cast?
     messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
 
-    fill_data(main     = main, 
-              datasets = datasets,
-              models   = models,
-              settings = settings,
-              quiet    = quiet, 
-              verbose  = verbose)
+    fill_data(main         = main, 
+              datasets     = datasets,
+              models       = models,
+              settings     = settings,
+              multiprocess = systemType,
+              quiet        = quiet, 
+              verbose      = verbose)
 
   }
 
@@ -107,27 +133,15 @@ cast <- function (main       = ".",
                   start_moon = 217, 
                   cast_date  = Sys.Date(), 
                   settings   = directory_settings(), 
+                  multiprocess = FALSE,
                   quiet      = FALSE, 
                   verbose    = FALSE) {
 
   moons <- read_moons(main     = main,
                       settings = settings)
-
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon       <- moons$newmoonnumber[which_last_moon]
-  end_moon        <- ifnull(end_moon, last_moon)
-
-  messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
-
-  if (end_moon != last_moon) {
-
-    fill_data(main     = main, 
-              datasets = datasets,
-              models   = models,
-              settings = settings,
-              quiet    = quiet, 
-              verbose  = verbose)
-
+  
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
   }
 
   messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
@@ -138,13 +152,13 @@ cast <- function (main       = ".",
 
   nmodels <- length(models)
 
-  for (i in 1:nmodels) {
+  model_f <- function(i) {
 
     model <- models_scripts[i]
 
     messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), "\n", message_break(), quiet = quiet)
 
-    run_status <- tryCatch(expr  = source(model),
+    run_status <- tryCatch(expr  = source(model, local=TRUE),
                            error = function(x){NA})
 
     if (all(is.na(run_status))) {
@@ -158,6 +172,38 @@ cast <- function (main       = ".",
     }
 
   }
+
+  if(multiprocess == 'unix') {
+
+    models_list <- lapply(1:nmodels, function(i) {
+      mcparallel(model_f(i))
+    })
+
+    mccollect(models_list)
+
+
+  } else if (multiprocess == 'windows') {
+
+    clusters <- makeCluster(detectCores() - 1, outfile = "")
+
+    clusterExport(cl=clusters, varlist=c('models_scripts'), envir=environment())
+
+    parLapply(clusters, 1:nmodels, function(i) {
+      model_f(i)
+    })
+
+    stopCluster(clusters)
+
+  } else {
+
+    for (i in 1:nmodels) {
+
+      model_f(i)
+
+    }
+
+  }
+  
 
   invisible()
 

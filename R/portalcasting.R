@@ -4,6 +4,7 @@
 #' @importFrom grDevices grey rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
+#' @importFrom parallel mclapply mcparallel mccollect detectCores makeCluster parLapply stopCluster clusterExport
 #' @importFrom portalr download_observations get_future_moons load_trapping_data ndvi summarize_rodent_data weather
 #' @importFrom runjags run.jags runjags.options
 #' @importFrom scoringRules crps_nbinom crps_norm crps_pois crps_sample logs_sample logs_nbinom logs_norm logs_pois 

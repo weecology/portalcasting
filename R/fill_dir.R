@@ -24,6 +24,8 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
+#' @param multiprocess \code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
@@ -52,10 +54,15 @@ fill_dir <- function (main     = ".",
                       models   = prefab_models(), 
                       datasets = prefab_datasets(),
                       settings = directory_settings(), 
+                      multiprocess  = FALSE,
                       quiet    = FALSE, 
                       verbose  = FALSE) {
 
   messageq("Filling directory with content: \n", quiet = quiet)
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   fill_raw(main     = main, 
            settings = settings, 
@@ -76,6 +83,7 @@ fill_dir <- function (main     = ".",
             datasets = datasets,
             models   = models,
             settings = settings,
+            multiprocess = multiprocess,
             quiet    = quiet, 
             verbose  = verbose)
 
@@ -101,43 +109,110 @@ fill_dir <- function (main     = ".",
 #' @rdname directory-filling
 #'
 #' @export
-#'
-fill_data <- function (main     = ".",
-                       models   = prefab_models(),
-                       datasets = prefab_datasets(),
-                       settings = directory_settings(), 
-                       quiet    = FALSE,
-                       verbose  = FALSE) {
+#'library(portalcasting)
+fill_data <- function (main         = ".",
+                       models       = prefab_models(),
+                       datasets     = prefab_datasets(),
+                       settings     = directory_settings(), 
+                       multiprocess = FALSE,
+                       quiet        = FALSE,
+                       verbose      = FALSE) {
 
   messageq(" Writing data files ... ", quiet = quiet)
 
-  write_dataset_controls(main     = main, 
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
+
+  write_data_set_controls_f <- function() {
+
+    write_dataset_controls(main     = main, 
                          settings = settings, 
-                         datasets = datasets, 
+                         datasets = datasets,
+                         multiprocess = multiprocess, 
                          quiet    = FALSE)
 
-  prep_rodents(main     = main,
+  }
+
+  prep_rodents_f <- function() {
+
+    prep_rodents(main     = main,
                settings = settings,
                datasets = datasets,
                quiet    = quiet,
                verbose  = verbose)
 
-  prep_moons(main      = main,  
+  }
+
+  prep_moons_f <- function() {
+
+    prep_moons(main      = main,  
              settings  = settings,
              quiet     = quiet, 
              verbose   = verbose)
 
-  prep_covariates(main      = main,  
+  }
+
+  prep_covariates_f <- function() {
+
+    prep_covariates(main      = main,  
                   settings  = settings,
                   quiet     = quiet, 
                   verbose   = verbose)
+    
+  }
 
-  prep_metadata(main     = main, 
+  prep_metadata_f <- function() {
+
+    prep_metadata(main     = main, 
                 datasets = datasets,
                 models   = models, 
                 settings = settings,
                 quiet    = quiet, 
                 verbose  = verbose)
+
+  }
+
+  if(multiprocess == 'unix') {
+
+    write_data_set_controls_mc <- mcparallel(write_data_set_controls_f())
+    prep_rodents_mc <-  mcparallel(prep_rodents_f())
+    prep_moons_f_mc  <- mcparallel(prep_moons_f())
+    prep_covariates_mc <- mcparallel(prep_covariates_f())
+    prep_metadata_mc <- mcparallel(prep_metadata_f())
+    mccollect(list(
+      write_data_set_controls_mc,
+      prep_rodents_mc,
+      prep_moons_f_mc,
+      prep_covariates_mc,
+      prep_metadata_mc
+    ))
+
+  } else if (multiprocess == 'windows') {
+
+    clusters <- makeCluster(detectCores() - 1, outfile = "")
+
+    clusterExport(cl=clusters, varlist=c('main', 'datasets', 'models', 'settings', 'quiet', 'verbose', 'multiprocess'), envir=environment())
+
+    parLapply(clusters, list(
+      write_data_set_controls_f,
+      prep_rodents_f,
+      prep_moons_f,
+      prep_covariates_f,
+      prep_metadata_f
+    ), function(prep_function) {
+      prep_function()
+    })
+
+    stopCluster(clusters)
+
+  } else {
+    write_data_set_controls_f()
+    prep_rodents_f()
+    prep_moons_f()
+    prep_covariates_f()
+    prep_metadata_f()
+  }
 
   messageq("  ... data preparing complete.", quiet = quiet)
 

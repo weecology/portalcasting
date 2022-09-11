@@ -30,6 +30,7 @@ Imports:
     forecast,
     httr,
     jsonlite,
+    parallel,
     portalr,
     runjags,
     scoringRules,
@@ -43,6 +44,6 @@ Suggests:
   markdown,
   rmarkdown,
   testthat
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 Encoding: UTF-8

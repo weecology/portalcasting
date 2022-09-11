@@ -10,6 +10,8 @@
 #'
 #' @param origin \code{Date} for the forecast origin. Defaults to today's date.
 #'
+#' @param multiprocess \code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be printed.
@@ -26,11 +28,16 @@
 prep_covariates <- function (main     = ".", 
                              settings = directory_settings(), 
                              origin   = Sys.Date(), 
+                             multiprocess = FALSE,
                              quiet    = TRUE, 
                              verbose  = FALSE) {
 
 
   messageq("  - covariate data files", quiet = quiet)
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   historic_covariates <- prep_historic_covariates(main     = main, 
                                                   settings = settings, 
@@ -38,6 +45,7 @@ prep_covariates <- function (main     = ".",
                                                   verbose  = verbose)
   forecast_covariates <- prep_forecast_covariates(main     = main,
                                                   origin   = origin, 
+                                                  multiprocess = multiprocess,
                                                   settings = settings, 
                                                   quiet    = quiet, 
                                                   verbose  = verbose)
@@ -88,8 +96,13 @@ prep_historic_covariates <- function (main     = ".",
 prep_forecast_covariates <- function (main      = ".", 
                                       origin    = Sys.Date(), 
                                       settings  = directory_settings(), 
+                                      multiprocess = FALSE,
                                       quiet     = TRUE,
                                       verbose   = FALSE) {
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   if (origin == Sys.Date()) {
 
@@ -154,7 +167,7 @@ prep_forecast_covariates <- function (main      = ".",
   precipitations <- rep(NA, nhist_time)
   ndvis          <- rep(NA, nhist_time)
 
-  for (i in 1:nhist_time) {
+  climate_prep_f <- function(i) {
 
     days_in           <- climate_forecasts$newmoonnumber == hist_time[i]
     mintemps[i]       <- min(climate_forecasts$mintemp[days_in], na.rm = TRUE)
@@ -162,7 +175,27 @@ prep_forecast_covariates <- function (main      = ".",
     meantemps[i]      <- mean(climate_forecasts$meantemp[days_in], na.rm = TRUE)
     precipitations[i] <- sum(climate_forecasts$precipitation[days_in], na.rm = TRUE)
     ndvis[i]          <- mean(climate_forecasts$ndvi[days_in], na.rm = TRUE)
-  
+
+  }
+
+  if (multiprocess == 'unix') {
+
+    mclapply(1:nhist_time, climate_prep_f, mc.cores = detectCores() - 1)
+
+  } else if (multiprocess == 'windows') {
+
+    clusters <- makeCluster(detectCores() - 1, outfile = "")
+
+    clusterExport(cl=clusters, varlist=c('climate_forecasts', 'mintemps', 'maxtemps', 'meantemps', 'precipitations', 'ndvis'), envir=environment())
+
+    parLapply(clusters, 1:nhist_time, climate_prep_f)
+
+    stopCluster(clusters)
+
+  } else {
+
+    lapply(1:nhist_time, climate_prep_f)
+
   }
 
   hist_climate_forecasts <- data.frame(newmoonnumber = hist_time, 
