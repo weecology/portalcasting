@@ -15,6 +15,7 @@ fill_dir(
   models = prefab_models(),
   datasets = prefab_datasets(),
   settings = directory_settings(),
+  multiprocess = FALSE,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -24,6 +25,7 @@ fill_data(
   models = prefab_models(),
   datasets = prefab_datasets(),
   settings = directory_settings(),
+  multiprocess = FALSE,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -65,6 +67,8 @@ fill_models(
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
+
+\item{multiprocess}{\code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 

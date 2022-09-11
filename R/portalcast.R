@@ -21,6 +21,8 @@
 #'
 #' @param datasets \code{character} vector of dataset names to be created. 
 #'
+#' @param multiprocess \code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.
+#' 
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
@@ -137,8 +139,11 @@ cast <- function (main       = ".",
 
   moons <- read_moons(main     = main,
                       settings = settings)
-
   
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
+
   messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
 
   models_scripts <- models_to_cast(main     = main, 

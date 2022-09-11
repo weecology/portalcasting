@@ -12,6 +12,8 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
+#' @param multiprocess \code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
@@ -39,6 +41,10 @@ setup_dir <- function (main     = ".",
                        verbose  = FALSE) {
 
   messageq(message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   create_dir(main     = main, 
              settings = settings,

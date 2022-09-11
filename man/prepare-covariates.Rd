@@ -11,6 +11,7 @@ prep_covariates(
   main = ".",
   settings = directory_settings(),
   origin = Sys.Date(),
+  multiprocess = FALSE,
   quiet = TRUE,
   verbose = FALSE
 )
@@ -26,6 +27,7 @@ prep_forecast_covariates(
   main = ".",
   origin = Sys.Date(),
   settings = directory_settings(),
+  multiprocess = FALSE,
   quiet = TRUE,
   verbose = FALSE
 )
@@ -36,6 +38,8 @@ prep_forecast_covariates(
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{origin}{\code{Date} for the forecast origin. Defaults to today's date.}
+
+\item{multiprocess}{\code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 

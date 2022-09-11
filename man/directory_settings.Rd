@@ -14,8 +14,8 @@ directory_settings(
   model_controls_file = "model_controls.yaml",
   cast_evaluations_file = "cast_evaluations.csv",
   metadata_file = "metadata.yaml",
-  subdirectories = list(forecasts = "casts", fits = "fits", models = "models",
-    resources = "raw", data = "data"),
+  subdirectories = list(forecasts = "casts", fits = "fits", models = "models", resources
+    = "raw", data = "data"),
   PortalData = list(source = "github", version = "latest"),
   portalPredictions = list(source = "github", version = NULL),
   climate_forecast = list(source = "NMME", version = as.character(Sys.Date()), data =

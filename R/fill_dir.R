@@ -24,6 +24,8 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
+#' @param multiprocess \code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
@@ -57,6 +59,10 @@ fill_dir <- function (main     = ".",
                       verbose  = FALSE) {
 
   messageq("Filling directory with content: \n", quiet = quiet)
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   fill_raw(main     = main, 
            settings = settings, 
@@ -113,6 +119,10 @@ fill_data <- function (main         = ".",
                        verbose      = FALSE) {
 
   messageq(" Writing data files ... ", quiet = quiet)
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   write_data_set_controls_f <- function() {
 

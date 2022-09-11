@@ -20,6 +20,7 @@ write_dataset_controls(
   new_dataset_controls = NULL,
   datasets = prefab_datasets(),
   settings = directory_settings(),
+  multiprocess = FALSE,
   quiet = FALSE
 )
 }
@@ -31,6 +32,8 @@ write_dataset_controls(
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 
 \item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
+
+\item{multiprocess}{\code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }

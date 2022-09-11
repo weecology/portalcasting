@@ -13,6 +13,7 @@ portalcast(
   start_moon = 217,
   cast_date = Sys.Date(),
   settings = directory_settings(),
+  multiprocess = FALSE,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -25,6 +26,7 @@ cast(
   start_moon = 217,
   cast_date = Sys.Date(),
   settings = directory_settings(),
+  multiprocess = FALSE,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -44,6 +46,8 @@ cast(
 \item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+
+\item{multiprocess}{\code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 

@@ -10,6 +10,8 @@
 #'
 #' @param origin \code{Date} for the forecast origin. Defaults to today's date.
 #'
+#' @param multiprocess \code{character} (or \code{logical}) configuration for mulit-processing, can be any value from \code{unix}, \code{windows}, \code{TRUE}, \code{FALSE}. Default value is \code{FALSE}.
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be printed.
@@ -32,6 +34,10 @@ prep_covariates <- function (main     = ".",
 
 
   messageq("  - covariate data files", quiet = quiet)
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   historic_covariates <- prep_historic_covariates(main     = main, 
                                                   settings = settings, 
@@ -93,6 +99,10 @@ prep_forecast_covariates <- function (main      = ".",
                                       multiprocess = FALSE,
                                       quiet     = TRUE,
                                       verbose   = FALSE) {
+
+  if (multiprocess == TRUE) {
+    multiprocess <- .Platform$OS.type
+  }
 
   if (origin == Sys.Date()) {
 
