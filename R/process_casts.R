@@ -233,7 +233,7 @@ read_cast_tab <- function (main     = ".",
   }
 
   lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
-  cpath <- file.path(main, settings$subs$forecasts, lpath)
+  cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
 
@@ -312,7 +312,7 @@ read_cast_metadata <- function (main     = ".",
   }
 
   lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
-  cpath <- file.path(main, settings$subs$forecasts, lpath)
+  cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
 
@@ -342,7 +342,7 @@ read_model_fit <- function (main     = ".",
   }
 
   lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath <- file.path(main, settings$subs$fits, lpath)
+  cpath <- file.path(main, settings$subdirectories$fits, lpath)
 
   if (!file.exists(cpath)) {
 
@@ -372,10 +372,10 @@ read_model_cast <- function (main     = ".",
   }
 
   lpath_json  <- paste0("cast_id_", cast_id, "_model_casts.json")
-  cpath_json  <- file.path(main, settings$subs$forecasts, lpath_json)
+  cpath_json  <- file.path(main, settings$subdirectories$forecasts, lpath_json)
 
   lpath_RData <- paste0("cast_id_", cast_id, "_model_casts.RData")
-  cpath_RData  <- file.path(main, settings$subs$forecasts, lpath_RData)
+  cpath_RData  <- file.path(main, settings$subdirectories$forecasts, lpath_RData)
 
   if (!file.exists(cpath_json)) {
 
@@ -550,14 +550,14 @@ save_cast_output <- function (cast     = NULL,
                               QAQC                  = TRUE,
                               notes                 = NA)
   cast_meta     <- rbind(cast_meta, new_cast_meta)
-  meta_path     <- file.path(main, settings$subs$forecasts, "casts_metadata.csv")
+  meta_path     <- file.path(main, settings$subdirectories$forecasts, "casts_metadata.csv")
  
   write.csv(cast_meta, meta_path, row.names = FALSE)
 
   if (!is.null(cast$metadata)) {
 
     meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
-    meta_path     <- file.path(main, settings$subs$forecasts, meta_filename)
+    meta_path     <- file.path(main, settings$subdirectories$forecasts, meta_filename)
 
     write_yaml(x    = cast$metadata,
                file = meta_path)
@@ -567,7 +567,7 @@ save_cast_output <- function (cast     = NULL,
   if (!is.null(cast$cast_tab)) {
 
     cast_tab_filename         <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
-    cast_tab_path             <- file.path(main, settings$subs$forecasts, cast_tab_filename)
+    cast_tab_path             <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
     cast_tab                  <- cast$cast_tab
     cast_tab$cast_id          <- next_cast_id
 
@@ -580,7 +580,7 @@ save_cast_output <- function (cast     = NULL,
   if (!is.null(cast$model_fits)) {
 
     model_fits_filename <- paste0("cast_id_", next_cast_id, "_model_fits.json") 
-    model_fits_path     <- file.path(main, settings$subs$fits, model_fits_filename)
+    model_fits_path     <- file.path(main, settings$subdirectories$fits, model_fits_filename)
     model_fits          <- cast$model_fits
     model_fits          <- serializeJSON(model_fits)
 
@@ -592,7 +592,7 @@ save_cast_output <- function (cast     = NULL,
   if (!is.null(cast$model_casts)) {
 
     model_casts_filename <- paste0("cast_id_", next_cast_id, "_model_casts.json") 
-    model_casts_path     <- file.path(main, settings$subs$forecasts, model_casts_filename)
+    model_casts_path     <- file.path(main, settings$subdirectories$forecasts, model_casts_filename)
     model_casts          <- cast$model_casts
     model_casts          <- serializeJSON(model_casts)
 

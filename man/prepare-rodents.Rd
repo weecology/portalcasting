@@ -2,10 +2,10 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{prepare rodents}
 \alias{prepare rodents}
-\alias{prep_rodents}
+\alias{prepare_rodents}
 \title{Prepare Rodents Data for the Portalcasting Repository}
 \usage{
-prep_rodents(
+prepare_rodents(
   main = ".",
   datasets = prefab_datasets(),
   settings = directory_settings(),

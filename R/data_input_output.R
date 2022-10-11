@@ -182,7 +182,7 @@ read_rodents_table <- function (main     = ".",
 
 
   return_if_null(dataset)
-  read.csv(file.path(main, settings$subs$data, paste0("rodents_", tolower(dataset), ".csv"))) 
+  read.csv(file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(dataset), ".csv"))) 
 
 }
 
@@ -206,7 +206,7 @@ read_rodents <- function (main     = ".",
 read_moons <- function(main     = ".", 
                        settings = directory_settings()){
   
-  read.csv(file.path(main, settings$subs$data, settings$files$moons))
+  read.csv(file.path(main, settings$subdirectories$data, settings$files$moons))
 
 }
 
@@ -217,7 +217,7 @@ read_moons <- function(main     = ".",
 read_covariates <- function (main     = ".",
                              settings = directory_settings()) {
 
-  read.csv(file.path(main, settings$subs$data, settings$files$covariates))
+  read.csv(file.path(main, settings$subdirectories$data, settings$files$covariates))
 
 }
 
@@ -228,7 +228,7 @@ read_covariates <- function (main     = ".",
 read_forecast_covariates <- function (main     = ".",
                                       settings = directory_settings()) {
 
-  read.csv(file.path(main, settings$subs$data, settings$files$forecast_covariates))
+  read.csv(file.path(main, settings$subdirectories$data, settings$files$forecast_covariates))
 
 }
 
@@ -239,7 +239,7 @@ read_forecast_covariates <- function (main     = ".",
 read_historical_covariates <- function (main    = ".",
                                        settings = directory_settings()) {
 
-  read.csv(file.path(main, settings$subs$data, settings$files$historical_covariates))
+  read.csv(file.path(main, settings$subdirectories$data, settings$files$historical_covariates))
 
 }
 
@@ -254,7 +254,7 @@ read_climate_forecasts <- function (main     = ".",
 
   datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
   ndatas <- length(datas)
-  dat_list <- mapply(FUN = read.csv, file.path(main, settings$subs$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
+  dat_list <- mapply(FUN = read.csv, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
 
   dat_tab <- dat_list[[1]]
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
@@ -309,7 +309,7 @@ read_climate_forecasts <- function (main     = ".",
 read_metadata <- function(main     = ".", 
                           settings = directory_settings()){
   
-  read_yaml(file.path(main, settings$subs$data, settings$files$metadata), eval.expr = TRUE)
+  read_yaml(file.path(main, settings$subdirectories$data, settings$files$metadata), eval.expr = TRUE)
 
 }
 
@@ -333,7 +333,7 @@ read_casts_metadata <- function (main     = ".",
                                  settings = directory_settings(), 
                                  quiet    = FALSE){
   
-  meta_path <- file.path(main, settings$subs$forecasts, "casts_metadata.csv")
+  meta_path <- file.path(main, settings$subdirectories$forecasts, "casts_metadata.csv")
 
   if (!file.exists(meta_path)) {
 
@@ -346,7 +346,7 @@ read_casts_metadata <- function (main     = ".",
                              end_moon              = NA,
                              lead_time             = NA, 
                              model                 = NA, 
-                             dataset        = NA,
+                             dataset               = NA,
                              portalcasting_version = NA,
                              QAQC                  = FALSE, 
                              notes                 = NA)

@@ -1,6 +1,6 @@
 #' @title Prepare a Model-Running Metadata List
 #'
-#' @description Sets up the metadata used for casting, in particular the matching of time period across the data sets. This should always be run after \code{\link{prep_moons}}, \code{\link{prep_rodents}}, and \code{\link{prep_covariates}} before any model is run.
+#' @description Sets up the metadata used for casting, in particular the matching of time period across the data sets. This should always be run after \code{\link{prepare_moons}}, \code{\link{prepare_rodents}}, and \code{\link{prepare_covariates}} before any model is run.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -28,17 +28,17 @@
 #' 
 #' @export
 #'
-prep_metadata <- function (main             = ".",
-                           models           = prefab_models(), 
-                           datasets         = prefab_datasets(),
-                           end_moon         = NULL, 
-                           start_moon       = 217, 
-                           lead_time        = 12,
-                           cast_date        = Sys.Date(), 
-                           confidence_level = 0.95,
-                           settings         = directory_settings(), 
-                           quiet            = FALSE, 
-                           verbose          = FALSE) {
+prepare_metadata <- function (main             = ".",
+                              models           = prefab_models(), 
+                              datasets         = prefab_datasets(),
+                              end_moon         = NULL, 
+                              start_moon       = 217, 
+                              lead_time        = 12,
+                              cast_date        = Sys.Date(), 
+                              confidence_level = 0.95,
+                              settings         = directory_settings(), 
+                              quiet            = FALSE, 
+                              verbose          = FALSE) {
 
 
   moons      <- read_moons(main     = main, 
@@ -103,9 +103,9 @@ prep_metadata <- function (main             = ".",
 
   covariates_origin_date <- max(covariates$date[covariates$source == "historic"])
 
-  config <- read_directory_config(main     = main, 
-                                  settings = settings,
-                                  quiet    = quiet)
+  config <- read_directory_configuration(main     = main, 
+                                         settings = settings,
+                                         quiet    = quiet)
 
 
   out <- list(cast_group              = cast_group,

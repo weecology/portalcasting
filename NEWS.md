@@ -2,6 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.44.0
+*In Progress*
+
+### Adding integrated warm precip and ndvi covariates 
+
+### Shift internal naming of subs to subdirectories
+
+### Shift folder naming of raw, casts to resources, forecasts
+
 # [portalcasting 0.43.0](https://github.com/weecology/portalcasting/releases/tag/v0.43.0)
 *2022-05-31*
 
