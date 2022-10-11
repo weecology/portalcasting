@@ -206,7 +206,7 @@ model_template <- function (main     = ".",
 
     for (i in 1:nadditional_args) {
 
-      additional_args <- paste0(additional_args, ", ", names(control_model$args)[i], " = ", control_model$args[i])
+     # additional_args <- paste0(additional_args, ", ", names(control_model$args)[i], " = ", control_model$args[i])
 
     }
 

@@ -537,7 +537,7 @@ save_cast_output <- function (cast     = NULL,
   }
 
   dir_config    <- cast$metadata$directory_configuration
-  pc_version    <- dir_config$setup$portalcasting_version
+  pc_version    <- dir_config$setup$core_package_version
   new_cast_meta <- data.frame(cast_id               = next_cast_id,
                               cast_group            = cast$metadata$cast_group,
                               cast_date             = cast$metadata$time$cast_date,
