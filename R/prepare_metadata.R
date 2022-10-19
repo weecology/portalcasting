@@ -94,7 +94,7 @@ prepare_metadata <- function (main             = ".",
   cast_meta  <- read_casts_metadata(main     = main, 
                                     settings = settings,
                                     quiet    = quiet)
-  cast_group <- max(cast_meta$cast_group) + 1
+  cast_group <- max(c(0, cast_meta$cast_group)) + 1
 
 
 

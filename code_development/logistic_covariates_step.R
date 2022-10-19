@@ -75,6 +75,7 @@
     mu        ~  dnorm(mean_log_past_count, precision_log_past_count); 
     tau       ~  dgamma(shape, rate); 
     r_int     ~  dnorm(0, 10);
+    r_slope   ~  dnorm(0, 1);
     log_K_int ~  dnorm(log_bonus_max_past_count, 1 / (0.1 * log_bonus_max_past_count))
     K_int     <- exp(log_K_int) 
  
@@ -82,7 +83,7 @@
 
     for (i in 1:N) {
 
-      r[i] <- r_int + r_slope * three_month_warm_rain[i]
+      r[i] <- r_int + r_slope * warm_rain_three_months[i]
       K[i] <- K_int
 
     }
@@ -118,12 +119,14 @@
 
 
 
-  runjags.options(silent.jags    = control_runjags$silent_jags, 
-                  silent.runjags = control_runjags$silent_jags)
+#  runjags.options(silent.jags    = control_runjags$silent_jags, 
+ #                 silent.runjags = control_runjags$silent_jags)
 
   rodents_table <- read_rodents_table(main     = main,
                                       dataset = dataset, 
                                       settings = settings) 
+  covariates    <- read_covariates(main     = main,
+                                   settings = settings)
   metadata      <- read_metadata(main     = main,
                                  settings = settings)
 
@@ -177,17 +180,17 @@
 
     }
 
+    warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
 
-
-
-    data <- list(count       = count, 
-                 ntraps      = ntraps, 
-                 N           = length(count),
-                 moon        = moon, 
-                 past_moon   = past_moon, 
-                 past_count  = past_count,
-                 past_ntraps = past_ntraps, 
-                 past_N      = length(past_count))
+    data <- list(count                  = count, 
+                 ntraps                 = ntraps, 
+                 N                      = length(count),
+                 moon                   = moon, 
+                 past_moon              = past_moon, 
+                 past_count             = past_count,
+                 past_ntraps            = past_ntraps, 
+                 past_N                 = length(past_count),
+                 warm_rain_three_months = warm_rain_three_months[,1])
 
     obs_pred_times      <- metadata$time$rodent_cast_moons 
     obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon

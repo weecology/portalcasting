@@ -5,7 +5,7 @@
 devtools::load_all()
 
 main <- "~/portalcasting"
-
+setup_production(main = main)
 
 
 dataset         = "dm_controls"  
@@ -20,6 +20,9 @@ dataset         = "dm_controls"
   rodents_table <- read_rodents_table(main     = main,
                                       dataset = dataset, 
                                       settings = settings) 
+  covariates    <- read_covariates(main     = main,
+                                   settings = settings)
+
   metadata      <- read_metadata(main     = main,
                                  settings = settings)
 
@@ -42,21 +45,17 @@ dataset         = "dm_controls"
   moon         <- rodents_table[moon_in, "newmoonnumber"] 
   count        <- rodents_table[moon_in, species]
 
-  weather <- weather(level = "newmoon", fill = TRUE, horizon = 90, path = file.path(main, settings$subs$resources))
-  ndvi    <- ndvi(level = "newmoon", fill = TRUE, path = file.path(main, settings$subs$resources))
-
-  warm_rain_three_months <- weather$warm_precip
-  ndvi_twelve_months     <- filter(ndvi$ndvi, rep(1, 12), sides = 1)
+  warm_rain_three_months <- covariates$warm_precip_3_month
+  ndvi_twelve_months     <- covariates$ndvi_12_month
 
   warm_rain_three_months <- warm_rain_three_months[weather$newmoonnumber >= start_moon & weather$newmoonnumber <= max(rodents_table$newmoonnumber)]
   ndvi_twelve_months     <- ndvi_twelve_months[ndvi$newmoonnumber >= start_moon & ndvi$newmoonnumber <= max(rodents_table$newmoonnumber)]
 
 
 
-warm_rain_three_months
-
 diff_log_count <- diff(log(count))
 
+n <- length(count)
 plot(diff_log_count, type = 'l')
 plot((count)[-n], diff_log_count)
 

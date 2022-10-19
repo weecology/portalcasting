@@ -95,8 +95,63 @@ prepare_forecast_covariates <- function (main      = ".",
 
   if (origin == Sys.Date()) {
 
+    moons <- read_moons(main = main,
+                        settings = settings)
+
     climate_forecasts <- read_climate_forecasts(main     = main,
                                                 settings = settings)
+
+    if (max(climate_forecasts$date) < (as.Date(max(moons$newmoondate)) + 27)) {
+
+      # this accounts for needing a climate forecast a year out now, whereas we did not before
+      # the models we get don't always go out that far.
+
+      to_cast <- seq.Date(as.Date(max(climate_forecasts$date) + 1), as.Date(max(moons$newmoondate)) + 27, 1)
+      
+      date_fit     <- climate_forecasts$date
+      jday_fit     <- as.numeric(format(date_fit, "%j"))
+      yr_fit       <- format(date_fit, "%Y")
+      nye_fit      <- as.Date(paste(yr_fit, "-12-31", sep = ""))
+      nye_jday_fit <- as.numeric(format(nye_fit, "%j"))
+      fr_of_yr_fit <- jday_fit/nye_jday_fit
+      cos_fit      <- cos(2 * pi * fr_of_yr_fit)
+      sin_fit      <- sin(2 * pi * fr_of_yr_fit)
+      xreg_fit     <- data.frame(cos_seas = cos_fit, sin_seas = sin_fit)
+      xreg_fit     <- as.matrix(xreg_fit)
+
+      mintemp_model   <- auto.arima(climate_forecasts$mintemp, xreg = xreg_fit)
+      maxtemp_model   <- auto.arima(climate_forecasts$maxtemp, xreg = xreg_fit)
+      meantemp_model  <- auto.arima(climate_forecasts$meantemp, xreg = xreg_fit)
+      precip_model    <- auto.arima(climate_forecasts$precipitation, xreg = xreg_fit)
+
+      date_fcast     <- to_cast
+      jday_fcast     <- as.numeric(format(date_fcast, "%j"))
+      yr_fcast       <- format(date_fcast, "%Y")
+      nye_fcast      <- as.Date(paste(yr_fcast, "-12-31", sep = ""))
+      nye_jday_fcast <- as.numeric(format(nye_fcast, "%j"))
+      fr_of_yr_fcast <- jday_fcast/nye_jday_fcast
+      cos_fcast      <- cos(2 * pi * fr_of_yr_fcast)
+      sin_fcast      <- sin(2 * pi * fr_of_yr_fcast)
+      xreg_fcast     <- data.frame(cos_seas = cos_fcast, sin_seas = sin_fcast)
+      xreg_fcast     <- as.matrix(xreg_fcast)
+
+      mintemp_forecast  <- forecast(mintemp_model, xreg = xreg_fcast)$mean
+      maxtemp_forecast  <- forecast(maxtemp_model, xreg = xreg_fcast)$mean
+      meantemp_forecast <- forecast(meantemp_model, xreg = xreg_fcast)$mean
+      precip_forecast   <- pmax(0, forecast(precip_model, xreg = xreg_fcast)$mean)
+
+      casts <- data.frame(date = date_fcast, 
+                          mintemp = mintemp_forecast, 
+                          maxtemp = maxtemp_forecast, 
+                          meantemp = meantemp_forecast, 
+                          precipitation = precip_forecast)
+
+      climate_forecasts <- rbind(climate_forecasts, casts)
+
+
+    }
+
+
 
     ndvi_data      <- ndvi(level = "daily", path = file.path(main, settings$subdirectories$resources))
     ndvi_data$date <- as.Date(ndvi_data$date)

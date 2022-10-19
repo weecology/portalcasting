@@ -616,25 +616,10 @@ add_newmoonnumbers_from_dates <- function (df, moons = NULL) {
     df <- add_date_from_components(df)
   }
 
-  moon_number       <- moons$newmoonnumber[-1]
-  moon_start        <- as.Date(moons$newmoondate[-nrow(moons)])
-  moon_end          <- as.Date(moons$newmoondate[-1])
-  moon_match_number <- NULL
-  moon_match_date   <- NULL
-
-  for (i in seq(moon_number)) {
-
-    temp_dates        <- seq.Date(moon_start[i] + 1, moon_end[i], 1)
-    temp_dates        <- as.character(temp_dates)
-    temp_numbers      <- rep(moon_number[i], length(temp_dates))
-    moon_match_date   <- c(moon_match_date, temp_dates)
-    moon_match_number <- c(moon_match_number, temp_numbers)
-
+  df$newmoonnumber <- NA
+  for (i in 1:nrow(df)) {
+    df$newmoonnumber[i] <- max(moons$newmoonnumber[moons$newmoondate <= df$date[i]])
   }
-
-  moon_match_date  <- as.Date(moon_match_date)
-  moon_matches     <- match(df$date, moon_match_date)
-  df$newmoonnumber <- moon_match_number[moon_matches]
 
   df
 
