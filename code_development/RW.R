@@ -1,7 +1,8 @@
 
-  monitor <- c("mu", "tau", "r_int", "r_slope", "K_int")
+  dataset <- tolower(dataset)
+  messageq("  -jags_RW for ", dataset, quiet = quiet)
 
-  control_runjags = runjags_control(silent_jags = FALSE, adapt = 1000, burnin = 1000, sample = 1000) 
+  monitor <- c("mu", "tau")
 
   inits <- function (data = NULL) {
 
@@ -15,8 +16,6 @@
     sd_log_past_count   <- max(c(sd(log_past_count), 0.01))
     diff_log_past_count <- rep(NA, past_N - 1)
 
-    log_max_past_count <- log(max(past_count))
-
     for (i in 1:(past_N - 1)) {
 
       diff_count             <- log_past_count[i + 1] - log_past_count[i]
@@ -24,27 +23,26 @@
       diff_log_past_count[i] <- diff_count / diff_time
 
     }
-
     sd_diff_log_past_count        <- max(c(sd(diff_log_past_count), 0.01))
     var_diff_log_past_count       <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-    rate                          <- 1
-    shape                         <- precision_diff_log_past_count * rate
 
-    function(chain = chain){
-      list(.RNG.name  = sample(rngs, 1),
-           .RNG.seed  = sample(1:1e+06, 1),
-            mu        = rnorm(1, mean_log_past_count, sd_log_past_count), 
-            tau       = 100, #rgamma(1, shape = shape, rate = rate),
-            r_int     = rnorm(1, 0, 0.1),
-            r_slope   = rnorm(1, 0, 0.1),
-            log_K_int = rnorm(1, log_max_past_count, 0.1))
+    rate  <- 0.1
+    shape <- precision_diff_log_past_count * rate
+
+    function (chain = chain) {
+
+      list(.RNG.name = sample(rngs, 1),
+           .RNG.seed = sample(1:1e+06, 1),
+            mu       = rnorm(1, mean_log_past_count, sd_log_past_count), 
+            tau      = rgamma(1, shape = shape, rate = rate))
 
     }
+
   }
 
-  jags_model <- "model {  
-
+  jags_model <- "model { 
+ 
     # priors
 
     log_past_count           <- log(past_count + 0.1)
@@ -52,7 +50,6 @@
     sd_log_past_count        <- max(c(sd(log_past_count), 0.01))
     var_log_past_count       <- sd_log_past_count^2
     precision_log_past_count <- 1/(var_log_past_count)
-    log_max_past_count       <- log(max(past_count))
 
     diff_count[1]          <- log_past_count[2] - log_past_count[1]
     diff_time[1]           <- past_moon[2] - past_moon[1] 
@@ -69,24 +66,13 @@
     sd_diff_log_past_count        <- max(c(sd(diff_log_past_count), 0.01))
     var_diff_log_past_count       <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
-    rate                          <- 0.2
-    shape                         <- precision_diff_log_past_count * rate
 
-    mu        ~  dnorm(mean_log_past_count, precision_log_past_count); 
-    tau       ~  dgamma(shape, rate); 
-    r_int     ~  dnorm(0, 10);
-    r_slope   ~  dnorm(0, 1);
-    log_K_int ~  dnorm(log_max_past_count, 1 / (log_max_past_count))
-    K_int     <- exp(log_K_int) 
- 
-    # Parameter expansions
+    rate  <- 0.1
+    shape <- precision_diff_log_past_count * rate
 
-    for (i in 1:N) {
-
-      r[i] <- r_int + r_slope * warm_rain_three_months[i]
-      K[i] <- K_int
-
-    }
+    mu  ~ dnorm(mean_log_past_count, precision_log_past_count); 
+    tau ~ dgamma(shape, rate); 
+   
 
     # initial state
 
@@ -94,39 +80,39 @@
     pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
     count[1]      ~  dpois(pred_count[1]) 
 
+
     # through time
 
-    for (i in 2:N) {
+    for(i in 2:N) {
 
       # Process model
 
-      predX[i]      <- log(exp(X[i-1]) * exp(r[i] * (1 - (X[i - 1] / K[i]))));
+      predX[i]      <- X[i-1];
       checkX[i]     ~  dnorm(predX[i], tau); 
-      X[i]          <- checkX[i]
+      X[i]          <- c(checkX[i]); 
       pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
    
+
       # observation model
 
-      count[i] ~ dpois(pred_count[i]);
+      count[i] ~ dpois(pred_count[i])
 
     }
 
   }"
 
 
+          model_name      = "jags_RW"
 
 
 
 
 
-#  runjags.options(silent.jags    = control_runjags$silent_jags, 
- #                 silent.runjags = control_runjags$silent_jags)
+
 
   rodents_table <- read_rodents_table(main     = main,
                                       dataset = dataset, 
                                       settings = settings) 
-  covariates    <- read_covariates(main     = main,
-                                   settings = settings)
   metadata      <- read_metadata(main     = main,
                                  settings = settings)
 
@@ -145,8 +131,9 @@
   casts    <- named_null_list(species)
   cast_tab <- data.frame()
 
+i<-1
 
-    s  <- species
+    s  <- species[i]
     ss <- gsub("NA.", "NA", s)
     messageq("   -", ss, quiet = !verbose)
 
@@ -180,17 +167,14 @@
 
     }
 
-    warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-
-    data <- list(count                  = count, 
-                 ntraps                 = ntraps, 
-                 N                      = length(count),
-                 moon                   = moon, 
-                 past_moon              = past_moon, 
-                 past_count             = past_count,
-                 past_ntraps            = past_ntraps, 
-                 past_N                 = length(past_count),
-                 warm_rain_three_months = warm_rain_three_months[,1])
+    data <- list(count       = count, 
+                 ntraps      = ntraps, 
+                 N           = length(count),
+                 moon        = moon, 
+                 past_moon   = past_moon, 
+                 past_count  = past_count,
+                 past_ntraps = past_ntraps, 
+                 past_N      = length(past_count))
 
     obs_pred_times      <- metadata$time$rodent_cast_moons 
     obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
@@ -206,14 +190,14 @@
 
     }
 
-    xmods <- run.jags(model     = jags_model, 
+    mods[[i]] <- run.jags(model     = jags_model, 
                           monitor   = monitor, 
                           inits     = inits(data), 
                           data      = data, 
-                          n.chains  = 6,#control_runjags$nchains, 
-                          adapt     = 0, #control_runjags$adapt, 
-                          burnin    = 0, #control_runjags$burnin, 
-                          sample    = 100, #control_runjags$sample, 
+                          n.chains  = control_runjags$nchains, 
+                          adapt     = control_runjags$adapt, 
+                          burnin    = control_runjags$burnin, 
+                          sample    = control_runjags$sample, 
                           thin      = control_runjags$thin, 
                           modules   = control_runjags$modules, 
                           method    = control_runjags$method, 
@@ -222,5 +206,5 @@
                           summarise = FALSE, 
                           plots     = FALSE)
 
-plot(xmods, vars = "tau")
-xmods$end.state
+
+plot(mods[[i]])

@@ -4,7 +4,7 @@
 
 devtools::load_all()
 
-main <- "~/portalcasting"
+main <- "~/portalcasting2"
 setup_production(main = main)
 
 
@@ -144,7 +144,7 @@ for (i in 2:(n)) {
 
     log_past_count           <- log(past_count + 0.1)
     mean_log_past_count      <- mean(log_past_count)
-    sd_log_past_count        <- max(c(sd(log_past_count) * sqrt(2), 0.01))
+    sd_log_past_count        <- max(c(sd(log_past_count), 0.01))
     var_log_past_count       <- sd_log_past_count^2
     precision_log_past_count <- 1/(var_log_past_count)
     log_bonus_max_past_count <- max(log(past_count * 1.2))
@@ -161,7 +161,7 @@ for (i in 2:(n)) {
 
     }    
 
-    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count) * sqrt(2), 0.01))
+    sd_diff_log_past_count        <- max(c(sd(diff_log_past_count), 0.01))
     var_diff_log_past_count       <- sd_diff_log_past_count^2
     precision_diff_log_past_count <- 1/(var_diff_log_past_count)
     rate                          <- 0.1
@@ -178,7 +178,7 @@ for (i in 2:(n)) {
 
     X[1]          <- mu;
     pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
-    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001))) T(0, ntraps[1]);
+    count[1]      ~  dpois(max(c(exp(X[1]) - 0.1, 0.00001)))
 
     # through time
 
@@ -193,7 +193,7 @@ for (i in 2:(n)) {
    
       # observation model
 
-      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) T(0, ntraps[i]); 
+      count[i] ~ dpois(max(c(exp(X[i]) - 0.1, 0.00001))) 
 
     }
 

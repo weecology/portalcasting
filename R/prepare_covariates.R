@@ -26,7 +26,7 @@
 prepare_covariates <- function (main     = ".", 
                                 settings = directory_settings(), 
                                 origin   = Sys.Date(), 
-                                quiet    = TRUE, 
+                                quiet    = FALSE, 
                                 verbose  = FALSE) {
 
 
@@ -58,7 +58,7 @@ prepare_covariates <- function (main     = ".",
 #'
 prepare_historic_covariates <- function (main     = ".", 
                                          settings = directory_settings(), 
-                                         quiet    = TRUE, 
+                                         quiet    = FALSE, 
                                          verbose  = FALSE) {
 
   weather_data <- weather(level = "newmoon", fill = TRUE, horizon = 28, path = file.path(main, settings$subdirectories$resources))
