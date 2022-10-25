@@ -90,9 +90,9 @@
 
     # initial state
 
-    X[1]          <- mu;
-    pred_count[1] <- max(c(exp(X[1]) - 0.1, 0.00001));
-    count[1]      ~  dpois(pred_count[1]) 
+    log_X[1]      <- mu
+    X[1]          <- exp(log_X[1])
+    count[1]      ~  dpois(X[1]) 
 
     # through time
 
@@ -100,14 +100,13 @@
 
       # Process model
 
-      predX[i]      <- log(exp(X[i-1]) * exp(r[i] * (1 - (X[i - 1] / K[i]))));
-      checkX[i]     ~  dnorm(predX[i], tau); 
-      X[i]          <- checkX[i]
-      pred_count[i] <- max(c(exp(X[i]) - 0.1, 0.00001));
-   
+      pred_log_X[i] <- log(exp(X[i-1]) * exp(r[i] * (1 - (X[i - 1] / K[i]))))
+      log_X[i]      ~  dnorm(pred_log_X[i], tau)
+      X[i]          <- exp(log_X[i])
+
       # observation model
 
-      count[i] ~ dpois(pred_count[i]);
+      count[i] ~ dpois(X[i])
 
     }
 
