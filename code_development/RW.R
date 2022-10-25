@@ -2,20 +2,21 @@
   dataset <- tolower(dataset)
   messageq("  -jags_RW for ", dataset, quiet = quiet)
 
-  monitor <- c("mu", "tau")
+  monitor <- c("mu", "sigma")
 
   inits <- function (data = NULL) {
 
     rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
 
     log_mean_past_count <- log(mean(data$past_count, na.rm = TRUE))
+    sd_log_past_count <- sd(log(data$past_count), na.rm = TRUE)
 
     function (chain = chain) {
 
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
             mu       = rnorm(1, log_mean_past_count, 1), 
-            sigma    = runif(1, 0, 10))
+            sigma    = runif(1, 0, 0.1))
 
     }
 
@@ -25,8 +26,8 @@
  
     # priors
 
-    mu    ~  dnorm(log_mean_past_count, 1)
-    sigma ~  dunif(0, 10) 
+    mu    ~  dnorm(log_mean_past_count, 5)
+    sigma ~  dunif(0, 0.1) 
     tau   <- pow(sigma, -1/2)
 
     # initial state
@@ -147,7 +148,7 @@ i<-1
                           monitor   = monitor, 
                           inits     = inits(data), 
                           data      = data, 
-                          n.chains  = 6, #control_runjags$nchains, 
+                          n.chains  = control_runjags$nchains, 
                           adapt     = control_runjags$adapt, 
                           burnin    = control_runjags$burnin, 
                           sample    = control_runjags$sample, 
@@ -161,3 +162,47 @@ i<-1
 
 
 plot(mods[[i]])
+
+summary(mods[[i]])
+
+
+
+    mu    <- summary(mods[[i]], vars = "mu")[ , "Mean"]
+    sigma <- summary(mods[[i]], vars = "sigma")[ , "Mean"]
+    tau   <- pow(sigma, -1/2)
+
+    # initial state
+
+
+plot(1:N, count, type = "p")
+for(j in 1:100){
+
+pcount <- NULL
+log_X <- X <- pred_log_X <- NULL
+N <- length(count)
+
+    log_X[1]      <- mu
+    X[1]          <- exp(log_X[1])
+    pcount[1]     <- rpois(1, X[1]) 
+
+
+    # through time
+
+    for(i in 2:N) {
+
+      # Process model
+
+      pred_log_X[i] <- log_X[i-1]
+      log_X[i]      <- rnorm(1, pred_log_X[i], sigma)
+      X[i]          <- exp(log_X[i])
+   
+
+      # observation model
+
+      pcount[i] <- rpois(1, X[i])
+
+    }
+
+
+points(1:N, pcount, type = "l", col = grey(0.7, 0.2))
+}
