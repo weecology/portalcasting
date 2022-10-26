@@ -11,14 +11,14 @@ prepare_covariates(
   main = ".",
   settings = directory_settings(),
   origin = Sys.Date(),
-  quiet = TRUE,
+  quiet = FALSE,
   verbose = FALSE
 )
 
 prepare_historic_covariates(
   main = ".",
   settings = directory_settings(),
-  quiet = TRUE,
+  quiet = FALSE,
   verbose = FALSE
 )
 

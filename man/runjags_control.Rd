@@ -5,7 +5,7 @@
 \title{Create a control list for a runjags JAGS model run}
 \usage{
 runjags_control(
-  nchains = 2,
+  nchains = 4,
   adapt = 10000,
   burnin = 10000,
   sample = 10000,
@@ -15,7 +15,7 @@ runjags_control(
   factories = "",
   mutate = NA,
   cast_obs = TRUE,
-  silent_jags = TRUE
+  silent_jags = FALSE
 )
 }
 \arguments{

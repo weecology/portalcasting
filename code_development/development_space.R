@@ -3,6 +3,7 @@
 # just to get a sense of where things land
 
 devtools::load_all()
+devtools::document()
 
 main <- "~/portalcasting"
 #setup_production(main = main)
