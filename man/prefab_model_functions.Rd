@@ -33,7 +33,7 @@ jags_logistic(
 
 jags_RW(
   main = ".",
-  dataset = "all",
+  dataset = "dm_controls",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,

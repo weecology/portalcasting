@@ -2,7 +2,7 @@
 #'
 #' @description Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and this function gathers them into a list for pipeline functionality.
 #'
-#' @param directory_config_file \code{character} value of the path to the directory config YAML.
+#' @param directory_configuration_file \code{character} value of the path to the directory config YAML.
 #'
 #' @param moons_file \code{character} name of the file for saving the moons data.
 #'

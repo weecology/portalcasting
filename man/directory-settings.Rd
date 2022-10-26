@@ -34,6 +34,8 @@ production_settings()
 sandbox_settings()
 }
 \arguments{
+\item{directory_configuration_file}{\code{character} value of the path to the directory config YAML.}
+
 \item{moons_file}{\code{character} name of the file for saving the moons data.}
 
 \item{covariates_file, historical_covariates_file, forecast_covariates_file}{\code{character} name of the files for saving the covariate data (combined historical and forecast) and each component.}
@@ -64,8 +66,6 @@ See \code{\link{download_climate_forecasts}}.}
 \item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
 \item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
-
-\item{directory_config_file}{\code{character} value of the path to the directory config YAML.}
 }
 \value{
 Named \code{list} of settings for the directory.

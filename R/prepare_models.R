@@ -12,8 +12,6 @@
 #'
 #' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.
 #'
-#' @param eval.expr \code{logical} indicator whether or not to evaluate expressions (tagged with \code{!expr}) found in the model controls document. Defaults to \code{TRUE} if not set as a global option or argument. See \code{\link[yaml]{yaml.load}}.
-#'
 #' @return \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_model_controls}.
 #'  
 #' @name read and write model controls

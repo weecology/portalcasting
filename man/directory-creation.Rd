@@ -47,6 +47,8 @@ setup_sandbox(
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
 The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
