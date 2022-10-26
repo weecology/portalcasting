@@ -8,10 +8,14 @@ devtools::document()
 main <- "~/portalcasting"
 #setup_production(main = main)
 
+jrw <- jags_RW(main = main)
+jl  <- jags_logistic(main = main)
+jlc <- jags_logistic_covariates(main = main)
+
 
 dataset         = "dm_controls"  
                            settings        = directory_settings() 
-                           control_runjags = runjags_control(silent_jags = FALSE) 
+                           control_runjags = runjags_control(silent_jags = FALSE, adapt = 1e3, burnin = 1e3, sample = 1e3) 
                            quiet           = FALSE 
                            verbose         = TRUE
 

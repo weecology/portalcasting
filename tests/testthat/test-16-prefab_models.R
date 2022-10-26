@@ -201,3 +201,21 @@ test_that(desc = "jags_logistic model", {
 
 
 })
+
+test_that(desc = "jags_logistic_covariates model", {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  # check for JAGS installation on system
+
+    check_jags() 
+
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  expect_message(f_a <- jags_logistic_covariates(main = main, control_runjags = rjc,
+                                dataset = "dm_controls", quiet = FALSE))
+  expect_is(f_a, "list")
+
+
+})

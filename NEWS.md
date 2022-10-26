@@ -5,7 +5,18 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # portalcasting 0.44.0
 *In Progress*
 
+### Major updates to JAGS models
+* Modeling and tracking sigma not tau (sd, not precision)
+* No max caps for density or counts (aka removing guardrails)
+* No use of ` + 0.1` `- 0.1` for logging, managing it differently
+* Chain increase from 2 to 4, silent jags is now FALSE
+* Removal of `jags_SS` wrapper, which limited adaptation of the model
+
+### Removing JAGS model vignette
+* Removal of the `jags_SS` wrapper eliminates the core of that vignette
+
 ### Adding integrated warm precip and ndvi covariates 
+* Allows covariates logistic model
 
 ### Shift internal naming of subs to subdirectories
 
