@@ -2,8 +2,7 @@
   dataset <- tolower(dataset)
   messageq("  -jags_logistic_covariates for ", dataset, quiet = quiet)
 
-
-  monitor <- c("mu", "sigma", "r_int", "K_int")
+  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope")
 
   inits <- function (data = NULL) {
 
@@ -20,39 +19,49 @@
            .RNG.seed  = sample(1:1e+06, 1),
             mu        = rnorm(1, log_mean_past_count, 1), 
             sigma     = runif(1, 0, 0.1),
-            r_int     = rnorm(1, 0, sqrt(1/10)),
-            log_K_int = rnorm(1, log_max_past_count, 0.1))
+            r_int     = rnorm(1, 0, 0.1),
+            r_slope   = rnorm(1, 0, 0.1),
+            log_K_int   = rnorm(1, log_max_past_count, 0.1),
+            log_K_slope = rnorm(1, 0, 0.1))
 
     }
 
   }
 
-
   jags_model <- "model {  
- 
+
     # priors
 
-    mu        ~  dnorm(log_mean_past_count, 5)
-    sigma     ~  dunif(0, 0.1) 
-    tau       <- pow(sigma, -1/2)
-    r_int     ~  dnorm(0, 10)
-    log_K_int ~  dnorm(log_max_past_count, 10)
-    K_int     <- exp(log_K_int) 
- 
+    mu           ~  dnorm(log_mean_past_count, 5)
+    sigma        ~  dunif(0, 0.1) 
+    tau          <- pow(sigma, -1/2)
+    r_int        ~  dnorm(0, 10)
+    r_slope      ~  dnorm(0, 1)
+    log_K_int    ~  dnorm(log_max_past_count, 0.1)
+    log_K_slope  ~ dunif(-10, 10)#  dnorm(0, 10)
+
+    # Parameter expansions
+
+    for (i in 1:N) {
+
+      r[i] <- r_int + r_slope * warm_rain_three_months[i]
+      K[i] <- exp(log_K_int)# + log_K_slope * ndvi_twelve_months[i]) 
+
+    }
+
     # initial state
 
     log_X[1]      <- mu
     X[1]          <- exp(log_X[1])
     count[1]      ~  dpois(X[1]) 
 
-
     # through time
 
-    for(i in 2:N) {
+    for (i in 2:N) {
 
       # Process model
 
-      pred_X[i]     <- X[i-1] * exp(r_int * (1 - (X[i - 1] / K_int)))
+      pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
       pred_log_X[i] <- log(pred_X[i])
       log_X[i]      ~  dnorm(pred_log_X[i], tau)
       X[i]          <- exp(log_X[i])
@@ -65,8 +74,8 @@
 
   }"
 
-
 model_name <- "jags_logistic_covariates"
+
 
 
   rodents_table <- read_rodents_table(main     = main,
@@ -93,9 +102,7 @@ model_name <- "jags_logistic_covariates"
   cast_tab <- data.frame()
 
 
-i<-1
-
-    s  <- species[i]
+    s  <- species
     ss <- gsub("NA.", "NA", s)
     messageq("   -", ss, quiet = !verbose)
 
@@ -131,15 +138,22 @@ i<-1
     log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
     log_mean_past_count <- log(max(past_count, na.rm = TRUE))
 
-    warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
 
-    data <- list(count       = count, 
-                 ntraps      = ntraps, 
-                 N           = length(count),
-                 moon        = moon, 
+
+    warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    ndvi_twelve_months     <- scale(covariates$ndvi_12_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+
+    data <- list(count                  = count, 
+                 ntraps                 = ntraps, 
+                 N                      = length(count),
+                 moon                   = moon, 
+                 past_moon              = past_moon, 
+                 past_N                 = length(past_count),
                  log_mean_past_count = log_mean_past_count,
                  log_max_past_count = log_max_past_count,
-                 past_count  = past_count)
+                 past_count  = past_count,
+                 warm_rain_three_months = warm_rain_three_months[,1],
+                 ndvi_twelve_months = ndvi_twelve_months[,1])
 
     obs_pred_times      <- metadata$time$rodent_cast_moons 
     obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
@@ -154,9 +168,6 @@ i<-1
       monitor  <- c(monitor, obs_pred) 
 
     }
-
-
-
 
     mods[[i]] <- run.jags(model     = jags_model, 
                           monitor   = monitor, 
@@ -176,3 +187,65 @@ i<-1
 
 
 plot(mods[[i]])
+
+
+
+
+
+
+
+
+
+
+    mu    <- summary(mods[[i]], vars = "mu")[ , "Mean"]
+    sigma <- summary(mods[[i]], vars = "sigma")[ , "Mean"]
+    tau   <- pow(sigma, -1/2)
+    r_int     <- summary(mods[[i]], vars = "r_int")[ , "Mean"]
+    r_slope   <- summary(mods[[i]], vars = "r_slope")[ , "Mean"]
+    log_K_int     <- summary(mods[[i]], vars = "log_K_int")[ , "Mean"]
+    log_K_slope  <- summary(mods[[i]], vars = "log_K_slope")[ , "Mean"]
+
+    # initial state
+
+
+plot(1:N, count, type = "p")
+for(j in 1:100){
+
+pcount <- NULL
+log_X <- X <- pred_log_X <- pred_X <- NULL
+N <- length(count)
+
+    log_X[1]      <- mu
+    X[1]          <- exp(log_X[1])
+    pcount[1]     <- rpois(1, X[1]) 
+
+    for (i in 1:N) {
+
+      r[i] <- r_int + r_slope * warm_rain_three_months[i]
+      K[i] <- log(K_int) + log_K_slope * ndvi_twelve_months[i]
+
+    }
+
+    # through time
+
+    for(i in 2:N) {
+
+      # Process model
+
+      pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
+      pred_log_X[i] <- log(pred_X[i])
+      log_X[i]      <- rnorm(1, pred_log_X[i], sigma)
+      X[i]          <- exp(log_X[i])
+   
+
+      # observation model
+
+      pcount[i] <- rpois(1, X[i])
+
+    }
+
+
+points(1:N, pcount, type = "l", col = grey(0.7, 0.2))
+}
+
+

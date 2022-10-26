@@ -2,7 +2,7 @@
   dataset <- tolower(dataset)
   messageq("  -jags_logistic for ", dataset, quiet = quiet)
 
-  monitor <- c("mu", "sigma", "r", "K")
+  monitor <- c("mu", "sigma", "r", "log_K")
 
 
   inits <- function (data = NULL) {
@@ -18,10 +18,10 @@
 
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
-            mu       = rnorm(1, log_mean_past_count, 1), 
-            sigma    = runif(1, 0, 0.1),
-            r        = rnorm(1, 0, sqrt(1/10)),
-            log_K    = rnorm(1, log_max_past_count, 0.1))
+            mu       = rnorm(1, log_mean_past_count, 0.1), 
+            sigma    = runif(1, 0, 0.0005),
+            r        = rnorm(1, 0, 0.01),
+            log_K    = rnorm(1, log_max_past_count, 0.01))
 
     }
 
@@ -32,10 +32,10 @@
     # priors
 
     mu    ~  dnorm(log_mean_past_count, 5)
-    sigma ~  dunif(0, 0.1) 
+    sigma ~  dunif(0, 0.001) 
     tau   <- pow(sigma, -1/2)
-    r     ~  dnorm(0, 10)
-    log_K ~  dnorm(log_max_past_count, 10)
+    r     ~  dnorm(0, 5)
+    log_K ~  dnorm(log_max_past_count, 5)
     K     <- exp(log_K) 
  
     # initial state
@@ -126,7 +126,7 @@ i<-1
 
     }
     log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
-    log_mean_past_count <- log(max(past_count, na.rm = TRUE))
+    log_max_past_count <- log(max(past_count, na.rm = TRUE))
 
 
     data <- list(count       = count, 
@@ -151,6 +151,7 @@ i<-1
 
     }
 
+
     mods[[i]] <- run.jags(model     = jags_model, 
                           monitor   = monitor, 
                           inits     = inits(data), 
@@ -170,27 +171,27 @@ i<-1
 
 plot(mods[[i]])
 
+pow <- function(x1, x2){x1 ^ x2}
+mcmc <- runjags:::combine.mcmc(mods[[1]])
 
 
-
-
-    mu    <- summary(mods[[i]], vars = "mu")[ , "Mean"]
-    sigma <- summary(mods[[i]], vars = "sigma")[ , "Mean"]
+    mu    <- mcmc[ , "mu"]
+    sigma <- mcmc[ , "sigma"]
     tau   <- pow(sigma, -1/2)
-    r     <- summary(mods[[i]], vars = "r")[ , "Mean"]
-    K     <- summary(mods[[i]], vars = "K")[ , "Mean"]
+    r     <- mcmc[ , "r"]
+    log_K <- mcmc[ , "log_K"]
 
     # initial state
 
+N <- length(count)
 
 plot(1:N, count, type = "p")
 for(j in 1:100){
 
 pcount <- NULL
 log_X <- X <- pred_log_X <- pred_X <- NULL
-N <- length(count)
 
-    log_X[1]      <- mu
+    log_X[1]      <- mu[j]
     X[1]          <- exp(log_X[1])
     pcount[1]     <- rpois(1, X[1]) 
 
@@ -201,9 +202,10 @@ N <- length(count)
 
       # Process model
 
-      pred_X[i]     <- X[i-1] * exp(r * (1 - (X[i - 1] / K)))
+      pred_X[i]     <- X[i-1] * exp(r[j] * (1 - (X[i - 1] / exp(log_K[j]))))
+
       pred_log_X[i] <- log(pred_X[i])
-      log_X[i]      <- rnorm(1, pred_log_X[i], sigma)
+      log_X[i]      <- rnorm(1, pred_log_X[i], sigma[j])
       X[i]          <- exp(log_X[i])
    
 

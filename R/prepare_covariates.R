@@ -42,6 +42,16 @@ prepare_covariates <- function (main     = ".",
                                                      quiet    = quiet, 
                                                      verbose  = verbose)
 
+  # patch to deal with weird split of the newmoon, think this comes from the newmoon table issues
+
+  if (any(forecast_covariates$newmoonnumber %in% historic_covariates$newmoonnumber)) {
+
+    forecast_covariates <- forecast_covariates[!(forecast_covariates$newmoonnumber %in% historic_covariates$newmoonnumber), ]
+
+  }
+
+  # end patch
+
   write_data(x         = rbind(historic_covariates, forecast_covariates), 
              main      = main, 
              save      = settings$save, 

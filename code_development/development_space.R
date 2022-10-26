@@ -4,8 +4,8 @@
 
 devtools::load_all()
 
-main <- "~/portalcasting2"
-setup_production(main = main)
+main <- "~/portalcasting"
+#setup_production(main = main)
 
 
 dataset         = "dm_controls"  

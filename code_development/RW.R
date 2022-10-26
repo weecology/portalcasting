@@ -15,8 +15,8 @@
 
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
-            mu       = rnorm(1, log_mean_past_count, 1), 
-            sigma    = runif(1, 0, 0.1))
+            mu       = rnorm(1, log_mean_past_count, 0.1), 
+            sigma    = runif(1, 0, 0.0005))
 
     }
 
@@ -27,7 +27,7 @@
     # priors
 
     mu    ~  dnorm(log_mean_past_count, 5)
-    sigma ~  dunif(0, 0.1) 
+    sigma ~  dunif(0, 0.001) 
     tau   <- pow(sigma, -1/2)
 
     # initial state
@@ -166,14 +166,17 @@ plot(mods[[i]])
 summary(mods[[i]])
 
 
+mcmc <- runjags:::combine.mcmc(mods[[i]])
 
-    mu    <- summary(mods[[i]], vars = "mu")[ , "Mean"]
-    sigma <- summary(mods[[i]], vars = "sigma")[ , "Mean"]
+
+    mu    <- mcmc[ , "mu"]
+    sigma <- mcmc[ , "sigma"]
     tau   <- pow(sigma, -1/2)
 
     # initial state
 
 
+windows()
 plot(1:N, count, type = "p")
 for(j in 1:100){
 
@@ -181,7 +184,7 @@ pcount <- NULL
 log_X <- X <- pred_log_X <- NULL
 N <- length(count)
 
-    log_X[1]      <- mu
+    log_X[1]      <- mu[j]
     X[1]          <- exp(log_X[1])
     pcount[1]     <- rpois(1, X[1]) 
 
@@ -193,7 +196,7 @@ N <- length(count)
       # Process model
 
       pred_log_X[i] <- log_X[i-1]
-      log_X[i]      <- rnorm(1, pred_log_X[i], sigma)
+      log_X[i]      <- rnorm(1, pred_log_X[i], sigma[j])
       X[i]          <- exp(log_X[i])
    
 
@@ -206,3 +209,8 @@ N <- length(count)
 
 points(1:N, pcount, type = "l", col = grey(0.7, 0.2))
 }
+
+windows()
+plot(1:N, count, type = "p")
+
+
