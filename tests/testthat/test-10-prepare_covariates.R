@@ -9,7 +9,7 @@ test_that(desc = "prep_covariates", {
 
     skip_on_cran() 
 
-  covs <- prep_covariates(main = main)
+  covs <- prepare_covariates(main = main)
   expect_is(covs, "data.frame")
 
 })
@@ -37,8 +37,8 @@ test_that(desc = "daily weather can be summarized by moon", {
 
     skip_on_cran() 
 
-    moons <- prep_moons(main)
-  weather <- portalr::weather("daily", fill = TRUE, path = file.path(main, "raw"))
+    moons <- prepare_moons(main)
+  weather <- portalr::weather("daily", fill = TRUE, path = file.path(main, "resources"))
   weather <- add_date_from_components(weather)
   weather <- add_newmoonnumbers_from_dates(weather, moons)
 expect_is(weather, "data.frame")

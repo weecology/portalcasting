@@ -9,7 +9,7 @@ test_that(desc = "prep_metadata", {
     skip_on_cran() 
 
 
-  md <- prep_metadata(main = main)
+  md <- prepare_metadata(main = main)
   expect_is(md, "list")
 
 })

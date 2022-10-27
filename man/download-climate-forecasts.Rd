@@ -7,7 +7,7 @@
 \usage{
 download_climate_forecasts(
   main = ".",
-  resources_sub = "raw",
+  resources_sub = "resources",
   version = Sys.Date(),
   source = "NMME",
   data = c("tasmin", "tasmean", "tasmax", "pr"),

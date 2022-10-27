@@ -5,7 +5,7 @@ main <- "./testing"
 
 test_that(desc = "read_directory_config works but errors out of directory", {
 
-  dc <- read_directory_config(main)
+  dc <- read_directory_configuration(main)
   expect_is(dc, "list")
   expect_error(read_directory_config())
 

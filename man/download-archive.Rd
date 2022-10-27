@@ -7,7 +7,7 @@
 \usage{
 download_archive(
   main = ".",
-  resources_sub = "raw",
+  resources_sub = "resources",
   version = "latest",
   source = "github",
   quiet = FALSE,
