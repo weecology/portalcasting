@@ -32,6 +32,8 @@ update_directory_configuration(
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
 \code{list} of directory configurations, \code{\link[base]{invisible}}-ly.

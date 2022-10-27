@@ -150,6 +150,8 @@ setup_sandbox <- function (main     = ".",
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) puts the forecasting directory in the present locations. Nesting the forecasting directory in a folder can be done by simply adding to the \code{main} input (see \code{Examples}).
 #'
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
+#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
 #' @return \code{list} of directory configurations, \code{\link[base]{invisible}}-ly.
