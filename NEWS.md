@@ -2,8 +2,8 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.44.0
-*In Progress*
+# [portalcasting 0.44.0](https://github.com/weecology/portalcasting/releases/tag/v0.44.0)
+*2022-10-27*
 
 ### Major updates to JAGS models
 * Modeling and tracking sigma not tau (sd, not precision)
