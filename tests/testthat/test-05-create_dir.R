@@ -16,7 +16,7 @@ test_that(desc = "write_directory_config creates the config file",
           code = {
 
 
-  config <- write_directory_config(main     = main)
+  config <- write_directory_configuration(main     = main)
   expect_equal(!is.null(config), TRUE)
   expect_is(config, "list")
 

@@ -7,9 +7,9 @@
 #' @importFrom portalr download_observations get_future_moons load_trapping_data ndvi summarize_rodent_data weather
 #' @importFrom runjags run.jags runjags.options
 #' @importFrom scoringRules crps_nbinom crps_norm crps_pois crps_sample logs_sample logs_nbinom logs_norm logs_pois 
-#' @importFrom stats AIC lm na.omit predict qnorm quantile rgamma rnorm runif sd
+#' @importFrom stats AIC filter frequency lm na.omit predict qnorm quantile rgamma rnorm runif sd
 #' @importFrom tscount tsglm
-#' @importFrom utils download.file packageDescription read.csv sessionInfo tail unzip write.csv write.table
+#' @importFrom utils download.file find packageDescription read.csv sessionInfo tail unzip write.csv write.table
 #' @importFrom viridis viridis
 #' @importFrom yaml read_yaml write_yaml
 

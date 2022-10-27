@@ -1,7 +1,7 @@
 #' @title Cast Portal Rodents Models
 #'
 #' @description Cast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr
-#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prep_data}. \cr \cr
+#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prepare_data}. \cr \cr
 #'  \code{cast} runs a single cast of multiple models across data sets.
 #'
 #' @details Multiple models can be run together on the multiple, varying data sets for a single new moon using \code{cast}. \code{portalcast} wraps around \code{cast}, providing updating, verification, and resetting utilities as well as facilitating multiple runs of \code{cast} across new moons (e.g., when using a rolling origin).
@@ -191,7 +191,7 @@ models_to_cast <- function (main     = ".",
                             models   = prefab_models(),
                             settings = directory_settings()) {
   
-  models_path <- file.path(main, settings$subs$models)
+  models_path <- file.path(main, settings$subdirectories$models)
   file_names  <- paste0(models, ".R")
   torun       <- list.files(models_path) %in% file_names
   torun_paths <- list.files(models_path, full.names = TRUE)[torun] 

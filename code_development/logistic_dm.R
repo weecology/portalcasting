@@ -65,8 +65,8 @@
                         inits     = inits(data),
                         data      = data, 
                         n.chains  = 3,
-                        adapt     = 10000,
-                        burnin    = 10000,
+                        adapt     = 1000,
+                        burnin    = 1000,
                         sample    = 1000,
                         thin      = 1,
                         modules   = "glm", 
@@ -74,3 +74,28 @@
 
   round(summary(model_fit), 4)
   plot(model_fit)
+
+
+pX <- NULL
+pY <- NULL
+
+    r  <- summary(model_fit, vars = "r")[,"Mean"]
+    K  <- summary(model_fit, vars = "K")[,"Mean"]
+    X0 <- summary(model_fit, vars = "X0")[,"Mean"]
+
+
+    Y0      <- rpois(1, X0)
+  
+    pX[1]   <- max(c(X0 * exp(r * (1 -( X0 / K))), 0.000001))
+    pY[1]   <- rpois(1, pX[1])
+
+    for (i in 2:nmoons) {
+
+      pX[i] <- max(c(pX[i-1] * exp(r * (1 - (pX[i - 1] / K))), 0.000001))
+
+      pY[i] <- rpois(1, pX[i])
+
+    }
+
+
+plot(c(Y, count))

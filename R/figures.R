@@ -115,7 +115,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   cast_tab <- cast_tab[all_in, ]
 
 
-  lp    <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
+  lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -368,7 +368,7 @@ plot_casts_err_lead <- function (main           = ".",
   cast_tab <- cast_tab[all_in, ]
 
 
-  lp    <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
+  lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -827,7 +827,7 @@ plot_cast_point <- function (main         = ".",
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
   mtext(title, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
 
-  lpath <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
+  lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath) 
   sptab <- na_conformer(sptab, "speciescode")
 
@@ -1066,7 +1066,7 @@ plot_cast_ts <- function (main        = ".",
        tck    = -0.005)  
 
   lab   <- list(text = "", font = 1)
-  lp    <- file.path(main, settings$subs$resources, "PortalData/Rodents/Portal_rodent_species.csv")
+  lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp)
   sptab <- na_conformer(sptab, "speciescode")
 

@@ -21,42 +21,31 @@
 #' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
 #'
 #' @return Some version of a moons \code{data.frame}. \cr \cr. 
-#'         \code{prep_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{save = TRUE}). \cr 
+#'         \code{prepare_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr 
 #'         \code{add_future_moons}: fully appended and formatted \code{data.frame}. \cr 
 #'         \code{forecast_future_moons}: moons \code{data.frame} to append to the existing \code{moons}.
 #'
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   prep_moons()
+#'   prepare_moons()
 #'  }
 #'
 #' @name prepare moons
 #'
 #' @export
 #' 
-prep_moons <- function (main     = ".", 
-                        lead     = 365,
-                        origin   = Sys.Date(), 
-                        settings = directory_settings(), 
-                        quiet    = TRUE,
-                        verbose  = FALSE) {
+prepare_moons <- function (main     = ".", 
+                           lead     = 365,
+                           origin   = Sys.Date(), 
+                           settings = directory_settings(), 
+                           quiet    = TRUE,
+                           verbose  = FALSE) {
 
   
-  PD <- file.path(main, settings$subs$resources, "PortalData")
-  
-  if (!file.exists(PD)) {
-
-    download_observations(path        = file.path(main, settings$subs["resources"]), 
-                          version     = settings$resources$PortalData$version,
-                          from_zenodo = settings$resources$PortalData$source == "zenodo",
-                          quiet       = quiet)
-
-  }
-
   messageq("  - moons data file", quiet = quiet)
 
-  traps_in <- load_trapping_data(path                = file.path(main, settings$subs["resources"]), 
+  traps_in <- load_trapping_data(path                = file.path(main, settings$subdirectories["resources"]), 
                                  download_if_missing = FALSE,
                                  clean               = FALSE, 
                                  quiet               = !verbose)
@@ -68,7 +57,7 @@ prep_moons <- function (main     = ".",
                                 lead   = lead, 
                                 origin = origin)
 
-  write_data(x       = moons_out, 
+  write_data(x         = moons_out, 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$moons, 

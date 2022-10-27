@@ -19,9 +19,11 @@ NULL
 #'
 prefab_model_controls <- function( ) {
 
-  prefab_controls_file <- system.file("extdata", "prefab_model_controls.yaml", package = "portalcasting")
+  prefab_controls_file <- system.file(...     = "extdata", 
+                                      ...     = "prefab_model_controls.yaml", 
+                                      package = "portalcasting")
 
-  read_yaml(prefab_controls_file)
+  read_yaml(file = prefab_controls_file)
 
 }
 
@@ -31,7 +33,7 @@ prefab_model_controls <- function( ) {
 #'
 prefab_models <- function( ) {
 
-  names(prefab_model_controls())
+  names(x = prefab_model_controls( ))
 
 }
 
@@ -49,6 +51,7 @@ prefab_models <- function( ) {
 #  \code{GPEDM} fits an EDM model using Gaussian Processes for function approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. \cr \cr
 #'  \code{jags_logistic} fits a log-scale density logistic-growth (r-K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
+#'  \code{jags_logistic_covariates} fits a log-scale density logistic-growth (r-K) based on covariates (warm rain influencing r, NDVI influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
 #'
 #' @details 
 #'  \code{AutoArima} \cr
@@ -96,6 +99,7 @@ prefab_models <- function( ) {
 #'   pevGARCH()
 #'   jags_RW()
 #'   jags_logistic()
+#'   jags_logistic_covariates()
 #'  }
 #'
 #' @name prefab_model_functions

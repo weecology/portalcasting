@@ -2,7 +2,7 @@
 #'
 #' @description Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and this function gathers them into a list for pipeline functionality.
 #'
-#' @param directory_config_file \code{character} value of the path to the directory config YAML.
+#' @param directory_configuration_file \code{character} value of the path to the directory config YAML.
 #'
 #' @param moons_file \code{character} name of the file for saving the moons data.
 #'
@@ -37,39 +37,45 @@
 #'
 #' @return Named \code{list} of settings for the directory.
 #'
+#' @name directory settings
+#'
+NULL
+
+#' @rdname directory-settings
+#'
 #' @export
 #'
-directory_settings <- function (directory_config_file      = "dir_config.yaml",
-                                moons_file                 = "moon_dates.csv",
-                                covariates_file            = "covariates.csv",
-                                historical_covariates_file = "historical_covariates.csv",
-                                forecast_covariates_file   = "forecast_covariates.csv",
-                                dataset_controls_file      = "dataset_controls.yaml", 
-                                model_controls_file        = "model_controls.yaml",
-                                cast_evaluations_file      = "cast_evaluations.csv",
-                                metadata_file              = "metadata.yaml",
-                                subdirectories             = list("forecasts" = "casts", "fits" = "fits", "models" = "models", "resources" = "raw", "data" = "data"),
-                                PortalData                 = list(source = "github", version = "latest"),
-                                portalPredictions          = list(source = "github", version = NULL),
-                                climate_forecast           = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),
-                                save                       = TRUE,
-                                overwrite                  = TRUE, 
-                                unzip_pause                = 30,
-                                download_timeout           = getOption("timeout")) {
+directory_settings <- function (directory_configuration_file = "directory_configuration.yaml",
+                                moons_file                   = "moon_dates.csv",
+                                covariates_file              = "covariates.csv",
+                                historical_covariates_file   = "historical_covariates.csv",
+                                forecast_covariates_file     = "forecast_covariates.csv",
+                                dataset_controls_file        = "dataset_controls.yaml", 
+                                model_controls_file          = "model_controls.yaml",
+                                cast_evaluations_file        = "cast_evaluations.csv",
+                                metadata_file                = "metadata.yaml",
+                                subdirectories               = list("forecasts" = "forecasts", "fits" = "fits", "models" = "models", "resources" = "resources", "data" = "data"),
+                                PortalData                   = list(source = "github", version = "latest"),
+                                portalPredictions            = list(source = "github", version = NULL),
+                                climate_forecast             = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),
+                                save                         = TRUE,
+                                overwrite                    = TRUE, 
+                                unzip_pause                  = 30,
+                                download_timeout             = getOption("timeout")) {
 
-  list(files            = list(directory_config      = directory_config_file,
-                               moons                 = moons_file,
-                               covariates            = covariates_file,
-                               historical_covariates = historical_covariates_file,
-                               forecast_covariates   = forecast_covariates_file,
-                               dataset_controls      = dataset_controls_file,
-                               model_controls        = model_controls_file,
+  list(files            = list(directory_configuration = directory_configuration_file,
+                               moons                   = moons_file,
+                               covariates              = covariates_file,
+                               historical_covariates   = historical_covariates_file,
+                               forecast_covariates     = forecast_covariates_file,
+                               dataset_controls        = dataset_controls_file,
+                               model_controls          = model_controls_file,
                                cast_evaluations        = cast_evaluations_file,
-                               metadata              = metadata_file),
-       subs             = subdirectories,
-       resources        = list(PortalData            = PortalData,
-                               portalPredictions     = portalPredictions,
-                               climate_forecast      = climate_forecast),
+                               metadata                = metadata_file),
+       subdirectories   = subdirectories,
+       resources        = list(PortalData              = PortalData,
+                               portalPredictions       = portalPredictions,
+                               climate_forecast        = climate_forecast),
        repository       = "portalPredictions",
        save             = save, 
        overwrite        = overwrite, 
@@ -77,4 +83,33 @@ directory_settings <- function (directory_config_file      = "dir_config.yaml",
        download_timeout = download_timeout)
 
 }
+
+
+#' @rdname directory-settings
+#'
+#' @export
+#'
+production_settings <- function ( ) {
+
+  directory_settings(portalPredictions = list(source  = "github", 
+                                              version = "latest"), 
+                     download_timeout  = 600)
+
+}
+
+
+#' @rdname directory-settings
+#'
+#' @export
+#'
+sandbox_settings <- function ( ) {
+
+  directory_settings()
+
+}
+
+
+
+
+
 

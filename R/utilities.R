@@ -1,3 +1,45 @@
+#' @title Round an Interpolated Series
+#'
+#' @description Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.
+#'
+#' @param x A time series passed directly to \code{\link[forecast]{na.interp}}.
+#'
+#' @param lambda Box-Cox transformation parameter passed directly to \code{\link[forecast]{na.interp}}.
+#'
+#' @param linear \code{logical} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast]{na.interp}}.
+#'
+#' @param digits \code{integer} or \code{numeric} integer of how many digits to round to. Passed directly to \code{\link{round}}.
+#'
+#' @param min_val \code{integer} or \code{numeric} integer of minimum value allowable in the series.
+#'
+#' @return \code{numeric} series.
+#' 
+#' @examples
+#'   round_na.interp(x = c(1, 2, 3, NA, NA, 170))
+#'   round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
+#'
+#' @export
+#'
+round_na.interp <- function (x,
+                             lambda  = NULL, 
+                             linear  = (frequency(x) <= 1 | sum(!is.na(x)) <= 2 * frequency(x)),
+                             digits  = 0,
+                             min_val = 0) {
+
+  xi <- na.interp(x      = x, 
+                  lambda = lambda,
+                  linear = linear)
+
+  xr <- round(x      = xi,
+              digits = digits)
+
+  pmax(... = min_val,
+       ... = xr)
+
+}
+
+
+
 #' @title Determine a File's Extension or Remove the Extension from the File Path
 #'
 #' @description Based on the separating character, \code{file_ext} determines the file extension and \code{path_no_ext} determines the file path without the extension.
@@ -552,62 +594,6 @@ ifna <- function (x = NULL, alt = NA) {
 
 
 
-#' @title Optionally generate a message based on a logical input
-#'
-#' @description A wrapper on \code{\link[base]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not.
-#'
-#' @param ... zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base]{message}}.
-#'
-#' @param quiet \code{logical} indicator if the message should be generated. 
-#'
-#' @param domain The domain for the translation. If \code{NA}, messages will not be translated. See \code{\link[base]{message}} and \code{\link[base]{gettext}}.
-#'
-#' @param appendLF \code{logical} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base]{message}}.
-#'
-#' @return A message is given, and \code{NULL} returned.
-#'
-#' @export
-#'
-messageq <- function (..., 
-                      quiet    = FALSE, 
-                      domain   = NULL, 
-                      appendLF = TRUE) {
-
-  if (!quiet) {
-
-    message(...,
-            domain   = domain,
-            appendLF = appendLF)
-
-  }
-
-  invisible()
-
-}
-
-
-#' @title Produce a Horizontal Break Line for Messaging
-#'
-#' @description Creates a horizontal line of characters for messages.
-#'
-#' @param char \code{character} value to repeated \code{reps} times to form the break. 
-#'
-#' @param reps \code{integer}-conformable value for number of times \code{char} is replicated.
-#' 
-#' @return \code{NULL} (message is put out to console).
-#'
-#' @examples
-#'  message_break()
-#'
-#' @export
-#'
-message_break <- function(char = "-",
-                          reps = 60){
-  
-  paste(rep(char, reps), collapse = "") 
-
-}
-
 
 #' @title Add a Newmoon Number Column to a Table that has a Date Column 
 #' 
@@ -615,7 +601,7 @@ message_break <- function(char = "-",
 #' 
 #' @param df \code{data.frame} with column of \code{date}s.
 #'
-#' @param moons Moons \code{data.frame}. See \code{\link{prep_moons}}.
+#' @param moons Moons \code{data.frame}. See \code{\link{prepare_moons}}.
 #'
 #' @return \code{data.frame} \code{df} with column of \code{newmoonnumber}s added.
 #'
@@ -630,25 +616,10 @@ add_newmoonnumbers_from_dates <- function (df, moons = NULL) {
     df <- add_date_from_components(df)
   }
 
-  moon_number       <- moons$newmoonnumber[-1]
-  moon_start        <- as.Date(moons$newmoondate[-nrow(moons)])
-  moon_end          <- as.Date(moons$newmoondate[-1])
-  moon_match_number <- NULL
-  moon_match_date   <- NULL
-
-  for (i in seq(moon_number)) {
-
-    temp_dates        <- seq.Date(moon_start[i] + 1, moon_end[i], 1)
-    temp_dates        <- as.character(temp_dates)
-    temp_numbers      <- rep(moon_number[i], length(temp_dates))
-    moon_match_date   <- c(moon_match_date, temp_dates)
-    moon_match_number <- c(moon_match_number, temp_numbers)
-
+  df$newmoonnumber <- NA
+  for (i in 1:nrow(df)) {
+    df$newmoonnumber[i] <- max(moons$newmoonnumber[moons$newmoondate <= df$date[i]])
   }
-
-  moon_match_date  <- as.Date(moon_match_date)
-  moon_matches     <- match(df$date, moon_match_date)
-  df$newmoonnumber <- moon_match_number[moon_matches]
 
   df
 

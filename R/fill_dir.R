@@ -1,18 +1,18 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
 #' @description Fill the directory with components including \enumerate{
-#'   \item{Resources (\code{\link{fill_raw}}): \itemize{
+#'   \item{Resources (\code{\link{fill_resources}}): \itemize{
 #'     \item{raw data (\code{\link[portalr]{download_observations}})}
 #'     \item{directory archive (\code{\link{download_archive}})}
 #'     \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
 #'   \item{Output: \itemize{
-#'     \item{forecasts (\code{\link{fill_casts}})}
+#'     \item{forecasts (\code{\link{fill_forecasts}})}
 #'     \item{model fits (\code{\link{fill_fits}})}}}
 #'   \item{Data (\code{\link{fill_data}}):  \itemize{
-#'     \item{rodent datasets (\code{\link{prep_rodents}})}
-#'     \item{temporal (lunar) data (\code{\link{prep_moons}})}
-#'     \item{covariates (\code{\link{prep_covariates}})}
-#'     \item{metadata (\code{\link{prep_metadata}})}}}
+#'     \item{rodent datasets (\code{\link{prepare_rodents}})}
+#'     \item{temporal (lunar) data (\code{\link{prepare_moons}})}
+#'     \item{covariates (\code{\link{prepare_covariates}})}
+#'     \item{metadata (\code{\link{prepare_metadata}})}}}
 #'   \item{Models (\code{\link{fill_models}})}
 #'  }
 #'             
@@ -37,14 +37,17 @@
 #'   fill_dir("./portalcasting")
 #'
 #'   create_dir("./pc")
-#'   fill_raw("./pc")
-#'   fill_casts("./pc")
+#'   fill_resources("./pc")
+#'   fill_forecasts("./pc")
 #'   fill_fits("./pc")
 #'   fill_models("./pc")
 #'  }
 #'
 #' @name directory filling
 #'
+NULL
+
+#' @rdname directory-filling
 #'
 #' @export
 #'
@@ -57,20 +60,25 @@ fill_dir <- function (main     = ".",
 
   messageq("Filling directory with content: \n", quiet = quiet)
 
-  fill_raw(main     = main, 
-           settings = settings, 
-           quiet    = quiet, 
-           verbose  = verbose)
+  subdirectories <- settings$subdirectories
 
-  fill_casts(main     = main, 
-             settings = settings, 
-             quiet    = quiet, 
-             verbose  = verbose)
+
+
+  fill_resources(main     = main, 
+                 settings = settings, 
+                 quiet    = quiet, 
+                 verbose  = verbose)
+
+  fill_forecasts(main     = main, 
+                 settings = settings, 
+                 quiet    = quiet, 
+                 verbose  = verbose)
 
   fill_fits(main     = main, 
             settings = settings, 
             quiet    = quiet, 
             verbose  = verbose)
+
 
   fill_data(main     = main, 
             datasets = datasets,
@@ -78,12 +86,6 @@ fill_dir <- function (main     = ".",
             settings = settings,
             quiet    = quiet, 
             verbose  = verbose)
-
-
-  write_model_controls(main     = main, 
-                       settings = settings, 
-                       models   = models, 
-                       quiet    = quiet)
 
   fill_models(main     = main, 
               settings = settings,
@@ -109,35 +111,30 @@ fill_data <- function (main     = ".",
                        quiet    = FALSE,
                        verbose  = FALSE) {
 
-  messageq(" Writing data files ... ", quiet = quiet)
+  messageq(" Preparing data files ... ", quiet = quiet)
 
-  write_dataset_controls(main     = main, 
-                         settings = settings, 
-                         datasets = datasets, 
-                         quiet    = FALSE)
+  prepare_rodents(main     = main,
+                  settings = settings,
+                  datasets = datasets,
+                  quiet    = quiet,
+                  verbose  = verbose)
 
-  prep_rodents(main     = main,
-               settings = settings,
-               datasets = datasets,
-               quiet    = quiet,
-               verbose  = verbose)
+  prepare_moons(main      = main,  
+                settings  = settings,
+                quiet     = quiet, 
+                verbose   = verbose)
 
-  prep_moons(main      = main,  
-             settings  = settings,
-             quiet     = quiet, 
-             verbose   = verbose)
+  prepare_covariates(main      = main,  
+                     settings  = settings,
+                     quiet     = quiet, 
+                     verbose   = verbose)
 
-  prep_covariates(main      = main,  
-                  settings  = settings,
-                  quiet     = quiet, 
-                  verbose   = verbose)
-
-  prep_metadata(main     = main, 
-                datasets = datasets,
-                models   = models, 
-                settings = settings,
-                quiet    = quiet, 
-                verbose  = verbose)
+  prepare_metadata(main     = main, 
+                   datasets = datasets,
+                   models   = models, 
+                   settings = settings,
+                   quiet    = quiet, 
+                   verbose  = verbose)
 
   messageq("  ... data preparing complete.", quiet = quiet)
 
@@ -151,20 +148,20 @@ fill_data <- function (main     = ".",
 #'
 #' @export
 #'
-fill_raw <- function (main     = ".",
-                      settings = directory_settings(),
-                      quiet    = FALSE,
-                      verbose  = FALSE) {
+fill_resources <- function (main     = ".",
+                            settings = directory_settings(),
+                            quiet    = FALSE,
+                            verbose  = FALSE) {
 
   messageq("Downloading resources ... ", quiet = quiet)
 
-  download_observations(path        = file.path(main, settings$subs$resources), 
+  download_observations(path        = file.path(main, settings$subdirectories$resources), 
                         version     = settings$resources$PortalData$version,
                         from_zenodo = settings$resources$PortalData$source == "zenodo",
                         quiet       = quiet)
 
   download_archive(main          = main, 
-                   resources_sub = settings$subs$resources,
+                   resources_sub = settings$subdirectories$resources,
                    version       = settings$resources$portalPredictions$version,
                    source        = settings$resources$portalPredictions$source,
                    pause         = settings$unzip_pause,
@@ -173,7 +170,7 @@ fill_raw <- function (main     = ".",
                    verbose       = verbose)
 
   download_climate_forecasts(main          = main, 
-                             resources_sub = settings$subs$resources,
+                             resources_sub = settings$subdirectories$resources,
                              source        = settings$resources$climate_forecast$source,  
                              version       = settings$resources$climate_forecast$version, 
                              data          = settings$resources$climate_forecast$data, 
@@ -183,9 +180,9 @@ fill_raw <- function (main     = ".",
 
   messageq("  ... downloads complete. ", quiet = quiet)
   
-  update_directory_config(main     = main,
-                          settings = settings,
-                          quiet    = quiet)
+  update_directory_configuration(main     = main,
+                                 settings = settings,
+                                 quiet    = quiet)
 
   invisible()
 
@@ -195,16 +192,16 @@ fill_raw <- function (main     = ".",
 #'
 #' @export
 #'
-fill_casts <- function (main     = ".", 
-                        settings = directory_settings(), 
-                        quiet    = FALSE, 
-                        verbose  = FALSE) { 
+fill_forecasts <- function (main     = ".", 
+                            settings = directory_settings(), 
+                            quiet    = FALSE, 
+                            verbose  = FALSE) { 
 
-  output_folders <- c("casts")
+  output_folders <- c("forecasts", "casts")
 
   files <- unlist(mapply(FUN        = list.files,
                          path       = mapply(FUN = file.path, 
-                                                   main, settings$subs$resources, settings$repository, output_folders),
+                                                   main, settings$subdirectories$resources, settings$repository, output_folders),
                          full.names = TRUE))
 
   if (length(files) == 0) {
@@ -216,7 +213,7 @@ fill_casts <- function (main     = ".",
   messageq(paste0(" Located ", length(files), " cast files ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subs$forecasts), 
+                      to        = file.path(main, settings$subdirectories$forecasts), 
                       recursive = TRUE)
 
   messageq(paste(ifelse(sum(copied) > 0, 
@@ -248,7 +245,7 @@ fill_fits <- function (main     = ".",
 
   files <- unlist(mapply(FUN        = list.files,
                          path       = mapply(FUN = file.path, 
-                                                   main, settings$subs$resources, settings$repository, output_folders),
+                                                   main, settings$subdirectories$resources, settings$repository, output_folders),
                          full.names = TRUE))
 
   if (length(files) == 0) {
@@ -260,7 +257,7 @@ fill_fits <- function (main     = ".",
   messageq(paste0(" Located ", length(files), " fit files ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subs$fits), 
+                      to        = file.path(main, settings$subdirectories$fits), 
                       recursive = TRUE)
 
   messageq(paste(ifelse(sum(copied) > 0, 
@@ -290,12 +287,12 @@ fill_models <- function (main     = ".",
                          quiet    = FALSE, 
                          verbose  = FALSE) {
 
+  model_controls_list <- write_model_controls(main     = main, 
+                                              settings = settings, 
+                                              models   = models, 
+                                              quiet    = quiet)
+
   return_if_null(models)
-
-  model_controls_list <- model_controls(main     = main, 
-                                        settings = settings, 
-                                        models   = models)
-
 
 
   messageq(" Writing model scripts ... ", quiet = quiet)

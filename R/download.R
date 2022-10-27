@@ -34,7 +34,7 @@
 #' @export
 #'
 download_archive <- function(main          = ".",
-                             resources_sub = "raw",
+                             resources_sub = "resources",
                              version       = "latest", 
                              source        = "github",
                              quiet         = FALSE,
@@ -204,7 +204,7 @@ download_archive <- function(main          = ".",
 #' @export
 #'
 download_climate_forecasts <- function (main          = ".",
-                                        resources_sub = "raw",
+                                        resources_sub = "resources",
                                         version       = Sys.Date(), 
                                         source        = "NMME",
                                         data          = c("tasmin", "tasmean", "tasmax", "pr"),

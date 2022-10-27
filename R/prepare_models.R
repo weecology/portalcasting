@@ -21,7 +21,7 @@
 read_model_controls <- function (main     = ".",
                                  settings = directory_settings()) {
 
-  read_yaml(file.path(main, settings$subs$models, settings$files$model_controls))
+  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
 
 }
 
@@ -79,7 +79,7 @@ write_model_controls <- function (main               = ".",
   }
 
   write_yaml(x    = model_controls,
-             file = file.path(main, settings$subs$models, settings$files$model_controls))
+             file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
 
   invisible(model_controls)
 
@@ -141,7 +141,7 @@ write_model <- function (main     = ".",
   }
 
   model_file <- paste0(model, ".R")
-  mod_path   <- file.path(main, settings$subs$models, model_file)
+  mod_path   <- file.path(main, settings$subdirectories$models, model_file)
 
 
   mod_template <- model_template(main     = main, 
@@ -204,7 +204,7 @@ model_template <- function (main     = ".",
 
     for (i in 1:nadditional_args) {
 
-      additional_args <- paste0(additional_args, ", ", names(control_model$args)[i], " = ", control_model$args[i])
+     # additional_args <- paste0(additional_args, ", ", names(control_model$args)[i], " = ", control_model$args[i])
 
     }
 

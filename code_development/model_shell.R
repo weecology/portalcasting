@@ -1,11 +1,15 @@
 # working here and with the updated model controls yaml to streamline model construction
 
-classic_model_core <- function (main     = ".", 
-                                model = NULL,
-                                dataset  = "all",
-                                settings = directory_settings(), 
-                                quiet    = FALSE, 
-                                verbose  = FALSE) {
+# right now stuck on addressing the fact that the model functions use different names for the response variable
+# y or ts or whatever
+
+
+site_model <- function (main     = ".", 
+                        model    = NULL,
+                        dataset  = "all",
+                        settings = directory_settings(), 
+                        quiet    = FALSE, 
+                        verbose  = FALSE) {
 
   return_if_null(model)
 
@@ -49,9 +53,9 @@ classic_model_core <- function (main     = ".",
 
     messageq("   -", ss, quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abundance <- rodents_table[ , s]
 
-    if (sum(abund_s, na.rm = TRUE) == 0) {
+    if (sum(abundance, na.rm = TRUE) == 0) {
       next()
     }
 
@@ -65,15 +69,28 @@ classic_model_core <- function (main     = ".",
 
     }
 
-    if (controls$interpolate) {
+    nargs <- length(args)
+
+    for (j in 1:nargs) {
+
+      if(grepl("quote", args[[j]])) {
+
+        args[[j]] <- eval(parse(text = args[[j]]))
+
+      }
+
+    }
+
+    if (controls$interpolate$needed) {
 
       args <- update_list(args, 
-                          y = round(na.interp(abund_s)))
+                          y = do.call(what = controls$interpolate$fun,
+                                      args = list(abundance)))
 
     }  else {
 
       args <- update_list(args, 
-                          y = abund_s)
+                          y = abundance)
 
     }
 

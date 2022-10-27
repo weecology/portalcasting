@@ -11,7 +11,7 @@ test_that(desc = "fill_raw fills raw but doesn't when not missing and told not t
 
     skip_on_cran() 
 
-  expect_equal(fill_raw(main = main), NULL)
+  expect_equal(fill_resources(main = main), NULL)
 
 })
 
@@ -23,7 +23,7 @@ test_that(desc = "fill_casts fills the casts folder",
 
     skip_on_cran() 
 
-  expect_message(xx <- fill_casts(main = main, verbose = TRUE))
+  expect_message(xx <- fill_forecasts(main = main, verbose = TRUE))
   expect_equal(xx, NULL)
 
 })
@@ -41,8 +41,7 @@ test_that(desc = "fill_data sets up the data sub",
   expect_equal(fill_data(main = main), NULL)
   main_dir <- list.files(main)
   main_dir <- sort(main_dir)
-  expected_main_dir <- c("casts", "data", "dir_config.yaml", "fits", "models",
-                         "raw")
+  expected_main_dir <- c("data", "directory_configuration.yaml", "fits", "forecasts", "models", "resources")
   expect_equal(main_dir, expected_main_dir)
 
 })

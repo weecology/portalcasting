@@ -2,12 +2,12 @@
 % Please edit documentation in R/prepare_moons.R
 \name{prepare moons}
 \alias{prepare moons}
-\alias{prep_moons}
+\alias{prepare_moons}
 \alias{add_future_moons}
 \alias{forecast_future_moons}
 \title{Prepare Lunar Data for the Portalcasting Repository}
 \usage{
-prep_moons(
+prepare_moons(
   main = ".",
   lead = 365,
   origin = Sys.Date(),
@@ -43,7 +43,7 @@ forecast_future_moons(moons = NULL, lead = 365, origin = Sys.Date())
 }
 \value{
 Some version of a moons \code{data.frame}. \cr \cr. 
-        \code{prep_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{save = TRUE}). \cr 
+        \code{prepare_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr 
         \code{add_future_moons}: fully appended and formatted \code{data.frame}. \cr 
         \code{forecast_future_moons}: moons \code{data.frame} to append to the existing \code{moons}.
 }
@@ -58,7 +58,7 @@ Sometimes the resources moon data table is not fully up-to-date. Because the \co
 \examples{
  \donttest{
   setup_dir()
-  prep_moons()
+  prepare_moons()
  }
 
 }

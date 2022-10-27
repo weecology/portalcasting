@@ -2,10 +2,10 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{prepare rodent dataset}
 \alias{prepare rodent dataset}
-\alias{prep_dataset}
+\alias{prepare_dataset}
 \title{Prepare Rodents Data Tables for Forecasting}
 \usage{
-prep_dataset(
+prepare_dataset(
   name = "all",
   main = ".",
   settings = directory_settings(),
@@ -92,5 +92,5 @@ The default \code{time = "newmoon"} produces an equispaced observation timestep,
 \description{
 Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
-             Ready for implementation via \code{\link{prep_rodents}}.
+             Ready for implementation via \code{\link{prepare_rodents}}.
 }

@@ -21,7 +21,7 @@
 read_dataset_controls <- function (main     = ".",
                                    settings = directory_settings()) {
 
-  read_yaml(file.path(main, settings$subs$data, settings$files$dataset_controls))
+  read_yaml(file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
 
 }
 
@@ -66,7 +66,7 @@ write_dataset_controls <- function (main                 = ".",
   }
 
   write_yaml(x    = dataset_controls,
-             file = file.path(main, settings$subs$data, settings$files$dataset_controls))
+             file = file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
 
   invisible(dataset_controls)
 
@@ -93,17 +93,20 @@ write_dataset_controls <- function (main                 = ".",
 #'
 #' @export
 #'
-prep_rodents <- function (main     = ".",
-                          datasets = prefab_datasets(),
-                          settings = directory_settings(), 
-                          quiet    = FALSE,
-                          verbose  = FALSE) {
+prepare_rodents <- function (main     = ".",
+                             datasets = prefab_datasets(),
+                             settings = directory_settings(), 
+                             quiet    = FALSE,
+                             verbose  = FALSE) {
+
+  dataset_controls_list <- write_dataset_controls(main     = main, 
+                                                  settings = settings, 
+                                                  datasets = datasets, 
+                                                  quiet    = quiet)
+
 
   return_if_null(datasets)
 
-  dataset_controls_list <- dataset_controls(main     = main, 
-                                            settings = settings, 
-                                            datasets = datasets)
 
   messageq("  - rodents", quiet = quiet)
 
@@ -134,7 +137,7 @@ prep_rodents <- function (main     = ".",
 #'
 #' @description Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
 #'              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
-#'              Ready for implementation via \code{\link{prep_rodents}}.
+#'              Ready for implementation via \code{\link{prepare_rodents}}.
 #'
 #' @param name \code{character} name of the data set.
 #'
@@ -194,7 +197,7 @@ prep_rodents <- function (main     = ".",
 #'
 #' @export
 #'
-prep_dataset <- function(name        = "all",
+prepare_dataset <- function(name        = "all",
                          main        = ".",
                          settings    = directory_settings(),
                          filename    = "rodents_all.csv",
@@ -224,7 +227,7 @@ prep_dataset <- function(name        = "all",
 
   messageq("    - ", name, quiet = quiet)
 
-  rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subs$resources), 
+  rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subdirectories$resources), 
                                          clean      = clean, 
                                          level      = level, 
                                          type       = type, 
@@ -285,9 +288,9 @@ prep_dataset <- function(name        = "all",
   out                             <- out[out_ord, ]
 
 
-  write_data(x       = out, 
+  write_data(x         = out, 
              main      = main, 
-             data_sub  = settings$subs$data,
+             data_sub  = settings$subdirectories$data,
              save      = save, 
              filename  = filename, 
              overwrite = overwrite, 

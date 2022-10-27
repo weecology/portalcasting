@@ -13,16 +13,16 @@ test_that(desc = "cast_covariates properly forecasts", {
     skip_on_cran() 
 
 
-  hist_cov <- prep_historic_covariates(main = main)
+  hist_cov <- prepare_historic_covariates(main = main)
   expect_is(hist_cov, "data.frame")
   expect_true(all(hist_cov$source == "historic"))
 
-  cast_cov1 <- prep_forecast_covariates(main = main)
+  cast_cov1 <- prepare_forecast_covariates(main = main)
   expect_is(cast_cov1, "data.frame")
   expect_true(all(cast_cov1$source == "forecast"))
 
 
-  expect_error(prep_forecast_covariates(main = main, origin = 1))
+  expect_error(prepare_forecast_covariates(main = main, origin = 1))
 
 })
 

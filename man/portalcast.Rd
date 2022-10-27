@@ -54,7 +54,7 @@ Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}
 }
 \description{
 Cast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr
- \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prep_data}. \cr \cr
+ \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prepare_data}. \cr \cr
  \code{cast} runs a single cast of multiple models across data sets.
 }
 \details{

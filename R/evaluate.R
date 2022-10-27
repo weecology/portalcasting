@@ -75,7 +75,7 @@ evaluate_casts <- function (main           = ".",
 
     }
     
-    evaluations_file <- file.path(main, settings$subs$forecasts, settings$files$cast_evaluations)
+    evaluations_file <- file.path(main, settings$subdirectories$forecasts, settings$files$cast_evaluations)
 
     if (file.exists(evaluations_file)) {
 

@@ -5,7 +5,7 @@
 \title{Create a control list for a runjags JAGS model run}
 \usage{
 runjags_control(
-  nchains = 2,
+  nchains = 4,
   adapt = 10000,
   burnin = 10000,
   sample = 10000,
@@ -15,7 +15,7 @@ runjags_control(
   factories = "",
   mutate = NA,
   cast_obs = TRUE,
-  silent_jags = TRUE
+  silent_jags = FALSE
 )
 }
 \arguments{
@@ -45,7 +45,7 @@ runjags_control(
 \code{list} of controls.
 }
 \description{
-We leverage the \code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package to run JAGS (Plummer 2003) models in portalcasting. That function has a number of control parameters that users may be interested in changing, and this function wraps those parameters with a few portalcasting-specific parameters into a control list for input into reusable functions like \code{\link{jags_ss}} and specific model functions.
+We leverage the \code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package to run JAGS (Plummer 2003) models in portalcasting. That function has a number of control parameters that users may be interested in changing, and this function wraps those parameters with a few portalcasting-specific parameters into a control list for input into specific model functions.
 }
 \examples{
  runjags_control()

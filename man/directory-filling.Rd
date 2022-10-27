@@ -4,8 +4,8 @@
 \alias{directory filling}
 \alias{fill_dir}
 \alias{fill_data}
-\alias{fill_raw}
-\alias{fill_casts}
+\alias{fill_resources}
+\alias{fill_forecasts}
 \alias{fill_fits}
 \alias{fill_models}
 \title{Fill a Portalcasting Directory with Basic Components}
@@ -28,14 +28,14 @@ fill_data(
   verbose = FALSE
 )
 
-fill_raw(
+fill_resources(
   main = ".",
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
 
-fill_casts(
+fill_forecasts(
   main = ".",
   settings = directory_settings(),
   quiet = FALSE,
@@ -75,18 +75,18 @@ fill_models(
 }
 \description{
 Fill the directory with components including \enumerate{
-  \item{Resources (\code{\link{fill_raw}}): \itemize{
+  \item{Resources (\code{\link{fill_resources}}): \itemize{
     \item{raw data (\code{\link[portalr]{download_observations}})}
     \item{directory archive (\code{\link{download_archive}})}
     \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
   \item{Output: \itemize{
-    \item{forecasts (\code{\link{fill_casts}})}
+    \item{forecasts (\code{\link{fill_forecasts}})}
     \item{model fits (\code{\link{fill_fits}})}}}
   \item{Data (\code{\link{fill_data}}):  \itemize{
-    \item{rodent datasets (\code{\link{prep_rodents}})}
-    \item{temporal (lunar) data (\code{\link{prep_moons}})}
-    \item{covariates (\code{\link{prep_covariates}})}
-    \item{metadata (\code{\link{prep_metadata}})}}}
+    \item{rodent datasets (\code{\link{prepare_rodents}})}
+    \item{temporal (lunar) data (\code{\link{prepare_moons}})}
+    \item{covariates (\code{\link{prepare_covariates}})}
+    \item{metadata (\code{\link{prepare_metadata}})}}}
   \item{Models (\code{\link{fill_models}})}
  }
 }
@@ -97,8 +97,8 @@ Fill the directory with components including \enumerate{
   fill_dir("./portalcasting")
 
   create_dir("./pc")
-  fill_raw("./pc")
-  fill_casts("./pc")
+  fill_resources("./pc")
+  fill_forecasts("./pc")
   fill_fits("./pc")
   fill_models("./pc")
  }
