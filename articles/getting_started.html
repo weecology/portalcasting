@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.43.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.44.0</span>
       </span>
     </div>
 
@@ -51,9 +51,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -97,7 +94,7 @@
             <h3 data-toc-skip class="subtitle">Set Up and Use a Portal Predictions Directory</h3>
                         <h4 data-toc-skip class="author">Juniper L. Simonis</h4>
             
-            <h4 data-toc-skip class="date">29 July, 2022</h4>
+            <h4 data-toc-skip class="date">27 October, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/HEAD/vignettes/getting_started.Rmd" class="external-link"><code>vignettes/getting_started.Rmd</code></a></small>
       <div class="hidden name"><code>getting_started.Rmd</code></div>
@@ -119,12 +116,12 @@
 <div class="section level2">
 <h2 id="create-a-portal-predictions-directory">Create a Portal Predictions directory<a class="anchor" aria-label="anchor" href="#create-a-portal-predictions-directory"></a>
 </h2>
-<p>The <code><a href="../reference/directory-setup.html">setup_dir()</a></code> function creates and populates a standard Portal Predictions directory that includes <code>raw</code>, <code>data</code>, <code>models</code>, <code>fits</code>, and <code>casts</code> subdirectories. By default, <code><a href="../reference/directory-setup.html">setup_dir()</a></code> downloads the most up-to-date version of the <a href="https://doi.org/10.5281/zenodo.1215988" class="external-link">Portal Data</a> and <a href="https://doi.org/10.5281/zenodo.833438" class="external-link">Portal Predictions</a> archives from Zenodo into the <code>raw</code> subdirectory, prepares the moons, rodents, covariates, covariate forecast, and metadata data files (and places them in the <code>data</code> subdirectory) and populates the <code>models</code> subdirectory with scripts for the eight existing models (“AutoArima”, “NaiveArima”, “ESSS”, “jags_logistic”, “jags_RW”, “nbGARCH”, “nbsGARCH”, and “pevGARCH”).</p>
+<p>The <code><a href="../reference/directory-creation.html">setup_dir()</a></code> function creates and populates a standard Portal Predictions directory that includes <code>raw</code>, <code>data</code>, <code>models</code>, <code>fits</code>, and <code>casts</code> subdirectories. By default, <code><a href="../reference/directory-creation.html">setup_dir()</a></code> downloads the most up-to-date version of the <a href="https://doi.org/10.5281/zenodo.1215988" class="external-link">Portal Data</a> and <a href="https://doi.org/10.5281/zenodo.833438" class="external-link">Portal Predictions</a> archives from Zenodo into the <code>raw</code> subdirectory, prepares the moons, rodents, covariates, covariate forecast, and metadata data files (and places them in the <code>data</code> subdirectory) and populates the <code>models</code> subdirectory with scripts for the eight existing models (“AutoArima”, “NaiveArima”, “ESSS”, “jags_logistic”, “jags_RW”, “nbGARCH”, “nbsGARCH”, and “pevGARCH”).</p>
 <p>Specialized versions of <code>setup_dir</code> are tailored for local model exploration, development, and testing (“<code>setup_sandbox</code>”) and for use in the real-deal pipeline (“<code>setup_production</code>”). The settings are fairly similar, although <code>setup_sandbox</code> has extra rigid argument checking turned off and extra verbose messaging turned on. <code>setup_production</code> provides a robust starting point for a user interested in seeing the range of what the package can do, with specific error checking and verbose messaging, so we use it here. Note that downloading the full directory does take a few minutes.</p>
-<p>There are many arguments available for the user to tailor the setup of the directory, which can be found on the help page (<code><a href="../reference/directory-setup.html">?setup_dir</a></code>). Perhaps the most important argument is <code>main</code> which allows the user to point the directory to any particular location. The default is <code>main = "."</code>, which is basically “the present directory”. A common implementation would be to create a directory in the home directory of a computer (indicated by <code>"~"</code>) and within a named folder, say “portalcast_directory”, which would be done with <code>main = "~/portalcast_directory"</code>, or by setting <code>main &lt;- "~/portalcast_directory"</code> and then using <code>main = main</code> throughout the code:</p>
+<p>There are many arguments available for the user to tailor the setup of the directory, which can be found on the help page (<code><a href="../reference/directory-creation.html">?setup_dir</a></code>). Perhaps the most important argument is <code>main</code> which allows the user to point the directory to any particular location. The default is <code>main = "."</code>, which is basically “the present directory”. A common implementation would be to create a directory in the home directory of a computer (indicated by <code>"~"</code>) and within a named folder, say “portalcast_directory”, which would be done with <code>main = "~/portalcast_directory"</code>, or by setting <code>main &lt;- "~/portalcast_directory"</code> and then using <code>main = main</code> throughout the code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">main</span> <span class="op">&lt;-</span> <span class="st">"~/portalcast_directory"</span></span>
-<span><span class="fu"><a href="../reference/directory-setup.html">setup_production</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/directory-creation.html">setup_production</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="run-a-cast-forecast-or-hindcast">Run a cast (forecast or hindcast)<a class="anchor" aria-label="anchor" href="#run-a-cast-forecast-or-hindcast"></a>

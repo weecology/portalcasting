@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.43.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.44.0</span>
       </span>
     </div>
 
@@ -33,9 +33,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -108,25 +105,21 @@
         </td>
         <td><p>Create a covariate model list</p></td>
       </tr><tr><td>
-          <p><code><a href="directory-creation.html">create_dir()</a></code> </p>
+          <p><code><a href="directory-creation.html">create_dir()</a></code> <code><a href="directory-creation.html">setup_dir()</a></code> <code><a href="directory-creation.html">setup_production()</a></code> <code><a href="directory-creation.html">setup_sandbox()</a></code> </p>
         </td>
-        <td><p>Create the Structure of a Forecasting Directory</p></td>
+        <td><p>Create the Structure of a Directory and Fill with Content</p></td>
       </tr><tr><td>
-          <p><code><a href="directory-filling.html">fill_dir()</a></code> <code><a href="directory-filling.html">fill_data()</a></code> <code><a href="directory-filling.html">fill_raw()</a></code> <code><a href="directory-filling.html">fill_casts()</a></code> <code><a href="directory-filling.html">fill_fits()</a></code> <code><a href="directory-filling.html">fill_models()</a></code> </p>
+          <p><code><a href="directory-filling.html">fill_dir()</a></code> <code><a href="directory-filling.html">fill_data()</a></code> <code><a href="directory-filling.html">fill_resources()</a></code> <code><a href="directory-filling.html">fill_forecasts()</a></code> <code><a href="directory-filling.html">fill_fits()</a></code> <code><a href="directory-filling.html">fill_models()</a></code> </p>
         </td>
         <td><p>Fill a Portalcasting Directory with Basic Components</p></td>
       </tr><tr><td>
-          <p><code><a href="directory-setup.html">setup_dir()</a></code> <code><a href="directory-setup.html">setup_production()</a></code> <code><a href="directory-setup.html">setup_sandbox()</a></code> </p>
-        </td>
-        <td><p>Create and Fill a Forecasting Directory</p></td>
-      </tr><tr><td>
-          <p><code><a href="directory_configuration_file.html">write_directory_config()</a></code> <code><a href="directory_configuration_file.html">read_directory_config()</a></code> <code><a href="directory_configuration_file.html">update_directory_config()</a></code> </p>
-        </td>
-        <td><p>Create, Update, and Read the Directory Configuration File</p></td>
-      </tr><tr><td>
-          <p><code><a href="directory_settings.html">directory_settings()</a></code> </p>
+          <p><code><a href="directory-settings.html">directory_settings()</a></code> <code><a href="directory-settings.html">production_settings()</a></code> <code><a href="directory-settings.html">sandbox_settings()</a></code> </p>
         </td>
         <td><p>Create a Directory Settings List</p></td>
+      </tr><tr><td>
+          <p><code><a href="directory_configuration_file.html">write_directory_configuration()</a></code> <code><a href="directory_configuration_file.html">read_directory_configuration()</a></code> <code><a href="directory_configuration_file.html">update_directory_configuration()</a></code> </p>
+        </td>
+        <td><p>Create, Update, and Read the Directory Configuration File</p></td>
       </tr><tr><td>
           <p><code><a href="download-archive.html">download_archive()</a></code> </p>
         </td>
@@ -155,10 +148,6 @@
           <p><code><a href="foy.html">foy()</a></code> </p>
         </td>
         <td><p>Calculate the Fraction of the Year from a Date</p></td>
-      </tr><tr><td>
-          <p><code><a href="jags_ss.html">jags_ss()</a></code> </p>
-        </td>
-        <td><p>Run a single-species JAGS model</p></td>
       </tr><tr><td>
           <p><code><a href="lag_covariates.html">lag_covariates()</a></code> </p>
         </td>
@@ -220,7 +209,7 @@
         </td>
         <td><p>Functions for Portalcasting (Forecasting Portal Rodents)</p></td>
       </tr><tr><td>
-          <p><code><a href="prefab_model_functions.html">jags_logistic()</a></code> <code><a href="prefab_model_functions.html">jags_RW()</a></code> <code><a href="prefab_model_functions.html">AutoArima()</a></code> <code><a href="prefab_model_functions.html">NaiveArima()</a></code> <code><a href="prefab_model_functions.html">ESSS()</a></code> <code><a href="prefab_model_functions.html">nbGARCH()</a></code> <code><a href="prefab_model_functions.html">nbsGARCH()</a></code> <code><a href="prefab_model_functions.html">pevGARCH()</a></code> </p>
+          <p><code><a href="prefab_model_functions.html">jags_logistic_covariates()</a></code> <code><a href="prefab_model_functions.html">jags_logistic()</a></code> <code><a href="prefab_model_functions.html">jags_RW()</a></code> <code><a href="prefab_model_functions.html">AutoArima()</a></code> <code><a href="prefab_model_functions.html">NaiveArima()</a></code> <code><a href="prefab_model_functions.html">ESSS()</a></code> <code><a href="prefab_model_functions.html">nbGARCH()</a></code> <code><a href="prefab_model_functions.html">nbsGARCH()</a></code> <code><a href="prefab_model_functions.html">pevGARCH()</a></code> </p>
         </td>
         <td><p>Functions for the prefab portalcasting models</p></td>
       </tr><tr><td>
@@ -232,25 +221,25 @@
         </td>
         <td><p>Provide the Names or Controls for the Prefab Models</p></td>
       </tr><tr><td>
-          <p><code><a href="prep_metadata.html">prep_metadata()</a></code> </p>
-        </td>
-        <td><p>Prepare a Model-Running Metadata List</p></td>
-      </tr><tr><td>
-          <p><code><a href="prepare-covariates.html">prep_covariates()</a></code> <code><a href="prepare-covariates.html">prep_historic_covariates()</a></code> <code><a href="prepare-covariates.html">prep_forecast_covariates()</a></code> </p>
+          <p><code><a href="prepare-covariates.html">prepare_covariates()</a></code> <code><a href="prepare-covariates.html">prepare_historic_covariates()</a></code> <code><a href="prepare-covariates.html">prepare_forecast_covariates()</a></code> </p>
         </td>
         <td><p>Prepare Covariate Data for Casting</p></td>
       </tr><tr><td>
-          <p><code><a href="prepare-moons.html">prep_moons()</a></code> <code><a href="prepare-moons.html">add_future_moons()</a></code> <code><a href="prepare-moons.html">forecast_future_moons()</a></code> </p>
+          <p><code><a href="prepare-moons.html">prepare_moons()</a></code> <code><a href="prepare-moons.html">add_future_moons()</a></code> <code><a href="prepare-moons.html">forecast_future_moons()</a></code> </p>
         </td>
         <td><p>Prepare Lunar Data for the Portalcasting Repository</p></td>
       </tr><tr><td>
-          <p><code><a href="prepare-rodent-dataset.html">prep_dataset()</a></code> </p>
+          <p><code><a href="prepare-rodent-dataset.html">prepare_dataset()</a></code> </p>
         </td>
         <td><p>Prepare Rodents Data Tables for Forecasting</p></td>
       </tr><tr><td>
-          <p><code><a href="prepare-rodents.html">prep_rodents()</a></code> </p>
+          <p><code><a href="prepare-rodents.html">prepare_rodents()</a></code> </p>
         </td>
         <td><p>Prepare Rodents Data for the Portalcasting Repository</p></td>
+      </tr><tr><td>
+          <p><code><a href="prepare_metadata.html">prepare_metadata()</a></code> </p>
+        </td>
+        <td><p>Prepare a Model-Running Metadata List</p></td>
       </tr><tr><td>
           <p><code><a href="read-and-write-model-controls.html">read_model_controls()</a></code> <code><a href="read-and-write-model-controls.html">model_controls()</a></code> <code><a href="read-and-write-model-controls.html">write_model_controls()</a></code> </p>
         </td>
@@ -283,6 +272,10 @@
           <p><code><a href="rodent_species.html">rodent_species()</a></code> <code><a href="rodent_species.html">all_species()</a></code> <code><a href="rodent_species.html">base_species()</a></code> <code><a href="rodent_species.html">eval_species()</a></code> </p>
         </td>
         <td><p>Rodent species abbreviations</p></td>
+      </tr><tr><td>
+          <p><code><a href="round_na.interp.html">round_na.interp()</a></code> </p>
+        </td>
+        <td><p>Round an Interpolated Series</p></td>
       </tr><tr><td>
           <p><code><a href="runjags_control.html">runjags_control()</a></code> </p>
         </td>

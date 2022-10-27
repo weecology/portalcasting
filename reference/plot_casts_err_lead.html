@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.43.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.44.0</span>
       </span>
     </div>
 
@@ -33,9 +33,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -80,7 +77,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_casts_err_lead</span><span class="op">(</span></span>
 <span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
-<span>  settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  settings <span class="op">=</span> <span class="fu"><a href="directory-settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  cast_ids <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cast_tab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  end_moons <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -98,7 +95,7 @@
 
 
 <dt>settings</dt>
-<dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+<dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory-settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
 
 
 <dt>cast_ids</dt>
@@ -144,7 +141,7 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span> <span class="co"># \donttest{</span></span>
-<span>  <span class="fu"><a href="directory-setup.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="directory-creation.html">setup_dir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="portalcast.html">portalcast</a></span><span class="op">(</span>models <span class="op">=</span> <span class="st">"AutoArima"</span>, end_moons <span class="op">=</span> <span class="fl">515</span><span class="op">:</span><span class="fl">520</span><span class="op">)</span></span>
 <span>  <span class="fu">plot_casts_err_lead</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># }</span></span>

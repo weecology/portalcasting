@@ -28,9 +28,6 @@
     <loc>https://weecology.github.io/portalcasting/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/articles/jags_models.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/authors.html</loc>
   </url>
   <url>
@@ -70,13 +67,10 @@
     <loc>https://weecology.github.io/portalcasting/reference/directory-filling.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory-setup.html</loc>
+    <loc>https://weecology.github.io/portalcasting/reference/directory-settings.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/directory_configuration_file.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory_settings.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/download-archive.html</loc>
@@ -101,9 +95,6 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/jags_ss.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/lag_covariates.html</loc>
@@ -160,9 +151,6 @@
     <loc>https://weecology.github.io/portalcasting/reference/prefabricated_models.html</loc>
   </url>
   <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prep_metadata.html</loc>
-  </url>
-  <url>
     <loc>https://weecology.github.io/portalcasting/reference/prepare-covariates.html</loc>
   </url>
   <url>
@@ -173,6 +161,9 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/prepare-rodents.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/prepare_metadata.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/read-and-write-model-controls.html</loc>
@@ -197,6 +188,9 @@
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/rodent_species.html</loc>
+  </url>
+  <url>
+    <loc>https://weecology.github.io/portalcasting/reference/round_na.interp.html</loc>
   </url>
   <url>
     <loc>https://weecology.github.io/portalcasting/reference/runjags_control.html</loc>

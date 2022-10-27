@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.43.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.44.0</span>
       </span>
     </div>
 
@@ -33,9 +33,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -78,15 +75,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_cast_tab</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory-settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">read_cast_tabs</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_ids <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">read_cast_tabs</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_ids <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory-settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">read_cast_metadata</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">read_cast_metadata</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory-settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">read_model_fit</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">read_model_fit</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory-settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">read_model_cast</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory_settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">read_model_cast</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, cast_id <span class="op">=</span> <span class="cn">NULL</span>, settings <span class="op">=</span> <span class="fu"><a href="directory-settings.html">directory_settings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -96,7 +93,7 @@
 
 
 <dt>settings</dt>
-<dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory_settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
+<dd><p><code>list</code> of controls for the directory, with defaults set in <code><a href="directory-settings.html">directory_settings</a></code> that should generally not need to be altered.</p></dd>
 
 
 <dt>cast_ids, cast_id</dt>

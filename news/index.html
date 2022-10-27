@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.43.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.44.0</span>
       </span>
     </div>
 
@@ -33,9 +33,6 @@
     </li>
     <li>
       <a href="../articles/current_models.html">Current models</a>
-    </li>
-    <li>
-      <a href="../articles/jags_models.html">JAGS modeling</a>
     </li>
     <li>
       <a href="../articles/codebase.html">portalcasting codebase</a>
@@ -75,6 +72,26 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="portalcasting-development-version">portalcasting (development version)<a class="anchor" aria-label="anchor" href="#portalcasting-development-version"></a></h2>
 <p>Version numbers follow <a href="https://semver.org/" class="external-link">Semantic Versioning</a>.</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.44.0" id="portalcasting-0440"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.44.0" class="external-link">portalcasting 0.44.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0440"></a></h2>
+<p><em>2022-10-27</em></p>
+<div class="section level4">
+<h4 id="major-updates-to-jags-models-0-44-0">Major updates to JAGS models<a class="anchor" aria-label="anchor" href="#major-updates-to-jags-models-0-44-0"></a></h4>
+<ul><li>Modeling and tracking sigma not tau (sd, not precision)</li>
+<li>No max caps for density or counts (aka removing guardrails)</li>
+<li>No use of <code>+ 0.1</code> <code>- 0.1</code> for logging, managing it differently</li>
+<li>Chain increase from 2 to 4, silent jags is now FALSE</li>
+<li>Removal of <code>jags_SS</code> wrapper, which limited adaptation of the model</li>
+</ul></div>
+<div class="section level4">
+<h4 id="removing-jags-model-vignette-0-44-0">Removing JAGS model vignette<a class="anchor" aria-label="anchor" href="#removing-jags-model-vignette-0-44-0"></a></h4>
+<ul><li>Removal of the <code>jags_SS</code> wrapper eliminates the core of that vignette</li></ul></div>
+<div class="section level4">
+<h4 id="adding-integrated-warm-precip-and-ndvi-covariates-0-44-0">Adding integrated warm precip and ndvi covariates<a class="anchor" aria-label="anchor" href="#adding-integrated-warm-precip-and-ndvi-covariates-0-44-0"></a></h4>
+<ul><li>Allows covariates logistic model</li></ul></div>
+<div class="section level4"><h4 id="shift-internal-naming-of-subs-to-subdirectories-0-44-0">Shift internal naming of subs to subdirectories<a class="anchor" aria-label="anchor" href="#shift-internal-naming-of-subs-to-subdirectories-0-44-0"></a></h4></div>
+<div class="section level4"><h4 id="shift-folder-naming-of-raw-casts-to-resources-forecasts-0-44-0">Shift folder naming of raw, casts to resources, forecasts<a class="anchor" aria-label="anchor" href="#shift-folder-naming-of-raw-casts-to-resources-forecasts-0-44-0"></a></h4></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.43.0" id="portalcasting-0430"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.43.0" class="external-link">portalcasting 0.43.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0430"></a></h2>
