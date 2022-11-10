@@ -10,14 +10,16 @@ setup_production(main = main)
 portalcast(main)
 evaluate_casts(main)
 
-jrw <- jags_RW(main = main)
-jl  <- jags_logistic(main = main)
-jlc <- jags_logistic_covariates(main = main)
+jrw  <- jags_RW(main = main)
+jl   <- jags_logistic(main = main)
+jlc  <- jags_logistic_covariates(main = main)
+jlo  <- jags_logistic_competition(main = main)
+jlcc <- jags_logistic_competition_covariates(main = main)
 
 
 dataset         = "dm_controls"  
                            settings        = directory_settings() 
-                           control_runjags = runjags_control(silent_jags = FALSE), adapt = 1e3, burnin = 1e3, sample = 1e3) 
+                           control_runjags = runjags_control(silent_jags = FALSE, adapt = 1e3, burnin = 1e3, sample = 1e3) 
                            quiet           = FALSE 
                            verbose         = TRUE
 
