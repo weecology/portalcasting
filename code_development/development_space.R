@@ -1,7 +1,3 @@
-# working here to develop the logistic w covariates model
-# doing some basic data exploration and isolated regressions
-# just to get a sense of where things land
-
 devtools::load_all()
 devtools::document()
 
@@ -23,7 +19,14 @@ dataset         = "dm_controls"
                            quiet           = FALSE 
                            verbose         = TRUE
 
-
+dataset = NULL
+                          cast_id     = NULL 
+                          cast_groups = NULL
+                          dataset     = NULL 
+                          model       = NULL 
+                          end_moon    = NULL 
+                          species     = NULL 
+                          start_moon  = 217
 
 
   rodents_table <- read_rodents_table(main     = main,

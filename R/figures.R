@@ -949,20 +949,11 @@ plot_cast_ts <- function (main        = ".",
                           start_moon  = 217, 
                           quiet       = FALSE) {
 
-  model  <- ifnull(model, "Ensemble")
-  model2 <- model
-
-  if (!is.null(model) && tolower(model) == "ensemble") {
-
-    model2 <- NULL
-
-  }
-
   casts_meta <- select_casts(main      = main, 
                              settings  = settings, 
                              cast_ids  = cast_id,
                              end_moons = end_moon, 
-                             models    = model2, 
+                             models    = model, 
                              datasets  = dataset, 
                              quiet     = quiet)
 
@@ -986,10 +977,18 @@ plot_cast_ts <- function (main        = ".",
 
   sp_col  <- is_sp_col(obs, nadot = TRUE, total = TRUE)
   species <- ifnull(species, colnames(obs)[sp_col])
+  if (length(species) > 1) {
+    if ("total" %in% species) {
+      species <- "total"
+    } else {
+      species <- species[1]
+    }
+
+  }
 
   if (!all(species %in% colnames(obs))) {
 
-    stop("cast not available for requested species")
+    stop("observations not available for requested species")
 
   }
 
@@ -1012,7 +1011,12 @@ plot_cast_ts <- function (main        = ".",
 
   }
 
-  species   <- ifnull(species, unique(preds$species))
+  if (!(species %in% preds$species)) {
+
+    stop("cast not available for requested species")
+
+  }
+
   match_sp  <- (preds$species %in% species)
   colnames  <- c("moon", "estimate", "lower_pi", "upper_pi")
   match_col <- (colnames(preds) %in% colnames)
@@ -1136,6 +1140,3 @@ plot_cast_ts <- function (main        = ".",
   mtext(text = title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
 
 }
-
-
-
