@@ -8,21 +8,17 @@
 \title{Create a Directory Settings List}
 \usage{
 directory_settings(
-  directory_configuration_file = "directory_configuration.yaml",
-  moons_file = "moon_dates.csv",
-  covariates_file = "covariates.csv",
-  historical_covariates_file = "historical_covariates.csv",
-  forecast_covariates_file = "forecast_covariates.csv",
-  dataset_controls_file = "dataset_controls.yaml",
-  model_controls_file = "model_controls.yaml",
-  cast_evaluations_file = "cast_evaluations.csv",
-  metadata_file = "metadata.yaml",
+  files = list(directory_configuration = "directory_configuration.yaml", moons =
+    "moon_dates.csv", covariates = "covariates.csv", historical_covariates =
+    "historical_covariates.csv", forecast_covariates = "forecast_covariates.csv",
+    dataset_controls = "dataset_controls.yaml", model_controls = "model_controls.yaml",
+    cast_evaluations = "cast_evaluations.csv", metadata = "metadata.yaml"),
   subdirectories = list(forecasts = "forecasts", fits = "fits", models = "models",
     resources = "resources", data = "data"),
-  PortalData = list(source = "github", version = "latest"),
-  portalPredictions = list(source = "github", version = NULL),
-  climate_forecast = list(source = "NMME", version = as.character(Sys.Date()), data =
-    c("tasmin", "tasmean", "tasmax", "pr")),
+  resources = list(PortalData = list(source = "github", version = "latest"),
+    portalPredictions = list(source = "github", version = NULL), climate_forecast =
+    list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin",
+    "tasmean", "tasmax", "pr"))),
   save = TRUE,
   overwrite = TRUE,
   unzip_pause = 30,
@@ -34,30 +30,27 @@ production_settings()
 sandbox_settings()
 }
 \arguments{
-\item{directory_configuration_file}{\code{character} value of the path to the directory config YAML.}
+\item{files}{\code{list} of \code{character} names for standard files: 
+  \describe{
+    \item{directory_configuration}{Directory configuration YAML}
+    \item{moons}{Lunar data csv}
+    \item{covariates}{Combined historical and forecast covariates csv}
+    \item{historical_covariates}{Historical covariates csv}
+    \item{forecast_covariates}{Forecast covariates csv}
+    \item{metadata}{Forecast metadata YAML}
+    \item{dataset_controls}{YAML of dataset control list(s)}
+    \item{model_controls}{YAML of model controls list(s)}
+    \item{cast_evaluations}{Forecast evaluations csv}
+}}
 
-\item{moons_file}{\code{character} name of the file for saving the moons data.}
+\item{subdirectories}{\code{list} of subdirectories: \code{resources}, \code{data}, \code{models}, \code{fits}, and \code{forecasts}.}
 
-\item{covariates_file, historical_covariates_file, forecast_covariates_file}{\code{character} name of the files for saving the covariate data (combined historical and forecast) and each component.}
-
-\item{dataset_controls_file}{\code{character} name of the file for saving the rodent dataset controls.}
-
-\item{model_controls_file}{\code{character} name of the file for saving the model controls.}
-
-\item{cast_evaluations_file}{\code{character} name of the file for saving the cast evaluations.}
-
-\item{metadata_file}{\code{character} name of the file for saving the forecast metadata.}
-
-\item{subdirectories}{\code{character} vector of the subdirectory names. Default includes \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}.}
-
-\item{PortalData}{\code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. \cr \cr
-See \code{\link[portalr]{download_observations}}.}
-
-\item{portalPredictions}{\code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the archive to download. Default values point to github, but \code{version = NULL} indicates no download. \cr \cr 
-See \code{\link{download_archive}}.}
-
-\item{climate_forecast}{\code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the climate forecasts to download. Default values retrieve the current day's forecast from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts. \cr \cr 
-See \code{\link{download_climate_forecasts}}.}
+\item{resources}{\code{list} of \code{list}s for standard resources: 
+\describe{
+  \item{PortalData}{\code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github}
+  \item{portalPredictions}{\code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download}
+  \item{climate_forecast}{\code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts}
+}}
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
 

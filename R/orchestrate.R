@@ -47,7 +47,6 @@ create_dir <- function(main     = ".",
          recursive    = TRUE,
          showWarnings = FALSE)
 
-
   write_directory_configuration(main     = main, 
                                 settings = settings, 
                                 quiet    = quiet)
