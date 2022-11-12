@@ -147,14 +147,10 @@ directory_resources <- function (PortalData        = list(source  = "github",
 #'
 #' @export
 #'
-production_settings <- function ( ) {
+production_settings <- function (download_timeout  = max(getOption("timeout"), 600)) {
 
-  resources        <- directory_resources(portalPredictions = list(source  = "github", 
-                                                                   version = "latest"))
-
-
-  download_timeout <- min(getOption("timeout"), 600)
-
+  resources <- directory_resources(portalPredictions = list(source  = "github", 
+                                                            version = "latest"))
 
   directory_settings(resources        = resources,
                      download_timeout = download_timeout)

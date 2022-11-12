@@ -47,7 +47,7 @@ directory_resources(
     c("tasmin", "tasmean", "tasmax", "pr"))
 )
 
-production_settings()
+production_settings(download_timeout = max(getOption("timeout"), 600))
 
 sandbox_settings()
 }
