@@ -1,7 +1,7 @@
 devtools::load_all()
 devtools::document()
 
-main <- "~/te"
+main <- "~/pc2"
 setup_production(main = main)
 portalcast(main)
 evaluate_casts(main)

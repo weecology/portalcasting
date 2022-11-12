@@ -1,6 +1,6 @@
-#' @title Cast Portal Rodents Models
+#' @title Forecast Portal Rodents Models
 #'
-#' @description Cast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr
+#' @description Forecast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr
 #'  \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prepare_data}. \cr \cr
 #'  \code{cast} runs a single cast of multiple models across data sets.
 #'

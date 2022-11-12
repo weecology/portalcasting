@@ -12,7 +12,7 @@ AutoArima:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: normal
     type: distribution 
@@ -32,7 +32,7 @@ ESSS:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: normal
     type: distribution
@@ -52,7 +52,7 @@ NaiveArima:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: normal
     type: distribution
@@ -77,7 +77,7 @@ nbGARCH:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: negative_binomial
     type: distribution
@@ -96,7 +96,7 @@ nbsGARCH:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: negative_binomial
     type: distribution
@@ -111,7 +111,7 @@ pevGARCH:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   interpolate: 
     needed: yes
     fun: round_na.interp
@@ -140,7 +140,8 @@ jags_RW:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: dm_controls
+  datasets: controls
+  species: dm
   interpolate: 
     needed: no
   response: 
@@ -166,7 +167,8 @@ jags_logistic:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: dm_controls
+  datasets: controls
+  species: dm
   interpolate: 
     needed: no
   response: 
@@ -192,7 +194,8 @@ jags_logistic_covariates:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: dm_controls
+  datasets: controls
+  species: dm
   interpolate: 
     needed: no
   response: 
