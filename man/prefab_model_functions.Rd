@@ -15,7 +15,7 @@
 \usage{
 jags_logistic_covariates(
   main = ".",
-  dataset = "dm_controls",
+  dataset = "controls",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -24,7 +24,7 @@ jags_logistic_covariates(
 
 jags_logistic(
   main = ".",
-  dataset = "dm_controls",
+  dataset = "controls",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -33,7 +33,7 @@ jags_logistic(
 
 jags_RW(
   main = ".",
-  dataset = "dm_controls",
+  dataset = "controls",
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,

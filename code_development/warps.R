@@ -2,6 +2,31 @@
 
 # use count as the response object's name, rather than abundance
 
+main <- "~/pc"
+
+count <- (read_rodents(main))[[1]][,4,drop=T]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 count <- (read_rodents(main))[[1]][,4,drop=T]
 

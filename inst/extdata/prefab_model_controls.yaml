@@ -141,7 +141,7 @@ jags_RW:
       cast_obs: yes
       silent_jags: no
   datasets: controls
-  species: dm
+  species: DM
   interpolate: 
     needed: no
   response: 
@@ -168,7 +168,7 @@ jags_logistic:
       cast_obs: yes
       silent_jags: no
   datasets: controls
-  species: dm
+  species: DM
   interpolate: 
     needed: no
   response: 
@@ -195,7 +195,7 @@ jags_logistic_covariates:
       cast_obs: yes
       silent_jags: no
   datasets: controls
-  species: dm
+  species: DM
   interpolate: 
     needed: no
   response: 

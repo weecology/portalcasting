@@ -126,6 +126,10 @@ AutoArima <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+
+  temp_species  <- read_model_controls(main = main, settings = settings)$AutoArima$species
+  species       <- ifelse(temp_species == "all", species, species[species %in% temp_species])
+
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -219,6 +223,8 @@ NaiveArima <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$NaiveArima$species
+  species       <- ifelse(temp_species == "all", species, species[species %in% temp_species])
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -311,6 +317,8 @@ ESSS <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$ESSS$species
+  species       <- ifelse(temp_species == "all", species, species[species %in% temp_species])
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -402,6 +410,8 @@ nbGARCH <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$nbGARCH$species
+  species       <- ifelse(temp_species == "all", species, species[species %in% temp_species])
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -506,6 +516,8 @@ nbsGARCH <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$nbsGARCH$species
+  species       <- ifelse(temp_species == "all", species, species[species %in% temp_species])
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -633,6 +645,8 @@ pevGARCH <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$pevGARCH$species
+  species       <- ifelse(temp_species == "all", species, species[species %in% temp_species])
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
