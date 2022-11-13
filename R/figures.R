@@ -761,7 +761,7 @@ plot_cast_point <- function (main         = ".",
 
     obs           <- read_rodents_table(main           = main, 
                                         settings       = settings,
-                                        dataset = gsub("_interp", "", casts_meta$dataset))
+                                        dataset = gsub("dm_", "", gsub("_interp", "", casts_meta$dataset)))
     colnames(obs) <- gsub("\\.", "", colnames(obs))
     sp_col        <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species       <- ifnull(species, colnames(obs)[sp_col])
