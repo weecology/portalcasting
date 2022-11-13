@@ -11,7 +11,7 @@ main <- "./testing"
 
 
   fill_data(main = main)
-  keepers <- c("moon", "DM", "ntraps")
+  keepers <- c("newmoonnumber", "DM", "ntraps")
 
 
   all <- read_rodents_table(main = main, "all")
@@ -179,7 +179,7 @@ test_that(desc = "jags_RW model", {
 
   rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
   expect_message(f_a <- jags_RW(main = main, control_runjags = rjc,
-                                dataset = "dm_controls", quiet = FALSE))
+                                dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
 
 })
@@ -196,7 +196,7 @@ test_that(desc = "jags_logistic model", {
 
   rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
   expect_message(f_a <- jags_logistic(main = main, control_runjags = rjc,
-                                dataset = "dm_controls", quiet = FALSE))
+                                dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
 
 
@@ -214,7 +214,7 @@ test_that(desc = "jags_logistic_covariates model", {
 
   rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
   expect_message(f_a <- jags_logistic_covariates(main = main, control_runjags = rjc,
-                                dataset = "dm_controls", quiet = FALSE))
+                                dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
 
 
