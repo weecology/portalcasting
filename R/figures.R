@@ -91,7 +91,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   # patch
 
   # patch
-  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
+  cast_tab$dataset <- gsub("dm_", "", gsub("_interp", "", cast_tab$dataset))
   # patch
 
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
