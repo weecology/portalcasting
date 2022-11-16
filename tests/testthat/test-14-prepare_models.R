@@ -25,7 +25,7 @@ test_that(desc = "covariate_models constructs the submodels", {
 test_that(desc = "prefab_models creates a vector of model names", {
 
   pfm <- prefab_models()
-  expect_equal(length(pfm), 9)
+  expect_equal(length(pfm), 11)
   expect_is(pfm, "character")
 
 })
