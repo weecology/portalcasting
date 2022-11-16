@@ -1,5 +1,5 @@
 jags_logistic_competition <- function (main            = ".", 
-                                       dataset         = "dm_controls",  
+                                       dataset         = "controls",  
                                        settings        = directory_settings(), 
                                        control_runjags = runjags_control(), 
                                        quiet           = FALSE, 
@@ -46,7 +46,7 @@ jags_logistic_competition <- function (main            = ".",
 
     mu          ~  dnorm(log_mean_past_count, 5)
     sigma       ~  dunif(0, 0.001) 
-    tau         <- pow(sigma, -1/2)
+    tau         <- pow(sigma, -2)
     r_int       ~  dnorm(0, 5)
     log_K_int   ~  dnorm(log_max_past_count, 5)
     log_K_slope ~  dnorm(0, 1)
@@ -112,6 +112,12 @@ jags_logistic_competition <- function (main            = ".",
   species <- species_from_table(rodents_tab = rodents_table, 
                                 total       = TRUE, 
                                 nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)

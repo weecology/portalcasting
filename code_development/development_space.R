@@ -1,9 +1,9 @@
 devtools::load_all()
 devtools::document()
 
-main <- "~/pc3"
+main <- "~/pcx2x"
 setup_production(main = main)
-portalcast(main)
+portalcast(main, model = "ESSS")
 evaluate_casts(main)
 
 jrw  <- jags_RW(main = main)

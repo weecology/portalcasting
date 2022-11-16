@@ -219,3 +219,41 @@ test_that(desc = "jags_logistic_covariates model", {
 
 
 })
+
+
+test_that(desc = "jags_logistic_competition model", {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  # check for JAGS installation on system
+
+    check_jags() 
+
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  expect_message(f_a <- jags_logistic_competition(main = main, control_runjags = rjc,
+                                dataset = "Controls", quiet = FALSE))
+  expect_is(f_a, "list")
+
+
+})
+
+
+test_that(desc = "jags_logistic_competition_covariates model", {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  # check for JAGS installation on system
+
+    check_jags() 
+
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  expect_message(f_a <- jags_logistic_competition_covariates(main = main, control_runjags = rjc,
+                                dataset = "Controls", quiet = FALSE))
+  expect_is(f_a, "list")
+
+
+})

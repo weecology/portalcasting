@@ -7,6 +7,14 @@ main <- "~/pc"
 count <- (read_rodents(main))[[1]][,4,drop=T]
 
 
+auto_arima <- function () {
+
+forecast
+}
+
+
+
+
 
 
 

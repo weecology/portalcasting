@@ -9,6 +9,11 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Following the removal of the `interp` datasets
 * Now model controls indicate species to which their applied
 
+### New models
+* `jags_logistic_competition`
+* `jags_logistic_covariates`
+* `jags_logistic_competition_covariates`
+
 
 # [portalcasting 0.44.0](https://github.com/weecology/portalcasting/releases/tag/v0.44.0)
 *2022-10-27*

@@ -52,6 +52,8 @@ prefab_models <- function( ) {
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. \cr \cr
 #'  \code{jags_logistic} fits a log-scale density logistic-growth (r-K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
 #'  \code{jags_logistic_covariates} fits a log-scale density logistic-growth (r-K) based on covariates (warm rain influencing r, NDVI influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
+#'  \code{jags_logistic_competition} fits a log-scale density logistic-growth (r-K) based on covariates (competitor density influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
+#'  \code{jags_logistic_competition_covariates} fits a log-scale density logistic-growth (r-K) based on covariates (warm rain influencing r, NDVI and competitor density influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
 #'
 #' @details 
 #'  \code{AutoArima} \cr
@@ -100,6 +102,8 @@ prefab_models <- function( ) {
 #'   jags_RW()
 #'   jags_logistic()
 #'   jags_logistic_covariates()
+#'   jags_logistic_competition()
+#'   jags_logistic_competition_covariates()
 #'  }
 #'
 #' @name prefab_model_functions

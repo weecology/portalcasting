@@ -1,5 +1,5 @@
 jags_logistic_covariates <- function (main            = ".", 
-                                      dataset         = "dm_controls",  
+                                      dataset         = "controls",  
                                       settings        = directory_settings(), 
                                       control_runjags = runjags_control(), 
                                       quiet           = FALSE, 
@@ -114,6 +114,14 @@ jags_logistic_covariates <- function (main            = ".",
   species <- species_from_table(rodents_tab = rodents_table, 
                                 total       = TRUE, 
                                 nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
+
+
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)
