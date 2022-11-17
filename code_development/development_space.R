@@ -1,16 +1,16 @@
-# working here to develop the logistic w covariates model
-# doing some basic data exploration and isolated regressions
-# just to get a sense of where things land
-
 devtools::load_all()
 devtools::document()
 
-main <- "~/portalcasting"
-#setup_production(main = main)
+main <- "~/pcx2x"
+setup_production(main = main)
+portalcast(main, model = "ESSS")
+evaluate_casts(main)
 
-jrw <- jags_RW(main = main)
-jl  <- jags_logistic(main = main)
-jlc <- jags_logistic_covariates(main = main)
+jrw  <- jags_RW(main = main)
+jl   <- jags_logistic(main = main)
+jlc  <- jags_logistic_covariates(main = main)
+jlo  <- jags_logistic_competition(main = main)
+jlcc <- jags_logistic_competition_covariates(main = main)
 
 
 dataset         = "dm_controls"  
@@ -19,7 +19,14 @@ dataset         = "dm_controls"
                            quiet           = FALSE 
                            verbose         = TRUE
 
-
+dataset = NULL
+                          cast_id     = 3000 
+                          cast_groups = NULL
+                          dataset     = NULL 
+                          model       = NULL 
+                          end_moon    = NULL 
+                          species     = NULL 
+                          start_moon  = 217
 
 
   rodents_table <- read_rodents_table(main     = main,

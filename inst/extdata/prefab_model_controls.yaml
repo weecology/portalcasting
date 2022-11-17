@@ -12,7 +12,7 @@ AutoArima:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: normal
     type: distribution 
@@ -32,7 +32,7 @@ ESSS:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: normal
     type: distribution
@@ -52,7 +52,7 @@ NaiveArima:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: normal
     type: distribution
@@ -77,7 +77,7 @@ nbGARCH:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: negative_binomial
     type: distribution
@@ -96,7 +96,7 @@ nbsGARCH:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   response: 
     link: negative_binomial
     type: distribution
@@ -111,7 +111,7 @@ pevGARCH:
   - all
   - controls
   - exclosures
-  - dm_controls
+  species: all
   interpolate: 
     needed: yes
     fun: round_na.interp
@@ -125,7 +125,7 @@ jags_RW:
   metadata:
     name: jags_RW
     descriptor: population model, focal species
-    text: jags_RW fits a hierarchical log-scale density random walk model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. Similar to the NaiveArima model, jags_RW has an ARIMA order of (0,1,0), but in jags_RW, it is the underlying density that takes a random walk on the log scale, whereas in NaiveArima, it is the raw counts that take a random walk on the observation scale. The jags_RW model is rather simple, but the `jags_RW()` function provides a starting template and underlying machinery for more articulated models using the JAGS infrastructure. There are two process parameters -- mu (the density of the species at the beginning of the time series) and sigma (the standard deviation of the random walk, which is Gaussian on the log scale). The observation model has no additional parameters. The prior distributions for mu is informed by the available data collected prior to the start of the data used in the time series. mu is normally distributed with a mean equal to the average log-scale density and a standard deviation of 0.1. Sigma was given a uniform distribution between 0 and 1.
+    text: jags_RW fits a hierarchical log-scale density random walk model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Similar to the NaiveArima model, jags_RW has an ARIMA order of (0,1,0), but in jags_RW, it is the underlying density that takes a random walk on the log scale, whereas in NaiveArima, it is the raw counts that take a random walk on the observation scale. There are two process parameters -- mu (the density of the species at the beginning of the time series) and sigma (the standard deviation of the random walk, which is Gaussian on the log scale). The observation model has no additional parameters. The prior distributions for mu is informed by the available data collected prior to the start of the data used in the time series. mu is normally distributed with a mean equal to the average log-scale density and a standard deviation of 0.04. Sigma was given a uniform distribution between 0 and 1.
   fun: jags_RW
   args:
     control_runjags:
@@ -140,7 +140,8 @@ jags_RW:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: dm_controls
+  datasets: controls
+  species: DM
   interpolate: 
     needed: no
   response: 
@@ -151,7 +152,7 @@ jags_logistic:
   metadata:
     name: jags_logistic
     descriptor: population model, focal species
-    text: jags_logistic fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. Building upon the jags_RW model, jags_logistic expands upon the "process model" underlying the Poisson observations. There are four process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), r (growth rate), and K (carrying capacity). The observation model has no additional parameters. The prior distributions for mu and K are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density. K is modeled on the log-scale with a prior mean equal to the maximum of `past counts`. r is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 1.
+    text: jags_logistic fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Building upon the jags_RW model, jags_logistic expands upon the "process model" underlying the Poisson observations. There are four process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), r (growth rate), and K (carrying capacity). The observation model has no additional parameters. The prior distributions for mu and K are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density and a standard deviation of 0.04. K is modeled on the log-scale with a prior mean equal to the maximum of `past counts` and a standard deviation of 0.04. r is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 1.
   fun: jags_logistic
   args:
     control_runjags:
@@ -166,7 +167,8 @@ jags_logistic:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: dm_controls
+  datasets: controls
+  species: DM
   interpolate: 
     needed: no
   response: 
@@ -177,7 +179,7 @@ jags_logistic_covariates:
   metadata:
     name: jags_logistic_covariates
     descriptor: population model, focal species
-    text: jags_logistic_covariates fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. Building upon the jags_RW model, jags_logistic expands upon the "process model" underlying the Poisson observations. There are six process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), and then intercept and slope parameters for r (growth rate) and K (carrying capacity) as a function of covariates (r being a function of the integrated warm rain over the past 3 months and K being a function of average NDVI over the past year). The observation model has no additional parameters. The prior distributions for mu and the K intercept are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density. The K intercept is modeled on the log-scale with a prior mean equal to the maximum of `past counts`. The r intercept is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 1. The slopes for r and log-scale K were given priors with mean 0 and standard deviation 1.
+    text: jags_logistic_covariates fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Building upon the jags_logistic model, jags_logistic_covariates expands upon the "process model" underlying the Poisson observations. There are six process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), and then intercept and slope parameters for r (growth rate) and K (carrying capacity) as a function of covariates (r being a function of the integrated warm rain over the past 3 months and K being a function of average NDVI over the past year). The observation model has no additional parameters. The prior distributions for mu and the K intercept are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density and standard deviation 0.04. The K intercept is modeled on the log-scale with a prior mean equal to the maximum of `past counts` and standard deviation 0.04. The r intercept is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 1. The slopes for r and log-scale K were given priors with mean 0 and standard deviation 1.
   fun: jags_logistic_covariates
   args:
     control_runjags:
@@ -192,7 +194,62 @@ jags_logistic_covariates:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: dm_controls
+  datasets: controls
+  species: DM
+  interpolate: 
+    needed: no
+  response: 
+    link: poisson
+    type: empirical
+  time: newmoon
+jags_logistic_competition:
+  metadata:
+    name: jags_logistic_competition
+    descriptor: population model, focal species
+    text: jags_logistic_competition fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Building upon the jags_logistic model, jags_logistic_competition expands upon the "process model" underlying the Poisson observations. There are six process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), and then intercept and slope parameters for r (growth rate) and K (carrying capacity) as a function of competitior density (K being a function of current DO counts). The observation model has no additional parameters. The prior distributions for mu and the K intercept are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density and standard deviation 0.04. The K intercept is modeled on the log-scale with a prior mean equal to the maximum of `past counts` and standard deviation 0.04. The r intercept is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 0.001. The slope for log-scale K was given a prior with mean 0 and standard deviation 1.
+  fun: jags_logistic_competition
+  args:
+    control_runjags:
+      nchains: 4.0
+      adapt: 10000.0
+      burnin: 10000.0
+      sample: 10000.0
+      thin: 1.0
+      modules: ''
+      method: interruptible
+      factories: ''
+      mutate: .na
+      cast_obs: yes
+      silent_jags: no
+  datasets: controls
+  species: DM
+  interpolate: 
+    needed: no
+  response: 
+    link: poisson
+    type: empirical
+  time: newmoon
+jags_logistic_competition_covariates:
+  metadata:
+    name: jags_logistic_competition_covariates
+    descriptor: population model, focal species
+    text: jags_logistic_competition_covariates fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Building upon the jags_logistic model, jags_logistic_competition_covariates expands upon the "process model" underlying the Poisson observations. There are seven process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), and then intercept and slope parameters for r (growth rate) and K (carrying capacity) as a function of competitior density (r being a function of the integrated warm rain over the past 3 months and K being a function of average NDVI over the past year as well as a function of current DO counts). The observation model has no additional parameters. The prior distributions for mu and the K intercept are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density and standard deviation 0.04. The K intercept is modeled on the log-scale with a prior mean equal to the maximum of `past counts` and standard deviation 0.04. The r intercept is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 0.001. The slopes for r and log-scale K were given priors with mean 0 and standard deviation 1.
+  fun: jags_logistic_competition_covariates
+  args:
+    control_runjags:
+      nchains: 4.0
+      adapt: 10000.0
+      burnin: 10000.0
+      sample: 10000.0
+      thin: 1.0
+      modules: ''
+      method: interruptible
+      factories: ''
+      mutate: .na
+      cast_obs: yes
+      silent_jags: no
+  datasets: controls
+  species: DM
   interpolate: 
     needed: no
   response: 

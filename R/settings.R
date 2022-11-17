@@ -2,30 +2,45 @@
 #'
 #' @description Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and this function gathers them into a list for pipeline functionality.
 #'
-#' @param directory_configuration_file \code{character} value of the path to the directory config YAML.
+#' @param files \code{list} of \code{character} names of standard files, see \code{\link{directory_files}}.
 #'
-#' @param moons_file \code{character} name of the file for saving the moons data.
+#' @param subdirectories \code{list} of \code{character} names of standard subdirectories, see \code{\link{directory_subdirectories}}.
 #'
-#' @param covariates_file,historical_covariates_file,forecast_covariates_file \code{character} name of the files for saving the covariate data (combined historical and forecast) and each component.
+#' @param resources \code{list} of \code{list}s for standard resources, see \code{\link{directory_resources}}.
 #'
-#' @param metadata_file \code{character} name of the file for saving the forecast metadata.
+#' @param directory_configuration \code{character} name for the directory configuration YAML.
 #'
-#' @param dataset_controls_file \code{character} name of the file for saving the rodent dataset controls.
+#' @param moons \code{character} name for the lunar data csv.
 #'
-#' @param model_controls_file \code{character} name of the file for saving the model controls.
+#' @param covariates \code{character} name for the combined historical and forecast covariates csv.
 #'
-#' @param cast_evaluations_file \code{character} name of the file for saving the cast evaluations.
+#' @param historical_covariates \code{character} name for the historical covariates csv.
 #'
-#' @param subdirectories \code{character} vector of the subdirectory names. Default includes \code{raw}, \code{data}, \code{models}, \code{fits}, and \code{casts}. 
+#' @param forecast_covariates \code{character} name for the forecast covariates csv.
 #'
-#' @param PortalData \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. \cr \cr
-#'                   See \code{\link[portalr]{download_observations}}.
+#' @param metadata \code{character} name for the Forecast metadata YAML.
 #'
-#' @param portalPredictions \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the archive to download. Default values point to github, but \code{version = NULL} indicates no download. \cr \cr 
-#'                          See \code{\link{download_archive}}.
+#' @param dataset_controls \code{character} name for the YAML of dataset control list(s).
 #'
-#' @param climate_forecast \code{list} with \code{source} and \code{version} elements that are \code{character} values for the source and version of the climate forecasts to download. Default values retrieve the current day's forecast from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts. \cr \cr 
-#'                         See \code{\link{download_climate_forecasts}}.
+#' @param model_controls \code{character} name for the YAML of model controls list(s).
+#'
+#' @param cast_evaluations \code{character} name for the forecast evaluations csv.
+#'
+#' @param resources \code{character} name for the resources subdirectory.
+#'
+#' @param data \code{character} name for the data subdirectory.
+#'
+#' @param models \code{character} name for the models subdirectory.
+#'
+#' @param fits \code{character} name for the fits subdirectory.
+#'
+#' @param forecasts \code{character} name for the forecasts subdirectory.
+#'
+#' @param PortalData \code{list} of \code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github
+#'
+#' @param portalPredictions \code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download.
+#'
+#' @param climate_forecast \code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.
 #'
 #' @param save \code{logical} indicator controlling if the output should be saved out.
 #'
@@ -35,7 +50,7 @@
 #'
 #' @param download_timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
-#' @return Named \code{list} of settings for the directory.
+#' @return Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
 #'
 #' @name directory settings
 #'
@@ -45,37 +60,17 @@ NULL
 #'
 #' @export
 #'
-directory_settings <- function (directory_configuration_file = "directory_configuration.yaml",
-                                moons_file                   = "moon_dates.csv",
-                                covariates_file              = "covariates.csv",
-                                historical_covariates_file   = "historical_covariates.csv",
-                                forecast_covariates_file     = "forecast_covariates.csv",
-                                dataset_controls_file        = "dataset_controls.yaml", 
-                                model_controls_file          = "model_controls.yaml",
-                                cast_evaluations_file        = "cast_evaluations.csv",
-                                metadata_file                = "metadata.yaml",
-                                subdirectories               = list("forecasts" = "forecasts", "fits" = "fits", "models" = "models", "resources" = "resources", "data" = "data"),
-                                PortalData                   = list(source = "github", version = "latest"),
-                                portalPredictions            = list(source = "github", version = NULL),
-                                climate_forecast             = list(source = "NMME", version = as.character(Sys.Date()), data = c("tasmin", "tasmean", "tasmax", "pr")),
-                                save                         = TRUE,
-                                overwrite                    = TRUE, 
-                                unzip_pause                  = 30,
-                                download_timeout             = getOption("timeout")) {
+directory_settings <- function (files             = directory_files( ),
+                                subdirectories    = directory_subdirectories( ),
+                                resources         = directory_resources( ),
+                                save              = TRUE,
+                                overwrite         = TRUE, 
+                                unzip_pause       = 30,
+                                download_timeout  = getOption("timeout")) {
 
-  list(files            = list(directory_configuration = directory_configuration_file,
-                               moons                   = moons_file,
-                               covariates              = covariates_file,
-                               historical_covariates   = historical_covariates_file,
-                               forecast_covariates     = forecast_covariates_file,
-                               dataset_controls        = dataset_controls_file,
-                               model_controls          = model_controls_file,
-                               cast_evaluations        = cast_evaluations_file,
-                               metadata                = metadata_file),
+  list(files            = files,
        subdirectories   = subdirectories,
-       resources        = list(PortalData              = PortalData,
-                               portalPredictions       = portalPredictions,
-                               climate_forecast        = climate_forecast),
+       resources        = resources,
        repository       = "portalPredictions",
        save             = save, 
        overwrite        = overwrite, 
@@ -84,16 +79,81 @@ directory_settings <- function (directory_configuration_file = "directory_config
 
 }
 
+#' @rdname directory-settings
+#'
+#' @export
+#'
+directory_files <- function (directory_configuration = "directory_configuration.yaml",
+                             moons                   = "moon_dates.csv",
+                             covariates              = "covariates.csv",
+                             historical_covariates   = "historical_covariates.csv",
+                             forecast_covariates     = "forecast_covariates.csv",
+                             dataset_controls        = "dataset_controls.yaml", 
+                             model_controls          = "model_controls.yaml",
+                             cast_evaluations        = "cast_evaluations.csv",
+                             metadata                = "metadata.yaml") {
+
+  list(directory_configuration = directory_configuration,
+       moons                   = moons,
+       covariates              = covariates,
+       historical_covariates   = historical_covariates,
+       forecast_covariates     = forecast_covariates,
+       dataset_controls        = dataset_controls, 
+       model_controls          = model_controls,
+       cast_evaluations        = cast_evaluations,
+       metadata                = metadata)
+
+}
+
 
 #' @rdname directory-settings
 #'
 #' @export
 #'
-production_settings <- function ( ) {
+directory_subdirectories <- function (forecasts = "forecasts", 
+                                      fits      = "fits", 
+                                      models    = "models", 
+                                      resources = "resources", 
+                                      data      = "data") {
 
-  directory_settings(portalPredictions = list(source  = "github", 
-                                              version = "latest"), 
-                     download_timeout  = 600)
+  list(forecasts = forecasts, 
+       fits      = fits, 
+       models    = models, 
+       resources = resources, 
+       data      = data)
+
+}
+
+#' @rdname directory-settings
+#'
+#' @export
+#'
+directory_resources <- function (PortalData        = list(source  = "github", 
+                                                          version = "latest"),
+                                 portalPredictions = list(source  = "github", 
+                                                          version = NULL),
+                                 climate_forecast  = list(source  = "NMME", 
+                                                          version = as.character(Sys.Date()), 
+                                                          data    = c("tasmin", "tasmean", "tasmax", "pr"))) {
+
+  list(PortalData        = PortalData,
+       portalPredictions = portalPredictions,
+       climate_forecast  = climate_forecast)
+
+}
+
+
+#' @rdname directory-settings
+#'
+#' @export
+#'
+production_settings <- function (download_timeout  = max(getOption("timeout"), 600)) {
+
+  resources <- directory_resources(portalPredictions = list(source  = "github", 
+                                                            version = "latest"))
+
+  directory_settings(resources        = resources,
+                     download_timeout = download_timeout)
 
 }
 

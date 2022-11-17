@@ -1,15 +1,15 @@
-jags_logistic_covariates <- function (main            = ".", 
-                                      dataset         = "controls",  
-                                      settings        = directory_settings(), 
-                                      control_runjags = runjags_control(), 
-                                      quiet           = FALSE, 
-                                      verbose         = FALSE) {
+jags_logistic_competition <- function (main            = ".", 
+                                       dataset         = "controls",  
+                                       settings        = directory_settings(), 
+                                       control_runjags = runjags_control(), 
+                                       quiet           = FALSE, 
+                                       verbose         = FALSE) {
 
 
   dataset     <- tolower(dataset)
-  messageq("  -jags_logistic_covariates for ", dataset, quiet = quiet)
+  messageq("  -jags_logistic_competition for ", dataset, quiet = quiet)
 
-  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope")
+  monitor <- c("mu", "sigma", "r_int", "log_K_int", "log_K_slope")
 
 
   inits <- function (data = NULL) {
@@ -33,7 +33,6 @@ jags_logistic_covariates <- function (main            = ".",
             mu          = mu, 
             sigma       = runif(1, 0, 0.0005),
             r_int       = rnorm(1, 0, 0.01),
-            r_slope     = rnorm(1, 0, 0.1),
             log_K_int   = log_K_int,
             log_K_slope = rnorm(1, 0, 0.01))
 
@@ -47,9 +46,8 @@ jags_logistic_covariates <- function (main            = ".",
 
     mu          ~  dnorm(log_mean_past_count, 5)
     sigma       ~  dunif(0, 0.001) 
-    tau         <- pow(sigma, -1/2)
+    tau         <- pow(sigma, -2)
     r_int       ~  dnorm(0, 5)
-    r_slope     ~  dnorm(0, 1)
     log_K_int   ~  dnorm(log_max_past_count, 5)
     log_K_slope ~  dnorm(0, 1)
  
@@ -63,8 +61,8 @@ jags_logistic_covariates <- function (main            = ".",
 
     for (i in 1:N) {
 
-      r[i] <- r_int + r_slope * warm_rain_three_months[i]
-      K[i] <- exp(log_K_int + log_K_slope * ndvi_twelve_months[i]) 
+      r[i] <- r_int
+      K[i] <- exp(log_K_int + log_K_slope * spectab[i]) 
 
     }
 
@@ -91,7 +89,7 @@ jags_logistic_covariates <- function (main            = ".",
 
 
 
-  model_name     <- "jags_logistic_competition"
+  model_name     <- "jags_logistic_covariates"
 
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
@@ -114,14 +112,12 @@ jags_logistic_covariates <- function (main            = ".",
   species <- species_from_table(rodents_tab = rodents_table, 
                                 total       = TRUE, 
                                 nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$species
+  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$species
   if (temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
   }
-
-
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)
@@ -173,6 +169,8 @@ jags_logistic_covariates <- function (main            = ".",
 
     warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
     ndvi_twelve_months     <- scale(covariates$ndvi_12_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    spectab_controls       <- scale(covariates$spectab_controls[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+ 
 
     data <- list(count                  = count, 
                  ntraps                 = ntraps, 
@@ -181,8 +179,7 @@ jags_logistic_covariates <- function (main            = ".",
                  log_mean_past_count    = log_mean_past_count,
                  log_max_past_count     = log_max_past_count,
                  past_count             = past_count,
-                 warm_rain_three_months = warm_rain_three_months[ , 1],
-                 ndvi_twelve_months     = ndvi_twelve_months[ , 1])
+                 spectab                = spectab_controls[ , 1])
 
 
     obs_pred_times      <- metadata$time$rodent_cast_moons 

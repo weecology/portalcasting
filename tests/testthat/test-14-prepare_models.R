@@ -25,7 +25,7 @@ test_that(desc = "covariate_models constructs the submodels", {
 test_that(desc = "prefab_models creates a vector of model names", {
 
   pfm <- prefab_models()
-  expect_equal(length(pfm), 9)
+  expect_equal(length(pfm), 11)
   expect_is(pfm, "character")
 
 })
@@ -42,11 +42,11 @@ test_that(desc = "model_template produces lines for a model script", {
 
   temp1 <- model_template("AutoArima", main = main)
   expect_is(temp1, "character")
-  expect_equal(length(temp1), 8)
+  expect_equal(length(temp1), 6)
 
   temp2 <- model_template("pevGARCH", main = main)
   expect_is(temp2, "character")
-  expect_equal(length(temp2), 8)
+  expect_equal(length(temp2), 6)
 
 })
 

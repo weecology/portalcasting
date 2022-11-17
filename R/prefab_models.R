@@ -52,6 +52,8 @@ prefab_models <- function( ) {
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. \cr \cr
 #'  \code{jags_logistic} fits a log-scale density logistic-growth (r-K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
 #'  \code{jags_logistic_covariates} fits a log-scale density logistic-growth (r-K) based on covariates (warm rain influencing r, NDVI influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
+#'  \code{jags_logistic_competition} fits a log-scale density logistic-growth (r-K) based on covariates (competitor density influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
+#'  \code{jags_logistic_competition_covariates} fits a log-scale density logistic-growth (r-K) based on covariates (warm rain influencing r, NDVI and competitor density influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
 #'
 #' @details 
 #'  \code{AutoArima} \cr
@@ -100,6 +102,8 @@ prefab_models <- function( ) {
 #'   jags_RW()
 #'   jags_logistic()
 #'   jags_logistic_covariates()
+#'   jags_logistic_competition()
+#'   jags_logistic_competition_covariates()
 #'  }
 #'
 #' @name prefab_model_functions
@@ -126,6 +130,14 @@ AutoArima <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+
+  temp_species  <- read_model_controls(main = main, settings = settings)$AutoArima$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
+
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -219,6 +231,12 @@ NaiveArima <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$NaiveArima$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -311,6 +329,12 @@ ESSS <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$ESSS$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -402,6 +426,12 @@ nbGARCH <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$nbGARCH$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -506,6 +536,12 @@ nbsGARCH <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$nbsGARCH$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -633,6 +669,12 @@ pevGARCH <- function (main     = ".",
   species       <- species_from_table(rodents_tab = rodents_table, 
                                       total       = TRUE, 
                                       nadot       = TRUE)
+  temp_species  <- read_model_controls(main = main, settings = settings)$pevGARCH$species
+  if (temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
