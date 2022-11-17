@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.44.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.45.0</span>
       </span>
     </div>
 
@@ -76,79 +76,59 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">directory_settings</span><span class="op">(</span></span>
-<span>  directory_configuration_file <span class="op">=</span> <span class="st">"directory_configuration.yaml"</span>,</span>
-<span>  moons_file <span class="op">=</span> <span class="st">"moon_dates.csv"</span>,</span>
-<span>  covariates_file <span class="op">=</span> <span class="st">"covariates.csv"</span>,</span>
-<span>  historical_covariates_file <span class="op">=</span> <span class="st">"historical_covariates.csv"</span>,</span>
-<span>  forecast_covariates_file <span class="op">=</span> <span class="st">"forecast_covariates.csv"</span>,</span>
-<span>  dataset_controls_file <span class="op">=</span> <span class="st">"dataset_controls.yaml"</span>,</span>
-<span>  model_controls_file <span class="op">=</span> <span class="st">"model_controls.yaml"</span>,</span>
-<span>  cast_evaluations_file <span class="op">=</span> <span class="st">"cast_evaluations.csv"</span>,</span>
-<span>  metadata_file <span class="op">=</span> <span class="st">"metadata.yaml"</span>,</span>
-<span>  subdirectories <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>forecasts <span class="op">=</span> <span class="st">"forecasts"</span>, fits <span class="op">=</span> <span class="st">"fits"</span>, models <span class="op">=</span> <span class="st">"models"</span>,</span>
-<span>    resources <span class="op">=</span> <span class="st">"resources"</span>, data <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span>,</span>
-<span>  PortalData <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"github"</span>, version <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>,</span>
-<span>  portalPredictions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"github"</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
-<span>  climate_forecast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"NMME"</span>, version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, data <span class="op">=</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tasmin"</span>, <span class="st">"tasmean"</span>, <span class="st">"tasmax"</span>, <span class="st">"pr"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  files <span class="op">=</span> <span class="fu">directory_files</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  subdirectories <span class="op">=</span> <span class="fu">directory_subdirectories</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  resources <span class="op">=</span> <span class="fu">directory_resources</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  save <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  unzip_pause <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  download_timeout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"timeout"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">production_settings</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">directory_files</span><span class="op">(</span></span>
+<span>  directory_configuration <span class="op">=</span> <span class="st">"directory_configuration.yaml"</span>,</span>
+<span>  moons <span class="op">=</span> <span class="st">"moon_dates.csv"</span>,</span>
+<span>  covariates <span class="op">=</span> <span class="st">"covariates.csv"</span>,</span>
+<span>  historical_covariates <span class="op">=</span> <span class="st">"historical_covariates.csv"</span>,</span>
+<span>  forecast_covariates <span class="op">=</span> <span class="st">"forecast_covariates.csv"</span>,</span>
+<span>  dataset_controls <span class="op">=</span> <span class="st">"dataset_controls.yaml"</span>,</span>
+<span>  model_controls <span class="op">=</span> <span class="st">"model_controls.yaml"</span>,</span>
+<span>  cast_evaluations <span class="op">=</span> <span class="st">"cast_evaluations.csv"</span>,</span>
+<span>  metadata <span class="op">=</span> <span class="st">"metadata.yaml"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">directory_subdirectories</span><span class="op">(</span></span>
+<span>  forecasts <span class="op">=</span> <span class="st">"forecasts"</span>,</span>
+<span>  fits <span class="op">=</span> <span class="st">"fits"</span>,</span>
+<span>  models <span class="op">=</span> <span class="st">"models"</span>,</span>
+<span>  resources <span class="op">=</span> <span class="st">"resources"</span>,</span>
+<span>  data <span class="op">=</span> <span class="st">"data"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">directory_resources</span><span class="op">(</span></span>
+<span>  PortalData <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"github"</span>, version <span class="op">=</span> <span class="st">"latest"</span><span class="op">)</span>,</span>
+<span>  portalPredictions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"github"</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
+<span>  climate_forecast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"NMME"</span>, version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, data <span class="op">=</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tasmin"</span>, <span class="st">"tasmean"</span>, <span class="st">"tasmax"</span>, <span class="st">"pr"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">production_settings</span><span class="op">(</span>download_timeout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"timeout"</span><span class="op">)</span>, <span class="fl">600</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">sandbox_settings</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>directory_configuration_file</dt>
-<dd><p><code>character</code> value of the path to the directory config YAML.</p></dd>
-
-
-<dt>moons_file</dt>
-<dd><p><code>character</code> name of the file for saving the moons data.</p></dd>
-
-
-<dt>covariates_file, historical_covariates_file, forecast_covariates_file</dt>
-<dd><p><code>character</code> name of the files for saving the covariate data (combined historical and forecast) and each component.</p></dd>
-
-
-<dt>dataset_controls_file</dt>
-<dd><p><code>character</code> name of the file for saving the rodent dataset controls.</p></dd>
-
-
-<dt>model_controls_file</dt>
-<dd><p><code>character</code> name of the file for saving the model controls.</p></dd>
-
-
-<dt>cast_evaluations_file</dt>
-<dd><p><code>character</code> name of the file for saving the cast evaluations.</p></dd>
-
-
-<dt>metadata_file</dt>
-<dd><p><code>character</code> name of the file for saving the forecast metadata.</p></dd>
+    <dl><dt>files</dt>
+<dd><p><code>list</code> of <code>character</code> names of standard files, see <code>directory_files</code>.</p></dd>
 
 
 <dt>subdirectories</dt>
-<dd><p><code>character</code> vector of the subdirectory names. Default includes <code>raw</code>, <code>data</code>, <code>models</code>, <code>fits</code>, and <code>casts</code>.</p></dd>
+<dd><p><code>list</code> of <code>character</code> names of standard subdirectories, see <code>directory_subdirectories</code>.</p></dd>
 
 
-<dt>PortalData</dt>
-<dd><p><code>list</code> with <code>source</code> and <code>version</code> elements that are <code>character</code> values for the source and version of the Portal Data to download. Default values retrieve the latest data from github. <br><br>
-See <code><a href="https://weecology.github.io/portalr/reference/download_observations.html" class="external-link">download_observations</a></code>.</p></dd>
-
-
-<dt>portalPredictions</dt>
-<dd><p><code>list</code> with <code>source</code> and <code>version</code> elements that are <code>character</code> values for the source and version of the archive to download. Default values point to github, but <code>version = NULL</code> indicates no download. <br><br> 
-See <code><a href="download-archive.html">download_archive</a></code>.</p></dd>
-
-
-<dt>climate_forecast</dt>
-<dd><p><code>list</code> with <code>source</code> and <code>version</code> elements that are <code>character</code> values for the source and version of the climate forecasts to download. Default values retrieve the current day's forecast from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts. <br><br> 
-See <code><a href="download-climate-forecasts.html">download_climate_forecasts</a></code>.</p></dd>
+<dt>resources</dt>
+<dd><p><code>character</code> name for the resources subdirectory.</p></dd>
 
 
 <dt>save</dt>
@@ -166,12 +146,76 @@ See <code><a href="download-climate-forecasts.html">download_climate_forecasts</
 <dt>download_timeout</dt>
 <dd><p>Positive <code>integer</code> or integer <code>numeric</code> seconds for timeout on downloads. Temporarily overrides the <code>"timeout"</code> option in <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></code>.</p></dd>
 
+
+<dt>directory_configuration</dt>
+<dd><p><code>character</code> name for the directory configuration YAML.</p></dd>
+
+
+<dt>moons</dt>
+<dd><p><code>character</code> name for the lunar data csv.</p></dd>
+
+
+<dt>covariates</dt>
+<dd><p><code>character</code> name for the combined historical and forecast covariates csv.</p></dd>
+
+
+<dt>historical_covariates</dt>
+<dd><p><code>character</code> name for the historical covariates csv.</p></dd>
+
+
+<dt>forecast_covariates</dt>
+<dd><p><code>character</code> name for the forecast covariates csv.</p></dd>
+
+
+<dt>dataset_controls</dt>
+<dd><p><code>character</code> name for the YAML of dataset control list(s).</p></dd>
+
+
+<dt>model_controls</dt>
+<dd><p><code>character</code> name for the YAML of model controls list(s).</p></dd>
+
+
+<dt>cast_evaluations</dt>
+<dd><p><code>character</code> name for the forecast evaluations csv.</p></dd>
+
+
+<dt>metadata</dt>
+<dd><p><code>character</code> name for the Forecast metadata YAML.</p></dd>
+
+
+<dt>forecasts</dt>
+<dd><p><code>character</code> name for the forecasts subdirectory.</p></dd>
+
+
+<dt>fits</dt>
+<dd><p><code>character</code> name for the fits subdirectory.</p></dd>
+
+
+<dt>models</dt>
+<dd><p><code>character</code> name for the models subdirectory.</p></dd>
+
+
+<dt>data</dt>
+<dd><p><code>character</code> name for the data subdirectory.</p></dd>
+
+
+<dt>PortalData</dt>
+<dd><p><code>list</code> of <code>source</code> and <code>version</code> elements of <code>character</code> values for the Portal Data download. Default values retrieve the latest data from github</p></dd>
+
+
+<dt>portalPredictions</dt>
+<dd><p><code>list</code> of <code>source</code> and <code>version</code> elements of <code>character</code> values for the archive download. Default values point to github, but <code>version = NULL</code> indicates no download.</p></dd>
+
+
+<dt>climate_forecast</dt>
+<dd><p><code>list</code> of <code>source</code>, <code>version</code>, and <code>data</code> elements of <code>character</code> values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>Named <code>list</code> of settings for the directory.</p>
+<p>Named <code>list</code> of settings for the directory (for <code>directory_settings</code>) or <code>list</code> of settings components (for <code>directory_files</code>, <code>directory_subdirectories</code>, and <code>directory_resources</code>).</p>
     </div>
 
   </div>
