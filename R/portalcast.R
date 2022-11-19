@@ -78,7 +78,7 @@ portalcast <- function (main       = ".",
   }
 
   if (end_moons[nend_moons] != last_moon) {
- # this maybe should happen within cast?
+ # this maybe should happen within cast? or maybe we can sidestep it
     messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
 
     fill_data(main     = main, 
