@@ -2,8 +2,12 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.45.0
+# portalcasting 0.46.0
 *In Progress*
+
+
+# [portalcasting 0.45.0](https://github.com/weecology/portalcasting/releases/tag/v0.45.0)
+*20222-11-18*
 
 ### Removing `dm_controls` as a separate dataset
 * Following the removal of the `interp` datasets
