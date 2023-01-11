@@ -977,6 +977,7 @@ plot_cast_ts <- function (main        = ".",
 
   sp_col  <- is_sp_col(obs, nadot = TRUE, total = TRUE)
   species <- ifnull(species, colnames(obs)[sp_col])
+
   mod_control <- read_model_controls(main = main, settings = settings)
   temp_species <- mod_control[[model]]$species
   if (temp_species == "all") {

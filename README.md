@@ -71,7 +71,9 @@ We welcome any contributions in form of models or pipeline changes.
 For the workflow, please checkout the [contribution](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) pages. 
 
 
-## Acknowledgements 
+## Acknowledgements
+
+This project is developed in active collaboration with [DAPPER Stats](https://www.dapperstats.com/).
 
 The motivating study—the Portal Project—has been funded nearly continuously since 1977 by the [National Science Foundation](http://nsf.gov/), most recently by [DEB-1622425](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1622425) to S. K. M. Ernest. 
 Much of the computational work was supported by the [Gordon and Betty Moore Foundation’s Data-Driven Discovery Initiative](http://www.moore.org/programs/science/data-driven-discovery) through [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to E. P. White. 
