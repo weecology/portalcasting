@@ -1,15 +1,16 @@
 # Supporting [automated forecasting](https://github.com/weecology/portalPredictions) of [rodent populations](https://portal.weecology.org/)
+
+<img src="man/figures/portalcasting.png" alt="hexagon software logo, light grey blue background, basic lettering at the top says portalcasting, main image is a drawn all black rodent standing on two feet with a fishing rod in hand and a brown fishing hat on head, standing next to a tan and green tackle box." width="200px" align="right">   
+
 [![R-CMD-check-release](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml)
-[![Docker](https://img.shields.io/docker/cloud/build/weecology/portalcasting.svg)](https://hub.docker.com/repository/docker/weecology/portalcasting)
+[![Docker](https://github.com/weecology/portalcasting/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/docker-publish.yml)
 [![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/main.svg)](https://codecov.io/github/weecology/portalcasting/branch/main)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3332973.svg)](https://doi.org/10.5281/zenodo.3332973)
 [![NSF-1929730](https://img.shields.io/badge/NSF-1929730-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1929730)
-[![DOI](https://joss.theoj.org/papers/10.21105/joss.03220/status.svg)](https://doi.org/10.21105/joss.03220)
+[![JOSS](https://joss.theoj.org/papers/10.21105/joss.03220/status.svg)](https://doi.org/10.21105/joss.03220)
 
-
-<img src="man/figures/portalcasting.png" alt="hexagon software logo, light grey blue background, basic lettering at the top says portalcasting, main image is a drawn all black rodent standing on two feet with a fishing rod in hand and a brown fishing hat on head, standing next to a tan and green tackle box." width="200px">   
 
 ## Overview
 
@@ -42,8 +43,8 @@ The API is moderately well defined at this point, but is still evolving.
 You can install the package from github:
 
 ```r
-install.packages("devtools")
-devtools::install_github("weecology/portalcasting")
+install.packages("remotes")
+remotes::install_github("weecology/portalcasting")
 ```
 
 ## Production environment
