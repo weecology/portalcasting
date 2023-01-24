@@ -45,6 +45,8 @@ cast(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
+
+\item{datasets}{\code{character} vector of dataset names to be created.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.

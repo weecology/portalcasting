@@ -19,7 +19,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-# @param datasets \code{character} vector of dataset names to be created. 
+#' @param datasets \code{character} vector of dataset names to be created. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
