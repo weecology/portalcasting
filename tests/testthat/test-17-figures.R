@@ -72,6 +72,8 @@ test_that(desc = "plot_casts_cov_RMSE", {
 
     skip_on_cran() 
 
+  fill_forecasts(main     = main)
+
   expect_silent(plot_casts_cov_RMSE(main = main))
   cast_tab <- read_cast_tabs(main = main)
   expect_error(plot_casts_cov_RMSE(main = main, cast_tab = cast_tab,
