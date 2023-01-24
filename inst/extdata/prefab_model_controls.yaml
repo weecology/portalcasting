@@ -12,7 +12,28 @@ AutoArima:
   - all
   - controls
   - exclosures
-  species: all
+  species: 
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    - total
   response: 
     link: normal
     type: distribution 
@@ -32,7 +53,28 @@ ESSS:
   - all
   - controls
   - exclosures
-  species: all
+  species: 
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    - total
   response: 
     link: normal
     type: distribution
@@ -52,7 +94,28 @@ NaiveArima:
   - all
   - controls
   - exclosures
-  species: all
+  species: 
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    - total
   response: 
     link: normal
     type: distribution
@@ -77,7 +140,28 @@ nbGARCH:
   - all
   - controls
   - exclosures
-  species: all
+  species: 
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    - total
   response: 
     link: negative_binomial
     type: distribution
@@ -96,7 +180,28 @@ nbsGARCH:
   - all
   - controls
   - exclosures
-  species: all
+  species: 
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    - total
   response: 
     link: negative_binomial
     type: distribution
@@ -111,7 +216,28 @@ pevGARCH:
   - all
   - controls
   - exclosures
-  species: all
+  species: 
+    - BA
+    - DM
+    - DO
+    - DS
+    - NA
+    - OL
+    - OT
+    - PB
+    - PE
+    - PF
+    - PH
+    - PL
+    - PM
+    - PP
+    - RF
+    - RM
+    - RO
+    - SF
+    - SH
+    - SO
+    - total
   interpolate: 
     needed: yes
     fun: round_na.interp

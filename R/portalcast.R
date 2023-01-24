@@ -19,7 +19,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param datasets \code{character} vector of dataset names to be created. 
+# @param datasets \code{character} vector of dataset names to be created. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -38,7 +38,7 @@
 #'
 portalcast <- function (main       = ".", 
                         models     = prefab_models(), 
-                        datasets   = prefab_datasets(),
+#                        datasets   = prefab_datasets(),
                         end_moons  = NULL, 
                         start_moon = 217, 
                         cast_date  = Sys.Date(),
@@ -49,7 +49,12 @@ portalcast <- function (main       = ".",
 #
 # the datasets here should come from the models selected
 #  and not as an argument ... or? maybe not? idk. think this out.
-# 
+#  i think so
+# should the start and end time also come from somewhere else?
+#  well, here the end moon is what is looped over
+#   not sure this is what i want to happen more generally, tho
+#  we want portalcast to iterate over individual casts, but generally
+#   i think we want to create a recipe list or something
 
   return_if_null(models)
 
@@ -79,6 +84,7 @@ portalcast <- function (main       = ".",
 
   if (end_moons[nend_moons] != last_moon) {
  # this maybe should happen within cast? or maybe we can sidestep it
+  # yeah, i would like to avoid refilling the data so many times, how to do?
     messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
 
     fill_data(main     = main, 

@@ -117,7 +117,7 @@ jags_logistic_competition <- function (main            = ".",
                                 total       = TRUE, 
                                 nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -405,7 +405,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
                                 total       = TRUE, 
                                 nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -692,7 +692,7 @@ jags_logistic_covariates <- function (main            = ".",
                                 total       = TRUE, 
                                 nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -964,7 +964,7 @@ jags_logistic <- function (main            = ".",
                                 total       = TRUE, 
                                 nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -1215,7 +1215,7 @@ jags_RW <- function (main            = ".",
                                 total       = TRUE, 
                                 nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$jags_RW$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]

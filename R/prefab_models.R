@@ -132,7 +132,7 @@ AutoArima <- function (main     = ".",
                                       nadot       = TRUE)
 
   temp_species  <- read_model_controls(main = main, settings = settings)$AutoArima$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -232,7 +232,7 @@ NaiveArima <- function (main     = ".",
                                       total       = TRUE, 
                                       nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$NaiveArima$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -330,7 +330,7 @@ ESSS <- function (main     = ".",
                                       total       = TRUE, 
                                       nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$ESSS$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -427,7 +427,7 @@ nbGARCH <- function (main     = ".",
                                       total       = TRUE, 
                                       nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$nbGARCH$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -537,7 +537,7 @@ nbsGARCH <- function (main     = ".",
                                       total       = TRUE, 
                                       nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$nbsGARCH$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
@@ -670,7 +670,7 @@ pevGARCH <- function (main     = ".",
                                       total       = TRUE, 
                                       nadot       = TRUE)
   temp_species  <- read_model_controls(main = main, settings = settings)$pevGARCH$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
