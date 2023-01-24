@@ -38,7 +38,7 @@
 #'
 portalcast <- function (main       = ".", 
                         models     = prefab_models(), 
-#                        datasets   = prefab_datasets(),
+                        datasets   = prefab_datasets(),
                         end_moons  = NULL, 
                         start_moon = 217, 
                         cast_date  = Sys.Date(),

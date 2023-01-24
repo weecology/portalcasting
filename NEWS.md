@@ -3,12 +3,15 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
-# portalcasting 0.46.0
-*In Progress*
+# [portalcasting 0.46.0](https://github.com/weecology/portalcasting/releases/tag/v0.46.0)
+*2023-01-24*
+
+### Articulating dataset controls for species
+* Changing dataset controls list input from having `all` for species to listing the species.
 
 
 # [portalcasting 0.45.0](https://github.com/weecology/portalcasting/releases/tag/v0.45.0)
-*20222-11-18*
+*2022-11-18*
 
 ### Removing `dm_controls` as a separate dataset
 * Following the removal of the `interp` datasets

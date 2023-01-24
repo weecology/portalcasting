@@ -8,6 +8,7 @@
 portalcast(
   main = ".",
   models = prefab_models(),
+  datasets = prefab_datasets(),
   end_moons = NULL,
   start_moon = 217,
   cast_date = Sys.Date(),
@@ -33,6 +34,8 @@ cast(
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
+\item{datasets}{\code{character} vector of dataset names to be created.}
+
 \item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
 \strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.}
 
@@ -45,8 +48,6 @@ cast(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
-
-\item{datasets}{\code{character} vector of dataset names to be created.}
 }
 \value{
 Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
