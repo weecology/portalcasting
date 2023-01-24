@@ -1,6 +1,3 @@
-# These functions are to be pulled out into the directory orchestration package
-
-
 #' @title Create the Structure of a Directory and Fill with Content
 #'
 #' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with core content. 
@@ -40,7 +37,11 @@ create_dir <- function(main     = ".",
                        settings = directory_settings(), 
                        quiet    = FALSE){
 
+  core_package_version <- package_version_finder("setup_dir")
+
+  messageq(message_break(), "\nThis is ", core_package_version[["package"]], " v", core_package_version[["version"]], "  ", format(Sys.time(), "%x %T %Z"), "\n", message_break(), quiet = quiet)
   messageq(message_break(), "\nEstablishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", message_break(), quiet = quiet)
+
 
   mapply(FUN          = dir.create, 
          path         = file.path(main, settings$subdirectories),
@@ -51,6 +52,7 @@ create_dir <- function(main     = ".",
                                 settings = settings, 
                                 quiet    = quiet)
 
+  messageq(message_break(), "\nDirectory successfully instantiated\n", message_break(), quiet = quiet)
 
 }
 
@@ -67,11 +69,6 @@ setup_dir <- function (main     = ".",
                        quiet    = FALSE, 
                        verbose  = FALSE) {
 
-  core_package_version <- package_version_finder("setup_dir")
-
-
-  messageq(message_break(), "\nThis is ", core_package_version[["package"]], " v", core_package_version[["version"]], quiet = quiet)
-  messageq("  ", format(Sys.time(), "%x %T %Z"), "\n", message_break(), quiet = quiet)
 
   create_dir(main     = main, 
              settings = settings,
@@ -84,7 +81,6 @@ setup_dir <- function (main     = ".",
            quiet    = quiet,
            verbose  = verbose)
 
-  messageq(message_break(), "\nDirectory successfully instantiated\n", message_break(), quiet = quiet)
 
   read_directory_configuration(main     = main,
                                settings = settings,

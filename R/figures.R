@@ -979,8 +979,9 @@ plot_cast_ts <- function (main        = ".",
   species <- ifnull(species, colnames(obs)[sp_col])
 
   mod_control <- read_model_controls(main = main, settings = settings)
+  model   <- ifnull(model, names(mod_control)[1])
   temp_species <- mod_control[[model]]$species
-  if (temp_species == "all") {
+  if (length(temp_species) == 1 && temp_species == "all") {
     species <- species
   } else {
     species <- species[species %in% temp_species]
