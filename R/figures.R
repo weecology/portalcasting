@@ -972,11 +972,20 @@ plot_cast_ts <- function (main        = ".",
 
   obs           <- read_rodents_table(main     = main, 
                                       settings = settings, 
-                                        dataset = gsub("_interp", "", casts_meta$dataset))
+                                        dataset = gsub("dm_", "", gsub("_interp", "", casts_meta$dataset)))
   colnames(obs) <- gsub("\\.", "", colnames(obs))
 
   sp_col  <- is_sp_col(obs, nadot = TRUE, total = TRUE)
   species <- ifnull(species, colnames(obs)[sp_col])
+
+  mod_control <- read_model_controls(main = main, settings = settings)
+  model   <- ifnull(model, names(mod_control)[1])
+  temp_species <- mod_control[[model]]$species
+  if (length(temp_species) == 1 && temp_species == "all") {
+    species <- species
+  } else {
+    species <- species[species %in% temp_species]
+  }
   if (length(species) > 1) {
     if ("total" %in% species) {
       species <- "total"
@@ -993,7 +1002,7 @@ plot_cast_ts <- function (main        = ".",
   }
 
   obs     <- obs[ , c("newmoonnumber", species)]
-  dataset <- gsub("_interp", "", casts_meta$dataset)
+  dataset <- gsub("dm_", "", gsub("_interp", "", casts_meta$dataset))
 
   if (!is.null(model) && tolower(model) == "ensemble") {
 

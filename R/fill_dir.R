@@ -26,7 +26,7 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or just the tidy messages.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'

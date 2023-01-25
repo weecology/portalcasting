@@ -68,7 +68,7 @@ fill_models(
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just the tidy messages.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.

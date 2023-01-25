@@ -49,7 +49,12 @@ portalcast <- function (main       = ".",
 #
 # the datasets here should come from the models selected
 #  and not as an argument ... or? maybe not? idk. think this out.
-# 
+#  i think so
+# should the start and end time also come from somewhere else?
+#  well, here the end moon is what is looped over
+#   not sure this is what i want to happen more generally, tho
+#  we want portalcast to iterate over individual casts, but generally
+#   i think we want to create a recipe list or something
 
   return_if_null(models)
 
@@ -78,7 +83,8 @@ portalcast <- function (main       = ".",
   }
 
   if (end_moons[nend_moons] != last_moon) {
- # this maybe should happen within cast?
+ # this maybe should happen within cast? or maybe we can sidestep it
+  # yeah, i would like to avoid refilling the data so many times, how to do?
     messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
 
     fill_data(main     = main, 

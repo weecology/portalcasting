@@ -36,17 +36,18 @@ model_controls <- function (main     = ".",
 
   nmodels <- length(models)
 
-  if (nmodels == 1) {
-
-    read_model_controls(main     = main, 
-                        settings = settings)[[models]]
-
-  } else if (nmodels > 1) {
+# want to cut this commented part out but need to make sure it will still work fine or figure out where i need to fix it
+#  if (nmodels == 1) {
+#
+#    read_model_controls(main     = main, 
+#                        settings = settings)[[models]]
+#
+#  } else if (nmodels > 1) {
 
     read_model_controls(main     = main, 
                         settings = settings)[models]
 
-  }
+#  }
 
 }
 
