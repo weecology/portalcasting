@@ -13,27 +13,7 @@ AutoArima:
   - controls
   - exclosures
   species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
   response: 
     link: normal
     type: distribution 
@@ -54,27 +34,7 @@ ESSS:
   - controls
   - exclosures
   species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
   response: 
     link: normal
     type: distribution
@@ -95,27 +55,7 @@ NaiveArima:
   - controls
   - exclosures
   species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
   response: 
     link: normal
     type: distribution
@@ -141,27 +81,7 @@ nbGARCH:
   - controls
   - exclosures
   species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
   response: 
     link: negative_binomial
     type: distribution
@@ -181,27 +101,7 @@ nbsGARCH:
   - controls
   - exclosures
   species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
   response: 
     link: negative_binomial
     type: distribution
@@ -217,27 +117,7 @@ pevGARCH:
   - controls
   - exclosures
   species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
   interpolate: 
     needed: yes
     fun: round_na.interp

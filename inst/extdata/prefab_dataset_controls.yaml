@@ -7,26 +7,7 @@ all:
   args:
     name: all
     species:
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
+      - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO]
     total: yes
     clean: no
     type: Rodents
@@ -52,26 +33,7 @@ controls:
   args:
     name: controls
     species:
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
+      - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO]
     total: yes
     clean: no
     type: Rodents
@@ -97,26 +59,7 @@ exclosures:
   args:
     name: exclosures
     species:
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
+      - [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO]
     total: yes
     clean: no
     type: Rodents
