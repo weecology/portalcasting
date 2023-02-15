@@ -21,7 +21,7 @@
 read_model_controls <- function (main     = ".",
                                  settings = directory_settings()) {
 
-  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
+  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$model_controls), eval.expr = TRUE)
 
 }
 

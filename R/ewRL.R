@@ -58,8 +58,6 @@ download_archive <- function(main          = ".",
 
   if (source == "zenodo") {
 
-    base_url <-  
-
     got <- GET(url   = "https://zenodo.org/api/records/", 
                query = list(q            = "conceptrecid:833438",
                             size         = 9999, 
@@ -97,9 +95,9 @@ download_archive <- function(main          = ".",
 
   } else if (source == "github") {
 
-    url <- ifelse(version == "latest", 
-                  "https://api.github.com/repos/weecology/portalPredictions/releases/latest",
-                  paste0("https://api.github.com/repos/weecology/portalPredictions/releases/tags/", version))
+    url <- ifelse(test = version == "latest", 
+                  yes  = "https://api.github.com/repos/weecology/portalPredictions/releases/latest",
+                  no   = paste0("https://api.github.com/repos/weecology/portalPredictions/releases/tags/", version))
 
     got <- GET(url = url)
 
@@ -108,7 +106,20 @@ download_archive <- function(main          = ".",
 
     zipball_url <- content(got)$zipball_url      
  
-    version <- ifelse(version == "latest", content(got)$tag_name, version)
+    version <- ifelse(test = version == "latest", 
+                      yes  = content(got)$tag_name, 
+                      no   = version)
+
+    local_version <- 
+
+list.files(file.path(main, resources_sub, "portalPredictions"))
+
+    if (version == local_version) {
+
+      messageq("Local copy of archive is already version ", version, quiet = quiet)
+      return(invisible( ))
+
+    }
 
   } else {
 
@@ -166,6 +177,11 @@ download_archive <- function(main          = ".",
             recursive = TRUE)
 
   Sys.sleep(pause)
+
+  new_version       <- content(got)$tag_name
+
+  version_file_path <- 
+  write(new_version, file = version_file_path)
 
   unlink(temp_unzip, recursive = TRUE)
   file.remove(temp)
