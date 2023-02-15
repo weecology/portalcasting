@@ -197,11 +197,10 @@ fill_forecasts <- function (main     = ".",
                             quiet    = FALSE, 
                             verbose  = FALSE) { 
 
-  output_folders <- c("forecasts", "casts")
 
   files <- unlist(mapply(FUN        = list.files,
                          path       = mapply(FUN = file.path, 
-                                                   main, settings$subdirectories$resources, settings$repository, output_folders),
+                                                   main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts),
                          full.names = TRUE))
 
   if (length(files) == 0) {

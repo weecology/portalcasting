@@ -43,6 +43,6 @@ Suggests:
   markdown,
   rmarkdown,
   testthat
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Encoding: UTF-8
