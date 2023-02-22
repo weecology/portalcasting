@@ -2,6 +2,9 @@ context(desc = "Figure functions")
 
 main <- "./testing"
 
+
+
+
 test_that(desc = "plot_cast_ts", {
 
   # download is held back on cran
@@ -39,8 +42,6 @@ test_that(desc = "plot_cast_point", {
 
 
 })
-
-
 
 
 
