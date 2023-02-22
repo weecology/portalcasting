@@ -252,6 +252,12 @@ plot_casts_cov_RMSE <- function (main           = ".",
 }
 
 
+eval_models <- function() {
+
+  c("ESSS", "AutoArima", "nbsGARCH")
+
+}
+
 #' @title Plot the Forecast Error as a Function of Lead Time 
 #'
 #' @description Plot the raw error (estimate - observation) as a function of lead time across model runs from different forecast origins (\code{end_moons}) for multiple models and multiple species (or total) within a data set.
@@ -348,7 +354,7 @@ plot_casts_err_lead <- function (main           = ".",
   # patch
 
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                  <- ifnull(models, unique(cast_tab$model))
+  models                  <- ifnull(models, eval_models())
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species                 <- ifnull(species, eval_species()) 
   end_moons               <- ifnull(end_moons, unique(cast_tab$end_moon)) 

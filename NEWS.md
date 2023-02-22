@@ -3,6 +3,13 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.47.0](https://github.com/weecology/portalcasting/releases/tag/v0.47.0)
+*2023-02-21*
+
+### Patching error in cast metadata output for jags models
+* Multiple models had the jags_logistic_covariates name being used in the metadata output when that was not correct.
+
+
 # [portalcasting 0.46.0](https://github.com/weecology/portalcasting/releases/tag/v0.46.0)
 *2023-01-24*
 

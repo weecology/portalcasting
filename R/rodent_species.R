@@ -102,8 +102,8 @@ rodent_species <- function (set   = NULL,
 
   } else if (set == "eval") {
 
-    out_abb <- c("BA", "DM", "DO", "PP", "OT", "NA")
-    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Chaetodipus penicillatus", "Onychomys torridus", "Neotoma albigula")
+    out_abb <- c("BA", "DM", "DO", "PP")
+    out_lat <- c("Baiomys taylori", "Dipodomys merriami", "Dipodomys ordii", "Chaetodipus penicillatus")
 
   } else {
 
