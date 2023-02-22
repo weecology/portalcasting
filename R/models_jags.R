@@ -93,7 +93,7 @@ jags_logistic_competition <- function (main            = ".",
 
 
 
-  model_name     <- "jags_logistic_covariates"
+  model_name     <- "jags_logistic_competition"
 
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
@@ -269,7 +269,7 @@ jags_logistic_competition <- function (main            = ".",
   }
 
   metadata <- update_list(metadata,
-                          models           = "jags_logistic_covariates",
+                          models           = model_name,
                           datasets         = dataset,
                           dataset_controls = dataset_controls)
 
@@ -559,7 +559,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
   }
 
   metadata <- update_list(metadata,
-                          models           = "jags_logistic_covariates",
+                          models           = model_name,
                           datasets         = dataset,
                           dataset_controls = dataset_controls)
 
@@ -844,7 +844,7 @@ jags_logistic_covariates <- function (main            = ".",
   }
 
   metadata <- update_list(metadata,
-                          models           = "jags_logistic_covariates",
+                          models           = model_name,
                           datasets         = dataset,
                           dataset_controls = dataset_controls)
 
