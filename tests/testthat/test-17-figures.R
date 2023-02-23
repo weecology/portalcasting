@@ -4,14 +4,12 @@ main <- "./testing"
 
 
 
-
 test_that(desc = "plot_cast_ts", {
 
   # download is held back on cran
 
     skip_on_cran() 
-  fill_data(main = main)
-  fill_models(main = main)
+
   portalcast(main = main, models = c("AutoArima", "NaiveArima"))
   expect_silent(plot_cast_ts(main = main, species = "DM", 
                              model = "AutoArima"))
@@ -20,6 +18,7 @@ test_that(desc = "plot_cast_ts", {
 
 })
 
+
 test_that(desc = "plot_cast_point", {
 
   # download is held back on cran
@@ -27,7 +26,7 @@ test_that(desc = "plot_cast_point", {
     skip_on_cran() 
 
 
-  moons <- read_moons(main = main)
+  moons <- read_newmoons(main = main)
   
 
   last_census_date <- max(moons$censusdate, na.rm = TRUE)
@@ -67,15 +66,14 @@ test_that(desc = "plot_casts_err_lead", {
 })
 
 
+
 test_that(desc = "plot_casts_cov_RMSE", {
 
   # download is held back on cran
 
     skip_on_cran() 
 
-  fill_forecasts(main     = main)
-
-  expect_silent(plot_casts_cov_RMSE(main = main))
+  expect_silent(plot_casts_cov_RMSE(main = main, species = "DM"))
   cast_tab <- read_cast_tabs(main = main)
   expect_error(plot_casts_cov_RMSE(main = main, cast_tab = cast_tab,
                                    cast_id = 1e10))

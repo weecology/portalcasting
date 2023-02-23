@@ -12,6 +12,7 @@ download_archive(
   source = "github",
   quiet = FALSE,
   verbose = FALSE,
+  overwrite = FALSE,
   pause = 30,
   timeout = getOption("timeout")
 )
@@ -28,6 +29,8 @@ download_archive(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be printed.}
+
+\item{overwrite}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 

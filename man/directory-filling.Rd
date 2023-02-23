@@ -84,7 +84,7 @@ Fill the directory with components including \enumerate{
     \item{model fits (\code{\link{fill_fits}})}}}
   \item{Data (\code{\link{fill_data}}):  \itemize{
     \item{rodent datasets (\code{\link{prepare_rodents}})}
-    \item{temporal (lunar) data (\code{\link{prepare_moons}})}
+    \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
     \item{covariates (\code{\link{prepare_covariates}})}
     \item{metadata (\code{\link{prepare_metadata}})}}}
   \item{Models (\code{\link{fill_models}})}

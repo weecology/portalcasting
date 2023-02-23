@@ -3,6 +3,20 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.48.0](https://github.com/weecology/portalcasting/releases/tag/v0.48.0)
+*2023-02-23*
+
+### Settings updates to avoid redownloading archive
+* settings `overwrite` is now `FALSE` by default to manage the version match decision making
+* the directory resources portalpredictions version is updated to be the correct value (`"latest"`; was `NULL`)
+* the `overwrite` setting is temporarily removed from the file saving functions to prevent argument name confusion
+* we need to have an external location of file version to compare
+
+### Fixing jags model inits values
+* Model values were not facilitating good chain mixing, updated now
+
+### More transitions from `moons` to `newmoons` to align naming
+
 # [portalcasting 0.47.0](https://github.com/weecology/portalcasting/releases/tag/v0.47.0)
 *2023-02-21*
 

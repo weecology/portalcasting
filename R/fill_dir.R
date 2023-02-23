@@ -10,7 +10,7 @@
 #'     \item{model fits (\code{\link{fill_fits}})}}}
 #'   \item{Data (\code{\link{fill_data}}):  \itemize{
 #'     \item{rodent datasets (\code{\link{prepare_rodents}})}
-#'     \item{temporal (lunar) data (\code{\link{prepare_moons}})}
+#'     \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
 #'     \item{covariates (\code{\link{prepare_covariates}})}
 #'     \item{metadata (\code{\link{prepare_metadata}})}}}
 #'   \item{Models (\code{\link{fill_models}})}
@@ -62,7 +62,7 @@ fill_dir <- function (main     = ".",
 
   subdirectories <- settings$subdirectories
 
-
+# make all of these have the same arguments and standardize further
 
   fill_resources(main     = main, 
                  settings = settings, 
@@ -78,7 +78,6 @@ fill_dir <- function (main     = ".",
             settings = settings, 
             quiet    = quiet, 
             verbose  = verbose)
-
 
   fill_data(main     = main, 
             datasets = datasets,
@@ -119,10 +118,10 @@ fill_data <- function (main     = ".",
                   quiet    = quiet,
                   verbose  = verbose)
 
-  prepare_moons(main      = main,  
-                settings  = settings,
-                quiet     = quiet, 
-                verbose   = verbose)
+  prepare_newmoons(main      = main,  
+                   settings  = settings,
+                   quiet     = quiet, 
+                   verbose   = verbose)
 
   prepare_covariates(main      = main,  
                      settings  = settings,
@@ -166,6 +165,7 @@ fill_resources <- function (main     = ".",
                    source        = settings$resources$portalPredictions$source,
                    pause         = settings$unzip_pause,
                    timeout       = settings$download_timeout,
+                   overwrite     = settings$overwrite,
                    quiet         = quiet,
                    verbose       = verbose)
 
@@ -175,6 +175,7 @@ fill_resources <- function (main     = ".",
                              version       = settings$resources$climate_forecast$version, 
                              data          = settings$resources$climate_forecast$data, 
                              timeout       = settings$download_timeout,
+                             overwrite     = settings$overwrite,
                              quiet         = quiet,
                              verbose       = verbose)
 
@@ -197,12 +198,20 @@ fill_forecasts <- function (main     = ".",
                             quiet    = FALSE, 
                             verbose  = FALSE) { 
 
-  output_folders <- c("forecasts", "casts")
+  files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts),
+                      full.names = TRUE)
 
-  files <- unlist(mapply(FUN        = list.files,
-                         path       = mapply(FUN = file.path, 
-                                                   main, settings$subdirectories$resources, settings$repository, output_folders),
-                         full.names = TRUE))
+
+  if (!settings$overwrite) {
+
+    existing_files <- list.files(path = file.path(main, settings$subdirectories$forecasts))
+    files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts))
+    short_meta     <- files_short == settings$files$forecast_metadata
+    files          <- unique(c(files[!(files_short %in% existing_files)],
+                               files[short_meta]))
+    
+
+  }
 
   if (length(files) == 0) {
 
@@ -210,7 +219,7 @@ fill_forecasts <- function (main     = ".",
 
   }
 
-  messageq(paste0(" Located ", length(files), " cast files ... \n  ... moving ..."), quiet = quiet)
+  messageq(paste0(" Located ", length(files), " cast file(s) in resources to be moved to directory ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
                       to        = file.path(main, settings$subdirectories$forecasts), 
@@ -241,12 +250,18 @@ fill_fits <- function (main     = ".",
                        quiet    = FALSE, 
                        verbose  = FALSE) { 
 
-  output_folders <- c("fits")
+  files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits),
+                      full.names = TRUE)
 
-  files <- unlist(mapply(FUN        = list.files,
-                         path       = mapply(FUN = file.path, 
-                                                   main, settings$subdirectories$resources, settings$repository, output_folders),
-                         full.names = TRUE))
+
+  if (!settings$overwrite) {
+
+    existing_files <- list.files(path = file.path(main, settings$subdirectories$fits))
+    files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits))
+    files          <- unique(c(files[!(files_short %in% existing_files)]))   
+
+  }
+
 
   if (length(files) == 0) {
 
@@ -254,7 +269,7 @@ fill_fits <- function (main     = ".",
 
   }
 
-  messageq(paste0(" Located ", length(files), " fit files ... \n  ... moving ..."), quiet = quiet)
+  messageq(paste0(" Located ", length(files), " fit file(s) in resources to be moved to directory ... \n  ... moving ..."), quiet = quiet)
 
   copied <- file.copy(from      = files, 
                       to        = file.path(main, settings$subdirectories$fits), 

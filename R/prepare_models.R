@@ -152,7 +152,7 @@ write_model <- function (main     = ".",
                                  quiet    = FALSE, 
                                  verbose  = FALSE)
 
-  if (file.exists(mod_path) & settings$overwrite) {
+  if (file.exists(mod_path) ) {#& settings$overwrite) {
 
     write(mod_template, mod_path)
     messageq("  -", ifelse(verbose, "Updating ", ""), model, quiet = quiet)

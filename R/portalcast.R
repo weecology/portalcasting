@@ -60,7 +60,7 @@ portalcast <- function (main       = ".",
 
   messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
 
-  moons <- read_moons(main     = main,
+  moons <- read_newmoons(main     = main,
                       settings = settings)
 
   which_last_moon <- max(which(moons$newmoondate < cast_date))
@@ -116,7 +116,7 @@ cast <- function (main       = ".",
                   quiet      = FALSE, 
                   verbose    = FALSE) {
 
-  moons <- read_moons(main     = main,
+  moons <- read_newmoons(main     = main,
                       settings = settings)
 
   which_last_moon <- max(which(moons$newmoondate < cast_date))

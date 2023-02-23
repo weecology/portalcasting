@@ -9,7 +9,7 @@ runjags_control(
   adapt = 10000,
   burnin = 10000,
   sample = 10000,
-  thin = 1,
+  thin = 10,
   modules = "glm",
   method = "interruptible",
   factories = "",

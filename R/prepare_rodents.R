@@ -185,8 +185,8 @@ prepare_rodents <- function (main     = ".",
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param overwrite \code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).
-#'
+# @param overwrite \code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).
+#
 #' @param save \code{logical} indicator controlling if the output should be saved out.
 #'
 #' @param filename \code{character} value of the file for saving the output.
@@ -219,7 +219,7 @@ prepare_dataset <- function(name        = "all",
                             species     = base_species(),
                             total       = TRUE,
                             save        = TRUE,
-                            overwrite   = TRUE,
+#                            overwrite   = FALSE,
                             quiet       = FALSE,
                             verbose     = FALSE) {
 
@@ -293,7 +293,7 @@ prepare_dataset <- function(name        = "all",
              data_sub  = settings$subdirectories$data,
              save      = save, 
              filename  = filename, 
-             overwrite = overwrite, 
+#             overwrite = overwrite, 
              quiet     = !verbose)
 
   out

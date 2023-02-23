@@ -601,7 +601,7 @@ ifna <- function (x = NULL, alt = NA) {
 #' 
 #' @param df \code{data.frame} with column of \code{date}s.
 #'
-#' @param moons Moons \code{data.frame}. See \code{\link{prepare_moons}}.
+#' @param moons Moons \code{data.frame}. See \code{\link{prepare_newmoons}}.
 #'
 #' @return \code{data.frame} \code{df} with column of \code{newmoonnumber}s added.
 #'

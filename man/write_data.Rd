@@ -10,7 +10,6 @@ write_data(
   data_sub = "data",
   save = TRUE,
   filename = NULL,
-  overwrite = TRUE,
   quiet = FALSE
 )
 }
@@ -24,8 +23,6 @@ write_data(
 \item{save}{\code{logical} indicator controlling if \code{x} should be saved out.}
 
 \item{filename}{\code{character} name of the file for saving \code{x}.}
-
-\item{overwrite}{\code{logical} indicator of if the file should be overwritten if it exists.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
 }

@@ -13,8 +13,8 @@
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
 #'
-#' @param overwrite \code{logical} indicator of if the file should be overwritten if it exists.
-#'
+# @param overwrite \code{logical} indicator of if the file should be overwritten if it exists.
+#
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
 #' @return \code{x} as input, \code{\link[base]{invisible}}-ly.
@@ -26,14 +26,14 @@ write_data <- function (x         = NULL,
                         data_sub  = "data",
                         save      = TRUE, 
                         filename  = NULL, 
-                        overwrite = TRUE, 
+#                        overwrite = FALSE, 
                         quiet     = FALSE) {
   
   return_if_null(x)
 
   return_if_null(filename)
 
-  save_it <- FALSE
+#  save_it <- FALSE
 
   if (save) {
 
@@ -41,26 +41,26 @@ write_data <- function (x         = NULL,
 
     if (file.exists(full_path)) {
 
-      if (overwrite) {
-
-        save_it <- TRUE
-
-        messageq("    **", filename, " exists and overwrite = TRUE; file saved**", quiet = quiet)
-
-      } else {
-
-        messageq("    **", filename, " exists and overwrite = FALSE; not saved***", quiet = quiet) 
-      }
+#      if (overwrite) {
+#
+#        save_it <- TRUE
+#
+#        messageq("    **", filename, " exists and overwrite = TRUE; file saved**", quiet = quiet)
+#
+#      } else {
+#
+#        messageq("    **", filename, " exists and overwrite = FALSE; not saved***", quiet = quiet) 
+#      }
 
     } else {
 
-      save_it <- TRUE
+#      save_it <- TRUE
 
       messageq("    **", filename, " saved**", quiet = quiet)
 
     }
 
-    if (save_it) {
+#    if (save_it) {
 
       if (file_ext(filename) == "csv") {
 
@@ -78,7 +78,7 @@ write_data <- function (x         = NULL,
 
     }
    
-  }
+#  }
 
   invisible(x)
 
@@ -90,7 +90,7 @@ write_data <- function (x         = NULL,
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'  
-#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
+#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.
 #'
 #' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
 #'
@@ -141,9 +141,9 @@ read_data <- function (main      = ".",
 
   }
 
-  if (data_name == "moons") {
+  if (data_name == "newmoons") {
 
-    out <- read_moons(main     = main, 
+    out <- read_newmoons(main     = main, 
                       settings = settings)
 
   }
@@ -203,10 +203,10 @@ read_rodents <- function (main     = ".",
 #'
 #' @export
 #'
-read_moons <- function(main     = ".", 
+read_newmoons <- function(main     = ".", 
                        settings = directory_settings()){
   
-  read.csv(file.path(main, settings$subdirectories$data, settings$files$moons))
+  read.csv(file.path(main, settings$subdirectories$data, settings$files$newmoons))
 
 }
 

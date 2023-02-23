@@ -95,7 +95,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   # patch
 
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                  <- ifnull(models, unique(cast_tab$model))
+  models                  <- ifnull(models, eval_models())
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species                 <- ifnull(species, eval_species()) 
   end_moons               <- ifnull(end_moons, unique(cast_tab$end_moon)) 
@@ -712,7 +712,7 @@ plot_cast_point <- function (main         = ".",
                              settings     = directory_settings(),
                              quiet        = FALSE) {
 
-  moons <- read_moons(main     = main, 
+  moons <- read_newmoons(main     = main, 
                       settings = settings)
 
   last_census_date       <- as.Date(max(moons$censusdate, na.rm = TRUE))
@@ -1058,7 +1058,7 @@ plot_cast_ts <- function (main        = ".",
        xlim = rangex, 
        ylim = rangey)
 
-  moons <- read_moons(main     = main, 
+  moons <- read_newmoons(main     = main, 
                       settings = settings)
   minx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])

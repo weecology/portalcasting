@@ -15,20 +15,21 @@ directory_settings(
   subdirectories = directory_subdirectories(),
   resources = directory_resources(),
   save = TRUE,
-  overwrite = TRUE,
+  overwrite = FALSE,
   unzip_pause = 30,
   download_timeout = getOption("timeout")
 )
 
 directory_files(
   directory_configuration = "directory_configuration.yaml",
-  moons = "moon_dates.csv",
+  newmoons = "newmoon_dates.csv",
   covariates = "covariates.csv",
   historical_covariates = "historical_covariates.csv",
   forecast_covariates = "forecast_covariates.csv",
   dataset_controls = "dataset_controls.yaml",
   model_controls = "model_controls.yaml",
   cast_evaluations = "cast_evaluations.csv",
+  forecast_metadata = "casts_metadata.csv",
   metadata = "metadata.yaml"
 )
 
@@ -42,7 +43,7 @@ directory_subdirectories(
 
 directory_resources(
   PortalData = list(source = "github", version = "latest"),
-  portalPredictions = list(source = "github", version = NULL),
+  portalPredictions = list(source = "github", version = "latest"),
   climate_forecast = list(source = "NMME", version = as.character(Sys.Date()), data =
     c("tasmin", "tasmean", "tasmax", "pr"))
 )
@@ -60,15 +61,13 @@ sandbox_settings()
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
 
-\item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
+\item{overwrite}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
 \item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 
 \item{directory_configuration}{\code{character} name for the directory configuration YAML.}
-
-\item{moons}{\code{character} name for the lunar data csv.}
 
 \item{covariates}{\code{character} name for the combined historical and forecast covariates csv.}
 
@@ -81,6 +80,8 @@ sandbox_settings()
 \item{model_controls}{\code{character} name for the YAML of model controls list(s).}
 
 \item{cast_evaluations}{\code{character} name for the forecast evaluations csv.}
+
+\item{forecast_metadata}{\code{character} name for the forecast metadata csv.}
 
 \item{metadata}{\code{character} name for the Forecast metadata YAML.}
 
@@ -97,6 +98,8 @@ sandbox_settings()
 \item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download.}
 
 \item{climate_forecast}{\code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.}
+
+\item{moons}{\code{character} name for the lunar data csv.}
 }
 \value{
 Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
