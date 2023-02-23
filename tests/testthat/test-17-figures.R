@@ -26,7 +26,7 @@ test_that(desc = "plot_cast_point", {
     skip_on_cran() 
 
 
-  moons <- read_moons(main = main)
+  moons <- read_newmoons(main = main)
   
 
   last_census_date <- max(moons$censusdate, na.rm = TRUE)

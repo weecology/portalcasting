@@ -9,7 +9,7 @@ add_newmoonnumbers_from_dates(df, moons = NULL)
 \arguments{
 \item{df}{\code{data.frame} with column of \code{date}s.}
 
-\item{moons}{Moons \code{data.frame}. See \code{\link{prepare_moons}}.}
+\item{moons}{Moons \code{data.frame}. See \code{\link{prepare_newmoons}}.}
 }
 \value{
 \code{data.frame} \code{df} with column of \code{newmoonnumber}s added.
