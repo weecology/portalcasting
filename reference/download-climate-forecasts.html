@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.47.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.48.0</span>
       </span>
     </div>
 
@@ -83,6 +83,7 @@
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tasmin"</span>, <span class="st">"tasmean"</span>, <span class="st">"tasmax"</span>, <span class="st">"pr"</span><span class="op">)</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  timeout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"timeout"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -115,6 +116,10 @@
 
 <dt>verbose</dt>
 <dd><p><code>logical</code> indicator if detailed messages should be printed.</p></dd>
+
+
+<dt>overwrite</dt>
+<dd><p><code>logical</code> indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as <code>FALSE</code>).</p></dd>
 
 
 <dt>timeout</dt>

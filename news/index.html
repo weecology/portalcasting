@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">portalcasting</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.47.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.48.0</span>
       </span>
     </div>
 
@@ -72,6 +72,21 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="portalcasting-development-version">portalcasting (development version)<a class="anchor" aria-label="anchor" href="#portalcasting-development-version"></a></h2>
 <p>Version numbers follow <a href="https://semver.org/" class="external-link">Semantic Versioning</a>.</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.48.0" id="portalcasting-0480"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.48.0" class="external-link">portalcasting 0.48.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0480"></a></h2>
+<p><em>2023-02-23</em></p>
+<div class="section level4">
+<h4 id="settings-updates-to-avoid-redownloading-archive-0-48-0">Settings updates to avoid redownloading archive<a class="anchor" aria-label="anchor" href="#settings-updates-to-avoid-redownloading-archive-0-48-0"></a></h4>
+<ul><li>settings <code>overwrite</code> is now <code>FALSE</code> by default to manage the version match decision making</li>
+<li>the directory resources portalpredictions version is updated to be the correct value (<code>"latest"</code>; was <code>NULL</code>)</li>
+<li>the <code>overwrite</code> setting is temporarily removed from the file saving functions to prevent argument name confusion</li>
+<li>we need to have an external location of file version to compare</li>
+</ul></div>
+<div class="section level4">
+<h4 id="fixing-jags-model-inits-values-0-48-0">Fixing jags model inits values<a class="anchor" aria-label="anchor" href="#fixing-jags-model-inits-values-0-48-0"></a></h4>
+<ul><li>Model values were not facilitating good chain mixing, updated now</li></ul></div>
+<div class="section level4"><h4 id="more-transitions-from-moons-to-newmoons-to-align-naming-0-48-0">More transitions from <code>moons</code> to <code>newmoons</code> to align naming<a class="anchor" aria-label="anchor" href="#more-transitions-from-moons-to-newmoons-to-align-naming-0-48-0"></a></h4></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.47.0" id="portalcasting-0470"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.47.0" class="external-link">portalcasting 0.47.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0470"></a></h2>
