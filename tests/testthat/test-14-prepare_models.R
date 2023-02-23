@@ -33,7 +33,8 @@ test_that(desc = "prefab_models creates a vector of model names", {
 
 test_that(desc = "write_model constructs model file", {
 
-  expect_message(write_model("AutoArima", main = main))
+  expect_message(write_model(model = "AutoArima", main = main, 
+                             settings = directory_settings(overwrite = TRUE)))
 
 })
 

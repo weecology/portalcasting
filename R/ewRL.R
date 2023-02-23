@@ -18,6 +18,8 @@
 #'
 #' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
+#' @param overwrite \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be printed.
@@ -43,6 +45,7 @@ download_archive <- function(main          = ".",
                              source        = "github",
                              quiet         = FALSE,
                              verbose       = FALSE,
+                             overwrite     = FALSE,
                              pause         = 30,
                              timeout       = getOption("timeout")) {
 
@@ -57,8 +60,6 @@ download_archive <- function(main          = ".",
   source  <- tolower(source)
 
   if (source == "zenodo") {
-
-    base_url <-  
 
     got <- GET(url   = "https://zenodo.org/api/records/", 
                query = list(q            = "conceptrecid:833438",
@@ -116,10 +117,31 @@ download_archive <- function(main          = ".",
 
   }
   
-  messageq("Downloading archive version `", version, "` ...", quiet = quiet)
 
-  temp  <- file.path(tempdir(), "portalPredictions.zip")
-  final <- file.path(main, resources_sub, "portalPredictions")
+  temp         <- file.path(tempdir(), "portalPredictions.zip")
+  final        <- file.path(main, resources_sub, "portalPredictions")
+  version_file <- file.path(final, "version.txt")
+
+
+  if (!overwrite & file.exists(version_file)) {
+
+    existing_version <- scan(file  = version_file, 
+                             what  = character(), 
+                             quiet = TRUE)
+  
+
+    if (existing_version == version) {
+
+      messageq("Existing local version (", existing_version, ") is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped",
+               quiet = quiet)
+      return(invisible())
+
+    }
+
+  }
+
+
+  messageq("Downloading archive version `", version, "` ...", quiet = quiet)
 
   result <- tryCatch(
               expr  = download.file(url      = zipball_url, 
@@ -164,6 +186,9 @@ download_archive <- function(main          = ".",
   file.copy(list.files(temp_unzip, full.names = TRUE), 
             final, 
             recursive = TRUE)
+
+  write(x    = version, 
+        file = version_file)
 
   Sys.sleep(pause)
 

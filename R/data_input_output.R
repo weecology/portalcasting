@@ -26,7 +26,7 @@ write_data <- function (x         = NULL,
                         data_sub  = "data",
                         save      = TRUE, 
                         filename  = NULL, 
-                        overwrite = TRUE, 
+                        overwrite = FALSE, 
                         quiet     = FALSE) {
   
   return_if_null(x)

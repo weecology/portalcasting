@@ -83,18 +83,18 @@ prepare_historic_covariates <- function (main     = ".",
   out$ndvi                         <- NA
   moon_match                       <- match(ndvi_data$newmoonnumber, out$newmoonnumber)
   out$ndvi[moon_match]             <- ndvi_data$ndvi
-  out$ndvi_12_month                <- as.numeric(filter(out$ndvi, rep(1, 12), sides = 1))
-  out$warm_precip_3_month          <- as.numeric(filter(out$warm_precip, rep(1, 3), sides = 1))
-  out$spectab_controls             <- NA
+  out$ndvi_13_moon                 <- as.numeric(filter(out$ndvi, rep(1, 13), sides = 1))
+  out$warm_precip_3_moon           <- as.numeric(filter(out$warm_precip, rep(1, 3), sides = 1))
+  out$ordii_controls             <- NA
   for (i in 1:nrow(out)) {
     spot <- which(rodents_table$newmoonnumber == out$newmoonnumber[i])
     if (length(spot) == 1) {
-      out$spectab_controls[i] <- rodents_table$DS[spot] 
+      out$ordii_controls[i] <- rodents_table$DO[spot] 
     }
   }
-  out$spectab_controls <- as.numeric(round(pmax(na.interp(out$spectab_controls), 0) ))
+  out$ordii_controls <- as.numeric(round(pmax(na.interp(out$ordii_controls), 0) ))
 
-  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", "warm_precip_3_month", "ndvi_12_month", "spectab_controls", "source")
+  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", "warm_precip_3_moon", "ndvi_13_moon", "ordii_controls", "source")
 
   write_data(x         = out[ , cols_to_keep], 
              main      = main, 
@@ -251,13 +251,13 @@ prepare_forecast_covariates <- function (main      = ".",
 
   historical_covariates <- read_historical_covariates(main = main,
                                                       settings = settings)
-  ndvi_12_months        <- filter(c(historical_covariates$ndvi, ndvis), rep(1, 12), sides = 1)
-  warm_precip_3_months  <- filter(c(historical_covariates$warm_precip, warm_precips), rep(1, 3), sides = 1)
+  ndvi_13_moon        <- filter(c(historical_covariates$ndvi, ndvis), rep(1, 13), sides = 1)
+  warm_precip_3_moon  <- filter(c(historical_covariates$warm_precip, warm_precips), rep(1, 3), sides = 1)
 
-  past <- list(past_obs = 1, past_mean = 12)
-  spectab_controls_mod  <- tsglm(historical_covariates$spectab_controls, model = past, distr = "poisson", link = "log")
+  past <- list(past_obs = 1, past_mean = 13)
+  ordii_controls_mod  <- tsglm(historical_covariates$ordii_controls, model = past, distr = "poisson", link = "log")
 
-  spectab_controls_cast <- predict(spectab_controls_mod, nhist_time)$pred
+  ordii_controls_cast <- predict(ordii_controls_mod, nhist_time)$pred
 
   hist_climate_forecasts <- data.frame(newmoonnumber       = hist_time, 
                                        date                = moons$newmoondate[match(hist_time, moons$newmoonnumber)],
@@ -267,9 +267,9 @@ prepare_forecast_covariates <- function (main      = ".",
                                        precipitation       = precipitations,
                                        warm_precip         = warm_precips,
                                        ndvi                = ndvis,
-                                       warm_precip_3_month = warm_precip_3_months[(length(warm_precip_3_months) - nhist_time + 1):length(warm_precip_3_months)], 
-                                       ndvi_12_month       = ndvi_12_months[(length(ndvi_12_months) - nhist_time + 1):length(ndvi_12_months)], 
-                                       spectab_controls    = spectab_controls_cast,
+                                       warm_precip_3_moon  = warm_precip_3_moon[(length(warm_precip_3_moon) - nhist_time + 1):length(warm_precip_3_moon)], 
+                                       ndvi_13_moon        = ndvi_13_moon[(length(ndvi_13_moon) - nhist_time + 1):length(ndvi_13_moon)], 
+                                       ordii_controls      = ordii_controls_cast,
                                        source              = "forecast")
 
 

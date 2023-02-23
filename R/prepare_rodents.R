@@ -219,7 +219,7 @@ prepare_dataset <- function(name        = "all",
                             species     = base_species(),
                             total       = TRUE,
                             save        = TRUE,
-                            overwrite   = TRUE,
+                            overwrite   = FALSE,
                             quiet       = FALSE,
                             verbose     = FALSE) {
 

@@ -15,6 +15,8 @@
 #'
 #' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
+#' @param overwrite \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
+#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be printed.
@@ -39,6 +41,7 @@ download_climate_forecasts <- function (main          = ".",
                                         data          = c("tasmin", "tasmean", "tasmax", "pr"),
                                         quiet         = FALSE,
                                         verbose       = FALSE,
+                                        overwrite     = FALSE,
                                         timeout       = getOption("timeout")) {
 
   return_if_null(version)

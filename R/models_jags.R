@@ -35,7 +35,7 @@ jags_logistic_competition <- function (main            = ".",
       list(.RNG.name    = sample(rngs, 1),
            .RNG.seed    = sample(1:1e+06, 1),
             mu          = mu, 
-            sigma       = runif(1, 0, 0.0005),
+            sigma       = runif(1, 0.00001, 0.005),
             r_int       = rnorm(1, 0, 0.01),
             log_K_int   = log_K_int,
             log_K_slope = rnorm(1, 0, 0.01))
@@ -49,7 +49,7 @@ jags_logistic_competition <- function (main            = ".",
     # priors
 
     mu          ~  dnorm(log_mean_past_count, 5)
-    sigma       ~  dunif(0, 0.001) 
+    sigma       ~  dunif(0, 1) 
     tau         <- pow(sigma, -2)
     r_int       ~  dnorm(0, 5)
     log_K_int   ~  dnorm(log_max_past_count, 5)
@@ -66,7 +66,7 @@ jags_logistic_competition <- function (main            = ".",
     for (i in 1:N) {
 
       r[i] <- r_int
-      K[i] <- exp(log_K_int + log_K_slope * spectab[i]) 
+      K[i] <- exp(log_K_int + log_K_slope * ordii[i]) 
 
     }
 
@@ -171,9 +171,9 @@ jags_logistic_competition <- function (main            = ".",
     log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
     log_max_past_count  <- log(max(past_count, na.rm = TRUE))
 
-    warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_twelve_months     <- scale(covariates$ndvi_12_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    spectab_controls       <- scale(covariates$spectab_controls[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    ndvi_thirteen_newmoons   <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    ordii_controls         <- scale(covariates$ordii_controls[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
  
 
     data <- list(count                  = count, 
@@ -183,7 +183,7 @@ jags_logistic_competition <- function (main            = ".",
                  log_mean_past_count    = log_mean_past_count,
                  log_max_past_count     = log_max_past_count,
                  past_count             = past_count,
-                 spectab                = spectab_controls[ , 1])
+                 ordii                = ordii_controls[ , 1])
 
 
     obs_pred_times      <- metadata$time$rodent_cast_moons 
@@ -297,7 +297,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
   dataset     <- tolower(dataset)
   messageq("  -jags_logistic_competition_covariates for ", dataset, quiet = quiet)
 
-  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope_NDVI", "log_K_slope_DS")
+  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope_NDVI", "log_K_slope_DO")
 
 
   inits <- function (data = NULL) {
@@ -319,12 +319,12 @@ jags_logistic_competition_covariates <- function (main            = ".",
       list(.RNG.name         = sample(rngs, 1),
            .RNG.seed         = sample(1:1e+06, 1),
             mu               = mu, 
-            sigma            = runif(1, 0, 0.0005),
+            sigma            = runif(1, 0.01, 0.5),
             r_int            = rnorm(1, 0, 0.01),
             r_slope          = rnorm(1, 0, 0.1),
             log_K_int        = log_K_int,
             log_K_slope_NDVI = rnorm(1, 0, 0.01),
-            log_K_slope_DS   = rnorm(1, 0, 0.01))
+            log_K_slope_DO   = rnorm(1, 0, 0.01))
 
     }
 
@@ -335,13 +335,13 @@ jags_logistic_competition_covariates <- function (main            = ".",
     # priors
 
     mu               ~  dnorm(log_mean_past_count, 5)
-    sigma            ~  dunif(0, 0.001) 
+    sigma            ~  dunif(0, 1) 
     tau              <- pow(sigma, -1/2)
     r_int            ~  dnorm(0, 5)
     r_slope          ~  dnorm(0, 1)
     log_K_int        ~  dnorm(log_max_past_count, 5)
     log_K_slope_NDVI ~  dnorm(0, 4)
-    log_K_slope_DS   ~  dnorm(0, 4)
+    log_K_slope_DO   ~  dnorm(0, 4)
  
     # initial state
 
@@ -353,8 +353,8 @@ jags_logistic_competition_covariates <- function (main            = ".",
 
     for (i in 1:N) {
 
-      r[i] <- r_int + r_slope * warm_rain_three_months[i]
-      K[i] <- exp(log_K_int + log_K_slope_DS * spectab[i] + log_K_slope_NDVI * ndvi_twelve_months[i]) 
+      r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
+      K[i] <- exp(log_K_int + log_K_slope_DO * ordii[i] + log_K_slope_NDVI * ndvi_thirteen_newmoons[i]) 
 
     }
 
@@ -459,9 +459,9 @@ jags_logistic_competition_covariates <- function (main            = ".",
     log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
     log_max_past_count  <- log(max(past_count, na.rm = TRUE))
 
-    warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_twelve_months     <- scale(covariates$ndvi_12_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    spectab_controls       <- scale(covariates$spectab_controls[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    ndvi_thirteen_newmoons     <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    ordii_controls       <- scale(covariates$ordii_controls[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
  
 
     data <- list(count                  = count, 
@@ -471,9 +471,9 @@ jags_logistic_competition_covariates <- function (main            = ".",
                  log_mean_past_count    = log_mean_past_count,
                  log_max_past_count     = log_max_past_count,
                  past_count             = past_count,
-                 warm_rain_three_months = warm_rain_three_months[ , 1],
-                 ndvi_twelve_months     = ndvi_twelve_months[ , 1],
-                 spectab                = spectab_controls[ , 1])
+                 warm_rain_three_newmoons = warm_rain_three_newmoons[ , 1],
+                 ndvi_thirteen_newmoons     = ndvi_thirteen_newmoons[ , 1],
+                 ordii                = ordii_controls[ , 1])
 
 
     obs_pred_times      <- metadata$time$rodent_cast_moons 
@@ -608,7 +608,7 @@ jags_logistic_covariates <- function (main            = ".",
       list(.RNG.name    = sample(rngs, 1),
            .RNG.seed    = sample(1:1e+06, 1),
             mu          = mu, 
-            sigma       = runif(1, 0, 0.0005),
+            sigma       = runif(1, 0.01, 0.5),
             r_int       = rnorm(1, 0, 0.01),
             r_slope     = rnorm(1, 0, 0.1),
             log_K_int   = log_K_int,
@@ -640,8 +640,8 @@ jags_logistic_covariates <- function (main            = ".",
 
     for (i in 1:N) {
 
-      r[i] <- r_int + r_slope * warm_rain_three_months[i]
-      K[i] <- exp(log_K_int + log_K_slope * ndvi_twelve_months[i]) 
+      r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
+      K[i] <- exp(log_K_int + log_K_slope * ndvi_thirteen_newmoons[i]) 
 
     }
 
@@ -747,8 +747,8 @@ jags_logistic_covariates <- function (main            = ".",
     log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
     log_max_past_count  <- log(max(past_count, na.rm = TRUE))
 
-    warm_rain_three_months <- scale(covariates$warm_precip_3_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_twelve_months     <- scale(covariates$ndvi_12_month[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+    ndvi_thirteen_newmoons     <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
 
     data <- list(count                  = count, 
                  ntraps                 = ntraps, 
@@ -757,8 +757,8 @@ jags_logistic_covariates <- function (main            = ".",
                  log_mean_past_count    = log_mean_past_count,
                  log_max_past_count     = log_max_past_count,
                  past_count             = past_count,
-                 warm_rain_three_months = warm_rain_three_months[ , 1],
-                 ndvi_twelve_months     = ndvi_twelve_months[ , 1])
+                 warm_rain_three_newmoons = warm_rain_three_newmoons[ , 1],
+                 ndvi_thirteen_newmoons     = ndvi_thirteen_newmoons[ , 1])
 
 
     obs_pred_times      <- metadata$time$rodent_cast_moons 
@@ -894,7 +894,7 @@ jags_logistic <- function (main            = ".",
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
             mu       = mu, 
-            sigma    = runif(1, 0, 0.0005),
+            sigma    = runif(1, 0.01, 0.5),
             r        = rnorm(1, 0, 0.01),
             log_K    = log_K)
 
@@ -1152,7 +1152,7 @@ jags_RW <- function (main            = ".",
       list(.RNG.name = sample(rngs, 1),
            .RNG.seed = sample(1:1e+06, 1),
             mu       = rnorm(1, mean = log_mean_past_count, sd = 0.1),  
-            sigma    = runif(1, min = 0, max = 0.0005))
+            sigma    = runif(1, min = 0.01, max = 0.5))
 
     }
 
@@ -1415,7 +1415,7 @@ runjags_control <- function (nchains     = 4,
                              adapt       = 1e4, 
                              burnin      = 1e4, 
                              sample      = 1e4, 
-                             thin        = 1, 
+                             thin        = 10, 
                              modules     = "glm", 
                              method      = "interruptible", 
                              factories   = "", 

@@ -1,0 +1,40 @@
+AutoArima:
+  metadata:
+    name: AutoArima
+    descriptor: classic model, all species, focal species
+    text: 123.456
+  fun: auto.arima
+  args:
+    'y': quote(abundance)
+  interpolate:
+    needed: FALSE
+  datasets:
+  - all
+  - controls
+  - exclosures
+  species:
+  - BA
+  - DM
+  - DO
+  - DS
+  - NA
+  - OL
+  - OT
+  - PB
+  - PE
+  - PF
+  - PH
+  - PL
+  - PM
+  - PP
+  - RF
+  - RM
+  - RO
+  - SF
+  - SH
+  - SO
+  - total
+  response:
+    link: normal
+    type: distribution
+  time: newmoon

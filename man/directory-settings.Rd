@@ -15,7 +15,7 @@ directory_settings(
   subdirectories = directory_subdirectories(),
   resources = directory_resources(),
   save = TRUE,
-  overwrite = TRUE,
+  overwrite = FALSE,
   unzip_pause = 30,
   download_timeout = getOption("timeout")
 )
@@ -29,6 +29,7 @@ directory_files(
   dataset_controls = "dataset_controls.yaml",
   model_controls = "model_controls.yaml",
   cast_evaluations = "cast_evaluations.csv",
+  forecast_metadata = "casts_metadata.csv",
   metadata = "metadata.yaml"
 )
 
@@ -42,7 +43,7 @@ directory_subdirectories(
 
 directory_resources(
   PortalData = list(source = "github", version = "latest"),
-  portalPredictions = list(source = "github", version = NULL),
+  portalPredictions = list(source = "github", version = "latest"),
   climate_forecast = list(source = "NMME", version = as.character(Sys.Date()), data =
     c("tasmin", "tasmean", "tasmax", "pr"))
 )
@@ -60,7 +61,7 @@ sandbox_settings()
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
 
-\item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
+\item{overwrite}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
@@ -81,6 +82,8 @@ sandbox_settings()
 \item{model_controls}{\code{character} name for the YAML of model controls list(s).}
 
 \item{cast_evaluations}{\code{character} name for the forecast evaluations csv.}
+
+\item{forecast_metadata}{\code{character} name for the forecast metadata csv.}
 
 \item{metadata}{\code{character} name for the Forecast metadata YAML.}
 

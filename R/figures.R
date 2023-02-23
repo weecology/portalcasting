@@ -95,7 +95,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   # patch
 
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                  <- ifnull(models, unique(cast_tab$model))
+  models                  <- ifnull(models, eval_models())
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species                 <- ifnull(species, eval_species()) 
   end_moons               <- ifnull(end_moons, unique(cast_tab$end_moon)) 
