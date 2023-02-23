@@ -1,4 +1,4 @@
-main <- "~/pc"
+main <- "~/pct"
 
 devtools::load_all()
 setup_production(main = main)
@@ -14,3 +14,17 @@ summary(jl$model_fits$DM)
 summary(jlc$model_fits$DM)
 summary(jlw$model_fits$DM)
 summary(jlcw$model_fits$DM)
+
+
+x <- read_covariates(main = main)
+
+head(x)
+
+plot(x$warm_precip_3_moon ~ as.Date(x$date), type = "l")
+plot(x$ndvi_13_moon ~ as.Date(x$date), type = "l")
+plot(x$meantemp ~ as.Date(x$date), type = "l")
+plot(x$precipitation ~ as.Date(x$date), type = "l")
+plot(x$warm_precip ~ as.Date(x$date), type = "l")
+plot(x$ndvi ~ as.Date(x$date), type = "l")
+xx <- lm(x$ndvi ~ as.Date(x$date))
+abline(xx)
