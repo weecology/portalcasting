@@ -712,7 +712,7 @@ plot_cast_point <- function (main         = ".",
                              settings     = directory_settings(),
                              quiet        = FALSE) {
 
-  moons <- read_moons(main     = main, 
+  moons <- read_newmoons(main     = main, 
                       settings = settings)
 
   last_census_date       <- as.Date(max(moons$censusdate, na.rm = TRUE))
@@ -1058,7 +1058,7 @@ plot_cast_ts <- function (main        = ".",
        xlim = rangex, 
        ylim = rangey)
 
-  moons <- read_moons(main     = main, 
+  moons <- read_newmoons(main     = main, 
                       settings = settings)
   minx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])

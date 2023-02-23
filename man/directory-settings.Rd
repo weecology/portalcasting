@@ -22,7 +22,7 @@ directory_settings(
 
 directory_files(
   directory_configuration = "directory_configuration.yaml",
-  moons = "moon_dates.csv",
+  newmoons = "newmoon_dates.csv",
   covariates = "covariates.csv",
   historical_covariates = "historical_covariates.csv",
   forecast_covariates = "forecast_covariates.csv",
@@ -69,8 +69,6 @@ sandbox_settings()
 
 \item{directory_configuration}{\code{character} name for the directory configuration YAML.}
 
-\item{moons}{\code{character} name for the lunar data csv.}
-
 \item{covariates}{\code{character} name for the combined historical and forecast covariates csv.}
 
 \item{historical_covariates}{\code{character} name for the historical covariates csv.}
@@ -100,6 +98,8 @@ sandbox_settings()
 \item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download.}
 
 \item{climate_forecast}{\code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.}
+
+\item{moons}{\code{character} name for the lunar data csv.}
 }
 \value{
 Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).

@@ -546,7 +546,7 @@ nbsGARCH <- function (main     = ".",
 
   metadata <- read_metadata(main     = main,
                             settings = settings)
-  moons <- read_moons(main     = main,
+  moons <- read_newmoons(main     = main,
                             settings = settings)
 
   start_moon       <- metadata$time$start_moon

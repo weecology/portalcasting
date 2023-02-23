@@ -86,7 +86,7 @@ directory_settings <- function (files             = directory_files( ),
 #' @export
 #'
 directory_files <- function (directory_configuration = "directory_configuration.yaml",
-                             moons                   = "moon_dates.csv",
+                             newmoons                = "newmoon_dates.csv",
                              covariates              = "covariates.csv",
                              historical_covariates   = "historical_covariates.csv",
                              forecast_covariates     = "forecast_covariates.csv",
@@ -97,7 +97,7 @@ directory_files <- function (directory_configuration = "directory_configuration.
                              metadata                = "metadata.yaml") {
 
   list(directory_configuration = directory_configuration,
-       moons                   = moons,
+       newmoons                = newmoons,
        covariates              = covariates,
        historical_covariates   = historical_covariates,
        forecast_covariates     = forecast_covariates,

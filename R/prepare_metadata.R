@@ -41,7 +41,7 @@ prepare_metadata <- function (main             = ".",
                               verbose          = FALSE) {
 
 
-  moons      <- read_moons(main     = main, 
+  moons      <- read_newmoons(main     = main, 
                            settings = settings)
   rodents    <- read_rodents(main     = main, 
                              datasets = datasets, 

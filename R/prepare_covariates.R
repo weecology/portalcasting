@@ -117,8 +117,8 @@ prepare_forecast_covariates <- function (main      = ".",
 
   if (origin == Sys.Date()) {
 
-    moons <- read_moons(main = main,
-                        settings = settings)
+    newmoons <- read_newmoons(main     = main,
+                              settings = settings)
 
     climate_forecasts <- read_climate_forecasts(main     = main,
                                                 settings = settings)
@@ -220,7 +220,7 @@ prepare_forecast_covariates <- function (main      = ".",
 
   # forces things onto moons still for the time being
 
-  moons <- read_moons(main = main, settings = settings)
+  moons <- read_newmoons(main = main, settings = settings)
 
   climate_forecasts <- add_newmoonnumbers_from_dates(climate_forecasts, moons)
   

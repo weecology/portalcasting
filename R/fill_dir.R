@@ -119,10 +119,10 @@ fill_data <- function (main     = ".",
                   quiet    = quiet,
                   verbose  = verbose)
 
-  prepare_moons(main      = main,  
-                settings  = settings,
-                quiet     = quiet, 
-                verbose   = verbose)
+  prepare_newmoons(main      = main,  
+                   settings  = settings,
+                   quiet     = quiet, 
+                   verbose   = verbose)
 
   prepare_covariates(main      = main,  
                      settings  = settings,

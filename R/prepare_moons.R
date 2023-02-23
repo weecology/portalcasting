@@ -1,10 +1,10 @@
 #' @title Prepare Lunar Data for the Portalcasting Repository
 #'
 #' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. If needed, additional moons will be added to both the in-use and resources versions of the data table. \cr \cr
-#'              \code{add_future_moons} adds future moon dates to the moon table, counting forward from \code{cast_date}. Because the \code{moons} table might not have the most recent moons, more rows than \code{lead} may need to be added to the table. \cr \cr. 
-#'              \code{get_cast_future_moons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional moons needed to achieve the full \code{lead} from \code{cast_date}. \cr \cr
+#'              \code{add_future_newmoons} adds future newmoon dates to the newmoon table, counting forward from \code{origin}. Because the \code{newmoons} table might not have the most recent newmoons, more rows than \code{lead} may need to be added to the table. \cr \cr. 
+#'              \code{get_cast_future_newmoons} wraps around \code{\link[portalr]{get_future_newmoons}} to include any additional newmoons needed to achieve the full \code{lead} from \code{origin}. \cr \cr
 #'
-#' @details Sometimes the resources moon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the resources moons data, that table needs to be updated to produce the correct current data table for casting. 
+#' @details Sometimes the resources newmoon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the resources newmoons data, that table needs to be updated to produce the correct current data table for casting. 
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -20,106 +20,113 @@
 #'
 #' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
 #'
-#' @return Some version of a moons \code{data.frame}. \cr \cr. 
-#'         \code{prepare_moons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr 
-#'         \code{add_future_moons}: fully appended and formatted \code{data.frame}. \cr 
-#'         \code{forecast_future_moons}: moons \code{data.frame} to append to the existing \code{moons}.
+#' @return Some version of a newmoons \code{data.frame}. \cr \cr. 
+#'         \code{prepare_newmoons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr 
+#'         \code{add_future_newmoons}: fully appended and formatted \code{data.frame}. \cr 
+#'         \code{forecast_future_newmoons}: newmoons \code{data.frame} to append to the existing \code{moons}.
 #'
 #' @examples
 #'  \donttest{
 #'   setup_dir()
-#'   prepare_moons()
+#'   prepare_newmoons()
 #'  }
 #'
-#' @name prepare moons
+#' @name prepare newmoons
 #'
 #' @export
 #' 
-prepare_moons <- function (main     = ".", 
-                           lead     = 365,
-                           origin   = Sys.Date(), 
-                           settings = directory_settings(), 
-                           quiet    = TRUE,
-                           verbose  = FALSE) {
+prepare_newmoons <- function (main     = ".", 
+                              lead     = 365,
+                              origin   = Sys.Date(), 
+                              settings = directory_settings(), 
+                              quiet    = TRUE,
+                              verbose  = FALSE) {
 
   
-  messageq("  - moons data file", quiet = quiet)
+  messageq("  - newmoons data file", quiet = quiet)
 
   traps_in <- load_trapping_data(path                = file.path(main, settings$subdirectories["resources"]), 
                                  download_if_missing = FALSE,
                                  clean               = FALSE, 
                                  quiet               = !verbose)
 
-  moons_in <- traps_in[["newmoons_table"]]
+  newmoons_in <- traps_in[["newmoons_table"]]
 
-  moons_out <- add_future_moons(main   = main, 
-                                moons  = moons_in, 
-                                lead   = lead, 
-                                origin = origin)
+  newmoons_out <- add_future_newmoons(main      = main, 
+                                      newmoons  = newmoons_in, 
+                                      lead      = lead, 
+                                      origin    = origin)
 
-  write_data(x         = moons_out, 
+  write_data(x         = newmoons_out, 
              main      = main, 
              save      = settings$save, 
-             filename  = settings$files$moons, 
+             filename  = settings$files$newmoons, 
              overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 } 
 
-#' @rdname prepare-moons
+#' @rdname prepare-newmoons
 #'
 #' @export
 #'
-add_future_moons <- function (main      = ".", 
-                              moons     = NULL, 
-                              lead      = 365, 
-                              origin    = Sys.Date(), 
-                              settings  = directory_settings()) {
+add_future_newmoons <- function (main      = ".", 
+                                 newmoons  = NULL, 
+                                 lead      = 365, 
+                                 origin    = Sys.Date(), 
+                                 settings  = directory_settings()) {
 
-  return_if_null(moons)
+  return_if_null(newmoons)
 
   if (lead == 0) {
 
-    return(moons)
+    return(newmoons)
 
   }
  
-  rbind(moons, 
-        forecast_future_moons(moons  = moons, 
-                              lead   = lead, 
-                              origin = origin))
+  rbind(newmoons, 
+        forecast_future_newmoons(newmoons  = newmoons, 
+                                 lead      = lead, 
+                                 origin    = origin))
+ 
+}
+
+get_future_newmoons <- function (newmoons, num_future_newmoons) {
+
+  get_future_moons(moons            = newmoons,
+                   num_future_moons = num_future_newmoons)
 
 }
 
-#' @rdname prepare-moons
+#' @rdname prepare-newmoons
 #'
 #' @export
 #'
-forecast_future_moons <- function (moons  = NULL, 
-                                   lead   = 365, 
-                                   origin = Sys.Date()) {
+forecast_future_newmoons <- function (newmoons  = NULL, 
+                                      lead   = 365, 
+                                      origin = Sys.Date()) {
 
-  return_if_null(moons)
+  return_if_null(newmoons)
 
-  num_future_moons <- floor(lead / mean(as.numeric(diff(as.Date(moons$newmoondate))), na.rm = TRUE))
+  num_future_newmoons <- floor(lead / mean(as.numeric(diff(as.Date(newmoons$newmoondate))), na.rm = TRUE))
 
-  future_moons <- get_future_moons(moons            = moons, 
-                                   num_future_moons = num_future_moons)
+  future_newmoons <- get_future_newmoons(newmoons            = newmoons, 
+                                         num_future_newmoons = num_future_newmoons)
 
 
-  n_extra_future_moons <- length(which(future_moons$newmoondate < origin))
+  n_extra_future_newmoons <- length(which(future_newmoons$newmoondate < origin))
 
-  if (n_extra_future_moons > 0){
+  if (n_extra_future_newmoons > 0){
 
-    extra_moons  <- get_future_moons(moons            = future_moons, 
-                                     num_future_moons = n_extra_future_moons)
-    future_moons <- rbind(future_moons, extra_moons)
+    extra_newmoons  <- get_future_newmoons(newmoons            = future_newmoons, 
+                                           num_future_newmoons = n_extra_future_newmoons)
+    future_newmoons <- rbind(future_newmoons, extra_newmoons)
 
   } 
 
-  future_moons$newmoondate <- as.character(future_moons$newmoondate)
+  future_newmoons$newmoondate <- as.character(future_newmoons$newmoondate)
 
-  future_moons
+  future_newmoons
 
 }
 

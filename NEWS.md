@@ -13,6 +13,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Fixing jags model inits values
 * Model values were not facilitating good chain mixing, updated now
 
+### More transitions from `moons` to `newmoons` to align naming
+
 # [portalcasting 0.47.0](https://github.com/weecology/portalcasting/releases/tag/v0.47.0)
 *2023-02-21*
 

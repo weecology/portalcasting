@@ -90,7 +90,7 @@ write_data <- function (x         = NULL,
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'  
-#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"moons"}, and \code{"metadata"}.
+#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.
 #'
 #' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
 #'
@@ -141,9 +141,9 @@ read_data <- function (main      = ".",
 
   }
 
-  if (data_name == "moons") {
+  if (data_name == "newmoons") {
 
-    out <- read_moons(main     = main, 
+    out <- read_newmoons(main     = main, 
                       settings = settings)
 
   }
@@ -203,10 +203,10 @@ read_rodents <- function (main     = ".",
 #'
 #' @export
 #'
-read_moons <- function(main     = ".", 
+read_newmoons <- function(main     = ".", 
                        settings = directory_settings()){
   
-  read.csv(file.path(main, settings$subdirectories$data, settings$files$moons))
+  read.csv(file.path(main, settings$subdirectories$data, settings$files$newmoons))
 
 }
 
