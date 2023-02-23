@@ -13,8 +13,8 @@
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
 #'
-#' @param overwrite \code{logical} indicator of if the file should be overwritten if it exists.
-#'
+# @param overwrite \code{logical} indicator of if the file should be overwritten if it exists.
+#
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
 #' @return \code{x} as input, \code{\link[base]{invisible}}-ly.
@@ -26,14 +26,14 @@ write_data <- function (x         = NULL,
                         data_sub  = "data",
                         save      = TRUE, 
                         filename  = NULL, 
-                        overwrite = FALSE, 
+#                        overwrite = FALSE, 
                         quiet     = FALSE) {
   
   return_if_null(x)
 
   return_if_null(filename)
 
-  save_it <- FALSE
+#  save_it <- FALSE
 
   if (save) {
 
@@ -41,26 +41,26 @@ write_data <- function (x         = NULL,
 
     if (file.exists(full_path)) {
 
-      if (overwrite) {
-
-        save_it <- TRUE
-
-        messageq("    **", filename, " exists and overwrite = TRUE; file saved**", quiet = quiet)
-
-      } else {
-
-        messageq("    **", filename, " exists and overwrite = FALSE; not saved***", quiet = quiet) 
-      }
+#      if (overwrite) {
+#
+#        save_it <- TRUE
+#
+#        messageq("    **", filename, " exists and overwrite = TRUE; file saved**", quiet = quiet)
+#
+#      } else {
+#
+#        messageq("    **", filename, " exists and overwrite = FALSE; not saved***", quiet = quiet) 
+#      }
 
     } else {
 
-      save_it <- TRUE
+#      save_it <- TRUE
 
       messageq("    **", filename, " saved**", quiet = quiet)
 
     }
 
-    if (save_it) {
+#    if (save_it) {
 
       if (file_ext(filename) == "csv") {
 
@@ -78,7 +78,7 @@ write_data <- function (x         = NULL,
 
     }
    
-  }
+#  }
 
   invisible(x)
 

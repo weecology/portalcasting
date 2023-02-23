@@ -56,7 +56,7 @@ prepare_covariates <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$covariates, 
-             overwrite = settings$overwrite, 
+#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 }
@@ -100,7 +100,7 @@ prepare_historic_covariates <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$historical_covariates, 
-             overwrite = settings$overwrite, 
+#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 }
@@ -123,12 +123,12 @@ prepare_forecast_covariates <- function (main      = ".",
     climate_forecasts <- read_climate_forecasts(main     = main,
                                                 settings = settings)
 
-    if (max(climate_forecasts$date) < (as.Date(max(moons$newmoondate)) + 27)) {
+    if (max(climate_forecasts$date) < (as.Date(max(newmoons$newmoondate)) + 27)) {
 
       # this accounts for needing a climate forecast a year out now, whereas we did not before
       # the models we get don't always go out that far.
 
-      to_cast <- seq.Date(as.Date(max(climate_forecasts$date) + 1), as.Date(max(moons$newmoondate)) + 27, 1)
+      to_cast <- seq.Date(as.Date(max(climate_forecasts$date) + 1), as.Date(max(newmoons$newmoondate)) + 27, 1)
       
       date_fit     <- climate_forecasts$date
       jday_fit     <- as.numeric(format(date_fit, "%j"))
@@ -278,7 +278,7 @@ prepare_forecast_covariates <- function (main      = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$forecast_covariates, 
-             overwrite = settings$overwrite, 
+#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 }

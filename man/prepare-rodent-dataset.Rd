@@ -28,7 +28,6 @@ prepare_dataset(
   species = base_species(),
   total = TRUE,
   save = TRUE,
-  overwrite = FALSE,
   quiet = FALSE,
   verbose = FALSE
 )
@@ -79,8 +78,6 @@ The default \code{time = "newmoon"} produces an equispaced observation timestep,
 \item{total}{\code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included.}
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
-
-\item{overwrite}{\code{logical} indicator of whether or not the existing files should be updated (most users should leave as \code{TRUE}).}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 

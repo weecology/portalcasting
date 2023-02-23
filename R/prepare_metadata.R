@@ -131,7 +131,7 @@ prepare_metadata <- function (main             = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$metadata, 
-             overwrite = settings$overwrite, 
+#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 }

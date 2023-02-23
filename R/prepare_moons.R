@@ -61,7 +61,7 @@ prepare_newmoons <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$newmoons, 
-             overwrite = settings$overwrite, 
+#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 } 
