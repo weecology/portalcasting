@@ -37,7 +37,7 @@ test_that(desc = "daily weather can be summarized by moon", {
 
     skip_on_cran() 
 
-    moons <- prepare_moons(main)
+    moons <- prepare_newmoons(main)
   weather <- portalr::weather("daily", fill = TRUE, path = file.path(main, "resources"))
   weather <- add_date_from_components(weather)
   weather <- add_newmoonnumbers_from_dates(weather, moons)

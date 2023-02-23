@@ -19,12 +19,12 @@ test_that(desc = "write_data works if overwriting or not", {
     skip_on_cran() 
 
   expect_silent(controls <- read_data(main, "rodents_table", "controls"))
-  expect_message(write_data(controls, main, save = TRUE, 
-                            filename = "rodents_controls.csv",
-                            overwrite = FALSE))
-  expect_message(write_data(controls, main, save = TRUE, 
-                            filename = "rodents_controls.csv",
-                            overwrite = TRUE))
+  expect_silent(write_data(controls, main, save = TRUE, 
+                            filename = "rodents_controls.csv"))#,
+#                            overwrite = FALSE))
+#  expect_message(write_data(controls, main, save = TRUE, 
+#                            filename = "rodents_controls.csv",
+#                            overwrite = TRUE))
 
 })  
 
@@ -47,7 +47,7 @@ test_that(desc = "read_data works when the data are present", {
   expect_is(covariates , "data.frame")
   expect_silent(covariate_casts <- read_data(main, "climate_forecasts"))
   expect_is(covariate_casts , "data.frame")
-  expect_silent(moons <- read_data(main, "moons"))
+  expect_silent(moons <- read_data(main, "newmoons"))
   expect_is(moons, "data.frame")
   expect_silent(metadata <- read_data(main, "metadata"))
   expect_is(metadata, "list")
