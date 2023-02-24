@@ -1,6 +1,6 @@
 #' @title Prepare a Model-Running Metadata List
 #'
-#' @description Sets up the metadata used for casting, in particular the matching of time period across the data sets. This should always be run after \code{\link{prepare_newmoons}}, \code{\link{prepare_rodents}}, and \code{\link{prepare_covariates}} before any model is run.
+#' @description Sets up the metadata used for forecasting, in particular the matching of time period across the datasets. This should always be run after \code{\link{prepare_newmoons}}, \code{\link{prepare_rodents}}, and \code{\link{prepare_covariates}} but before any model is run.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'

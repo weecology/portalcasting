@@ -55,6 +55,27 @@ download_climate_forecasts <- function (main          = ".",
     dir.create(path         = file.path(main, resources_sub, source),
                showWarnings = FALSE)
 
+    final        <- file.path(main, resources_sub, source)
+    version_file <- file.path(final, "version.txt")
+
+
+    if (!overwrite & file.exists(version_file)) {
+
+      existing_version <- scan(file  = version_file, 
+                               what  = character(), 
+                               quiet = TRUE)
+  
+
+      if (existing_version == version) {
+
+        messageq("Existing local version (", existing_version, ") is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped",
+                 quiet = quiet)
+        return(invisible())
+
+      }
+ 
+    }
+
     messageq("Downloading climate forcasts version `", version, "` ...", quiet = quiet)
     
 
@@ -70,6 +91,10 @@ download_climate_forecasts <- function (main          = ".",
     stop("`source` must be 'NMME'")
 
   }
+
+
+  write(x    = as.character(version), 
+        file = version_file)
 
   invisible()
 

@@ -112,6 +112,14 @@ fill_data <- function (main     = ".",
 
   messageq(" Preparing data files ... ", quiet = quiet)
 
+  messageq("  ... removing existing data files ... ", quiet = quiet)
+
+  unlink(x = list.files(path       = file.path(main, settings$subdirectories$data),
+                        full.names = TRUE),
+         force = TRUE)
+
+  messageq("  ... adding data files ... ", quiet = quiet)
+
   prepare_rodents(main     = main,
                   settings = settings,
                   datasets = datasets,
