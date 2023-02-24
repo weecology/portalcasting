@@ -93,7 +93,7 @@ download_climate_forecasts <- function (main          = ".",
   }
 
 
-  write(x    = version, 
+  write(x    = as.character(version), 
         file = version_file)
 
   invisible()
