@@ -4,10 +4,11 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
 # [portalcasting 0.49.0](https://github.com/weecology/portalcasting/releases/tag/v0.49.0)
-*In progress*
+*2023-02-24*
 
 ### Added a clearing out step to fill_data
-*
+
+### Updated download climate forecasts to check for version pre-updates
 
 # [portalcasting 0.48.0](https://github.com/weecology/portalcasting/releases/tag/v0.48.0)
 *2023-02-23*
