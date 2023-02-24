@@ -13,7 +13,7 @@ test_that(desc = "download_climate_forecasts retrieves files", {
 
   dlcc <- download_climate_forecasts(main = main)
   expect_equal((dlcc), NULL)
-  expect_messages(download_climate_forecasts(main))
+  expect_message(download_climate_forecasts(main))
 
 })
 
@@ -21,7 +21,7 @@ test_that(desc = "download_archive downloads the archive",
           code = {
 
   expect_equal(download_archive(main, timeout = 600), NULL)
-  expect_messages(download_archive(main))
+  expect_message(download_archive(main))
 
 })
 
