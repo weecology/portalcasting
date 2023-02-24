@@ -254,17 +254,17 @@ package_version_finder <- function (what) {
 
   }
 
-  object_expr       <- parse(text                = what)
-  object_eval       <- eval(expr                 = object_expr)
-  object_class      <- class(x                   = object_eval)
-  location_name     <- find(what                 = what)
-  packages_names    <- sapply(X                  = location_name,
-                              FUN                = gsub,
-                              pattern            = "package\\:",
-                              replacement        = "")
-  packages_versions <- sapply(X                  = packages_names,
-                              FUN                = packageDescription,
-                              fields             = "Version")
+  object_expr       <- parse(text         = what)
+  object_eval       <- eval(expr          = object_expr)
+  object_class      <- class(x            = object_eval)
+  location_name     <- find(what          = what)
+  packages_names    <- sapply(X           = location_name,
+                              FUN         = gsub,
+                              pattern     = "package\\:",
+                              replacement = "")
+  packages_versions <- sapply(X           = packages_names,
+                              FUN         = packageDescription,
+                              fields      = "Version")
   
   names(packages_versions) <- packages_names
 
