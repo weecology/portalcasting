@@ -20,8 +20,6 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to include.
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
-#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
@@ -53,7 +51,6 @@ NULL
 #'
 fill_dir <- function (main     = ".",
                       models   = prefab_models(), 
-                      datasets = prefab_datasets(),
                       settings = directory_settings(), 
                       quiet    = FALSE, 
                       verbose  = FALSE) {
@@ -80,7 +77,6 @@ fill_dir <- function (main     = ".",
             verbose  = verbose)
 
   fill_data(main     = main, 
-            datasets = datasets,
             models   = models,
             settings = settings,
             quiet    = quiet, 
@@ -99,13 +95,32 @@ fill_dir <- function (main     = ".",
 }
 
 
+# generalize?
+
+
+#' @rdname directory-filling
+#'
+#' @export
+#'
+fill_subdirectory <- function (main         = ".",
+                               subdirectory = NULL,
+                               models       = prefab_models(),
+                               settings     = directory_settings(), 
+                               quiet        = FALSE,
+                               verbose      = FALSE) {
+
+  return_if_null(x = subdirectory)
+
+  
+
+}
+
 #' @rdname directory-filling
 #'
 #' @export
 #'
 fill_data <- function (main     = ".",
                        models   = prefab_models(),
-                       datasets = prefab_datasets(),
                        settings = directory_settings(), 
                        quiet    = FALSE,
                        verbose  = FALSE) {

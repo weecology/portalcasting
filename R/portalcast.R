@@ -55,6 +55,7 @@ portalcast <- function (main       = ".",
 #   not sure this is what i want to happen more generally, tho
 #  we want portalcast to iterate over individual casts, but generally
 #   i think we want to create a recipe list or something
+# think of it as the first columns in the casts metadata
 
   return_if_null(models)
 

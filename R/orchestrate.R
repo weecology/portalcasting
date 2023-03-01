@@ -8,8 +8,6 @@
 #'
 #' @param models \code{character} vector of name(s) of model(s) to include.
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
-#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
@@ -37,26 +35,12 @@ create_dir <- function(main     = ".",
                        settings = directory_settings(), 
                        quiet    = FALSE){
 
-  core_package_version <- package_version_finder("setup_dir")
-
-  messageq(message_break(), "\nThis is ", core_package_version[["package"]], " v", core_package_version[["version"]], "  ", format(Sys.time(), "%x %T %Z"), "\n", message_break(), quiet = quiet)
-  messageq(message_break(), "\nEstablishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", message_break(), quiet = quiet)
-
-
   mapply(FUN          = dir.create, 
          path         = file.path(main, settings$subdirectories),
          recursive    = TRUE,
          showWarnings = FALSE)
 
-  write_directory_configuration(main     = main, 
-                                settings = settings, 
-                                quiet    = quiet)
-
-  messageq(message_break(), "\nDirectory successfully instantiated\n", message_break(), quiet = quiet)
-
 }
-
-
 
 #' @rdname directory-creation
 #'
@@ -64,27 +48,26 @@ create_dir <- function(main     = ".",
 #'
 setup_dir <- function (main     = ".",
                        models   = prefab_models(), 
-                       datasets = prefab_datasets(),
                        settings = directory_settings(), 
                        quiet    = FALSE, 
                        verbose  = FALSE) {
 
+  setup_start_message(main     = main,
+                      settings = settings,
+                      quiet    = quiet)
 
   create_dir(main     = main, 
              settings = settings,
              quiet    = quiet)
 
   fill_dir(main     = main,
-           models   = models, 
-           datasets = datasets,
            settings = settings,
            quiet    = quiet,
            verbose  = verbose)
 
-
-  read_directory_configuration(main     = main,
-                               settings = settings,
-                               quiet    = quiet)
+  setup_end_message(main     = main,
+                    settings = settings,
+                    quiet    = quiet)
 
 }
 
@@ -95,14 +78,12 @@ setup_dir <- function (main     = ".",
 #'
 setup_production <- function (main     = ".",
                               models   = prefab_models(), 
-                              datasets = prefab_datasets(),
                               settings = production_settings(), 
                               quiet    = FALSE, 
                               verbose  = TRUE) {
 
   setup_dir(main     = main,
             models   = models,
-            datasets = datasets,
             settings = settings,
             quiet    = quiet,
             verbose  = verbose)
@@ -117,14 +98,12 @@ setup_production <- function (main     = ".",
 #'
 setup_sandbox <- function (main     = ".",
                            models   = prefab_models(), 
-                           datasets = prefab_datasets(),
                            settings = sandbox_settings(), 
                            quiet    = FALSE, 
                            verbose  = FALSE) {
 
   setup_dir(main     = main,
             models   = models,
-            datasets = datasets,
             settings = settings,
             quiet    = quiet,
             verbose  = verbose)
@@ -138,8 +117,8 @@ setup_sandbox <- function (main     = ".",
 #' @title Create, Update, and Read the Directory Configuration File
 #' 
 #' @description The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
-#'              \code{write_directory_config} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
-#'              \code{read_directory_config} reads the YAML config file into the R session.
+#'              \code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
+#'              \code{read_directory_configuration} reads the YAML config file into the R session.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'

@@ -1,0 +1,41 @@
+
+break up the casts ... each row in the metadata should be a single species, not dataset
+
+
+
+
+reinstate Upon completion of the downloads, `fill_resources` updates `directory_configuration.yaml` with download versions.
+
+
+workflow steps
+
+setup_production
+  create_dir
+  fill_dir
+    fill_resources
+	  download_observations
+	  download_archive
+	  download_climate_forecasts
+	fill_forecasts
+	fill_fits
+	fill_data
+	  prepare_rodents
+      prepare_newmoons
+      prepare_covariates
+      prepare_metadata
+	fill_models
+
+should models go before data in fill
+
+
+portalcast
+  cast
+  
+  
+looping over cast and the fill datas seems not optimal
+
+among mod loop happens based on nendmoons
+within models loop over spp ... blech
+
+
+ok and what about the time variables? how do we deal with them? theyre still arguments///

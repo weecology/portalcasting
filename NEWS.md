@@ -3,6 +3,14 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.50.0](https://github.com/weecology/portalcasting/releases/tag/v0.50.0)
+*In Progress*
+
+### Argument tightening
+*Removing the `datasets` arguments from top-level functions as they will get populated by the models
+
+
+
 # [portalcasting 0.49.0](https://github.com/weecology/portalcasting/releases/tag/v0.49.0)
 *2023-02-24*
 

@@ -1,6 +1,19 @@
 main <- "~/pct"
 
 devtools::load_all()
+
+plot_cast_ts(main)
+
+
+
+
+
+
+
+
+
+
+
 setup_production(main = main)
 
 jr   <- jags_RW(main = main)
