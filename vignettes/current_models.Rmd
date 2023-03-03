@@ -15,9 +15,9 @@ vignette: >
   knitr::opts_chunk$set(collapse = TRUE,
                         comment  = "#>")
 
-  fpath <- system.file("extdata", "prefab_model_controls.yaml", package = "portalcasting")
-  model_controls <- yaml::read_yaml(fpath)
-  model_names    <- names(model_controls)
+  model_controls <- prefab_model_controls( )
+  model_names    <- unlist(mapply(getElement, prefab_model_controls(), "metadata")["print_name", ])
+
   nmodels        <- length(model_names)
   nmodels_text   <- as.character(english::english(nmodels))
 
@@ -35,7 +35,7 @@ We currently analyze and forecast rodent data at Portal using `r nmodels_text` m
 
   for (i in 1:nmodels) {
     model_i_controls <- model_controls[[i]]
-    cat(sprintf(template, model_i_controls$metadata$name, model_i_controls$metadata$text))
+    cat(sprintf(template, model_i_controls$metadata$print_name, model_i_controls$metadata$text))
   }
 ```
 
