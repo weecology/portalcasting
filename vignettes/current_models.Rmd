@@ -16,7 +16,9 @@ vignette: >
                         comment  = "#>")
 
   model_controls <- prefab_model_controls( )
-  model_names    <- names(model_list( ))
+  model_names    <- prefab_models()
+  names(model_names) <- unlist(mapply(getElement, prefab_model_controls(), "metadata")["print_name", ])
+
   nmodels        <- length(model_names)
   nmodels_text   <- as.character(english::english(nmodels))
 
