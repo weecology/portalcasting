@@ -3,6 +3,13 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.50.0](https://github.com/weecology/portalcasting/releases/tag/v0.50.0)
+*2023-03-03*
+
+### Update prefab_model_controls.yaml
+* including a nicer print_name for rendering the model texts
+
+
 # [portalcasting 0.49.0](https://github.com/weecology/portalcasting/releases/tag/v0.49.0)
 *2023-02-24*
 
