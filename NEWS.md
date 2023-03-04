@@ -3,6 +3,12 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
+*2023-03-03*
+
+### Putting species under dataset in the models' controls lists
+* This is more articulated and allows for finer control to help avoid fitting issues, etc.
+
 # [portalcasting 0.50.0](https://github.com/weecology/portalcasting/releases/tag/v0.50.0)
 *2023-03-03*
 
