@@ -4,38 +4,7 @@ main <- "./testing"
 
   # set up a mini version of data
 
-# i'm not sure which model (maybe pevgarch?) needs this. check in covr
-#   all2$BA <- 0
-#   all2$DO <- c(rep(0, nrow(all2) - 1), 1)
-# also not sure if that's how it should be now
-
-
-  fill_data(main = main)
-  keepers <- c("newmoonnumber", "DM", "ntraps")
-
-
-  all <- read_rodents_table(main = main, "all")
-  rest_cols <- which(colnames(all) %in% keepers)
-  all2 <- all[, rest_cols]
-  write.csv(all2, file.path(main, "data", "rodents_all.csv"), 
-             row.names = FALSE)
-
-  controls <- read_rodents_table(main = main, "controls")
-  rest_cols <- which(colnames(controls) %in% keepers)
-  controls2 <- controls[, rest_cols]
-  write.csv(controls2, file.path(main, 
-                                 "data", "rodents_controls.csv"), 
-            row.names = FALSE)
-  
-  controls <- read_rodents_table(main = main, "exclosures")
-  rest_cols <- which(colnames(controls) %in% keepers)
-  controls3 <- controls[, rest_cols]
-  write.csv(controls3, file.path(main, 
-                                 "data", "rodents_exclosures.csv"), 
-            row.names = FALSE)
-
-
-  
+  fill_data(main = main)  
 
 
 test_that(desc = "AutoArima model", {
@@ -177,7 +146,7 @@ test_that(desc = "jags_RW model", {
 
     check_jags() 
 
-  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100, thin = 1)
   expect_message(f_a <- jags_RW(main = main, control_runjags = rjc,
                                 dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
@@ -194,7 +163,7 @@ test_that(desc = "jags_logistic model", {
 
     check_jags() 
 
-  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100, thin = 1)
   expect_message(f_a <- jags_logistic(main = main, control_runjags = rjc,
                                 dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
@@ -212,7 +181,7 @@ test_that(desc = "jags_logistic_covariates model", {
 
     check_jags() 
 
-  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100, thin = 1)
   expect_message(f_a <- jags_logistic_covariates(main = main, control_runjags = rjc,
                                 dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
@@ -231,7 +200,7 @@ test_that(desc = "jags_logistic_competition model", {
 
     check_jags() 
 
-  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100, thin = 1)
   expect_message(f_a <- jags_logistic_competition(main = main, control_runjags = rjc,
                                 dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
@@ -250,7 +219,7 @@ test_that(desc = "jags_logistic_competition_covariates model", {
 
     check_jags() 
 
-  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100)
+  rjc <- runjags_control(adapt = 100, burnin = 100, sample = 100, thin = 1)
   expect_message(f_a <- jags_logistic_competition_covariates(main = main, control_runjags = rjc,
                                 dataset = "Controls", quiet = FALSE))
   expect_is(f_a, "list")
