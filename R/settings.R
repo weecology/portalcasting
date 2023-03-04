@@ -10,7 +10,7 @@
 #'
 #' @param directory_configuration \code{character} name for the directory configuration YAML.
 #'
-#' @param moons \code{character} name for the lunar data csv.
+#' @param newmoons \code{character} name for the lunar data csv.
 #'
 #' @param covariates \code{character} name for the combined historical and forecast covariates csv.
 #'
