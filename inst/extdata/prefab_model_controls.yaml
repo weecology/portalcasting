@@ -6,14 +6,16 @@ AutoArima:
     text: AutoARIMA (Automatic Auto-Regressive Integrated Moving Average) is a flexible Auto-Regressive Integrated Moving Average (ARIMA) model fit to the data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The model is selected and  fitted using the `auto.arima` and `forecast` functions in the **forecast** package [@Hyndman2013; @Hyndman2017] within the `AutoArima()` function. Generally, ARIMA models are defined according to three model structure parameters -- the number of autoregressive terms (p), the degree of differencing (d), and the order of the moving average (q), and are represented as ARIMA(p, d, q) [@Box1970]. While the `auto.arima` function allows for seasonal models, the seasonality is hard-coded to be on the same period as the sampling, which is not the case for the Portal rodent surveys. As a result, no seasonal models were evaluated. AutoARIMA is fit flexibly, such that the model parameters can vary from fit to fit.
   fun: auto.arima
   args: 
-    "y": quote(abundance)
+    "y": abundance
   interpolate: 
     needed: no
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
     link: normal
     type: distribution 
@@ -31,11 +33,12 @@ ESSS:
     needed: yes
     fun: round_na.interp
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: 
-      [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
     link: normal
     type: distribution
@@ -53,10 +56,12 @@ NaiveArima:
   interpolate: 
     needed: no
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
     link: normal
     type: distribution
@@ -73,16 +78,18 @@ nbGARCH:
     model: 
       past_obs: 1
       past_mean: 12
-    distr: nbinom
-    link: log
+    distr: 'nbinom'
+    link: 'log'
   interpolate: 
     needed: yes
     fun: round_na.interp
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
     link: negative_binomial
     type: distribution
@@ -99,10 +106,12 @@ nbsGARCH:
     needed: yes
     fun: round_na.interp
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
     link: negative_binomial
     type: distribution
@@ -115,10 +124,12 @@ pevGARCH:
     text: pevGARCH (Poisson Environmental Variable Auto-Regressive Conditional Heteroskedasticity) is a generalized autoregressive conditional heteroskedasticity (GARCH) model fit to the interpolated data at the composite (full site and just control plots) spatial level and both the composite (community) and the articulated (species) ecological levels. The response variable is Poisson, and a variety of environmental variables are considered as covariates. The model for each species is selected and fitted using the `tsglm` function in the **tscount** package [@Liboschik2017a] within the `pevGARCH()` function. GARCH models are generalized ARMA models and are defined according to their link function, response distribution, and two model structure parameters -- the number of autoregressive terms (p) and the order of the moving average (q), and are represented as GARCH(p, q) [@Liboschik2017a]. The pevGARCH model is fit using the log link and a Poisson response, as well as with p = 1 (first-order autoregression) and q = 12 (yearly moving average). The environmental variables potentially included in the model are min, mean, and max temperatures, precipitation, and NDVI.  The `tsglm` function in the **tscount** package [@Liboschik2017a] uses a (conditional) quasi-likelihood based approach to inference. This approach has only been minimally evaluated for models with covariates, although preliminary simulation-based studies are promising [@Liboschik2017b]. Each species is fit using the following (nonexhaustive) sets of the environmental covariates --  [1] max temp, mean temp, precipitation, NDVI; [2] max temp, min temp, precipitation, NDVI; [3] max temp, mean temp, min temp, precipitation; [4] precipitation, NDVI; [5] min temp, NDVI; [6] min temp; [7] max temp; [8] mean temp; [9] precipitation; [10] NDVI; and [11] -none- (intercept-only). The single best model of the 11 is selected based on AIC. 
   fun: pevGARCH
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO, total]
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   interpolate: 
     needed: yes
     fun: round_na.interp
@@ -148,8 +159,9 @@ jags_RW:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: controls
-  species: DM
+  datasets: 
+    controls:
+      species: [DM]
   interpolate: 
     needed: no
   response: 
@@ -176,8 +188,9 @@ jags_logistic:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: controls
-  species: DM
+  datasets: 
+    controls:
+      species: [DM]
   interpolate: 
     needed: no
   response: 
@@ -204,8 +217,9 @@ jags_logistic_covariates:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: controls
-  species: DM
+  datasets: 
+    controls:
+      species: [DM]
   interpolate: 
     needed: no
   response: 
@@ -232,8 +246,9 @@ jags_logistic_competition:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: controls
-  species: DM
+  datasets: 
+    controls:
+      species: [DM]
   interpolate: 
     needed: no
   response: 
@@ -260,8 +275,9 @@ jags_logistic_competition_covariates:
       mutate: .na
       cast_obs: yes
       silent_jags: no
-  datasets: controls
-  species: DM
+  datasets: 
+    controls:
+      species: [DM]
   interpolate: 
     needed: no
   response: 

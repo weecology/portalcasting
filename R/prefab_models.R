@@ -110,17 +110,9 @@ AutoArima <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species_from_table(rodents_tab = rodents_table, 
-                                      total       = TRUE, 
-                                      nadot       = TRUE)
 
-  temp_species  <- read_model_controls(main = main, settings = settings)$AutoArima$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
-
+  species  <- read_model_controls(main = main, settings = settings)$AutoArima$dataset[[dataset]]$species
+  
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -211,15 +203,8 @@ NaiveArima <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species_from_table(rodents_tab = rodents_table, 
-                                      total       = TRUE, 
-                                      nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$NaiveArima$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species       <- read_model_controls(main = main, settings = settings)$NaiveArima$dataset[[dataset]]$species
+
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -309,15 +294,8 @@ ESSS <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species_from_table(rodents_tab = rodents_table, 
-                                      total       = TRUE, 
-                                      nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$ESSS$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species       <- read_model_controls(main = main, settings = settings)$ESSS[[dataset]]$dataset$species
+
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -406,15 +384,8 @@ nbGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species_from_table(rodents_tab = rodents_table, 
-                                      total       = TRUE, 
-                                      nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$nbGARCH$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species       <- species  <- read_model_controls(main = main, settings = settings)$nbGARCH[[dataset]]$dataset$species
+
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -516,15 +487,8 @@ nbsGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species_from_table(rodents_tab = rodents_table, 
-                                      total       = TRUE, 
-                                      nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$nbsGARCH$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species       <- read_model_controls(main = main, settings = settings)$nbsGARCH[[dataset]]$dataset$species
+
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,
@@ -649,15 +613,8 @@ pevGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species_from_table(rodents_tab = rodents_table, 
-                                      total       = TRUE, 
-                                      nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$pevGARCH$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species       <- read_model_controls(main = main, settings = settings)$pevGARCH[[dataset]]$dataset$species
+
   nspecies      <- length(species)
 
   metadata <- read_metadata(main     = main,

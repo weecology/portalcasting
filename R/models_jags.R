@@ -113,15 +113,8 @@ jags_logistic_competition <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition[[dataset]]$dataset$species
+
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)
@@ -401,15 +394,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates[[dataset]]$dataset$species
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)
@@ -688,15 +673,7 @@ jags_logistic_covariates <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates[[dataset]]$dataset$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -960,15 +937,7 @@ jags_logistic <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic[[dataset]]$dataset$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -1211,15 +1180,8 @@ jags_RW <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_RW$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species <- read_model_controls(main = main, settings = settings)$jags_RW[[dataset]]$dataset$species
+
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)
