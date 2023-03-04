@@ -27,13 +27,6 @@
 #'
 #' @return Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
 #'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = "ESSS")
-#'   cast()
-#'  }
-#'
 #' @export
 #'
 portalcast <- function (main       = ".", 

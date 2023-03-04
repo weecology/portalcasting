@@ -25,12 +25,6 @@
 #'         \code{add_future_newmoons}: fully appended and formatted \code{data.frame}. \cr 
 #'         \code{forecast_future_newmoons}: newmoons \code{data.frame} to append to the existing \code{moons}.
 #'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   prepare_newmoons()
-#'  }
-#'
 #' @name prepare newmoons
 #'
 #' @export
@@ -61,7 +55,6 @@ prepare_newmoons <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$newmoons, 
-#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 } 

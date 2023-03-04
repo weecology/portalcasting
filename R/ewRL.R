@@ -28,13 +28,6 @@
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
-#' @examples
-#'  \donttest{
-#'
-#'   create_dir(main = "./portalcasting")
-#'   download_archive(main = "./portalcasting")
-#'  } 
-#'
 #' @name download archive
 #'
 #' @export

@@ -13,8 +13,6 @@
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
 #'
-# @param overwrite \code{logical} indicator of if the file should be overwritten if it exists.
-#
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
 #' @return \code{x} as input, \code{\link[base]{invisible}}-ly.
@@ -26,14 +24,12 @@ write_data <- function (x         = NULL,
                         data_sub  = "data",
                         save      = TRUE, 
                         filename  = NULL, 
-#                        overwrite = FALSE, 
                         quiet     = FALSE) {
   
   return_if_null(x)
 
   return_if_null(filename)
 
-#  save_it <- FALSE
 
   if (save) {
 
@@ -41,26 +37,13 @@ write_data <- function (x         = NULL,
 
     if (file.exists(full_path)) {
 
-#      if (overwrite) {
-#
-#        save_it <- TRUE
-#
-#        messageq("    **", filename, " exists and overwrite = TRUE; file saved**", quiet = quiet)
-#
-#      } else {
-#
-#        messageq("    **", filename, " exists and overwrite = FALSE; not saved***", quiet = quiet) 
-#      }
 
     } else {
-
-#      save_it <- TRUE
 
       messageq("    **", filename, " saved**", quiet = quiet)
 
     }
 
-#    if (save_it) {
 
       if (file_ext(filename) == "csv") {
 
@@ -78,7 +61,6 @@ write_data <- function (x         = NULL,
 
     }
    
-#  }
 
   invisible(x)
 
@@ -92,7 +74,7 @@ write_data <- function (x         = NULL,
 #'  
 #' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.
 #'
-#' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"} and \code{"controls"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
+#' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"}, \code{"controls"}, and \code{"exclosures"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
@@ -333,11 +315,11 @@ read_casts_metadata <- function (main     = ".",
                                  settings = directory_settings(), 
                                  quiet    = FALSE){
   
-  meta_path <- file.path(main, settings$subdirectories$forecasts, "casts_metadata.csv")
+  meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
 
   if (!file.exists(meta_path)) {
 
-    messageq("  **creating cast_metadata.csv**", quiet = quiet)
+    messageq("  **creating forecast metadata file**", quiet = quiet)
 
     casts_meta <- data.frame(cast_id               = 0, 
                              cast_group            = 0, 
@@ -357,9 +339,6 @@ read_casts_metadata <- function (main     = ".",
 
   out <- read.csv(meta_path)
 
-  # patch
-  colnames(out)[colnames(out) == "data_set"] <- "dataset"
-  # patch
 
   out[out$cast_group != 0, ]
 

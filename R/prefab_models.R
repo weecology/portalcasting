@@ -89,23 +89,6 @@ prefab_models <- function( ) {
 #'  
 #'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
 #'
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   AutoArima()
-#'   NaiveArima()
-#'   ESSS()
-#'   nbGARCH()
-#'   nbsGARCH()
-#'   pevGARCH()
-#'   jags_RW()
-#'   jags_logistic()
-#'   jags_logistic_covariates()
-#'   jags_logistic_competition()
-#'   jags_logistic_competition_covariates()
-#'  }
-#'
 #' @name prefab_model_functions
 #'
 NULL

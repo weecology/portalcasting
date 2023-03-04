@@ -111,14 +111,6 @@ write_model_controls <- function (main               = ".",
 #'  \code{model_template}: \code{character}-valued text for a model script to be housed in the model directory. \cr \cr
 #'  \code{control_list_arg}: \code{character}-valued text for part of a model script. \cr \cr
 #'
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   write_model("AutoArima")
-#'   model_template()
-#'   control_list_arg(runjags_control(nchains = 3), "runjags_control")
-#'  }
-#'
 #' @export
 #'
 write_model <- function (main     = ".", 
@@ -152,7 +144,7 @@ write_model <- function (main     = ".",
                                  quiet    = FALSE, 
                                  verbose  = FALSE)
 
-  if (file.exists(mod_path) ) {#& settings$overwrite) {
+  if (file.exists(mod_path) ) {
 
     write(mod_template, mod_path)
     messageq("  -", ifelse(verbose, "Updating ", ""), model, quiet = quiet)

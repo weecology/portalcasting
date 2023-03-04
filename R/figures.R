@@ -26,13 +26,6 @@
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = "AutoArima", end_moons = 515:520)
-#'   plot_casts_cov_RMSE()
-#' }
-#'
 #' @export
 #'
 plot_casts_cov_RMSE <- function (main           = ".", 

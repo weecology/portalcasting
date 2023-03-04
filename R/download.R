@@ -23,13 +23,6 @@
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
-#' @examples
-#'  \donttest{
-#'
-#'   create_dir(main = "./portalcasting")
-#'   download_climate_forecasts(main = "./portalcasting")
-#'  } 
-#'
 #' @name download climate forecasts
 #'
 #' @export

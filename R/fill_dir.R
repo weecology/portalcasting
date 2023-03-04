@@ -30,19 +30,6 @@
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
-#' @examples
-#'  \donttest{
-#'
-#'   create_dir("./portalcasting")
-#'   fill_dir("./portalcasting")
-#'
-#'   create_dir("./pc")
-#'   fill_resources("./pc")
-#'   fill_forecasts("./pc")
-#'   fill_fits("./pc")
-#'   fill_models("./pc")
-#'  }
-#'
 #' @name directory filling
 #'
 NULL

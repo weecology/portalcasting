@@ -6,8 +6,8 @@
 #'         \code{prefab_dataset_controls}: \code{list} vector of dataset controls. \cr
 #'
 #' @examples
-#'  prefab_datasets()
-#'  prefab_dataset_controls()
+#'  prefab_datasets( )
+#'  prefab_dataset_controls( )
 #'
 #' @name prefabricated_datasets
 #'
@@ -17,9 +17,9 @@ NULL
 #'
 #' @export
 #'
-prefab_datasets <- function(){
+prefab_datasets <- function( ){
 
-  names(prefab_dataset_controls())
+  names(prefab_dataset_controls( ))
 
 }
 
@@ -28,7 +28,7 @@ prefab_datasets <- function(){
 #'
 #' @export
 #'
-prefab_dataset_controls <- function () {
+prefab_dataset_controls <- function ( ) {
 
   prefab_controls_file <- system.file("extdata", "prefab_dataset_controls.yaml", package = "portalcasting")
 

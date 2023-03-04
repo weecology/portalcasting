@@ -56,7 +56,6 @@ prepare_covariates <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$covariates, 
-#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 }
@@ -100,7 +99,6 @@ prepare_historic_covariates <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$historical_covariates, 
-#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 }
@@ -278,7 +276,6 @@ prepare_forecast_covariates <- function (main      = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$forecast_covariates, 
-#             overwrite = settings$overwrite, 
              quiet     = !verbose)
 
 }

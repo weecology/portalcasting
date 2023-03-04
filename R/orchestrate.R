@@ -16,15 +16,6 @@
 #'
 #' @return The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 #'
-#' @examples
-#' \donttest{
-#'  create_dir()
-#'  fill_dir()
-#'  setup_dir()
-#'  setup_sandbox()
-#'  setup_production()
-#' }
-#'
 #' @name directory creation
 #'
 NULL
