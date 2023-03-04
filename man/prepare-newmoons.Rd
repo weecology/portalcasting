@@ -39,7 +39,7 @@ forecast_future_newmoons(newmoons = NULL, lead = 365, origin = Sys.Date())
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 
-\item{moons}{\code{data.frame} of moon data.}
+\item{newmoons}{\code{data.frame} of newmoon data.}
 }
 \value{
 Some version of a newmoons \code{data.frame}. \cr \cr. 

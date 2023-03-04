@@ -14,7 +14,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
 #'
-#' @param moons \code{data.frame} of moon data.
+#' @param newmoons \code{data.frame} of newmoon data.
 #'
 #' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
 #'
