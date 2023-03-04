@@ -45,11 +45,3 @@ Plot the coverage (fraction of predictions within the CI) and RMSE (root mean sq
 A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
  The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts will be plotted.
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = "AutoArima", end_moons = 515:520)
-  plot_casts_cov_RMSE()
-}
-
-}

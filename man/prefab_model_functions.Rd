@@ -152,23 +152,6 @@ Functions used for fitting the prefab models. For detailed descriptions of the m
  Environmental predictors have an optional \code{lag} time, which is currently structured to impact all covariates the same and defaults to \code{6}. \cr
  All covariate models are fit and the best model (by AIC) is selected for use.
 }
-\examples{
- \donttest{
-  setup_dir()
-  AutoArima()
-  NaiveArima()
-  ESSS()
-  nbGARCH()
-  nbsGARCH()
-  pevGARCH()
-  jags_RW()
-  jags_logistic()
-  jags_logistic_covariates()
-  jags_logistic_competition()
-  jags_logistic_competition_covariates()
- }
-
-}
 \references{
 Hyndman, R., Bergmeir, C., Caceres, G., Chhay, L., O'Hara-Wild, M., Petropoulos, F., Razbash, S., Wang, E., and Yasmeen, F. 2018. forecast: Forecasting functions for time series and linear models. R package version 8.3. \href{http://pkg.robjhyndman.com/forecast}{URL}. 
 

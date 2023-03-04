@@ -60,11 +60,3 @@ Forecast the Portal rodent population data using the (updated if needed) data an
 \details{
 Multiple models can be run together on the multiple, varying data sets for a single new moon using \code{cast}. \code{portalcast} wraps around \code{cast}, providing updating, verification, and resetting utilities as well as facilitating multiple runs of \code{cast} across new moons (e.g., when using a rolling origin).
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = "ESSS")
-  cast()
- }
-
-}

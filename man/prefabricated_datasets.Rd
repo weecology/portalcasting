@@ -18,7 +18,7 @@ prefab_dataset_controls()
 Create a \code{character} vector of the names of the pre-fabricated (prefab) rodent datasets or a \code{list} of their controls
 }
 \examples{
- prefab_datasets()
- prefab_dataset_controls()
+ prefab_datasets( )
+ prefab_dataset_controls( )
 
 }

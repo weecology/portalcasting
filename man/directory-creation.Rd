@@ -56,13 +56,3 @@ The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 \description{
 Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with core content.
 }
-\examples{
-\donttest{
- create_dir()
- fill_dir()
- setup_dir()
- setup_sandbox()
- setup_production()
-}
-
-}

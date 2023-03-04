@@ -55,10 +55,3 @@ Get time information (calendar dates, census periods, and newmoon numbers) assoc
 \details{
 Sometimes the resources newmoon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the resources newmoons data, that table needs to be updated to produce the correct current data table for casting.
 }
-\examples{
- \donttest{
-  setup_dir()
-  prepare_newmoons()
- }
-
-}

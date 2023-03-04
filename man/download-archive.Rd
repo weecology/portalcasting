@@ -45,11 +45,3 @@ Downloads a specific \code{version} of the Portal Predictions repository from ei
 \note{
 There are two calls to \code{link[base]{Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
 }
-\examples{
- \donttest{
-
-  create_dir(main = "./portalcasting")
-  download_archive(main = "./portalcasting")
- } 
-
-}
