@@ -136,11 +136,11 @@ AutoArima <- function (main     = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
+    ss <- gsub("NA", "NA.", s)
 
-    messageq("   -", ss, quiet = !verbose)
+    messageq("   -", s, quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abund_s <- rodents_table[ , ss]
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -228,11 +228,11 @@ NaiveArima <- function (main     = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
+    ss <- gsub("NA", "NA.", s)
 
-    messageq("   -", ss, quiet = !verbose)
+    messageq("   -", s, quiet = !verbose)
 
-    abund_s <- rodents_table[ , s]
+    abund_s <- rodents_table[ , ss]
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -294,7 +294,7 @@ ESSS <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- read_model_controls(main = main, settings = settings)$ESSS[[dataset]]$dataset$species
+  species       <- read_model_controls(main = main, settings = settings)$ESSS$dataset[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -319,11 +319,11 @@ ESSS <- function (main     = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
+    ss <- gsub("NA", "NA.", s)
 
-    messageq("   -", ss, quiet = !verbose)
+    messageq("   -", s, quiet = !verbose)
 
-    abund_s <- round(na.interp(rodents_table[ , s]))
+    abund_s <- round(na.interp(rodents_table[ , ss]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -384,7 +384,7 @@ nbGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species  <- read_model_controls(main = main, settings = settings)$nbGARCH[[dataset]]$dataset$species
+  species       <- species  <- read_model_controls(main = main, settings = settings)$nbGARCH$dataset[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -409,11 +409,11 @@ nbGARCH <- function (main     = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
+    ss <- gsub("NA", "NA.", s)
 
-    messageq("   -", ss, quiet = !verbose)
+    messageq("   -", s, quiet = !verbose)
 
-    abund_s <- round(na.interp(rodents_table[ , s]))
+    abund_s <- round(na.interp(rodents_table[ , ss]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -487,7 +487,7 @@ nbsGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- read_model_controls(main = main, settings = settings)$nbsGARCH[[dataset]]$dataset$species
+  species       <- read_model_controls(main = main, settings = settings)$nbsGARCH$dataset[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -523,11 +523,11 @@ nbsGARCH <- function (main     = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
+    ss <- gsub("NA", "NA.", s)
 
-    messageq("   -", ss, quiet = !verbose)
+    messageq("   -", s, quiet = !verbose)
 
-    abund_s <- round(na.interp(rodents_table[ , s]))
+    abund_s <- round(na.interp(rodents_table[ , ss]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()
@@ -613,7 +613,7 @@ pevGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- read_model_controls(main = main, settings = settings)$pevGARCH[[dataset]]$dataset$species
+  species       <- read_model_controls(main = main, settings = settings)$pevGARCH$dataset[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -665,11 +665,11 @@ pevGARCH <- function (main     = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
+    ss <- gsub("NA", "NA.", s)
 
-    messageq(paste0("   -", ss), quiet = !verbose)
+    messageq("   -", s, quiet = !verbose)
 
-    abund_s <- round(na.interp(rodents_table[ , s]))
+    abund_s <- round(na.interp(rodents_table[ , ss]))
 
     if (sum(abund_s, na.rm = TRUE) == 0) {
       next()

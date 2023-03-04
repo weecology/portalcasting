@@ -113,7 +113,7 @@ jags_logistic_competition <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition[[dataset]]$dataset$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$dataset[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -123,8 +123,10 @@ jags_logistic_competition <- function (main            = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
+    ss <- gsub("NA", "NA.", s)
+
+    messageq("   -", s, quiet = !verbose)
+
 
     moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
     past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
@@ -139,7 +141,7 @@ jags_logistic_competition <- function (main            = ".",
     ntraps           <- c(ntraps, cast_ntraps)
     past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
 
-    species_in <- which(colnames(rodents_table) == s)
+    species_in <- which(colnames(rodents_table) == ss)
     count <- rodents_table[moon_in, species_in]
 
     if (sum(count, na.rm = TRUE) == 0) {
@@ -394,7 +396,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates[[dataset]]$dataset$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates$dataset[[dataset]]$species
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)
@@ -403,8 +405,8 @@ jags_logistic_competition_covariates <- function (main            = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
+    ss <- gsub("NA", "NA.", s)
+    messageq("   -", s, quiet = !verbose)
 
     moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
     past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
@@ -419,7 +421,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
     ntraps           <- c(ntraps, cast_ntraps)
     past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
 
-    species_in <- which(colnames(rodents_table) == s)
+    species_in <- which(colnames(rodents_table) == ss)
     count <- rodents_table[moon_in, species_in]
 
     if (sum(count, na.rm = TRUE) == 0) {
@@ -673,7 +675,7 @@ jags_logistic_covariates <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates[[dataset]]$dataset$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$dataset[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -683,8 +685,8 @@ jags_logistic_covariates <- function (main            = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
+    ss <- gsub("NA", "NA.", s)
+    messageq("   -", s, quiet = !verbose)
 
     moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
     past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
@@ -699,7 +701,7 @@ jags_logistic_covariates <- function (main            = ".",
     ntraps           <- c(ntraps, cast_ntraps)
     past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
 
-    species_in <- which(colnames(rodents_table) == s)
+    species_in <- which(colnames(rodents_table) == ss)
     count <- rodents_table[moon_in, species_in]
 
     if (sum(count, na.rm = TRUE) == 0) {
@@ -937,7 +939,7 @@ jags_logistic <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic[[dataset]]$dataset$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic$dataset[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -947,8 +949,8 @@ jags_logistic <- function (main            = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
+    ss <- gsub("NA", "NA.", s)
+    messageq("   -", s, quiet = !verbose)
 
     moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
     past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
@@ -963,7 +965,7 @@ jags_logistic <- function (main            = ".",
     ntraps           <- c(ntraps, cast_ntraps)
     past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
 
-    species_in <- which(colnames(rodents_table) == s)
+    species_in <- which(colnames(rodents_table) == ss)
     count <- rodents_table[moon_in, species_in]
 
     if (sum(count, na.rm = TRUE) == 0) {
@@ -1180,7 +1182,7 @@ jags_RW <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_RW[[dataset]]$dataset$species
+  species <- read_model_controls(main = main, settings = settings)$jags_RW$dataset[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -1190,8 +1192,9 @@ jags_RW <- function (main            = ".",
   for (i in 1:nspecies) {
 
     s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
+    ss <- gsub("NA", "NA.", s)
+    messageq("   -", s, quiet = !verbose)
+
 
     moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
     past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
@@ -1206,7 +1209,7 @@ jags_RW <- function (main            = ".",
     ntraps           <- c(ntraps, cast_ntraps)
     past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
 
-    species_in <- which(colnames(rodents_table) == s)
+    species_in <- which(colnames(rodents_table) == ss)
     count <- rodents_table[moon_in, species_in]
 
     if (sum(count, na.rm = TRUE) == 0) {

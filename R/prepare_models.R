@@ -177,7 +177,7 @@ model_template <- function (main     = ".",
   control_model   <- tryCatch(prefab_model_controls()[[model]],
                               error = function(x){NULL})
 
-  datasets <- control_model$datasets
+  datasets <- names(control_model$datasets)
   nds             <- length(datasets)
   
   return_if_null(datasets)
