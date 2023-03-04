@@ -156,10 +156,6 @@ add_obs_to_cast_tab <- function (main     = ".",
 
   return_if_null(cast_tab)
 
-  # patch
-  colnames(cast_tab)[colnames(cast_tab) == "data_set"] <- "dataset"
-  # patch
-
   cast_tab$obs   <- NA
   cast_dataset   <- gsub("dm_", "", gsub("_interp", "", cast_tab$dataset))
   ucast_dataset  <- unique(cast_dataset)
@@ -242,15 +238,6 @@ read_cast_tab <- function (main     = ".",
   }
 
   out <- read.csv(cpath) 
-
-
-  # patch
-  colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "dataset"
-  # patch
-
-  # patch
-  out$dataset <- gsub("_interp", "", out$dataset)
-  # patch
 
   na_conformer(out)
 

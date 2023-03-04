@@ -79,14 +79,6 @@ plot_casts_cov_RMSE <- function (main           = ".",
 
   }
 
-  # patch
-  colnames(cast_tab)[colnames(cast_tab) %in% c("data_set", "dataset")] <- "dataset"
-  # patch
-
-  # patch
-  cast_tab$dataset <- gsub("dm_", "", gsub("_interp", "", cast_tab$dataset))
-  # patch
-
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, eval_models())
   dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
@@ -338,13 +330,6 @@ plot_casts_err_lead <- function (main           = ".",
 
   }
 
-  # patch
-  colnames(cast_tab)[colnames(cast_tab) %in% c("data_set", "dataset")] <- "dataset"
-  # patch
-
-  # patch
-  cast_tab$dataset <- gsub("_interp", "", cast_tab$dataset)
-  # patch
 
   cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                  <- ifnull(models, eval_models())
