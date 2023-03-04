@@ -926,7 +926,7 @@ plot_cast_ts <- function (main        = ".",
                           settings    = directory_settings(), 
                           cast_id     = NULL, 
                           cast_groups = NULL,
-                          dataset     = NULL, 
+                          dataset     = "all", 
                           model       = NULL, 
                           end_moon    = NULL, 
                           species     = NULL, 
@@ -964,12 +964,8 @@ plot_cast_ts <- function (main        = ".",
 
   mod_control <- read_model_controls(main = main, settings = settings)
   model   <- ifnull(model, names(mod_control)[1])
-  temp_species <- mod_control[[model]]$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
+  species <- mod_control[[model]]$datasets[[dataset]]$species
+
   if (length(species) > 1) {
     if ("total" %in% species) {
       species <- "total"

@@ -9,7 +9,7 @@ plot_cast_ts(
   settings = directory_settings(),
   cast_id = NULL,
   cast_groups = NULL,
-  dataset = NULL,
+  dataset = "all",
   model = NULL,
   end_moon = NULL,
   species = NULL,

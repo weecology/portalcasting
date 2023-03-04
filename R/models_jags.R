@@ -113,7 +113,7 @@ jags_logistic_competition <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$dataset[[dataset]]$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$datasets[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -396,7 +396,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates$dataset[[dataset]]$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates$datasets[[dataset]]$species
   nspecies <- length(species)
   mods     <- named_null_list(species)
   casts    <- named_null_list(species)
@@ -675,7 +675,7 @@ jags_logistic_covariates <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$dataset[[dataset]]$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$datasets[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -939,7 +939,7 @@ jags_logistic <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_logistic$dataset[[dataset]]$species
+  species <- read_model_controls(main = main, settings = settings)$jags_logistic$datasets[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)
@@ -1182,7 +1182,7 @@ jags_RW <- function (main            = ".",
   confidence_level  <- metadata$confidence_level
   dataset_controls  <- metadata$dataset_controls[[dataset]]
 
-  species <- read_model_controls(main = main, settings = settings)$jags_RW$dataset[[dataset]]$species
+  species <- read_model_controls(main = main, settings = settings)$jags_RW$datasets[[dataset]]$species
 
   nspecies <- length(species)
   mods     <- named_null_list(species)

@@ -111,7 +111,7 @@ AutoArima <- function (main     = ".",
                                       dataset  = dataset,
                                       settings = settings)
 
-  species  <- read_model_controls(main = main, settings = settings)$AutoArima$dataset[[dataset]]$species
+  species  <- read_model_controls(main = main, settings = settings)$AutoArima$datasets[[dataset]]$species
   
   nspecies      <- length(species)
 
@@ -203,7 +203,7 @@ NaiveArima <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- read_model_controls(main = main, settings = settings)$NaiveArima$dataset[[dataset]]$species
+  species       <- read_model_controls(main = main, settings = settings)$NaiveArima$datasets[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -294,7 +294,7 @@ ESSS <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- read_model_controls(main = main, settings = settings)$ESSS$dataset[[dataset]]$species
+  species       <- read_model_controls(main = main, settings = settings)$ESSS$datasets[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -384,7 +384,7 @@ nbGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- species  <- read_model_controls(main = main, settings = settings)$nbGARCH$dataset[[dataset]]$species
+  species       <- species  <- read_model_controls(main = main, settings = settings)$nbGARCH$datasets[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -487,7 +487,7 @@ nbsGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- read_model_controls(main = main, settings = settings)$nbsGARCH$dataset[[dataset]]$species
+  species       <- read_model_controls(main = main, settings = settings)$nbsGARCH$datasets[[dataset]]$species
 
   nspecies      <- length(species)
 
@@ -613,7 +613,7 @@ pevGARCH <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  species       <- read_model_controls(main = main, settings = settings)$pevGARCH$dataset[[dataset]]$species
+  species       <- read_model_controls(main = main, settings = settings)$pevGARCH$datasets[[dataset]]$species
 
   nspecies      <- length(species)
 
