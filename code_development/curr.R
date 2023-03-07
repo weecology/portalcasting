@@ -1,3 +1,6 @@
+working in the portalcast function to loop over the model dataset species combos
+currently should work for all of the models
+
 main <- "~/pct"
 main <- "~/portalcasting"
 

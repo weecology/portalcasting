@@ -17,7 +17,8 @@
 \usage{
 jags_logistic_competition(
   main = ".",
-  dataset = "controls",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -26,7 +27,8 @@ jags_logistic_competition(
 
 jags_logistic_competition_covariates(
   main = ".",
-  dataset = "controls",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -35,7 +37,8 @@ jags_logistic_competition_covariates(
 
 jags_logistic_covariates(
   main = ".",
-  dataset = "controls",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -44,7 +47,8 @@ jags_logistic_covariates(
 
 jags_logistic(
   main = ".",
-  dataset = "controls",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
@@ -53,7 +57,8 @@ jags_logistic(
 
 jags_RW(
   main = ".",
-  dataset = "controls",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   control_runjags = runjags_control(),
   quiet = FALSE,
