@@ -1,4 +1,6 @@
 main <- "~/pct"
+main <- "~/portalcasting"
+
 mc <- model_controls(main)
 md <- read_metadata(main)
 

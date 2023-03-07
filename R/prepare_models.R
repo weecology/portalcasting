@@ -34,20 +34,9 @@ model_controls <- function (main     = ".",
                             models   = prefab_models(),
                             settings = directory_settings()) {
 
-  nmodels <- length(models)
+  read_model_controls(main     = main, 
+                      settings = settings)[models]
 
-# want to cut this commented part out but need to make sure it will still work fine or figure out where i need to fix it
-#  if (nmodels == 1) {
-#
-#    read_model_controls(main     = main, 
-#                        settings = settings)[[models]]
-#
-#  } else if (nmodels > 1) {
-
-    read_model_controls(main     = main, 
-                        settings = settings)[models]
-
-#  }
 
 }
 
@@ -122,16 +111,10 @@ write_model <- function (main     = ".",
 
   return_if_null(model)
   
-  control_model   <- tryCatch(prefab_model_controls()[[model]],
+  control_model   <- tryCatch(expr  = prefab_model_controls()[[model]],
                               error = function(x){NULL})
   datasets <- control_model$datasets
 
-  if (is.null(datasets)) {
-
-    messageq("   ~datasets = NULL for ", model, quiet = quiet)
-    datasets <- prefab_datasets()
-
-  }
 
   model_file <- paste0(model, ".R")
   mod_path   <- file.path(main, settings$subdirectories$models, model_file)
@@ -174,7 +157,7 @@ model_template <- function (main     = ".",
 
   return_if_null(model)
 
-  control_model   <- tryCatch(prefab_model_controls()[[model]],
+  control_model   <- tryCatch(expr  = prefab_model_controls()[[model]],
                               error = function(x){NULL})
 
   datasets <- names(control_model$datasets)

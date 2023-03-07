@@ -62,7 +62,8 @@ jags_RW(
 
 AutoArima(
   main = ".",
-  dataset = "all",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -70,7 +71,8 @@ AutoArima(
 
 NaiveArima(
   main = ".",
-  dataset = "all",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -78,7 +80,8 @@ NaiveArima(
 
 ESSS(
   main = ".",
-  dataset = "all",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -86,7 +89,8 @@ ESSS(
 
 nbGARCH(
   main = ".",
-  dataset = "all",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -94,7 +98,8 @@ nbGARCH(
 
 nbsGARCH(
   main = ".",
-  dataset = "all",
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -102,8 +107,8 @@ nbsGARCH(
 
 pevGARCH(
   main = ".",
-  dataset = "all",
-  lag = 6,
+  dataset = NULL,
+  species = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -121,8 +126,6 @@ pevGARCH(
 \item{quiet}{\code{logical} value indicating if the function should be quiet.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
-
-\item{lag}{\code{integer} (or integer \code{numeric}) of the lag time to use for the covariates.}
 }
 \value{
 \code{list} of \enumerate{

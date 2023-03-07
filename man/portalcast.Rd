@@ -7,11 +7,6 @@
 \usage{
 portalcast(
   main = ".",
-  models = prefab_models(),
-  datasets = prefab_datasets(),
-  end_moons = NULL,
-  start_moon = 217,
-  cast_date = Sys.Date(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -19,11 +14,6 @@ portalcast(
 
 cast(
   main = ".",
-  models = prefab_models(),
-  datasets = prefab_datasets(),
-  end_moon = NULL,
-  start_moon = 217,
-  cast_date = Sys.Date(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -31,17 +21,6 @@ cast(
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{models}{\code{character} vector of name(s) of model(s) to include.}
-
-\item{datasets}{\code{character} vector of dataset names to be created.}
-
-\item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
-\strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.}
-
-\item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

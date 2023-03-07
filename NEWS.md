@@ -4,10 +4,17 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
-*2023-03-03*
+*In Progress*
 
 ### Putting species under dataset in the models' controls lists
 * This is more articulated and allows for finer control to help avoid fitting issues, etc.
+
+### Moving arguments into functionalities
+* `cast_date` is not an argument anymore, just filled automatically 
+* `dataset` arguments are also being removed as possible to streamline (just pull from model controls)
+
+### Model functions are now species-level
+* To facilitate a lot of downstream functionality, we're breaking up the model functions to operate on the species-level rather than the dataset-level, according to the new control lists
 
 # [portalcasting 0.50.0](https://github.com/weecology/portalcasting/releases/tag/v0.50.0)
 *2023-03-03*

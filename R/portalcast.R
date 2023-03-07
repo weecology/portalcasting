@@ -8,18 +8,7 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
-#'
-#' @param end_moons,end_moon \code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
-#'  \strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.
-#'
-#' @param cast_date \code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.
-#'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.
-#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @param datasets \code{character} vector of dataset names to be created. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -30,64 +19,39 @@
 #' @export
 #'
 portalcast <- function (main       = ".", 
-                        models     = prefab_models(), 
-                        datasets   = prefab_datasets(),
-                        end_moons  = NULL, 
-                        start_moon = 217, 
-                        cast_date  = Sys.Date(),
                         settings   = directory_settings(),
                         quiet      = FALSE,
                         verbose    = FALSE){
 
-#
-# the datasets here should come from the models selected
-#  and not as an argument ... or? maybe not? idk. think this out.
-#  i think so
-# should the start and end time also come from somewhere else?
-#  well, here the end moon is what is looped over
-#   not sure this is what i want to happen more generally, tho
-#  we want portalcast to iterate over individual casts, but generally
-#   i think we want to create a recipe list or something
 
-  return_if_null(models)
+  messageq(message_break(), "\nPreparing directory for casting\n", 
+           message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
+           message_break(), quiet = quiet)
 
-  messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
+  # we're pulling everything from the metadata file, rather than as arguments to the functions
 
-  moons <- read_newmoons(main     = main,
-                      settings = settings)
+  metadata <- read_metadata(main     = main,
+                            settings = settings)
 
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon       <- moons$newmoonnumber[which_last_moon]
-  end_moons       <- ifnull(end_moons, last_moon)
-  nend_moons      <- length(end_moons)
+  model_combinations <- make_model_combinations(metadata = metadata)
 
-  for (i in 1:nend_moons) {
+  nmodel_combinations <- nrow(model_combinations)
 
-    cast(main       = main, 
-         datasets   = datasets,
-         models     = models, 
-         end_moon   = end_moons[i], 
-         start_moon = start_moon, 
-         cast_date  = cast_date, 
-         settings   = settings,
-         quiet      = quiet, 
-         verbose    = verbose)
 
-  }
+  # use do.call along the table
 
-  if (end_moons[nend_moons] != last_moon) {
- # this maybe should happen within cast? or maybe we can sidestep it
-  # yeah, i would like to avoid refilling the data so many times, how to do?
-    messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
+model <- model_combinations$model[1]
+dataset <- model_combinations$dataset[1]
+species <- model_combinations$species[1]
 
-    fill_data(main     = main, 
-              datasets = datasets,
-              models   = models,
-              settings = settings,
-              quiet    = quiet, 
-              verbose  = verbose)
+  do.call(what = model,
+          args = list(main = main,
+                      settings = settings,
+                      dataset = dataset,
+                      species = species,
+                      quiet = quiet,
+                      verbose = verbose))
 
-  }
 
   messageq(message_break(), "\nCasting complete\n", message_break(), quiet = quiet)
   invisible() 
@@ -100,11 +64,6 @@ portalcast <- function (main       = ".",
 #' @export
 #'
 cast <- function (main       = ".", 
-                  models     = prefab_models(), 
-                  datasets   = prefab_datasets(),
-                  end_moon   = NULL, 
-                  start_moon = 217, 
-                  cast_date  = Sys.Date(), 
                   settings   = directory_settings(), 
                   quiet      = FALSE, 
                   verbose    = FALSE) {
@@ -162,7 +121,36 @@ cast <- function (main       = ".",
 
 }
 
+make_model_combinations <- function (metadata = NULL) {
 
+  return_if_null(metadata)
+
+  models <- metadata$models
+  nmodels <- length(models)
+
+  controls <- model_controls(main = main)
+
+  out <- data.frame(model   = character(0),
+                    dataset = character(0),
+                    species = character(0))
+
+  for (i in 1:nmodels) {
+
+    control <- controls[[models[i]]]
+
+    datasets <- control$datasets
+    species  <- lapply(datasets, getElement, "species")    
+    nspecies <- lapply(species, length) 
+
+    out <- rbind(out, data.frame(model   = models[[i]], 
+                                 dataset = rep(names(datasets), nspecies),
+                                 species = unlist(species)))
+
+  }
+
+  row.names(out) <- NULL
+  out
+}
 
 
 #' @title Determine the Paths to the Scripts for Models to Cast with
