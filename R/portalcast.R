@@ -62,6 +62,10 @@ species <- model_combinations$species[1]
 # tryCatch and error messaging
 # what are we using scripts for now
 
+# the cast function should be what's looped over along the do.call
+# model is an argument then?
+# it pulls all the details needed from metadata
+
 
 } 
 
