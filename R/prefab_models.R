@@ -117,19 +117,22 @@ AutoArima <- function (main     = ".",
                             settings = settings)
 
 
-  abund_s <- prepare_rodent_abundance(main     = main,
-                                      dataset  = dataset,
-                                      species  = species,
-                                      model    = model,
-                                      settings = settings,
-                                      quiet    = quiet,
-                                      verbose  = verbose)
+  abundance <- prepare_rodent_abundance(main     = main,
+                                        dataset  = dataset,
+                                        species  = species,
+                                        model    = model,
+                                        settings = settings,
+                                        quiet    = quiet,
+                                        verbose  = verbose)
 
 
 
-  mods   <- auto.arima(abund_s)
-  casts  <- forecast(mods, h = length(metadata$time$rodent_cast_moons), level = metadata$confidence_level)
-  casts  <- data.frame(casts, moon = metadata$time$rodent_cast_moons)
+  mods   <- auto.arima(y = abundance)
+  casts  <- forecast(object = mods, 
+                     h      = length(metadata$time$rodent_cast_moons), 
+                     level  = metadata$confidence_level)
+
+  casts$moon  <- metadata$time$rodent_cast_moons
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
                          cast_month       = metadata$time$rodent_cast_months,
@@ -188,7 +191,7 @@ NaiveArima <- function (main     = ".",
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  abund_s <- prepare_rodent_abundance(main     = main,
+  abundance <- prepare_rodent_abundance(main     = main,
                                       dataset  = dataset,
                                       species  = species,
                                       model    = model,
@@ -196,9 +199,13 @@ NaiveArima <- function (main     = ".",
                                       quiet    = quiet,
                                       verbose  = verbose)
 
-  mods   <- Arima(abund_s, order = c(0, 1, 0))
-  casts  <- forecast(mods, h = length(metadata$time$rodent_cast_moons), level = metadata$confidence_level)
-  casts  <- data.frame(casts, moon = metadata$time$rodent_cast_moons)
+  mods   <- Arima(y     = abundance, 
+                  order = c(0, 1, 0))
+  casts  <- forecast(object = mods, 
+                     h      = length(metadata$time$rodent_cast_moons), 
+                     level  = metadata$confidence_level)
+
+  casts$moon <- metadata$time$rodent_cast_moons
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
                          cast_month       = metadata$time$rodent_cast_months,
@@ -257,7 +264,7 @@ ESSS <- function (main     = ".",
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  abund_s <- prepare_rodent_abundance(main     = main,
+  abundance <- prepare_rodent_abundance(main     = main,
                                       dataset  = dataset,
                                       species  = species,
                                       model    = model,
@@ -265,9 +272,12 @@ ESSS <- function (main     = ".",
                                       quiet    = quiet,
                                       verbose  = verbose)
 
-  mods   <- ets(abund_s)
-  casts  <- forecast(mods, h = length(metadata$time$rodent_cast_moons), level = metadata$confidence_level,
-                           allow.multiplicative.trend = TRUE)
+  mods   <- ets(y = abundance)
+  casts  <- forecast(object = mods, 
+                     h      = length(metadata$time$rodent_cast_moons), 
+                     level = metadata$confidence_level,
+                     allow.multiplicative.trend = TRUE)
+
   casts  <- data.frame(casts, moon = metadata$time$rodent_cast_moons)
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
@@ -324,7 +334,7 @@ nbGARCH <- function (main     = ".",
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  abund_s <- prepare_rodent_abundance(main     = main,
+  abundance <- prepare_rodent_abundance(main     = main,
                                       dataset  = dataset,
                                       species  = species,
                                       model    = model,
@@ -332,21 +342,28 @@ nbGARCH <- function (main     = ".",
                                       quiet    = quiet,
                                       verbose  = verbose)
 
-    past <- list(past_obs = 1, past_mean = 12)
+    past <- list(past_obs  = 1, 
+                 past_mean = 12)
     mods <- tryCatch(
-                   tsglm(abund_s, model = past, distr = "nbinom", 
-                         link = "log"),
+                   tsglm(ts    = abundance, 
+                         model = past, 
+                         distr = "nbinom", 
+                         link  = "log"),
                    warning = function(x){NA}, 
                    error = function(x){NA})
     if(all(is.na(mods)) || AIC(mods) == Inf){
       mods <- tryCatch(
-                     tsglm(abund_s, model = past, distr = "poisson", 
-                           link = "log"),
+                   tsglm(ts    = abundance, 
+                         model = past, 
+                         distr = "poisson", 
+                         link  = "log"),
                      warning = function(x){NA}, 
                      error = function(x){NA})
     }
     if(!all(is.na(mods))){
-      casts <- predict(mods, length(metadata$time$rodent_cast_moons), level = metadata$confidence_level)
+      casts <- predict(object  = mods, 
+                       n.ahead = length(metadata$time$rodent_cast_moons), 
+                       level   = metadata$confidence_level)
       casts$moon <- metadata$time$rodent_cast_moons
     }  
 
@@ -404,7 +421,7 @@ nbsGARCH <- function (main     = ".",
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  abund_s <- prepare_rodent_abundance(main     = main,
+  abundance <- prepare_rodent_abundance(main     = main,
                                       dataset  = dataset,
                                       species  = species,
                                       model    = model,
@@ -426,9 +443,10 @@ nbsGARCH <- function (main     = ".",
 
 
 
-    past <- list(past_obs = 1, past_mean = 12)
+    past <- list(past_obs  = 1, 
+                 past_mean = 12)
     mods <- tryCatch(
-                   tsglm(ts    = abund_s, 
+                   tsglm(ts    = abundance, 
                          model = past, 
                          distr = "nbinom", 
                          xreg  = predictors, 
@@ -439,7 +457,7 @@ nbsGARCH <- function (main     = ".",
     if (all(is.na(mods)) || AIC(mods) == Inf) {
 
       mods <- tryCatch(
-                     tsglm(ts    = abund_s, 
+                     tsglm(ts    = abundance, 
                            model = past, 
                            distr = "poisson", 
                            xreg  = predictors, 
@@ -448,8 +466,11 @@ nbsGARCH <- function (main     = ".",
                      error   = function(x){NA})
     }
     if (!all(is.na(mods))) {
-      casts <- predict(mods, length(metadata$time$rodent_cast_moons), level = metadata$confidence_level,
-                            newxreg = cast_predictors)
+
+      casts <- predict(object  = mods, 
+                       n.ahead = length(metadata$time$rodent_cast_moons), 
+                       level   = metadata$confidence_level,
+                       newxreg = cast_predictors)
       casts$moon <- metadata$time$rodent_cast_moons
 
     }    
@@ -522,7 +543,7 @@ pevGARCH <- function (main     = ".",
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  abund_s <- prepare_rodent_abundance(main     = main,
+  abundance <- prepare_rodent_abundance(main     = main,
                                       dataset  = dataset,
                                       species  = species,
                                       model    = model,
@@ -582,15 +603,22 @@ pevGARCH <- function (main     = ".",
 
       }
 
-      mods[[j]] <- tryCatch(tsglm(abund_s, model = past, distr = "poisson",
-                                    xreg = predictors, link = "log"), 
-                             warning = function(x){NA}, 
-                              error = function(x) {NA})
+      mods[[j]] <- tryCatch(
+                     tsglm(ts    = abundance, 
+                           model = past, 
+                           distr = "poisson", 
+                           xreg  = predictors, 
+                           link  = "log"),
+                     warning = function(x){NA}, 
+                     error   = function(x){NA})
       if(!all(is.na(mods[[j]]))){
-        casts[[j]] <-  tryCatch(predict(mods[[j]], length(metadata$time$rodent_cast_moons), level = metadata$confidence_level, 
-                                          newxreg = cast_predictors),
-                                 warning = function(x){NA}, 
-                                  error = function(x) {NA})
+        casts[[j]] <-  tryCatch(
+                              predict(object  = mods[[j]], 
+                                      n.ahead = length(metadata$time$rodent_cast_moons), 
+                                      level   = metadata$confidence_level,
+                                      newxreg = cast_predictors),
+                              warning = function(x){NA}, 
+                              error = function(x) {NA})
       }
       AICs[j] <- tryCatch(AIC(mods[[j]]), 
                           error = function(x) {Inf})
@@ -602,6 +630,7 @@ pevGARCH <- function (main     = ".",
 
     mods <- mods[[best_mod]] 
     casts <- casts[[best_mod]] 
+
     casts$moon <- metadata$time$rodent_cast_moons
 
 
