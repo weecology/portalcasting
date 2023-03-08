@@ -132,7 +132,10 @@ AutoArima <- function (main     = ".",
                      h      = length(metadata$time$rodent_cast_moons), 
                      level  = metadata$confidence_level)
 
-  casts$moon  <- metadata$time$rodent_cast_moons
+  casts  <- data.frame(pred = casts$mean,
+                       lower = casts$lower[,1], 
+                       upper = casts$upper[,1],
+                       moon = metadata$time$rodent_cast_moons)
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
                          cast_month       = metadata$time$rodent_cast_months,
@@ -144,9 +147,9 @@ AutoArima <- function (main     = ".",
                          species          = species, 
                          cast_group       = metadata$cast_group,
                          confidence_level = metadata$confidence_level,
-                         estimate         = casts[ , "Point.Forecast"], 
-                         lower_pi         = casts[ , paste0("Lo.", metadata$confidence_level * 100)], 
-                         upper_pi         = casts[ , paste0("Hi.", metadata$confidence_level * 100)], 
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper, 
                          start_moon       = metadata$time$start_moon,
                          end_moon         = metadata$time$end_moon)
 
@@ -205,7 +208,10 @@ NaiveArima <- function (main     = ".",
                      h      = length(metadata$time$rodent_cast_moons), 
                      level  = metadata$confidence_level)
 
-  casts$moon <- metadata$time$rodent_cast_moons
+  casts  <- data.frame(pred = casts$mean,
+                       lower = casts$lower[,1], 
+                       upper = casts$upper[,1],
+                       moon = metadata$time$rodent_cast_moons)
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
                          cast_month       = metadata$time$rodent_cast_months,
@@ -217,9 +223,9 @@ NaiveArima <- function (main     = ".",
                          species          = species, 
                          cast_group       = metadata$cast_group,
                          confidence_level = metadata$confidence_level,
-                         estimate         = casts[ , "Point.Forecast"], 
-                         lower_pi         = casts[ , paste0("Lo.", metadata$confidence_level * 100)], 
-                         upper_pi         = casts[ , paste0("Hi.", metadata$confidence_level * 100)], 
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper,
                          start_moon       = metadata$time$start_moon,
                          end_moon         = metadata$time$end_moon)
 
@@ -278,7 +284,10 @@ ESSS <- function (main     = ".",
                      level = metadata$confidence_level,
                      allow.multiplicative.trend = TRUE)
 
-  casts  <- data.frame(casts, moon = metadata$time$rodent_cast_moons)
+  casts  <- data.frame(pred = casts$mean,
+                       lower = casts$lower[,1], 
+                       upper = casts$upper[,1],
+                       moon = metadata$time$rodent_cast_moons)
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
                          cast_month       = metadata$time$rodent_cast_months,
@@ -290,9 +299,9 @@ ESSS <- function (main     = ".",
                          species          = species, 
                          cast_group       = metadata$cast_group,
                          confidence_level = metadata$confidence_level,
-                         estimate         = casts[ , "Point.Forecast"], 
-                         lower_pi         = casts[ , paste0("Lo.", metadata$confidence_level * 100)], 
-                         upper_pi         = casts[ , paste0("Hi.", metadata$confidence_level * 100)], 
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper,
                          start_moon       = metadata$time$start_moon,
                          end_moon         = metadata$time$end_moon)
 
@@ -364,7 +373,10 @@ nbGARCH <- function (main     = ".",
       casts <- predict(object  = mods, 
                        n.ahead = length(metadata$time$rodent_cast_moons), 
                        level   = metadata$confidence_level)
-      casts$moon <- metadata$time$rodent_cast_moons
+      casts  <- data.frame(pred = as.numeric(casts$pred),
+                       lower = as.numeric(casts$interval[ , 1]),
+                       upper = as.numeric(casts$interval[ , 2]),
+                       moon = metadata$time$rodent_cast_moons)
     }  
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
@@ -377,9 +389,9 @@ nbGARCH <- function (main     = ".",
                          species          = species, 
                          cast_group       = metadata$cast_group,
                          confidence_level = metadata$confidence_level,
-                         estimate         = as.numeric(casts$pred),
-                         lower_pi         = as.numeric(casts$interval[ , 1]),
-                         upper_pi         = as.numeric(casts$interval[ , 2]),
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper,
                          start_moon       = metadata$time$start_moon,
                          end_moon         = metadata$time$end_moon)
 
@@ -471,8 +483,10 @@ nbsGARCH <- function (main     = ".",
                        n.ahead = length(metadata$time$rodent_cast_moons), 
                        level   = metadata$confidence_level,
                        newxreg = cast_predictors)
-      casts$moon <- metadata$time$rodent_cast_moons
-
+      casts  <- data.frame(pred = as.numeric(casts$pred),
+                       lower = as.numeric(casts$interval[ , 1]),
+                       upper = as.numeric(casts$interval[ , 2]),
+                       moon = metadata$time$rodent_cast_moons)
     }    
 
 
@@ -487,9 +501,9 @@ nbsGARCH <- function (main     = ".",
                          species          = species, 
                          cast_group       = metadata$cast_group,
                          confidence_level = metadata$confidence_level,
-                         estimate         = as.numeric(casts$pred),
-                         lower_pi         = as.numeric(casts$interval[ , 1]),
-                         upper_pi         = as.numeric(casts$interval[ , 2]),
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper,
                          start_moon       = metadata$time$start_moon,
                          end_moon         = metadata$time$end_moon)
 
@@ -631,7 +645,10 @@ pevGARCH <- function (main     = ".",
     mods <- mods[[best_mod]] 
     casts <- casts[[best_mod]] 
 
-    casts$moon <- metadata$time$rodent_cast_moons
+      casts  <- data.frame(pred = as.numeric(casts$pred),
+                       lower = as.numeric(casts$interval[ , 1]),
+                       upper = as.numeric(casts$interval[ , 2]),
+                       moon = metadata$time$rodent_cast_moons)
 
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
@@ -644,9 +661,9 @@ pevGARCH <- function (main     = ".",
                          species          = species, 
                          cast_group       = metadata$cast_group,
                          confidence_level = metadata$confidence_level,
-                         estimate         = as.numeric(casts$pred),
-                         lower_pi         = as.numeric(casts$interval[ , 1]),
-                         upper_pi         = as.numeric(casts$interval[ , 2]),
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper,
                          start_moon       = metadata$time$start_moon,
                          end_moon         = metadata$time$end_moon)
 
