@@ -35,6 +35,8 @@ portalcast <- function (main       = ".",
 
   model_combinations <- make_model_combinations(metadata = metadata)
 
+# does this replace (/  should it be renamed) models_to_cast
+
   nmodel_combinations <- nrow(model_combinations)
 
 
@@ -55,6 +57,11 @@ species <- model_combinations$species[1]
 
   messageq(message_break(), "\nCasting complete\n", message_break(), quiet = quiet)
   invisible() 
+
+# things to consider / incorporate from cast
+# tryCatch and error messaging
+# what are we using scripts for now
+
 
 } 
 

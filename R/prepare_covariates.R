@@ -93,7 +93,12 @@ prepare_historic_covariates <- function (main     = ".",
   }
   out$ordii_controls <- as.numeric(round(pmax(na.interp(out$ordii_controls), 0) ))
 
-  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", "warm_precip_3_moon", "ndvi_13_moon", "ordii_controls", "source")
+  moon_foys        <- foy(dates = out$date)
+  out$sin2pifoy    <- sin(2 * pi * moon_foys)
+  out$cos2pifoy    <- cos(2 * pi * moon_foys)
+  
+
+  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", "warm_precip_3_moon", "ndvi_13_moon", "ordii_controls", "sin2pifoy", "cos2pifoy", "source")
 
   write_data(x         = out[ , cols_to_keep], 
              main      = main, 
@@ -257,6 +262,10 @@ prepare_forecast_covariates <- function (main      = ".",
 
   ordii_controls_cast <- predict(ordii_controls_mod, nhist_time)$pred
 
+  moon_foys        <- foy(dates = moons$newmoondate[match(hist_time, moons$newmoonnumber)])
+  sin2pifoy    <- sin(2 * pi * moon_foys)
+  cos2pifoy    <- cos(2 * pi * moon_foys)
+  
   hist_climate_forecasts <- data.frame(newmoonnumber       = hist_time, 
                                        date                = moons$newmoondate[match(hist_time, moons$newmoonnumber)],
                                        mintemp             = mintemps,
@@ -268,6 +277,8 @@ prepare_forecast_covariates <- function (main      = ".",
                                        warm_precip_3_moon  = warm_precip_3_moon[(length(warm_precip_3_moon) - nhist_time + 1):length(warm_precip_3_moon)], 
                                        ndvi_13_moon        = ndvi_13_moon[(length(ndvi_13_moon) - nhist_time + 1):length(ndvi_13_moon)], 
                                        ordii_controls      = ordii_controls_cast,
+                                       sin2pifoy           = sin2pifoy,
+                                       cos2pifoy           = cos2pifoy,
                                        source              = "forecast")
 
 

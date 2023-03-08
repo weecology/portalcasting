@@ -124,6 +124,8 @@ pevGARCH(
 
 \item{dataset}{\code{character} value name of the rodent data set, such as (\code{"all"} or \code{"controls"}).}
 
+\item{species}{\code{character} value name of the rodent species.}
+
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{control_runjags}{\code{list} of arguments passed to \code{\link[runjags]{run.jags}} via \code{\link{runjags_control}}.}
