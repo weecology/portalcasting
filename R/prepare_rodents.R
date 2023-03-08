@@ -1,3 +1,35 @@
+prepare_rodent_abundance <- function (main     = ".", 
+                                      dataset  = NULL,
+                                      species  = NULL,
+                                      model    = NULL,
+                                      settings = directory_settings(), 
+                                      quiet    = FALSE, 
+                                      verbose  = FALSE) {
+
+  metadata <- read_metadata(main     = main,
+                            settings = settings)
+  rodents_table <- read_rodents_table(main     = main, 
+                                      dataset  = dataset,
+                                      settings = settings)
+  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
+  species_in <- colnames(rodents_table) == gsub("NA", "NA.", species)
+    out <- rodents_table[moon_in, species_in]
+
+  model_controls <- read_model_controls(main = main, settings = settings)[[model]]
+
+  if (model_controls$interpolate$needed) {
+
+   out <- do.call(what = model_controls$interpolate$fun,
+                  args = list(x = out))
+
+  } 
+
+  out 
+}
+
+
+
+
 #' @title Read and Write Rodent Dataset Control Lists
 #'
 #' @description Input/Output functions for dataset control lists.

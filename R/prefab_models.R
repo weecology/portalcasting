@@ -113,17 +113,19 @@ AutoArima <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main     = main, 
-                                      dataset  = dataset,
-                                      settings = settings)
-
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
-  rodents_table    <- rodents_table[moon_in, ]
 
-  abund_s <- rodents_table[ , gsub("NA", "NA.", species)]
+  abund_s <- prepare_rodent_abundance(main     = main,
+                                      dataset  = dataset,
+                                      species  = species,
+                                      model    = model,
+                                      settings = settings,
+                                      quiet    = quiet,
+                                      verbose  = verbose)
+
+
 
   mods   <- auto.arima(abund_s)
   casts  <- forecast(mods, h = length(metadata$time$rodent_cast_moons), level = metadata$confidence_level)
@@ -182,17 +184,17 @@ NaiveArima <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main     = main, 
-                                      dataset  = dataset,
-                                      settings = settings)
 
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
-  rodents_table    <- rodents_table[moon_in, ]
-
-  abund_s <- rodents_table[ , gsub("NA", "NA.", species)]
+  abund_s <- prepare_rodent_abundance(main     = main,
+                                      dataset  = dataset,
+                                      species  = species,
+                                      model    = model,
+                                      settings = settings,
+                                      quiet    = quiet,
+                                      verbose  = verbose)
 
   mods   <- Arima(abund_s, order = c(0, 1, 0))
   casts  <- forecast(mods, h = length(metadata$time$rodent_cast_moons), level = metadata$confidence_level)
@@ -251,17 +253,17 @@ ESSS <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main     = main, 
-                                      dataset  = dataset,
-                                      settings = settings)
 
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
-  rodents_table    <- rodents_table[moon_in, ]
-
-  abund_s <- round(na.interp(rodents_table[ , gsub("NA", "NA.", species)]))
+  abund_s <- prepare_rodent_abundance(main     = main,
+                                      dataset  = dataset,
+                                      species  = species,
+                                      model    = model,
+                                      settings = settings,
+                                      quiet    = quiet,
+                                      verbose  = verbose)
 
   mods   <- ets(abund_s)
   casts  <- forecast(mods, h = length(metadata$time$rodent_cast_moons), level = metadata$confidence_level,
@@ -319,17 +321,16 @@ nbGARCH <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main     = main, 
-                                      dataset  = dataset,
-                                      settings = settings)
-
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
-  rodents_table    <- rodents_table[moon_in, ]
-
-  abund_s <- round(na.interp(rodents_table[ , gsub("NA", "NA.", species)]))
+  abund_s <- prepare_rodent_abundance(main     = main,
+                                      dataset  = dataset,
+                                      species  = species,
+                                      model    = model,
+                                      settings = settings,
+                                      quiet    = quiet,
+                                      verbose  = verbose)
 
     past <- list(past_obs = 1, past_mean = 12)
     mods <- tryCatch(
@@ -400,23 +401,23 @@ nbsGARCH <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main     = main, 
-                                      dataset  = dataset,
-                                      settings = settings)
-
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
-  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
-  rodents_table    <- rodents_table[moon_in, ]
-
-  abund_s <- round(na.interp(rodents_table[ , gsub("NA", "NA.", species)]))
-
+  abund_s <- prepare_rodent_abundance(main     = main,
+                                      dataset  = dataset,
+                                      species  = species,
+                                      model    = model,
+                                      settings = settings,
+                                      quiet    = quiet,
+                                      verbose  = verbose)
 
 #
+
   covariates <- read_covariates(main = main, settings = settings)
 
-  for_hist         <- which(covariates$newmoonnumber %in% rodents_table$newmoonnumber & covariates$newmoonnumber >= metadata$time$start_moon)
+
+  for_hist         <- which(covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber < metadata$time$rodent_cast_moons[1])
   for_cast         <- which(covariates$newmoonnumber %in% metadata$time$rodent_cast_moons) 
   predictors       <- covariates[for_hist, c("sin2pifoy", "cos2pifoy")]
   cast_predictors  <- covariates[for_cast, c("sin2pifoy", "cos2pifoy")]
@@ -518,12 +519,17 @@ pevGARCH <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  rodents_table <- read_rodents_table(main     = main, 
-                                      dataset  = dataset,
-                                      settings = settings)
-
   metadata <- read_metadata(main     = main,
                             settings = settings)
+
+  abund_s <- prepare_rodent_abundance(main     = main,
+                                      dataset  = dataset,
+                                      species  = species,
+                                      model    = model,
+                                      settings = settings,
+                                      quiet    = quiet,
+                                      verbose  = verbose)
+
 
 
 
@@ -536,8 +542,9 @@ pevGARCH <- function (main     = ".",
                               tail       = TRUE)
 
 
+  covariates <- read_covariates(main = main, settings = settings)
 
-  for_hist         <- which(covar_lag$newmoonnumber %in% rodents_table$newmoonnumber & covar_lag$newmoonnumber >= metadata$time$start_moon)
+  for_hist         <- which(covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber < metadata$time$rodent_cast_moons[1])
   for_cast         <- which(covar_lag$newmoonnumber %in% metadata$time$rodent_cast_moons) 
   covar_hist       <- covar_lag[for_hist, ]
   covar_cast       <- covar_lag[for_cast, ]
@@ -547,16 +554,6 @@ pevGARCH <- function (main     = ".",
   dataset_controls <- metadata$dataset_controls[[dataset]]      
   models           <- covariate_models(model = "pevGARCH")
   nmodels          <- length(models)
-
-
-
-
-  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
-  rodents_table    <- rodents_table[moon_in, ]
-
-  abund_s <- round(na.interp(rodents_table[ , gsub("NA", "NA.", species)]))
-
-
 
     past <- list(past_obs = 1, past_mean = 12)
 
