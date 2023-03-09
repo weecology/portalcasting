@@ -982,7 +982,7 @@ jags_RW <- function (main            = ".",
 }
 
 
-#' @title Create a control list for a runjags JAGS model run
+#' @title Create a Control List for a runjags JAGS Model Run
 #'
 #' @description We leverage the \code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package to run JAGS (Plummer 2003) models in portalcasting. That function has a number of control parameters that users may be interested in changing, and this function wraps those parameters with a few portalcasting-specific parameters into a control list for input into specific model functions.
 #'
@@ -994,7 +994,7 @@ jags_RW <- function (main            = ".",
 #'
 #' @param sample Non-negative \code{integer}-conformable value of the number of sampling steps to use. See \code{\link[runjags]{run.jags}}.
 #'
-#' @param thin Non-negative \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags]{run.jags}}.
+#' @param thin Positive \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags]{run.jags}}.
 #'
 #' @param modules \code{character} vector of external modules to add to JAGS. See \code{\link[runjags]{run.jags}}.
 #'

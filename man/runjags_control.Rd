@@ -2,7 +2,7 @@
 % Please edit documentation in R/models_jags.R
 \name{runjags_control}
 \alias{runjags_control}
-\title{Create a control list for a runjags JAGS model run}
+\title{Create a Control List for a runjags JAGS Model Run}
 \usage{
 runjags_control(
   nchains = 4,
@@ -14,7 +14,6 @@ runjags_control(
   method = "interruptible",
   factories = "",
   mutate = NA,
-  cast_obs = TRUE,
   silent_jags = FALSE
 )
 }
@@ -36,8 +35,6 @@ runjags_control(
 \item{factories}{\code{character} vector of factory modules to add to JAGS. See \code{\link[runjags]{run.jags}}.}
 
 \item{mutate}{A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags]{run.jags}}.}
-
-\item{cast_obs}{\code{logical} value indicating if the observations should be forecast as well (should be kept as \code{TRUE} for the vast majority of uses).}
 
 \item{silent_jags}{\code{logical} value for quieting the output from the runjags function, including the underlying JAGS output.}
 }

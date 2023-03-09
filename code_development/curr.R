@@ -1,5 +1,5 @@
 devtools::load_all()
-g<-jags_logistic(main="~/pct", dataset="all", species="DM", control_runjags = runjags_control(burnin=100, adapt = 100, sample = 100, thin = 1))
+g<-jags_RW(main="~/portalcasting", dataset="all", species="DM", control_runjags = runjags_control(burnin=100, adapt = 100, sample = 100, thin = 1))
   
 currently working through updates to the jags models
 have done a round through all of the jags models
