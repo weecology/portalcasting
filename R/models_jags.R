@@ -111,83 +111,77 @@ jags_logistic_competition <- function (main            = ".",
   covariates    <- read_covariates(main     = main,
                                    settings = settings)
 
-    true_count_lead   <- length(metadata$time$rodent_cast_moons)
 
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(abundance, cast_count)
-   
-    log_mean_count <- log(mean(abundance, na.rm = TRUE))
-    log_max_count  <- log(max(abundance, na.rm = TRUE))
+  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  cast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, cast_count)
+  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
+  log_max_count   <- log(max(abundance, na.rm = TRUE))
 
-    ordii_controls <- scale(covariates$ordii_controls[covariates$newmoonnumber >= metadata$time$start_moon &
-                                                      covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+  ordii_controls <- scale(covariates$ordii_controls[covariates$newmoonnumber >= metadata$time$start_moon &
+                                                    covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])[ , 1]
 
-    data <- list(count          = count, 
-                 N              = length(count),
-                 log_mean_count = log_mean_count,
-                 log_max_count  = log_max_count,
-                 ordii          = ordii_controls[ , 1])
+  data <- list(count          = count, 
+               N              = length(count),
+               log_mean_count = log_mean_count,
+               log_max_count  = log_max_count,
+               ordii          = ordii_controls)
 
+  mods <- run.jags(model     = jags_model, 
+                   monitor   = monitor, 
+                   inits     = inits(data), 
+                   data      = data, 
+                   n.chains  = control_runjags$nchains, 
+                   adapt     = control_runjags$adapt, 
+                   burnin    = control_runjags$burnin, 
+                   sample    = control_runjags$sample, 
+                   thin      = control_runjags$thin, 
+                   modules   = control_runjags$modules, 
+                   method    = control_runjags$method, 
+                   factories = control_runjags$factories, 
+                   mutate    = control_runjags$mutate, 
+                   summarise = FALSE, 
+                   plots     = FALSE)
 
+  nchains <- control_runjags$nchains
+  vals    <- mods$mcmc[[1]]
 
-    mods <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
+  if (nchains > 1) {
 
+    for (j in 2:nchains) {
 
-      nchains <- control_runjags$nchains
-      vals    <- mods$mcmc[[1]]
+      vals <- rbind(vals, mods$mcmc[[j]])
 
-      if (nchains > 1) {
+    }
 
-        for (j in 2:nchains) {
+  }
 
-          vals <- rbind(vals, mods$mcmc[[j]])
+  pred_cols       <- grep("X", colnames(vals))
+  vals            <- vals[ , pred_cols]
+  HPD             <- HPDinterval(as.mcmc(vals))
+  casts           <- data.frame(pred  = round(apply(vals, 2, mean), 3),
+                                lower = round(HPD[ , "lower"], 3), 
+                                upper = round(HPD[ , "upper"], 3),
+                                moon  = metadata$time$rodent_cast_moons)
+  rownames(casts) <- NULL
 
-        }
+  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
+                         cast_month       = metadata$time$rodent_cast_months,
+                         cast_year        = metadata$time$rodent_cast_years, 
+                         moon             = metadata$time$rodent_cast_moons,
+                         currency         = metadata$dataset_controls[[dataset]]$args$output,
+                         model            = model, 
+                         dataset          = dataset, 
+                         species          = species, 
+                         cast_group       = metadata$cast_group,
+                         confidence_level = metadata$confidence_level,
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper, 
+                         start_moon       = metadata$time$start_moon,
+                         end_moon         = metadata$time$end_moon)
 
-      }
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      HPD            <- HPDinterval(as.mcmc(vals))
-      casts        <- data.frame(pred = round(apply(vals, 2, mean), 3),
-                                 lower       = round(HPD[ , "lower"], 3), 
-                                 upper       = round(HPD[ , "upper"], 3),
-                                 moon           = metadata$time$rodent_cast_moons)
-
-      rownames(casts)      <- NULL
-
-      cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = metadata$dataset_controls[[dataset]]$args$output,
-                               model            = model, 
-                               dataset          = dataset, 
-                               species          = species, 
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               estimate         = casts$pred, 
-                               lower_pi         = casts$lower,
-                               upper_pi         = casts$upper, 
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-
-  metadata <- update_list(metadata,
+  metadata <- update_list(metadata, 
                           models           = model,
                           datasets         = dataset,
                           dataset_controls = metadata$dataset_controls[[dataset]])
@@ -195,8 +189,8 @@ jags_logistic_competition <- function (main            = ".",
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
        model_fits  = mods, 
-       model_casts = casts) 
- 
+       model_casts = casts)
+
 
 }
 
@@ -318,85 +312,80 @@ jags_logistic_competition_covariates <- function (main            = ".",
 
 
 
-    true_count_lead   <- length(metadata$time$rodent_cast_moons)
+  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  cast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, cast_count)
+  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
+  log_max_count   <- log(max(abundance, na.rm = TRUE))
 
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(abundance, cast_count)
-   
-    log_mean_count <- log(mean(abundance, na.rm = TRUE))
-    log_max_count  <- log(max(abundance, na.rm = TRUE))
+  warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])[ , 1]
+  ndvi_thirteen_newmoons   <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])[ , 1]
+  ordii_controls           <- scale(covariates$ordii_controls[covariates$newmoonnumber >= metadata$time$start_moon &
+                                                    covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])[ , 1]
 
-    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_thirteen_newmoons     <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ordii_controls <- scale(covariates$ordii_controls[covariates$newmoonnumber >= metadata$time$start_moon &
-                                                      covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+  data <- list(count                    = count, 
+               N                        = length(count),
+               log_mean_count           = log_mean_count,
+               log_max_count            = log_max_count,
+               warm_rain_three_newmoons = warm_rain_three_newmoons,
+               ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons,
+               ordii                    = ordii_controls)
 
-    data <- list(count          = count, 
-                 N              = length(count),
-                 log_mean_count = log_mean_count,
-                 log_max_count  = log_max_count,
-                 warm_rain_three_newmoons = warm_rain_three_newmoons[ , 1],
-                 ndvi_thirteen_newmoons     = ndvi_thirteen_newmoons[ , 1],
-                 ordii          = ordii_controls[ , 1])
+  mods <- run.jags(model     = jags_model, 
+                   monitor   = monitor, 
+                   inits     = inits(data), 
+                   data      = data, 
+                   n.chains  = control_runjags$nchains, 
+                   adapt     = control_runjags$adapt, 
+                   burnin    = control_runjags$burnin, 
+                   sample    = control_runjags$sample, 
+                   thin      = control_runjags$thin, 
+                   modules   = control_runjags$modules, 
+                   method    = control_runjags$method, 
+                   factories = control_runjags$factories, 
+                   mutate    = control_runjags$mutate, 
+                   summarise = FALSE, 
+                   plots     = FALSE)
 
+  nchains <- control_runjags$nchains
+  vals    <- mods$mcmc[[1]]
 
-    mods <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
+  if (nchains > 1) {
 
-      nchains <- control_runjags$nchains
-      vals    <- mods$mcmc[[1]]
+    for (j in 2:nchains) {
 
-      if (nchains > 1) {
+      vals <- rbind(vals, mods$mcmc[[j]])
 
-        for (j in 2:nchains) {
+    }
 
-          vals <- rbind(vals, mods$mcmc[[j]])
+  }
 
-        }
+  pred_cols       <- grep("X", colnames(vals))
+  vals            <- vals[ , pred_cols]
+  HPD             <- HPDinterval(as.mcmc(vals))
+  casts           <- data.frame(pred  = round(apply(vals, 2, mean), 3),
+                                lower = round(HPD[ , "lower"], 3), 
+                                upper = round(HPD[ , "upper"], 3),
+                                moon  = metadata$time$rodent_cast_moons)
+  rownames(casts) <- NULL
 
-      }
+  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
+                         cast_month       = metadata$time$rodent_cast_months,
+                         cast_year        = metadata$time$rodent_cast_years, 
+                         moon             = metadata$time$rodent_cast_moons,
+                         currency         = metadata$dataset_controls[[dataset]]$args$output,
+                         model            = model, 
+                         dataset          = dataset, 
+                         species          = species, 
+                         cast_group       = metadata$cast_group,
+                         confidence_level = metadata$confidence_level,
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper, 
+                         start_moon       = metadata$time$start_moon,
+                         end_moon         = metadata$time$end_moon)
 
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      HPD            <- HPDinterval(as.mcmc(vals))
-      casts        <- data.frame(pred = round(apply(vals, 2, mean), 3),
-                                 lower       = round(HPD[ , "lower"], 3), 
-                                 upper       = round(HPD[ , "upper"], 3),
-                                 moon           = metadata$time$rodent_cast_moons)
-
-      rownames(casts)      <- NULL
-
-      cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = metadata$dataset_controls[[dataset]]$args$output,
-                               model            = model, 
-                               dataset          = dataset, 
-                               species          = species, 
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               estimate         = casts$pred, 
-                               lower_pi         = casts$lower,
-                               upper_pi         = casts$upper, 
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-
-  metadata <- update_list(metadata,
+  metadata <- update_list(metadata, 
                           models           = model,
                           datasets         = dataset,
                           dataset_controls = metadata$dataset_controls[[dataset]])
@@ -404,7 +393,8 @@ jags_logistic_competition_covariates <- function (main            = ".",
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
        model_fits  = mods, 
-       model_casts = casts) 
+       model_casts = casts)
+
  
 
 }
@@ -525,87 +515,77 @@ jags_logistic_covariates <- function (main            = ".",
   covariates    <- read_covariates(main     = main,
                                    settings = settings)
 
+  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  cast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, cast_count)
+  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
+  log_max_count   <- log(max(abundance, na.rm = TRUE))
 
+  warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])[ , 1]
+  ndvi_thirteen_newmoons   <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])[ , 1]
 
-    true_count_lead   <- length(metadata$time$rodent_cast_moons)
+  data <- list(count                    = count, 
+               N                        = length(count),
+               log_mean_count           = log_mean_count,
+               log_max_count            = log_max_count,
+               warm_rain_three_newmoons = warm_rain_three_newmoons,
+               ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons)
 
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(abundance, cast_count)
-   
-    log_mean_count <- log(mean(abundance, na.rm = TRUE))
-    log_max_count  <- log(max(abundance, na.rm = TRUE))
+  mods <- run.jags(model     = jags_model, 
+                   monitor   = monitor, 
+                   inits     = inits(data), 
+                   data      = data, 
+                   n.chains  = control_runjags$nchains, 
+                   adapt     = control_runjags$adapt, 
+                   burnin    = control_runjags$burnin, 
+                   sample    = control_runjags$sample, 
+                   thin      = control_runjags$thin, 
+                   modules   = control_runjags$modules, 
+                   method    = control_runjags$method, 
+                   factories = control_runjags$factories, 
+                   mutate    = control_runjags$mutate, 
+                   summarise = FALSE, 
+                   plots     = FALSE)
 
-    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_thirteen_newmoons     <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= metadata$time$start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
+  nchains <- control_runjags$nchains
+  vals    <- mods$mcmc[[1]]
 
+  if (nchains > 1) {
 
-    data <- list(count                  = count, 
-                 N                      = length(count),
-                 log_mean_count    = log_mean_count,
-                 log_max_count     = log_max_count,
-                 warm_rain_three_newmoons = warm_rain_three_newmoons[ , 1],
-                 ndvi_thirteen_newmoons     = ndvi_thirteen_newmoons[ , 1])
+    for (j in 2:nchains) {
 
+      vals <- rbind(vals, mods$mcmc[[j]])
 
-    mods <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
+    }
 
+  }
 
-      nchains <- control_runjags$nchains
-      vals    <- mods$mcmc[[1]]
+  pred_cols       <- grep("X", colnames(vals))
+  vals            <- vals[ , pred_cols]
+  HPD             <- HPDinterval(as.mcmc(vals))
+  casts           <- data.frame(pred  = round(apply(vals, 2, mean), 3),
+                                lower = round(HPD[ , "lower"], 3), 
+                                upper = round(HPD[ , "upper"], 3),
+                                moon  = metadata$time$rodent_cast_moons)
+  rownames(casts) <- NULL
 
-      if (nchains > 1) {
+  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
+                         cast_month       = metadata$time$rodent_cast_months,
+                         cast_year        = metadata$time$rodent_cast_years, 
+                         moon             = metadata$time$rodent_cast_moons,
+                         currency         = metadata$dataset_controls[[dataset]]$args$output,
+                         model            = model, 
+                         dataset          = dataset, 
+                         species          = species, 
+                         cast_group       = metadata$cast_group,
+                         confidence_level = metadata$confidence_level,
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper, 
+                         start_moon       = metadata$time$start_moon,
+                         end_moon         = metadata$time$end_moon)
 
-        for (j in 2:nchains) {
-
-          vals <- rbind(vals, mods$mcmc[[j]])
-
-        }
-
-      }
-
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      HPD            <- HPDinterval(as.mcmc(vals))
-      casts        <- data.frame(pred = round(apply(vals, 2, mean), 3),
-                                 lower       = round(HPD[ , "lower"], 3), 
-                                 upper       = round(HPD[ , "upper"], 3),
-                                 moon           = metadata$time$rodent_cast_moons)
-
-      rownames(casts)      <- NULL
-
-      cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = metadata$dataset_controls[[dataset]]$args$output,
-                               model            = model, 
-                               dataset          = dataset, 
-                               species          = species, 
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               estimate         = casts$pred, 
-                               lower_pi         = casts$lower,
-                               upper_pi         = casts$upper, 
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-
-  metadata <- update_list(metadata,
+  metadata <- update_list(metadata, 
                           models           = model,
                           datasets         = dataset,
                           dataset_controls = metadata$dataset_controls[[dataset]])
@@ -613,7 +593,8 @@ jags_logistic_covariates <- function (main            = ".",
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
        model_fits  = mods, 
-       model_casts = casts) 
+       model_casts = casts)
+
 
 }
 
@@ -717,81 +698,71 @@ jags_logistic <- function (main            = ".",
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
 
+  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  cast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, cast_count)
+  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
+  log_max_count   <- log(max(abundance, na.rm = TRUE))
 
-    true_count_lead   <- length(metadata$time$rodent_cast_moons)
+  data <- list(count          = count, 
+               N              = length(count),
+               log_mean_count = log_mean_count,
+               log_max_count  = log_max_count)
 
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(abundance, cast_count)
-   
-    log_mean_count <- log(mean(abundance, na.rm = TRUE))
-    log_max_count  <- log(max(abundance, na.rm = TRUE))
+  mods <- run.jags(model     = jags_model, 
+                   monitor   = monitor, 
+                   inits     = inits(data), 
+                   data      = data, 
+                   n.chains  = control_runjags$nchains, 
+                   adapt     = control_runjags$adapt, 
+                   burnin    = control_runjags$burnin, 
+                   sample    = control_runjags$sample, 
+                   thin      = control_runjags$thin, 
+                   modules   = control_runjags$modules, 
+                   method    = control_runjags$method, 
+                   factories = control_runjags$factories, 
+                   mutate    = control_runjags$mutate, 
+                   summarise = FALSE, 
+                   plots     = FALSE)
+  nchains <- control_runjags$nchains
+  vals    <- mods$mcmc[[1]]
 
+  if (nchains > 1) {
 
-    data <- list(count                  = count, 
-                 N                      = length(count),
-                 log_mean_count    = log_mean_count,
-                 log_max_count     = log_max_count)
+    for (j in 2:nchains) {
 
+      vals <- rbind(vals, mods$mcmc[[j]])
 
-    mods <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
+    }
 
+  }
 
-      nchains <- control_runjags$nchains
-      vals    <- mods$mcmc[[1]]
+  pred_cols       <- grep("X", colnames(vals))
+  vals            <- vals[ , pred_cols]
+  HPD             <- HPDinterval(as.mcmc(vals))
+  casts           <- data.frame(pred  = round(apply(vals, 2, mean), 3),
+                                lower = round(HPD[ , "lower"], 3), 
+                                upper = round(HPD[ , "upper"], 3),
+                                moon  = metadata$time$rodent_cast_moons)
+  rownames(casts) <- NULL
 
-      if (nchains > 1) {
+  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
+                         cast_month       = metadata$time$rodent_cast_months,
+                         cast_year        = metadata$time$rodent_cast_years, 
+                         moon             = metadata$time$rodent_cast_moons,
+                         currency         = metadata$dataset_controls[[dataset]]$args$output,
+                         model            = model, 
+                         dataset          = dataset, 
+                         species          = species, 
+                         cast_group       = metadata$cast_group,
+                         confidence_level = metadata$confidence_level,
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper, 
+                         start_moon       = metadata$time$start_moon,
+                         end_moon         = metadata$time$end_moon)
 
-        for (j in 2:nchains) {
-
-          vals <- rbind(vals, mods$mcmc[[j]])
-
-        }
-
-      }
-
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      HPD            <- HPDinterval(as.mcmc(vals))
-      casts        <- data.frame(pred = round(apply(vals, 2, mean), 3),
-                                 lower       = round(HPD[ , "lower"], 3), 
-                                 upper       = round(HPD[ , "upper"], 3),
-                                 moon           = metadata$time$rodent_cast_moons)
-
-      rownames(casts)      <- NULL
-
-      cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = metadata$dataset_controls[[dataset]]$args$output,
-                               model            = model, 
-                               dataset          = dataset, 
-                               species          = species, 
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               estimate         = casts$pred, 
-                               lower_pi         = casts$lower,
-                               upper_pi         = casts$upper, 
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-
-  metadata <- update_list(metadata,
+  metadata <- update_list(metadata, 
                           models           = model,
                           datasets         = dataset,
                           dataset_controls = metadata$dataset_controls[[dataset]])
@@ -799,7 +770,7 @@ jags_logistic <- function (main            = ".",
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
        model_fits  = mods, 
-       model_casts = casts) 
+       model_casts = casts)
 
 }
 
@@ -836,8 +807,6 @@ jags_RW <- function (main            = ".",
                                         settings = settings,
                                         quiet    = quiet,
                                         verbose  = verbose)
-
-
 
   monitor <- c("mu", "sigma", paste0("X[", metadata$time$rodent_cast_moons - metadata$time$start_moon, "]"))
 
@@ -891,85 +860,74 @@ jags_RW <- function (main            = ".",
 
   }"
 
-  model     <- "jags_RW"
-
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
 
 
-    true_count_lead   <- length(metadata$time$rodent_cast_moons)
+  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  cast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, cast_count)
+  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
 
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(abundance, cast_count)
-   
-    log_mean_count <- log(mean(abundance, na.rm = TRUE))
+  data <- list(count          = count, 
+               N              = length(count),
+               log_mean_count = log_mean_count)
 
+  mods <- run.jags(model     = jags_model, 
+                   monitor   = monitor, 
+                   inits     = inits(data), 
+                   data      = data, 
+                   n.chains  = control_runjags$nchains, 
+                   adapt     = control_runjags$adapt, 
+                   burnin    = control_runjags$burnin, 
+                   sample    = control_runjags$sample, 
+                   thin      = control_runjags$thin, 
+                   modules   = control_runjags$modules, 
+                   method    = control_runjags$method, 
+                   factories = control_runjags$factories, 
+                   mutate    = control_runjags$mutate, 
+                   summarise = FALSE, 
+                   plots     = FALSE)
 
-    data <- list(count                  = count, 
-                 N                      = length(count),
-                 log_mean_count    = log_mean_count)
+  nchains <- control_runjags$nchains
+  vals    <- mods$mcmc[[1]]
 
+  if (nchains > 1) {
 
+    for (j in 2:nchains) {
 
-    mods <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
+      vals <- rbind(vals, mods$mcmc[[j]])
 
+    }
 
-      nchains <- control_runjags$nchains
-      vals    <- mods$mcmc[[1]]
+  }
 
-      if (nchains > 1) {
+  pred_cols       <- grep("X", colnames(vals))
+  vals            <- vals[ , pred_cols]
+  HPD             <- HPDinterval(as.mcmc(vals))
+  casts           <- data.frame(pred  = round(apply(vals, 2, mean), 3),
+                                lower = round(HPD[ , "lower"], 3), 
+                                upper = round(HPD[ , "upper"], 3),
+                                moon  = metadata$time$rodent_cast_moons)
+  rownames(casts) <- NULL
 
-        for (j in 2:nchains) {
+  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
+                         cast_month       = metadata$time$rodent_cast_months,
+                         cast_year        = metadata$time$rodent_cast_years, 
+                         moon             = metadata$time$rodent_cast_moons,
+                         currency         = metadata$dataset_controls[[dataset]]$args$output,
+                         model            = model, 
+                         dataset          = dataset, 
+                         species          = species, 
+                         cast_group       = metadata$cast_group,
+                         confidence_level = metadata$confidence_level,
+                         estimate         = casts$pred, 
+                         lower_pi         = casts$lower,
+                         upper_pi         = casts$upper, 
+                         start_moon       = metadata$time$start_moon,
+                         end_moon         = metadata$time$end_moon)
 
-          vals <- rbind(vals, mods$mcmc[[j]])
-
-        }
-
-      }
-
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      HPD            <- HPDinterval(as.mcmc(vals))
-      casts        <- data.frame(pred = round(apply(vals, 2, mean), 3),
-                                 lower       = round(HPD[ , "lower"], 3), 
-                                 upper       = round(HPD[ , "upper"], 3),
-                                 moon           = metadata$time$rodent_cast_moons)
-
-      rownames(casts)      <- NULL
-
-      cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = metadata$dataset_controls[[dataset]]$args$output,
-                               model            = model, 
-                               dataset          = dataset, 
-                               species          = species, 
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               estimate         = casts$pred, 
-                               lower_pi         = casts$lower,
-                               upper_pi         = casts$upper, 
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-
-  metadata <- update_list(metadata,
+  metadata <- update_list(metadata, 
                           models           = model,
                           datasets         = dataset,
                           dataset_controls = metadata$dataset_controls[[dataset]])
@@ -977,7 +935,7 @@ jags_RW <- function (main            = ".",
   list(metadata    = metadata, 
        cast_tab    = cast_tab, 
        model_fits  = mods, 
-       model_casts = casts) 
+       model_casts = casts)
 
 }
 

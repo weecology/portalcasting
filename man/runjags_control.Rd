@@ -26,7 +26,7 @@ runjags_control(
 
 \item{sample}{Non-negative \code{integer}-conformable value of the number of sampling steps to use. See \code{\link[runjags]{run.jags}}.}
 
-\item{thin}{Non-negative \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags]{run.jags}}.}
+\item{thin}{Positive \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags]{run.jags}}.}
 
 \item{modules}{\code{character} vector of external modules to add to JAGS. See \code{\link[runjags]{run.jags}}.}
 
