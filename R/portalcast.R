@@ -46,13 +46,12 @@ model <- model_combinations$model[1]
 dataset <- model_combinations$dataset[1]
 species <- model_combinations$species[1]
 
-  do.call(what = model,
-          args = list(main = main,
-                      settings = settings,
-                      dataset = dataset,
-                      species = species,
-                      quiet = quiet,
-                      verbose = verbose))
+  cast(main = main,
+       settings = settings,
+       dataset = dataset,
+       species = species,
+       quiet = quiet,
+       verbose = verbose)
 
 
   messageq(message_break(), "\nCasting complete\n", message_break(), quiet = quiet)
@@ -70,11 +69,48 @@ species <- model_combinations$species[1]
 } 
 
 
+cast <- function (main     = ".", 
+                  dataset  = NULL,
+                  species  = NULL,
+                  model    = NULL,
+                  settings = directory_settings(), 
+                  quiet    = FALSE, 
+                  verbose  = FALSE) {
+
+  return_if_null(x = dataset)
+  return_if_null(x = species)
+  return_if_null(x = model)
+
+
+  dataset <- tolower(dataset)
+
+  messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
+
+  metadata <- read_metadata(main     = main,
+                            settings = settings)
+
+  abundance <- prepare_rodent_abundance(main     = main,
+                                        dataset  = dataset,
+                                        species  = species,
+                                        model    = model,
+                                        settings = settings,
+                                        quiet    = quiet,
+                                        verbose  = verbose)
+  model_controls(main     = main,
+                 model    = model,
+                 settings = settings)[[model]]$fun
+                                        
+
+
+}
+
+
+
 #' @rdname portalcast
 #'
 #' @export
 #'
-cast <- function (main       = ".", 
+xcast <- function (main       = ".", 
                   settings   = directory_settings(), 
                   quiet      = FALSE, 
                   verbose    = FALSE) {

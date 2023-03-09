@@ -2,7 +2,7 @@
 % Please edit documentation in R/portalcast.R
 \name{portalcast}
 \alias{portalcast}
-\alias{cast}
+\alias{xcast}
 \title{Forecast Portal Rodents Models}
 \usage{
 portalcast(
@@ -12,7 +12,7 @@ portalcast(
   verbose = FALSE
 )
 
-cast(
+xcast(
   main = ".",
   settings = directory_settings(),
   quiet = FALSE,
