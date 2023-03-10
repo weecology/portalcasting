@@ -1,4 +1,40 @@
 
+
+process_model_output <- function (model_fit,
+                                  model_cast,
+                                  metadata,
+                                  model,
+                                  dataset,
+                                  species) {
+
+  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
+                         cast_month       = metadata$time$rodent_cast_months,
+                         cast_year        = metadata$time$rodent_cast_years, 
+                         moon             = metadata$time$rodent_cast_moons,
+                         currency         = metadata$dataset_controls[[dataset]]$args$output,
+                         model            = model, 
+                         dataset          = dataset, 
+                         species          = species, 
+                         cast_group       = metadata$cast_group,
+                         confidence_level = metadata$confidence_level,
+                         estimate         = model_cast$pred, 
+                         lower_pi         = model_cast$lower,
+                         upper_pi         = model_cast$upper, 
+                         start_moon       = metadata$time$start_moon,
+                         end_moon         = metadata$time$end_moon)
+
+  metadata <- update_list(metadata, 
+                          model            = model,
+                          dataset          = dataset,
+                          dataset_controls = metadata$dataset_controls[[dataset]])
+
+  list(metadata   = metadata, 
+       cast_tab   = cast_tab, 
+       model_fit  = model_fit, 
+       model_cast = model_cast)
+
+}
+
 #' @title Measure Error and Fit Metrics for Forecasts
 #' 
 #' @description Summarize the cast-level errors or fits to the observations. \cr 

@@ -127,42 +127,22 @@ AutoArima <- function (main     = ".",
 
 
 
-  mods   <- auto.arima(y = abundance)
-  casts  <- forecast(object = mods, 
+  model_fit   <- auto.arima(y = abundance)
+  model_cast  <- forecast(object = model_fit, 
                      h      = length(metadata$time$rodent_cast_moons), 
                      level  = metadata$confidence_level)
 
-  casts  <- data.frame(pred = casts$mean,
-                       lower = casts$lower[,1], 
-                       upper = casts$upper[,1],
-                       moon = metadata$time$rodent_cast_moons)
+  model_cast  <- data.frame(pred  = model_cast$mean,
+                          lower = model_cast$lower[,1], 
+                          upper = model_cast$upper[,1],
+                          moon  = metadata$time$rodent_cast_moons)
 
-  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                         cast_month       = metadata$time$rodent_cast_months,
-                         cast_year        = metadata$time$rodent_cast_years, 
-                         moon             = metadata$time$rodent_cast_moons,
-                         currency         = metadata$dataset_controls[[dataset]]$args$output,
-                         model            = model, 
-                         dataset          = dataset, 
-                         species          = species, 
-                         cast_group       = metadata$cast_group,
-                         confidence_level = metadata$confidence_level,
-                         estimate         = casts$pred, 
-                         lower_pi         = casts$lower,
-                         upper_pi         = casts$upper, 
-                         start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon)
-
-  metadata <- update_list(metadata, 
-                          models           = model,
-                          datasets         = dataset,
-                          dataset_controls = metadata$dataset_controls[[dataset]])
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts)
-
+  process_model_output(model_fit  = model_fit,
+                       model_cast = model_cast,
+                       metadata   = metadata,
+                       model      = model,
+                       dataset    = dataset,
+                       species    = species) 
 }
 
 
@@ -202,47 +182,25 @@ NaiveArima <- function (main     = ".",
                                       quiet    = quiet,
                                       verbose  = verbose)
 
-  mods   <- Arima(y     = abundance, 
+  model_fit   <- Arima(y     = abundance, 
                   order = c(0, 1, 0))
-  casts  <- forecast(object = mods, 
+  model_cast  <- forecast(object = model_fit, 
                      h      = length(metadata$time$rodent_cast_moons), 
                      level  = metadata$confidence_level)
 
-  casts  <- data.frame(pred = casts$mean,
-                       lower = casts$lower[,1], 
-                       upper = casts$upper[,1],
-                       moon = metadata$time$rodent_cast_moons)
+  model_cast  <- data.frame(pred  = model_cast$mean,
+                          lower = model_cast$lower[,1], 
+                          upper = model_cast$upper[,1],
+                          moon  = metadata$time$rodent_cast_moons)
 
-  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                         cast_month       = metadata$time$rodent_cast_months,
-                         cast_year        = metadata$time$rodent_cast_years, 
-                         moon             = metadata$time$rodent_cast_moons,
-                         currency         = metadata$dataset_controls[[dataset]]$args$output,
-                         model            = model, 
-                         dataset          = dataset, 
-                         species          = species, 
-                         cast_group       = metadata$cast_group,
-                         confidence_level = metadata$confidence_level,
-                         estimate         = casts$pred, 
-                         lower_pi         = casts$lower,
-                         upper_pi         = casts$upper,
-                         start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon)
-
-  metadata <- update_list(metadata, 
-                          models           = model,
-                          datasets         = dataset,
-                          dataset_controls = metadata$dataset_controls[[dataset]])
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts)
+  process_model_output(model_fit  = model_fit,
+                       model_cast = model_cast,
+                       metadata   = metadata,
+                       model      = model,
+                       dataset    = dataset,
+                       species    = species) 
 
 }
-
-
-
 
 
 #' @rdname prefab_model_functions
@@ -278,42 +236,23 @@ ESSS <- function (main     = ".",
                                       quiet    = quiet,
                                       verbose  = verbose)
 
-  mods   <- ets(y = abundance)
-  casts  <- forecast(object = mods, 
+  model_fit   <- ets(y = abundance)
+  model_cast  <- forecast(object = model_fit, 
                      h      = length(metadata$time$rodent_cast_moons), 
-                     level = metadata$confidence_level,
+                     level  = metadata$confidence_level,
                      allow.multiplicative.trend = TRUE)
 
-  casts  <- data.frame(pred = casts$mean,
-                       lower = casts$lower[,1], 
-                       upper = casts$upper[,1],
-                       moon = metadata$time$rodent_cast_moons)
+  model_cast  <- data.frame(pred  = model_cast$mean,
+                          lower = model_cast$lower[,1], 
+                          upper = model_cast$upper[,1],
+                          moon  = metadata$time$rodent_cast_moons)
 
-  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                         cast_month       = metadata$time$rodent_cast_months,
-                         cast_year        = metadata$time$rodent_cast_years, 
-                         moon             = metadata$time$rodent_cast_moons,
-                         currency         = metadata$dataset_controls[[dataset]]$args$output,
-                         model            = model, 
-                         dataset          = dataset, 
-                         species          = species, 
-                         cast_group       = metadata$cast_group,
-                         confidence_level = metadata$confidence_level,
-                         estimate         = casts$pred, 
-                         lower_pi         = casts$lower,
-                         upper_pi         = casts$upper,
-                         start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon)
-
-  metadata <- update_list(metadata, 
-                          models           = model,
-                          datasets         = dataset,
-                          dataset_controls = metadata$dataset_controls[[dataset]])
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts)
+  process_model_output(model_fit  = model_fit,
+                       model_cast = model_cast,
+                       metadata   = metadata,
+                       model      = model,
+                       dataset    = dataset,
+                       species    = species) 
 
 }
 
@@ -352,16 +291,16 @@ nbGARCH <- function (main     = ".",
                                       verbose  = verbose)
 
     past <- list(past_obs  = 1, 
-                 past_mean = 12)
-    mods <- tryCatch(
+                 past_mean = 13)
+    model_fit <- tryCatch(
                    tsglm(ts    = abundance, 
                          model = past, 
                          distr = "nbinom", 
                          link  = "log"),
                    warning = function(x){NA}, 
                    error = function(x){NA})
-    if(all(is.na(mods)) || AIC(mods) == Inf){
-      mods <- tryCatch(
+    if(all(is.na(model_fit)) || AIC(model_fit) == Inf){
+      model_fit <- tryCatch(
                    tsglm(ts    = abundance, 
                          model = past, 
                          distr = "poisson", 
@@ -369,41 +308,24 @@ nbGARCH <- function (main     = ".",
                      warning = function(x){NA}, 
                      error = function(x){NA})
     }
-    if(!all(is.na(mods))){
-      casts <- predict(object  = mods, 
+    if(!all(is.na(model_fit))){
+      model_cast <- predict(object  = model_fit, 
                        n.ahead = length(metadata$time$rodent_cast_moons), 
                        level   = metadata$confidence_level)
-      casts  <- data.frame(pred = as.numeric(casts$pred),
-                       lower = as.numeric(casts$interval[ , 1]),
-                       upper = as.numeric(casts$interval[ , 2]),
+      model_cast <- data.frame(pred = as.numeric(model_cast$pred),
+                       lower = as.numeric(model_cast$interval[ , 1]),
+                       upper = as.numeric(model_cast$interval[ , 2]),
                        moon = metadata$time$rodent_cast_moons)
     }  
 
-  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                         cast_month       = metadata$time$rodent_cast_months,
-                         cast_year        = metadata$time$rodent_cast_years, 
-                         moon             = metadata$time$rodent_cast_moons,
-                         currency         = metadata$dataset_controls[[dataset]]$args$output,
-                         model            = model, 
-                         dataset          = dataset, 
-                         species          = species, 
-                         cast_group       = metadata$cast_group,
-                         confidence_level = metadata$confidence_level,
-                         estimate         = casts$pred, 
-                         lower_pi         = casts$lower,
-                         upper_pi         = casts$upper,
-                         start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon)
 
-  metadata <- update_list(metadata, 
-                          models           = model,
-                          datasets         = dataset,
-                          dataset_controls = metadata$dataset_controls[[dataset]])
+  process_model_output(model_fit  = model_fit,
+                       model_cast = model_cast,
+                       metadata   = metadata,
+                       model      = model,
+                       dataset    = dataset,
+                       species    = species) 
 
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts)
 
 
 }
@@ -456,8 +378,8 @@ nbsGARCH <- function (main     = ".",
 
 
     past <- list(past_obs  = 1, 
-                 past_mean = 12)
-    mods <- tryCatch(
+                 past_mean = 13)
+    model_fit <- tryCatch(
                    tsglm(ts    = abundance, 
                          model = past, 
                          distr = "nbinom", 
@@ -466,9 +388,9 @@ nbsGARCH <- function (main     = ".",
                    warning = function(x){NA}, 
                    error   = function(x){NA})
 
-    if (all(is.na(mods)) || AIC(mods) == Inf) {
+    if (all(is.na(model_fit)) || AIC(model_fit) == Inf) {
 
-      mods <- tryCatch(
+      model_fit <- tryCatch(
                      tsglm(ts    = abundance, 
                            model = past, 
                            distr = "poisson", 
@@ -477,58 +399,27 @@ nbsGARCH <- function (main     = ".",
                      warning = function(x){NA}, 
                      error   = function(x){NA})
     }
-    if (!all(is.na(mods))) {
+    if (!all(is.na(model_fit))) {
 
-      casts <- predict(object  = mods, 
+      model_cast <- predict(object  = model_fit, 
                        n.ahead = length(metadata$time$rodent_cast_moons), 
                        level   = metadata$confidence_level,
                        newxreg = cast_predictors)
-      casts  <- data.frame(pred = as.numeric(casts$pred),
-                       lower = as.numeric(casts$interval[ , 1]),
-                       upper = as.numeric(casts$interval[ , 2]),
+      model_cast <- data.frame(pred = as.numeric(model_cast$pred),
+                       lower = as.numeric(model_cast$interval[ , 1]),
+                       upper = as.numeric(model_cast$interval[ , 2]),
                        moon = metadata$time$rodent_cast_moons)
     }    
 
 
 
-  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                         cast_month       = metadata$time$rodent_cast_months,
-                         cast_year        = metadata$time$rodent_cast_years, 
-                         moon             = metadata$time$rodent_cast_moons,
-                         currency         = metadata$dataset_controls[[dataset]]$args$output,
-                         model            = model, 
-                         dataset          = dataset, 
-                         species          = species, 
-                         cast_group       = metadata$cast_group,
-                         confidence_level = metadata$confidence_level,
-                         estimate         = casts$pred, 
-                         lower_pi         = casts$lower,
-                         upper_pi         = casts$upper,
-                         start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon)
 
-  
-
-  metadata <- update_list(metadata, 
-                          models           = model,
-                          datasets         = dataset,
-                          dataset_controls = metadata$dataset_controls[[dataset]])
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts)
-
-
-
-  metadata <- update_list(metadata, models           = model,
-                                    datasets         = dataset,
-                                    dataset_controls = dataset_controls)
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts)
+  process_model_output(model_fit  = model_fit,
+                       model_cast = model_cast,
+                       metadata   = metadata,
+                       model      = model,
+                       dataset    = dataset,
+                       species    = species) 
 
 }
 
@@ -642,42 +533,20 @@ pevGARCH <- function (main     = ".",
     }
     best_mod <- which.min(AICs)
 
-    mods <- mods[[best_mod]] 
-    casts <- casts[[best_mod]] 
+    model_fit <- mods[[best_mod]] 
+    model_cast <- casts[[best_mod]] 
 
-      casts  <- data.frame(pred = as.numeric(casts$pred),
-                       lower = as.numeric(casts$interval[ , 1]),
-                       upper = as.numeric(casts$interval[ , 2]),
+      model_cast <- data.frame(pred = as.numeric(model_cast$pred),
+                       lower = as.numeric(model_cast$interval[ , 1]),
+                       upper = as.numeric(model_cast$interval[ , 2]),
                        moon = metadata$time$rodent_cast_moons)
 
-
-  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
-                         cast_month       = metadata$time$rodent_cast_months,
-                         cast_year        = metadata$time$rodent_cast_years, 
-                         moon             = metadata$time$rodent_cast_moons,
-                         currency         = metadata$dataset_controls[[dataset]]$args$output,
-                         model            = model, 
-                         dataset          = dataset, 
-                         species          = species, 
-                         cast_group       = metadata$cast_group,
-                         confidence_level = metadata$confidence_level,
-                         estimate         = casts$pred, 
-                         lower_pi         = casts$lower,
-                         upper_pi         = casts$upper,
-                         start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon)
-
-  
-
-  metadata <- update_list(metadata, 
-                          models           = model,
-                          datasets         = dataset,
-                          dataset_controls = metadata$dataset_controls[[dataset]])
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts)
+  process_model_output(model_fit  = model_fit,
+                       model_cast = model_cast,
+                       metadata   = metadata,
+                       model      = model,
+                       dataset    = dataset,
+                       species    = species) 
 
 
 }
