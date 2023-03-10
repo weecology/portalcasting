@@ -10,6 +10,16 @@ g
 
 g<-AutoArima(main="~/portalcasting", dataset="all", species="DM")
 g
+g<-NaiveArima(main="~/portalcasting", dataset="all", species="DM")
+g
+g<-ESSS(main="~/portalcasting", dataset="all", species="DM")
+g
+
+g<-nbGARCH(main="~/portalcasting", dataset="all", species="DM")
+g
+g<-nbsGARCH(main="~/portalcasting", dataset="all", species="DM")
+g
+
 
 g <- read_casts_metadata(main     = "~/portalcasting")
 g <- read_metadata(main     = "~/portalcasting")

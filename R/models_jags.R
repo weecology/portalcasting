@@ -398,7 +398,7 @@ jags_logistic_covariates <- function (main            = ".",
                                         verbose  = verbose)
 
 
-  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope_NDVI", paste0("X[", metadata$time$rodent_cast_moons - metadata$time$start_moon, "]"))
+  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope", paste0("X[", metadata$time$rodent_cast_moons - metadata$time$start_moon, "]"))
 
 
 
