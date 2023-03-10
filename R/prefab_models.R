@@ -113,8 +113,6 @@ AutoArima <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  metadata <- read_metadata(main     = main,
-                            settings = settings)
 
 
   abundance <- prepare_rodent_abundance(main     = main,
@@ -125,7 +123,9 @@ AutoArima <- function (main     = ".",
                                         quiet    = quiet,
                                         verbose  = verbose)
 
-
+##
+  metadata <- read_metadata(main     = main,
+                            settings = settings)
 
   model_fit   <- auto.arima(y = abundance)
   model_cast  <- forecast(object = model_fit, 
@@ -134,15 +134,18 @@ AutoArima <- function (main     = ".",
 
   model_cast  <- data.frame(pred  = model_cast$mean,
                           lower = model_cast$lower[,1], 
-                          upper = model_cast$upper[,1],
-                          moon  = metadata$time$rodent_cast_moons)
+                          upper = model_cast$upper[,1])
 
-  process_model_output(model_fit  = model_fit,
+##
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 }
 
 
@@ -190,15 +193,17 @@ NaiveArima <- function (main     = ".",
 
   model_cast  <- data.frame(pred  = model_cast$mean,
                           lower = model_cast$lower[,1], 
-                          upper = model_cast$upper[,1],
-                          moon  = metadata$time$rodent_cast_moons)
+                          upper = model_cast$upper[,1])
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
 }
 
@@ -244,16 +249,17 @@ ESSS <- function (main     = ".",
 
   model_cast  <- data.frame(pred  = model_cast$mean,
                           lower = model_cast$lower[,1], 
-                          upper = model_cast$upper[,1],
-                          moon  = metadata$time$rodent_cast_moons)
+                          upper = model_cast$upper[,1])
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
-
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 }
 
 
@@ -314,17 +320,19 @@ nbGARCH <- function (main     = ".",
                        level   = metadata$confidence_level)
       model_cast <- data.frame(pred = as.numeric(model_cast$pred),
                        lower = as.numeric(model_cast$interval[ , 1]),
-                       upper = as.numeric(model_cast$interval[ , 2]),
-                       moon = metadata$time$rodent_cast_moons)
+                       upper = as.numeric(model_cast$interval[ , 2]))
     }  
 
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
 
 
@@ -407,20 +415,18 @@ nbsGARCH <- function (main     = ".",
                        newxreg = cast_predictors)
       model_cast <- data.frame(pred = as.numeric(model_cast$pred),
                        lower = as.numeric(model_cast$interval[ , 1]),
-                       upper = as.numeric(model_cast$interval[ , 2]),
-                       moon = metadata$time$rodent_cast_moons)
+                       upper = as.numeric(model_cast$interval[ , 2]))
     }    
 
-
-
-
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
-
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 }
 
 
@@ -481,7 +487,7 @@ pevGARCH <- function (main     = ".",
   models           <- covariate_models(model = "pevGARCH")
   nmodels          <- length(models)
 
-    past <- list(past_obs = 1, past_mean = 12)
+    past <- list(past_obs = 1, past_mean = 13)
 
     model_count <- 1
 
@@ -538,15 +544,16 @@ pevGARCH <- function (main     = ".",
 
       model_cast <- data.frame(pred = as.numeric(model_cast$pred),
                        lower = as.numeric(model_cast$interval[ , 1]),
-                       upper = as.numeric(model_cast$interval[ , 2]),
-                       moon = metadata$time$rodent_cast_moons)
+                       upper = as.numeric(model_cast$interval[ , 2]))
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
-
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
 }

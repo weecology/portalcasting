@@ -10,7 +10,7 @@ prepare_metadata(
   datasets = prefab_datasets(),
   end_moon = NULL,
   start_moon = 217,
-  lead_time = 12,
+  lead_time = 13,
   cast_date = Sys.Date(),
   confidence_level = 0.95,
   settings = directory_settings(),
@@ -29,7 +29,8 @@ prepare_metadata(
 
 \item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.}
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover. \cr 
+As of version 0.51.0, default is now 13, was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year.}
 
 \item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
 

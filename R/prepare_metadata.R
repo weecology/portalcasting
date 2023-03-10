@@ -20,7 +20,8 @@
 #'
 #' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number of the last sample to be included. Default value is \code{NULL}, which equates to the most recently included sample. 
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover. \cr 
+#'   As of version 0.51.0, default is now 13, was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year. 
 #'
 #' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
 #'
@@ -33,7 +34,7 @@ prepare_metadata <- function (main             = ".",
                               datasets         = prefab_datasets(),
                               end_moon         = NULL, 
                               start_moon       = 217, 
-                              lead_time        = 12,
+                              lead_time        = 13,
                               cast_date        = Sys.Date(), 
                               confidence_level = 0.95,
                               settings         = directory_settings(), 

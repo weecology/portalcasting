@@ -1,11 +1,35 @@
 
 
-process_model_output <- function (model_fit,
+# this incorporates the code from save_model_output, now rendering that function vestigial, so i've deleted it
+#  but we will want to use that documentation to build the doc for this function, so i've just commented it out below
+# this way, the basic processing function just needs the model fit and cast
+# and honestly it can even not have anything for the fit, the default NULL still works,
+# as all that happens for the fit is a version is serialized as JSON and saved out in the fits folder and the raw input is passed through
+# the model cast just needs to be a dataframe with pred, lower, and upper columns
+
+process_model_output <- function (main     = ".", 
+                                  model_fit = NULL,
                                   model_cast,
-                                  metadata,
                                   model,
                                   dataset,
-                                  species) {
+                                  species,
+                                  settings = directory_settings( ), 
+                                  quiet    = FALSE, 
+                                  verbose  = FALSE) {
+
+
+  casts_metadata <- read_casts_metadata(main     = main, 
+                                        settings = settings,
+                                        quiet    = quiet) 
+
+  metadata <- read_metadata(main     = main,
+                            settings = settings)
+
+  cast_metadata <- update_list(metadata, 
+                               cast_id          = max(casts_metadata$cast_id) + 1,
+                               model            = model,
+                               dataset          = dataset,
+                               dataset_controls = metadata$dataset_controls[[dataset]])
 
   cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
                          cast_month       = metadata$time$rodent_cast_months,
@@ -21,17 +45,74 @@ process_model_output <- function (model_fit,
                          lower_pi         = model_cast$lower,
                          upper_pi         = model_cast$upper, 
                          start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon)
+                         end_moon         = metadata$time$end_moon,
+                         cast_id          = cast_metadata$cast_id)
 
-  metadata <- update_list(metadata, 
-                          model            = model,
-                          dataset          = dataset,
-                          dataset_controls = metadata$dataset_controls[[dataset]])
+  pkg_version   <- metadata$directory_configuration$setup$core_package_version
 
-  list(metadata   = metadata, 
-       cast_tab   = cast_tab, 
-       model_fit  = model_fit, 
-       model_cast = model_cast)
+  # patch to facilitate inclusion of species in cast metadata table going forward
+  if (!("species" %in% colnames(casts_metadata))) {
+    casts_metadata$species <- NA
+  }
+  # end patch
+
+  new_cast_metadata <- data.frame(cast_id               = cast_metadata$cast_id,
+                                  cast_group            = cast_metadata$cast_group,
+                                  cast_date             = cast_metadata$time$cast_date,
+                                  start_moon            = cast_metadata$time$start_moon,
+                                  end_moon              = cast_metadata$time$end_moon,
+                                  lead_time             = cast_metadata$time$lead_time,
+                                  model                 = model,
+                                  dataset               = dataset,
+                                  species               = species,
+                                  portalcasting_version = pkg_version,
+                                  QAQC                  = TRUE,
+                                  notes                 = NA)
+# how can we allow notes to be passed through from the user again? and to turn off QAQC?
+  casts_metadata <- rbind(casts_metadata, new_cast_metadata)
+
+  if (settings$save) {
+
+    cast_metadata_filename <- paste0("cast_id_", cast_metadata$cast_id, "_metadata.yaml")
+    cast_metadata_path     <- file.path(main, settings$subdirectories$forecasts, cast_metadata_filename)
+
+    write_yaml(x    = cast_metadata,
+               file = cast_metadata_path)
+
+
+    cast_tab_filename <- paste0("cast_id_", cast_metadata$cast_id, "_cast_tab.csv") 
+    cast_tab_path     <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
+
+    write.csv(x         = cast_tab,
+              file      = cast_tab_path, 
+              row.names = FALSE)
+
+    casts_metadata_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
+
+    write.csv(x         = casts_metadata, 
+              file      = casts_metadata_path, 
+              row.names = FALSE)
+
+    model_fit_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_fit.json") 
+    model_fit_path     <- file.path(main, settings$subdirectories$fits, model_fit_filename)
+    model_fit_json     <- serializeJSON(x = model_fit)
+
+    write_json(x       = model_fit_json, 
+               path    = model_fit_path)
+
+    model_cast_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_casts.json") 
+    model_cast_path     <- file.path(main, settings$subdirectories$forecasts, model_cast_filename)
+    model_cast_json     <- serializeJSON(x = model_cast)
+
+    write_json(x    = model_cast_json, 
+               path = model_cast_path)
+
+  }
+
+  list(cast_metadata   = cast_metadata, 
+       cast_tab        = cast_tab, 
+       model_fit       = model_fit, 
+       model_cast      = model_cast)
 
 }
 
@@ -491,142 +572,45 @@ select_casts <- function (main           = ".",
 }
 
 
-
-#' @title Save Cast Output to Files
-#'
-#' @description Save out any output from a cast of a model for a data set and update the cast metadata file accordingly to track the saved output. \cr
-#'  Most users will want to at least save out model metadata and a table of predictions.
-#'
-#' @param cast Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents data set. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
-#'  Names of the elements of the list (such as \code{"metadat"}) indicate the specific saving procedures that happens to each of them. See \code{Details} section for specifics. 
-#'
-#' @details Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
-#'  \itemize{
-#'   \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
-#'    typically be the model-specific metadata from the 
-#'    \code{data/metadata.yaml} file, but can more generally be any 
-#'    appropriate object (typically a \code{list}).  
-#'   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
-#'    assumed to be a table such as a \code{matrix} or \code{data.frame} 
-#'    or coercible to one. Used to summarize the output across instances
-#'    of the model (across multiple species, for example). 
-#'   \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
-#'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
-#'    specific object structure. Saving out a \code{list} of the actual model
-#'    fit/return objects means that models do not need to be refit later.
-#'   \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
-#'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
-#'    specific object structure. Is used to save \code{list}s
-#'    of predictions across multiple instances of the model.
-#'  }
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @return Relevant elements are saved to external files, and \code{NULL} is returned.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir() 
-#'   out <- AutoArima()
-#'   save_cast_output(out)
-#'  }
-#'
-#' @export
-#'
-save_cast_output <- function (cast     = NULL, 
-                              main     = ".", 
-                              settings = directory_settings(), 
-                              quiet    = FALSE) {
-
-  cast_meta <- read_casts_metadata(main     = main, 
-                                   settings = settings,
-                                   quiet    = quiet)
-  cast_ids  <- cast_meta$cast_id
-
-  if (all(is.na(cast_ids))) {
-
-    next_cast_id <- 1
-
-  } else {
-
-    next_cast_id <- max(cast_ids) + 1
-
-  }
-
-  dir_config    <- cast$metadata$directory_configuration
-  pc_version    <- dir_config$setup$core_package_version
-  new_cast_meta <- data.frame(cast_id               = next_cast_id,
-                              cast_group            = cast$metadata$cast_group,
-                              cast_date             = cast$metadata$time$cast_date,
-                              start_moon            = cast$metadata$time$start_moon,
-                              end_moon              = cast$metadata$time$end_moon,
-                              lead_time             = cast$metadata$time$lead_time,
-                              model                 = cast$metadata$models,
-                              dataset               = gsub("_interp", "", cast$metadata$datasets),
-                              portalcasting_version = pc_version,
-                              QAQC                  = TRUE,
-                              notes                 = NA)
-  cast_meta     <- rbind(cast_meta, new_cast_meta)
-  meta_path     <- file.path(main, settings$subdirectories$forecasts, "casts_metadata.csv")
- 
-  write.csv(cast_meta, meta_path, row.names = FALSE)
-
-  if (!is.null(cast$metadata)) {
-
-    meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
-    meta_path     <- file.path(main, settings$subdirectories$forecasts, meta_filename)
-
-    write_yaml(x    = cast$metadata,
-               file = meta_path)
-
-  }
-
-  if (!is.null(cast$cast_tab)) {
-
-    cast_tab_filename         <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
-    cast_tab_path             <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
-    cast_tab                  <- cast$cast_tab
-    cast_tab$cast_id          <- next_cast_id
-
-    write.csv(x         = cast_tab,
-              file      = cast_tab_path, 
-              row.names = FALSE)
-
-  }
-
-  if (!is.null(cast$model_fits)) {
-
-    model_fits_filename <- paste0("cast_id_", next_cast_id, "_model_fits.json") 
-    model_fits_path     <- file.path(main, settings$subdirectories$fits, model_fits_filename)
-    model_fits          <- cast$model_fits
-    model_fits          <- serializeJSON(model_fits)
-
-    write_json(x    = model_fits, 
-               path = model_fits_path)
-
-  }
-
-  if (!is.null(cast$model_casts)) {
-
-    model_casts_filename <- paste0("cast_id_", next_cast_id, "_model_casts.json") 
-    model_casts_path     <- file.path(main, settings$subdirectories$forecasts, model_casts_filename)
-    model_casts          <- cast$model_casts
-    model_casts          <- serializeJSON(model_casts)
-
-    write_json(x    = model_casts, 
-               path = model_casts_path)
-
-  }
-
-  invisible()
-
-}
-
-
+# Old documentation 
+# @title Save Cast Output to Files
+#
+# @description Save out any output from a cast of a model for a data set and update the cast metadata file accordingly to track the saved output. \cr
+#  Most users will want to at least save out model metadata and a table of predictions.
+#
+# @param cast Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents data set. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
+#  Names of the elements of the list (such as \code{"metadat"}) indicate the specific saving procedures that happens to each of them. See \code{Details} section for specifics. 
+#
+# @details Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
+#  \itemize{
+#   \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
+#    typically be the model-specific metadata from the 
+#    \code{data/metadata.yaml} file, but can more generally be any 
+#    appropriate object (typically a \code{list}).  
+#   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
+#    assumed to be a table such as a \code{matrix} or \code{data.frame} 
+#    or coercible to one. Used to summarize the output across instances
+#    of the model (across multiple species, for example). 
+#   \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
+#    via \code{\link[jsonlite]{serializeJSON}} and 
+#    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
+#    specific object structure. Saving out a \code{list} of the actual model
+#    fit/return objects means that models do not need to be refit later.
+#   \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
+#    via \code{\link[jsonlite]{serializeJSON}} and 
+#    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
+#    specific object structure. Is used to save \code{list}s
+#    of predictions across multiple instances of the model.
+#  }
+#
+# @param main \code{character} value of the name of the main component of the directory tree.
+#
+# @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#
+# @param quiet \code{logical} indicator if progress messages should be quieted.
+#
+# @return Relevant elements are saved to external files, and \code{NULL} is returned.
+#
+# @export
+#
 

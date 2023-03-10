@@ -1,10 +1,18 @@
 devtools::load_all()
 g<-jags_logistic_competition_covariates(main="~/portalcasting", dataset="all", species="DM", control_runjags = runjags_control(burnin=100, adapt = 100, sample = 100, thin = 1))
+g<-jags_logistic_competition(main="~/portalcasting", dataset="all", species="DM", control_runjags = runjags_control(burnin=100, adapt = 100, sample = 100, thin = 1))
+g<-jags_logistic_covariates(main="~/portalcasting", dataset="all", species="DM", control_runjags = runjags_control(burnin=100, adapt = 100, sample = 100, thin = 1))
+g<-jags_logistic(main="~/portalcasting", dataset="all", species="DM", control_runjags = runjags_control(burnin=100, adapt = 100, sample = 100, thin = 1))
+g<-jags_RW(main="~/portalcasting", dataset="all", species="DM", control_runjags = runjags_control(burnin=100, adapt = 100, sample = 100, thin = 1))
+
 g<-pevGARCH(main="~/portalcasting", dataset="all", species="DM")
 g
 
+g<-AutoArima(main="~/portalcasting", dataset="all", species="DM")
+g
 
-
+g <- read_casts_metadata(main     = "~/portalcasting")
+g <- read_metadata(main     = "~/portalcasting")
 
 
 

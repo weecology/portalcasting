@@ -158,19 +158,21 @@ jags_logistic_competition <- function (main            = ".",
 
   pred_cols       <- grep("X", colnames(vals))
   vals            <- vals[ , pred_cols]
-  HPD             <- HPDinterval(as.mcmc(vals))
+  HPD             <- HPDinterval(obj = as.mcmc(vals), prob = metadata$confidence_level)
   model_cast      <- data.frame(pred  = round(apply(vals, 2, mean), 3),
                                 lower = round(HPD[ , "lower"], 3), 
-                                upper = round(HPD[ , "upper"], 3),
-                                moon  = metadata$time$rodent_cast_moons)
+                                upper = round(HPD[ , "upper"], 3))
   rownames(model_cast) <- NULL
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
 
 }
@@ -343,19 +345,21 @@ jags_logistic_competition_covariates <- function (main            = ".",
 
   pred_cols       <- grep("X", colnames(vals))
   vals            <- vals[ , pred_cols]
-  HPD             <- HPDinterval(as.mcmc(vals))
+  HPD             <- HPDinterval(obj = as.mcmc(vals), prob = metadata$confidence_level)
   model_cast      <- data.frame(pred  = round(apply(vals, 2, mean), 3),
                                 lower = round(HPD[ , "lower"], 3), 
-                                upper = round(HPD[ , "upper"], 3),
-                                moon  = metadata$time$rodent_cast_moons)
+                                upper = round(HPD[ , "upper"], 3))
   rownames(model_cast) <- NULL
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
  
 
@@ -524,19 +528,21 @@ jags_logistic_covariates <- function (main            = ".",
 
   pred_cols       <- grep("X", colnames(vals))
   vals            <- vals[ , pred_cols]
-  HPD             <- HPDinterval(as.mcmc(vals))
+  HPD             <- HPDinterval(obj = as.mcmc(vals), prob = metadata$confidence_level)
   model_cast      <- data.frame(pred  = round(apply(vals, 2, mean), 3),
                                 lower = round(HPD[ , "lower"], 3), 
-                                upper = round(HPD[ , "upper"], 3),
-                                moon  = metadata$time$rodent_cast_moons)
+                                upper = round(HPD[ , "upper"], 3))
   rownames(model_cast) <- NULL
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
 
 }
@@ -682,19 +688,21 @@ jags_logistic <- function (main            = ".",
 
   pred_cols       <- grep("X", colnames(vals))
   vals            <- vals[ , pred_cols]
-  HPD             <- HPDinterval(as.mcmc(vals))
+  HPD             <- HPDinterval(obj = as.mcmc(vals), prob = metadata$confidence_level)
   model_cast      <- data.frame(pred  = round(apply(vals, 2, mean), 3),
                                 lower = round(HPD[ , "lower"], 3), 
-                                upper = round(HPD[ , "upper"], 3),
-                                moon  = metadata$time$rodent_cast_moons)
+                                upper = round(HPD[ , "upper"], 3))
   rownames(model_cast) <- NULL
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose)  
 
 }
 
@@ -828,19 +836,21 @@ jags_RW <- function (main            = ".",
 
   pred_cols       <- grep("X", colnames(vals))
   vals            <- vals[ , pred_cols]
-  HPD             <- HPDinterval(as.mcmc(vals))
+  HPD             <- HPDinterval(obj = as.mcmc(vals), prob = metadata$confidence_level)
   model_cast      <- data.frame(pred  = round(apply(vals, 2, mean), 3),
                                 lower = round(HPD[ , "lower"], 3), 
-                                upper = round(HPD[ , "upper"], 3),
-                                moon  = metadata$time$rodent_cast_moons)
+                                upper = round(HPD[ , "upper"], 3))
   rownames(model_cast) <- NULL
 
-  process_model_output(model_fit  = model_fit,
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
                        model_cast = model_cast,
-                       metadata   = metadata,
                        model      = model,
                        dataset    = dataset,
-                       species    = species) 
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
 }
 
