@@ -1,14 +1,14 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
 #' @description Fill the directory with components including \enumerate{
-#'   \item{Resources (\code{\link{fill_resources}}): \itemize{
+#'   \item{Resources (\code{\link{fill_resources}}) \itemize{
 #'     \item{raw data (\code{\link[portalr]{download_observations}})}
 #'     \item{directory archive (\code{\link{download_archive}})}
 #'     \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
-#'   \item{Output: \itemize{
+#'   \item{Output \itemize{
 #'     \item{forecasts (\code{\link{fill_forecasts}})}
 #'     \item{model fits (\code{\link{fill_fits}})}}}
-#'   \item{Data (\code{\link{fill_data}}):  \itemize{
+#'   \item{Data (\code{\link{fill_data}})  \itemize{
 #'     \item{rodent datasets (\code{\link{prepare_rodents}})}
 #'     \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
 #'     \item{covariates (\code{\link{prepare_covariates}})}
@@ -38,18 +38,19 @@ NULL
 #'
 #' @export
 #'
-fill_dir <- function (main     = ".",
-                      models   = prefab_models(), 
-                      datasets = prefab_datasets(),
-                      settings = directory_settings(), 
-                      quiet    = FALSE, 
-                      verbose  = FALSE) {
+fill_dir <- function (main             = ".",
+                      models           = prefab_models(), 
+                      datasets         = prefab_datasets(),
+                      timeseries_start = as.Date("1995-01-01"), 
+                      origin           = Sys.Date(),
+                      lead_time        = 365,
+                      settings         = directory_settings(), 
+                      quiet            = FALSE, 
+                      verbose          = FALSE) {
 
   messageq("Filling directory with content: \n", quiet = quiet)
 
   subdirectories <- settings$subdirectories
-
-# make all of these have the same arguments and standardize further
 
   fill_resources(main     = main, 
                  settings = settings, 
@@ -66,12 +67,15 @@ fill_dir <- function (main     = ".",
             quiet    = quiet, 
             verbose  = verbose)
 
-  fill_data(main     = main, 
-            datasets = datasets,
-            models   = models,
-            settings = settings,
-            quiet    = quiet, 
-            verbose  = verbose)
+  fill_data(main             = main, 
+            datasets         = datasets,
+            models           = models,
+            timeseries_start = timeseries_start,
+            origin           = origin,
+            lead_time        = lead_time,
+            settings         = settings,
+            quiet            = quiet, 
+            verbose          = verbose)
 
   fill_models(main     = main, 
               settings = settings,
@@ -90,12 +94,18 @@ fill_dir <- function (main     = ".",
 #'
 #' @export
 #'
-fill_data <- function (main     = ".",
-                       models   = prefab_models(),
-                       datasets = prefab_datasets(),
-                       settings = directory_settings(), 
-                       quiet    = FALSE,
-                       verbose  = FALSE) {
+fill_data <- function (main                 = ".",
+                       models               = prefab_models(),
+                       datasets             = prefab_datasets(),
+                       new_dataset_controls = NULL,
+                       timeseries_start     = as.Date("1995-01-01"), 
+                       origin               = Sys.Date(),
+                       lead_time            = 365,
+                       max_lag              = 365,
+                       confidence_level     = 0.95,
+                       settings             = directory_settings(), 
+                       quiet                = FALSE,
+                       verbose              = FALSE) {
 
   messageq(" Preparing data files ... ", quiet = quiet)
 
@@ -107,28 +117,47 @@ fill_data <- function (main     = ".",
 
   messageq("  ... adding data files ... ", quiet = quiet)
 
-  prepare_rodents(main     = main,
-                  settings = settings,
-                  datasets = datasets,
-                  quiet    = quiet,
-                  verbose  = verbose)
 
-  prepare_newmoons(main      = main,  
-                   settings  = settings,
-                   quiet     = quiet, 
-                   verbose   = verbose)
+  prepare_newmoons(main             = main,  
+                   timeseries_start = timeseries_start,
+                   origin           = origin,
+                   lead_time        = lead_time,
+                   max_lag          = max_lag,
+                   settings         = settings,
+                   quiet            = quiet, 
+                   verbose          = verbose)
 
-  prepare_covariates(main      = main,  
-                     settings  = settings,
-                     quiet     = quiet, 
-                     verbose   = verbose)
+  prepare_rodents(main             = main,  
+                  datasets         = datasets,
+                  timeseries_start = timeseries_start,
+                  origin           = origin,
+                  lead_time        = lead_time,
+                  max_lag          = max_lag,
+                  settings         = settings,
+                  quiet            = quiet, 
+                  verbose          = verbose) 
 
-  prepare_metadata(main     = main, 
-                   datasets = datasets,
-                   models   = models, 
-                   settings = settings,
-                   quiet    = quiet, 
-                   verbose  = verbose)
+
+  prepare_covariates(main             = main, 
+                     timeseries_start = timeseries_start,
+                     origin           = origin,
+                     lead_time        = lead_time,
+                     max_lag          = max_lag,
+                     settings         = settings,
+                     quiet            = quiet, 
+                     verbose          = verbose)
+
+  prepare_metadata(main             = main, 
+                   datasets         = datasets,
+                   timeseries_start = timeseries_start,
+                   origin           = origin,
+                   lead_time        = lead_time,
+                   max_lag          = max_lag,
+                   confidence_level = confidence_level,
+                   models           = models, 
+                   settings         = settings,
+                   quiet            = quiet, 
+                   verbose          = verbose)
 
   messageq("  ... data preparing complete.", quiet = quiet)
 

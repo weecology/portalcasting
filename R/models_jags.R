@@ -112,7 +112,7 @@ jags_logistic_competition <- function (main            = ".",
                                    settings = settings)
 
 
-  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  true_count_lead <- metadata$time$rodent_lead_time
   cast_count      <- rep(NA, true_count_lead)
   count           <- c(abundance, cast_count)
   log_mean_count  <- log(mean(abundance, na.rm = TRUE))
@@ -295,7 +295,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
 
 
 
-  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  true_count_lead <- metadata$time$rodent_lead_time
   cast_count      <- rep(NA, true_count_lead)
   count           <- c(abundance, cast_count)
   log_mean_count  <- log(mean(abundance, na.rm = TRUE))
@@ -481,7 +481,7 @@ jags_logistic_covariates <- function (main            = ".",
   covariates    <- read_covariates(main     = main,
                                    settings = settings)
 
-  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  true_count_lead <- metadata$time$rodent_lead_time
   cast_count      <- rep(NA, true_count_lead)
   count           <- c(abundance, cast_count)
   log_mean_count  <- log(mean(abundance, na.rm = TRUE))
@@ -647,7 +647,7 @@ jags_logistic <- function (main            = ".",
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
 
-  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  true_count_lead <- metadata$time$rodent_lead_time
   cast_count      <- rep(NA, true_count_lead)
   count           <- c(abundance, cast_count)
   log_mean_count  <- log(mean(abundance, na.rm = TRUE))
@@ -796,7 +796,7 @@ jags_RW <- function (main            = ".",
                   silent.runjags = control_runjags$silent_jags)
 
 
-  true_count_lead <- length(metadata$time$rodent_cast_moons)
+  true_count_lead <- metadata$time$rodent_lead_time
   cast_count      <- rep(NA, true_count_lead)
   count           <- c(abundance, cast_count)
   log_mean_count  <- log(mean(abundance, na.rm = TRUE))

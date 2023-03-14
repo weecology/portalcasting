@@ -29,6 +29,7 @@ portalcast <- function (main       = ".",
            message_break(), quiet = quiet)
 
   # we're pulling everything from the metadata file, rather than as arguments to the functions
+# note that this means we may want to reorganize fill_data to start with the metadata file (?)
 
   metadata <- read_metadata(main     = main,
                             settings = settings)
@@ -86,8 +87,7 @@ cast <- function (main     = ".",
 
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
-  metadata <- read_metadata(main     = main,
-                            settings = settings)
+
 
   abundance <- prepare_rodent_abundance(main     = main,
                                         dataset  = dataset,
@@ -96,14 +96,44 @@ cast <- function (main     = ".",
                                         settings = settings,
                                         quiet    = quiet,
                                         verbose  = verbose)
-  model_controls(main     = main,
-                 model    = model,
-                 settings = settings)[[model]]$fun
+  model_controls <- model_controls(main     = main,
+                                   model    = model,
+                                   settings = settings)[[model]]
                                         
+#  model_fit   <- do.call(what = model_controls$fit_fun 
+#
+#  model_cast <-  hmmmmmmmm
 
+
+
+##
+  process_model_output(main       = main,
+                       model_fit  = model_fit,
+                       model_cast = model_cast,
+                       model      = model,
+                       dataset    = dataset,
+                       species    = species,
+                       settings   = settings,
+                       quiet      = quiet,
+                       verbose    = verbose) 
 
 }
 
+
+#AutoArima_cast <- function (model_fit, 
+
+#  metadata <- read_metadata(main     = main,
+#                            settings = settings)
+
+#  model_cast  <- forecast(object = model_fit, 
+#                          h      = metadata$time$rodent_lead_time, 
+#                          level  = metadata$confidence_level)
+
+#  data.frame(pred  = model_cast$mean,
+#             lower = model_cast$lower[,1], 
+#             upper = model_cast$upper[,1])
+
+#}
 
 
 #' @rdname portalcast
@@ -118,7 +148,7 @@ xcast <- function (main       = ".",
   moons <- read_newmoons(main     = main,
                       settings = settings)
 
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
+  which_last_moon <- max(which(moons$newmoondate < origin))
   last_moon       <- moons$newmoonnumber[which_last_moon]
   end_moon        <- ifnull(end_moon, last_moon)
 

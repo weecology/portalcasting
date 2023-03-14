@@ -16,9 +16,9 @@
 #'
 #' @param newmoons \code{data.frame} of newmoon data.
 #'
-#' @param origin \code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).
+#' @param origin \code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).
 #'
-#' @param lead \code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. Default is \code{365}. 
 #'
 #' @return Some version of a newmoons \code{data.frame}. \cr \cr. 
 #'         \code{prepare_newmoons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr 
@@ -29,29 +29,34 @@
 #'
 #' @export
 #' 
-prepare_newmoons <- function (main     = ".", 
-                              lead     = 365,
-                              origin   = Sys.Date(), 
-                              settings = directory_settings(), 
-                              quiet    = TRUE,
-                              verbose  = FALSE) {
+prepare_newmoons <- function (main             = ".",
+                              timeseries_start = as.Date("1995-01-01"), 
+                              origin           = Sys.Date(), 
+                              lead_time        = 365,
+                              max_lag          = 365,
+                              settings         = directory_settings(), 
+                              quiet            = FALSE, 
+                              verbose          = FALSE) {
 
   
   messageq("  - newmoons data file", quiet = quiet)
 
-  traps_in <- load_trapping_data(path                = file.path(main, settings$subdirectories["resources"]), 
-                                 download_if_missing = FALSE,
-                                 clean               = FALSE, 
-                                 quiet               = !verbose)
+  newmoons <- load_datafile(datafile            = file.path("Rodents", "moon_dates.csv"),
+                            path                = file.path(main, settings$subdirectories$resources),
+                            download_if_missing = FALSE,
+                            na.strings          = "NA",
+                            quiet               = !verbose)
+  newmoons <- add_forecast_newmoons(main        = main, 
+                                    settings    = settings,
+                                    newmoons    = newmoons,
+                                    lead_time   = lead_time,
+                                    origin      = origin)
 
-  newmoons_in <- traps_in[["newmoons_table"]]
+  timeseries_start_lagged <- timeseries_start - max_lag 
 
-  newmoons_out <- add_future_newmoons(main      = main, 
-                                      newmoons  = newmoons_in, 
-                                      lead      = lead, 
-                                      origin    = origin)
+  newmoons <- newmoons[newmoons$newmoondate >= timeseries_start_lagged, ]
 
-  write_data(x         = newmoons_out, 
+  write_data(x         = newmoons, 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$newmoons, 
@@ -63,63 +68,35 @@ prepare_newmoons <- function (main     = ".",
 #'
 #' @export
 #'
-add_future_newmoons <- function (main      = ".", 
-                                 newmoons  = NULL, 
-                                 lead      = 365, 
-                                 origin    = Sys.Date(), 
-                                 settings  = directory_settings()) {
+add_forecast_newmoons <- function (main      = ".", 
+                                   newmoons  = NULL, 
+                                   lead_time = 365, 
+                                   origin    = Sys.Date(), 
+                                   settings  = directory_settings()) {
 
   return_if_null(newmoons)
 
-  if (lead == 0) {
+  if (lead_time == 0) {
 
     return(newmoons)
 
   }
  
+  nforecast_newmoons <- ceiling(lead_time / 29.5)
+  forecast_newmoons  <- get_future_newmoons(newmoons         = newmoons, 
+                                            nfuture_newmoons = nforecast_newmoons)
+
+  forecast_newmoons$newmoondate <- as.character(forecast_newmoons$newmoondate)
   rbind(newmoons, 
-        forecast_future_newmoons(newmoons  = newmoons, 
-                                 lead      = lead, 
-                                 origin    = origin))
+        forecast_newmoons)
  
 }
 
-get_future_newmoons <- function (newmoons, num_future_newmoons) {
+get_future_newmoons <- function (newmoons, nfuture_newmoons) {
 
   get_future_moons(moons            = newmoons,
-                   num_future_moons = num_future_newmoons)
+                   num_future_moons = nfuture_newmoons)
 
 }
 
-#' @rdname prepare-newmoons
-#'
-#' @export
-#'
-forecast_future_newmoons <- function (newmoons  = NULL, 
-                                      lead   = 365, 
-                                      origin = Sys.Date()) {
-
-  return_if_null(newmoons)
-
-  num_future_newmoons <- floor(lead / mean(as.numeric(diff(as.Date(newmoons$newmoondate))), na.rm = TRUE))
-
-  future_newmoons <- get_future_newmoons(newmoons            = newmoons, 
-                                         num_future_newmoons = num_future_newmoons)
-
-
-  n_extra_future_newmoons <- length(which(future_newmoons$newmoondate < origin))
-
-  if (n_extra_future_newmoons > 0){
-
-    extra_newmoons  <- get_future_newmoons(newmoons            = future_newmoons, 
-                                           num_future_newmoons = n_extra_future_newmoons)
-    future_newmoons <- rbind(future_newmoons, extra_newmoons)
-
-  } 
-
-  future_newmoons$newmoondate <- as.character(future_newmoons$newmoondate)
-
-  future_newmoons
-
-}
 

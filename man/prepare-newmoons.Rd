@@ -3,35 +3,32 @@
 \name{prepare newmoons}
 \alias{prepare newmoons}
 \alias{prepare_newmoons}
-\alias{add_future_newmoons}
-\alias{forecast_future_newmoons}
+\alias{add_forecast_newmoons}
 \title{Prepare Lunar Data for the Portalcasting Repository}
 \usage{
 prepare_newmoons(
   main = ".",
-  lead = 365,
+  lead_time = 365,
   origin = Sys.Date(),
   settings = directory_settings(),
-  quiet = TRUE,
+  quiet = FALSE,
   verbose = FALSE
 )
 
-add_future_newmoons(
+add_forecast_newmoons(
   main = ".",
   newmoons = NULL,
-  lead = 365,
+  lead_time = 365,
   origin = Sys.Date(),
   settings = directory_settings()
 )
-
-forecast_future_newmoons(newmoons = NULL, lead = 365, origin = Sys.Date())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{lead}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover.}
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. Default is \code{365}.}
 
-\item{origin}{\code{Date} forecast origin, typically today's date (set using \code{\link{Sys.Date}}).}
+\item{origin}{\code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

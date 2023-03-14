@@ -75,14 +75,14 @@ fill_models(
 }
 \description{
 Fill the directory with components including \enumerate{
-  \item{Resources (\code{\link{fill_resources}}): \itemize{
+  \item{Resources (\code{\link{fill_resources}}) \itemize{
     \item{raw data (\code{\link[portalr]{download_observations}})}
     \item{directory archive (\code{\link{download_archive}})}
     \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
-  \item{Output: \itemize{
+  \item{Output \itemize{
     \item{forecasts (\code{\link{fill_forecasts}})}
     \item{model fits (\code{\link{fill_fits}})}}}
-  \item{Data (\code{\link{fill_data}}):  \itemize{
+  \item{Data (\code{\link{fill_data}})  \itemize{
     \item{rodent datasets (\code{\link{prepare_rodents}})}
     \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
     \item{covariates (\code{\link{prepare_covariates}})}

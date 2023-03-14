@@ -31,7 +31,7 @@ process_model_output <- function (main     = ".",
                                dataset          = dataset,
                                dataset_controls = metadata$dataset_controls[[dataset]])
 
-  cast_tab <- data.frame(cast_date        = metadata$time$cast_date, 
+  cast_tab <- data.frame(origin        = metadata$time$origin, 
                          cast_month       = metadata$time$rodent_cast_months,
                          cast_year        = metadata$time$rodent_cast_years, 
                          moon             = metadata$time$rodent_cast_moons,
@@ -58,7 +58,7 @@ process_model_output <- function (main     = ".",
 
   new_cast_metadata <- data.frame(cast_id               = cast_metadata$cast_id,
                                   cast_group            = cast_metadata$cast_group,
-                                  cast_date             = cast_metadata$time$cast_date,
+                                  origin             = cast_metadata$time$origin,
                                   start_moon            = cast_metadata$time$start_moon,
                                   end_moon              = cast_metadata$time$end_moon,
                                   lead_time             = cast_metadata$time$lead_time,

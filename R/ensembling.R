@@ -162,7 +162,7 @@ ensemble_casts <- function (main           = ".",
 
   lead <- moon_id - end_moon_id
 
-  data.frame(cast_date  = Sys.Date(),
+  data.frame(origin  = Sys.Date(),
              cast_month = as.numeric(format(Sys.Date(), "%m")),
              cast_year  = as.numeric(format(Sys.Date(), "%Y")),
              currency   = "abundance",

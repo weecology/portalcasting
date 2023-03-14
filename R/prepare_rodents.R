@@ -62,8 +62,8 @@ read_dataset_controls <- function (main     = ".",
 #' @export
 #'
 dataset_controls <- function (main     = ".",
-                                   datasets = prefab_datasets(),
-                                   settings = directory_settings()) {
+                              datasets = prefab_datasets(),
+                              settings = directory_settings()) {
 
   read_dataset_controls(main     = main,
                         settings = settings)[datasets]
@@ -125,20 +125,24 @@ write_dataset_controls <- function (main                 = ".",
 #'
 #' @export
 #'
-prepare_rodents <- function (main     = ".",
-                             datasets = prefab_datasets(),
-                             settings = directory_settings(), 
-                             quiet    = FALSE,
-                             verbose  = FALSE) {
-
-  dataset_controls_list <- write_dataset_controls(main     = main, 
-                                                  settings = settings, 
-                                                  datasets = datasets, 
-                                                  quiet    = quiet)
-
+prepare_rodents <- function (main                 = ".",
+                             datasets             = prefab_datasets(),
+                             new_dataset_controls = NULL,
+                             timeseries_start     = as.Date("1995-01-01"), 
+                             origin               = Sys.Date(),
+                             lead_time            = 365,
+                             max_lag              = 365,
+                             settings             = directory_settings(), 
+                             quiet                = FALSE,
+                             verbose              = FALSE) {
 
   return_if_null(datasets)
 
+  dataset_controls_list <- write_dataset_controls(main                 = main, 
+                                                  settings             = settings, 
+                                                  datasets             = datasets, 
+                                                  new_dataset_controls = new_dataset_controls,
+                                                  quiet                = quiet)
 
   messageq("  - rodents", quiet = quiet)
 
@@ -147,21 +151,20 @@ prepare_rodents <- function (main     = ".",
   for (i in 1:length(dataset_controls_list)) {
 
     out[[i]] <- do.call(what = dataset_controls_list[[i]]$fun, 
-                        args = update_list(list      = dataset_controls_list[[i]]$args, 
-                                           main      = main, 
-                                           settings  = settings, 
-                                           quiet     = quiet, 
-                                           verbose   = verbose))
+                        args = update_list(list             = dataset_controls_list[[i]]$args, 
+                                           main             = main, 
+                                           settings         = settings, 
+                                           timeseries_start = timeseries_start,
+                                           origin           = origin,
+                                           max_lag          = max_lag,
+                                           quiet            = quiet, 
+                                           verbose          = verbose))
   
   }
 
   invisible(out)
 
 }
-
-
-
-
 
 
 
@@ -209,7 +212,7 @@ prepare_rodents <- function (main     = ".",
 #' @param time \code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr \cr
 #'             The default \code{time = "newmoon"} produces an equispaced observation timestep, a common format format for discrete-time modeling. 
 #'
-#' @param na_drop \code{logical} indicator of if \code{NA} values (representing insufficient sampling) should be dropped.
+#' @param na_drop \code{logical} indicator of if \code{NA} values (representing insufficient sampling) should be dropped. 
 #'
 #' @param zero_drop \code{logical} indicator of if \code{0} values (representing sufficient sampling but no detection) should be dropped.
 #'
@@ -227,30 +230,33 @@ prepare_rodents <- function (main     = ".",
 #'
 #' @export
 #'
-prepare_dataset <- function(name        = "all",
-                            main        = ".",
-                            settings    = directory_settings(),
-                            filename    = "rodents_all.csv",
-                            clean       = FALSE,
-                            level       = "Site",
-                            type        = "Rodents",
-                            plots       = "all",
-                            unknowns    = FALSE,
-                            shape       = "crosstab",
-                            time        = "newmoon",
-                            output      = "abundance",
-                            fillweight  = FALSE,
-                            treatment   = NULL,
-                            na_drop     = FALSE,
-                            zero_drop   = FALSE,
-                            min_traps   = 1,
-                            min_plots   = 24,
-                            effort      = TRUE,
-                            species     = base_species(),
-                            total       = TRUE,
-                            save        = TRUE,
-                            quiet       = FALSE,
-                            verbose     = FALSE) {
+prepare_dataset <- function(name             = "all",
+                            main             = ".",
+                            timeseries_start = as.Date("1995-01-01"), 
+                            origin           = Sys.Date(),
+                            max_lag          = 365,
+                            settings         = directory_settings(),
+                            filename         = "rodents_all.csv",
+                            clean            = FALSE,
+                            level            = "Site",
+                            type             = "Rodents",
+                            plots            = "all",
+                            unknowns         = FALSE,
+                            shape            = "crosstab",
+                            time             = "newmoon",
+                            output           = "abundance",
+                            fillweight       = FALSE,
+                            treatment        = NULL,
+                            na_drop          = FALSE,
+                            zero_drop        = FALSE,
+                            min_traps        = 1,
+                            min_plots        = 24,
+                            effort           = TRUE,
+                            species          = base_species(),
+                            total            = TRUE,
+                            save             = TRUE,
+                            quiet            = FALSE,
+                            verbose          = FALSE) {
 
   return_if_null(name)
 
@@ -274,11 +280,7 @@ prepare_dataset <- function(name        = "all",
                                          quiet      = !verbose) 
 
 
-  nspecies <- length(species)
-
-  total <- ifelse(nspecies == 1, FALSE, total)
-
-  sp_col           <- colnames(rodents_table) %in% all_species()
+  sp_col           <- colnames(rodents_table) %in% all_species( )
   which_sp_col     <- which(sp_col)
   which_not_sp_col <- which(!sp_col)
   sp_col_in        <- colnames(rodents_table)[sp_col] %in% species
@@ -291,7 +293,6 @@ prepare_dataset <- function(name        = "all",
 
   }
 
-
   if (level == "Treatment") {
 
     rows_in <- out$treatment %in% treatment
@@ -300,21 +301,15 @@ prepare_dataset <- function(name        = "all",
 
   }
 
-  # assuming newmoon with na_drop rodents
+  newmoons <- read_newmoons(main     = main, 
+                            settings = settings)
+  
+  timeseries_start_lagged <- timeseries_start - max_lag 
 
-  present_moons                   <- out[ , "newmoonnumber"]
-  range_moons                     <- range(present_moons, na.rm = TRUE)
-  seq_moons                       <- seq(range_moons[1], range_moons[2], by = 1)
-  needed_moons                    <- !(seq_moons %in% present_moons)
-  which_needed_moons              <- seq_moons[needed_moons]
-  nneeded_rows                    <- length(which_needed_moons)
-  ndf_moons                       <- ncol(out)
-  needed_rows                     <- matrix(NA, nrow = nneeded_rows, ncol = ndf_moons)
-  colnames(needed_rows)           <- colnames(out)
-  needed_rows[ , "newmoonnumber"] <- seq_moons[needed_moons]
-  out                             <- rbind(out, needed_rows)
-  out_ord                         <- order(out[ , "newmoonnumber"])
-  out                             <- out[out_ord, ]
+  rows_in <- out$newmoonnumber >= min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - timeseries_start_lagged >= 0)]) & 
+             out$newmoonnumber <= max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - origin < 0)])
+
+  out <- out[rows_in, ]
 
 
   write_data(x         = out, 
@@ -323,8 +318,6 @@ prepare_dataset <- function(name        = "all",
              save      = save, 
              filename  = filename, 
              quiet     = !verbose)
-
-  out
 
 }
 

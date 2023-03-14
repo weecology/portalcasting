@@ -2,12 +2,12 @@
 % Please edit documentation in R/prepare_covariates.R
 \name{prepare covariates}
 \alias{prepare covariates}
+\alias{xprepare_covariates}
 \alias{prepare_covariates}
-\alias{prepare_historic_covariates}
 \alias{prepare_forecast_covariates}
 \title{Prepare Covariate Data for Casting}
 \usage{
-prepare_covariates(
+xprepare_covariates(
   main = ".",
   settings = directory_settings(),
   origin = Sys.Date(),
@@ -15,7 +15,7 @@ prepare_covariates(
   verbose = FALSE
 )
 
-prepare_historic_covariates(
+prepare_covariates(
   main = ".",
   settings = directory_settings(),
   quiet = FALSE,

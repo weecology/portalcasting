@@ -23,7 +23,7 @@
 #'
 #' @export
 #'
-prepare_covariates <- function (main     = ".", 
+xprepare_covariates <- function (main     = ".", 
                                 settings = directory_settings(), 
                                 origin   = Sys.Date(), 
                                 quiet    = FALSE, 
@@ -42,7 +42,8 @@ prepare_covariates <- function (main     = ".",
                                                      quiet    = quiet, 
                                                      verbose  = verbose)
 
-  # patch to deal with weird split of the newmoon, think this comes from the newmoon table issues
+  # patch to deal with split of the newmoon
+  # this is when there are data for a newmoon in both historic and forecast tables (when we're in the middle of a newmoon)
 
   if (any(forecast_covariates$newmoonnumber %in% historic_covariates$newmoonnumber)) {
 
@@ -65,26 +66,149 @@ prepare_covariates <- function (main     = ".",
 #'
 #' @export
 #'
-prepare_historic_covariates <- function (main     = ".", 
-                                         settings = directory_settings(), 
-                                         quiet    = FALSE, 
-                                         verbose  = FALSE) {
+prepare_covariates <- function (main             = ".", 
+                                timeseries_start = as.Date("1995-01-01"), 
+                                origin           = Sys.Date(),
+                                lead_time        = 365,
+                                max_lag          = 365,
+                                settings         = directory_settings(), 
+                                quiet            = FALSE, 
+                                verbose          = FALSE) {
 
-  weather_data <- weather(level = "newmoon", fill = TRUE, horizon = 28, path = file.path(main, settings$subdirectories$resources))
-  ndvi_data    <- ndvi(level = "newmoon", fill = TRUE, path = file.path(main, settings$subdirectories$resources))
+# need to shift this to level daily so we can manage when a newmoon is split between historic and forecast days
+# but what about when we only want historic and not forecast? or vice-versa... do we mark it somehow?
 
-  rodents_table <- read_rodents_table(main     = main,
-                                      dataset = "controls", 
-                                      settings = settings) 
+  weather_data <- weather(level   = "daily", 
+                          horizon = 1, 
+                          path    = file.path(main, settings$subdirectories$resources))
+  ndvi_data    <- ndvi(level      = "daily", 
+                       path       = file.path(main, settings$subdirectories$resources))
 
-  out                              <- weather_data
-  out$source                       <- "historic"
-  out$ndvi                         <- NA
-  moon_match                       <- match(ndvi_data$newmoonnumber, out$newmoonnumber)
-  out$ndvi[moon_match]             <- ndvi_data$ndvi
-  out$ndvi_13_moon                 <- as.numeric(filter(out$ndvi, rep(1, 13), sides = 1))
-  out$warm_precip_3_moon           <- as.numeric(filter(out$warm_precip, rep(1, 3), sides = 1))
-  out$ordii_controls             <- NA
+  climate_forecasts <- read_climate_forecasts(main     = main,
+                                              settings = settings)
+  newmoons          <- read_newmoons(main     = main,
+                                     settings = settings)
+  control_rodents   <- read_rodents_table(main     = main,
+                                          dataset = "controls", 
+                                          settings = settings) 
+
+  timeseries_start_lagged  <- timeseries_start - max_lag 
+  forecast_start           <- origin + 1
+  forecast_end             <- origin + lead_time
+
+  historic_weather         <- data.frame(date = seq(timeseries_start_lagged, origin, 1))
+
+  weather_rows                   <- match(historic_weather$date, weather_data$date)
+  historic_weather$mintemp       <- weather_data$mintemp[weather_rows]
+  historic_weather$maxtemp       <- weather_data$maxtemp[weather_rows]
+  historic_weather$meantemp      <- weather_data$meantemp[weather_rows]
+  historic_weather$precipitation <- weather_data$precipitation[weather_rows]
+  historic_weather$source        <- "historic"             
+
+  forecast_weather               <- data.frame(date = seq(forecast_start, forecast_end, 1))
+
+  forecast_weather_rows          <- match(forecast_weather$date, climate_forecasts$date)
+  forecast_weather$mintemp       <- climate_forecasts$mintemp[forecast_weather_rows]
+  forecast_weather$maxtemp       <- climate_forecasts$maxtemp[forecast_weather_rows]
+  forecast_weather$meantemp      <- climate_forecasts$meantemp[forecast_weather_rows]
+  forecast_weather$precipitation <- climate_forecasts$precipitation[forecast_weather_rows]
+  maxin                          <- forecast_weather$date %in% climate_forecasts$date
+  forecast_weather$source[maxin] <- "nmme_forecast"
+
+  weather_together <- rbind(historic_weather, forecast_weather)
+
+
+  # this accounts for needing a climate forecast a year out now, whereas we did not before
+  # the models we get don't always go out that far.
+
+  in_fit         <- !is.na(weather_together$source)
+  date_fit       <- weather_together$date[in_fit]
+  foy_fit        <- foy(date_fit)
+  cos_fit        <- cos(2 * pi * foy_fit)
+  sin_fit        <- sin(2 * pi * foy_fit)
+  xreg_fit       <- data.frame(cos_seas = cos_fit, sin_seas = sin_fit)
+  xreg_fit       <- as.matrix(xreg_fit)
+
+  mintemp_model  <- auto.arima(weather_together$mintemp[in_fit], xreg = xreg_fit)
+  maxtemp_model  <- auto.arima(weather_together$maxtemp[in_fit], xreg = xreg_fit)
+  meantemp_model <- auto.arima(weather_together$meantemp[in_fit], xreg = xreg_fit)
+  precip_model   <- auto.arima(weather_together$precipitation[in_fit], xreg = xreg_fit)
+
+  in_cast        <- is.na(weather_together$source)
+  date_cast      <- weather_together$date[in_cast]
+  foy_cast       <- foy(date_cast)
+  cos_cast       <- cos(2 * pi * foy_cast)
+  sin_cast       <- sin(2 * pi * foy_cast)
+  xreg_cast      <- data.frame(cos_seas = cos_cast, sin_seas = sin_cast)
+  xreg_cast      <- as.matrix(xreg_cast)
+
+  mintemp_forecast  <- forecast(mintemp_model, xreg = xreg_cast)$mean
+  maxtemp_forecast  <- forecast(maxtemp_model, xreg = xreg_cast)$mean
+  meantemp_forecast <- forecast(meantemp_model, xreg = xreg_cast)$mean
+  precip_forecast   <- pmax(0, forecast(precip_model, xreg = xreg_cast)$mean)
+ 
+  weather_together$mintemp[in_cast]       <- mintemp_forecast
+  weather_together$maxtemp[in_cast]       <- maxtemp_forecast
+  weather_together$meantemp[in_cast]      <- meantemp_forecast
+  weather_together$precipitation[in_cast] <- precip_forecast
+  weather_together$source[in_cast]        <- "seasonal_autoarima_forecast"
+
+
+
+
+
+
+  ndvi_data$date           <- as.Date(ndvi_data$date)                
+  ndvi_rows                <- match(covariates$date, ndvi_data$date)
+  covariates$ndvi          <- ndvi_data$ndvi[ndvi_rows]
+  newmoons$newmoondate     <- as.Date(newmoons$newmoondate)                
+  newmoons$censusdate      <- as.Date(newmoons$censusdate)                
+
+  control_rodents$date     <- newmoons$censusdate[match(control_rodents$newmoon, newmoons$newmoonnumber)]
+
+  rodent_rows              <- match(covariates$date, control_rodents$date)
+  covariates$ordii         <- control_rodents[rodent_rows, "DO"]
+
+
+
+newmoons$newmoondate[match(newmoons$newmoonnumber, control_rodents$newmoon)]
+
+  rodents_rows             <- 
+
+match(newmoons$newmoonnumber[match(covariates$date, newmoons$censusdate)], control_rodents$newmoonnumber)
+
+head(control_rodents)
+
+control_rodents$date
+  covariates$ordii         <- control_rodents
+
+
+
+
+
+
+
+
+
+  min_date <- min(c(weather_data$date, ndvi_data$date))
+  
+
+
+  out                       <- weather_data
+  out$source                <- "historic"
+  out$ndvi                  <- NA
+  moon_match                <- match(ndvi_data$newmoonnumber, out$newmoonnumber)
+  out$ndvi[moon_match]      <- ndvi_data$ndvi
+  out$ndvi_13_moon          <- as.numeric(filter(out$ndvi, rep(1, 13), sides = 1))
+  out$warm_precip_3_moon    <- as.numeric(filter(out$warm_precip, rep(1, 3), sides = 1))
+
+  out$mintemp_6_moon        <- as.numeric(filter(out$mintemp, rep(1, 6), sides = 1))
+  out$meantemp_6_moon       <- as.numeric(filter(out$meantemp, rep(1, 6), sides = 1))
+  out$maxtemp_6_moon        <- as.numeric(filter(out$maxtemp, rep(1, 6), sides = 1))
+  out$precipitation_6_moon  <- as.numeric(filter(out$precipitation, rep(1, 6), sides = 1))
+  out$ndvi_6_moon           <- as.numeric(filter(out$ndvi, rep(1, 6), sides = 1))
+
+  out$ordii_controls        <- NA
   for (i in 1:nrow(out)) {
     spot <- which(rodents_table$newmoonnumber == out$newmoonnumber[i])
     if (length(spot) == 1) {
@@ -98,7 +222,9 @@ prepare_historic_covariates <- function (main     = ".",
   out$cos2pifoy    <- cos(2 * pi * moon_foys)
   
 
-  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", "warm_precip_3_moon", "ndvi_13_moon", "ordii_controls", "sin2pifoy", "cos2pifoy", "source")
+  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", 
+                    "mintemp_6_moon", "meantemp_6_moon", "maxtemp_6_moon", "precipitation_6_moon", "ndvi_6_moon", 
+                    "warm_precip_3_moon", "ndvi_13_moon", "ordii_controls", "sin2pifoy", "cos2pifoy", "source")
 
   write_data(x         = out[ , cols_to_keep], 
              main      = main, 
@@ -177,7 +303,6 @@ prepare_forecast_covariates <- function (main      = ".",
     }
 
 
-
     ndvi_data      <- ndvi(level = "daily", path = file.path(main, settings$subdirectories$resources))
     ndvi_data$date <- as.Date(ndvi_data$date)
  
@@ -221,12 +346,13 @@ prepare_forecast_covariates <- function (main      = ".",
 
   climate_forecasts$warm_precip <- warm_precip
 
-  # forces things onto moons still for the time being
+
 
   moons <- read_newmoons(main = main, settings = settings)
 
   climate_forecasts <- add_newmoonnumbers_from_dates(climate_forecasts, moons)
   
+# not sure why this is called "hist_time" ... that's confusing, probably an outdated naming
   hist_time_obs <- climate_forecasts$newmoonnumber
   min_hist_time <- min(hist_time_obs)
   max_hist_time <- max(hist_time_obs)
@@ -252,10 +378,22 @@ prepare_forecast_covariates <- function (main      = ".",
   
   }
 
+# make sure this is all aligning right with the lags and forecasts of covariates
   historical_covariates <- read_historical_covariates(main = main,
                                                       settings = settings)
+
+head(historical_covariates)
+
+
   ndvi_13_moon        <- filter(c(historical_covariates$ndvi, ndvis), rep(1, 13), sides = 1)
   warm_precip_3_moon  <- filter(c(historical_covariates$warm_precip, warm_precips), rep(1, 3), sides = 1)
+
+
+  mintemp_6_moon        <- as.numeric(filter(historical_covariates$mintemp, rep(1, 6), sides = 1))
+  meantemp_6_moon       <- as.numeric(filter(historical_covariates$meantemp, rep(1, 6), sides = 1))
+  maxtemp_6_moon        <- as.numeric(filter(historical_covariates$maxtemp, rep(1, 6), sides = 1))
+  precipitation_6_moon  <- as.numeric(filter(historical_covariates$precipitation, rep(1, 6), sides = 1))
+  ndvi_6_moon           <- as.numeric(filter(historical_covariates$ndvi, rep(1, 6), sides = 1))
 
   past <- list(past_obs = 1, past_mean = 13)
   ordii_controls_mod  <- tsglm(historical_covariates$ordii_controls, model = past, distr = "poisson", link = "log")
@@ -281,6 +419,10 @@ prepare_forecast_covariates <- function (main      = ".",
                                        cos2pifoy           = cos2pifoy,
                                        source              = "forecast")
 
+
+  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", 
+                    "mintemp_6_moon", "meantemp_6_moon", "maxtemp_6_moon", "precipitation_6_moon", "ndvi_6_moon", 
+                    "warm_precip_3_moon", "ndvi_13_moon", "ordii_controls", "sin2pifoy", "cos2pifoy", "source")
 
 
   write_data(x         = hist_climate_forecasts, 

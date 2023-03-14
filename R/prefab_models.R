@@ -129,7 +129,7 @@ AutoArima <- function (main     = ".",
 
   model_fit   <- auto.arima(y = abundance)
   model_cast  <- forecast(object = model_fit, 
-                     h      = length(metadata$time$rodent_cast_moons), 
+                     h      = metadata$time$rodent_lead_time, 
                      level  = metadata$confidence_level)
 
   model_cast  <- data.frame(pred  = model_cast$mean,
@@ -188,7 +188,7 @@ NaiveArima <- function (main     = ".",
   model_fit   <- Arima(y     = abundance, 
                   order = c(0, 1, 0))
   model_cast  <- forecast(object = model_fit, 
-                     h      = length(metadata$time$rodent_cast_moons), 
+                     h      = metadata$time$rodent_lead_time, 
                      level  = metadata$confidence_level)
 
   model_cast  <- data.frame(pred  = model_cast$mean,
@@ -243,7 +243,7 @@ ESSS <- function (main     = ".",
 
   model_fit   <- ets(y = abundance)
   model_cast  <- forecast(object = model_fit, 
-                     h      = length(metadata$time$rodent_cast_moons), 
+                     h      = metadata$time$rodent_lead_time, 
                      level  = metadata$confidence_level,
                      allow.multiplicative.trend = TRUE)
 
@@ -316,7 +316,7 @@ nbGARCH <- function (main     = ".",
     }
     if(!all(is.na(model_fit))){
       model_cast <- predict(object  = model_fit, 
-                       n.ahead = length(metadata$time$rodent_cast_moons), 
+                       n.ahead = metadata$time$rodent_lead_time, 
                        level   = metadata$confidence_level)
       model_cast <- data.frame(pred = as.numeric(model_cast$pred),
                        lower = as.numeric(model_cast$interval[ , 1]),
@@ -410,7 +410,7 @@ nbsGARCH <- function (main     = ".",
     if (!all(is.na(model_fit))) {
 
       model_cast <- predict(object  = model_fit, 
-                       n.ahead = length(metadata$time$rodent_cast_moons), 
+                       n.ahead = metadata$time$rodent_lead_time, 
                        level   = metadata$confidence_level,
                        newxreg = cast_predictors)
       model_cast <- data.frame(pred = as.numeric(model_cast$pred),
@@ -525,7 +525,7 @@ pevGARCH <- function (main     = ".",
       if(!all(is.na(mods[[j]]))){
         casts[[j]] <-  tryCatch(
                               predict(object  = mods[[j]], 
-                                      n.ahead = length(metadata$time$rodent_cast_moons), 
+                                      n.ahead = metadata$time$rodent_lead_time, 
                                       level   = metadata$confidence_level,
                                       newxreg = cast_predictors),
                               warning = function(x){NA}, 

@@ -323,7 +323,7 @@ read_casts_metadata <- function (main     = ".",
 
     casts_meta <- data.frame(cast_id               = 0, 
                              cast_group            = 0, 
-                             cast_date             = NA, 
+                             origin             = NA, 
                              start_moon            = NA, 
                              end_moon              = NA,
                              lead_time             = NA, 
