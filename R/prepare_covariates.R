@@ -177,12 +177,43 @@ prepare_covariates <- function (main             = ".",
   ordii_together               <- rbind(historic_ordii, forecast_ordii)
   
 
-                                      
-
 # ndvi is a bit of a challenge because we have multiple sources now
 # and so can end up with multiple readings on the same day
 
+  ndvi_data$date        <- as.Date(ndvi_data$date)
+  possible_sensors      <- levels(as.factor(ndvi_data$sensor))
+  npossible_sensors     <- length(possible_sensors)
 
+  ndvi_models           <- named_null_list(possible_sensors)
+  ndvi_forecasts        <- named_null_list(possible_sensors)
+  ndvi_dates            <- named_null_list(possible_sensors)
+  for (i in 1:npossible_sensors) {
+    sensor_data         <- ndvi_data[ndvi_data$sensor == possible_sensors[i], ]
+    possible_dates_fit      <- seq(min(ndvi_data$date), max(sensor_data$date), 1)
+    sensor_observations <- sensor_data$ndvi[match(possible_dates_fit, sensor_data$date)]
+
+    foy_fit        <- foy(possible_dates_fit)
+    cos_fit        <- cos(2 * pi * foy_fit)
+    sin_fit        <- sin(2 * pi * foy_fit)
+    xreg_fit       <- data.frame(cos_seas = cos_fit, sin_seas = sin_fit)
+    xreg_fit       <- as.matrix(xreg_fit)
+
+    ndvi_models[[i]]    <- auto.arima(sensor_observations, xreg = xreg_fit)
+
+    possible_dates_cast      <- seq(max(sensor_data$date), max(ndvi_data$date), 1)
+    ndays_cast      <- length(possible_dates_cast)
+    foy_cast        <- foy(possible_dates_cast)
+    cos_cast        <- cos(2 * pi * foy_cast)
+    sin_cast        <- sin(2 * pi * foy_cast)
+    xreg_cast       <- data.frame(cos_seas = cos_cast, sin_seas = sin_cast)
+    xreg_cast       <- as.matrix(xreg_cast)   
+    ndvi_forecasts[[i]] <- forecast(ndvi_models[[i]], ndays_cast, xreg = xreg_cast)
+    
+    ndvi_dates[[i]] <- list(dates_fit  = possible_dates_fit,
+                            dates_cast = possible_dates_cast)
+  }
+
+forecast:::forecast.Arima
 
 
 

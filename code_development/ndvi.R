@@ -137,4 +137,7 @@
                    plots     = FALSE)
 
 
+# next in working on this: fit sensor- level models and get params from them
+# it wont fit aross if it cant fit within
+
 model_fit
