@@ -235,6 +235,7 @@ prepare_dataset <- function(name             = "all",
                             timeseries_start = as.Date("1995-01-01"), 
                             origin           = Sys.Date(),
                             max_lag          = 365,
+                            lag_buffer       = 30,
                             settings         = directory_settings(),
                             filename         = "rodents_all.csv",
                             clean            = FALSE,
@@ -304,7 +305,8 @@ prepare_dataset <- function(name             = "all",
   newmoons <- read_newmoons(main     = main, 
                             settings = settings)
   
-  timeseries_start_lagged <- timeseries_start - max_lag 
+  # have the lag go back a lunar month further to facilitate half month inclusions etc
+  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer
 
   rows_in <- out$newmoonnumber >= min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - timeseries_start_lagged >= 0)]) & 
              out$newmoonnumber <= max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - origin < 0)])

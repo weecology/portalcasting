@@ -71,6 +71,7 @@ prepare_covariates <- function (main             = ".",
                                 origin           = Sys.Date(),
                                 lead_time        = 365,
                                 max_lag          = 365,
+                                lag_buffer       = 30,
                                 settings         = directory_settings(), 
                                 quiet            = FALSE, 
                                 verbose          = FALSE) {
@@ -89,10 +90,11 @@ prepare_covariates <- function (main             = ".",
   newmoons          <- read_newmoons(main     = main,
                                      settings = settings)
   control_rodents   <- read_rodents_table(main     = main,
-                                          dataset = "controls", 
+                                          dataset  = "controls", 
                                           settings = settings) 
 
-  timeseries_start_lagged  <- timeseries_start - max_lag 
+  # have the lag go back a lunar month further to facilitate half month inclusions etc
+  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer
   forecast_start           <- origin + 1
   forecast_end             <- origin + lead_time
 
@@ -112,14 +114,14 @@ prepare_covariates <- function (main             = ".",
   forecast_weather$maxtemp       <- climate_forecasts$maxtemp[forecast_weather_rows]
   forecast_weather$meantemp      <- climate_forecasts$meantemp[forecast_weather_rows]
   forecast_weather$precipitation <- climate_forecasts$precipitation[forecast_weather_rows]
-  maxin                          <- forecast_weather$date %in% climate_forecasts$date
-  forecast_weather$source[maxin] <- "nmme_forecast"
+  dayin                          <- forecast_weather$date %in% climate_forecasts$date
+  forecast_weather$source[dayin] <- "nmme_forecast"
 
   weather_together <- rbind(historic_weather, forecast_weather)
 
-
+  # fill in the missing values in the time series with a seasonal auto arima model
   # this accounts for needing a climate forecast a year out now, whereas we did not before
-  # the models we get don't always go out that far.
+  # the models we get don't always go out that far, so we extend with a seasonal autoarima on each covariate
 
   in_fit         <- !is.na(weather_together$source)
   date_fit       <- weather_together$date[in_fit]
@@ -154,83 +156,35 @@ prepare_covariates <- function (main             = ".",
   weather_together$source[in_cast]        <- "seasonal_autoarima_forecast"
 
 
+  control_rodents$censusdate   <- as.Date(newmoons$censusdate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)])
+  control_rodents$newmoondate  <- as.Date(newmoons$newmoondate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)]) 
+  control_rodents$date         <- control_rodents$censusdate
+  control_rodents$source       <- "historic"
+  nadate                       <- is.na(control_rodents$date)
+  control_rodents$date[nadate] <- control_rodents$newmoondate[nadate]
 
-
-
-
-  ndvi_data$date           <- as.Date(ndvi_data$date)                
-  ndvi_rows                <- match(covariates$date, ndvi_data$date)
-  covariates$ndvi          <- ndvi_data$ndvi[ndvi_rows]
-  newmoons$newmoondate     <- as.Date(newmoons$newmoondate)                
-  newmoons$censusdate      <- as.Date(newmoons$censusdate)                
-
-  control_rodents$date     <- newmoons$censusdate[match(control_rodents$newmoon, newmoons$newmoonnumber)]
-
-  rodent_rows              <- match(covariates$date, control_rodents$date)
-  covariates$ordii         <- control_rodents[rodent_rows, "DO"]
-
-
-
-newmoons$newmoondate[match(newmoons$newmoonnumber, control_rodents$newmoon)]
-
-  rodents_rows             <- 
-
-match(newmoons$newmoonnumber[match(covariates$date, newmoons$censusdate)], control_rodents$newmoonnumber)
-
-head(control_rodents)
-
-control_rodents$date
-  covariates$ordii         <- control_rodents
-
-
-
-
-
-
-
-
-
-  min_date <- min(c(weather_data$date, ndvi_data$date))
+  historic_ordii               <- control_rodents[ , c("newmoonnumber", "DO", "date", "source")]
+  moonin                       <- newmoons$newmoondate > origin
+  forecast_ordii               <- data.frame(newmoonnumber = newmoons$newmoonnumber[moonin], 
+                                             DO            = NA,
+                                             date          = newmoons$newmoondate[moonin],
+                                             source        = "psGARCH_forecast")
   
 
-
-  out                       <- weather_data
-  out$source                <- "historic"
-  out$ndvi                  <- NA
-  moon_match                <- match(ndvi_data$newmoonnumber, out$newmoonnumber)
-  out$ndvi[moon_match]      <- ndvi_data$ndvi
-  out$ndvi_13_moon          <- as.numeric(filter(out$ndvi, rep(1, 13), sides = 1))
-  out$warm_precip_3_moon    <- as.numeric(filter(out$warm_precip, rep(1, 3), sides = 1))
-
-  out$mintemp_6_moon        <- as.numeric(filter(out$mintemp, rep(1, 6), sides = 1))
-  out$meantemp_6_moon       <- as.numeric(filter(out$meantemp, rep(1, 6), sides = 1))
-  out$maxtemp_6_moon        <- as.numeric(filter(out$maxtemp, rep(1, 6), sides = 1))
-  out$precipitation_6_moon  <- as.numeric(filter(out$precipitation, rep(1, 6), sides = 1))
-  out$ndvi_6_moon           <- as.numeric(filter(out$ndvi, rep(1, 6), sides = 1))
-
-  out$ordii_controls        <- NA
-  for (i in 1:nrow(out)) {
-    spot <- which(rodents_table$newmoonnumber == out$newmoonnumber[i])
-    if (length(spot) == 1) {
-      out$ordii_controls[i] <- rodents_table$DO[spot] 
-    }
-  }
-  out$ordii_controls <- as.numeric(round(pmax(na.interp(out$ordii_controls), 0) ))
-
-  moon_foys        <- foy(dates = out$date)
-  out$sin2pifoy    <- sin(2 * pi * moon_foys)
-  out$cos2pifoy    <- cos(2 * pi * moon_foys)
+  past                         <- list(past_obs = 1, past_mean = 13)
+  ordii_model                  <- tsglm(historic_ordii$DO, model = past, distr = "poisson", link = "log")
+  forecast_ordii$DO            <- predict(ordii_model, n.ahead = nrow(forecast_ordii))$pred
+  ordii_together               <- rbind(historic_ordii, forecast_ordii)
   
 
-  cols_to_keep <- c("newmoonnumber", "date", "mintemp", "maxtemp", "meantemp", "precipitation", "warm_precip", "ndvi", 
-                    "mintemp_6_moon", "meantemp_6_moon", "maxtemp_6_moon", "precipitation_6_moon", "ndvi_6_moon", 
-                    "warm_precip_3_moon", "ndvi_13_moon", "ordii_controls", "sin2pifoy", "cos2pifoy", "source")
+                                      
 
-  write_data(x         = out[ , cols_to_keep], 
-             main      = main, 
-             save      = settings$save, 
-             filename  = settings$files$historical_covariates, 
-             quiet     = !verbose)
+# ndvi is a bit of a challenge because we have multiple sources now
+# and so can end up with multiple readings on the same day
+
+
+
+
 
 }
 

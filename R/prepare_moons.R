@@ -34,6 +34,7 @@ prepare_newmoons <- function (main             = ".",
                               origin           = Sys.Date(), 
                               lead_time        = 365,
                               max_lag          = 365,
+                              lag_buffer       = 30,
                               settings         = directory_settings(), 
                               quiet            = FALSE, 
                               verbose          = FALSE) {
@@ -52,7 +53,8 @@ prepare_newmoons <- function (main             = ".",
                                     lead_time   = lead_time,
                                     origin      = origin)
 
-  timeseries_start_lagged <- timeseries_start - max_lag 
+  # have the lag go back a lunar month further to facilitate half month inclusions etc
+  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer 
 
   newmoons <- newmoons[newmoons$newmoondate >= timeseries_start_lagged, ]
 

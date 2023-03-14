@@ -74,7 +74,7 @@ jags_logistic_competition <- function (main            = ".",
     X[1]          <- exp(log_X[1])
     count[1]      ~  dpois(X[1]) 
 
-    # exampand parameters
+    # expand parameters
 
     for (i in 1:N) {
 
@@ -258,7 +258,7 @@ jags_logistic_competition_covariates <- function (main            = ".",
     X[1]          <- exp(log_X[1])
     count[1]      ~  dpois(X[1]) 
 
-    # exampand parameters
+    # expand parameters
 
     for (i in 1:N) {
 
@@ -444,7 +444,7 @@ jags_logistic_covariates <- function (main            = ".",
     X[1]          <- exp(log_X[1])
     count[1]      ~  dpois(X[1]) 
 
-    # exampand parameters
+    # expand parameters
 
     for (i in 1:N) {
 
