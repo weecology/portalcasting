@@ -5,7 +5,7 @@
 #' @importFrom httr content GET stop_for_status
 #' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
 #' @importFrom portalr download_observations get_future_moons load_datafile ndvi summarize_rodent_data weather
-#' @importFrom runjags run.jags runjags.options
+#' @importFrom runjags combine.mcmc run.jags runjags.options
 #' @importFrom scoringRules crps_nbinom crps_norm crps_pois crps_sample logs_sample logs_nbinom logs_norm logs_pois 
 #' @importFrom stats AIC filter frequency lm na.omit predict qnorm quantile rgamma rnorm runif sd
 #' @importFrom tscount tsglm

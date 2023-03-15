@@ -8,6 +8,10 @@
 prepare_dataset(
   name = "all",
   main = ".",
+  timeseries_start = as.Date("1995-01-01"),
+  origin = Sys.Date(),
+  max_lag = 365,
+  lag_buffer = 30,
   settings = directory_settings(),
   filename = "rodents_all.csv",
   clean = FALSE,

@@ -178,44 +178,146 @@ prepare_covariates <- function (main             = ".",
   
 
 # ndvi is a bit of a challenge because we have multiple sources now
-# and so can end up with multiple readings on the same day
 
-  ndvi_data$date        <- as.Date(ndvi_data$date)
-  possible_sensors      <- levels(as.factor(ndvi_data$sensor))
-  npossible_sensors     <- length(possible_sensors)
+  monitor <- c("mu", "sensor_observation_sigma", "sensor_offset_sigma", "seasonal_cos_slope", "seasonal_sin_slope", "mu_year_offset_sigma", "seasonal_cos_year_offset_sigma", "seasonal_sin_year_offset_sigma",
+               "mu_year_offset", "seasonal_cos_year_offset", "seasonal_sin_year_offset")
 
-  ndvi_models           <- named_null_list(possible_sensors)
-  ndvi_forecasts        <- named_null_list(possible_sensors)
-  ndvi_dates            <- named_null_list(possible_sensors)
-  for (i in 1:npossible_sensors) {
-    sensor_data         <- ndvi_data[ndvi_data$sensor == possible_sensors[i], ]
-    possible_dates_fit      <- seq(min(ndvi_data$date), max(sensor_data$date), 1)
-    sensor_observations <- sensor_data$ndvi[match(possible_dates_fit, sensor_data$date)]
+  inits <- function (data = NULL) {
 
-    foy_fit        <- foy(possible_dates_fit)
-    cos_fit        <- cos(2 * pi * foy_fit)
-    sin_fit        <- sin(2 * pi * foy_fit)
-    xreg_fit       <- data.frame(cos_seas = cos_fit, sin_seas = sin_fit)
-    xreg_fit       <- as.matrix(xreg_fit)
+    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
 
-    ndvi_models[[i]]    <- auto.arima(sensor_observations, xreg = xreg_fit)
+    function (chain = chain) {
 
-    possible_dates_cast      <- seq(max(sensor_data$date), max(ndvi_data$date), 1)
-    ndays_cast      <- length(possible_dates_cast)
-    foy_cast        <- foy(possible_dates_cast)
-    cos_cast        <- cos(2 * pi * foy_cast)
-    sin_cast        <- sin(2 * pi * foy_cast)
-    xreg_cast       <- data.frame(cos_seas = cos_cast, sin_seas = sin_cast)
-    xreg_cast       <- as.matrix(xreg_cast)   
-    ndvi_forecasts[[i]] <- forecast(ndvi_models[[i]], ndays_cast, xreg = xreg_cast)
-    
-    ndvi_dates[[i]] <- list(dates_fit  = possible_dates_fit,
-                            dates_cast = possible_dates_cast)
+      list(.RNG.name                 = sample(rngs, 1),
+           .RNG.seed                 = sample(1:1e+06, 1),
+            mu                       = rnorm(1, data$mean_observed_value, 0.01),
+            seasonal_cos_slope       = rnorm(1, 0, 0.1),
+            seasonal_sin_slope       = rnorm(1, 0, 0.1),
+            mu_year_offset_sigma        = runif(1, 0.001, 0.01),
+            seasonal_sin_year_offset_sigma        = runif(1, 0.001, 0.01),
+            seasonal_cos_year_offset_sigma        = runif(1, 0.001, 0.01),
+            sensor_observation_sigma = runif(data$nsensors, 0.001, 0.01),
+            sensor_offset_sigma      = runif(1, 0.001, 0.01))
+
+
+
+    }
+
   }
 
-forecast:::forecast.Arima
+  jags_model <- "model { 
+ 
+    # priors
+
+    mu                   ~  dnorm(mean_observed_value, 100)
+
+    sensor_offset_sigma  ~  dunif(0, 1) 
+    sensor_offset_tau    <- pow(sensor_offset_sigma, -2)
+
+    seasonal_cos_slope   ~ dnorm(0, 1)
+    seasonal_sin_slope   ~ dnorm(0, 1)
+
+    seasonal_cos_year_offset_sigma  ~  dunif(0, 1) 
+    seasonal_cos_year_offset_tau    <- pow(seasonal_cos_year_offset_sigma, -2)
+    seasonal_sin_year_offset_sigma  ~  dunif(0, 1) 
+    seasonal_sin_year_offset_tau    <- pow(seasonal_sin_year_offset_sigma, -2)
+
+    mu_year_offset_sigma  ~  dunif(0, 1) 
+    mu_year_offset_tau    <- pow(mu_year_offset_sigma, -2)
+
+    for (i in 1:nsensors) {
+
+      sensor_offset[i]            ~  dnorm(0, sensor_offset_tau)
+      sensor_observation_sigma[i] ~  dunif(0, 1) 
+      sensor_observation_tau[i]   <- pow(sensor_observation_sigma[i], -2)
+
+    }
+
+    for (i in 1:nyears) {
+
+      mu_year_offset[i]            ~  dnorm(0, mu_year_offset_tau)
+      seasonal_cos_year_offset[i]            ~  dnorm(0, seasonal_cos_year_offset_tau)
+      seasonal_sin_year_offset[i]            ~  dnorm(0, seasonal_sin_year_offset_tau)
+
+    }
+
+    for (i in 1:npossible_dates) {
+ 
+      latent_value[i]   <-  mu + mu_year_offset[date_year[i]] + 
+                           (seasonal_cos_slope + seasonal_cos_year_offset[date_year[i]]) * seasonal_cos_value[i] + 
+                           (seasonal_sin_slope + seasonal_sin_year_offset[date_year[i]]) * seasonal_sin_value[i]
+
+    }
 
 
+
+    for (i in 1:nobservations) {
+
+      observed_value[i] ~ dnorm(latent_value[observation_date[i]] + sensor_offset[observation_sensor[i]], sensor_observation_tau[observation_sensor[i]])
+
+    }
+
+
+
+  }"
+
+
+
+  possible_dates      <- seq(as.Date(min(ndvi_data$date)), forecast_end, 1)
+  npossible_dates     <- length(possible_dates)
+  seasonal_cos_value  <- cos(2 * pi * foy(possible_dates))
+  seasonal_sin_value  <- sin(2 * pi * foy(possible_dates))
+  date_year           <- as.numeric(as.factor(format(possible_dates, "%Y")))
+  nyears              <- max(date_year)
+
+  observed_value      <- ndvi_data$ndvi[ndvi_data$date %in% possible_dates]
+  mean_observed_value <- mean(observed_value, na.rm = TRUE)
+  nobservations       <- nrow(ndvi_data[ndvi_data$date %in% possible_dates, ])
+  observation_sensor  <- as.numeric(as.factor(ndvi_data$sensor[ndvi_data$date %in% possible_dates]))
+  nsensors            <- length(unique(observation_sensor))
+  observation_date    <- match(as.Date(ndvi_data$date[ndvi_data$date %in% possible_dates]), possible_dates)
+  possible_sensors    <- levels(as.factor(ndvi_data$sensor[ndvi_data$date %in% possible_dates]))
+  
+
+
+  data <- list(observed_value      = observed_value,
+               mean_observed_value = mean_observed_value,
+               seasonal_cos_value  = seasonal_cos_value,
+               seasonal_sin_value  = seasonal_sin_value,
+               nobservations       = nobservations,
+               npossible_dates     = npossible_dates,
+               observation_date    = observation_date,
+               nsensors            = nsensors,
+               observation_sensor  = observation_sensor,
+               nyears              = nyears,
+               date_year           = date_year)
+
+  model_fit <- run.jags(model = jags_model, 
+                   monitor   = monitor, 
+                   inits     = inits(data), 
+                   data      = data, 
+                   n.chains  = 4,
+                   adapt     = 1000,
+                   burnin    = 1000,
+                   sample    = 1000,
+                   thin      = 1,
+                   modules   = "glm",
+                   method    = "interruptible", 
+                   factories = "", 
+                   mutate    = NA, 
+                   summarise = TRUE, 
+                   plots     = FALSE)
+
+  mcmc <- combine.mcmc(model_fit$mcmc)
+  model_fit_summary <- summary(model_fit)
+
+  y <-  model_fit_summary["mu", "Mean"] + model_fit_summary[paste0("mu_year_offset[", date_year, "]"), "Mean"] + 
+       (model_fit_summary["seasonal_cos_slope", "Mean"] + model_fit_summary[paste0("seasonal_cos_year_offset[", date_year, "]"), "Mean"]) * seasonal_cos_value + 
+       (model_fit_summary["seasonal_sin_slope", "Mean"] + model_fit_summary[paste0("seasonal_sin_year_offset[", date_year, "]"), "Mean"]) * seasonal_sin_value
+
+  
+  # now to bring it back to the obervations and forecasts of the other covariates
+  
 
 }
 

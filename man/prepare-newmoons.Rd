@@ -8,8 +8,11 @@
 \usage{
 prepare_newmoons(
   main = ".",
-  lead_time = 365,
+  timeseries_start = as.Date("1995-01-01"),
   origin = Sys.Date(),
+  lead_time = 365,
+  max_lag = 365,
+  lag_buffer = 30,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -26,9 +29,9 @@ add_forecast_newmoons(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. Default is \code{365}.}
-
 \item{origin}{\code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).}
+
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. Default is \code{365}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

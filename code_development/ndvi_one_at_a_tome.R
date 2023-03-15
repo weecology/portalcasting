@@ -1,3 +1,17 @@
+s <- mgcv::s
+# one at a time?
+m <- mgcv::gam(ndvi ~ s(foy_fit * sensor, bs = "cc"))
+i <- 5
+y <- predict(m, newdata = data.frame(foy_fit = foy_cast, sensor = sensor_levels[i]))
+sensor_index_col <- sensor_index
+sensor_index_col[sensor_index_col != i] <- 0
+plot(ndvi ~ ndvi_data$date, col = sensor_index_col, ylim = c(0, 0.5))
+points(y ~ dates_cast, type = 'l', lwd = 3)
+
+
+
+
+
   possible_sensors    <- unique(ndvi_data$sensor)
   npossible_sensors   <- length(possible_sensors)
 model_fit <- named_null_list(possible_sensors)

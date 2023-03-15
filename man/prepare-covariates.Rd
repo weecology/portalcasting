@@ -17,6 +17,11 @@ xprepare_covariates(
 
 prepare_covariates(
   main = ".",
+  timeseries_start = as.Date("1995-01-01"),
+  origin = Sys.Date(),
+  lead_time = 365,
+  max_lag = 365,
+  lag_buffer = 30,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
