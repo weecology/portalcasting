@@ -1,27 +1,31 @@
 # produces a model-ready vector
-prepare_rodent_abundance <- function (main     = ".", 
-                                      dataset  = NULL,
-                                      species  = NULL,
-                                      model    = NULL,
-                                      settings = directory_settings( ), 
-                                      quiet    = FALSE, 
-                                      verbose  = FALSE) {
+prepare_abundance <- function (main     = ".", 
+                               dataset  = NULL,
+                               species  = NULL,
+                               model    = NULL,
+                               settings = directory_settings( ), 
+                               quiet    = FALSE, 
+                               verbose  = FALSE) {
 
-  metadata <- read_metadata(main     = main,
-                            settings = settings)
-  rodents_table <- read_rodents_table(main     = main, 
-                                      dataset  = dataset,
-                                      settings = settings)
-  moon_in          <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoons
-  species_in <- colnames(rodents_table) == gsub("NA", "NA.", species)
-    out <- rodents_table[moon_in, species_in]
+  # species can only be length 1 here
 
-  model_controls <- read_model_controls(main = main, settings = settings)[[model]]
+  model_controls <- read_model_controls(main     = main, 
+                                        settings = settings)[[model]]
+  metadata       <- read_metadata(main           = main,
+                                  settings       = settings)
+  rodents_table  <- read_rodents_table(main      = main, 
+                                       dataset   = dataset,
+                                       settings  = settings)
+
+  moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoons
+  species_in    <- colnames(rodents_table) == gsub("NA", "NA.", species)
+  out           <- rodents_table[moon_in, species_in]
+
 
   if (model_controls$interpolate$needed) {
 
    out <- do.call(what = model_controls$interpolate$fun,
-                  args = list(x = out))
+                  args = update_list(list(x = out), model_controls$interpolate$args))
 
   } 
 

@@ -77,7 +77,7 @@ get_future_newmoons <- function (newmoons, nfuture_newmoons) {
 
   get_future_moons(moons            = newmoons,
                    num_future_moons = nfuture_newmoons)
-
+# will be available directly in portalr in place of get future moons shortly
 }
 
 

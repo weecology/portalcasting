@@ -8,6 +8,7 @@ prepare_metadata(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
+  new_dataset_controls = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -19,6 +20,8 @@ prepare_metadata(
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{character} vector of name(s) of dataset(s) to include.}
+
+\item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

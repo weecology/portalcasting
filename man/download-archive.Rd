@@ -24,7 +24,7 @@ download_archive(
 
 \item{version}{\code{character} version of the data to download. Default \code{"latest"} downloads the most recent (by date published). \code{NULL} means no download.}
 
-\item{source}{\code{character} indicator of the source for the download. Either \code{"github"} (default) or \code{"github"}.}
+\item{source}{\code{character} indicator of the source for the download. Either \code{"github"} (default) or \code{"zenodo"}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 

@@ -32,10 +32,7 @@ xcast(
 Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
 }
 \description{
-Forecast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr
- \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prepare_data}. \cr \cr
- \code{cast} runs a single cast of multiple models across data sets.
-}
-\details{
-Multiple models can be run together on the multiple, varying data sets for a single new moon using \code{cast}. \code{portalcast} wraps around \code{cast}, providing updating, verification, and resetting utilities as well as facilitating multiple runs of \code{cast} across new moons (e.g., when using a rolling origin).
+Forecast the Portal rodent population data using the data and models in a portalcasting directory. \cr \cr
+ \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models. \cr \cr
+ \code{cast} runs a single cast of a single model on one species of one data set.
 }

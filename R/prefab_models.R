@@ -47,8 +47,6 @@ prefab_models <- function( ) {
 #'  \code{nbGARCH} fits a generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}; requires interpolation of data. \cr \cr
 #'  \code{nbsGARCH} fits a seasonal generalized autoregresive conditional heteroscedasticity model with overdispersion (\emph{i.e.}, a negative binomial response variable) using \code{\link[tscount]{tsglm}}; requires interpolation of data. \cr \cr
 #'  \code{pevGARCH} fits a set of generalized autoregressive conditional heteroscedasticity models with Poisson response variables and  environmental covariates (max temp, mean temp, min temp, precipitation, and NDVI) using \code{\link[tscount]{tsglm}}; requires interpolation of data. \cr \cr
-#  \code{simplexEDM} fits an EDM model with the simplex projection "kernel" using \code{\link[rEDM]{simplex}}. \cr \cr
-#  \code{GPEDM} fits an EDM model using Gaussian Processes for function approximation using \code{\link[rEDM]{tde_gp}}. \cr \cr
 #'  \code{jags_RW} fits a log-scale density random walk with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. \cr \cr
 #'  \code{jags_logistic} fits a log-scale density logistic-growth (r-K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
 #'  \code{jags_logistic_covariates} fits a log-scale density logistic-growth (r-K) based on covariates (warm rain influencing r, NDVI influencing K) model with a Poisson observation process using JAGS (Just Another Gibbs Sampler; Plummer 2003) hierarchical Bayesian inference. 
@@ -118,10 +116,10 @@ AutoArima <- function (main     = ".",
                                         settings = settings,
                                         quiet    = quiet,
                                         verbose  = verbose)
-
-##
   metadata <- read_metadata(main     = main,
                             settings = settings)
+##
+
 
   model_fit   <- auto.arima(y = abundance)
   model_cast  <- forecast(object = model_fit, 

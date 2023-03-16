@@ -235,6 +235,10 @@ prepare_covariates <- function (main     = ".",
                nyears              = nyears,
                date_year           = date_year)
 
+
+  runjags.options(silent.jags    = !verbose, 
+                  silent.runjags = quiet)
+
   model_fit <- run.jags(model = jags_model, 
                    monitor   = monitor, 
                    inits     = inits(data), 

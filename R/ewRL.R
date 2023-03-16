@@ -12,7 +12,7 @@
 #'
 #' @param version \code{character} version of the data to download. Default \code{"latest"} downloads the most recent (by date published). \code{NULL} means no download. 
 #'
-#' @param source \code{character} indicator of the source for the download. Either \code{"github"} (default) or \code{"github"}.
+#' @param source \code{character} indicator of the source for the download. Either \code{"github"} (default) or \code{"zenodo"}.
 #'
 #' @param pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay. 
 #'
