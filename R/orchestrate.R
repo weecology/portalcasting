@@ -10,6 +10,10 @@
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
 #'
+#' @param new_dataset_controls Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}. This argument is not available in \code{setup_production}.
+#'
+#' @param new_model_controls Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.
+#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
@@ -25,13 +29,13 @@ NULL
 #' @export
 #'
 create_dir <- function(main     = ".", 
-                       settings = directory_settings(), 
+                       settings = directory_settings( ), 
                        quiet    = FALSE){
 
   core_package_version <- package_version_finder("setup_dir")
 
-  messageq(message_break(), "\nThis is ", core_package_version[["package"]], " v", core_package_version[["version"]], "  ", format(Sys.time(), "%x %T %Z"), "\n", message_break(), quiet = quiet)
-  messageq(message_break(), "\nEstablishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", message_break(), quiet = quiet)
+  messageq(message_break( ), "\nThis is ", core_package_version[["package"]], " v", core_package_version[["version"]], "  ", format(Sys.time(), "%x %T %Z"), "\n", message_break( ), quiet = quiet)
+  messageq(message_break( ), "\nEstablishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", message_break( ), quiet = quiet)
 
 
   mapply(FUN          = dir.create, 
@@ -43,7 +47,7 @@ create_dir <- function(main     = ".",
                                 settings = settings, 
                                 quiet    = quiet)
 
-  messageq(message_break(), "\nDirectory successfully instantiated\n", message_break(), quiet = quiet)
+  messageq(message_break( ), "\nDirectory successfully instantiated\n", message_break( ), quiet = quiet)
 
 }
 
@@ -53,25 +57,27 @@ create_dir <- function(main     = ".",
 #'
 #' @export
 #'
-setup_dir <- function (main     = ".",
-                       models   = prefab_models(), 
-                       datasets = prefab_datasets(),
-                       settings = directory_settings(), 
-                       quiet    = FALSE, 
-                       verbose  = FALSE) {
-
+setup_dir <- function (main                 = ".",
+                       models               = prefab_models( ), 
+                       datasets             = prefab_datasets( ),
+                       new_dataset_controls = NULL,
+                       new_model_controls   = NULL,
+                       settings             = directory_settings( ), 
+                       quiet                = FALSE, 
+                       verbose              = FALSE) {
 
   create_dir(main     = main, 
              settings = settings,
              quiet    = quiet)
 
-  fill_dir(main     = main,
-           models   = models, 
-           datasets = datasets,
-           settings = settings,
-           quiet    = quiet,
-           verbose  = verbose)
-
+  fill_dir(main                 = main,
+           models               = models, 
+           datasets             = datasets,
+           new_dataset_controls = new_dataset_controls,
+           new_model_controls   = new_model_controls,
+           settings             = settings,
+           quiet                = quiet,
+           verbose              = verbose)
 
   read_directory_configuration(main     = main,
                                settings = settings,
@@ -85,9 +91,9 @@ setup_dir <- function (main     = ".",
 #' @export
 #'
 setup_production <- function (main     = ".",
-                              models   = prefab_models(), 
-                              datasets = prefab_datasets(),
-                              settings = production_settings(), 
+                              models   = prefab_models( ), 
+                              datasets = prefab_datasets( ),
+                              settings = production_settings( ), 
                               quiet    = FALSE, 
                               verbose  = TRUE) {
 
@@ -106,19 +112,23 @@ setup_production <- function (main     = ".",
 #'
 #' @export
 #'
-setup_sandbox <- function (main     = ".",
-                           models   = prefab_models(), 
-                           datasets = prefab_datasets(),
-                           settings = sandbox_settings(), 
-                           quiet    = FALSE, 
-                           verbose  = FALSE) {
+setup_sandbox <- function (main                 = ".",
+                           models               = prefab_models( ), 
+                           datasets             = prefab_datasets( ),
+                           new_dataset_controls = NULL,
+                           new_model_controls   = NULL,
+                           settings             = directory_settings( ), 
+                           quiet                = FALSE, 
+                           verbose              = FALSE) {
 
-  setup_dir(main     = main,
-            models   = models,
-            datasets = datasets,
-            settings = settings,
-            quiet    = quiet,
-            verbose  = verbose)
+  setup_dir(main                 = main,
+            models               = models, 
+            datasets             = datasets,
+            new_dataset_controls = new_dataset_controls,
+            new_model_controls   = new_model_controls,
+            settings             = settings,
+            quiet                = quiet,
+            verbose              = verbose)
 
   messageq(castle(), "Sandbox directory successfully set up at \n\n  ", normalizePath(file.path(main = main)), "\n\nHappy model building!", quiet = quiet)
 
@@ -151,7 +161,7 @@ NULL
 #' @export
 #'
 write_directory_configuration <- function (main     = ".", 
-                                           settings = directory_settings(), 
+                                           settings = directory_settings( ), 
                                            quiet    = FALSE){
 
   core_package_version <- package_version_finder("write_directory_configuration")
@@ -178,7 +188,7 @@ write_directory_configuration <- function (main     = ".",
 #' @export
 #'
 read_directory_configuration<- function (main     = ".", 
-                                         settings = directory_settings(), 
+                                         settings = directory_settings( ), 
                                          quiet    = FALSE){
   
   config <- tryCatch(
@@ -202,7 +212,7 @@ read_directory_configuration<- function (main     = ".",
 #' @export
 #'
 update_directory_configuration <- function (main     = ".", 
-                                            settings = directory_settings(), 
+                                            settings = directory_settings( ), 
                                             quiet    = FALSE,
                                             verbose  = FALSE){
   
@@ -236,6 +246,17 @@ update_directory_configuration <- function (main     = ".",
 # this function finds an object's host package and its version 
 # if nothing is input, it operates on itself as the object
 # if the object is sourced through multiple packages, each and its version are included
+
+#' @title Find an Object's Host Package and Version Information
+#'
+#' @description Locate basic package information of an R object. If nothing is input, it operates on itself. If the object is sourced through multiple packages, each and its version are included.
+#'
+#' @param what An R object.
+#'
+#' @return \code{list} of the object, its class, the packages it is sourced from / through, and the versions of those packages.
+#'
+#' @export
+#'
 
 package_version_finder <- function (what) {
 
@@ -298,7 +319,7 @@ messageq <- function (...,
 
   }
 
-  invisible()
+  invisible( )
 
 }
 
@@ -314,7 +335,7 @@ messageq <- function (...,
 #' @return \code{NULL} (message is put out to console).
 #'
 #' @examples
-#'  message_break()
+#'  message_break( )
 #'
 #' @export
 #'

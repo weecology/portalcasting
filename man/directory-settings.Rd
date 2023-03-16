@@ -3,6 +3,7 @@
 \name{directory settings}
 \alias{directory settings}
 \alias{directory_settings}
+\alias{time_settings}
 \alias{directory_files}
 \alias{directory_subdirectories}
 \alias{directory_resources}
@@ -14,18 +15,26 @@ directory_settings(
   files = directory_files(),
   subdirectories = directory_subdirectories(),
   resources = directory_resources(),
+  time = time_settings(),
+  confidence_level = 0.95,
   save = TRUE,
   overwrite = FALSE,
   unzip_pause = 30,
   download_timeout = getOption("timeout")
 )
 
+time_settings(
+  timeseries_start = as.Date("1995-01-01"),
+  origin = Sys.Date(),
+  lead_time = 365,
+  max_lag = 365,
+  lag_buffer = 30
+)
+
 directory_files(
   directory_configuration = "directory_configuration.yaml",
   newmoons = "newmoon_dates.csv",
   covariates = "covariates.csv",
-  historical_covariates = "historical_covariates.csv",
-  forecast_covariates = "forecast_covariates.csv",
   dataset_controls = "dataset_controls.yaml",
   model_controls = "model_controls.yaml",
   cast_evaluations = "cast_evaluations.csv",
@@ -59,6 +68,8 @@ sandbox_settings()
 
 \item{resources}{\code{character} name for the resources subdirectory.}
 
+\item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
+
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
 
 \item{overwrite}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
@@ -67,15 +78,21 @@ sandbox_settings()
 
 \item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 
+\item{timeseries_start}{\code{Date} after which historic samples are included in the timeseries fit. Default value is \code{1995-01-01}, corresponding to moon 217.}
+
+\item{origin}{\code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).}
+
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. \cr 
+As of version 0.51.0, default is now \code{365}, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year.}
+
+\item{max_lag}{\code{integer} (or integer \code{numeric}) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
+Default is \code{365} for the logistic covariate models.}
+
 \item{directory_configuration}{\code{character} name for the directory configuration YAML.}
 
 \item{newmoons}{\code{character} name for the lunar data csv.}
 
 \item{covariates}{\code{character} name for the combined historical and forecast covariates csv.}
-
-\item{historical_covariates}{\code{character} name for the historical covariates csv.}
-
-\item{forecast_covariates}{\code{character} name for the forecast covariates csv.}
 
 \item{dataset_controls}{\code{character} name for the YAML of dataset control list(s).}
 
@@ -100,6 +117,9 @@ sandbox_settings()
 \item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download.}
 
 \item{climate_forecast}{\code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.}
+
+\item{lag_bugger}{\code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
+Default value of \code{30} corresponds to one additional lunar month.}
 }
 \value{
 Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).

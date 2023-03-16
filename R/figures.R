@@ -29,7 +29,7 @@
 #' @export
 #'
 plot_casts_cov_RMSE <- function (main           = ".", 
-                                 settings       = directory_settings(),
+                                 settings       = directory_settings( ),
                                  cast_ids       = NULL, 
                                  cast_tab       = NULL, 
                                  end_moons      = NULL, 
@@ -280,7 +280,7 @@ eval_models <- function() {
 #' @export
 #'
 plot_casts_err_lead <- function (main           = ".", 
-                                 settings       = directory_settings(), 
+                                 settings       = directory_settings( ), 
                                  cast_ids       = NULL, 
                                  cast_tab       = NULL, 
                                  end_moons      = NULL, 
@@ -627,7 +627,7 @@ plot_casts_err_lead <- function (main           = ".",
 
   }  
 
-  invisible()
+  invisible( )
 
 }
 
@@ -687,7 +687,7 @@ plot_cast_point <- function (main         = ".",
                              highlight_sp = NULL,
                              moon         = NULL, 
                              with_census  = FALSE, 
-                             settings     = directory_settings(),
+                             settings     = directory_settings( ),
                              quiet        = FALSE) {
 
   moons <- read_newmoons(main     = main, 
@@ -875,7 +875,7 @@ plot_cast_point <- function (main         = ".",
 
   }
 
-  invisible()
+  invisible( )
 
 }
 
@@ -923,7 +923,7 @@ plot_cast_point <- function (main         = ".",
 #' @export
 #'
 plot_cast_ts <- function (main        = ".", 
-                          settings    = directory_settings(), 
+                          settings    = directory_settings( ), 
                           cast_id     = NULL, 
                           cast_groups = NULL,
                           dataset     = "all", 

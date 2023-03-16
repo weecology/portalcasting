@@ -85,8 +85,8 @@ write_data <- function (x         = NULL,
 read_data <- function (main      = ".", 
                        data_name = NULL, 
                        dataset   = "all", 
-                       datasets  = prefab_datasets(), 
-                       settings  = directory_settings()) {
+                       datasets  = prefab_datasets( ), 
+                       settings  = directory_settings( )) {
   
   return_if_null(data_name)
 
@@ -160,7 +160,7 @@ read_data <- function (main      = ".",
 #'
 read_rodents_table <- function (main     = ".", 
                                 dataset  = "all", 
-                                settings = directory_settings()) {
+                                settings = directory_settings( )) {
 
 
   return_if_null(dataset)
@@ -173,8 +173,8 @@ read_rodents_table <- function (main     = ".",
 #' @export
 #'
 read_rodents <- function (main     = ".", 
-                          datasets = prefab_datasets(), 
-                          settings = directory_settings()) {
+                          datasets = prefab_datasets( ), 
+                          settings = directory_settings( )) {
   
   return_if_null(datasets)
   mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
@@ -186,7 +186,7 @@ read_rodents <- function (main     = ".",
 #' @export
 #'
 read_newmoons <- function(main     = ".", 
-                       settings = directory_settings()){
+                       settings = directory_settings( )){
   
   read.csv(file.path(main, settings$subdirectories$data, settings$files$newmoons))
 
@@ -197,7 +197,7 @@ read_newmoons <- function(main     = ".",
 #' @export
 #'
 read_covariates <- function (main     = ".",
-                             settings = directory_settings()) {
+                             settings = directory_settings( )) {
 
   read.csv(file.path(main, settings$subdirectories$data, settings$files$covariates))
 
@@ -208,7 +208,7 @@ read_covariates <- function (main     = ".",
 #' @export
 #'
 read_forecast_covariates <- function (main     = ".",
-                                      settings = directory_settings()) {
+                                      settings = directory_settings( )) {
 
   read.csv(file.path(main, settings$subdirectories$data, settings$files$forecast_covariates))
 
@@ -219,7 +219,7 @@ read_forecast_covariates <- function (main     = ".",
 #' @export
 #'
 read_historical_covariates <- function (main    = ".",
-                                       settings = directory_settings()) {
+                                       settings = directory_settings( )) {
 
   read.csv(file.path(main, settings$subdirectories$data, settings$files$historical_covariates))
 
@@ -232,7 +232,7 @@ read_historical_covariates <- function (main    = ".",
 #' @export
 #'
 read_climate_forecasts <- function (main     = ".",
-                                    settings = directory_settings()) {
+                                    settings = directory_settings( )) {
 
   datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
   ndatas <- length(datas)
@@ -289,7 +289,7 @@ read_climate_forecasts <- function (main     = ".",
 #' @export
 #'
 read_metadata <- function(main     = ".", 
-                          settings = directory_settings()){
+                          settings = directory_settings( )){
   
   read_yaml(file.path(main, settings$subdirectories$data, settings$files$metadata), eval.expr = TRUE)
 
@@ -312,7 +312,7 @@ read_metadata <- function(main     = ".",
 #' @export
 #'
 read_casts_metadata <- function (main     = ".",
-                                 settings = directory_settings(), 
+                                 settings = directory_settings( ), 
                                  quiet    = FALSE){
   
   meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)

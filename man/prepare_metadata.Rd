@@ -8,11 +8,6 @@ prepare_metadata(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  timeseries_start = as.Date("1995-01-01"),
-  origin = Sys.Date(),
-  lead_time = 365,
-  max_lag = 365,
-  confidence_level = 0.95,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -24,15 +19,6 @@ prepare_metadata(
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{character} vector of name(s) of dataset(s) to include.}
-
-\item{timeseries_start}{\code{Date} after which samples are included. Default value is \code{1995-01-01}, corresponding to moon 217.}
-
-\item{origin}{\code{Date} from which future is defined. In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
-
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of days forward a cast will cover. \cr 
-As of version 0.51.0, default is now 365, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year.}
-
-\item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

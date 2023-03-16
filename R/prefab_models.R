@@ -6,8 +6,8 @@
 #'         \code{prefab_model_controls}: \code{list} vector of model controls. \cr
 #'
 #' @examples
-#'  prefab_models()
-#'  prefab_model_controls()
+#'  prefab_models( )
+#'  prefab_model_controls( )
 #'
 #' @name prefabricated_models
 #'
@@ -100,7 +100,7 @@ NULL
 AutoArima <- function (main     = ".", 
                        dataset  = NULL,
                        species  = NULL,
-                       settings = directory_settings(), 
+                       settings = directory_settings( ), 
                        quiet    = FALSE, 
                        verbose  = FALSE) {
 
@@ -129,7 +129,7 @@ AutoArima <- function (main     = ".",
 
   model_fit   <- auto.arima(y = abundance)
   model_cast  <- forecast(object = model_fit, 
-                     h      = metadata$time$rodent_lead_time, 
+                     h      = metadata$time$lead_time_newmoons, 
                      level  = metadata$confidence_level)
 
   model_cast  <- data.frame(pred  = model_cast$mean,
@@ -160,7 +160,7 @@ AutoArima <- function (main     = ".",
 NaiveArima <- function (main     = ".", 
                         dataset  = NULL,
                         species  = NULL,
-                        settings = directory_settings(), 
+                        settings = directory_settings( ), 
                         quiet    = FALSE, 
                         verbose  = FALSE) {
 
@@ -216,7 +216,7 @@ NaiveArima <- function (main     = ".",
 ESSS <- function (main     = ".", 
                   dataset  = NULL,
                   species  = NULL,
-                  settings = directory_settings(), 
+                  settings = directory_settings( ), 
                   quiet    = FALSE, 
                   verbose  = FALSE) {
 
@@ -272,7 +272,7 @@ ESSS <- function (main     = ".",
 nbGARCH <- function (main     = ".", 
                      dataset  = NULL,
                      species  = NULL,
-                     settings = directory_settings(), 
+                     settings = directory_settings( ), 
                      quiet    = FALSE, 
                      verbose  = FALSE) {
 
@@ -347,7 +347,7 @@ nbGARCH <- function (main     = ".",
 nbsGARCH <- function (main     = ".", 
                      dataset  = NULL,
                      species  = NULL,
-                     settings = directory_settings(), 
+                     settings = directory_settings( ), 
                      quiet    = FALSE, 
                      verbose  = FALSE) {
 
@@ -438,7 +438,7 @@ nbsGARCH <- function (main     = ".",
 pevGARCH <- function (main     = ".", 
                      dataset  = NULL,
                      species  = NULL,
-                     settings = directory_settings(), 
+                     settings = directory_settings( ), 
                      quiet    = FALSE, 
                      verbose  = FALSE) {
 

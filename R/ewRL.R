@@ -127,7 +127,7 @@ download_archive <- function(main          = ".",
 
       messageq("Existing local version (", existing_version, ") is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped",
                quiet = quiet)
-      return(invisible())
+      return(invisible( ))
 
     }
 
@@ -146,7 +146,7 @@ download_archive <- function(main          = ".",
   if (is.na(result)) {
 
     warning("Archive version `", version, "` could not be downloaded")
-    return(invisible())
+    return(invisible( ))
 
   }
 
@@ -188,6 +188,6 @@ download_archive <- function(main          = ".",
   unlink(temp_unzip, recursive = TRUE)
   file.remove(temp)
 
-  invisible()
+  invisible( )
 
 }

@@ -19,14 +19,14 @@
 #' @export
 #'
 portalcast <- function (main       = ".", 
-                        settings   = directory_settings(),
+                        settings   = directory_settings( ),
                         quiet      = FALSE,
                         verbose    = FALSE){
 
 
-  messageq(message_break(), "\nPreparing directory for casting\n", 
-           message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
-           message_break(), quiet = quiet)
+  messageq(message_break( ), "\nPreparing directory for casting\n", 
+           message_break( ), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
+           message_break( ), quiet = quiet)
 
   # we're pulling everything from the metadata file, rather than as arguments to the functions
 # note that this means we may want to reorganize fill_data to start with the metadata file (?)
@@ -55,8 +55,8 @@ species <- model_combinations$species[1]
        verbose = verbose)
 
 
-  messageq(message_break(), "\nCasting complete\n", message_break(), quiet = quiet)
-  invisible() 
+  messageq(message_break( ), "\nCasting complete\n", message_break( ), quiet = quiet)
+  invisible( ) 
 
 # things to consider / incorporate from cast
 # tryCatch and error messaging
@@ -74,7 +74,7 @@ cast <- function (main     = ".",
                   dataset  = NULL,
                   species  = NULL,
                   model    = NULL,
-                  settings = directory_settings(), 
+                  settings = directory_settings( ), 
                   quiet    = FALSE, 
                   verbose  = FALSE) {
 
@@ -141,7 +141,7 @@ cast <- function (main     = ".",
 #' @export
 #'
 xcast <- function (main       = ".", 
-                  settings   = directory_settings(), 
+                  settings   = directory_settings( ), 
                   quiet      = FALSE, 
                   verbose    = FALSE) {
 
@@ -152,7 +152,7 @@ xcast <- function (main       = ".",
   last_moon       <- moons$newmoonnumber[which_last_moon]
   end_moon        <- ifnull(end_moon, last_moon)
 
-  messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
+  messageq(message_break( ), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break( ), quiet = quiet)
 
   if (end_moon != last_moon) {
 
@@ -165,7 +165,7 @@ xcast <- function (main       = ".",
 
   }
 
-  messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
+  messageq(message_break( ), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break( ), quiet = quiet)
 
   models_scripts <- models_to_cast(main     = main, 
                                    models   = models,
@@ -177,7 +177,7 @@ xcast <- function (main       = ".",
 
     model <- models_scripts[i]
 
-    messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), "\n", message_break(), quiet = quiet)
+    messageq(message_break( ), "\n -Running ", path_no_ext(basename(model)), "\n", message_break( ), quiet = quiet)
 
     run_status <- tryCatch(expr  = source(model),
                            error = function(x){NA})
@@ -194,7 +194,7 @@ xcast <- function (main       = ".",
 
   }
 
-  invisible()
+  invisible( )
 
 }
 
@@ -252,8 +252,8 @@ make_model_combinations <- function (metadata = NULL) {
 #' @export
 #'
 models_to_cast <- function (main     = ".", 
-                            models   = prefab_models(),
-                            settings = directory_settings()) {
+                            models   = prefab_models( ),
+                            settings = directory_settings( )) {
   
   models_path <- file.path(main, settings$subdirectories$models)
   file_names  <- paste0(models, ".R")

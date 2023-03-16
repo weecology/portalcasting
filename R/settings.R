@@ -14,10 +14,6 @@
 #'
 #' @param covariates \code{character} name for the combined historical and forecast covariates csv.
 #'
-#' @param historical_covariates \code{character} name for the historical covariates csv.
-#'
-#' @param forecast_covariates \code{character} name for the forecast covariates csv.
-#'
 #' @param forecast_metadata \code{character} name for the forecast metadata csv.
 #'
 #' @param metadata \code{character} name for the Forecast metadata YAML.
@@ -52,6 +48,21 @@
 #'
 #' @param download_timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
+#' @param origin \code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).
+#'
+#' @param timeseries_start \code{Date} after which historic samples are included in the timeseries fit. Default value is \code{1995-01-01}, corresponding to moon 217.
+#'
+#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. \cr 
+#'   As of version 0.51.0, default is now \code{365}, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year. 
+#'
+#' @param max_lag \code{integer} (or integer \code{numeric}) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
+#'   Default is \code{365} for the logistic covariate models.
+#'
+#' @param lag_bugger \code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
+#'   Default value of \code{30} corresponds to one additional lunar month. 
+#'
+#' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
+#'
 #' @return Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
 #'
 #' @name directory settings
@@ -65,6 +76,8 @@ NULL
 directory_settings <- function (files             = directory_files( ),
                                 subdirectories    = directory_subdirectories( ),
                                 resources         = directory_resources( ),
+                                time              = time_settings( ),
+                                confidence_level  = 0.95,
                                 save              = TRUE,
                                 overwrite         = FALSE, 
                                 unzip_pause       = 30,
@@ -73,7 +86,8 @@ directory_settings <- function (files             = directory_files( ),
   list(files            = files,
        subdirectories   = subdirectories,
        resources        = resources,
-       repository       = "portalPredictions", # work to remove, should be populated from internal to the resource files
+       repository       = "portalPredictions", 
+       time             = time,
        save             = save, 
        overwrite        = overwrite, 
        unzip_pause      = unzip_pause,
@@ -85,11 +99,31 @@ directory_settings <- function (files             = directory_files( ),
 #'
 #' @export
 #'
+time_settings <- function (timeseries_start = as.Date("1995-01-01"), 
+                           origin           = Sys.Date( ),
+                           lead_time        = 365,
+                           max_lag          = 365,
+                           lag_buffer       = 30) {
+
+  # have the lag go back a lunar month further to facilitate half month inclusions etc
+  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer 
+
+  list(timeseries_start        = timeseries_start,
+       timeseries_start_lagged = timeseries_start_lagged,
+       origin                  = origin,
+       lead_time               = lead_time,
+       max_lag                 = max_lag,
+       lag_buffer              = lag_buffer)
+
+}
+
+#' @rdname directory-settings
+#'
+#' @export
+#'
 directory_files <- function (directory_configuration = "directory_configuration.yaml",
                              newmoons                = "newmoon_dates.csv",
                              covariates              = "covariates.csv",
-                             historical_covariates   = "historical_covariates.csv",
-                             forecast_covariates     = "forecast_covariates.csv",
                              dataset_controls        = "dataset_controls.yaml", 
                              model_controls          = "model_controls.yaml",
                              cast_evaluations        = "cast_evaluations.csv",
@@ -99,8 +133,6 @@ directory_files <- function (directory_configuration = "directory_configuration.
   list(directory_configuration = directory_configuration,
        newmoons                = newmoons,
        covariates              = covariates,
-       historical_covariates   = historical_covariates,
-       forecast_covariates     = forecast_covariates,
        dataset_controls        = dataset_controls, 
        model_controls          = model_controls,
        cast_evaluations        = cast_evaluations,
@@ -168,7 +200,7 @@ production_settings <- function (download_timeout  = max(getOption("timeout"), 6
 #'
 sandbox_settings <- function ( ) {
 
-  directory_settings()
+  directory_settings( )
 
 }
 

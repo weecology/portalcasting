@@ -14,12 +14,8 @@ fill_dir(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  timeseries_start = as.Date("1995-01-01"),
-  origin = Sys.Date(),
-  lead_time = 365,
-  max_lag = 365,
-  lag_buffer = 30,
-  confidence_level = 0.95,
+  new_dataset_controls = NULL,
+  new_model_controls = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -30,12 +26,6 @@ fill_data(
   models = prefab_models(),
   datasets = prefab_datasets(),
   new_dataset_controls = NULL,
-  timeseries_start = as.Date("1995-01-01"),
-  origin = Sys.Date(),
-  lead_time = 365,
-  max_lag = 365,
-  lag_buffer = 30,
-  confidence_level = 0.95,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -65,6 +55,7 @@ fill_fits(
 fill_models(
   main = ".",
   models = prefab_models(),
+  new_model_controls = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -76,6 +67,10 @@ fill_models(
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
+
+\item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
+
+\item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 

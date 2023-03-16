@@ -22,6 +22,10 @@
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
 #'
+#' @param new_dataset_controls Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.
+#'
+#' @param new_model_controls Optional \code{list} of controls for new models. See \code{\link{model_controls}}.
+#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
@@ -38,59 +42,51 @@ NULL
 #'
 #' @export
 #'
-fill_dir <- function (main             = ".",
-                      models           = prefab_models(), 
-                      datasets         = prefab_datasets(),
-                      timeseries_start = as.Date("1995-01-01"), 
-                      origin           = Sys.Date(),
-                      lead_time        = 365,
-                      max_lag          = 365,
-                      lag_buffer       = 30,
-                      confidence_level = 0.95,
-                      settings         = directory_settings(), 
-                      quiet            = FALSE, 
-                      verbose          = FALSE) {
+fill_dir <- function (main                 = ".",
+                      models               = prefab_models( ), 
+                      datasets             = prefab_datasets( ),
+                      new_dataset_controls = NULL,
+                      new_model_controls   = NULL,
+                      settings             = directory_settings( ), 
+                      quiet                = FALSE, 
+                      verbose              = FALSE) {
 
   messageq("Filling directory with content: \n", quiet = quiet)
 
-  subdirectories <- settings$subdirectories
+  fill_resources(main            = main, 
+                 settings        = settings, 
+                 quiet           = quiet, 
+                 verbose         = verbose)
 
-  fill_resources(main     = main, 
-                 settings = settings, 
-                 quiet    = quiet, 
-                 verbose  = verbose)
+  fill_forecasts(main            = main, 
+                 settings        = settings, 
+                 quiet           = quiet, 
+                 verbose         = verbose)
 
-  fill_forecasts(main     = main, 
-                 settings = settings, 
-                 quiet    = quiet, 
-                 verbose  = verbose)
+  fill_fits(main                 = main, 
+            settings             = settings, 
+            quiet                = quiet, 
+            verbose              = verbose)
 
-  fill_fits(main     = main, 
-            settings = settings, 
-            quiet    = quiet, 
-            verbose  = verbose)
+  fill_data(main                 = main, 
+            datasets             = datasets,
+            models               = models,
+            new_dataset_controls = new_dataset_controls,
+            new_dataset_controls = new_dataset_controls,
+            settings             = settings,
+            quiet                = quiet, 
+            verbose              = verbose)
 
-  fill_data(main             = main, 
-            datasets         = datasets,
-            models           = models,
-            timeseries_start = timeseries_start,
-            origin           = origin,
-            lead_time        = lead_time,
-            max_lag          = max_lag,
-            lag_buffer       = lag_buffer,
-            settings         = settings,
-            quiet            = quiet, 
-            verbose          = verbose)
-
-  fill_models(main     = main, 
-              settings = settings,
-              models   = models, 
-              quiet    = quiet, 
-              verbose  = verbose)
+  fill_models(main               = main, 
+              settings           = settings,
+              models             = models,
+              new_model_controls = new_model_controls,
+              quiet              = quiet, 
+              verbose            = verbose)
 
   messageq("\nDirectory filling complete.", quiet = quiet)
 
-  invisible()
+  invisible( )
 
 }
 
@@ -100,16 +96,10 @@ fill_dir <- function (main             = ".",
 #' @export
 #'
 fill_data <- function (main                 = ".",
-                       models               = prefab_models(),
-                       datasets             = prefab_datasets(),
+                       models               = prefab_models( ),
+                       datasets             = prefab_datasets( ),
                        new_dataset_controls = NULL,
-                       timeseries_start     = as.Date("1995-01-01"), 
-                       origin               = Sys.Date(),
-                       lead_time            = 365,
-                       max_lag              = 365,
-                       lag_buffer           = 30,
-                       confidence_level     = 0.95,
-                       settings             = directory_settings(), 
+                       settings             = directory_settings( ), 
                        quiet                = FALSE,
                        verbose              = FALSE) {
 
@@ -123,55 +113,34 @@ fill_data <- function (main                 = ".",
 
   messageq("  ... adding data files ... ", quiet = quiet)
 
+  prepare_newmoons(main                = main,  
+                   settings            = settings,
+                   quiet               = quiet, 
+                   verbose             = verbose)
 
-  prepare_newmoons(main             = main,  
-                   timeseries_start = timeseries_start,
-                   origin           = origin,
-                   lead_time        = lead_time,
-                   max_lag          = max_lag,
-                   lag_buffer       = lag_buffer,
-                   settings         = settings,
-                   quiet            = quiet, 
-                   verbose          = verbose)
+  prepare_rodents(main                 = main,  
+                  datasets             = datasets,
+                  new_dataset_controls = new_dataset_controls,
+                  settings             = settings,
+                  quiet                = quiet, 
+                  verbose              = verbose) 
 
-  prepare_rodents(main             = main,  
-                  datasets         = datasets,
-                  timeseries_start = timeseries_start,
-                  origin           = origin,
-                  lead_time        = lead_time,
-                  max_lag          = max_lag,
-                  lag_buffer       = lag_buffer,
-                  settings         = settings,
-                  quiet            = quiet, 
-                  verbose          = verbose) 
+  prepare_covariates(main              = main, 
+                     settings          = settings,
+                     quiet             = quiet, 
+                     verbose           = verbose)
 
-
-  prepare_covariates(main             = main, 
-                     timeseries_start = timeseries_start,
-                     origin           = origin,
-                     lead_time        = lead_time,
-                     max_lag          = max_lag,
-                     lag_buffer       = lag_buffer,
-                     settings         = settings,
-                     quiet            = quiet, 
-                     verbose          = verbose)
-
-  prepare_metadata(main             = main, 
-                   datasets         = datasets,
-                   timeseries_start = timeseries_start,
-                   origin           = origin,
-                   lead_time        = lead_time,
-                   max_lag          = max_lag,
-                   lag_buffer       = lag_buffer,
-                   confidence_level = confidence_level,
-                   models           = models, 
-                   settings         = settings,
-                   quiet            = quiet, 
-                   verbose          = verbose)
+  prepare_metadata(main                 = main, 
+                   datasets             = datasets,
+                   new_dataset_controls = new_dataset_controls,
+                   models               = models, 
+                   settings             = settings,
+                   quiet                = quiet, 
+                   verbose              = verbose)
 
   messageq("  ... data preparing complete.", quiet = quiet)
 
-  invisible()
+  invisible( )
 
 }
 
@@ -182,7 +151,7 @@ fill_data <- function (main                 = ".",
 #' @export
 #'
 fill_resources <- function (main     = ".",
-                            settings = directory_settings(),
+                            settings = directory_settings( ),
                             quiet    = FALSE,
                             verbose  = FALSE) {
 
@@ -219,7 +188,7 @@ fill_resources <- function (main     = ".",
                                  settings = settings,
                                  quiet    = quiet)
 
-  invisible()
+  invisible( )
 
 }
 
@@ -228,7 +197,7 @@ fill_resources <- function (main     = ".",
 #' @export
 #'
 fill_forecasts <- function (main     = ".", 
-                            settings = directory_settings(), 
+                            settings = directory_settings( ), 
                             quiet    = FALSE, 
                             verbose  = FALSE) { 
 
@@ -249,7 +218,7 @@ fill_forecasts <- function (main     = ".",
 
   if (length(files) == 0) {
 
-    return(invisible())
+    return(invisible( ))
 
   }
 
@@ -270,7 +239,7 @@ fill_forecasts <- function (main     = ".",
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
 
-  invisible()
+  invisible( )
 
 }
 
@@ -280,7 +249,7 @@ fill_forecasts <- function (main     = ".",
 #' @export
 #'
 fill_fits <- function (main     = ".", 
-                       settings = directory_settings(), 
+                       settings = directory_settings( ), 
                        quiet    = FALSE, 
                        verbose  = FALSE) { 
 
@@ -299,7 +268,7 @@ fill_fits <- function (main     = ".",
 
   if (length(files) == 0) {
 
-    return(invisible())
+    return(invisible( ))
 
   }
 
@@ -320,7 +289,7 @@ fill_fits <- function (main     = ".",
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
 
-  invisible()
+  invisible( )
 
 }
 
@@ -330,16 +299,18 @@ fill_fits <- function (main     = ".",
 #'
 #' @export
 #'
-fill_models <- function (main     = ".", 
-                         models   = prefab_models(), 
-                         settings = directory_settings(), 
-                         quiet    = FALSE, 
-                         verbose  = FALSE) {
+fill_models <- function (main               = ".", 
+                         models             = prefab_models( ), 
+                         new_model_controls = NULL,
+                         settings           = directory_settings( ), 
+                         quiet              = FALSE, 
+                         verbose            = FALSE) {
 
-  model_controls_list <- write_model_controls(main     = main, 
-                                              settings = settings, 
-                                              models   = models, 
-                                              quiet    = quiet)
+  model_controls_list <- write_model_controls(main               = main, 
+                                              settings           = settings,
+                                              models             = models,
+                                              new_model_controls = new_model_controls,
+                                              quiet              = quiet) 
 
   return_if_null(models)
 
@@ -360,7 +331,7 @@ fill_models <- function (main     = ".",
 
   messageq("  ... done. ", quiet = quiet)
 
-  invisible()
+  invisible( )
 
 }
 

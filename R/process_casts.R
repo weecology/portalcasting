@@ -31,10 +31,14 @@ process_model_output <- function (main     = ".",
                                dataset          = dataset,
                                dataset_controls = metadata$dataset_controls[[dataset]])
 
-  cast_tab <- data.frame(origin        = metadata$time$origin, 
-                         cast_month       = metadata$time$rodent_cast_months,
-                         cast_year        = metadata$time$rodent_cast_years, 
-                         moon             = metadata$time$rodent_cast_moons,
+  cast_tab <- data.frame(origin           = metadata$time$origin, 
+                         lead_time        = metadata$time$lead_time,
+                         max_lag          = metadata$time$max_lag,
+                         lag_buffer       = metadata$time$lag_buffer,
+
+                         cast_month       = metadata$time$forecast_months,
+                         cast_year        = metadata$time$forecast_years, 
+                         moon             = metadata$time$forecast_newmoons,
                          currency         = metadata$dataset_controls[[dataset]]$args$output,
                          model            = model, 
                          dataset          = dataset, 
@@ -44,8 +48,8 @@ process_model_output <- function (main     = ".",
                          estimate         = model_cast$pred, 
                          lower_pi         = model_cast$lower,
                          upper_pi         = model_cast$upper, 
-                         start_moon       = metadata$time$start_moon,
-                         end_moon         = metadata$time$end_moon,
+                         start_moon       = metadata$time$historic_start_newmoon,
+                         end_moon         = metadata$time$historic_end_newmoon,
                          cast_id          = cast_metadata$cast_id)
 
   pkg_version   <- metadata$directory_configuration$setup$core_package_version
@@ -208,7 +212,7 @@ measure_cast_level_error <- function (cast_tab = NULL) {
 #' @export
 #'
 add_lead_to_cast_tab <- function (main     = ".", 
-                                  settings = directory_settings(), 
+                                  settings = directory_settings( ), 
                                   cast_tab = NULL) {
 
   return_if_null(cast_tab)
@@ -222,7 +226,7 @@ add_lead_to_cast_tab <- function (main     = ".",
 #' @export
 #'
 add_err_to_cast_tab <- function (main     = ".", 
-                                 settings = directory_settings(), 
+                                 settings = directory_settings( ), 
                                  cast_tab = NULL) {
 
 
@@ -244,7 +248,7 @@ add_err_to_cast_tab <- function (main     = ".",
 #' @export
 #'
 add_covered_to_cast_tab <- function (main     = ".", 
-                                     settings = directory_settings(), 
+                                     settings = directory_settings( ), 
                                      cast_tab = NULL) {
 
 
@@ -268,7 +272,7 @@ add_covered_to_cast_tab <- function (main     = ".",
 #' @export
 #'
 add_obs_to_cast_tab <- function (main     = ".", 
-                                 settings = directory_settings(),
+                                 settings = directory_settings( ),
                                  cast_tab = NULL) {
 
   return_if_null(cast_tab)
@@ -335,7 +339,7 @@ add_obs_to_cast_tab <- function (main     = ".",
 #'
 read_cast_tab <- function (main     = ".", 
                            cast_id  = NULL, 
-                           settings = directory_settings()) {
+                           settings = directory_settings( )) {
 
   if (is.null(cast_id) ){
 
@@ -366,7 +370,7 @@ read_cast_tab <- function (main     = ".",
 #'
 read_cast_tabs <- function (main     = ".", 
                             cast_ids  = NULL, 
-                            settings = directory_settings()) {
+                            settings = directory_settings( )) {
   
   if (is.null(cast_ids)) {
 
@@ -406,7 +410,7 @@ read_cast_tabs <- function (main     = ".",
 #'
 read_cast_metadata <- function (main     = ".", 
                                 cast_id  = NULL, 
-                                settings = directory_settings()) {
+                                settings = directory_settings( )) {
   
   if (is.null(cast_id)) {
 
@@ -435,7 +439,7 @@ read_cast_metadata <- function (main     = ".",
 #'
 read_model_fit <- function (main     = ".", 
                             cast_id  = NULL, 
-                            settings = directory_settings()) {
+                            settings = directory_settings( )) {
   
   if (is.null(cast_id)) {
 
@@ -465,7 +469,7 @@ read_model_fit <- function (main     = ".",
 #'
 read_model_cast <- function (main     = ".", 
                              cast_id  = NULL, 
-                             settings = directory_settings()) {
+                             settings = directory_settings( )) {
   
   if (is.null(cast_id)) {
 
@@ -531,7 +535,7 @@ read_model_cast <- function (main     = ".",
 #' @export
 #'
 select_casts <- function (main           = ".", 
-                          settings       = directory_settings(), 
+                          settings       = directory_settings( ), 
                           cast_ids       = NULL, 
                           cast_groups    = NULL,
                           end_moons      = NULL, 

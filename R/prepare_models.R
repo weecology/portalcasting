@@ -19,7 +19,7 @@
 #' @export
 #'
 read_model_controls <- function (main     = ".",
-                                 settings = directory_settings()) {
+                                 settings = directory_settings( )) {
 
   read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
 
@@ -31,8 +31,8 @@ read_model_controls <- function (main     = ".",
 #' @export
 #'
 model_controls <- function (main     = ".",
-                            models   = prefab_models(),
-                            settings = directory_settings()) {
+                            models   = prefab_models( ),
+                            settings = directory_settings( )) {
 
   read_model_controls(main     = main, 
                       settings = settings)[models]
@@ -46,8 +46,8 @@ model_controls <- function (main     = ".",
 #'
 write_model_controls <- function (main               = ".",
                                   new_model_controls = NULL,
-                                  models             = prefab_models(),
-                                  settings           = directory_settings(),
+                                  models             = prefab_models( ),
+                                  settings           = directory_settings( ),
                                   quiet              = FALSE) {
 
   model_controls <- prefab_model_controls()
@@ -104,7 +104,7 @@ write_model_controls <- function (main               = ".",
 #'
 write_model <- function (main     = ".", 
                          model    = NULL, 
-                         settings = directory_settings(), 
+                         settings = directory_settings( ), 
                          quiet    = FALSE, 
                          verbose  = FALSE) {
 
@@ -122,8 +122,8 @@ write_model <- function (main     = ".",
 
   mod_template <- model_template(main     = main, 
                                  model    = model, 
-                                 datasets = prefab_datasets(),
-                                 settings = directory_settings(), 
+                                 datasets = prefab_datasets( ),
+                                 settings = directory_settings( ), 
                                  quiet    = FALSE, 
                                  verbose  = FALSE)
 
@@ -140,7 +140,7 @@ write_model <- function (main     = ".",
 
   } 
 
-  invisible()
+  invisible( )
 
 }
 
@@ -151,7 +151,7 @@ write_model <- function (main     = ".",
 model_template <- function (main     = ".", 
                             model    = NULL, 
                             datasets = NULL,
-                            settings = directory_settings(), 
+                            settings = directory_settings( ), 
                             quiet    = FALSE, 
                             verbose  = FALSE) {
 
@@ -170,7 +170,7 @@ model_template <- function (main     = ".",
   quiet_arg    <- paste0(', quiet = ', quiet)
   verbose_arg  <- paste0(', verbose = ', verbose)
   ds_args      <- paste0('dataset = "', datasets, '"')
-  settings_arg <- paste0(', settings = directory_settings()')
+  settings_arg <- paste0(', settings = directory_settings( )')
 
   additional_args <- NULL
 

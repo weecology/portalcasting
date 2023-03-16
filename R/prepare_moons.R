@@ -1,10 +1,7 @@
 #' @title Prepare Lunar Data for the Portalcasting Repository
 #'
-#' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. If needed, additional moons will be added to both the in-use and resources versions of the data table. \cr \cr
-#'              \code{add_future_newmoons} adds future newmoon dates to the newmoon table, counting forward from \code{origin}. Because the \code{newmoons} table might not have the most recent newmoons, more rows than \code{lead} may need to be added to the table. \cr \cr. 
-#'              \code{get_cast_future_newmoons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional newmoons needed to achieve the full \code{lead} from \code{origin}. \cr \cr
-#'
-#' @details Sometimes the resources newmoon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the resources newmoons data, that table needs to be updated to produce the correct current data table for casting. 
+#' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. 
+#'              \code{add_forecast_newmoons} adds future newmoon dates to the newmoon table from \code{prepare_newmoons} associated with the forecast.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
 #'
@@ -16,29 +13,18 @@
 #'
 #' @param newmoons \code{data.frame} of newmoon data.
 #'
-#' @param origin \code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).
-#'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. Default is \code{365}. 
-#'
 #' @return Some version of a newmoons \code{data.frame}. \cr \cr. 
 #'         \code{prepare_newmoons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr 
-#'         \code{add_future_newmoons}: fully appended and formatted \code{data.frame}. \cr 
-#'         \code{forecast_future_newmoons}: newmoons \code{data.frame} to append to the existing \code{moons}.
+#'         \code{add_forecast_newmoons}: fully appended and formatted \code{data.frame}. \cr 
 #'
 #' @name prepare newmoons
 #'
 #' @export
 #' 
-prepare_newmoons <- function (main             = ".",
-                              timeseries_start = as.Date("1995-01-01"), 
-                              origin           = Sys.Date(), 
-                              lead_time        = 365,
-                              max_lag          = 365,
-                              lag_buffer       = 30,
-                              settings         = directory_settings(), 
-                              quiet            = FALSE, 
-                              verbose          = FALSE) {
-
+prepare_newmoons <- function (main     = ".",
+                              settings = directory_settings( ), 
+                              quiet    = FALSE, 
+                              verbose  = FALSE) {
   
   messageq("  - newmoons data file", quiet = quiet)
 
@@ -49,14 +35,9 @@ prepare_newmoons <- function (main             = ".",
                             quiet               = !verbose)
   newmoons <- add_forecast_newmoons(main        = main, 
                                     settings    = settings,
-                                    newmoons    = newmoons,
-                                    lead_time   = lead_time,
-                                    origin      = origin)
+                                    newmoons    = newmoons)
 
-  # have the lag go back a lunar month further to facilitate half month inclusions etc
-  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer 
-
-  newmoons <- newmoons[newmoons$newmoondate >= timeseries_start_lagged, ]
+  newmoons <- newmoons[newmoons$newmoondate >= settings$time$timeseries_start_lagged, ]
 
   write_data(x         = newmoons, 
              main      = main, 
@@ -72,19 +53,17 @@ prepare_newmoons <- function (main             = ".",
 #'
 add_forecast_newmoons <- function (main      = ".", 
                                    newmoons  = NULL, 
-                                   lead_time = 365, 
-                                   origin    = Sys.Date(), 
-                                   settings  = directory_settings()) {
+                                   settings  = directory_settings( )) {
 
   return_if_null(newmoons)
 
-  if (lead_time == 0) {
+  if (settings$time$lead_time == 0) {
 
     return(newmoons)
 
   }
  
-  nforecast_newmoons <- ceiling(lead_time / 29.5)
+  nforecast_newmoons <- ceiling(settings$time$lead_time / 29.5)
   forecast_newmoons  <- get_future_newmoons(newmoons         = newmoons, 
                                             nfuture_newmoons = nforecast_newmoons)
 

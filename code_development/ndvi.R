@@ -83,7 +83,8 @@
 
 
 
-  possible_dates      <- seq(as.Date(min(ndvi_data$date)), forecast_end, 1)
+  ndvi_data$date      <- as.Date(ndvi_data$date)
+  possible_dates      <- seq(min(ndvi_data$date), forecast_end, 1)
   npossible_dates     <- length(possible_dates)
   seasonal_cos_value  <- cos(2 * pi * foy(possible_dates))
   seasonal_sin_value  <- sin(2 * pi * foy(possible_dates))
@@ -127,6 +128,9 @@
                    mutate    = NA, 
                    summarise = TRUE, 
                    plots     = FALSE)
+
+
+
 plot(ndvi_data$date, ndvi_data$ndvi, col = as.numeric(observation_sensor), ylim = c(-0.1, 0.5), xlim = as.Date(c("1990-01-01", "2023-05-05")))
   points(possible_dates, y, type = 'l', lwd = 3, col =1)
 

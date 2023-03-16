@@ -1,8 +1,9 @@
+# produces a model-ready vector
 prepare_rodent_abundance <- function (main     = ".", 
                                       dataset  = NULL,
                                       species  = NULL,
                                       model    = NULL,
-                                      settings = directory_settings(), 
+                                      settings = directory_settings( ), 
                                       quiet    = FALSE, 
                                       verbose  = FALSE) {
 
@@ -11,7 +12,7 @@ prepare_rodent_abundance <- function (main     = ".",
   rodents_table <- read_rodents_table(main     = main, 
                                       dataset  = dataset,
                                       settings = settings)
-  moon_in          <- rodents_table$newmoonnumber >= metadata$time$start_moon & rodents_table$newmoonnumber <= metadata$time$end_moon
+  moon_in          <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoons
   species_in <- colnames(rodents_table) == gsub("NA", "NA.", species)
     out <- rodents_table[moon_in, species_in]
 
@@ -51,7 +52,7 @@ prepare_rodent_abundance <- function (main     = ".",
 #' @export
 #'
 read_dataset_controls <- function (main     = ".",
-                                   settings = directory_settings()) {
+                                   settings = directory_settings( )) {
 
   read_yaml(file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
 
@@ -62,8 +63,8 @@ read_dataset_controls <- function (main     = ".",
 #' @export
 #'
 dataset_controls <- function (main     = ".",
-                              datasets = prefab_datasets(),
-                              settings = directory_settings()) {
+                              datasets = prefab_datasets( ),
+                              settings = directory_settings( )) {
 
   read_dataset_controls(main     = main,
                         settings = settings)[datasets]
@@ -76,8 +77,8 @@ dataset_controls <- function (main     = ".",
 #'
 write_dataset_controls <- function (main                 = ".",
                                     new_dataset_controls = NULL,
-                                    datasets             = prefab_datasets(),
-                                    settings             = directory_settings(),
+                                    datasets             = prefab_datasets( ),
+                                    settings             = directory_settings( ),
                                     quiet                = FALSE) {
 
   dataset_controls <- prefab_dataset_controls()
@@ -126,13 +127,9 @@ write_dataset_controls <- function (main                 = ".",
 #' @export
 #'
 prepare_rodents <- function (main                 = ".",
-                             datasets             = prefab_datasets(),
+                             datasets             = prefab_datasets( ),
                              new_dataset_controls = NULL,
-                             timeseries_start     = as.Date("1995-01-01"), 
-                             origin               = Sys.Date(),
-                             lead_time            = 365,
-                             max_lag              = 365,
-                             settings             = directory_settings(), 
+                             settings             = directory_settings( ), 
                              quiet                = FALSE,
                              verbose              = FALSE) {
 
@@ -154,9 +151,6 @@ prepare_rodents <- function (main                 = ".",
                         args = update_list(list             = dataset_controls_list[[i]]$args, 
                                            main             = main, 
                                            settings         = settings, 
-                                           timeseries_start = timeseries_start,
-                                           origin           = origin,
-                                           max_lag          = max_lag,
                                            quiet            = quiet, 
                                            verbose          = verbose))
   
@@ -232,11 +226,7 @@ prepare_rodents <- function (main                 = ".",
 #'
 prepare_dataset <- function(name             = "all",
                             main             = ".",
-                            timeseries_start = as.Date("1995-01-01"), 
-                            origin           = Sys.Date(),
-                            max_lag          = 365,
-                            lag_buffer       = 30,
-                            settings         = directory_settings(),
+                            settings         = directory_settings( ),
                             filename         = "rodents_all.csv",
                             clean            = FALSE,
                             level            = "Site",
@@ -305,11 +295,8 @@ prepare_dataset <- function(name             = "all",
   newmoons <- read_newmoons(main     = main, 
                             settings = settings)
   
-  # have the lag go back a lunar month further to facilitate half month inclusions etc
-  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer
-
-  rows_in <- out$newmoonnumber >= min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - timeseries_start_lagged >= 0)]) & 
-             out$newmoonnumber <= max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - origin < 0)])
+  rows_in <- out$newmoonnumber >= min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$timeseries_start_lagged >= 0)]) & 
+             out$newmoonnumber <= max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin < 0)])
 
   out <- out[rows_in, ]
 

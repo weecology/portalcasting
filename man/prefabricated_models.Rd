@@ -18,7 +18,7 @@ prefab_models()
 Create a \code{character} vector of the names of the pre-fabricated (prefab) models or a \code{list} of their controls
 }
 \examples{
- prefab_models()
+ prefab_models( )
  prefab_model_controls()
 
 }

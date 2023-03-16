@@ -30,7 +30,7 @@
 #' @export
 #'
 ensemble_casts <- function (main           = ".", 
-                            settings       = directory_settings(), 
+                            settings       = directory_settings( ), 
                             method         = "unwtavg", 
                             cast_groups    = NULL, 
                             cast_ids       = NULL, 

@@ -63,7 +63,7 @@ download_climate_forecasts <- function (main          = ".",
 
         messageq("Existing local version (", existing_version, ") is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped",
                  quiet = quiet)
-        return(invisible())
+        return(invisible( ))
 
       }
  
@@ -89,7 +89,7 @@ download_climate_forecasts <- function (main          = ".",
   write(x    = as.character(version), 
         file = version_file)
 
-  invisible()
+  invisible( )
 
 }
 
