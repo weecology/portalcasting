@@ -105,11 +105,15 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
                            max_lag          = 365,
                            lag_buffer       = 30) {
 
-  # have the lag go back a lunar month further to facilitate half month inclusions etc
+
   timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer 
+  forecast_start          <- origin + 1
+  forecast_end            <- origin + lead_time
 
   list(timeseries_start        = timeseries_start,
        timeseries_start_lagged = timeseries_start_lagged,
+       forecast_start          = forecast_start,
+       forecast_end            = forecast_end,
        origin                  = origin,
        lead_time               = lead_time,
        max_lag                 = max_lag,

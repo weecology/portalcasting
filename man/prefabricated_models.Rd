@@ -19,6 +19,6 @@ Create a \code{character} vector of the names of the pre-fabricated (prefab) mod
 }
 \examples{
  prefab_models( )
- prefab_model_controls()
+ prefab_model_controls( )
 
 }

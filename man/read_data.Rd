@@ -6,8 +6,6 @@
 \alias{read_rodents}
 \alias{read_newmoons}
 \alias{read_covariates}
-\alias{read_forecast_covariates}
-\alias{read_historical_covariates}
 \alias{read_climate_forecasts}
 \alias{read_metadata}
 \title{Read in and Format a Portalcasting Data File}
@@ -35,10 +33,6 @@ read_rodents(
 read_newmoons(main = ".", settings = directory_settings())
 
 read_covariates(main = ".", settings = directory_settings())
-
-read_forecast_covariates(main = ".", settings = directory_settings())
-
-read_historical_covariates(main = ".", settings = directory_settings())
 
 read_climate_forecasts(main = ".", settings = directory_settings())
 

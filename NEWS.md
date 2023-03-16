@@ -6,6 +6,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
 *In Progress*
 
+### Shifting covariates to a daily-level build initial step
+* need to shift this to level daily so we can manage when a newmoon is split between historic and forecast days
+
+
 ### Putting species under dataset in the models' controls lists
 * This is more articulated and allows for finer control to help avoid fitting issues, etc.
 

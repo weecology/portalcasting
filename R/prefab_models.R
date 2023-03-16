@@ -109,11 +109,7 @@ AutoArima <- function (main     = ".",
 
   model <- "AutoArima"
 
-  dataset <- tolower(dataset)
-
   messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
-
-
 
   abundance <- prepare_rodent_abundance(main     = main,
                                         dataset  = dataset,

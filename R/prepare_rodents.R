@@ -81,7 +81,7 @@ write_dataset_controls <- function (main                 = ".",
                                     settings             = directory_settings( ),
                                     quiet                = FALSE) {
 
-  dataset_controls <- prefab_dataset_controls()
+  dataset_controls <- prefab_dataset_controls( )
   ndatasets        <- length(dataset_controls)
   nnew_datasets    <- length(new_dataset_controls)
 
@@ -301,12 +301,12 @@ prepare_dataset <- function(name             = "all",
   out <- out[rows_in, ]
 
 
-  write_data(x         = out, 
-             main      = main, 
-             data_sub  = settings$subdirectories$data,
-             save      = save, 
-             filename  = filename, 
-             quiet     = !verbose)
+  write_data(x            = out, 
+             main         = main, 
+             subdirectory = settings$subdirectories$data,
+             save         = save, 
+             filename     = filename, 
+             quiet        = !verbose)
 
 }
 

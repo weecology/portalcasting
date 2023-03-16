@@ -7,11 +7,6 @@
 \usage{
 prepare_covariates(
   main = ".",
-  timeseries_start = as.Date("1995-01-01"),
-  origin = Sys.Date(),
-  lead_time = 365,
-  max_lag = 365,
-  lag_buffer = 30,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -20,13 +15,13 @@ prepare_covariates(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{origin}{\code{Date} for the forecast origin. Defaults to today's date.}
-
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be printed.}
+
+\item{origin}{\code{Date} for the forecast origin. Defaults to today's date.}
 }
 \value{
 \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.

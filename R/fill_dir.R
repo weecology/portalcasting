@@ -72,7 +72,6 @@ fill_dir <- function (main                 = ".",
             datasets             = datasets,
             models               = models,
             new_dataset_controls = new_dataset_controls,
-            new_dataset_controls = new_dataset_controls,
             settings             = settings,
             quiet                = quiet, 
             verbose              = verbose)

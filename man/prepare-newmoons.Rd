@@ -33,14 +33,9 @@ add_forecast_newmoons(
 \value{
 Some version of a newmoons \code{data.frame}. \cr \cr. 
         \code{prepare_newmoons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr 
-        \code{add_future_newmoons}: fully appended and formatted \code{data.frame}. \cr 
-        \code{forecast_future_newmoons}: newmoons \code{data.frame} to append to the existing \code{moons}.
+        \code{add_forecast_newmoons}: fully appended and formatted \code{data.frame}. \cr
 }
 \description{
-Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. If needed, additional moons will be added to both the in-use and resources versions of the data table. \cr \cr
-             \code{add_future_newmoons} adds future newmoon dates to the newmoon table, counting forward from \code{origin}. Because the \code{newmoons} table might not have the most recent newmoons, more rows than \code{lead} may need to be added to the table. \cr \cr. 
-             \code{get_cast_future_newmoons} wraps around \code{\link[portalr]{get_future_moons}} to include any additional newmoons needed to achieve the full \code{lead} from \code{origin}. \cr \cr
-}
-\details{
-Sometimes the resources newmoon data table is not fully up-to-date. Because the \code{portalr} functions \code{\link[portalr]{weather}} and \code{\link[portalr]{fcast_ndvi}} point to the resources newmoons data, that table needs to be updated to produce the correct current data table for casting.
+Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. 
+             \code{add_forecast_newmoons} adds future newmoon dates to the newmoon table from \code{prepare_newmoons} associated with the forecast.
 }

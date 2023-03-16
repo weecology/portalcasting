@@ -20,18 +20,12 @@
 #'
 #' @export
 #'
-prepare_covariates <- function (main             = ".", 
-                                timeseries_start = as.Date("1995-01-01"), 
-                                origin           = Sys.Date(),
-                                lead_time        = 365,
-                                max_lag          = 365,
-                                lag_buffer       = 30,
-                                settings         = directory_settings( ), 
-                                quiet            = FALSE, 
-                                verbose          = FALSE) {
+prepare_covariates <- function (main     = ".", 
+                                settings = directory_settings( ), 
+                                quiet    = FALSE, 
+                                verbose  = FALSE) {
 
-# need to shift this to level daily so we can manage when a newmoon is split between historic and forecast days
-# but what about when we only want historic and not forecast? or vice-versa... do we mark it somehow?
+  messageq("  - covariates", quiet = quiet)
 
   weather_data <- weather(level   = "daily", 
                           horizon = 1, 
@@ -41,19 +35,13 @@ prepare_covariates <- function (main             = ".",
 
   climate_forecasts <- read_climate_forecasts(main     = main,
                                               settings = settings)
-  newmoons          <- read_newmoons(main     = main,
-                                     settings = settings)
-  control_rodents   <- read_rodents_table(main     = main,
-                                          dataset  = "controls", 
-                                          settings = settings) 
+  newmoons          <- read_newmoons(main              = main,
+                                     settings          = settings)
+  control_rodents   <- read_rodents_table(main         = main,
+                                          dataset      = "controls", 
+                                          settings     = settings) 
 
-  # have the lag go back a lunar month further to facilitate half month inclusions etc
-  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer
-  forecast_start           <- origin + 1
-  forecast_end             <- origin + lead_time
-
-  historic_weather         <- data.frame(date = seq(timeseries_start_lagged, origin, 1))
-
+  historic_weather               <- data.frame(date = seq(settings$time$timeseries_start_lagged, settings$time$origin, 1))
   weather_rows                   <- match(historic_weather$date, weather_data$date)
   historic_weather$mintemp       <- weather_data$mintemp[weather_rows]
   historic_weather$maxtemp       <- weather_data$maxtemp[weather_rows]
@@ -61,7 +49,7 @@ prepare_covariates <- function (main             = ".",
   historic_weather$precipitation <- weather_data$precipitation[weather_rows]
   historic_weather$source        <- "historic"             
 
-  forecast_weather               <- data.frame(date = seq(forecast_start, forecast_end, 1))
+  forecast_weather               <- data.frame(date = seq(settings$time$forecast_start, settings$time$forecast_end, 1))
 
   forecast_weather_rows          <- match(forecast_weather$date, climate_forecasts$date)
   forecast_weather$mintemp       <- climate_forecasts$mintemp[forecast_weather_rows]
@@ -112,28 +100,29 @@ prepare_covariates <- function (main             = ".",
 
   control_rodents$censusdate   <- as.Date(newmoons$censusdate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)])
   control_rodents$newmoondate  <- as.Date(newmoons$newmoondate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)]) 
-#  control_rodents$date         <- control_rodents$censusdate
-  control_rodents$date         <- control_rodents$newmoondate
-
   control_rodents$source       <- "historic"
-  nadate                       <- is.na(control_rodents$date)
-  control_rodents$date[nadate] <- control_rodents$newmoondate[nadate]
 
-  historic_ordii               <- control_rodents[ , c("newmoonnumber", "DO", "date", "source")]
-  moonin                       <- newmoons$newmoondate > origin
+  historic_ordii               <- control_rodents[ , c("newmoonnumber", "DO", "newmoondate", "source")]
+  moonin                       <- newmoons$newmoondate > settings$time$origin
   forecast_ordii               <- data.frame(newmoonnumber = newmoons$newmoonnumber[moonin], 
                                              DO            = NA,
-                                             date          = newmoons$newmoondate[moonin],
+                                             newmoondate   = newmoons$newmoondate[moonin],
                                              source        = "psGARCH_forecast")
+
+  past                         <- list(past_obs   = 1,
+                                       past_mean  = 13)
+  ordii_model                  <- tsglm(ts        = historic_ordii$DO, 
+                                        model     = past, 
+                                        distr     = "poisson", 
+                                        link      = "log")
+  forecast_ordii$DO            <- predict(object  = ordii_model, 
+                                          n.ahead = nrow(forecast_ordii))$pred
+
+  ordii_together               <- rbind(historic_ordii, 
+                                        forecast_ordii)
   
 
-  past                         <- list(past_obs = 1, past_mean = 13)
-  ordii_model                  <- tsglm(historic_ordii$DO, model = past, distr = "poisson", link = "log")
-  forecast_ordii$DO            <- predict(ordii_model, n.ahead = nrow(forecast_ordii))$pred
-  ordii_together               <- rbind(historic_ordii, forecast_ordii)
-  
-
-# ndvi is a bit of a challenge because we have multiple sources now
+  # ndvi is a bit of a challenge because we have multiple sources now
 
   monitor <- c("mu", "sensor_observation_sigma", "sensor_offset_sigma", "seasonal_cos_slope", "seasonal_sin_slope", "mu_year_offset_sigma", "seasonal_cos_year_offset_sigma", "seasonal_sin_year_offset_sigma",
                "mu_year_offset", "seasonal_cos_year_offset", "seasonal_sin_year_offset")
@@ -219,7 +208,7 @@ prepare_covariates <- function (main             = ".",
 
 
   ndvi_data$date      <- as.Date(ndvi_data$date)
-  possible_dates      <- seq(min(ndvi_data$date), forecast_end, 1)
+  possible_dates      <- seq(min(ndvi_data$date), settings$time$forecast_end, 1)
   npossible_dates     <- length(possible_dates)
   seasonal_cos_value  <- cos(2 * pi * foy(possible_dates))
   seasonal_sin_value  <- sin(2 * pi * foy(possible_dates))
@@ -234,8 +223,6 @@ prepare_covariates <- function (main             = ".",
   observation_date    <- match(as.Date(ndvi_data$date[ndvi_data$date %in% possible_dates]), possible_dates)
   possible_sensors    <- levels(as.factor(ndvi_data$sensor[ndvi_data$date %in% possible_dates]))
   
-
-
   data <- list(observed_value      = observed_value,
                mean_observed_value = mean_observed_value,
                seasonal_cos_value  = seasonal_cos_value,
@@ -273,9 +260,9 @@ prepare_covariates <- function (main             = ".",
   names(y) <- NULL
 
   covariates_together <- data.frame(newmoon       = ordii_together$newmoonnumber,
-                                    date          = ordii_together$date,
+                                    newmoondate   = ordii_together$newmoondate,
                                     ordii         = ordii_together$DO,
-                                    ndvi          = round(y[match(ordii_together$date,  possible_dates)], 3),
+                                    ndvi          = round(y[match(ordii_together$newmoondate,  possible_dates)], 3),
                                     mintemp       = NA,
                                     meantemp      = NA,
                                     maxtemp       = NA,
@@ -305,8 +292,8 @@ prepare_covariates <- function (main             = ".",
 
   }
 
-  covariates_together$cos2pifoy <- round(cos(2 * pi * foy(covariates_together$date)), 3)
-  covariates_together$sin2pifoy <- round(sin(2 * pi * foy(covariates_together$date)), 3)
+  covariates_together$cos2pifoy <- round(cos(2 * pi * foy(covariates_together$newmoondate)), 3)
+  covariates_together$sin2pifoy <- round(sin(2 * pi * foy(covariates_together$newmoondate)), 3)
   covariates_together  
 
   write_data(x         = covariates_together, 
@@ -314,45 +301,6 @@ prepare_covariates <- function (main             = ".",
              save      = settings$save, 
              filename  = settings$files$covariates, 
              quiet     = !verbose)
-
-}
-
-#' @title Lag covariate data
-#'
-#' @description Lag the covariate data together based on the new moons
-#'
-#' @param covariates \code{data.frame} of covariate data to be lagged. 
-#'  
-#' @param lag \code{integer} lag between rodent census and covariate data, in new moons.
-#'  
-#' @param tail \code{logical} indicator if the data lagged to the tail end should be retained.
-#'
-#' @return \code{data.frame} with a \code{newmoonnumber} column reflecting the lag.
-#'
-#' @export
-#'
-lag_covariates <- function (covariates, 
-                            lag, 
-                            tail = FALSE){
-
-  covariates$moon_lag <- covariates$newmoonnumber + lag
-  
-  if (tail == FALSE) {
-
-    oldest_included_moon     <- covariates$newmoonnumber[1]
-    most_recent_moon         <- covariates$newmoonnumber[nrow(covariates)]
-    hist_moons               <- oldest_included_moon:most_recent_moon
-    moon_match               <- match(covariates$moon_lag, hist_moons)
-    covariates$newmoonnumber <- hist_moons[moon_match]
-    if (lag > 0) {
-      covariates <- covariates[-(1:lag), ]
-    }
-
-  }
-
-  covariates$newmoonnumber <- covariates$moon_lag
-  covariates$moon_lag      <- NULL
-  covariates
 
 }
 

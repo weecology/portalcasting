@@ -7,7 +7,7 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
-#' @param data_sub \code{character} value defining the data subdirectory of the portalcasting directory tree. 
+#' @param subdirectory \code{character} value defining the data subdirectory of the portalcasting directory tree. 
 #'
 #' @param save \code{logical} indicator controlling if \code{x} should be saved out.
 #'
@@ -19,12 +19,12 @@
 #'
 #' @export
 #'
-write_data <- function (x         = NULL, 
-                        main      = ".", 
-                        data_sub  = "data",
-                        save      = TRUE, 
-                        filename  = NULL, 
-                        quiet     = FALSE) {
+write_data <- function (x            = NULL, 
+                        main         = ".", 
+                        subdirectory = "data",
+                        save         = TRUE, 
+                        filename     = NULL, 
+                        quiet        = FALSE) {
   
   return_if_null(x)
 
@@ -33,7 +33,7 @@ write_data <- function (x         = NULL,
 
   if (save) {
 
-    full_path <- file.path(main, data_sub, filename)
+    full_path <- file.path(main, subdirectory, filename)
 
     if (file.exists(full_path)) {
 
@@ -106,7 +106,6 @@ read_data <- function (main      = ".",
                               dataset  = dataset, 
                               settings = settings)
 
-
   }
 
   if (data_name == "covariates") {
@@ -137,20 +136,6 @@ read_data <- function (main      = ".",
 
   }
 
-  if (data_name == "forecast_covariates") {
-
-    out <- read_forecast_covariates(main     = main, 
-                                    settings = settings)
-
-  }
-
-  if (data_name == "historical_covariates") {
-
-    out <- read_historical_covariates(main     = main, 
-                                      settings = settings)
-
-  }
-
   out
 }
 
@@ -161,7 +146,6 @@ read_data <- function (main      = ".",
 read_rodents_table <- function (main     = ".", 
                                 dataset  = "all", 
                                 settings = directory_settings( )) {
-
 
   return_if_null(dataset)
   read.csv(file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(dataset), ".csv"))) 
@@ -202,29 +186,6 @@ read_covariates <- function (main     = ".",
   read.csv(file.path(main, settings$subdirectories$data, settings$files$covariates))
 
 }
-
-#' @rdname read_data
-#'
-#' @export
-#'
-read_forecast_covariates <- function (main     = ".",
-                                      settings = directory_settings( )) {
-
-  read.csv(file.path(main, settings$subdirectories$data, settings$files$forecast_covariates))
-
-}
-
-#' @rdname read_data
-#'
-#' @export
-#'
-read_historical_covariates <- function (main    = ".",
-                                       settings = directory_settings( )) {
-
-  read.csv(file.path(main, settings$subdirectories$data, settings$files$historical_covariates))
-
-}
-
 
 
 #' @rdname read_data
