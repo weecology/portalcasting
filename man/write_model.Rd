@@ -29,5 +29,6 @@ write_model(
 \code{write_model} \code{\link{write}}s the model script out and returns \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
+Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr 
+             \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
 }

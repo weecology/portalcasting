@@ -314,7 +314,7 @@ prepare_dataset <- function(name             = "all",
   if (level == "Treatment") {
 
     rows_in <- out$treatment %in% treatment
-    cols_in <- colnames(out) != "treatment"
+    cols_in <- tolower(colnames(out)) != "treatment"
     out     <- out[rows_in, cols_in, drop = FALSE]
 
   }

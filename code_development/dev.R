@@ -4,11 +4,14 @@ main <- "~/portalcasting"
 fill_models(main)
 
 dataset  = "controls"
-                  species  = "DM"
-                  model    = "pevGARCH"
+species <- "DM"
+
+                  model    = "jags_RW"
                   settings = directory_settings( ) 
                   quiet    = FALSE 
                   verbose  = TRUE
+
+
 
   abundance      <- prepare_abundance(main     = main,
                                       dataset  = dataset,
@@ -27,6 +30,7 @@ dataset  = "controls"
   covariates     <- read_covariates(main       = main,
                                     settings   = settings)
 
+
   model_fit  <- do.call(what = model_controls$fit$fun,
                         args = lapply(model_controls$fit$args, eval_parse_text))
 
@@ -42,4 +46,6 @@ dataset  = "controls"
                        settings   = settings,
                        quiet      = quiet,
                        verbose    = verbose) 
+
+
 
