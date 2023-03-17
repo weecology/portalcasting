@@ -26,7 +26,7 @@ prepare_newmoons <- function (main     = ".",
                               quiet    = FALSE, 
                               verbose  = FALSE) {
   
-  messageq("  - newmoons data file", quiet = quiet)
+  messageq("  - newmoons", quiet = quiet)
 
   newmoons <- load_datafile(datafile            = file.path("Rodents", "moon_dates.csv"),
                             path                = file.path(main, settings$subdirectories$resources),

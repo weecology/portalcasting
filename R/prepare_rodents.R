@@ -319,6 +319,22 @@ prepare_dataset <- function(name             = "all",
 
   }
 
+  # patch to deal with incomplete tables at the treatment-level
+  if (any(diff(out$newmoonnumber) > 1)) {
+    na_row         <- out[1, ]
+    na_row[ , ]    <- NA
+    all_newmoons   <- min(out$newmoonnumber):max(out$newmoonnumber)
+    miss_newmoons  <- all_newmoons[!(all_newmoons %in% out$newmoonnumber)]
+    nmiss_newmoons <- length(miss_newmoons)
+    for (i in 1:nmiss_newmoons) {
+      na_row_i               <- na_row
+      na_row_i$newmoonnumber <- miss_newmoons[i]
+      out                    <- rbind(out, na_row_i)
+    } 
+    out <- out[order(out$newmoonnumber), ]
+  }
+  # end patch
+
   newmoons <- read_newmoons(main     = main, 
                             settings = settings)
   

@@ -9,10 +9,11 @@ AutoArima:
     args: 
       "y": abundance
   cast:
-    fun: cast_AutoArima
+    fun: forecast
     args: 
-      model_fit: model_fit
-      metadata: metadata
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   interpolate: 
     needed: no
   datasets:
@@ -36,12 +37,13 @@ ESSS:
     fun: ets
     args: 
       "y": abundance
+      allow.multiplicative.trend: TRUE
   cast:
-    fun: cast_ESSS
+    fun: forecast
     args: 
-      model_fit: model_fit
-      metadata: metadata
-    "y": abundance
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   interpolate: 
     needed: yes
     fun: round_na.interp
@@ -68,10 +70,11 @@ NaiveArima:
       "y":  abundance
       order: c(0, 1, 0)
   cast:
-    fun: cast_NaiveArima
+    fun: forecast
     args: 
-      model_fit: model_fit
-      metadata: metadata
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   interpolate: 
     needed: no
   datasets:

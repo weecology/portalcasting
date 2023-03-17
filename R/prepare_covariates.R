@@ -98,12 +98,20 @@ prepare_covariates <- function (main     = ".",
   weather_together$precipitation[in_cast] <- precip_forecast
   weather_together$source[in_cast]        <- "seasonal_autoarima_forecast"
 
- 
-  control_rodents$censusdate   <- as.Date(newmoons$censusdate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)])
-  control_rodents$newmoondate  <- as.Date(newmoons$newmoondate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)]) 
-  control_rodents$source       <- "historic"
+  newmoons$newmoondate   <- as.Date(newmoons$newmoondate)
 
-  historic_ordii               <- control_rodents[ , c("newmoonnumber", "DO", "newmoondate", "source")]
+  historic_start_newmoon <- min(newmoons$newmoonnumber[which(newmoons$newmoondate - settings$time$timeseries_start_lagged >= 0)])
+  historic_end_newmoon   <- max(newmoons$newmoonnumber[which(newmoons$newmoondate - settings$time$origin < 0)])
+
+  historic_ordii               <- data.frame(newmoonnumber = historic_start_newmoon:historic_end_newmoon,
+                                             source        = "historic")
+  historic_ordii$DO            <- control_rodents$DO[match(historic_ordii$newmoonnumber, control_rodents$newmoonnumber)]
+  is_na                        <- is.na(historic_ordii$DO)
+  historic_ordii$source[is_na] <- "na_interp"
+  historic_ordii$DO            <- round_na.interp(historic_ordii$DO)
+  historic_ordii$newmoondate   <- newmoons$newmoondate[match(historic_ordii$newmoonnumber, newmoons$newmoonnumber)]
+
+
   moonin                       <- newmoons$newmoondate > settings$time$origin
   forecast_ordii               <- data.frame(newmoonnumber = newmoons$newmoonnumber[moonin], 
                                              DO            = NA,
@@ -238,7 +246,7 @@ prepare_covariates <- function (main     = ".",
 
 
   runjags.options(silent.jags    = !verbose, 
-                  silent.runjags = quiet)
+                  silent.runjags = !verbose)
 
   model_fit <- run.jags(model = jags_model, 
                    monitor   = monitor, 
@@ -293,7 +301,7 @@ prepare_covariates <- function (main     = ".",
     covariates_together$meantemp[i]      <- round(mean(weather_together$meantemp[rowsin], na.rm = TRUE), 3)
     covariates_together$maxtemp[i]       <- round(mean(weather_together$maxtemp[rowsin], na.rm = TRUE), 3)
     covariates_together$precipitation[i] <- round(sum(weather_together$precipitation[rowsin], na.rm = TRUE), 3)
-    covariates_together$warm_precip[i]   <- round(sum(weather_together$precipitation[rowsin] * weather_together$mintemp[rowsin] >= 4, na.rm = TRUE), 3)
+    covariates_together$warm_precip[i]   <- round(sum(weather_together$precipitation[rowsin] * as.numeric(weather_together$mintemp[rowsin] >= 4), na.rm = TRUE), 3)
 
   }
 

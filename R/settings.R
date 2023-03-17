@@ -59,7 +59,7 @@
 #'   Default is \code{365} for the logistic covariate models.
 #'
 #' @param lag_bugger \code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
-#'   Default value of \code{30} corresponds to one additional lunar month. 
+#'   Default value of \code{60} corresponds to two additional lunar months. 
 #'
 #' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
 #'
@@ -104,7 +104,7 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
                            origin           = Sys.Date( ),
                            lead_time        = 365,
                            max_lag          = 365,
-                           lag_buffer       = 30) {
+                           lag_buffer       = 60) {
 
 
   timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer 

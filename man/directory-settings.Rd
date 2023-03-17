@@ -28,7 +28,7 @@ time_settings(
   origin = Sys.Date(),
   lead_time = 365,
   max_lag = 365,
-  lag_buffer = 30
+  lag_buffer = 60
 )
 
 directory_files(
@@ -119,7 +119,7 @@ Default is \code{365} for the logistic covariate models.}
 \item{climate_forecast}{\code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.}
 
 \item{lag_bugger}{\code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
-Default value of \code{30} corresponds to one additional lunar month.}
+Default value of \code{60} corresponds to two additional lunar months.}
 }
 \value{
 Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
