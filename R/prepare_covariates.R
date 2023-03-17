@@ -28,6 +28,7 @@ prepare_covariates <- function (main     = ".",
   messageq("  - covariates", quiet = quiet)
 
   weather_data <- weather(level   = "daily", 
+                          fill    = TRUE,
                           horizon = 1, 
                           path    = file.path(main, settings$subdirectories$resources))
   ndvi_data    <- ndvi(level      = "daily", 
@@ -97,7 +98,7 @@ prepare_covariates <- function (main     = ".",
   weather_together$precipitation[in_cast] <- precip_forecast
   weather_together$source[in_cast]        <- "seasonal_autoarima_forecast"
 
-
+ 
   control_rodents$censusdate   <- as.Date(newmoons$censusdate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)])
   control_rodents$newmoondate  <- as.Date(newmoons$newmoondate[match(control_rodents$newmoonnumber, newmoons$newmoonnumber)]) 
   control_rodents$source       <- "historic"
@@ -109,9 +110,10 @@ prepare_covariates <- function (main     = ".",
                                              newmoondate   = newmoons$newmoondate[moonin],
                                              source        = "psGARCH_forecast")
 
+  historic_ordii$DO            <- round_na.interp(historic_ordii$DO)
   past                         <- list(past_obs   = 1,
                                        past_mean  = 13)
-  ordii_model                  <- tsglm(ts        = historic_ordii$DO, 
+  ordii_model                  <- tsglm(ts        = historic_ordii$DO,
                                         model     = past, 
                                         distr     = "poisson", 
                                         link      = "log")
@@ -121,7 +123,6 @@ prepare_covariates <- function (main     = ".",
   ordii_together               <- rbind(historic_ordii, 
                                         forecast_ordii)
   
-
   # ndvi is a bit of a challenge because we have multiple sources now
 
   monitor <- c("mu", "sensor_observation_sigma", "sensor_offset_sigma", "seasonal_cos_slope", "seasonal_sin_slope", "mu_year_offset_sigma", "seasonal_cos_year_offset_sigma", "seasonal_sin_year_offset_sigma",
@@ -298,7 +299,7 @@ prepare_covariates <- function (main     = ".",
 
   covariates_together$cos2pifoy <- round(cos(2 * pi * foy(covariates_together$newmoondate)), 3)
   covariates_together$sin2pifoy <- round(sin(2 * pi * foy(covariates_together$newmoondate)), 3)
-  covariates_together  
+  covariates_together <- covariates_together[-1, ]
 
   write_data(x         = covariates_together, 
              main      = main, 
