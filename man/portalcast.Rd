@@ -2,18 +2,24 @@
 % Please edit documentation in R/portalcast.R
 \name{portalcast}
 \alias{portalcast}
-\alias{xcast}
+\alias{cast}
 \title{Forecast Portal Rodents Models}
 \usage{
 portalcast(
   main = ".",
+  models = prefab_models(),
+  datasets = prefab_datasets(),
+  species = base_species(),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
 
-xcast(
+cast(
   main = ".",
+  dataset = NULL,
+  species = NULL,
+  model = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -21,6 +27,12 @@ xcast(
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
+
+\item{models}{\code{character} vector of name(s) of model(s) to include in the forecast.}
+
+\item{datasets}{\code{character} vector of datasets to be forecast.}
+
+\item{species}{\code{character} vector of species to be forecast.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 

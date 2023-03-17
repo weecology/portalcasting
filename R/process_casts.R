@@ -7,7 +7,7 @@
 # as all that happens for the fit is a version is serialized as JSON and saved out in the fits folder and the raw input is passed through
 # the model cast just needs to be a dataframe with pred, lower, and upper columns
 
-process_model_output <- function (main     = ".", 
+process_model_output <- function (main      = ".", 
                                   model_fit = NULL,
                                   model_cast,
                                   model,
@@ -62,9 +62,9 @@ process_model_output <- function (main     = ".",
 
   new_cast_metadata <- data.frame(cast_id               = cast_metadata$cast_id,
                                   cast_group            = cast_metadata$cast_group,
-                                  origin             = cast_metadata$time$origin,
-                                  start_moon            = cast_metadata$time$start_moon,
-                                  end_moon              = cast_metadata$time$end_moon,
+                                  cast_date             = cast_metadata$time$origin,
+                                  start_moon            = cast_metadata$time$historic_start_newmoon,
+                                  end_moon              = cast_metadata$time$historic_end_newmoon,
                                   lead_time             = cast_metadata$time$lead_time,
                                   model                 = model,
                                   dataset               = dataset,
@@ -72,6 +72,7 @@ process_model_output <- function (main     = ".",
                                   portalcasting_version = pkg_version,
                                   QAQC                  = TRUE,
                                   notes                 = NA)
+
 # how can we allow notes to be passed through from the user again? and to turn off QAQC?
   casts_metadata <- rbind(casts_metadata, new_cast_metadata)
 

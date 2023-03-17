@@ -2,9 +2,20 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{prepare rodents}
 \alias{prepare rodents}
+\alias{prepare_abundance}
 \alias{prepare_rodents}
-\title{Prepare Rodents Data for the Portalcasting Repository}
+\title{Prepare Rodents Data for the a Portalcasting Model}
 \usage{
+prepare_abundance(
+  main = ".",
+  dataset = NULL,
+  species = NULL,
+  model = NULL,
+  settings = directory_settings(),
+  quiet = FALSE,
+  verbose = FALSE
+)
+
 prepare_rodents(
   main = ".",
   datasets = prefab_datasets(),
@@ -17,17 +28,27 @@ prepare_rodents(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
+\item{dataset}{\code{character} value of name of rodent dataset to include.}
+
+\item{species}{\code{character} value of name of rodent species within the dataset.}
+
+\item{model}{\code{character} value of the model name.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
+
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 }
 \value{
+\code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.
+
 \code{list} of prepared \code{datasets}.
 }
 \description{
+Create vector of historic abundances for a rodent species in a dataset.
+
 Create specified \code{datasets} using their associated function and arguments.
 }

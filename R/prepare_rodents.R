@@ -1,4 +1,27 @@
-# produces a model-ready vector
+#' @title Prepare Rodents Data for the a Portalcasting Model
+#'
+#' @description Create vector of historic abundances for a rodent species in a dataset.
+#'
+#' @param quiet \code{logical} indicator controlling if messages are printed.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree. 
+#'
+#' @param dataset \code{character} value of name of rodent dataset to include.
+#'
+#' @param species \code{character} value of name of rodent species within the dataset.
+#'
+#' @param model \code{character} value of the model name.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#'
+#' @return \code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.
+#'  
+#' @name prepare rodents
+#'
+#' @export
+#'
 prepare_abundance <- function (main     = ".", 
                                dataset  = NULL,
                                species  = NULL,

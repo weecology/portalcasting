@@ -57,11 +57,12 @@ portalcast <- function (main     = ".",
   messageq(message_break( ), "\nCasting complete\n", message_break( ), quiet = quiet)
   invisible( ) 
 
-
-
 } 
 
-
+#' @rdname portalcast
+#'
+#' @export
+#'
 cast <- function (main     = ".", 
                   dataset  = NULL,
                   species  = NULL,
@@ -90,8 +91,14 @@ cast <- function (main     = ".",
                                   settings     = settings)
   newmoons       <- read_newmoons(main         = main,
                                   settings     = settings)                                        
+  covariates     <- read_covariates(main       = main,
+                                    settings   = settings)
 
-  
+  model_fit  <- do.call(what = model_controls$fit$fun,
+                        args = lapply(model_controls$fit$args, eval_parse_text))
+
+  model_cast <- do.call(what = model_controls$cast$fun,
+                        args = lapply(model_controls$cast$args, eval_parse_text))
 
   process_model_output(main       = main,
                        model_fit  = model_fit,
@@ -104,39 +111,6 @@ cast <- function (main     = ".",
                        verbose    = verbose) 
 
 }
-
-#' @rdname portalcast
-#'
-#' @export
-#'
-xcast <- function (main       = ".", 
-                  settings   = directory_settings( ), 
-                  quiet      = FALSE, 
-                  verbose    = FALSE) {
-
-    model <- models_scripts[i]
-
-    messageq(message_break( ), "\n -Running ", path_no_ext(basename(model)), "\n", message_break( ), quiet = quiet)
-
-    run_status <- tryCatch(expr  = source(model),
-                           error = function(x){NA})
-
-    if (all(is.na(run_status))) {
-
-      messageq("  |----| ", path_no_ext(basename(model)), " failed |----|", quiet = quiet)
-
-    } else {
-
-      messageq("  |++++| ", path_no_ext(basename(model)), " successful |++++|", quiet = quiet)
-
-    }
-
-  }
-
-  invisible( )
-
-}
-
 
 #' @title Determine All Requested Combinations of Model, Dataset, and Species to Cast 
 #'

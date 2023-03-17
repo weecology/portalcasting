@@ -1,3 +1,7 @@
+eval_parse_text <- function (x) {
+  eval(parse(text = x))
+}
+
 #' @title Round an Interpolated Series
 #'
 #' @description Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.

@@ -2,21 +2,11 @@
 % Please edit documentation in R/prepare_models.R
 \name{write_model}
 \alias{write_model}
-\alias{model_template}
 \title{Write Model Function Script into Directory}
 \usage{
 write_model(
   main = ".",
   model = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
-
-model_template(
-  main = ".",
-  model = NULL,
-  datasets = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -36,9 +26,7 @@ model_template(
 \item{datasets}{\code{character} vector of dataset names for the model.}
 }
 \value{
-\code{write_mode} \code{\link{write}}s the model script out and returns \code{NULL}, \code{\link[base]{invisible}}-ly.. \cr \cr
- \code{model_template}: \code{character}-valued text for a model script to be housed in the model directory. \cr \cr
- \code{control_list_arg}: \code{character}-valued text for part of a model script. \cr \cr
+\code{write_model} \code{\link{write}}s the model script out and returns \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
 Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}

@@ -79,7 +79,7 @@ prepare_metadata <- function (main                 = ".",
               dataset_controls        = dataset_controls_list,
               datasets                = datasets,
               models                  = models,
-              confidence_level        = settings$time$confidence_level,
+              confidence_level        = settings$confidence_level,
               directory_configuration = config)
 
   write_data(x        = out, 

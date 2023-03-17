@@ -96,9 +96,7 @@ write_model_controls <- function (main               = ".",
 #'
 #' @param datasets \code{character} vector of dataset names for the model. 
 #'
-#' @return \code{write_mode} \code{\link{write}}s the model script out and returns \code{NULL}, \code{\link[base]{invisible}}-ly.. \cr \cr
-#'  \code{model_template}: \code{character}-valued text for a model script to be housed in the model directory. \cr \cr
-#'  \code{control_list_arg}: \code{character}-valued text for part of a model script. \cr \cr
+#' @return \code{write_model} \code{\link{write}}s the model script out and returns \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
 #' @export
 #'
@@ -111,102 +109,33 @@ write_model <- function (main     = ".",
 
   return_if_null(model)
   
-  control_model   <- tryCatch(expr  = prefab_model_controls()[[model]],
-                              error = function(x){NULL})
-  datasets <- control_model$datasets
+  control_model <- model_controls(main     = main,
+                                  models   = model,
+                                  settings = settings)
+
+  model_path    <- file.path(main, settings$subdirectories$models, paste0(model, ".R"))
+
+  model_script <- 1
+
+  if (file.exists(model_path) ) {
+
+    messageq("  - Updating ", model, quiet = quiet)
 
 
-  model_file <- paste0(model, ".R")
-  mod_path   <- file.path(main, settings$subdirectories$models, model_file)
+  } else {
 
-
-  mod_template <- model_template(main     = main, 
-                                 model    = model, 
-                                 datasets = prefab_datasets( ),
-                                 settings = directory_settings( ), 
-                                 quiet    = FALSE, 
-                                 verbose  = FALSE)
-
-  if (file.exists(mod_path) ) {
-
-    write(mod_template, mod_path)
-    messageq("  -", ifelse(verbose, "Updating ", ""), model, quiet = quiet)
-
-
-  } else if (!file.exists(mod_path)) {
-
-    write(mod_template, mod_path)
-    messageq("  -", ifelse(verbose, "Adding ", ""), model, quiet = quiet)
+    messageq("  - Adding ", model, quiet = quiet)
 
   } 
+
+  write(x    = model_script, 
+        file = model_path)
 
   invisible( )
 
 }
 
-#' @rdname write_model
-#'
-#' @export
-#'
-model_template <- function (main     = ".", 
-                            model    = NULL, 
-                            datasets = NULL,
-                            settings = directory_settings( ), 
-                            quiet    = FALSE, 
-                            verbose  = FALSE) {
 
-  return_if_null(model)
-
-  control_model   <- tryCatch(expr  = prefab_model_controls()[[model]],
-                              error = function(x){NULL})
-
-  datasets <- names(control_model$datasets)
-  nds             <- length(datasets)
-  
-  return_if_null(datasets)
-
-
-  main_arg     <- paste0(', main = "', main, '"')
-  quiet_arg    <- paste0(', quiet = ', quiet)
-  verbose_arg  <- paste0(', verbose = ', verbose)
-  ds_args      <- paste0('dataset = "', datasets, '"')
-  settings_arg <- paste0(', settings = directory_settings( )')
-
-  additional_args <- NULL
-
-  nadditional_args <- length(control_model$args)
-
-  if (nadditional_args > 0) {
-
-    for (i in 1:nadditional_args) {
-
-     # additional_args <- paste0(additional_args, ", ", names(control_model$args)[i], " = ", control_model$args[i])
-
-    }
-
-  }
-  
-
-  out <- NULL
-  for(i in 1:nds){
-
-    resp <- paste0('cast_', datasets[i])
-
-    model_args <- paste0(ds_args[i], main_arg, settings_arg, quiet_arg, verbose_arg, additional_args)
-
-    model_fun  <- paste0(model, '(', model_args, ');')
-    model_line <- paste0(resp, ' <- ', model_fun)
-    save_args  <- paste0(resp, main_arg, settings_arg, quiet_arg)
-    save_fun   <- paste0('save_cast_output(', save_args, ');')
-    save_line  <- save_fun
-    newout     <- c(model_line, save_line)
-    out        <- c(out, newout)
-
-  }
-
-  out
-
-}
 
 
 #' @title Create a covariate model list

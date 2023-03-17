@@ -20,7 +20,7 @@ all:
     unknowns: no
     time: newmoon
     na_drop: no
-    zero_drop: yes
+    zero_drop: no
     effort: yes
     filename: rodents_all.csv
 controls:
@@ -45,7 +45,7 @@ controls:
     unknowns: no
     time: newmoon
     na_drop: no
-    zero_drop: yes
+    zero_drop: no
     effort: yes
     filename: rodents_controls.csv
 exclosures:
@@ -70,6 +70,6 @@ exclosures:
     unknowns: no
     time: newmoon
     na_drop: no
-    zero_drop: yes
+    zero_drop: no
     effort: yes
     filename: rodents_exclosures.csv

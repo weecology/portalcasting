@@ -4,15 +4,27 @@
 \alias{make_model_combinations}
 \title{Determine All Requested Combinations of Model, Dataset, and Species to Cast}
 \usage{
-make_model_combinations(main = ".", settings = directory_settings())
+make_model_combinations(
+  main = ".",
+  models = prefab_models(),
+  datasets = prefab_datasets(),
+  species = base_species(),
+  settings = directory_settings()
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
+\item{models}{\code{character} vector of name(s) of model(s) to include in the forecast.}
+
+\item{datasets}{\code{character} vector of datasets to be forecast.}
+
+\item{species}{\code{character} vector of species to be forecast.}
+
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
 }
 \value{
-\code{character} vector of the path(s) of the R script file(s) to be run.
+\code{data.frame} of the model combinations.
 }
 \description{
 Translate model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination.
