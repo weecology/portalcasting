@@ -5,7 +5,7 @@ fill_models(main)
 
 dataset  = "controls"
                   species  = "DM"
-                  model    = "AutoArima"
+                  model    = "pevGARCH"
                   settings = directory_settings( ) 
                   quiet    = FALSE 
                   verbose  = TRUE
@@ -32,7 +32,6 @@ dataset  = "controls"
 
   model_cast <- do.call(what = model_controls$cast$fun,
                         args = lapply(model_controls$cast$args, eval_parse_text))
-
 
   pmo <- process_model_output(main       = main,
                        model_fit  = model_fit,

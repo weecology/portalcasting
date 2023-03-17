@@ -1,34 +1,8 @@
 
+# THIS is what a model script is
 
-cast_nbGARCH <- function (model_fit, metadata) {
+fit_pevGARCH <- function (ts, model, distr, link, lag, submodels, covariates, metadata, quiet = FALSE) {
 
-  model_cast <- forecast(object = model_fit, 
-                         h      = metadata$time$lead_time_newmoons, 
-                         level  = metadata$confidence_level)
-
-  data.frame(pred  = model_cast$mean,
-             lower = model_cast$lower[ , 1], 
-             upper = model_cast$upper[ , 1])
-
-}
-
-fit_nbsGARCH <- function (ts, model, distr, link, covariates, metadata) {
-
-  xreg <- covariates[covariates$newmoon %in% metadata$time$historic_newmoons, c("cos2pifoy", "sin2pifoy")]
-
-  tsglm(ts    = ts, 
-        model = model, 
-        distr = distr, 
-        xreg  = xreg, 
-        link  = link)
-
-
-}
-
-
-fit_pevGARCH <- function (ts, model, distr, link, lag, covariates, metadata, quiet = FALSE) {
-
-  submodels     <- covariate_models(model = "pevGARCH")
   nsubmodels    <- length(submodels)
   submodel_fits <- named_null_list(element_names = submodels)
 
@@ -50,44 +24,12 @@ fit_pevGARCH <- function (ts, model, distr, link, lag, covariates, metadata, qui
 
   best_fit     <- which.min(sapply(submodel_fits, AIC))
   out          <- submodel_fits[[best_fit]]
-  out$submodel <- best_fit
+  out$submodel <- unlist(submodels[best_fit])
   out$lag      <- lag
   out
-}
-
-
-cast_pevGARCH <- function (model_fit, covariates, metadata) {
-
-  submodel <- model_fit$submodel
-
-  newxreg  <- covariates[covariates$newmoon %in% (metadata$time$forecast_newmoons - model_fit$lag), unlist(submodel)]
-
-  model_cast <- forecast(object  = model_fit, 
-                         h       = metadata$time$lead_time_newmoons, 
-                         level   = metadata$confidence_level,
-                         newxreg = newxreg)
-
-  data.frame(pred  = model_cast$mean,
-             lower = model_cast$lower[ , 1], 
-             upper = model_cast$upper[ , 1])
 
 }
 
-
-cast_nbsGARCH <- function (model_fit, covariates, metadata) {
-
-  newxreg <- covariates[covariates$newmoon %in% metadata$time$forecast_newmoons, c("cos2pifoy", "sin2pifoy")]
-
-  model_cast <- forecast(object  = model_fit, 
-                         h       = metadata$time$lead_time_newmoons, 
-                         level   = metadata$confidence_level,
-                         newxreg = newxreg)
-
-  data.frame(pred  = model_cast$mean,
-             lower = model_cast$lower[ , 1], 
-             upper = model_cast$upper[ , 1])
-
-}
 
 
 forecast.tsglm <- function (object, h, level, ...) {
@@ -101,7 +43,12 @@ forecast.tsglm <- function (object, h, level, ...) {
   out$lower <- as.ts(out$interval[ , 1, drop = FALSE])
   out$upper <- as.ts(out$interval[ , 2, drop = FALSE])
 
-  out
+  dots <- list(...)
+
+  if (!is.null(dots$newxreg)) {
+    out$newxreg <- as.ts(dots$newxreg)
+  }
+  structure(out, class = "forecast")
 
 }
 

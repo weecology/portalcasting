@@ -82,7 +82,8 @@ write_model_controls <- function (main               = ".",
 
 #' @title Write Model Function Script into Directory
 #'
-#' @description Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
+#' @description Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr 
+#'              \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -137,39 +138,3 @@ write_model <- function (main     = ".",
 
 
 
-
-#' @title Create a covariate model list
-#'
-#' @description Convenience function for creating covariate model \code{list}s.
-#'
-#' @param model \code{character} name for covariate models. Currently only \code{"pevGARCH"} is supported.
-#'
-#' @return \code{list} of covariate model structures.
-#'
-#' @examples
-#'  covariate_models()
-#'
-#' @export
-#'
-covariate_models <- function (model = "pevGARCH") {
-
-  out <- NULL
-  if (model == "pevGARCH") {
-
-    out <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),
-                c("maxtemp", "mintemp", "precipitation", "ndvi"),
-                c("mintemp", "maxtemp", "meantemp", "precipitation"),
-                c("precipitation", "ndvi"),
-                c("mintemp", "ndvi"),
-                c("mintemp"),
-                c("maxtemp"),
-                c("meantemp"),
-                c("precipitation"),
-                c("ndvi"),
-                c(NULL))
-
-  }
-
-  out
-
-}
