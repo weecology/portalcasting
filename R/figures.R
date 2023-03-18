@@ -269,13 +269,6 @@ eval_models <- function() {
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{NULL}. Plot is generated.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = "AutoArima", end_moons = 515:520)
-#'   plot_casts_err_lead()
-#' }
 #'
 #' @export
 #'
@@ -667,13 +660,6 @@ plot_casts_err_lead <- function (main           = ".",
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{NULL}. Plot is generated.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
-#'   plot_cast_point()
-#' }
 #'
 #' @export
 #'
@@ -912,13 +898,6 @@ plot_cast_point <- function (main         = ".",
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{NULL}. Plot is generated.
-#' 
-#' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
-#'   plot_cast_ts()
-#' }
 #'
 #' @export
 #'

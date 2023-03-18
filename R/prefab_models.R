@@ -10,10 +10,6 @@
 #' @return \code{prefab_models}: \code{character} vector of model names. \cr
 #'         \code{prefab_model_controls}: \code{list} vector of model controls. \cr
 #'
-#' @examples
-#'  prefab_models( )
-#'  prefab_model_controls( )
-#'
 #' @name prefabricated_models
 #'
 NULL

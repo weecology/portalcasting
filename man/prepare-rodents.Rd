@@ -41,6 +41,8 @@ prepare_rodents(
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
+
+\item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
 }
 \value{
 \code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.

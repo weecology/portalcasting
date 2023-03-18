@@ -51,11 +51,3 @@ The resulting plot shows observations as a solid black line and predictions as a
  As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. \cr
  Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
-  plot_cast_ts()
-}
-
-}

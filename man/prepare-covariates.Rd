@@ -20,8 +20,6 @@ prepare_covariates(
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
 \item{verbose}{\code{logical} indicator if detailed messages should be printed.}
-
-\item{origin}{\code{Date} for the forecast origin. Defaults to today's date.}
 }
 \value{
 \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.

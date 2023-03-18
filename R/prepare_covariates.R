@@ -8,8 +8,6 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
-#' @param origin \code{Date} for the forecast origin. Defaults to today's date.
-#'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator if detailed messages should be printed.

@@ -17,7 +17,3 @@ message_break(char = "-", reps = 60)
 \description{
 Creates a horizontal line of characters for messages.
 }
-\examples{
- message_break( )
-
-}

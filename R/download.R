@@ -113,9 +113,6 @@ download_climate_forecasts <- function (main          = ".",
 #'
 #' @name NMME urls
 #'
-#' @examples
-#'   NMME_urls()
-#'
 #' @export
 #'
 NMME_urls <- function (start = Sys.Date(), 

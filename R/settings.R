@@ -8,6 +8,8 @@
 #'
 #' @param resources \code{list} of \code{list}s for standard resources, see \code{\link{directory_resources}}.
 #'
+#' @param time \code{list} of time settings, see \code{\link{time_settings}}.
+#'
 #' @param directory_configuration \code{character} name for the directory configuration YAML.
 #'
 #' @param newmoons \code{character} name for the lunar data csv.
@@ -58,7 +60,7 @@
 #' @param max_lag \code{integer} (or integer \code{numeric}) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
 #'   Default is \code{365} for the logistic covariate models.
 #'
-#' @param lag_bugger \code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
+#' @param lag_buffer \code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
 #'   Default value of \code{60} corresponds to two additional lunar months. 
 #'
 #' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.

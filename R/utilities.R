@@ -325,96 +325,6 @@ foy <- function (dates = NULL) {
 
 
 
-#' @title Combine a Historical Table and a Cast Table
-#'
-#' @description A simple utility for combining a table of historical data and a table of cast data that might need to be assigned to either one or the other.
-#'
-#' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns including a code{date} column of \code{Date}s, which is used to align them.
-#'
-#' @param winner \code{character} value either {"hist"} or \code{"cast"} to decide who wins any ties. In the typical portalcasting space, this is kept at its default value throughout. In the case of \code{NA} values, this will be overridden to use the entry that has no missing entries.
-#'
-#' @param column \code{character} indicating the column to use for identifying entries in combining.
-#'
-#' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
-#' 
-#' @examples
-#'  hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
-#'  cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1), x = 101:106)
-#'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
-#'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
-#'
-#' @export
-#'
-combine_hist_and_cast <- function (hist_tab = NULL, 
-                                   cast_tab = NULL, 
-                                   winner   = "hist", 
-                                   column   = "date"){
-  
-  return_if_null(hist_tab, cast_tab)
-  return_if_null(cast_tab, hist_tab)
-
-  hist_tab$x_source <- "hist"
-  cast_tab$x_source <- "cast"
-
-  out    <- rbind(hist_tab, cast_tab)
-  in_out <- rep(TRUE, NROW(out))
-
-  if (!(winner %in% c("hist", "cast"))) {
-
-    stop("`winner` must be `hist` or `cast`")
-
-  }
-
-  dupes  <- names(which(table(out[,column]) > 1))
-  ndupes <- length(dupes) 
-
-  if (ndupes > 0) {
-
-    for (i in 1:ndupes) {
-
-      which_duped      <- which(out$moon == dupes[i])
-      which_duped_hist <- which(as.character(out[,column]) == dupes[i] & out$x_source == "hist")
-      which_duped_cast <- which(as.character(out[,column]) == dupes[i] & out$x_source == "cast") 
-
-      hist_dupe_NA <- any(is.na(out[which_duped_hist, ]))
-      cast_dupe_NA <- any(is.na(out[which_duped_cast, ]))
-
-      if (winner == "hist") {
-
-        if (!hist_dupe_NA) {
-
-          in_out[which_duped_cast] <- FALSE
-
-        } else {
-
-          in_out[which_duped_hist] <- FALSE   
-
-        }
-
-      } else if(winner == "cast") {
-
-        if (!cast_dupe_NA) {
-
-          in_out[which_duped_hist] <- FALSE
-
-        } else {
-
-          in_out[which_duped_cast] <- FALSE   
-
-        }
-
-      }
-
-    }
-
-  }
-
-  out <- out[ , -which(colnames(out) == "x_source")]
-
-  out[in_out, ]
-
-}
-
 #' @title Add a Date to a Table That has the Year, Month, and Day as Components 
 #' 
 #' @description Add a date (as a \code{Date}) column to a table that has the year month and day as components.
@@ -535,7 +445,7 @@ return_if_null <- function (x, value = NULL) {
 
   if (is.null(x)) {
 
-    do.call(what  = return, 
+    do.call(what  = "return", 
             args  = list(value), 
             envir = sys.frame(-1))
 

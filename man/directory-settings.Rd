@@ -68,6 +68,8 @@ sandbox_settings()
 
 \item{resources}{\code{character} name for the resources subdirectory.}
 
+\item{time}{\code{list} of time settings, see \code{\link{time_settings}}.}
+
 \item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
@@ -87,6 +89,9 @@ As of version 0.51.0, default is now \code{365}, which when divided by 29.5 (dur
 
 \item{max_lag}{\code{integer} (or integer \code{numeric}) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
 Default is \code{365} for the logistic covariate models.}
+
+\item{lag_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
+Default value of \code{60} corresponds to two additional lunar months.}
 
 \item{directory_configuration}{\code{character} name for the directory configuration YAML.}
 
@@ -117,9 +122,6 @@ Default is \code{365} for the logistic covariate models.}
 \item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download.}
 
 \item{climate_forecast}{\code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.}
-
-\item{lag_bugger}{\code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
-Default value of \code{60} corresponds to two additional lunar months.}
 }
 \value{
 Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).

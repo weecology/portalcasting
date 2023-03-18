@@ -548,9 +548,6 @@ runjags_data <- function (model = NULL, abundance, metadata, covariates) {
 #'  
 #'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
 #'
-#' @examples
-#'  runjags_control()
-#'
 #' @export
 #'
 runjags_control <- function (nchains     = 4, 

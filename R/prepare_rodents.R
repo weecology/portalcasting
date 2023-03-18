@@ -145,6 +145,8 @@ write_dataset_controls <- function (main                 = ".",
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
 #'
+#' @param new_dataset_controls Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.
+#'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{list} of prepared \code{datasets}.

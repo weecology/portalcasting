@@ -334,9 +334,6 @@ messageq <- function (...,
 #' 
 #' @return \code{NULL} (message is put out to console).
 #'
-#' @examples
-#'  message_break( )
-#'
 #' @export
 #'
 message_break <- function(char = "-",

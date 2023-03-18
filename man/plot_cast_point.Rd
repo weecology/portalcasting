@@ -54,11 +54,3 @@ Plot the point value with confidence interval for a time point across multiple s
 The resulting plot shows predictions as points (open white circles) with error, where the point represents the \code{estimate} and the bounds of the error are \code{lower_pi} and \code{upper_pi} in the \code{cast_table} saved output from a model. \cr
  As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. If \code{with_census = TRUE}, the observations from the associated moon are plotted as blue filled squares.
 }
-\examples{
- \donttest{
-  setup_dir()
-  portalcast(models = c("AutoArima", "NaiveArima"), end_moons = 515:520)
-  plot_cast_point()
-}
-
-}

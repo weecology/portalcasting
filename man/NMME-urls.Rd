@@ -35,7 +35,3 @@ Generate the URL for a specific request to the NMME API based on parameters. See
 \details{
 The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set.
 }
-\examples{
-  NMME_urls()
-
-}
