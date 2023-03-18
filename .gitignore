@@ -15,3 +15,5 @@ model_testing/*
 testing/* 
 testing_dir/* 
 *.bak
+/doc/
+/Meta/

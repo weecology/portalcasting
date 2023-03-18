@@ -6,41 +6,25 @@
 model_name:
   metadata:
     name: model_name
-    descriptor: free-form text field that is not used to populate anything
-    text: Text field that is used to populate descriptions of the model on websites, etc.
-  fun: model_function_name
-  args: 
-    arg_1: arg_1_default_value
+    print_name: model name
+    tags: []
+    text: 
+  fit:
+    fun: 
+    args: 
+  cast:
+    fun: 
+    args:
   interpolate: 
     needed: no
-    fun: ~
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
-    link: normal
-    type: distribution 
+    link: 
+    type:  
   time: newmoon

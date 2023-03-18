@@ -1,7 +1,7 @@
 all:
   metadata:
     name: all
-    descriptor: classic dataset, all plots combined
+    tags: [classic dataset, exclosure plots combined]
     text: Twenty focal species and total abundance summed across all plots at the newmoon.
   fun: prepare_dataset
   args:
@@ -26,7 +26,7 @@ all:
 controls:
   metadata:
     name: controls
-    descriptor: classic dataset, control plots combined
+    tags: [classic dataset, exclosure plots combined]
     text: Twenty focal species and total abundance summed across control plots at the newmoon.
   fun: prepare_dataset
   args:
@@ -51,7 +51,7 @@ controls:
 exclosures:
   metadata:
     name: exclosures
-    descriptor: classic dataset, exclosure plots combined
+    tags: [classic dataset, exclosure plots combined]
     text: Twenty focal species and total abundance summed across exclosure plots at the newmoon.
   fun: prepare_dataset
   args:

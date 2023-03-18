@@ -1,0 +1,30 @@
+# Basic template and explanation for a dataset controls list.
+# This is used to read in for population from the R command line.
+# Important notes:
+#   while normally text fields don't need to be quoted, "y" does because otherwise it's read as yes aka TRUE
+
+dataset_name:
+  metadata:
+    name: dataset_name
+    tags: []
+    text: 
+  fun: prepare_dataset
+  args:
+    name: dataset_name
+    species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PH, PL, PM, PP, RF, RM, RO, SF, SH, SO]
+    total: yes
+    clean: no
+    type: Rodents
+    level: Site
+    plots: all
+    treatment: ~
+    min_plots: 24.0
+    min_traps: 1.0
+    output: abundance
+    fillweight: no
+    unknowns: no
+    time: newmoon
+    na_drop: no
+    zero_drop: no
+    effort: yes
+    filename: rodents_dataset_name.csv
