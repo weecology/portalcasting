@@ -3,12 +3,9 @@
 \name{alternative values}
 \alias{alternative values}
 \alias{ifnull}
-\alias{ifna}
-\title{Replace a Value with an Alternative if it is NULL or if it is NA}
+\title{Replace a Value with an Alternative if it is NULL}
 \usage{
 ifnull(x = NULL, alt = NULL)
-
-ifna(x = NULL, alt = NA)
 }
 \arguments{
 \item{x}{Focal input.}
@@ -16,19 +13,14 @@ ifna(x = NULL, alt = NA)
 \item{alt}{Alternative value.}
 }
 \value{
-\code{ifnull}: \code{x} if not \code{NULL}, \code{alt} otherwise. \cr \cr
- \code{ifna}:  \code{x} if not \code{NA}, \code{alt} otherwise.
+\code{x} if not \code{NULL}, \code{alt} otherwise.
 }
 \description{
-\code{ifnull} replaces the focal input with the alternative value if it is \code{NULL}. \cr \cr
- \code{ifna} replaces the focal input with the alternative value if it is \code{NA}.
+Replaces the focal input with the alternative value if it is \code{NULL}.
 }
 \examples{
  ifnull(NULL, 123)
  ifnull(TRUE, 123)
  ifnull(FALSE, 123)
- ifna(NA, 123)
- ifna(FALSE, 123)
- ifna(NA, NA)
 
 }

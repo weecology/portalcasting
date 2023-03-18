@@ -15,23 +15,6 @@ test_that(desc = "round_na.interp does its job",
 })
 
 
-test_that(desc = "match.call.defaults operates within functions",
-          code = {
-
-  fun <- function(arg1 = "ok", ...) {
-    match.call.defaults()
-  }
-
-  # simple default
-
-    expect_is(fun(), "call")
-
-  # elipsis input
-
-    expect_is(fun(arg2 = "hi"), "call")
-
-})
-
 
 test_that(desc = "named_null_list produces a proper list",
           code = {
@@ -44,15 +27,6 @@ test_that(desc = "named_null_list produces a proper list",
     expect_equal(length(nnl), 3)
     expect_equal(names(nnl), c("a", "b", "c"))
     expect_equal(all(unlist(lapply(nnl, is.null))), TRUE)
-
-})
-
-
-test_that(desc = "error_if_deep catches deep but not shallow",
-          code = {
-
-  expect_error(error_if_deep(-1e4))
-  expect_equal(error_if_deep(0), NULL)
 
 })
 
@@ -92,31 +66,6 @@ test_that(desc = "na_conformer makes NA into `NA` in vectors and data frames",
     expect_equal(na_conformer(xx, "n")[2,2], "NA")
 })
 
-
-test_that(desc = "append_csv properly appends and saves a csv, even if absent",
-          code = {
-
-  # nothing present yet
-
-    df <- data.frame(x = 1:10, y = 11:20)
-    expect_silent(append_csv(df, "ok.csv"))
-
-    df_in <- read.csv("ok.csv") 
-    nrow1 <- NROW(df_in)
-
-  # with it present
-
-    dfa <- data.frame(x = 100:102, y = 200:202)
-    expect_silent(append_csv(dfa, "ok.csv"))
-    dfap <- read.csv("ok.csv") 
-    nrow2 <- NROW(dfap)
-
-    expect_equal(nrow2 > nrow1, TRUE)
-
-    unlink("ok.csv")
-})
-
-
 test_that(desc = "foy calculates the fraction of the year ",
           code = {
 
@@ -127,36 +76,6 @@ test_that(desc = "foy calculates the fraction of the year ",
 })
 
 
-test_that(desc = "add_date_from_components combines parts into date",
-          code = {
-
-  df <- data.frame(year = 2010, month = 2, day = 1:10)
-  df2 <- add_date_from_components(df)
-  expect_is(df2, "data.frame")
-  expect_equal(df2$date, 
-               as.Date(c("2010-02-01", "2010-02-02", "2010-02-03", 
-                         "2010-02-04", "2010-02-05", "2010-02-06", 
-                         "2010-02-07", "2010-02-08", "2010-02-09",
-                         "2010-02-10")))
-})
-
-
-test_that(desc = "remove_incompletes does remove them",
-          code = {
-  df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)
-  df2 <- remove_incompletes(df, "c1")
-  expect_is(df2, "data.frame")
-  expect_equal(NROW(df2), 9)
-})
-
-
-test_that(desc = "list_depth properly measures the depth of a list",
-          code = {
-  expect_equal(list_depth("a"), 0)
-  expect_equal(list_depth(list("a")), 1)
-  expect_equal(list_depth(list()), 0)
-  expect_equal(list_depth(list(list("a"))), 2)
-})
 
 test_that(desc = "return_if_null properly returns for a new function",
           code = {
@@ -172,11 +91,4 @@ test_that(desc = "ifnull toggles based on input",
           code = {
   expect_equal(ifnull(NULL, 123), 123)
   expect_equal(ifnull(TRUE, 123), TRUE)
-})
-
-test_that(desc = "ifna toggles based on input",
-          code = {
-  expect_equal(ifna(NA, 123), 123)
-  expect_equal(ifna(FALSE, 123), FALSE)
-  expect_equal(ifna(NA, NA), NA)
 })
