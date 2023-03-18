@@ -12,11 +12,11 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include in the forecast.
+#' @param models,model \code{character} vector of name(s) of model(s) to include in the forecast. In \code{cast}, \code{model} can only be length-one.
 #'
-#' @param datasets \code{character} vector of datasets to be forecast. 
+#' @param datasets,dataset \code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one. 
 #'
-#' @param species \code{character} vector of species to be forecast. 
+#' @param species \code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. 
 #'
 #' @return Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
 #'
@@ -30,7 +30,7 @@ portalcast <- function (main     = ".",
                         quiet    = FALSE,
                         verbose  = FALSE) {
 
-  messageq(message_break( ), "\nPreparing directory for casting\n", 
+  messageq(message_break( ), "\nForecasting models...\n", 
            message_break( ), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
            message_break( ), quiet = quiet)
 
@@ -65,7 +65,7 @@ portalcast <- function (main     = ".",
     }
   }
 
-  messageq(message_break( ), "\nCasting complete\n", message_break( ), quiet = quiet)
+  messageq(message_break( ), "\n...forecasting complete.\n", message_break( ), quiet = quiet)
   invisible( ) 
 
 } 

@@ -1,7 +1,7 @@
 rm(list=ls())
 devtools::load_all()
-main <- "~/portalcasting"
-fill_models(main)
+main <- "~/sandbox2"
+setup_sandbox(main)
 
 dataset  = "controls"
 species <- "DM"

@@ -117,7 +117,7 @@ setup_sandbox <- function (main                 = ".",
                            datasets             = prefab_datasets( ),
                            new_dataset_controls = NULL,
                            new_model_controls   = NULL,
-                           settings             = directory_settings( ), 
+                           settings             = sandbox_settings( ), 
                            quiet                = FALSE, 
                            verbose              = FALSE) {
 

@@ -28,11 +28,11 @@ cast(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to include in the forecast.}
+\item{models, model}{\code{character} vector of name(s) of model(s) to include in the forecast. In \code{cast}, \code{model} can only be length-one.}
 
-\item{datasets}{\code{character} vector of datasets to be forecast.}
+\item{datasets, dataset}{\code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one.}
 
-\item{species}{\code{character} vector of species to be forecast.}
+\item{species}{\code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one.}
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 

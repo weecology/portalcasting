@@ -1,12 +1,37 @@
 
 
-# this incorporates the code from save_model_output, now rendering that function vestigial, so i've deleted it
-#  but we will want to use that documentation to build the doc for this function, so i've just commented it out below
-# this way, the basic processing function just needs the model fit and cast
-# and honestly it can even not have anything for the fit, the default NULL still works,
-# as all that happens for the fit is a version is serialized as JSON and saved out in the fits folder and the raw input is passed through
-# the model cast just needs to be a dataframe with pred, lower, and upper columns
-
+#' @title Process and Save Cast Output to Files
+#'
+#' @description Take the model fit and cast output, process them into saveables, and save them to the output folders. The cast metadata file is updated accordingly to track the saved output. \cr
+#'
+#' @param model_fit,model_cast Output from a model's fit and cast functions.
+#'
+#' @details Four model-specific output components are saved and returned. 
+#'  \itemize{
+#'   \item \code{"cast_metadata"}: saved out with \code{\link[yaml]{write_yaml}}.
+#'   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}.
+#'   \item \code{"model_fit"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite]{serializeJSON}} and \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to specific object structure.
+#'   \item \code{"model_cast"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite]{serializeJSON}} and \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to specific object structure.
+#'  }
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#'
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not.
+#'
+#' @param model Length-one \code{character} vector of model name.
+#'
+#' @param dataset Length-one \code{character} vector of dataset name.
+#'
+#' @param species Length-one\code{character} vector of species name.
+#'
+#' @return Relevant elements are saved to external files, and returned as a \code{list}.
+#'
+#' @export
+#'
 process_model_output <- function (main      = ".", 
                                   model_fit = NULL,
                                   model_cast,
@@ -25,10 +50,17 @@ process_model_output <- function (main      = ".",
   metadata <- read_metadata(main     = main,
                             settings = settings)
 
+  ids     <- casts_metadata$cast_id
+  ids     <- gsub("-", ".", ids)
+  ids     <- as.numeric(ids)
+  next_id <- ceiling(max(c(0, ids))) + 1
+
+
   cast_metadata <- update_list(metadata, 
-                               cast_id          = max(casts_metadata$cast_id) + 1,
+                               cast_id          = next_id,
                                model            = model,
                                dataset          = dataset,
+                               species          = species,
                                dataset_controls = metadata$dataset_controls[[dataset]])
 
   cast_tab <- data.frame(origin           = metadata$time$origin, 
@@ -56,7 +88,7 @@ process_model_output <- function (main      = ".",
 
   # patch to facilitate inclusion of species in cast metadata table going forward
   if (!("species" %in% colnames(casts_metadata))) {
-    casts_metadata$species <- NA
+    casts_metadata <- data.frame (casts_metadata, species = character())
   }
   # end patch
 
@@ -105,7 +137,7 @@ process_model_output <- function (main      = ".",
     write_json(x       = model_fit_json, 
                path    = model_fit_path)
 
-    model_cast_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_casts.json") 
+    model_cast_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_cast.json") 
     model_cast_path     <- file.path(main, settings$subdirectories$forecasts, model_cast_filename)
     model_cast_json     <- serializeJSON(x = model_cast)
 
@@ -120,6 +152,7 @@ process_model_output <- function (main      = ".",
        model_cast      = model_cast)
 
 }
+
 
 #' @title Measure Error and Fit Metrics for Forecasts
 #' 
@@ -577,45 +610,4 @@ select_casts <- function (main           = ".",
 }
 
 
-# Old documentation 
-# @title Save Cast Output to Files
-#
-# @description Save out any output from a cast of a model for a data set and update the cast metadata file accordingly to track the saved output. \cr
-#  Most users will want to at least save out model metadata and a table of predictions.
-#
-# @param cast Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents data set. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
-#  Names of the elements of the list (such as \code{"metadat"}) indicate the specific saving procedures that happens to each of them. See \code{Details} section for specifics. 
-#
-# @details Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
-#  \itemize{
-#   \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
-#    typically be the model-specific metadata from the 
-#    \code{data/metadata.yaml} file, but can more generally be any 
-#    appropriate object (typically a \code{list}).  
-#   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
-#    assumed to be a table such as a \code{matrix} or \code{data.frame} 
-#    or coercible to one. Used to summarize the output across instances
-#    of the model (across multiple species, for example). 
-#   \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
-#    via \code{\link[jsonlite]{serializeJSON}} and 
-#    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
-#    specific object structure. Saving out a \code{list} of the actual model
-#    fit/return objects means that models do not need to be refit later.
-#   \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
-#    via \code{\link[jsonlite]{serializeJSON}} and 
-#    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
-#    specific object structure. Is used to save \code{list}s
-#    of predictions across multiple instances of the model.
-#  }
-#
-# @param main \code{character} value of the name of the main component of the directory tree.
-#
-# @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#
-# @param quiet \code{logical} indicator if progress messages should be quieted.
-#
-# @return Relevant elements are saved to external files, and \code{NULL} is returned.
-#
-# @export
-#
 

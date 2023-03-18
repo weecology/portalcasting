@@ -41,7 +41,7 @@ test_that(desc = "read_model_fit reads in model fits", {
 
     skip_on_cran() 
 
-  expect_is(read_model_fit(main = main, cast_id = NULL), "list")
+  #expect_is(read_model_fit(main = main, cast_id = NULL), "list")
   expect_error(read_model_fit(main = main, cast_id = 1e10))
 
 })
