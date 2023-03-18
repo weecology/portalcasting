@@ -1097,14 +1097,5 @@ plot_cast_ts <- function (main        = ".",
   points(o_x_1, o_y_1, type = "l", lwd = 2)
   points(o_x_2, o_y_2, type = "l", lwd = 2)
 
-  # pull the nice model name from the model controls yaml file based on settings list
-
-  model_name   <- ifnull(model, casts_meta$model)
-  dataset_name <- dataset
-
-
-  title        <- paste0(model_name, ", ", dataset_name)
-
-  mtext(text = title, side = 3, cex = 1.25, line = 0.5, at = 217, adj = 0)
 
 }

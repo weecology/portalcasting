@@ -278,7 +278,7 @@ update_list <- function (list = list(),
 #' @examples
 #'  \donttest{
 #'   df <- data.frame(x = 1:10)
-#'   fpath <- file.path("xx.csv")
+#'   fpath <- file.path(tempdir(), "xx.csv")
 #'   append_csv(df, fpath)
 #'  }
 #'

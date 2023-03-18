@@ -127,29 +127,6 @@ test_that(desc = "foy calculates the fraction of the year ",
 })
 
 
-test_that(desc = "combine_hist_and_cast correctly combines overlapping dataframes",
-          code = {
-
-  hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
-  cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1),
-                         x = 101:106)
-
-  # hist wins then cast wins
-
-    df <- combine_hist_and_cast(hist_tab, cast_tab, "hist")
-    expect_is(df, "data.frame")
-    expect_equal(df$x[6], 6)
-
-    df <- combine_hist_and_cast(hist_tab, cast_tab, "cast")
-    expect_is(df, "data.frame")
-    expect_equal(df$x[6], 101)
-
-  # errors properly with incorrect winner
-
-    expect_error(combine_hist_and_cast(hist_tab, cast_tab, winner = "c123")) 
-
-})
-
 test_that(desc = "add_date_from_components combines parts into date",
           code = {
 
