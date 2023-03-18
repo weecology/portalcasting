@@ -22,7 +22,7 @@ add_forecast_newmoons(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 

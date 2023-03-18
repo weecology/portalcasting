@@ -89,7 +89,7 @@ write_model_controls <- function (main               = ".",
 #'
 #' @param model \code{character} name of a model function, the \code{function} itself, or its symbol (backquoted name).
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'

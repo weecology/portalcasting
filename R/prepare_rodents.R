@@ -199,7 +199,7 @@ prepare_rodents <- function (main                 = ".",
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param species \code{character}-valued vector of species names to include. 
 #'

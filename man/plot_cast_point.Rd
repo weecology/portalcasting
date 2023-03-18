@@ -40,7 +40,7 @@ plot_cast_point(
 
 \item{with_census}{\code{logical} toggle if the plot should include the observed data collected during the predicted census.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }

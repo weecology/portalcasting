@@ -35,7 +35,7 @@ add_obs_to_cast_tab(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{cast_tab}{A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.}
 }

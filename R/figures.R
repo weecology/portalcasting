@@ -8,7 +8,7 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
@@ -266,7 +266,7 @@ eval_models <- function() {
 #'
 #' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 
@@ -664,7 +664,7 @@ plot_casts_err_lead <- function (main           = ".",
 #'
 #' @param with_census \code{logical} toggle if the plot should include the observed data collected during the predicted census.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 
@@ -909,7 +909,7 @@ plot_cast_point <- function (main         = ".",
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 

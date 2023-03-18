@@ -6,7 +6,7 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -124,7 +124,7 @@ cast <- function (main     = ".",
 #'
 #' @param species \code{character} vector of species to be forecast. 
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{data.frame} of the model combinations.
 #'

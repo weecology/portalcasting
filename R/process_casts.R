@@ -204,7 +204,7 @@ measure_cast_level_error <- function (cast_tab = NULL) {
 #' 
 #' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{data.frame} of \code{cast_tab} with an additional column or columns if needed. 
 #'
@@ -325,7 +325,7 @@ add_obs_to_cast_tab <- function (main     = ".",
 #' @param cast_ids,cast_id \code{integer} (or integer \code{numeric}) value(s) representing the cast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated cast's output is read in. \cr 
 #'  \code{cast_ids} can be NULL, one value, or more than one values, \code{cast_id} can only be NULL or one value.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return 
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
@@ -529,7 +529,7 @@ read_model_cast <- function (main     = ".",
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{data.frame} of the \code{cast_tab}.
 #'
@@ -610,7 +610,7 @@ select_casts <- function (main           = ".",
 #
 # @param main \code{character} value of the name of the main component of the directory tree.
 #
-# @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+# @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #
 # @param quiet \code{logical} indicator if progress messages should be quieted.
 #
