@@ -19,6 +19,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### Model functions are now species-level
 * To facilitate a lot of downstream functionality, we're breaking up the model functions to operate on the species-level rather than the dataset-level, according to the new control lists
+* Species that were failing the nb GARCH models (s or not) have been removed, since that throws a warning and then fits a poisson version, and we are now fitting poisson versions of everyone.
 
 ### process_model_output replaces save_cast_output and various model processing bits
 * provides a much more general way to produce a forecast that is integratable in the system, leveraging the metadata files
@@ -30,6 +31,12 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### updates to prefab models to 13 time steps forward (addressing issue 297)
 * pevGARCH, nbGARCH, nbsGARCH all get past_mean set to 13 
 * all models set with lead_time of 13
+
+### new models
+* sAutoArima
+* sNaiveArima
+* pGARCH
+* psGARCH
 
 # [portalcasting 0.50.0](https://github.com/weecology/portalcasting/releases/tag/v0.50.0)
 *2023-03-03*
