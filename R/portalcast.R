@@ -1,8 +1,8 @@
 #' @title Forecast Portal Rodents Models
 #'
 #' @description Forecast the Portal rodent population data using the data and models in a portalcasting directory. \cr \cr
-#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models. \cr \cr
-#'  \code{cast} runs a single cast of a single model on one species of one data set.
+#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. \cr \cr
+#'  \code{cast} runs a single cast of a single model on one species of one dataset.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -25,7 +25,7 @@
 portalcast <- function (main     = ".", 
                         models   = prefab_models( ), 
                         datasets = prefab_datasets( ),
-                        species  = base_species( ),
+                        species  = base_species(total = TRUE),
                         settings = directory_settings( ),
                         quiet    = FALSE,
                         verbose  = FALSE) {
@@ -41,17 +41,28 @@ portalcast <- function (main     = ".",
                                                 settings = settings)
 
   nmodel_combinations <- nrow(model_combinations)
+  out <- named_null_list(element_names = apply(model_combinations, 1, paste0, collapse = "_"))
 
   for (i in 1:nmodel_combinations) {
 
-    cast(main     = main,
-         settings = settings,
-         model    = model_combinations$model[i],
-         dataset  = model_combinations$dataset[i],
-         species  = model_combinations$species[i],
-         quiet    = quiet,
-         verbose  = verbose)
+    out[[i]] <- tryCatch(expr = cast(main     = main,
+                                     settings = settings,
+                                     model    = model_combinations$model[i],
+                                     dataset  = model_combinations$dataset[i],
+                                     species  = model_combinations$species[i],
+                                     quiet    = quiet,
+                                     verbose  = verbose),
+                         error = function(x) {NA})
+  
+    if (all(is.na(out[[i]]))) { 
 
+      messageq("    |------| failed |------|", quiet = !verbose)    
+
+    } else {
+
+      messageq("    |++++| successful |++++|", quiet = !verbose)    
+
+    }
   }
 
   messageq(message_break( ), "\nCasting complete\n", message_break( ), quiet = quiet)
@@ -94,11 +105,21 @@ cast <- function (main     = ".",
   covariates     <- read_covariates(main       = main,
                                     settings   = settings)
 
+  fit_args  <- named_null_list(element_names = names(model_controls$fit$args))
+  for (i in 1:length(fit_args)) {
+    fit_args[[i]] <- eval(parse(text = model_controls$fit$args[i]))
+  }
+
   model_fit  <- do.call(what = model_controls$fit$fun,
-                        args = lapply(model_controls$fit$args, eval_parse_text))
+                        args = fit_args)
+
+  cast_args  <- named_null_list(element_names = names(model_controls$cast$args))
+  for (i in 1:length(cast_args)) {
+    cast_args[[i]] <- eval(parse(text = model_controls$cast$args[i]))
+  }
 
   model_cast <- do.call(what = model_controls$cast$fun,
-                        args = lapply(model_controls$cast$args, eval_parse_text))
+                        args = cast_args)
 
   process_model_output(main       = main,
                        model_fit  = model_fit,
@@ -133,7 +154,7 @@ cast <- function (main     = ".",
 make_model_combinations <- function (main     = ".", 
                                      models   = prefab_models( ), 
                                      datasets = prefab_datasets( ),
-                                     species  = base_species( ),
+                                     species  = base_species(total = TRUE),
                                      settings = directory_settings( )) {
   
   metadata <- read_metadata(main     = main,

@@ -2,13 +2,14 @@
 
 fit_runjags <- function (model, abundance, metadata, covariates, control_runjags) {
 
-  monitor    <- runjags_monitor(model   = model)  
-  inits      <- runjags_inits(model     = model)  
-  jags_model <- runjags_model(model     = model)  
-  data       <- runjags_data(model      = model,
-                             abundance  = abundance,
-                             metadata   = metadata,
-                             covariates = covariates)  
+  monitor    <- runjags_monitor(model    = model,
+                                metadata = metadata)  
+  inits      <- runjags_inits(model      = model)  
+  jags_model <- runjags_model(model      = model)  
+  data       <- runjags_data(model       = model,
+                             abundance   = abundance,
+                             metadata    = metadata,
+                             covariates  = covariates)  
 
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
@@ -32,7 +33,7 @@ fit_runjags <- function (model, abundance, metadata, covariates, control_runjags
 
 }
 
-forecast.runjags <- function (object, level) {
+forecast.runjags <- function (object, h, level) {
 
   vals      <- combine.mcmc(mcmc.objects = object$mcmc)
 
@@ -49,7 +50,7 @@ forecast.runjags <- function (object, level) {
 
 }
 
-runjags_monitor <- function (model) {
+runjags_monitor <- function (model, metadata) {
 
   out <- c("mu", "sigma", paste0("X[", metadata$time$forecast_newmoons - metadata$time$historic_start_newmoon + 1, "]"))
 
