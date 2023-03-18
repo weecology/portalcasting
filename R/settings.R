@@ -172,7 +172,7 @@ directory_subdirectories <- function (forecasts = "forecasts",
 directory_resources <- function (PortalData        = list(source  = "github", 
                                                           version = "latest"),
                                  portalPredictions = list(source  = "github", 
-                                                          version = "latest"),
+                                                          version = NULL),
                                  climate_forecast  = list(source  = "NMME", 
                                                           version = as.character(Sys.Date()), 
                                                           data    = c("tasmin", "tasmean", "tasmax", "pr"))) {

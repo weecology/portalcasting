@@ -12,6 +12,19 @@ test_that(desc = "read_directory_config works but errors out of directory", {
 })
 
 
+test_that(desc = "read_climate_forecasts reads them in right", {
+
+  # downloads take too long for cran checks
+
+    skip_on_cran() 
+  
+  cc <- read_climate_forecasts(main = main)
+  expect_is(cc, "data.frame")
+  expect_equal(colnames(cc), c("date", "mintemp", "meantemp", "maxtemp", "precipitation"))
+
+})
+
+
 test_that(desc = "write_data works if overwriting or not", {
 
   # downloads take too long for cran checks

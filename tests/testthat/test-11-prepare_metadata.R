@@ -2,7 +2,7 @@ context(desc = "metadata prepping functions")
 
 main <- "./testing"
 
-test_that(desc = "prep_metadata", {
+test_that(desc = "prepare_metadata", {
 
   # downloads take too long for cran checks
 

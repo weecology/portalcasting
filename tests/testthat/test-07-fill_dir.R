@@ -56,14 +56,14 @@ test_that(desc = "write_model_controls writes out the controls file",
 }) 
 
 
-test_that(desc = "fill_models adds the models to their folder",
+test_that(desc = "fill_models adds the models control list to their folder",
           code = {
 
   expect_message(fill_models(main = main))
-  prefabs <- paste0(prefab_models(), ".R")
-  mods <- list.files(file.path(main, "models"))
 
-  expect_equal(sort(mods), sort(c(prefabs, "model_controls.yaml")))
+  files <- list.files(file.path(main, "models"))
+
+  expect_equal(files, "model_controls.yaml")
 
 })
 

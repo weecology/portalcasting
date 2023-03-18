@@ -9,7 +9,7 @@ portalcast(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  species = base_species(),
+  species = base_species(total = TRUE),
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -45,6 +45,6 @@ Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}
 }
 \description{
 Forecast the Portal rodent population data using the data and models in a portalcasting directory. \cr \cr
- \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models. \cr \cr
- \code{cast} runs a single cast of a single model on one species of one data set.
+ \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. \cr \cr
+ \code{cast} runs a single cast of a single model on one species of one dataset.
 }

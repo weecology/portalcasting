@@ -13,6 +13,8 @@ devtools::test(filter = "12")
 devtools::test(filter = "13")
 devtools::test(filter = "14")
 devtools::test(filter = "15")
+
+# still working on: 
 devtools::test(filter = "16") 
 devtools::test(filter = "17")  
 devtools::test(filter = "18")
