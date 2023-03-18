@@ -272,20 +272,20 @@ jags_logistic_covariates:
     print_name: Logistic Covariates
     descriptor: population model, focal species
     text: Logistic Covariates fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Building upon the jags_logistic model, Logistic Covariates expands upon the "process model" underlying the Poisson observations. There are six process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), and then intercept and slope parameters for r (growth rate) and K (carrying capacity) as a function of covariates (r being a function of the integrated warm rain over the past 3 months and K being a function of average NDVI over the past year). The observation model has no additional parameters. The prior distributions for mu and the K intercept are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density and standard deviation 0.04. The K intercept is modeled on the log-scale with a prior mean equal to the maximum of `past counts` and standard deviation 0.04. The r intercept is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 1. The slopes for r and log-scale K were given priors with mean 0 and standard deviation 1.
-  fun: jags_logistic_covariates
-  args:
-    control_runjags:
-      nchains: 4.0
-      adapt: 10000.0
-      burnin: 10000.0
-      sample: 10000.0
-      thin: 1.0
-      modules: ''
-      method: interruptible
-      factories: ''
-      mutate: .na
-      cast_obs: yes
-      silent_jags: no
+  fit:
+    fun: fit_runjags
+    args: 
+      model: "'jags_logistic_covariates'"
+      abundance:  abundance
+      control_runjags: runjags_control(nchains = 2, thin = 1, sample = 100, burnin = 100, adapt = 100)
+      metadata:  metadata
+      covariates: covariates
+  cast:
+    fun: forecast.runjags
+    args: 
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   datasets: 
     controls:
       species: [DM]
@@ -301,20 +301,20 @@ jags_logistic_competition:
     print_name: Logistic Competition
     descriptor: population model, focal species
     text: Logistic Competition fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Building upon the jags_logistic model, Logistic Competition expands upon the "process model" underlying the Poisson observations. There are six process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), and then intercept and slope parameters for r (growth rate) and K (carrying capacity) as a function of competitior density (K being a function of current DO counts). The observation model has no additional parameters. The prior distributions for mu and the K intercept are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density and standard deviation 0.04. The K intercept is modeled on the log-scale with a prior mean equal to the maximum of `past counts` and standard deviation 0.04. The r intercept is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 0.001. The slope for log-scale K was given a prior with mean 0 and standard deviation 1.
-  fun: jags_logistic_competition
-  args:
-    control_runjags:
-      nchains: 4.0
-      adapt: 10000.0
-      burnin: 10000.0
-      sample: 10000.0
-      thin: 1.0
-      modules: ''
-      method: interruptible
-      factories: ''
-      mutate: .na
-      cast_obs: yes
-      silent_jags: no
+  fit:
+    fun: fit_runjags
+    args: 
+      model: "'jags_logistic_competition'"
+      abundance:  abundance
+      control_runjags: runjags_control(nchains = 2, thin = 1, sample = 100, burnin = 100, adapt = 100)
+      metadata:  metadata
+      covariates: covariates
+  cast:
+    fun: forecast.runjags
+    args: 
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   datasets: 
     controls:
       species: [DM]
@@ -330,20 +330,20 @@ jags_logistic_competition_covariates:
     print_name: Logistic Competition Covariates
     descriptor: population model, focal species
     text: Logistic Competition Covariates fits a hierarchical log-scale density logistic growth model with a Poisson observation process using the JAGS (Just Another Gibbs Sampler) infrastructure [@Plummer2003] fit to the  data at the composite (full site but just control plots) spatial level and the articulated (species) ecological level. Building upon the jags_logistic model, Logistic Competition Covariates expands upon the "process model" underlying the Poisson observations. There are seven process parameters -- mu (the density of the species at the beginning of the time series), sigma (the standard deviation of the random walk, which is Gaussian on the log scale), and then intercept and slope parameters for r (growth rate) and K (carrying capacity) as a function of competitior density (r being a function of the integrated warm rain over the past 3 months and K being a function of average NDVI over the past year as well as a function of current DO counts). The observation model has no additional parameters. The prior distributions for mu and the K intercept are informed by the available data collected prior to the start of the data used in the time series and sigma and r are set with vague priors. mu is normally distributed with a mean equal to the average log-scale density and standard deviation 0.04. The K intercept is modeled on the log-scale with a prior mean equal to the maximum of `past counts` and standard deviation 0.04. The r intercept is given a normal prior with mean 0 and standard deviation 0.04. Sigma was given a uniform distribution between 0 and 0.001. The slopes for r and log-scale K were given priors with mean 0 and standard deviation 1.
-  fun: jags_logistic_competition_covariates
-  args:
-    control_runjags:
-      nchains: 4.0
-      adapt: 10000.0
-      burnin: 10000.0
-      sample: 10000.0
-      thin: 1.0
-      modules: ''
-      method: interruptible
-      factories: ''
-      mutate: .na
-      cast_obs: yes
-      silent_jags: no
+  fit:
+    fun: fit_runjags
+    args: 
+      model: "'jags_logistic_competition_covariates'"
+      abundance:  abundance
+      control_runjags: runjags_control(nchains = 2, thin = 1, sample = 100, burnin = 100, adapt = 100)
+      metadata:  metadata
+      covariates: covariates
+  cast:
+    fun: forecast.runjags
+    args: 
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   datasets: 
     controls:
       species: [DM]

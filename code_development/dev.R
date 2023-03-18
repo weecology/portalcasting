@@ -6,7 +6,7 @@ fill_models(main)
 dataset  = "controls"
 species <- "DM"
 
-                  model    = "jags_RW"
+                  model    = "jags_logistic_competition_covariates"
                   settings = directory_settings( ) 
                   quiet    = FALSE 
                   verbose  = TRUE

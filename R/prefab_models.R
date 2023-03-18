@@ -71,6 +71,24 @@ runjags_monitor <- function (model = NULL) {
   
   }
 
+  if (model == "jags_logistic_covariates") {
+
+    out <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope", paste0("X[", metadata$time$forecast_newmoons - metadata$time$historic_start_newmoon + 1, "]"))
+  
+  }
+
+  if (model == "jags_logistic_competition") {
+
+    out <- c("mu", "sigma", "r_int", "log_K_int", "log_K_slope", paste0("X[", metadata$time$forecast_newmoons - metadata$time$historic_start_newmoon + 1, "]"))
+  
+  }
+
+  if (model == "jags_logistic_competition_covariates") {
+
+    out <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope_NDVI", "log_K_slope_DO", paste0("X[", metadata$time$forecast_newmoons - metadata$time$historic_start_newmoon + 1, "]"))
+  
+  }
+
   out
 
 }
@@ -114,6 +132,87 @@ runjags_inits <- function (model = NULL) {
                      sigma    = runif(1, 0.01, 0.5),
                      r        = rnorm(1, 0, 0.01),
                      log_K    = log_K)
+ 
+             }
+ 
+           }    
+  
+  }
+
+  if (model == "jags_logistic_covariates") {
+
+    out <- function (data = NULL) {
+
+             function (chain = chain) {
+
+               mu        <- rnorm(1, data$log_mean_count, 0.1)
+               log_K_int <- rnorm(1, data$log_max_count, 0.01)
+
+               log_K_int <- max(c(mu, log_K_int)) + 0.01
+
+               list(.RNG.name    = sample(rngs, 1),
+                    .RNG.seed    = sample(1:1e+06, 1),
+                     mu          = mu, 
+                     sigma       = runif(1, 0.01, 0.5),
+                     r_int       = rnorm(1, 0, 0.01),
+                     r_slope     = rnorm(1, 0, 0.1),
+                     log_K_int   = log_K_int,
+                     log_K_slope = rnorm(1, 0, 0.01))
+
+ 
+             }
+ 
+           }    
+  
+  }
+
+  if (model == "jags_logistic_competition") {
+
+    out <- function (data = NULL) {
+
+             function (chain = chain) {
+
+               mu        <- rnorm(1, data$log_mean_count, 0.1)
+               log_K_int <- rnorm(1, data$log_max_count, 0.01)
+
+               log_K_int <- max(c(mu, log_K_int)) + 0.01
+
+               list(.RNG.name    = sample(rngs, 1),
+                    .RNG.seed    = sample(1:1e+06, 1),
+                     mu          = mu, 
+                     sigma       = runif(1, 0.01, 0.5),
+                     r_int       = rnorm(1, 0, 0.01),
+                     log_K_int   = log_K_int,
+                     log_K_slope = rnorm(1, 0, 0.01))
+
+ 
+             }
+ 
+           }    
+  
+  }
+
+  if (model == "jags_logistic_competition_covariates") {
+
+    out <- function (data = NULL) {
+
+             function (chain = chain) {
+
+               mu        <- rnorm(1, data$log_mean_count, 0.1)
+               log_K_int <- rnorm(1, data$log_max_count, 0.01)
+
+               log_K_int <- max(c(mu, log_K_int)) + 0.01
+
+               list(.RNG.name         = sample(rngs, 1),
+                    .RNG.seed         = sample(1:1e+06, 1),
+                     mu               = mu, 
+                     sigma            = runif(1, 0.01, 0.5),
+                     r_int            = rnorm(1, 0, 0.01),
+                     r_slope          = rnorm(1, 0, 0.1),
+                     log_K_int        = log_K_int,
+                     log_K_slope_NDVI = rnorm(1, 0, 0.01),
+                     log_K_slope_DO   = rnorm(1, 0, 0.01))
+
  
              }
  
@@ -202,7 +301,159 @@ runjags_model <- function (model = NULL) {
   
   }
 
+  if (model == "jags_logistic_covariates") {
+
+    out <- "model { 
+ 
+             # priors
+
+             mu          ~  dnorm(log_mean_count, 5)
+             sigma       ~  dunif(0, 1) 
+             tau         <- pow(sigma, -2)
+             r_int       ~  dnorm(0, 5)
+             r_slope     ~  dnorm(0, 1)
+             log_K_int   ~  dnorm(log_max_count, 5)
+             log_K_slope ~  dnorm(0, 1)
+ 
+             # initial state
+
+             log_X[1]      <- mu
+             X[1]          <- exp(log_X[1])
+             count[1]      ~  dpois(X[1]) 
+
+             # expand parameters
+
+             for (i in 1:N) {
+
+               r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
+               K[i] <- exp(log_K_int + log_K_slope * ndvi_thirteen_newmoons[i]) 
+
+             }
+
+             # through time
+
+             for(i in 2:N) {
+
+               # Process model
+
+               pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
+               pred_log_X[i] <- log(pred_X[i])
+               log_X[i]      ~  dnorm(pred_log_X[i], tau)
+               X[i]          <- exp(log_X[i])
+
+               # observation model
+
+               count[i] ~ dpois(X[i])
+
+             }
+
+           }"
+  
+  }
+
+  if (model == "jags_logistic_competition") {
+
+    out <- "model {  
+
+             # priors
+
+             mu          ~  dnorm(log_mean_count, 5)
+             sigma       ~  dunif(0, 1) 
+             tau         <- pow(sigma, -2)
+             r_int       ~  dnorm(0, 5)
+             log_K_int   ~  dnorm(log_max_count, 5)
+             log_K_slope ~  dnorm(0, 1)
+ 
+             # initial state
+
+             log_X[1]      <- mu
+             X[1]          <- exp(log_X[1])
+             count[1]      ~  dpois(X[1]) 
+
+             # expand parameters
+
+             for (i in 1:N) {
+
+               r[i] <- r_int
+               K[i] <- exp(log_K_int + log_K_slope * ordii_one_newmoon[i]) 
+
+             }
+
+             # through time
+
+             for(i in 2:N) {
+
+               # Process model
+
+               pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
+               pred_log_X[i] <- log(pred_X[i])
+               log_X[i]      ~  dnorm(pred_log_X[i], tau)
+               X[i]          <- exp(log_X[i])
+
+               # observation model
+
+               count[i] ~ dpois(X[i])
+
+             }
+ 
+           }"
+  
+  }
+
+  if (model == "jags_logistic_competition_covariates") {
+
+    out <- "model { 
+  
+             # priors
+
+             mu               ~  dnorm(log_mean_count, 5)
+             sigma            ~  dunif(0, 1) 
+             tau              <- pow(sigma, -1/2)
+             r_int            ~  dnorm(0, 5)
+             r_slope          ~  dnorm(0, 1)
+             log_K_int        ~  dnorm(log_max_count, 5)
+             log_K_slope_NDVI ~  dnorm(0, 4)
+             log_K_slope_DO   ~  dnorm(0, 4)
+ 
+             # initial state
+
+             log_X[1]      <- mu
+             X[1]          <- exp(log_X[1])
+             count[1]      ~  dpois(X[1]) 
+
+             # expand parameters
+
+             for (i in 1:N) {
+
+               r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
+               K[i] <- exp(log_K_int + log_K_slope_DO * ordii_one_newmoon[i] + log_K_slope_NDVI * ndvi_thirteen_newmoons[i]) 
+
+             }
+
+
+             # through time
+
+             for(i in 2:N) {
+
+               # Process model
+
+               pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
+               pred_log_X[i] <- log(pred_X[i])
+               log_X[i]      ~  dnorm(pred_log_X[i], tau)
+               X[i]          <- exp(log_X[i])
+
+               # observation model
+
+               count[i] ~ dpois(X[i])
+
+             }
+
+           }"
+  
+  }
+
   out
+
 }
 
 runjags_data <- function (model = NULL, abundance, metadata, covariates) {
@@ -213,6 +464,9 @@ runjags_data <- function (model = NULL, abundance, metadata, covariates) {
   log_mean_count  <- log(mean(abundance, na.rm = TRUE))
   log_max_count   <- log(max(abundance, na.rm = TRUE))
 
+  warm_rain_three_newmoons <- scale(covariates$warm_precip[covariates$newmoon %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoon) - 3)])[ , 1]
+  ndvi_thirteen_newmoons   <- scale(covariates$ndvi[covariates$newmoon %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoon) - 13)])[ , 1]
+  ordii_one_newmoon        <- scale(covariates$ordii[covariates$newmoon %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoon) - 1)])[ , 1]
 
   if (model == "jags_RW") {
 
@@ -230,6 +484,40 @@ runjags_data <- function (model = NULL, abundance, metadata, covariates) {
                 log_mean_count = log_mean_count)
   
   }
+
+  if (model == "jags_logistic_covariates") {
+
+    out <- list(count                    = count, 
+                N                        = length(count),
+                log_max_count            = log_max_count,
+                log_mean_count           = log_mean_count,
+                warm_rain_three_newmoons = warm_rain_three_newmoons,
+                ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons)
+  
+  }
+
+  if (model == "jags_logistic_competition") {
+
+    out <- list(count                    = count, 
+                N                        = length(count),
+                log_max_count            = log_max_count,
+                log_mean_count           = log_mean_count,
+                ordii_one_newmoon        = ordii_one_newmoon)
+  
+  }
+
+  if (model == "jags_logistic_competition_covariates") {
+
+    out <- list(count                    = count, 
+                N                        = length(count),
+                log_max_count            = log_max_count,
+                log_mean_count           = log_mean_count,
+                warm_rain_three_newmoons = warm_rain_three_newmoons,
+                ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons,
+                ordii_one_newmoon        = ordii_one_newmoon)
+  
+  }
+
   out
 }
 

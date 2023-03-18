@@ -305,28 +305,14 @@ fill_models <- function (main               = ".",
                          quiet              = FALSE, 
                          verbose            = FALSE) {
 
+
+  messageq(" Writing model controls ... ", quiet = quiet)
+
   model_controls_list <- write_model_controls(main               = main, 
                                               settings           = settings,
                                               models             = models,
                                               new_model_controls = new_model_controls,
                                               quiet              = quiet) 
-
-  return_if_null(models)
-
-
-  messageq(" Writing model scripts ... ", quiet = quiet)
-
-  nmodels <- length(model_controls_list)
-
-  for (i in 1:nmodels) {
-
-    write_model(main     = main, 
-                model    = models[i], 
-                settings = settings, 
-                quiet    = quiet, 
-                verbose  = verbose)
-
-  }
 
   messageq("  ... done. ", quiet = quiet)
 
