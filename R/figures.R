@@ -637,7 +637,7 @@ plot_casts_err_lead <- function (main           = ".",
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
+#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
 #' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. Also available is \code{"Ensemble"}, which combines the models via \code{\link{ensemble_casts}}. 
 #'
@@ -645,7 +645,7 @@ plot_casts_err_lead <- function (main           = ".",
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param moon \code{integer} (or integer \code{numeric}) newmoon number for the plot. 
+#' @param newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number for the plot. 
 #'
 #' @param cast_id \code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
@@ -663,60 +663,39 @@ plot_casts_err_lead <- function (main           = ".",
 #'
 #' @export
 #'
-plot_cast_point <- function (main         = ".", 
-                             cast_id      = NULL, 
-                             cast_groups  = NULL,
-                             dataset      = NULL, 
-                             model        = NULL, 
-                             end_moon     = NULL, 
-                             species      = NULL, 
-                             highlight_sp = NULL,
-                             moon         = NULL, 
-                             with_census  = FALSE, 
-                             settings     = directory_settings( ),
-                             quiet        = FALSE) {
+plot_cast_point <- function (main                       = ".", 
+                             cast_id                    = NULL, 
+                             cast_groups                = NULL,
+                             dataset                    = NULL, 
+                             model                      = NULL, 
+                             historic_end_newmoonnumber = NULL, 
+                             species                    = base_species(total = TRUE), 
+                             highlight_sp               = NULL,
+                             newmoonnumber              = NULL, 
+                             with_census                = FALSE, 
+                             settings                   = directory_settings( ),
+                             quiet                      = FALSE) {
 
-  moons <- read_newmoons(main     = main, 
-                      settings = settings)
 
-  last_census_date       <- as.Date(max(moons$censusdate, na.rm = TRUE))
-  which_last_census_moon <- which(moons$censusdate == last_census_date)
-  last_census_moon       <- moons$newmoonnumber[which_last_census_moon]
-  which_last_moon        <- max(which(moons$newmoondate < Sys.Date()))
-  last_moon              <- moons$newmoonnumber[which_last_moon]
-  alt_moon               <- ifelse(with_census, last_census_moon, last_moon + 1)
-  moon                   <- ifnull(moon, alt_moon)
-
-  model  <- ifnull(model, "Ensemble")
-  model2 <- model
-
-  if (!is.null(model) && tolower(model) == "ensemble") {
-
-    model2 <- NULL
-
-  }
-
-  casts_meta <- select_casts(main      = main, 
-                             settings  = settings,
-                             cast_ids  = cast_id,
-                             end_moons = end_moon, 
-                             models    = model2, 
-                             datasets  = dataset, 
-                             quiet     = quiet)
+  casts_meta <- select_casts(main                       = main, 
+                             settings                   = settings, 
+                             cast_ids                   = cast_id,
+                             historic_end_newmoonnumber = historic_end_newmoonnumber, 
+                             models                     = model, 
+                             datasets                   = dataset, 
+                             species                    = species, 
+                             quiet                      = quiet)
 
   if (with_census) {
 
-    casts_meta_moon1  <- casts_meta$end_moon + 1
-    casts_meta_moon2  <- casts_meta$end_moon + casts_meta$lead_time
+    moons <- read_newmoons(main     = main, 
+                           settings = settings)
+
+    last_census_moon  <- max(moons$newmoonnumber[!is.na(moons$censusdate)])
+    casts_meta_moon1  <- casts_meta$historic_end_newmoonnumber + 1
+    casts_meta_moon2  <- casts_meta$historic_end_newmoonnumber + casts_meta$lead_time_newmoons
     casts_last_census <- last_census_moon >= casts_meta_moon1 & last_census_moon <= casts_meta_moon2 
     casts_meta        <- casts_meta[casts_last_census, ]
-
-  }
-
-  if (NROW(casts_meta) > 1) {
-
-    which_max  <- which.max(casts_meta$cast_id)
-    casts_meta <- casts_meta[which_max, ]
 
   }
 
@@ -726,17 +705,57 @@ plot_cast_point <- function (main         = ".",
 
   }
 
-  max_obs <- 0
+  if (NROW(casts_meta) > 1) {
+
+    which_max  <- which.max(gsub("-", ".", casts_meta$cast_id))
+    match_max  <- casts_meta$model      == casts_meta$model[which_max] &
+                  casts_meta$dataset    == casts_meta$dataset[which_max] &
+                  casts_meta$cast_group == casts_meta$cast_group[which_max]
+    casts_meta <- casts_meta[match_max, ]
+
+  }
+
+#  newmoonnumber <- ifnull(newmoonnumber, min(casts_meta$forecast_start_newmoonnumber))
+# patch
+  newmoonnumber <- ifnull(newmoonnumber, min(casts_meta$historic_end_newmoonnumber) + 1)
+#end patch
+
+  dataset       <- ifnull(dataset, unique(casts_meta$dataset))
+
+
+
+  species  <- casts_meta$species
+  nspecies <- length(species)
+
+  for (i in 1:nspecies) {
+    cast_tab_i <- read_cast_tab(main     = main,
+                                cast_id  = casts_meta$cast_id[i],
+                                settings = settings)
+    cast_tab_i <- cast_tab_i[cast_tab_i$newmoonnumber == newmoonnumber, ]
+    if (i == 1) {
+      casts_tab <- cast_tab_i
+    } else {
+      casts_tab <- rbind(casts_tab, cast_tab_i)
+    }
+  }
+  
+
+  preds   <- casts_tab[order(casts_tab$estimate, decreasing = TRUE), ]
+  species <- preds$species
+
+  max_obs <- NA
   if (with_census) {
 
-    obs           <- read_rodents_table(main           = main, 
-                                        settings       = settings,
-                                        dataset = gsub("dm_", "", gsub("_interp", "", casts_meta$dataset)))
+
+    obs           <- read_rodents_table(main     = main, 
+                                        settings = settings,
+                                        dataset  = gsub("dm_", "", gsub("_interp", "", dataset)))
+
     colnames(obs) <- gsub("\\.", "", colnames(obs))
     sp_col        <- is_sp_col(obs, nadot = TRUE, total = TRUE)
     species       <- ifnull(species, colnames(obs)[sp_col])
-    moon          <- ifnull(moon, unique(obs$moon))
-    obs           <- obs[obs$newmoonnumber %in% moon, species, drop = FALSE]
+    newmoonnumber <- ifnull(newmoonnumber, unique(obs$newmoonnumber))
+    obs           <- obs[obs$newmoonnumber %in% newmoonnumber, species, drop = FALSE]
 
     if (NROW(obs) == 0) {
 
@@ -746,62 +765,24 @@ plot_cast_point <- function (main         = ".",
 
     max_obs <- max(as.numeric(obs), na.rm = TRUE)
 
-  }
+  } 
 
-  dataset <- gsub("_interp", "", casts_meta$dataset)
-
-  if (!is.null(model) && tolower(model) == "ensemble") {
-
-    preds   <- ensemble_casts(main        = main, 
-                              cast_groups = cast_groups,
-                              end_moon    = casts_meta$end_moon, 
-                              dataset     = dataset, 
-                              species     = species)
-
-  } else {
-
-    preds <- read_cast_tab(main     = main, 
-                           settings = settings,
-                           cast_id  = casts_meta$cast_id)
-
-  }
-
-  preds      <- na_conformer(preds, "species")
-  species    <- ifnull(species, unique(preds$species))
-  match_sp   <- (preds$species %in% species)
-  moon       <- ifnull(moon, unique(preds$moon))
-  match_moon <- (preds$moon %in% moon)
-  colnames   <- c("moon", "species", "estimate", "lower_pi", "upper_pi")
-  match_col  <- (colnames(preds) %in% colnames)
-  preds      <- preds[match_sp & match_moon, match_col]
-
-  moon_month          <- as.numeric(format(as.Date(moons$newmoondate[moons$newmoonnumber == moon]), "%m"))
-  moon_year           <- as.numeric(format(as.Date(moons$newmoondate[moons$newmoonnumber == moon]), "%Y"))
-  title_date          <- paste(month.abb[moon_month], moon_year, sep = " ")
-  dataset_name <- dataset
-  model_name          <- ifnull(model, casts_meta$model)
-  title               <- paste0(title_date, ", " , model_name, ", ", dataset_name)
-
-  preds   <- preds[order(preds$estimate, decreasing = TRUE), ]
-  species <- preds$species
-  nspp    <- length(species)
-  rangey  <- c(nspp + 0.25, 0.75)
   rangex  <- c(0, max(c(preds$upper_pi, max_obs), na.rm = TRUE))
+  rangey  <- c(nspecies + 0.25, 0.75)
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   par(mar = c(3.5, 9.5, 2, 1))
   plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", 
        las = 1, xlim = rangex, ylim = rangey)
+
   mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
   mtext("Species", side = 2, cex = 1.5, line = 8.25)
-  mtext(title, side = 3, cex = 1.25, line = 0.5, at = 0, adj = 0)
-
   lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath) 
   sptab <- na_conformer(sptab, "speciescode")
 
-  for (i in 1:nspp) {
+  for (i in 1:nspecies) {
 
     if (species[i] == "total") {
 
@@ -823,12 +804,12 @@ plot_cast_point <- function (main         = ".",
 
   }
 
-  for (i in 1:nspp) {
+  for (i in 1:nspecies) {
 
     low   <- max(c(preds$lower_pi[i], 0))
     up    <- preds$upper_pi[i]
     est   <- preds$estimate[i]
-    vbars <- i + (0.015 * nspp * c(-1, 1))
+    vbars <- i + (0.015 * nspecies * c(-1, 1))
 
     if (!is.null(highlight_sp) && species[i] %in% highlight_sp) {
 
@@ -878,20 +859,20 @@ plot_cast_point <- function (main         = ".",
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
+#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
 #' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to \code{"Ensemble"} or an unweighted combination of the most recent cast group's models via  \code{\link{ensemble_casts}}. 
 #'
-#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#' @param dataset \code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
 #' @param cast_id \code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
 #' @param species \code{character} value of the species codes (or \code{"total"} for the total across species) to be plotted. \code{NULL} (default) also gives the total.
 #'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
+#' @param historic_start_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
 #'  Does not influence the fit of the models, just the presentation. 
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled. 
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -901,28 +882,29 @@ plot_cast_point <- function (main         = ".",
 #'
 #' @export
 #'
-plot_cast_ts <- function (main        = ".", 
-                          settings    = directory_settings( ), 
-                          cast_id     = NULL, 
-                          cast_groups = NULL,
-                          dataset     = "all", 
-                          model       = NULL, 
-                          end_moon    = NULL, 
-                          species     = NULL, 
-                          start_moon  = 217, 
-                          quiet       = FALSE) {
+plot_cast_ts <- function (main                         = ".", 
+                          settings                     = directory_settings( ), 
+                          cast_id                      = NULL, 
+                          cast_group                   = NULL,
+                          dataset                      = NULL, 
+                          model                        = NULL, 
+                          historic_start_newmoonnumber = NULL, 
+                          historic_end_newmoonnumber   = NULL, 
+                          species                      = NULL,  
+                          quiet                        = FALSE) {
 
-  casts_meta <- select_casts(main      = main, 
-                             settings  = settings, 
-                             cast_ids  = cast_id,
-                             end_moons = end_moon, 
-                             models    = model, 
-                             datasets  = dataset, 
-                             quiet     = quiet)
+  casts_meta <- select_casts(main                       = main, 
+                             settings                   = settings, 
+                             cast_ids                   = cast_id,
+                             historic_end_newmoonnumber = historic_end_newmoonnumber, 
+                             models                     = model, 
+                             datasets                   = dataset, 
+                             species                    = species, 
+                             quiet                      = quiet)
 
   if (NROW(casts_meta) > 1) {
 
-    which_max  <- which.max(casts_meta$cast_id)
+    which_max  <- which.max(gsub("-", ".", casts_meta$cast_id))
     casts_meta <- casts_meta[which_max, ]
 
   }
@@ -933,68 +915,36 @@ plot_cast_ts <- function (main        = ".",
 
   }
 
-  obs           <- read_rodents_table(main     = main, 
-                                      settings = settings, 
-                                        dataset = gsub("dm_", "", gsub("_interp", "", casts_meta$dataset)))
-  colnames(obs) <- gsub("\\.", "", colnames(obs))
+  dataset <- casts_meta$dataset
+  species <- casts_meta$species
+  model   <- casts_meta$moon
+  cast_id <- casts_meta$cast_id
 
-  sp_col  <- is_sp_col(obs, nadot = TRUE, total = TRUE)
-  species <- ifnull(species, colnames(obs)[sp_col])
+  historic_start_newmoonnumber <- casts_meta$historic_start_newmoonnumber
+  historic_end_newmoonnumber   <- casts_meta$historic_end_newmoonnumber
 
-  mod_control <- read_model_controls(main = main, settings = settings)
-  model   <- ifnull(model, names(mod_control)[1])
-  species <- mod_control[[model]]$datasets[[dataset]]$species
+  obs     <- read_rodents_table(main     = main, 
+                                settings = settings, 
+                                dataset  = dataset)
 
-  if (length(species) > 1) {
-    if ("total" %in% species) {
-      species <- "total"
-    } else {
-      species <- species[1]
-    }
 
-  }
+  preds <- read_cast_tab(main     = main, 
+                         settings = settings,
+                         cast_id  = cast_id)
 
-  if (!all(species %in% colnames(obs))) {
 
-    stop("observations not available for requested species")
-
-  }
-
-  obs     <- obs[ , c("newmoonnumber", species)]
-  dataset <- gsub("dm_", "", gsub("_interp", "", casts_meta$dataset))
-
-  if (!is.null(model) && tolower(model) == "ensemble") {
-
-    preds   <- ensemble_casts(main        = main, 
-                              cast_groups = cast_groups,
-                              end_moon    = casts_meta$end_moon, 
-                              dataset     = dataset, 
-                              species     = species)
-
-  } else {
-
-    preds <- read_cast_tab(main     = main, 
-                           settings = settings,
-                           cast_id  = casts_meta$cast_id)
-
-  }
-
-  if (!(species %in% preds$species)) {
-
-    stop("cast not available for requested species")
-
-  }
 
   match_sp  <- (preds$species %in% species)
-  colnames  <- c("moon", "estimate", "lower_pi", "upper_pi")
+
+  colnames  <- c("newmoonnumber", "estimate", "lower_pi", "upper_pi")
   match_col <- (colnames(preds) %in% colnames)
   preds     <- preds[match_sp, match_col]
 
-  max_moon <- max(preds$moon)
-  rangex   <- c(start_moon, max_moon)
+  max_moon <- max(preds$newmoonnumber)
+  rangex   <- c(historic_start_newmoonnumber, max_moon)
   obs_sp   <- obs[ , species]
   obs_nm   <- obs[ , "newmoonnumber"]
-  maxy     <- max(c(preds$UpperPI, obs_sp), na.rm = TRUE)
+  maxy     <- max(c(preds$upper_pi, obs_sp), na.rm = TRUE)
   rangey   <- c(0, maxy)
 
   oldpar <- par(no.readonly = TRUE)
@@ -1062,7 +1012,7 @@ plot_cast_ts <- function (main        = ".",
   p_y_m <- preds[ , "estimate"]
   p_y_l <- preds[ , "lower_pi"]
   p_y_u <- preds[ , "upper_pi"]
-  p_x   <- preds[ , "moon"]
+  p_x   <- preds[ , "newmoonnumber"]
 
   for (i in 1:length(p_y_l)) {
 
@@ -1097,5 +1047,8 @@ plot_cast_ts <- function (main        = ".",
   points(o_x_1, o_y_1, type = "l", lwd = 2)
   points(o_x_2, o_y_2, type = "l", lwd = 2)
 
+  actual_obs <- !is.na(o_y)
+  points(o_x[actual_obs], o_y[actual_obs], pch = 16, col = "white")
+  points(o_x[actual_obs], o_y[actual_obs], pch = 1, col = 1, lwd = 2)
 
 }

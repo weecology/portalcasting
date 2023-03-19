@@ -694,7 +694,7 @@ read_model_cast <- function (main     = ".",
 #'
 #' @param end_moons \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled. 
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast groups to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
 #'
 #' @param models \code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.
 #'
@@ -708,46 +708,101 @@ read_model_cast <- function (main     = ".",
 #'
 #' @export
 #'
-select_casts <- function (main           = ".", 
-                          settings       = directory_settings( ), 
-                          cast_ids       = NULL, 
-                          cast_groups    = NULL,
-                          end_moons      = NULL, 
-                          models         = NULL, 
-                          datasets       = NULL,
-                          quiet          = FALSE) {
+select_casts <- function (main                        = ".", 
+                          settings                    = directory_settings( ), 
+                          cast_ids                    = NULL,
+                          cast_groups                 = NULL,
+                          models                      = NULL, 
+                          datasets                    = NULL,
+                          species                     = NULL,
+                          historic_end_newmoonnumbers = NULL, 
+                          quiet                       = FALSE) {
 
 
   casts_metadata <- read_casts_metadata(main     = main,
                                         settings = settings,
                                         quiet    = quiet)
 
-  ucast_ids <- unique(casts_metadata$cast_id[casts_metadata$QAQC])
-  cast_ids  <- ifnull(cast_ids, ucast_ids)
-  match_id  <- casts_metadata$cast_id %in% cast_ids
+  ucast_ids      <- unique(casts_metadata$cast_id[casts_metadata$QAQC])
+  cast_ids       <- ifnull(cast_ids, ucast_ids)
+  match_id       <- casts_metadata$cast_id %in% cast_ids
 
-  ucast_groups <- unique(casts_metadata$cast_group[casts_metadata$QAQC])
-  cast_groups  <- ifnull(cast_groups, ucast_groups)
-  match_group  <- casts_metadata$cast_group %in% cast_groups
+  ucast_groups   <- unique(casts_metadata$cast_group[casts_metadata$QAQC])
+  cast_groups    <- ifnull(cast_groups, ucast_groups)
+  match_group    <- casts_metadata$cast_group %in% cast_groups
 
-  uend_moons     <- unique(casts_metadata$end_moon[casts_metadata$QAQC])
-  end_moons      <- ifnull(end_moons, uend_moons)
-  match_end_moon <- casts_metadata$end_moon %in% end_moons
+  uend_moons     <- unique(casts_metadata$historic_end_newmoonnumber[casts_metadata$QAQC])
+  end_moons      <- ifnull(historic_end_newmoonnumbers, uend_moons)
+  match_end_moon <- casts_metadata$historic_end_newmoonnumber %in% end_moons
 
-  umodels     <- unique(casts_metadata$model[casts_metadata$QAQC])
-  models      <- ifnull(models, umodels)
-  match_model <- casts_metadata$model %in% models
+  umodels        <- unique(casts_metadata$model[casts_metadata$QAQC])
+  models         <- ifnull(models, umodels)
+  match_model    <- casts_metadata$model %in% models
   
-  udatasets <- gsub("_interp", "", unique(casts_metadata$dataset[casts_metadata$QAQC]))
-  datasets  <- ifnull(datasets, udatasets)
+  udatasets      <- unique(casts_metadata$dataset[casts_metadata$QAQC])
+  datasets       <- ifnull(datasets, udatasets)
+  match_dataset  <- casts_metadata$dataset %in% datasets
 
-  match_dataset <- gsub("_interp", "", casts_metadata$dataset) %in% datasets
-  
+  uspecies       <- unique(casts_metadata$species[casts_metadata$QAQC])
+  species        <- ifnull(species, uspecies)
+  match_species  <- casts_metadata$species %in% species
   QAQC <- casts_metadata$QAQC
 
-  casts_metadata[match_id & match_end_moon & match_model & match_dataset & QAQC, ]
+  casts_metadata[match_id & match_end_moon & match_model & match_dataset & match_species & QAQC, ]
 
 }
 
 
+
+  
+#' @title Read in the Casts Metadata File
+#'
+#' @description Read in the casts metadata file. If the data file does not exist, an effort is made to create the file.
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree.
+#'
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#'
+#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#'
+#' @return Data requested.
+#'
+#' @export
+#'
+read_casts_metadata <- function (main     = ".",
+                                 settings = directory_settings( ), 
+                                 quiet    = FALSE){
+  
+  meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
+
+  if (!file.exists(meta_path)) {
+
+    messageq("  **creating forecast metadata file**", quiet = quiet)
+
+    out <- data.frame(cast_id                      = NA,
+                      old_cast_id                  = NA,
+                      cast_group                   = 0,
+                      cast_date                    = NA,
+                      origin                       = NA,
+                      historic_start_newmoonnumber = NA,
+                      historic_end_newmoonnumber   = NA,
+                      lead_time_newmoons           = NA,
+                      model                        = NA,
+                      dataset                      = NA,
+                      species                      = NA,
+                      portalcasting_version        = NA,
+                      QAQC                         = NA,
+                      notes                        = NA)
+  
+    write.csv(out, meta_path, row.names = FALSE)
+
+  }
+
+
+  out <- read.csv(meta_path)
+  out <- na_conformer(out)
+
+  out[out$cast_group != 0, ]
+
+}
 

@@ -8,12 +8,12 @@ plot_cast_ts(
   main = ".",
   settings = directory_settings(),
   cast_id = NULL,
-  cast_groups = NULL,
-  dataset = "all",
+  cast_group = NULL,
+  dataset = NULL,
   model = NULL,
-  end_moon = NULL,
+  historic_start_newmoonnumber = NULL,
+  historic_end_newmoonnumber = NULL,
   species = NULL,
-  start_moon = 217,
   quiet = FALSE
 )
 }
@@ -24,20 +24,20 @@ plot_cast_ts(
 
 \item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
-
-\item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
+\item{dataset}{\code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
 \item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to \code{"Ensemble"} or an unweighted combination of the most recent cast group's models via  \code{\link{ensemble_casts}}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{historic_start_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
+Does not influence the fit of the models, just the presentation.}
+
+\item{historic_end_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
 \item{species}{\code{character} value of the species codes (or \code{"total"} for the total across species) to be plotted. \code{NULL} (default) also gives the total.}
 
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
-Does not influence the fit of the models, just the presentation.}
-
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.}
 }
 \value{
 \code{NULL}. Plot is generated.

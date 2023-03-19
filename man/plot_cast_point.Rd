@@ -10,10 +10,10 @@ plot_cast_point(
   cast_groups = NULL,
   dataset = NULL,
   model = NULL,
-  end_moon = NULL,
-  species = NULL,
+  historic_end_newmoonnumber = NULL,
+  species = base_species(total = TRUE),
   highlight_sp = NULL,
-  moon = NULL,
+  newmoonnumber = NULL,
   with_census = FALSE,
   settings = directory_settings(),
   quiet = FALSE
@@ -30,13 +30,13 @@ plot_cast_point(
 
 \item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. Also available is \code{"Ensemble"}, which combines the models via \code{\link{ensemble_casts}}.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{historic_end_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
 \item{species}{\code{character} vector of the species codes (or \code{"total"} for the total across species) to be plotted or \code{NULL} (default) to plot all species in \code{dataset}.}
 
 \item{highlight_sp}{\code{character} vector of the species codes (or \code{"total"} for the total across species) to be highlighted or \code{NULL} (default) to not highlight anything.}
 
-\item{moon}{\code{integer} (or integer \code{numeric}) newmoon number for the plot.}
+\item{newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the plot.}
 
 \item{with_census}{\code{logical} toggle if the plot should include the observed data collected during the predicted census.}
 

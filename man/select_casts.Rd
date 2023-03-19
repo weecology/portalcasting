@@ -9,9 +9,10 @@ select_casts(
   settings = directory_settings(),
   cast_ids = NULL,
   cast_groups = NULL,
-  end_moons = NULL,
   models = NULL,
   datasets = NULL,
+  species = NULL,
+  historic_end_newmoonnumbers = NULL,
   quiet = FALSE
 )
 }
@@ -22,15 +23,15 @@ select_casts(
 
 \item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
-
-\item{end_moons}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast groups to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.}
 
 \item{models}{\code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.}
 
 \item{datasets}{\code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+
+\item{end_moons}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 }
 \value{
 \code{data.frame} of the \code{cast_tab}.
