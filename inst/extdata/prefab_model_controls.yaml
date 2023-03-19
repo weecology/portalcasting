@@ -37,14 +37,14 @@ sAutoArima:
     fun: auto.arima
     args: 
       "y": abundance
-      xreg: as.matrix(covariates[covariates$newmoon %in% metadata$time$historic_newmoons, c("cos2pifoy", "sin2pifoy")])
+      xreg: as.matrix(covariates[covariates$newmoonnumber %in% metadata$time$historic_newmoonnumbers, c("cos2pifoy", "sin2pifoy")])
   cast:
     fun: forecast
     args: 
       object: model_fit
       h:      metadata$time$lead_time_newmoons
       level:  metadata$confidence_level
-      xreg:   as.matrix(covariates[covariates$newmoon %in% metadata$time$forecast_newmoons, c("cos2pifoy", "sin2pifoy")])
+      xreg:   as.matrix(covariates[covariates$newmoonnumber %in% metadata$time$forecast_newmoonnumbers, c("cos2pifoy", "sin2pifoy")])
   interpolate: 
     needed: no
   datasets:
@@ -129,7 +129,7 @@ sNaiveArima:
     fun: Arima
     args: 
       "y":  abundance
-      xreg: as.matrix(covariates[covariates$newmoon %in% metadata$time$historic_newmoons, c("cos2pifoy", "sin2pifoy")])
+      xreg: as.matrix(covariates[covariates$newmoonnumber %in% metadata$time$historic_newmoonnumbers, c("cos2pifoy", "sin2pifoy")])
       order: c(0, 1, 0)
   cast:
     fun: forecast
@@ -137,7 +137,7 @@ sNaiveArima:
       object: model_fit
       h:      metadata$time$lead_time_newmoons
       level:  metadata$confidence_level
-      xreg:   as.matrix(covariates[covariates$newmoon %in% metadata$time$forecast_newmoons, c("cos2pifoy", "sin2pifoy")])
+      xreg:   as.matrix(covariates[covariates$newmoonnumber %in% metadata$time$forecast_newmoonnumbers, c("cos2pifoy", "sin2pifoy")])
   interpolate: 
     needed: no
   datasets:
@@ -199,14 +199,14 @@ nbsGARCH:
                   past_mean = 13)
       distr: "'nbinom'"
       link:  "'log'"
-      xreg: covariates[covariates$newmoon %in% metadata$time$historic_newmoons, c("cos2pifoy", "sin2pifoy")] 
+      xreg: covariates[covariates$newmoonnumber %in% metadata$time$historic_newmoonnumbers, c("cos2pifoy", "sin2pifoy")] 
   cast:
     fun: forecast.tsglm
     args: 
       object: model_fit
       h:      metadata$time$lead_time_newmoons
       level:  metadata$confidence_level
-      newxreg: covariates[covariates$newmoon %in% metadata$time$forecast_newmoons, c("cos2pifoy", "sin2pifoy")] 
+      newxreg: covariates[covariates$newmoonnumber %in% metadata$time$forecast_newmoonnumbers, c("cos2pifoy", "sin2pifoy")] 
   interpolate: 
     needed: yes
     fun: round_na.interp
@@ -324,7 +324,7 @@ pevGARCH:
       object: model_fit
       h:      metadata$time$lead_time_newmoons
       level:  metadata$confidence_level
-      newxreg: covariates[covariates$newmoon %in% (metadata$time$forecast_newmoons - model_fit$lag), unlist(model_fit$submodel)] 
+      newxreg: covariates[covariates$newmoonnumber %in% (metadata$time$forecast_newmoonnumbers - model_fit$lag), unlist(model_fit$submodel)] 
   datasets:
     all:
       species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]

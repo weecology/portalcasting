@@ -40,7 +40,7 @@ prepare_abundance <- function (main     = ".",
                                        dataset   = dataset,
                                        settings  = settings)
 
-  moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoons
+  moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoonnumbers
   species_in    <- colnames(rodents_table) == gsub("NA", "NA.", species)
   out           <- rodents_table[moon_in, species_in]
 

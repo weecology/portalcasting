@@ -1,5 +1,9 @@
 rm(list=ls())
 devtools::load_all()
+
+main <- "~/pc"
+setup_production(main)
+
 main <- "~/sandbox2"
 setup_sandbox(main)
 

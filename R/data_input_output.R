@@ -282,19 +282,22 @@ read_casts_metadata <- function (main     = ".",
 
     messageq("  **creating forecast metadata file**", quiet = quiet)
 
-    casts_meta <- data.frame(cast_id               = 0, 
-                             cast_group            = 0, 
-                             origin             = NA, 
-                             start_moon            = NA, 
-                             end_moon              = NA,
-                             lead_time             = NA, 
-                             model                 = NA, 
-                             dataset               = NA,
-                             portalcasting_version = NA,
-                             QAQC                  = FALSE, 
-                             notes                 = NA)
+    out <- data.frame(cast_id                      = NA,
+                      old_cast_id                  = NA,
+                      cast_group                   = 0,
+                      cast_date                    = NA,
+                      origin                       = NA,
+                      historic_start_newmoonnumber = NA,
+                      historic_end_newmoonnumber   = NA,
+                      lead_time_newmoons           = NA,
+                      model                        = NA,
+                      dataset                      = NA,
+                      species                      = NA,
+                      portalcasting_version        = NA,
+                      QAQC                         = NA,
+                      notes                        = NA)
 
-    write.csv(casts_meta, meta_path, row.names = FALSE)
+    write.csv(out, meta_path, row.names = FALSE)
 
   }
 

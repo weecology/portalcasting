@@ -52,6 +52,8 @@
 #'
 #' @param origin \code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).
 #'
+#' @param cast_date \code{Date} of when the forecasts are occurring. Default is today's date (set using \code{\link{Sys.Date}}).
+#'
 #' @param timeseries_start \code{Date} after which historic samples are included in the timeseries fit. Default value is \code{1995-01-01}, corresponding to moon 217.
 #'
 #' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. \cr 
@@ -104,6 +106,7 @@ directory_settings <- function (files             = directory_files( ),
 #'
 time_settings <- function (timeseries_start = as.Date("1995-01-01"), 
                            origin           = Sys.Date( ),
+                           cast_date        = Sys.Date( ),
                            lead_time        = 365,
                            max_lag          = 365,
                            lag_buffer       = 60) {
@@ -118,6 +121,7 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
        forecast_start          = forecast_start,
        forecast_end            = forecast_end,
        origin                  = origin,
+       cast_date               = cast_date,
        lead_time               = lead_time,
        max_lag                 = max_lag,
        lag_buffer              = lag_buffer)

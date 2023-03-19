@@ -43,38 +43,39 @@ prepare_metadata <- function (main                 = ".",
                                             settings = settings, 
                                             datasets = datasets)
 
-  historic_start_newmoon <- min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$timeseries_start >= 0)])
-  historic_end_newmoon   <- max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin < 0)])
-  historic_newmoons      <- historic_start_newmoon:historic_end_newmoon
-  forecast_start_newmoon <- min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin >= 0)])
-  forecast_end_newmoon   <- max(newmoons$newmoonnumber)
-  forecast_newmoons      <- forecast_start_newmoon:forecast_end_newmoon
-  forecast_dates         <- as.Date(newmoons$newmoondate[match(forecast_newmoons, newmoons$newmoonnumber)])
-  forecast_months        <- format(forecast_dates, "%m")
-  forecast_years         <- format(forecast_dates, "%Y")
-  lead_time_newmoons     <- length(forecast_newmoons)
+  historic_start_newmoonnumber <- min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$timeseries_start >= 0)])
+  historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin < 0)])
+  historic_newmoonnumbers      <- historic_start_newmoonnumber:historic_end_newmoonnumber
+  forecast_start_newmoonnumber <- min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin >= 0)])
+  forecast_end_newmoonnumber   <- max(newmoons$newmoonnumber)
+  forecast_newmoonnumbers      <- forecast_start_newmoonnumber:forecast_end_newmoonnumber
+  forecast_dates               <- as.Date(newmoons$newmoondate[match(forecast_newmoonnumbers, newmoons$newmoonnumber)])
+  forecast_months              <- format(forecast_dates, "%m")
+  forecast_years               <- format(forecast_dates, "%Y")
+  lead_time_newmoons           <- length(forecast_newmoonnumbers)
 
   cast_meta  <- read_casts_metadata(main     = main, 
                                     settings = settings,
                                     quiet    = quiet)
-  cast_group <- max(c(0, cast_meta$cast_group)) + 1
+  cast_group <- max(c(0, cast_meta$cast_group), na.rm = TRUE) + 1
 
 
-  out <- list(time                    = list(timeseries_start        = as.character(settings$time$timeseries_start),
-                                             timeseries_start_lagged = as.character(settings$time$timeseries_start_lagged),
-                                             lead_time               = settings$time$lead_time,
-                                             max_lag                 = settings$time$max_lag,
-                                             lag_buffer              = settings$time$lag_buffer,
-                                             origin                  = as.character(settings$time$origin),
-                                             historic_start_newmoon  = historic_start_newmoon,
-                                             historic_end_newmoon    = historic_end_newmoon,
-                                             historic_newmoons       = historic_newmoons,
-                                             forecast_start_newmoon  = forecast_start_newmoon,
-                                             forecast_end_newmoon    = forecast_end_newmoon,
-                                             forecast_newmoons       = forecast_newmoons,
-                                             forecast_years          = forecast_years,
-                                             forecast_months         = forecast_months,
-                                             lead_time_newmoons      = lead_time_newmoons),
+  out <- list(time                    = list(timeseries_start             = as.character(settings$time$timeseries_start),
+                                             timeseries_start_lagged      = as.character(settings$time$timeseries_start_lagged),
+                                             lead_time                    = settings$time$lead_time,
+                                             max_lag                      = settings$time$max_lag,
+                                             lag_buffer                   = settings$time$lag_buffer,
+                                             cast_date                    = as.character(settings$time$cast_date),
+                                             origin                       = as.character(settings$time$origin),
+                                             historic_start_newmoonnumber = historic_start_newmoonnumber,
+                                             historic_end_newmoonnumber   = historic_end_newmoonnumber,
+                                             historic_newmoonnumbers      = historic_newmoonnumbers,
+                                             forecast_start_newmoonnumber = forecast_start_newmoonnumber,
+                                             forecast_end_newmoonnumber   = forecast_end_newmoonnumber,
+                                             forecast_newmoonnumbers      = forecast_newmoonnumbers,
+                                             forecast_years               = forecast_years,
+                                             forecast_months              = forecast_months,
+                                             lead_time_newmoons           = lead_time_newmoons),
               cast_group              = cast_group,
               dataset_controls        = dataset_controls_list,
               datasets                = datasets,

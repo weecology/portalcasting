@@ -98,10 +98,10 @@ prepare_covariates <- function (main     = ".",
 
   newmoons$newmoondate   <- as.Date(newmoons$newmoondate)
 
-  historic_start_newmoon <- min(newmoons$newmoonnumber[which(newmoons$newmoondate - settings$time$timeseries_start_lagged >= 0)])
-  historic_end_newmoon   <- max(newmoons$newmoonnumber[which(newmoons$newmoondate - settings$time$origin < 0)])
+  historic_start_newmoonnumber <- min(newmoons$newmoonnumber[which(newmoons$newmoondate - settings$time$timeseries_start_lagged >= 0)])
+  historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[which(newmoons$newmoondate - settings$time$origin < 0)])
 
-  historic_ordii               <- data.frame(newmoonnumber = historic_start_newmoon:historic_end_newmoon,
+  historic_ordii               <- data.frame(newmoonnumber = historic_start_newmoonnumber:historic_end_newmoonnumber,
                                              source        = "historic")
   historic_ordii$DO            <- control_rodents$DO[match(historic_ordii$newmoonnumber, control_rodents$newmoonnumber)]
   is_na                        <- is.na(historic_ordii$DO)
@@ -151,8 +151,6 @@ prepare_covariates <- function (main     = ".",
             sensor_observation_sigma = runif(data$nsensors, 0.001, 0.01),
             sensor_offset_sigma      = runif(1, 0.001, 0.01))
 
-
-
     }
 
   }
@@ -201,15 +199,11 @@ prepare_covariates <- function (main     = ".",
 
     }
 
-
-
     for (i in 1:nobservations) {
 
       observed_value[i] ~ dnorm(latent_value[observation_date[i]] + sensor_offset[observation_sensor[i]], sensor_observation_tau[observation_sensor[i]])
 
     }
-
-
 
   }"
 
@@ -247,20 +241,20 @@ prepare_covariates <- function (main     = ".",
                   silent.runjags = !verbose)
 
   model_fit <- run.jags(model = jags_model, 
-                   monitor   = monitor, 
-                   inits     = inits(data), 
-                   data      = data, 
-                   n.chains  = 4,
-                   adapt     = 1000,
-                   burnin    = 1000,
-                   sample    = 1000,
-                   thin      = 1,
-                   modules   = "glm",
-                   method    = "interruptible", 
-                   factories = "", 
-                   mutate    = NA, 
-                   summarise = TRUE, 
-                   plots     = FALSE)
+                        monitor   = monitor, 
+                        inits     = inits(data), 
+                        data      = data, 
+                        n.chains  = 4,
+                        adapt     = 1000,
+                        burnin    = 1000,
+                        sample    = 1000,
+                        thin      = 1,
+                        modules   = "glm",
+                        method    = "interruptible", 
+                        factories = "", 
+                        mutate    = NA, 
+                        summarise = TRUE, 
+                        plots     = FALSE)
 
   mcmc <- combine.mcmc(model_fit$mcmc)
   model_fit_summary <- summary(model_fit)
@@ -270,7 +264,7 @@ prepare_covariates <- function (main     = ".",
        (model_fit_summary["seasonal_sin_slope", "Mean"] + model_fit_summary[paste0("seasonal_sin_year_offset[", date_year, "]"), "Mean"]) * seasonal_sin_value
   names(y) <- NULL
 
-  covariates_together <- data.frame(newmoon       = ordii_together$newmoonnumber,
+  covariates_together <- data.frame(newmoonnumber = ordii_together$newmoonnumber,
                                     newmoondate   = ordii_together$newmoondate,
                                     ordii         = ordii_together$DO,
                                     ndvi          = round(y[match(ordii_together$newmoondate,  possible_dates)], 3),
@@ -294,7 +288,7 @@ prepare_covariates <- function (main     = ".",
   newmoon_match_date <- as.Date(newmoon_match_date)
   
   for (i in 1:nrow(covariates_together)) {
-    rowsin <- weather_together$date %in% newmoon_match_date[newmoon_match_number == covariates_together$newmoon[i]]
+    rowsin <- weather_together$date %in% newmoon_match_date[newmoon_match_number == covariates_together$newmoonnumber[i]]
     covariates_together$mintemp[i]       <- round(mean(weather_together$mintemp[rowsin], na.rm = TRUE), 3)
     covariates_together$meantemp[i]      <- round(mean(weather_together$meantemp[rowsin], na.rm = TRUE), 3)
     covariates_together$maxtemp[i]       <- round(mean(weather_together$maxtemp[rowsin], na.rm = TRUE), 3)
