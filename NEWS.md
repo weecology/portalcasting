@@ -19,14 +19,14 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ### Model functions are now species-level
 * To facilitate a lot of downstream functionality, we're breaking up the model functions to operate on the species-level rather than the dataset-level, according to the new control lists
-* Species that were failing the nb GARCH models (s or not) have been removed, since that throws a warning and then fits a poisson version, and we are now fitting poisson versions of everyone.
+* Species that were failing the nb GARCH models (s or not) have been removed, since that throws a warning and then fits a Poisson version, and we are now fitting Poisson versions of everyone.
 
 ### process_model_output replaces save_cast_output and various model processing bits
-* provides a much more general way to produce a forecast that is integratable in the system, leveraging the metadata files
+* provides a much more general way to produce a forecast that can be integrated in the system, leveraging the metadata files
 
 ### casts metadata table includes new column
 * species
-* to facilitate backwards compatability, filled with NA for previous tables if missing when loaded
+* to facilitate backwards compatibility, filled with NA for previous tables if missing when loaded
 
 ### updates to prefab models to 13 time steps forward (addressing issue 297)
 * pevGARCH, nbGARCH, nbsGARCH all get past_mean set to 13 

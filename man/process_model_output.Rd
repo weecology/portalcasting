@@ -37,7 +37,7 @@ process_model_output(
 Relevant elements are saved to external files, and returned as a \code{list}.
 }
 \description{
-Take the model fit and cast output, process them into saveables, and save them to the output folders. The cast metadata file is updated accordingly to track the saved output. \cr
+Take the model fit and cast output, process them into savable objects, and save them to the output folders. The cast metadata file is updated accordingly to track the saved output. \cr
 }
 \details{
 Four model-specific output components are saved and returned. 

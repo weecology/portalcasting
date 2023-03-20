@@ -148,7 +148,7 @@ update_forecasts_folder <- function (main = ".", settings = directory_settings()
 
 #' @title Process and Save Cast Output to Files
 #'
-#' @description Take the model fit and cast output, process them into saveables, and save them to the output folders. The cast metadata file is updated accordingly to track the saved output. \cr
+#' @description Take the model fit and cast output, process them into savable objects, and save them to the output folders. The cast metadata file is updated accordingly to track the saved output. \cr
 #'
 #' @param model_fit,model_cast Output from a model's fit and cast functions.
 #'
