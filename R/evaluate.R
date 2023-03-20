@@ -110,7 +110,6 @@ evaluate_cast <- function (main     = ".",
                            cast_id  = NULL,
                            quiet    = FALSE, 
                            verbose  = FALSE) {
-
   return_if_null(cast_id)
 
   model_cast     <- read_model_cast(main     = main,
@@ -135,9 +134,6 @@ evaluate_cast <- function (main     = ".",
   cast_tab <- add_err_to_cast_tab(main     = main,  
                                   settings = settings,
                                   cast_tab = cast_tab)
-  cast_tab <- add_lead_to_cast_tab(main     = main,  
-                                   settings = settings,
-                                   cast_tab = cast_tab)
   cast_tab <- add_covered_to_cast_tab(main     = main,  
                                       settings = settings,
                                       cast_tab = cast_tab)

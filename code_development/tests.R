@@ -18,9 +18,5 @@ devtools::test(filter = "17")
 devtools::test(filter = "18")
 devtools::test(filter = "19") 
 devtools::test(filter = "20")
-
-# still working on: 
-
- 
 devtools::test(filter = "21")
 devtools::test(filter = "99")
