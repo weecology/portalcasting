@@ -54,7 +54,9 @@ update_forecasts_folder <- function (main = ".", settings = directory_settings()
 
         cast_tab_j$forecast_start_newmoonnumber <- min(cast_tab_j$newmoonnumber)
         cast_tab_j$forecast_end_newmoonnumber   <- max(cast_tab_j$newmoonnumber)
-        cast_tab_j$lead_time_newmoons           <- 1:length(min(cast_tab_j$newmoonnumber):max(cast_tab_j$newmoonnumber))
+        cast_tab_j$lead_time_newmoons           <- cast_tab_j$newmoonnumber - cast_tab_j$historic_end_newmoonnumber
+
+
         cast_tab_j$max_lag <- NA
         cast_tab_j$lag_buffer <- NA
 
@@ -65,7 +67,7 @@ update_forecasts_folder <- function (main = ".", settings = directory_settings()
         } else if (class(cast_cast) == "data.frame") {
           cast_cast_j            <- update_list(as.list(cast_cast[unique(cast_tab$species)[j], ]), model = cast_meta$models, dataset = cast_meta$datasets, species = unique(cast_tab$species)[j], old_cast_id = casts_metadata$cast_id[i], cast_id = cast_id_j)
         } 
- 
+
         lpath <- paste0("cast_id_", cast_id_j, "_cast_tab.csv")
         cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
         write.csv(cast_tab_j, file = cpath, row.names = FALSE)
