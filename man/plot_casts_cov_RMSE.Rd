@@ -9,10 +9,9 @@ plot_casts_cov_RMSE(
   settings = directory_settings(),
   cast_ids = NULL,
   cast_tab = NULL,
-  end_moons = NULL,
+  historic_end_newmoonnumbers = NULL,
   models = NULL,
-  ensemble = TRUE,
-  dataset = NULL,
+  datasets = "controls",
   species = NULL
 )
 }
@@ -25,15 +24,13 @@ plot_casts_cov_RMSE(
 
 \item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not input, will be loaded.}
 
-\item{end_moons}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
 \item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 
-\item{ensemble}{\code{logical} indicator of if an ensemble should be included. Presently only the unweighted average. See \code{\link{ensemble_casts}}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.}
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
-
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.}
 }
 \value{
 \code{NULL}. Plot is generated.

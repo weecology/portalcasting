@@ -9,12 +9,12 @@ main <- "./testing"
 #})
 
 
-#test_that(desc = "evaluate_cast evaluates cast", {
+test_that(desc = "evaluate_cast evaluates cast", {
 
  # expect_null(evaluate_cast(main = main))
-  #expect_is(evaluate_cast(main = main, cast_id = 1), "data.frame")
+  expect_is(evaluate_cast(main = main, cast_id = "1-1"), "data.frame")
 
-#})
+})
 
 test_that(desc = "placeholder", {
 

@@ -4,7 +4,7 @@ context(desc = "directory filling functions")
 
 main <- "./testing"
 
-test_that(desc = "fill_raw fills raw but doesn't when not missing and told not to",
+test_that(desc = "fill_resources fills the resources folder",
           code = {
 
   # download is held back on cran
@@ -56,7 +56,7 @@ test_that(desc = "write_model_controls writes out the controls file",
 }) 
 
 
-test_that(desc = "fill_models adds the models control list to their folder",
+test_that(desc = "fill_models adds the models control list to the models folder",
           code = {
 
   expect_message(fill_models(main = main))

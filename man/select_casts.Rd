@@ -29,9 +29,9 @@ select_casts(
 
 \item{datasets}{\code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+\item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
-\item{end_moons}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
 \code{data.frame} of the \code{cast_tab}.

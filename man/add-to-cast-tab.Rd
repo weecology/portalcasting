@@ -2,18 +2,11 @@
 % Please edit documentation in R/process_casts.R
 \name{add to cast tab}
 \alias{add to cast tab}
-\alias{add_lead_to_cast_tab}
 \alias{add_err_to_cast_tab}
 \alias{add_covered_to_cast_tab}
 \alias{add_obs_to_cast_tab}
 \title{Add the Associated Values to a Cast Tab}
 \usage{
-add_lead_to_cast_tab(
-  main = ".",
-  settings = directory_settings(),
-  cast_tab = NULL
-)
-
 add_err_to_cast_tab(
   main = ".",
   settings = directory_settings(),
@@ -44,7 +37,6 @@ add_obs_to_cast_tab(
 }
 \description{
 Add values to a cast's cast tab. If necessary components are missing (such as no observations added yet and the user requests errors), the missing components are added. \cr \cr
- \code{add_lead_to_cast_tab} adds a column of lead times. \cr \cr
  \code{add_obs_to_cast_tab} appends a column of observations. \cr \cr
  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating if the observation was within the prediction interval.

@@ -26,7 +26,7 @@ plot_cast_ts(
 
 \item{dataset}{\code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
-\item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to \code{"Ensemble"} or an unweighted combination of the most recent cast group's models via  \code{\link{ensemble_casts}}.}
+\item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to model.}
 
 \item{historic_start_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
 Does not influence the fit of the models, just the presentation.}

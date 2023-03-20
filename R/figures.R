@@ -12,7 +12,7 @@
 #'
 #' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param end_moons \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
+#' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
 #' @param cast_tab Optional \code{data.frame} of cast table outputs. If not input, will be loaded.
 #'
@@ -20,38 +20,32 @@
 #'
 #' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
-#' @param ensemble \code{logical} indicator of if an ensemble should be included. Presently only the unweighted average. See \code{\link{ensemble_casts}}.
-#'
 #' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 
 #' @export
 #'
-plot_casts_cov_RMSE <- function (main           = ".", 
-                                 settings       = directory_settings( ),
-                                 cast_ids       = NULL, 
-                                 cast_tab       = NULL, 
-                                 end_moons      = NULL, 
-                                 models         = NULL, 
-                                 ensemble       = TRUE, 
-                                 dataset        = NULL, 
-                                 species        = NULL) {
+plot_casts_cov_RMSE <- function (main                        = ".", 
+                                 settings                    = directory_settings( ), 
+                                 cast_ids                    = NULL, 
+                                 cast_tab                    = NULL, 
+                                 historic_end_newmoonnumbers = NULL, 
+                                 models                      = NULL, 
+                                 datasets                    = "controls", 
+                                 species                     = NULL) {
 
-  if (length(models) == 1 && models != "ensemble") {
-
-    ensemble <- FALSE
-
-  }
 
   if (is.null(cast_tab)) {
 
-    cast_choices <- select_casts(main           = main, 
-                                 settings       = settings,
-                                 cast_ids       = cast_ids, 
-                                 models         = models, 
-                                 end_moons      = end_moons, 
-                                 datasets       = dataset)
+    cast_choices <- select_casts(main                       = main, 
+                                 settings                   = settings, 
+                                 cast_ids                   = cast_ids,
+                                 historic_end_newmoonnumber = historic_end_newmoonnumbers, 
+                                 models                     = models, 
+                                 datasets                   = datasets, 
+                                 species                    = species, 
+                                 quiet                      = quiet)
 
     if (NROW(cast_choices) == 0) {
 
@@ -68,9 +62,6 @@ plot_casts_cov_RMSE <- function (main           = ".",
       cast_tab <- add_err_to_cast_tab(main     = main,  
                                       settings = settings,
                                       cast_tab = cast_tab)
-      cast_tab <- add_lead_to_cast_tab(main     = main,  
-                                       settings = settings,
-                                       cast_tab = cast_tab)
       cast_tab <- add_covered_to_cast_tab(main     = main,  
                                           settings = settings,
                                           cast_tab = cast_tab)
@@ -79,17 +70,18 @@ plot_casts_cov_RMSE <- function (main           = ".",
 
   }
 
-  cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                  <- ifnull(models, eval_models())
-  dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                 <- ifnull(species, eval_species()) 
-  end_moons               <- ifnull(end_moons, unique(cast_tab$end_moon)) 
-  cast_id_in              <- cast_tab$cast_id %in% cast_ids
-  model_in                <- cast_tab$model %in% models
-  dataset_in       <- cast_tab$dataset == dataset
-  species_in              <- cast_tab$species %in% species
-  end_moon_in             <- cast_tab$end_moon %in% end_moons
-  all_in                  <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
+
+  cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
+  models                        <- ifnull(models, eval_models())
+  dataset                       <- ifnull(datasets, unique(cast_tab$dataset)[1])
+  species                       <- ifnull(species, eval_species()) 
+  historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(cast_tab$historic_end_newmoonnumber)) 
+  cast_id_in                    <- cast_tab$cast_id %in% cast_ids
+  model_in                      <- cast_tab$model %in% models
+  dataset_in                    <- cast_tab$dataset == dataset
+  species_in                    <- cast_tab$species %in% species
+  historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
+  all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
@@ -99,38 +91,16 @@ plot_casts_cov_RMSE <- function (main           = ".",
 
   cast_tab <- cast_tab[all_in, ]
 
-
   lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
 
-  if (ensemble) {
 
-    ecast_tab <- data.frame()
+  nmodels <- length(models) 
+  nspecies <- length(species)
 
-    for (i in 1:length(end_moons)) {
-
-      ecast_tab <- rbind(ecast_tab, 
-                         ensemble_casts(main     = main, 
-                                        settings = settings,
-                                        cast_tab = cast_tab,
-                                        end_moon = end_moons[i],
-                                        models   = models, 
-                                        dataset  = dataset,
-                                        species  = species))
-
-    }
-
-    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
-    models    <- c(models, as.character(unique(ecast_tab$model)))
-    cast_tab  <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
-    cast_tab  <- rbind(cast_tab, ecast_tab)
-
-  }
 
   cast_level_errs <- measure_cast_level_error(cast_tab = cast_tab)
-  nmodels <- length(models)
-  nspecies <- length(species)
 
 
   oldpar <- par(no.readonly = TRUE)
@@ -138,7 +108,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n")
-  models2 <- gsub("ensemble_unwtavg", "Ensemble", models)
+
   x1 <- 0
   x2 <- 0.48
   y1 <- 0.0
@@ -146,7 +116,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models2, cex = 0.7, 
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
        xpd = TRUE, srt = 45, adj = 1)
   x1 <- 0.49
   x2 <- 0.97
@@ -155,7 +125,7 @@ plot_casts_cov_RMSE <- function (main           = ".",
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models2, cex = 0.7, 
+  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
        xpd = TRUE, srt = 45, adj = 1)
 
   for (i in 1:nspecies){
@@ -237,12 +207,6 @@ plot_casts_cov_RMSE <- function (main           = ".",
 }
 
 
-eval_models <- function() {
-
-  c("ESSS", "AutoArima", "nbsGARCH")
-
-}
-
 #' @title Plot the Forecast Error as a Function of Lead Time 
 #'
 #' @description Plot the raw error (estimate - observation) as a function of lead time across model runs from different forecast origins (\code{end_moons}) for multiple models and multiple species (or total) within a data set.
@@ -254,15 +218,13 @@ eval_models <- function() {
 #'
 #' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param end_moons \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
+#' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
 #' @param cast_tab Optional \code{data.frame} of cast table outputs. If not input, will be loaded.
 #'
 #' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
 #'
-#' @param dataset \code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
-#'
-#' @param ensemble \code{logical} indicator of if an ensemble should be included. Presently only the unweighted average. See \code{\link{ensemble_casts}}.
+#' @param datasets \code{character} value of the rodent data set(s) to include. Default value is \code{"controls"}.
 #'
 #' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.
 #'
@@ -272,30 +234,26 @@ eval_models <- function() {
 #'
 #' @export
 #'
-plot_casts_err_lead <- function (main           = ".", 
-                                 settings       = directory_settings( ), 
-                                 cast_ids       = NULL, 
-                                 cast_tab       = NULL, 
-                                 end_moons      = NULL, 
-                                 models         = NULL, 
-                                 ensemble       = TRUE, 
-                                 dataset        = "controls", 
-                                 species        = NULL) {
+plot_casts_err_lead <- function (main                        = ".", 
+                                 settings                    = directory_settings( ), 
+                                 cast_ids                    = NULL, 
+                                 cast_tab                    = NULL, 
+                                 historic_end_newmoonnumbers = NULL, 
+                                 models                      = NULL, 
+                                 datasets                    = "controls", 
+                                 species                     = NULL) {
 
-  if (length(models) == 1 && models != "ensemble") {
-
-    ensemble <- FALSE
-
-  }
 
   if (is.null(cast_tab)) {
 
-    cast_choices <- select_casts(main           = main, 
-                                 settings       = settings,
-                                 cast_ids       = cast_ids, 
-                                 models         = models, 
-                                 end_moons      = end_moons, 
-                                 datasets       = dataset)
+    cast_choices <- select_casts(main                       = main, 
+                                 settings                   = settings, 
+                                 cast_ids                   = cast_ids,
+                                 historic_end_newmoonnumber = historic_end_newmoonnumbers, 
+                                 models                     = models, 
+                                 datasets                   = datasets, 
+                                 species                    = species, 
+                                 quiet                      = quiet)
 
     if (NROW(cast_choices) == 0) {
 
@@ -312,9 +270,6 @@ plot_casts_err_lead <- function (main           = ".",
       cast_tab <- add_err_to_cast_tab(main     = main,  
                                       settings = settings,
                                       cast_tab = cast_tab)
-      cast_tab <- add_lead_to_cast_tab(main     = main,  
-                                       settings = settings,
-                                       cast_tab = cast_tab)
       cast_tab <- add_covered_to_cast_tab(main     = main,  
                                           settings = settings,
                                           cast_tab = cast_tab)
@@ -324,17 +279,17 @@ plot_casts_err_lead <- function (main           = ".",
   }
 
 
-  cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                  <- ifnull(models, eval_models())
-  dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                 <- ifnull(species, eval_species()) 
-  end_moons               <- ifnull(end_moons, unique(cast_tab$end_moon)) 
-  cast_id_in              <- cast_tab$cast_id %in% cast_ids
-  model_in                <- cast_tab$model %in% models
-  dataset_in       <- cast_tab$dataset == dataset
-  species_in              <- cast_tab$species %in% species
-  end_moon_in             <- cast_tab$end_moon %in% end_moons
-  all_in                  <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
+  cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
+  models                        <- ifnull(models, eval_models())
+  dataset                       <- ifnull(datasets, unique(cast_tab$dataset)[1])
+  species                       <- ifnull(species, eval_species()) 
+  historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(cast_tab$historic_end_newmoonnumber)) 
+  cast_id_in                    <- cast_tab$cast_id %in% cast_ids
+  model_in                      <- cast_tab$model %in% models
+  dataset_in                    <- cast_tab$dataset == dataset
+  species_in                    <- cast_tab$species %in% species
+  historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
+  all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
@@ -344,37 +299,10 @@ plot_casts_err_lead <- function (main           = ".",
 
   cast_tab <- cast_tab[all_in, ]
 
-
   lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lp, stringsAsFactors = FALSE)  
   sptab <- na_conformer(sptab, "speciescode")
 
-
-  if (ensemble) {
-
-    ecast_tab <- data.frame()
-
-    for (i in 1:length(end_moons)) {
-
-      ecast_tab <- rbind(ecast_tab, 
-                         ensemble_casts(main     = main, 
-                                        settings = settings,
-                                        cast_tab = cast_tab,
-                                        end_moon = end_moons[i],
-                                        models   = models, 
-                                        dataset  = dataset,
-                                        species  = species))
-
-    }
-
-
-
-    ecast_tab <- ecast_tab[ , -which(colnames(ecast_tab) == "var")]
-    models    <- c(models, as.character(unique(ecast_tab$model)))
-    cast_tab  <- cast_tab[ , colnames(cast_tab) %in% colnames(ecast_tab)]
-    cast_tab  <- rbind(cast_tab, ecast_tab)
-
-  }
 
   nmodels <- length(models) 
   nspecies <- length(species)
@@ -383,7 +311,7 @@ plot_casts_err_lead <- function (main           = ".",
 
     yy <- round(cast_tab$error, 3)
     yrange <- range(c(0, yy), na.rm = TRUE)
-    xrange <- c(max(cast_tab$lead) + 0.25, 0)
+    xrange <- c(max(cast_tab$lead_time_newmoons) + 0.25, 0)
 
     oldpar <- par(no.readonly = TRUE)
     on.exit(par(oldpar))
@@ -407,30 +335,6 @@ plot_casts_err_lead <- function (main           = ".",
     axis(2, cex.axis = 1.25, las = 1)
     mtext(side = 1, "Lead time (new moons)", cex = 1.5, line = 2.75)
     mtext(side = 2, "Forecast error", cex = 1.75, line = 3)
-    models <- gsub("ensemble_unwtavg", "Ensemble", models)
-
-    if (species == "total") {
-
-      spp <- "total abundance"
-      title <- paste0(models, ", ", dataset, ", ", spp)
-
-    } else {
-      sppmatch <- which(sptab[ , "speciescode"] == species)
-      spp <- sptab[sppmatch , "scientificname"]
-      title <- eval(substitute(
-                      expression(
-                        paste(models_i, ", ", dataset, ", ", italic(spp))), 
-                      env = list(spp = spp, dataset = dataset,  
-                                 models_i = models)))
-
-    }
-
-    mtext(text = title, 
-          side = 3, 
-          cex  = 1.25, 
-          line = 0.5, 
-          at   = xrange[1], 
-          adj  = 0)
 
   } else {
 
@@ -471,22 +375,15 @@ plot_casts_err_lead <- function (main           = ".",
 
       for(i in 1:nmodels){
 
-        if (tolower(models[i]) == "ensemble_unwtavg") {
+        cast_id_in <- cast_tab$cast_id %in% cast_ids
 
-          cast_id_in <- cast_tab$cast_id %in% as.numeric(paste0(9999, cast_ids))
 
-        } else {
+        dataset_in                     <- cast_tab$dataset == dataset
+        model_in                       <- cast_tab$model %in% models[i]
+        species_in                     <- cast_tab$species %in% species[j]
+        historic_end_newmoonnumbers_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
 
-          cast_id_in <- cast_tab$cast_id %in% cast_ids
-
-        }
-
-        dataset_in <- cast_tab$dataset == dataset
-        model_in          <- cast_tab$model %in% models[i]
-        species_in        <- cast_tab$species %in% species[j]
-        end_moon_in       <- cast_tab$end_moon %in% end_moons
-
-        all_in <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
+        all_in <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumbers_in
 
         pcast_tab <- cast_tab[all_in, ]
 
@@ -495,7 +392,7 @@ plot_casts_err_lead <- function (main           = ".",
             fig = c(x1[i], x2[i], y1[j], y2[j]),
             new = TRUE)
 
-        xrange <- c(max(pcast_tab$lead) + 0.25, 0)
+        xrange <- c(max(pcast_tab$lead_time_newmoons) + 0.25, 0)
 
         plot(x    = 1, 
              y    = 1, 
@@ -572,7 +469,6 @@ plot_casts_err_lead <- function (main           = ".",
         if (j == nspecies) {
 
           mod_name <- models[i]
-          mod_name <- gsub("ensemble_unwtavg", "Ensemble", mod_name)
 
           mtext(side = 3, 
                 text = mod_name, 
@@ -639,7 +535,7 @@ plot_casts_err_lead <- function (main           = ".",
 #'
 #' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
-#' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. Also available is \code{"Ensemble"}, which combines the models via \code{\link{ensemble_casts}}. 
+#' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. 
 #'
 #' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
@@ -653,7 +549,7 @@ plot_casts_err_lead <- function (main           = ".",
 #' 
 #' @param highlight_sp \code{character} vector of the species codes (or \code{"total"} for the total across species) to be highlighted or \code{NULL} (default) to not highlight anything.
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled. 
+#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to include.
 #'
 #' @param with_census \code{logical} toggle if the plot should include the observed data collected during the predicted census.
 #'
@@ -715,11 +611,7 @@ plot_cast_point <- function (main                       = ".",
 
   }
 
-#  newmoonnumber <- ifnull(newmoonnumber, min(casts_meta$forecast_start_newmoonnumber))
-# patch
-  newmoonnumber <- ifnull(newmoonnumber, min(casts_meta$historic_end_newmoonnumber) + 1)
-#end patch
-
+  newmoonnumber <- ifnull(newmoonnumber, min(casts_meta$forecast_start_newmoonnumber))
   dataset       <- ifnull(dataset, unique(casts_meta$dataset))
 
 
@@ -861,7 +753,7 @@ plot_cast_point <- function (main                       = ".",
 #'
 #' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
-#' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to \code{"Ensemble"} or an unweighted combination of the most recent cast group's models via  \code{\link{ensemble_casts}}. 
+#' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to model. 
 #'
 #' @param dataset \code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'

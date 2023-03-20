@@ -24,11 +24,11 @@ plot_cast_point(
 
 \item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
+\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to include.}
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
-\item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. Also available is \code{"Ensemble"}, which combines the models via \code{\link{ensemble_casts}}.}
+\item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.}
 
 \item{historic_end_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 

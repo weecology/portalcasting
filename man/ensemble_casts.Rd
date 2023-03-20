@@ -11,7 +11,7 @@ ensemble_casts(
   cast_groups = NULL,
   cast_ids = NULL,
   cast_tab = NULL,
-  end_moon = NULL,
+  historic_end_newmoonnumber = NULL,
   models = NULL,
   dataset = NULL,
   species = NULL
@@ -30,7 +30,7 @@ ensemble_casts(
 
 \item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not input, will be loaded.}
 
-\item{end_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{historic_end_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
 
 \item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 

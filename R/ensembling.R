@@ -13,7 +13,7 @@
 #'
 #' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
+#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
 #' @param cast_tab Optional \code{data.frame} of cast table outputs. If not input, will be loaded.
 #'
@@ -29,25 +29,27 @@
 #' 
 #' @export
 #'
-ensemble_casts <- function (main           = ".", 
-                            settings       = directory_settings( ), 
-                            method         = "unwtavg", 
-                            cast_groups    = NULL, 
-                            cast_ids       = NULL, 
-                            cast_tab       = NULL, 
-                            end_moon       = NULL, 
-                            models         = NULL, 
-                            dataset        = NULL, 
-                            species        = NULL) {
+ensemble_casts <- function (main                       = ".", 
+                            settings                   = directory_settings( ), 
+                            method                     = "unwtavg", 
+                            cast_groups                = NULL, 
+                            cast_ids                   = NULL, 
+                            cast_tab                   = NULL, 
+                            historic_end_newmoonnumber = NULL, 
+                            models                     = NULL, 
+                            dataset                    = NULL, 
+                            species                    = NULL) {
 
   if (is.null(cast_tab)) {
 
-    cast_choices <- select_casts(main           = main, 
-                                 settings       = settings,
-                                 cast_ids       = cast_ids, 
-                                 models         = models, 
-                                 end_moons      = end_moon, 
-                                 datasets       = dataset)
+    cast_choices <- select_casts(main                        = main, 
+                                 settings                    = settings,
+                                 cast_ids                    = cast_ids, 
+                                 cast_groups                 = cast_groups, 
+                                 models                      = models, 
+                                 species                     = species, 
+                                 historic_end_newmoonnumbers = historic_end_newmoonnumber, 
+                                 datasets                    = dataset)
 
     if (NROW(cast_choices) == 0) {
 
@@ -64,9 +66,6 @@ ensemble_casts <- function (main           = ".",
       cast_tab <- add_err_to_cast_tab(main     = main,  
                                       settings = settings,
                                       cast_tab = cast_tab)
-      cast_tab <- add_lead_to_cast_tab(main     = main,  
-                                       settings = settings,
-                                       cast_tab = cast_tab)
       cast_tab <- add_covered_to_cast_tab(main     = main,  
                                           settings = settings,
                                           cast_tab = cast_tab)
@@ -75,17 +74,21 @@ ensemble_casts <- function (main           = ".",
 
   }
 
-  cast_ids                <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                  <- ifnull(models, unique(cast_tab$model))
-  dataset          <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                 <- ifnull(species, base_species()) 
-  end_moon                <- ifnull(end_moon, max(unique(cast_tab$end_moon)))
-  cast_id_in              <- cast_tab$cast_id %in% cast_ids
-  model_in                <- cast_tab$model %in% models
-  dataset_in       <- cast_tab$dataset == dataset
-  species_in              <- cast_tab$species %in% species
-  end_moon_in             <- cast_tab$end_moon %in% end_moon
-  all_in                  <- cast_id_in & model_in & dataset_in & species_in & end_moon_in
+  cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
+  models                        <- ifnull(models, eval_models())
+  dataset                       <- ifnull(dataset, unique(cast_tab$dataset)[1])
+  species                       <- ifnull(species, eval_species()) 
+  historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(cast_tab$historic_end_newmoonnumber)) 
+  cast_id_in                    <- cast_tab$cast_id %in% cast_ids
+  model_in                      <- cast_tab$model %in% models
+  dataset_in                    <- cast_tab$dataset == dataset
+  species_in                    <- cast_tab$species %in% species
+  if ("end_moon" %in% colnames(cast_tab)) {
+    historic_end_newmoonnumber_in <- cast_tab$end_moon %in% historic_end_newmoonnumber
+  } else if ("historic_end_newmoonnumber" %in% colnames(cast_tab)) {
+    historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumber
+  }
+  all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
@@ -93,10 +96,15 @@ ensemble_casts <- function (main           = ".",
 
   }
 
-
   cast_tab    <- cast_tab[all_in, ]
   nspecies    <- length(species)
-  moons       <- unique(cast_tab$moon)
+
+  if ("moon" %in% colnames(cast_tab)) {
+    moons       <- unique(cast_tab$moon)
+  } else if ("newmoonnumber" %in% colnames(cast_tab)) {
+    moons       <- unique(cast_tab$newmoonnumber)
+  }
+  
   nmoons      <- length(moons)
   nmodels     <- length(models)
   weight      <- 1/nmodels
@@ -119,7 +127,13 @@ ensemble_casts <- function (main           = ".",
     for (j in 1:nmoons) {
 
       species_in <- cast_tab$species %in% species[i]
-      moon_in    <- cast_tab$moon %in% moons[j]
+      
+      if ("moon" %in% colnames(cast_tab)) {
+        moon_in    <- cast_tab$moon %in% moons[j]
+      } else if ("newmoonnumber" %in% colnames(cast_tab)) {
+        moon_in    <- cast_tab$newmoonnumber %in% moons[j]
+      }
+
       all_in     <- species_in & moon_in
       pcast_tab  <- cast_tab[all_in, ]
       estimates  <- na.omit(pcast_tab$estimate)
@@ -146,8 +160,15 @@ ensemble_casts <- function (main           = ".",
         l_pi[counter]        <- estimate[counter] - sqrt(mvar[counter] * CL)
         obs[counter]         <- unique(pcast_tab$obs)
         error[counter]       <- estimate[counter] - obs[counter]
-        end_moon_id[counter] <- unique(pcast_tab$end_moon)
-        ecast_id[counter]    <- as.numeric(paste0(9999, min(pcast_tab$cast_id)))
+        
+
+        if ("end_moon" %in% colnames(cast_tab)) {
+          end_moon_id[counter] <- unique(pcast_tab$end_moon)
+        } else if ("historic_end_newmoonnumber" %in% colnames(cast_tab)) {
+          end_moon_id[counter] <- unique(pcast_tab$historic_end_newmoonnumber)
+        }
+
+        ecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(gsub("-", ".", pcast_tab$cast_id)))))
         moon_id[counter]     <- moons[j]
         species_id[counter]  <- species[i]
         covered[counter]     <- estimate[counter] >= l_pi[counter] &
@@ -160,25 +181,32 @@ ensemble_casts <- function (main           = ".",
 
   ensemble_name <- paste0("ensemble_", method)
 
-  lead <- moon_id - end_moon_id
 
-  data.frame(origin  = Sys.Date(),
-             cast_month = as.numeric(format(Sys.Date(), "%m")),
-             cast_year  = as.numeric(format(Sys.Date(), "%Y")),
-             currency   = "abundance",
-             model      = ensemble_name, 
-             moon       = moon_id, 
-             species    = species_id,
-             estimate   = estimate, 
-             var        = mvar, 
-             lower_pi   = l_pi, 
-             upper_pi   = u_pi, 
-             obs        = obs, 
-             error      = error, 
-             end_moon   = end_moon_id, 
-             lead       = lead, 
-             dataset    = dataset,
-             cast_id    = ecast_id,
-             covered    = covered)
+
+
+  data.frame(origin               = Sys.Date(),
+             cast_date            = Sys.Date(),
+             cast_month           = as.numeric(format(Sys.Date(), "%m")),
+             cast_year            = as.numeric(format(Sys.Date(), "%Y")),
+             currency             = "abundance",
+             model                = ensemble_name, 
+             newmoonnumber        = moon_id, 
+             species              = species_id,
+             estimate             = estimate, 
+             var                  = mvar, 
+             lower_pi             = l_pi, 
+             upper_pi             = u_pi, 
+             obs                  = obs, 
+             error                = error, 
+             historic_end_newmoon = end_moon_id, 
+             lead_time_newmoons   = moon_id - end_moon_id, 
+             dataset              = dataset,
+             cast_id              = ecast_id,
+             covered              = covered)
+
+
+
+
+
  
 }

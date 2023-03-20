@@ -76,7 +76,7 @@ update_forecasts_folder <- function (main = ".", settings = directory_settings()
 
         lpath <- paste0("cast_id_", cast_id_j, "_model_cast.json")
         cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
-        write_json(cast_cast_j, path = cpath)
+        write_json(serializeJSON(cast_cast_j), path = cpath)
 
         out_row <- data.frame(cast_id                      = cast_id_j,
                               old_cast_id                  = casts_metadata$cast_id[i],
@@ -372,7 +372,6 @@ measure_cast_level_error <- function (cast_tab = NULL) {
 #' @title Add the Associated Values to a Cast Tab
 #' 
 #' @description Add values to a cast's cast tab. If necessary components are missing (such as no observations added yet and the user requests errors), the missing components are added. \cr \cr
-#'  \code{add_lead_to_cast_tab} adds a column of lead times. \cr \cr
 #'  \code{add_obs_to_cast_tab} appends a column of observations. \cr \cr
 #'  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
 #'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating if the observation was within the prediction interval. 
@@ -388,20 +387,6 @@ measure_cast_level_error <- function (cast_tab = NULL) {
 #' @return \code{data.frame} of \code{cast_tab} with an additional column or columns if needed. 
 #'
 #' @name add to cast tab
-#'
-#' @export
-#'
-add_lead_to_cast_tab <- function (main     = ".", 
-                                  settings = directory_settings( ), 
-                                  cast_tab = NULL) {
-
-  return_if_null(cast_tab)
-  cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
-  cast_tab
-
-}
-
-#' @rdname add-to-cast-tab
 #'
 #' @export
 #'
@@ -476,7 +461,7 @@ add_obs_to_cast_tab <- function (main     = ".",
     for (i in 1:nmatches) {
 
       spot        <- matches[i]
-      obs_moon    <- which(obs$newmoonnumber == cast_tab$moon[spot])
+      obs_moon    <- which(obs$newmoonnumber == cast_tab$newmoonnumber[spot])
       obs_species <- which(obs_cols == cast_tab$species[spot])
 
       if (length(obs_moon) == 1 & length(obs_species) == 1) {
@@ -629,17 +614,26 @@ read_model_fit <- function (main     = ".",
 
   }
 
-  lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath <- file.path(main, settings$subdirectories$fits, lpath)
+  lpath_json1  <- paste0("cast_id_", cast_id, "_model_fit.json")
+  lpath_json2  <- paste0("cast_id_", cast_id, "_model_fits.json")
+  cpath_json1  <- file.path(main, settings$subdirectories$forecasts, lpath_json1)
+  cpath_json2  <- file.path(main, settings$subdirectories$forecasts, lpath_json2)
 
-  if (!file.exists(cpath)) {
+  if (file.exists(cpath_json1)) {
 
-    stop("cast_id does not have a model_fits file")
+    read_in_json <- fromJSON(readLines(cpath_json1))
+    unserializeJSON(read_in_json)
 
-  }
+  } else if (file.exists(cpath_json2)) {
 
-  read_in_json <- fromJSON(readLines(cpath))
-  unserializeJSON(read_in_json)
+    read_in_json <- fromJSON(readLines(cpath_json2))
+    unserializeJSON(read_in_json)
+
+  } else {
+
+    stop("cast_id does not have a model_fit or model_fits file")
+
+  } 
 
 }
 
@@ -655,39 +649,59 @@ read_model_cast <- function (main     = ".",
 
     casts_meta <- select_casts(main     = main,
                                settings = settings)
-    cast_id <- max(casts_meta$cast_id)
+
+    cast_id <- gsub("\\.", "-", max(as.numeric(gsub("-", ".", casts_meta$cast_id))))
 
   }
 
-  lpath_json  <- paste0("cast_id_", cast_id, "_model_casts.json")
-  cpath_json  <- file.path(main, settings$subdirectories$forecasts, lpath_json)
 
-  lpath_RData <- paste0("cast_id_", cast_id, "_model_casts.RData")
-  cpath_RData  <- file.path(main, settings$subdirectories$forecasts, lpath_RData)
+  lpath_json1  <- paste0("cast_id_", cast_id, "_model_cast.json")
+  lpath_json2  <- paste0("cast_id_", cast_id, "_model_casts.json")
+  cpath_json1  <- file.path(main, settings$subdirectories$forecasts, lpath_json1)
+  cpath_json2  <- file.path(main, settings$subdirectories$forecasts, lpath_json2)
 
-  if (!file.exists(cpath_json)) {
+  lpath_RData1 <- paste0("cast_id_", cast_id, "_model_cast.RData")
+  cpath_RData1 <- file.path(main, settings$subdirectories$forecasts, lpath_RData1)
+  lpath_RData2 <- paste0("cast_id_", cast_id, "_model_casts.RData")
+  cpath_RData2 <- file.path(main, settings$subdirectories$forecasts, lpath_RData2)
 
-    if (!file.exists(cpath_RData)) {
+  if (file.exists(cpath_json1)) {
 
-      stop("cast_id does not have a model_casts file")
-  
-    } else {
+    read_in_json <- fromJSON(readLines(cpath_json1))
+    unserializeJSON(read_in_json)
+
+  } else if (file.exists(cpath_json2)) {
+
+    read_in_json <- fromJSON(readLines(cpath_json2))
+    unserializeJSON(read_in_json)
+
+  } else if (file.exists(cpath_RData1)) {
 
       model_casts <- NULL
-      load(cpath_RData)
+      load(cpath_RData1)
       model_casts
 
-    }
+  } else if (file.exists(cpath_RData2)) {
+
+      model_casts <- NULL
+      load(cpath_RData2)
+      model_casts
 
   } else {
 
-    read_in_json <- fromJSON(readLines(cpath_json))
-    unserializeJSON(read_in_json)
+     stop("cast_id does not have a model_cast or model_casts file")
 
-  }
+  } 
+
+
 
 }
 
+eval_models <- function() {
+
+  c("ESSS", "AutoArima", "nbsGARCH")
+
+}
 
 #' @title Find Casts that Fit Specifications
 #'
@@ -698,7 +712,7 @@ read_model_cast <- function (main     = ".",
 #'
 #' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param end_moons \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
+#' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
 #'
 #' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast groups to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
 #'
@@ -737,9 +751,19 @@ select_casts <- function (main                        = ".",
   cast_groups    <- ifnull(cast_groups, ucast_groups)
   match_group    <- casts_metadata$cast_group %in% cast_groups
 
-  uend_moons     <- unique(casts_metadata$historic_end_newmoonnumber[casts_metadata$QAQC])
+  uend_moons     <- c(unique(casts_metadata$end_moon[casts_metadata$QAQC]),
+                      unique(casts_metadata$historic_end_newmoonnumber[casts_metadata$QAQC]))
   end_moons      <- ifnull(historic_end_newmoonnumbers, uend_moons)
-  match_end_moon <- casts_metadata$historic_end_newmoonnumber %in% end_moons
+
+  if ("end_moon" %in% colnames(casts_metadata)) {
+
+    match_end_moon <- casts_metadata$end_moon %in% end_moons
+
+  } else if ("historic_end_newmoonnumber" %in% colnames(casts_metadata)) {
+
+    match_end_moon <- casts_metadata$historic_end_newmoonnumber %in% end_moons
+
+  } 
 
   umodels        <- unique(casts_metadata$model[casts_metadata$QAQC])
   models         <- ifnull(models, umodels)
@@ -749,9 +773,18 @@ select_casts <- function (main                        = ".",
   datasets       <- ifnull(datasets, udatasets)
   match_dataset  <- casts_metadata$dataset %in% datasets
 
-  uspecies       <- unique(casts_metadata$species[casts_metadata$QAQC])
-  species        <- ifnull(species, uspecies)
-  match_species  <- casts_metadata$species %in% species
+  if ("species" %in% colnames(casts_metadata)) {
+
+    uspecies       <- unique(casts_metadata$species[casts_metadata$QAQC])
+    species        <- ifnull(species, uspecies)
+    match_species  <- casts_metadata$species %in% species
+
+  } else {
+  
+    match_species <- rep(TRUE, length(match_id))
+
+  }
+
   QAQC <- casts_metadata$QAQC
 
   casts_metadata[match_id & match_end_moon & match_model & match_dataset & match_species & QAQC, ]
@@ -808,8 +841,10 @@ read_casts_metadata <- function (main     = ".",
 
 
   out <- read.csv(meta_path)
-  out <- na_conformer(out)
 
+  if ("species" %in% colnames(out)) {
+    out <- na_conformer(out)
+  }
   out[out$cast_group != 0, ]
 
 }
