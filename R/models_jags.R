@@ -33,26 +33,9 @@ fit_runjags <- function (model, abundance, metadata, covariates, control_runjags
 
 }
 
-forecast.runjags <- function (object, h, level) {
-
-  vals      <- combine.mcmc(mcmc.objects = object$mcmc)
-
-  pred_cols <- grep("X", colnames(vals))
-  vals      <- vals[ , pred_cols]
-  HPD       <- HPDinterval(obj = as.mcmc(vals), prob = level)
-  out       <- list(mean  = as.ts(round(apply(vals, 2, mean), 3)),
-                    lower = as.ts(round(HPD[ , "lower", drop = FALSE], 3)), 
-                    upper = as.ts(round(HPD[ , "upper", drop = FALSE], 3)))
-  out$level <- level
-
-  structure(.Data = out, 
-            class = "forecast")
-
-}
-
 runjags_monitor <- function (model, metadata) {
 
-  out <- c("mu", "sigma", paste0("X[", metadata$time$forecast_newmoons - metadata$time$historic_start_newmoon + 1, "]"))
+  out <- c("mu", "sigma", paste0("X[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoon + 1, "]"))
 
 
   if (model == "jags_RW") {
@@ -515,6 +498,38 @@ runjags_data <- function (model = NULL, abundance, metadata, covariates) {
   }
 
   out
+}
+
+
+#' @title Forecast a runjags Object
+#'
+#' @description A convenience function for extracting existing forecasts from runjags objects and summarizing them into a \code{"forecast"}-class object.
+#' 
+#' @param object A \code{runjags}-class object with columns of \code{"X"} values (state variables) in the the \code{mcmc} element.
+#'
+#' @param h \code{integer}-conformable number of steps forward to include in the forecast.
+#'
+#' @param level \code{numeric} of the confidence level to use in summarizing the predictions.
+#'
+#' @return \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"level"}.
+#'
+#' @export
+#'
+forecast.runjags <- function (object, h, level) {
+
+  vals      <- combine.mcmc(mcmc.objects = object$mcmc)
+
+  pred_cols <- grep("X", colnames(vals))
+  vals      <- vals[ , pred_cols]
+  HPD       <- HPDinterval(obj = as.mcmc(vals), prob = level)
+  out       <- list(mean  = as.ts(round(apply(vals, 2, mean)[1:h], 3)),
+                    lower = as.ts(round(HPD[1:h, "lower", drop = FALSE], 3)), 
+                    upper = as.ts(round(HPD[1:h, "upper", drop = FALSE], 3)))
+  out$level <- level
+
+  structure(.Data = out, 
+            class = "forecast")
+
 }
 
 #' @title Create a Control List for a runjags JAGS Model Run

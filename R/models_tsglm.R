@@ -1,25 +1,4 @@
 
-forecast.tsglm <- function (object, h, level, ...) {
-
-  out <- predict(object  = object,
-                 n.ahead = h,
-                 level   = level,
-                 ...     = ...)
-
-  out$mean  <- as.ts(out$pred)
-  out$lower <- as.ts(out$interval[ , 1, drop = FALSE])
-  out$upper <- as.ts(out$interval[ , 2, drop = FALSE])
-
-  dots <- list(...)
-
-  if (!is.null(dots$newxreg)) {
-    out$newxreg <- as.ts(dots$newxreg)
-  }
-  structure(out, class = "forecast")
-
-}
-
-
 
 meta_tsglm <- function (ts, model, distr, link, lag, submodels, covariates, metadata, quiet = FALSE) {
 
@@ -51,3 +30,38 @@ meta_tsglm <- function (ts, model, distr, link, lag, submodels, covariates, meta
 }
 
 
+#' @title Forecast a TSGLM Object
+#'
+#' @description A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
+#' 
+#' @param object A \code{tsglm}-class object.
+#'
+#' @param h \code{integer}-conformable number of steps forward to forecast. Passed into \code{predict} as \code{n.ahead}.
+#'
+#' @param level \code{numeric} of the confidence level to use in summarizing the predictions.
+#'
+#' @param ... Additional parameters passed into \code{predict}. 
+#'
+#' @return \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
+#'
+#' @export
+#'
+forecast.tsglm <- function (object, h, level, ...) {
+
+  out <- predict(object  = object,
+                 n.ahead = h,
+                 level   = level,
+                 ...     = ...)
+
+  out$mean  <- as.ts(out$pred)
+  out$lower <- as.ts(out$interval[ , 1, drop = FALSE])
+  out$upper <- as.ts(out$interval[ , 2, drop = FALSE])
+
+  dots <- list(...)
+
+  if (!is.null(dots$newxreg)) {
+    out$newxreg <- as.ts(dots$newxreg)
+  }
+  structure(out, class = "forecast")
+
+}
