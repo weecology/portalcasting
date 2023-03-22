@@ -52,7 +52,8 @@ meta_tsglm(
   \code{forecast.tsglm}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
 }
 \description{
-\code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount]{tsglm}} (from the tscount (Liboschik et al. 2017) package) model.
+Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr
+  \code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount]{tsglm}} (from the tscount (Liboschik et al. 2017) package) model. \cr
   \code{forecast.tsglm}: A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
 }
 \references{

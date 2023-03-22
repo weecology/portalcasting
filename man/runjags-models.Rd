@@ -8,7 +8,7 @@
 \alias{runjags_data}
 \alias{fit_runjags}
 \alias{forecast.runjags}
-\alias{runjags_control}
+\alias{runjags_controls}
 \title{Create and Run a runjags Portalcasting Model}
 \usage{
 runjags_inits(model_controls)
@@ -24,12 +24,12 @@ fit_runjags(
   metadata,
   covariates,
   model_controls,
-  control_runjags = runjags_control()
+  control_runjags = runjags_controls()
 )
 
 \method{forecast}{runjags}(object, h, level)
 
-runjags_control(
+runjags_controls(
   nchains = 4,
   adapt = 10000,
   burnin = 10000,
@@ -51,7 +51,7 @@ runjags_control(
 
 \item{covariates}{\code{data.frame} of covariates used in modeling. See \code{\link{prepare_covariates}}.}
 
-\item{control_runjags}{\code{list} of controls for running runjags models. See \code{\link{runjags_control}}. Optional. If not provided here, will be taken from the model controls list.}
+\item{control_runjags}{\code{list} of controls for running runjags models. See \code{\link{runjags_controls}}. Optional. If not provided here, will be taken from the model controls list.}
 
 \item{object}{A \code{runjags}-class object with columns of \code{"X"} values (state variables) in the the \code{mcmc} element.}
 
@@ -85,7 +85,7 @@ runjags_control(
   \code{runjags_monit}: A \code{vector} of model-specific \code{character} values of parameters to track in \code{\link[runjags]{run.jags}}.  \cr
   \code{runjags_model}: A single \code{character} value of the JAGS model block for \code{\link[runjags]{run.jags}}.  \cr
   \code{runjags_inits}: A \code{function} that takes the argument \code{data} to produce chain-specific initial values for \code{\link[runjags]{run.jags}}. \cr
-  \code{runjags_control}: A \code{list} of controls. \cr
+  \code{runjags_controls}: A \code{list} of controls. \cr
   \code{forecast.runjags}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"level"}.
 }
 \description{
@@ -93,7 +93,7 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \c
   \code{fit_runjags}: Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
   \code{runjags_data}, \code{runjags_monit}, \code{runjags_model}, \code{runjags_inits}: Produce the model-specific components as named. \cr 
   \code{forecast.runjags}: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a \code{"forecast"}-class object. \cr 
-  \code{runjags_control}: Combines the \code{\link[runjags]{run.jags}} control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
+  \code{runjags_controls}: Combines the \code{\link[runjags]{run.jags}} control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
 }
 \references{
 Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}. 
