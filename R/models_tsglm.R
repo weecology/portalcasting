@@ -1,9 +1,11 @@
 
 
 
-#' @title Create and Run a runjags Model Run
+#' @title Create, Run, and Forecast Multi-model Inference TSGLM Model Runs
 #'
-#' @description Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting.
+#' @description Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr
+#'   \code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount]{tsglm}} (from the tscount (Liboschik et al. 2017) package) model. \cr
+#'   \code{forecast.tsglm}: A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
 #'
 #' @param ts Non-negative \code{integer}-conformable vector of rodent abundances to use in forecasting. See \code{\link{prepare_abundance}}.
 #'
@@ -22,13 +24,27 @@
 #' @param lag \code{integer}-conformable value of the number of timesteps used in a bulk lagging for all covariates in all submodels.
 #'
 #' @param quiet \code{logical} indicator controlling if messages are printed.
+#' 
+#' @param object A \code{tsglm}-class object.
 #'
-#' @return An object of class \code{"tsglm"} with additional elements defining the submodel and lag.
+#' @param h \code{integer}-conformable number of steps forward to forecast. Passed into \code{predict} as \code{n.ahead}.
+#'
+#' @param level \code{numeric} of the confidence level to use in summarizing the predictions.
+#'
+#' @param ... Additional parameters passed into \code{predict}. 
+#'
+#' @return 
+#'   \code{meta_tsglm}: An object of class \code{"tsglm"} with additional elements defining the submodel and lag.
+#'   \code{forecast.tsglm}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
 #'
 #' @references 
-#'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}. 
-#'  
-#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
+#'  Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. \href{https://doi.org/10.18637/jss.v082.i05}{URL}. 
+#'
+#' @name tsglm models
+#'
+NULL
+
+#' @rdname tsglm-models
 #'
 #' @export
 #'
@@ -71,20 +87,12 @@ meta_tsglm <- function (ts,
 
 }
 
+#'
+#' @name tsglm models
+#'
+NULL
 
-#' @title Forecast a TSGLM Object
-#'
-#' @description A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
-#' 
-#' @param object A \code{tsglm}-class object.
-#'
-#' @param h \code{integer}-conformable number of steps forward to forecast. Passed into \code{predict} as \code{n.ahead}.
-#'
-#' @param level \code{numeric} of the confidence level to use in summarizing the predictions.
-#'
-#' @param ... Additional parameters passed into \code{predict}. 
-#'
-#' @return \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
+#' @rdname tsglm-models
 #'
 #' @export
 #'

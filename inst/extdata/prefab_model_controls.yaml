@@ -350,7 +350,7 @@ jags_RW:
     args: 
       model: "'jags_RW'"
       abundance:  abundance
-      control_runjags: runjags_control()
+      control_runjags: runjags_controls()
       metadata:  metadata
       covariates: covariates
     data_needs: [count, "N", log_mean_count]  
@@ -385,7 +385,7 @@ jags_logistic:
     args: 
       model: "'jags_logistic'"
       abundance:  abundance
-      control_runjags: runjags_control()
+      control_runjags: runjags_controls()
       metadata:  metadata
       covariates: covariates
     data_needs: [count, "N", log_mean_count, log_max_count]  
@@ -422,7 +422,7 @@ jags_logistic_covariates:
     args: 
       model: "'jags_logistic_covariates'"
       abundance:  abundance
-      control_runjags: runjags_control()
+      control_runjags: runjags_controls()
       metadata:  metadata
       covariates: covariates
     data_needs: [count, "N", log_mean_count, log_max_count, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
@@ -461,7 +461,7 @@ jags_logistic_competition:
     args: 
       model: "'jags_logistic_competition'"
       abundance:  abundance
-      control_runjags: runjags_control()
+      control_runjags: runjags_controls()
       metadata:  metadata
       covariates: covariates
     data_needs: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon]  
@@ -493,7 +493,7 @@ jags_logistic_competition_covariates:
     args: 
       model: "'jags_logistic_competition_covariates'"
       abundance:  abundance
-      control_runjags: runjags_control()
+      control_runjags: runjags_controls()
       metadata:  metadata
       covariates: covariates
     data_needs: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  

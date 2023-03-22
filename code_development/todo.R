@@ -8,7 +8,6 @@ setup_production(main)
 todo
 
 new model and dataset controls, templates, etc
-decide on jags arrangement
 test new tsglm and jags functions
 
 
