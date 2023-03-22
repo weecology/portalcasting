@@ -1,15 +1,119 @@
 
 
-fit_runjags <- function (model, abundance, metadata, covariates, control_runjags) {
+runjags_inits <- function (model_controls) {
 
-  monitor    <- runjags_monitor(model    = model,
-                                metadata = metadata)  
-  inits      <- runjags_inits(model      = model)  
-  jags_model <- runjags_model(model      = model)  
-  data       <- runjags_data(model       = model,
-                             abundance   = abundance,
-                             metadata    = metadata,
-                             covariates  = covariates)  
+  rngs  <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
+
+  function (data = NULL) {
+
+    function(chain = chain) {
+
+      model_specific_inits <- named_null_list(element_names = names(model_controls$fit$inits))
+      for (i in 1:length(model_specific_inits)) {
+
+        model_specific_inits[[i]] <- eval(parse(text = model_controls$fit$inits[[i]]))
+
+      }
+
+      c(list(.RNG.name = sample(rngs, 1),
+             .RNG.seed = sample(1:1e+06, 1)),
+        model_specific_inits)                  
+      
+    }
+
+  }
+
+}
+
+runjags_model <- function (model_controls, 
+                           verbose        = FALSE) {
+
+  scan(file  = eval(parse(text = model_controls$fit$full_model_file)),
+       what  = "character",
+       quiet = !verbose)
+  
+}
+
+
+runjags_monitors <- function (model_controls, 
+                              metadata) {
+
+  out <- paste0("X[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
+  c(out, model_controls$fit$monitors)
+
+}
+
+runjags_data <- function (model_controls,
+                          abundance, 
+                          metadata, 
+                          covariates) {
+
+  true_count_lead <- metadata$time$lead_time_newmoons
+  cast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, cast_count)
+  N               <- length(count)
+  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
+  log_max_count   <- log(max(abundance, na.rm = TRUE))
+
+  warm_rain_three_newmoons <- scale(covariates$warm_precip[covariates$newmoonnumber %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoonnumber) - 3)])[ , 1]
+  ndvi_thirteen_newmoons   <- scale(covariates$ndvi[covariates$newmoonnumber %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoonnumber) - 13)])[ , 1]
+  ordii_one_newmoon        <- scale(covariates$ordii[covariates$newmoonnumber %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoonnumber) - 1)])[ , 1]
+
+  list(true_count_lead          = true_count_lead,
+       cast_count               = cast_count,
+       count                    = count,
+       N                        = N,
+       log_mean_count           = log_mean_count,
+       log_max_count            = log_max_count,
+       warm_rain_three_newmoons = warm_rain_three_newmoons,
+       ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons,
+       ordii_one_newmoon        = ordii_one_newmoon)[model_controls$fit$data_needs]
+
+}
+
+
+
+#' @title Create and Run a runjags Model Run
+#'
+#' @description Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting.
+#'
+#' @param abundance Non-negative \code{integer}-conformable vector of rodent abundances to use in forecasting. See \code{\link{prepare_abundance}}.
+#'
+#' @param metadata \code{list} of model control elements. See \code{\link{prepare_metadata}}.
+#'
+#' @param covariates \code{data.frame} of covariates used in modeling. See \code{\link{prepare_covariates}}.
+#'
+#' @param control_runjags \code{list} of controls for running runjags models. See \code{\link{runjags_control}}. Optional. If not provided here, will be taken from the model controls list.
+#'
+#' @param model_controls \code{list} of model controls for the model of interest. See \code{\link{prefab_model_controls}}.
+#'
+#' @return An object of class \code{"runjags"} of model components. See \code{\link[runjags]{run.jags}}.
+#'
+#' @references 
+#'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}. 
+#'  
+#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
+#'
+#' @export
+#'
+fit_runjags <- function (abundance, 
+                         metadata, 
+                         covariates, 
+                         model_controls,
+                         control_runjags) {
+
+  if (missing(control_runjags)) {
+    control_runjags <- eval(parse(text = model_controls$fit$args$control_runjags))
+  }
+
+  monitor    <- runjags_monitors(model_controls = model_controls,
+                                 metadata       = metadata)  
+  inits      <- runjags_inits(model_controls    = model_controls)  
+  jags_model <- runjags_model(model_controls    = model_controls)  
+  data       <- runjags_data(model_controls     = model_controls,
+                             abundance          = abundance,
+                             metadata           = metadata,
+                             covariates         = covariates)  
 
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
@@ -32,474 +136,6 @@ fit_runjags <- function (model, abundance, metadata, covariates, control_runjags
 
 
 }
-
-runjags_monitor <- function (model, metadata) {
-
-  out <- c("mu", "sigma", paste0("X[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoon + 1, "]"))
-
-
-  if (model == "jags_RW") {
-
-    out <- out
-
-  } 
-  
-  if (model == "jags_logistic") {
-
-    out <- c(out, "r", "log_K")
-  
-  }
-
-  if (model == "jags_logistic_covariates") {
-
-    out <- c(out, "r_int", "r_slope", "log_K_int", "log_K_slope")
-  
-  }
-
-  if (model == "jags_logistic_competition") {
-
-    out <- c(out, "r_int", "log_K_int", "log_K_slope")
-  
-  }
-
-  if (model == "jags_logistic_competition_covariates") {
-
-    out <- c(out, "r_int", "r_slope", "log_K_int", "log_K_slope_NDVI", "log_K_slope_DO")
-  
-  }
-
-  out
-
-}
-
-runjags_inits <- function (model) {
-
-  rngs  <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
-
-
-  if (model == "jags_RW") {
-
-    out <- function (data = NULL) {
-
-             function (chain = chain) {
-
-               list(.RNG.name = sample(rngs, 1),
-                    .RNG.seed = sample(1:1e+06, 1),
-                     mu       = rnorm(1, mean = data$log_mean_count, sd = 0.1),  
-                     sigma    = runif(1, min = 0.01, max = 0.5))
-
-             }
-
-           }
-
-  }
-
-  if (model == "jags_logistic") {
-
-    out <- function (data = NULL) {
-
-             function (chain = chain) {
-
-               mu    <- rnorm(1, data$log_mean_count, 0.1)
-               log_K <- rnorm(1, data$log_max_count, 0.01)
-
-               log_K <- max(c(mu, log_K)) + 0.01
-
-               list(.RNG.name = sample(rngs, 1),
-                    .RNG.seed = sample(1:1e+06, 1),
-                     mu       = mu, 
-                     sigma    = runif(1, 0.01, 0.5),
-                     r        = rnorm(1, 0, 0.01),
-                     log_K    = log_K)
- 
-             }
- 
-           }    
-  
-  }
-
-  if (model == "jags_logistic_covariates") {
-
-    out <- function (data = NULL) {
-
-             function (chain = chain) {
-
-               mu        <- rnorm(1, data$log_mean_count, 0.1)
-               log_K_int <- rnorm(1, data$log_max_count, 0.01)
-
-               log_K_int <- max(c(mu, log_K_int)) + 0.01
-
-               list(.RNG.name    = sample(rngs, 1),
-                    .RNG.seed    = sample(1:1e+06, 1),
-                     mu          = mu, 
-                     sigma       = runif(1, 0.01, 0.5),
-                     r_int       = rnorm(1, 0, 0.01),
-                     r_slope     = rnorm(1, 0, 0.1),
-                     log_K_int   = log_K_int,
-                     log_K_slope = rnorm(1, 0, 0.01))
-
- 
-             }
- 
-           }    
-  
-  }
-
-  if (model == "jags_logistic_competition") {
-
-    out <- function (data = NULL) {
-
-             function (chain = chain) {
-
-               mu        <- rnorm(1, data$log_mean_count, 0.1)
-               log_K_int <- rnorm(1, data$log_max_count, 0.01)
-
-               log_K_int <- max(c(mu, log_K_int)) + 0.01
-
-               list(.RNG.name    = sample(rngs, 1),
-                    .RNG.seed    = sample(1:1e+06, 1),
-                     mu          = mu, 
-                     sigma       = runif(1, 0.01, 0.5),
-                     r_int       = rnorm(1, 0, 0.01),
-                     log_K_int   = log_K_int,
-                     log_K_slope = rnorm(1, 0, 0.01))
-
- 
-             }
- 
-           }    
-  
-  }
-
-  if (model == "jags_logistic_competition_covariates") {
-
-    out <- function (data = NULL) {
-
-             function (chain = chain) {
-
-               mu        <- rnorm(1, data$log_mean_count, 0.1)
-               log_K_int <- rnorm(1, data$log_max_count, 0.01)
-
-               log_K_int <- max(c(mu, log_K_int)) + 0.01
-
-               list(.RNG.name         = sample(rngs, 1),
-                    .RNG.seed         = sample(1:1e+06, 1),
-                     mu               = mu, 
-                     sigma            = runif(1, 0.01, 0.5),
-                     r_int            = rnorm(1, 0, 0.01),
-                     r_slope          = rnorm(1, 0, 0.1),
-                     log_K_int        = log_K_int,
-                     log_K_slope_NDVI = rnorm(1, 0, 0.01),
-                     log_K_slope_DO   = rnorm(1, 0, 0.01))
-
- 
-             }
- 
-           }    
-  
-  }
-
-  out 
-}
-
-runjags_model <- function (model) {
-
-  if (model == "jags_RW") {
-
-    out <- "model { 
- 
-             # priors
-
-             mu    ~  dnorm(log_mean_count, 5)
-             sigma ~  dunif(0, 1) 
-             tau   <- pow(sigma, -2)
-
-             # initial state
-
-             log_X[1]      <- mu
-             X[1]          <- exp(log_X[1])
-             count[1]      ~  dpois(X[1]) 
-
-             # through time
- 
-             for(i in 2:N) {
-
-               # Process model
-
-               pred_log_X[i] <- log_X[i-1]
-               log_X[i]      ~  dnorm(pred_log_X[i], tau)
-               X[i]          <- exp(log_X[i])
-   
-               # observation model
-
-               count[i] ~ dpois(X[i])
-
-             }
-
-           }"
-
-  }
-
-  if (model == "jags_logistic") {
-
-    out <- "model { 
- 
-             # priors
-
-             mu    ~  dnorm(log_mean_count, 5)
-             sigma ~  dunif(0, 1) 
-             tau   <- pow(sigma, -2)
-             r     ~  dnorm(0, 5)
-             log_K ~  dnorm(log_max_count, 5)
-             K     <- exp(log_K) 
- 
-             # initial state
-
-             log_X[1]      <- mu
-             X[1]          <- exp(log_X[1])
-             count[1]      ~  dpois(X[1]) 
-
-             # through time
-
-             for(i in 2:N) {
-
-               # Process model
-
-               pred_X[i]     <- X[i-1] * exp(r * (1 - (X[i - 1] / K)))
-               pred_log_X[i] <- log(pred_X[i])
-               log_X[i]      ~  dnorm(pred_log_X[i], tau)
-               X[i]          <- exp(log_X[i])
-
-               # observation model
-
-               count[i] ~ dpois(X[i])
-
-             }
-
-           }"
-  
-  }
-
-  if (model == "jags_logistic_covariates") {
-
-    out <- "model { 
- 
-             # priors
-
-             mu          ~  dnorm(log_mean_count, 5)
-             sigma       ~  dunif(0, 1) 
-             tau         <- pow(sigma, -2)
-             r_int       ~  dnorm(0, 5)
-             r_slope     ~  dnorm(0, 1)
-             log_K_int   ~  dnorm(log_max_count, 5)
-             log_K_slope ~  dnorm(0, 1)
- 
-             # initial state
-
-             log_X[1]      <- mu
-             X[1]          <- exp(log_X[1])
-             count[1]      ~  dpois(X[1]) 
-
-             # expand parameters
-
-             for (i in 1:N) {
-
-               r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
-               K[i] <- exp(log_K_int + log_K_slope * ndvi_thirteen_newmoons[i]) 
-
-             }
-
-             # through time
-
-             for(i in 2:N) {
-
-               # Process model
-
-               pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
-               pred_log_X[i] <- log(pred_X[i])
-               log_X[i]      ~  dnorm(pred_log_X[i], tau)
-               X[i]          <- exp(log_X[i])
-
-               # observation model
-
-               count[i] ~ dpois(X[i])
-
-             }
-
-           }"
-  
-  }
-
-  if (model == "jags_logistic_competition") {
-
-    out <- "model {  
-
-             # priors
-
-             mu          ~  dnorm(log_mean_count, 5)
-             sigma       ~  dunif(0, 1) 
-             tau         <- pow(sigma, -2)
-             r_int       ~  dnorm(0, 5)
-             log_K_int   ~  dnorm(log_max_count, 5)
-             log_K_slope ~  dnorm(0, 1)
- 
-             # initial state
-
-             log_X[1]      <- mu
-             X[1]          <- exp(log_X[1])
-             count[1]      ~  dpois(X[1]) 
-
-             # expand parameters
-
-             for (i in 1:N) {
-
-               r[i] <- r_int
-               K[i] <- exp(log_K_int + log_K_slope * ordii_one_newmoon[i]) 
-
-             }
-
-             # through time
-
-             for(i in 2:N) {
-
-               # Process model
-
-               pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
-               pred_log_X[i] <- log(pred_X[i])
-               log_X[i]      ~  dnorm(pred_log_X[i], tau)
-               X[i]          <- exp(log_X[i])
-
-               # observation model
-
-               count[i] ~ dpois(X[i])
-
-             }
- 
-           }"
-  
-  }
-
-  if (model == "jags_logistic_competition_covariates") {
-
-    out <- "model { 
-  
-             # priors
-
-             mu               ~  dnorm(log_mean_count, 5)
-             sigma            ~  dunif(0, 1) 
-             tau              <- pow(sigma, -1/2)
-             r_int            ~  dnorm(0, 5)
-             r_slope          ~  dnorm(0, 1)
-             log_K_int        ~  dnorm(log_max_count, 5)
-             log_K_slope_NDVI ~  dnorm(0, 4)
-             log_K_slope_DO   ~  dnorm(0, 4)
- 
-             # initial state
-
-             log_X[1]      <- mu
-             X[1]          <- exp(log_X[1])
-             count[1]      ~  dpois(X[1]) 
-
-             # expand parameters
-
-             for (i in 1:N) {
-
-               r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
-               K[i] <- exp(log_K_int + log_K_slope_DO * ordii_one_newmoon[i] + log_K_slope_NDVI * ndvi_thirteen_newmoons[i]) 
-
-             }
-
-
-             # through time
-
-             for(i in 2:N) {
-
-               # Process model
-
-               pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
-               pred_log_X[i] <- log(pred_X[i])
-               log_X[i]      ~  dnorm(pred_log_X[i], tau)
-               X[i]          <- exp(log_X[i])
-
-               # observation model
-
-               count[i] ~ dpois(X[i])
-
-             }
-
-           }"
-  
-  }
-
-  out
-
-}
-
-runjags_data <- function (model = NULL, abundance, metadata, covariates) {
-
-  true_count_lead <- metadata$time$lead_time_newmoons
-  cast_count      <- rep(NA, true_count_lead)
-  count           <- c(abundance, cast_count)
-  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
-  log_max_count   <- log(max(abundance, na.rm = TRUE))
-
-  warm_rain_three_newmoons <- scale(covariates$warm_precip[covariates$newmoon %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoon) - 3)])[ , 1]
-  ndvi_thirteen_newmoons   <- scale(covariates$ndvi[covariates$newmoon %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoon) - 13)])[ , 1]
-  ordii_one_newmoon        <- scale(covariates$ordii[covariates$newmoon %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoon) - 1)])[ , 1]
-
-  if (model == "jags_RW") {
-
-    out <- list(count          = count, 
-                N              = length(count),
-                log_mean_count = log_mean_count)
-
-  }
-
-  if (model == "jags_logistic") {
-
-    out <- list(count          = count, 
-                N              = length(count),
-                log_max_count  = log_max_count,
-                log_mean_count = log_mean_count)
-  
-  }
-
-  if (model == "jags_logistic_covariates") {
-
-    out <- list(count                    = count, 
-                N                        = length(count),
-                log_max_count            = log_max_count,
-                log_mean_count           = log_mean_count,
-                warm_rain_three_newmoons = warm_rain_three_newmoons,
-                ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons)
-  
-  }
-
-  if (model == "jags_logistic_competition") {
-
-    out <- list(count                    = count, 
-                N                        = length(count),
-                log_max_count            = log_max_count,
-                log_mean_count           = log_mean_count,
-                ordii_one_newmoon        = ordii_one_newmoon)
-  
-  }
-
-  if (model == "jags_logistic_competition_covariates") {
-
-    out <- list(count                    = count, 
-                N                        = length(count),
-                log_max_count            = log_max_count,
-                log_mean_count           = log_mean_count,
-                warm_rain_three_newmoons = warm_rain_three_newmoons,
-                ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons,
-                ordii_one_newmoon        = ordii_one_newmoon)
-  
-  }
-
-  out
-}
-
 
 #' @title Forecast a runjags Object
 #'

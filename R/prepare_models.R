@@ -68,13 +68,23 @@ write_model_controls <- function (main               = ".",
 
   }
 
+  for (i in 1:length(model_controls)) {
+
+    if(!is.null(model_controls[[i]]$fit$model_file)) {
+      fpath <- paste0("'", file.path(main, settings$subdirectories$models, model_controls[[i]]$fit$model_file), "'")
+      model_controls[[i]]$fit$full_model_file <- fpath
+
+    } else {
+
+      model_controls[[i]]$fit$full_model_file <- NULL
+
+    }
+
+  }
+
   write_yaml(x    = model_controls,
              file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
 
   invisible(model_controls)
 
 }
-
-
-
-

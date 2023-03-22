@@ -353,6 +353,12 @@ jags_RW:
       control_runjags: runjags_control()
       metadata:  metadata
       covariates: covariates
+    data_needs: [count, "N", log_mean_count]  
+    monitors: [mu, sigma]
+    model_file: jags_RW.txt
+    inits:
+      mu:    rnorm(1, mean = data$log_mean_count, sd = 0.1)
+      sigma: runif(1, min = 0.01, max = 0.5)
   cast:
     fun: forecast
     args: 
@@ -382,6 +388,14 @@ jags_logistic:
       control_runjags: runjags_control()
       metadata:  metadata
       covariates: covariates
+    data_needs: [count, "N", log_mean_count, log_max_count]  
+    monitors: [mu, sigma, r, log_K]
+    model_file: jags_logistic.txt
+    inits:
+      mu:    rnorm(1, data$log_mean_count, 0.1)
+      sigma: runif(1, 0.01, 0.5)
+      r:     rnorm(1, 0, 0.01)
+      log_K: rnorm(1, data$log_max_count, 0.01)
   cast:
     fun: forecast
     args: 
@@ -411,6 +425,16 @@ jags_logistic_covariates:
       control_runjags: runjags_control()
       metadata:  metadata
       covariates: covariates
+    data_needs: [count, "N", log_mean_count, log_max_count, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
+    monitors: [mu, sigma, r_int, r_slope, log_K_int, log_K_slope]
+    model_file: jags_logistic_covariates.txt
+    inits:
+      mu:          rnorm(1, data$log_mean_count, 0.1)
+      sigma:       runif(1, 0.01, 0.5)
+      r_int:       rnorm(1, 0, 0.01)
+      r_slope:     rnorm(1, 0, 0.1)
+      log_K_int:   rnorm(1, data$log_max_count, 0.01)
+      log_K_slope: rnorm(1, 0, 0.01)
   cast:
     fun: forecast
     args: 
@@ -440,6 +464,9 @@ jags_logistic_competition:
       control_runjags: runjags_control()
       metadata:  metadata
       covariates: covariates
+    data_needs: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon]  
+    monitors: [mu, sigma, r_int, log_K_int, log_K_slope]
+    model_file: jags_logistic_competition.txt
   cast:
     fun: forecast
     args: 
@@ -469,6 +496,9 @@ jags_logistic_competition_covariates:
       control_runjags: runjags_control()
       metadata:  metadata
       covariates: covariates
+    data_needs: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
+    monitors: [mu, sigma, r_int, r_slope, log_K_int, log_K_slope_NDVI, log_K_slope_DO]
+    model_file: jags_logistic_competition_covariates.txt
   cast:
     fun: forecast
     args: 

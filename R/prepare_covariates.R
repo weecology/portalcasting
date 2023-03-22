@@ -110,7 +110,7 @@ prepare_covariates <- function (main     = ".",
   historic_ordii$newmoondate   <- newmoons$newmoondate[match(historic_ordii$newmoonnumber, newmoons$newmoonnumber)]
 
 
-  moonin                       <- newmoons$newmoondate > settings$time$origin
+  moonin                       <- newmoons$newmoondate >= settings$time$origin
   forecast_ordii               <- data.frame(newmoonnumber = newmoons$newmoonnumber[moonin], 
                                              DO            = NA,
                                              newmoondate   = newmoons$newmoondate[moonin],

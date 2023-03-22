@@ -30,6 +30,10 @@ prepare_abundance <- function (main     = ".",
                                quiet    = FALSE, 
                                verbose  = FALSE) {
 
+  return_if_null(dataset)
+  return_if_null(model)
+  return_if_null(species)
+
   # species can only be length 1 here
 
   model_controls <- read_model_controls(main     = main, 

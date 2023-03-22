@@ -9,5 +9,23 @@ todo
 
 new model and dataset controls, templates, etc
 decide on jags arrangement
-document new tsglm and jags functions
 test new tsglm and jags functions
+
+
+something like this, but needs easier updates
+
+add_model_controls <- function (main               = ".",
+                                new_model_controls = NULL,
+                                settings           = directory_settings( ),
+                                quiet              = FALSE, 
+                                ...) {
+
+  template_path <- system.file(...     = "extdata", 
+                               ...     = "model_controls_template.yaml", 
+                               package = "portalcasting")
+
+  template      <- read_yaml(file = template_path)
+
+  update_list(template, ... = ...)
+
+}

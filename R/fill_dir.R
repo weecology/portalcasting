@@ -320,6 +320,32 @@ fill_models <- function (main               = ".",
 
   messageq("  ... done. ", quiet = quiet)
 
+  files  <- unlist(mapply(getElement, mapply(getElement, model_controls_list, "fit"), "model_file"))
+  ffiles <- unlist(mapply(getElement, mapply(getElement, model_controls_list, "fit"), "full_model_file"))
+
+  nfiles <- length(files)
+  if (nfiles > 0) {
+
+    messageq(" Writing model script files ... ", quiet = quiet)
+
+    for (i in 1:nfiles) {
+
+      messageq("   - ", names(files)[i], quiet = !verbose)
+
+      to_path   <- eval(parse(text = ffiles[i]))
+      from_path <- system.file(...     = "extdata", 
+                               ...     = files[i], 
+                               package = "portalcasting")
+      file.copy(from = from_path,
+                to   = to_path)
+
+
+    }
+
+    messageq("  ... done. ", quiet = quiet)
+
+  }
+
   invisible( )
 
 }

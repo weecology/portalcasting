@@ -7,10 +7,28 @@ setup_production(main)
 main <- "~/sandbox2"
 setup_sandbox(main)
 
+
+main <- "~/covs"
+create_dir(main)
+fill_resources(main)
+
+
+# currently working here on the model script files for the jags models
+
+
+runjags_inits
+
+
+rm(list=ls())
+devtools::load_all()
+
+main <- "~/ptc"
+fill_models(main,verbose=F)
+
 dataset  = "controls"
 species <- "DM"
 
-                  model    = "AutoArima"
+                  model    = "jags_logistic_covariates"
                   settings = directory_settings( ) 
                   quiet    = FALSE 
                   verbose  = TRUE
@@ -33,6 +51,17 @@ species <- "DM"
                                   settings     = settings)                                        
   covariates     <- read_covariates(main       = main,
                                     settings   = settings)
+control_runjags <- runjags_control(thin = 1, adapt = 1000, burnin = 1000, sample = 1000)
+
+  data       <- runjags_data(model_controls = model_controls,
+                             abundance      = abundance,
+                             metadata       = metadata,
+                             covariates     = covariates)  
+
+  monitors       <- runjags_monitors(model_controls = model_controls,
+                             metadata       = metadata)
+monitors
+  
 
 
   model_fit  <- do.call(what = model_controls$fit$fun,
