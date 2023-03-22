@@ -158,10 +158,14 @@ fill_resources <- function (main     = ".",
 
   messageq("Downloading resources ... ", quiet = quiet)
 
-  download_observations(path        = file.path(main, settings$subdirectories$resources), 
-                        version     = settings$resources$PortalData$version,
-                        from_zenodo = settings$resources$PortalData$source == "zenodo",
-                        quiet       = quiet)
+  download_observations(path      = file.path(main, settings$subdirectories$resources), 
+                        version   = settings$resources$PortalData$version,
+                        source    = settings$resources$PortalData$source,
+                        pause     = settings$unzip_pause,
+                        timeout   = settings$download_timeout,
+                        overwrite = settings$overwrite,
+                        quiet     = quiet,
+                        verbose   = verbose)
 
   download_archive(main          = main, 
                    resources_sub = settings$subdirectories$resources,

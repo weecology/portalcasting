@@ -20,6 +20,8 @@
 #'
 #' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#'
 #' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.
 #'
 #' @return \code{NULL}. Plot is generated.
@@ -33,19 +35,20 @@ plot_casts_cov_RMSE <- function (main                        = ".",
                                  historic_end_newmoonnumbers = NULL, 
                                  models                      = NULL, 
                                  datasets                    = "controls", 
-                                 species                     = NULL) {
+                                 species                     = NULL,
+                                 quiet                       = FALSE) {
 
 
   if (is.null(cast_tab)) {
 
-    cast_choices <- select_casts(main                       = main, 
-                                 settings                   = settings, 
-                                 cast_ids                   = cast_ids,
-                                 historic_end_newmoonnumber = historic_end_newmoonnumbers, 
-                                 models                     = models, 
-                                 datasets                   = datasets, 
-                                 species                    = species, 
-                                 quiet                      = quiet)
+    cast_choices <- select_casts(main                        = main, 
+                                 settings                    = settings, 
+                                 cast_ids                    = cast_ids,
+                                 historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
+                                 models                      = models, 
+                                 datasets                    = datasets, 
+                                 species                     = species, 
+                                 quiet                       = quiet)
 
     if (NROW(cast_choices) == 0) {
 
@@ -74,7 +77,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
   cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                        <- ifnull(models, eval_models())
   dataset                       <- ifnull(datasets, unique(cast_tab$dataset)[1])
-  species                       <- ifnull(species, eval_species()) 
+  species                       <- ifnull(species, "DM") 
   historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(cast_tab$historic_end_newmoonnumber)) 
   cast_id_in                    <- cast_tab$cast_id %in% cast_ids
   model_in                      <- cast_tab$model %in% models
@@ -230,6 +233,8 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
+#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#'
 #' @return \code{NULL}. Plot is generated.
 #'
 #' @export
@@ -241,19 +246,20 @@ plot_casts_err_lead <- function (main                        = ".",
                                  historic_end_newmoonnumbers = NULL, 
                                  models                      = NULL, 
                                  datasets                    = "controls", 
-                                 species                     = NULL) {
+                                 species                     = NULL,
+                                 quiet                       = FALSE) {
 
 
   if (is.null(cast_tab)) {
 
-    cast_choices <- select_casts(main                       = main, 
-                                 settings                   = settings, 
-                                 cast_ids                   = cast_ids,
-                                 historic_end_newmoonnumber = historic_end_newmoonnumbers, 
-                                 models                     = models, 
-                                 datasets                   = datasets, 
-                                 species                    = species, 
-                                 quiet                      = quiet)
+    cast_choices <- select_casts(main                        = main, 
+                                 settings                    = settings, 
+                                 cast_ids                    = cast_ids,
+                                 historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
+                                 models                      = models, 
+                                 datasets                    = datasets, 
+                                 species                     = species, 
+                                 quiet                       = quiet)
 
     if (NROW(cast_choices) == 0) {
 
@@ -282,7 +288,7 @@ plot_casts_err_lead <- function (main                        = ".",
   cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
   models                        <- ifnull(models, eval_models())
   dataset                       <- ifnull(datasets, unique(cast_tab$dataset)[1])
-  species                       <- ifnull(species, eval_species()) 
+  species                       <- ifnull(species, "DM") 
   historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(cast_tab$historic_end_newmoonnumber)) 
   cast_id_in                    <- cast_tab$cast_id %in% cast_ids
   model_in                      <- cast_tab$model %in% models
@@ -573,14 +579,14 @@ plot_cast_point <- function (main                       = ".",
                              quiet                      = FALSE) {
 
 
-  casts_meta <- select_casts(main                       = main, 
-                             settings                   = settings, 
-                             cast_ids                   = cast_id,
-                             historic_end_newmoonnumber = historic_end_newmoonnumber, 
-                             models                     = model, 
-                             datasets                   = dataset, 
-                             species                    = species, 
-                             quiet                      = quiet)
+  casts_meta <- select_casts(main                        = main, 
+                             settings                    = settings, 
+                             cast_ids                    = cast_id,
+                             historic_end_newmoonnumbers = historic_end_newmoonnumber, 
+                             models                      = model, 
+                             datasets                    = dataset, 
+                             species                     = species, 
+                             quiet                       = quiet)
 
   if (with_census) {
 
@@ -785,14 +791,14 @@ plot_cast_ts <- function (main                         = ".",
                           species                      = NULL,  
                           quiet                        = FALSE) {
 
-  casts_meta <- select_casts(main                       = main, 
-                             settings                   = settings, 
-                             cast_ids                   = cast_id,
-                             historic_end_newmoonnumber = historic_end_newmoonnumber, 
-                             models                     = model, 
-                             datasets                   = dataset, 
-                             species                    = species, 
-                             quiet                      = quiet)
+  casts_meta <- select_casts(main                        = main, 
+                             settings                    = settings, 
+                             cast_ids                    = cast_id,
+                             historic_end_newmoonnumbers = historic_end_newmoonnumber, 
+                             models                      = model, 
+                             datasets                    = dataset, 
+                             species                     = species, 
+                             quiet                       = quiet)
 
   if (NROW(casts_meta) > 1) {
 

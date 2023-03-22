@@ -304,7 +304,7 @@ prepare_dataset <- function(name             = "all",
                                          quiet      = !verbose) 
 
 
-  sp_col           <- colnames(rodents_table) %in% all_species( )
+  sp_col           <- colnames(rodents_table) %in% rodent_species( )
   which_sp_col     <- which(sp_col)
   which_not_sp_col <- which(!sp_col)
   sp_col_in        <- colnames(rodents_table)[sp_col] %in% species

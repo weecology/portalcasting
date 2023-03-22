@@ -29,14 +29,12 @@ Depends:
 License: MIT + file LICENSE
 Imports:
   coda,
-  forecast,
   httr,
   jsonlite,
   portalr,
   runjags,
   scoringRules,
   stats,
-  tscount,
   viridis,
   yaml
 Suggests:

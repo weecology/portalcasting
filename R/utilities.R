@@ -212,7 +212,7 @@ foy <- function (dates = NULL) {
 #'
 ifnull <- function (x = NULL, alt = NULL) {
 
-  ifelse(expr = is.null(x),
+  ifelse(test = is.null(x),
          yes  = alt,
          no   = x)
 
