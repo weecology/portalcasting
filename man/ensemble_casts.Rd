@@ -36,7 +36,7 @@ ensemble_casts(
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.}
 }
 \value{
 \code{data.frame} of ensembled casts.

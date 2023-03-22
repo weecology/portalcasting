@@ -31,7 +31,7 @@ plot_casts_err_lead(
 
 \item{datasets}{\code{character} value of the rodent data set(s) to include. Default value is \code{"controls"}.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }

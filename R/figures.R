@@ -22,7 +22,7 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.
+#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 
@@ -229,7 +229,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #'
 #' @param datasets \code{character} value of the rodent data set(s) to include. Default value is \code{"controls"}.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.
+#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
