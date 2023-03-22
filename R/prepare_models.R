@@ -12,6 +12,8 @@
 #'
 #' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.
 #'
+#' @param model_controls_list \code{list} of controls for the models. 
+#'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or just the tidy messages.
 #'
 #' @return 

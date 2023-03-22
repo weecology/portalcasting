@@ -41,6 +41,8 @@ write_model_scripts(
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
+\item{model_controls_list}{\code{list} of controls for the models.}
+
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just the tidy messages.}
 }
 \value{

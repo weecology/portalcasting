@@ -18,7 +18,7 @@
 #'
 #' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
 #'
-#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#' @param datasets \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -770,7 +770,7 @@ plot_cast_point <- function (main                       = ".",
 #' @param historic_start_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
 #'  Does not influence the fit of the models, just the presentation. 
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
+#' @param cast_group \code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'

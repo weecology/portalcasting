@@ -720,7 +720,9 @@ eval_models <- function() {
 #'
 #' @param models \code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.
 #'
-#' @param datasets \code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#' @param datasets \code{character} values of the rodent data sets to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#'
+#' @param species \code{character} value of the species codes (or \code{"total"} for the total across species) to include. Default value is \code{NULL}, which equates to no selection with respect to \code{species}.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'

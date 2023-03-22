@@ -24,6 +24,8 @@ plot_cast_ts(
 
 \item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
+\item{cast_group}{\code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.}
+
 \item{dataset}{\code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
 \item{model}{\code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to model.}
@@ -36,8 +38,6 @@ Does not influence the fit of the models, just the presentation.}
 \item{species}{\code{character} value of the species codes (or \code{"total"} for the total across species) to be plotted. \code{NULL} (default) also gives the total.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.}
 }
 \value{
 \code{NULL}. Plot is generated.
