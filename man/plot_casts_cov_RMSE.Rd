@@ -28,7 +28,7 @@ plot_casts_cov_RMSE(
 
 \item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.}
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 }

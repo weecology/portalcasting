@@ -1,9 +1,9 @@
 
-#' @title Save Data Out to a File and Return It	Invisibly
+#' @title Save Data Out to a File and Return It	(Invisibly)
 #'
 #' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..
 #'
-#' @param x \code{data.frame} or YAML \code{list} to be written out.
+#' @param x \code{data.frame} or \code{list} to be written out.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
@@ -72,7 +72,7 @@ write_data <- function (x            = NULL,
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'  
-#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"forecast_covariates"},  \code{"historical_covariates"}, \code{"covariate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.
+#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"climate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.
 #'
 #' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"}, \code{"controls"}, and \code{"exclosures"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
 #'

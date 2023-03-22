@@ -5,6 +5,7 @@
 \alias{read_model_controls}
 \alias{model_controls}
 \alias{write_model_controls}
+\alias{write_model_scripts}
 \title{Read and Write Model Control Lists}
 \usage{
 read_model_controls(main = ".", settings = directory_settings())
@@ -22,6 +23,12 @@ write_model_controls(
   settings = directory_settings(),
   quiet = FALSE
 )
+
+write_model_scripts(
+  model_controls_list = prefab_model_controls(),
+  quiet = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
@@ -33,9 +40,14 @@ write_model_controls(
 \item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
 
 \item{quiet}{\code{logical} indicator controlling if messages are printed.}
+
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just the tidy messages.}
 }
 \value{
-\code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_model_controls}.
+\code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly. \cr 
+  \code{read_model_controls}: \code{list} of all \code{models}' control \code{list}s, from the file defined in \code{\link{directory_settings}}, \code{\link[base]{invisible}}-ly. \cr 
+  \code{write_model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly. \cr 
+  \code{write_model_scripts}: \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
 Input/output functions for model control lists.

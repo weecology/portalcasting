@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_input_output.R
 \name{write_data}
 \alias{write_data}
-\title{Save Data Out to a File and Return It	Invisibly}
+\title{Save Data Out to a File and Return It	(Invisibly)}
 \usage{
 write_data(
   x = NULL,
@@ -14,7 +14,7 @@ write_data(
 )
 }
 \arguments{
-\item{x}{\code{data.frame} or YAML \code{list} to be written out.}
+\item{x}{\code{data.frame} or \code{list} to be written out.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 

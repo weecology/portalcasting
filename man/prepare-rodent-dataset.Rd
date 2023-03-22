@@ -25,7 +25,7 @@ prepare_dataset(
   min_traps = 1,
   min_plots = 24,
   effort = TRUE,
-  species = base_species(),
+  species = forecasting_species(),
   total = TRUE,
   save = TRUE,
   quiet = FALSE,

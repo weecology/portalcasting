@@ -95,6 +95,8 @@ Fill the directory with components including \enumerate{
     \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
     \item{covariates (\code{\link{prepare_covariates}})}
     \item{metadata (\code{\link{prepare_metadata}})}}}
-  \item{Models (\code{\link{fill_models}})}
+  \item{Models (\code{\link{fill_models}}) \itemize{
+    \item{model controls (\code{\link{write_model_controls}})}
+    \item{model scripts (if needed) (\code{\link{write_model_scripts}})}}}
  }
 }

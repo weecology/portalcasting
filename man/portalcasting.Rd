@@ -5,7 +5,7 @@
 \alias{portalcasting}
 \title{Functions for Portalcasting (Forecasting Portal Rodents)}
 \description{
-This package contains the functions used for continuous analysis and forecasting of \href{https://portal.weecology.org/}{Portal rodent populations}, as implemented in the \href{https://www.github.com/weecology/portalPredictions}{Portal Predictions repository} and displayed on the \href{https://portal.naturecast.org}{Portal Forecast website}. \cr
- Functions in \code{portalcasting} are designed to be portable, allowing users to set up a fully-functional replica repository for development and testing of new models (a.k.a. \emph{sandboxing}) in the same directory and codebase as the production pipeline.
+Functions for continuous analysis and forecasting of \href{https://portal.weecology.org/}{Portal rodent populations}, as implemented in the \href{https://www.github.com/weecology/portalPredictions}{Portal Predictions repository} and displayed on the \href{https://portal.naturecast.org}{Portal Forecast website}. \cr
+             Functions in \code{portalcasting} are designed to be portable, allowing users to set up a fully-functional replica repository for development and testing of new models (a.k.a. \href{https://en.wikipedia.org/wiki/Sandbox_(software_development)}{\emph{sandboxing}}) in the same directory configurations, codebase, and datasets as the production pipeline.
 }
 \keyword{package}

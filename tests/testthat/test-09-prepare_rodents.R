@@ -41,40 +41,6 @@ test_that(desc = "prepare_rodents preps all the rodents", {
 
 
 
-test_that(desc = "rodents_species creates a vector of IDs as needed", {
-
-  x1 <- rodent_species()
-  x2 <- rodent_species(set = "all")
-  x3 <- rodent_species(set = "base")
-  x4 <- all_species(type = "abbreviation")
-  x5 <- all_species(type = "Latin")
-  x6 <- all_species(type = "table")
-  x7 <- all_species()
-  x8 <- all_species(nadot = TRUE)
-  x9 <- all_species(total = TRUE)
-  x0 <- base_species()
-  xa <- eval_species()
-
-
-  expect_equal(x1, NULL)
-  expect_is(x2, "character")
-  expect_is(x3, "character")
-  expect_is(x4, "character")
-  expect_is(x5, "character")
-  expect_is(x6, "data.frame")
-  expect_is(x7, "character")
-  expect_is(x8, "character")
-  expect_is(x9, "character")
-  expect_is(x0, "character")
-  expect_is(xa, "character")
-
-  expect_error(rodent_species(type = "xxx", set = "all"))
-  expect_error(rodent_species(set = "xxx"))
-
-})
-
-
-
 test_that(desc = "prefab_datasets names the proper sets", {
 
   pds1 <- prefab_datasets()

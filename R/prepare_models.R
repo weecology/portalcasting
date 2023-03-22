@@ -12,8 +12,14 @@
 #'
 #' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.
 #'
-#' @return \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_model_controls}.
-#'  
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information or just the tidy messages.
+#'
+#' @return 
+#'   \code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly. \cr 
+#'   \code{read_model_controls}: \code{list} of all \code{models}' control \code{list}s, from the file defined in \code{\link{directory_settings}}, \code{\link[base]{invisible}}-ly. \cr 
+#'   \code{write_model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly. \cr 
+#'   \code{write_model_scripts}: \code{NULL}, \code{\link[base]{invisible}}-ly.
+#' 
 #' @name read and write model controls
 #'
 #' @export
@@ -50,29 +56,16 @@ write_model_controls <- function (main               = ".",
                                   settings           = directory_settings( ),
                                   quiet              = FALSE) {
 
-  model_controls <- prefab_model_controls()
+  messageq(" Writing model controls ... ", quiet = quiet)
 
-  nmodels     <- length(model_controls)
-  nnew_models <- length(new_model_controls)
+  model_controls <- c(prefab_model_controls( ), new_model_controls)[models]
+  nmodels        <- length(model_controls)
 
-  if (nnew_models > 0) {
-
-    for (i in 1:nnew_models) {
-
-      model_controls <- update_list(model_controls, 
-                                    x = new_model_controls[[i]])
-
-      names(model_controls)[nmodels + i] <- names(new_model_controls)[i]
-
-    }
-
-  }
-
-  for (i in 1:length(model_controls)) {
+  for (i in 1:nmodels) {
 
     if(!is.null(model_controls[[i]]$fit$model_file)) {
-      fpath <- paste0("'", file.path(main, settings$subdirectories$models, model_controls[[i]]$fit$model_file), "'")
-      model_controls[[i]]$fit$full_model_file <- fpath
+
+      model_controls[[i]]$fit$full_model_file <- paste0("'", file.path(main, settings$subdirectories$models, model_controls[[i]]$fit$model_file), "'")
 
     } else {
 
@@ -85,6 +78,48 @@ write_model_controls <- function (main               = ".",
   write_yaml(x    = model_controls,
              file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
 
+  messageq("  ... done. ", quiet = quiet)
+
   invisible(model_controls)
+
+}
+
+
+
+#' @rdname read-and-write-model-controls
+#'
+#' @export
+#'
+write_model_scripts <- function (model_controls_list = prefab_model_controls( ), 
+                                 quiet               = FALSE, 
+                                 verbose             = FALSE) {
+
+  files  <- unlist(mapply(getElement, mapply(getElement, model_controls_list, "fit"), "model_file"))
+  ffiles <- unlist(mapply(getElement, mapply(getElement, model_controls_list, "fit"), "full_model_file"))
+
+  nfiles <- length(files)
+  if (nfiles > 0) {
+
+    messageq(" Writing model script files ... ", quiet = quiet)
+
+    for (i in 1:nfiles) {
+
+      messageq("   - ", names(files)[i], quiet = !verbose)
+
+      to_path   <- eval(parse(text     = ffiles[i]))
+      from_path <- system.file(...     = "extdata", 
+                               ...     = files[i], 
+                               package = "portalcasting")
+      file.copy(from = from_path,
+                to   = to_path)
+
+
+    }
+
+    messageq("  ... done. ", quiet = quiet)
+
+  }
+
+  invisible( )
 
 }

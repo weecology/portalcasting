@@ -25,7 +25,7 @@
 portalcast <- function (main     = ".", 
                         models   = prefab_models( ), 
                         datasets = prefab_datasets( ),
-                        species  = base_species(total = TRUE),
+                        species  = forecasting_species(total = TRUE),
                         settings = directory_settings( ),
                         quiet    = FALSE,
                         verbose  = FALSE) {
@@ -154,7 +154,7 @@ cast <- function (main     = ".",
 make_model_combinations <- function (main     = ".", 
                                      models   = prefab_models( ), 
                                      datasets = prefab_datasets( ),
-                                     species  = base_species(total = TRUE),
+                                     species  = forecasting_species(total = TRUE),
                                      settings = directory_settings( )) {
   
   metadata <- read_metadata(main     = main,

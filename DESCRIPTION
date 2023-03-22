@@ -46,6 +46,8 @@ Suggests:
   markdown,
   rmarkdown,
   testthat
+Remotes:
+  portalr: weecology/portalr#288
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Encoding: UTF-8

@@ -4,7 +4,7 @@
 #' @importFrom grDevices grey rgb
 #' @importFrom httr content GET stop_for_status
 #' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
-#' @importFrom portalr download_observations get_future_moons load_datafile ndvi summarize_rodent_data weather
+#' @importFrom portalr download_observations get_future_newmoons load_datafile ndvi return_if_null rodent_species summarize_rodent_data weather
 #' @importFrom runjags combine.mcmc run.jags runjags.options
 #' @importFrom scoringRules crps_nbinom crps_norm crps_pois crps_sample logs_sample logs_nbinom logs_norm logs_pois 
 #' @importFrom stats AIC as.ts filter frequency lm na.omit predict qnorm quantile rgamma rnorm runif sd
@@ -15,8 +15,8 @@
 
 #' @title Functions for Portalcasting (Forecasting Portal Rodents)
 #'
-#' @description This package contains the functions used for continuous analysis and forecasting of \href{https://portal.weecology.org/}{Portal rodent populations}, as implemented in the \href{https://www.github.com/weecology/portalPredictions}{Portal Predictions repository} and displayed on the \href{https://portal.naturecast.org}{Portal Forecast website}. \cr
-#'  Functions in \code{portalcasting} are designed to be portable, allowing users to set up a fully-functional replica repository for development and testing of new models (a.k.a. \emph{sandboxing}) in the same directory and codebase as the production pipeline. 
+#' @description Functions for continuous analysis and forecasting of \href{https://portal.weecology.org/}{Portal rodent populations}, as implemented in the \href{https://www.github.com/weecology/portalPredictions}{Portal Predictions repository} and displayed on the \href{https://portal.naturecast.org}{Portal Forecast website}. \cr
+#'              Functions in \code{portalcasting} are designed to be portable, allowing users to set up a fully-functional replica repository for development and testing of new models (a.k.a. \href{https://en.wikipedia.org/wiki/Sandbox_(software_development)}{\emph{sandboxing}}) in the same directory configurations, codebase, and datasets as the production pipeline. 
 #'
 #' @name portalcasting
 #'

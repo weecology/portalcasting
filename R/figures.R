@@ -20,7 +20,7 @@
 #'
 #' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.
+#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #' 
@@ -226,7 +226,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #'
 #' @param datasets \code{character} value of the rodent data set(s) to include. Default value is \code{"controls"}.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{base_species}.
+#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portar]{forecasting_species}}.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
@@ -565,7 +565,7 @@ plot_cast_point <- function (main                       = ".",
                              dataset                    = NULL, 
                              model                      = NULL, 
                              historic_end_newmoonnumber = NULL, 
-                             species                    = base_species(total = TRUE), 
+                             species                    = forecasting_species(total = TRUE), 
                              highlight_sp               = NULL,
                              newmoonnumber              = NULL, 
                              with_census                = FALSE, 
@@ -644,7 +644,7 @@ plot_cast_point <- function (main                       = ".",
                                         dataset  = gsub("dm_", "", gsub("_interp", "", dataset)))
 
     colnames(obs) <- gsub("\\.", "", colnames(obs))
-    sp_col        <- is_sp_col(obs, nadot = TRUE, total = TRUE)
+    sp_col        <- colnames(obs) %in% forecasting_species(total = TRUE)
     species       <- ifnull(species, colnames(obs)[sp_col])
     newmoonnumber <- ifnull(newmoonnumber, unique(obs$newmoonnumber))
     obs           <- obs[obs$newmoonnumber %in% newmoonnumber, species, drop = FALSE]
