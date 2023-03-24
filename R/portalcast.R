@@ -30,9 +30,9 @@ portalcast <- function (main     = ".",
                         quiet    = FALSE,
                         verbose  = FALSE) {
 
-  messageq(message_break( ), "\nForecasting models...\n", 
-           message_break( ), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
-           message_break( ), quiet = quiet)
+  messageq(break_line( ), "Forecasting models...\n", 
+           break_line( ), "This is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
+           break_line( ), quiet = quiet)
 
   model_combinations <- make_model_combinations(main     = main,
                                                 models   = models,
@@ -65,7 +65,7 @@ portalcast <- function (main     = ".",
     }
   }
 
-  messageq(message_break( ), "\n...forecasting complete.\n", message_break( ), quiet = quiet)
+  messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = quiet)
   invisible( ) 
 
 } 

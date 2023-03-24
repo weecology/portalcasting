@@ -6,7 +6,7 @@
 \alias{setup_dir}
 \alias{setup_production}
 \alias{setup_sandbox}
-\title{Create the Structure of a Directory and Fill with Content}
+\title{Create the Structure of a Directory and Fill It with Content}
 \usage{
 create_dir(main = ".", settings = directory_settings(), quiet = FALSE)
 
@@ -56,11 +56,11 @@ setup_sandbox(
 
 \item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
+\item{verbose}{\code{logical} indicator of whether or not to produce all of the messages.}
 }
 \value{
 The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 }
 \description{
-Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with core content.
+Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content.
 }

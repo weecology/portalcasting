@@ -64,25 +64,25 @@ fill_models(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to include.}
+\item{models}{\code{character} vector of name(s) of model(s) to include. Defaults to \code{\link{prefab_models}}. If controls are provided in \code{new_model_controls}, the model still needs to be named here to be included.}
 
-\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created. Defaults to \code{\link{prefab_datasets}}. If controls are provided in \code{new_dataset_controls}, the dataset still needs to be named here to be included.}
 
 \item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
 
 \item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
+\item{settings}{\code{list} of controls for the directory. Defaults are set in \code{\link{directory_settings}}.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just the tidy messages.}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Fill the directory with components including \enumerate{
+Fill the directory with components including: \enumerate{
   \item{Resources (\code{\link{fill_resources}}) \itemize{
     \item{raw data (\code{\link[portalr]{download_observations}})}
     \item{directory archive (\code{\link{download_archive}})}
@@ -98,5 +98,6 @@ Fill the directory with components including \enumerate{
   \item{Models (\code{\link{fill_models}}) \itemize{
     \item{model controls (\code{\link{write_model_controls}})}
     \item{model scripts (if needed) (\code{\link{write_model_scripts}})}}}
- }
+   }
+   Additional, new models and datasets can be added to the directory at filling using the optional arguments \code{new_model_controls} and \code{new_dataset_controls}, but the model or dataset must still be listed in its respective main argument, as well.
 }

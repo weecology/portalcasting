@@ -1,7 +1,7 @@
 # Basic template and explanation for a model controls list.
 # This is used to read in for population from the R command line.
 # Important notes:
-#   while normally text fields don't need to be quoted, "y" does because otherwise it's read as yes aka TRUE
+#   while normally text fields don't need to be quoted, "y" and "n" do because otherwise they are read as yes aka TRUE or no aka FALSE
 
 model_name:
   metadata:

@@ -1,3 +1,44 @@
+#' @title Find an Object's Host Package and Version Information
+#'
+#' @description Locate basic package information of an R object. If nothing is input, it operates on itself. \cr
+#'   If the object is sourced through multiple packages, each package and its version are included.
+#'
+#' @param what An R object.
+#'
+#' @return \code{list} of the object, its class, the packages it is sourced from / through, and the versions of those packages.
+#'
+#' @export
+#'
+package_version_finder <- function (what) {
+
+  if (missing(what)) {
+
+    what <- "package_version_finder"
+
+  }
+
+  object_expr       <- parse(text         = what)
+  object_eval       <- eval(expr          = object_expr)
+  object_class      <- class(x            = object_eval)
+  location_name     <- find(what          = what)
+  packages_names    <- sapply(X           = location_name,
+                              FUN         = gsub,
+                              pattern     = "package\\:",
+                              replacement = "")
+  packages_versions <- sapply(X           = packages_names,
+                              FUN         = packageDescription,
+                              fields      = "Version")
+  
+  names(packages_versions) <- packages_names
+
+  list(object   = what,
+       class    = object_class,
+       package  = packages_names,
+       version  = packages_versions)
+
+}
+
+
 #' @title Round an Interpolated Series
 #'
 #' @description Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.

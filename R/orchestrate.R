@@ -1,10 +1,10 @@
-#' @title Create the Structure of a Directory and Fill with Content
+#' @title Create the Structure of a Directory and Fill It with Content
 #'
-#' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with core content. 
+#' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. 
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) puts the directory in the present locations. 
+#' @param main \code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) roots the directory in the present location. 
 #'
 #' @param models \code{character} vector of name(s) of model(s) to include.
 #'
@@ -16,7 +16,7 @@
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
+#' @param verbose \code{logical} indicator of whether or not to produce all of the messages.
 #'
 #' @return The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
 #'
@@ -34,8 +34,8 @@ create_dir <- function(main     = ".",
 
   core_package_version <- package_version_finder("setup_dir")
 
-  messageq(message_break( ), "\nThis is ", core_package_version[["package"]], " v", core_package_version[["version"]], "  ", format(Sys.time(), "%x %T %Z"), "\n", message_break( ), quiet = quiet)
-  messageq(message_break( ), "\nEstablishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", message_break( ), quiet = quiet)
+  messageq(break_line( ), "This is ", core_package_version[["package"]], " v", core_package_version[["version"]], "  ", format(Sys.time(), "%x %T %Z"), "\n", break_line( ), quiet = quiet)
+  messageq(break_line( ), "Establishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", break_line( ), quiet = quiet)
 
 
   mapply(FUN          = dir.create, 
@@ -47,7 +47,7 @@ create_dir <- function(main     = ".",
                                 settings = settings, 
                                 quiet    = quiet)
 
-  messageq(message_break( ), "\nDirectory successfully instantiated\n", message_break( ), quiet = quiet)
+  messageq(break_line( ), "Directory successfully instantiated\n", break_line( ), quiet = quiet)
 
 }
 
@@ -139,24 +139,24 @@ setup_sandbox <- function (main                 = ".",
 #' @title Create, Update, and Read the Directory Configuration File
 #' 
 #' @description The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
-#'              \code{write_directory_config} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
-#'              \code{read_directory_config} reads the YAML config file into the R session.
+#'              \code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
+#'              \code{read_directory_configuration} reads the YAML config file into the R session.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) puts the forecasting directory in the present locations. Nesting the forecasting directory in a folder can be done by simply adding to the \code{main} input (see \code{Examples}).
+#' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
+#' @param verbose \code{logical} indicator of whether or not to print out all of the messages.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{list} of directory configurations, \code{\link[base]{invisible}}-ly.
 #'
-#' @name directory_configuration_file
+#' @name directory configuration file
 #'
 NULL
 
-#' @rdname directory_configuration_file
+#' @rdname directory-configuration-file
 #'
 #' @export
 #'
@@ -183,7 +183,7 @@ write_directory_configuration <- function (main     = ".",
 
 
 
-#' @rdname directory_configuration_file
+#' @rdname directory-configuration-file
 #'
 #' @export
 #'
@@ -207,7 +207,7 @@ read_directory_configuration<- function (main     = ".",
 
 
 
-#' @rdname directory_configuration_file
+#' @rdname directory-configuration-file
 #'
 #' @export
 #'
@@ -242,14 +242,10 @@ update_directory_configuration <- function (main     = ".",
 }
 
 
-
-# this function finds an object's host package and its version 
-# if nothing is input, it operates on itself as the object
-# if the object is sourced through multiple packages, each and its version are included
-
 #' @title Find an Object's Host Package and Version Information
 #'
-#' @description Locate basic package information of an R object. If nothing is input, it operates on itself. If the object is sourced through multiple packages, each and its version are included.
+#' @description Locate basic package information of an R object. If nothing is input, it operates on itself. \cr
+#'   If the object is sourced through multiple packages, each package and its version are included.
 #'
 #' @param what An R object.
 #'
@@ -257,7 +253,6 @@ update_directory_configuration <- function (main     = ".",
 #'
 #' @export
 #'
-
 package_version_finder <- function (what) {
 
   if (missing(what)) {
@@ -287,12 +282,12 @@ package_version_finder <- function (what) {
 
 }
 
-
-
-
-#' @title Optionally generate a message based on a logical input
+#' @title Functions for Message Generation 
 #'
-#' @description A wrapper on \code{\link[base]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not.
+#' @description 
+#'   \code{messageq}: Optionally generate a message based on a logical input. Uses a wrapper on \code{\link[base]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not. \cr \cr
+#'   \code{break_line}: Creates a horizontal line of characters for messages. \cr \cr
+#'   \code{castle}: Creates a text drawing of a sandcastle of characters for messages. 
 #'
 #' @param ... zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base]{message}}.
 #'
@@ -302,10 +297,20 @@ package_version_finder <- function (what) {
 #'
 #' @param appendLF \code{logical} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base]{message}}.
 #'
-#' @return A message is given, and \code{NULL} returned.
+#' @param char \code{character} value to repeated \code{reps} times to form the break line. 
 #'
-#' @export
+#' @param reps \code{integer}-conformable value for number of times \code{char} is replicated.
+#' 
 #'
+#' @return 
+#'   \code{messageq}: A message is given, and \code{NULL} returned, \code{\link[base]{invisible}}-ly. \cr
+#'   \code{break_line}: The \code{character} of the line to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. \cr 
+#'   \code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. \cr 
+#'
+#' @name messages
+#'
+NULL
+
 messageq <- function (..., 
                       quiet    = FALSE, 
                       domain   = NULL, 
@@ -323,29 +328,22 @@ messageq <- function (...,
 
 }
 
-
-#' @title Produce a Horizontal Break Line for Messaging
-#'
-#' @description Creates a horizontal line of characters for messages.
-#'
-#' @param char \code{character} value to repeated \code{reps} times to form the break. 
-#'
-#' @param reps \code{integer}-conformable value for number of times \code{char} is replicated.
-#' 
-#' @return \code{NULL} (message is put out to console).
+#' @rdname messages
 #'
 #' @export
 #'
-message_break <- function(char = "-",
-                          reps = 60){
+break_line <- function(char = "-",
+                       reps = 60){
   
   paste(rep(char, reps), collapse = "") 
 
 }
 
 
-
-
+#' @rdname messages
+#'
+#' @export
+#'
 castle <- function ( ) {
 
 "
