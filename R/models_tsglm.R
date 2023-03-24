@@ -64,8 +64,10 @@ meta_tsglm <- function (ts,
   for (j in 1:nsubmodels) {
 
     model_name <- paste(submodels[j][[1]], collapse = ", ")
-    model_name <- ifnull(model_name, "<intercept only>")
-    messageq("    -", j, ": ", model_name, quiet = quiet)  
+    model_name <- paste0(j, ": ", ifnull(model_name, "<intercept only>"))
+
+    model_message(model = model_name, 
+                  quiet = quiet)
 
     covariates_j  <- unlist(submodels[j])
 

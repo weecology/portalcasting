@@ -28,8 +28,8 @@ prepare_metadata <- function (main                 = ".",
                               quiet                = FALSE,
                               verbose              = FALSE) {
 
-
-  messageq("  - metadata file", quiet = quiet)
+  data_type_message(data_type = "metadata",
+                    quiet     = quiet)
 
   config <- read_directory_configuration(main     = main, 
                                          settings = settings,

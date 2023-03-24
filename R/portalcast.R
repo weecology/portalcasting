@@ -30,9 +30,7 @@ portalcast <- function (main     = ".",
                         quiet    = FALSE,
                         verbose  = FALSE) {
 
-  messageq(break_line( ), "Forecasting models...\n", 
-           break_line( ), "This is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
-           break_line( ), quiet = quiet)
+  portalcasting_started_message(quiet = quiet)
 
   model_combinations <- make_model_combinations(main     = main,
                                                 models   = models,
@@ -56,16 +54,16 @@ portalcast <- function (main     = ".",
   
     if (all(is.na(out[[i]]))) { 
 
-      messageq("    |------| failed |------|", quiet = !verbose)    
+      model_failed_message(quiet = !verbose)    
 
     } else {
 
-      messageq("    |++++| successful |++++|", quiet = !verbose)    
+      model_succeeded_message(quiet = !verbose)    
 
     }
   }
 
-  messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = quiet)
+  portalcasting_completed_message(quiet = quiet)
   invisible( ) 
 
 } 
@@ -86,7 +84,10 @@ cast <- function (main     = ".",
   return_if_null(x = species)
   return_if_null(x = model)
 
-  messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
+  cast_message(model   = model, 
+               dataset = dataset,
+               species = species,
+               quiet   = quiet)
  
   abundance      <- prepare_abundance(main     = main,
                                       dataset  = dataset,

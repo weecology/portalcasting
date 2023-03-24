@@ -23,7 +23,8 @@ prepare_covariates <- function (main     = ".",
                                 quiet    = FALSE, 
                                 verbose  = FALSE) {
 
-  messageq("  - covariates", quiet = quiet)
+  data_type_message(data_type = "covariates",
+                    quiet     = quiet)
 
   weather_data <- weather(level   = "daily", 
                           fill    = TRUE,

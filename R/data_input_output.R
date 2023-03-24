@@ -26,9 +26,8 @@ write_data <- function (x            = NULL,
                         filename     = NULL, 
                         quiet        = FALSE) {
   
-  return_if_null(x)
-
-  return_if_null(filename)
+  return_if_null(x = )
+  return_if_null(x = filename)
 
 
   if (save) {
@@ -37,13 +36,12 @@ write_data <- function (x            = NULL,
 
     if (file.exists(full_path)) {
 
-
     } else {
 
-      messageq("    **", filename, " saved**", quiet = quiet)
+      file_saved_message(file  = filename,
+                         quiet = quiet)
 
     }
-
 
       if (file_ext(filename) == "csv") {
 
@@ -88,7 +86,7 @@ read_data <- function (main      = ".",
                        datasets  = prefab_datasets( ), 
                        settings  = directory_settings( )) {
   
-  return_if_null(data_name)
+  return_if_null(x = data_name)
 
   data_name <- tolower(data_name)
 
@@ -147,7 +145,7 @@ read_rodents_table <- function (main     = ".",
                                 dataset  = "all", 
                                 settings = directory_settings( )) {
 
-  return_if_null(dataset)
+  return_if_null(x = dataset)
   read.csv(file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(dataset), ".csv"))) 
 
 }
@@ -160,7 +158,7 @@ read_rodents <- function (main     = ".",
                           datasets = prefab_datasets( ), 
                           settings = directory_settings( )) {
   
-  return_if_null(datasets)
+  return_if_null(x = datasets)
   mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
 
 }
@@ -170,7 +168,7 @@ read_rodents <- function (main     = ".",
 #' @export
 #'
 read_newmoons <- function(main     = ".", 
-                       settings = directory_settings( )){
+                          settings = directory_settings( )){
   
   read.csv(file.path(main, settings$subdirectories$data, settings$files$newmoons))
 

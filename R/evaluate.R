@@ -11,7 +11,7 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
+#' @param verbose \code{logical} indicator of whether or not to print out all of the information.
 #'
 #' @return A \code{data.frame}, or \code{list} of \code{data.frame}s.
 #'
@@ -26,9 +26,9 @@ evaluate_casts <- function (main           = ".",
                             verbose        = FALSE) {
 
 
-  casts_to_evaluate <- select_casts(main           = main, 
-                                    settings       = settings,
-                                    cast_ids       = cast_ids)
+  casts_to_evaluate <- select_casts(main     = main, 
+                                    settings = settings,
+                                    cast_ids = cast_ids)
 
   if (NROW(casts_to_evaluate) == 0) {
 
@@ -43,7 +43,7 @@ evaluate_casts <- function (main           = ".",
 
   out <- named_null_list(element_names = cast_ids)
 
-  messageq("Evaluating casts ...\n", quiet = quiet)
+  evaluation_message(quiet = quiet)
 
   for (i in 1:ncast_ids) {
 
@@ -55,14 +55,13 @@ evaluate_casts <- function (main           = ".",
 
   }
 
-  messageq(" ... complete\n", quiet = quiet)
+  completion_message(quiet = quiet)
 
   if (settings$save) {
 
     out_flat <- data.frame(cast_id = names(out)[1], 
                            out[[1]])
 
-    
     if (ncast_ids > 1) {
 
       for (i in 2:ncast_ids) { 
@@ -81,14 +80,14 @@ evaluate_casts <- function (main           = ".",
 
       if (settings$overwrite) {
 
-        messageq("cast evaluations file updated", quiet = quiet)
+        file_updated_message(filename = settings$files$cast_evaluations, quiet = quiet)
         write.csv(out_flat, file = evaluations_file, row.names = FALSE)
 
       }
 
     } else {
 
-      messageq("cast evaluations file saved", quiet = quiet)
+      file_saved_message(filename = settings$files$cast_evaluations, quiet = quiet)
       write.csv(out_flat, file = evaluations_file, row.names = FALSE)
  
     }
@@ -110,7 +109,7 @@ evaluate_cast <- function (main     = ".",
                            cast_id  = NULL,
                            quiet    = FALSE, 
                            verbose  = FALSE) {
-  return_if_null(cast_id)
+  return_if_null(x = cast_id)
 
   model_cast     <- read_model_cast(main     = main,
                                     cast_id  = cast_id,

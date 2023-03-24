@@ -820,7 +820,8 @@ read_casts_metadata <- function (main     = ".",
 
   if (!file.exists(meta_path)) {
 
-    messageq("  **creating forecast metadata file**", quiet = quiet)
+    file_creating_message(file  = "forecast metadata", 
+                          quiet = quiet)
 
     out <- data.frame(cast_id                      = NA,
                       old_cast_id                  = NA,

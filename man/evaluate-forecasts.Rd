@@ -29,7 +29,7 @@ evaluate_cast(
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the information.}
 
 \item{cast_id, cast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
 \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}

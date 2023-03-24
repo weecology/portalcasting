@@ -30,9 +30,9 @@ prepare_abundance <- function (main     = ".",
                                quiet    = FALSE, 
                                verbose  = FALSE) {
 
-  return_if_null(dataset)
-  return_if_null(model)
-  return_if_null(species)
+  return_if_null(x = dataset)
+  return_if_null(x = model)
+  return_if_null(x = species)
 
   # species can only be length 1 here
 
@@ -166,7 +166,7 @@ prepare_rodents <- function (main                 = ".",
                              quiet                = FALSE,
                              verbose              = FALSE) {
 
-  return_if_null(datasets)
+  return_if_null(x = datasets)
 
   dataset_controls_list <- write_dataset_controls(main                 = main, 
                                                   settings             = settings, 
@@ -174,8 +174,8 @@ prepare_rodents <- function (main                 = ".",
                                                   new_dataset_controls = new_dataset_controls,
                                                   quiet                = quiet)
 
-  messageq("  - rodents", quiet = quiet)
-
+  data_type_message(data_type = "rodents",
+                    quiet     = quiet)
   out <- named_null_list(element_names = datasets)
 
   for (i in 1:length(dataset_controls_list)) {
@@ -282,9 +282,10 @@ prepare_dataset <- function(name             = "all",
                             quiet            = FALSE,
                             verbose          = FALSE) {
 
-  return_if_null(name)
+  return_if_null(x = name)
 
-  messageq("    - ", name, quiet = quiet)
+  dataset_message(dataset = name,
+                  quiet   = quiet)
 
   rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subdirectories$resources), 
                                          clean      = clean, 

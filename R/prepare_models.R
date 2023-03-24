@@ -61,7 +61,7 @@ write_model_controls <- function (main               = ".",
                                   settings           = directory_settings( ),
                                   quiet              = FALSE) {
 
-  messageq(" Writing model controls ... ", quiet = quiet)
+  writing_model_controls_message(quiet = quiet)
 
   model_controls <- c(prefab_model_controls( ), new_model_controls)[models]
   nmodels        <- length(model_controls)
@@ -83,7 +83,7 @@ write_model_controls <- function (main               = ".",
   write_yaml(x    = model_controls,
              file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
 
-  messageq("  ... done. ", quiet = quiet)
+  completion_message(quiet = quiet)
 
   invisible(model_controls)
 
@@ -105,11 +105,13 @@ write_model_scripts <- function (model_controls_list = prefab_model_controls( ),
   nfiles <- length(files)
   if (nfiles > 0) {
 
-    messageq(" Writing model script files ... ", quiet = quiet)
+    writing_model_scripts_message(quiet = quiet)
 
     for (i in 1:nfiles) {
 
-      messageq("   - ", names(files)[i], quiet = !verbose)
+      model_message(model_name = names(files)[i],
+                    quiet      = !verbose)
+
 
       to_path   <- eval(parse(text     = ffiles[i]))
       from_path <- system.file(...     = "extdata", 
@@ -121,7 +123,7 @@ write_model_scripts <- function (model_controls_list = prefab_model_controls( ),
 
     }
 
-    messageq("  ... done. ", quiet = quiet)
+    completion_message(quiet = quiet)
 
   }
 
