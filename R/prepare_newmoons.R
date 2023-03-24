@@ -56,7 +56,7 @@ add_forecast_newmoons <- function (main      = ".",
                                    newmoons  = NULL, 
                                    settings  = directory_settings( )) {
 
-  return_if_null(newmoons)
+  return_if_null(x = newmoons)
 
   if (settings$time$lead_time == 0) {
 
