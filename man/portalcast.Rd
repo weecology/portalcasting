@@ -3,6 +3,7 @@
 \name{portalcast}
 \alias{portalcast}
 \alias{cast}
+\alias{make_model_combinations}
 \title{Forecast Portal Rodents Models}
 \usage{
 portalcast(
@@ -24,6 +25,14 @@ cast(
   quiet = FALSE,
   verbose = FALSE
 )
+
+make_model_combinations(
+  main = ".",
+  models = prefab_models(),
+  datasets = prefab_datasets(),
+  species = forecasting_species(total = TRUE),
+  settings = directory_settings()
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
@@ -41,10 +50,12 @@ cast(
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
-Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
+\code{portalcast}, \code{cast}: Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly. \cr \cr
+  \code{make_model_combinations}: \code{data.frame} of the model combinations.
 }
 \description{
-Forecast the Portal rodent population data using the data and models in a portalcasting directory. \cr \cr
+Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
  \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. \cr \cr
- \code{cast} runs a single cast of a single model on one species of one dataset.
+ \code{cast} runs a single cast of a single model on one species of one dataset. \cr \cr
+ \code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination.
 }

@@ -71,20 +71,19 @@ fill_dir <- function (main                 = ".",
             quiet                = quiet, 
             verbose              = verbose)
 
-  fill_data(main                 = main, 
-            datasets             = datasets,
-            models               = models,
-            new_dataset_controls = new_dataset_controls,
-            settings             = settings,
-            quiet                = quiet, 
-            verbose              = verbose)
-
   fill_models(main               = main, 
               settings           = settings,
               models             = models,
               new_model_controls = new_model_controls,
               quiet              = quiet, 
               verbose            = verbose)
+
+  fill_data(main                 = main, 
+            datasets             = datasets,
+            new_dataset_controls = new_dataset_controls,
+            settings             = settings,
+            quiet                = quiet, 
+            verbose              = verbose)
 
   messageq("\nDirectory filling complete.", quiet = quiet)
 
@@ -98,7 +97,6 @@ fill_dir <- function (main                 = ".",
 #' @export
 #'
 fill_data <- function (main                 = ".",
-                       models               = prefab_models( ),
                        datasets             = prefab_datasets( ),
                        new_dataset_controls = NULL,
                        settings             = directory_settings( ), 
@@ -134,7 +132,6 @@ fill_data <- function (main                 = ".",
   prepare_metadata(main                 = main, 
                    datasets             = datasets,
                    new_dataset_controls = new_dataset_controls,
-                   models               = models, 
                    settings             = settings,
                    quiet                = quiet, 
                    verbose              = verbose)
@@ -315,15 +312,15 @@ fill_models <- function (main               = ".",
                          quiet              = FALSE, 
                          verbose            = FALSE) {
 
-  model_controls_list <- write_model_controls(main               = main, 
-                                              settings           = settings,
-                                              models             = models,
-                                              new_model_controls = new_model_controls,
-                                              quiet              = quiet) 
+  controls <- write_model_controls(main               = main, 
+                                   settings           = settings,
+                                   models             = models,
+                                   new_model_controls = new_model_controls,
+                                   quiet              = quiet) 
 
-  write_model_scripts(model_controls_list = model_controls_list,
-                      quiet               = quiet,
-                      verbose             = verbose)
+  write_model_scripts(controls = controls,
+                      quiet    = quiet,
+                      verbose  = verbose)
 
   invisible( )
 

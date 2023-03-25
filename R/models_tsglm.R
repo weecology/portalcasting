@@ -1,6 +1,3 @@
-
-
-
 #' @title Create, Run, and Forecast Multi-model Inference TSGLM Model Runs
 #'
 #' @description Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr

@@ -1,4 +1,3 @@
-
 #' @title Save Data Out to a File and Return It	(Invisibly)
 #'
 #' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..

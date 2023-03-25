@@ -10,8 +10,12 @@ navbar:
     articles:
       text: "Vignettes"
       menu:
-       - text: "Current models"
+       - text: "Current Models"
          href: articles/current_models.html
+       - text: "Getting Started"
+         href: articles/getting_started.html
+       - text: "Codebase"
+         href: articles/codebase.html
     reference: 
       text: "Reference"
       href: reference/index.html

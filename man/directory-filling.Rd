@@ -23,7 +23,6 @@ fill_dir(
 
 fill_data(
   main = ".",
-  models = prefab_models(),
   datasets = prefab_datasets(),
   new_dataset_controls = NULL,
   settings = directory_settings(),

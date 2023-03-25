@@ -1,11 +1,8 @@
-
-
-
 #' @title Read and Write Model Control Lists
 #'
 #' @description Input/output functions for model control lists.
 #'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
+#' @param quiet \code{logical} indicator controlling if messages are generated.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
@@ -15,7 +12,7 @@
 #'
 #' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.
 #'
-#' @param model_controls_list \code{list} of controls for the models. 
+#' @param controls \code{list} of controls for the models. 
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or just the tidy messages.
 #'
@@ -95,12 +92,12 @@ write_model_controls <- function (main               = ".",
 #'
 #' @export
 #'
-write_model_scripts <- function (model_controls_list = prefab_model_controls( ), 
-                                 quiet               = FALSE, 
-                                 verbose             = FALSE) {
+write_model_scripts <- function (controls = prefab_model_controls( ), 
+                                 quiet    = FALSE, 
+                                 verbose  = FALSE) {
 
-  files  <- unlist(mapply(getElement, mapply(getElement, model_controls_list, "fit"), "model_file"))
-  ffiles <- unlist(mapply(getElement, mapply(getElement, model_controls_list, "fit"), "full_model_file"))
+  files  <- unlist(mapply(getElement, mapply(getElement, controls, "fit"), "model_file"))
+  ffiles <- unlist(mapply(getElement, mapply(getElement, controls, "fit"), "full_model_file"))
 
   nfiles <- length(files)
   if (nfiles > 0) {
@@ -111,10 +108,10 @@ write_model_scripts <- function (model_controls_list = prefab_model_controls( ),
 
       messageq("   - ", names(files)[i], quiet = !verbose)
 
-      to_path   <- eval(parse(text     = ffiles[i]))
       from_path <- system.file(...     = "extdata", 
                                ...     = files[i], 
                                package = "portalcasting")
+      to_path   <- eval(parse(text     = ffiles[i]))
       file.copy(from = from_path,
                 to   = to_path)
     }

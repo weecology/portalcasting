@@ -6,7 +6,6 @@
 \usage{
 prepare_metadata(
   main = ".",
-  models = prefab_models(),
   datasets = prefab_datasets(),
   new_dataset_controls = NULL,
   settings = directory_settings(),
@@ -16,8 +15,6 @@ prepare_metadata(
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{character} vector of name(s) of dataset(s) to include.}
 

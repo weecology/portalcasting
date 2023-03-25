@@ -3,7 +3,7 @@
 #' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. 
 #'              \code{add_forecast_newmoons} adds future newmoon dates to the newmoon table from \code{prepare_newmoons} associated with the forecast.
 #'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
+#' @param quiet \code{logical} indicator controlling if messages are generated.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
 #'

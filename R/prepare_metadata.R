@@ -4,8 +4,6 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
-#'
 #' @param datasets \code{character} vector of name(s) of dataset(s) to include.
 #'
 #' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
@@ -21,7 +19,6 @@
 #' @export
 #'
 prepare_metadata <- function (main                 = ".",
-                              models               = prefab_models( ),
                               datasets             = prefab_datasets( ),
                               new_dataset_controls = NULL,
                               settings             = directory_settings( ), 
@@ -77,8 +74,6 @@ prepare_metadata <- function (main                 = ".",
                                              lead_time_newmoons           = lead_time_newmoons),
               cast_group              = cast_group,
               dataset_controls        = dataset_controls_list,
-              datasets                = datasets,
-              models                  = models,
               confidence_level        = settings$confidence_level,
               directory_configuration = config)
 

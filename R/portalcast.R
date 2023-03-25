@@ -1,8 +1,9 @@
 #' @title Forecast Portal Rodents Models
 #'
-#' @description Forecast the Portal rodent population data using the data and models in a portalcasting directory. \cr \cr
+#' @description Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
 #'  \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. \cr \cr
-#'  \code{cast} runs a single cast of a single model on one species of one dataset.
+#'  \code{cast} runs a single cast of a single model on one species of one dataset. \cr \cr
+#'  \code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination. 
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -18,7 +19,8 @@
 #'
 #' @param species \code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. 
 #'
-#' @return Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
+#' @return \code{portalcast}, \code{cast}: Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly. \cr \cr
+#'   \code{make_model_combinations}: \code{data.frame} of the model combinations.
 #'
 #' @export
 #'
@@ -133,21 +135,8 @@ cast <- function (main     = ".",
 
 }
 
-#' @title Determine All Requested Combinations of Model, Dataset, and Species to Cast 
-#'
-#' @description Translate model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination. 
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param models \code{character} vector of name(s) of model(s) to include in the forecast.
-#'
-#' @param datasets \code{character} vector of datasets to be forecast. 
-#'
-#' @param species \code{character} vector of species to be forecast. 
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
-#' @return \code{data.frame} of the model combinations.
+
+#' @rdname portalcast
 #'
 #' @export
 #'
@@ -156,15 +145,11 @@ make_model_combinations <- function (main     = ".",
                                      datasets = prefab_datasets( ),
                                      species  = forecasting_species(total = TRUE),
                                      settings = directory_settings( )) {
-  
-  metadata <- read_metadata(main     = main,
-                            settings = settings)
 
-
-  available_models  <- metadata$models
-  navailable_models <- length(available_models)
-
-  controls <- model_controls(main = main)
+  available_controls  <- read_model_controls(main     = main,
+                                             settings = settings)
+  available_models    <- names(available_controls)
+  navailable_models   <- length(available_models)
 
   out <- data.frame(model   = character(0),
                     dataset = character(0),
@@ -172,7 +157,7 @@ make_model_combinations <- function (main     = ".",
 
   for (i in 1:navailable_models) {
 
-    control <- controls[[available_models[i]]]
+    control <- available$controls[[available_models[i]]]
 
     model_datasets   <- control$datasets
     dataset_species  <- lapply(model_datasets, getElement, "species")    
@@ -185,10 +170,9 @@ make_model_combinations <- function (main     = ".",
   }
 
   row.names(out) <- NULL
-
-  all_in      <- out$model %in% models &
-                 out$dataset %in% datasets &
-                 out$species %in% species
+  all_in         <- out$model %in% models &
+                    out$dataset %in% datasets &
+                    out$species %in% species
   out[all_in, ]
 
 }

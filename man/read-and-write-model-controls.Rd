@@ -25,7 +25,7 @@ write_model_controls(
 )
 
 write_model_scripts(
-  model_controls_list = prefab_model_controls(),
+  controls = prefab_model_controls(),
   quiet = FALSE,
   verbose = FALSE
 )
@@ -39,9 +39,9 @@ write_model_scripts(
 
 \item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
 
-\item{quiet}{\code{logical} indicator controlling if messages are printed.}
+\item{quiet}{\code{logical} indicator controlling if messages are generated.}
 
-\item{model_controls_list}{\code{list} of controls for the models.}
+\item{controls}{\code{list} of controls for the models.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just the tidy messages.}
 }

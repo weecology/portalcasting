@@ -24,7 +24,7 @@ add_forecast_newmoons(
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
-\item{quiet}{\code{logical} indicator controlling if messages are printed.}
+\item{quiet}{\code{logical} indicator controlling if messages are generated.}
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 
