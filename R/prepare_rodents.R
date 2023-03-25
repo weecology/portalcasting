@@ -286,7 +286,6 @@ prepare_dataset <- function(name             = "all",
 
   messageq("    - ", name, quiet = quiet)
 
-
   rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subdirectories$resources), 
                                          clean      = clean, 
                                          level      = level, 
@@ -350,6 +349,18 @@ prepare_dataset <- function(name             = "all",
 
   out <- out[rows_in, ]
 
+  ### patch to verify the correct moons are in ###
+    needed_newmoonnumbers  <- newmoons$newmoonnumber[newmoons$newmoondate < settings$time$origin]
+    missing_newmoonnumbers <- needed_newmoonnumbers[!(needed_newmoonnumbers  %in% out$newmoonnumber)]
+    nmissing_newmoons      <- length(missing_newmoonnumbers)
+    if (nmissing_newmoons > 0) {
+      for (i in 1:nmissing_newmoons) {
+        row_i <- c(missing_newmoonnumbers[i], rep(NA, ncol(out) - 1))
+        out   <- rbind(out,
+                       row_i)
+      }
+    }
+  ### end patch ###
 
   write_data(x            = out, 
              main         = main, 

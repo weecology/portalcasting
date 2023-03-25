@@ -23,3 +23,14 @@ test_that(desc = "write_directory_config creates the config file",
 })
 
 
+
+test_that(desc = "read_directory_config catches if its missing and throws error",
+          code = {
+
+
+  expect_error(read_directory_configuration())
+
+})
+
+
+# we can test the other set_up functions once we have the directory squared away with the new format

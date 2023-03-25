@@ -30,14 +30,12 @@ evaluate_casts <- function (main           = ".",
                                     settings = settings,
                                     cast_ids = cast_ids)
 
+  cast_ids  <- casts_to_evaluate$cast_id
+  ncast_ids <- length(cast_ids)
+
   if (NROW(casts_to_evaluate) == 0) {
 
     stop("no casts available for request")
-
-  } else {
-
-    cast_ids  <- casts_to_evaluate$cast_id
-    ncast_ids <- length(cast_ids)
 
   }
 
@@ -109,24 +107,25 @@ evaluate_cast <- function (main     = ".",
                            cast_id  = NULL,
                            quiet    = FALSE, 
                            verbose  = FALSE) {
+
   return_if_null(x = cast_id)
 
-  model_cast     <- read_model_cast(main     = main,
-                                    cast_id  = cast_id,
-                                    settings = settings)
-  casts_metadata <- read_casts_metadata(main     = main,
-                                       settings = settings)
-  cast_model     <- casts_metadata$model[casts_metadata$cast_id == cast_id]
-
-  cast_model_controls <- model_controls(main     = main,
-                                        models   = cast_model,
-                                        settings = settings)[[cast_model]]
+  model_cast          <- read_model_cast(main         = main,
+                                         cast_id      = cast_id,
+                                         settings     = settings)
+  casts_metadata      <- read_casts_metadata(main     = main,
+                                             settings = settings)
+  cast_model          <- casts_metadata$model[casts_metadata$cast_id == cast_id]
+  cast_model_controls <- model_controls(main          = main,
+                                        models        = cast_model,
+                                        settings      = settings)[[cast_model]]
   cast_model_response <- cast_model_controls$response
 
-  cast_tab <- read_cast_tab(main     = main, 
-                            settings = settings,
-                            cast_id  = cast_id)
+  cast_tab            <- read_cast_tab(main           = main, 
+                                       settings       = settings,
+                                       cast_id        = cast_id)
 
+return(cast_id)
   cast_tab <- add_obs_to_cast_tab(main     = main,  
                                   settings = settings,
                                   cast_tab = cast_tab)

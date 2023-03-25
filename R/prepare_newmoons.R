@@ -38,6 +38,19 @@ prepare_newmoons <- function (main     = ".",
                                     settings    = settings,
                                     newmoons    = newmoons)
 
+  ### patch to verify the correct moons are in ###
+    nlead_newmoons   <- sum(newmoons$newmoondate >= settings$time$origin)
+    nneeded_newmoons <- ceiling(settings$time$lead_time / 29.5)
+    nshort           <- nneeded_newmoons - nlead_newmoons
+    if (nshort > 0) {
+      addl_newmoons    <- get_future_newmoons(newmoons         = newmoons,
+                                              nfuture_newmoons = nshort)
+      addl_newmoons$newmoondate <- as.character(addl_newmoons$newmoondate)
+      newmoons         <- rbind(newmoons,
+                                addl_newmoons)
+    }
+  ### end patch ###
+
   newmoons <- newmoons[newmoons$newmoondate >= settings$time$timeseries_start_lagged, ]
 
   write_data(x         = newmoons, 
