@@ -157,7 +157,7 @@ make_model_combinations <- function (main     = ".",
 
   for (i in 1:navailable_models) {
 
-    control <- available$controls[[available_models[i]]]
+    control <- available_controls$controls[[available_models[i]]]
 
     model_datasets   <- control$datasets
     dataset_species  <- lapply(model_datasets, getElement, "species")    
