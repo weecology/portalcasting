@@ -15,6 +15,16 @@ test_that(desc = "fill_resources fills the resources folder",
 
 })
 
+test_that(desc = "fill_directory fills the directory",
+          code = {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  expect_equal(fill_directory(main = main, settings = sandbox_settings()), NULL)
+
+})
 
 test_that(desc = "fill_casts fills the casts folder",
           code = {
@@ -24,6 +34,19 @@ test_that(desc = "fill_casts fills the casts folder",
     skip_on_cran() 
 
   expect_message(xx <- fill_forecasts(main = main, verbose = TRUE))
+  expect_equal(xx, NULL)
+
+})
+
+
+test_that(desc = "fill_fits fills the fits folder",
+          code = {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  expect_silent(xx <- fill_fits(main = main, verbose = TRUE))
   expect_equal(xx, NULL)
 
 })

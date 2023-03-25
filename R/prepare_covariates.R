@@ -1,8 +1,6 @@
 #' @title Prepare Covariate Data for Casting
 #'
-#' @description Prepare and combine the historical and cast covariate data for a model run. \cr \cr 
-#'              \code{prepare_historical_covariates} and \code{prepare_forecast_covariates} ready the historical and -casted covariates, respectively. \cr \cr
-#'              \code{prepare_covariates} combines \code{prepare_historical_covariates} and \code{prepare_forecast_covariates}.
+#' @description Prepare and combine the historical and forecast covariate data for a model run.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -10,7 +8,7 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be printed.
+#' @param verbose \code{logical} indicator if detailed messages should be generated.
 #'
 #' @return \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.
 #'  
@@ -108,7 +106,6 @@ prepare_covariates <- function (main     = ".",
   historic_ordii$source[is_na] <- "na_interp"
   historic_ordii$DO            <- round_na.interp(historic_ordii$DO)
   historic_ordii$newmoondate   <- newmoons$newmoondate[match(historic_ordii$newmoonnumber, newmoons$newmoonnumber)]
-
 
   moonin                       <- newmoons$newmoondate >= settings$time$origin
   forecast_ordii               <- data.frame(newmoonnumber = newmoons$newmoonnumber[moonin], 

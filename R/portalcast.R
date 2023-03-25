@@ -17,7 +17,7 @@
 #'
 #' @param datasets,dataset \code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one. 
 #'
-#' @param species \code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. 
+#' @param species \code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr]{rodent_species}}.
 #'
 #' @return \code{portalcast}, \code{cast}: Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly. \cr \cr
 #'   \code{make_model_combinations}: \code{data.frame} of the model combinations.

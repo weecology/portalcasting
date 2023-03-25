@@ -30,7 +30,7 @@ download_climate_forecasts(
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator if detailed messages should be printed.}
+\item{verbose}{\code{logical} indicator if detailed messages should be generated.}
 
 \item{overwrite}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 

@@ -19,13 +19,11 @@ prepare_covariates(
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator if detailed messages should be printed.}
+\item{verbose}{\code{logical} indicator if detailed messages should be generated.}
 }
 \value{
 \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.
 }
 \description{
-Prepare and combine the historical and cast covariate data for a model run. \cr \cr 
-             \code{prepare_historical_covariates} and \code{prepare_forecast_covariates} ready the historical and -casted covariates, respectively. \cr \cr
-             \code{prepare_covariates} combines \code{prepare_historical_covariates} and \code{prepare_forecast_covariates}.
+Prepare and combine the historical and forecast covariate data for a model run.
 }

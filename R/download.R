@@ -19,7 +19,7 @@
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be printed.
+#' @param verbose \code{logical} indicator if detailed messages should be generated.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
@@ -192,7 +192,7 @@ NMME_urls <- function (start = Sys.Date(),
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be printed.
+#' @param verbose \code{logical} indicator if detailed messages should be generated.
 #'
 #' @note There are two calls to \code{link[base]{Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
 #'
