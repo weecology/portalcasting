@@ -36,7 +36,7 @@ test_that(desc = "fill_fits fills the fits folder",
 
     skip_on_cran() 
 
-  expect_silent(xx <- fill_fits(main = main, verbose = TRUE))
+  expect_messages(xx <- fill_fits(main = main, verbose = TRUE))
   expect_equal(xx, NULL)
 
 })
