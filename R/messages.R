@@ -459,7 +459,7 @@ files_located_message <- function (nfiles    = NULL,
                                    quiet     = FALSE) {
 
   return_if_null(x = nfiles)
-  messageq(paste0(" Located ", length(files), " ", file_type, " file(s) in resources to be moved to directory ..."), quiet = quiet)
+  messageq(paste0(" Located ", nfiles, " ", file_type, " file(s) in resources to be moved to directory ..."), quiet = quiet)
 
 }
 

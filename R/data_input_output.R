@@ -26,7 +26,7 @@ write_data <- function (x            = NULL,
                         filename     = NULL, 
                         quiet        = FALSE) {
   
-  return_if_null(x = x)
+  return_if_null(x = )
   return_if_null(x = filename)
 
 

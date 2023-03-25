@@ -112,7 +112,7 @@ fill_data <- function (main                 = ".",
                         full.names = TRUE),
          force = TRUE)
 
-  data_adding_message(quiet = quiet)
+  data_adding_files(quiet = quiet)
 
   prepare_newmoons(main                = main,  
                    settings            = settings,
