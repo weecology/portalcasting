@@ -6,7 +6,7 @@
 #' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
 #' @importFrom portalr download_observations forecasting_species get_future_newmoons load_datafile na_conformer ndvi return_if_null rodent_species summarize_rodent_data weather
 #' @importFrom runjags combine.mcmc run.jags runjags.options
-#' @importFrom scoringRules crps_nbinom crps_norm crps_pois crps_sample logs_sample logs_nbinom logs_norm logs_pois 
+#' @importFrom scoringRules crps crps_nbinom crps_norm crps_pois crps_sample logs logs_sample logs_nbinom logs_norm logs_pois 
 #' @importFrom stats AIC as.ts filter frequency lm na.omit predict qnorm quantile rgamma rnorm runif sd
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file find packageDescription read.csv sessionInfo tail unzip write.csv write.table

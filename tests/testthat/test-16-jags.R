@@ -56,7 +56,7 @@ test_that(desc = "runjags_inits makes a function that operates on data to make a
 test_that(desc = "fit_runjags wraps up all the functions and can be forecast from", {
 
   rjc <- runjags_controls(nchains = 2, adapt = 100, burnin = 100, sample = 100, thin = 1)
-  expect_message(run <- fit_runjags(model_controls = model_controls, metadata = metadata, abundance = abundance, covariates = covariates, control_runjags = rjc))
+  expect_silent(run <- fit_runjags(model_controls = model_controls, metadata = metadata, abundance = abundance, covariates = covariates, control_runjags = rjc))
   expect_is(run, "runjags")
  
   expect_silent(fc <- forecast(object = run, h = 13, level = 0.95))

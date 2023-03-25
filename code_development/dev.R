@@ -3,34 +3,17 @@ devtools::load_all()
 
 main <- "~/pc"
 
-datasets             = prefab_datasets( )
-new_dataset_controls = NULL
+
 settings             = directory_settings( )
 quiet                = FALSE
 verbose              = TRUE
-
-
-prepare_rodents(main)
-fill_data(main)
-
-
-
-
-
-
-setup_production(main)
-
-
+model <- "AutoArima"
 
 dataset  = "controls"
 species <- "DM"
 
-                  model    = "jags_logistic_covariates"
-                  settings = directory_settings( ) 
-                  quiet    = FALSE 
-                  verbose  = TRUE
 
-
+  messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
 
   abundance      <- prepare_abundance(main     = main,
                                       dataset  = dataset,
@@ -48,26 +31,24 @@ species <- "DM"
                                   settings     = settings)                                        
   covariates     <- read_covariates(main       = main,
                                     settings   = settings)
-control_runjags <- runjags_controls(thin = 1, adapt = 1000, burnin = 1000, sample = 1000)
 
-  data       <- runjags_data(model_controls = model_controls,
-                             abundance      = abundance,
-                             metadata       = metadata,
-                             covariates     = covariates)  
-
-  monitors       <- runjags_monitors(model_controls = model_controls,
-                             metadata       = metadata)
-monitors
-  
-
+  fit_args  <- named_null_list(element_names = names(model_controls$fit$args))
+  for (i in 1:length(fit_args)) {
+    fit_args[[i]] <- eval(parse(text = model_controls$fit$args[i]))
+  }
 
   model_fit  <- do.call(what = model_controls$fit$fun,
-                        args = lapply(model_controls$fit$args, eval_parse_text))
+                        args = fit_args)
+
+  cast_args  <- named_null_list(element_names = names(model_controls$cast$args))
+  for (i in 1:length(cast_args)) {
+    cast_args[[i]] <- eval(parse(text = model_controls$cast$args[i]))
+  }
 
   model_cast <- do.call(what = model_controls$cast$fun,
-                        args = lapply(model_controls$cast$args, eval_parse_text))
+                        args = cast_args)
 
-  pmo <- process_model_output(main       = main,
+out <-  process_model_output(main       = main,
                        model_fit  = model_fit,
                        model_cast = model_cast,
                        model      = model,
@@ -76,6 +57,49 @@ monitors
                        settings   = settings,
                        quiet      = quiet,
                        verbose    = verbose) 
+
+
+#  model_cast          <- read_model_cast(main         = main,
+#                                         cast_id      = cast_id,
+#                                         settings     = settings)
+#  casts_metadata      <- read_casts_metadata(main     = main,
+#                                             settings = settings)
+#  cast_model          <- casts_metadata$model[casts_metadata$cast_id == cast_id]
+#  cast_tab            <- read_cast_tab(main           = main, 
+#                                       settings       = settings,
+#                                       cast_id        = cast_id)
+cast_model <- model
+cast_tab   <- out$cast_tab
+#
+  cast_model_controls <- model_controls(main          = main,
+                                        models        = cast_model,
+                                        settings      = settings)[[cast_model]]
+  cast_model_response <- cast_model_controls$response
+
+#  cast_tab <- add_obs_to_cast_tab(main     = main,  
+#                                  settings = settings,
+#                                  cast_tab = cast_tab)
+set.seed(1312)
+cast_tab$obs <- rpois(nrow(cast_tab), as.numeric(cast_tab$estimate))
+#
+
+  cast_tab <- add_err_to_cast_tab(main     = main,  
+                                  settings = settings,
+                                  cast_tab = cast_tab)
+  cast_tab <- add_covered_to_cast_tab(main     = main,  
+                                      settings = settings,
+                                      cast_tab = cast_tab)
+  measure_cast_level_error(cast_tab = cast_tab)
+
+# working here to expand on the evaluations of forecasts!!!
+
+
+
+
+
+
+
+
 
 
 
