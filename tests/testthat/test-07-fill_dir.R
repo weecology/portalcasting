@@ -15,14 +15,14 @@ test_that(desc = "fill_resources fills the resources folder",
 
 })
 
-test_that(desc = "fill_directory fills the directory",
+test_that(desc = "fill_dir fills the directory",
           code = {
 
   # download is held back on cran
 
     skip_on_cran() 
 
-  expect_equal(fill_directory(main = main, settings = sandbox_settings()), NULL)
+  expect_equal(fill_dir(main = main, settings = sandbox_settings()), NULL)
 
 })
 
