@@ -54,7 +54,7 @@ fill_dir <- function (main                 = ".",
                       quiet                = FALSE, 
                       verbose              = FALSE) {
 
-  directory_filling_message(quiet = quiet)
+  messageq("Filling directory with content: \n", quiet = quiet)
 
   fill_resources(main            = main, 
                  settings        = settings, 
@@ -86,7 +86,7 @@ fill_dir <- function (main                 = ".",
               quiet              = quiet, 
               verbose            = verbose)
 
-  directory_filling_completed_message(quiet = quiet)
+  messageq("\nDirectory filling complete.", quiet = quiet)
 
   invisible( )
 
@@ -105,14 +105,14 @@ fill_data <- function (main                 = ".",
                        quiet                = FALSE,
                        verbose              = FALSE) {
 
-  data_filling_message(quiet  = quiet)
-  data_removing_message(quiet = quiet)
+  messageq(" Preparing data files ... ", quiet = quiet)
+  messageq("  ... removing existing data files ... ", quiet = quiet)
 
   unlink(x = list.files(path       = file.path(main, settings$subdirectories$data),
                         full.names = TRUE),
          force = TRUE)
 
-  data_adding_files(quiet = quiet)
+  messageq("  ... adding data files ... ", quiet = quiet)
 
   prepare_newmoons(main                = main,  
                    settings            = settings,
@@ -139,7 +139,7 @@ fill_data <- function (main                 = ".",
                    quiet                = quiet, 
                    verbose              = verbose)
 
-  completion_message(quiet = quiet)
+  messageq(" ... complete.\n", quiet = quiet)
   invisible( )
 
 }
@@ -155,7 +155,7 @@ fill_resources <- function (main     = ".",
                             quiet    = FALSE,
                             verbose  = FALSE) {
 
-  resources_filling_message(quiet = quiet)
+  messageq("Downloading resources ... ", quiet = quiet)
 
   download_observations(path      = file.path(main, settings$subdirectories$resources), 
                         version   = settings$resources$PortalData$version,
@@ -186,7 +186,7 @@ fill_resources <- function (main     = ".",
                              quiet         = quiet,
                              verbose       = verbose)
 
-  completion_message(quiet = quiet)
+  messageq(" ... complete.\n", quiet = quiet)
   
   update_directory_configuration(main     = main,
                                  settings = settings,
@@ -224,27 +224,29 @@ fill_forecasts <- function (main     = ".",
 
   }
 
-  files_located_message(nfiles    = length(files),
-                        file_type = "cast",
-                        quiet     = quiet)
-
-  moving_message(quiet = quiet)
+  messageq(paste0(" Located ", length(files), " cast file(s) in resources to be moved to directory ..."), quiet = quiet)
+  messageq("  ... moving ... ", quiet = quiet)
 
   copied <- file.copy(from      = files, 
                       to        = file.path(main, settings$subdirectories$forecasts), 
                       recursive = TRUE)
 
-  files_moved_or_not_message(files  = basename(files), 
-                             copied = copied, 
-                             quiet  = !verbose)
+  messageq(paste(ifelse(sum(copied) > 0, 
+                   paste("  moved:", basename(files)[copied], collapse = "\n   "),
+                   ""),
+                 ifelse(sum(!copied) > 0, 
+                   paste("  not moved:", basename(files)[!copied], collapse = "\n   "),
+                   ""),
+                 collapse = "\n"),
+           quiet = !verbose)
 
 
   # patch to deal with refactor backwards compat
     update_forecasts_folder(main = main, settings = settings, quiet = quiet)
   # end patch
 
-  files_moved_message(nfiles = sum(copied),
-                      quiet  = quiet)
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
+
 
   invisible( )
 
@@ -277,23 +279,25 @@ fill_fits <- function (main     = ".",
 
   }
 
-  files_located_message(nfiles    = length(files),
-                        file_type = "fit",
-                        quiet     = quiet)
-
-
-  moving_message(quiet = quiet)
+  messageq(paste0(" Located ", length(files), " fit file(s) in resources to be moved to directory ..."), quiet = quiet)
+  messageq("  ... moving ... ", quiet = quiet)
 
   copied <- file.copy(from      = files, 
                       to        = file.path(main, settings$subdirectories$fits), 
                       recursive = TRUE)
 
-  files_moved_or_not_message(file   = basename(files), 
-                             copied = copied, 
-                             quiet  = !verbose)
+  messageq(paste(ifelse(sum(copied) > 0, 
+                   paste("  moved:", basename(files)[copied], collapse = "\n   "),
+                   ""),
+                 ifelse(sum(!copied) > 0, 
+                   paste("  not moved:", basename(files)[!copied], collapse = "\n   "),
+                   ""),
+                 collapse = "\n"),
+           quiet = !verbose)
 
-  files_moved_message(nfiles = sum(copied),
-                      quiet  = quiet)
+
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
+
   invisible( )
 
 }

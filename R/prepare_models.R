@@ -61,7 +61,7 @@ write_model_controls <- function (main               = ".",
                                   settings           = directory_settings( ),
                                   quiet              = FALSE) {
 
-  writing_model_controls_message(quiet = quiet)
+  messageq("Writing model controls ...\n", quiet = quiet)
 
   model_controls <- c(prefab_model_controls( ), new_model_controls)[models]
   nmodels        <- length(model_controls)
@@ -83,7 +83,7 @@ write_model_controls <- function (main               = ".",
   write_yaml(x    = model_controls,
              file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
 
-  completion_message(quiet = quiet)
+  messageq(" ... complete.\n", quiet = quiet)
 
   invisible(model_controls)
 
@@ -105,13 +105,11 @@ write_model_scripts <- function (model_controls_list = prefab_model_controls( ),
   nfiles <- length(files)
   if (nfiles > 0) {
 
-    writing_model_scripts_message(quiet = quiet)
+    messageq("Writing model script files ...\n", quiet = quiet)
 
     for (i in 1:nfiles) {
 
-      model_message(model_name = names(files)[i],
-                    quiet      = !verbose)
-
+      messageq("   - ", names(files)[i], quiet = !verbose)
 
       to_path   <- eval(parse(text     = ffiles[i]))
       from_path <- system.file(...     = "extdata", 
@@ -119,11 +117,9 @@ write_model_scripts <- function (model_controls_list = prefab_model_controls( ),
                                package = "portalcasting")
       file.copy(from = from_path,
                 to   = to_path)
-
-
     }
 
-    completion_message(quiet = quiet)
+    messageq(" ... complete.\n", quiet = quiet)
 
   }
 

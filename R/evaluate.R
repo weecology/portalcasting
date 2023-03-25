@@ -43,7 +43,7 @@ evaluate_casts <- function (main           = ".",
 
   out <- named_null_list(element_names = cast_ids)
 
-  evaluation_message(quiet = quiet)
+  messageq("Evaluating casts ...\n", quiet = quiet)
 
   for (i in 1:ncast_ids) {
 
@@ -55,7 +55,7 @@ evaluate_casts <- function (main           = ".",
 
   }
 
-  completion_message(quiet = quiet)
+  messageq("... done.\n", quiet = quiet)
 
   if (settings$save) {
 
@@ -80,14 +80,14 @@ evaluate_casts <- function (main           = ".",
 
       if (settings$overwrite) {
 
-        file_updated_message(filename = settings$files$cast_evaluations, quiet = quiet)
+        messageq("    **", settings$files$cast_evaluations, " updated**", quiet = quiet)
         write.csv(out_flat, file = evaluations_file, row.names = FALSE)
 
       }
 
     } else {
 
-      file_saved_message(filename = settings$files$cast_evaluations, quiet = quiet)
+      messageq("    **", settings$files$cast_evaluations, " saved**", quiet = quiet)
       write.csv(out_flat, file = evaluations_file, row.names = FALSE)
  
     }

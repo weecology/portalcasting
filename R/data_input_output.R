@@ -38,8 +38,7 @@ write_data <- function (x            = NULL,
 
     } else {
 
-      file_saved_message(file  = filename,
-                         quiet = quiet)
+      messageq("    **", filename, " saved**", quiet = quiet)
 
     }
 

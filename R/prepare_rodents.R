@@ -174,8 +174,8 @@ prepare_rodents <- function (main                 = ".",
                                                   new_dataset_controls = new_dataset_controls,
                                                   quiet                = quiet)
 
-  data_type_message(data_type = "rodents",
-                    quiet     = quiet)
+  messageq("  - rodents", quiet = quiet)
+
   out <- named_null_list(element_names = datasets)
 
   for (i in 1:length(dataset_controls_list)) {
@@ -284,8 +284,8 @@ prepare_dataset <- function(name             = "all",
 
   return_if_null(x = name)
 
-  dataset_message(dataset = name,
-                  quiet   = quiet)
+  messageq("    - ", name, quiet = quiet)
+
 
   rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subdirectories$resources), 
                                          clean      = clean, 

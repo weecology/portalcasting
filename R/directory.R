@@ -32,8 +32,11 @@ create_dir <- function(main     = ".",
                        settings = directory_settings( ), 
                        quiet    = FALSE){
 
-  directory_creation_start_message(main  = main,
-                                   quiet = quiet)
+  core_package <- package_version_finder("setup_dir")
+
+  messageq(break_lines( ), "This is ", core_package[["package"]], " v", core_package[["version"]], "\n  ", format(Sys.time(), "%x %T %Z"), "\n",
+           break_lines( ), "Establishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", break_lines( ), quiet = quiet)
+
 
   mapply(FUN          = dir.create, 
          path         = file.path(main, settings$subdirectories),
@@ -44,7 +47,7 @@ create_dir <- function(main     = ".",
                                 settings = settings, 
                                 quiet    = quiet)
 
-  directory_creation_complete_message(quiet = quiet)
+  messageq(break_lines( ), "Directory successfully instantiated\n", break_lines( ), quiet = quiet)
 
 }
 
@@ -127,8 +130,7 @@ setup_sandbox <- function (main                 = ".",
             quiet                = quiet,
             verbose              = verbose)
 
-  sandbox_message(main  = main,
-                  quiet = quiet)
+  messageq(castle(), "Sandbox directory successfully set up at \n\n  ", normalizePath(file.path(main = main)), "\n\nHappy model building!", quiet = quiet)
 
 }
 

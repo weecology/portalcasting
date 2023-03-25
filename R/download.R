@@ -61,17 +61,14 @@ download_climate_forecasts <- function (main          = ".",
 
       if (existing_version == version) {
 
-        not_updated_message(version = version,
-                            quiet   = quiet)
+        messageq("Existing local version is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped", quiet = quiet)
         return(invisible( ))
 
       }
  
     }
 
-    downloading_message(resource = "climate forecasts",
-                        version  = version,
-                        quiet    = quiet)
+    messageq("Downloading climate forecasts version `", version, "` ...", quiet = quiet)
     
     mapply(FUN      = download.file,
            url      = NMME_urls(start = version, data = data),
@@ -297,17 +294,14 @@ download_archive <- function(main          = ".",
 
     if (existing_version == version) {
 
-      not_updated_message(version = version,
-                          quiet   = quiet)
+      messageq("Existing local version is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped", quiet = quiet)
       return(invisible( ))
 
     }
 
   }
 
-  downloading_message(resource = "archive",
-                      version  = version,
-                      quiet    = quiet)
+  messageq("Downloading archive version `", version, "` ...", quiet = quiet)
 
   result <- tryCatch(
               expr  = download.file(url      = zipball_url, 

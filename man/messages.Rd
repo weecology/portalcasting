@@ -6,36 +6,6 @@
 \alias{break_line}
 \alias{break_lines}
 \alias{castle}
-\alias{sandbox_creation_message}
-\alias{directory_creation_start_message}
-\alias{directory_creation_complete_message}
-\alias{not_updated_message}
-\alias{downloading_message}
-\alias{file_updated_message}
-\alias{file_saved_message}
-\alias{completion_message}
-\alias{evaluation_message}
-\alias{writing_model_controls_message}
-\alias{writing_model_scripts_message}
-\alias{model_message}
-\alias{data_type_message}
-\alias{dataset_message}
-\alias{directory_filling_message}
-\alias{directory_filling_completed_message}
-\alias{model_failed_message}
-\alias{model_succeeded_message}
-\alias{portalcasting_started_message}
-\alias{portalcasting_completed_message}
-\alias{data_adding_message}
-\alias{moving_message}
-\alias{files_moved_message}
-\alias{files_moved_or_not_message}
-\alias{file_creating_message}
-\alias{cast_message}
-\alias{files_located_message}
-\alias{data_filling_message}
-\alias{resources_filling_message}
-\alias{data_removing_message}
 \title{Functions for Message Generation}
 \usage{
 messageq(..., quiet = FALSE, domain = NULL, appendLF = TRUE)
@@ -45,66 +15,6 @@ break_line(char = "-", reps = 60)
 break_lines(nlines = 2, char = "-", reps = 60)
 
 castle()
-
-sandbox_creation_message(main = ".", quiet = FALSE)
-
-directory_creation_start_message(main = ".", quiet = FALSE)
-
-directory_creation_complete_message(quiet = FALSE)
-
-not_updated_message(version = NULL, quiet = FALSE)
-
-downloading_message(resource = NULL, version = NULL, quiet = FALSE)
-
-file_updated_message(file = NULL, quiet = FALSE)
-
-file_saved_message(file = NULL, quiet = FALSE)
-
-completion_message(quiet = FALSE)
-
-evaluation_message(quiet = FALSE)
-
-writing_model_controls_message(quiet = FALSE)
-
-writing_model_scripts_message(quiet = FALSE)
-
-model_message(model = NULL, quiet = FALSE)
-
-data_type_message(data_type = NULL, quiet = FALSE)
-
-dataset_message(dataset = NULL, quiet = FALSE)
-
-directory_filling_message(quiet = FALSE)
-
-directory_filling_completed_message(quiet = FALSE)
-
-model_failed_message(quiet = FALSE)
-
-model_succeeded_message(quiet = FALSE)
-
-portalcasting_started_message(quiet = FALSE)
-
-portalcasting_completed_message(quiet = FALSE)
-
-data_adding_message(quiet = FALSE)
-
-moving_message(quiet = FALSE)
-
-files_moved_message(nfiles = NULL, quiet = FALSE)
-
-files_moved_or_not_message(files = NULL, copied = NULL, quiet = FALSE)
-
-file_creating_message(file = NULL, quiet = FALSE)
-
-cast_message(model = NULL, dataset = NULL, species = NULL, quiet = FALSE)
-
-files_located_message(nfiles = NULL, file_type = NULL, quiet = FALSE)
-
-data_filling_message(quiet = FALSE)
-
-resources_filling_message(quiet = FALSE)
-
-data_removing_message(quiet = FALSE)
 }
 \arguments{
 \item{...}{zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base]{message}}.}
@@ -120,51 +30,17 @@ data_removing_message(quiet = FALSE)
 \item{reps}{\code{integer}-conformable value for number of times \code{char} is replicated.}
 
 \item{nlines}{\code{integer}-conformable value for the number of \code{\link{break_line}}s to include. Defaults to \code{2} lines.}
-
-\item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{version}{\code{character} of the version of the resource.}
-
-\item{resource}{\code{character} of the resource's name.}
-
-\item{file, files}{\code{character} filename of the file saved. If plural (\code{files}) can be multiple, otherwise must only be one file.}
-
-\item{model}{\code{character} name of a model.}
-
-\item{data_type}{\code{character} of the type of data (e.g., \code{"newmoons"}, \code{"rodents"}, \code{"metadata"}, \code{"covariates"}) .}
-
-\item{dataset}{\code{character} dataset name.}
-
-\item{nfiles}{\code{integer}-conformable value for the number of files.}
-
-\item{species}{\code{character} species name.}
-
-\item{file_type}{\code{character} of the type of file (e.g., \code{"casts"}, \code{"fits"})}
-
-\item{moved}{\code{logical} vector indicating if the file(s) were moved.}
 }
 \value{
 \code{messageq}: A message is given, and \code{NULL} returned, \code{\link[base]{invisible}}-ly. \cr
   \code{break_line}: The \code{character} of the line to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. \cr 
   \code{break_lines}: The \code{character} of the lines to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. \cr 
-  \code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. \cr 
-  For specific message functions, a message is given, and \code{NULL} returned, \code{\link[base]{invisible}}-ly.
+  \code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base]{message}} or \code{\link{messageq}}.
 }
 \description{
 Create messages for use in the portalcasting pipeline. 
   \code{messageq}: Optionally generate a message based on a logical input. Uses a wrapper on \code{\link[base]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not. \cr \cr
   \code{break_line}: Creates a horizontal line of characters ending with a newline call for messages. \cr \cr
   \code{break_lines}: Creates a set of horizontal line of characters ending with a newline call for messages. \cr \cr
-  \code{castle}: Creates a text drawing of a sandcastle of characters for messages. \cr \cr 
-  Many message functions wrap around \code{messageq} to produce specific messages, see \code{Details}.
-}
-\details{
-The following specific message functions exist: \cr
-  \code{sandbox_creation_message}, \code{evaluation_message}, \code{completion_message}, \code{file_saved_message}, \code{file_updated_message}, 
-  \code{downloading_message}, \code{not_updated_message}, \code{directory_creation_start_message}, \code{directory_creation_complete_message},
-  \code{writing_model_controls_message}, \code{writing_model_scripts_message}, \code{model_message}, \code{data_message}, \code{subdata_message}, 
-  \code{directory_filling_message}, \code{directory_filling_completed_message}, \code{data_filling_message}, \code{data_removing_message}, 
-  \code{data_adding_message}, \code{resources_filling_message}, \code{moving_message}, \code{files_moved_message}, \code{files_moved_or_not_message},
-  \code{files_located_message}, \code{file_creating_message}, \code{cast_message}, \code{portalcasting_message}, \code{model_failed_message},
-  \code{model_succeeded_message}, \code{portalcasting_started_message}, \code{portalcasting_completed_message}.
+  \code{castle}: Creates a text drawing of a sandcastle of characters for messages.
 }
