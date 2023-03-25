@@ -8,7 +8,6 @@ setup_production(main)
 todo
 
 new model and dataset controls, templates, etc
-test new tsglm and jags functions
 
 
 something like this, but needs easier updates
