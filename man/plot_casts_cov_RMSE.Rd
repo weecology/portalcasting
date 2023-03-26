@@ -25,7 +25,7 @@ plot_casts_cov_RMSE(
 
 \item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not input, will be loaded.}
 
-\item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection.}
 
 \item{models}{\code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.}
 

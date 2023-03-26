@@ -15,6 +15,17 @@ test_that(desc = "download_climate_forecasts retrieves files", {
   expect_equal((dlcc), NULL)
   expect_message(download_climate_forecasts(main))
 
+  expect_error(download_climate_forecasts(main = main, source = "xxx"))
+
+
+})
+
+test_that(desc = "NMME urls can error as needed",
+          code = {
+  expect_error(NMME_urls(model = "xxx"))
+  expect_error(NMME_urls(data = "xxx"))
+  expect_error(NMME_urls(freq = "xxx"))
+
 })
 
 test_that(desc = "download_archive downloads the archive",
@@ -22,6 +33,8 @@ test_that(desc = "download_archive downloads the archive",
 
   expect_equal(download_archive(main, timeout = 600), NULL)
   expect_message(download_archive(main))
+
+  expect_error(download_archive(source = "xxx"))
 
 })
 

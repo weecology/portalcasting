@@ -174,9 +174,6 @@ fit_runjags <- function (abundance,
                          data_names,
                          control_runjags = runjags_controls( )) {
 
-  if (missing(control_runjags)) {
-    control_runjags <- eval(parse(text = model_controls$fit$args$control_runjags))
-  }
   monitor    <- runjags_monitors(monitors = monitors,
                                  metadata = metadata)  
   init       <- runjags_inits(inits       = inits)  

@@ -32,3 +32,24 @@ test_that(desc = "meta_tsglm runs multiple models, picks best, and forecasts", {
   expect_is(fc, "forecast")
 
 })
+
+
+test_that(desc = "forecast.tsglm allows for new xregs or not", {
+
+  xreg <- covariates[covariates$newmoonnumber %in% (metadata$time$historic_newmoonnumbers - lag), "mintemp"]
+
+  expect_silent(mod <- tsglm(ts = abundance, model = model, distr = distr, link = link, xreg = xreg))
+  expect_is(mod, "tsglm")
+ 
+  newxreg <- covariates[covariates$newmoonnumber %in% (metadata$time$forecast_newmoonnumbers - lag), "mintemp"]
+  expect_silent(fc <- forecast(object = mod, h = 13, level = 0.95, newxreg = newxreg))
+  expect_is(fc, "forecast")
+
+
+  expect_silent(mod <- tsglm(ts = abundance, model = model, distr = distr, link = link))
+  expect_is(mod, "tsglm")
+ 
+  expect_silent(fc <- forecast(object = mod, h = 13, level = 0.95))
+  expect_is(fc, "forecast")
+
+})

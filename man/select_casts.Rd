@@ -31,7 +31,7 @@ select_casts(
 
 \item{species}{\code{character} value of the species codes (or \code{"total"} for the total across species) to include. Default value is \code{NULL}, which equates to no selection with respect to \code{species}.}
 
-\item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.}
+\item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection.}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }

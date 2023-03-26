@@ -61,6 +61,19 @@ test_that(desc = "foy calculates the fraction of the year ",
 })
 
 
+test_that(desc = "package_version_finder finds itself and can find forecast in multiple packages",
+          code = {
+
+  expect_silent(out <- package_version_finder())
+  expect_is(out, "list")
+
+  expect_silent(out <- package_version_finder("forecast"))
+  expect_is(out, "list")
+  expect_equal(out$package, c("package:portalcasting" = "portalcasting", "package:forecast" = "forecast"))
+
+})
+
+
 
 test_that(desc = "return_if_null properly returns for a new function",
           code = {

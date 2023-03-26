@@ -5,6 +5,8 @@ devtools::document()
 main <- "~/sandbox"
 setup_sandbox(main = main)
 
+portalcast(main, dataset = "controls", species = "DM", models = c("AutoArima", "jags_RW", "pGARCH", "nbGARCH"), verbose = TRUE)
+
 
 fill_models(main)
 

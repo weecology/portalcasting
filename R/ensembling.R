@@ -13,7 +13,7 @@
 #'
 #' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
-#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
+#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection.
 #'
 #' @param cast_tab Optional \code{data.frame} of cast table outputs. If not input, will be loaded.
 #'
@@ -83,11 +83,7 @@ ensemble_casts <- function (main                       = ".",
   model_in                      <- cast_tab$model %in% models
   dataset_in                    <- cast_tab$dataset == dataset
   species_in                    <- cast_tab$species %in% species
-  if ("end_moon" %in% colnames(cast_tab)) {
-    historic_end_newmoonnumber_in <- cast_tab$end_moon %in% historic_end_newmoonnumber
-  } else if ("historic_end_newmoonnumber" %in% colnames(cast_tab)) {
-    historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumber
-  }
+  historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumber
   all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
@@ -127,12 +123,7 @@ ensemble_casts <- function (main                       = ".",
     for (j in 1:nmoons) {
 
       species_in <- cast_tab$species %in% species[i]
-      
-      if ("moon" %in% colnames(cast_tab)) {
-        moon_in    <- cast_tab$moon %in% moons[j]
-      } else if ("newmoonnumber" %in% colnames(cast_tab)) {
-        moon_in    <- cast_tab$newmoonnumber %in% moons[j]
-      }
+      moon_in    <- cast_tab$newmoonnumber %in% moons[j]
 
       all_in     <- species_in & moon_in
       pcast_tab  <- cast_tab[all_in, ]
