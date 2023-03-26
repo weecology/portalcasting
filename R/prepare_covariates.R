@@ -38,6 +38,12 @@ prepare_covariates <- function (main     = ".",
                                           dataset      = "controls", 
                                           settings     = settings) 
 
+  # truncate to historic values to facilitate hindcasting --- not yet quite properly integrated because we don't use the old nmme
+
+     ndvi_data           <- ndvi_data[ndvi_data$date <= settings$time$origin, ]
+     weather_data        <- weather_data[weather_data$date <= settings$time$origin, ]
+
+
   historic_weather               <- data.frame(date = seq(settings$time$timeseries_start_lagged, settings$time$origin, 1))
   weather_rows                   <- match(historic_weather$date, weather_data$date)
   historic_weather$mintemp       <- weather_data$mintemp[weather_rows]
@@ -46,7 +52,7 @@ prepare_covariates <- function (main     = ".",
   historic_weather$precipitation <- weather_data$precipitation[weather_rows]
   historic_weather$source        <- "historic"             
 
-  forecast_weather               <- data.frame(date = seq(settings$time$forecast_start, settings$time$forecast_end, 1))
+  forecast_weather               <- data.frame(date = seq(settings$time$forecast_start, settings$time$forecast_end_buffered, 1))
 
   forecast_weather_rows          <- match(forecast_weather$date, climate_forecasts$date)
   forecast_weather$mintemp       <- climate_forecasts$mintemp[forecast_weather_rows]
@@ -61,6 +67,8 @@ prepare_covariates <- function (main     = ".",
   # fill in the missing values in the time series with a seasonal auto arima model
   # this accounts for needing a climate forecast a year out now, whereas we did not before
   # the models we get don't always go out that far, so we extend with a seasonal autoarima on each covariate
+
+  # this also helps fill in the not-yet-quite-proper hindcast approach, which isn't implemented
 
   in_fit         <- !is.na(weather_together$source)
   date_fit       <- weather_together$date[in_fit]
@@ -204,9 +212,8 @@ prepare_covariates <- function (main     = ".",
 
   }"
 
-
   ndvi_data$date      <- as.Date(ndvi_data$date)
-  possible_dates      <- seq(min(ndvi_data$date), max(c(newmoons$newmoondate, settings$time$forecast_end)), 1)
+  possible_dates      <- seq(min(ndvi_data$date), max(c(newmoons$newmoondate, settings$time$forecast_end_buffered)), 1)
   npossible_dates     <- length(possible_dates)
   seasonal_cos_value  <- cos(2 * pi * foy(possible_dates))
   seasonal_sin_value  <- sin(2 * pi * foy(possible_dates))
@@ -271,21 +278,27 @@ prepare_covariates <- function (main     = ".",
                                     precipitation = NA,
                                     warm_precip   = NA)
 
-  newmoon_number <- newmoons$newmoonnumber[-1]
-  newmoon_start <- as.Date(newmoons$newmoondate[-nrow(newmoons)])
-  newmoon_end <- as.Date(newmoons$newmoondate[-1])
+  newmoon_number       <- newmoons$newmoonnumber[-1]
+  newmoon_start        <- as.Date(newmoons$newmoondate[-nrow(newmoons)])
+  newmoon_end          <- as.Date(newmoons$newmoondate[-1])
   newmoon_match_number <- NULL
-  newmoon_match_date <- NULL
+  newmoon_match_date   <- NULL
+
   for (i in seq(newmoon_number)) {
-    temp_dates <- as.character(seq.Date(newmoon_start[i] + 1, newmoon_end[i], 1))
-    temp_numbers <- rep(newmoon_number[i], length(temp_dates))
-    newmoon_match_date <- c(newmoon_match_date, temp_dates)
+
+    temp_dates           <- as.character(seq.Date(newmoon_start[i] + 1, newmoon_end[i], 1))
+    temp_numbers         <- rep(newmoon_number[i], length(temp_dates))
+    newmoon_match_date   <- c(newmoon_match_date, temp_dates)
     newmoon_match_number <- c(newmoon_match_number, temp_numbers)
+
   }
+
   newmoon_match_date <- as.Date(newmoon_match_date)
   
   for (i in 1:nrow(covariates_together)) {
+
     rowsin <- weather_together$date %in% newmoon_match_date[newmoon_match_number == covariates_together$newmoonnumber[i]]
+
     covariates_together$mintemp[i]       <- round(mean(weather_together$mintemp[rowsin], na.rm = TRUE), 3)
     covariates_together$meantemp[i]      <- round(mean(weather_together$meantemp[rowsin], na.rm = TRUE), 3)
     covariates_together$maxtemp[i]       <- round(mean(weather_together$maxtemp[rowsin], na.rm = TRUE), 3)
@@ -296,7 +309,7 @@ prepare_covariates <- function (main     = ".",
 
   covariates_together$cos2pifoy <- round(cos(2 * pi * foy(covariates_together$newmoondate)), 3)
   covariates_together$sin2pifoy <- round(sin(2 * pi * foy(covariates_together$newmoondate)), 3)
-  covariates_together <- covariates_together[-1, ]
+  covariates_together           <- covariates_together[-1, ]
 
   write_data(x         = covariates_together, 
              main      = main, 

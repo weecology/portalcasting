@@ -29,7 +29,8 @@ time_settings(
   cast_date = Sys.Date(),
   lead_time = 365,
   max_lag = 365,
-  lag_buffer = 60
+  lag_buffer = 60,
+  lead_time_buffer = 30
 )
 
 directory_files(
@@ -95,6 +96,9 @@ Default is \code{365} for the logistic covariate models.}
 
 \item{lag_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
 Default value of \code{60} corresponds to two additional lunar months.}
+
+\item{lead_time_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days forward in time to forecast. \cr
+Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{directory_configuration}{\code{character} name for the directory configuration YAML.}
 

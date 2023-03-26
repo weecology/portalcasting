@@ -4,10 +4,32 @@ devtools::load_all()
 main <- "~/pc"
 
 
+
+settings <- directory_settings(time = (time_settings(origin = as.Date("2015-01-01"))))
+
+
+prepare_newmoons(main = main, settings = settings)
+read_newmoons(main)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 settings             = directory_settings( )
 quiet                = FALSE
 verbose              = TRUE
-model <- "jags_RW"
+model <- "AutoArima"
 
 dataset  = "controls"
 species <- "DM"

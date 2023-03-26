@@ -157,21 +157,24 @@ runjags_data <- function (model_controls,
 fit_runjags <- function (abundance, 
                          metadata, 
                          covariates, 
-                         model_controls,
+                         monitors, 
+                         inits,
+                         model,
+                         data_names,
                          control_runjags = runjags_controls( )) {
 
   if (missing(control_runjags)) {
     control_runjags <- eval(parse(text = model_controls$fit$args$control_runjags))
   }
 
-  monitor    <- runjags_monitors(model_controls = model_controls,
-                                 metadata       = metadata)  
-  inits      <- runjags_inits(model_controls    = model_controls)  
-  jags_model <- runjags_model(model_controls    = model_controls)  
-  data       <- runjags_data(model_controls     = model_controls,
-                             abundance          = abundance,
-                             metadata           = metadata,
-                             covariates         = covariates)  
+  monitor    <- runjags_monitors(monitors = monitors,
+                                 metadata = metadata)  
+  inits      <- runjags_inits(inits       = inits)  
+  jags_model <- runjags_model(model       = model)  
+  data       <- runjags_data(data_names   = model_controls,
+                             abundance    = abundance,
+                             metadata     = metadata,
+                             covariates   = covariates)  
 
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)

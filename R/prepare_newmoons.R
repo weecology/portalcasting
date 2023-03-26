@@ -28,7 +28,6 @@ prepare_newmoons <- function (main     = ".",
   
   messageq("  - newmoons", quiet = quiet)
 
-
   newmoons <- load_datafile(datafile            = file.path("Rodents", "moon_dates.csv"),
                             path                = file.path(main, settings$subdirectories$resources),
                             download_if_missing = FALSE,
@@ -51,7 +50,8 @@ prepare_newmoons <- function (main     = ".",
     }
   ### end patch ###
 
-  newmoons <- newmoons[newmoons$newmoondate >= settings$time$timeseries_start_lagged, ]
+  newmoons <- newmoons[newmoons$newmoondate >= settings$time$timeseries_start_lagged & 
+                       newmoons$newmoondate <  settings$time$forecast_end_buffered, ]
 
   write_data(x         = newmoons, 
              main      = main, 

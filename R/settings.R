@@ -65,6 +65,9 @@
 #' @param lag_buffer \code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
 #'   Default value of \code{60} corresponds to two additional lunar months. 
 #'
+#' @param lead_time_buffer \code{integer} (or integer \code{numeric}) additional number of calendar days forward in time to forecast. \cr
+#'   Default value of \code{30} corresponds to one additional lunar month. 
+#'
 #' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
 #'
 #' @return Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
@@ -109,17 +112,20 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
                            cast_date        = Sys.Date( ),
                            lead_time        = 365,
                            max_lag          = 365,
-                           lag_buffer       = 60) {
+                           lag_buffer       = 60,
+                           lead_time_buffer = 30) {
 
 
   timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer 
   forecast_start          <- origin + 1
   forecast_end            <- origin + lead_time
+  forecast_end_buffered   <- origin + lead_time + lead_time_buffer
 
   list(timeseries_start        = timeseries_start,
        timeseries_start_lagged = timeseries_start_lagged,
        forecast_start          = forecast_start,
        forecast_end            = forecast_end,
+       forecast_end_buffered   = forecast_end_buffered,
        origin                  = origin,
        cast_date               = cast_date,
        lead_time               = lead_time,

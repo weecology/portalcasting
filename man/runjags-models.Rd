@@ -23,7 +23,10 @@ fit_runjags(
   abundance,
   metadata,
   covariates,
-  model_controls,
+  monitors,
+  inits,
+  model,
+  data_names,
   control_runjags = runjags_controls()
 )
 
