@@ -53,12 +53,15 @@ process_model_output <- function (main      = ".",
   ids     <- as.numeric(ids)
   next_id <- ceiling(max(c(0, ids), na.rm = TRUE)) + 1
 
+  model_controls <- read_model_controls(main     = main, 
+                                        settings = settings)
 
   cast_metadata <- update_list(metadata, 
                                cast_id          = next_id,
                                model            = model,
                                dataset          = dataset,
                                species          = species,
+                               model_controls   = model_controls[[model]],
                                dataset_controls = metadata$dataset_controls[[dataset]])
 
   cast_tab <- data.frame(lead_time_newmoons                 = 1:metadata$time$lead_time_newmoons,

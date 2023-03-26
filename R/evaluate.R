@@ -110,30 +110,19 @@ evaluate_cast <- function (main     = ".",
 
   return_if_null(x = cast_id)
 
-  model_cast          <- read_model_cast(main             = main,
-                                         cast_id          = cast_id,
-                                         settings         = settings)
-  cast_metadata       <- read_cast_metadata(main          = main,
-                                            cast_id       = cast_id,
-                                            settings      = settings)
-  cast_model          <- cast_metadata$model
-  cast_model_controls <- model_controls(main              = main,
-                                        models            = cast_model,
-                                        settings          = settings)[[cast_model]]
-
-  cast_tab            <- read_cast_tab(main               = main, 
-                                       settings           = settings,
-                                       cast_id            = cast_id)
-  cast_tab            <- add_obs_to_cast_tab(main         = main,  
-                                             settings     = settings,
-                                             cast_tab     = cast_tab)
-  cast_tab            <- add_err_to_cast_tab(main         = main,  
-                                             settings     = settings,
-                                             cast_tab     = cast_tab)
-  cast_tab            <- add_covered_to_cast_tab(main     = main,  
-                                                 settings = settings,
-                                                 cast_tab = cast_tab)
-  measure_cast_level_error(cast_tab = cast_tab)
+  cast_tab <- read_cast_tab(main               = main, 
+                            settings           = settings,
+                            cast_id            = cast_id)
+  cast_tab <- add_obs_to_cast_tab(main         = main,  
+                                  settings     = settings,
+                                  cast_tab     = cast_tab)
+  cast_tab <- add_err_to_cast_tab(main         = main,  
+                                  settings     = settings,
+                                  cast_tab     = cast_tab)
+  cast_tab <- add_covered_to_cast_tab(main     = main,  
+                                      settings = settings,
+                                      cast_tab = cast_tab)
+  measure_cast_error(cast_tab = cast_tab)
 
 }
 

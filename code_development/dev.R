@@ -1,6 +1,6 @@
 rm(list=ls())
-devtools::load_all()
 devtools::document()
+devtools::load_all()
 
 main <- "~/sandbox"
 unlink(main, recursive = TRUE, force = TRUE)
@@ -9,9 +9,11 @@ setup_sandbox(main     = main,
               settings = directory_settings(time = (time_settings(origin = as.Date("2015-01-01")))),
               verbose  = TRUE)
 
+portalcast(main, datasets = "controls", species = "DM", models = c("AutoArima", "pGARCH", "jags_RW"), verbose = TRUE)
 
 
-portalcast(main, dataset = "controls", species = "DM", models = c("AutoArima", "pGARCH", "jags_RW"), verbose = TRUE)
+
+
 
 
 fill_models(main)

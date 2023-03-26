@@ -9,7 +9,6 @@ test_that(desc = "ensemble_casts ensembles accordingly", {
     skip_on_cran() 
 
   expect_is(ensemble_casts(main                       = main, 
-                           historic_end_newmoonnumber = 555, 
                            species                    = "DM", 
                            dataset                    = "controls"), "data.frame")
   expect_error(ensemble_casts(main = main, cast_id = 1e10))
