@@ -122,7 +122,8 @@ evaluate_cast <- function (main     = ".",
   cast_tab <- add_covered_to_cast_tab(main     = main,  
                                       settings = settings,
                                       cast_tab = cast_tab)
-  measure_cast_error(cast_tab = cast_tab)
+
+  measure_cast_level_error(cast_tab = cast_tab)
 
 }
 
