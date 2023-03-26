@@ -1,4 +1,4 @@
-context(desc = "jags functions")
+context(desc = "settings functions")
 
 main <- "./testing"
 
