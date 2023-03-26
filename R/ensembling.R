@@ -63,12 +63,8 @@ ensemble_casts <- function (main                       = ".",
       cast_tab <- add_obs_to_cast_tab(main     = main,  
                                       settings = settings,
                                       cast_tab = cast_tab)
-      cast_tab <- add_err_to_cast_tab(main     = main,  
-                                      settings = settings,
-                                      cast_tab = cast_tab)
-      cast_tab <- add_covered_to_cast_tab(main     = main,  
-                                          settings = settings,
-                                          cast_tab = cast_tab)
+      cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
+      cast_tab$error   <- cast_tab$estimate - cast_tab$obs
 
     }
 

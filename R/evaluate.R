@@ -125,7 +125,7 @@ evaluate_cast <- function (main     = ".",
   RMSE     <- sqrt(mean(cast_tab$error^2, na.rm = TRUE))
   coverage <- mean(cast_tab$covered, na.rm = TRUE)
 
-  data.frame(cast_id  = ids, 
+  data.frame(cast_id  = cast_id, 
              species  = cast_tab$species[1], 
              model    = cast_tab$model[1], 
 #             dataset  = cast_tab$dataset[1], 

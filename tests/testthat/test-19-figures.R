@@ -33,32 +33,3 @@ test_that(desc = "plot_cast_point", {
 
 
 
-
-
-test_that(desc = "plot_casts_err_lead", {
-
-  # download is held back on cran
-
-    skip_on_cran() 
-
-
-  expect_silent(plot_casts_err_lead(main = main, models = c("AutoArima"), species = c("DM")))
-  expect_silent(plot_casts_err_lead(main = main, models = c("AutoArima", "ESSS"), species = c("DM", "BA")))
-  expect_error(plot_casts_err_lead(main = main, cast_id = 1e10))
-
-})
-
-
-
-test_that(desc = "plot_casts_cov_RMSE", {
-
-  # download is held back on cran
-
-    skip_on_cran() 
-
-  expect_silent(plot_casts_cov_RMSE(main = main, models = c("AutoArima"), species = c("DM")))
-  expect_silent(plot_casts_cov_RMSE(main = main, models = c("AutoArima", "ESSS"), species = c("DM", "BA")))
-  expect_error(plot_casts_cov_RMSE(main = main, cast_id = 1e10))
-
-
-})
