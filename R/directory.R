@@ -32,12 +32,6 @@ create_dir <- function(main     = ".",
                        settings = directory_settings( ), 
                        quiet    = FALSE){
 
-  core_package <- package_version_finder("setup_dir")
-
-  messageq(break_lines( ), "This is ", core_package[["package"]], " v", core_package[["version"]], "\n  ", format(Sys.time(), "%x %T %Z"), "\n",
-           break_lines( ), "Establishing directory at\n ", normalizePath(file.path(main = main), mustWork = FALSE), "\n", break_lines( ), quiet = quiet)
-
-
   mapply(FUN          = dir.create, 
          path         = file.path(main, settings$subdirectories),
          recursive    = TRUE,
@@ -46,8 +40,6 @@ create_dir <- function(main     = ".",
   write_directory_configuration(main     = main, 
                                 settings = settings, 
                                 quiet    = quiet)
-
-  messageq(break_lines( ), "Directory successfully instantiated\n", break_lines( ), quiet = quiet)
 
 }
 
@@ -66,6 +58,13 @@ setup_dir <- function (main                 = ".",
                        quiet                = FALSE, 
                        verbose              = FALSE) {
 
+  core_package <- package_version_finder("setup_dir")
+
+  messageq(break_lines( ), "This is ", core_package[["package"]], " v", core_package[["version"]], "\n", 
+           break_line( ), "Establishing directory at\n  ", normalizePath(file.path(main = main), mustWork = FALSE), "\n  ",
+           format(Sys.time(), "%x %T %Z"), "\n", break_lines( ), quiet = quiet)
+
+
   create_dir(main     = main, 
              settings = settings,
              quiet    = quiet)
@@ -82,6 +81,8 @@ setup_dir <- function (main                 = ".",
   read_directory_configuration(main     = main,
                                settings = settings,
                                quiet    = quiet)
+
+  messageq(break_lines( ), "Directory successfully instantiated.\n", break_lines( ), quiet = quiet)
 
 }
 
