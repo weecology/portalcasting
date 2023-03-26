@@ -1,7 +1,7 @@
 #' @title Forecast Portal Rodents Models
 #'
 #' @description Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
-#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. \cr \cr
+#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
 #'  \code{cast} runs a single cast of a single model on one species of one dataset. \cr \cr
 #'  \code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination. 
 #'
@@ -19,7 +19,9 @@
 #'
 #' @param species \code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr]{rodent_species}}.
 #'
-#' @return \code{portalcast}, \code{cast}: Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly. \cr \cr
+#' @return 
+#'   \code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base]{invisible}}-ly. \cr 
+#'   \code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr
 #'   \code{make_model_combinations}: \code{data.frame} of the model combinations.
 #'
 #' @export
@@ -55,7 +57,7 @@ portalcast <- function (main     = ".",
                                      quiet    = quiet,
                                      verbose  = verbose),
                          error = function(x) {NA})
-  
+ 
     if (all(is.na(out[[i]]))) { 
 
       messageq("    |------| failed |------|", quiet = quiet) 
@@ -67,8 +69,16 @@ portalcast <- function (main     = ".",
     }
   }
 
+  model_combinations$fit_successful <- NA
+  for (i in 1:nmodel_combinations) {
+    model_combinations$fit_successful[i] <- !(all(is.na(out[[i]])))
+  }
+  write.csv(x         = model_combinations, 
+            file      = file.path(main, settings$files$cast_results),
+            row.names = FALSE)
+
   messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = quiet)
-  invisible( ) 
+  invisible(model_combinations) 
 
 } 
 

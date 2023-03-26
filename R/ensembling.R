@@ -75,7 +75,7 @@ ensemble_casts <- function (main                       = ".",
   }
 
   cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                        <- ifnull(models, eval_models())
+  models                        <- ifnull(models, "AutoArima")
   dataset                       <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species                       <- ifnull(species, "DM") 
   historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(cast_tab$historic_end_newmoonnumber)) 

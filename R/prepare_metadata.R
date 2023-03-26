@@ -39,11 +39,11 @@ prepare_metadata <- function (main                 = ".",
                                             settings = settings, 
                                             datasets = datasets)
 
-  historic_start_newmoonnumber <- min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$timeseries_start >= 0)])
-  historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin < 0)])
+  historic_start_newmoonnumber <- min(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) >= settings$time$timeseries_start])
+  historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) < settings$time$origin])
   historic_newmoonnumbers      <- historic_start_newmoonnumber:historic_end_newmoonnumber
-  forecast_start_newmoonnumber <- min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin >= 0)])
-  forecast_end_newmoonnumber   <- max(newmoons$newmoonnumber)
+  forecast_start_newmoonnumber <- min(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) >= settings$time$origin])
+  forecast_end_newmoonnumber   <- max(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) < settings$time$forecast_end_buffered])
   forecast_newmoonnumbers      <- forecast_start_newmoonnumber:forecast_end_newmoonnumber
   forecast_dates               <- as.Date(newmoons$newmoondate[match(forecast_newmoonnumbers, newmoons$newmoonnumber)])
   forecast_months              <- format(forecast_dates, "%m")
@@ -58,6 +58,8 @@ prepare_metadata <- function (main                 = ".",
 
   out <- list(time                    = list(timeseries_start             = as.character(settings$time$timeseries_start),
                                              timeseries_start_lagged      = as.character(settings$time$timeseries_start_lagged),
+                                             forecast_end                 = as.character(settings$time$forecast_end),
+                                             forecast_end_buffered        = as.character(settings$time$forecast_end_buffered),
                                              lead_time                    = settings$time$lead_time,
                                              max_lag                      = settings$time$max_lag,
                                              lag_buffer                   = settings$time$lag_buffer,

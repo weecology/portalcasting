@@ -26,6 +26,8 @@
 #'
 #' @param cast_evaluations \code{character} name for the forecast evaluations csv.
 #'
+#' @param cast_results \code{character} name for the forecast combination results csv.
+#'
 #' @param resources \code{character} name for the resources subdirectory.
 #'
 #' @param data \code{character} name for the data subdirectory.
@@ -148,6 +150,7 @@ directory_files <- function (directory_configuration = "directory_configuration.
                              dataset_controls        = "dataset_controls.yaml", 
                              model_controls          = "model_controls.yaml",
                              cast_evaluations        = "cast_evaluations.csv",
+                             cast_results            = "cast_results.csv",
                              forecast_metadata       = "casts_metadata.csv",
                              metadata                = "metadata.yaml") {
 
@@ -157,6 +160,7 @@ directory_files <- function (directory_configuration = "directory_configuration.
        dataset_controls        = dataset_controls, 
        model_controls          = model_controls,
        cast_evaluations        = cast_evaluations,
+       cast_results            = cast_results,
        forecast_metadata       = forecast_metadata,
        metadata                = metadata)
 

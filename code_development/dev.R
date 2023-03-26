@@ -3,12 +3,11 @@ devtools::load_all()
 devtools::document()
 
 main <- "~/sandbox"
-setup_sandbox(main = main, settings = directory_settings(time = (time_settings(origin = as.Date("2015-01-01")))))
+unlink(main, recursive = TRUE, force = TRUE)
 
-create_dir(main)
-fill_resources(main)
-fill_fits(main)
-fill_forecasts(main)
+setup_sandbox(main     = main, 
+              settings = directory_settings(time = (time_settings(origin = as.Date("2015-01-01")))),
+              verbose  = TRUE)
 
 
 

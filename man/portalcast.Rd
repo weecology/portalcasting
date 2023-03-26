@@ -50,7 +50,8 @@ make_model_combinations(
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
-\code{portalcast}, \code{cast}: Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly. \cr \cr
+\code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base]{invisible}}-ly. \cr 
+  \code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr
   \code{make_model_combinations}: \code{data.frame} of the model combinations.
 }
 \description{

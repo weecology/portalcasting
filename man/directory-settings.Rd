@@ -41,6 +41,7 @@ directory_files(
   dataset_controls = "dataset_controls.yaml",
   model_controls = "model_controls.yaml",
   cast_evaluations = "cast_evaluations.csv",
+  cast_results = "cast_results.csv",
   forecast_metadata = "casts_metadata.csv",
   metadata = "metadata.yaml"
 )
@@ -114,6 +115,8 @@ Default value of \code{30} corresponds to one additional lunar month.}
 \item{model_controls}{\code{character} name for the YAML of model controls list(s).}
 
 \item{cast_evaluations}{\code{character} name for the forecast evaluations csv.}
+
+\item{cast_results}{\code{character} name for the forecast combination results csv.}
 
 \item{forecast_metadata}{\code{character} name for the forecast metadata csv.}
 
