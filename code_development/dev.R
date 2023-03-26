@@ -1,5 +1,60 @@
 rm(list=ls())
 devtools::load_all()
+devtools::document()
+
+main <- "~/portalcast"
+
+fill_models(main)
+
+out <- cast(main = main,
+            dataset = "controls",
+            species = "DM",
+            model = "jags_logistic_competition_covariates",
+            verbose = TRUE)
+out
+out$model_cast$sample
+
+
+  abundance      <- prepare_abundance(main     = main,
+                                      dataset  = dataset,
+                                      species  = species,
+                                      model    = model,
+                                      settings = settings,
+                                      quiet    = quiet,
+                                      verbose  = verbose)
+  model_controls <- model_controls(main        = main,
+                                   model       = model,
+                                   settings    = settings)[[model]]
+  metadata       <- read_metadata(main         = main,
+                                  settings     = settings)
+  newmoons       <- read_newmoons(main         = main,
+                                  settings     = settings)                                        
+  covariates     <- read_covariates(main       = main,
+                                    settings   = settings)
+
+  fit_args  <- named_null_list(element_names = names(model_controls$fit$args))
+  for (i in 1:length(fit_args)) {
+    fit_args[[i]] <- eval(parse(text = model_controls$fit$args[i]))
+  }
+
+  control_runjags <- runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100) 
+#  control_runjags <- fit_args$control_runjags
+  monitors        <- fit_args$monitors
+  data_names      <- fit_args$data_names
+  inits           <- fit_args$inits
+  model           <- fit_args$model
+
+
+
+
+
+fill_data(main)
+
+
+setup_sandbox(main)
+
+
+
 
 main <- "~/pc"
 
@@ -134,7 +189,6 @@ crps(y      = cast_tab$obs,
 
 
 
-control_runjags <- runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100) 
 
 
 

@@ -359,21 +359,23 @@ jags_RW:
     fun: fit_runjags
     args: 
       abundance:  abundance
-      control_runjags: runjags_controls()
+      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
       metadata:  metadata
       covariates: covariates
       data_names: [count, "N", log_mean_count]  
       monitors: [mu, sigma]
-      model: jags_RW.txt
+      model: file.path(main, settings$subdirectories$models, "jags_RW.txt")
       inits:
         mu:    rnorm(1, mean = data$log_mean_count, sd = 0.1)
         sigma: runif(1, min = 0.01, max = 0.5)
+    model_file: jags_RW.txt
   cast:
     fun: forecast
     args: 
-      object: model_fit
-      h:      metadata$time$lead_time_newmoons
-      level:  metadata$confidence_level
+      object:   model_fit
+      h:        metadata$time$lead_time_newmoons
+      level:    metadata$confidence_level
+      nsamples: metadata$nsamples
   datasets: 
     controls:
       species: [DM]
@@ -393,25 +395,26 @@ jags_logistic:
   fit:
     fun: fit_runjags
     args: 
-      model: "'jags_logistic'"
       abundance:  abundance
-      control_runjags: runjags_controls()
+      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
       metadata:  metadata
       covariates: covariates
-    data_needs: [count, "N", log_mean_count, log_max_count]  
-    monitors: [mu, sigma, r, log_K]
+      data_names: [count, "N", log_mean_count, log_max_count]  
+      monitors: [mu, sigma, r, log_K]
+      model: file.path(main, settings$subdirectories$models, "jags_logistic.txt")
+      inits:
+        mu:    rnorm(1, data$log_mean_count, 0.1)
+        sigma: runif(1, 0.01, 0.5)
+        r:     rnorm(1, 0, 0.01)
+        log_K: rnorm(1, data$log_max_count, 0.01)
     model_file: jags_logistic.txt
-    inits:
-      mu:    rnorm(1, data$log_mean_count, 0.1)
-      sigma: runif(1, 0.01, 0.5)
-      r:     rnorm(1, 0, 0.01)
-      log_K: rnorm(1, data$log_max_count, 0.01)
   cast:
     fun: forecast
     args: 
-      object: model_fit
-      h:      metadata$time$lead_time_newmoons
-      level:  metadata$confidence_level
+      object:   model_fit
+      h:        metadata$time$lead_time_newmoons
+      level:    metadata$confidence_level
+      nsamples: metadata$nsamples
   datasets: 
     controls:
       species: [DM]
@@ -431,27 +434,28 @@ jags_logistic_covariates:
   fit:
     fun: fit_runjags
     args: 
-      model: "'jags_logistic_covariates'"
       abundance:  abundance
-      control_runjags: runjags_controls()
+      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
       metadata:  metadata
       covariates: covariates
-    data_needs: [count, "N", log_mean_count, log_max_count, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
-    monitors: [mu, sigma, r_int, r_slope, log_K_int, log_K_slope]
+      data_names: [count, "N", log_mean_count, log_max_count, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
+      monitors: [mu, sigma, r_int, r_slope, log_K_int, log_K_slope]
+      model: file.path(main, settings$subdirectories$models, "jags_logistic_covariates.txt")
+      inits:
+        mu:          rnorm(1, data$log_mean_count, 0.1)
+        sigma:       runif(1, 0.01, 0.5)
+        r_int:       rnorm(1, 0, 0.01)
+        r_slope:     rnorm(1, 0, 0.1)
+        log_K_int:   rnorm(1, data$log_max_count, 0.01)
+        log_K_slope: rnorm(1, 0, 0.01)
     model_file: jags_logistic_covariates.txt
-    inits:
-      mu:          rnorm(1, data$log_mean_count, 0.1)
-      sigma:       runif(1, 0.01, 0.5)
-      r_int:       rnorm(1, 0, 0.01)
-      r_slope:     rnorm(1, 0, 0.1)
-      log_K_int:   rnorm(1, data$log_max_count, 0.01)
-      log_K_slope: rnorm(1, 0, 0.01)
   cast:
     fun: forecast
     args: 
-      object: model_fit
-      h:      metadata$time$lead_time_newmoons
-      level:  metadata$confidence_level
+      object:   model_fit
+      h:        metadata$time$lead_time_newmoons
+      level:    metadata$confidence_level
+      nsamples: metadata$nsamples
   datasets: 
     controls:
       species: [DM]
@@ -471,20 +475,27 @@ jags_logistic_competition:
   fit:
     fun: fit_runjags
     args: 
-      model: "'jags_logistic_competition'"
       abundance:  abundance
-      control_runjags: runjags_controls()
+      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
       metadata:  metadata
       covariates: covariates
-    data_needs: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon]  
-    monitors: [mu, sigma, r_int, log_K_int, log_K_slope]
+      data_names: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon]  
+      monitors: [mu, sigma, r_int, log_K_int, log_K_slope]
+      model: file.path(main, settings$subdirectories$models, "jags_logistic_competition.txt")
+      inits: 
+        mu:          rnorm(1, data$log_mean_count, 0.1)
+        sigma:       runif(1, 0.01, 0.5)
+        r_int:       rnorm(1, 0, 0.01)
+        log_K_int:   rnorm(1, data$log_max_count, 0.01)
+        log_K_slope: rnorm(1, 0, 0.01)
     model_file: jags_logistic_competition.txt
   cast:
     fun: forecast
     args: 
-      object: model_fit
-      h:      metadata$time$lead_time_newmoons
-      level:  metadata$confidence_level
+      object:   model_fit
+      h:        metadata$time$lead_time_newmoons
+      level:    metadata$confidence_level
+      nsamples: metadata$nsamples
   datasets: 
     controls:
       species: [DM]
@@ -504,20 +515,29 @@ jags_logistic_competition_covariates:
   fit:
     fun: fit_runjags
     args: 
-      model: "'jags_logistic_competition_covariates'"
       abundance:  abundance
-      control_runjags: runjags_controls()
+      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
       metadata:  metadata
       covariates: covariates
-    data_needs: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
-    monitors: [mu, sigma, r_int, r_slope, log_K_int, log_K_slope_NDVI, log_K_slope_DO]
+      data_names: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
+      monitors: [mu, sigma, r_int, r_slope, log_K_int, log_K_slope_NDVI, log_K_slope_DO]
+      model: file.path(main, settings$subdirectories$models, "jags_logistic_competition_covariates.txt")
+      inits: 
+        mu:               rnorm(1, data$log_mean_count, 0.1)
+        sigma:            runif(1, 0.01, 0.5)
+        r_int:            rnorm(1, 0, 0.01)
+        r_slope:          rnorm(1, 0, 0.1)
+        log_K_int:        rnorm(1, data$log_max_count, 0.01)
+        log_K_slope_DO:   rnorm(1, 0, 0.01)
+        log_K_slope_NDVI: rnorm(1, 0, 0.01)
     model_file: jags_logistic_competition_covariates.txt
   cast:
     fun: forecast
     args: 
-      object: model_fit
-      h:      metadata$time$lead_time_newmoons
-      level:  metadata$confidence_level
+      object:   model_fit
+      h:        metadata$time$lead_time_newmoons
+      level:    metadata$confidence_level
+      nsamples: metadata$nsamples
   datasets: 
     controls:
       species: [DM]

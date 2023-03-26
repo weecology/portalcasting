@@ -33,6 +33,8 @@
 #'
 #' @param factories \code{character} vector of factory modules to add to JAGS. See \code{\link[runjags]{run.jags}}.
 #'
+#' @param monitors \code{character} vector of parameters to track. Forecasted observations and state variables are tracked automatically.
+#'
 #' @param mutate A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags]{run.jags}}. 
 #'
 #' @param silent_jags \code{logical} value for quieting the output from the runjags function, including the underlying JAGS output. 
@@ -42,6 +44,8 @@
 #' @param h \code{integer}-conformable number of steps forward to include in the forecast.
 #'
 #' @param level \code{numeric} of the confidence level to use in summarizing the predictions.
+#'
+#' @param nsamples \code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates. 
 #'
 #' @return 
 #'   \code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags]{run.jags}}. \cr
@@ -67,7 +71,7 @@ NULL
 #'
 #' @export
 #'
-runjags_inits <- function (model_controls) {
+runjags_inits <- function (inits) {
 
   rngs  <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
 
@@ -75,15 +79,15 @@ runjags_inits <- function (model_controls) {
 
     function(chain = chain) {
 
-      model_specific_inits <- named_null_list(element_names = names(model_controls$fit$inits))
+      model_specific_inits <- named_null_list(element_names = names(inits))
       for (i in 1:length(model_specific_inits)) {
 
-        model_specific_inits[[i]] <- eval(parse(text = model_controls$fit$inits[[i]]))
+        model_specific_inits[[i]] <- eval(parse(text = inits[[i]]))
 
       }
 
-      c(list(.RNG.name = sample(rngs, 1),
-             .RNG.seed = sample(1:1e+06, 1)),
+      c(.RNG.name = sample(rngs, 1),
+        .RNG.seed = sample(1:1e+06, 1), 
         model_specific_inits)                  
       
     }
@@ -96,9 +100,9 @@ runjags_inits <- function (model_controls) {
 #'
 #' @export
 #'
-runjags_model <- function (model_controls) {
+runjags_model <- function (model) {
 
-  scan(file  = eval(parse(text = model_controls$fit$full_model_file)),
+  scan(file  = model,
        what  = "character",
        quiet = TRUE)
   
@@ -108,11 +112,12 @@ runjags_model <- function (model_controls) {
 #'
 #' @export
 #'
-runjags_monitors <- function (model_controls, 
+runjags_monitors <- function (monitors,
                               metadata) {
 
-  out <- paste0("count_predicted[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
-  c(out, model_controls$fit$monitors)
+  count_predicted <- paste0("count_predicted[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
+  X               <- paste0("X[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
+  c(count_predicted, X, monitors)
 
 }
 
@@ -120,7 +125,7 @@ runjags_monitors <- function (model_controls,
 #'
 #' @export
 #'
-runjags_data <- function (model_controls,
+runjags_data <- function (data_names,
                           abundance, 
                           metadata, 
                           covariates) {
@@ -144,7 +149,7 @@ runjags_data <- function (model_controls,
        log_max_count            = log_max_count,
        warm_rain_three_newmoons = warm_rain_three_newmoons,
        ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons,
-       ordii_one_newmoon        = ordii_one_newmoon)[model_controls$fit$data_needs]
+       ordii_one_newmoon        = ordii_one_newmoon)[data_names]
 
 }
 
@@ -166,22 +171,22 @@ fit_runjags <- function (abundance,
   if (missing(control_runjags)) {
     control_runjags <- eval(parse(text = model_controls$fit$args$control_runjags))
   }
-
   monitor    <- runjags_monitors(monitors = monitors,
                                  metadata = metadata)  
-  inits      <- runjags_inits(inits       = inits)  
+  init       <- runjags_inits(inits       = inits)  
   jags_model <- runjags_model(model       = model)  
-  data       <- runjags_data(data_names   = model_controls,
+  data       <- runjags_data(data_names   = data_names,
                              abundance    = abundance,
                              metadata     = metadata,
                              covariates   = covariates)  
+
 
   runjags.options(silent.jags    = control_runjags$silent_jags, 
                   silent.runjags = control_runjags$silent_jags)
 
   model_fit <- run.jags(model     = jags_model, 
                         monitor   = monitor, 
-                        inits     = inits(data), 
+                        inits     = init(data), 
                         data      = data, 
                         n.chains  = control_runjags$nchains, 
                         adapt     = control_runjags$adapt, 
@@ -204,17 +209,23 @@ fit_runjags <- function (abundance,
 #'
 forecast.runjags <- function (object, 
                               h, 
-                              level) {
+                              level,
+                              nsamples,
+                              seed = NULL) {
 
-  vals      <- combine.mcmc(mcmc.objects = object$mcmc)
+  vals        <- combine.mcmc(mcmc.objects = object$mcmc)
 
-  pred_cols <- grep("X", colnames(vals))
-  vals      <- vals[ , pred_cols]
-  HPD       <- HPDinterval(obj = as.mcmc(vals), prob = level)
-  out       <- list(mean  = as.ts(round(apply(vals, 2, mean)[1:h], 3)),
-                    lower = as.ts(round(HPD[1:h, "lower", drop = FALSE], 3)), 
-                    upper = as.ts(round(HPD[1:h, "upper", drop = FALSE], 3)))
-  out$level <- level
+  pred_cols   <- grep("count_predicted", colnames(vals))
+  vals        <- vals[ , pred_cols]
+  HPD         <- HPDinterval(obj = as.mcmc(vals), prob = level)
+  set.seed(seed = seed)
+  sample_rows <- sample(1:nrow(vals), min(c(nrow(vals), nsamples)))
+  sample      <- vals[sample_rows, ]
+  out         <- list(mean   = as.ts(round(apply(vals, 2, mean)[1:h], 3)),
+                      lower  = as.ts(round(HPD[1:h, "lower", drop = FALSE], 3)), 
+                      upper  = as.ts(round(HPD[1:h, "upper", drop = FALSE], 3)),
+                      level  = level,
+                      sample = sample)
 
   structure(.Data = out, 
             class = "forecast")

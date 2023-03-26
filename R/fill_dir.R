@@ -318,7 +318,9 @@ fill_models <- function (main               = ".",
                                    new_model_controls = new_model_controls,
                                    quiet              = quiet) 
 
-  write_model_scripts(controls = controls,
+  write_model_scripts(main     = main, 
+                      settings = settings,
+                      controls = controls,
                       quiet    = quiet,
                       verbose  = verbose)
 

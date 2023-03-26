@@ -25,6 +25,8 @@ write_model_controls(
 )
 
 write_model_scripts(
+  main = ".",
+  settings = directory_settings(),
   controls = prefab_model_controls(),
   quiet = FALSE,
   verbose = FALSE

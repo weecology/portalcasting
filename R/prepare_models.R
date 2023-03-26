@@ -58,7 +58,7 @@ write_model_controls <- function (main               = ".",
                                   settings           = directory_settings( ),
                                   quiet              = FALSE) {
 
-  messageq("Writing model controls ...\n", quiet = quiet)
+  messageq("Writing model controls ...", quiet = quiet)
 
   model_controls <- c(prefab_model_controls( ), new_model_controls)[models]
   nmodels        <- length(model_controls)
@@ -92,17 +92,19 @@ write_model_controls <- function (main               = ".",
 #'
 #' @export
 #'
-write_model_scripts <- function (controls = prefab_model_controls( ), 
+write_model_scripts <- function (main     = ".",
+                                 settings = directory_settings( ), 
+                                 controls = prefab_model_controls( ), 
                                  quiet    = FALSE, 
                                  verbose  = FALSE) {
 
+
   files  <- unlist(mapply(getElement, mapply(getElement, controls, "fit"), "model_file"))
-  ffiles <- unlist(mapply(getElement, mapply(getElement, controls, "fit"), "full_model_file"))
 
   nfiles <- length(files)
   if (nfiles > 0) {
 
-    messageq("Writing model script files ...\n", quiet = quiet)
+    messageq("Writing model script files ...", quiet = quiet)
 
     for (i in 1:nfiles) {
 
@@ -111,7 +113,7 @@ write_model_scripts <- function (controls = prefab_model_controls( ),
       from_path <- system.file(...     = "extdata", 
                                ...     = files[i], 
                                package = "portalcasting")
-      to_path   <- eval(parse(text     = ffiles[i]))
+      to_path   <- file.path(main, settings$subdirectories$models, files[i])
       file.copy(from      = from_path,
                 to        = to_path, 
                 overwrite = TRUE)

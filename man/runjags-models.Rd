@@ -11,13 +11,13 @@
 \alias{runjags_controls}
 \title{Create and Run a runjags Portalcasting Model}
 \usage{
-runjags_inits(model_controls)
+runjags_inits(inits)
 
-runjags_model(model_controls)
+runjags_model(model)
 
-runjags_monitors(model_controls, metadata)
+runjags_monitors(monitors, metadata)
 
-runjags_data(model_controls, abundance, metadata, covariates)
+runjags_data(data_names, abundance, metadata, covariates)
 
 fit_runjags(
   abundance,
@@ -30,7 +30,7 @@ fit_runjags(
   control_runjags = runjags_controls()
 )
 
-\method{forecast}{runjags}(object, h, level)
+\method{forecast}{runjags}(object, h, level, nsamples, seed = NULL)
 
 runjags_controls(
   nchains = 4,
@@ -46,7 +46,7 @@ runjags_controls(
 )
 }
 \arguments{
-\item{model_controls}{\code{list} of model controls for the model of interest. See \code{\link{prefab_model_controls}}.}
+\item{monitors}{\code{character} vector of parameters to track. Forecasted observations and state variables are tracked automatically.}
 
 \item{metadata}{\code{list} of model control elements. See \code{\link{prepare_metadata}}.}
 
@@ -61,6 +61,8 @@ runjags_controls(
 \item{h}{\code{integer}-conformable number of steps forward to include in the forecast.}
 
 \item{level}{\code{numeric} of the confidence level to use in summarizing the predictions.}
+
+\item{nsamples}{\code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates.}
 
 \item{nchains}{Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags]{run.jags}}.}
 
@@ -81,6 +83,8 @@ runjags_controls(
 \item{mutate}{A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags]{run.jags}}.}
 
 \item{silent_jags}{\code{logical} value for quieting the output from the runjags function, including the underlying JAGS output.}
+
+\item{model_controls}{\code{list} of model controls for the model of interest. See \code{\link{prefab_model_controls}}.}
 }
 \value{
 \code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags]{run.jags}}. \cr

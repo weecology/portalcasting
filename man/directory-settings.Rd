@@ -17,6 +17,7 @@ directory_settings(
   resources = directory_resources(),
   time = time_settings(),
   confidence_level = 0.95,
+  nsamples = 10000,
   save = TRUE,
   overwrite = FALSE,
   unzip_pause = 30,
@@ -73,6 +74,8 @@ sandbox_settings()
 \item{time}{\code{list} of time settings, see \code{\link{time_settings}}.}
 
 \item{confidence_level}{\code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.}
+
+\item{nsamples}{\code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates.}
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
 

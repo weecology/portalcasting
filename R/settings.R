@@ -70,6 +70,8 @@
 #'
 #' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
 #'
+#' @param nsamples \code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates. 
+#'
 #' @return Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
 #'
 #' @name directory settings
@@ -85,6 +87,7 @@ directory_settings <- function (files             = directory_files( ),
                                 resources         = directory_resources( ),
                                 time              = time_settings( ),
                                 confidence_level  = 0.95,
+                                nsamples          = 1e4,
                                 save              = TRUE,
                                 overwrite         = FALSE, 
                                 unzip_pause       = 30,
@@ -95,6 +98,7 @@ directory_settings <- function (files             = directory_files( ),
        resources        = resources,
        repository       = "portalPredictions", 
        confidence_level = confidence_level,
+       nsamples         = nsamples,
        time             = time,
        save             = save, 
        overwrite        = overwrite, 

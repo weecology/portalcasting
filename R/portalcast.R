@@ -111,9 +111,9 @@ cast <- function (main     = ".",
   for (i in 1:length(fit_args)) {
     fit_args[[i]] <- eval(parse(text = model_controls$fit$args[i]))
   }
-
   model_fit  <- do.call(what = model_controls$fit$fun,
                         args = fit_args)
+
 
   cast_args  <- named_null_list(element_names = names(model_controls$cast$args))
   for (i in 1:length(cast_args)) {

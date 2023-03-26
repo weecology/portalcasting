@@ -75,6 +75,7 @@ prepare_metadata <- function (main                 = ".",
               cast_group              = cast_group,
               dataset_controls        = dataset_controls_list,
               confidence_level        = settings$confidence_level,
+              nsamples                = settings$nsamples,
               directory_configuration = config)
 
   write_data(x        = out, 
