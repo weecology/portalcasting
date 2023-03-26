@@ -46,9 +46,15 @@ runjags_controls(
 )
 }
 \arguments{
+\item{inits}{\code{list} of model parameter initializer functions. See \code{\link{prefab_model_controls}}.}
+
+\item{model}{\code{character} value of the model file name. See \code{\link{prefab_model_controls}}.}
+
 \item{monitors}{\code{character} vector of parameters to track. Forecasted observations and state variables are tracked automatically.}
 
 \item{metadata}{\code{list} of model control elements. See \code{\link{prepare_metadata}}.}
+
+\item{data_names}{\code{character} vector of data values to include in the data \code{list}. See \code{\link{prefab_model_controls}}.}
 
 \item{abundance}{Non-negative \code{integer}-conformable vector of rodent abundances to use in forecasting. See \code{\link{prepare_abundance}}.}
 
@@ -63,6 +69,8 @@ runjags_controls(
 \item{level}{\code{numeric} of the confidence level to use in summarizing the predictions.}
 
 \item{nsamples}{\code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates.}
+
+\item{seed}{A single \code{integer}-conformable value or \code{NULL} set in \code{\link{set.seed}}.}
 
 \item{nchains}{Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags]{run.jags}}.}
 
@@ -83,8 +91,6 @@ runjags_controls(
 \item{mutate}{A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags]{run.jags}}.}
 
 \item{silent_jags}{\code{logical} value for quieting the output from the runjags function, including the underlying JAGS output.}
-
-\item{model_controls}{\code{list} of model controls for the model of interest. See \code{\link{prefab_model_controls}}.}
 }
 \value{
 \code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags]{run.jags}}. \cr

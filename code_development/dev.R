@@ -2,7 +2,9 @@ rm(list=ls())
 devtools::load_all()
 devtools::document()
 
-main <- "~/portalcast"
+main <- "~/sandbox"
+setup_sandbox(main = main)
+
 
 fill_models(main)
 

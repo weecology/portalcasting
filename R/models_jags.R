@@ -15,7 +15,13 @@
 #'
 #' @param control_runjags \code{list} of controls for running runjags models. See \code{\link{runjags_controls}}. Optional. If not provided here, will be taken from the model controls list.
 #'
-#' @param model_controls \code{list} of model controls for the model of interest. See \code{\link{prefab_model_controls}}.
+#' @param inits \code{list} of model parameter initializer functions. See \code{\link{prefab_model_controls}}.
+#'
+#' @param model \code{character} value of the model file name. See \code{\link{prefab_model_controls}}.
+#'
+#' @param data_names \code{character} vector of data values to include in the data \code{list}. See \code{\link{prefab_model_controls}}.
+#'
+#' @param seed A single \code{integer}-conformable value or \code{NULL} set in \code{\link{set.seed}}.
 #'
 #' @param nchains Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags]{run.jags}}.
 #'
