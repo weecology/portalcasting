@@ -40,7 +40,8 @@
 
     # observation model
 
-    count[i] ~ dpois(X[i])
+    count[i]           ~ dpois(X[i])
+    count_predicted[i] ~ dpois(X[i])
 
   }
 

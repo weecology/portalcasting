@@ -111,7 +111,7 @@ runjags_model <- function (model_controls) {
 runjags_monitors <- function (model_controls, 
                               metadata) {
 
-  out <- paste0("X[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
+  out <- paste0("count_predicted[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
   c(out, model_controls$fit$monitors)
 
 }

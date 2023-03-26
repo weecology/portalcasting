@@ -112,8 +112,9 @@ write_model_scripts <- function (controls = prefab_model_controls( ),
                                ...     = files[i], 
                                package = "portalcasting")
       to_path   <- eval(parse(text     = ffiles[i]))
-      file.copy(from = from_path,
-                to   = to_path)
+      file.copy(from      = from_path,
+                to        = to_path, 
+                overwrite = TRUE)
     }
 
     messageq(" ... complete.\n", quiet = quiet)

@@ -7,7 +7,7 @@ main <- "~/pc"
 settings             = directory_settings( )
 quiet                = FALSE
 verbose              = TRUE
-model <- "AutoArima"
+model <- "jags_RW"
 
 dataset  = "controls"
 species <- "DM"
@@ -91,15 +91,28 @@ cast_tab$obs <- rpois(nrow(cast_tab), as.numeric(cast_tab$estimate))
                                       cast_tab = cast_tab)
   measure_cast_level_error(cast_tab = cast_tab)
 
+
 # working here to expand on the evaluations of forecasts!!!
+#  AutoArima, with a normal response
+
+
+
+logs(y      = cast_tab$obs,
+     family = ifelse(model_controls$response$type == "empirical", "sample", model_controls$response$link),
+     mean   = as.numeric(cast_tab$estimate),
+     sd     = as.numeric((cast_tab$estimate - cast_tab$lower) / 1.96))
+
+crps(y      = cast_tab$obs,
+     family = ifelse(model_controls$response$type == "empirical", "sample", model_controls$response$link),
+     mean   = as.numeric(cast_tab$estimate),
+     sd     = as.numeric((cast_tab$estimate - cast_tab$lower) / 1.96))
 
 
 
 
 
 
-
-
+control_runjags <- runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100) 
 
 
 

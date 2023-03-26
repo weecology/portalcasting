@@ -25,7 +25,8 @@ AutoArima:
       species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
     link: normal
-    type: distribution 
+    type: distribution
+  scoring_family: normal 
   time: newmoon
 sAutoArima:
   metadata:
@@ -57,6 +58,7 @@ sAutoArima:
   response: 
     link: normal
     type: distribution 
+  scoring_family: normal
   time: newmoon
 ESSS:
   metadata:
@@ -88,6 +90,7 @@ ESSS:
   response: 
     link: normal
     type: distribution
+  scoring_family: normal
   time: newmoon
 NaiveArima:
   metadata:
@@ -118,6 +121,7 @@ NaiveArima:
   response: 
     link: normal
     type: distribution
+  scoring_family: normal
   time: newmoon
 sNaiveArima:
   metadata:
@@ -150,6 +154,7 @@ sNaiveArima:
   response: 
     link: normal
     type: distribution
+  scoring_family: normal
   time: newmoon
 nbGARCH:
   metadata:
@@ -184,6 +189,7 @@ nbGARCH:
   response: 
     link: negative_binomial
     type: distribution
+  scoring_family: nbinom
   time: newmoon
 nbsGARCH:
   metadata:
@@ -220,6 +226,7 @@ nbsGARCH:
   response: 
     link: negative_binomial
     type: distribution
+  scoring_family: nbinom
   time: newmoon
 pGARCH:
   metadata:
@@ -254,6 +261,7 @@ pGARCH:
   response: 
     link: negative_binomial
     type: distribution
+  scoring_family: poisson
   time: newmoon
 psGARCH:
   metadata:
@@ -288,6 +296,7 @@ psGARCH:
   response: 
     link: negative_binomial
     type: distribution
+  scoring_family: poisson
   time: newmoon
 pevGARCH:
   metadata:
@@ -338,6 +347,7 @@ pevGARCH:
   response: 
     link: poisson
     type: distribution
+  scoring_family: poisson
   time: newmoon
 jags_RW:
   metadata:
@@ -373,6 +383,7 @@ jags_RW:
   response: 
     link: poisson
     type: empirical
+  scoring_family: sample
   time: newmoon
 jags_logistic:
   metadata:
@@ -410,6 +421,7 @@ jags_logistic:
   response: 
     link: poisson
     type: empirical
+  scoring_family: sample
   time: newmoon
 jags_logistic_covariates:
   metadata:
@@ -449,6 +461,7 @@ jags_logistic_covariates:
   response: 
     link: poisson
     type: empirical
+  scoring_family: sample
   time: newmoon
 jags_logistic_competition:
   metadata:
@@ -481,6 +494,7 @@ jags_logistic_competition:
   response: 
     link: poisson
     type: empirical
+  scoring_family: sample
   time: newmoon
 jags_logistic_competition_covariates:
   metadata:
@@ -513,4 +527,5 @@ jags_logistic_competition_covariates:
   response: 
     link: poisson
     type: empirical
+  scoring_family: sample
   time: newmoon

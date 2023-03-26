@@ -137,16 +137,16 @@ prepare_covariates <- function (main     = ".",
 
     function (chain = chain) {
 
-      list(.RNG.name                 = sample(rngs, 1),
-           .RNG.seed                 = sample(1:1e+06, 1),
-            mu                       = rnorm(1, data$mean_observed_value, 0.01),
-            seasonal_cos_slope       = rnorm(1, 0, 0.1),
-            seasonal_sin_slope       = rnorm(1, 0, 0.1),
-            mu_year_offset_sigma        = runif(1, 0.001, 0.01),
-            seasonal_sin_year_offset_sigma        = runif(1, 0.001, 0.01),
-            seasonal_cos_year_offset_sigma        = runif(1, 0.001, 0.01),
-            sensor_observation_sigma = runif(data$nsensors, 0.001, 0.01),
-            sensor_offset_sigma      = runif(1, 0.001, 0.01))
+      list(.RNG.name                       = sample(rngs, 1),
+           .RNG.seed                       = sample(1:1e+06, 1),
+            mu                             = rnorm(1, data$mean_observed_value, 0.01),
+            seasonal_cos_slope             = rnorm(1, 0, 0.1),
+            seasonal_sin_slope             = rnorm(1, 0, 0.1),
+            mu_year_offset_sigma           = runif(1, 0.001, 0.01),
+            seasonal_sin_year_offset_sigma = runif(1, 0.001, 0.01),
+            seasonal_cos_year_offset_sigma = runif(1, 0.001, 0.01),
+            sensor_observation_sigma       = runif(data$nsensors, 0.001, 0.01),
+            sensor_offset_sigma            = runif(1, 0.001, 0.01))
 
     }
 
@@ -156,35 +156,35 @@ prepare_covariates <- function (main     = ".",
  
     # priors
 
-    mu                   ~  dnorm(mean_observed_value, 100)
+    mu                              ~  dnorm(mean_observed_value, 100)
 
-    sensor_offset_sigma  ~  dunif(0, 1) 
-    sensor_offset_tau    <- pow(sensor_offset_sigma, -2)
+    sensor_offset_sigma             ~  dunif(0, 1) 
+    sensor_offset_tau               <- pow(sensor_offset_sigma, -2)
 
-    seasonal_cos_slope   ~ dnorm(0, 1)
-    seasonal_sin_slope   ~ dnorm(0, 1)
+    seasonal_cos_slope              ~ dnorm(0, 1)
+    seasonal_sin_slope              ~ dnorm(0, 1)
 
     seasonal_cos_year_offset_sigma  ~  dunif(0, 1) 
     seasonal_cos_year_offset_tau    <- pow(seasonal_cos_year_offset_sigma, -2)
     seasonal_sin_year_offset_sigma  ~  dunif(0, 1) 
     seasonal_sin_year_offset_tau    <- pow(seasonal_sin_year_offset_sigma, -2)
 
-    mu_year_offset_sigma  ~  dunif(0, 1) 
-    mu_year_offset_tau    <- pow(mu_year_offset_sigma, -2)
+    mu_year_offset_sigma            ~  dunif(0, 1) 
+    mu_year_offset_tau              <- pow(mu_year_offset_sigma, -2)
 
     for (i in 1:nsensors) {
 
-      sensor_offset[i]            ~  dnorm(0, sensor_offset_tau)
-      sensor_observation_sigma[i] ~  dunif(0, 1) 
-      sensor_observation_tau[i]   <- pow(sensor_observation_sigma[i], -2)
+      sensor_offset[i]              ~  dnorm(0, sensor_offset_tau)
+      sensor_observation_sigma[i]   ~  dunif(0, 1) 
+      sensor_observation_tau[i]     <- pow(sensor_observation_sigma[i], -2)
 
     }
 
     for (i in 1:nyears) {
 
-      mu_year_offset[i]            ~  dnorm(0, mu_year_offset_tau)
-      seasonal_cos_year_offset[i]            ~  dnorm(0, seasonal_cos_year_offset_tau)
-      seasonal_sin_year_offset[i]            ~  dnorm(0, seasonal_sin_year_offset_tau)
+      mu_year_offset[i]             ~  dnorm(0, mu_year_offset_tau)
+      seasonal_cos_year_offset[i]   ~  dnorm(0, seasonal_cos_year_offset_tau)
+      seasonal_sin_year_offset[i]   ~  dnorm(0, seasonal_sin_year_offset_tau)
 
     }
 
@@ -206,7 +206,7 @@ prepare_covariates <- function (main     = ".",
 
 
   ndvi_data$date      <- as.Date(ndvi_data$date)
-  possible_dates      <- seq(min(ndvi_data$date), settings$time$forecast_end, 1)
+  possible_dates      <- seq(min(ndvi_data$date), max(c(newmoons$newmoondate, settings$time$forecast_end)), 1)
   npossible_dates     <- length(possible_dates)
   seasonal_cos_value  <- cos(2 * pi * foy(possible_dates))
   seasonal_sin_value  <- sin(2 * pi * foy(possible_dates))
