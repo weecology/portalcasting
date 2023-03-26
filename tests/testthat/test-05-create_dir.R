@@ -6,9 +6,8 @@ main <- "./testing"
 test_that(desc = "create_dir creates the folder structure",
           code = {
   
-  main2 <- "./testing2"
-  expect_message(create_dir(main = main2, verbose = TRUE))
-  expect_silent(create_dir(main = main2, verbose = TRUE))
+  expect_message(create_dir(main = main, verbose = TRUE))
+  expect_silent(create_dir(main = main, verbose = TRUE))
 
 
 })
@@ -35,4 +34,3 @@ test_that(desc = "read_directory_config catches if its missing and throws error"
 })
 
 
-# we can test the other set_up functions once we have the directory squared away with the new format
