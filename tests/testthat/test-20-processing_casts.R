@@ -49,7 +49,7 @@ test_that(desc = "read_model_fit reads in model fits", {
 })
 
 
-test_that(desc = "add_XXX_to_cast_tab functions add properly", {
+test_that(desc = "add_obs_to_cast_tab functions add properly", {
 
   # download is held back on cran
 
@@ -58,25 +58,7 @@ test_that(desc = "add_XXX_to_cast_tab functions add properly", {
    cast_tab <- read_cast_tab(main = main, cast_id = "1-1")
    expect_is(add_obs_to_cast_tab(main = main, cast_tab = cast_tab), 
              "data.frame")
-   expect_is(add_err_to_cast_tab(main = main, cast_tab = cast_tab), 
-             "data.frame")
-   expect_is(add_covered_to_cast_tab(main = main, cast_tab = cast_tab), 
-             "data.frame")
 
-})
-
-test_that(desc = "measure_cast_level_error", {
-
-  # download is held back on cran
-
-    skip_on_cran() 
-
-  cast_choices <- select_casts(main = main)
-  cast_tab <- read_cast_tabs(main = main, cast_ids = "1-1")
-  cast_tab <- add_obs_to_cast_tab(main = main, cast_tab = cast_tab)
-  cast_tab <- add_err_to_cast_tab(main = main, cast_tab = cast_tab)
-  cast_tab <- add_covered_to_cast_tab(main = main, cast_tab = cast_tab)
-  expect_is(measure_cast_level_error(cast_tab), "data.frame")
 
 })
 

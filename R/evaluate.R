@@ -116,94 +116,28 @@ evaluate_cast <- function (main     = ".",
   cast_tab <- add_obs_to_cast_tab(main         = main,  
                                   settings     = settings,
                                   cast_tab     = cast_tab)
-  cast_tab <- add_err_to_cast_tab(main         = main,  
-                                  settings     = settings,
-                                  cast_tab     = cast_tab)
-  cast_tab <- add_covered_to_cast_tab(main     = main,  
-                                      settings = settings,
-                                      cast_tab = cast_tab)
 
-  measure_cast_level_error(cast_tab = cast_tab)
-
-}
+  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
+  cast_tab$error   <- cast_tab$estimate - cast_tab$obs
 
 
 
-#' @title Measure Error and Fit Metrics for Forecasts
-#' 
-#' @description Summarize the cast-level errors or fits to the observations. \cr 
-#'  Presently included are root mean square error and coverage.
-#' 
-#' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
-#'
-#' @return \code{data.frame} of metrics for each cast for each species. 
-#'
-#' @export
-#'
-measure_cast_level_error <- function (cast_tab = NULL) {
-
-
-  return_if_null(cast_tab)
-
-  ucast_ids <- unique(cast_tab$cast_id)
-  ncast_ids <- length(ucast_ids)
-  uspecies  <- unique(cast_tab$species)
-  nspecies  <- length(uspecies)
-  RMSE      <- rep(NA, ncast_ids * nspecies)
-  coverage  <- rep(NA, ncast_ids * nspecies)
-  model     <- rep(NA, ncast_ids * nspecies)
-  counter   <- 1
-
-  for (i in 1:ncast_ids) {
-
-    for (j in 1:nspecies) {
-
-      ij          <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
-      cast_tab_ij <- cast_tab[ij, ]
-      err         <- cast_tab_ij$err
-
-      if (!is.null(err)) {
-
-        RMSE[counter] <- sqrt(mean(err^2, na.rm = TRUE))
-
-      }
-
-      covered <- cast_tab_ij$covered
-
-      if (!is.null(covered)) {
-
-        coverage[counter] <- mean(covered, na.rm = TRUE)            
-
-      }
-
-      if (length(cast_tab_ij$model) > 0) {
-
-        model[counter] <- unique(cast_tab_ij$model)
-
-      }
-
-      counter <- counter + 1
-
-    }
-
-  }
-
-  ids <- rep(ucast_ids, each = nspecies)
-  spp <- rep(uspecies, ncast_ids)
+  RMSE     <- sqrt(mean(cast_tab$error^2, na.rm = TRUE))
+  coverage <- mean(cast_tab$covered, na.rm = TRUE)
 
   data.frame(cast_id  = ids, 
-             species  = spp, 
-             model    = model, 
+             species  = cast_tab$species[1], 
+             model    = cast_tab$model[1], 
+#             dataset  = cast_tab$dataset[1], 
              RMSE     = RMSE, 
              coverage = coverage)
+
 }
 
-#' @title Add the Associated Values to a Cast Tab
+
+#' @title Add Observations to a Cast Tab
 #' 
-#' @description Add values to a cast's cast tab. If necessary components are missing (such as no observations added yet and the user requests errors), the missing components are added. \cr \cr
-#'  \code{add_obs_to_cast_tab} appends a column of observations. \cr \cr
-#'  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
-#'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating if the observation was within the prediction interval. 
+#' @description Appends a column of observations to a cast's cast tab. 
 #'
 #' @details If a model interpolated a data set, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
 #'
@@ -213,53 +147,12 @@ measure_cast_level_error <- function (cast_tab = NULL) {
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
-#' @return \code{data.frame} of \code{cast_tab} with an additional column or columns if needed. 
+#' @return \code{data.frame} of \code{cast_tab} with an additional column. 
 #'
 #' @name add to cast tab
 #'
-#' @export
-#'
-add_err_to_cast_tab <- function (main     = ".", 
-                                 settings = directory_settings( ), 
-                                 cast_tab = NULL) {
+NULL
 
-
-  return_if_null(cast_tab)
-  if (is.null(cast_tab$obs)) {
-
-    cast_tab <- add_obs_to_cast_tab(main     = main,
-                                    settings = settings,
-                                    cast_tab = cast_tab)
-  }
-
-  cast_tab$error <- cast_tab$estimate - cast_tab$obs
-  cast_tab
-
-}
-
-#' @rdname add-to-cast-tab
-#'
-#' @export
-#'
-add_covered_to_cast_tab <- function (main     = ".", 
-                                     settings = directory_settings( ), 
-                                     cast_tab = NULL) {
-
-
-  return_if_null(cast_tab)
-  if (is.null(cast_tab$obs)) {
-
-    cast_tab <- add_obs_to_cast_tab(main     = main,
-                                    settings = settings,
-                                    cast_tab = cast_tab)
-
-  }
-
-  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
-  cast_tab$covered[is.na(cast_tab$obs)] <- NA
-  cast_tab
-
-}
 
 #' @rdname add-to-cast-tab
 #'
