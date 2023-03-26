@@ -8,7 +8,12 @@
 \alias{setup_sandbox}
 \title{Create the Structure of a Directory and Fill It with Content}
 \usage{
-create_dir(main = ".", settings = directory_settings(), quiet = FALSE)
+create_dir(
+  main = ".",
+  settings = directory_settings(),
+  quiet = FALSE,
+  verbose = FALSE
+)
 
 setup_dir(
   main = ".",
@@ -48,6 +53,8 @@ setup_sandbox(
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
+\item{verbose}{\code{logical} indicator of whether or not to produce all of the messages.}
+
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
@@ -55,8 +62,6 @@ setup_sandbox(
 \item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}. This argument is not available in \code{setup_production}.}
 
 \item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.}
-
-\item{verbose}{\code{logical} indicator of whether or not to produce all of the messages.}
 }
 \value{
 The \code{list} of directory settings \code{\link[base]{invisible}}-ly.

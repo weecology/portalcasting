@@ -30,12 +30,19 @@ NULL
 #'
 create_dir <- function(main     = ".", 
                        settings = directory_settings( ), 
-                       quiet    = FALSE){
+                       quiet    = FALSE, 
+                       verbose  = FALSE){
 
-  mapply(FUN          = dir.create, 
-         path         = file.path(main, settings$subdirectories),
-         recursive    = TRUE,
-         showWarnings = FALSE)
+  out <- mapply(FUN          = dir.create, 
+                path         = file.path(main, settings$subdirectories),
+                recursive    = TRUE,
+                showWarnings = FALSE)
+
+  if (any(out)) {
+    x <-  mapply(FUN    = messageq,
+                 ...    = paste0("  creating: ", names(out)[out]),
+                 quiet  = !verbose)
+  }
 
   write_directory_configuration(main     = main, 
                                 settings = settings, 

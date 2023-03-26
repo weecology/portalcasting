@@ -5,8 +5,10 @@ main <- "./testing"
 
 test_that(desc = "create_dir creates the folder structure",
           code = {
-
-  expect_message(create_dir(main = main))
+  
+  main2 <- "./testing2"
+  expect_message(create_dir(main = main2, verbose = TRUE))
+  expect_silent(create_dir(main = main2, verbose = TRUE))
 
 
 })
