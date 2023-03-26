@@ -343,11 +343,12 @@ prepare_dataset <- function(name             = "all",
 
   newmoons <- read_newmoons(main     = main, 
                             settings = settings)
-  
-  rows_in <- out$newmoonnumber >= min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$timeseries_start_lagged >= 0)]) & 
-             out$newmoonnumber <= max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin < 0)])
+ 
+# dont cut them out of the actual data tho... 
+#  rows_in <- out$newmoonnumber >= min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$timeseries_start_lagged >= 0)]) & 
+#             out$newmoonnumber <= max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin < 0)])
 
-  out <- out[rows_in, ]
+#  out <- out[rows_in, ]
 
   ### patch to verify the correct moons are in ###
     needed_newmoonnumbers  <- newmoons$newmoonnumber[newmoons$newmoondate < settings$time$origin]

@@ -115,7 +115,7 @@ prepare_covariates <- function (main     = ".",
   historic_ordii$DO            <- round_na.interp(historic_ordii$DO)
   historic_ordii$newmoondate   <- newmoons$newmoondate[match(historic_ordii$newmoonnumber, newmoons$newmoonnumber)]
 
-  moonin                       <- newmoons$newmoondate >= settings$time$origin
+  moonin                       <- newmoons$newmoondate >= settings$time$origin & newmoons$newmoondate < settings$time$forecast_end_buffered
   forecast_ordii               <- data.frame(newmoonnumber = newmoons$newmoonnumber[moonin], 
                                              DO            = NA,
                                              newmoondate   = newmoons$newmoondate[moonin],
@@ -213,7 +213,7 @@ prepare_covariates <- function (main     = ".",
   }"
 
   ndvi_data$date      <- as.Date(ndvi_data$date)
-  possible_dates      <- seq(min(ndvi_data$date), max(c(newmoons$newmoondate, settings$time$forecast_end_buffered)), 1)
+  possible_dates      <- seq(min(ndvi_data$date), settings$time$forecast_end_buffered, 1)
   npossible_dates     <- length(possible_dates)
   seasonal_cos_value  <- cos(2 * pi * foy(possible_dates))
   seasonal_sin_value  <- sin(2 * pi * foy(possible_dates))

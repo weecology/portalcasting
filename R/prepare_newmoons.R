@@ -50,8 +50,9 @@ prepare_newmoons <- function (main     = ".",
     }
   ### end patch ###
 
-  newmoons <- newmoons[newmoons$newmoondate >= settings$time$timeseries_start_lagged & 
-                       newmoons$newmoondate <  settings$time$forecast_end_buffered, ]
+# dont cut them out of the actual data tho...
+#  newmoons <- newmoons[newmoons$newmoondate >= settings$time$timeseries_start_lagged & 
+#                       newmoons$newmoondate <  settings$time$forecast_end_buffered, ]
 
   write_data(x         = newmoons, 
              main      = main, 
