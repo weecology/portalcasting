@@ -33,11 +33,11 @@ fit_runjags(
 \method{forecast}{runjags}(object, h, level, nsamples, seed = NULL)
 
 runjags_controls(
-  nchains = 4,
-  adapt = 10000,
-  burnin = 10000,
-  sample = 10000,
-  thin = 10,
+  nchains = 2,
+  adapt = 100,
+  burnin = 100,
+  sample = 100,
+  thin = 1,
   modules = "glm",
   method = "interruptible",
   factories = "",

@@ -359,7 +359,7 @@ jags_RW:
     fun: fit_runjags
     args: 
       abundance:  abundance
-      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
+      control_runjags: runjags_controls( )
       metadata:  metadata
       covariates: covariates
       data_names: [count, "N", log_mean_count]  
@@ -396,7 +396,7 @@ jags_logistic:
     fun: fit_runjags
     args: 
       abundance:  abundance
-      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
+      control_runjags: runjags_controls( )
       metadata:  metadata
       covariates: covariates
       data_names: [count, "N", log_mean_count, log_max_count]  
@@ -435,7 +435,7 @@ jags_logistic_covariates:
     fun: fit_runjags
     args: 
       abundance:  abundance
-      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
+      control_runjags: runjags_controls( )
       metadata:  metadata
       covariates: covariates
       data_names: [count, "N", log_mean_count, log_max_count, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
@@ -476,7 +476,7 @@ jags_logistic_competition:
     fun: fit_runjags
     args: 
       abundance:  abundance
-      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
+      control_runjags: runjags_controls( )
       metadata:  metadata
       covariates: covariates
       data_names: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon]  
@@ -516,7 +516,7 @@ jags_logistic_competition_covariates:
     fun: fit_runjags
     args: 
       abundance:  abundance
-      control_runjags: runjags_controls(nchains = 2, thin = 1, sample = 100, adapt = 100, burnin = 100)
+      control_runjags: runjags_controls( )
       metadata:  metadata
       covariates: covariates
       data_names: [count, "N", log_mean_count, log_max_count, ordii_one_newmoon, warm_rain_three_newmoons, ndvi_thirteen_newmoons]  
