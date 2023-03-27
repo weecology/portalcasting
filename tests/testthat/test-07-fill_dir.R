@@ -23,7 +23,7 @@ test_that(desc = "fill_casts fills the casts folder",
 
     skip_on_cran() 
 
-  expect_message(xx <- fill_forecasts(main = main, verbose = TRUE))
+  expect_message(xx <- fill_forecasts(main = main))
   expect_equal(xx, NULL)
 
 })
@@ -36,7 +36,7 @@ test_that(desc = "fill_fits fills the fits folder",
 
     skip_on_cran() 
 
-  expect_message(xx <- fill_fits(main = main, verbose = TRUE))
+  expect_message(xx <- fill_fits(main = main))
   expect_equal(xx, NULL)
 
 })
@@ -64,7 +64,7 @@ test_that(desc = "fill_data sets up the data sub",
 
 test_that(desc = "write_model_controls writes out the controls file",
           code = {
-  expect_is(write_model_controls(main     = main), "list")
+  expect_is(write_model_controls(main = main), "list")
 
 }) 
 
