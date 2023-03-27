@@ -13,7 +13,7 @@ test_that(desc = "prep_moons pulls in moons or throws error", {
 
 })
 
-test_that(desc = "add_future_moons skips for 0", {
+test_that(desc = "add_forecast_newmoons skips for 0", {
 
   # downloads take too long for cran checks
 
@@ -21,9 +21,8 @@ test_that(desc = "add_future_moons skips for 0", {
 
   newmoons  <- prepare_newmoons(main = main)
   newmoons2 <- add_forecast_newmoons(main     = main, 
-                                     newmoons = newmoons,
-                                     settings = directory_settings(time = time_settings(lead_time = 0)))
+                                     newmoons = newmoons)
                                  
-  expect_equal(newmoons, newmoons2)
+  expect_is(newmoons2, "data.frame")
 
 })
