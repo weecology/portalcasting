@@ -14,7 +14,7 @@
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information.
 #'
-#' @return A \code{data.frame} of all cast evaluations at the observation (newmoon) level.
+#' @return A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base]{invisible}}-ly..
 #'
 #' @name evaluate forecasts
 #'
@@ -70,30 +70,12 @@ evaluate_casts <- function (main      = ".",
 
   messageq("... done.\n", quiet = quiet)
 
-  if (settings$save) {
-
-    evaluations_file <- file.path(main, settings$subdirectories$forecasts, settings$files$cast_evaluations)
-
-    if (file.exists(evaluations_file)) {
-
-      if (settings$overwrite) {
-
-        messageq("    **", settings$files$cast_evaluations, " updated**", quiet = quiet)
-        write.csv(out_flat, file = evaluations_file, row.names = FALSE)
-
-      }
-
-    } else {
-
-      messageq("    **", settings$files$cast_evaluations, " saved**", quiet = quiet)
-      write.csv(out_flat, file = evaluations_file, row.names = FALSE)
- 
-    }
-
-
-  }
-
-  out_flat
+  write_data(x            = out_flat,
+             main         = main,
+             subdirectory = settings$subdirectories$forecasts,
+             save         = settings$save,
+             filename     = settings$files$cast_evaluations,
+             quiet        = quiet)
 
 }
 

@@ -25,6 +25,8 @@ write_data <- function (x            = NULL,
                         filename     = NULL, 
                         quiet        = FALSE) {
   
+# add in a capacity to halt overwriting, default to true?
+
   return_if_null(x = x)
   return_if_null(x = filename)
 

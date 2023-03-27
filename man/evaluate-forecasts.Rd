@@ -35,7 +35,7 @@ evaluate_cast(
 \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}
 }
 \value{
-A \code{data.frame} of all cast evaluations at the observation (newmoon) level.
+A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base]{invisible}}-ly..
 }
 \description{
 Evaluate forecasts in the directory, based on id(s). \cr
