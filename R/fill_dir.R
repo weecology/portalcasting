@@ -29,12 +29,6 @@
 #'
 #' @param new_model_controls Optional \code{list} of controls for new models. See \code{\link{model_controls}}.
 #'
-#' @param settings \code{list} of controls for the directory. Defaults are set in \code{\link{directory_settings}}.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information.
-#'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
 #' @name directory filling

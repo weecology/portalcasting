@@ -23,8 +23,6 @@
 #'
 #' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @return \code{data.frame} of ensembled casts.
 #' 
 #' @export

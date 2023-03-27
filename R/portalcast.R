@@ -7,12 +7,6 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
-#'
 #' @param models,model \code{character} vector of name(s) of model(s) to include in the forecast. In \code{cast}, \code{model} can only be length-one.
 #'
 #' @param datasets,dataset \code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one. 

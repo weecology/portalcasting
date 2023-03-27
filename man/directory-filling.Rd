@@ -42,12 +42,6 @@ fill_models(main = ".", models = prefab_models(), new_model_controls = NULL)
 \item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
 
 \item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}.}
-
-\item{settings}{\code{list} of controls for the directory. Defaults are set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.

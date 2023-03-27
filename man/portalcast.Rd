@@ -30,12 +30,6 @@ make_model_combinations(
 \item{datasets, dataset}{\code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one.}
 
 \item{species}{\code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr]{rodent_species}}.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
 \code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base]{invisible}}-ly. \cr 

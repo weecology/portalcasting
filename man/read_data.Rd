@@ -35,8 +35,6 @@ read_metadata(main = ".")
 \item{data_name}{\code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"climate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.}
 
 \item{dataset, datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"}, \code{"controls"}, and \code{"exclosures"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 }
 \value{
 Data requested.

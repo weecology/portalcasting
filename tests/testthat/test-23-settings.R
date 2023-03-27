@@ -6,15 +6,15 @@ test_that(desc = "directory_settings produces a list", {
 
   expect_silent(ds <- directory_settings())
   expect_is(ds, "list")
-  expect_equal(names(ds), c("files", "subdirectories", "resources", "repository", "confidence_level", "nsamples", "time", "save", "overwrite", "unzip_pause", "download_timeout"))
+  expect_equal(names(ds), c("files", "subdirectories", "resources", "repository", "confidence_level", "nsamples", "time", "save", "force", "overwrite", "unzip_pause", "download_timeout"))
 
   expect_silent(ps <- production_settings())
   expect_is(ps, "list")
-  expect_equal(names(ps), c("files", "subdirectories", "resources", "repository", "confidence_level", "nsamples", "time", "save", "overwrite", "unzip_pause", "download_timeout"))
+  expect_equal(names(ps), c("files", "subdirectories", "resources", "repository", "confidence_level", "nsamples", "time", "save", "force", "overwrite", "unzip_pause", "download_timeout"))
 
   expect_silent(ss <- sandbox_settings())
   expect_is(ss, "list")
-  expect_equal(names(ss), c("files", "subdirectories", "resources", "repository", "confidence_level", "nsamples", "time", "save", "overwrite", "unzip_pause", "download_timeout"))
+  expect_equal(names(ss), c("files", "subdirectories", "resources", "repository", "confidence_level", "nsamples", "time", "save", "force", "overwrite", "unzip_pause", "download_timeout"))
 
 })
 
