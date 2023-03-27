@@ -72,7 +72,7 @@ plot_cast_point <- function (main                       = ".",
 
   if (NROW(casts_meta) > 1) {
 
-    which_max  <- which.max(gsub("-", ".", casts_meta$cast_id))
+    which_max  <- which.max(casts_meta$cast_id)
     match_max  <- casts_meta$model      == casts_meta$model[which_max] &
                   casts_meta$dataset    == casts_meta$dataset[which_max] &
                   casts_meta$cast_group == casts_meta$cast_group[which_max]
@@ -257,7 +257,7 @@ plot_cast_ts <- function (main                         = ".",
 
   if (NROW(casts_meta) > 1) {
 
-    which_max  <- which.max(gsub("-", ".", casts_meta$cast_id))
+    which_max  <- which.max(casts_meta$cast_id)
     casts_meta <- casts_meta[which_max, ]
 
   }

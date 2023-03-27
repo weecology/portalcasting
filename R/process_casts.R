@@ -38,7 +38,6 @@ process_model_output <- function (main      = ".",
   metadata <- read_metadata(main = main)
 
   ids     <- casts_metadata$cast_id
-  ids     <- gsub("-", ".", ids)
   ids     <- as.numeric(ids)
   next_id <- ceiling(max(c(0, ids), na.rm = TRUE)) + 1
 
@@ -314,7 +313,7 @@ read_model_cast <- function (main    = ".",
 
     casts_meta <- select_casts(main = main)
 
-    cast_id <- gsub("\\.", "-", max(as.numeric(gsub("-", ".", casts_meta$cast_id))))
+    cast_id <- max(as.numeric(gsub("-", ".", casts_meta$cast_id)))
 
   }
 

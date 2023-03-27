@@ -142,7 +142,7 @@ ensemble_casts <- function (main                       = ".",
         
         end_moon_id[counter] <- unique(pcast_tab$historic_end_newmoonnumber)
 
-        ecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(gsub("-", ".", pcast_tab$cast_id)))))
+        ecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(pcast_tab$cast_id))))
         moon_id[counter]     <- moons[j]
         species_id[counter]  <- species[i]
         covered[counter]     <- estimate[counter] >= l_pi[counter] &
