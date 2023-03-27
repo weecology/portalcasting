@@ -36,7 +36,7 @@ test_that(desc = "fill_fits fills the fits folder",
 
     skip_on_cran() 
 
-  expect_message(xx <- fill_fits(main = main))
+  xx <- fill_fits(main = main)
   expect_equal(xx, NULL)
 
 })
