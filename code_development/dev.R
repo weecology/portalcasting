@@ -8,7 +8,7 @@ unlink(main, recursive = TRUE, force = TRUE)
 setup_sandbox(main)
 
 setup_sandbox(main     = main, 
-              settings = directory_settings(time = (time_settings(origin = as.Date("2015-01-01")))),
+              settings = directory_settings(time = (time_settings(origin = as.Date("2014-08-01")))),
               verbose  = TRUE)
 
 portalcast(main, datasets = "controls", species = "DM", models = c("AutoArima", "pGARCH", "pevGARCH", "jags_RW"))
@@ -16,8 +16,14 @@ x <- evaluate_casts(main)
 d <- ensemble_casts(main)
 
 
+main <- "~/portalcasting"
+setup_production(main = main, verbose = TRUE)
 
 
+
+# working here! figures! 
+plot_cast_ts(main)
+plot_cast_point(main, with_census=T)
 
 fill_models(main)
 

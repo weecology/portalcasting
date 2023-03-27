@@ -39,9 +39,7 @@ create_dir <- function(main     = ".",
                 showWarnings = FALSE)
 
   if (any(out)) {
-    mapply(FUN    = messageq,
-           ...    = paste0("  creating: ", names(out)[out]),
-           quiet  = !verbose)
+    messageq(" Creating folders: \n", paste0("   ", names(out)[out], "\n"), quiet = quiet)
   }
 
   write_directory_configuration(main     = main, 

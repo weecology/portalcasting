@@ -1,5 +1,3 @@
-
-
 #' @title Plot Predictions for a Given Point in Time Across Multiple Species
 #'
 #' @description Plot the point value with confidence interval for a time point across multiple species. Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
@@ -53,12 +51,10 @@ plot_cast_point <- function (main                       = ".",
 
   if (with_census) {
 
-    moons <- read_newmoons(main = main)
-
-    last_census_moon  <- max(moons$newmoonnumber[!is.na(moons$censusdate)])
-    casts_meta_moon1  <- casts_meta$historic_end_newmoonnumber + 1
-    casts_meta_moon2  <- casts_meta$historic_end_newmoonnumber + casts_meta$lead_time_newmoons
-    casts_last_census <- last_census_moon >= casts_meta_moon1 & last_census_moon <= casts_meta_moon2 
+    moons          <- read_newmoons(main = main)
+    newmoonnumber  <- ifnull(newmoonnumber, casts_meta$forecast_end_newmoonnumber[nrow(casts_meta)])
+    newmoon_census <- !is.na(moons$censusdate)[match(newmoonnumber, moons$newmoonnumber)]
+    casts_last_census <- newmoonnumber >= casts_meta$forecast_start_newmoonnumber & newmoonnumber <= casts_meta$forecast_end_newmoonnumber
     casts_meta        <- casts_meta[casts_last_census, ]
 
   }
@@ -104,7 +100,6 @@ plot_cast_point <- function (main                       = ".",
 
   max_obs <- NA
   if (with_census) {
-
 
     obs           <- read_rodents_table(main     = main, 
                                         dataset  = gsub("dm_", "", gsub("_interp", "", dataset)))
