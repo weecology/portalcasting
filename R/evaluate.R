@@ -1,30 +1,30 @@
 #' @title Evaluate Forecasts
 #'
-#' @description Evaluate forecasts in the directory, based on id or group, or (if \code{cast_ids = NULL} and \code{cast_groups = NULL}, the default) \code{evaluate_casts} will evaluate all and (if \code{cast_id = NULL} and \code{cast_group = NULL}, the default), \code{evaluate_cast} will evaluate the most recent cast.
+#' @description Evaluate forecasts in the directory, based on id(s). \cr
+#'   Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
 #' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
-#' @param cast_id,cast_ids \code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
+#' @param cast_id,cast_ids \code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
 #'  \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
 #' @param verbose \code{logical} indicator of whether or not to print out all of the information.
 #'
-#' @return A \code{data.frame}, or \code{list} of \code{data.frame}s.
+#' @return A \code{data.frame} of all cast evaluations at the observation (newmoon) level.
 #'
 #' @name evaluate forecasts
 #'
 #' @export
 #'
-evaluate_casts <- function (main           = ".", 
-                            settings       = directory_settings( ), 
-                            cast_ids       = NULL,
-                            quiet          = FALSE, 
-                            verbose        = FALSE) {
-
+evaluate_casts <- function (main      = ".", 
+                            settings  = directory_settings( ), 
+                            cast_ids  = NULL,
+                            quiet     = FALSE, 
+                            verbose   = FALSE) {
 
   casts_to_evaluate <- select_casts(main     = main, 
                                     settings = settings,
@@ -53,25 +53,25 @@ evaluate_casts <- function (main           = ".",
 
   }
 
+  out_flat <- data.frame(cast_id = names(out)[1], 
+                         out[[1]])
+
+  if (ncast_ids > 1) {
+
+    for (i in 2:ncast_ids) { 
+
+      out_flat <- rbind(out_flat, 
+                        data.frame(cast_id = names(out)[i], 
+                                   out[[i]]))
+      
+    }
+
+  }
+
   messageq("... done.\n", quiet = quiet)
 
   if (settings$save) {
 
-    out_flat <- data.frame(cast_id = names(out)[1], 
-                           out[[1]])
-
-    if (ncast_ids > 1) {
-
-      for (i in 2:ncast_ids) { 
-
-        out_flat <- rbind(out_flat, 
-                          data.frame(cast_id = names(out)[i], 
-                                     out[[i]]))
-      
-      }
-
-    }
-    
     evaluations_file <- file.path(main, settings$subdirectories$forecasts, settings$files$cast_evaluations)
 
     if (file.exists(evaluations_file)) {
@@ -93,7 +93,7 @@ evaluate_casts <- function (main           = ".",
 
   }
 
-  out
+  out_flat
 
 }
 
@@ -113,24 +113,103 @@ evaluate_cast <- function (main     = ".",
   cast_tab <- read_cast_tab(main               = main, 
                             settings           = settings,
                             cast_id            = cast_id)
+  cast_meta <- read_cast_metadata(main         = main, 
+                                  settings     = settings,
+                                  cast_id      = cast_id)
+
   cast_tab <- add_obs_to_cast_tab(main         = main,  
                                   settings     = settings,
                                   cast_tab     = cast_tab)
 
   cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
   cast_tab$error   <- cast_tab$estimate - cast_tab$obs
+  cast_tab$logs    <- NA
+  cast_tab$crps    <- NA
+
+  if (cast_meta$model_controls$scoring_family == "normal") {
+
+    can_score     <- !is.na(cast_tab$obs)
+
+    cast_obs  <- cast_tab$obs[can_score]
+
+    cast_mean   <- cast_tab$estimate[can_score]
+    cast_sd   <- (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96
 
 
+    cast_tab$logs[can_score] <- logs(y      = cast_obs,
+                                     family = cast_meta$model_controls$scoring_family,
+                                     mean   = cast_mean,
+                                     sd     = cast_sd)
+    cast_tab$crps[can_score] <- crps(y      = cast_obs,
+                                     family = cast_meta$model_controls$scoring_family,
+                                     mean   = cast_mean,
+                                     sd     = cast_sd)
 
-  RMSE     <- sqrt(mean(cast_tab$error^2, na.rm = TRUE))
-  coverage <- mean(cast_tab$covered, na.rm = TRUE)
+  } else if (cast_meta$model_controls$scoring_family == "poisson") {
 
-  data.frame(cast_id  = cast_id, 
-             species  = cast_tab$species[1], 
-             model    = cast_tab$model[1], 
-#             dataset  = cast_tab$dataset[1], 
-             RMSE     = RMSE, 
-             coverage = coverage)
+    can_score     <- !is.na(cast_tab$obs)
+
+    cast_obs  <- cast_tab$obs[can_score]
+
+    cast_lambda  <- cast_tab$estimate[can_score]
+
+
+    cast_tab$logs[can_score] <- logs(y      = cast_obs,
+                                     family = cast_meta$model_controls$scoring_family,
+                                     lambda = cast_lambda)
+    cast_tab$crps[can_score] <- crps(y      = cast_obs,
+                                     family = cast_meta$model_controls$scoring_family,
+                                     lambda = cast_lambda)
+
+  } else if (cast_meta$model_controls$scoring_family == "nbinom") {
+
+    # mu:   mean
+    # size: dispersion
+    # var:  variance
+    # sd:   standard deviation
+    #  var  = sd ^ 2
+    #  var  = mu + mu^2 / size
+    #  size = mu^2 / (var - mu)
+
+    can_score <- !is.na(cast_tab$obs)
+
+    cast_obs  <- cast_tab$obs[can_score]
+
+    cast_mu   <- cast_tab$estimate[can_score]
+    cast_sd   <- (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96
+    cast_var  <- (cast_sd) ^ 2
+    cast_size <- (cast_mu ^ 2) / (cast_var - cast_mu)
+
+    cast_tab$logs[can_score] <- logs(y      = cast_obs,
+                                     family = cast_meta$model_controls$scoring_family,
+                                     mu     = cast_mu,
+                                     size   = cast_size)
+
+    cast_tab$crps[can_score] <- crps(y      = cast_obs,
+                                     family = cast_meta$model_controls$scoring_family,
+                                     mu     = cast_mu,
+                                     size   = cast_size)
+
+  } else if (cast_meta$model_controls$scoring_family == "sample") {
+
+    model_cast  <- read_model_cast(main         = main, 
+                                   settings     = settings,
+                                   cast_id      = cast_id)
+
+    can_score   <- !is.na(cast_tab$obs)
+
+    cast_obs    <- cast_tab$obs[can_score]
+    cast_sample <- t(model_cast$sample[ , can_score])
+
+    cast_tab$logs[can_score] <- logs_sample(y   = cast_obs,
+                                            dat = cast_sample)
+
+    cast_tab$crps[can_score] <- crps_sample(y   = cast_obs,
+                                            dat = cast_sample)
+
+  }
+
+  cast_tab
 
 }
 

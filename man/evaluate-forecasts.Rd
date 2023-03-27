@@ -31,12 +31,13 @@ evaluate_cast(
 
 \item{verbose}{\code{logical} indicator of whether or not to print out all of the information.}
 
-\item{cast_id, cast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
+\item{cast_id, cast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
 \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}
 }
 \value{
-A \code{data.frame}, or \code{list} of \code{data.frame}s.
+A \code{data.frame} of all cast evaluations at the observation (newmoon) level.
 }
 \description{
-Evaluate forecasts in the directory, based on id or group, or (if \code{cast_ids = NULL} and \code{cast_groups = NULL}, the default) \code{evaluate_casts} will evaluate all and (if \code{cast_id = NULL} and \code{cast_group = NULL}, the default), \code{evaluate_cast} will evaluate the most recent cast.
+Evaluate forecasts in the directory, based on id(s). \cr
+  Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
 }

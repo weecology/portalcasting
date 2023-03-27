@@ -71,10 +71,10 @@ ensemble_casts <- function (main                       = ".",
   }
 
   cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  models                        <- ifnull(models, "AutoArima")
+  models                        <- ifnull(models, unique(cast_tab$model)[1])
   dataset                       <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                       <- ifnull(species, "DM") 
-  historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(cast_tab$historic_end_newmoonnumber)) 
+  species                       <- ifnull(species, unique(cast_tab$species)[1]) 
+  historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(cast_tab$historic_end_newmoonnumber)[1]) 
   cast_id_in                    <- cast_tab$cast_id %in% cast_ids
   model_in                      <- cast_tab$model %in% models
   dataset_in                    <- cast_tab$dataset == dataset
@@ -91,11 +91,7 @@ ensemble_casts <- function (main                       = ".",
   cast_tab    <- cast_tab[all_in, ]
   nspecies    <- length(species)
 
-  if ("moon" %in% colnames(cast_tab)) {
-    moons       <- unique(cast_tab$moon)
-  } else if ("newmoonnumber" %in% colnames(cast_tab)) {
-    moons       <- unique(cast_tab$newmoonnumber)
-  }
+  moons       <- unique(cast_tab$newmoonnumber)
   
   nmoons      <- length(moons)
   nmodels     <- length(models)
@@ -148,12 +144,7 @@ ensemble_casts <- function (main                       = ".",
         obs[counter]         <- unique(pcast_tab$obs)
         error[counter]       <- estimate[counter] - obs[counter]
         
-
-        if ("end_moon" %in% colnames(cast_tab)) {
-          end_moon_id[counter] <- unique(pcast_tab$end_moon)
-        } else if ("historic_end_newmoonnumber" %in% colnames(cast_tab)) {
-          end_moon_id[counter] <- unique(pcast_tab$historic_end_newmoonnumber)
-        }
+        end_moon_id[counter] <- unique(pcast_tab$historic_end_newmoonnumber)
 
         ecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(gsub("-", ".", pcast_tab$cast_id)))))
         moon_id[counter]     <- moons[j]
@@ -168,32 +159,25 @@ ensemble_casts <- function (main                       = ".",
 
   ensemble_name <- paste0("ensemble_", method)
 
-
-
-
-  data.frame(origin               = Sys.Date(),
-             cast_date            = Sys.Date(),
-             cast_month           = as.numeric(format(Sys.Date(), "%m")),
-             cast_year            = as.numeric(format(Sys.Date(), "%Y")),
-             currency             = "abundance",
-             model                = ensemble_name, 
-             newmoonnumber        = moon_id, 
-             species              = species_id,
-             estimate             = estimate, 
-             var                  = mvar, 
-             lower_pi             = l_pi, 
-             upper_pi             = u_pi, 
-             obs                  = obs, 
-             error                = error, 
-             historic_end_newmoon = end_moon_id, 
-             lead_time_newmoons   = moon_id - end_moon_id, 
-             dataset              = dataset,
-             cast_id              = ecast_id,
-             covered              = covered)
-
-
-
-
+  data.frame(origin                     = Sys.Date(),
+             cast_date                  = Sys.Date(),
+             cast_month                 = as.numeric(format(Sys.Date(), "%m")),
+             cast_year                  = as.numeric(format(Sys.Date(), "%Y")),
+             currency                   = "abundance",
+             model                      = ensemble_name, 
+             newmoonnumber              = moon_id, 
+             species                    = species_id,
+             estimate                   = estimate, 
+             var                        = mvar, 
+             lower_pi                   = l_pi, 
+             upper_pi                   = u_pi, 
+             obs                        = obs, 
+             error                      = error, 
+             historic_end_newmoonnumber = end_moon_id, 
+             lead_time_newmoons         = moon_id - end_moon_id, 
+             dataset                    = dataset,
+             cast_id                    = ecast_id,
+             covered                    = covered)
 
  
 }
