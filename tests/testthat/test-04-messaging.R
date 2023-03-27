@@ -12,10 +12,11 @@ test_that(desc = "messageq quiets",
 })
 
 
-test_that(desc = "break_line writes",
+test_that(desc = "break_line and break_lines write",
           code = {
 
   expect_is(break_line(), "character")
+  expect_is(break_lines(), "character")
 
 })
 
