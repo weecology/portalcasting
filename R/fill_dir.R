@@ -49,43 +49,27 @@ fill_dir <- function (main                 = ".",
                       models               = prefab_models( ), 
                       datasets             = prefab_datasets( ),
                       new_dataset_controls = NULL,
-                      new_model_controls   = NULL,
-                      settings             = directory_settings( ), 
-                      quiet                = FALSE, 
-                      verbose              = FALSE) {
+                      new_model_controls   = NULL) {
 
-  messageq("Filling directory with content: \n", quiet = quiet)
+  settings <- read_directory_settings(main = main)
 
-  fill_resources(main            = main, 
-                 settings        = settings, 
-                 quiet           = quiet, 
-                 verbose         = verbose)
+  messageq("Filling directory with content: \n", quiet = settings$quiet)
 
-  fill_forecasts(main            = main, 
-                 settings        = settings, 
-                 quiet           = quiet, 
-                 verbose         = verbose)
+  fill_resources(main            = main)
 
-  fill_fits(main                 = main, 
-            settings             = settings, 
-            quiet                = quiet, 
-            verbose              = verbose)
+  fill_forecasts(main            = main)
+
+  fill_fits(main                 = main)
 
   fill_models(main               = main, 
-              settings           = settings,
               models             = models,
-              new_model_controls = new_model_controls,
-              quiet              = quiet, 
-              verbose            = verbose)
+              new_model_controls = new_model_controls)
 
   fill_data(main                 = main, 
             datasets             = datasets,
-            new_dataset_controls = new_dataset_controls,
-            settings             = settings,
-            quiet                = quiet, 
-            verbose              = verbose)
+            new_dataset_controls = new_dataset_controls)
 
-  messageq("\nDirectory filling complete.", quiet = quiet)
+  messageq("\nDirectory filling complete.", quiet = settings$quiet)
 
   invisible( )
 
@@ -98,45 +82,33 @@ fill_dir <- function (main                 = ".",
 #'
 fill_data <- function (main                 = ".",
                        datasets             = prefab_datasets( ),
-                       new_dataset_controls = NULL,
-                       settings             = directory_settings( ), 
-                       quiet                = FALSE,
-                       verbose              = FALSE) {
+                       new_dataset_controls = NULL) {
 
-  messageq(" Preparing data files ... ", quiet = quiet)
-  messageq("  ... removing existing data files ... ", quiet = quiet)
+  settings <- read_directory_settings(main = main)
+
+
+  messageq(" Preparing data files ... ", quiet = settings$quiet)
+  messageq("  ... removing existing data files ... ", quiet = settings$quiet)
 
   unlink(x = list.files(path       = file.path(main, settings$subdirectories$data),
                         full.names = TRUE),
          force = TRUE)
 
-  messageq("  ... adding data files ... ", quiet = quiet)
+  messageq("  ... adding data files ... ", quiet = settings$quiet)
 
-  prepare_newmoons(main                = main,  
-                   settings            = settings,
-                   quiet               = quiet, 
-                   verbose             = verbose)
+  prepare_newmoons(main                = main)
 
   prepare_rodents(main                 = main,  
                   datasets             = datasets,
-                  new_dataset_controls = new_dataset_controls,
-                  settings             = settings,
-                  quiet                = quiet, 
-                  verbose              = verbose) 
+                  new_dataset_controls = new_dataset_controls) 
 
-  prepare_covariates(main              = main, 
-                     settings          = settings,
-                     quiet             = quiet, 
-                     verbose           = verbose)
+  prepare_covariates(main              = main)
 
   prepare_metadata(main                 = main, 
                    datasets             = datasets,
-                   new_dataset_controls = new_dataset_controls,
-                   settings             = settings,
-                   quiet                = quiet, 
-                   verbose              = verbose)
+                   new_dataset_controls = new_dataset_controls)
 
-  messageq(" ... complete.\n", quiet = quiet)
+  messageq(" ... complete.\n", quiet = settings$quiet)
   invisible( )
 
 }
@@ -147,12 +119,11 @@ fill_data <- function (main                 = ".",
 #'
 #' @export
 #'
-fill_resources <- function (main     = ".",
-                            settings = directory_settings( ),
-                            quiet    = FALSE,
-                            verbose  = FALSE) {
+fill_resources <- function (main = ".") {
 
-  messageq("Downloading resources ... ", quiet = quiet)
+  settings <- read_directory_settings(main = main)
+
+  messageq("Downloading resources ... ", quiet = settings$quiet)
 
   download_observations(path      = file.path(main, settings$subdirectories$resources), 
                         version   = settings$resources$PortalData$version,
@@ -160,8 +131,8 @@ fill_resources <- function (main     = ".",
                         pause     = settings$unzip_pause,
                         timeout   = settings$download_timeout,
                         overwrite = settings$overwrite,
-                        quiet     = quiet,
-                        verbose   = verbose)
+                        quiet     = settings$quiet,
+                        verbose   = settings$verbose)
 
   download_archive(main          = main, 
                    resources_sub = settings$subdirectories$resources,
@@ -170,8 +141,8 @@ fill_resources <- function (main     = ".",
                    pause         = settings$unzip_pause,
                    timeout       = settings$download_timeout,
                    overwrite     = settings$overwrite,
-                   quiet         = quiet,
-                   verbose       = verbose)
+                   quiet         = settings$quiet,
+                   verbose       = settings$verbose)
 
   download_climate_forecasts(main          = main, 
                              resources_sub = settings$subdirectories$resources,
@@ -180,14 +151,12 @@ fill_resources <- function (main     = ".",
                              data          = settings$resources$climate_forecast$data, 
                              timeout       = settings$download_timeout,
                              overwrite     = settings$overwrite,
-                             quiet         = quiet,
-                             verbose       = verbose)
+                             quiet         = settings$quiet,
+                             verbose       = settings$verbose)
 
-  messageq(" ... complete.\n", quiet = quiet)
+  messageq(" ... complete.\n", quiet = settings$quiet)
   
-  update_directory_configuration(main     = main,
-                                 settings = settings,
-                                 quiet    = quiet)
+  update_directory_configuration(main = main)
 
   invisible( )
 
@@ -197,10 +166,9 @@ fill_resources <- function (main     = ".",
 #'
 #' @export
 #'
-fill_forecasts <- function (main     = ".", 
-                            settings = directory_settings( ), 
-                            quiet    = FALSE, 
-                            verbose  = FALSE) { 
+fill_forecasts <- function (main = ".") { 
+
+  settings <- read_directory_settings(main = main)
 
   files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts),
                       full.names = TRUE)
@@ -221,8 +189,8 @@ fill_forecasts <- function (main     = ".",
 
   }
 
-  messageq(paste0(" Located ", length(files), " cast file(s) in resources to be moved to directory ..."), quiet = quiet)
-  messageq("  ... moving ... ", quiet = quiet)
+  messageq(paste0(" Located ", length(files), " cast file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
+  messageq("  ... moving ... ", quiet = settings$quiet)
 
   copied <- file.copy(from      = files, 
                       to        = file.path(main, settings$subdirectories$forecasts), 
@@ -235,14 +203,14 @@ fill_forecasts <- function (main     = ".",
                    paste("  not moved:", basename(files)[!copied], collapse = "\n   "),
                    ""),
                  collapse = "\n"),
-           quiet = !verbose)
+           quiet = !settings$verbose)
 
 
-  # patch to deal with refactor backwards compat
-    update_forecasts_folder(main = main, settings = settings, quiet = quiet)
-  # end patch
+  ### --- patch to deal with refactor backwards compat --- ###
+    update_forecasts_folder(main = main)
+  ### --- end patch --- ###
 
-  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
 
   invisible( )
@@ -254,10 +222,9 @@ fill_forecasts <- function (main     = ".",
 #'
 #' @export
 #'
-fill_fits <- function (main     = ".", 
-                       settings = directory_settings( ), 
-                       quiet    = FALSE, 
-                       verbose  = FALSE) { 
+fill_fits <- function (main = ".") { 
+
+  settings <- read_directory_settings(main = main)
 
   files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits),
                       full.names = TRUE)
@@ -276,8 +243,8 @@ fill_fits <- function (main     = ".",
 
   }
 
-  messageq(paste0(" Located ", length(files), " fit file(s) in resources to be moved to directory ..."), quiet = quiet)
-  messageq("  ... moving ... ", quiet = quiet)
+  messageq(paste0(" Located ", length(files), " fit file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
+  messageq("  ... moving ... ", quiet = settings$quiet)
 
   copied <- file.copy(from      = files, 
                       to        = file.path(main, settings$subdirectories$fits), 
@@ -290,10 +257,10 @@ fill_fits <- function (main     = ".",
                    paste("  not moved:", basename(files)[!copied], collapse = "\n   "),
                    ""),
                  collapse = "\n"),
-           quiet = !verbose)
+           quiet = !settings$verbose)
 
 
-  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
   invisible( )
 
@@ -307,22 +274,14 @@ fill_fits <- function (main     = ".",
 #'
 fill_models <- function (main               = ".", 
                          models             = prefab_models( ), 
-                         new_model_controls = NULL,
-                         settings           = directory_settings( ), 
-                         quiet              = FALSE, 
-                         verbose            = FALSE) {
+                         new_model_controls = NULL) {
 
   controls <- write_model_controls(main               = main, 
-                                   settings           = settings,
                                    models             = models,
-                                   new_model_controls = new_model_controls,
-                                   quiet              = quiet) 
+                                   new_model_controls = new_model_controls) 
 
   write_model_scripts(main     = main, 
-                      settings = settings,
-                      controls = controls,
-                      quiet    = quiet,
-                      verbose  = verbose)
+                      controls = controls)
 
   invisible( )
 

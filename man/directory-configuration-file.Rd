@@ -4,27 +4,22 @@
 \alias{directory configuration file}
 \alias{write_directory_configuration}
 \alias{read_directory_configuration}
+\alias{read_directory_settings}
 \alias{update_directory_configuration}
 \title{Create, Update, and Read the Directory Configuration File}
 \usage{
 write_directory_configuration(
   main = ".",
   settings = directory_settings(),
-  quiet = FALSE
-)
-
-read_directory_configuration(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE
-)
-
-update_directory_configuration(
-  main = ".",
-  settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
+
+read_directory_configuration(main = ".")
+
+read_directory_settings(main = ".")
+
+update_directory_configuration(main = ".")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
@@ -41,5 +36,6 @@ update_directory_configuration(
 \description{
 The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
              \code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
-             \code{read_directory_configuration} reads the YAML config file into the R session.
+             \code{read_directory_configuration} reads the YAML config file into the R session. \cr \cr
+             \code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
 }

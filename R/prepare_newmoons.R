@@ -3,13 +3,7 @@
 #' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. 
 #'              \code{add_forecast_newmoons} adds future newmoon dates to the newmoon table from \code{prepare_newmoons} associated with the forecast.
 #'
-#' @param quiet \code{logical} indicator controlling if messages are generated.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
-#'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param newmoons \code{data.frame} of newmoon data.
 #'
@@ -21,20 +15,18 @@
 #'
 #' @export
 #' 
-prepare_newmoons <- function (main     = ".",
-                              settings = directory_settings( ), 
-                              quiet    = FALSE, 
-                              verbose  = FALSE) {
+prepare_newmoons <- function (main = ".") {
   
-  messageq("  - newmoons", quiet = quiet)
+  settings <- read_directory_settings(main = main)
+
+  messageq("  - newmoons", quiet = settings$quiet)
 
   newmoons <- load_datafile(datafile            = file.path("Rodents", "moon_dates.csv"),
                             path                = file.path(main, settings$subdirectories$resources),
                             download_if_missing = FALSE,
                             na.strings          = "NA",
-                            quiet               = !verbose)
-  newmoons <- add_forecast_newmoons(main        = main, 
-                                    settings    = settings,
+                            quiet               = !settings$verbose)
+  newmoons <- add_forecast_newmoons(main        = main,
                                     newmoons    = newmoons)
 
   ### patch to verify the correct moons are in ###
@@ -58,7 +50,7 @@ prepare_newmoons <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$newmoons, 
-             quiet     = !verbose)
+             quiet     = !settings$verbose)
 
 } 
 
@@ -66,9 +58,10 @@ prepare_newmoons <- function (main     = ".",
 #'
 #' @export
 #'
-add_forecast_newmoons <- function (main      = ".", 
-                                   newmoons  = NULL, 
-                                   settings  = directory_settings( )) {
+add_forecast_newmoons <- function (main     = ".",
+                                   newmoons = NULL) {
+
+  settings <- read_directory_settings(main = main)
 
   return_if_null(newmoons)
 

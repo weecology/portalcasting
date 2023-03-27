@@ -8,7 +8,6 @@
 prepare_dataset(
   name = "all",
   main = ".",
-  settings = directory_settings(),
   filename = "rodents_all.csv",
   clean = FALSE,
   level = "Site",
@@ -27,17 +26,13 @@ prepare_dataset(
   effort = TRUE,
   species = forecasting_species(),
   total = TRUE,
-  save = TRUE,
-  quiet = FALSE,
-  verbose = FALSE
+  save = TRUE
 )
 }
 \arguments{
 \item{name}{\code{character} name of the data set.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{filename}{\code{character} value of the file for saving the output.}
 
@@ -78,10 +73,6 @@ The default \code{time = "newmoon"} produces an equispaced observation timestep,
 \item{total}{\code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included.}
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator if detailed messages should be shown.}
 }
 \value{
 \code{data.frame} for the specified data set.

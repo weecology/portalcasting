@@ -8,44 +8,26 @@
 \alias{write_model_scripts}
 \title{Read and Write Model Control Lists}
 \usage{
-read_model_controls(main = ".", settings = directory_settings())
+read_model_controls(main = ".")
 
-model_controls(
-  main = ".",
-  models = prefab_models(),
-  settings = directory_settings()
-)
+model_controls(main = ".", models = prefab_models())
 
 write_model_controls(
   main = ".",
   new_model_controls = NULL,
-  models = prefab_models(),
-  settings = directory_settings(),
-  quiet = FALSE
+  models = prefab_models()
 )
 
-write_model_scripts(
-  main = ".",
-  settings = directory_settings(),
-  controls = prefab_model_controls(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+write_model_scripts(main = ".", controls = prefab_model_controls())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
 
-\item{quiet}{\code{logical} indicator controlling if messages are generated.}
-
 \item{controls}{\code{list} of controls for the models.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just the tidy messages.}
 }
 \value{
 \code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly. \cr 
@@ -54,5 +36,5 @@ write_model_scripts(
   \code{write_model_scripts}: \code{NULL}, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Input/output functions for model control lists.
+Input/output functions for model control lists, according to the \code{\link{directory_settings}}..
 }

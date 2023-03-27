@@ -10,28 +10,16 @@ portalcast(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  species = forecasting_species(total = TRUE),
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  species = forecasting_species(total = TRUE)
 )
 
-cast(
-  main = ".",
-  dataset = NULL,
-  species = NULL,
-  model = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+cast(main = ".", dataset = NULL, species = NULL, model = NULL)
 
 make_model_combinations(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  species = forecasting_species(total = TRUE),
-  settings = directory_settings()
+  species = forecasting_species(total = TRUE)
 )
 }
 \arguments{

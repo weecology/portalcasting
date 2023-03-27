@@ -6,23 +6,12 @@
 \alias{prepare_rodents}
 \title{Prepare Rodents Data for the a Portalcasting Model}
 \usage{
-prepare_abundance(
-  main = ".",
-  dataset = NULL,
-  species = NULL,
-  model = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+prepare_abundance(main = ".", dataset = NULL, species = NULL, model = NULL)
 
 prepare_rodents(
   main = ".",
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  new_dataset_controls = NULL
 )
 }
 \arguments{
@@ -34,12 +23,6 @@ prepare_rodents(
 
 \item{model}{\code{character} value of the model name.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator controlling if messages are printed.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
-
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 
 \item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
@@ -50,7 +33,7 @@ prepare_rodents(
 \code{list} of prepared \code{datasets}.
 }
 \description{
-Create vector of historic abundances for a rodent species in a dataset.
+Create vector of historic abundances for a rodent species in a dataset for a model's forecasting.
 
-Create specified \code{datasets} using their associated function and arguments.
+Create specified \code{datasets} using their associated function and arguments, according to the \code{\link{directory_settings}}.
 }

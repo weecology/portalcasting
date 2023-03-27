@@ -6,20 +6,16 @@
 \usage{
 select_casts(
   main = ".",
-  settings = directory_settings(),
   cast_ids = NULL,
   cast_groups = NULL,
   models = NULL,
   datasets = NULL,
   species = NULL,
-  historic_end_newmoonnumbers = NULL,
-  quiet = FALSE
+  historic_end_newmoonnumbers = NULL
 )
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
@@ -32,8 +28,6 @@ select_casts(
 \item{species}{\code{character} value of the species codes (or \code{"total"} for the total across species) to include. Default value is \code{NULL}, which equates to no selection with respect to \code{species}.}
 
 \item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
 \code{data.frame} of the \code{cast_tab}.

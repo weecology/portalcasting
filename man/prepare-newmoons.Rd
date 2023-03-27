@@ -6,27 +6,12 @@
 \alias{add_forecast_newmoons}
 \title{Prepare Lunar Data for the Portalcasting Repository}
 \usage{
-prepare_newmoons(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+prepare_newmoons(main = ".")
 
-add_forecast_newmoons(
-  main = ".",
-  newmoons = NULL,
-  settings = directory_settings()
-)
+add_forecast_newmoons(main = ".", newmoons = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator controlling if messages are generated.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 
 \item{newmoons}{\code{data.frame} of newmoon data.}
 }

@@ -5,25 +5,14 @@
 \alias{prepare_covariates}
 \title{Prepare Covariate Data for Casting}
 \usage{
-prepare_covariates(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+prepare_covariates(main = ".")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator if detailed messages should be generated.}
 }
 \value{
 \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.
 }
 \description{
-Prepare and combine the historical and forecast covariate data for a model run.
+Prepare and combine the historical and forecast covariate data for a model run, according to the \code{\link{directory_settings}}.
 }

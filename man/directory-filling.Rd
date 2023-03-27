@@ -15,50 +15,22 @@ fill_dir(
   models = prefab_models(),
   datasets = prefab_datasets(),
   new_dataset_controls = NULL,
-  new_model_controls = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  new_model_controls = NULL
 )
 
 fill_data(
   main = ".",
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  new_dataset_controls = NULL
 )
 
-fill_resources(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_resources(main = ".")
 
-fill_forecasts(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_forecasts(main = ".")
 
-fill_fits(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_fits(main = ".")
 
-fill_models(
-  main = ".",
-  models = prefab_models(),
-  new_model_controls = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_models(main = ".", models = prefab_models(), new_model_controls = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}

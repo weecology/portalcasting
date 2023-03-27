@@ -10,8 +10,6 @@
 #'
 #' @param time \code{list} of time settings, see \code{\link{time_settings}}.
 #'
-#' @param directory_configuration \code{character} name for the directory configuration YAML.
-#'
 #' @param newmoons \code{character} name for the lunar data csv.
 #'
 #' @param covariates \code{character} name for the combined historical and forecast covariates csv.
@@ -127,14 +125,15 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
   forecast_end            <- origin + lead_time
   forecast_end_buffered   <- origin + lead_time + lead_time_buffer
 
-  list(timeseries_start        = timeseries_start,
-       timeseries_start_lagged = timeseries_start_lagged,
-       forecast_start          = forecast_start,
-       forecast_end            = forecast_end,
-       forecast_end_buffered   = forecast_end_buffered,
-       origin                  = origin,
-       cast_date               = cast_date,
+  list(timeseries_start        = as.character(timeseries_start),
+       timeseries_start_lagged = as.character(timeseries_start_lagged),
+       forecast_start          = as.character(forecast_start),
+       forecast_end            = as.character(forecast_end),
+       forecast_end_buffered   = as.character(forecast_end_buffered),
+       origin                  = as.character(origin),
+       cast_date               = as.character(cast_date),
        lead_time               = lead_time,
+       lead_time_buffer        = lead_time_buffer,
        max_lag                 = max_lag,
        lag_buffer              = lag_buffer)
 
@@ -144,18 +143,16 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
 #'
 #' @export
 #'
-directory_files <- function (directory_configuration = "directory_configuration.yaml",
-                             newmoons                = "newmoon_dates.csv",
-                             covariates              = "covariates.csv",
-                             dataset_controls        = "dataset_controls.yaml", 
-                             model_controls          = "model_controls.yaml",
-                             cast_evaluations        = "cast_evaluations.csv",
-                             cast_results            = "cast_results.csv",
-                             forecast_metadata       = "casts_metadata.csv",
-                             metadata                = "metadata.yaml") {
+directory_files <- function (newmoons          = "newmoon_dates.csv",
+                             covariates        = "covariates.csv",
+                             dataset_controls  = "dataset_controls.yaml", 
+                             model_controls    = "model_controls.yaml",
+                             cast_evaluations  = "cast_evaluations.csv",
+                             cast_results      = "cast_results.csv",
+                             forecast_metadata = "casts_metadata.csv",
+                             metadata          = "metadata.yaml") {
 
-  list(directory_configuration = directory_configuration,
-       newmoons                = newmoons,
+  list(newmoons                = newmoons,
        covariates              = covariates,
        dataset_controls        = dataset_controls, 
        model_controls          = model_controls,

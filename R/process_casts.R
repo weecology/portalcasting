@@ -14,12 +14,6 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not.
-#'
 #' @param model Length-one \code{character} vector of model name.
 #'
 #' @param dataset Length-one \code{character} vector of dataset name.
@@ -35,26 +29,20 @@ process_model_output <- function (main      = ".",
                                   model_cast,
                                   model,
                                   dataset,
-                                  species,
-                                  settings = directory_settings( ), 
-                                  quiet    = FALSE, 
-                                  verbose  = FALSE) {
+                                  species) {
 
+  settings <- read_directory_settings(main = main)
 
-  casts_metadata <- read_casts_metadata(main     = main, 
-                                        settings = settings,
-                                        quiet    = quiet) 
+  casts_metadata <- read_casts_metadata(main = main) 
 
-  metadata <- read_metadata(main     = main,
-                            settings = settings)
+  metadata <- read_metadata(main = main)
 
   ids     <- casts_metadata$cast_id
   ids     <- gsub("-", ".", ids)
   ids     <- as.numeric(ids)
   next_id <- ceiling(max(c(0, ids), na.rm = TRUE)) + 1
 
-  model_controls <- read_model_controls(main     = main, 
-                                        settings = settings)
+  model_controls <- read_model_controls(main = main)
 
   cast_metadata <- update_list(metadata, 
                                cast_id          = next_id,
@@ -166,8 +154,6 @@ process_model_output <- function (main      = ".",
 #' @param cast_ids,cast_id \code{integer} (or integer \code{numeric}) value(s) representing the cast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated cast's output is read in. \cr 
 #'  \code{cast_ids} can be NULL, one value, or more than one values, \code{cast_id} can only be NULL or one value.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @return 
 #'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
 #'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
@@ -179,14 +165,14 @@ process_model_output <- function (main      = ".",
 #'
 #' @export
 #'
-read_cast_tab <- function (main     = ".", 
-                           cast_id  = NULL, 
-                           settings = directory_settings( )) {
+read_cast_tab <- function (main    = ".", 
+                           cast_id = NULL) {
+
+  settings <- read_directory_settings(main = main)
 
   if (is.null(cast_id) ){
 
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
+    casts_meta <- select_casts(main = main)
     cast_id    <- max(casts_meta$cast_id)
 
   }
@@ -211,20 +197,19 @@ read_cast_tab <- function (main     = ".",
 #' @export
 #'
 read_cast_tabs <- function (main     = ".", 
-                            cast_ids  = NULL, 
-                            settings = directory_settings( )) {
+                            cast_ids = NULL) {
   
+  settings <- read_directory_settings(main = main)
+
   if (is.null(cast_ids)) {
 
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
+    casts_meta <- select_casts(main = main)
     cast_ids   <- max(casts_meta$cast_id)
 
   }
 
-  cast_tab <- read_cast_tab(main     = main,
-                            cast_id  = cast_ids[1],
-                            settings = settings)
+  cast_tab <- read_cast_tab(main    = main,
+                            cast_id = cast_ids[1])
   ncasts   <- length(cast_ids)
 
 
@@ -232,9 +217,8 @@ read_cast_tabs <- function (main     = ".",
 
     for (i in 2:ncasts) {
 
-      cast_tab_i <- read_cast_tab(main     = main,
-                                  cast_id  = cast_ids[i], 
-                                  settings = settings)
+      cast_tab_i <- read_cast_tab(main    = main,
+                                  cast_id = cast_ids[i])
 
       cast_tab   <- rbind(cast_tab, cast_tab_i)
 
@@ -250,10 +234,11 @@ read_cast_tabs <- function (main     = ".",
 #'
 #' @export
 #'
-read_cast_metadata <- function (main     = ".", 
-                                cast_id  = NULL, 
-                                settings = directory_settings( )) {
+read_cast_metadata <- function (main    = ".", 
+                                cast_id = NULL) {
   
+  settings <- read_directory_settings(main = main)
+
   if (is.null(cast_id)) {
 
     casts_meta <- select_casts(main = main)
@@ -279,10 +264,11 @@ read_cast_metadata <- function (main     = ".",
 #'
 #' @export
 #'
-read_model_fit <- function (main     = ".", 
-                            cast_id  = NULL, 
-                            settings = directory_settings( )) {
+read_model_fit <- function (main    = ".", 
+                            cast_id = NULL) {
   
+  settings <- read_directory_settings(main = main)
+
   if (is.null(cast_id)) {
 
     casts_meta <- select_casts(main     = main,
@@ -318,10 +304,11 @@ read_model_fit <- function (main     = ".",
 #'
 #' @export
 #'
-read_model_cast <- function (main     = ".", 
-                             cast_id  = NULL, 
-                             settings = directory_settings( )) {
+read_model_cast <- function (main    = ".", 
+                             cast_id = NULL) {
   
+  settings <- read_directory_settings(main = main)
+
   if (is.null(cast_id)) {
 
     casts_meta <- select_casts(main     = main,
@@ -394,28 +381,21 @@ read_model_cast <- function (main     = ".",
 #'
 #' @param species \code{character} value of the species codes (or \code{"total"} for the total across species) to include. Default value is \code{NULL}, which equates to no selection with respect to \code{species}.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @return \code{data.frame} of the \code{cast_tab}.
 #'
 #' @export
 #'
 select_casts <- function (main                        = ".", 
-                          settings                    = directory_settings( ), 
                           cast_ids                    = NULL,
                           cast_groups                 = NULL,
                           models                      = NULL, 
                           datasets                    = NULL,
                           species                     = NULL,
-                          historic_end_newmoonnumbers = NULL, 
-                          quiet                       = FALSE) {
+                          historic_end_newmoonnumbers = NULL) {
 
+  settings <- read_directory_settings(main = main)
 
-  casts_metadata <- read_casts_metadata(main     = main,
-                                        settings = settings,
-                                        quiet    = quiet)
+  casts_metadata <- read_casts_metadata(main = main)
 
   ucast_ids      <- unique(casts_metadata$cast_id[casts_metadata$QAQC])
   cast_ids       <- ifnull(cast_ids, ucast_ids)
@@ -465,23 +445,19 @@ select_casts <- function (main                        = ".",
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @return Data requested.
 #'
 #' @export
 #'
-read_casts_metadata <- function (main     = ".",
-                                 settings = directory_settings( ), 
-                                 quiet    = FALSE){
+read_casts_metadata <- function (main = "."){
   
+  settings  <- read_directory_settings(main = main)
+
   meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
 
   if (!file.exists(meta_path)) {
 
-    messageq("  **creating forecast metadata file**", quiet = quiet)
+    messageq("  **creating forecast metadata file**", quiet = settings$quiet)
 
     out <- data.frame(cast_id                      = NA,
                       old_cast_id                  = NA,

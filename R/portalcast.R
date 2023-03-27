@@ -29,42 +29,37 @@
 portalcast <- function (main     = ".", 
                         models   = prefab_models( ), 
                         datasets = prefab_datasets( ),
-                        species  = forecasting_species(total = TRUE),
-                        settings = directory_settings( ),
-                        quiet    = FALSE,
-                        verbose  = FALSE) {
+                        species  = forecasting_species(total = TRUE)) {
+
+  settings <- read_directory_settings(main = main)
 
   messageq(break_line( ), "Forecasting models...\n", 
            break_line( ), "This is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
-           break_line( ), quiet = quiet)
+           break_line( ), quiet = settings$quiet)
 
   model_combinations <- make_model_combinations(main     = main,
                                                 models   = models,
                                                 datasets = datasets,
-                                                species  = species,
-                                                settings = settings)
+                                                species  = species)
 
   nmodel_combinations <- nrow(model_combinations)
   out <- named_null_list(element_names = apply(model_combinations, 1, paste0, collapse = "_"))
 
   for (i in 1:nmodel_combinations) {
 
-    out[[i]] <- tryCatch(expr = cast(main     = main,
-                                     settings = settings,
-                                     model    = model_combinations$model[i],
-                                     dataset  = model_combinations$dataset[i],
-                                     species  = model_combinations$species[i],
-                                     quiet    = quiet,
-                                     verbose  = verbose),
+    out[[i]] <- tryCatch(expr = cast(main    = main,
+                                     model   = model_combinations$model[i],
+                                     dataset = model_combinations$dataset[i],
+                                     species = model_combinations$species[i]),
                          error = function(x) {NA})
  
     if (all(is.na(out[[i]]))) { 
 
-      messageq("    |------| failed |------|", quiet = quiet) 
+      messageq("    |------| failed |------|", quiet = settings$quiet) 
 
     } else {
 
-      messageq("    |++++| successful |++++|", quiet = quiet )    
+      messageq("    |++++| successful |++++|", quiet = settings$quiet)    
 
     }
   }
@@ -77,7 +72,7 @@ portalcast <- function (main     = ".",
             file      = file.path(main, settings$subdirectories$forecasts, settings$files$cast_results),
             row.names = FALSE)
 
-  messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = quiet)
+  messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = settings$quiet)
   invisible(model_combinations) 
 
 } 
@@ -89,33 +84,25 @@ portalcast <- function (main     = ".",
 cast <- function (main     = ".", 
                   dataset  = NULL,
                   species  = NULL,
-                  model    = NULL,
-                  settings = directory_settings( ), 
-                  quiet    = FALSE, 
-                  verbose  = FALSE) {
+                  model    = NULL) {
 
   return_if_null(x = dataset)
   return_if_null(x = species)
   return_if_null(x = model)
 
-  messageq("  - ", model, " for ", dataset, " ", species, quiet = quiet)
+  settings <- read_directory_settings(main = main)
 
-  abundance      <- prepare_abundance(main     = main,
-                                      dataset  = dataset,
-                                      species  = species,
-                                      model    = model,
-                                      settings = settings,
-                                      quiet    = quiet,
-                                      verbose  = verbose)
-  model_controls <- model_controls(main        = main,
-                                   model       = model,
-                                   settings    = settings)[[model]]
-  metadata       <- read_metadata(main         = main,
-                                  settings     = settings)
-  newmoons       <- read_newmoons(main         = main,
-                                  settings     = settings)                                        
-  covariates     <- read_covariates(main       = main,
-                                    settings   = settings)
+  messageq("  - ", model, " for ", dataset, " ", species, quiet = settings$quiet)
+
+  abundance      <- prepare_abundance(main    = main,
+                                      dataset = dataset,
+                                      species = species,
+                                      model   = model)
+  model_controls <- model_controls(main       = main,
+                                   models     = model)[[model]]
+  metadata       <- read_metadata(main        = main)
+  newmoons       <- read_newmoons(main        = main)                                        
+  covariates     <- read_covariates(main      = main)
 
   fit_args  <- named_null_list(element_names = names(model_controls$fit$args))
   for (i in 1:length(fit_args)) {
@@ -138,10 +125,7 @@ cast <- function (main     = ".",
                        model_cast = model_cast,
                        model      = model,
                        dataset    = dataset,
-                       species    = species,
-                       settings   = settings,
-                       quiet      = quiet,
-                       verbose    = verbose) 
+                       species    = species) 
 
 }
 
@@ -153,11 +137,9 @@ cast <- function (main     = ".",
 make_model_combinations <- function (main     = ".", 
                                      models   = prefab_models( ), 
                                      datasets = prefab_datasets( ),
-                                     species  = forecasting_species(total = TRUE),
-                                     settings = directory_settings( )) {
+                                     species  = forecasting_species(total = TRUE)) {
 
-  available_controls  <- read_model_controls(main     = main,
-                                             settings = settings)
+  available_controls  <- read_model_controls(main = main)
   available_models    <- names(available_controls)
   navailable_models   <- length(available_models)
 

@@ -74,20 +74,16 @@ setup_dir <- function (main                 = ".",
 
   create_dir(main     = main, 
              settings = settings,
-             quiet    = quiet)
+             quiet    = quiet,
+             verbose  = verbose)
 
   fill_dir(main                 = main,
            models               = models, 
            datasets             = datasets,
            new_dataset_controls = new_dataset_controls,
-           new_model_controls   = new_model_controls,
-           settings             = settings,
-           quiet                = quiet,
-           verbose              = verbose)
+           new_model_controls   = new_model_controls)
 
-  read_directory_configuration(main     = main,
-                               settings = settings,
-                               quiet    = quiet)
+  read_directory_configuration(main = main)
 
   messageq(break_lines( ), "Directory successfully instantiated.\n", break_lines( ), quiet = quiet)
 
@@ -148,7 +144,8 @@ setup_sandbox <- function (main                 = ".",
 #' 
 #' @description The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
 #'              \code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
-#'              \code{read_directory_configuration} reads the YAML config file into the R session.
+#'              \code{read_directory_configuration} reads the YAML config file into the R session. \cr \cr
+#'              \code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -170,7 +167,8 @@ NULL
 #'
 write_directory_configuration <- function (main     = ".", 
                                            settings = directory_settings( ), 
-                                           quiet    = FALSE){
+                                           quiet    = FALSE,
+                                           verbose  = FALSE){
 
   core_package_version <- package_version_finder("write_directory_configuration")
 
@@ -179,11 +177,15 @@ write_directory_configuration <- function (main     = ".",
                               core_package_name    = core_package_version[["package"]],
                               core_package_version = core_package_version[["version"]]),
                  tree  = list(main                 = main, 
-                              subdirectories       = settings$subdirectories),
-                 raw   = settings$raw)
+                              subdirectories       = settings$subdirectories))
+  settings <- c(settings, 
+                quiet    = quiet,
+                verbose  = verbose)
+  config <- update_list(list     = config, 
+                        settings = settings)
 
   write_yaml(x    = config, 
-             file = file.path(main, settings$files$directory_config))
+             file = file.path(main, "directory_configuration.yaml"))
 
   invisible(config)
 
@@ -195,13 +197,12 @@ write_directory_configuration <- function (main     = ".",
 #'
 #' @export
 #'
-read_directory_configuration<- function (main     = ".", 
-                                         settings = directory_settings( ), 
-                                         quiet    = FALSE){
+read_directory_configuration<- function (main = ".") {
   
   config <- tryCatch(
-              read_yaml(file.path(main, settings$files$directory_config)),
-              error = function(x){NA}, warning = function(x){NA})
+              read_yaml(file.path(main, "directory_configuration.yaml")),
+              error = function(x){NA}, 
+              warning = function(x){NA})
   
   if (length(config) == 1 && is.na(config)) {
 
@@ -214,36 +215,54 @@ read_directory_configuration<- function (main     = ".",
 }
 
 
+#' @rdname directory-configuration-file
+#'
+#' @export
+#'
+read_directory_settings <- function (main = ".") {
+  
+  settings <- read_directory_configuration(main = main)$settings
+ 
+  settings$time$timeseries_start        <- as.Date(settings$time$timeseries_start)
+  settings$time$timeseries_start_lagged <- as.Date(settings$time$timeseries_start_lagged)
+  settings$time$forecast_start          <- as.Date(settings$time$forecast_start)
+  settings$time$forecast_end            <- as.Date(settings$time$forecast_end)
+  settings$time$forecast_end_buffered   <- as.Date(settings$time$forecast_end_buffered)
+  settings$time$origin                  <- as.Date(settings$time$origin)
+  settings$time$cast_date               <- as.Date(settings$time$cast_date)
+
+  settings
+}
+
+
 
 #' @rdname directory-configuration-file
 #'
 #' @export
 #'
-update_directory_configuration <- function (main     = ".", 
-                                            settings = directory_settings( ), 
-                                            quiet    = FALSE,
-                                            verbose  = FALSE){
+update_directory_configuration <- function (main = ".") {
   
-  config <- read_directory_configuration(main     = main, 
-                                         settings = settings,
-                                         quiet    = quiet)
+  config   <- read_directory_configuration(main = main)
+  settings <- config$settings
 
   # fix this so it grabs the actual values when `latest`
 
-  config$raw$PortalData_version       <- settings$resources$PortalData$version
-  config$raw$archive_version          <- ifnull(settings$resources$portalPredictions$version, "")
-  config$raw$climate_forecast_version <- settings$resources$climate_forecast$version
+  settings$resources$PortalData_version       <- settings$resources$PortalData$version
+  settings$resources$archive_version          <- ifnull(settings$resources$portalPredictions$version, "")
+  settings$resources$climate_forecast_version <- settings$resources$climate_forecast$version
 
-  if (config$raw$PortalData_version == "latest") {
+  if (settings$resources$PortalData_version == "latest") {
 
-    config$raw$PortalData_version <- scan(file  = file.path(main, settings$subdirectories$resources, "PortalData", "version.txt"),
-                                          what  = "character", 
-                                          quiet = !verbose)
+    settings$resources$PortalData_version <- scan(file  = file.path(main, settings$subdirectories$resources, "PortalData", "version.txt"),
+                                                  what  = "character", 
+                                                  quiet = !settings$verbose)
 
   }
 
+  config$settings <- settings
+
   write_yaml(x    = config, 
-             file = file.path(main, settings$files$directory_configuration))
+             file = file.path(main, "directory_configuration.yaml"))
 
   invisible(config)
 

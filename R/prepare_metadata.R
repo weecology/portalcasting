@@ -1,6 +1,6 @@
 #' @title Prepare a Model-Running Metadata List
 #'
-#' @description Sets up the metadata used for forecasting, in particular the matching of time period across the datasets. This should always be run after \code{\link{prepare_newmoons}}, \code{\link{prepare_rodents}}, and \code{\link{prepare_covariates}} but before any model is run.
+#' @description Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the \code{\link{directory_settings}}.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
@@ -8,51 +8,36 @@
 #'
 #' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).
-#'
 #' @return \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 #' 
 #' @export
 #'
 prepare_metadata <- function (main                 = ".",
                               datasets             = prefab_datasets( ),
-                              new_dataset_controls = NULL,
-                              settings             = directory_settings( ), 
-                              quiet                = FALSE,
-                              verbose              = FALSE) {
+                              new_dataset_controls = NULL) {
 
-  messageq("  - metadata", quiet = quiet)
+  settings <- read_directory_settings(main = main)
 
-  config <- read_directory_configuration(main     = main, 
-                                         settings = settings,
-                                         quiet    = quiet)
+  messageq("  - metadata", quiet = settings$quiet)
+
+  config <- read_directory_configuration(main = main)
   
-  newmoons <- read_newmoons(main     = main, 
-                            settings = settings)
-
-
+  newmoons <- read_newmoons(main = main)
   dataset_controls_list <- dataset_controls(main     = main, 
-                                            settings = settings, 
                                             datasets = datasets)
 
-  historic_start_newmoonnumber <- min(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) >= settings$time$timeseries_start])
-  historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) < settings$time$origin])
+  historic_start_newmoonnumber <- min(newmoons$newmoonnumber[newmoons$newmoondate >= settings$time$timeseries_start])
+  historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[newmoons$newmoondate < settings$time$origin])
   historic_newmoonnumbers      <- historic_start_newmoonnumber:historic_end_newmoonnumber
-  forecast_start_newmoonnumber <- min(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) >= settings$time$origin])
-  forecast_end_newmoonnumber   <- max(newmoons$newmoonnumber[as.Date(newmoons$newmoondate) < settings$time$forecast_end_buffered])
+  forecast_start_newmoonnumber <- min(newmoons$newmoonnumber[newmoons$newmoondate >= settings$time$origin])
+  forecast_end_newmoonnumber   <- max(newmoons$newmoonnumber[newmoons$newmoondate < settings$time$forecast_end_buffered])
   forecast_newmoonnumbers      <- forecast_start_newmoonnumber:forecast_end_newmoonnumber
   forecast_dates               <- as.Date(newmoons$newmoondate[match(forecast_newmoonnumbers, newmoons$newmoonnumber)])
   forecast_months              <- format(forecast_dates, "%m")
   forecast_years               <- format(forecast_dates, "%Y")
   lead_time_newmoons           <- length(forecast_newmoonnumbers)
 
-  cast_meta  <- read_casts_metadata(main     = main, 
-                                    settings = settings,
-                                    quiet    = quiet)
+  cast_meta  <- read_casts_metadata(main = main)
   cast_group <- max(c(0, cast_meta$cast_group), na.rm = TRUE) + 1
 
 
@@ -84,6 +69,6 @@ prepare_metadata <- function (main                 = ".",
              main     = main, 
              save     = settings$save, 
              filename = settings$files$metadata, 
-             quiet    = !verbose)
+             quiet    = !settings$verbose)
 
 }

@@ -326,7 +326,7 @@ pevGARCH:
                       c(NULL))
       covariates: covariates
       metadata: metadata
-      quiet: "!verbose"
+      quiet: "!settings$verbose"
   cast:
     fun: forecast
     args: 

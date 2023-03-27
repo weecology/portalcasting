@@ -6,30 +6,12 @@
 \alias{evaluate_cast}
 \title{Evaluate Forecasts}
 \usage{
-evaluate_casts(
-  main = ".",
-  settings = directory_settings(),
-  cast_ids = NULL,
-  quiet = FALSE,
-  verbose = FALSE
-)
+evaluate_casts(main = ".", cast_ids = NULL)
 
-evaluate_cast(
-  main = ".",
-  settings = directory_settings(),
-  cast_id = NULL,
-  quiet = FALSE,
-  verbose = FALSE
-)
+evaluate_cast(main = ".", cast_id = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information.}
 
 \item{cast_id, cast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
 \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}

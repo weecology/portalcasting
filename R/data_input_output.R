@@ -83,8 +83,7 @@ write_data <- function (x            = NULL,
 read_data <- function (main      = ".", 
                        data_name = NULL, 
                        dataset   = "all", 
-                       datasets  = prefab_datasets( ), 
-                       settings  = directory_settings( )) {
+                       datasets  = prefab_datasets( )) {
   
   return_if_null(x = data_name)
 
@@ -93,44 +92,38 @@ read_data <- function (main      = ".",
   if (data_name == "rodents") {
 
     out <- read_rodents(main     = main, 
-                        datasets = datasets, 
-                        settings = settings)
+                        datasets = datasets)
 
   }
 
   if (data_name == "rodents_table") { 
 
-    out <- read_rodents_table(main     = main, 
-                              dataset  = dataset, 
-                              settings = settings)
+    out <- read_rodents_table(main    = main, 
+                              dataset = dataset)
 
   }
 
   if (data_name == "covariates") {
 
-    out <- read_covariates(main     = main, 
-                           settings = settings)
+    out <- read_covariates(main = main)
 
   }
 
   if (data_name == "climate_forecasts") {
 
-    out <- read_climate_forecasts(main     = main, 
-                                  settings = settings)
+    out <- read_climate_forecasts(main = main)
 
   }
 
   if (data_name == "newmoons") {
 
-    out <- read_newmoons(main     = main, 
-                      settings = settings)
+    out <- read_newmoons(main = main)
 
   }
 
   if (data_name == "metadata") {
 
-    out <- read_metadata(main     = main, 
-                         settings = settings)
+    out <- read_metadata(main = main)
 
   }
 
@@ -141,11 +134,11 @@ read_data <- function (main      = ".",
 #'
 #' @export
 #'
-read_rodents_table <- function (main     = ".", 
-                                dataset  = "all", 
-                                settings = directory_settings( )) {
+read_rodents_table <- function (main    = ".", 
+                                dataset = "all") {
 
   return_if_null(x = dataset)
+  settings <- read_directory_settings(main = main)
   read.csv(file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(dataset), ".csv"))) 
 
 }
@@ -155,10 +148,10 @@ read_rodents_table <- function (main     = ".",
 #' @export
 #'
 read_rodents <- function (main     = ".", 
-                          datasets = prefab_datasets( ), 
-                          settings = directory_settings( )) {
+                          datasets = prefab_datasets( )) {
   
   return_if_null(x = datasets)
+  settings <- read_directory_settings(main = main)
   mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
 
 }
@@ -167,10 +160,12 @@ read_rodents <- function (main     = ".",
 #'
 #' @export
 #'
-read_newmoons <- function(main     = ".", 
-                          settings = directory_settings( )){
+read_newmoons <- function(main = "."){
   
-  read.csv(file.path(main, settings$subdirectories$data, settings$files$newmoons))
+  settings       <- read_directory_settings(main = main)
+  out             <- read.csv(file.path(main, settings$subdirectories$data, settings$files$newmoons))
+  out$newmoondate <- as.Date(out$newmoondate)
+  out
 
 }
 
@@ -178,9 +173,9 @@ read_newmoons <- function(main     = ".",
 #'
 #' @export
 #'
-read_covariates <- function (main     = ".",
-                             settings = directory_settings( )) {
+read_covariates <- function (main = ".") {
 
+  settings <- read_directory_settings(main = main)
   read.csv(file.path(main, settings$subdirectories$data, settings$files$covariates))
 
 }
@@ -190,8 +185,9 @@ read_covariates <- function (main     = ".",
 #'
 #' @export
 #'
-read_climate_forecasts <- function (main     = ".",
-                                    settings = directory_settings( )) {
+read_climate_forecasts <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
 
   datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
   ndatas <- length(datas)
@@ -247,9 +243,9 @@ read_climate_forecasts <- function (main     = ".",
 #'
 #' @export
 #'
-read_metadata <- function(main     = ".", 
-                          settings = directory_settings( )){
+read_metadata <- function(main = "."){
   
+  settings <- read_directory_settings(main = main)
   read_yaml(file.path(main, settings$subdirectories$data, settings$files$metadata), eval.expr = TRUE)
 
 }

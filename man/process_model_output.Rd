@@ -10,10 +10,7 @@ process_model_output(
   model_cast,
   model,
   dataset,
-  species,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  species
 )
 }
 \arguments{
@@ -26,12 +23,6 @@ process_model_output(
 \item{dataset}{Length-one \code{character} vector of dataset name.}
 
 \item{species}{Length-one\code{character} vector of species name.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not.}
 }
 \value{
 Relevant elements are saved to external files, and returned as a \code{list}.

@@ -1,10 +1,6 @@
 #' @title Prepare Rodents Data for the a Portalcasting Model
 #'
-#' @description Create vector of historic abundances for a rodent species in a dataset.
-#'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
+#' @description Create vector of historic abundances for a rodent species in a dataset for a model's forecasting.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
@@ -14,35 +10,30 @@
 #'
 #' @param model \code{character} value of the model name.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @return \code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.
 #'  
 #' @name prepare rodents
 #'
 #' @export
 #'
-prepare_abundance <- function (main     = ".", 
-                               dataset  = NULL,
-                               species  = NULL,
-                               model    = NULL,
-                               settings = directory_settings( ), 
-                               quiet    = FALSE, 
-                               verbose  = FALSE) {
+prepare_abundance <- function (main    = ".", 
+                               dataset = NULL,
+                               species = NULL,
+                               model   = NULL) {
 
   return_if_null(x = dataset)
   return_if_null(x = model)
   return_if_null(x = species)
 
+  settings <- read_directory_settings(main = main)
+
   # species can only be length 1 here
 
-  model_controls <- read_model_controls(main     = main, 
-                                        settings = settings)[[model]]
-  metadata       <- read_metadata(main           = main,
-                                  settings       = settings)
-  rodents_table  <- read_rodents_table(main      = main, 
-                                       dataset   = dataset,
-                                       settings  = settings)
+  model_controls <- model_controls(main   = main, 
+                                   models = model)[[model]]
+  metadata       <- read_metadata(main         = main)
+  rodents_table  <- read_rodents_table(main    = main, 
+                                       dataset = dataset)
 
   moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoonnumbers
   species_in    <- colnames(rodents_table) == gsub("NA", "NA.", species)
@@ -66,13 +57,9 @@ prepare_abundance <- function (main     = ".",
 #'
 #' @description Input/Output functions for dataset control lists.
 #'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
-#'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
 #'
@@ -82,9 +69,9 @@ prepare_abundance <- function (main     = ".",
 #'
 #' @export
 #'
-read_dataset_controls <- function (main     = ".",
-                                   settings = directory_settings( )) {
+read_dataset_controls <- function (main = ".") {
 
+  settings <- read_directory_settings(main = main)
   read_yaml(file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
 
 }
@@ -94,11 +81,9 @@ read_dataset_controls <- function (main     = ".",
 #' @export
 #'
 dataset_controls <- function (main     = ".",
-                              datasets = prefab_datasets( ),
-                              settings = directory_settings( )) {
+                              datasets = prefab_datasets( )) {
 
-  read_dataset_controls(main     = main,
-                        settings = settings)[datasets]
+  read_dataset_controls(main = main)[datasets]
 
 }
 
@@ -108,9 +93,9 @@ dataset_controls <- function (main     = ".",
 #'
 write_dataset_controls <- function (main                 = ".",
                                     new_dataset_controls = NULL,
-                                    datasets             = prefab_datasets( ),
-                                    settings             = directory_settings( ),
-                                    quiet                = FALSE) {
+                                    datasets             = prefab_datasets( )) {
+
+  settings <- read_directory_settings(main = main)
 
   dataset_controls <- prefab_dataset_controls( )
   ndatasets        <- length(dataset_controls)
@@ -139,19 +124,13 @@ write_dataset_controls <- function (main                 = ".",
 
 #' @title Prepare Rodents Data for the Portalcasting Repository
 #'
-#' @description Create specified \code{datasets} using their associated function and arguments.
-#'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
+#' @description Create specified \code{datasets} using their associated function and arguments, according to the \code{\link{directory_settings}}.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
 #'
 #' @param new_dataset_controls Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{list} of prepared \code{datasets}.
 #'  
@@ -161,31 +140,24 @@ write_dataset_controls <- function (main                 = ".",
 #'
 prepare_rodents <- function (main                 = ".",
                              datasets             = prefab_datasets( ),
-                             new_dataset_controls = NULL,
-                             settings             = directory_settings( ), 
-                             quiet                = FALSE,
-                             verbose              = FALSE) {
+                             new_dataset_controls = NULL) {
 
   return_if_null(x = datasets)
+  settings <- read_directory_settings(main = main)
 
   dataset_controls_list <- write_dataset_controls(main                 = main, 
-                                                  settings             = settings, 
                                                   datasets             = datasets, 
-                                                  new_dataset_controls = new_dataset_controls,
-                                                  quiet                = quiet)
+                                                  new_dataset_controls = new_dataset_controls)
 
-  messageq("  - rodents", quiet = quiet)
+  messageq("  - rodents", quiet = settings$quiet)
 
   out <- named_null_list(element_names = datasets)
 
   for (i in 1:length(dataset_controls_list)) {
 
     out[[i]] <- do.call(what = dataset_controls_list[[i]]$fun, 
-                        args = update_list(list             = dataset_controls_list[[i]]$args, 
-                                           main             = main, 
-                                           settings         = settings, 
-                                           quiet            = quiet, 
-                                           verbose          = verbose))
+                        args = update_list(list = dataset_controls_list[[i]]$args, 
+                                           main = main))
   
   }
 
@@ -204,8 +176,6 @@ prepare_rodents <- function (main                 = ".",
 #' @param name \code{character} name of the data set.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @param species \code{character}-valued vector of species names to include. 
 #'
@@ -232,8 +202,6 @@ prepare_rodents <- function (main                 = ".",
 #'
 #' @param shape \code{character} value indicating a "crosstab" or "flat" output. 
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be shown.
-#'
 #' @param unknowns \code{logical} indicator to either remove all individuals not identified to species (\code{unknowns = FALSE}) or sum them in an additional column (\code{unknowns = TRUE}.
 #'
 #' @param time \code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr \cr
@@ -245,8 +213,6 @@ prepare_rodents <- function (main                 = ".",
 #'
 #' @param effort \code{logical} indicator of if the effort columns should be included in the output.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
 #' @param save \code{logical} indicator controlling if the output should be saved out.
 #'
 #' @param filename \code{character} value of the file for saving the output.
@@ -257,34 +223,33 @@ prepare_rodents <- function (main                 = ".",
 #'
 #' @export
 #'
-prepare_dataset <- function(name             = "all",
-                            main             = ".",
-                            settings         = directory_settings( ),
-                            filename         = "rodents_all.csv",
-                            clean            = FALSE,
-                            level            = "Site",
-                            type             = "Rodents",
-                            plots            = "all",
-                            unknowns         = FALSE,
-                            shape            = "crosstab",
-                            time             = "newmoon",
-                            output           = "abundance",
-                            fillweight       = FALSE,
-                            treatment        = NULL,
-                            na_drop          = FALSE,
-                            zero_drop        = FALSE,
-                            min_traps        = 1,
-                            min_plots        = 24,
-                            effort           = TRUE,
-                            species          = forecasting_species(),
-                            total            = TRUE,
-                            save             = TRUE,
-                            quiet            = FALSE,
-                            verbose          = FALSE) {
+prepare_dataset <- function(name       = "all",
+                            main       = ".",
+                            filename   = "rodents_all.csv",
+                            clean      = FALSE,
+                            level      = "Site",
+                            type       = "Rodents",
+                            plots      = "all",
+                            unknowns   = FALSE,
+                            shape      = "crosstab",
+                            time       = "newmoon",
+                            output     = "abundance",
+                            fillweight = FALSE,
+                            treatment  = NULL,
+                            na_drop    = FALSE,
+                            zero_drop  = FALSE,
+                            min_traps  = 1,
+                            min_plots  = 24,
+                            effort     = TRUE,
+                            species    = forecasting_species(),
+                            total      = TRUE,
+                            save       = TRUE) {
 
   return_if_null(x = name)
 
-  messageq("    - ", name, quiet = quiet)
+  settings <- read_directory_settings(main = main)
+
+  messageq("    - ", name, quiet = settings$quiet)
 
   rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subdirectories$resources), 
                                          clean      = clean, 
@@ -301,7 +266,7 @@ prepare_dataset <- function(name             = "all",
                                          min_traps  = min_traps,
                                          min_plots  = min_plots, 
                                          effort     = effort, 
-                                         quiet      = !verbose) 
+                                         quiet      = !settings$verbose) 
 
 
   sp_col           <- colnames(rodents_table) %in% rodent_species( )
@@ -341,13 +306,11 @@ prepare_dataset <- function(name             = "all",
   }
   # end patch
 
-  newmoons <- read_newmoons(main     = main, 
-                            settings = settings)
+  newmoons <- read_newmoons(main = main)
  
 # dont cut them out of the actual data tho... 
 #  rows_in <- out$newmoonnumber >= min(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$timeseries_start_lagged >= 0)]) & 
 #             out$newmoonnumber <= max(newmoons$newmoonnumber[which(as.Date(newmoons$newmoondate) - settings$time$origin < 0)])
-
 #  out <- out[rows_in, ]
 
   ### patch to verify the correct moons are in ###
@@ -368,7 +331,7 @@ prepare_dataset <- function(name             = "all",
              subdirectory = settings$subdirectories$data,
              save         = save, 
              filename     = filename, 
-             quiet        = !verbose)
+             quiet        = !settings$verbose)
 
 }
 

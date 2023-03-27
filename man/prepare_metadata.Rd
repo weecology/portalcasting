@@ -7,10 +7,7 @@
 prepare_metadata(
   main = ".",
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL,
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  new_dataset_controls = NULL
 )
 }
 \arguments{
@@ -19,16 +16,10 @@ prepare_metadata(
 \item{datasets}{\code{character} vector of name(s) of dataset(s) to include.}
 
 \item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
 }
 \value{
 \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 }
 \description{
-Sets up the metadata used for forecasting, in particular the matching of time period across the datasets. This should always be run after \code{\link{prepare_newmoons}}, \code{\link{prepare_rodents}}, and \code{\link{prepare_covariates}} but before any model is run.
+Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the \code{\link{directory_settings}}.
 }

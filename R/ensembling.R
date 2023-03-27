@@ -30,7 +30,6 @@
 #' @export
 #'
 ensemble_casts <- function (main                       = ".", 
-                            settings                   = directory_settings( ), 
                             method                     = "unwtavg", 
                             cast_groups                = NULL, 
                             cast_ids                   = NULL, 
@@ -40,10 +39,11 @@ ensemble_casts <- function (main                       = ".",
                             dataset                    = NULL, 
                             species                    = NULL) {
 
+  settings <- read_directory_settings(main = main)
+
   if (is.null(cast_tab)) {
 
     cast_choices <- select_casts(main                        = main, 
-                                 settings                    = settings,
                                  cast_ids                    = cast_ids, 
                                  cast_groups                 = cast_groups, 
                                  models                      = models, 
@@ -58,10 +58,8 @@ ensemble_casts <- function (main                       = ".",
     } else {
 
       cast_tab <- read_cast_tabs(main     = main, 
-                                 settings = settings,
                                  cast_ids = cast_choices$cast_id)
       cast_tab <- add_obs_to_cast_tab(main     = main,  
-                                      settings = settings,
                                       cast_tab = cast_tab)
       cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
       cast_tab$error   <- cast_tab$estimate - cast_tab$obs

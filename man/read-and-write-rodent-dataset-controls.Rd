@@ -7,32 +7,22 @@
 \alias{write_dataset_controls}
 \title{Read and Write Rodent Dataset Control Lists}
 \usage{
-read_dataset_controls(main = ".", settings = directory_settings())
+read_dataset_controls(main = ".")
 
-dataset_controls(
-  main = ".",
-  datasets = prefab_datasets(),
-  settings = directory_settings()
-)
+dataset_controls(main = ".", datasets = prefab_datasets())
 
 write_dataset_controls(
   main = ".",
   new_dataset_controls = NULL,
-  datasets = prefab_datasets(),
-  settings = directory_settings(),
-  quiet = FALSE
+  datasets = prefab_datasets()
 )
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 
 \item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
-
-\item{quiet}{\code{logical} indicator controlling if messages are printed.}
 }
 \value{
 \code{list} of \code{datasets}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_dataset_controls}.

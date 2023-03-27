@@ -5,14 +5,8 @@
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @param cast_id,cast_ids \code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
 #'  \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information.
 #'
 #' @return A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base]{invisible}}-ly..
 #'
@@ -21,13 +15,11 @@
 #' @export
 #'
 evaluate_casts <- function (main      = ".", 
-                            settings  = directory_settings( ), 
-                            cast_ids  = NULL,
-                            quiet     = FALSE, 
-                            verbose   = FALSE) {
+                            cast_ids  = NULL) {
+
+  settings <- read_directory_settings(main = main)
 
   casts_to_evaluate <- select_casts(main     = main, 
-                                    settings = settings,
                                     cast_ids = cast_ids)
 
   cast_ids  <- casts_to_evaluate$cast_id
@@ -41,15 +33,12 @@ evaluate_casts <- function (main      = ".",
 
   out <- named_null_list(element_names = cast_ids)
 
-  messageq("Evaluating casts ...\n", quiet = quiet)
+  messageq("Evaluating casts ...\n", quiet = settings$quiet)
 
   for (i in 1:ncast_ids) {
 
-    out[[i]] <- evaluate_cast(main     = main,
-                              settings = settings,
-                              cast_id  = cast_ids[i],
-                              quiet    = quiet,
-                              verbose  = verbose)
+    out[[i]] <- evaluate_cast(main    = main,
+                              cast_id = cast_ids[i])
 
   }
 
@@ -75,7 +64,7 @@ evaluate_casts <- function (main      = ".",
              subdirectory = settings$subdirectories$forecasts,
              save         = settings$save,
              filename     = settings$files$cast_evaluations,
-             quiet        = quiet)
+             quiet        = settings$quiet)
 
 }
 
@@ -85,23 +74,18 @@ evaluate_casts <- function (main      = ".",
 #' @export
 #'
 evaluate_cast <- function (main     = ".", 
-                           settings = directory_settings( ), 
-                           cast_id  = NULL,
-                           quiet    = FALSE, 
-                           verbose  = FALSE) {
+                           cast_id  = NULL) {
+
+  settings <- read_directory_settings(main = main)
 
   return_if_null(x = cast_id)
 
-  cast_tab <- read_cast_tab(main               = main, 
-                            settings           = settings,
-                            cast_id            = cast_id)
-  cast_meta <- read_cast_metadata(main         = main, 
-                                  settings     = settings,
-                                  cast_id      = cast_id)
-
-  cast_tab <- add_obs_to_cast_tab(main         = main,  
-                                  settings     = settings,
-                                  cast_tab     = cast_tab)
+  cast_tab <- read_cast_tab(main           = main, 
+                            cast_id        = cast_id)
+  cast_meta <- read_cast_metadata(main     = main, 
+                                  cast_id  = cast_id)
+  cast_tab <- add_obs_to_cast_tab(main     = main,  
+                                  cast_tab = cast_tab)
 
   cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
   cast_tab$error   <- cast_tab$estimate - cast_tab$obs
@@ -206,8 +190,6 @@ evaluate_cast <- function (main     = ".",
 #' 
 #' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @return \code{data.frame} of \code{cast_tab} with an additional column. 
 #'
 #' @name add to cast tab
@@ -220,7 +202,6 @@ NULL
 #' @export
 #'
 add_obs_to_cast_tab <- function (main     = ".", 
-                                 settings = directory_settings( ),
                                  cast_tab = NULL) {
 
   return_if_null(cast_tab)
@@ -231,7 +212,6 @@ add_obs_to_cast_tab <- function (main     = ".",
   cast_tab$obs   <- NA
 
   obs <- read_rodents_table(main     = main, 
-                            settings = settings,
                             dataset  = dataset)
 
   obs_cols <- gsub("NA.", "NA", colnames(obs))

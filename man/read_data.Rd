@@ -14,29 +14,20 @@ read_data(
   main = ".",
   data_name = NULL,
   dataset = "all",
-  datasets = prefab_datasets(),
-  settings = directory_settings()
+  datasets = prefab_datasets()
 )
 
-read_rodents_table(
-  main = ".",
-  dataset = "all",
-  settings = directory_settings()
-)
+read_rodents_table(main = ".", dataset = "all")
 
-read_rodents(
-  main = ".",
-  datasets = prefab_datasets(),
-  settings = directory_settings()
-)
+read_rodents(main = ".", datasets = prefab_datasets())
 
-read_newmoons(main = ".", settings = directory_settings())
+read_newmoons(main = ".")
 
-read_covariates(main = ".", settings = directory_settings())
+read_covariates(main = ".")
 
-read_climate_forecasts(main = ".", settings = directory_settings())
+read_climate_forecasts(main = ".")
 
-read_metadata(main = ".", settings = directory_settings())
+read_metadata(main = ".")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}

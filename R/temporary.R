@@ -1,14 +1,16 @@
 # this will update old forecast folders to the new species-level files and numbering
 
-update_forecasts_folder <- function (main = ".", settings = directory_settings(), quiet = FALSE) {
+update_forecasts_folder <- function (main = ".") {
 
-  casts_metadata <- read_casts_metadata(main = main, settings = settings, quiet = quiet)
+  settings <- read_directory_settings(main = main)
+
+  casts_metadata <- read_casts_metadata(main = main)
 
   old_colnames <- c("cast_id", "cast_group", "cast_date", "start_moon", "end_moon", "lead_time", "model", "dataset", "portalcasting_version", "QAQC", "notes")
 
   if (all(colnames(casts_metadata) == old_colnames)) {
 
-    messageq(" --- Updating forecasts folder ---", quiet = quiet)
+    messageq(" --- Updating forecasts folder ---", quiet = settings$quiet)
 
     out <- data.frame(cast_id                      = NULL,
                       old_cast_id                  = NULL,
@@ -137,7 +139,7 @@ update_forecasts_folder <- function (main = ".", settings = directory_settings()
     meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
     write.csv(x = out, file = meta_path, row.names = FALSE)
 
-    messageq(" --- Done with update ---", quiet = quiet)
+    messageq(" --- Done with update ---", quiet = settings$quiet)
 
   } else {
 

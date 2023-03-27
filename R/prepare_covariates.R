@@ -1,14 +1,8 @@
 #' @title Prepare Covariate Data for Casting
 #'
-#' @description Prepare and combine the historical and forecast covariate data for a model run.
+#' @description Prepare and combine the historical and forecast covariate data for a model run, according to the \code{\link{directory_settings}}.
 #'
 #' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator if detailed messages should be generated.
 #'
 #' @return \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.
 #'  
@@ -16,12 +10,11 @@
 #'
 #' @export
 #'
-prepare_covariates <- function (main     = ".", 
-                                settings = directory_settings( ), 
-                                quiet    = FALSE, 
-                                verbose  = FALSE) {
+prepare_covariates <- function (main = ".") {
 
-  messageq("  - covariates", quiet = quiet)
+  settings <- read_directory_settings(main = main)
+
+  messageq("  - covariates", quiet = settings$quiet)
 
   weather_data <- weather(level   = "daily", 
                           fill    = TRUE,
@@ -30,13 +23,10 @@ prepare_covariates <- function (main     = ".",
   ndvi_data    <- ndvi(level      = "daily", 
                        path       = file.path(main, settings$subdirectories$resources))
 
-  climate_forecasts <- read_climate_forecasts(main     = main,
-                                              settings = settings)
-  newmoons          <- read_newmoons(main              = main,
-                                     settings          = settings)
-  control_rodents   <- read_rodents_table(main         = main,
-                                          dataset      = "controls", 
-                                          settings     = settings) 
+  climate_forecasts <- read_climate_forecasts(main = main)
+  newmoons          <- read_newmoons(main          = main)
+  control_rodents   <- read_rodents_table(main     = main,
+                                          dataset  = "controls")
 
   # truncate to historic values to facilitate hindcasting --- not yet quite properly integrated because we don't use the old nmme
 
@@ -241,10 +231,10 @@ prepare_covariates <- function (main     = ".",
                date_year           = date_year)
 
 
-  runjags.options(silent.jags    = !verbose, 
-                  silent.runjags = !verbose)
+  runjags.options(silent.jags    = !settings$verbose, 
+                  silent.runjags = !settings$verbose)
 
-  model_fit <- run.jags(model = jags_model, 
+  model_fit <- run.jags(model     = jags_model, 
                         monitor   = monitor, 
                         inits     = inits(data), 
                         data      = data, 
@@ -256,9 +246,7 @@ prepare_covariates <- function (main     = ".",
                         modules   = "glm",
                         method    = "interruptible", 
                         factories = "", 
-                        mutate    = NA, 
-                        summarise = TRUE, 
-                        plots     = FALSE)
+                        mutate    = NA)
 
   mcmc <- combine.mcmc(model_fit$mcmc)
   model_fit_summary <- summary(model_fit)
@@ -315,7 +303,7 @@ prepare_covariates <- function (main     = ".",
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$covariates, 
-             quiet     = !verbose)
+             quiet     = !settings$verbose)
 
 }
 
