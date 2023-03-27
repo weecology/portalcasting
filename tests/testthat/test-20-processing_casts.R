@@ -20,7 +20,7 @@ test_that(desc = "read_cast_tabs reads in multiple cast tabs", {
     skip_on_cran() 
 
   expect_is(read_cast_tabs(main = main, cast_ids = NULL), "data.frame")
-  expect_is(read_cast_tabs(main = main, cast_ids = c("1-1", "1-2")), "data.frame")
+  expect_is(read_cast_tabs(main = main, cast_ids = c("1.1", "1.2")), "data.frame")
 
 })
 
@@ -55,7 +55,7 @@ test_that(desc = "add_obs_to_cast_tab functions add properly", {
 
     skip_on_cran() 
 
-   cast_tab <- read_cast_tab(main = main, cast_id = "1-1")
+   cast_tab <- read_cast_tab(main = main, cast_id = "1.1")
    expect_is(add_obs_to_cast_tab(main = main, cast_tab = cast_tab), 
              "data.frame")
 
