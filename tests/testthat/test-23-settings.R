@@ -38,7 +38,7 @@ test_that(desc = "time_settings produces a list", {
 
   expect_silent(ts <- time_settings())
   expect_is(ts, "list")
-  expect_equal(names(ts), c("timeseries_start", "timeseries_start_lagged", "forecast_start", "forecast_end", "forecast_end_buffered", "origin", "cast_date", "lead_time", "max_lag", "lag_buffer"))
+  expect_equal(names(ts), c("timeseries_start", "timeseries_start_lagged", "forecast_start", "forecast_end", "forecast_end_buffered", "origin", "cast_date", "lead_time", "lead_time_buffer", "max_lag", "lag_buffer"))
 
 })
 

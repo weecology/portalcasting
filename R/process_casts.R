@@ -271,8 +271,7 @@ read_model_fit <- function (main    = ".",
 
   if (is.null(cast_id)) {
 
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
+    casts_meta <- select_casts(main = main)
     cast_id <- max(casts_meta$cast_id)
 
   }
@@ -311,8 +310,7 @@ read_model_cast <- function (main    = ".",
 
   if (is.null(cast_id)) {
 
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
+    casts_meta <- select_casts(main = main)
 
     cast_id <- gsub("\\.", "-", max(as.numeric(gsub("-", ".", casts_meta$cast_id))))
 
