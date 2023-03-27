@@ -33,9 +33,9 @@ update_forecasts_folder <- function (main = ".") {
     ncasts   <- nrow(casts_metadata)
     for (i in 1:ncasts) {
 
-      cast_tab  <- read_cast_tab(main = main, cast_id = casts_metadata$cast_id[i], settings = settings)
-      cast_meta <- read_cast_metadata(main = main, cast_id = casts_metadata$cast_id[i], settings = settings)
-      cast_cast <- read_model_cast(main = main, cast_id = casts_metadata$cast_id[i], settings = settings)
+      cast_tab  <- read_cast_tab(main = main, cast_id = casts_metadata$cast_id[i])
+      cast_meta <- read_cast_metadata(main = main, cast_id = casts_metadata$cast_id[i])
+      cast_cast <- read_model_cast(main = main, cast_id = casts_metadata$cast_id[i])
 
       nspecies <- length(unique(cast_tab$species))
 
