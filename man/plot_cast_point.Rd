@@ -14,9 +14,7 @@ plot_cast_point(
   species = forecasting_species(total = TRUE),
   highlight_sp = NULL,
   newmoonnumber = NULL,
-  with_census = FALSE,
-  settings = directory_settings(),
-  quiet = FALSE
+  with_census = FALSE
 )
 }
 \arguments{
@@ -39,10 +37,6 @@ plot_cast_point(
 \item{newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the plot.}
 
 \item{with_census}{\code{logical} toggle if the plot should include the observed data collected during the predicted census.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
 \code{NULL}. Plot is generated.

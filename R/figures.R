@@ -15,8 +15,6 @@
 #'
 #' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
 #' @param newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number for the plot. 
 #'
 #' @param cast_id \code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
@@ -28,8 +26,6 @@
 #' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to include.
 #'
 #' @param with_census \code{logical} toggle if the plot should include the observed data collected during the predicted census.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
 #'
 #' @return \code{NULL}. Plot is generated.
 #'
@@ -44,24 +40,20 @@ plot_cast_point <- function (main                       = ".",
                              species                    = forecasting_species(total = TRUE), 
                              highlight_sp               = NULL,
                              newmoonnumber              = NULL, 
-                             with_census                = FALSE, 
-                             settings                   = directory_settings( ),
-                             quiet                      = FALSE) {
+                             with_census                = FALSE) {
 
+  settings <- read_directory_settings(main = main)
 
   casts_meta <- select_casts(main                        = main, 
-                             settings                    = settings, 
                              cast_ids                    = cast_id,
                              historic_end_newmoonnumbers = historic_end_newmoonnumber, 
                              models                      = model, 
                              datasets                    = dataset, 
-                             species                     = species, 
-                             quiet                       = quiet)
+                             species                     = species)
 
   if (with_census) {
 
-    moons <- read_newmoons(main     = main, 
-                           settings = settings)
+    moons <- read_newmoons(main = main)
 
     last_census_moon  <- max(moons$newmoonnumber[!is.na(moons$censusdate)])
     casts_meta_moon1  <- casts_meta$historic_end_newmoonnumber + 1
@@ -97,8 +89,7 @@ plot_cast_point <- function (main                       = ".",
 
   for (i in 1:nspecies) {
     cast_tab_i <- read_cast_tab(main     = main,
-                                cast_id  = casts_meta$cast_id[i],
-                                settings = settings)
+                                cast_id  = casts_meta$cast_id[i])
     cast_tab_i <- cast_tab_i[cast_tab_i$newmoonnumber == newmoonnumber, ]
     if (i == 1) {
       casts_tab <- cast_tab_i
@@ -116,7 +107,6 @@ plot_cast_point <- function (main                       = ".",
 
 
     obs           <- read_rodents_table(main     = main, 
-                                        settings = settings,
                                         dataset  = gsub("dm_", "", gsub("_interp", "", dataset)))
 
     colnames(obs) <- gsub("\\.", "", colnames(obs))
@@ -243,33 +233,27 @@ plot_cast_point <- function (main                       = ".",
 #'
 #' @param cast_group \code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
-#'
 #' @return \code{NULL}. Plot is generated.
 #'
 #' @export
 #'
 plot_cast_ts <- function (main                         = ".", 
-                          settings                     = directory_settings( ), 
                           cast_id                      = NULL, 
                           cast_group                   = NULL,
                           dataset                      = NULL, 
                           model                        = NULL, 
                           historic_start_newmoonnumber = NULL, 
                           historic_end_newmoonnumber   = NULL, 
-                          species                      = NULL,  
-                          quiet                        = FALSE) {
+                          species                      = NULL) {
+
+  settings <- read_directory_settings(main = main)
 
   casts_meta <- select_casts(main                        = main, 
-                             settings                    = settings, 
                              cast_ids                    = cast_id,
                              historic_end_newmoonnumbers = historic_end_newmoonnumber, 
                              models                      = model, 
                              datasets                    = dataset, 
-                             species                     = species, 
-                             quiet                       = quiet)
+                             species                     = species)
 
   if (NROW(casts_meta) > 1) {
 
@@ -293,12 +277,10 @@ plot_cast_ts <- function (main                         = ".",
   historic_end_newmoonnumber   <- casts_meta$historic_end_newmoonnumber
 
   obs     <- read_rodents_table(main     = main, 
-                                settings = settings, 
                                 dataset  = dataset)
 
 
   preds <- read_cast_tab(main     = main, 
-                         settings = settings,
                          cast_id  = cast_id)
 
 
@@ -330,8 +312,7 @@ plot_cast_ts <- function (main                         = ".",
        xlim = rangex, 
        ylim = rangey)
 
-  moons <- read_newmoons(main     = main, 
-                      settings = settings)
+  moons <- read_newmoons(main     = main)
   minx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
   minx_yr  <- as.numeric(format(as.Date(minx), "%Y"))

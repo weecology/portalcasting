@@ -57,7 +57,7 @@ evaluate_casts <- function (main      = ".",
 
   }
 
-  messageq("... done.\n", quiet = quiet)
+  messageq("... done.\n", quiet = settings$quiet)
 
   write_data(x            = out_flat,
              main         = main,
@@ -159,7 +159,6 @@ evaluate_cast <- function (main     = ".",
   } else if (cast_meta$model_controls$scoring_family == "sample") {
 
     model_cast  <- read_model_cast(main         = main, 
-                                   settings     = settings,
                                    cast_id      = cast_id)
 
     can_score   <- !is.na(cast_tab$obs)

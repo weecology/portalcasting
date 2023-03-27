@@ -6,21 +6,17 @@
 \usage{
 plot_cast_ts(
   main = ".",
-  settings = directory_settings(),
   cast_id = NULL,
   cast_group = NULL,
   dataset = NULL,
   model = NULL,
   historic_start_newmoonnumber = NULL,
   historic_end_newmoonnumber = NULL,
-  species = NULL,
-  quiet = FALSE
+  species = NULL
 )
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
 \item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
 
@@ -36,8 +32,6 @@ Does not influence the fit of the models, just the presentation.}
 \item{historic_end_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection.}
 
 \item{species}{\code{character} value of the species codes (or \code{"total"} for the total across species) to be plotted. \code{NULL} (default) also gives the total.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 }
 \value{
 \code{NULL}. Plot is generated.
