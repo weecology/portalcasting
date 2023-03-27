@@ -86,48 +86,92 @@ evaluate_cast <- function (main     = ".",
                                   cast_id  = cast_id)
   cast_tab <- add_obs_to_cast_tab(main     = main,  
                                   cast_tab = cast_tab)
+  model_cast  <- read_model_cast(main         = main, 
+                                 cast_id      = cast_id)
 
   cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
   cast_tab$error   <- cast_tab$estimate - cast_tab$obs
   cast_tab$logs    <- NA
   cast_tab$crps    <- NA
 
-  if (cast_meta$model_controls$scoring_family == "normal") {
+  if (!is.null(cast_meta$model_controls$scoring_family)) {
 
-    can_score     <- !is.na(cast_tab$obs)
+    scoring_family <- cast_meta$model_controls$scoring_family
+
+  } else if (!is.null(cast_meta$model)) {
+
+    scoring_family <- switch(cast_meta$model,
+                             "AutoArima"                            = "normal",
+                             "NaiveArima"                           = "normal",
+                             "ESSS"                                 = "normal",
+                             "GPEDM"                                = "normal",
+                             "simplexEDM"                           = "normal",
+                             "nbGARCH"                              = "nbinom",
+                             "nbsGARCH"                             = "nbinom",
+                             "pGARCH"                               = "poisson",
+                             "psGARCH"                              = "poisson",
+                             "pevGARCH"                             = "poisson",
+                             "jags_RW"                              = "sample",
+                             "jags_logistic"                        = "sample",
+                             "jags_logistic_competition"            = "sample",
+                             "jags_logistic_covariates"             = "sample",
+                             "jags_logistic_competition_covariates" = "sample")
+
+  } 
+
+  if (is.null(scoring_family)) {
+
+    scoring_family <- "normal"
+
+  }
+  if (grepl("jags", cast_meta$model) & is.null(model_cast$sample)) {
+
+    scoring_family <- "poisson"
+
+  }
+
+
+  can_score <- !is.na(cast_tab$obs)
+
+  if (!any(can_score)) {
+
+    return(cast_tab)
+
+  }
+
+  if (scoring_family == "normal") {
 
     cast_obs  <- cast_tab$obs[can_score]
 
     cast_mean   <- cast_tab$estimate[can_score]
-    cast_sd   <- (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96
+    cast_sd   <- pmax(1e-5, (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96, na.rm = TRUE)
 
 
     cast_tab$logs[can_score] <- logs(y      = cast_obs,
-                                     family = cast_meta$model_controls$scoring_family,
+                                     family = scoring_family,
                                      mean   = cast_mean,
                                      sd     = cast_sd)
     cast_tab$crps[can_score] <- crps(y      = cast_obs,
-                                     family = cast_meta$model_controls$scoring_family,
+                                     family = scoring_family,
                                      mean   = cast_mean,
                                      sd     = cast_sd)
 
-  } else if (cast_meta$model_controls$scoring_family == "poisson") {
+  } else if (scoring_family == "poisson") {
 
-    can_score     <- !is.na(cast_tab$obs)
 
     cast_obs  <- cast_tab$obs[can_score]
 
-    cast_lambda  <- cast_tab$estimate[can_score]
+    cast_lambda  <- pmax(1e-5, cast_tab$estimate[can_score])
 
 
     cast_tab$logs[can_score] <- logs(y      = cast_obs,
-                                     family = cast_meta$model_controls$scoring_family,
+                                     family = scoring_family,
                                      lambda = cast_lambda)
     cast_tab$crps[can_score] <- crps(y      = cast_obs,
-                                     family = cast_meta$model_controls$scoring_family,
+                                     family = scoring_family,
                                      lambda = cast_lambda)
 
-  } else if (cast_meta$model_controls$scoring_family == "nbinom") {
+  } else if (scoring_family == "nbinom") {
 
     # mu:   mean
     # size: dispersion
@@ -137,31 +181,24 @@ evaluate_cast <- function (main     = ".",
     #  var  = mu + mu^2 / size
     #  size = mu^2 / (var - mu)
 
-    can_score <- !is.na(cast_tab$obs)
-
     cast_obs  <- cast_tab$obs[can_score]
 
-    cast_mu   <- cast_tab$estimate[can_score]
-    cast_sd   <- (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96
+    cast_mu   <- pmax(1e-5, cast_tab$estimate[can_score])
+    cast_sd   <- pmax(1e-5, (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96, na.rm = TRUE)
     cast_var  <- (cast_sd) ^ 2
-    cast_size <- (cast_mu ^ 2) / (cast_var - cast_mu)
+    cast_size <- pmax(1e-4, (cast_mu ^ 2) / (cast_var - cast_mu), na.rm = TRUE)
 
     cast_tab$logs[can_score] <- logs(y      = cast_obs,
-                                     family = cast_meta$model_controls$scoring_family,
+                                     family = scoring_family,
                                      mu     = cast_mu,
                                      size   = cast_size)
 
     cast_tab$crps[can_score] <- crps(y      = cast_obs,
-                                     family = cast_meta$model_controls$scoring_family,
+                                     family = scoring_family,
                                      mu     = cast_mu,
                                      size   = cast_size)
 
-  } else if (cast_meta$model_controls$scoring_family == "sample") {
-
-    model_cast  <- read_model_cast(main         = main, 
-                                   cast_id      = cast_id)
-
-    can_score   <- !is.na(cast_tab$obs)
+  } else if (scoring_family == "sample") {
 
     cast_obs    <- cast_tab$obs[can_score]
     cast_sample <- t(model_cast$sample[ , can_score])
@@ -205,7 +242,7 @@ add_obs_to_cast_tab <- function (main     = ".",
 
   return_if_null(cast_tab)
 
-  dataset <- cast_tab$dataset[1]
+  dataset <- gsub("dm_", "", cast_tab$dataset[1])
   species <- cast_tab$species[1]
 
   cast_tab$obs   <- NA
@@ -213,7 +250,7 @@ add_obs_to_cast_tab <- function (main     = ".",
   obs <- read_rodents_table(main     = main, 
                             dataset  = dataset)
 
-  obs_cols <- gsub("NA.", "NA", colnames(obs))
+  colnames(obs) <- gsub("NA.", "NA", colnames(obs))
 
   cast_tab$obs <- obs[match(cast_tab$newmoonnumber, obs$newmoonnumber), species]
 

@@ -52,9 +52,14 @@ plot_cast_point <- function (main                       = ".",
   if (with_census) {
 
     moons          <- read_newmoons(main = main)
-    newmoonnumber  <- ifnull(newmoonnumber, casts_meta$forecast_end_newmoonnumber[nrow(casts_meta)])
-    newmoon_census <- !is.na(moons$censusdate)[match(newmoonnumber, moons$newmoonnumber)]
+    rodents_all    <- read_rodents_table(main = main, dataset = "all")
+
+    newmoons_census  <- rodents_all$newmoonnumber[!is.na(rodents_all$total)]
+
+    newmoonnumber  <- ifnull(newmoonnumber, max(newmoons_census))
+
     casts_last_census <- newmoonnumber >= casts_meta$forecast_start_newmoonnumber & newmoonnumber <= casts_meta$forecast_end_newmoonnumber
+
     casts_meta        <- casts_meta[casts_last_census, ]
 
   }
