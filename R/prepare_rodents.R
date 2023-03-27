@@ -330,6 +330,7 @@ prepare_dataset <- function(name       = "all",
              main         = main, 
              subdirectory = settings$subdirectories$data,
              save         = save, 
+             overwrite    = settings$overwrite, 
              filename     = filename, 
              quiet        = !settings$verbose)
 

@@ -49,6 +49,7 @@ prepare_newmoons <- function (main = ".") {
   write_data(x         = newmoons, 
              main      = main, 
              save      = settings$save, 
+             overwrite = settings$overwrite, 
              filename  = settings$files$newmoons, 
              quiet     = !settings$verbose)
 

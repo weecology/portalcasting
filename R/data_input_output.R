@@ -1,6 +1,6 @@
 #' @title Save Data Out to a File and Return It	(Invisibly)
 #'
-#' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..
+#' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly. Currently available for yaml, csv, and json file extensions.
 #'
 #' @param x \code{data.frame} or \code{list} to be written out.
 #'
@@ -12,6 +12,8 @@
 #'
 #' @param filename \code{character} name of the file for saving \code{x}.
 #'
+#' @param overwrite \code{logical} indicator of whether or not file writing sould occur even if a local copy already exists.
+#'
 #' @param quiet \code{logical} indicator if messages should be quieted.
 #'
 #' @return \code{x} as input, \code{\link[base]{invisible}}-ly.
@@ -22,11 +24,10 @@ write_data <- function (x            = NULL,
                         main         = ".", 
                         subdirectory = "data",
                         save         = TRUE, 
+                        overwrite    = TRUE, 
                         filename     = NULL, 
                         quiet        = FALSE) {
   
-# add in a capacity to halt overwriting, default to true?
-
   return_if_null(x = x)
   return_if_null(x = filename)
 
@@ -37,28 +38,43 @@ write_data <- function (x            = NULL,
 
     if (file.exists(full_path)) {
 
+      if (overwrite) {
+
+        messageq("    **", filename, " updated**", quiet = quiet)
+
+      } else {
+
+        messageq("  `overwrite` is FALSE, **", filename, " not updated**", quiet = quiet)
+        return(invisible(x))
+
+      }
+
     } else {
 
       messageq("    **", filename, " saved**", quiet = quiet)
 
     }
 
-      if (file_ext(filename) == "csv") {
+    if (file_ext(filename) == "csv") {
 
-        write.csv(x, full_path, row.names = FALSE)
+      write.csv(x, full_path, row.names = FALSE)
 
-      } else if (file_ext(filename) == "yaml"){
+    } else if (file_ext(filename) == "yaml"){
 
-        write_yaml(x, file = full_path)
+      write_yaml(x, file = full_path)
 
-      } else {
+    } else if (file_ext(filename) == "json"){
 
-        stop("file type not supported")
+      x2 <- serializeJSON(x = x)
+      write_json(x2, file = full_path)
 
-      }
+    } else {
+
+      stop("file type not supported")
 
     }
-   
+
+  }
 
   invisible(x)
 

@@ -13,7 +13,7 @@ download_climate_forecasts(
   data = c("tasmin", "tasmean", "tasmax", "pr"),
   quiet = FALSE,
   verbose = FALSE,
-  overwrite = FALSE,
+  force = FALSE,
   timeout = getOption("timeout")
 )
 }
@@ -32,7 +32,7 @@ download_climate_forecasts(
 
 \item{verbose}{\code{logical} indicator if detailed messages should be generated.}
 
-\item{overwrite}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
+\item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
 }

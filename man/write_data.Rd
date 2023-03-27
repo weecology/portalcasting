@@ -9,6 +9,7 @@ write_data(
   main = ".",
   subdirectory = "data",
   save = TRUE,
+  overwrite = TRUE,
   filename = NULL,
   quiet = FALSE
 )
@@ -22,6 +23,8 @@ write_data(
 
 \item{save}{\code{logical} indicator controlling if \code{x} should be saved out.}
 
+\item{overwrite}{\code{logical} indicator of whether or not file writing sould occur even if a local copy already exists.}
+
 \item{filename}{\code{character} name of the file for saving \code{x}.}
 
 \item{quiet}{\code{logical} indicator if messages should be quieted.}
@@ -30,5 +33,5 @@ write_data(
 \code{x} as input, \code{\link[base]{invisible}}-ly.
 }
 \description{
-Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly..
+Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly. Currently available for yaml, csv, and json file extensions.
 }

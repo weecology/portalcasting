@@ -130,7 +130,7 @@ fill_resources <- function (main = ".") {
                         source    = settings$resources$PortalData$source,
                         pause     = settings$unzip_pause,
                         timeout   = settings$download_timeout,
-                        overwrite = settings$overwrite,
+                        force     = settings$force,
                         quiet     = settings$quiet,
                         verbose   = settings$verbose)
 
@@ -140,7 +140,7 @@ fill_resources <- function (main = ".") {
                    source        = settings$resources$portalPredictions$source,
                    pause         = settings$unzip_pause,
                    timeout       = settings$download_timeout,
-                   overwrite     = settings$overwrite,
+                   force         = settings$force,
                    quiet         = settings$quiet,
                    verbose       = settings$verbose)
 
@@ -150,7 +150,7 @@ fill_resources <- function (main = ".") {
                              version       = settings$resources$climate_forecast$version, 
                              data          = settings$resources$climate_forecast$data, 
                              timeout       = settings$download_timeout,
-                             overwrite     = settings$overwrite,
+                             force         = settings$force,
                              quiet         = settings$quiet,
                              verbose       = settings$verbose)
 

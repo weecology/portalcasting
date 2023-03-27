@@ -98,6 +98,8 @@ process_model_output <- function (main      = ".",
   casts_metadata <- rbind(casts_metadata, new_cast_metadata)
 
   if (settings$save) {
+ 
+  # update these to be write_data calls
 
     cast_metadata_filename <- paste0("cast_id_", cast_metadata$cast_id, "_metadata.yaml")
     cast_metadata_path     <- file.path(main, settings$subdirectories$forecasts, cast_metadata_filename)

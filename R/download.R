@@ -15,7 +15,7 @@
 #'
 #' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
-#' @param overwrite \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
+#' @param force \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -34,7 +34,7 @@ download_climate_forecasts <- function (main          = ".",
                                         data          = c("tasmin", "tasmean", "tasmax", "pr"),
                                         quiet         = FALSE,
                                         verbose       = FALSE,
-                                        overwrite     = FALSE,
+                                        force         = FALSE,
                                         timeout       = getOption("timeout")) {
 
   return_if_null(x = version)
@@ -52,7 +52,7 @@ download_climate_forecasts <- function (main          = ".",
     version_file <- file.path(final, "version.txt")
 
 
-    if (!overwrite & file.exists(version_file)) {
+    if (!force & file.exists(version_file)) {
 
       existing_version <- scan(file  = version_file, 
                                what  = character(), 
@@ -61,7 +61,7 @@ download_climate_forecasts <- function (main          = ".",
 
       if (existing_version == version) {
 
-        messageq("Existing local version is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped", quiet = quiet)
+        messageq("Existing local version is up-to-date with remote version (", version, ") requested and `force` is FALSE, download is skipped", quiet = quiet)
         return(invisible( ))
 
       }
@@ -188,7 +188,7 @@ NMME_urls <- function (start = Sys.Date(),
 #'
 #' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
 #'
-#' @param overwrite \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
+#' @param force \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
 #'
 #' @param quiet \code{logical} indicator if progress messages should be quieted.
 #'
@@ -208,7 +208,7 @@ download_archive <- function(main          = ".",
                              source        = "github",
                              quiet         = FALSE,
                              verbose       = FALSE,
-                             overwrite     = FALSE,
+                             force         = FALSE,
                              pause         = 30,
                              timeout       = getOption("timeout")) {
 
@@ -285,7 +285,7 @@ download_archive <- function(main          = ".",
   final        <- file.path(main, resources_sub, "portalPredictions")
   version_file <- file.path(final, "version.txt")
 
-  if (!overwrite & file.exists(version_file)) {
+  if (!force & file.exists(version_file)) {
 
     existing_version <- scan(file  = version_file, 
                              what  = character(), 
@@ -294,7 +294,7 @@ download_archive <- function(main          = ".",
 
     if (existing_version == version) {
 
-      messageq("Existing local version is up-to-date with remote version (", version, ") requested and `overwrite` is FALSE, download is skipped", quiet = quiet)
+      messageq("Existing local version is up-to-date with remote version (", version, ") requested and `force` is FALSE, download is skipped", quiet = quiet)
       return(invisible( ))
 
     }

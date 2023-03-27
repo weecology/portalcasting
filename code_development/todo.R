@@ -1,3 +1,20 @@
+new model and dataset controls and templates
+update directory function
+document patches and needs to remove them
+
+
+
+remotes::install_github("weecology/portalr#288")
+
+
+
+
+
+
+
+
+
+
 rm(list=ls())
 devtools::load_all()
 
@@ -7,7 +24,6 @@ setup_production(main)
 
 todo
 
-new model and dataset controls, templates, etc
 
 
 something like this, but needs easier updates

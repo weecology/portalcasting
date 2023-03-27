@@ -19,7 +19,8 @@ directory_settings(
   confidence_level = 0.95,
   nsamples = 10000,
   save = TRUE,
-  overwrite = FALSE,
+  overwrite = TRUE,
+  force = FALSE,
   unzip_pause = 30,
   download_timeout = getOption("timeout")
 )
@@ -79,7 +80,9 @@ sandbox_settings()
 
 \item{save}{\code{logical} indicator controlling if the output should be saved out.}
 
-\item{overwrite}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
+\item{overwrite}{\code{logical} indicator of whether or not file writing sould occur even if a local copy already exists.}
+
+\item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
