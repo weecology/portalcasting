@@ -3,6 +3,7 @@
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices grey rgb
 #' @importFrom httr content GET stop_for_status
+#' @importFrom hypergeo hypergeo
 #' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json
 #' @importFrom portalr download_observations forecasting_species get_future_newmoons load_datafile na_conformer ndvi return_if_null rodent_species summarize_rodent_data weather
 #' @importFrom runjags combine.mcmc run.jags runjags.options

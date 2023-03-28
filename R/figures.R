@@ -645,7 +645,7 @@ plot_cast_point <- function (main                       = ".",
 
   } 
 
-  rangex  <- c(0, max(c(preds$upper_pi, max_obs), na.rm = TRUE))
+  rangex  <- c(0, max(c(casts_tab$upper_pi, max_obs), na.rm = TRUE))
   rangey  <- c(nspecies + 0.25, 0.75)
 
   oldpar <- par(no.readonly = TRUE)
@@ -684,9 +684,9 @@ plot_cast_point <- function (main                       = ".",
 
   for (i in 1:nspecies) {
 
-    low   <- max(c(preds$lower_pi[i], 0))
-    up    <- preds$upper_pi[i]
-    est   <- preds$estimate[i]
+    low   <- max(c(casts_tab$lower_pi[i], 0))
+    up    <- casts_tab$upper_pi[i]
+    est   <- casts_tab$estimate[i]
     vbars <- i + (0.015 * nspecies * c(-1, 1))
 
     if (!is.null(highlight_sp) && species[i] %in% highlight_sp) {
@@ -709,7 +709,7 @@ plot_cast_point <- function (main                       = ".",
 
    if (with_census) {
 
-      spmatch       <- preds$species[i]
+      spmatch       <- casts_tab$species[i]
       nasp          <- spmatch == "NA"
       spmatch[nasp] <- "NA."
       obsi          <- obs[ , spmatch]
