@@ -32,8 +32,7 @@ vignette: >
 ```
 
 
-This vignette shows how to set up and run your own [Portal 
-Predictions](https://github.com/weecology/portalPredictions) directory.
+This vignette shows how to set up and run your own [Portal Predictions](https://github.com/weecology/portalPredictions) directory.
 
 ## Installation
 
@@ -48,15 +47,15 @@ library(portalcasting)
 ## Create a Portal Predictions directory
 
 The `setup_dir()` function creates and populates a standard Portal Predictions directory that includes `resources`, `data`, `models`, `fits`, and `forecasts` subdirectories. 
-By default, `setup_dir()` downloads the most up-to-date version of both the [Portal Data](https://doi.org/10.5281/zenodo.1215988) and [Portal Predictions](https://doi.org/10.5281/zenodo.833438) archives from Zenodo and the NMME downscaled weather forecasts into the `resources` subdirectory; unpacks relevant components; prepares the newmoons, rodents, covariates, covariate forecast, and metadata data files (and places them in the `data` subdirectory); and populates the `models` subdirectory with scripts for the `r nmodels_text` existing models (`r model_names`).
+By default, `setup_dir()` downloads the most up-to-date version of the [Portal Data](https://doi.org/10.5281/zenodo.1215988) archive from GitHub and the NMME downscaled weather forecasts into the `resources` subdirectory; unpacks relevant components; prepares the newmoons, rodents, covariates, covariate forecast, and metadata data files (and places them in the `data` subdirectory); and populates the `models` subdirectory with scripts for the `r nmodels_text` existing models (`r model_names`).
 
-Specialized versions of `setup_dir` are tailored for local model exploration, development, and  testing ("`setup_sandbox`") and for use in the real-deal pipeline ("`setup_production`"). The settings are fairly similar, although `setup_sandbox` has extra rigid argument checking turned off and extra verbose messaging turned on. In addition, it does not download the repository archive resource (only the Portal Data and NMME resources). `setup_production` provides a robust starting point for a user interested in seeing the range of what the package can do, with specific error checking and verbose messaging, so we use it here. Note that downloading the full directory does take a few minutes.
+Specialized versions of `setup_dir` are tailored for local model exploration, development, and  testing ("`setup_sandbox`") and for use in the real-deal pipeline ("`setup_production`"). The settings are fairly similar, although `setup_sandbox` has extra rigid argument checking turned off and extra verbose messaging turned on. In addition, it does not download the repository archive resource (only the Portal Data and NMME resources). `setup_production` provides a robust starting point for a user interested in seeing the range of what the package can do, with specific error checking and verbose messaging. `setup_production` does download the entire [Portal Predictions](https://doi.org/10.5281/zenodo.833438) archive from GitHub. Note that downloading the full directory does take a few minutes.
 
 There are many arguments available for the user to tailor the setup of the directory, which can be found on the help pages (`?setup_dir` and `?directory_settings`). Perhaps the most important argument is `main` which allows the user to point the directory to any particular location. The default is `main = "."`, which is basically "the present directory". A common implementation would be to create a directory in the home directory of a computer (indicated by `"~"`) and within a named folder, say "portalcast_directory", which would be done with `main = "~/portalcast_directory"`, or by setting `main <- "~/portalcast_directory"` and then using `main = main` throughout the code:
 
 ```{r, eval=FALSE}
 main <- "~/portalcast_directory"
-setup_production(main = main)
+setup_dir(main = main)
 ```
 
 The `models` and `datasets` arguments to `setup_<>` functions allow for control over which models and rodent data sets are included in the directory, and new models and datasets can be added as long as they are given controls in the `new_dataset_controls` or `new_model_controls` arguments. 
@@ -64,7 +63,7 @@ Many additional arguments for altering directory set up are available indirectly
 
 ## Run a forecast
 
-The `portalcast()` function controls the running of potentially multiple models across various species in different data sets for a given time setup (defined in `directory_settings` and `time_settings` specifically). This can involve what we have classically called "forecasts" (from the present time step) and "hindcasts" (from a time step before the current one), although the data must be set accordingly (using `fill_data`) for each time point prior to invoking `portalcast()`.
+The `portalcast()` function controls the running of potentially multiple models across various species in different data sets for a given time setup (defined in `directory_settings` and `time_settings` specifically). This can involve what we have classically called "forecasts" (from the present time step) and "hindcasts" (from a time step before the current one), although the data must be set accordingly (using `time_settings`) for each time point prior to invoking `portalcast()`.
 
 Presently, the preloaded model set includes `r nmodels_text` models: `r model_names`. The jags and GARCH models all take a bit longer to run, so for the purposes of illustration, we will only run ESS, AutoArima, and NaiveArima models, which we indicate through input to the `models` argument: 
 
@@ -72,7 +71,7 @@ Presently, the preloaded model set includes `r nmodels_text` models: `r model_na
 portalcast(main = main, models = c("ESSS", "AutoArima", "NaiveArima"))
 ```
 
-If the user does not specify the models, all of the prefab models are run. Note that we need to point `portalcast` to the directory of interest via the `main` argument. This allows us to go between different directories from the same R session with relative ease, but it does mean that `main` is a key argument in nearly all functions. 
+If the user does not specify the models, all of the prefab models are run. Note that we need to point `portalcast` to the directory of interest via the `main` argument. This allows us to go between different directories from the same R session with relative ease, but it does mean that `main` is a key argument in nearly all functions. Indeed, `main` is the *only* argument for many **portalcasting** functions.
 
 ## Plot the results
 
@@ -101,8 +100,6 @@ A series of `read_<name>` functions are available for simple loading of the data
 read_data(main = main, data_name = "rodents")
 read_data(main = main, data_name = "rodents_table", data_set = "all")
 read_data(main = main, data_name = "rodents_table", data_set = "controls")
-read_data(main = main, data_name = "rodents_table", data_set = "all_interp")
-read_data(main = main, data_name = "rodents_table", data_set = "controls_interp")
 read_data(main = main, data_name = "covariates")
 read_data(main = main, data_name = "climate_forecasts")
 read_data(main = main, data_name = "newmoons")
@@ -119,7 +116,7 @@ read_casts_metadata(main = main)
 
 ## Reading in cast output to the R console from the directory
 
-Presently, two functions are available for interfacing with saved cast output. 
+Presently, four functions are available for interfacing with saved cast output. 
 
 `select_casts` provides a simple interface to the cast metadata file with quick filtering:
 
@@ -127,8 +124,11 @@ Presently, two functions are available for interfacing with saved cast output.
 select_casts(main = main, models = "AutoArima")
 ```
 
-And `read_cast_tab` reads in the cast_tab output from a given cast, as indicated by its cast_id, which is displayed in the output from `select_casts`:
+And `read_cast_tab`, `read_model_cast`, and `read_casts_metadata` each read in the associated output from a given cast, as indicated by its cast_id, which is displayed in the output from `select_casts`:
 
 ```{r, eval=FALSE}
-read_cast_tab(main = main, cast_id = "1-1")
+read_cast_tab(main = main, cast_id = "1.1")
+read_model_cast(main = main, cast_id = "1.1")
+read_cast_metadata(main = main, cast_id = "1.1")
 ```
+

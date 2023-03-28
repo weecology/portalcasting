@@ -27,7 +27,7 @@ vignette: >
 
 ## Models
 
-We currently analyze and forecast rodent data at Portal using `r nmodels_text` models: `r model_names` [@PortalPredictions]. Each model has a function with its name (*e.g.*, `ESSS()`) which is called from an associated R script in the `models` subdirectory with its name (*e.g.*, `ESSS.R`)
+We currently analyze and forecast rodent data at Portal using `r nmodels_text` models: `r model_names` [@PortalPredictions]. 
 
 
 ```{r echo = FALSE, results = "asis"}
