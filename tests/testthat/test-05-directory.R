@@ -34,3 +34,11 @@ test_that(desc = "read_directory_config catches if its missing and throws error"
 })
 
 
+
+test_that(desc = "setup_sandbox creates a sandbox directory",
+          code = {
+  
+  expect_message(setup_sandbox(main = main, verbose = TRUE))
+
+
+})
