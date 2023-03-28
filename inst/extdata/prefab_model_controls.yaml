@@ -185,7 +185,7 @@ nbGARCH:
     controls:
       species: [BA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
     exclosures:
-      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, SF, SH, total]
+      species: [BA, OL, OT, PB, PE, PF, PM, PP, SF, SH, total]
   response: 
     link: negative_binomial
     type: distribution
@@ -220,9 +220,9 @@ nbsGARCH:
     all:
       species: [BA, DM, DO, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
     controls:
-      species: [BA, DS, OL, OT, PB, PE, PF, PM, PP, RM, SF, total]
+      species: [BA, OL, OT, PB, PF, PM, PP, RM, SF, total]
     exclosures:
-      species: [BA, NA, OL, OT, PB, PE, PM, PP, SF, total]
+      species: [BA, OL, OT, PB, PE, PM, PP, SF, total]
   response: 
     link: negative_binomial
     type: distribution

@@ -37,8 +37,9 @@ evaluate_casts <- function (main      = ".",
 
   for (i in 1:ncast_ids) {
 
-    out[[i]] <- evaluate_cast(main    = main,
-                              cast_id = cast_ids[i])
+    out[[i]] <- tryCatch(evaluate_cast(main    = main,
+                                       cast_id = cast_ids[i]),
+                         error = function(x) {NA})
 
   }
 
@@ -49,9 +50,13 @@ evaluate_casts <- function (main      = ".",
 
     for (i in 2:ncast_ids) { 
 
+     if (all(is.na(out[[i]]))) {
+       next
+     }
+
       out_flat <- rbind(out_flat, 
                         data.frame(cast_id = names(out)[i], 
-                                   out[[i]]))
+                                  out[[i]]))
       
     }
 
