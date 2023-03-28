@@ -25,6 +25,7 @@ BugReports: https://github.com/weecology/portalcasting/issues
 Depends: 
   R (>= 3.5.0),
   forecast,  
+  hypergeo,
   tscount
 License: MIT + file LICENSE
 Imports:
