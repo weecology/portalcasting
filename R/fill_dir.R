@@ -167,7 +167,7 @@ fill_forecasts <- function (main = ".") {
   files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts),
                       full.names = TRUE)
 
-  if (!settings$overwrite) {
+  if (!settings$force) {
 
     existing_files <- list.files(path = file.path(main, settings$subdirectories$forecasts))
     files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts))
@@ -223,7 +223,7 @@ fill_fits <- function (main = ".") {
   files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits),
                       full.names = TRUE)
 
-  if (!settings$overwrite) {
+  if (!settings$force) {
 
     existing_files <- list.files(path = file.path(main, settings$subdirectories$fits))
     files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits))
