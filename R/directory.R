@@ -1,4 +1,4 @@
-#' @title Create the Structure of a Directory and Fill It with Content
+#' @title Create the Structure of a Directory and Fill It with Content or Update an Existing Directory
 #'
 #' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. 
 #'
@@ -45,6 +45,56 @@ create_dir <- function(main     = ".",
   write_directory_configuration(main     = main, 
                                 settings = settings, 
                                 quiet    = quiet)
+
+}
+
+
+
+#' @rdname directory-creation
+#'
+#' @export
+#'
+update_dir <- function (main                 = ".",
+                        models               = prefab_models( ), 
+                        datasets             = prefab_datasets( ),
+                        new_dataset_controls = NULL,
+                        new_model_controls   = NULL,
+                        settings             = directory_settings( ), 
+                        quiet                = FALSE, 
+                        verbose              = FALSE) {
+
+  core_package <- package_version_finder("setup_dir")
+
+  messageq(break_lines( ), "This is ", core_package[["package"]], " v", core_package[["version"]], "\n", 
+           break_line( ), "Updating directory at\n  ", normalizePath(file.path(main = main), mustWork = FALSE), "\n  ",
+           format(Sys.time(), "%x %T %Z"), "\n", break_lines( ), quiet = quiet)
+
+  out <- mapply(FUN          = dir.create, 
+               path         = file.path(main, settings$subdirectories),
+                recursive    = TRUE,
+                showWarnings = FALSE)
+
+  if (any(out)) {
+    messageq(" Creating folders: \n", paste0("   ", names(out)[out], "\n"), quiet = quiet)
+  }
+
+  messageq("Updating directory configuration file ... \n ... done.\n", quiet = quiet)
+
+  write_directory_configuration(main     = main, 
+                                settings = settings, 
+                                quiet    = quiet)
+
+
+  fill_dir(main                 = main,
+           models               = models, 
+           datasets             = datasets,
+           new_dataset_controls = new_dataset_controls,
+           new_model_controls   = new_model_controls)
+
+  read_directory_configuration(main = main)
+
+  messageq(break_lines( ), "Directory successfully updated.\n", break_lines( ), quiet = quiet)
+
 
 }
 

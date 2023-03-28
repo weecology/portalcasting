@@ -3,13 +3,25 @@
 \name{directory creation}
 \alias{directory creation}
 \alias{create_dir}
+\alias{update_dir}
 \alias{setup_dir}
 \alias{setup_production}
 \alias{setup_sandbox}
-\title{Create the Structure of a Directory and Fill It with Content}
+\title{Create the Structure of a Directory and Fill It with Content or Update an Existing Directory}
 \usage{
 create_dir(
   main = ".",
+  settings = directory_settings(),
+  quiet = FALSE,
+  verbose = FALSE
+)
+
+update_dir(
+  main = ".",
+  models = prefab_models(),
+  datasets = prefab_datasets(),
+  new_dataset_controls = NULL,
+  new_model_controls = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE

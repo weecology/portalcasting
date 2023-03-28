@@ -239,11 +239,11 @@ forecast.runjags <- function (object,
 #'
 #' @export
 #'
-runjags_controls <- function (nchains     = 2,#4, 
-                              adapt       = 1e2,#1e4, 
-                              burnin      = 1e2,#1e4, 
-                              sample      = 1e2,#1e4, 
-                              thin        = 1,#10, 
+runjags_controls <- function (nchains     = 4, 
+                              adapt       = 1e4, 
+                              burnin      = 1e4, 
+                              sample      = 1e4, 
+                              thin        = 10, 
                               modules     = "glm", 
                               method      = "interruptible", 
                               factories   = "", 

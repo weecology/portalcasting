@@ -32,4 +32,34 @@ test_that(desc = "plot_cast_point", {
 })
 
 
+test_that(desc = "plot_casts_err_lead", {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  expect_silent(plot_casts_err_lead(main = main))
+  expect_silent(plot_casts_err_lead(main = main, species = c("PP", "DM"), models = c("AutoArima")))
+  cast_tab <- read_cast_tabs(main = main)
+  expect_error(plot_casts_err_lead(main = main, cast_tab = cast_tab,
+                                   cast_id = 1e10))
+  expect_error(plot_casts_err_lead(main = main, cast_id = 1e10))
+
+})
+
+
+
+test_that(desc = "plot_casts_cov_RMSE", {
+
+  # download is held back on cran
+
+    skip_on_cran() 
+
+  expect_silent(plot_casts_cov_RMSE(main = main))
+  cast_tab <- read_cast_tabs(main = main)
+  expect_error(plot_casts_cov_RMSE(main = main, cast_tab = cast_tab,
+                                   cast_id = 1e10))
+  expect_error(plot_casts_cov_RMSE(main = main, cast_id = 1e10))
+
+})
 

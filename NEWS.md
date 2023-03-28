@@ -6,9 +6,14 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
 *In Progress*
 
+### Elimination of model-named functions
+* The models are now implemented using `cast` on their fit and cast elements in their control lists
+* Only models the need new functions have them (`meta_tsglm` and `fit_runjags`) for fitting
+* `forecast` method used generally now for `cast` function
+  * introduction of `forecast` methods for `tsglm` and `runjags` objects
+
 ### Shifting covariates to a daily-level build initial step
 * need to shift this to level daily so we can manage when a newmoon is split between historic and forecast days
-
 
 ### Putting species under dataset in the models' controls lists
 * This is more articulated and allows for finer control to help avoid fitting issues, etc.
@@ -37,6 +42,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * sNaiveArima
 * pGARCH
 * psGARCH
+
+### new functions
+* `update_dir` is an "update-flavored" setup function 
+
 
 # [portalcasting 0.50.0](https://github.com/weecology/portalcasting/releases/tag/v0.50.0)
 *2023-03-03*
