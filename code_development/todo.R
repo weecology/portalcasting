@@ -1,8 +1,9 @@
 new model and dataset controls and templates
+update directory function
 document patches and needs to remove them
 
 update NEWS and PR
-
+figures --- incl testing
 remotes::install_github("weecology/portalr#288")
 
 
@@ -15,12 +16,9 @@ rm(list=ls())
 devtools::load_all()
 
 main <- "~/portalcasting"
-
-plot_casts_cov_RMSE(main)
-
 setup_production(main)
-
-
+portalcast(main)
+evaluate_casts(main)
 todo
 
 

@@ -1,5 +1,3 @@
-
-
 #' @title Plot the Forecast Error as a Function of Lead Time 
 #'
 #' @description Plot the raw error (estimate - observation) as a function of lead time across model runs from different forecast origins for multiple models and multiple species (or total) within a data set.
@@ -304,11 +302,6 @@ plot_casts_err_lead <- function (main                        = ".",
   invisible( )
 
 }
-
-
-
-
-
 
 
 #' @title Plot the Forecast Coverage and RMSE 
@@ -627,8 +620,8 @@ plot_cast_point <- function (main                       = ".",
   }
   
 
-  preds   <- casts_tab[order(casts_tab$estimate, decreasing = TRUE), ]
-  species <- preds$species
+  casts_tab <- casts_tab[order(casts_tab$estimate, decreasing = TRUE), ]
+  species   <- casts_tab$species
 
   max_obs <- NA
   if (with_census) {
@@ -669,14 +662,14 @@ plot_cast_point <- function (main                       = ".",
 
   for (i in 1:nspecies) {
 
-    if (species[i] == "total") {
+    if (casts_tab$species[i] == "total") {
 
       lab_text <- "Total"
       lab_font <- 1
 
     } else {
 
-      sppmatch <- which(sptab[ , "speciescode"] == species[i])
+      sppmatch <- which(sptab[ , "speciescode"] == casts_tab$species[i])
       lab_text <- sptab[sppmatch , "scientificname"]
       lab_font <- 3
 

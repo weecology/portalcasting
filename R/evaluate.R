@@ -43,8 +43,7 @@ evaluate_casts <- function (main      = ".",
 
   }
 
-  out_flat <- data.frame(cast_id = names(out)[1], 
-                         out[[1]])
+  out_flat <- data.frame(out[[1]])
 
   if (ncast_ids > 1) {
 
@@ -55,8 +54,7 @@ evaluate_casts <- function (main      = ".",
      }
 
       out_flat <- rbind(out_flat, 
-                        data.frame(cast_id = names(out)[i], 
-                                  out[[i]]))
+                        data.frame(out[[i]]))
       
     }
 
