@@ -5,8 +5,7 @@ main <- "./testing"
 test_that(desc = "evaluate_casts evaluates casts", {
 
   cast_ids <- select_casts(main)$cast_id
-  cast_id <- cast_ids[length(cast_ids)]
-  expect_is(evaluate_casts(main = main, cast_ids = cast_id), "data.frame")
+  expect_is(evaluate_casts(main = main, cast_ids = cast_ids), "data.frame")
   expect_error(evaluate_casts(main = main, cast_ids = c(1e100, 2e100)))
 
 })
