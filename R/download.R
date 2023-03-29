@@ -343,7 +343,7 @@ download_archive <- function(main          = ".",
 
   dir.create(final)
 
-  file.copy(temp_unzip,
+  file.copy(normalizePath(temp_unzip),
             final, 
             recursive = TRUE)
 
