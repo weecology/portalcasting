@@ -1,9 +1,6 @@
 new model and dataset controls and templates
-update directory function
-document patches and needs to remove them
 
 update NEWS and PR
-figures --- incl testing
 remotes::install_github("weecology/portalr#288")
 
 

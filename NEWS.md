@@ -46,6 +46,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### new functions
 * `update_dir` is an "update-flavored" setup function 
 
+### scoring
+* log and crps!
+
 
 # [portalcasting 0.50.0](https://github.com/weecology/portalcasting/releases/tag/v0.50.0)
 *2023-03-03*
