@@ -341,11 +341,8 @@ download_archive <- function(main          = ".",
 
   Sys.sleep(pause)
 
-  dir.create(final)
-
-  file.copy(normalizePath(temp_unzip),
-            final, 
-            recursive = TRUE)
+  file.rename(from = temp_unzip,
+              to   = final)
 
   write(x    = version, 
         file = version_file)
