@@ -190,24 +190,16 @@ fill_forecasts <- function (main = ".") {
                       to        = file.path(main, settings$subdirectories$forecasts), 
                       recursive = TRUE)
 
-  messageq(paste(ifelse(sum(copied) > 0, 
-                   paste("  moved:", basename(files)[copied], collapse = "\n   "),
-                   ""),
-                 ifelse(sum(!copied) > 0, 
-                   paste("  not moved:", basename(files)[!copied], collapse = "\n   "),
-                   ""),
-                 collapse = "\n"),
-           quiet = !settings$verbose)
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
+
+
+  invisible( )
 
 
   ### --- patch to deal with refactor backwards compat --- ###
     update_forecasts_folder(main = main)
   ### --- end patch --- ###
 
-  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
-
-
-  invisible( )
 
 }
 
@@ -243,16 +235,6 @@ fill_fits <- function (main = ".") {
   copied <- file.copy(from      = files, 
                       to        = file.path(main, settings$subdirectories$fits), 
                       recursive = TRUE)
-
-  messageq(paste(ifelse(sum(copied) > 0, 
-                   paste("  moved:", basename(files)[copied], collapse = "\n   "),
-                   ""),
-                 ifelse(sum(!copied) > 0, 
-                   paste("  not moved:", basename(files)[!copied], collapse = "\n   "),
-                   ""),
-                 collapse = "\n"),
-           quiet = !settings$verbose)
-
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
