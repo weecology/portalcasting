@@ -63,7 +63,7 @@ portalcast <- function (main     = ".",
     model_combinations$fit_successful[i] <- !(all(is.na(out[[i]])))
   }
   write.csv(x         = model_combinations, 
-            file      = file.path(main, settings$subdirectories$forecasts, settings$files$cast_results),
+            file      = file.path(main, settings$subdirectories$forecasts, settings$files$forecast_results),
             row.names = FALSE)
 
   messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = settings$quiet)

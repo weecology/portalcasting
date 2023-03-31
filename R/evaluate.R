@@ -67,7 +67,7 @@ evaluate_casts <- function (main      = ".",
              subdirectory = settings$subdirectories$forecasts,
              save         = settings$save,
              overwrite    = settings$overwrite, 
-             filename     = settings$files$cast_evaluations,
+             filename     = settings$files$forecast_evaluations,
              quiet        = settings$quiet)
 
 }
@@ -261,4 +261,43 @@ add_obs_to_cast_tab <- function (main     = ".",
   cast_tab 
 
 }
+
+  
+#' @title Read in the Casts Evaluations File
+#'
+#' @description Read in the casts evaluations file. 
+#'
+#' @param main \code{character} value of the name of the main component of the directory tree.
+#'
+#' @return Evaluations requested.
+#'
+#' @export
+#'
+read_casts_evaluations <- function (main = "."){
+  
+  settings  <- read_directory_settings(main = main)
+
+  eval_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_evaluations)
+
+  if (!file.exists(eval_path)) {
+
+    messageq("  Cast evaluations not available, run `evaluate_casts()`", quiet = settings$quiet)
+
+    out <- NULL
+
+  } else {
+
+    out <- read.csv(eval_path)
+
+    if ("species" %in% colnames(out)) {
+      out <- na_conformer(out)
+    }
+
+  }
+
+  out
+
+}
+
+
 

@@ -22,9 +22,9 @@
 #'
 #' @param model_controls \code{character} name for the YAML of model controls list(s).
 #'
-#' @param cast_evaluations \code{character} name for the forecast evaluations csv.
+#' @param forecast_evaluations \code{character} name for the forecast evaluations csv.
 #'
-#' @param cast_results \code{character} name for the forecast combination results csv.
+#' @param forecast_results \code{character} name for the forecast combination results csv.
 #'
 #' @param resources \code{character} name for the resources subdirectory.
 #'
@@ -147,21 +147,21 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
 #'
 #' @export
 #'
-directory_files <- function (newmoons          = "newmoon_dates.csv",
-                             covariates        = "covariates.csv",
-                             dataset_controls  = "dataset_controls.yaml", 
-                             model_controls    = "model_controls.yaml",
-                             cast_evaluations  = "cast_evaluations.csv",
-                             cast_results      = "cast_results.csv",
-                             forecast_metadata = "casts_metadata.csv",
-                             metadata          = "metadata.yaml") {
+directory_files <- function (newmoons              = "newmoon_dates.csv",
+                             covariates            = "covariates.csv",
+                             dataset_controls      = "dataset_controls.yaml", 
+                             model_controls        = "model_controls.yaml",
+                             forecast_evaluations  = "casts_evaluations.csv",
+                             forecast_results      = "cast_results.csv",
+                             forecast_metadata     = "casts_metadata.csv",
+                             metadata              = "metadata.yaml") {
 
   list(newmoons                = newmoons,
        covariates              = covariates,
        dataset_controls        = dataset_controls, 
        model_controls          = model_controls,
-       cast_evaluations        = cast_evaluations,
-       cast_results            = cast_results,
+       forecast_evaluations    = forecast_evaluations,
+       forecast_results        = forecast_results,
        forecast_metadata       = forecast_metadata,
        metadata                = metadata)
 

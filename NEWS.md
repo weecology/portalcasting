@@ -6,6 +6,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
 *In Progress*
 
+### Evaluation figures now read from evaluations file
+* Avoids computing evaluations while generating plots
+
 ### Elimination of model-named functions
 * The models are now implemented using `cast` on their fit and cast elements in their control lists
 * Only models the need new functions have them (`meta_tsglm` and `fit_runjags`) for fitting
@@ -161,7 +164,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ### Subdirectory internal naming changed to remove spaces
 * `model fits` now back to `fits` and `model scripts` back to `models`
 
-### `cast_evaluations` file now saved
+### `forecast_evaluations` file now saved
 * Flattened version of the generated list of evaluations
 * Rather crude options of saving or not and overwriting the whole file or not based on settings 
 * No file saving occurs when a single cast is evaluated
