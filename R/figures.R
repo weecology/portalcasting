@@ -280,8 +280,6 @@ plot_casts_err_lead <- function (main                        = ".",
 #'
 #' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection.
 #'
-#' @param cast_tab Optional \code{data.frame} of cast table outputs. If not input, will be loaded.
-#'
 #' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
 #'
 #' @param datasets \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.

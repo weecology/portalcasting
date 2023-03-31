@@ -28,7 +28,7 @@ test_that(desc = "write_directory_config creates the config file",
 test_that(desc = "read_directory_config catches if its missing and throws error",
           code = {
 
-
+  expect_is(read_directory_configuration(main = main), "list")
   expect_error(read_directory_configuration())
 
 })
