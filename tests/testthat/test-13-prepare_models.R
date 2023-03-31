@@ -63,7 +63,7 @@ test_that(desc = "new_model_<> functions update the list", {
 
   mc <- new_model_fit(fun = "lm", args = list(y = "abundance"))
   expect_is(mc, "list")
-  expect_equal(mc$fun, "predict")
+  expect_equal(mc$fun, "lm")
   expect_equal(mc$args, list(y = "abundance"))
   
   mc <- new_model_cast(fun = "predict")
