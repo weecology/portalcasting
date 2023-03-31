@@ -13,8 +13,11 @@ model_name:
     fun: 
     args: 
   cast:
-    fun: 
-    args:
+    fun: forecast
+    args: 
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   interpolate: 
     needed: no
   datasets:
@@ -27,4 +30,5 @@ model_name:
   response: 
     link: 
     type:  
+  scoring_family: 
   time: newmoon

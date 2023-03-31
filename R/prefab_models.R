@@ -3,13 +3,13 @@
 #' @description Create a \code{character} vector of the names of the pre-fabricated (prefab) models or a \code{list} of their controls.
 #'
 #' @return \code{prefab_models}: \code{character} vector of model names. \cr
-#'         \code{prefab_model_controls}: \code{list} vector of model controls.
+#'         \code{prefab_model_controls}: \code{list} of model controls.
 #'
-#' @name prefabricated_models
+#' @name prefabricated models
 #'
 NULL
 
-#' @rdname prefabricated_models
+#' @rdname prefabricated-models
 #'
 #' @export
 #'
@@ -23,7 +23,7 @@ prefab_model_controls <- function( ) {
 
 }
 
-#' @rdname prefabricated_models
+#' @rdname prefabricated-models
 #'
 #' @export
 #'
