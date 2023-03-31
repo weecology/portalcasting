@@ -12,6 +12,7 @@
 #' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.
 #'
 #' @return \code{model_controls_template}: \code{list} of named model controls elements, many as \code{NULL}. \cr 
+#'         \code{new_model_controls}: \code{list} of named model controls. \cr 
 #'         \code{new_model_metadata}: \code{list} of named model metadata elements to the controls \code{list}. \cr 
 #'         \code{new_model_fit}: \code{list} of named model fit function and argument elements to the controls \code{list}. \cr 
 #'         \code{new_model_cast}: \code{list} of named forecast function and argument elements to the controls \code{list}. \cr 

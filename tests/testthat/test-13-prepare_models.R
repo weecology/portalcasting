@@ -31,10 +31,6 @@ test_that(desc = "write_model_controls returns a list", {
 
 
 
-
-
-
-
 test_that(desc = "add_new_model makes a list", {
 
   mc <- add_new_model(main = main, new_model_controls = new_model_controls(metadata = new_model_metadata(name = "newone")))
@@ -48,7 +44,7 @@ test_that(desc = "model_controls_template reads in the list", {
 
   mc <- model_controls_template( )
   expect_is(mc, "list")
-  expect_equal(length(mc), 1)
+  expect_equal(length(mc), 8)
 
 })
 
