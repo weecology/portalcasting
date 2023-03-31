@@ -28,6 +28,8 @@ new_dataset_args(...)
 \item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
 
 \item{...}{Named \code{list} of arguments passed to \code{\link{update_list}}.}
+
+\item{fun}{\code{character} value of the generation function.}
 }
 \value{
 \code{dataset_controls_template}: \code{list} of named dataset controls elements, many as \code{NULL}. \cr 

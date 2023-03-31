@@ -7,6 +7,8 @@
 #'
 #' @param ... Named \code{list} of arguments passed to \code{\link{update_list}}.
 #'
+#' @param fun \code{character} value of the generation function.
+#'
 #' @param main \code{character} value of the name of the main component of the directory tree. 
 #'
 #' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
