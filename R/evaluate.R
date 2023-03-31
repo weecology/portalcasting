@@ -295,7 +295,7 @@ read_casts_evaluations <- function (main = "."){
 
   }
 
-  out
+  invisible(out)
 
 }
 

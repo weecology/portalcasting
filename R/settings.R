@@ -152,7 +152,7 @@ directory_files <- function (newmoons              = "newmoon_dates.csv",
                              dataset_controls      = "dataset_controls.yaml", 
                              model_controls        = "model_controls.yaml",
                              forecast_evaluations  = "casts_evaluations.csv",
-                             forecast_results      = "cast_results.csv",
+                             forecast_results      = "casts_results.csv",
                              forecast_metadata     = "casts_metadata.csv",
                              metadata              = "metadata.yaml") {
 
