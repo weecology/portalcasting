@@ -2,16 +2,11 @@
 #'
 #' @description Plot the raw error (estimate - observation) as a function of lead time across model runs from different forecast origins for multiple models and multiple species (or total) within a data set.
 #'
-#' @details A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'  The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts will be plotted. 
-#'
 #' @param main \code{character} value of the name of the main component of the directory tree.
 #'
 #' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
 #'
 #' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection.
-#'
-#' @param cast_tab Optional \code{data.frame} of cast table outputs. If not input, will be loaded.
 #'
 #' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
 #'
@@ -25,7 +20,6 @@
 #'
 plot_casts_err_lead <- function (main                        = ".", 
                                  cast_ids                    = NULL, 
-                                 cast_tab                    = NULL, 
                                  historic_end_newmoonnumbers = NULL, 
                                  models                      = NULL, 
                                  datasets                    = NULL, 
@@ -33,68 +27,37 @@ plot_casts_err_lead <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  models   <- ifnull(models, "AutoArima")
-  dataset  <- ifnull(datasets, "controls")
-  species  <- ifnull(species, "DM") 
+  evals    <- read_casts_evaluations(main)
 
-  if (is.null(cast_tab)) {
+  models                        <- ifnull(models, "AutoArima")
+  datasets                      <- ifnull(datasets, "controls")
+  species                       <- ifnull(species, "DM") 
+  cast_ids                      <- ifnull(cast_ids, unique(evals$cast_id))
+  historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(evals$historic_end_newmoonnumber)) 
 
-    cast_choices <- select_casts(main                        = main, 
-                                 cast_ids                    = cast_ids,
-                                 historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
-                                 models                      = models, 
-                                 datasets                    = datasets, 
-                                 species                     = species)
-
-    if (NROW(cast_choices) == 0) {
-
-      stop("no casts available for requested plot")
-
-    } else {
-
-      cast_tab <- read_cast_tabs(main     = main, 
-                                 cast_ids = cast_choices$cast_id)
-      cast_tab <- add_obs_to_cast_tab(main     = main,  
-                                      cast_tab = cast_tab)
-      cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
-      cast_tab$error   <- cast_tab$estimate - cast_tab$obs
-
-
-    }
-
-  }
-
-
-  cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
-  historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(cast_tab$historic_end_newmoonnumber)) 
-  cast_id_in                    <- cast_tab$cast_id %in% cast_ids
-  model_in                      <- cast_tab$model %in% models
-  dataset_in                    <- cast_tab$dataset == dataset
-  species_in                    <- cast_tab$species %in% species
-  historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
+  cast_id_in                    <- evals$cast_id %in% cast_ids
+  model_in                      <- evals$model %in% models
+  dataset_in                    <- evals$dataset == datasets
+  species_in                    <- evals$species %in% species
+  historic_end_newmoonnumber_in <- evals$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
   all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
-    stop("no casts available for requested plot")
+    stop("no evaluations available for requested plot")
 
   }
 
-  cast_tab <- cast_tab[all_in, ]
-
-  lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lp, stringsAsFactors = FALSE)  
-  sptab <- na_conformer(sptab, "speciescode")
-
+  evals_in <- evals[all_in, ]
 
   nmodels <- length(models) 
   nspecies <- length(species)
 
   if (nmodels == 1 & nspecies == 1) {
 
-    yy <- round(cast_tab$error, 3)
+    yy <- round(evals_in$error, 3)
     yrange <- range(c(0, yy), na.rm = TRUE)
-    xrange <- c(max(cast_tab$lead_time_newmoons) + 0.25, 0)
+    xrange <- c(max(evals_in$lead_time_newmoons) + 0.25, 0)
 
     oldpar <- par(no.readonly = TRUE)
     on.exit(par(oldpar))
@@ -103,13 +66,13 @@ plot_casts_err_lead <- function (main                        = ".",
     plot(1, 1, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n",
          ylim = yrange, xlim = xrange)
     abline(h = 0, lty = 3, lwd = 2, col = grey(0.6))
-    ucast_ids <- unique(cast_tab$cast_id)
+    ucast_ids <- unique(evals_in$cast_id)
     ncast_ids <- length(ucast_ids)
     cols <- viridis(ncast_ids, 0.8, 0, 0.75)
     for(k in 1:ncast_ids){
-      matches <- which(cast_tab$cast_id == ucast_ids[k])
-      x <- cast_tab$lead[matches]
-      y <- cast_tab$error[matches]
+      matches <- which(evals_in$cast_id == ucast_ids[k])
+      x <- evals_in$lead_time_newmoons[matches]
+      y <- evals_in$error[matches]
       x <- x[!is.na(y)]
       y <- y[!is.na(y)]
       points(x, y, type = "o", pch = 16, col = cols[k], cex = 1)
@@ -152,30 +115,30 @@ plot_casts_err_lead <- function (main                        = ".",
 
     for(j in 1:nspecies){
 
-      species_in <- cast_tab$species %in% species[j]
-      yy         <- round(cast_tab$error[species_in], 3)
+      species_in <- evals_in$species %in% species[j]
+      yy         <- round(evals_in$error[species_in], 3)
       yrange     <- range(c(0, yy), na.rm = TRUE)
 
       for(i in 1:nmodels){
 
-        cast_id_in <- cast_tab$cast_id %in% cast_ids
+        cast_id_in <- evals_in$cast_id %in% cast_ids
 
 
-        dataset_in                     <- cast_tab$dataset == dataset
-        model_in                       <- cast_tab$model %in% models[i]
-        species_in                     <- cast_tab$species %in% species[j]
-        historic_end_newmoonnumbers_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
+        dataset_in                     <- evals_in$dataset %in% datasets
+        model_in                       <- evals_in$model %in% models[i]
+        species_in                     <- evals_in$species %in% species[j]
+        historic_end_newmoonnumbers_in <- evals_in$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
 
         all_in <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumbers_in
 
-        pcast_tab <- cast_tab[all_in, ]
+        pevals_in <- evals_in[all_in, ]
 
         par(bty = "L", 
             mar = c(0.5, 0.5, 0.25, 0.25), 
             fig = c(x1[i], x2[i], y1[j], y2[j]),
             new = TRUE)
 
-        xrange <- c(max(pcast_tab$lead_time_newmoons) + 0.25, 0)
+        xrange <- c(max(pevals_in$lead_time_newmoons) + 0.25, 0)
 
         plot(x    = 1, 
              y    = 1, 
@@ -192,7 +155,7 @@ plot_casts_err_lead <- function (main                        = ".",
                lwd = 2, 
                col = grey(0.6))
 
-        ucast_ids <- unique(pcast_tab$cast_id)
+        ucast_ids <- unique(pevals_in$cast_id)
         ncast_ids <- length(ucast_ids)
 
         cols <- viridis(n     = ncast_ids, 
@@ -202,10 +165,10 @@ plot_casts_err_lead <- function (main                        = ".",
 
         for (k in 1:ncast_ids) {
 
-          matches <- which(pcast_tab$cast_id == ucast_ids[k])
+          matches <- which(pevals_in$cast_id == ucast_ids[k])
 
-          x <- pcast_tab$lead[matches]
-          y <- pcast_tab$error[matches]
+          x <- pevals_in$lead[matches]
+          y <- pevals_in$error[matches]
           x <- x[!is.na(y)]
           y <- y[!is.na(y)]
 
@@ -219,8 +182,8 @@ plot_casts_err_lead <- function (main                        = ".",
         }
 
         xaxl <- ifelse(j == 1, TRUE, FALSE)
-        xat1 <- seq(0, max(pcast_tab$lead), 2)
-        xat2 <- seq(0, max(pcast_tab$lead), 1)
+        xat1 <- seq(0, max(pevals_in$lead), 2)
+        xat2 <- seq(0, max(pevals_in$lead), 1)
         yaxl <- ifelse(i == 1, TRUE, FALSE)
 
         axis(side     = 1, 
@@ -283,8 +246,7 @@ plot_casts_err_lead <- function (main                        = ".",
 
           } else {
 
-            spptextmatch <- which(sptab[ , "speciescode"] == species[j])
-            spt <- sptab[spptextmatch, "scientificname"]
+            spt <- species[j]
             spf <- 4
 
           }  
@@ -302,6 +264,7 @@ plot_casts_err_lead <- function (main                        = ".",
   invisible( )
 
 }
+
 
 
 #' @title Plot the Forecast Coverage and RMSE 
@@ -331,73 +294,40 @@ plot_casts_err_lead <- function (main                        = ".",
 #'
 plot_casts_cov_RMSE <- function (main                        = ".", 
                                  cast_ids                    = NULL, 
-                                 cast_tab                    = NULL, 
                                  historic_end_newmoonnumbers = NULL, 
                                  models                      = NULL, 
-                                 datasets                    = NULL,
+                                 datasets                    = NULL, 
                                  species                     = NULL) {
 
   settings <- read_directory_settings(main = main)
 
-  models   <- ifnull(models, "AutoArima")
-  dataset  <- ifnull(datasets, "controls")
-  species  <- ifnull(species, "DM") 
+  evals    <- read_casts_evaluations(main)
 
-  if (is.null(cast_tab)) {
+  models                        <- ifnull(models, "AutoArima")
+  datasets                      <- ifnull(datasets, "controls")
+  species                       <- ifnull(species, "DM") 
+  cast_ids                      <- ifnull(cast_ids, unique(evals$cast_id))
+  historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(evals$historic_end_newmoonnumber)) 
 
-    cast_choices <- select_casts(main                        = main, 
-                                 cast_ids                    = cast_ids,
-                                 historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
-                                 models                      = models, 
-                                 datasets                    = datasets, 
-                                 species                     = species)
-
-    if (NROW(cast_choices) == 0) {
-
-      stop("no casts available for requested plot")
-
-    } else {
-
-      cast_tab <- read_cast_tabs(main     = main, 
-                                 cast_ids = cast_choices$cast_id)
-      cast_tab <- add_obs_to_cast_tab(main     = main,  
-                                      cast_tab = cast_tab)
-      cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
-      cast_tab$error   <- cast_tab$estimate - cast_tab$obs
-
-
-    }
-
-  }
-
-
-  cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
-
-  historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(cast_tab$historic_end_newmoonnumber)) 
-  cast_id_in                    <- cast_tab$cast_id %in% cast_ids
-  model_in                      <- cast_tab$model %in% models
-  dataset_in                    <- cast_tab$dataset == dataset
-  species_in                    <- cast_tab$species %in% species
-  historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
+  cast_id_in                    <- evals$cast_id %in% cast_ids
+  model_in                      <- evals$model %in% models
+  dataset_in                    <- evals$dataset == datasets
+  species_in                    <- evals$species %in% species
+  historic_end_newmoonnumber_in <- evals$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
   all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
-    stop("no casts available for requested plot")
+    stop("no evaluations available for requested plot")
 
   }
 
-  cast_tab <- cast_tab[all_in, ]
-
-  lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lp, stringsAsFactors = FALSE)  
-  sptab <- na_conformer(sptab, "speciescode")
-
+  evals_in <- evals[all_in, ]
 
   nmodels <- length(models) 
   nspecies <- length(species)
 
-  ucasts <- unique(cast_tab$cast_id)
+  ucasts <- unique(evals_in$cast_id)
   ncasts <- length(ucasts)
 
   cast_RMSE     <- numeric(ncasts)
@@ -407,10 +337,10 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
   for (i in 1:ncasts) {
 
-    cast_RMSE[i]     <- sqrt(mean(cast_tab$error[cast_tab$cast_id == ucasts[i]] ^ 2, na.rm = TRUE))
-    cast_coverage[i] <- mean(cast_tab$covered[cast_tab$cast_id == ucasts[i]], na.rm = TRUE)
-    cast_model[i]    <- cast_tab$model[cast_tab$cast_id == ucasts[i]][1]
-    cast_species[i]  <- cast_tab$species[cast_tab$cast_id == ucasts[i]][1]
+    cast_RMSE[i]     <- sqrt(mean(evals_in$error[evals_in$cast_id == ucasts[i]] ^ 2, na.rm = TRUE))
+    cast_coverage[i] <- mean(evals_in$covered[evals_in$cast_id == ucasts[i]], na.rm = TRUE)
+    cast_model[i]    <- evals_in$model[evals_in$cast_id == ucasts[i]][1]
+    cast_species[i]  <- evals_in$species[evals_in$cast_id == ucasts[i]][1]
 
   }
 
@@ -507,15 +437,18 @@ plot_casts_cov_RMSE <- function (main                        = ".",
       spt <- "Total Rodents"
       spf <- 2
     } else{
-      spptextmatch <- which(sptab[ , "speciescode"] == species[i])
-      spt <- sptab[spptextmatch, "scientificname"]
+      spt <- species[j]
       spf <- 4
     }  
     text(0.9, 1, spt, font = spf, cex = 0.8, xpd = TRUE, srt = 270)
   }
 
 
+  invisible( )
+
 }
+
+
 
 
 #' @title Plot Predictions for a Given Point in Time Across Multiple Species
