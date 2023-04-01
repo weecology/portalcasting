@@ -42,7 +42,7 @@ update_forecasts_folder <- function (main = ".") {
       for (j in 1:nspecies) {
 
         cast_tab_j                  <- cast_tab[cast_tab$species == unique(cast_tab$species)[j], ]
-        cast_id_j                   <- paste0(cast_tab_j$cast_id[1], ".", j)
+        cast_id_j                   <- paste0(cast_tab_j$cast_id[1], ".", ifelse(nchar(j) == 1, paste0(0, j), j))
         cast_tab_j$old_cast_id      <- cast_tab_j$cast_id
         cast_tab_j$cast_id          <- cast_id_j
         cast_tab_j$origin           <- NA
