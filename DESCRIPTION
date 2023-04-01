@@ -34,6 +34,7 @@ Imports:
   htmltools,
   httr,
   jsonlite,
+  knitr,
   markdown,
   portalr,
   rmarkdown,
@@ -44,7 +45,6 @@ Imports:
   viridis,
   yaml
 Suggests:
-  knitr,
   pkgdown,
   testthat
 Remotes:

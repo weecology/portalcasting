@@ -349,34 +349,37 @@ initial_reactive_values <- function (main = ".") {
 
 initial_output <- function (rv, output) {
 
-    output$forecast_tab_species                    <- renderText(rv$forecast_tab_species)
-    output$forecast_tab_dataset                    <- renderText(rv$forecast_tab_dataset)
-    output$forecast_tab_model                      <- renderText(rv$forecast_tab_model)
-    output$forecast_tab_historic_end_newmoonnumber <- renderText(rv$forecast_tab_historic_end_newmoonnumber)
-    output$forecast_tab_ts_plot                    <- renderPlot(plot_cast_ts(main                          = main,
-                                                                              dataset                       = rv$forecast_tab_dataset,
-                                                                              species                       = rv$forecast_tab_species,
-                                                                              historic_end_newmoonnumber    = rv$forecast_tab_historic_end_newmoonnumber,
-                                                                              model                         = rv$forecast_tab_model))
-    output$forecast_tab_ss_plot                    <- renderPlot(plot_cast_point(main                       = main,
-                                                                                 dataset                    = rv$forecast_tab_dataset,
-                                                                                 highlight_sp               = rv$forecast_tab_species,
-                                                                                 historic_end_newmoonnumber = rv$forecast_tab_historic_end_newmoonnumber,
-                                                                                 model                      = rv$forecast_tab_model))
+  output$forecast_tab_species                    <- renderText(rv$forecast_tab_species)
+  output$forecast_tab_dataset                    <- renderText(rv$forecast_tab_dataset)
+  output$forecast_tab_model                      <- renderText(rv$forecast_tab_model)
+  output$forecast_tab_historic_end_newmoonnumber <- renderText(rv$forecast_tab_historic_end_newmoonnumber)
+  output$forecast_tab_ts_plot                    <- renderPlot(plot_cast_ts(main                          = main,
+                                                                            dataset                       = rv$forecast_tab_dataset,
+                                                                            species                       = rv$forecast_tab_species,
+                                                                            historic_end_newmoonnumber    = rv$forecast_tab_historic_end_newmoonnumber,
+                                                                            model                         = rv$forecast_tab_model))
+  output$forecast_tab_ss_plot                    <- renderPlot(plot_cast_point(main                       = main,
+                                                                               dataset                    = rv$forecast_tab_dataset,
+                                                                               highlight_sp               = rv$forecast_tab_species,
+                                                                               historic_end_newmoonnumber = rv$forecast_tab_historic_end_newmoonnumber,
+                                                                               model                      = rv$forecast_tab_model))
 
-    output$evaluation_tab_species                    <- renderText(rv$evaluation_tab_species)
-    output$evaluation_tab_dataset                    <- renderText(rv$evaluation_tab_dataset)
-    output$evaluation_tab_model                      <- renderText(rv$evaluation_tab_model)
-    output$evaluation_tab_historic_end_newmoonnumber <- renderText(rv$evaluation_tab_historic_end_newmoonnumber)
+  output$evaluation_tab_species                    <- renderText(rv$evaluation_tab_species)
+  output$evaluation_tab_dataset                    <- renderText(rv$evaluation_tab_dataset)
+  output$evaluation_tab_model                      <- renderText(rv$evaluation_tab_model)
+  output$evaluation_tab_historic_end_newmoonnumber <- renderText(rv$evaluation_tab_historic_end_newmoonnumber)
 
-    output$evaluation_tab_sp_plot                    <- renderPlot(plot_cast_point(main                       = main,
-                                                                                   dataset                    = rv$evaluation_tab_dataset,
-                                                                                   highlight_sp               = rv$evaluation_tab_species,
-                                                                                   model                      = rv$evaluation_tab_model,
-                                                                                   historic_end_newmoonnumber = rv$evaluation_tab_historic_end_newmoonnumber,
-                                                                                   with_census                = TRUE))
-
-
+  output$evaluation_tab_sp_plot                    <- renderPlot(plot_cast_point(main                            = main,
+                                                                                 dataset                         = rv$evaluation_tab_dataset,
+                                                                                 highlight_sp                    = rv$evaluation_tab_species,
+                                                                                 model                           = rv$evaluation_tab_model,
+                                                                                 historic_end_newmoonnumber      = rv$evaluation_tab_historic_end_newmoonnumber,
+                                                                                 with_census                     = TRUE))
+  output$evaluation_tab_RMSE_plot                  <- renderPlot(plot_casts_cov_RMSE(main                        = main,
+                                                                                     dataset                     = rv$evaluation_tab_dataset,
+                                                                                     species                     = rv$evaluation_tab_species,
+                                                                                     model                       = rv$evaluation_tab_model,
+                                                                                     historic_end_newmoonnumbers = rv$evaluation_tab_historic_end_newmoonnumber))
   output 
 
 }
@@ -461,12 +464,18 @@ update_output <- function (main, event_name, rv, input, output) {
     output$evaluation_tab_model                      <- renderText(rv$evaluation_tab_model)
     output$evaluation_tab_historic_end_newmoonnumber <- renderText(rv$evaluation_tab_historic_end_newmoonnumber)
 
-    output$evaluation_tab_sp_plot                    <- renderPlot(plot_cast_point(main                       = main,
-                                                                                   dataset                    = rv$evaluation_tab_dataset,
-                                                                                   highlight_sp               = rv$evaluation_tab_species,
-                                                                                   model                      = rv$evaluation_tab_model,
-                                                                                   historic_end_newmoonnumber = rv$evaluation_tab_historic_end_newmoonnumber,
-                                                                                   with_census                = TRUE))
+    output$evaluation_tab_sp_plot                    <- renderPlot(plot_cast_point(main                            = main,
+                                                                                   dataset                         = rv$evaluation_tab_dataset,
+                                                                                   highlight_sp                    = rv$evaluation_tab_species,
+                                                                                   model                           = rv$evaluation_tab_model,
+                                                                                   historic_end_newmoonnumber      = rv$evaluation_tab_historic_end_newmoonnumber,
+                                                                                   with_census                     = TRUE))
+    output$evaluation_tab_RMSE_plot                  <- renderPlot(plot_casts_cov_RMSE(main                        = main,
+                                                                                       dataset                     = rv$evaluation_tab_dataset,
+                                                                                       species                     = rv$evaluation_tab_species,
+                                                                                       model                       = rv$evaluation_tab_model,
+                                                                                       historic_end_newmoonnumbers = rv$evaluation_tab_historic_end_newmoonnumber))
+
 
   }
 
