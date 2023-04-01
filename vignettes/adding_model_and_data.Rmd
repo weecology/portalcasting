@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(portalcasting)
 ```
 
 ## Overview
@@ -167,11 +168,36 @@ names(read_model_controls(main = main))
 #> [16] "newmod"
 ```
 
+And the model is directly ready to be `portalcast`ed:
+
+```{r, eval=FALSE}
+portalcast(main = main, models = "newmod", datasets = "all", species = c("DM", "PP", "total"))
+
+#> ------------------------------------------------------------
+#> Forecasting models...
+#> ------------------------------------------------------------
+#> This is portalcasting v0.51.0
+#> ------------------------------------------------------------
+#> 
+#>   - newmod for all DM
+#>     |++++| successful |++++|
+#>   - newmod for all PP
+#>     |++++| successful |++++|
+#>   - newmod for all total
+#>     |++++| successful |++++|
+#> ------------------------------------------------------------
+#> ...forecasting complete.
+#> ------------------------------------------------------------
+
+```
+
+### From the `setup` Stage
+
 Incorporating the model in the establishment of the directory requires adding the controls list to the initial `setup_<>` call:
 
 ```{r, eval=FALSE}
 main2 <- "~/sandbox2"
-setup_sandbox(main = main2, new_model_controls = new_controls, models = c(prefab_models(), "newmod"))
+setup_sandbox(main = main2, new_model_controls = list(newmod = new_controls), models = c(prefab_models(), "newmod"))
 ```
 
 
@@ -180,7 +206,7 @@ setup_sandbox(main = main2, new_model_controls = new_controls, models = c(prefab
 A new dataset is added to the pipeline much in the same way as a new model, but with only a single generating function and fewer elements in the controls list:
 
 ```{r}
-data_controls_template()
+dataset_controls_template()
 ```
 
 ### Metadata
@@ -239,9 +265,12 @@ names(read_dataset_controls(main = main))
 #>  [1] "all"        "controls"   "exclosures" "newdata"
 ```
 
+### From the `setup` Stage
+
 Incorporating the dataset in the establishment of the directory requires adding the controls list to the initial `setup_<>` call:
 
 ```{r, eval=FALSE}
 main3 <- "~/sandbox3"
-setup_sandbox(main = main3, new_dataset_controls = new_controls, datasets = c(prefab_models(), "newdata"))
+setup_sandbox(main = main3, new_dataset_controls = list(newdata = new_controls), datasets = c(prefab_datasets(), "newdata"))
 ```
+

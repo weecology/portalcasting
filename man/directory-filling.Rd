@@ -39,9 +39,9 @@ fill_models(main = ".", models = prefab_models(), new_model_controls = NULL)
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created. Defaults to \code{\link{prefab_datasets}}. If controls are provided in \code{new_dataset_controls}, the dataset still needs to be named here to be included.}
 
-\item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
+\item{new_dataset_controls}{Optional named \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
 
-\item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}.}
+\item{new_model_controls}{Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.}
 }
 \value{
 \code{NULL}, \code{\link[base]{invisible}}-ly.

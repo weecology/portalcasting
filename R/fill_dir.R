@@ -25,9 +25,9 @@
 #'
 #' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. Defaults to \code{\link{prefab_datasets}}. If controls are provided in \code{new_dataset_controls}, the dataset still needs to be named here to be included.
 #'
-#' @param new_dataset_controls Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.
+#' @param new_dataset_controls Optional named \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.
 #'
-#' @param new_model_controls Optional \code{list} of controls for new models. See \code{\link{model_controls}}.
+#' @param new_model_controls Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.
 #'
 #' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
 #'
