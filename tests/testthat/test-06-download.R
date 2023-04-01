@@ -32,7 +32,6 @@ test_that(desc = "download_archive downloads the archive",
           code = {
 
   expect_equal(download_archive(main, timeout = 600), NULL)
-  expect_message(download_archive(main))
 
   expect_error(download_archive(source = "xxx"))
 

@@ -349,7 +349,7 @@ download_archive <- function(main          = ".",
 
   Sys.sleep(pause)
 
-  unlink(temp_unzip, recursive = TRUE)
+  unlink(temp_unzip, force = TRUE, recursive = TRUE)
   file.remove(temp)
 
   invisible( )
