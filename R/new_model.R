@@ -3,7 +3,7 @@
 #' @description Create a new model's controls. Using the \code{model_controls_template} file as a basis for the \code{list} and leveraging element-specific functions to fill in details. \cr
 #'              Each of the specific \code{new_model_< >} functions wraps an \code{\link{update_list}} call starting with the \code{\link{model_controls_template}} as the main list and taking any named elements as inputs via \code{...}.
 #'
-#' @details Having been created using \code{link{new_model_controls}}, the new model's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \code{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{link{add_new_model}}.
+#' @details Having been created using \code{\link{new_model_controls}}, the new model's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \code{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{\link{add_new_model}}.
 #'
 #' @param ... Named \code{list} of arguments passed to \code{\link{update_list}}.
 #'

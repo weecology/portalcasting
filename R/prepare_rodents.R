@@ -97,25 +97,15 @@ write_dataset_controls <- function (main                 = ".",
 
   settings <- read_directory_settings(main = main)
 
-  dataset_controls <- prefab_dataset_controls( )
-  ndatasets        <- length(dataset_controls)
-  nnew_datasets    <- length(new_dataset_controls)
+  messageq("Writing dataset controls ...", quiet = settings$quiet)
 
-  if (nnew_datasets > 0) {
+  dataset_controls <- c(prefab_dataset_controls( ), new_dataset_controls)[datasets]
 
-    for (i in 1:nnew_datasets) {
-
-      dataset_controls <- update_list(dataset_controls, 
-                                             x = new_dataset_controls[[i]])
-
-      names(dataset_controls)[ndatasets + i] <- names(new_dataset_controls)[i]
-
-    }
-
-  }
 
   write_yaml(x    = dataset_controls,
              file = file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
+
+  messageq(" ... complete.\n", quiet = settings$quiet)
 
   invisible(dataset_controls)
 

@@ -100,7 +100,7 @@ evaluate_cast <- function (main     = ".",
 
   if (!is.null(cast_meta$model_controls$scoring_family)) {
 
-    scoring_family <- cast_meta$model_controls$scoring_family
+    scoring_family <- cast_meta$model_controls$response$scoring_family
 
   } else if (!is.null(cast_meta$model)) {
 
