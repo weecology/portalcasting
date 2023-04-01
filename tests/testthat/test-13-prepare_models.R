@@ -33,7 +33,7 @@ test_that(desc = "write_model_controls returns a list", {
 
 test_that(desc = "add_new_model makes a list", {
 
-  mc <- add_new_model(main = main, new_model_controls = list(newone = new_model_controls(metadata = new_model_metadata(name = "newone"))))
+  mc <- add_new_model(main = main, new_model_controls = new_model_controls(metadata = new_model_metadata(name = "newone")))
   expect_is(mc, "list")
 
 })

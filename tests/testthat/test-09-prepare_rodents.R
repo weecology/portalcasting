@@ -58,7 +58,7 @@ test_that(desc = "prefab_datasets names the proper sets", {
 
 test_that(desc = "add_new_dataset makes a list", {
 
-  dc <- add_new_dataset(main = main, new_dataset_controls = list(newone = new_dataset_controls(metadata = new_dataset_metadata(name = "newone"))))
+  dc <- add_new_dataset(main = main, new_dataset_controls = new_dataset_controls(metadata = new_dataset_metadata(name = "newone")))
   expect_is(dc, "list")
 
 })
