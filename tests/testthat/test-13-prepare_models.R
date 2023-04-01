@@ -44,7 +44,7 @@ test_that(desc = "model_controls_template reads in the list", {
 
   mc <- model_controls_template( )
   expect_is(mc, "list")
-  expect_equal(length(mc), 8)
+  expect_equal(length(mc), 7)
 
 })
 

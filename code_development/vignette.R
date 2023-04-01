@@ -52,7 +52,7 @@ main3 <- "~/sandbox3"
 new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
                                      args     = new_dataset_args(name = "newdata", filename = "rodents_newdata.csv"))
 
-add_new_dataset(main = main, new_dataset_controls = list(newdata = new_controls))
+add_new_dataset(main = main, new_dataset_controls =  new_controls)
 
 prepare_rodents(main = main, new_dataset_controls = list(newdata = new_controls), datasets = c(prefab_datasets(), "newdata"))
 

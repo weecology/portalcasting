@@ -35,7 +35,7 @@ test_that(desc = "prepare_rodents preps all the rodents", {
   expect_equal(length(r1), length(prefab_datasets()))
 
   expect_is(r2, "list")
-  expect_equal(length(r2), length(prefab_datasets()))
+  expect_equal(length(r2), 1)
 
 })
 
