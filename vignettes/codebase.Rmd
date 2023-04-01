@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 author: "Juniper L. Simonis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 vignette: >
-  %\VignetteIndexEntry{codebase}
+  %\VignetteIndexEntry{portalcasting Codebase}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

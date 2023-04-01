@@ -4,7 +4,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: "Juniper L. Simonis and Glenda M. Yenni"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{adding_model_and_data}
+  %\VignetteIndexEntry{Adding a Model and Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -5,7 +5,7 @@ output: rmarkdown::html_vignette
 author: "Juniper L. Simonis"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 vignette: >
-  %\VignetteIndexEntry{getting_started}
+  %\VignetteIndexEntry{Getting Started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

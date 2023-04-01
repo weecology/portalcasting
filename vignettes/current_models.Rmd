@@ -5,7 +5,7 @@ author: "Juniper L. Simonis, Hao Ye, and S. K. Morgan Ernest"
 output: rmarkdown::html_vignette
 bibliography: refs.bibtex
 vignette: >
-  %\VignetteIndexEntry{current_models}
+  %\VignetteIndexEntry{Current Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
