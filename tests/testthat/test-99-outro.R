@@ -1,6 +1,7 @@
 context(desc = "cleaning house")
 
 main <- "./testing"
+main2 <- "./testing2"
 
 test_that(desc = "placeholder",
           code = {
@@ -10,4 +11,5 @@ test_that(desc = "placeholder",
 })
 
 unlink(file.path(main), recursive = TRUE, force = TRUE)
+unlink(file.path(main2), recursive = TRUE, force = TRUE)
 

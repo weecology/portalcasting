@@ -1,6 +1,7 @@
 context(desc = "directory creating functions")
 
 main <- "./testing"
+main2 <- "./testing2"
 
 
 test_that(desc = "create_dir creates the folder structure",
@@ -38,7 +39,7 @@ test_that(desc = "read_directory_config catches if its missing and throws error"
 test_that(desc = "setup_sandbox creates a sandbox directory",
           code = {
   
-  expect_message(setup_sandbox(main = main, verbose = TRUE))
+  expect_message(setup_sandbox(main = main2, verbose = TRUE))
 
 
 })
