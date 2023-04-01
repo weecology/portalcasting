@@ -30,20 +30,22 @@ Depends:
 License: MIT + file LICENSE
 Imports:
   coda,
+  english,
+  htmltools,
   httr,
   jsonlite,
+  markdown,
   portalr,
+  rmarkdown,
   runjags,
   scoringRules,
+  shiny,
   stats,
   viridis,
   yaml
 Suggests:
   knitr,
   pkgdown,
-  english,
-  markdown,
-  rmarkdown,
   testthat
 Remotes:
   weecology/portalr#288

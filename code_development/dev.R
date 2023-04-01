@@ -1,6 +1,15 @@
 rm(list=ls())
 devtools::document()
 devtools::load_all()
+main <- "~/prod"
+setup_production(main = main, verbose = TRUE)
+portalcast(main = main)
+evaluate_casts(main = main)
+
+shiny::runApp()
+
+
+
 
 main <- "~/sandbox"
 unlink(main, recursive = TRUE, force = TRUE)
@@ -14,8 +23,6 @@ x <- evaluate_casts(main)
 d <- ensemble_casts(main)
 
 
-main <- "~/portalcasting"
-setup_production(main = main, verbose = TRUE)
 
 setup_sandbox(main     = main, 
               settings = directory_settings(time = (time_settings(origin = as.Date("2014-08-01")))),

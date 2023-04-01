@@ -533,10 +533,9 @@ plot_cast_point <- function (main                       = ".",
 
   newmoonnumber <- ifnull(newmoonnumber, min(casts_meta$forecast_start_newmoonnumber))
   dataset       <- ifnull(dataset, unique(casts_meta$dataset))
+  species       <- ifnull(species, unique(casts_meta$species))
 
-
-
-  species  <- casts_meta$species
+  species  <- species[species %in% unique(casts_meta$species)]
   nspecies <- length(species)
 
   for (i in 1:nspecies) {
@@ -552,17 +551,14 @@ plot_cast_point <- function (main                       = ".",
   
 
   casts_tab <- casts_tab[order(casts_tab$estimate, decreasing = TRUE), ]
-  species   <- casts_tab$species
 
   max_obs <- NA
   if (with_census) {
 
     obs           <- read_rodents_table(main     = main, 
                                         dataset  = gsub("dm_", "", gsub("_interp", "", dataset)))
-
     colnames(obs) <- gsub("\\.", "", colnames(obs))
-    sp_col        <- colnames(obs) %in% forecasting_species(total = TRUE)
-    species       <- ifnull(species, colnames(obs)[sp_col])
+
     newmoonnumber <- ifnull(newmoonnumber, unique(obs$newmoonnumber))
     obs           <- obs[obs$newmoonnumber %in% newmoonnumber, species, drop = FALSE]
 

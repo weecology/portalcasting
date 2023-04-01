@@ -1,0 +1,41 @@
+---
+title: "Models"
+bibliography: refs.bibtex
+---
+
+```{r setup, include = FALSE}
+
+  knitr::opts_chunk$set(collapse = TRUE,
+                        comment  = "#>")
+
+
+  model_controls <- prefab_model_controls( )
+  model_names    <- unlist(lapply(lapply(model_controls, getElement, "metadata"), getElement, "print_name"))
+  nmodels        <- length(model_names)
+  nmodels_text   <- as.character(english::english(nmodels))
+
+
+```
+
+<br>
+
+We currently analyze and forecast rodent data at Portal using `r nmodels_text` models: `r model_names` [@PortalPredictions]. 
+
+
+```{r echo = FALSE, results = "asis"}
+
+  template <- "## %s \n \n %s \n \n   \n"
+
+  for (i in 1:nmodels) {
+    model_i_controls <- model_controls[[i]]
+    cat(sprintf(template, model_i_controls$metadata$print_name, model_i_controls$metadata$text))
+  }
+```
+
+
+## Ensemble
+
+In addition to the base models, we include a starting-point ensemble. In versions before v0.9.0, the ensemble was based on AIC weights, but in the shift to separating the interpolated from non-interpolated data in model fitting, we had to transfer to an unweighted average ensemble model. The ensemble mean is calculated as the mean of all model means and the ensemble variance is estimated as the sum of the mean of all model variances and the variance of the estimated mean, calculated using the unbiased estimate of sample variances.
+
+
+# References
