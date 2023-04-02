@@ -1,15 +1,14 @@
-context(desc = "Test prepare_covariates functions")
+context(desc = "portalcast functions")
 
 main1 <- normalizePath(file.path(tempdir(), "testing1"))
 main2 <- normalizePath(file.path(tempdir(), "testing2"))
 main3 <- normalizePath(file.path(tempdir(), "testing3"))
 
+test_that(desc = "portalcast works as basic", {
 
-test_that(desc = "prepare_covariates", {
 
   skip_on_cran() 
 
-  covs <- prepare_covariates(main = main2)
-  expect_is(covs, "data.frame")
+  expect_message(portalcast(main = main2, models = "AutoArima"))
 
 })

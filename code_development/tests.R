@@ -15,7 +15,18 @@ devtools::test(filter = "27")
 
 devtools::test(filter = "30")
 devtools::test(filter = "31")
+devtools::test(filter = "32")
+devtools::test(filter = "33")
 
 devtools::test(filter = "40")
+devtools::test(filter = "41")
+devtools::test(filter = "42")
+devtools::test(filter = "43")
+
+devtools::test(filter = "50")
+
+devtools::test(filter = "60")
+devtools::test(filter = "61")
+devtools::test(filter = "62")
 
 #devtools::test(filter = "99")

@@ -1,10 +1,13 @@
 context(desc = "tsglm functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
+main1 <- normalizePath(file.path(tempdir(), "testing1"))
+main2 <- normalizePath(file.path(tempdir(), "testing2"))
+main3 <- normalizePath(file.path(tempdir(), "testing3"))
 
 
+test_that(desc = "meta_tsglm components work properly individually and together", {
+
+  skip_on_cran() 
 
   abundance      <- prepare_abundance(main     = main2,
                                       dataset  = "controls",
@@ -25,18 +28,13 @@ main3 <- file.path(tempdir(), "testing3")
                          c("precipitation"),
                          c(NULL))
 
-test_that(desc = "meta_tsglm runs multiple models, picks best, and forecasts", {
+
 
   expect_message(mod <- meta_tsglm(ts = abundance, model = model, distr = distr, link = link, lag = lag, submodels = submodels, covariates = covariates, metadata = metadata, quiet = FALSE))
   expect_is(mod, "tsglm")
 
   expect_silent(fc <- forecast(object = mod, h = 13, level = 0.95))
   expect_is(fc, "forecast")
-
-})
-
-
-test_that(desc = "forecast.tsglm allows for new xregs or not", {
 
   xreg <- covariates[covariates$newmoonnumber %in% (metadata$time$historic_newmoonnumbers - lag), "mintemp"]
 
