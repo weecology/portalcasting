@@ -60,7 +60,6 @@ portal_forecast_ui <- function (main = ".") {
                             package = "portalcasting")
   source(profiles_r)
 
-
   fluidPage(page_title_panel( ),
             page_subtitle_panel( ), 
             page_main_panel(main = main))
@@ -199,7 +198,6 @@ forecast_tab_input_selection_checks_row <- function ( ) {
 #
 forecast_tab_input_selection_row <- function (main = ".") {
 
-
   fluidRow(forecast_tab_input_selection_row_species( ),
            forecast_tab_input_selection_row_dataset( ),
            forecast_tab_input_selection_row_model( ),
@@ -282,7 +280,7 @@ evaluation_tab <- function (main = ".") {
            evaluation_tab_input_selection_row(main = main), 
            h2("Most recent observation vs. forecasts"),
            evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
-           plotOutput("evaluation_tab_sp_plot"),
+        #   plotOutput("evaluation_tab_sp_plot"),
            br( ),
            h2("Model Coverage & RMSE (last 3 years of forecasts)"),
  #          plotOutput("evaluation_tab_RMSE_plot"),

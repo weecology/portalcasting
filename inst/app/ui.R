@@ -1,2 +1,2 @@
 
-portal_forecast_ui(main = main)
+portal_forecast_ui( )
