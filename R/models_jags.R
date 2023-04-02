@@ -2,65 +2,65 @@
 #' @title Create and Run a runjags Portalcasting Model 
 #'
 #' @description Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \cr
-#'   \code{fit_runjags}: Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
-#'   \code{runjags_data}, \code{runjags_monit}, \code{runjags_model}, \code{runjags_inits}: Produce the model-specific components as named. \cr 
-#'   \code{forecast.runjags}: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a \code{"forecast"}-class object. \cr 
-#'   \code{runjags_controls}: Combines the \code{\link[runjags]{run.jags}} control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
+#'   `fit_runjags`: Wraps up the runjags model object preparation functions with the model running ([`runjags::run.jags`] function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
+#'   `runjags_data`, `runjags_monitor`, `runjags_model`, `runjags_inits`: Produce the model-specific components as named. \cr 
+#'   `forecast.runjags`: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a `"forecast"`-class object. \cr 
+#'   `runjags_controls`: Combines the [`runjags::run.jags`] control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
 #'
-#' @param abundance Non-negative \code{integer}-conformable vector of rodent abundances to use in forecasting. See \code{\link{prepare_abundance}}.
+#' @param abundance Non-negative `integer`-conformable vector of rodent abundances to use in forecasting. See [`prepare_abundance`].
 #'
-#' @param metadata \code{list} of model control elements. See \code{\link{prepare_metadata}}.
+#' @param metadata `list` of model control elements. See [`prepare_metadata`].
 #'
-#' @param covariates \code{data.frame} of covariates used in modeling. See \code{\link{prepare_covariates}}.
+#' @param covariates `data.frame` of covariates used in modeling. See [`prepare_covariates`].
 #'
-#' @param control_runjags \code{list} of controls for running runjags models. See \code{\link{runjags_controls}}. Optional. If not provided here, will be taken from the model controls list.
+#' @param control_runjags `list` of controls for running runjags models. See [`runjags_controls`]. Optional. If not provided here, will be taken from the model controls list.
 #'
-#' @param inits \code{list} of model parameter initializer functions. See \code{\link{prefab_model_controls}}.
+#' @param inits `list` of model parameter initializer functions. See [`prefab_model_controls`].
 #'
-#' @param model \code{character} value of the model file name. See \code{\link{prefab_model_controls}}.
+#' @param model `character` value of the model file name. See [`prefab_model_controls`].
 #'
-#' @param data_names \code{character} vector of data values to include in the data \code{list}. See \code{\link{prefab_model_controls}}.
+#' @param data_names `character` vector of data values to include in the data `list`. See [`prefab_model_controls`].
 #'
-#' @param seed A single \code{integer}-conformable value or \code{NULL} set in \code{\link{set.seed}}.
+#' @param seed A single `integer`-conformable value or `NULL` set in [`set.seed`].
 #'
-#' @param nchains Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags]{run.jags}}.
+#' @param nchains Non-negative `integer`-conformable value of the number of parallel chains to use. See [`runjags::run.jags`].
 #'
-#' @param adapt Non-negative \code{integer}-conformable value of the number of adaptation steps to use. See \code{\link[runjags]{run.jags}}.
+#' @param adapt Non-negative `integer`-conformable value of the number of adaptation steps to use. See [`runjags::run.jags`].
 #'
-#' @param burnin Non-negative \code{integer}-conformable value of the number of burnin steps to use. See \code{\link[runjags]{run.jags}}.
+#' @param burnin Non-negative `integer`-conformable value of the number of burnin steps to use. See [`runjags::run.jags`].
 #'
-#' @param sample Non-negative \code{integer}-conformable value of the number of sampling steps to use. See \code{\link[runjags]{run.jags}}.
+#' @param sample Non-negative `integer`-conformable value of the number of sampling steps to use. See [`runjags::run.jags`].
 #'
-#' @param thin Positive \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags]{run.jags}}.
+#' @param thin Positive `integer`-conformable value of the thinning interval to use. See [`runjags::run.jags`].
 #'
-#' @param modules \code{character} vector of external modules to add to JAGS. See \code{\link[runjags]{run.jags}}.
+#' @param modules `character` vector of external modules to add to JAGS. See [`runjags::run.jags`].
 #'
-#' @param method \code{character} value of the \code{\link[runjags]{run.jags}} method to use. Options include \code{"rjags"}, \code{"simple"}, \code{"interruptible"}, \code{"parallel"}, \code{"rjparallel"}, \code{"background"}, \code{"bgparallel"}, and \code{"snow"}. See \code{\link[runjags]{run.jags}}.
+#' @param method `character` value of the [`runjags::run.jags`] method to use. Options include `"rjags"`, `"simple"`, `"interruptible"`, `"parallel"`, `"rjparallel"`, `"background"`, `"bgparallel"`, and `"snow"`. See [`runjags::run.jags`].
 #'
-#' @param factories \code{character} vector of factory modules to add to JAGS. See \code{\link[runjags]{run.jags}}.
+#' @param factories `character` vector of factory modules to add to JAGS. See [`runjags::run.jags`].
 #'
-#' @param monitors \code{character} vector of parameters to track. Forecasted observations and state variables are tracked automatically.
+#' @param monitors `character` vector of parameters to track. Forecasted observations and state variables are tracked automatically.
 #'
-#' @param mutate A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags]{run.jags}}. 
+#' @param mutate A `function` or `list` (with the first element being a `function`) used to add variables to the posterior chain (rather than throughout sampling). See [`runjags::run.jags`]. 
 #'
-#' @param silent_jags \code{logical} value for quieting the output from the runjags function, including the underlying JAGS output. 
+#' @param silent_jags `logic` value for quieting the output from the runjags function, including the underlying JAGS output. 
 #'
-#' @param object A \code{runjags}-class object with columns of \code{"X"} values (state variables) in the the \code{mcmc} element.
+#' @param object A `runjags`-class object with columns of `"X"` values (state variables) in the the `mcmc` element.
 #'
-#' @param h \code{integer}-conformable number of steps forward to include in the forecast.
+#' @param h `integer`-conformable number of steps forward to include in the forecast.
 #'
-#' @param level \code{numeric} of the confidence level to use in summarizing the predictions.
+#' @param level `numeric` of the confidence level to use in summarizing the predictions.
 #'
-#' @param nsamples \code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates. 
+#' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates. 
 #'
 #' @return 
-#'   \code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags]{run.jags}}. \cr
-#'   \code{runjags_data}: A \code{list} of model-specific data for use in \code{\link[runjags]{run.jags}}. \cr
-#'   \code{runjags_monit}: A \code{vector} of model-specific \code{character} values of parameters to track in \code{\link[runjags]{run.jags}}.  \cr
-#'   \code{runjags_model}: A single \code{character} value of the JAGS model block for \code{\link[runjags]{run.jags}}.  \cr
-#'   \code{runjags_inits}: A \code{function} that takes the argument \code{data} to produce chain-specific initial values for \code{\link[runjags]{run.jags}}. \cr
-#'   \code{runjags_controls}: A \code{list} of controls. \cr
-#'   \code{forecast.runjags}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"level"}. 
+#'   `fit_runjags`: An object of class `"runjags"` of model components. See [`runjags::run.jags`]. \cr
+#'   `runjags_data`: A `list` of model-specific data for use in [`runjags::run.jags`]. \cr
+#'   `runjags_monitor`: A `vector` of model-specific `character` values of parameters to track in [`runjags::run.jags`].  \cr
+#'   `runjags_model`: A single `character` value of the JAGS model block for [`runjags::run.jags`].  \cr
+#'   `runjags_inits`: A `function` that takes the argument `data` to produce chain-specific initial values for [`runjags::run.jags`]. \cr
+#'   `runjags_controls`: A `list` of controls. \cr
+#'   `forecast.runjags`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"level"`. 
 #' 
 #'
 #' @references 

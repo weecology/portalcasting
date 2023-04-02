@@ -2,15 +2,15 @@
 #'
 #' @description Create vector of historic abundances for a rodent species in a dataset for a model's forecasting.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param dataset \code{character} value of name of rodent dataset to include.
+#' @param dataset `character` value of name of rodent dataset to include.
 #'
-#' @param species \code{character} value of name of rodent species within the dataset.
+#' @param species `character` value of name of rodent species within the dataset.
 #'
-#' @param model \code{character} value of the model name.
+#' @param model `character` value of the model name.
 #'
-#' @return \code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.
+#' @return `numeric` vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.
 #'  
 #' @name prepare rodents
 #'
@@ -57,13 +57,13 @@ prepare_abundance <- function (main    = ".",
 #'
 #' @description Input/Output functions for dataset control lists.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
+#' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
 #'
-#' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
+#' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @return \code{list} of \code{datasets}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_dataset_controls}.
+#' @return `list` of `datasets`' control `list`s, [`base::invisible`]-ly for `write_dataset_controls`.
 #'  
 #' @name read and write rodent dataset controls
 #'
@@ -114,15 +114,15 @@ write_dataset_controls <- function (main                 = ".",
 
 #' @title Prepare Rodents Data for the Portalcasting Repository
 #'
-#' @description Create specified \code{datasets} using their associated function and arguments, according to the \code{\link{directory_settings}}.
+#' @description Create specified `datasets` using their associated function and arguments, according to the[`directory_settings`].
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to include.
+#' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
 #'
-#' @param new_dataset_controls Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.
+#' @param new_dataset_controls Optional `list` of controls for new datasets. See [`dataset_controls`].
 #'
-#' @return \code{list} of prepared \code{datasets}.
+#' @return `list` of prepared `datasets`.
 #'  
 #' @name prepare rodents
 #'
@@ -160,54 +160,54 @@ prepare_rodents <- function (main                 = ".",
 #' @title Prepare Rodents Data Tables for Forecasting
 #'
 #' @description Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
-#'              Wraps around \code{\link[portalr]{summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. \cr \cr
-#'              Ready for implementation via \code{\link{prepare_rodents}}.
+#'              Wraps around [`portalr::summarize_rodent_data`] to produce a `data.frame` associated with a set of data specifications. \cr \cr
+#'              Ready for implementation via [`prepare_rodents`].
 #'
-#' @param name \code{character} name of the data set.
+#' @param name `character` name of the data set.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param species \code{character}-valued vector of species names to include. 
+#' @param species `character`-valued vector of species names to include. 
 #'
-#' @param total \code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included. 
+#' @param total `logic` value indicating if a total (sum across species should be added or not. Only available if more than one species is included. 
 #'
-#' @param clean \code{logical} indicator of if only the rodent data that passed QA/QC (\code{clean = TRUE}) or if all data (\code{clean = FALSE}) should be loaded.
+#' @param clean `logic` indicator of if only the rodent data that passed QA/QC (`clean = TRUE`) or if all data (`clean = FALSE`) should be loaded.
 #'
-#' @param type \code{character} value of the rodent data set type, according to pre-existing definitions. An alternative toggle to \code{species}. \cr \cr
-#'             Either all species (\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}). 
+#' @param type `character` value of the rodent data set type, according to pre-existing definitions. An alternative toggle to `species`. \cr \cr
+#'             Either all species (`type = "Rodents"`) or only granivoes (`type = "Granivores"`). 
 #'
-#' @param level \code{character} indicating the type of summary: \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes directly to \code{\link[portalr]{summarize_rodent_data}}.
+#' @param level `character` indicating the type of summary: `"Plot"`, `"Treatment"`, or `"Site"`. Pipes directly to [`portalr::summarize_rodent_data`].
 #'
-#' @param plots Specification of subset of plots. Can be a vector of \code{numeric} plots indicators or specific sets indicated by \code{character} values: \code{"all"} plots or \code{"Longterm"} plots (plots that have had the same treatment for the entire time series).
+#' @param plots Specification of subset of plots. Can be a vector of `numeric` plots indicators or specific sets indicated by `character` values: `"all"` plots or `"Longterm"` plots (plots that have had the same treatment for the entire time series).
 #'
-#' @param treatment \code{character} indicating the specific treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"}, \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"} 
+#' @param treatment `character` indicating the specific treatment(s) to trim to if `level = "Treatment"`: `"control"`, `"exclosure"`, `"removal"`, or `"spectabs"` 
 #'
-#' @param min_plots \code{integer} (or integer \code{numeric}) of the minimum number of plots surveyed for a survey to be used. 
+#' @param min_plots `integer` (or integer `numeric`) of the minimum number of plots surveyed for a survey to be used. 
 #'
-#' @param min_traps \code{integer} (or integer \code{numeric}) of the minimum number of traps collected for a plot to be used.
+#' @param min_traps `integer` (or integer `numeric`) of the minimum number of traps collected for a plot to be used.
 #'
-#' @param output \code{character} indicating the type of data: \code{"abundance"}, \code{"biomass"}, or \code{"energy"}. 
+#' @param output `character` indicating the type of data: `"abundance"`, `"biomass"`, or `"energy"`. 
 #'
-#' @param fillweight \code{logical} specifier of whether to fill in unknown weights with other records from that individual or species, where possible.
+#' @param fillweight `logic` specifier of whether to fill in unknown weights with other records from that individual or species, where possible.
 #'
-#' @param shape \code{character} value indicating a "crosstab" or "flat" output. 
+#' @param shape `character` value indicating a "crosstab" or "flat" output. 
 #'
-#' @param unknowns \code{logical} indicator to either remove all individuals not identified to species (\code{unknowns = FALSE}) or sum them in an additional column (\code{unknowns = TRUE}.
+#' @param unknowns `logic` indicator to either remove all individuals not identified to species (`unknowns = FALSE`) or sum them in an additional column (`unknowns = TRUE`.
 #'
-#' @param time \code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr \cr
-#'             The default \code{time = "newmoon"} produces an equispaced observation timestep, a common format format for discrete-time modeling. 
+#' @param time `character` value specifying the format of the time index in the output. Options are `"period"` (sequential Portal surveys), `"newmoon"` (lunar cycle numbering), and `"date"` (calendar date). \cr \cr
+#'             The default `time = "newmoon"` produces an equispaced observation timestep, a common format format for discrete-time modeling. 
 #'
-#' @param na_drop \code{logical} indicator of if \code{NA} values (representing insufficient sampling) should be dropped. 
+#' @param na_drop `logic` indicator of if `NA` values (representing insufficient sampling) should be dropped. 
 #'
-#' @param zero_drop \code{logical} indicator of if \code{0} values (representing sufficient sampling but no detection) should be dropped.
+#' @param zero_drop `logic` indicator of if `0` values (representing sufficient sampling but no detection) should be dropped.
 #'
-#' @param effort \code{logical} indicator of if the effort columns should be included in the output.
+#' @param effort `logic` indicator of if the effort columns should be included in the output.
 #'
-#' @param save \code{logical} indicator controlling if the output should be saved out.
+#' @param save `logic` indicator controlling if the output should be saved out.
 #'
-#' @param filename \code{character} value of the file for saving the output.
+#' @param filename `character` value of the file for saving the output.
 #'
-#' @return \code{data.frame} for the specified data set.
+#' @return `data.frame` for the specified data set.
 #'
 #' @name prepare rodent dataset
 #'

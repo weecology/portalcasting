@@ -32,17 +32,17 @@ new_dataset_args(...)
 \item{fun}{\code{character} value of the generation function.}
 }
 \value{
-\code{dataset_controls_template}: \code{list} of named dataset controls elements, many as \code{NULL}. \cr 
-        \code{new_dataset_controls}: \code{list} of named dataset controls. \cr 
-        \code{new_dataset_metadata}: \code{list} of named dataset metadata elements to the controls \code{list}. \cr 
-        \code{new_dataset_fun}: \code{character} of dataset generation function. \cr 
-        \code{new_dataset_args}: named \code{list} of argument elements to the generating function. \cr 
-        \code{add_new_dataset}: dataset controls \code{list} for the new dataset, \code{\link[base]{invisible}}-ly.
+\code{dataset_controls_template}: \code{list} of named dataset controls elements, many as \code{NULL}. \cr
+\code{new_dataset_controls}: \code{list} of named dataset controls. \cr
+\code{new_dataset_metadata}: \code{list} of named dataset metadata elements to the controls \code{list}. \cr
+\code{new_dataset_fun}: \code{character} of dataset generation function. \cr
+\code{new_dataset_args}: named \code{list} of argument elements to the generating function. \cr
+\code{add_new_dataset}: dataset controls \code{list} for the new dataset, \code{\link[base:invisible]{base::invisible}}-ly.
 }
 \description{
 Create a new dataset's controls. Using the \code{dataset_controls_template} file as a basis for the \code{list} and leveraging element-specific functions to fill in details. \cr
-             Each of the specific \code{new_dataset_< >} functions wraps an \code{\link{update_list}} call starting with the \code{\link{dataset_controls_template}} as the main list and taking any named elements as inputs via \code{...}.
+Each of the specific \verb{new_dataset_< >} functions wraps an \code{\link{update_list}} call starting with the \code{\link{dataset_controls_template}} as the main list and taking any named elements as inputs via \code{...}.
 }
 \details{
-Having been created using \code{link{new_dataset_controls}}, the new dataset's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \code{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{link{add_new_dataset}}.
+Having been created using \code{\link{new_dataset_controls}}, the new dataset's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \verb{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{\link{add_new_dataset}}.
 }

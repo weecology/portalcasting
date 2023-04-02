@@ -78,15 +78,15 @@ sandbox_settings()
 
 \item{nsamples}{\code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates.}
 
-\item{save}{\code{logical} indicator controlling if the output should be saved out.}
+\item{save}{\code{logic} indicator controlling if the output should be saved out.}
 
-\item{overwrite}{\code{logical} indicator of whether or not file writing sould occur even if a local copy already exists.}
+\item{overwrite}{\code{logic} indicator of whether or not file writing sould occur even if a local copy already exists.}
 
-\item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
+\item{force}{\code{logic} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
-\item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
+\item{download_timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{base::options}}.}
 
 \item{timeseries_start}{\code{Date} after which historic samples are included in the timeseries fit. Default value is \code{1995-01-01}, corresponding to moon 217.}
 
@@ -94,14 +94,14 @@ sandbox_settings()
 
 \item{cast_date}{\code{Date} of when the forecasts are occurring. Default is today's date (set using \code{\link{Sys.Date}}).}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. \cr 
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. \cr
 As of version 0.51.0, default is now \code{365}, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year.}
 
 \item{max_lag}{\code{integer} (or integer \code{numeric}) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
 Default is \code{365} for the logistic covariate models.}
 
 \item{lag_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
-Default value of \code{60} corresponds to two additional lunar months.}
+Default value of `60 corresponds to two additional lunar months.}
 
 \item{lead_time_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days forward in time to forecast. \cr
 Default value of \code{30} corresponds to one additional lunar month.}
@@ -132,7 +132,7 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{PortalData}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github}
 
-\item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download.}
+\item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{verison = NULL} indicates no download.}
 
 \item{climate_forecast}{\code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.}
 }

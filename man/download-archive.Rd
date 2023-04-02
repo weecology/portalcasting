@@ -26,22 +26,22 @@ download_archive(
 
 \item{source}{\code{character} indicator of the source for the download. Either \code{"github"} (default) or \code{"zenodo"}.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+\item{quiet}{\code{logic} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator if detailed messages should be generated.}
+\item{verbose}{\code{logic} indicator if detailed messages should be generated.}
 
-\item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
+\item{force}{\code{logic} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
-\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.}
+\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{base::options}}.}
 }
 \value{
-\code{NULL}, \code{\link[base]{invisible}}-ly.
+\code{NULL}, \code{\link[base:invisible]{base::invisible}}-ly.
 }
 \description{
-Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/raw} sub.
+Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \verb{<main>/raw} sub.
 }
 \note{
-There are two calls to \code{link[base]{Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
+There are two calls to \code{\link[base:Sys.sleep]{base::Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
 }

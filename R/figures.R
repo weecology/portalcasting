@@ -2,19 +2,19 @@
 #'
 #' @description Plot the raw error (estimate - observation) as a function of lead time across model runs from different forecast origins for multiple models and multiple species (or total) within a data set.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
+#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
 #'
-#' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection.
+#' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon number(s) of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
+#' @param models `character` value(s) of the name of the model to include. Default value is `NULL`, which equates to no selection with respect to `model`. `NULL` translates to all `models` in the table.
 #'
-#' @param datasets \code{character} value of the rodent data set(s) to include. Default value is \code{"controls"}.
+#' @param datasets `character` value of the rodent data set(s) to include. Default value is `"controls"`.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.
+#' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`portalr::forecasting_species`].
 #'
-#' @return \code{NULL}. Plot is generated.
+#' @return `NULL`. Plot is generated.
 #'
 #' @export
 #'
@@ -272,21 +272,21 @@ plot_casts_err_lead <- function (main                        = ".",
 #' @description Plot the coverage (fraction of predictions within the CI) and RMSE (root mean squared error) of each model among multiple species.
 #'
 #' @details A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'  The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts will be plotted. 
+#'  The casts can be trimmed specifically using the `cast_ids` input, otherwise, all relevant casts will be plotted. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
+#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
 #'
-#' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection.
+#' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon number(s) of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
+#' @param models `character` value(s) of the name of the model to include. Default value is `NULL`, which equates to no selection with respect to `model`. `NULL` translates to all `models` in the table.
 #'
-#' @param datasets \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#' @param datasets `character` value of the rodent data set to include Default value is `NULL`, which equates to no selection with respect to `dataset`.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.
+#' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`portalr::forecasting_species`].
 #'
-#' @return \code{NULL}. Plot is generated.
+#' @return `NULL`. Plot is generated.
 #' 
 #' @export
 #'
@@ -451,32 +451,32 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
 #' @title Plot Predictions for a Given Point in Time Across Multiple Species
 #'
-#' @description Plot the point value with confidence interval for a time point across multiple species. Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
+#' @description Plot the point value with confidence interval for a time point across multiple species. Casts can be selected either by supplying a `cast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `cast_id` input.
 #'
-#' @details The resulting plot shows predictions as points (open white circles) with error, where the point represents the \code{estimate} and the bounds of the error are \code{lower_pi} and \code{upper_pi} in the \code{cast_table} saved output from a model. \cr
-#'  As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. If \code{with_census = TRUE}, the observations from the associated moon are plotted as blue filled squares. 
+#' @details The resulting plot shows predictions as points (open white circles) with error, where the point represents the `estimate` and the bounds of the error are `lower_pi` and `upper_pi` in the `cast_table` saved output from a model. \cr
+#'  As of `portalcasting v0.9.0`, this represents the mean and the 95\% prediction interval. If `with_census = TRUE`, the observations from the associated moon are plotted as blue filled squares. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection.
+#' @param historic_end_newmoonnumber `integer` (or integer `numeric`) newmoon number of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection.
+#' @param model `character` value of the name of the model to include. Default value is `NULL`, which equates to no selection.
 #'
-#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#' @param dataset `character` value of the rodent data set to include Default value is `NULL`, which equates to no selection with respect to `dataset`.
 #'
-#' @param newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number for the plot. 
+#' @param newmoonnumber `integer` (or integer `numeric`) newmoon number for the plot. 
 #'
-#' @param cast_id \code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
+#' @param cast_id `integer` (or integer `numeric`) value representing the cast of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
 #'
-#' @param species \code{character} vector of the species codes (or \code{"total"} for the total across species) to be plotted or \code{NULL} (default) to plot all species in \code{dataset}. 
+#' @param species `character` vector of the species codes (or `"total"` for the total across species) to be plotted or `NULL` (default) to plot all species in `dataset`. 
 #' 
-#' @param highlight_sp \code{character} vector of the species codes (or \code{"total"} for the total across species) to be highlighted or \code{NULL} (default) to not highlight anything.
+#' @param highlight_sp `character` vector of the species codes (or `"total"` for the total across species) to be highlighted or `NULL` (default) to not highlight anything.
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to include.
+#' @param cast_groups `integer` (or integer `numeric`) value of the cast group to include.
 #'
-#' @param with_census \code{logical} toggle if the plot should include the observed data collected during the predicted census.
+#' @param with_census `logic` toggle if the plot should include the observed data collected during the predicted census.
 #'
-#' @return \code{NULL}. Plot is generated.
+#' @return `NULL`. Plot is generated.
 #'
 #' @export
 #'
@@ -656,31 +656,31 @@ plot_cast_point <- function (main                       = ".",
 #' @title Visualize a Time Series Cast of a Species
 #'
 #' @description Plot an observed timeseries and cast timeseries with a prediction interval. \cr
-#'  Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
-#'  Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
+#'  Casts can be selected either by supplying a `cast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `cast_id` input.
+#'  Casts can be selected either by supplying a `cast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `cast_id` input.
 #'
-#' @details The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line representing the \code{estimate} in the \code{cast_table} saved output from a model. \cr
-#'  As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. \cr
+#' @details The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by `lower_pi` and `upper_pi` and the bisecting blue line representing the `estimate` in the `cast_table` saved output from a model. \cr
+#'  As of `portalcasting v0.9.0`, this represents the mean and the 95\% prediction interval. \cr
 #'  Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection.
+#' @param historic_end_newmoonnumber `integer` (or integer `numeric`) newmoon number of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param model \code{character} value of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to model. 
+#' @param model `character` value of the name of the model to include. Default value is `NULL`, which equates to no selection with respect to model. 
 #'
-#' @param dataset \code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#' @param dataset `character` value of the rodent data set to include. Default value is `NULL`, which equates to no selection with respect to `dataset`.
 #'
-#' @param cast_id \code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
+#' @param cast_id `integer` (or integer `numeric`) value representing the cast of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
 #'
-#' @param species \code{character} value of the species codes (or \code{"total"} for the total across species) to be plotted. \code{NULL} (default) also gives the total.
+#' @param species `character` value of the species codes (or `"total"` for the total across species) to be plotted. `NULL` (default) also gives the total.
 #'
-#' @param historic_start_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
+#' @param historic_start_newmoonnumber `integer` (or integer `numeric`) newmoon number for the beginning of the x-axis of the plot. \cr
 #'  Does not influence the fit of the models, just the presentation. 
 #'
-#' @param cast_group \code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
+#' @param cast_group `integer` (or integer `numeric`) value of the cast group to include. Default value is `NULL`, which equates to no selection with respect to `cast_group`.
 #'
-#' @return \code{NULL}. Plot is generated.
+#' @return `NULL`. Plot is generated.
 #'
 #' @export
 #'

@@ -44,25 +44,34 @@ fill_models(main = ".", models = prefab_models(), new_model_controls = NULL)
 \item{new_model_controls}{Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.}
 }
 \value{
-\code{NULL}, \code{\link[base]{invisible}}-ly.
+\code{NULL}, \code{\link[base:invisible]{base::invisible}}-ly.
 }
 \description{
-Fill the directory with components including: \enumerate{
-  \item{Resources (\code{\link{fill_resources}}) \itemize{
-    \item{raw data (\code{\link[portalr]{download_observations}})}
-    \item{directory archive (\code{\link{download_archive}})}
-    \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
-  \item{Output \itemize{
-    \item{forecasts (\code{\link{fill_forecasts}})}
-    \item{model fits (\code{\link{fill_fits}})}}}
-  \item{Data (\code{\link{fill_data}})  \itemize{
-    \item{rodent datasets (\code{\link{prepare_rodents}})}
-    \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
-    \item{covariates (\code{\link{prepare_covariates}})}
-    \item{metadata (\code{\link{prepare_metadata}})}}}
-  \item{Models (\code{\link{fill_models}}) \itemize{
-    \item{model controls (\code{\link{write_model_controls}})}
-    \item{model scripts (if needed) (\code{\link{write_model_scripts}})}}}
-   }
-   Additional, new models and datasets can be added to the directory at filling using the optional arguments \code{new_model_controls} and \code{new_dataset_controls}, but the model or dataset must still be listed in its respective main argument, as well.
+Fill the directory with components including:
+\itemize{
+\item Resources (\code{\link{fill_resources}})
+\itemize{
+\item raw data (\code{\link[portalr:download_observations]{portalr::download_observations}})
+\item directory archive (\code{\link{download_archive}})
+\item climate forecasts (\code{\link{download_climate_forecasts}})
+}
+\item Output
+\itemize{
+\item forecasts (\code{\link{fill_forecasts}})
+\item model fits (\code{\link{fill_fits}})
+}
+\item Data (\code{\link{fill_data}})
+\itemize{
+\item rodent datasets (\code{\link{prepare_rodents}})
+\item temporal (lunar) data (\code{\link{prepare_newmoons}})
+\item covariates (\code{\link{prepare_covariates}})
+\item metadata (\code{\link{prepare_metadata}})
+}
+\item Models (\code{\link{fill_models}})
+\itemize{
+\item model controls (\code{\link{write_model_controls}})
+\item model scripts (if needed) (\code{\link{write_model_scripts}})
+Additional, new models and datasets can be added to the directory at filling using the optional arguments \code{new_model_controls} and \code{new_dataset_controls}, but the model or dataset must still be listed in its respective main argument, as well.
+}
+}
 }

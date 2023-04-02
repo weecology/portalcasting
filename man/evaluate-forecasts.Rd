@@ -17,9 +17,9 @@ evaluate_cast(main = ".", cast_id = NULL)
 \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}
 }
 \value{
-A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base]{invisible}}-ly..
+A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base:invisible]{base::invisible}}-ly..
 }
 \description{
 Evaluate forecasts in the directory, based on id(s). \cr
-  Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
+Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
 }

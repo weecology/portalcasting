@@ -33,7 +33,7 @@ ensemble_casts(
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr:rodent_species]{portalr::forecasting_species}}.}
 }
 \value{
 \code{data.frame} of ensembled casts.
@@ -42,6 +42,6 @@ ensemble_casts(
 Combine multiple casts' output into a single ensemble. Presently, only a general average ensemble is available.
 }
 \details{
-A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
- The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts from the stated \code{cast_groups} will be included.
+A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr
+The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts from the stated \code{cast_groups} will be included.
 }

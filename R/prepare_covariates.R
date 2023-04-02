@@ -1,10 +1,10 @@
 #' @title Prepare Covariate Data for Casting
 #'
-#' @description Prepare and combine the historical and forecast covariate data for a model run, according to the \code{\link{directory_settings}}.
+#' @description Prepare and combine the historical and forecast covariate data for a model run, according to the[`directory_settings`].
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @return \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.
+#' @return `data.frame` of historical and forecasted covariates that is also saved out to `settings$files$covariates` if indicated by `settings$save`.
 #'  
 #' @name prepare covariates
 #'

@@ -1,30 +1,30 @@
 #' @title Functions for Message Generation 
 #'
 #' @description Create messages for use in the portalcasting pipeline. 
-#'   \code{messageq}: Optionally generate a message based on a logical input. Uses a wrapper on \code{\link[base]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not. \cr \cr
-#'   \code{break_line}: Creates a horizontal line of characters ending with a newline call for messages. \cr \cr
-#'   \code{break_lines}: Creates a set of horizontal line of characters ending with a newline call for messages. \cr \cr
-#'   \code{castle}: Creates a text drawing of a sandcastle of characters for messages. 
+#'   `messageq`: Optionally generate a message based on a logical input. Uses a wrapper on [`base::message`] that, given the input to `quiet`, generates the message(s) in `...` or not. \cr \cr
+#'   `break_line`: Creates a horizontal line of characters ending with a newline call for messages. \cr \cr
+#'   `break_lines`: Creates a set of horizontal line of characters ending with a newline call for messages. \cr \cr
+#'   `castle`: Creates a text drawing of a sandcastle of characters for messages. 
 #'
-#' @param ... zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base]{message}}.
+#' @param ... zero or more objects that can be coerced to `character` and are concatenated with no separator added, or a single condition object. See [`base::message`].
 #'
-#' @param quiet \code{logical} indicator if the message should be generated. 
+#' @param quiet `logic` indicator if the message should be generated. 
 #'
-#' @param domain The domain for the translation. If \code{NA}, messages will not be translated. See \code{\link[base]{message}} and \code{\link[base]{gettext}}.
+#' @param domain The domain for the translation. If `NA`, messages will not be translated. See [`base::message`] and [`base::gettext`].
 #'
-#' @param appendLF \code{logical} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base]{message}}.
+#' @param appendLF `logic` indicator if messages given as a `character` string should have a newline appended. See [`base::message`].
 #'
-#' @param char \code{character} value to repeated \code{reps} times to form the break line. 
+#' @param char `character` value to repeated ``reps` times to form the break line. 
 #'
-#' @param reps \code{integer}-conformable value for number of times \code{char} is replicated.
+#' @param reps `integer`-conformable value for number of times `char` is replicated.
 #' 
-#' @param nlines \code{integer}-conformable value for the number of \code{\link{break_line}}s to include. Defaults to \code{2} lines.
+#' @param nlines `integer`-conformable value for the number of [`break_line`]s to include. Defaults to `2` lines.
 #'
 #' @return 
-#'   \code{messageq}: A message is given, and \code{NULL} returned, \code{\link[base]{invisible}}-ly. \cr
-#'   \code{break_line}: The \code{character} of the line to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. \cr 
-#'   \code{break_lines}: The \code{character} of the lines to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. \cr 
-#'   \code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base]{message}} or \code{\link{messageq}}. 
+#'   `messageq`: A message is given, and `NULL` returned, [`base::invisible`]-ly. \cr
+#'   `break_line`: The `character` of the line to be passed to [`base::message`] or [`messageq`]. \cr 
+#'   `break_lines`: The `character` of the lines to be passed to [`base::message`] or [`messageq`]. \cr 
+#'   `castle`: The `character` of the sandcastle to be passed to [`base::message`] or [`messageq`]. 
 #'
 #' @name messages
 #'

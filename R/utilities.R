@@ -5,7 +5,7 @@
 #'
 #' @param what An R object.
 #'
-#' @return \code{list} of the object, its class, the packages it is sourced from / through, and the versions of those packages.
+#' @return `list` of the object, its class, the packages it is sourced from / through, and the versions of those packages.
 #'
 #' @export
 #'
@@ -41,19 +41,19 @@ package_version_finder <- function (what) {
 
 #' @title Round an Interpolated Series
 #'
-#' @description Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.
+#' @description Wraps [`round`] around [`forecast::na.interp`] to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default `min_val = 0`) via [`pmax`].
 #'
-#' @param x A time series passed directly to \code{\link[forecast]{na.interp}}.
+#' @param x A time series passed directly to [`forecast::na.interp`].
 #'
-#' @param lambda Box-Cox transformation parameter passed directly to \code{\link[forecast]{na.interp}}.
+#' @param lambda Box-Cox transformation parameter passed directly to [`forecast::na.interp`].
 #'
-#' @param linear \code{logical} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast]{na.interp}}.
+#' @param linear `logic` indicator of if linear interpolation should be used. Passed directly to [`forecast::na.interp`].
 #'
-#' @param digits \code{integer} or \code{numeric} integer of how many digits to round to. Passed directly to \code{\link{round}}.
+#' @param digits `integer` or `numeric` integer of how many digits to round to. Passed directly to [`round`].
 #'
-#' @param min_val \code{integer} or \code{numeric} integer of minimum value allowable in the series.
+#' @param min_val `integer` or `numeric` integer of minimum value allowable in the series.
 #'
-#' @return \code{numeric} series.
+#' @return `numeric` series.
 #' 
 #' @examples
 #'   round_na.interp(x = c(1, 2, 3, NA, NA, 170))
@@ -85,12 +85,12 @@ round_na.interp <- function (x,
 #'
 #' @description Based on the separating character, determine the file extension.
 #'
-#' @param path \code{character} value of the file path possibly with an extension.
+#' @param path `character` value of the file path possibly with an extension.
 #'
-#' @param sep_char \code{character} value of the separator that delineates the extension from the file path. \cr 
-#'        Generally, this will be \code{"."}, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be \code{"="}.
+#' @param sep_char `character` value of the separator that delineates the extension from the file path. \cr 
+#'        Generally, this will be `."`, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be `"="`.
 #'
-#' @return \code{character} value of the extension (\code{file_ext}).
+#' @return `character` value of the extension (`file_ext`).
 #' 
 #' @examples
 #'  file_ext("home/folders.with.dots/stuff/ok.csv")
@@ -111,11 +111,11 @@ file_ext <- function (path, sep_char = ".") {
 
 #' @title Create a Named Empty List
 #'
-#' @description Produces a list with \code{NULL} for each element named according to \code{element_names}.
+#' @description Produces a list with `NULL` for each element named according to `element_names`.
 #' 
-#' @param element_names \code{character} vector of names for the elements in the list.
+#' @param element_names `character` vector of names for the elements in the list.
 #'
-#' @return \code{list} with names \code{element_names} and values \code{NULL}.
+#' @return `list` with names `element_names` and values `NULL`.
 #'
 #' @examples
 #'  named_null_list(c("a", "b", "c"))
@@ -138,11 +138,11 @@ named_null_list <- function (element_names = NULL) {
 #'
 #' @description Update a list with new values for elements
 #'
-#' @param list \code{list} to be updated with \code{...}. 
+#' @param list `list` to be updated with `...`. 
 #'
-#' @param ... Named elements to update in \code{list}
+#' @param ... Named elements to update in `list`
 #'
-#' @return Updated \code{list}.
+#' @return Updated `list`.
 #'
 #' @examples
 #'  orig_list <- list(a = 1, b = 3, c = 4)
@@ -207,9 +207,9 @@ update_list <- function (list = list(),
 #' 
 #' @description Based on the year in which the date occurred, determine the fraction of the year (foy) for the date (in relation to New Year's Eve in that year). 
 #'
-#' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be converted to the fraction of the year.
+#' @param dates `Date`(s) or `Date`-conformable value(s) to be converted to the fraction of the year.
 #'
-#' @return \code{numeric} value(s) of the fraction of the year.
+#' @return `numeric` value(s) of the fraction of the year.
 #'
 #' @examples
 #'  foy(Sys.Date())
@@ -234,13 +234,13 @@ foy <- function (dates = NULL) {
 
 #' @title Replace a Value with an Alternative if it is NULL 
 #'
-#' @description Replaces the focal input with the alternative value if it is \code{NULL}. 
+#' @description Replaces the focal input with the alternative value if it is `NULL`. 
 #'
 #' @param x Focal input.
 #'
 #' @param alt Alternative value.
 #'
-#' @return \code{x} if not \code{NULL}, \code{alt} otherwise. 
+#' @return `x` if not `NULL`, `alt` otherwise. 
 #' 
 #' @examples
 #'  ifnull(NULL, 123)

@@ -1,6 +1,11 @@
 # this script generates the static HTML file for the rodent profiles page from the csv in the www folder 
 
-table_in <- read.csv("www/rodents.csv")
+profiles_csv <- system.file(...     = "app", 
+                            ...     = "www",
+                            ...     = "rodents.csv",
+                            package = "portalcasting")
+
+table_in <- read.csv(profiles_csv)
 nspecies <- nrow(table_in)
 table_rows <- NULL
 for(i in 1:nspecies){

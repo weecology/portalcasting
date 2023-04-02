@@ -1,9 +1,9 @@
 #' @title Provide the Names or Controls for the Prefab Models
 #'
-#' @description Create a \code{character} vector of the names of the pre-fabricated (prefab) models or a \code{list} of their controls.
+#' @description Create a `character` vector of the names of the pre-fabricated (prefab) models or a `list` of their controls.
 #'
-#' @return \code{prefab_models}: \code{character} vector of model names. \cr
-#'         \code{prefab_model_controls}: \code{list} of model controls.
+#' @return `prefab_models`: `character` vector of model names. \cr
+#'         `prefab_model_controls`: `list` of model controls.
 #'
 #' @name prefabricated models
 #'

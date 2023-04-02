@@ -24,7 +24,7 @@ plot_casts_cov_RMSE(
 
 \item{datasets}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr:rodent_species]{portalr::forecasting_species}}.}
 }
 \value{
 \code{NULL}. Plot is generated.
@@ -33,6 +33,6 @@ plot_casts_cov_RMSE(
 Plot the coverage (fraction of predictions within the CI) and RMSE (root mean squared error) of each model among multiple species.
 }
 \details{
-A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
- The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts will be plotted.
+A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr
+The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts will be plotted.
 }

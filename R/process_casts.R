@@ -5,22 +5,20 @@
 #' @param model_fit,model_cast Output from a model's fit and cast functions.
 #'
 #' @details Four model-specific output components are saved and returned. 
-#'  \itemize{
-#'   \item \code{"cast_metadata"}: saved out with \code{\link[yaml]{write_yaml}}.
-#'   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}.
-#'   \item \code{"model_fit"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite]{serializeJSON}} and \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to specific object structure.
-#'   \item \code{"model_cast"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite]{serializeJSON}} and \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to specific object structure.
-#'  }
+#'    * `"cast_metadata"`: saved out with [`yaml::write_yaml`].
+#'    * `"cast_tab"`: saved using [`write.csv`].
+#'    * `"model_fit"`: saved out as a serialized `JSON` file via [`jsonlite::serializeJSON`] and [`jsonlite::read_json`], so quite flexible with respect to specific object structure.
+#'    * `"model_cast"`: saved out as a serialized `JSON` file via [`jsonlite::serializeJSON`] and [`jsonlite::read_json`], so quite flexible with respect to specific object structure.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param model Length-one \code{character} vector of model name.
+#' @param model Length-one `character` vector of model name.
 #'
-#' @param dataset Length-one \code{character} vector of dataset name.
+#' @param dataset Length-one `character` vector of dataset name.
 #'
-#' @param species Length-one\code{character} vector of species name.
+#' @param species Length-one`character` vector of species name.
 #'
-#' @return Relevant elements are saved to external files, and returned as a \code{list}.
+#' @return Relevant elements are saved to external files, and returned as a `list`.
 #'
 #' @export
 #'
@@ -150,17 +148,17 @@ process_model_output <- function (main      = ".",
 #'
 #' @description Read in the various output files of a cast or casts in the casts sub directory. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids,cast_id \code{integer} (or integer \code{numeric}) value(s) representing the cast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated cast's output is read in. \cr 
-#'  \code{cast_ids} can be NULL, one value, or more than one values, \code{cast_id} can only be NULL or one value.
+#' @param cast_ids,cast_id `integer` (or integer `numeric`) value(s) representing the cast(s) of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated cast's output is read in. \cr 
+#'  `cast_ids` can be NULL, one value, or more than one values, `cast_id` can only be NULL or one value.
 #'
 #' @return 
-#'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
-#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
-#'  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
-#'  \code{read_model_fit}: a model fit \code{list}. \cr \cr
-#'  \code{read_model_cast}: a model cast \code{list}.
+#'  `read_cast_tab`: `data.frame` of the `cast_tab`. \cr \cr
+#'  `read_cast_tabs`: `data.frame` of the `cast_tab`s with a `cast_id` column added to distinguish among casts. \cr \cr
+#'  `read_cast_metadata`: `list` of `cast_metadata`. \cr \cr
+#'  `read_model_fit`: a model fit `list`. \cr \cr
+#'  `read_model_cast`: a model cast `list`.
 #'
 #' @name read cast output
 #'
@@ -364,23 +362,23 @@ read_model_cast <- function (main    = ".",
 #' @title Find Casts that Fit Specifications
 #'
 #' @description Determines the casts that match user specifications. \cr
-#'  Functionally, a wrapper on \code{\link{read_casts_metadata}} with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
+#'  Functionally, a wrapper on [`read_casts_metadata`] with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
+#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
 #'
-#' @param historic_end_newmoonnumbers \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection.
+#' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon numbers of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast groups to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.
+#' @param cast_groups `integer` (or integer `numeric`) value of the cast groups to include. Default value is `NULL`, which equates to no selection with respect to `cast_group`.
 #'
-#' @param models \code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.
+#' @param models `character` values of the names of the models to include. Default value is `NULL`, which equates to no selection with respect to `model`.
 #'
-#' @param datasets \code{character} values of the rodent data sets to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
+#' @param datasets `character` values of the rodent data sets to include. Default value is `NULL`, which equates to no selection with respect to `dataset`.
 #'
-#' @param species \code{character} value of the species codes (or \code{"total"} for the total across species) to include. Default value is \code{NULL}, which equates to no selection with respect to \code{species}.
+#' @param species `character` value of the species codes (or `"total"` for the total across species) to include. Default value is `NULL`, which equates to no selection with respect to `species`.
 #'
-#' @return \code{data.frame} of the \code{cast_tab}.
+#' @return `data.frame` of the `cast_tab`.
 #'
 #' @export
 #'
@@ -442,7 +440,7 @@ select_casts <- function (main                        = ".",
 #'
 #' @description Read in the casts metadata file. If the data file does not exist, an effort is made to create the file.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @return Data requested.
 #'

@@ -72,44 +72,44 @@ runjags_controls(
 
 \item{seed}{A single \code{integer}-conformable value or \code{NULL} set in \code{\link{set.seed}}.}
 
-\item{nchains}{Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags]{run.jags}}.}
+\item{nchains}{Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{adapt}{Non-negative \code{integer}-conformable value of the number of adaptation steps to use. See \code{\link[runjags]{run.jags}}.}
+\item{adapt}{Non-negative \code{integer}-conformable value of the number of adaptation steps to use. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{burnin}{Non-negative \code{integer}-conformable value of the number of burnin steps to use. See \code{\link[runjags]{run.jags}}.}
+\item{burnin}{Non-negative \code{integer}-conformable value of the number of burnin steps to use. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{sample}{Non-negative \code{integer}-conformable value of the number of sampling steps to use. See \code{\link[runjags]{run.jags}}.}
+\item{sample}{Non-negative \code{integer}-conformable value of the number of sampling steps to use. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{thin}{Positive \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags]{run.jags}}.}
+\item{thin}{Positive \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{modules}{\code{character} vector of external modules to add to JAGS. See \code{\link[runjags]{run.jags}}.}
+\item{modules}{\code{character} vector of external modules to add to JAGS. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{method}{\code{character} value of the \code{\link[runjags]{run.jags}} method to use. Options include \code{"rjags"}, \code{"simple"}, \code{"interruptible"}, \code{"parallel"}, \code{"rjparallel"}, \code{"background"}, \code{"bgparallel"}, and \code{"snow"}. See \code{\link[runjags]{run.jags}}.}
+\item{method}{\code{character} value of the \code{\link[runjags:run.jags]{runjags::run.jags}} method to use. Options include \code{"rjags"}, \code{"simple"}, \code{"interruptible"}, \code{"parallel"}, \code{"rjparallel"}, \code{"background"}, \code{"bgparallel"}, and \code{"snow"}. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{factories}{\code{character} vector of factory modules to add to JAGS. See \code{\link[runjags]{run.jags}}.}
+\item{factories}{\code{character} vector of factory modules to add to JAGS. See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{mutate}{A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags]{run.jags}}.}
+\item{mutate}{A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags:run.jags]{runjags::run.jags}}.}
 
-\item{silent_jags}{\code{logical} value for quieting the output from the runjags function, including the underlying JAGS output.}
+\item{silent_jags}{\code{logic} value for quieting the output from the runjags function, including the underlying JAGS output.}
 }
 \value{
-\code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags]{run.jags}}. \cr
-  \code{runjags_data}: A \code{list} of model-specific data for use in \code{\link[runjags]{run.jags}}. \cr
-  \code{runjags_monit}: A \code{vector} of model-specific \code{character} values of parameters to track in \code{\link[runjags]{run.jags}}.  \cr
-  \code{runjags_model}: A single \code{character} value of the JAGS model block for \code{\link[runjags]{run.jags}}.  \cr
-  \code{runjags_inits}: A \code{function} that takes the argument \code{data} to produce chain-specific initial values for \code{\link[runjags]{run.jags}}. \cr
-  \code{runjags_controls}: A \code{list} of controls. \cr
-  \code{forecast.runjags}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"level"}.
+\code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags:run.jags]{runjags::run.jags}}. \cr
+\code{runjags_data}: A \code{list} of model-specific data for use in \code{\link[runjags:run.jags]{runjags::run.jags}}. \cr
+\code{runjags_monitor}: A \code{vector} of model-specific \code{character} values of parameters to track in \code{\link[runjags:run.jags]{runjags::run.jags}}.  \cr
+\code{runjags_model}: A single \code{character} value of the JAGS model block for \code{\link[runjags:run.jags]{runjags::run.jags}}.  \cr
+\code{runjags_inits}: A \code{function} that takes the argument \code{data} to produce chain-specific initial values for \code{\link[runjags:run.jags]{runjags::run.jags}}. \cr
+\code{runjags_controls}: A \code{list} of controls. \cr
+\code{forecast.runjags}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"level"}.
 }
 \description{
 Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \cr
-  \code{fit_runjags}: Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
-  \code{runjags_data}, \code{runjags_monit}, \code{runjags_model}, \code{runjags_inits}: Produce the model-specific components as named. \cr 
-  \code{forecast.runjags}: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a \code{"forecast"}-class object. \cr 
-  \code{runjags_controls}: Combines the \code{\link[runjags]{run.jags}} control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
+\code{fit_runjags}: Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags:run.jags]{runjags::run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
+\code{runjags_data}, \code{runjags_monitor}, \code{runjags_model}, \code{runjags_inits}: Produce the model-specific components as named. \cr
+\code{forecast.runjags}: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a \code{"forecast"}-class object. \cr
+\code{runjags_controls}: Combines the \code{\link[runjags:run.jags]{runjags::run.jags}} control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
 }
 \references{
-Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}. 
- 
- Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
+Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}.
+
+Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
 }

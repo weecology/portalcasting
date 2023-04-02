@@ -1,38 +1,38 @@
 #' @title Create, Run, and Forecast Multi-model Inference TSGLM Model Runs
 #'
 #' @description Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr
-#'   \code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount]{tsglm}} (from the tscount (Liboschik et al. 2017) package) model. \cr
-#'   \code{forecast.tsglm}: A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
+#'   `meta_tsglm`: Combines the model running with the covariate preparation functions for a multi-model [`tscount::tsglm`] (from the tscount (Liboschik et al. 2017) package) model. \cr
+#'   `forecast.tsglm`: A wrapper around the `predict` function for tsglm objects that produces a `"forecast"`-class object.
 #'
-#' @param ts Non-negative \code{integer}-conformable vector of rodent abundances to use in forecasting. See \code{\link{prepare_abundance}}.
+#' @param ts Non-negative `integer`-conformable vector of rodent abundances to use in forecasting. See [`prepare_abundance`].
 #'
-#' @param metadata \code{list} of model control elements. See \code{\link{prepare_metadata}}.
+#' @param metadata `list` of model control elements. See [`prepare_metadata`].
 #'
-#' @param covariates \code{data.frame} of covariates used in modeling. See \code{\link{prepare_covariates}}.
+#' @param covariates `data.frame` of covariates used in modeling. See [`prepare_covariates`].
 #'
-#' @param distr \code{character} of the response distribution. See \code{\link[tscount]{tsglm}}.
+#' @param distr `character` of the response distribution. See [`tscount::tsglm`].
 #'
-#' @param link \code{character} of the link funciton. See \code{\link[tscount]{tsglm}}.
+#' @param link `character` of the link funciton. See [`tscount::tsglm`].
 #'
-#' @param model A named \code{list} of model linear predictors. See \code{\link[tscount]{tsglm}}.
+#' @param model A named `list` of model linear predictors. See [`tscount::tsglm`].
 #'
-#' @param submodels \code{list} of \code{character} vectors definind the covariates to include in each of the submodels.
+#' @param submodels `list` of `character` vectors definind the covariates to include in each of the submodels.
 #'
-#' @param lag \code{integer}-conformable value of the number of timesteps used in a bulk lagging for all covariates in all submodels.
+#' @param lag `integer`-conformable value of the number of timesteps used in a bulk lagging for all covariates in all submodels.
 #'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
+#' @param quiet `logic` indicator controlling if messages are printed.
 #' 
-#' @param object A \code{tsglm}-class object.
+#' @param object A `tsglm`-class object.
 #'
-#' @param h \code{integer}-conformable number of steps forward to forecast. Passed into \code{predict} as \code{n.ahead}.
+#' @param h `integer`-conformable number of steps forward to forecast. Passed into `predict` as `n.ahead`.
 #'
-#' @param level \code{numeric} of the confidence level to use in summarizing the predictions.
+#' @param level `numeric` of the confidence level to use in summarizing the predictions.
 #'
-#' @param ... Additional parameters passed into \code{predict}. 
+#' @param ... Additional parameters passed into `predict`. 
 #'
 #' @return 
-#'   \code{meta_tsglm}: An object of class \code{"tsglm"} with additional elements defining the submodel and lag.
-#'   \code{forecast.tsglm}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
+#'   `meta_tsglm`: An object of class `"tsglm"` with additional elements defining the submodel and lag.
+#'   `forecast.tsglm`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"newxreg"` (if provided for prediction) as well as the other elements returned by `predict`.
 #'
 #' @references 
 #'  Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. \href{https://doi.org/10.18637/jss.v082.i05}{URL}. 

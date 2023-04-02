@@ -2,79 +2,79 @@
 #'
 #' @description Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and this function gathers them into a list for pipeline functionality.
 #'
-#' @param files \code{list} of \code{character} names of standard files, see \code{\link{directory_files}}.
+#' @param files `list` of `character` names of standard files, see [`directory_files`].
 #'
-#' @param subdirectories \code{list} of \code{character} names of standard subdirectories, see \code{\link{directory_subdirectories}}.
+#' @param subdirectories `list` of `character` names of standard subdirectories, see [`directory_subdirectories`].
 #'
-#' @param resources \code{list} of \code{list}s for standard resources, see \code{\link{directory_resources}}.
+#' @param resources `list` of `list`s for standard resources, see [`directory_resources`].
 #'
-#' @param time \code{list} of time settings, see \code{\link{time_settings}}.
+#' @param time `list` of time settings, see [`time_settings`].
 #'
-#' @param newmoons \code{character} name for the lunar data csv.
+#' @param newmoons `character` name for the lunar data csv.
 #'
-#' @param covariates \code{character} name for the combined historical and forecast covariates csv.
+#' @param covariates `character` name for the combined historical and forecast covariates csv.
 #'
-#' @param forecast_metadata \code{character} name for the forecast metadata csv.
+#' @param forecast_metadata `character` name for the forecast metadata csv.
 #'
-#' @param metadata \code{character} name for the Forecast metadata YAML.
+#' @param metadata `character` name for the Forecast metadata YAML.
 #'
-#' @param dataset_controls \code{character} name for the YAML of dataset control list(s).
+#' @param dataset_controls `character` name for the YAML of dataset control list(s).
 #'
-#' @param model_controls \code{character} name for the YAML of model controls list(s).
+#' @param model_controls `character` name for the YAML of model controls list(s).
 #'
-#' @param forecast_evaluations \code{character} name for the forecast evaluations csv.
+#' @param forecast_evaluations `character` name for the forecast evaluations csv.
 #'
-#' @param forecast_results \code{character} name for the forecast combination results csv.
+#' @param forecast_results `character` name for the forecast combination results csv.
 #'
-#' @param resources \code{character} name for the resources subdirectory.
+#' @param resources `character` name for the resources subdirectory.
 #'
-#' @param data \code{character} name for the data subdirectory.
+#' @param data `character` name for the data subdirectory.
 #'
-#' @param models \code{character} name for the models subdirectory.
+#' @param models `character` name for the models subdirectory.
 #'
-#' @param fits \code{character} name for the fits subdirectory.
+#' @param fits `character` name for the fits subdirectory.
 #'
-#' @param forecasts \code{character} name for the forecasts subdirectory.
+#' @param forecasts `character` name for the forecasts subdirectory.
 #'
-#' @param PortalData \code{list} of \code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github
+#' @param PortalData `list` of `source` and `version` elements of `character` values for the Portal Data download. Default values retrieve the latest data from github
 #'
-#' @param portalPredictions \code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{version = NULL} indicates no download.
+#' @param portalPredictions `list` of `source` and `version` elements of `character` values for the archive download. Default values point to github, but `verison = NULL` indicates no download.
 #'
-#' @param climate_forecast \code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.
+#' @param climate_forecast `list` of `source`, `version`, and `data` elements of `character` values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.
 #'
-#' @param save \code{logical} indicator controlling if the output should be saved out.
+#' @param save `logic` indicator controlling if the output should be saved out.
 #'
-#' @param overwrite \code{logical} indicator of whether or not file writing sould occur even if a local copy already exists.
+#' @param overwrite `logic` indicator of whether or not file writing sould occur even if a local copy already exists.
 #'
-#' @param force \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
+#' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
-#' @param unzip_pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay. 
+#' @param unzip_pause Positive `integer` or integer `numeric` seconds for pausing during steps around unzipping that require time delay. 
 #'
-#' @param download_timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
+#' @param download_timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`base::options`].
 #'
-#' @param origin \code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).
+#' @param origin `Date` forecast origin. Default is today's date (set using [`Sys.Date`]).
 #'
-#' @param cast_date \code{Date} of when the forecasts are occurring. Default is today's date (set using \code{\link{Sys.Date}}).
+#' @param cast_date `Date` of when the forecasts are occurring. Default is today's date (set using [`Sys.Date`]).
 #'
-#' @param timeseries_start \code{Date} after which historic samples are included in the timeseries fit. Default value is \code{1995-01-01}, corresponding to moon 217.
+#' @param timeseries_start `Date` after which historic samples are included in the timeseries fit. Default value is `1995-01-01`, corresponding to moon 217.
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. \cr 
-#'   As of version 0.51.0, default is now \code{365}, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year. 
+#' @param lead_time `integer` (or integer `numeric`) value for the number of calendar days forward a cast will cover. \cr 
+#'   As of version 0.51.0, default is now `365`, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year. 
 #'
-#' @param max_lag \code{integer} (or integer \code{numeric}) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
-#'   Default is \code{365} for the logistic covariate models.
+#' @param max_lag `integer` (or integer `numeric`) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
+#'   Default is `365` for the logistic covariate models.
 #'
-#' @param lag_buffer \code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
-#'   Default value of \code{60} corresponds to two additional lunar months. 
+#' @param lag_buffer `integer` (or integer `numeric`) additional number of calendar days back in time to add to the maximum lag. \cr
+#'   Default value of `60 corresponds to two additional lunar months. 
 #'
-#' @param lead_time_buffer \code{integer} (or integer \code{numeric}) additional number of calendar days forward in time to forecast. \cr
-#'   Default value of \code{30} corresponds to one additional lunar month. 
+#' @param lead_time_buffer `integer` (or integer `numeric`) additional number of calendar days forward in time to forecast. \cr
+#'   Default value of `30` corresponds to one additional lunar month. 
 #'
-#' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
+#' @param confidence_level `numeric` confidence level used in summarizing model output. Must be between `0` and `1`.
 #'
-#' @param nsamples \code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates. 
+#' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates. 
 #'
-#' @return Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
+#' @return Named `list` of settings for the directory (for `directory_settings`) or `list` of settings components (for `directory_files`, `directory_subdirectories`, and `directory_resources`).
 #'
 #' @name directory settings
 #'

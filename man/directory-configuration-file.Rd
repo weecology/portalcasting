@@ -24,18 +24,18 @@ update_directory_configuration(main = ".")
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in\code{\link{directory_settings}}.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+\item{quiet}{\code{logic} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the messages.}
+\item{verbose}{\code{logic} indicator of whether or not to print out all of the messages.}
 }
 \value{
-\code{list} of directory configurations, \code{\link[base]{invisible}}-ly.
+\code{list} of directory configurations, \code{\link[base:invisible]{base::invisible}}-ly.
 }
 \description{
 The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
-             \code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
-             \code{read_directory_configuration} reads the YAML config file into the R session. \cr \cr
-             \code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
+\code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
+\code{read_directory_configuration} reads the YAML config file into the R session. \cr \cr
+\code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
 }

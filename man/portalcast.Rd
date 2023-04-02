@@ -29,16 +29,16 @@ make_model_combinations(
 
 \item{datasets, dataset}{\code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one.}
 
-\item{species}{\code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr]{rodent_species}}.}
+\item{species}{\code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr:rodent_species]{portalr::rodent_species}}.}
 }
 \value{
-\code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base]{invisible}}-ly. \cr 
-  \code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr
-  \code{make_model_combinations}: \code{data.frame} of the model combinations.
+\code{portalcast}: \code{data.frame} of model combinations with a \code{logic} column added for fit success, \code{\link[base:invisible]{base::invisible}}-ly. \cr
+\code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr
+\code{make_model_combinations}: \code{data.frame} of the model combinations.
 }
 \description{
 Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
- \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
- \code{cast} runs a single cast of a single model on one species of one dataset. \cr \cr
- \code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination.
+\code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
+\code{cast} runs a single cast of a single model on one species of one dataset. \cr \cr
+\code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination.
 }

@@ -1,22 +1,22 @@
 #' @title Forecast Portal Rodents Models
 #'
 #' @description Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
-#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
-#'  \code{cast} runs a single cast of a single model on one species of one dataset. \cr \cr
-#'  \code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination. 
+#'  `portalcast` wraps around `cast` to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
+#'  `cast` runs a single cast of a single model on one species of one dataset. \cr \cr
+#'  `make_model_combinations` translates model controls into a `data.frame` of model, dataset, and species columns, with a row for each combination. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param models,model \code{character} vector of name(s) of model(s) to include in the forecast. In \code{cast}, \code{model} can only be length-one.
+#' @param models,model `character` vector of name(s) of model(s) to include in the forecast. In `cast`, `model` can only be length-one.
 #'
-#' @param datasets,dataset \code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one. 
+#' @param datasets,dataset `character` vector of datasets to be forecast. In `cast`, `dataset` can only be length-one. 
 #'
-#' @param species \code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr]{rodent_species}}.
+#' @param species `character` vector of species to be forecast. In `cast`, `species` can only be length-one. See [`portalr::rodent_species`].
 #'
 #' @return 
-#'   \code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base]{invisible}}-ly. \cr 
-#'   \code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr
-#'   \code{make_model_combinations}: \code{data.frame} of the model combinations.
+#'   `portalcast`: `data.frame` of model combinations with a `logic` column added for fit success, [`base::invisible`]-ly. \cr 
+#'   `cast`: `list` of model outputs from [`process_model_output`]. \cr
+#'   `make_model_combinations`: `data.frame` of the model combinations.
 #'
 #' @export
 #'

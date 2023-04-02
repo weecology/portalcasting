@@ -1,9 +1,9 @@
 #' @title Provide the Names or Controls for the Prefab Rodent Datasets
 #'
-#' @description Create a \code{character} vector of the names of the pre-fabricated (prefab) rodent datasets or a \code{list} of their controls
+#' @description Create a `character` vector of the names of the pre-fabricated (prefab) rodent datasets or a `list` of their controls
 #'
-#' @return \code{prefab_datasets}: \code{character} vector of dataset names. \cr
-#'         \code{prefab_dataset_controls}: \code{list} vector of dataset controls. 
+#' @return `prefab_datasets`: `character` vector of dataset names. \cr
+#'         `prefab_dataset_controls`: `list` vector of dataset controls. 
 #'
 #' @name prefabricated_datasets
 #'

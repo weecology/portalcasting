@@ -12,7 +12,7 @@ prefab_models()
 }
 \value{
 \code{prefab_models}: \code{character} vector of model names. \cr
-        \code{prefab_model_controls}: \code{list} of model controls.
+\code{prefab_model_controls}: \code{list} of model controls.
 }
 \description{
 Create a \code{character} vector of the names of the pre-fabricated (prefab) models or a \code{list} of their controls.

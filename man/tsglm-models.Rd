@@ -23,11 +23,11 @@ meta_tsglm(
 \arguments{
 \item{ts}{Non-negative \code{integer}-conformable vector of rodent abundances to use in forecasting. See \code{\link{prepare_abundance}}.}
 
-\item{model}{A named \code{list} of model linear predictors. See \code{\link[tscount]{tsglm}}.}
+\item{model}{A named \code{list} of model linear predictors. See \code{\link[tscount:tsglm]{tscount::tsglm}}.}
 
-\item{distr}{\code{character} of the response distribution. See \code{\link[tscount]{tsglm}}.}
+\item{distr}{\code{character} of the response distribution. See \code{\link[tscount:tsglm]{tscount::tsglm}}.}
 
-\item{link}{\code{character} of the link funciton. See \code{\link[tscount]{tsglm}}.}
+\item{link}{\code{character} of the link funciton. See \code{\link[tscount:tsglm]{tscount::tsglm}}.}
 
 \item{lag}{\code{integer}-conformable value of the number of timesteps used in a bulk lagging for all covariates in all submodels.}
 
@@ -37,7 +37,7 @@ meta_tsglm(
 
 \item{metadata}{\code{list} of model control elements. See \code{\link{prepare_metadata}}.}
 
-\item{quiet}{\code{logical} indicator controlling if messages are printed.}
+\item{quiet}{\code{logic} indicator controlling if messages are printed.}
 
 \item{object}{A \code{tsglm}-class object.}
 
@@ -49,12 +49,12 @@ meta_tsglm(
 }
 \value{
 \code{meta_tsglm}: An object of class \code{"tsglm"} with additional elements defining the submodel and lag.
-  \code{forecast.tsglm}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
+\code{forecast.tsglm}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
 }
 \description{
 Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr
-  \code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount]{tsglm}} (from the tscount (Liboschik et al. 2017) package) model. \cr
-  \code{forecast.tsglm}: A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
+\code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount:tsglm]{tscount::tsglm}} (from the tscount (Liboschik et al. 2017) package) model. \cr
+\code{forecast.tsglm}: A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
 }
 \references{
 Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. \href{https://doi.org/10.18637/jss.v082.i05}{URL}.

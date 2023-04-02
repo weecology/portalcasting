@@ -14,5 +14,5 @@ package_version_finder(what)
 }
 \description{
 Locate basic package information of an R object. If nothing is input, it operates on itself. \cr
-  If the object is sourced through multiple packages, each package and its version are included.
+If the object is sourced through multiple packages, each package and its version are included.
 }

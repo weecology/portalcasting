@@ -1,14 +1,14 @@
 #' @title Prepare a Model-Running Metadata List
 #'
-#' @description Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the \code{\link{directory_settings}}.
+#' @description Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the[`directory_settings`].
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param datasets \code{character} vector of name(s) of dataset(s) to include.
+#' @param datasets `character` vector of name(s) of dataset(s) to include.
 #'
-#' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
+#' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @return \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
+#' @return `list` of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 #' 
 #' @export
 #'

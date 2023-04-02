@@ -3,27 +3,27 @@
 #' @description Combine multiple casts' output into a single ensemble. Presently, only a general average ensemble is available.
 #'
 #' @details A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'  The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts from the stated \code{cast_groups} will be included. 
+#'  The casts can be trimmed specifically using the `cast_ids` input, otherwise, all relevant casts from the stated `cast_groups` will be included. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param method \code{character} value of the name of the ensemble method to use. Presently, only \code{"unwtavg"} (unweighted average) is allowed.
+#' @param method `character` value of the name of the ensemble method to use. Presently, only `"unwtavg"` (unweighted average) is allowed.
 #'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled. 
+#' @param cast_groups `integer` (or integer `numeric`) value of the cast group to combine with an ensemble. If `NULL` (default), the most recent cast group is ensembled. 
 #'
-#' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
+#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
 #'
-#' @param historic_end_newmoonnumber \code{integer} (or integer \code{numeric}) newmoon number of the forecast origin. Default value is \code{NULL}, which equates to no selection.
+#' @param historic_end_newmoonnumber `integer` (or integer `numeric`) newmoon number of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param cast_tab Optional \code{data.frame} of cast table outputs. If not input, will be loaded.
+#' @param cast_tab Optional `data.frame` of cast table outputs. If not input, will be loaded.
 #'
-#' @param models \code{character} value(s) of the name of the model to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}. \code{NULL} translates to all \code{models} in the table.
+#' @param models `character` value(s) of the name of the model to include. Default value is `NULL`, which equates to no selection with respect to `model`. `NULL` translates to all `models` in the table.
 #'
-#' @param dataset \code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.
+#' @param dataset `character` value of the rodent data set to include Default value is `NULL`, which equates to the first data set encountered.
 #'
-#' @param species \code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr]{forecasting_species}}.
+#' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`portalr::forecasting_species`].
 #'
-#' @return \code{data.frame} of ensembled casts.
+#' @return `data.frame` of ensembled casts.
 #' 
 #' @export
 #'

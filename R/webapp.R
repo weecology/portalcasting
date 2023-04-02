@@ -1,203 +1,14 @@
-portal_forecast_ui <- function (main = ".") {
 
-  models_rmd <- system.file(...     = "app", 
-                            ...     = "models.Rmd",
-                            package = "portalcasting")
-  render(models_rmd)
 
-  profiles_r <- system.file(...     = "app", 
-                            ...     = "profile_html.R",
-                            package = "portalcasting")
-  source(profiles_r)
 
 
-  fluidPage(page_title_panel( ),
-            page_subtitle_panel( ),
-            page_main_panel( ))
 
 
-}
 
 
+historic_end_newmoonnumber_list <- function (main = ".") {
 
-page_main_panel <- function ( ) {
-
-  mainPanel(tabsetPanel(forecast_tab( ),
-                        evaluation_tab( ),
-                        about_tab( ),
-                        models_tab( ),
-                        profiles_tab( )))
-
-
-}
-
-evaluation_tab <- function ( ) {
-
-
-  tabPanel(title = "Evaluation", 
-           br( ), 
-           evaluation_tab_input_selection_row( ), 
-           h2("Most recent observation vs. forecasts"),
-           evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
-           plotOutput("evaluation_tab_sp_plot"),
-           br( ),
-           h2("Model Coverage & RMSE (last 3 years of forecasts)"),
- #          plotOutput("evaluation_tab_RMSE_plot"),
-           br( ))
-
-}
-
-
-evaluation_tab_input_selection_checks_row <- function ( ) {
-
-  fluidRow(textOutput("evaluation_tab_species"), 
-           textOutput("evaluation_tab_dataset"), 
-           textOutput("evaluation_tab_model"), 
-           textOutput("evaluation_tab_historic_end_newmoonnumber"))
-
-}
-
-evaluation_tab_input_selection_row <- function ( ) {
-
-
-  fluidRow(evaluation_tab_input_selection_row_species( ),
-           evaluation_tab_input_selection_row_dataset( ),
-           evaluation_tab_input_selection_row_model( ),
-           evaluation_tab_input_selection_row_historic_end_newmoonnumber( ))
-
-
-
-}
-
-
-evaluation_tab_input_selection_row_species <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "evaluation_tab_species",
-                     label    = "Species",
-                     choices  = species_list( ),
-                     selected = "DM"))
-
-}
-
-evaluation_tab_input_selection_row_dataset <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "evaluation_tab_dataset",
-                     label    = "Dataset",
-                     choices  = prefab_datasets( ),
-                     selected = "controls"))
-
-}
-
-
-evaluation_tab_input_selection_row_model <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "evaluation_tab_model",
-                     label    = "Model",
-                     choices  = model_list(),
-                     selected = "AutoArima"))
-
-}
-
-
-evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "evaluation_tab_historic_end_newmoonnumber",
-                     label    = "Origin Newmoon",
-                     choices  = historic_end_newmoonnumber_list( ),
-                     selected = 560))
-
-}
-
-
-
-forecast_tab <- function ( ) {
-
-
-  tabPanel(title = "Forecast", 
-           br( ), 
-           forecast_tab_input_selection_row( ), 
-          # forecast_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
-           plotOutput("forecast_tab_ts_plot"),
-           br( ),
-           plotOutput("forecast_tab_ss_plot"),
-           br( ))
-
-}
-
-
-forecast_tab_input_selection_checks_row <- function ( ) {
-
-  fluidRow(textOutput("forecast_tab_species"), 
-           textOutput("forecast_tab_dataset"), 
-           textOutput("forecast_tab_model"), 
-           textOutput("forecast_tab_historic_end_newmoonnumber"))
-
-}
-
-forecast_tab_input_selection_row <- function ( ) {
-
-
-  fluidRow(forecast_tab_input_selection_row_species( ),
-           forecast_tab_input_selection_row_dataset( ),
-           forecast_tab_input_selection_row_model( ),
-           forecast_tab_input_selection_row_historic_end_newmoonnumber( ))
-
-
-
-}
-
-
-forecast_tab_input_selection_row_species <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "forecast_tab_species",
-                     label    = "Species",
-                     choices  = species_list( ),
-                     selected = "DM"))
-
-}
-
-forecast_tab_input_selection_row_dataset <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "forecast_tab_dataset",
-                     label    = "Dataset",
-                     choices  = prefab_datasets( ),
-                     selected = "controls"))
-
-}
-
-
-forecast_tab_input_selection_row_model <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "forecast_tab_model",
-                     label    = "Model",
-                     choices  = model_list(),
-                     selected = "AutoArima"))
-
-}
-
-
-forecast_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
-
-  column(width = 3,
-         selectInput(inputId  = "forecast_tab_historic_end_newmoonnumber",
-                     label    = "Origin Newmoon",
-                     choices  = historic_end_newmoonnumber_list( ),
-                     selected = 566))
-
-}
-
-
-historic_end_newmoonnumber_list <- function ( ) {
-
-# how do we get these from external? how can we pass main in?
-  525:566
+  unique(read_casts_metadata(main = main)$historic_end_newmoonnumber)
 
 }
 
@@ -218,43 +29,8 @@ species_list <- function ( ) {
 }
 
 
-about_tab <- function ( ) {
 
-  tabPanel(title = "About",
-           includeMarkdown("about.md")) 
 
-}
-
-models_tab <- function ( ) {
-
-  tabPanel(title = "Models",
-           includeHTML("models.html")) 
-
-}
-
-profiles_tab <- function ( ) {
-
-  tabPanel(title = "Rodent Profiles",
-           includeHTML("profile.html")) 
-
-}
-
-page_title_panel <- function ( ) {
-
-  app_title <- "Portal Project Forecasting"
-  titlePanel(title = app_title)
-
-}
-
-page_subtitle_panel <- function ( ) {
-
-  href <- a(href   = "http://portal.weecology.org", 
-                     "The Portal Project", 
-            target = "_blank")
-
-  p(HTML(text = paste0("Forecasts for the population and community dynamics of ", href, ".")))
-
-}
 
 
 
@@ -376,9 +152,9 @@ initial_output <- function (rv, output) {
                                                                                  historic_end_newmoonnumber      = rv$evaluation_tab_historic_end_newmoonnumber,
                                                                                  with_census                     = TRUE))
   output$evaluation_tab_RMSE_plot                  <- renderPlot(plot_casts_cov_RMSE(main                        = main,
-                                                                                     dataset                     = rv$evaluation_tab_dataset,
+                                                                                     datasets                    = rv$evaluation_tab_dataset,
                                                                                      species                     = rv$evaluation_tab_species,
-                                                                                     model                       = rv$evaluation_tab_model,
+                                                                                     models                      = rv$evaluation_tab_model,
                                                                                      historic_end_newmoonnumbers = rv$evaluation_tab_historic_end_newmoonnumber))
   output 
 
@@ -404,7 +180,6 @@ event_reaction <- function (main, event_name, rv, input, output, session) {
                event_name = event_name, 
                rv         = rv, 
                input      = input, 
-               output     = output, 
                session    = session)
 
 
@@ -471,11 +246,10 @@ update_output <- function (main, event_name, rv, input, output) {
                                                                                    historic_end_newmoonnumber      = rv$evaluation_tab_historic_end_newmoonnumber,
                                                                                    with_census                     = TRUE))
     output$evaluation_tab_RMSE_plot                  <- renderPlot(plot_casts_cov_RMSE(main                        = main,
-                                                                                       dataset                     = rv$evaluation_tab_dataset,
+                                                                                       datasets                    = rv$evaluation_tab_dataset,
                                                                                        species                     = rv$evaluation_tab_species,
-                                                                                       model                       = rv$evaluation_tab_model,
+                                                                                       models                      = rv$evaluation_tab_model,
                                                                                        historic_end_newmoonnumbers = rv$evaluation_tab_historic_end_newmoonnumber))
-
 
   }
 
@@ -486,7 +260,7 @@ update_output <- function (main, event_name, rv, input, output) {
 
 
 
-update_input <- function (main, event_name, rv, input, output, session) {
+update_input <- function (main, event_name, rv, input, session) {
 
   if (event_name == "forecast_tab_species") {
 
@@ -958,13 +732,12 @@ available_models <- function (event_name,
 
 
 
-#' @title Launch the Portal Forecast Web Application
-#' 
-#' @description Launches a local version of the web application by running \code{\link[shiny]{runApp}} pointed to the \code{app} subdirectory in the local \code{portalcasting} package folder.
+
+#' @rdname web-app
 #'
 #' @export
 #'
-run_web_app <- function( ) {
+run_web_app <- function(main = ".") {
 
   app_directory <- system.file(...     = "app", 
                                package = "portalcasting")
@@ -974,3 +747,15 @@ run_web_app <- function( ) {
 
 
 }
+
+
+
+#' @title Build and Launch the Portal Forecast Web Application
+#' 
+#' @description Constructs and launches a local version of the web application by running [`shiny::runApp`] pointed to the `app` subdirectory in the local `portalcasting` package folder.
+#'
+#' @param main `character` value of the name of the main component of the directory tree.
+#'
+#' @name web app
+#'
+NULL

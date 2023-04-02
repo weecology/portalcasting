@@ -36,7 +36,7 @@ plot_cast_point(
 
 \item{newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the plot.}
 
-\item{with_census}{\code{logical} toggle if the plot should include the observed data collected during the predicted census.}
+\item{with_census}{\code{logic} toggle if the plot should include the observed data collected during the predicted census.}
 }
 \value{
 \code{NULL}. Plot is generated.
@@ -46,5 +46,5 @@ Plot the point value with confidence interval for a time point across multiple s
 }
 \details{
 The resulting plot shows predictions as points (open white circles) with error, where the point represents the \code{estimate} and the bounds of the error are \code{lower_pi} and \code{upper_pi} in the \code{cast_table} saved output from a model. \cr
- As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. If \code{with_census = TRUE}, the observations from the associated moon are plotted as blue filled squares.
+As of \verb{portalcasting v0.9.0}, this represents the mean and the 95\\% prediction interval. If \code{with_census = TRUE}, the observations from the associated moon are plotted as blue filled squares.
 }

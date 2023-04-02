@@ -1,35 +1,34 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
-#' @description Fill the directory with components including: \enumerate{
-#'   \item{Resources (\code{\link{fill_resources}}) \itemize{
-#'     \item{raw data (\code{\link[portalr]{download_observations}})}
-#'     \item{directory archive (\code{\link{download_archive}})}
-#'     \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
-#'   \item{Output \itemize{
-#'     \item{forecasts (\code{\link{fill_forecasts}})}
-#'     \item{model fits (\code{\link{fill_fits}})}}}
-#'   \item{Data (\code{\link{fill_data}})  \itemize{
-#'     \item{rodent datasets (\code{\link{prepare_rodents}})}
-#'     \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
-#'     \item{covariates (\code{\link{prepare_covariates}})}
-#'     \item{metadata (\code{\link{prepare_metadata}})}}}
-#'   \item{Models (\code{\link{fill_models}}) \itemize{
-#'     \item{model controls (\code{\link{write_model_controls}})}
-#'     \item{model scripts (if needed) (\code{\link{write_model_scripts}})}}}
-#'    }
-#'    Additional, new models and datasets can be added to the directory at filling using the optional arguments \code{new_model_controls} and \code{new_dataset_controls}, but the model or dataset must still be listed in its respective main argument, as well.
+#' @description Fill the directory with components including: 
+#'   * Resources ([`fill_resources`]) 
+#'     * raw data ([`portalr::download_observations`])
+#'     * directory archive ([`download_archive`])
+#'     * climate forecasts ([`download_climate_forecasts`])
+#'   * Output 
+#'     * forecasts ([`fill_forecasts`])
+#'     * model fits ([`fill_fits`])
+#'   * Data ([`fill_data`])  
+#'     * rodent datasets ([`prepare_rodents`])
+#'     * temporal (lunar) data ([`prepare_newmoons`])
+#'     * covariates ([`prepare_covariates`])
+#'     * metadata ([`prepare_metadata`])
+#'   * Models ([`fill_models`]) 
+#'     * model controls ([`write_model_controls`])
+#'     * model scripts (if needed) ([`write_model_scripts`])
+#'   Additional, new models and datasets can be added to the directory at filling using the optional arguments `new_model_controls` and `new_dataset_controls`, but the model or dataset must still be listed in its respective main argument, as well.
 #'             
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include. Defaults to \code{\link{prefab_models}}. If controls are provided in \code{new_model_controls}, the model still needs to be named here to be included.
+#' @param models `character` vector of name(s) of model(s) to include. Defaults to [`prefab_models`]. If controls are provided in `new_model_controls`, the model still needs to be named here to be included.
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. Defaults to \code{\link{prefab_datasets}}. If controls are provided in \code{new_dataset_controls}, the dataset still needs to be named here to be included.
+#' @param datasets `character` vector of name(s) of rodent dataset(s) to be created. Defaults to [`prefab_datasets`]. If controls are provided in `new_dataset_controls`, the dataset still needs to be named here to be included.
 #'
-#' @param new_dataset_controls Optional named \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.
+#' @param new_dataset_controls Optional named `list` of controls for new datasets. See [`dataset_controls`].
 #'
-#' @param new_model_controls Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.
+#' @param new_model_controls Optional named `list` of controls for new models. See [`model_controls`].
 #'
-#' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
+#' @return `NULL`, [`base::invisible`]-ly.
 #'
 #' @name directory filling
 #'

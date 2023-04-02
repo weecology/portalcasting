@@ -1,27 +1,27 @@
 
 #' @title Download Climate Forecasts
 #'
-#' @description Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \code{<main>/raw} sub.
+#' @description Downloads climate forecasts, presently only from NMME (see [`NMME_urls`]) into the `<main>/raw` sub.
 #'
-#' @param main \code{character} value defining the main component of the portalcasting directory tree. 
+#' @param main `character` value defining the main component of the portalcasting directory tree. 
 #'
-#' @param resources_sub \code{character} value defining the resources subdirectory of the portalcasting directory tree. 
+#' @param resources_sub `character` value defining the resources subdirectory of the portalcasting directory tree. 
 #'
-#' @param source \code{character} indicator of the source for the download. Only \code{"NMME"} presently available.
+#' @param source `character` indicator of the source for the download. Only `"NMME"` presently available.
 #'
-#' @param data \code{character} vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (\code{c("tasmin", "tasmean", "tasmax", "pr")}).
+#' @param data `character` vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (`c("tasmin", "tasmean", "tasmax", "pr")`).
 #'
-#' @param version \code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).
+#' @param version `Date`-coercible start of the climate cast. See [`NMME_urls`] (used as `start`).
 #'
-#' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
+#' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`base::options`].
 #'
-#' @param force \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
+#' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#' @param quiet `logic` indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be generated.
+#' @param verbose `logic` indicator if detailed messages should be generated.
 #'
-#' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
+#' @return `NULL`, [`base::invisible`]-ly.
 #'
 #' @name download climate forecasts
 #'
@@ -91,21 +91,21 @@ download_climate_forecasts <- function (main          = ".",
 
 #' @title URLs for the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts
 #'
-#' @description Generate the URL for a specific request to the NMME API based on parameters. See arguments for specifics and \code{Details} for links. 
+#' @description Generate the URL for a specific request to the NMME API based on parameters. See arguments for specifics and `Details` for links. 
 #'
-#' @param start,end \code{Date} for the start and end of the cast.
+#' @param start,end `Date` for the start and end of the cast.
 #'
-#' @param model \code{character} value of the model to use, one of \code{"ENSMEAN"}, (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1), \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). Presently can only take one value.
+#' @param model `character` value of the model to use, one of `"ENSMEAN"`, (Multi-Model Mean), `"CMC1"` (CMC1-CanCM3), `"CMC2"` (CMC2-CanCM4), `"CFCSv2"` (NCEP-CFSv2), `"GFDL"` (GFDL-CM2.1), `"GFDL-FLOR"` (GFDL-FLOR), or `"NCAR"` (NCAR-CCSM4). Presently can only take one value.
 #'
-#' @param lat,lon \code{numeric} latitude and longitude values used to downscale the model. Presently can only take one value for each.
+#' @param lat,lon `numeric` latitude and longitude values used to downscale the model. Presently can only take one value for each.
 #'
-#' @param freq \code{character} value of the frequency of the data, can be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a number between \code{1} and \code{7}. Presently can only take one value.
+#' @param freq `character` value of the frequency of the data, can be `"daily"` or `"XmonthAverage"`, where `"X"` is a number between `1` and `7`. Presently can only take one value.
 #'
-#' @param data \code{character} value of the type of data, one of \code{"tasmin"} (minimum temperature), \code{"tasmean"} (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"} (precipitation), \code{"dps"} (dew point), \code{"rsds"} (shortwave radiation; sun intensity), \code{"was"} (wind speed).
+#' @param data `character` value of the type of data, one of `"tasmin"` (minimum temperature), `"tasmean"` (mean temperature), `"tasmax"` (maximum temperature), `"pr"` (precipitation), `"dps"` (dew point), `"rsds"` (shortwave radiation; sun intensity), `"was"` (wind speed).
 #'
 #' @details The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set. 
 #'
-#' @return Named \code{character} vector of URLs, or \code{NULL} if \code{data}, \code{freq}, or \code{model} is \code{NULL}.
+#' @return Named `character` vector of URLs, or `NULL` if `data`, `freq`, or `model` is `NULL`.
 #'
 #' @name NMME urls
 #'
@@ -174,29 +174,29 @@ NMME_urls <- function (start = Sys.Date(),
 
 #' @title Download the Portal Predictions Repository Archive
 #'
-#' @description Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \code{<main>/raw} sub.
+#' @description Downloads a specific `version` of the Portal Predictions repository from either GitHub or Zenodo (based on `source`) into the `<main>/raw` sub.
 #'
-#' @param main \code{character} value defining the main component of the portalcasting directory tree. 
+#' @param main `character` value defining the main component of the portalcasting directory tree. 
 #'
-#' @param resources_sub \code{character} value defining the resources subdirectory of the portalcasting directory tree. 
+#' @param resources_sub `character` value defining the resources subdirectory of the portalcasting directory tree. 
 #'
-#' @param version \code{character} version of the data to download. Default \code{"latest"} downloads the most recent (by date published). \code{NULL} means no download. 
+#' @param version `character` version of the data to download. Default `"latest"` downloads the most recent (by date published). `NULL` means no download. 
 #'
-#' @param source \code{character} indicator of the source for the download. Either \code{"github"} (default) or \code{"zenodo"}.
+#' @param source `character` indicator of the source for the download. Either `"github"` (default) or `"zenodo"`.
 #'
-#' @param pause Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay. 
+#' @param pause Positive `integer` or integer `numeric` seconds for pausing during steps around unzipping that require time delay. 
 #'
-#' @param timeout Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base]{options}}.
+#' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`base::options`].
 #'
-#' @param force \code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).
+#' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#' @param quiet `logic` indicator if progress messages should be quieted.
 #'
-#' @param verbose \code{logical} indicator if detailed messages should be generated.
+#' @param verbose `logic` indicator if detailed messages should be generated.
 #'
-#' @note There are two calls to \code{link[base]{Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
+#' @note There are two calls to [`base::Sys.sleep`] for `pause` seconds each to allow for the file unzipping, copying, and such to catch up.
 #'
-#' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
+#' @return `NULL`, [`base::invisible`]-ly.
 #'
 #' @name download archive
 #'

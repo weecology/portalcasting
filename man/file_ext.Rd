@@ -9,8 +9,8 @@ file_ext(path, sep_char = ".")
 \arguments{
 \item{path}{\code{character} value of the file path possibly with an extension.}
 
-\item{sep_char}{\code{character} value of the separator that delineates the extension from the file path. \cr 
-Generally, this will be \code{"."}, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be \code{"="}.}
+\item{sep_char}{\code{character} value of the separator that delineates the extension from the file path. \cr
+Generally, this will be \verb{."}, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be \code{"="}.}
 }
 \value{
 \code{character} value of the extension (\code{file_ext}).

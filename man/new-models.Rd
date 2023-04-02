@@ -39,20 +39,20 @@ new_model_response(...)
 \item{...}{Named \code{list} of arguments passed to \code{\link{update_list}}.}
 }
 \value{
-\code{model_controls_template}: \code{list} of named model controls elements, many as \code{NULL}. \cr 
-        \code{new_model_controls}: \code{list} of named model controls. \cr 
-        \code{new_model_metadata}: \code{list} of named model metadata elements to the controls \code{list}. \cr 
-        \code{new_model_fit}: \code{list} of named model fit function and argument elements to the controls \code{list}. \cr 
-        \code{new_model_cast}: \code{list} of named forecast function and argument elements to the controls \code{list}. \cr 
-        \code{new_model_interpolate}: \code{list} of named interpolation requirements elements to the controls \code{list}. \cr 
-        \code{new_model_datasets}: \code{list} of named dataset elements to the controls \code{list}. \cr 
-        \code{new_model_response}: \code{list} of named response data description elements to the controls \code{list}. \cr
-        \code{add_new_model}: model controls \code{list} for the new model, \code{\link[base]{invisible}}-ly.
+\code{model_controls_template}: \code{list} of named model controls elements, many as \code{NULL}. \cr
+\code{new_model_controls}: \code{list} of named model controls. \cr
+\code{new_model_metadata}: \code{list} of named model metadata elements to the controls \code{list}. \cr
+\code{new_model_fit}: \code{list} of named model fit function and argument elements to the controls \code{list}. \cr
+\code{new_model_cast}: \code{list} of named forecast function and argument elements to the controls \code{list}. \cr
+\code{new_model_interpolate}: \code{list} of named interpolation requirements elements to the controls \code{list}. \cr
+\code{new_model_datasets}: \code{list} of named dataset elements to the controls \code{list}. \cr
+\code{new_model_response}: \code{list} of named response data description elements to the controls \code{list}. \cr
+\code{add_new_model}: model controls \code{list} for the new model, \code{\link[base:invisible]{base::invisible}}-ly.
 }
 \description{
 Create a new model's controls. Using the \code{model_controls_template} file as a basis for the \code{list} and leveraging element-specific functions to fill in details. \cr
-             Each of the specific \code{new_model_< >} functions wraps an \code{\link{update_list}} call starting with the \code{\link{model_controls_template}} as the main list and taking any named elements as inputs via \code{...}.
+Each of the specific \verb{new_model_< >} functions wraps an \code{\link{update_list}} call starting with the \code{\link{model_controls_template}} as the main list and taking any named elements as inputs via \code{...}.
 }
 \details{
-Having been created using \code{\link{new_model_controls}}, the new model's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \code{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{\link{add_new_model}}.
+Having been created using \code{\link{new_model_controls}}, the new model's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \verb{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{\link{add_new_model}}.
 }

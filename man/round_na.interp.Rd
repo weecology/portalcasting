@@ -13,11 +13,11 @@ round_na.interp(
 )
 }
 \arguments{
-\item{x}{A time series passed directly to \code{\link[forecast]{na.interp}}.}
+\item{x}{A time series passed directly to \code{\link[forecast:na.interp]{forecast::na.interp}}.}
 
-\item{lambda}{Box-Cox transformation parameter passed directly to \code{\link[forecast]{na.interp}}.}
+\item{lambda}{Box-Cox transformation parameter passed directly to \code{\link[forecast:na.interp]{forecast::na.interp}}.}
 
-\item{linear}{\code{logical} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast]{na.interp}}.}
+\item{linear}{\code{logic} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast:na.interp]{forecast::na.interp}}.}
 
 \item{digits}{\code{integer} or \code{numeric} integer of how many digits to round to. Passed directly to \code{\link{round}}.}
 
@@ -27,7 +27,7 @@ round_na.interp(
 \code{numeric} series.
 }
 \description{
-Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.
+Wraps \code{\link{round}} around \code{\link[forecast:na.interp]{forecast::na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.
 }
 \examples{
   round_na.interp(x = c(1, 2, 3, NA, NA, 170))

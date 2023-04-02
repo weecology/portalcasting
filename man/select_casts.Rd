@@ -34,5 +34,5 @@ select_casts(
 }
 \description{
 Determines the casts that match user specifications. \cr
- Functionally, a wrapper on \code{\link{read_casts_metadata}} with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata.
+Functionally, a wrapper on \code{\link{read_casts_metadata}} with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata.
 }

@@ -25,7 +25,7 @@ write_dataset_controls(
 \item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
 }
 \value{
-\code{list} of \code{datasets}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_dataset_controls}.
+\code{list} of \code{datasets}' control \code{list}s, \code{\link[base:invisible]{base::invisible}}-ly for \code{write_dataset_controls}.
 }
 \description{
 Input/Output functions for dataset control lists.

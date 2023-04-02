@@ -1,22 +1,22 @@
 #' @title Save Data Out to a File and Return It	(Invisibly)
 #'
-#' @description Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly. Currently available for yaml, csv, and json file extensions.
+#' @description Save inputted data out to a data file if requested and return it to the console, [`base::invisible`]-ly. Currently available for yaml, csv, and json file extensions.
 #'
-#' @param x \code{data.frame} or \code{list} to be written out.
+#' @param x `data.frame` or `list` to be written out.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param subdirectory \code{character} value defining the data subdirectory of the portalcasting directory tree. 
+#' @param subdirectory `character` value defining the data subdirectory of the portalcasting directory tree. 
 #'
-#' @param save \code{logical} indicator controlling if \code{x} should be saved out.
+#' @param save `logic` indicator controlling if `x` should be saved out.
 #'
-#' @param filename \code{character} name of the file for saving \code{x}.
+#' @param filename `character` name of the file for saving `x`.
 #'
-#' @param overwrite \code{logical} indicator of whether or not file writing sould occur even if a local copy already exists.
+#' @param overwrite `logic` indicator of whether or not file writing sould occur even if a local copy already exists.
 #'
-#' @param quiet \code{logical} indicator if messages should be quieted.
+#' @param quiet `logic` indicator if messages should be quieted.
 #'
-#' @return \code{x} as input, \code{\link[base]{invisible}}-ly.
+#' @return `x` as input, [`base::invisible`]-ly.
 #'
 #' @export
 #'
@@ -84,11 +84,11 @@ write_data <- function (x            = NULL,
 #'
 #' @description Read in a specified data file.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'  
-#' @param data_name \code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"climate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.
+#' @param data_name `character` representation of the data needed. Current options include `"rodents"`, `"rodents_table"`, `"covariates"`, `"climate_forecasts"`, `"newmoons"`, and `"metadata"`.
 #'
-#' @param dataset,datasets \code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"}, \code{"controls"}, and \code{"exclosures"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.
+#' @param dataset,datasets `character` representation of the grouping name(s) used to define the rodents. Standard options are `"all"`, `"controls"`, and `"exclosures"`. `dataset` can only be length 1, `datasets` is not restricted in length.
 #'
 #' @return Data requested.
 #' 

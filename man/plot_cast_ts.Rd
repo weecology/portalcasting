@@ -38,11 +38,11 @@ Does not influence the fit of the models, just the presentation.}
 }
 \description{
 Plot an observed timeseries and cast timeseries with a prediction interval. \cr
- Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
- Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
+Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
+Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
 }
 \details{
 The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line representing the \code{estimate} in the \code{cast_table} saved output from a model. \cr
- As of \code{portalcasting v0.9.0}, this represents the mean and the 95\% prediction interval. \cr
- Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
+As of \verb{portalcasting v0.9.0}, this represents the mean and the 95\\% prediction interval. \cr
+Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
 }

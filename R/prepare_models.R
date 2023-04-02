@@ -1,20 +1,20 @@
 #' @title Read and Write Model Control Lists
 #'
-#' @description Input/output functions for model control lists, according to the \code{\link{directory_settings}}..
+#' @description Input/output functions for model control lists, according to the[`directory_settings`]..
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
+#' @param models `character` vector of name(s) of model(s) to include.
 #'
-#' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.
+#' @param new_model_controls `list` of controls for any new models (not in the prefab models) listed in `models` that are to be added to the control list and file.
 #'
-#' @param controls \code{list} of controls for the models. 
+#' @param controls `list` of controls for the models. 
 #'
 #' @return 
-#'   \code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly. \cr 
-#'   \code{read_model_controls}: \code{list} of all \code{models}' control \code{list}s, from the file defined in \code{\link{directory_settings}}, \code{\link[base]{invisible}}-ly. \cr 
-#'   \code{write_model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly. \cr 
-#'   \code{write_model_scripts}: \code{NULL}, \code{\link[base]{invisible}}-ly.
+#'   `model_controls`: `list` of `models`' control `list`s, [`base::invisible`]-ly. \cr 
+#'   `read_model_controls`: `list` of all `models`' control `list`s, from the file defined in[`directory_settings`], [`base::invisible`]-ly. \cr 
+#'   `write_model_controls`: `list` of `models`' control `list`s, [`base::invisible`]-ly. \cr 
+#'   `write_model_scripts`: `NULL`, [`base::invisible`]-ly.
 #' 
 #' @name read and write model controls
 #'

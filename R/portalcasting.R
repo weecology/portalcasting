@@ -1,4 +1,5 @@
 #' @importFrom coda as.mcmc HPDinterval
+#' @importFrom english english
 #' @importFrom forecast Arima auto.arima ets forecast na.interp
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices grey rgb

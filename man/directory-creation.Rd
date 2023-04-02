@@ -61,11 +61,11 @@ setup_sandbox(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) roots the directory in the present location.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
+\item{settings}{\code{list} of controls for the directory, with defaults set in\code{\link{directory_settings}}.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+\item{quiet}{\code{logic} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logical} indicator of whether or not to produce all of the messages.}
+\item{verbose}{\code{logic} indicator of whether or not to produce all of the messages.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
@@ -76,7 +76,7 @@ setup_sandbox(
 \item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.}
 }
 \value{
-The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
+The \code{list} of directory settings \code{\link[base:invisible]{base::invisible}}-ly.
 }
 \description{
 Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content.

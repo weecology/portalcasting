@@ -2,23 +2,23 @@
 #'
 #' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. 
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#' @param quiet `logic` indicator if progress messages should be quieted.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. Default value (\code{"."}) roots the directory in the present location. 
+#' @param main `character` value of the name of the main component of the directory tree. Default value (`"."`) roots the directory in the present location. 
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
+#' @param models `character` vector of name(s) of model(s) to include.
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
+#' @param datasets `character` vector of name(s) of rodent dataset(s) to be created. 
 #'
-#' @param new_dataset_controls Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}. This argument is not available in \code{setup_production}.
+#' @param new_dataset_controls Optional `list` of controls for new datasets. See [`dataset_controls`]. This argument is not available in `setup_production`.
 #'
-#' @param new_model_controls Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.
+#' @param new_model_controls Optional `list` of controls for new models. See [`model_controls`]. This argument is not available in `setup_production`.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#' @param settings `list` of controls for the directory, with defaults set in[`directory_settings`].
 #'
-#' @param verbose \code{logical} indicator of whether or not to produce all of the messages.
+#' @param verbose `logic` indicator of whether or not to produce all of the messages.
 #'
-#' @return The \code{list} of directory settings \code{\link[base]{invisible}}-ly.
+#' @return The `list` of directory settings [`base::invisible`]-ly.
 #'
 #' @name directory creation
 #'
@@ -191,19 +191,19 @@ setup_sandbox <- function (main                 = ".",
 #' @title Create, Update, and Read the Directory Configuration File
 #' 
 #' @description The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
-#'              \code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
-#'              \code{read_directory_configuration} reads the YAML config file into the R session. \cr \cr
-#'              \code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
+#'              `write_directory_configuration` creates the YAML metadata configuration file. It is (and should only be) called from within [`setup_dir`], as it captures information about the compute environment used to instantiate the directory. \cr \cr
+#'              `read_directory_configuration` reads the YAML config file into the R session. \cr \cr
+#'              `read_directory_configuration` reads the YAML config file into the R session and pulls just the directory settings list in.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#' @param quiet `logic` indicator if progress messages should be quieted.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the messages.
+#' @param verbose `logic` indicator of whether or not to print out all of the messages.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#' @param settings `list` of controls for the directory, with defaults set in[`directory_settings`].
 #'
-#' @return \code{list} of directory configurations, \code{\link[base]{invisible}}-ly.
+#' @return `list` of directory configurations, [`base::invisible`]-ly.
 #'
 #' @name directory configuration file
 #'

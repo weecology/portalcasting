@@ -1,24 +1,24 @@
 #' @title Facilitate Adding Datasets to a Directory
 #'
-#' @description Create a new dataset's controls. Using the \code{dataset_controls_template} file as a basis for the \code{list} and leveraging element-specific functions to fill in details. \cr
-#'              Each of the specific \code{new_dataset_< >} functions wraps an \code{\link{update_list}} call starting with the \code{\link{dataset_controls_template}} as the main list and taking any named elements as inputs via \code{...}.
+#' @description Create a new dataset's controls. Using the `dataset_controls_template` file as a basis for the `list` and leveraging element-specific functions to fill in details. \cr
+#'              Each of the specific `new_dataset_< >` functions wraps an [`update_list`] call starting with the [`dataset_controls_template`] as the main list and taking any named elements as inputs via `...`.
 #'
-#' @details Having been created using \code{link{new_dataset_controls}}, the new dataset's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \code{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{link{add_new_dataset}}.
+#' @details Having been created using [`new_dataset_controls`], the new dataset's controls can either be added to the directory at directory creation (via [`setup_dir`] or related `setup_<>` functions) or update (via [`update_dir`]) steps or via [`add_new_dataset`].
 #'
-#' @param ... Named \code{list} of arguments passed to \code{\link{update_list}}.
+#' @param ... Named `list` of arguments passed to [`update_list`].
 #'
-#' @param fun \code{character} value of the generation function.
+#' @param fun `character` value of the generation function.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param new_dataset_controls \code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.
+#' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @return \code{dataset_controls_template}: \code{list} of named dataset controls elements, many as \code{NULL}. \cr 
-#'         \code{new_dataset_controls}: \code{list} of named dataset controls. \cr 
-#'         \code{new_dataset_metadata}: \code{list} of named dataset metadata elements to the controls \code{list}. \cr 
-#'         \code{new_dataset_fun}: \code{character} of dataset generation function. \cr 
-#'         \code{new_dataset_args}: named \code{list} of argument elements to the generating function. \cr 
-#'         \code{add_new_dataset}: dataset controls \code{list} for the new dataset, \code{\link[base]{invisible}}-ly.
+#' @return `dataset_controls_template`: `list` of named dataset controls elements, many as `NULL`. \cr 
+#'         `new_dataset_controls`: `list` of named dataset controls. \cr 
+#'         `new_dataset_metadata`: `list` of named dataset metadata elements to the controls `list`. \cr 
+#'         `new_dataset_fun`: `character` of dataset generation function. \cr 
+#'         `new_dataset_args`: named `list` of argument elements to the generating function. \cr 
+#'         `add_new_dataset`: dataset controls `list` for the new dataset, [`base::invisible`]-ly.
 #'
 #' @name new datasets
 #'

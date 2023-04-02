@@ -21,17 +21,17 @@ write_data(
 
 \item{subdirectory}{\code{character} value defining the data subdirectory of the portalcasting directory tree.}
 
-\item{save}{\code{logical} indicator controlling if \code{x} should be saved out.}
+\item{save}{\code{logic} indicator controlling if \code{x} should be saved out.}
 
-\item{overwrite}{\code{logical} indicator of whether or not file writing sould occur even if a local copy already exists.}
+\item{overwrite}{\code{logic} indicator of whether or not file writing sould occur even if a local copy already exists.}
 
 \item{filename}{\code{character} name of the file for saving \code{x}.}
 
-\item{quiet}{\code{logical} indicator if messages should be quieted.}
+\item{quiet}{\code{logic} indicator if messages should be quieted.}
 }
 \value{
-\code{x} as input, \code{\link[base]{invisible}}-ly.
+\code{x} as input, \code{\link[base:invisible]{base::invisible}}-ly.
 }
 \description{
-Save inputted data out to a data file if requested and return it to the console, \code{\link[base]{invisible}}-ly. Currently available for yaml, csv, and json file extensions.
+Save inputted data out to a data file if requested and return it to the console, \code{\link[base:invisible]{base::invisible}}-ly. Currently available for yaml, csv, and json file extensions.
 }

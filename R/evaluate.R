@@ -3,12 +3,12 @@
 #' @description Evaluate forecasts in the directory, based on id(s). \cr
 #'   Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_id,cast_ids \code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
-#'  \code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.
+#' @param cast_id,cast_ids `integer` (or integer `numeric`) value(s) representing the casts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the casts metadata file (`casts_metadata.csv`) for summary information. \cr
+#'  `cast_id` can only be a single value, whereas `cast_ids` can be multiple.
 #'
-#' @return A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base]{invisible}}-ly..
+#' @return A `data.frame` of all cast evaluations at the observation (newmoon) level, [`base::invisible`]-ly..
 #'
 #' @name evaluate forecasts
 #'
@@ -224,13 +224,13 @@ evaluate_cast <- function (main     = ".",
 #' 
 #' @description Appends a column of observations to a cast's cast tab. 
 #'
-#' @details If a model interpolated a data set, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
+#' @details If a model interpolated a data set, `add_obs_to_cast_tab` adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #' 
-#' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
+#' @param cast_tab A `data.frame` of a cast's output. See [`read_cast_tab`].
 #'
-#' @return \code{data.frame} of \code{cast_tab} with an additional column. 
+#' @return `data.frame` of `cast_tab` with an additional column. 
 #'
 #' @name add to cast tab
 #'
@@ -267,7 +267,7 @@ add_obs_to_cast_tab <- function (main     = ".",
 #'
 #' @description Read in the casts evaluations file. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @return Evaluations requested.
 #'
