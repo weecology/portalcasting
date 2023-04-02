@@ -13,7 +13,7 @@
 #' @importFrom rmarkdown render
 #' @importFrom runjags combine.mcmc run.jags runjags.options
 #' @importFrom scoringRules crps crps_nbinom crps_norm crps_pois crps_sample logs logs_sample logs_nbinom logs_norm logs_pois 
-#' @importFrom shiny fluidPage fluidRow mainPanel observeEvent renderPlot renderText runApp selectInput shinyApp tabPanel tabsetPanel textOutput titlePanel
+#' @importFrom shiny column fluidPage fluidRow mainPanel observeEvent renderPlot renderText runApp selectInput shinyApp tabPanel tabsetPanel textOutput titlePanel
 #' @importFrom stats AIC as.ts filter frequency lm na.omit predict qnorm quantile rgamma rnorm runif sd
 #' @importFrom tscount tsglm
 #' @importFrom utils download.file find packageDescription read.csv sessionInfo tail unzip write.csv write.table
