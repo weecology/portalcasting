@@ -11,7 +11,7 @@ plot_cast_point(
   dataset = NULL,
   model = NULL,
   historic_end_newmoonnumber = NULL,
-  species = forecasting_species(total = TRUE),
+  species = NULL,
   highlight_sp = NULL,
   newmoonnumber = NULL,
   with_census = FALSE

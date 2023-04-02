@@ -176,6 +176,10 @@ read_cast_tab <- function (main    = ".",
 
   }
 
+  if (nchar(strsplit(as.character(cast_id), "\\.")[[1]][2]) == 1) {
+    cast_id <- paste0(cast_id, "0")
+  }
+
   lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
   cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 

@@ -486,7 +486,7 @@ plot_cast_point <- function (main                       = ".",
                              dataset                    = NULL, 
                              model                      = NULL, 
                              historic_end_newmoonnumber = NULL, 
-                             species                    = forecasting_species(total = TRUE), 
+                             species                    = NULL, 
                              highlight_sp               = NULL,
                              newmoonnumber              = NULL, 
                              with_census                = FALSE) {
@@ -616,7 +616,7 @@ plot_cast_point <- function (main                       = ".",
     est   <- casts_tab$estimate[i]
     vbars <- i + (0.015 * nspecies * c(-1, 1))
 
-    if (!is.null(highlight_sp) && species[i] %in% highlight_sp) {
+    if (!is.null(highlight_sp) && casts_tab$species[i] %in% highlight_sp) {
 
       col = rgb(0.2, 0.5, 0.9)
       lwd = 4
@@ -637,8 +637,6 @@ plot_cast_point <- function (main                       = ".",
    if (with_census) {
 
       spmatch       <- casts_tab$species[i]
-      nasp          <- spmatch == "NA"
-      spmatch[nasp] <- "NA."
       obsi          <- obs[ , spmatch]
       points(obsi, i, pch = 15, col = rgb(0, 0.4, 0.9, 0.8), cex = 1.25)
       points(obsi, i, pch = 0, col = rgb(0.2, 0.2, 0.2, 0.8), cex = 1.25)

@@ -167,7 +167,7 @@ forecast_tab <- function (main = ".") {
   tabPanel(title = "Forecast", 
            br( ), 
            forecast_tab_input_selection_row(main = main), 
-            forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
+         # forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
            plotOutput("forecast_tab_ts_plot"), 
            br( ),
            plotOutput("forecast_tab_ss_plot"),
@@ -280,7 +280,7 @@ evaluation_tab <- function (main = ".") {
            evaluation_tab_input_selection_row(main = main), 
            h2("Most recent observation vs. forecasts"),
            evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
-        #   plotOutput("evaluation_tab_sp_plot"),
+           plotOutput("evaluation_tab_sp_plot"),
            br( ),
            h2("Model Coverage & RMSE (last 3 years of forecasts)"),
  #          plotOutput("evaluation_tab_RMSE_plot"),

@@ -122,6 +122,7 @@ initial_reactive_values <- function (main = ".") {
                  evaluation_tab_dataset                    = "all", 
                  evaluation_tab_model                      = "AutoArima",
                  evaluation_tab_historic_end_newmoonnumber = 560, # max(casts_evaluations$historic_end_newmoonnumber), # not sure how best to auto select
+                 evaluation_tab_newmoonnumber              = 561,
                  casts_metadata                            = casts_metadata,
                  casts_evaluations                         = casts_evaluations)
 
@@ -161,6 +162,7 @@ initial_output <- function (main = ".",
                                                                                  highlight_sp                    = rv$evaluation_tab_species,
                                                                                  model                           = rv$evaluation_tab_model,
                                                                                  historic_end_newmoonnumber      = rv$evaluation_tab_historic_end_newmoonnumber,
+                                                                                 newmoonnumber                   = rv$evaluation_tab_newmoonnumber,
                                                                                  with_census                     = TRUE))
   output$evaluation_tab_RMSE_plot                  <- renderPlot(plot_casts_cov_RMSE(main                        = main,
                                                                                      datasets                    = rv$evaluation_tab_dataset,
@@ -269,12 +271,14 @@ update_output <- function (main,
     output$evaluation_tab_dataset                    <- renderText(rv$evaluation_tab_dataset)
     output$evaluation_tab_model                      <- renderText(rv$evaluation_tab_model)
     output$evaluation_tab_historic_end_newmoonnumber <- renderText(rv$evaluation_tab_historic_end_newmoonnumber)
+    output$evaluation_tab_newmoonnumber              <- renderText(rv$evaluation_tab_newmoonnumber)
 
     output$evaluation_tab_sp_plot                    <- renderPlot(plot_cast_point(main                            = main,
                                                                                    dataset                         = rv$evaluation_tab_dataset,
                                                                                    highlight_sp                    = rv$evaluation_tab_species,
                                                                                    model                           = rv$evaluation_tab_model,
                                                                                    historic_end_newmoonnumber      = rv$evaluation_tab_historic_end_newmoonnumber,
+                                                                                   newmoonnumber                   = rv$evaluation_tab_newmoonnumber,
                                                                                    with_census                     = TRUE))
     output$evaluation_tab_RMSE_plot                  <- renderPlot(plot_casts_cov_RMSE(main                        = main,
                                                                                        datasets                    = rv$evaluation_tab_dataset,
