@@ -167,8 +167,8 @@ forecast_tab <- function (main = ".") {
   tabPanel(title = "Forecast", 
            br( ), 
            forecast_tab_input_selection_row(main = main), 
-          # forecast_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
-           plotOutput("forecast_tab_ts_plot"),
+            forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
+           plotOutput("forecast_tab_ts_plot"), 
            br( ),
            plotOutput("forecast_tab_ss_plot"),
            br( ))

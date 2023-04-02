@@ -40,7 +40,8 @@ portal_forecast_server <- function (main = ".",
 
   rv     <- initial_reactive_values(main = main)
 
-  output <- initial_output(rv     = rv, 
+  output <- initial_output(main   = main,
+                           rv     = rv, 
                            output = output)
 
   observeEvent(eventExpr   = input$forecast_tab_species,
@@ -131,7 +132,8 @@ initial_reactive_values <- function (main = ".") {
 #'
 #' @export
 #'
-initial_output <- function (rv, 
+initial_output <- function (main = ".",
+                            rv, 
                             output) {
 
   output$forecast_tab_species                    <- renderText(rv$forecast_tab_species)

@@ -1,3 +1,32 @@
+#' @title Build and Launch the Portal Forecast Web Application
+#' 
+#' @description Constructs and launches a local version of the web application by running [`shiny::runApp`] pointed to the `app` subdirectory in the local `portalcasting` package folder.
+#'
+#' @param main `character` value of the name of the main component of the directory tree.
+#'
+#' @name web app
+#'
+NULL
+
+#' @rdname web-app
+#'
+#' @export
+#'
+run_web_app <- function(main = ".") {
+
+  app_directory <- system.file(...     = "app", 
+                               package = "portalcasting")
+
+  file.copy(from      = list.files(app_directory, full.names = TRUE),
+            to        = file.path(main),
+            recursive = TRUE,
+            overwrite = TRUE)
+
+  runApp(appDir         = file.path(main),
+         launch.browser = TRUE)
+
+
+}
 
 
 #' @title Utilities for the Web App
@@ -307,34 +336,6 @@ available_models <- function (event_name,
 
 
 
-#' @title Build and Launch the Portal Forecast Web Application
-#' 
-#' @description Constructs and launches a local version of the web application by running [`shiny::runApp`] pointed to the `app` subdirectory in the local `portalcasting` package folder.
-#'
-#' @param main `character` value of the name of the main component of the directory tree.
-#'
-#' @name web app
-#'
-NULL
 
-#' @rdname web-app
-#'
-#' @export
-#'
-run_web_app <- function(main = ".") {
-
-  app_directory <- system.file(...     = "app", 
-                               package = "portalcasting")
-
-  file.copy(from      = list.files(app_directory, full.names = TRUE),
-            to        = file.path(main),
-            recursive = TRUE,
-            overwrite = TRUE)
-
-  runApp(appDir         = file.path(main),
-         launch.browser = TRUE)
-
-
-}
 
 

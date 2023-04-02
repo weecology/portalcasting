@@ -15,7 +15,7 @@ portal_forecast_server(main = ".", input, output, session)
 
 initial_reactive_values(main = ".")
 
-initial_output(rv, output)
+initial_output(main = ".", rv, output)
 
 event_reaction(main, event_name, rv, input, output, session)
 
