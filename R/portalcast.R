@@ -11,11 +11,11 @@
 #'
 #' @param datasets,dataset `character` vector of datasets to be forecast. In `cast`, `dataset` can only be length-one. 
 #'
-#' @param species `character` vector of species to be forecast. In `cast`, `species` can only be length-one. See [`portalr::rodent_species`].
+#' @param species `character` vector of species to be forecast. In `cast`, `species` can only be length-one. See [`rodent_species`][portalr::rodent_species].
 #'
 #' @return 
-#'   `portalcast`: `data.frame` of model combinations with a `logic` column added for fit success, [`base::invisible`]-ly. \cr 
-#'   `cast`: `list` of model outputs from [`process_model_output`]. \cr
+#'   `portalcast`: `data.frame` of model combinations with a `logic` column added for fit success, [`invisible`][base::invisible]-ly. \cr  \cr
+#'   `cast`: `list` of model outputs from [`process_model_output`]. \cr \cr
 #'   `make_model_combinations`: `data.frame` of the model combinations.
 #'
 #' @export

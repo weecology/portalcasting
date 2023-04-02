@@ -1,6 +1,6 @@
 #' @title Prepare Covariate Data for Casting
 #'
-#' @description Prepare and combine the historical and forecast covariate data for a model run, according to the[`directory_settings`].
+#' @description Prepare and combine the historical and forecast covariate data for a model run, according to the [`directory_settings`].
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'

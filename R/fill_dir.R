@@ -2,7 +2,7 @@
 #'
 #' @description Fill the directory with components including: 
 #'   * Resources ([`fill_resources`]) 
-#'     * raw data ([`portalr::download_observations`])
+#'     * raw data ([`download_observations`][portalr::download_observations])
 #'     * directory archive ([`download_archive`])
 #'     * climate forecasts ([`download_climate_forecasts`])
 #'   * Output 
@@ -28,7 +28,7 @@
 #'
 #' @param new_model_controls Optional named `list` of controls for new models. See [`model_controls`].
 #'
-#' @return `NULL`, [`base::invisible`]-ly.
+#' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
 #' @name directory filling
 #'

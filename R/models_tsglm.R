@@ -1,7 +1,7 @@
 #' @title Create, Run, and Forecast Multi-model Inference TSGLM Model Runs
 #'
 #' @description Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr
-#'   `meta_tsglm`: Combines the model running with the covariate preparation functions for a multi-model [`tscount::tsglm`] (from the tscount (Liboschik et al. 2017) package) model. \cr
+#'   `meta_tsglm`: Combines the model running with the covariate preparation functions for a multi-model [`tsglm`][tscount::tsglm] (from the tscount (Liboschik et al. 2017) package) model. \cr \cr 
 #'   `forecast.tsglm`: A wrapper around the `predict` function for tsglm objects that produces a `"forecast"`-class object.
 #'
 #' @param ts Non-negative `integer`-conformable vector of rodent abundances to use in forecasting. See [`prepare_abundance`].
@@ -10,11 +10,11 @@
 #'
 #' @param covariates `data.frame` of covariates used in modeling. See [`prepare_covariates`].
 #'
-#' @param distr `character` of the response distribution. See [`tscount::tsglm`].
+#' @param distr `character` of the response distribution. See [`tsglm`][tscount::tsglm].
 #'
-#' @param link `character` of the link funciton. See [`tscount::tsglm`].
+#' @param link `character` of the link funciton. See [`tsglm`][tscount::tsglm].
 #'
-#' @param model A named `list` of model linear predictors. See [`tscount::tsglm`].
+#' @param model A named `list` of model linear predictors. See [`tsglm`][tscount::tsglm].
 #'
 #' @param submodels `list` of `character` vectors definind the covariates to include in each of the submodels.
 #'
@@ -31,11 +31,11 @@
 #' @param ... Additional parameters passed into `predict`. 
 #'
 #' @return 
-#'   `meta_tsglm`: An object of class `"tsglm"` with additional elements defining the submodel and lag.
+#'   `meta_tsglm`: An object of class `"tsglm"` with additional elements defining the submodel and lag. \cr \cr 
 #'   `forecast.tsglm`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"newxreg"` (if provided for prediction) as well as the other elements returned by `predict`.
 #'
 #' @references 
-#'  Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. \href{https://doi.org/10.18637/jss.v082.i05}{URL}. 
+#'  Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. [URL](https://doi.org/10.18637/jss.v082.i05).
 #'
 #' @name tsglm models
 #'

@@ -1,18 +1,18 @@
 #' @title Functions for Message Generation 
 #'
 #' @description Create messages for use in the portalcasting pipeline. 
-#'   `messageq`: Optionally generate a message based on a logical input. Uses a wrapper on [`base::message`] that, given the input to `quiet`, generates the message(s) in `...` or not. \cr \cr
+#'   `messageq`: Optionally generate a message based on a logical input. Uses a wrapper on [`message`][base::message] that, given the input to `quiet`, generates the message(s) in `...` or not. \cr \cr
 #'   `break_line`: Creates a horizontal line of characters ending with a newline call for messages. \cr \cr
 #'   `break_lines`: Creates a set of horizontal line of characters ending with a newline call for messages. \cr \cr
 #'   `castle`: Creates a text drawing of a sandcastle of characters for messages. 
 #'
-#' @param ... zero or more objects that can be coerced to `character` and are concatenated with no separator added, or a single condition object. See [`base::message`].
+#' @param ... zero or more objects that can be coerced to `character` and are concatenated with no separator added, or a single condition object. See [`message`][base::message].
 #'
 #' @param quiet `logic` indicator if the message should be generated. 
 #'
-#' @param domain The domain for the translation. If `NA`, messages will not be translated. See [`base::message`] and [`base::gettext`].
+#' @param domain The domain for the translation. If `NA`, messages will not be translated. See [`message`][base::message] and [`base::gettext`].
 #'
-#' @param appendLF `logic` indicator if messages given as a `character` string should have a newline appended. See [`base::message`].
+#' @param appendLF `logic` indicator if messages given as a `character` string should have a newline appended. See [`message`][base::message].
 #'
 #' @param char `character` value to repeated ``reps` times to form the break line. 
 #'
@@ -21,10 +21,10 @@
 #' @param nlines `integer`-conformable value for the number of [`break_line`]s to include. Defaults to `2` lines.
 #'
 #' @return 
-#'   `messageq`: A message is given, and `NULL` returned, [`base::invisible`]-ly. \cr
-#'   `break_line`: The `character` of the line to be passed to [`base::message`] or [`messageq`]. \cr 
-#'   `break_lines`: The `character` of the lines to be passed to [`base::message`] or [`messageq`]. \cr 
-#'   `castle`: The `character` of the sandcastle to be passed to [`base::message`] or [`messageq`]. 
+#'   `messageq`: A message is given, and `NULL` returned, [`invisible`][base::invisible]-ly. \cr \cr 
+#'   `break_line`: The `character` of the line to be passed to [`message`][base::message] or [`messageq`]. \cr \cr 
+#'   `break_lines`: The `character` of the lines to be passed to [`message`][base::message] or [`messageq`]. \cr \cr 
+#'   `castle`: The `character` of the sandcastle to be passed to [`message`][base::message] or [`messageq`]. 
 #'
 #' @name messages
 #'

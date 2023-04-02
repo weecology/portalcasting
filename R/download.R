@@ -13,7 +13,7 @@
 #'
 #' @param version `Date`-coercible start of the climate cast. See [`NMME_urls`] (used as `start`).
 #'
-#' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`base::options`].
+#' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`options`][base::options].
 #'
 #' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
@@ -21,7 +21,7 @@
 #'
 #' @param verbose `logic` indicator if detailed messages should be generated.
 #'
-#' @return `NULL`, [`base::invisible`]-ly.
+#' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
 #' @name download climate forecasts
 #'
@@ -186,7 +186,7 @@ NMME_urls <- function (start = Sys.Date(),
 #'
 #' @param pause Positive `integer` or integer `numeric` seconds for pausing during steps around unzipping that require time delay. 
 #'
-#' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`base::options`].
+#' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`options`][base::options].
 #'
 #' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
@@ -196,7 +196,7 @@ NMME_urls <- function (start = Sys.Date(),
 #'
 #' @note There are two calls to [`base::Sys.sleep`] for `pause` seconds each to allow for the file unzipping, copying, and such to catch up.
 #'
-#' @return `NULL`, [`base::invisible`]-ly.
+#' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
 #' @name download archive
 #'

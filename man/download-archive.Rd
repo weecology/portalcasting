@@ -34,10 +34,10 @@ download_archive(
 
 \item{pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
-\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{base::options}}.}
+\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{options}}.}
 }
 \value{
-\code{NULL}, \code{\link[base:invisible]{base::invisible}}-ly.
+\code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
 Downloads a specific \code{version} of the Portal Predictions repository from either GitHub or Zenodo (based on \code{source}) into the \verb{<main>/raw} sub.

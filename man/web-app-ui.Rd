@@ -74,7 +74,7 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber(main = ".")
 A UI definition or component shiny tags.
 }
 \description{
-\code{portal_forecast_ui} constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running \code{\link[shiny:fluidPage]{shiny::fluidPage}} on the UI components. \cr \cr
+\code{portal_forecast_ui} constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running \code{\link[shiny:fluidPage]{fluidPage}} on the UI components. \cr \cr
 See \code{Details} for hierarchy of functions.
 }
 \details{

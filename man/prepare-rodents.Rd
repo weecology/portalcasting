@@ -35,5 +35,5 @@ prepare_rodents(
 \description{
 Create vector of historic abundances for a rodent species in a dataset for a model's forecasting.
 
-Create specified \code{datasets} using their associated function and arguments, according to the\code{\link{directory_settings}}.
+Create specified \code{datasets} using their associated function and arguments, according to the \code{\link{directory_settings}}.
 }

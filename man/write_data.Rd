@@ -30,8 +30,8 @@ write_data(
 \item{quiet}{\code{logic} indicator if messages should be quieted.}
 }
 \value{
-\code{x} as input, \code{\link[base:invisible]{base::invisible}}-ly.
+\code{x} as input, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
-Save inputted data out to a data file if requested and return it to the console, \code{\link[base:invisible]{base::invisible}}-ly. Currently available for yaml, csv, and json file extensions.
+Save inputted data out to a data file if requested and return it to the console, \code{\link[base:invisible]{invisible}}-ly. Currently available for yaml, csv, and json file extensions.
 }

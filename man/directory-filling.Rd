@@ -44,14 +44,14 @@ fill_models(main = ".", models = prefab_models(), new_model_controls = NULL)
 \item{new_model_controls}{Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.}
 }
 \value{
-\code{NULL}, \code{\link[base:invisible]{base::invisible}}-ly.
+\code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
 Fill the directory with components including:
 \itemize{
 \item Resources (\code{\link{fill_resources}})
 \itemize{
-\item raw data (\code{\link[portalr:download_observations]{portalr::download_observations}})
+\item raw data (\code{\link[portalr:download_observations]{download_observations}})
 \item directory archive (\code{\link{download_archive}})
 \item climate forecasts (\code{\link{download_climate_forecasts}})
 }

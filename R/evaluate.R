@@ -8,7 +8,7 @@
 #' @param cast_id,cast_ids `integer` (or integer `numeric`) value(s) representing the casts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the casts metadata file (`casts_metadata.csv`) for summary information. \cr
 #'  `cast_id` can only be a single value, whereas `cast_ids` can be multiple.
 #'
-#' @return A `data.frame` of all cast evaluations at the observation (newmoon) level, [`base::invisible`]-ly..
+#' @return A `data.frame` of all cast evaluations at the observation (newmoon) level, [`invisible`][base::invisible]-ly..
 #'
 #' @name evaluate forecasts
 #'

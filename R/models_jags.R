@@ -2,10 +2,10 @@
 #' @title Create and Run a runjags Portalcasting Model 
 #'
 #' @description Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \cr
-#'   `fit_runjags`: Wraps up the runjags model object preparation functions with the model running ([`runjags::run.jags`] function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
+#'   `fit_runjags`: Wraps up the runjags model object preparation functions with the model running ([`run.jags`][runjags::run.jags] function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
 #'   `runjags_data`, `runjags_monitor`, `runjags_model`, `runjags_inits`: Produce the model-specific components as named. \cr 
 #'   `forecast.runjags`: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a `"forecast"`-class object. \cr 
-#'   `runjags_controls`: Combines the [`runjags::run.jags`] control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
+#'   `runjags_controls`: Combines the [`run.jags`][runjags::run.jags] control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions. \cr
 #'
 #' @param abundance Non-negative `integer`-conformable vector of rodent abundances to use in forecasting. See [`prepare_abundance`].
 #'
@@ -23,25 +23,25 @@
 #'
 #' @param seed A single `integer`-conformable value or `NULL` set in [`set.seed`].
 #'
-#' @param nchains Non-negative `integer`-conformable value of the number of parallel chains to use. See [`runjags::run.jags`].
+#' @param nchains Non-negative `integer`-conformable value of the number of parallel chains to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param adapt Non-negative `integer`-conformable value of the number of adaptation steps to use. See [`runjags::run.jags`].
+#' @param adapt Non-negative `integer`-conformable value of the number of adaptation steps to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param burnin Non-negative `integer`-conformable value of the number of burnin steps to use. See [`runjags::run.jags`].
+#' @param burnin Non-negative `integer`-conformable value of the number of burnin steps to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param sample Non-negative `integer`-conformable value of the number of sampling steps to use. See [`runjags::run.jags`].
+#' @param sample Non-negative `integer`-conformable value of the number of sampling steps to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param thin Positive `integer`-conformable value of the thinning interval to use. See [`runjags::run.jags`].
+#' @param thin Positive `integer`-conformable value of the thinning interval to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param modules `character` vector of external modules to add to JAGS. See [`runjags::run.jags`].
+#' @param modules `character` vector of external modules to add to JAGS. See [`run.jags`][runjags::run.jags].
 #'
-#' @param method `character` value of the [`runjags::run.jags`] method to use. Options include `"rjags"`, `"simple"`, `"interruptible"`, `"parallel"`, `"rjparallel"`, `"background"`, `"bgparallel"`, and `"snow"`. See [`runjags::run.jags`].
+#' @param method `character` value of the [`run.jags`][runjags::run.jags] method to use. Options include `"rjags"`, `"simple"`, `"interruptible"`, `"parallel"`, `"rjparallel"`, `"background"`, `"bgparallel"`, and `"snow"`. See [`run.jags`][runjags::run.jags].
 #'
-#' @param factories `character` vector of factory modules to add to JAGS. See [`runjags::run.jags`].
+#' @param factories `character` vector of factory modules to add to JAGS. See [`run.jags`][runjags::run.jags].
 #'
 #' @param monitors `character` vector of parameters to track. Forecasted observations and state variables are tracked automatically.
 #'
-#' @param mutate A `function` or `list` (with the first element being a `function`) used to add variables to the posterior chain (rather than throughout sampling). See [`runjags::run.jags`]. 
+#' @param mutate A `function` or `list` (with the first element being a `function`) used to add variables to the posterior chain (rather than throughout sampling). See [`run.jags`][runjags::run.jags]. 
 #'
 #' @param silent_jags `logic` value for quieting the output from the runjags function, including the underlying JAGS output. 
 #'
@@ -54,19 +54,19 @@
 #' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates. 
 #'
 #' @return 
-#'   `fit_runjags`: An object of class `"runjags"` of model components. See [`runjags::run.jags`]. \cr
-#'   `runjags_data`: A `list` of model-specific data for use in [`runjags::run.jags`]. \cr
-#'   `runjags_monitor`: A `vector` of model-specific `character` values of parameters to track in [`runjags::run.jags`].  \cr
-#'   `runjags_model`: A single `character` value of the JAGS model block for [`runjags::run.jags`].  \cr
-#'   `runjags_inits`: A `function` that takes the argument `data` to produce chain-specific initial values for [`runjags::run.jags`]. \cr
-#'   `runjags_controls`: A `list` of controls. \cr
+#'   `fit_runjags`: An object of class `"runjags"` of model components. See [`run.jags`][runjags::run.jags]. \cr \cr
+#'   `runjags_data`: A `list` of model-specific data for use in [`run.jags`][runjags::run.jags]. \cr \cr
+#'   `runjags_monitor`: A `vector` of model-specific `character` values of parameters to track in [`run.jags`][runjags::run.jags].  \cr \cr
+#'   `runjags_model`: A single `character` value of the JAGS model block for [`run.jags`][runjags::run.jags].  \cr \cr
+#'   `runjags_inits`: A `function` that takes the argument `data` to produce chain-specific initial values for [`run.jags`][runjags::run.jags]. \cr \cr
+#'   `runjags_controls`: A `list` of controls. \cr \cr
 #'   `forecast.runjags`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"level"`. 
 #' 
 #'
 #' @references 
-#'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}. 
+#'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. [URL](https://www.jstatsoft.org/article/view/v071i09). 
 #'  
-#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
+#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. [URL](https://bit.ly/33aQ37Y).
 #'
 #' @name runjags models
 #'

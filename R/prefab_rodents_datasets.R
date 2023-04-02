@@ -2,7 +2,7 @@
 #'
 #' @description Create a `character` vector of the names of the pre-fabricated (prefab) rodent datasets or a `list` of their controls
 #'
-#' @return `prefab_datasets`: `character` vector of dataset names. \cr
+#' @return `prefab_datasets`: `character` vector of dataset names. \cr \cr
 #'         `prefab_dataset_controls`: `list` vector of dataset controls. 
 #'
 #' @name prefabricated_datasets

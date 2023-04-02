@@ -5,10 +5,10 @@
 #' @param model_fit,model_cast Output from a model's fit and cast functions.
 #'
 #' @details Four model-specific output components are saved and returned. 
-#'    * `"cast_metadata"`: saved out with [`yaml::write_yaml`].
+#'    * `"cast_metadata"`: saved out with [`write_yaml`][yaml::write_yaml].
 #'    * `"cast_tab"`: saved using [`write.csv`].
-#'    * `"model_fit"`: saved out as a serialized `JSON` file via [`jsonlite::serializeJSON`] and [`jsonlite::read_json`], so quite flexible with respect to specific object structure.
-#'    * `"model_cast"`: saved out as a serialized `JSON` file via [`jsonlite::serializeJSON`] and [`jsonlite::read_json`], so quite flexible with respect to specific object structure.
+#'    * `"model_fit"`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
+#'    * `"model_cast"`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'

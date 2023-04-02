@@ -34,21 +34,19 @@ update_input(main, event_name, rv, input, session)
 
 \item{session}{Environment for the GenEst GUI.}
 
-\item{rv}{\code{\link[shiny:reactiveValues]{shiny::reactiveValues}} \code{list} for the UI.}
+\item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
 
 \item{event_name}{\code{character} value of the server event. \cr
 Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
 }
 \value{
-\itemize{
-\item \code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{shiny::observeEvent}} and \code{\link[shiny:observe]{shiny::observe}}).
-\item \code{initial_reactive_values}: a \code{\link[shiny:reactiveValues]{shiny::reactiveValues}} \code{list}.
-\item \code{initial_output}: an \code{output} \code{list}.
-\item \code{event_reaction}: updates the \code{rv}, \code{output}, and \code{input} \code{list}s, but does not return them, per se.
-\item \code{update_reactive_values}: a \code{\link[shiny:reactiveValues]{shiny::reactiveValues}} \code{list}.
-\item \code{update_output}: an \code{output} \code{list}.
-\item \code{update_input}: updates the \code{input} \code{list}, but does not return it.
-}
+\code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr \cr
+\code{initial_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr \cr
+\code{initial_output}: an \code{output} \code{list}. \cr \cr
+\code{event_reaction}: updates the \code{rv}, \code{output}, and \code{input} \code{list}s, but does not return them, per se. \cr \cr
+\code{update_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr \cr
+\code{update_output}: an \code{output} \code{list}. \cr \cr
+\code{update_input}: updates the \code{input} \code{list}, but does not return it. \cr \cr
 }
 \description{
 Generate the Server Code for the Web App

@@ -14,11 +14,11 @@
 #'
 #' @param new_model_controls Optional `list` of controls for new models. See [`model_controls`]. This argument is not available in `setup_production`.
 #'
-#' @param settings `list` of controls for the directory, with defaults set in[`directory_settings`].
+#' @param settings `list` of controls for the directory, with defaults set in [`directory_settings`].
 #'
 #' @param verbose `logic` indicator of whether or not to produce all of the messages.
 #'
-#' @return The `list` of directory settings [`base::invisible`]-ly.
+#' @return The `list` of directory settings [`invisible`][base::invisible]-ly.
 #'
 #' @name directory creation
 #'
@@ -201,9 +201,9 @@ setup_sandbox <- function (main                 = ".",
 #'
 #' @param verbose `logic` indicator of whether or not to print out all of the messages.
 #'
-#' @param settings `list` of controls for the directory, with defaults set in[`directory_settings`].
+#' @param settings `list` of controls for the directory, with defaults set in [`directory_settings`].
 #'
-#' @return `list` of directory configurations, [`base::invisible`]-ly.
+#' @return `list` of directory configurations, [`invisible`][base::invisible]-ly.
 #'
 #' @name directory configuration file
 #'

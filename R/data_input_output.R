@@ -1,6 +1,6 @@
 #' @title Save Data Out to a File and Return It	(Invisibly)
 #'
-#' @description Save inputted data out to a data file if requested and return it to the console, [`base::invisible`]-ly. Currently available for yaml, csv, and json file extensions.
+#' @description Save inputted data out to a data file if requested and return it to the console, [`invisible`][base::invisible]-ly. Currently available for yaml, csv, and json file extensions.
 #'
 #' @param x `data.frame` or `list` to be written out.
 #'
@@ -16,7 +16,7 @@
 #'
 #' @param quiet `logic` indicator if messages should be quieted.
 #'
-#' @return `x` as input, [`base::invisible`]-ly.
+#' @return `x` as input, [`invisible`][base::invisible]-ly.
 #'
 #' @export
 #'

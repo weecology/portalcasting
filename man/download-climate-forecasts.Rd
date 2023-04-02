@@ -34,10 +34,10 @@ download_climate_forecasts(
 
 \item{force}{\code{logic} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
-\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{base::options}}.}
+\item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{options}}.}
 }
 \value{
-\code{NULL}, \code{\link[base:invisible]{base::invisible}}-ly.
+\code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
 Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \verb{<main>/raw} sub.

@@ -1,7 +1,7 @@
 
 #' @title Generate the User Interface for the Web App
 #' 
-#' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`shiny::fluidPage`] on the UI components. \cr \cr
+#' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`fluidPage`][shiny::fluidPage] on the UI components. \cr \cr
 #'              See `Details` for hierarchy of functions. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.

@@ -17,13 +17,13 @@ break_lines(nlines = 2, char = "-", reps = 60)
 castle()
 }
 \arguments{
-\item{...}{zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base:message]{base::message}}.}
+\item{...}{zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base:message]{message}}.}
 
 \item{quiet}{\code{logic} indicator if the message should be generated.}
 
-\item{domain}{The domain for the translation. If \code{NA}, messages will not be translated. See \code{\link[base:message]{base::message}} and \code{\link[base:gettext]{base::gettext}}.}
+\item{domain}{The domain for the translation. If \code{NA}, messages will not be translated. See \code{\link[base:message]{message}} and \code{\link[base:gettext]{base::gettext}}.}
 
-\item{appendLF}{\code{logic} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base:message]{base::message}}.}
+\item{appendLF}{\code{logic} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base:message]{message}}.}
 
 \item{char}{\code{character} value to repeated ``reps` times to form the break line.}
 
@@ -32,14 +32,14 @@ castle()
 \item{nlines}{\code{integer}-conformable value for the number of \code{\link{break_line}}s to include. Defaults to \code{2} lines.}
 }
 \value{
-\code{messageq}: A message is given, and \code{NULL} returned, \code{\link[base:invisible]{base::invisible}}-ly. \cr
-\code{break_line}: The \code{character} of the line to be passed to \code{\link[base:message]{base::message}} or \code{\link{messageq}}. \cr
-\code{break_lines}: The \code{character} of the lines to be passed to \code{\link[base:message]{base::message}} or \code{\link{messageq}}. \cr
-\code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base:message]{base::message}} or \code{\link{messageq}}.
+\code{messageq}: A message is given, and \code{NULL} returned, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
+\code{break_line}: The \code{character} of the line to be passed to \code{\link[base:message]{message}} or \code{\link{messageq}}. \cr \cr
+\code{break_lines}: The \code{character} of the lines to be passed to \code{\link[base:message]{message}} or \code{\link{messageq}}. \cr \cr
+\code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base:message]{message}} or \code{\link{messageq}}.
 }
 \description{
 Create messages for use in the portalcasting pipeline.
-\code{messageq}: Optionally generate a message based on a logical input. Uses a wrapper on \code{\link[base:message]{base::message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not. \cr \cr
+\code{messageq}: Optionally generate a message based on a logical input. Uses a wrapper on \code{\link[base:message]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not. \cr \cr
 \code{break_line}: Creates a horizontal line of characters ending with a newline call for messages. \cr \cr
 \code{break_lines}: Creates a set of horizontal line of characters ending with a newline call for messages. \cr \cr
 \code{castle}: Creates a text drawing of a sandcastle of characters for messages.

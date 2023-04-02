@@ -21,5 +21,5 @@ prepare_metadata(
 \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 }
 \description{
-Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the\code{\link{directory_settings}}.
+Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the \code{\link{directory_settings}}.
 }

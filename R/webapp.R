@@ -7,9 +7,9 @@
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @return
-#'   * `historic_end_newmoonnumber_list`: `vector` of `integer` newmoonnumbers
-#'   * `model_list`: `vector` of `character` models named with print names from controls list.
-#'   * `species_list`: `vector` of `character` species codes named with their Latin names.
+#'   `historic_end_newmoonnumber_list`: `vector` of `integer` newmoonnumbers. \cr \cr
+#'   `model_list`: `vector` of `character` models named with print names from controls list. \cr \cr
+#'   `species_list`: `vector` of `character` species codes named with their Latin names. 
 #'
 #' @name web app utilities
 #'

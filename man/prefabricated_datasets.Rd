@@ -11,7 +11,7 @@ prefab_datasets()
 prefab_dataset_controls()
 }
 \value{
-\code{prefab_datasets}: \code{character} vector of dataset names. \cr
+\code{prefab_datasets}: \code{character} vector of dataset names. \cr \cr
 \code{prefab_dataset_controls}: \code{list} vector of dataset controls.
 }
 \description{

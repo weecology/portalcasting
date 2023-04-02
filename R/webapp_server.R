@@ -3,7 +3,7 @@
 #' 
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param rv [`shiny::reactiveValues`] `list` for the UI.
+#' @param rv [`reactiveValues`][shiny::reactiveValues] `list` for the UI.
 #'
 #' @param input `input` `list` for the UI.
 #'
@@ -15,13 +15,13 @@
 #' @param session Environment for the GenEst GUI.
 #'
 #' @return 
-#'   * `portal_forecast_server`: an observer reference class object (see [`shiny::observeEvent`] and [`shiny::observe`]). 
-#'   * `initial_reactive_values`: a [`shiny::reactiveValues`] `list`.
-#'   * `initial_output`: an `output` `list`.
-#'   * `event_reaction`: updates the `rv`, `output`, and `input` `list`s, but does not return them, per se.
-#'   * `update_reactive_values`: a [`shiny::reactiveValues`] `list`.
-#'   * `update_output`: an `output` `list`.
-#'   * `update_input`: updates the `input` `list`, but does not return it.
+#'   `portal_forecast_server`: an observer reference class object (see [`observeEvent`][shiny::observeEvent] and [`observe`][shiny::observe]). \cr \cr
+#'   `initial_reactive_values`: a [`reactiveValues`][shiny::reactiveValues] `list`. \cr \cr
+#'   `initial_output`: an `output` `list`. \cr \cr
+#'   `event_reaction`: updates the `rv`, `output`, and `input` `list`s, but does not return them, per se. \cr \cr
+#'   `update_reactive_values`: a [`reactiveValues`][shiny::reactiveValues] `list`. \cr \cr
+#'   `update_output`: an `output` `list`. \cr \cr
+#'   `update_input`: updates the `input` `list`, but does not return it. \cr \cr
 #'
 #' @name web app server
 #'

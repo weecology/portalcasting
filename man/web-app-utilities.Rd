@@ -17,11 +17,9 @@ species_list()
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 }
 \value{
-\itemize{
-\item \code{historic_end_newmoonnumber_list}: \code{vector} of \code{integer} newmoonnumbers
-\item \code{model_list}: \code{vector} of \code{character} models named with print names from controls list.
-\item \code{species_list}: \code{vector} of \code{character} species codes named with their Latin names.
-}
+\code{historic_end_newmoonnumber_list}: \code{vector} of \code{integer} newmoonnumbers. \cr \cr
+\code{model_list}: \code{vector} of \code{character} models named with print names from controls list. \cr \cr
+\code{species_list}: \code{vector} of \code{character} species codes named with their Latin names.
 }
 \description{
 Helper functions

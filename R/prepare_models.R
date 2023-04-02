@@ -1,6 +1,6 @@
 #' @title Read and Write Model Control Lists
 #'
-#' @description Input/output functions for model control lists, according to the[`directory_settings`]..
+#' @description Input/output functions for model control lists, according to the [`directory_settings`].
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
@@ -11,10 +11,10 @@
 #' @param controls `list` of controls for the models. 
 #'
 #' @return 
-#'   `model_controls`: `list` of `models`' control `list`s, [`base::invisible`]-ly. \cr 
-#'   `read_model_controls`: `list` of all `models`' control `list`s, from the file defined in[`directory_settings`], [`base::invisible`]-ly. \cr 
-#'   `write_model_controls`: `list` of `models`' control `list`s, [`base::invisible`]-ly. \cr 
-#'   `write_model_scripts`: `NULL`, [`base::invisible`]-ly.
+#'   `model_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
+#'   `read_model_controls`: `list` of all `models`' control `list`s, from the file defined in [`directory_settings`], [`invisible`][base::invisible]-ly. \cr \cr
+#'   `write_model_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
+#'   `write_model_scripts`: `NULL`, [`invisible`][base::invisible]-ly.
 #' 
 #' @name read and write model controls
 #'

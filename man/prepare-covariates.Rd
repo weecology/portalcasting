@@ -14,5 +14,5 @@ prepare_covariates(main = ".")
 \code{data.frame} of historical and forecasted covariates that is also saved out to \code{settings$files$covariates} if indicated by \code{settings$save}.
 }
 \description{
-Prepare and combine the historical and forecast covariate data for a model run, according to the\code{\link{directory_settings}}.
+Prepare and combine the historical and forecast covariate data for a model run, according to the \code{\link{directory_settings}}.
 }

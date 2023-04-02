@@ -7,9 +7,9 @@
 #'
 #' @param newmoons `data.frame` of newmoon data.
 #'
-#' @return Some version of a newmoons `data.frame`. \cr \cr. 
-#'         `prepare_newmoons`: fully appended and formatted `data.frame` (also saved out if `settings$save = TRUE`). \cr 
-#'         `add_forecast_newmoons`: fully appended and formatted `data.frame`. \cr 
+#' @return Some version of a newmoons `data.frame`. \cr \cr
+#'         `prepare_newmoons`: fully appended and formatted `data.frame` (also saved out if `settings$save = TRUE`). \cr \cr
+#'         `add_forecast_newmoons`: fully appended and formatted `data.frame`. 
 #'
 #' @name prepare newmoons
 #'

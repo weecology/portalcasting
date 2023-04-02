@@ -63,7 +63,7 @@ prepare_abundance <- function (main    = ".",
 #'
 #' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @return `list` of `datasets`' control `list`s, [`base::invisible`]-ly for `write_dataset_controls`.
+#' @return `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_dataset_controls`.
 #'  
 #' @name read and write rodent dataset controls
 #'
@@ -114,7 +114,7 @@ write_dataset_controls <- function (main                 = ".",
 
 #' @title Prepare Rodents Data for the Portalcasting Repository
 #'
-#' @description Create specified `datasets` using their associated function and arguments, according to the[`directory_settings`].
+#' @description Create specified `datasets` using their associated function and arguments, according to the [`directory_settings`].
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
