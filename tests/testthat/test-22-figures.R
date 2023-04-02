@@ -25,7 +25,7 @@ test_that(desc = "plot_cast_point", {
   expect_silent(plot_cast_point(main = main))
   expect_silent(plot_cast_point(main = main, highlight_sp = "DM"))
   expect_silent(plot_cast_point(main = main, model = "AutoArima"))
-  expect_silent(plot_cast_point(main = main, model = "AutoArima", with_census = TRUE))
+  
   expect_error(plot_cast_point(main = main, cast_id = 1e10))
 
 

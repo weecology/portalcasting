@@ -3,7 +3,7 @@
 #' @importFrom forecast Arima auto.arima ets forecast na.interp
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices grey rgb
-#' @importFrom htmltools a HTML includeHTML p 
+#' @importFrom htmltools a br HTML includeHTML includeMarkdown p 
 #' @importFrom httr content GET stop_for_status
 #' @importFrom hypergeo hypergeo
 #' @importFrom jsonlite fromJSON serializeJSON unserializeJSON write_json

@@ -91,5 +91,18 @@ test_that(desc = "evaluation tabs build tags", {
 })
 
 
+test_that(desc = "lists functions build lists", {
+
+  expect_silent(ft <- historic_end_newmoonnumber_list(main = main))
+  expect_is(ft, "integer")
+
+  expect_silent(ft <- model_list())
+  expect_is(ft, "character")
+
+  expect_silent(ft <- species_list())
+  expect_is(ft, "character")
+
+})
+
 
 

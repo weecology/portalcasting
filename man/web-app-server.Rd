@@ -3,22 +3,51 @@
 \name{web app server}
 \alias{web app server}
 \alias{portal_forecast_server}
+\alias{initial_reactive_values}
+\alias{initial_output}
+\alias{event_reaction}
+\alias{update_reactive_values}
+\alias{update_output}
+\alias{update_input}
 \title{Generate the Server Code for the Web App}
 \usage{
 portal_forecast_server(main = ".", input, output, session)
+
+initial_reactive_values(main = ".")
+
+initial_output(rv, output)
+
+event_reaction(main, event_name, rv, input, output, session)
+
+update_reactive_values(main, event_name, rv, input)
+
+update_output(main, event_name, rv, input, output)
+
+update_input(main, event_name, rv, input, session)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{input}{\code{input} list for the UI.}
+\item{input}{\code{input} \code{list} for the UI.}
 
-\item{output}{\code{output} list for the GenEst GUI.}
+\item{output}{\code{output} \code{list} for the GenEst GUI.}
 
 \item{session}{Environment for the GenEst GUI.}
+
+\item{rv}{\code{\link[shiny:reactiveValues]{shiny::reactiveValues}} \code{list} for the UI.}
+
+\item{event_name}{\code{character} value of the server event. \cr
+Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
 }
 \value{
 \itemize{
-\item \code{portal_forecast_server}: An observer reference class object (see \code{\link[shiny:observeEvent]{shiny::observeEvent}} and \code{\link[shiny:observe]{shiny::observe}}).
+\item \code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{shiny::observeEvent}} and \code{\link[shiny:observe]{shiny::observe}}).
+\item \code{initial_reactive_values}: a \code{\link[shiny:reactiveValues]{shiny::reactiveValues}} \code{list}.
+\item \code{initial_output}: an \code{output} \code{list}.
+\item \code{event_reaction}: updates the \code{rv}, \code{output}, and \code{input} \code{list}s, but does not return them, per se.
+\item \code{update_reactive_values}: a \code{\link[shiny:reactiveValues]{shiny::reactiveValues}} \code{list}.
+\item \code{update_output}: an \code{output} \code{list}.
+\item \code{update_input}: updates the \code{input} \code{list}, but does not return it.
 }
 }
 \description{
