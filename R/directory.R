@@ -91,10 +91,9 @@ update_dir <- function (main                 = ".",
            new_dataset_controls = new_dataset_controls,
            new_model_controls   = new_model_controls)
 
-  read_directory_configuration(main = main)
-
   messageq(break_lines( ), "Directory successfully updated.\n", break_lines( ), quiet = quiet)
 
+  read_directory_configuration(main = main)
 
 }
 
@@ -131,9 +130,9 @@ setup_dir <- function (main                 = ".",
            new_dataset_controls = new_dataset_controls,
            new_model_controls   = new_model_controls)
 
-  read_directory_configuration(main = main)
-
   messageq(break_lines( ), "Directory successfully instantiated.\n", break_lines( ), quiet = quiet)
+
+  read_directory_configuration(main = main)
 
 }
 
@@ -183,6 +182,8 @@ setup_sandbox <- function (main                 = ".",
             verbose              = verbose)
 
   messageq(castle(), "Sandbox directory successfully set up at \n\n  ", normalizePath(file.path(main = main)), "\n\nHappy model building!", quiet = quiet)
+
+  read_directory_configuration(main = main)
 
 }
 

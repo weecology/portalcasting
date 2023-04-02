@@ -1,10 +1,8 @@
-context(desc = "cleaning house")
+context(desc = "setting up house")
 
 main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
-
-
 
 
 test_that(desc = "removal main1",
@@ -27,5 +25,3 @@ test_that(desc = "removal main3",
   expect_equal((unlink(file.path(main3), recursive = TRUE, force = TRUE)), 0)
 
 })
-
-
