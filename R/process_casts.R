@@ -176,7 +176,7 @@ read_cast_tab <- function (main    = ".",
 
   }
 
-  if (nchar(strsplit(as.character(cast_id), "\\.")[[1]][2]) == 1) {
+  if (grepl("\\.", cast_id) && nchar(strsplit(as.character(cast_id), "\\.")[[1]][2]) == 1) {
     cast_id <- paste0(cast_id, "0")
   }
 
