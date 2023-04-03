@@ -51,13 +51,13 @@ test_that(desc = "forecast tabs build tags", {
   expect_silent(ftr <- forecast_tab_input_selection_row(main = main3))
   expect_is(ftr, "shiny.tag")
 
-  expect_silent(ftrs <- forecast_tab_input_selection_row_species())
+  expect_silent(ftrs <- forecast_tab_input_selection_row_species(main = main3))
   expect_is(ftrs, "shiny.tag")
 
-  expect_silent(ftrm <- forecast_tab_input_selection_row_model())
+  expect_silent(ftrm <- forecast_tab_input_selection_row_model(main = main3))
   expect_is(ftrm, "shiny.tag")
 
-  expect_silent(ftrd <- forecast_tab_input_selection_row_dataset())
+  expect_silent(ftrd <- forecast_tab_input_selection_row_dataset(main = main3))
   expect_is(ftrd, "shiny.tag")
 
   expect_silent(ftrh <- forecast_tab_input_selection_row_historic_end_newmoonnumber(main = main3))
