@@ -5,26 +5,24 @@ main2 <- normalizePath(file.path(tempdir(), "testing2"))
 main3 <- normalizePath(file.path(tempdir(), "testing3"))
 
 
-test_that(desc = "removal main1",
+test_that(desc = "main1",
           code = {
 
-  expect_equal(1, 1)
-#  expect_equal((unlink(file.path(main1), recursive = TRUE, force = TRUE)), 0)
+  expect_equal(file.exists(main1), FALSE)
 
 })
 
-test_that(desc = "removal main2",
+test_that(desc = "main2",
           code = {
 
-  expect_equal(1, 1)
-#  expect_equal((unlink(file.path(main2), recursive = TRUE, force = TRUE)), 0)
+  expect_equal(file.exists(main2), FALSE)
+
 
 })
 
-test_that(desc = "removal main3",
+test_that(desc = "main3",
           code = {
 
-  expect_equal(1, 1)
-#  expect_equal((unlink(file.path(main3), recursive = TRUE, force = TRUE)), 0)
+  expect_equal(file.exists(main3), FALSE)
 
 })
