@@ -55,18 +55,10 @@ available_newmoonnumbers <- function (main       = ".",
 
   if (event_name == "initial_evaluation_tab") {
 
-    selected_evaluation_tab_species  <- selected_species(main = main, event_name = "initial_evaluation_tab")
-    selected_evaluation_tab_model    <- selected_model(main = main, event_name = "initial_evaluation_tab")
-    selected_evaluation_tab_dataset  <- selected_dataset(main = main, event_name = "initial_evaluation_tab")
-    
-    avail_newmoonnumbers  <- unique(casts_evaluations$newmoonnumber[casts_evaluations$species  == selected_evaluation_tab_species &
-                                                                    casts_evaluations$model    == selected_evaluation_tab_model &
-                                                                    casts_evaluations$dataset  == selected_evaluation_tab_dataset &
-                                                                    !is.na(casts_evaluations$obs)])
+    avail_newmoonnumbers  <- evaluation_tab_available_newmoons
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
-    all_possible <- unique(casts_evaluations$newmoonnumber)
 
     possible <- unique(casts_evaluations$newmoonnumber[casts_evaluations$species                    == rv$evaluation_tab_species &
                                                        casts_evaluations$model                      == rv$evaluation_tab_model &
@@ -74,7 +66,7 @@ available_newmoonnumbers <- function (main       = ".",
                                                        casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
                                                        !is.na(casts_evaluations$obs)])
 
-    avail_newmoonnumbers <- possible[possible %in% all_possible]
+    avail_newmoonnumbers <- possible[possible %in% evaluation_tab_available_newmoons]
 
   }
 
@@ -129,34 +121,21 @@ available_historic_end_newmoonnumbers <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_historic_end_newmoonnumbers  <- unique(casts_metadata$historic_end_newmoonnumber)
+    avail_historic_end_newmoonnumbers  <- forecast_tab_available_historic_end_newmoons
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    selected_evaluation_tab_species       <- selected_species(main = main, event_name = "initial_evaluation_tab")
-    selected_evaluation_tab_model         <- selected_model(main = main, event_name = "initial_evaluation_tab")
-    selected_evaluation_tab_dataset       <- selected_dataset(main = main, event_name = "initial_evaluation_tab")
-    selected_evaluation_tab_newmoonnumber <- selected_newmoonnumber(main = main, event_name = "initial_evaluation_tab")
-    
-    avail_historic_end_newmoonnumbers  <- unique(casts_evaluations$historic_end_newmoonnumber[casts_evaluations$species                      == selected_evaluation_tab_species &
-                                                                                              casts_evaluations$model                        == selected_evaluation_tab_model &
-                                                                                              casts_evaluations$dataset                      == selected_evaluation_tab_dataset &
-                                                                                              casts_evaluations$newmoonnumber                == selected_evaluation_tab_newmoonnumber & 
-                                                                                              !is.na(casts_evaluations$obs)])
+    avail_historic_end_newmoonnumbers  <- evaluation_tab_available_historic_end_newmoons
 
   } else if (grepl("forecast_tab_", event_name)) {
-
-    all_possible <- unique(casts_metadata$historic_end_newmoonnumber)
 
     possible <- unique(casts_metadata$historic_end_newmoonnumber[casts_metadata$species == rv$forecast_tab_species &
                                                                  casts_metadata$model   == rv$forecast_tab_model &
                                                                  casts_metadata$dataset == rv$forecast_tab_dataset])
 
-    avail_historic_end_newmoonnumbers <- possible[possible %in% all_possible]
+    avail_historic_end_newmoonnumbers <- possible[possible %in% forecast_tab_available_historic_end_newmoons]
 
   } else if (grepl("evaluation_tab_", event_name)) {
-
-    all_possible <- unique(casts_evaluations$historic_end_newmoonnumber)
 
     possible <- unique(casts_evaluations$historic_end_newmoonnumber[casts_evaluations$species       == rv$evaluation_tab_species &
                                                                     casts_evaluations$model         == rv$evaluation_tab_model &
@@ -164,7 +143,7 @@ available_historic_end_newmoonnumbers <- function (main       = ".",
                                                                     casts_evaluations$newmoonnumber == rv$evaluation_tab_newmoonnumber & 
                                                                     !is.na(casts_evaluations$obs)])
 
-    avail_historic_end_newmoonnumbers <- possible[possible %in% all_possible]
+    avail_historic_end_newmoonnumbers <- possible[possible %in% evaluation_tab_available_historic_end_newmoons]
 
   }
 
@@ -223,25 +202,21 @@ available_species <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_species  <- unique(casts_metadata$species)
+    avail_species  <- forecast_tab_available_species
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    avail_species  <- unique(casts_evaluations$species)
+    avail_species  <- evaluation_tab_available_species
 
   } else if (grepl("forecast_tab_", event_name)) {
-
-    all_possible <- unique(casts_metadata$species[casts_metadata$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])
 
     possible <- unique(casts_metadata$species[casts_metadata$dataset                    == rv$forecast_tab_dataset &
                                               casts_metadata$model                      == rv$forecast_tab_model &
                                               casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
-    avail_species <- possible[possible %in% all_possible]
+    avail_species <- possible[possible %in% forecast_tab_available_species]
 
   } else if (grepl("evaluation_tab_", event_name)) {
-
-    all_possible <- unique(casts_evaluations$species[casts_evaluations$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])
 
     possible <- unique(casts_evaluations$species[casts_evaluations$dataset                    == rv$evaluation_tab_dataset &
                                                  casts_evaluations$model                      == rv$evaluation_tab_model &
@@ -249,7 +224,7 @@ available_species <- function (main       = ".",
                                                  casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber & 
                                                  !is.na(casts_evaluations$obs)])
 
-    avail_species <- possible[possible %in% all_possible]
+    avail_species <- possible[possible %in% evaluation_tab_available_species]
 
   } 
 
@@ -311,25 +286,21 @@ available_datasets <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_datasets  <- unique(casts_metadata$dataset[casts_metadata$dataset %in% prefab_datasets( )])
+    avail_datasets  <- forecast_tab_available_datasets
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    avail_datasets  <- unique(casts_evaluations$dataset[casts_evaluations$dataset %in% prefab_datasets( )])
+    avail_datasets  <- evaluation_tab_available_datasets
 
   } else if (grepl("forecast_tab_", event_name)) {
-
-    all_possible <- unique(casts_metadata$dataset[casts_metadata$dataset %in% prefab_datasets( )])
 
     possible <- unique(casts_metadata$dataset[casts_metadata$species                    == rv$forecast_tab_species &
                                               casts_metadata$model                      == rv$forecast_tab_model &
                                               casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
-    avail_datasets <- possible[possible %in% all_possible]
+    avail_datasets <- possible[possible %in% forecast_tab_available_datasets]
 
   } else if (grepl("evaluation_tab_", event_name)) {
-
-    all_possible <- unique(casts_evaluations$dataset[casts_evaluations$dataset %in% prefab_datasets( )])
 
     possible <- unique(casts_evaluations$dataset[casts_evaluations$species                    == rv$evaluation_tab_species &
                                                  casts_evaluations$model                      == rv$evaluation_tab_model &
@@ -337,7 +308,7 @@ available_datasets <- function (main       = ".",
                                                  casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber & 
                                                  !is.na(casts_evaluations$obs)])
 
-    avail_datasets <- possible[possible %in% all_possible]
+    avail_datasets <- possible[possible %in% evaluation_tab_available_datasets]
   }
 
   avail_datasets
@@ -393,25 +364,21 @@ available_models <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_models  <- unique(casts_metadata$model[casts_metadata$model %in% prefab_models( )])
+    avail_models  <- forecast_tab_available_models
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    avail_models  <- unique(casts_evaluations$model[casts_evaluations$model %in% prefab_models( )])
+    avail_models  <- evaluation_tab_available_models
 
   } else if (grepl("forecast_tab_", event_name)) {
-
-    all_possible <- unique(casts_metadata$model[casts_metadata$model %in% prefab_models( )])
 
     possible <- unique(casts_metadata$model[casts_metadata$species                    == rv$forecast_tab_species &
                                             casts_metadata$dataset                    == rv$forecast_tab_dataset &
                                             casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
-    avail_models <- possible[possible %in% all_possible]
+    avail_models <- possible[possible %in% forecast_tab_available_models]
 
   } else if (grepl("evaluation_tab_", event_name)) {
-
-    all_possible <- unique(casts_evaluations$model[casts_evaluations$model %in% prefab_models( )])
 
     possible <- unique(casts_evaluations$model[casts_evaluations$species                    == rv$evaluation_tab_species &
                                                casts_evaluations$dataset                    == rv$evaluation_tab_dataset &
@@ -419,7 +386,7 @@ available_models <- function (main       = ".",
                                                casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber & 
                                                !is.na(casts_evaluations$obs)])
 
-    avail_models <- possible[possible %in% all_possible]
+    avail_models <- possible[possible %in% evaluation_tab_available_models]
 
   }
 
@@ -443,8 +410,8 @@ selected_model <- function (main       = ".",
                             rv         = NULL) {
 
   available <- available_models(main       = main,
-                                  event_name = event_name,
-                                  rv         = rv)
+                                event_name = event_name,
+                                rv         = rv)
 
   if (grepl("initial_", event_name)) {
 
