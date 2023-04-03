@@ -68,9 +68,6 @@ portal_forecast_ui <- function (main = ".") {
 }
 
 
-
-
-
 #' @rdname web-app-ui
 #'
 #' @export
@@ -78,7 +75,7 @@ portal_forecast_ui <- function (main = ".") {
 page_main_panel <- function (main = ".") {
 
   mainPanel(tabsetPanel(forecast_tab(main = main),
-                        evaluation_tab(main = main),
+                        #evaluation_tab(main = main),
                         about_tab( ),
                         models_tab( ),
                         profiles_tab( )))
@@ -167,7 +164,7 @@ forecast_tab <- function (main = ".") {
   tabPanel(title = "Forecast", 
            br( ), 
            forecast_tab_input_selection_row(main = main), 
-         # forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
+          # forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
            plotOutput("forecast_tab_ts_plot"), 
            br( ),
            plotOutput("forecast_tab_ss_plot"),
@@ -190,17 +187,15 @@ forecast_tab_input_selection_checks_row <- function ( ) {
 }
 
 
-
-
 #' @rdname web-app-ui
 #'
 #' @export
 #
 forecast_tab_input_selection_row <- function (main = ".") {
 
-  fluidRow(forecast_tab_input_selection_row_species( ),
-           forecast_tab_input_selection_row_dataset( ),
-           forecast_tab_input_selection_row_model( ),
+  fluidRow(forecast_tab_input_selection_row_species(main = main),
+           forecast_tab_input_selection_row_dataset(main = main),
+           forecast_tab_input_selection_row_model(main = main),
            forecast_tab_input_selection_row_historic_end_newmoonnumber(main = main))
 
 }
@@ -210,13 +205,13 @@ forecast_tab_input_selection_row <- function (main = ".") {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_species <- function ( ) {
+forecast_tab_input_selection_row_species <- function (main = ".") {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_species",
                      label    = "Species",
-                     choices  = species_list( ),
-                     selected = "DM"))
+                     choices  = available_species(main = main, event_name = "initial_forecast_tab"),
+                     selected = selected_species(main = main, event_name = "initial_forecast_tab")))
 
 }
 
@@ -225,13 +220,13 @@ forecast_tab_input_selection_row_species <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_dataset <- function ( ) {
+forecast_tab_input_selection_row_dataset <- function (main = ".") {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_dataset",
                      label    = "Dataset",
-                     choices  = prefab_datasets( ),
-                     selected = "controls"))
+                     choices  = available_datasets(main = main, event_name = "initial_forecast_tab"),
+                     selected = selected_dataset(main = main, event_name = "initial_forecast_tab")))
 
 }
 
@@ -240,13 +235,13 @@ forecast_tab_input_selection_row_dataset <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_model <- function ( ) {
+forecast_tab_input_selection_row_model <- function (main = ".") {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_model",
                      label    = "Model",
-                     choices  = model_list(),
-                     selected = "AutoArima"))
+                     choices  = available_models(main = main, event_name = "initial_forecast_tab"),
+                     selected = selected_model(main = main, event_name = "initial_forecast_tab")))
 
 }
 
@@ -260,8 +255,8 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (main = 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_historic_end_newmoonnumber",
                      label    = "Origin Newmoon",
-                     choices  = historic_end_newmoonnumber_list(main = main),
-                     selected = max(historic_end_newmoonnumber_list(main = main))))
+                     choices  = available_historic_end_newmoonnumbers(main = main, event_name = "initial_forecast_tab"),
+                     selected = selected_historic_end_newmoonnumber(main = main, event_name = "initial_forecast_tab")))
 
 }
 
@@ -280,7 +275,7 @@ evaluation_tab <- function (main = ".") {
            evaluation_tab_input_selection_row(main = main), 
            h2("Most recent observation vs. forecasts"),
            evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
-           plotOutput("evaluation_tab_sp_plot"),
+#           plotOutput("evaluation_tab_sp_plot"),
            br( ),
            h2("Model Coverage & RMSE (last 3 years of forecasts)"),
  #          plotOutput("evaluation_tab_RMSE_plot"),

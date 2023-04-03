@@ -45,11 +45,11 @@ forecast_tab_input_selection_checks_row()
 
 forecast_tab_input_selection_row(main = ".")
 
-forecast_tab_input_selection_row_species()
+forecast_tab_input_selection_row_species(main = ".")
 
-forecast_tab_input_selection_row_dataset()
+forecast_tab_input_selection_row_dataset(main = ".")
 
-forecast_tab_input_selection_row_model()
+forecast_tab_input_selection_row_model(main = ".")
 
 forecast_tab_input_selection_row_historic_end_newmoonnumber(main = ".")
 

@@ -1,4 +1,4 @@
-#devtools::test(filter = "00")
+devtools::test(filter = "00")
 
 devtools::test(filter = "10")
 devtools::test(filter = "11")

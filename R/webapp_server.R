@@ -112,19 +112,20 @@ portal_forecast_server <- function (main = ".",
 initial_reactive_values <- function (main = ".") {
 
   casts_metadata    <- read_casts_metadata(main    = main)
-  casts_evaluations <- read_casts_evaluations(main = main)
+ # casts_evaluations <- read_casts_evaluations(main = main)
 
-  reactiveValues(forecast_tab_species                      = "DM", 
-                 forecast_tab_dataset                      = "all", 
-                 forecast_tab_model                        = "AutoArima",
-                 forecast_tab_historic_end_newmoonnumber   = max(casts_metadata$historic_end_newmoonnumber),
+
+  reactiveValues(forecast_tab_species                      = selected_species(main = main, event_name = "initial_forecast_tab"), 
+                 forecast_tab_dataset                      = selected_dataset(main = main, event_name = "initial_forecast_tab"), 
+                 forecast_tab_model                        = selected_model(main = main, event_name = "initial_forecast_tab"),
+                 forecast_tab_historic_end_newmoonnumber   = selected_historic_end_newmoonnumber(main = main, event_name = "initial_forecast_tab"),
                  evaluation_tab_species                    = "DM",
                  evaluation_tab_dataset                    = "all", 
                  evaluation_tab_model                      = "AutoArima",
                  evaluation_tab_historic_end_newmoonnumber = 560, # max(casts_evaluations$historic_end_newmoonnumber), # not sure how best to auto select
                  evaluation_tab_newmoonnumber              = 561,
-                 casts_metadata                            = casts_metadata,
-                 casts_evaluations                         = casts_evaluations)
+                 casts_metadata                            = casts_metadata)#,
+                # casts_evaluations                         = casts_evaluations)
 
 }
 
@@ -169,6 +170,7 @@ initial_output <- function (main = ".",
                                                                                      species                     = rv$evaluation_tab_species,
                                                                                      models                      = rv$evaluation_tab_model,
                                                                                      historic_end_newmoonnumbers = rv$evaluation_tab_historic_end_newmoonnumber))
+
   output 
 
 }
@@ -195,13 +197,11 @@ event_reaction <- function (main,
                           input      = input, 
                           output     = output)
 
-
   update_input(main       = main, 
                event_name = event_name, 
                rv         = rv, 
                input      = input, 
                session    = session)
-
 
 }
 
@@ -308,27 +308,35 @@ update_input <- function (main,
 
     updateSelectInput(session  = session, 
                       inputId  = "forecast_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                   event_name = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
+                      choices  = available_datasets(main       = main,
+                                                    event_name = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(event_name   = event_name,
-                                                   rv          = rv))
+                      selected = selected_dataset(main         = main,
+                                                  event_name   = event_name,
+                                                  rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main         = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main         = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
 
   }
@@ -336,27 +344,35 @@ update_input <- function (main,
 
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
+                      choices  = available_datasets(main       = main,
+                                                    event_name = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(event_name   = event_name,
+                      selected = selected_dataset(main         = main,
+                                                  event_name   = event_name,
                                                   rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main         = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main         = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
     updateSelectInput(session  = session, 
                       inputId  = "forecast_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                   event_name = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
 
   }
@@ -364,55 +380,71 @@ update_input <- function (main,
 
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main         = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main         = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
     updateSelectInput(session  = session, 
                       inputId  = "forecast_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                   event_name = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
+                      choices  = available_datasets(main       = main,
+                                                    event_name = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(event_name  = event_name,
-                                                  rv          = rv))
+                      selected = selected_dataset(main         = main,
+                                                  event_name   = event_name,
+                                                  rv           = rv))
 
   }
   if (event_name == "forecast_tab_historic_end_newmoonnumber") {
 
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main         = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
     updateSelectInput(session  = session, 
                       inputId  = "forecast_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                   event_name = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
+                      choices  = available_datasets(main       = main,
+                                                    event_name = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(event_name  = event_name,
+                      selected = selected_dataset(main       = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main       = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
 
   }
