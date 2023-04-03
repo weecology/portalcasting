@@ -8,7 +8,7 @@ update_forecasts_folder <- function (main = ".") {
 
   old_colnames <- c("cast_id", "cast_group", "cast_date", "start_moon", "end_moon", "lead_time", "model", "dataset", "portalcasting_version", "QAQC", "notes")
 
-  if (all(colnames(casts_metadata) == old_colnames)) {
+  if (all(colnames(casts_metadata) %in% old_colnames)) {
 
     messageq(" --- Updating forecasts folder ---", quiet = settings$quiet)
 
@@ -93,8 +93,8 @@ update_forecasts_folder <- function (main = ".") {
                               origin                       = NA,
                               historic_start_newmoonnumber = casts_metadata$start_moon[i],
                               historic_end_newmoonnumber   = casts_metadata$end_moon[i],
-                              forecast_start_newmoonnumber = casts_metadata$end_moon[i] + 1,
-                              forecast_end_newmoonnumber   = casts_metadata$end_moon[i] + casts_metadata$lead_time[i],
+                              forecast_start_newmoonnumber = min(cast_tab$moon),
+                              forecast_end_newmoonnumber   = max(cast_tab$moon),
                               lead_time_newmoons           = casts_metadata$lead_time[i],
                               model                        = casts_metadata$model[i],
                               dataset                      = casts_metadata$dataset[i],

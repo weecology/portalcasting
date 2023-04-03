@@ -4,6 +4,8 @@ main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
+casts_metadata    <- read_casts_metadata(main = main3)
+casts_evaluations <- read_casts_evaluations(main = main3)
 
 test_that(desc = "portal_forecast_ui builds a ui", {
 
