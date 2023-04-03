@@ -101,6 +101,13 @@ portal_forecast_server <- function (main = ".",
                                             input      = input, 
                                             output     = output, 
                                             session    = session))
+  observeEvent(eventExpr   = input$evaluation_tab_newmoonnumber,
+               handlerExpr = event_reaction(main       = main, 
+                                            event_name = "evaluation_tab_newmoonnumber", 
+                                            rv         = rv, 
+                                            input      = input, 
+                                            output     = output, 
+                                            session    = session))
 
 }
 
@@ -111,21 +118,15 @@ portal_forecast_server <- function (main = ".",
 #'
 initial_reactive_values <- function (main = ".") {
 
-  casts_metadata    <- read_casts_metadata(main    = main)
- # casts_evaluations <- read_casts_evaluations(main = main)
-
-
   reactiveValues(forecast_tab_species                      = selected_species(main = main, event_name = "initial_forecast_tab"), 
                  forecast_tab_dataset                      = selected_dataset(main = main, event_name = "initial_forecast_tab"), 
                  forecast_tab_model                        = selected_model(main = main, event_name = "initial_forecast_tab"),
                  forecast_tab_historic_end_newmoonnumber   = selected_historic_end_newmoonnumber(main = main, event_name = "initial_forecast_tab"),
-                 evaluation_tab_species                    = "DM",
-                 evaluation_tab_dataset                    = "all", 
-                 evaluation_tab_model                      = "AutoArima",
-                 evaluation_tab_historic_end_newmoonnumber = 560, # max(casts_evaluations$historic_end_newmoonnumber), # not sure how best to auto select
-                 evaluation_tab_newmoonnumber              = 561,
-                 casts_metadata                            = casts_metadata)#,
-                # casts_evaluations                         = casts_evaluations)
+                 evaluation_tab_species                    = selected_species(main = main, event_name = "initial_evaluation_tab"),
+                 evaluation_tab_dataset                    = selected_dataset(main = main, event_name = "initial_evaluation_tab"), 
+                 evaluation_tab_model                      = selected_model(main = main, event_name = "initial_evaluation_tab"),
+                 evaluation_tab_historic_end_newmoonnumber = selected_historic_end_newmoonnumber(main = main, event_name = "initial_evaluation_tab"),
+                 evaluation_tab_newmoonnumber              = selected_newmoonnumber(main = main, event_name = "initial_evaluation_tab"))
 
 }
 
@@ -157,6 +158,7 @@ initial_output <- function (main = ".",
   output$evaluation_tab_dataset                    <- renderText(rv$evaluation_tab_dataset)
   output$evaluation_tab_model                      <- renderText(rv$evaluation_tab_model)
   output$evaluation_tab_historic_end_newmoonnumber <- renderText(rv$evaluation_tab_historic_end_newmoonnumber)
+  output$evaluation_tab_newmoonnumber              <- renderText(rv$evaluation_tab_newmoonnumber)
 
   output$evaluation_tab_sp_plot                    <- renderPlot(plot_cast_point(main                            = main,
                                                                                  dataset                         = rv$evaluation_tab_dataset,
@@ -228,6 +230,7 @@ update_reactive_values <- function (main,
     rv$evaluation_tab_dataset                    <- input$evaluation_tab_dataset
     rv$evaluation_tab_model                      <- input$evaluation_tab_model
     rv$evaluation_tab_historic_end_newmoonnumber <- input$evaluation_tab_historic_end_newmoonnumber
+    rv$evaluation_tab_newmoonnumber              <- input$evaluation_tab_newmoonnumber
 
   }
 
@@ -435,15 +438,15 @@ update_input <- function (main,
                       choices  = available_datasets(main       = main,
                                                     event_name = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(main       = main,
-                                                  event_name  = event_name,
-                                                  rv          = rv))
+                      selected = selected_dataset(main         = main,
+                                                  event_name   = event_name,
+                                                  rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "forecast_tab_model", 
                       choices  = available_models(main       = main,
                                                   event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(main       = main,
+                      selected = selected_model(main         = main,
                                                 event_name   = event_name,
                                                 rv           = rv))
 
@@ -452,55 +455,87 @@ update_input <- function (main,
 
     updateSelectInput(session  = session, 
                       inputId  = "evaluation_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                  event_name  = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
+                      choices  = available_datasets(main       = main,
+                                                    event_name = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(event_name   = event_name,
-                                                   rv          = rv))
+                      selected = selected_dataset(main         = main,
+                                                  event_name   = event_name,
+                                                  rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main         = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main         = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_newmoonnumber", 
+                      choices  = available_newmoonnumbers(main       = main,
+                                                          event_name = event_name,
+                                                          rv         = rv),
+                      selected = selected_newmoonnumber(main         = main,
+                                                        event_name   = event_name,
+                                                        rv           = rv))
 
   }
   if (event_name == "evaluation_tab_dataset") {
 
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
+                      choices  = available_datasets(main       = main,
+                                                    event_name = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(event_name   = event_name,
+                      selected = selected_dataset(main       = main,
+                                                  event_name   = event_name,
                                                   rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main       = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main       = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_newmoonnumber", 
+                      choices  = available_newmoonnumbers(main       = main,
+                                                          event_name = event_name,
+                                                          rv         = rv),
+                      selected = selected_newmoonnumber(main         = main,
+                                                        event_name   = event_name,
+                                                        rv           = rv))
     updateSelectInput(session  = session, 
                       inputId  = "evaluation_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                   event_name = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main       = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
 
   }
@@ -508,27 +543,43 @@ update_input <- function (main,
 
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main       = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main       = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_newmoonnumber", 
+                      choices  = available_newmoonnumbers(main       = main,
+                                                          event_name = event_name,
+                                                          rv         = rv),
+                      selected = selected_newmoonnumber(main         = main,
+                                                        event_name   = event_name,
+                                                        rv           = rv))
     updateSelectInput(session  = session, 
                       inputId  = "evaluation_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                  event_name  = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
+                      choices  = available_datasets(main       = main,
+                                                  event_name   = event_name,
                                                     rv         = rv),
-                      selected = selected_dataset(event_name  = event_name,
+                      selected = selected_dataset(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
 
   }
@@ -536,28 +587,89 @@ update_input <- function (main,
 
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_historic_end_newmoonnumber", 
-                      choices  = available_historic_end_newmoonnumbers(event_name = event_name,
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
                                                                        rv         = rv),
-                      selected = selected_historic_end_newmoonnumber(event_name   = event_name,
+                      selected = selected_historic_end_newmoonnumber(main         = main,
+                                                                     event_name   = event_name,
                                                                      rv           = rv))
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_newmoonnumber", 
+                      choices  = available_newmoonnumbers(main       = main,
+                                                          event_name = event_name,
+                                                          rv         = rv),
+                      selected = selected_newmoonnumber(main         = main,
+                                                        event_name   = event_name,
+                                                        rv           = rv))
     updateSelectInput(session  = session, 
                       inputId  = "evaluation_tab_species", 
-                      choices  = available_species(event_name = event_name,
+                      choices  = available_species(main       = main,
+                                                  event_name  = event_name,
                                                    rv         = rv),
-                      selected = selected_species(event_name  = event_name,
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_dataset", 
-                      choices  = available_datasets(event_name = event_name,
-                                                    rv         = rv),
-                      selected = selected_dataset(event_name  = event_name,
+                      choices  = available_datasets(main      = main,
+                                                  event_name  = event_name,
+                                                    rv        = rv),
+                      selected = selected_dataset(main        = main,
+                                                  event_name  = event_name,
                                                   rv          = rv))
     updateSelectInput(session  = session,
                       inputId  = "evaluation_tab_model", 
-                      choices  = available_models(event_name = event_name,
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
                                                   rv         = rv),
-                      selected = selected_model(event_name   = event_name,
+                      selected = selected_model(main         = main,
+                                                event_name   = event_name,
                                                 rv           = rv))
+
+  }
+
+  if (event_name == "evaluation_tab_newmoonnumber") {
+
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_newmoonnumber", 
+                      choices  = available_newmoonnumbers(main       = main,
+                                                          event_name = event_name,
+                                                          rv         = rv),
+                      selected = selected_newmoonnumber(main         = main,
+                                                        event_name   = event_name,
+                                                        rv           = rv))
+    updateSelectInput(session  = session, 
+                      inputId  = "evaluation_tab_species", 
+                      choices  = available_species(main       = main,
+                                                  event_name  = event_name,
+                                                   rv         = rv),
+                      selected = selected_species(main        = main,
+                                                  event_name  = event_name,
+                                                  rv          = rv))
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_dataset", 
+                      choices  = available_datasets(main      = main,
+                                                  event_name  = event_name,
+                                                    rv        = rv),
+                      selected = selected_dataset(main        = main,
+                                                  event_name  = event_name,
+                                                  rv          = rv))
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_model", 
+                      choices  = available_models(main       = main,
+                                                  event_name = event_name,
+                                                  rv         = rv),
+                      selected = selected_model(main         = main,
+                                                event_name   = event_name,
+                                                rv           = rv))
+    updateSelectInput(session  = session,
+                      inputId  = "evaluation_tab_historic_end_newmoonnumber", 
+                      choices  = available_historic_end_newmoonnumbers(main       = main,
+                                                                       event_name = event_name,
+                                                                       rv         = rv),
+                      selected = selected_historic_end_newmoonnumber(main         = main,
+                                                                     event_name   = event_name,
+                                                                     rv           = rv))
 
   }
 

@@ -23,6 +23,7 @@
 \alias{evaluation_tab_input_selection_row_dataset}
 \alias{evaluation_tab_input_selection_row_model}
 \alias{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
+\alias{evaluation_tab_input_selection_row_newmoonnumber}
 \title{Generate the User Interface for the Web App}
 \usage{
 portal_forecast_ui(main = ".")
@@ -59,13 +60,15 @@ evaluation_tab_input_selection_checks_row()
 
 evaluation_tab_input_selection_row(main = ".")
 
-evaluation_tab_input_selection_row_species()
+evaluation_tab_input_selection_row_species(main = ".")
 
-evaluation_tab_input_selection_row_dataset()
+evaluation_tab_input_selection_row_dataset(main = ".")
 
-evaluation_tab_input_selection_row_model()
+evaluation_tab_input_selection_row_model(main = ".")
 
 evaluation_tab_input_selection_row_historic_end_newmoonnumber(main = ".")
+
+evaluation_tab_input_selection_row_newmoonnumber(main = ".")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
@@ -107,6 +110,7 @@ The UI is hierarchical built as:
 \item evaluation_tab_input_selection_row_dataset
 \item evaluation_tab_input_selection_row_model
 \item evaluation_tab_input_selection_row_historic_end_newmoonnumber
+\item evaluation_tab_input_selection_row_newmoonnumber
 }
 \item evaluation_tab_input_selection_checks_row  # commented out, but available for checking reactive inputs in dev
 \item plot_cast_point

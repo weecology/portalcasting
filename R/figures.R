@@ -500,6 +500,7 @@ plot_cast_point <- function (main                       = ".",
                              datasets                    = dataset, 
                              species                     = species)
 
+
   if (with_census) {
 
     moons          <- read_newmoons(main = main)
