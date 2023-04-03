@@ -52,12 +52,11 @@ add_new_model <- function (main               = "." ,
 
   model_controls <- read_model_controls(main = main)
 
-  if(!is.null(new_model_controls$fit$model_file)) {
+  if (!is.null(new_model_controls$fit$model_file)) {
 
     new_model_controls$fit$full_model_file <- paste0("'", file.path(main, settings$subdirectories$models, new_model_controls$fit$model_file), "'")
 
-    write_model_scripts(main     = main,
-                        controls = list(new_model_controls))
+    messageq(" NOTE: Model script file for ", new_model_controls$metadata$name, " must still be added to ", new_model_controls$fit$full_model_file, quiet = settings$quiet)
 
   } else {
 

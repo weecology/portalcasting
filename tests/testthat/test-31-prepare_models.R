@@ -43,6 +43,9 @@ test_that(desc = "add_new_model makes a list", {
   mc <- add_new_model(main = main2, new_model_controls = new_model_controls(metadata = new_model_metadata(name = "newone")))
   expect_is(mc, "list")
 
+  mc <- add_new_model(main = main2, new_model_controls = new_model_controls(fit = new_model_fit(model_file = "jags_RW.txt"), metadata = new_model_metadata(name = "newonejags")))
+  expect_is(mc, "list")
+
 })
 
 

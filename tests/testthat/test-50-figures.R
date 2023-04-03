@@ -12,6 +12,7 @@ test_that(desc = "plot_cast_ts", {
   expect_silent(plot_cast_ts(main = main3, species = "DM", 
                              model = "AutoArima"))
   expect_silent(plot_cast_ts(main = main3, species = "DM"))
+  expect_silent(plot_cast_ts(main = main3, species = "total"))
   expect_error(plot_cast_ts(main = main3, species = "DM", cast_id = 1e10))
 
 })
@@ -23,7 +24,8 @@ test_that(desc = "plot_cast_point", {
 
   expect_silent(plot_cast_point(main = main3, dataset = "controls", model = "AutoArima", species = "DM"))
   expect_silent(plot_cast_point(main = main3, dataset = "controls", model = "AutoArima", species = c("BA", "DM"), highlight_sp = "DM"))
-  #expect_silent(plot_cast_point(main = main3, model = "AutoArima"))
+  expect_silent(plot_cast_point(main = main3, model = "AutoArima"))
+  expect_silent(plot_cast_point(main = main3, model = "AutoArima", with_census = TRUE))
   
   expect_error(plot_cast_point(main = main3, cast_id = 1e10))
 
