@@ -1,8 +1,8 @@
 context(desc = "tsglm functions")
 
-main1 <- normalizePath(file.path(tempdir(), "testing1"))
-main2 <- normalizePath(file.path(tempdir(), "testing2"))
-main3 <- normalizePath(file.path(tempdir(), "testing3"))
+main1 <- file.path(tempdir(), "testing1")
+main2 <- file.path(tempdir(), "testing2")
+main3 <- file.path(tempdir(), "testing3")
 
 
 test_that(desc = "meta_tsglm components work properly individually and together", {

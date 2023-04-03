@@ -1,8 +1,8 @@
 context(desc = "directory filling functions")
 
-main1 <- normalizePath(file.path(tempdir(), "testing1"))
-main2 <- normalizePath(file.path(tempdir(), "testing2"))
-main3 <- normalizePath(file.path(tempdir(), "testing3"))
+main1 <- file.path(tempdir(), "testing1")
+main2 <- file.path(tempdir(), "testing2")
+main3 <- file.path(tempdir(), "testing3")
 
 
 test_that(desc = "fill_resources fills the resources folder",

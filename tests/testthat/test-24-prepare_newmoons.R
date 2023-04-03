@@ -1,8 +1,8 @@
 context(desc = "moons prepping functions")
 
-main1 <- normalizePath(file.path(tempdir(), "testing1"))
+main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
-main3 <- normalizePath(file.path(tempdir(), "testing3"))
+main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "prep_moons pulls in moons or throws error", {
 
