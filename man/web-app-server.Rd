@@ -11,33 +11,35 @@
 \alias{update_input}
 \title{Generate the Server Code for the Web App}
 \usage{
-portal_forecast_server(main = ".", input, output, session)
+portal_forecast_server(input, output, session)
 
-initial_reactive_values()
+initial_reactive_values(global = global_list())
 
 initial_output(main = ".", rv, output)
 
-event_reaction(main, event_name, rv, input, output, session)
+event_reaction(main, global, event_name, rv, input, output, session)
 
 update_reactive_values(event_name, rv, input)
 
 update_output(main, event_name, rv, input, output)
 
-update_input(event_name, rv, input, session)
+update_input(global, event_name, rv, input, session)
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of the directory tree.}
-
 \item{input}{\code{input} \code{list} for the UI.}
 
 \item{output}{\code{output} \code{list} for the GenEst GUI.}
 
 \item{session}{Environment for the GenEst GUI.}
 
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
+
 \item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
 
 \item{event_name}{\code{character} value of the server event. \cr
 Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
+
+\item{`global`}{A \code{list} of global values for the app.}
 }
 \value{
 \code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr \cr

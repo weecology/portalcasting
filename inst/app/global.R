@@ -1,2 +1,2 @@
 
-source("global_setup.R")
+global <- global_list(main = main)

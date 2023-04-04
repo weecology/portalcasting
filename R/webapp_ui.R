@@ -35,6 +35,10 @@
 #'       * profiles_tab
 #'         * htmltools::includeHTML
 #'
+#' @param `global` A `list` of global values for the app.
+#'
+#' @param main `character` value of the name of the main component of the directory tree.
+#'
 #' @return A UI definition or component shiny tags.
 #'
 #' @name web app ui
@@ -47,11 +51,11 @@ NULL
 #'
 #' @export
 #'
-portal_forecast_ui <- function ( ) {
+portal_forecast_ui <- function (global = global_list( )) {
 
   fluidPage(page_title_panel( ),
             page_subtitle_panel( ), 
-            page_main_panel( ))
+            page_main_panel(global = global))
 
 
 }
@@ -61,10 +65,10 @@ portal_forecast_ui <- function ( ) {
 #'
 #' @export
 #
-page_main_panel <- function ( ) {
+page_main_panel <- function (global = global_list( )) {
 
-  mainPanel(tabsetPanel(forecast_tab( ),
-                        evaluation_tab( ),
+  mainPanel(tabsetPanel(forecast_tab(global = global),
+                        evaluation_tab(global = global),
                         about_tab( ),
                         models_tab( ),
                         profiles_tab( )))
@@ -147,12 +151,12 @@ profiles_tab <- function ( ) {
 #'
 #' @export
 #
-forecast_tab <- function ( ) {
+forecast_tab <- function (global = global_list( )) {
 
 
   tabPanel(title = "Forecast", 
            br( ), 
-           forecast_tab_input_selection_row( ), 
+           forecast_tab_input_selection_row(global = global), 
       #    forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
            plotOutput("forecast_tab_ts_plot"), 
            br( ),
@@ -180,12 +184,12 @@ forecast_tab_input_selection_checks_row <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row <- function ( ) {
+forecast_tab_input_selection_row <- function (global = global_list( )) {
 
-  fluidRow(forecast_tab_input_selection_row_species( ),
-           forecast_tab_input_selection_row_dataset( ),
-           forecast_tab_input_selection_row_model( ),
-           forecast_tab_input_selection_row_historic_end_newmoonnumber( ))
+  fluidRow(forecast_tab_input_selection_row_species(global = global),
+           forecast_tab_input_selection_row_dataset(global = global),
+           forecast_tab_input_selection_row_model(global = global),
+           forecast_tab_input_selection_row_historic_end_newmoonnumber(global = global))
 
 }
 
@@ -194,13 +198,13 @@ forecast_tab_input_selection_row <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_species <- function ( ) {
+forecast_tab_input_selection_row_species <- function (global = global_list( )) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_species",
                      label    = "Species",
-                     choices  = initial_forecast_tab_available_species,
-                     selected = initial_forecast_tab_selected_species))
+                     choices  = global$initial_forecast_tab_available_species,
+                     selected = global$initial_forecast_tab_selected_species))
 
 }
 
@@ -209,13 +213,13 @@ forecast_tab_input_selection_row_species <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_dataset <- function ( ) {
+forecast_tab_input_selection_row_dataset <- function (global = global_list( )) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_dataset",
                      label    = "Dataset",
-                     choices  = initial_forecast_tab_available_datasets,
-                     selected = initial_forecast_tab_selected_dataset))
+                     choices  = global$initial_forecast_tab_available_datasets,
+                     selected = global$initial_forecast_tab_selected_dataset))
 
 }
 
@@ -224,13 +228,13 @@ forecast_tab_input_selection_row_dataset <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_model <- function ( ) {
+forecast_tab_input_selection_row_model <- function (global = global_list( )) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_model",
                      label    = "Model",
-                     choices  = initial_forecast_tab_available_models,
-                     selected = initial_forecast_tab_selected_model))
+                     choices  = global$initial_forecast_tab_available_models,
+                     selected = global$initial_forecast_tab_selected_model))
 
 }
 
@@ -239,13 +243,13 @@ forecast_tab_input_selection_row_model <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
+forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (global = global_list( )) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_historic_end_newmoonnumber",
                      label    = "Origin Newmoon",
-                     choices  = initial_forecast_tab_available_historic_end_newmoonnumbers,
-                     selected = initial_forecast_tab_selected_historic_end_newmoonnumber))
+                     choices  = global$initial_forecast_tab_available_historic_end_newmoonnumbers,
+                     selected = global$initial_forecast_tab_selected_historic_end_newmoonnumber))
 
 }
 
@@ -256,12 +260,12 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab <- function ( ) {
+evaluation_tab <- function (global = global_list( )) {
 
 
   tabPanel(title = "Evaluation", 
            br( ), 
-           evaluation_tab_input_selection_row( ), 
+           evaluation_tab_input_selection_row(global = global), 
            h2("Recent Observations vs. Forecasts"),
        #   evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
            plotOutput("evaluation_tab_sp_plot"),
@@ -292,14 +296,14 @@ evaluation_tab_input_selection_checks_row <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row <- function ( ) {
+evaluation_tab_input_selection_row <- function (global = global_list( )) {
 
 
-  fluidRow(evaluation_tab_input_selection_row_species( ),
-           evaluation_tab_input_selection_row_dataset( ),
-           evaluation_tab_input_selection_row_model( ),
-           evaluation_tab_input_selection_row_historic_end_newmoonnumber( ),
-           evaluation_tab_input_selection_row_newmoonnumber( ))
+  fluidRow(evaluation_tab_input_selection_row_species(global = global),
+           evaluation_tab_input_selection_row_dataset(global = global),
+           evaluation_tab_input_selection_row_model(global = global),
+           evaluation_tab_input_selection_row_historic_end_newmoonnumber(global = global),
+           evaluation_tab_input_selection_row_newmoonnumber(global = global))
 
 }
 
@@ -308,13 +312,13 @@ evaluation_tab_input_selection_row <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_species <- function ( ) {
+evaluation_tab_input_selection_row_species <- function (global = global_list( )) {
 
   column(width = 3,
          selectInput(inputId  = "evaluation_tab_species",
                      label    = "Species",
-                     choices  = initial_evaluation_tab_available_species,
-                     selected = initial_evaluation_tab_selected_species))
+                     choices  = global$initial_evaluation_tab_available_species,
+                     selected = global$initial_evaluation_tab_selected_species))
 
 }
 
@@ -323,13 +327,13 @@ evaluation_tab_input_selection_row_species <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_dataset <- function ( ) {
+evaluation_tab_input_selection_row_dataset <- function (global = global_list( )) {
 
   column(width = 2,
          selectInput(inputId  = "evaluation_tab_dataset",
                      label    = "Dataset",
-                     choices  = initial_evaluation_tab_available_datasets,
-                     selected = initial_evaluation_tab_selected_dataset))
+                     choices  = global$initial_evaluation_tab_available_datasets,
+                     selected = global$initial_evaluation_tab_selected_dataset))
 
 }
 
@@ -338,13 +342,13 @@ evaluation_tab_input_selection_row_dataset <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_model <- function ( ) {
+evaluation_tab_input_selection_row_model <- function (global = global_list( )) {
 
   column(width = 3,
          selectInput(inputId  = "evaluation_tab_model",
                      label    = "Model",
-                     choices  = initial_evaluation_tab_available_models,
-                     selected = initial_evaluation_tab_selected_model))
+                     choices  = global$initial_evaluation_tab_available_models,
+                     selected = global$initial_evaluation_tab_selected_model))
 
 }
 
@@ -353,13 +357,13 @@ evaluation_tab_input_selection_row_model <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
+evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function (global = global_list( )) {
 
   column(width = 2,
          selectInput(inputId  = "evaluation_tab_historic_end_newmoonnumber",
                      label    = "Origin Newmoon",
-                     choices  = initial_evaluation_tab_available_historic_end_newmoonnumbers,
-                     selected = initial_evaluation_tab_selected_historic_end_newmoonnumber))
+                     choices  = global$initial_evaluation_tab_available_historic_end_newmoonnumbers,
+                     selected = global$initial_evaluation_tab_selected_historic_end_newmoonnumber))
 
 }
 
@@ -367,12 +371,122 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_newmoonnumber <- function ( ) {
+evaluation_tab_input_selection_row_newmoonnumber <- function (global = global_list( )) {
 
   column(width = 2,
          selectInput(inputId  = "evaluation_tab_newmoonnumber",
                      label    = "Target Newmoon",
-                     choices  = initial_evaluation_tab_available_newmoonnumbers,
-                     selected = initial_evaluation_tab_selected_newmoonnumber))
+                     choices  = global$initial_evaluation_tab_available_newmoonnumbers,
+                     selected = global$initial_evaluation_tab_selected_newmoonnumber))
 
 }
+
+
+#' @rdname web-app-ui
+#'
+#' @export
+#
+global_list <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+
+  messageq("Reading in casts metadata and evaluation files ...", quiet = settings$quiet)
+
+  casts_metadata    <- read_casts_metadata(main = main)
+  casts_evaluations <- read_casts_evaluations(main = main)
+  casts_evaluations <- casts_evaluations[!is.na(casts_evaluations$obs), ]
+
+  messageq(" ... done.", quiet = settings$quiet)
+
+  messageq("Determining initial available values ...", quiet = settings$quiet)
+
+  initial_forecast_tab_available_species                       <- unique(casts_metadata$species[casts_metadata$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])
+  initial_evaluation_tab_available_species                     <- unique(casts_evaluations$species[casts_evaluations$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])
+
+  initial_forecast_tab_available_models                        <- unique(casts_metadata$model[casts_metadata$model %in% prefab_models( ) & casts_metadata$species %in% initial_forecast_tab_available_species])
+  initial_evaluation_tab_available_models                      <- unique(casts_evaluations$model[casts_evaluations$model %in% prefab_models( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species])
+
+  initial_forecast_tab_available_datasets                      <- unique(casts_metadata$dataset[casts_metadata$dataset %in% prefab_datasets( ) & casts_metadata$species %in% initial_forecast_tab_available_species & casts_metadata$model %in% initial_forecast_tab_available_models])
+  initial_evaluation_tab_available_datasets                    <- unique(casts_evaluations$dataset[casts_evaluations$dataset %in% prefab_datasets( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models])
+
+  initial_forecast_tab_available_historic_end_newmoonnumbers   <- unique(casts_metadata$historic_end_newmoonnumber[casts_metadata$species %in% initial_forecast_tab_available_species & casts_metadata$model %in% initial_forecast_tab_available_models & casts_metadata$dataset %in% initial_forecast_tab_available_datasets])
+  initial_evaluation_tab_available_historic_end_newmoonnumbers <- unique(casts_evaluations$historic_end_newmoonnumber[casts_evaluations$dataset %in% initial_evaluation_tab_available_datasets & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models])
+
+  initial_evaluation_tab_available_newmoonnumbers              <- unique(casts_evaluations$newmoon[casts_evaluations$dataset %in% initial_evaluation_tab_available_datasets & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models & casts_evaluations$historic_end_newmoonnumber %in% initial_evaluation_tab_available_historic_end_newmoonnumbers])
+
+  messageq(" ... done.", quiet = settings$quiet)
+
+  messageq("Selecting intial values ...", quiet = settings$quiet)
+
+  initial_forecast_tab_selected_model                         <- "AutoArima"
+  initial_evaluation_tab_selected_model                       <- "AutoArima"
+
+  initial_forecast_tab_selected_species                       <- "DM"
+  initial_evaluation_tab_selected_species                     <- "DM"
+
+  initial_forecast_tab_selected_dataset                       <- "controls"
+  initial_evaluation_tab_selected_dataset                     <- "controls"
+
+  initial_forecast_tab_selected_historic_end_newmoonnumber    <- max(initial_forecast_tab_available_historic_end_newmoonnumbers)
+  initial_evaluation_tab_selected_historic_end_newmoonnumber  <- max(initial_evaluation_tab_available_historic_end_newmoonnumbers)
+
+  initial_evaluation_tab_selected_newmoonnumber               <- max(initial_evaluation_tab_available_newmoonnumbers)
+
+  messageq(" ... done.", quiet = settings$quiet)
+
+  messageq("Locating species and model names ... ", quiet = settings$quiet)
+
+  latin_names <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "Latin", total = TRUE)
+  code_names  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "code", total = TRUE)
+
+  print_name <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
+  model_name <- unlist(mapply(getElement, model_controls(main = main), "metadata")["name", ])
+
+  messageq(" ... done.", quiet = settings$quiet)
+  
+  rodent_latin_names <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "Latin", total = TRUE)
+  rodent_code_names  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "code", total = TRUE)
+
+  model_print_names  <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
+  model_code_names   <- unlist(mapply(getElement, model_controls(main = main), "metadata")["name", ])
+
+
+  list(casts_metadata                                                   = casts_metadata,
+       casts_evaluations                                                = casts_evaluations,
+
+       initial_forecast_tab_available_species                           = initial_forecast_tab_available_species,
+       initial_evaluation_tab_available_species                         = initial_evaluation_tab_available_species,
+
+       initial_forecast_tab_available_models                            = initial_forecast_tab_available_models,
+       initial_evaluation_tab_available_models                          = initial_evaluation_tab_available_models,
+       initial_forecast_tab_available_datasets                          = initial_forecast_tab_available_datasets,
+       initial_evaluation_tab_available_datasets                        = initial_evaluation_tab_available_datasets,
+
+       initial_forecast_tab_available_historic_end_newmoonnumbers       = initial_forecast_tab_available_historic_end_newmoonnumbers,
+       initial_evaluation_tab_available_historic_end_newmoonnumbers     = initial_evaluation_tab_available_historic_end_newmoonnumbers,
+
+       initial_evaluation_tab_available_newmoonnumbers                  = initial_evaluation_tab_available_newmoonnumbers,
+
+       initial_forecast_tab_selected_model                              = initial_forecast_tab_selected_model,
+       initial_evaluation_tab_selected_model                            = initial_evaluation_tab_selected_model,
+
+       initial_forecast_tab_selected_species                            = initial_forecast_tab_selected_species,
+       initial_evaluation_tab_selected_species                          = initial_evaluation_tab_selected_species,
+
+       initial_forecast_tab_selected_dataset                            = initial_forecast_tab_selected_dataset,
+       initial_evaluation_tab_selected_dataset                          = initial_evaluation_tab_selected_dataset,
+
+       initial_forecast_tab_selected_historic_end_newmoonnumber         = initial_forecast_tab_selected_historic_end_newmoonnumber,
+       initial_evaluation_tab_selected_historic_end_newmoonnumber       = initial_evaluation_tab_selected_historic_end_newmoonnumber,
+
+       initial_evaluation_tab_selected_newmoonnumber                    = initial_evaluation_tab_selected_newmoonnumber,
+
+       rodent_latin_names                                               = rodent_latin_names,
+       rodent_code_names                                                = rodent_code_names,
+
+       model_print_names                                                = model_print_names,
+       model_code_names                                                 = model_code_names)
+
+}
+
+

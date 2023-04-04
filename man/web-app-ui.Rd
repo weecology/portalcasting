@@ -24,11 +24,12 @@
 \alias{evaluation_tab_input_selection_row_model}
 \alias{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
 \alias{evaluation_tab_input_selection_row_newmoonnumber}
+\alias{global_list}
 \title{Generate the User Interface for the Web App}
 \usage{
-portal_forecast_ui()
+portal_forecast_ui(global = global_list())
 
-page_main_panel()
+page_main_panel(global = global_list())
 
 page_title_panel()
 
@@ -40,35 +41,46 @@ models_tab()
 
 profiles_tab()
 
-forecast_tab()
+forecast_tab(global = global_list())
 
 forecast_tab_input_selection_checks_row()
 
-forecast_tab_input_selection_row()
+forecast_tab_input_selection_row(global = global_list())
 
-forecast_tab_input_selection_row_species()
+forecast_tab_input_selection_row_species(global = global_list())
 
-forecast_tab_input_selection_row_dataset()
+forecast_tab_input_selection_row_dataset(global = global_list())
 
-forecast_tab_input_selection_row_model()
+forecast_tab_input_selection_row_model(global = global_list())
 
-forecast_tab_input_selection_row_historic_end_newmoonnumber()
+forecast_tab_input_selection_row_historic_end_newmoonnumber(
+  global = global_list()
+)
 
-evaluation_tab()
+evaluation_tab(global = global_list())
 
 evaluation_tab_input_selection_checks_row()
 
-evaluation_tab_input_selection_row()
+evaluation_tab_input_selection_row(global = global_list())
 
-evaluation_tab_input_selection_row_species()
+evaluation_tab_input_selection_row_species(global = global_list())
 
-evaluation_tab_input_selection_row_dataset()
+evaluation_tab_input_selection_row_dataset(global = global_list())
 
-evaluation_tab_input_selection_row_model()
+evaluation_tab_input_selection_row_model(global = global_list())
 
-evaluation_tab_input_selection_row_historic_end_newmoonnumber()
+evaluation_tab_input_selection_row_historic_end_newmoonnumber(
+  global = global_list()
+)
 
-evaluation_tab_input_selection_row_newmoonnumber()
+evaluation_tab_input_selection_row_newmoonnumber(global = global_list())
+
+global_list(main = ".")
+}
+\arguments{
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
+
+\item{`global`}{A \code{list} of global values for the app.}
 }
 \value{
 A UI definition or component shiny tags.
