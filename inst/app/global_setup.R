@@ -9,6 +9,7 @@ messageq(" ... done.", quiet = settings$quiet)
 
 messageq("Determining available values ...", quiet = settings$quiet)
 
+
   forecast_tab_available_species                 <- unique(casts_metadata$species[casts_metadata$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])
   evaluation_tab_available_species               <- unique(casts_evaluations$species[casts_evaluations$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])
 
@@ -19,9 +20,10 @@ messageq("Determining available values ...", quiet = settings$quiet)
   evaluation_tab_available_datasets              <- unique(casts_evaluations$dataset[casts_evaluations$dataset %in% prefab_datasets( ) & casts_evaluations$species %in% evaluation_tab_available_species & casts_evaluations$model %in% evaluation_tab_available_models])
 
   forecast_tab_available_historic_end_newmoons   <- unique(casts_metadata$historic_end_newmoon[casts_metadata$species %in% forecast_tab_available_species & casts_metadata$model %in% forecast_tab_available_models & casts_metadata$dataset %in% forecast_tab_available_datasets])
-  evaluation_tab_available_historic_end_newmoons <- unique(casts_evaluations$historic_end_newmoon[casts_evaluations$historic_end_newmoon %in% prefab_datasets( ) & casts_evaluations$species %in% evaluation_tab_available_species & casts_evaluations$model %in% evaluation_tab_available_models])
+  evaluation_tab_available_historic_end_newmoons <- unique(casts_evaluations$historic_end_newmoon[casts_evaluations$dataset %in% evaluation_tab_available_datasets & casts_evaluations$species %in% evaluation_tab_available_species & casts_evaluations$model %in% evaluation_tab_available_models])
 
-  evaluation_tab_available_newmoons              <- unique(casts_evaluations$newmoon[casts_evaluations$historic_end_newmoon %in% prefab_datasets( ) & casts_evaluations$species %in% evaluation_tab_available_species & casts_evaluations$model %in% evaluation_tab_available_models & casts_evaluations$historic_end_newmoon %in% evaluation_tab_available_historic_end_newmoons])
+  evaluation_tab_available_newmoons              <- unique(casts_evaluations$newmoon[casts_evaluations$dataset %in% evaluation_tab_available_datasets & casts_evaluations$species %in% evaluation_tab_available_species & casts_evaluations$model %in% evaluation_tab_available_models & casts_evaluations$historic_end_newmoon %in% evaluation_tab_available_historic_end_newmoons & !is.na(casts_evaluations$obs)])
+
 
 
 messageq(" ... done.", quiet = settings$quiet)
