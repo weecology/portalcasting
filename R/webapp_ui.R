@@ -338,7 +338,7 @@ evaluation_tab_input_selection_row_dataset <- function ( ) {
   column(width = 2,
          selectInput(inputId  = "evaluation_tab_dataset",
                      label    = "Dataset",
-                     choices  = evaluation_tab_available_datasets,
+                     choices  = initial_evaluation_tab_available_datasets,
                      selected = initial_evaluation_tab_selected_dataset))
 
 }
