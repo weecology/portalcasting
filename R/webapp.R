@@ -49,8 +49,7 @@ NULL
 #'
 #' @export
 #'
-available_newmoonnumbers <- function (main       = ".",
-                                      event_name, 
+available_newmoonnumbers <- function (event_name, 
                                       rv         = NULL) {
 
   if (event_name == "initial_evaluation_tab") {
@@ -79,13 +78,10 @@ available_newmoonnumbers <- function (main       = ".",
 #'
 #' @export
 #'
-selected_newmoonnumber <- function (main       = ".",
-                                    event_name,
-                                    default    = NULL,
+selected_newmoonnumber <- function (event_name,
                                     rv         = NULL) {
 
-  available <- available_newmoonnumbers(main       = main,
-                                        event_name = event_name,
+  available <- available_newmoonnumbers(event_name = event_name,
                                         rv         = rv)
 
   if (grepl("evaluation_tab_", event_name)) {
@@ -110,8 +106,7 @@ selected_newmoonnumber <- function (main       = ".",
 #'
 #' @export
 #'
-available_historic_end_newmoonnumbers <- function (main       = ".",
-                                                   event_name, 
+available_historic_end_newmoonnumbers <- function (event_name, 
                                                    rv         = NULL) {
 
   if (event_name == "initial_forecast_tab") {
@@ -151,12 +146,10 @@ available_historic_end_newmoonnumbers <- function (main       = ".",
 #'
 #' @export
 #'
-selected_historic_end_newmoonnumber <- function (main       = ".",
-                                                 event_name,
+selected_historic_end_newmoonnumber <- function (event_name,
                                                  rv         = NULL) {
 
-  available <- available_historic_end_newmoonnumbers(main       = main,
-                                                     event_name = event_name,
+  available <- available_historic_end_newmoonnumbers(event_name = event_name,
                                                      rv         = rv)
 
   if (grepl("forecast_tab_", event_name)) {
@@ -184,8 +177,7 @@ selected_historic_end_newmoonnumber <- function (main       = ".",
 #'
 #' @export
 #'
-available_species <- function (main       = ".",
-                               event_name, 
+available_species <- function (event_name, 
                                rv         = NULL) {
 
   if (event_name == "initial_forecast_tab") {
@@ -215,8 +207,7 @@ available_species <- function (main       = ".",
 
   } 
 
-  latin_names <- rodent_species(set = "forecasting", type = "Latin", total = TRUE)
-  code_names  <- rodent_species(set = "forecasting", type = "code", total = TRUE)
+
 
   names(avail_species) <- latin_names[match(avail_species, code_names)]
 
@@ -229,12 +220,10 @@ available_species <- function (main       = ".",
 #'
 #' @export
 #'
-selected_species <- function (main       = ".",
-                              event_name,
+selected_species <- function (event_name,
                               rv         = NULL) {
 
-  available <- available_species(main       = main,
-                                 event_name = event_name,
+  available <- available_species(event_name = event_name,
                                  rv         = rv)
 
  if (grepl("forecast_tab_", event_name)) {
@@ -262,8 +251,7 @@ selected_species <- function (main       = ".",
 #'
 #' @export
 #'
-available_datasets <- function (main       = ".",
-                                event_name, 
+available_datasets <- function (event_name, 
                                 rv         = NULL) {
 
   if (event_name == "initial_forecast_tab") {
@@ -305,8 +293,7 @@ selected_dataset <- function (main       = ".",
                               event_name,
                               rv         = NULL) {
 
-  available <- available_datasets(main       = main,
-                                  event_name = event_name,
+  available <- available_datasets(event_name = event_name,
                                   rv         = rv)
 
  if (grepl("forecast_tab_", event_name)) {
@@ -334,8 +321,7 @@ selected_dataset <- function (main       = ".",
 #'
 #' @export
 #'
-available_models <- function (main       = ".",
-                              event_name, 
+available_models <- function (event_name, 
                               rv         = NULL) {
 
   if (event_name == "initial_forecast_tab") {
@@ -365,9 +351,6 @@ available_models <- function (main       = ".",
 
   }
 
-  print_name <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
-  model_name <- unlist(mapply(getElement, model_controls(main = main), "metadata")["name", ])
-
   names(avail_models) <- print_name[match(avail_models, model_name)]
 
   avail_models
@@ -379,12 +362,10 @@ available_models <- function (main       = ".",
 #'
 #' @export
 #'
-selected_model <- function (main       = ".",
-                            event_name,
+selected_model <- function (event_name,
                             rv         = NULL) {
 
-  available <- available_models(main       = main,
-                                event_name = event_name,
+  available <- available_models(event_name = event_name,
                                 rv         = rv)
 
   if (grepl("forecast_tab_", event_name)) {

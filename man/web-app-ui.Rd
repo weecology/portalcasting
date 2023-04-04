@@ -26,7 +26,7 @@
 \alias{evaluation_tab_input_selection_row_newmoonnumber}
 \title{Generate the User Interface for the Web App}
 \usage{
-portal_forecast_ui(main = ".")
+portal_forecast_ui()
 
 page_main_panel()
 

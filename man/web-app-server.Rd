@@ -19,11 +19,11 @@ initial_output(main = ".", rv, output)
 
 event_reaction(main, event_name, rv, input, output, session)
 
-update_reactive_values(main, event_name, rv, input)
+update_reactive_values(event_name, rv, input)
 
 update_output(main, event_name, rv, input, output)
 
-update_input(main, event_name, rv, input, session)
+update_input(event_name, rv, input, session)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}

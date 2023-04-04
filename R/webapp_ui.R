@@ -47,7 +47,7 @@ NULL
 #'
 #' @export
 #'
-portal_forecast_ui <- function (main = ".") {
+portal_forecast_ui <- function ( ) {
 
   models_rmd <- system.file(...     = "app", 
                             ...     = "models.Rmd",

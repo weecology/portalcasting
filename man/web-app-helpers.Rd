@@ -14,33 +14,33 @@
 \alias{selected_model}
 \title{Helper Functions for the Web App}
 \usage{
-available_newmoonnumbers(main = ".", event_name, rv = NULL)
+available_newmoonnumbers(event_name, rv = NULL)
 
-selected_newmoonnumber(main = ".", event_name, default = NULL, rv = NULL)
+selected_newmoonnumber(event_name, rv = NULL)
 
-available_historic_end_newmoonnumbers(main = ".", event_name, rv = NULL)
+available_historic_end_newmoonnumbers(event_name, rv = NULL)
 
-selected_historic_end_newmoonnumber(main = ".", event_name, rv = NULL)
+selected_historic_end_newmoonnumber(event_name, rv = NULL)
 
-available_species(main = ".", event_name, rv = NULL)
+available_species(event_name, rv = NULL)
 
-selected_species(main = ".", event_name, rv = NULL)
+selected_species(event_name, rv = NULL)
 
-available_datasets(main = ".", event_name, rv = NULL)
+available_datasets(event_name, rv = NULL)
 
 selected_dataset(main = ".", event_name, rv = NULL)
 
-available_models(main = ".", event_name, rv = NULL)
+available_models(event_name, rv = NULL)
 
-selected_model(main = ".", event_name, rv = NULL)
+selected_model(event_name, rv = NULL)
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of the directory tree.}
-
 \item{event_name}{\code{character} value of the server event. \cr
 Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
 
 \item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
+
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
 }
 \description{
 Construct vectors of available choices and make selections.
