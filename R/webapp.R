@@ -17,6 +17,16 @@ run_web_app <- function(main = ".") {
   app_directory <- system.file(...     = "app", 
                                package = "portalcasting")
 
+  models_rmd <- system.file(...     = "app", 
+                            ...     = "models.Rmd",
+                            package = "portalcasting")
+  render(models_rmd)
+
+  profiles_r <- system.file(...     = "app", 
+                            ...     = "profile_html.R",
+                            package = "portalcasting")
+  source(profiles_r)
+
   file.copy(from      = list.files(app_directory, full.names = TRUE),
             to        = file.path(main),
             recursive = TRUE,

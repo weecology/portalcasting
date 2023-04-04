@@ -49,16 +49,6 @@ NULL
 #'
 portal_forecast_ui <- function ( ) {
 
-  models_rmd <- system.file(...     = "app", 
-                            ...     = "models.Rmd",
-                            package = "portalcasting")
-  render(models_rmd)
-
-  profiles_r <- system.file(...     = "app", 
-                            ...     = "profile_html.R",
-                            package = "portalcasting")
-  source(profiles_r)
-
   fluidPage(page_title_panel( ),
             page_subtitle_panel( ), 
             page_main_panel( ))

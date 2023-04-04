@@ -38,7 +38,7 @@ portal_forecast_server <- function (main = ".",
                                     output, 
                                     session) {
 
-  rv     <- initial_reactive_values(main = main)
+  rv     <- initial_reactive_values( )
 
   output <- initial_output(main   = main,
                            rv     = rv, 
@@ -116,7 +116,7 @@ portal_forecast_server <- function (main = ".",
 #'
 #' @export
 #'
-initial_reactive_values <- function (main = ".") {
+initial_reactive_values <- function ( ) {
 
   reactiveValues(forecast_tab_species                      = initial_forecast_tab_selected_species, 
                  forecast_tab_dataset                      = initial_forecast_tab_selected_dataset,

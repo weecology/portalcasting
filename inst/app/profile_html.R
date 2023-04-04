@@ -51,6 +51,9 @@ table_rows,
 </body>
 ', collapse = '\n')
 
-write(html_out, file = "profile.html")
+profiles_html <- file.path(system.file(...     = "app", 
+                                       package = "portalcasting"),
+                           "profile.html")
+write(html_out, file = profiles_html)
 
 

@@ -4,6 +4,7 @@ main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
+test_that(desc = "server functions operate properly", {
 
   casts_metadata    <- read_casts_metadata(main = main3)
   casts_evaluations <- read_casts_evaluations(main = main3)
@@ -39,11 +40,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 
 
-
-test_that(desc = "initial reactive values are setup properly", {
-
-
-  expect_is(initial_reactive_values(main = main3), "reactivevalues")
+  expect_is(initial_reactive_values( ), "reactivevalues")
 
 
 })

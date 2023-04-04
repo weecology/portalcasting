@@ -4,6 +4,8 @@ main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
+test_that(desc = "portal_forecast_ui builds a ui", {
+
   casts_metadata    <- read_casts_metadata(main = main3)
   casts_evaluations <- read_casts_evaluations(main = main3)
   casts_evaluations <- casts_evaluations[!is.na(casts_evaluations$obs), ]
@@ -37,14 +39,9 @@ main3 <- file.path(tempdir(), "testing3")
   initial_evaluation_tab_selected_newmoonnumber               <- max(initial_evaluation_tab_available_newmoonnumbers)
 
 
-test_that(desc = "portal_forecast_ui builds a ui", {
 
   expect_message(ui <- portal_forecast_ui( ))
   expect_is(ui, "list")
-
-})
-
-test_that(desc = "panels build tags", {
 
   expect_silent(mp <- page_main_panel( ))
   expect_is(mp, "shiny.tag")
@@ -55,11 +52,6 @@ test_that(desc = "panels build tags", {
   expect_silent(st <- page_subtitle_panel())
   expect_is(st, "shiny.tag")
 
-})
-
-
-test_that(desc = "static tabs build tags", {
-
   expect_silent(at <- about_tab())
   expect_is(at, "shiny.tag")
 
@@ -68,11 +60,6 @@ test_that(desc = "static tabs build tags", {
 
   expect_silent(pt <- profiles_tab())
   expect_is(pt, "shiny.tag")
-
-})
-
-
-test_that(desc = "forecast tabs build tags", {
 
   expect_silent(ft <- forecast_tab( ))
   expect_is(ft, "shiny.tag")
@@ -94,11 +81,6 @@ test_that(desc = "forecast tabs build tags", {
 
   expect_silent(ftrh <- forecast_tab_input_selection_row_historic_end_newmoonnumber( ))
   expect_is(ftrh, "shiny.tag")
-
-})
-
-
-test_that(desc = "evaluation tabs build tags", {
 
   expect_silent(ft <- evaluation_tab( ))
   expect_is(ft, "shiny.tag")

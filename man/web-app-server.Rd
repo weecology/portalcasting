@@ -13,7 +13,7 @@
 \usage{
 portal_forecast_server(main = ".", input, output, session)
 
-initial_reactive_values(main = ".")
+initial_reactive_values()
 
 initial_output(main = ".", rv, output)
 
