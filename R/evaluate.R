@@ -31,23 +31,49 @@ evaluate_casts <- function (main      = ".",
 
   }
 
-  out <- named_null_list(element_names = cast_ids)
+  existing_evaluations      <- read_casts_evaluations(main = main)
+  rodents_table             <- read_rodents_table(main = main, dataset = "all")                          
+  last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
+
+
+  if (is.null(existing_evaluations$cast_evaluation_complete)) {
+
+    existing_evaluations$cast_evaluation_complete <- existing_evaluations$forecast_end_newmoonnumber <= last_census_newmoonnumber
+
+  }
+
+
+  casts_left_to_evaluate  <- unique(existing_evaluations$cast_id[!existing_evaluations$cast_evaluation_complete & 
+                                                                 existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
+  
+  selected_cast_ids <- cast_ids[cast_ids %in% casts_left_to_evaluate]
+
+  if (length(selected_cast_ids) == 0) {
+
+    message(" No casts need evaluation.", quiet = FALSE)
+    return(existing_evaluations)
+  }
+
+  nselected_cast_ids <- length(selected_cast_ids)
+
+
+  out <- named_null_list(element_names = selected_cast_ids)
 
   messageq("Evaluating casts ...\n", quiet = settings$quiet)
 
-  for (i in 1:ncast_ids) {
+  for (i in 1:nselected_cast_ids) {
 
     out[[i]] <- tryCatch(evaluate_cast(main    = main,
-                                       cast_id = cast_ids[i]),
+                                       cast_id = selected_cast_ids[i]),
                          error = function(x) {NA})
 
   }
 
   out_flat <- data.frame(out[[1]])
 
-  if (ncast_ids > 1) {
+  if (nselected_cast_ids > 1) {
 
-    for (i in 2:ncast_ids) { 
+    for (i in 2:nselected_cast_ids) { 
 
      if (all(is.na(out[[i]]))) {
        next
@@ -59,6 +85,9 @@ evaluate_casts <- function (main      = ".",
     }
 
   }
+
+  out_flat <- rbind(existing_evaluations[!(existing_evaluations$cast_id %in% selected_cast_ids), ],
+                    out_flat)
 
   messageq("... done.\n", quiet = settings$quiet)
 
@@ -97,6 +126,7 @@ evaluate_cast <- function (main     = ".",
   cast_tab$error   <- cast_tab$estimate - cast_tab$obs
   cast_tab$logs    <- NA
   cast_tab$crps    <- NA
+  cast_tab$cast_evaluation_complete <- FALSE
 
   if (!is.null(cast_meta$model_controls$scoring_family)) {
 
@@ -214,8 +244,11 @@ evaluate_cast <- function (main     = ".",
                                             dat = cast_sample)
 
   }
-
-  cast_tab
+  species                           <- ifelse(cast_tab$species[1] == "NA", "NA.", cast_tab$species[1])
+  rodents_table                     <- read_rodents_table(main = main, dataset = cast_tab$dataset[1])                          
+  last_census_newmoonnumber         <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , species])]])
+  cast_tab$cast_evaluation_complete <- cast_tab$forecast_end_newmoonnumber <= last_census_newmoonnumber
+  cast_tab 
 
 }
 
