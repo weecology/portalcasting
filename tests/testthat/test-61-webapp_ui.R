@@ -39,7 +39,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "portal_forecast_ui builds a ui", {
 
-  expect_message(ui <- portal_forecast_ui(main = main3))
+  expect_message(ui <- portal_forecast_ui( ))
   expect_is(ui, "list")
 
 })
@@ -83,7 +83,7 @@ test_that(desc = "forecast tabs build tags", {
   expect_silent(ftr <- forecast_tab_input_selection_row( ))
   expect_is(ftr, "shiny.tag")
 
-  expect_silent(ftrs <- forecast_tab_input_selection_row_species(main = main3))
+  expect_silent(ftrs <- forecast_tab_input_selection_row_species( ))
   expect_is(ftrs, "shiny.tag")
 
   expect_silent(ftrm <- forecast_tab_input_selection_row_model( ))
@@ -100,7 +100,7 @@ test_that(desc = "forecast tabs build tags", {
 
 test_that(desc = "evaluation tabs build tags", {
 
-  expect_silent(ft <- evaluation_tab(main = main3))
+  expect_silent(ft <- evaluation_tab( ))
   expect_is(ft, "shiny.tag")
 
   expect_silent(ftcr <- evaluation_tab_input_selection_checks_row())
