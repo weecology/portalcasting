@@ -130,11 +130,11 @@ fill_app <- function (main = ".") {
             recursive = TRUE,
             overwrite = TRUE)
 
-  models_rmd <- file.path(main, "models.Rmd")
-  profiles_r <- file.path(main, "profile_html.R")
+  models_rmd <- file.path(main, settings$subdirectories$app, "models.Rmd")
+  profiles_r <- file.path(main, settings$subdirectories$app, "profile_html.R")
 
   render(models_rmd)
-  source(profiles_r)
+  source(profiles_r, local = TRUE)
 
   messageq(" ... complete.\n", quiet = settings$quiet)
   invisible( )

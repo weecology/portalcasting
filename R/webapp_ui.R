@@ -105,12 +105,8 @@ page_subtitle_panel <- function ( ) {
 #'
 about_tab <- function ( ) {
 
-  about_md <- system.file(...     = "app", 
-                          ...     = "about.md",
-                          package = "portalcasting")
-
   tabPanel(title = "About",
-           includeMarkdown(about_md)) 
+           includeMarkdown("about.md")) 
 
 }
 
@@ -120,12 +116,8 @@ about_tab <- function ( ) {
 #'
 models_tab <- function ( ) {
 
-  models_html <- system.file(...     = "app", 
-                             ...     = "models.html",
-                             package = "portalcasting")
-
   tabPanel(title = "Models",
-           includeHTML(models_html)) 
+           includeHTML("models.html")) 
 
 }
 
@@ -135,12 +127,8 @@ models_tab <- function ( ) {
 #'
 profiles_tab <- function ( ) {
 
-  profile_html <- system.file(...     = "app", 
-                              ...     = "profile.html",
-                              package = "portalcasting")
-
   tabPanel(title = "Rodent Profiles",
-           includeHTML(profile_html)) 
+           includeHTML("profile.html")) 
 
 }
 

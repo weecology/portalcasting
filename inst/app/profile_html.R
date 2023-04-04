@@ -1,6 +1,6 @@
 # this script generates the static HTML file for the rodent profiles page from the csv in the www folder 
 
-profiles_csv <- file.path(main, "www", "rodents.csv")
+profiles_csv <- file.path(main, settings$subdirectories$app, "www", "rodents.csv")
 
 table_in <- read.csv(profiles_csv)
 nspecies <- nrow(table_in)
@@ -48,7 +48,7 @@ table_rows,
 </body>
 ', collapse = '\n')
 
-profiles_html <- file.path(main,
+profiles_html <- file.path(main, settings$subdirectories$app, 
                            "profile.html")
 write(html_out, file = profiles_html)
 
