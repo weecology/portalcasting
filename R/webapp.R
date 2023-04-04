@@ -55,7 +55,7 @@ available_newmoonnumbers <- function (main       = ".",
 
   if (event_name == "initial_evaluation_tab") {
 
-    avail_newmoonnumbers  <- evaluation_tab_available_newmoons
+    avail_newmoonnumbers  <- initial_evaluation_tab_available_newmoonnumbers
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
@@ -66,7 +66,7 @@ available_newmoonnumbers <- function (main       = ".",
                                                        casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
                                                        !is.na(casts_evaluations$obs)])
 
-    avail_newmoonnumbers <- possible[possible %in% evaluation_tab_available_newmoons]
+    avail_newmoonnumbers <- possible[possible %in% initial_evaluation_tab_available_newmoonnumbers]
 
   }
 
@@ -88,12 +88,7 @@ selected_newmoonnumber <- function (main       = ".",
                                         event_name = event_name,
                                         rv         = rv)
 
-  if (grepl("initial_", event_name)) {
-
-    default              <- ifnull(default, max(available))
-    select_newmoonnumber <- default
-
-  } else if (grepl("evaluation_tab_", event_name)) {
+  if (grepl("evaluation_tab_", event_name)) {
 
     select_newmoonnumber <- rv$evaluation_tab_newmoonnumber
 
@@ -121,11 +116,11 @@ available_historic_end_newmoonnumbers <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_historic_end_newmoonnumbers  <- forecast_tab_available_historic_end_newmoons
+    avail_historic_end_newmoonnumbers  <- initial_forecast_tab_available_historic_end_newmoonnumbers
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    avail_historic_end_newmoonnumbers  <- evaluation_tab_available_historic_end_newmoons
+    avail_historic_end_newmoonnumbers  <- initial_evaluation_tab_available_historic_end_newmoonnumbers
 
   } else if (grepl("forecast_tab_", event_name)) {
 
@@ -133,17 +128,16 @@ available_historic_end_newmoonnumbers <- function (main       = ".",
                                                                  casts_metadata$model   == rv$forecast_tab_model &
                                                                  casts_metadata$dataset == rv$forecast_tab_dataset])
 
-    avail_historic_end_newmoonnumbers <- possible[possible %in% forecast_tab_available_historic_end_newmoons]
+    avail_historic_end_newmoonnumbers <- possible[possible %in% initial_forecast_tab_available_historic_end_newmoonnumbers]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
     possible <- unique(casts_evaluations$historic_end_newmoonnumber[casts_evaluations$species       == rv$evaluation_tab_species &
                                                                     casts_evaluations$model         == rv$evaluation_tab_model &
                                                                     casts_evaluations$dataset       == rv$evaluation_tab_dataset & 
-                                                                    casts_evaluations$newmoonnumber == rv$evaluation_tab_newmoonnumber & 
-                                                                    !is.na(casts_evaluations$obs)])
+                                                                    casts_evaluations$newmoonnumber == rv$evaluation_tab_newmoonnumber])
 
-    avail_historic_end_newmoonnumbers <- possible[possible %in% evaluation_tab_available_historic_end_newmoons]
+    avail_historic_end_newmoonnumbers <- possible[possible %in% initial_evaluation_tab_available_historic_end_newmoonnumbers]
 
   }
 
@@ -159,19 +153,13 @@ available_historic_end_newmoonnumbers <- function (main       = ".",
 #'
 selected_historic_end_newmoonnumber <- function (main       = ".",
                                                  event_name,
-                                                 default    = NULL,
                                                  rv         = NULL) {
 
   available <- available_historic_end_newmoonnumbers(main       = main,
                                                      event_name = event_name,
                                                      rv         = rv)
 
-  if (grepl("initial_", event_name)) {
-
-    default                           <- ifnull(default, max(available))
-    select_historic_end_newmoonnumber <- default
-
-  } else if (grepl("forecast_tab_", event_name)) {
+  if (grepl("forecast_tab_", event_name)) {
 
     select_historic_end_newmoonnumber   <- rv$forecast_tab_historic_end_newmoonnumber
 
@@ -202,11 +190,11 @@ available_species <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_species  <- forecast_tab_available_species
+    avail_species  <- initial_forecast_tab_available_species
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    avail_species  <- evaluation_tab_available_species
+    avail_species  <- initial_evaluation_tab_available_species
 
   } else if (grepl("forecast_tab_", event_name)) {
 
@@ -214,17 +202,16 @@ available_species <- function (main       = ".",
                                               casts_metadata$model                      == rv$forecast_tab_model &
                                               casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
-    avail_species <- possible[possible %in% forecast_tab_available_species]
+    avail_species <- possible[possible %in% initial_forecast_tab_available_species]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
     possible <- unique(casts_evaluations$species[casts_evaluations$dataset                    == rv$evaluation_tab_dataset &
                                                  casts_evaluations$model                      == rv$evaluation_tab_model &
                                                  casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
-                                                 casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber & 
-                                                 !is.na(casts_evaluations$obs)])
+                                                 casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber])
 
-    avail_species <- possible[possible %in% evaluation_tab_available_species]
+    avail_species <- possible[possible %in% initial_evaluation_tab_available_species]
 
   } 
 
@@ -244,18 +231,13 @@ available_species <- function (main       = ".",
 #'
 selected_species <- function (main       = ".",
                               event_name,
-                              default    = "DM",
                               rv         = NULL) {
 
   available <- available_species(main       = main,
                                  event_name = event_name,
                                  rv         = rv)
 
-  if (grepl("initial_", event_name)) {
-
-    select_species <- default
-
-  } else if (grepl("forecast_tab_", event_name)) {
+ if (grepl("forecast_tab_", event_name)) {
 
     select_species   <- rv$forecast_tab_species
 
@@ -286,11 +268,11 @@ available_datasets <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_datasets  <- forecast_tab_available_datasets
+    avail_datasets  <- initial_forecast_tab_available_datasets
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    avail_datasets  <- evaluation_tab_available_datasets
+    avail_datasets  <- initial_evaluation_tab_available_datasets
 
   } else if (grepl("forecast_tab_", event_name)) {
 
@@ -298,17 +280,16 @@ available_datasets <- function (main       = ".",
                                               casts_metadata$model                      == rv$forecast_tab_model &
                                               casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
-    avail_datasets <- possible[possible %in% forecast_tab_available_datasets]
+    avail_datasets <- possible[possible %in% initial_forecast_tab_available_datasets]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
     possible <- unique(casts_evaluations$dataset[casts_evaluations$species                    == rv$evaluation_tab_species &
                                                  casts_evaluations$model                      == rv$evaluation_tab_model &
                                                  casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
-                                                 casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber & 
-                                                 !is.na(casts_evaluations$obs)])
+                                                 casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber])
 
-    avail_datasets <- possible[possible %in% evaluation_tab_available_datasets]
+    avail_datasets <- possible[possible %in% initial_evaluation_tab_available_datasets]
   }
 
   avail_datasets
@@ -322,18 +303,13 @@ available_datasets <- function (main       = ".",
 #'
 selected_dataset <- function (main       = ".",
                               event_name,
-                              default    = "controls",
                               rv         = NULL) {
 
   available <- available_datasets(main       = main,
                                   event_name = event_name,
                                   rv         = rv)
 
-  if (grepl("initial_", event_name)) {
-
-    select_dataset <- default
-
-  } else if (grepl("forecast_tab_", event_name)) {
+ if (grepl("forecast_tab_", event_name)) {
 
     select_dataset   <- rv$forecast_tab_dataset
 
@@ -364,11 +340,11 @@ available_models <- function (main       = ".",
 
   if (event_name == "initial_forecast_tab") {
 
-    avail_models  <- forecast_tab_available_models
+    avail_models  <- initial_forecast_tab_available_models
 
   } else if (event_name == "initial_evaluation_tab") {
 
-    avail_models  <- evaluation_tab_available_models
+    avail_models  <- initial_evaluation_tab_available_models
 
   } else if (grepl("forecast_tab_", event_name)) {
 
@@ -376,17 +352,16 @@ available_models <- function (main       = ".",
                                             casts_metadata$dataset                    == rv$forecast_tab_dataset &
                                             casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
-    avail_models <- possible[possible %in% forecast_tab_available_models]
+    avail_models <- possible[possible %in% initial_forecast_tab_available_models]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
     possible <- unique(casts_evaluations$model[casts_evaluations$species                    == rv$evaluation_tab_species &
                                                casts_evaluations$dataset                    == rv$evaluation_tab_dataset &
                                                casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
-                                               casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber & 
-                                               !is.na(casts_evaluations$obs)])
+                                               casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber ])
 
-    avail_models <- possible[possible %in% evaluation_tab_available_models]
+    avail_models <- possible[possible %in% initial_evaluation_tab_available_models]
 
   }
 
@@ -406,18 +381,13 @@ available_models <- function (main       = ".",
 #'
 selected_model <- function (main       = ".",
                             event_name,
-                            default    = "AutoArima",
                             rv         = NULL) {
 
   available <- available_models(main       = main,
                                 event_name = event_name,
                                 rv         = rv)
 
-  if (grepl("initial_", event_name)) {
-
-    select_model <- default
-
-  } else if (grepl("forecast_tab_", event_name)) {
+  if (grepl("forecast_tab_", event_name)) {
 
     select_model   <- rv$forecast_tab_model
 

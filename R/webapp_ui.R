@@ -4,8 +4,6 @@
 #' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`fluidPage`][shiny::fluidPage] on the UI components. \cr \cr
 #'              See `Details` for hierarchy of functions. 
 #'
-#' @param main `character` value of the name of the main component of the directory tree.
-#'
 #' @details The UI is hierarchical built as:
 #'   * portal_forecast_ui 
 #'     * page_title_panel
@@ -63,7 +61,7 @@ portal_forecast_ui <- function (main = ".") {
 
   fluidPage(page_title_panel( ),
             page_subtitle_panel( ), 
-            page_main_panel(main = main))
+            page_main_panel( ))
 
 
 }
@@ -73,10 +71,10 @@ portal_forecast_ui <- function (main = ".") {
 #'
 #' @export
 #
-page_main_panel <- function (main = ".") {
+page_main_panel <- function ( ) {
 
-  mainPanel(tabsetPanel(forecast_tab(main = main),
-                        evaluation_tab(main = main),
+  mainPanel(tabsetPanel(forecast_tab( ),
+                        evaluation_tab( ),
                         about_tab( ),
                         models_tab( ),
                         profiles_tab( )))
@@ -159,12 +157,12 @@ profiles_tab <- function ( ) {
 #'
 #' @export
 #
-forecast_tab <- function (main = ".") {
+forecast_tab <- function ( ) {
 
 
   tabPanel(title = "Forecast", 
            br( ), 
-           forecast_tab_input_selection_row(main = main), 
+           forecast_tab_input_selection_row( ), 
       #    forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
            plotOutput("forecast_tab_ts_plot"), 
            br( ),
@@ -192,12 +190,12 @@ forecast_tab_input_selection_checks_row <- function ( ) {
 #'
 #' @export
 #
-forecast_tab_input_selection_row <- function (main = ".") {
+forecast_tab_input_selection_row <- function ( ) {
 
-  fluidRow(forecast_tab_input_selection_row_species(main = main),
-           forecast_tab_input_selection_row_dataset(main = main),
-           forecast_tab_input_selection_row_model(main = main),
-           forecast_tab_input_selection_row_historic_end_newmoonnumber(main = main))
+  fluidRow(forecast_tab_input_selection_row_species( ),
+           forecast_tab_input_selection_row_dataset( ),
+           forecast_tab_input_selection_row_model( ),
+           forecast_tab_input_selection_row_historic_end_newmoonnumber( ))
 
 }
 
@@ -206,13 +204,13 @@ forecast_tab_input_selection_row <- function (main = ".") {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_species <- function (main = ".") {
+forecast_tab_input_selection_row_species <- function ( ) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_species",
                      label    = "Species",
-                     choices  = available_species(main = main, event_name = "initial_forecast_tab"),
-                     selected = selected_species(main = main, event_name = "initial_forecast_tab")))
+                     choices  = initial_forecast_tab_available_species,
+                     selected = initial_forecast_tab_selected_species))
 
 }
 
@@ -221,13 +219,13 @@ forecast_tab_input_selection_row_species <- function (main = ".") {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_dataset <- function (main = ".") {
+forecast_tab_input_selection_row_dataset <- function ( ) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_dataset",
                      label    = "Dataset",
-                     choices  = available_datasets(main = main, event_name = "initial_forecast_tab"),
-                     selected = selected_dataset(main = main, event_name = "initial_forecast_tab")))
+                     choices  = initial_forecast_tab_available_datasets,
+                     selected = initial_forecast_tab_selected_dataset))
 
 }
 
@@ -236,13 +234,13 @@ forecast_tab_input_selection_row_dataset <- function (main = ".") {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_model <- function (main = ".") {
+forecast_tab_input_selection_row_model <- function ( ) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_model",
                      label    = "Model",
-                     choices  = available_models(main = main, event_name = "initial_forecast_tab"),
-                     selected = selected_model(main = main, event_name = "initial_forecast_tab")))
+                     choices  = initial_forecast_tab_available_models,
+                     selected = initial_forecast_tab_selected_model))
 
 }
 
@@ -251,13 +249,13 @@ forecast_tab_input_selection_row_model <- function (main = ".") {
 #'
 #' @export
 #
-forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (main = ".") {
+forecast_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
 
   column(width = 3,
          selectInput(inputId  = "forecast_tab_historic_end_newmoonnumber",
                      label    = "Origin Newmoon",
-                     choices  = available_historic_end_newmoonnumbers(main = main, event_name = "initial_forecast_tab"),
-                     selected = selected_historic_end_newmoonnumber(main = main, event_name = "initial_forecast_tab")))
+                     choices  = initial_forecast_tab_available_historic_end_newmoonnumbers,
+                     selected = initial_forecast_tab_selected_historic_end_newmoonnumber))
 
 }
 
@@ -268,12 +266,12 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (main = 
 #'
 #' @export
 #
-evaluation_tab <- function (main = ".") {
+evaluation_tab <- function ( ) {
 
 
   tabPanel(title = "Evaluation", 
            br( ), 
-           evaluation_tab_input_selection_row(main = main), 
+           evaluation_tab_input_selection_row( ), 
            h2("Recent Observations vs. Forecasts"),
        #   evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
            plotOutput("evaluation_tab_sp_plot"),
@@ -304,14 +302,14 @@ evaluation_tab_input_selection_checks_row <- function ( ) {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row <- function (main = ".") {
+evaluation_tab_input_selection_row <- function ( ) {
 
 
-  fluidRow(evaluation_tab_input_selection_row_species(main = main),
-           evaluation_tab_input_selection_row_dataset(main = main),
-           evaluation_tab_input_selection_row_model(main = main),
-           evaluation_tab_input_selection_row_historic_end_newmoonnumber(main = main),
-           evaluation_tab_input_selection_row_newmoonnumber(main = main))
+  fluidRow(evaluation_tab_input_selection_row_species( ),
+           evaluation_tab_input_selection_row_dataset( ),
+           evaluation_tab_input_selection_row_model( ),
+           evaluation_tab_input_selection_row_historic_end_newmoonnumber( ),
+           evaluation_tab_input_selection_row_newmoonnumber( ))
 
 }
 
@@ -320,13 +318,13 @@ evaluation_tab_input_selection_row <- function (main = ".") {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_species <- function (main = ".") {
+evaluation_tab_input_selection_row_species <- function ( ) {
 
   column(width = 3,
          selectInput(inputId  = "evaluation_tab_species",
                      label    = "Species",
-                     choices  = available_species(main = main, event_name = "initial_evaluation_tab"),
-                     selected = selected_species(main = main, event_name = "initial_evaluation_tab")))
+                     choices  = initial_evaluation_tab_available_species,
+                     selected = initial_evaluation_tab_selected_species))
 
 }
 
@@ -335,13 +333,13 @@ evaluation_tab_input_selection_row_species <- function (main = ".") {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_dataset <- function (main = ".") {
+evaluation_tab_input_selection_row_dataset <- function ( ) {
 
   column(width = 2,
          selectInput(inputId  = "evaluation_tab_dataset",
                      label    = "Dataset",
-                     choices  = available_datasets(main = main, event_name = "initial_evaluation_tab"),
-                     selected = selected_dataset(main = main, event_name = "initial_evaluation_tab")))
+                     choices  = evaluation_tab_available_datasets,
+                     selected = initial_evaluation_tab_selected_dataset))
 
 }
 
@@ -350,13 +348,13 @@ evaluation_tab_input_selection_row_dataset <- function (main = ".") {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_model <- function (main = ".") {
+evaluation_tab_input_selection_row_model <- function ( ) {
 
   column(width = 3,
          selectInput(inputId  = "evaluation_tab_model",
                      label    = "Model",
-                     choices  = available_models(main = main, event_name = "initial_evaluation_tab"),
-                     selected = selected_model(main = main, event_name = "initial_evaluation_tab")))
+                     choices  = initial_evaluation_tab_available_models,
+                     selected = initial_evaluation_tab_selected_model))
 
 }
 
@@ -365,13 +363,13 @@ evaluation_tab_input_selection_row_model <- function (main = ".") {
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function (main = ".") {
+evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function ( ) {
 
   column(width = 2,
          selectInput(inputId  = "evaluation_tab_historic_end_newmoonnumber",
                      label    = "Origin Newmoon",
-                     choices  = available_historic_end_newmoonnumbers(main = main, event_name = "initial_evaluation_tab"),
-                     selected = selected_historic_end_newmoonnumber(main = main, event_name = "initial_evaluation_tab")))
+                     choices  = initial_evaluation_tab_available_historic_end_newmoonnumbers,
+                     selected = initial_evaluation_tab_selected_historic_end_newmoonnumber))
 
 }
 
@@ -379,12 +377,12 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function (main 
 #'
 #' @export
 #
-evaluation_tab_input_selection_row_newmoonnumber <- function (main = ".") {
+evaluation_tab_input_selection_row_newmoonnumber <- function ( ) {
 
   column(width = 2,
          selectInput(inputId  = "evaluation_tab_newmoonnumber",
                      label    = "Target Newmoon",
-                     choices  = available_newmoonnumbers(main = main, event_name = "initial_evaluation_tab"),
-                     selected = selected_newmoonnumber(main = main, event_name = "initial_evaluation_tab")))
+                     choices  = initial_evaluation_tab_available_newmoonnumbers,
+                     selected = initial_evaluation_tab_selected_newmoonnumber))
 
 }

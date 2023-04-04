@@ -28,7 +28,7 @@
 \usage{
 portal_forecast_ui(main = ".")
 
-page_main_panel(main = ".")
+page_main_panel()
 
 page_title_panel()
 
@@ -40,38 +40,35 @@ models_tab()
 
 profiles_tab()
 
-forecast_tab(main = ".")
+forecast_tab()
 
 forecast_tab_input_selection_checks_row()
 
-forecast_tab_input_selection_row(main = ".")
+forecast_tab_input_selection_row()
 
-forecast_tab_input_selection_row_species(main = ".")
+forecast_tab_input_selection_row_species()
 
-forecast_tab_input_selection_row_dataset(main = ".")
+forecast_tab_input_selection_row_dataset()
 
-forecast_tab_input_selection_row_model(main = ".")
+forecast_tab_input_selection_row_model()
 
-forecast_tab_input_selection_row_historic_end_newmoonnumber(main = ".")
+forecast_tab_input_selection_row_historic_end_newmoonnumber()
 
-evaluation_tab(main = ".")
+evaluation_tab()
 
 evaluation_tab_input_selection_checks_row()
 
-evaluation_tab_input_selection_row(main = ".")
+evaluation_tab_input_selection_row()
 
-evaluation_tab_input_selection_row_species(main = ".")
+evaluation_tab_input_selection_row_species()
 
-evaluation_tab_input_selection_row_dataset(main = ".")
+evaluation_tab_input_selection_row_dataset()
 
-evaluation_tab_input_selection_row_model(main = ".")
+evaluation_tab_input_selection_row_model()
 
-evaluation_tab_input_selection_row_historic_end_newmoonnumber(main = ".")
+evaluation_tab_input_selection_row_historic_end_newmoonnumber()
 
-evaluation_tab_input_selection_row_newmoonnumber(main = ".")
-}
-\arguments{
-\item{main}{\code{character} value of the name of the main component of the directory tree.}
+evaluation_tab_input_selection_row_newmoonnumber()
 }
 \value{
 A UI definition or component shiny tags.

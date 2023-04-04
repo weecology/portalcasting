@@ -20,24 +20,19 @@ selected_newmoonnumber(main = ".", event_name, default = NULL, rv = NULL)
 
 available_historic_end_newmoonnumbers(main = ".", event_name, rv = NULL)
 
-selected_historic_end_newmoonnumber(
-  main = ".",
-  event_name,
-  default = NULL,
-  rv = NULL
-)
+selected_historic_end_newmoonnumber(main = ".", event_name, rv = NULL)
 
 available_species(main = ".", event_name, rv = NULL)
 
-selected_species(main = ".", event_name, default = "DM", rv = NULL)
+selected_species(main = ".", event_name, rv = NULL)
 
 available_datasets(main = ".", event_name, rv = NULL)
 
-selected_dataset(main = ".", event_name, default = "controls", rv = NULL)
+selected_dataset(main = ".", event_name, rv = NULL)
 
 available_models(main = ".", event_name, rv = NULL)
 
-selected_model(main = ".", event_name, default = "AutoArima", rv = NULL)
+selected_model(main = ".", event_name, rv = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}

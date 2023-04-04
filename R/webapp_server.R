@@ -118,15 +118,15 @@ portal_forecast_server <- function (main = ".",
 #'
 initial_reactive_values <- function (main = ".") {
 
-  reactiveValues(forecast_tab_species                      = selected_species(main = main, event_name = "initial_forecast_tab"), 
-                 forecast_tab_dataset                      = selected_dataset(main = main, event_name = "initial_forecast_tab"), 
-                 forecast_tab_model                        = selected_model(main = main, event_name = "initial_forecast_tab"),
-                 forecast_tab_historic_end_newmoonnumber   = selected_historic_end_newmoonnumber(main = main, event_name = "initial_forecast_tab"),
-                 evaluation_tab_species                    = selected_species(main = main, event_name = "initial_evaluation_tab"),
-                 evaluation_tab_dataset                    = selected_dataset(main = main, event_name = "initial_evaluation_tab"), 
-                 evaluation_tab_model                      = selected_model(main = main, event_name = "initial_evaluation_tab"),
-                 evaluation_tab_historic_end_newmoonnumber = selected_historic_end_newmoonnumber(main = main, event_name = "initial_evaluation_tab"),
-                 evaluation_tab_newmoonnumber              = selected_newmoonnumber(main = main, event_name = "initial_evaluation_tab"))
+  reactiveValues(forecast_tab_species                      = initial_forecast_tab_selected_species, 
+                 forecast_tab_dataset                      = initial_forecast_tab_selected_dataset,
+                 forecast_tab_model                        = initial_forecast_tab_selected_model,
+                 forecast_tab_historic_end_newmoonnumber   = initial_forecast_tab_selected_historic_end_newmoonnumber,
+                 evaluation_tab_species                    = initial_evaluation_tab_selected_species,
+                 evaluation_tab_dataset                    = initial_evaluation_tab_selected_dataset,
+                 evaluation_tab_model                      = initial_evaluation_tab_selected_model,
+                 evaluation_tab_historic_end_newmoonnumber = initial_evaluation_tab_selected_historic_end_newmoonnumber,
+                 evaluation_tab_newmoonnumber              = initial_evaluation_tab_selected_newmoonnumber)
 
 }
 
@@ -249,6 +249,7 @@ update_output <- function (main,
                            rv, 
                            input, 
                            output) {
+
 
   if (grepl("forecast_tab", event_name)) {
 
