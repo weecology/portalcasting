@@ -36,16 +36,24 @@ evaluate_casts <- function (main      = ".",
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
 
-  if (is.null(existing_evaluations$cast_evaluation_complete)) {
+  if (!is.null(existing_evaluations)) {
 
-    existing_evaluations$cast_evaluation_complete <- existing_evaluations$forecast_end_newmoonnumber <= last_census_newmoonnumber
+    if (is.null(existing_evaluations$cast_evaluation_complete)) {
+
+      existing_evaluations$cast_evaluation_complete <- existing_evaluations$forecast_end_newmoonnumber <= last_census_newmoonnumber
+
+    }
+
+    casts_left_to_evaluate  <- unique(existing_evaluations$cast_id[!existing_evaluations$cast_evaluation_complete & 
+                                                                   existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
+  
+  } else {
+
+    casts_left_to_evaluate  <- cast_ids
 
   }
 
 
-  casts_left_to_evaluate  <- unique(existing_evaluations$cast_id[!existing_evaluations$cast_evaluation_complete & 
-                                                                 existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
-  
   selected_cast_ids <- cast_ids[cast_ids %in% casts_left_to_evaluate]
 
   if (length(selected_cast_ids) == 0) {
@@ -314,7 +322,7 @@ read_casts_evaluations <- function (main = "."){
 
   if (!file.exists(eval_path)) {
 
-    messageq("  Cast evaluations not available, run `evaluate_casts()`.", quiet = settings$quiet)
+    messageq("  Cast evaluations not available.", quiet = settings$quiet)
 
     out <- NULL
 

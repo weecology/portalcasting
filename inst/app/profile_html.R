@@ -1,16 +1,13 @@
 # this script generates the static HTML file for the rodent profiles page from the csv in the www folder 
 
-profiles_csv <- system.file(...     = "app", 
-                            ...     = "www",
-                            ...     = "rodents.csv",
-                            package = "portalcasting")
+profiles_csv <- file.path(main, "www", "rodents.csv")
 
 table_in <- read.csv(profiles_csv)
 nspecies <- nrow(table_in)
 table_rows <- NULL
 for(i in 1:nspecies){
   table_row <- c('  <tr>', 
-                 paste0('   <td style="text-align:left;"> <img src="', table_in$image[i], '" width ="200" alt="', table_in$image_alt_text[i], '"/td>'),
+                 paste0('   <td style="text-align:left;"> <img src="', table_in$image[i], '" width ="200" alt="', table_in$image_alt_text[i], '"></td>'),
                  paste0('   <td style="text-align:left;"><i>', table_in$scientific_name[i], '</i></td>'),
                  paste0('   <td style="text-align:left;"> ', table_in$common_name[i], ' </td>'),
                  paste0('   <td style="text-align:left;"> ', table_in$species_description[i], ' </td>'),
@@ -51,8 +48,7 @@ table_rows,
 </body>
 ', collapse = '\n')
 
-profiles_html <- file.path(system.file(...     = "app", 
-                                       package = "portalcasting"),
+profiles_html <- file.path(main,
                            "profile.html")
 write(html_out, file = profiles_html)
 

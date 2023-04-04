@@ -65,8 +65,8 @@ portal_forecast_ui <- function (global = global_list( )) {
 #
 page_main_panel <- function (global = global_list( )) {
 
-  mainPanel(tabsetPanel(forecast_tab(global = global),
-                        evaluation_tab(global = global),
+  mainPanel(tabsetPanel(#forecast_tab(global = global),
+                        #evaluation_tab(global = global),
                         about_tab( ),
                         models_tab( ),
                         profiles_tab( )))

@@ -16,7 +16,10 @@
 #'   * Models ([`fill_models`]) 
 #'     * model controls ([`write_model_controls`])
 #'     * model scripts (if needed) ([`write_model_scripts`])
-#'   Additional, new models and datasets can be added to the directory at filling using the optional arguments `new_model_controls` and `new_dataset_controls`, but the model or dataset must still be listed in its respective main argument, as well.
+#'   * Web Application ([`fill_app`]) 
+#'     * transfers app files from package to main
+#'     * renders ([`render`][rmarkdown::render]) and sources ([`source`][base::source]) files into HTML. \cr \cr
+#'   Additionally, new models and datasets can be added to the directory at filling using the optional arguments `new_model_controls` and `new_dataset_controls`, but the model or dataset must still be listed in its respective main argument, as well.
 #'             
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
@@ -62,6 +65,8 @@ fill_dir <- function (main                 = ".",
             datasets             = datasets,
             new_dataset_controls = new_dataset_controls)
 
+  fill_app(main                  = main)
+
   messageq("\nDirectory filling complete.", quiet = settings$quiet)
 
   invisible( )
@@ -106,6 +111,35 @@ fill_data <- function (main                 = ".",
 
 }
 
+
+#' @rdname directory-filling
+#'
+#' @export
+#'
+fill_app <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+
+  messageq("Setting up local web app viewer ... ", quiet = settings$quiet)
+
+  app_directory <- system.file(...     = "app", 
+                               package = "portalcasting")
+
+  file.copy(from      = list.files(app_directory, full.names = TRUE),
+            to        = file.path(main, settings$subdirectories$app),
+            recursive = TRUE,
+            overwrite = TRUE)
+
+  models_rmd <- file.path(main, "models.Rmd")
+  profiles_r <- file.path(main, "profile_html.R")
+
+  render(models_rmd)
+  source(profiles_r)
+
+  messageq(" ... complete.\n", quiet = settings$quiet)
+  invisible( )
+
+}
 
 
 #' @rdname directory-filling

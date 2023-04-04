@@ -259,7 +259,7 @@ prepare_dataset <- function(name       = "all",
                                          quiet      = !settings$verbose) 
 
 
-  sp_col           <- colnames(rodents_table) %in% rodent_species( )
+  sp_col           <- colnames(rodents_table) %in% rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "code", total = FALSE)
   which_sp_col     <- which(sp_col)
   which_not_sp_col <- which(!sp_col)
   sp_col_in        <- colnames(rodents_table)[sp_col] %in% species

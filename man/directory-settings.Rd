@@ -51,7 +51,8 @@ directory_subdirectories(
   fits = "fits",
   models = "models",
   resources = "resources",
-  data = "data"
+  data = "data",
+  app = "app"
 )
 
 directory_resources(

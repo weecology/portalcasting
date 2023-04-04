@@ -4,6 +4,7 @@
 \alias{directory filling}
 \alias{fill_dir}
 \alias{fill_data}
+\alias{fill_app}
 \alias{fill_resources}
 \alias{fill_forecasts}
 \alias{fill_fits}
@@ -23,6 +24,8 @@ fill_data(
   datasets = prefab_datasets(),
   new_dataset_controls = NULL
 )
+
+fill_app(main = ".")
 
 fill_resources(main = ".")
 
@@ -71,7 +74,12 @@ Fill the directory with components including:
 \itemize{
 \item model controls (\code{\link{write_model_controls}})
 \item model scripts (if needed) (\code{\link{write_model_scripts}})
-Additional, new models and datasets can be added to the directory at filling using the optional arguments \code{new_model_controls} and \code{new_dataset_controls}, but the model or dataset must still be listed in its respective main argument, as well.
+}
+\item Web Application (\code{\link{fill_app}})
+\itemize{
+\item transfers app files from package to main
+\item renders (\code{\link[rmarkdown:render]{render}}) and sources (\code{\link[base:source]{source}}) files into HTML. \cr \cr
+Additionally, new models and datasets can be added to the directory at filling using the optional arguments \code{new_model_controls} and \code{new_dataset_controls}, but the model or dataset must still be listed in its respective main argument, as well.
 }
 }
 }
