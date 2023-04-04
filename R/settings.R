@@ -36,6 +36,8 @@
 #'
 #' @param forecasts `character` name for the forecasts subdirectory.
 #'
+#' @param app `character` name for the app subdirectory.
+#'
 #' @param PortalData `list` of `source` and `version` elements of `character` values for the Portal Data download. Default values retrieve the latest data from github
 #'
 #' @param portalPredictions `list` of `source` and `version` elements of `character` values for the archive download. Default values point to github, but `verison = NULL` indicates no download.

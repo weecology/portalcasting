@@ -131,6 +131,8 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{data}{\code{character} name for the data subdirectory.}
 
+\item{app}{\code{character} name for the app subdirectory.}
+
 \item{PortalData}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github}
 
 \item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{verison = NULL} indicates no download.}

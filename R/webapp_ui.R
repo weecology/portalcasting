@@ -35,7 +35,7 @@
 #'       * profiles_tab
 #'         * htmltools::includeHTML
 #'
-#' @param `global` A `list` of global values for the app.
+#' @param global A `list` of global values for the app.
 #'
 #' @return A UI definition or component shiny tags.
 #'

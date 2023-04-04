@@ -37,7 +37,7 @@ run_web_app <- function(main = ".") {
 #'
 #' @param rv [`reactiveValues`][shiny::reactiveValues] `list` for the UI.
 #'
-#' @param `global` A `list` of global values for the app.
+#' @param global A `list` of global values for the app.
 #'
 #' @name web app helpers
 #'

@@ -75,7 +75,7 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber(
 evaluation_tab_input_selection_row_newmoonnumber(global = global_list())
 }
 \arguments{
-\item{`global`}{A \code{list} of global values for the app.}
+\item{global}{A \code{list} of global values for the app.}
 }
 \value{
 A UI definition or component shiny tags.
