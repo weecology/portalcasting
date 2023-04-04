@@ -1,6 +1,8 @@
 ---
 title: "Models"
 bibliography: refs.bibtex
+output: 
+  rmarkdown::html_document 
 ---
 
 ```{r setup, include = FALSE}
