@@ -314,7 +314,7 @@ read_casts_evaluations <- function (main = "."){
 
   if (!file.exists(eval_path)) {
 
-    messageq("  Cast evaluations not available, run `evaluate_casts()`", quiet = settings$quiet)
+    messageq("  Cast evaluations not available, run `evaluate_casts()`.", quiet = settings$quiet)
 
     out <- NULL
 

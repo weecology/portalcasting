@@ -3,13 +3,20 @@
 \name{web app}
 \alias{web app}
 \alias{run_web_app}
+\alias{global_list}
 \title{Build and Launch the Portal Forecast Web Application}
 \usage{
 run_web_app(main = ".")
+
+global_list(main = ".")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 }
+\value{
+\code{global_list}: a \code{list} of values that will be globally available in the app.
+}
 \description{
-Constructs and launches a local version of the web application by running \code{\link[shiny:runApp]{shiny::runApp}} pointed to the \code{app} subdirectory in the local \code{portalcasting} package folder.
+\code{run_web_app} constructs and launches a local version of the web application by running \code{\link[shiny:runApp]{shiny::runApp}} pointed to the \code{app} subdirectory in the local \code{portalcasting} package folder. \cr \cr
+\code{global_list} creates a list of values that are globally available in an app run.
 }

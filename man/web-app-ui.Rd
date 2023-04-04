@@ -24,7 +24,6 @@
 \alias{evaluation_tab_input_selection_row_model}
 \alias{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
 \alias{evaluation_tab_input_selection_row_newmoonnumber}
-\alias{global_list}
 \title{Generate the User Interface for the Web App}
 \usage{
 portal_forecast_ui(global = global_list())
@@ -74,12 +73,8 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber(
 )
 
 evaluation_tab_input_selection_row_newmoonnumber(global = global_list())
-
-global_list(main = ".")
 }
 \arguments{
-\item{main}{\code{character} value of the name of the main component of the directory tree.}
-
 \item{`global`}{A \code{list} of global values for the app.}
 }
 \value{
