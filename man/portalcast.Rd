@@ -10,7 +10,7 @@ portalcast(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  species = forecasting_species(total = TRUE)
+  species = NULL
 )
 
 cast(main = ".", dataset = NULL, species = NULL, model = NULL)

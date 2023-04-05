@@ -23,9 +23,11 @@
 portalcast <- function (main     = ".", 
                         models   = prefab_models( ), 
                         datasets = prefab_datasets( ),
-                        species  = forecasting_species(total = TRUE)) {
+                        species  = NULL) {
 
   settings <- read_directory_settings(main = main)
+
+  species <- ifnull(species, forecasting_species(path = file.path(main, settings$subdirectories$resources), total = TRUE))
 
   messageq(break_line( ), "Forecasting models...\n", 
            break_line( ), "This is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
