@@ -14,7 +14,7 @@
 #'
 #' @param session Environment for the GenEst GUI.
 #'
-#' @param `global` A `list` of global values for the app.
+#' @param global A `list` of global values for the app.
 #'
 #' @return 
 #'   `portal_forecast_server`: an observer reference class object (see [`observeEvent`][shiny::observeEvent] and [`observe`][shiny::observe]). \cr \cr

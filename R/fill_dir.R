@@ -120,7 +120,7 @@ fill_app <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  messageq("Setting up local web app viewer ... ", quiet = settings$quiet)
+  messageq("Setting up local web app instance ... ", quiet = settings$quiet)
 
   app_directory <- system.file(...     = "app", 
                                package = "portalcasting")
@@ -133,7 +133,7 @@ fill_app <- function (main = ".") {
   models_rmd <- file.path(main, settings$subdirectories$app, "models.Rmd")
   profiles_r <- file.path(main, settings$subdirectories$app, "profile_html.R")
 
-  render(models_rmd)
+  render(models_rmd, quiet = !settings$verbose)
   source(profiles_r, local = TRUE)
 
   messageq(" ... complete.\n", quiet = settings$quiet)

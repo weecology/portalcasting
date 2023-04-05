@@ -32,14 +32,14 @@ update_input(global, event_name, rv, input, session)
 
 \item{session}{Environment for the GenEst GUI.}
 
+\item{global}{A \code{list} of global values for the app.}
+
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
 \item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
 
 \item{event_name}{\code{character} value of the server event. \cr
 Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
-
-\item{`global`}{A \code{list} of global values for the app.}
 }
 \value{
 \code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr \cr
