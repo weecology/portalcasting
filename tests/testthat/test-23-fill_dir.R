@@ -22,7 +22,7 @@ test_that(desc = "fill_data sets up the data sub",
   expect_equal(fill_data(main = main2), NULL)
   main_dir <- list.files(main2)
   main_dir <- sort(main_dir)
-  expected_main_dir <- c("data", "directory_configuration.yaml", "fits", "forecasts", "models", "resources", "app")
+  expected_main_dir <- c("app", "data", "directory_configuration.yaml", "fits", "forecasts", "models", "resources")
   expect_equal(main_dir, expected_main_dir)
 
 })
