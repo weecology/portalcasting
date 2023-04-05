@@ -55,3 +55,13 @@ test_that(desc = "setup_production does",
   expect_is(out, "list")
 
 })
+
+test_that(desc = "update_directory does",
+          code = {
+
+  skip_on_cran() 
+
+  expect_message(out <- update_dir(main = main3, verbose = TRUE))
+  expect_is(out, "list")
+
+})

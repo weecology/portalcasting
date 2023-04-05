@@ -6,6 +6,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "ui functions can build a functioning ui off the global list", {
 
+  skip_on_cran() 
 
   expect_message(gl <- global_list(main = main3))
   expect_is(gl, "list")
@@ -48,6 +49,22 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   expect_is(tt, "shiny.tag")
 
 
+
+})
+
+
+
+test_that(desc = "ui functions can build a functioning ui off the global list of a sandbox", {
+
+  skip_on_cran() 
+
+  expect_message(gl <- global_list(main = main2))
+  expect_is(gl, "list")
+
+  expect_silent(ft <- forecast_tab(global = gl)) 
+  expect_is(ft, "shiny.tag")
+  expect_silent(et <- evaluation_tab(global = gl)) 
+  expect_is(et, "shiny.tag")
 
 })
 

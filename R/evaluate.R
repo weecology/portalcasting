@@ -136,41 +136,22 @@ evaluate_cast <- function (main     = ".",
   cast_tab$crps    <- NA
   cast_tab$cast_evaluation_complete <- FALSE
 
-  if (!is.null(cast_meta$model_controls$scoring_family)) {
-
-    scoring_family <- cast_meta$model_controls$response$scoring_family
-
-  } else if (!is.null(cast_meta$model)) {
-
-    scoring_family <- switch(cast_meta$model,
-                             "AutoArima"                            = "normal",
-                             "NaiveArima"                           = "normal",
-                             "ESSS"                                 = "normal",
-                             "GPEDM"                                = "normal",
-                             "simplexEDM"                           = "normal",
-                             "nbGARCH"                              = "nbinom",
-                             "nbsGARCH"                             = "nbinom",
-                             "pGARCH"                               = "poisson",
-                             "psGARCH"                              = "poisson",
-                             "pevGARCH"                             = "poisson",
-                             "jags_RW"                              = "sample",
-                             "jags_logistic"                        = "sample",
-                             "jags_logistic_competition"            = "sample",
-                             "jags_logistic_covariates"             = "sample",
-                             "jags_logistic_competition_covariates" = "sample")
-
-  } 
-
-  if (is.null(scoring_family)) {
-
-    scoring_family <- "normal"
-
-  }
-  if (grepl("jags", cast_meta$model) & is.null(model_cast$sample)) {
-
-    scoring_family <- "poisson"
-
-  }
+  scoring_family <- switch(cast_meta$model,
+                           "AutoArima"                            = "normal",
+                           "NaiveArima"                           = "normal",
+                           "ESSS"                                 = "normal",
+                           "GPEDM"                                = "normal",
+                           "simplexEDM"                           = "normal",
+                           "nbGARCH"                              = "nbinom",
+                           "nbsGARCH"                             = "nbinom",
+                           "pGARCH"                               = "poisson",
+                           "psGARCH"                              = "poisson",
+                           "pevGARCH"                             = "poisson",
+                           "jags_RW"                              = "sample",
+                           "jags_logistic"                        = "sample",
+                           "jags_logistic_competition"            = "sample",
+                           "jags_logistic_covariates"             = "sample",
+                           "jags_logistic_competition_covariates" = "sample")
 
 
   can_score <- !is.na(cast_tab$obs)

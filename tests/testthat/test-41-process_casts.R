@@ -11,6 +11,7 @@ test_that(desc = "read_cast_tab reads in a cast tab", {
 
   expect_is(read_cast_tab(main = main2, cast_id = NULL), "data.frame")
   expect_error(read_cast_tab(main = main2, cast_id = 1e10))
+  expect_error(read_cast_tab(main = main2, cast_id = "1.1"))
 
 })
 

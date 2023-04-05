@@ -7,11 +7,12 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "evaluate_casts evaluates casts", {
 
-  cast_ids <- select_casts(main = main3, species = c("DM", "PP", "total"), models = c("AutoArima", "ESSS"), datasets = c("all", "controls"))$cast_id
+  cast_ids <- select_casts(main = main3, species = c("DM", "PP", "total"), models = c("AutoArima", "ESSS", "pevGARCH", "nbGARCH"), datasets = c("all", "controls"))$cast_id
   nids <- length(cast_ids)
   nsample_ids <- 1000
   cast_ids <- cast_ids[round(seq(1, nids, length.out = nsample_ids))]
   expect_is(evaluate_casts(main = main3, cast_ids = cast_ids), "data.frame")
+  expect_message(evaluate_casts(main = main3, cast_ids = cast_ids))
   expect_error(evaluate_casts(main = main3, cast_ids = c(1e100, 2e100)))
 
 })

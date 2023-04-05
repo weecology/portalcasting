@@ -41,6 +41,15 @@ test_that(desc = "write_data works if overwriting or not", {
                             filename = "rodents_controls.csv",
                             overwrite = TRUE))
 
+  jsontest <- list(test = 1312)
+  expect_message(write_data(jsontest, main = main2, save = TRUE, 
+                            filename = "jsontest.json"))
+  expect_message(write_data(jsontest, main = main2, save = TRUE, 
+                            filename = "jsontest.json", overwrite = FALSE))
+
+  expect_error(write_data(jsontest, main = main2, save = TRUE, 
+                            filename = "jsontest.failure", overwrite = FALSE))
+
 })  
 
 

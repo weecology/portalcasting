@@ -66,7 +66,7 @@ write_data <- function (x            = NULL,
     } else if (file_ext(filename) == "json"){
 
       x2 <- serializeJSON(x = x)
-      write_json(x2, file = full_path)
+      write_json(x2, path = full_path)
 
     } else {
 
