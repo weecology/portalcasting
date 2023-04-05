@@ -6,6 +6,11 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "ui functions can build a functioning ui off the global list", {
 
+
+  expect_message(gl <- global_list(main = main3))
+  expect_is(gl, "list")
+
+
   expect_silent(ptp <- page_title_panel( ))
   expect_is(ptp, "shiny.tag.list")
 
