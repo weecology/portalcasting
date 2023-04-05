@@ -4,8 +4,74 @@ main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
-test_that(desc = "placeholder", {
+test_that(desc = "global_list makes a list of globals and component functions operate on it", {
 
-  expect_silent(1)
+  expect_message(gl <- global_list(main = main3))
+  expect_is(gl, "list")
+
+  rv <- list(forecast_tab_species                       = gl$initial_forecast_tab_selected_species,
+             forecast_tab_dataset                       = gl$initial_forecast_tab_selected_dataset,
+             forecast_tab_model                         = gl$initial_forecast_tab_selected_model,
+             forecast_tab_historic_end_newmoonnumber    = gl$initial_forecast_tab_selected_historic_end_newmoonnumber,
+             evaluation_tab_species                     = gl$initial_evaluation_tab_selected_species,
+             evaluation_tab_dataset                     = gl$initial_evaluation_tab_selected_dataset,
+             evaluation_tab_model                       = gl$initial_evaluation_tab_selected_model,
+             evaluation_tab_historic_end_newmoonnumber  = gl$initial_evaluation_tab_selected_historic_end_newmoonnumber,
+             evaluation_tab_newmoonnumber               = gl$initial_evaluation_tab_selected_newmoonnumber)
+
+  expect_is(available_models(global = global, event_name = "initial_forecast_tab"), "character")
+  expect_is(available_models(global = global, event_name = "initial_evaluation_tab"), "character")
+  expect_is(available_datasets(global = global, event_name = "initial_forecast_tab"), "character")
+  expect_is(available_datasets(global = global, event_name = "initial_evaluation_tab"), "character")
+  expect_is(available_species(global = global, event_name = "initial_forecast_tab"), "character")
+  expect_is(available_species(global = global, event_name = "initial_evaluation_tab"), "character")
+  expect_is(available_historic_end_newmoonnumbers(global = global, event_name = "initial_forecast_tab"), "integer")
+  expect_is(available_historic_end_newmoonnumbers(global = global, event_name = "initial_evaluation_tab"), "integer")
+  expect_is(available_newmoonnumbers(global = global, event_name = "initial_evaluation_tab"), "integer")
+
+  expect_is(available_models(global = global, event_name = "forecast_tab_model", rv = rv), "character")
+  expect_is(available_models(global = global, event_name = "evaluation_tab_model", rv = rv), "character")
+
+  expect_is(available_datasets(global = global, event_name = "forecast_tab_dataset", rv = rv), "character")
+  expect_is(available_datasets(global = global, event_name = "evaluation_tab_dataset", rv = rv), "character")
+
+  expect_is(available_species(global = global, event_name = "forecast_tab_species", rv = rv), "character")
+  expect_is(available_species(global = global, event_name = "evaluation_tab_species", rv = rv), "character")
+
+  expect_is(available_historic_end_newmoonnumbers(global = global, event_name = "forecast_tab_historic_end_newmoonnumber", rv = rv), "integer")
+  expect_is(available_historic_end_newmoonnumbers(global = global, event_name = "evaluation_tab_historic_end_newmoonnumber", rv = rv), "integer")
+
+  expect_is(available_newmoonnumbers(global = global, event_name = "evaluation_tab_newmoonnumber", rv = rv), "integer")
+
+
+  rv1 <- update_list(rv, forecast_tab_model = "xx")
+  expect_is(selected_model(global = global, event_name = "forecast_tab_model", rv = rv1), "character")
+  rv1 <- update_list(rv, evaluation_tab_model = "xx")
+  expect_is(selected_model(global = global, event_name = "evaluation_tab_model", rv = rv1), "character")
+
+  rv1 <- update_list(rv, forecast_tab_dataset = "xx")
+  expect_is(selected_dataset(global = global, event_name = "forecast_tab_dataset", rv = rv1), "character")
+  rv1 <- update_list(rv, evaluation_tab_dataset = "xx")
+  expect_is(selected_dataset(global = global, event_name = "evaluation_tab_dataset", rv = rv1), "character")
+
+  rv1 <- update_list(rv, forecast_tab_species = "xx")
+  expect_is(selected_species(global = global, event_name = "forecast_tab_species", rv = rv1), "character")
+  rv1 <- update_list(rv, evaluation_tab_species = "xx")
+  expect_is(selected_species(global = global, event_name = "evaluation_tab_species", rv = rv1), "character")
+
+  rv1 <- update_list(rv, forecast_tab_historic_end_newmoonnumber = 1e10)
+  expect_is(selected_historic_end_newmoonnumber(global = global, event_name = "forecast_tab_historic_end_newmoonnumber", rv = rv1), "integer")
+  rv1 <- update_list(rv, evaluation_tab_historic_end_newmoonnumber = 1e10)
+  expect_is(selected_historic_end_newmoonnumber(global = global, event_name = "evaluation_tab_historic_end_newmoonnumber", rv = rv1), "integer")
+
+  rv1 <- update_list(rv, evaluation_tab_newmoonnumber = 1e10)
+  expect_is(selected_newmoonnumber(global = global, event_name = "evaluation_tab_newmoonnumber", rv = rv1), "integer")
+
+
+
 
 })
+
+
+
+
