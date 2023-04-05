@@ -60,6 +60,8 @@ main
 │   <casts metadata file>
 └──fits
 │   <previous and current model fits>
+└──app
+│   <ui, server, and application files>
 └──directory_configuration.yaml
 ```
 
@@ -86,7 +88,7 @@ If needed, the `subdirectories` can be altered via the `directory_settings` cont
 
 The directory is filled (loaded with files for forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir` function:
 
-* `fill_resources` downloads each of the resources for the directory, which presently include the source data (rodents), covariate data (weather, NDVI), and previous forecasts' archive. Upon completion of the downloads, `fill_resource` updates `directory_configuration.yaml` with downloaded versions.
+* `fill_resources` downloads each of the resources for the directory, which presently include the source data (rodents), covariate data (weather, NDVI), and previous forecasts' archive. Upon completion of the downloads, `fill_resources` updates `directory_configuration.yaml` with downloaded versions.
 * `fill_forecasts` moves the existing model cast output files from the `resources` subdirectory to the `forecasts` subdirectory.
 * `fill_fits` moves the existing model fit files from the `resource` subdirectory to the `fits` subdirectory.
 * `fill_models` writes the model controls list and scripts into the `models` subdirectory.
@@ -95,6 +97,7 @@ The directory is filled (loaded with files for forecasting) using a series of su
   * `prepare_rodents` prepares multiple structures of the rodents data for analyses from the raw data.
   * `prepare_covariates` downloads and forecasts covariates data.
   * `prepare_metadata` creates and saves out a YAML metadata list for the forecasting configurations. 
+* `fill_app` moves the app-building files into the directory and renders components based on local content.
 
 Each of these components can be run individually, as well. For example, `fill_data` can be used to set up the complete set of data for a given model run.
 
