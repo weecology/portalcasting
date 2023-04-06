@@ -299,17 +299,25 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  evals    <- read_casts_evaluations(main)
+  evals    <- read_casts_evaluations(main = main)
 
-  models                        <- ifnull(models, "AutoArima")
-  datasets                      <- ifnull(datasets, "controls")
-  species                       <- ifnull(species, "DM") 
-  cast_ids                      <- ifnull(cast_ids, unique(evals$cast_id))
-  historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(evals$historic_end_newmoonnumber)) 
+  casts_meta <- select_casts(main                        = main, 
+                             cast_ids                    = cast_ids,
+                             historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
+                             models                      = models, 
+                             datasets                    = datasets, 
+                             species                     = species)
+
+
+  datasets                      <- unique(casts_meta$dataset)[unique(casts_meta$dataset) %in% unique(evals$dataset)]
+  species                       <- unique(casts_meta$species)[unique(casts_meta$species) %in% unique(evals$species)]
+  models                        <- unique(casts_meta$model)[unique(casts_meta$model) %in% unique(evals$model)]
+  cast_ids                      <- unique(casts_meta$cast_id)[unique(casts_meta$cast_id) %in% unique(evals$cast_id)]
+  historic_end_newmoonnumbers   <- unique(casts_meta$historic_end_newmoonnumber)[unique(casts_meta$historic_end_newmoonnumber) %in% unique(evals$historic_end_newmoonnumber)]
 
   cast_id_in                    <- evals$cast_id %in% cast_ids
   model_in                      <- evals$model %in% models
-  dataset_in                    <- evals$dataset == datasets
+  dataset_in                    <- evals$dataset %in% datasets
   species_in                    <- evals$species %in% species
   historic_end_newmoonnumber_in <- evals$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
   all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
@@ -356,8 +364,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
-       xpd = TRUE, srt = 45, adj = 1)
+
   x1 <- 0.49
   x2 <- 0.97
   y1 <- 0.0
@@ -365,8 +372,6 @@ plot_casts_cov_RMSE <- function (main                        = ".",
   par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
-       xpd = TRUE, srt = 45, adj = 1)
 
   for (i in 1:nspecies){
 
@@ -396,6 +401,11 @@ plot_casts_cov_RMSE <- function (main                        = ".",
       rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
       points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
       points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+
+  #    text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
+   #        xpd = TRUE, srt = 45, adj = 1)
+    #  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
+     #      xpd = TRUE, srt = 45, adj = 1)
     }
     
     abline(h = 0.95, lwd = 2, lty = 3)
@@ -801,6 +811,8 @@ plot_cast_ts <- function (main                         = ".",
 
     sppmatch <- which(sptab[ , "speciescode"] == species)
     lab$text <- sptab[sppmatch , "scientificname"]
+    lab$text <- paste0(substr(lab$text, 1, 1), ". ", strsplit(lab$text, " ")[[1]][2])
+
     lab$font <- 3
 
   }
