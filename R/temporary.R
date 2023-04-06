@@ -45,7 +45,7 @@ update_forecasts_folder <- function (main = ".") {
       cast_tab <- as.data.frame(read_csv_arrow(file = cpath))
       cast_tab <- na_conformer(out)
 
-      lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
+      lpath <- paste0("cast_id_", casts_metadata$cast_id[i], "_metadata.yaml")
       cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
       if (!file.exists(cpath)) {
@@ -58,8 +58,8 @@ update_forecasts_folder <- function (main = ".") {
 
 
 
-      cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_casts.json"))
-      cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_casts.RData"))
+      cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", casts_metadata$cast_id[i], "_model_casts.json"))
+      cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", casts_metadata$cast_id[i], "_model_casts.RData"))
 
       if (file.exists(cpath_json)) {
 
@@ -188,7 +188,7 @@ update_forecasts_folder <- function (main = ".") {
     }
 
     meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
-    row_names(out) <- NULL    
+    row.names(out) <- NULL    
     write_csv_arrow(x = out, file = meta_path)
 
     messageq(" --- Done with update ---", quiet = settings$quiet)
