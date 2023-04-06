@@ -6,6 +6,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
 *In Progress*
 
+### Using `arrow` to speed up reading and writing files
+
 ### Evaluation figures now read from evaluations file
 * Avoids computing evaluations while generating plots
 

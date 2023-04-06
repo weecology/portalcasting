@@ -57,7 +57,8 @@ write_data <- function (x            = NULL,
 
     if (file_ext(filename) == "csv") {
 
-      write_csv_arrow(x = x, file = full_path, row.names = FALSE)
+      row_names(x) <- NULL
+      write_csv_arrow(x = x, file = full_path)
 
     } else if (file_ext(filename) == "yaml"){
 

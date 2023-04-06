@@ -371,7 +371,8 @@ plot_casts_cov_RMSE <- function (main                        = ".",
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0,1), bty = "L")
     axis(2, at = seq(0, 1, 0.2), cex.axis = 1.125, las = 1, line = -0.5, 
          lwd = 0)
-    axis(2, at = seq(0, 1, 0.2), labels = FALSE, tck = -0.025)
+    axis(2, at = seq(0, 1, 0.2), labels = FALSE, tck = -0.0125)
+    axis(2, at = seq(-0.5, 1.5, 0.1), labels = FALSE, tck = 0)
     mtext(side = 2, "Coverage", line = 2.25, cex = 1.5)
     if (nmodels > 1) {
       axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
@@ -404,13 +405,13 @@ plot_casts_cov_RMSE <- function (main                        = ".",
     x2 <- 1
     y1 <- 0 + (i - 1) * 1 * (1/nspecies)
     y2 <- y1 + 1 * (1/nspecies)
-    par(mar = c(2, 3.5, 0.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    par(mar = c(2, 5, 0.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
 
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", bty = "L",
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0, ymax))
     axis(2, cex.axis = 1.125, las = 1, line = -0.5, lwd = 0)
-    axis(2, labels = FALSE, tck = -0.025)
-    mtext(side = 2, "RMSE", line = 2.25, cex = 1.5)
+    axis(2, labels = FALSE, tck = -0.0125)
+    mtext(side = 2, "RMSE", line = 3, cex = 1.5)
     if (nmodels > 1) {
       axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
     }
@@ -428,6 +429,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
       rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
       points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
       points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+      axis(2, labels = FALSE, tck = 0, at = seq(min(ys) - 2, max(ys) + 2, 0.1))
 
       if (nmodels > 1) {
         axis(1, at = 1:nmodels, labels = models, cex.axis = 1.125, xpd = TRUE)
@@ -620,7 +622,7 @@ plot_cast_point <- function (main                       = ".",
     }
 
     axis(2, at = i, labels = lab_text, font = lab_font, las = 1, 
-         cex.axis = 1.25, tck = 0, line = -0.5, lwd = 0)
+         cex.axis = 1.125, tck = 0, line = -0.5, lwd = 0)
     axis(2, at = i, labels = FALSE, las = 1, 
          cex.axis = 0.65, tck = -0.01)
 

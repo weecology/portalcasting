@@ -16,6 +16,9 @@ plot_cast_ts(main, species = "total", dataset = "all")
 casts_evaluations <- read_casts_evaluations(main)
 
 plot_casts_cov_RMSE(main, species = "DM", datasets = "controls", models = "AutoArima")
+plot_cast_point(main, species = "DM", dataset = "controls", model = "AutoArima", historic_end_newmoonnumber = 565, with_census = T, newmoonnumber = 565)
+
+plot_cast_point(main, highlight_sp = "DM", dataset = "controls", model = "AutoArima", historic_end_newmoonnumber = 558)
 
 plot_cast_point(main)
 fill_app(main)

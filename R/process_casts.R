@@ -108,12 +108,13 @@ process_model_output <- function (main      = ".",
     cast_tab_filename <- paste0("cast_id_", cast_metadata$cast_id, "_cast_tab.csv") 
     cast_tab_path     <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
 
+    row_names(cast_tab) <- NULL
     write_csv_arrow(x         = cast_tab,
-                    file      = cast_tab_path, 
-                    row.names = FALSE)
+                    file      = cast_tab_path)
 
     casts_metadata_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
 
+    row_names(casts_metadata) <- NULL
     write_csv_arrow(x         = casts_metadata, 
                     file      = casts_metadata_path, 
                     row.names = FALSE)
@@ -186,8 +187,10 @@ read_cast_tab <- function (main    = ".",
   }
 
   out <- as.data.frame(read_csv_arrow(file = cpath))
-
-  na_conformer(out)
+  out <- na_conformer(out)
+  class(out$species) <- "character"
+ 
+  out
 
 }
 
@@ -275,24 +278,16 @@ read_model_fit <- function (main    = ".",
 
   }
 
-  lpath_json1  <- paste0("cast_id_", cast_id, "_model_fit.json")
-  lpath_json2  <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath_json1  <- file.path(main, settings$subdirectories$forecasts, lpath_json1)
-  cpath_json2  <- file.path(main, settings$subdirectories$forecasts, lpath_json2)
+  cpath <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_fit.json"))
 
-  if (file.exists(cpath_json1)) {
+  if (file.exists(cpath)) {
 
-    read_in_json <- fromJSON(readLines(cpath_json1))
-    unserializeJSON(read_in_json)
-
-  } else if (file.exists(cpath_json2)) {
-
-    read_in_json <- fromJSON(readLines(cpath_json2))
+    read_in_json <- fromJSON(readLines(cpath))
     unserializeJSON(read_in_json)
 
   } else {
 
-    stop("cast_id does not have a model_fit or model_fits file")
+    stop("cast_id does not have a model_fit file")
 
   } 
 
@@ -315,46 +310,25 @@ read_model_cast <- function (main    = ".",
 
   }
 
+  cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_cast.json"))
+  cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_cast.RData"))
 
-  lpath_json1  <- paste0("cast_id_", cast_id, "_model_cast.json")
-  lpath_json2  <- paste0("cast_id_", cast_id, "_model_casts.json")
-  cpath_json1  <- file.path(main, settings$subdirectories$forecasts, lpath_json1)
-  cpath_json2  <- file.path(main, settings$subdirectories$forecasts, lpath_json2)
+  if (file.exists(cpath)) {
 
-  lpath_RData1 <- paste0("cast_id_", cast_id, "_model_cast.RData")
-  cpath_RData1 <- file.path(main, settings$subdirectories$forecasts, lpath_RData1)
-  lpath_RData2 <- paste0("cast_id_", cast_id, "_model_casts.RData")
-  cpath_RData2 <- file.path(main, settings$subdirectories$forecasts, lpath_RData2)
-
-  if (file.exists(cpath_json1)) {
-
-    read_in_json <- fromJSON(readLines(cpath_json1))
+    read_in_json <- fromJSON(readLines(cpath))
     unserializeJSON(read_in_json)
 
-  } else if (file.exists(cpath_json2)) {
-
-    read_in_json <- fromJSON(readLines(cpath_json2))
-    unserializeJSON(read_in_json)
-
-  } else if (file.exists(cpath_RData1)) {
+  } else if (file.exists(cpath)) {
 
       model_casts <- NULL
-      load(cpath_RData1)
-      model_casts
-
-  } else if (file.exists(cpath_RData2)) {
-
-      model_casts <- NULL
-      load(cpath_RData2)
+      load(cpath)
       model_casts
 
   } else {
 
-     stop("cast_id does not have a model_cast or model_casts file")
+     stop("cast_id does not have a model_cast file")
 
   } 
-
-
 
 }
 
@@ -473,7 +447,9 @@ read_casts_metadata <- function (main = "."){
                       QAQC                         = NA,
                       notes                        = NA)
   
-    write_csv_arrow(x = out, file = meta_path, row.names = FALSE)
+    row_names(x) <- NULL
+    write_csv_arrow(x         = out, 
+                    file      = meta_path)
 
   }
 
