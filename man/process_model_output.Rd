@@ -34,7 +34,7 @@ Take the model fit and cast output, process them into savable objects, and save 
 Four model-specific output components are saved and returned.
 \itemize{
 \item \code{"cast_metadata"}: saved out with \code{\link[yaml:write_yaml]{write_yaml}}.
-\item \code{"cast_tab"}: saved using \code{\link{write.csv}}.
+\item \code{"cast_tab"}: saved using \code{\link{write_csv_arrow}}.
 \item \code{"model_fit"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite:serializeJSON]{serializeJSON}} and \code{\link[jsonlite:read_json]{read_json}}, so quite flexible with respect to specific object structure.
 \item \code{"model_cast"}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite:serializeJSON]{serializeJSON}} and \code{\link[jsonlite:read_json]{read_json}}, so quite flexible with respect to specific object structure.
 }

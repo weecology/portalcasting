@@ -57,7 +57,7 @@ write_data <- function (x            = NULL,
 
     if (file_ext(filename) == "csv") {
 
-      write.csv(x, full_path, row.names = FALSE)
+      write_csv_arrow(x = x, file = full_path, row.names = FALSE)
 
     } else if (file_ext(filename) == "yaml"){
 
@@ -153,7 +153,7 @@ read_rodents_table <- function (main    = ".",
 
   return_if_null(x = dataset)
   settings <- read_directory_settings(main = main)
-  read.csv(file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(dataset), ".csv"))) 
+  as.data.frame(read_csv_arrow(file = file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(dataset), ".csv"))) )
 
 }
 
@@ -176,10 +176,8 @@ read_rodents <- function (main     = ".",
 #'
 read_newmoons <- function(main = "."){
   
-  settings       <- read_directory_settings(main = main)
-  out             <- read.csv(file.path(main, settings$subdirectories$data, settings$files$newmoons))
-  out$newmoondate <- as.Date(out$newmoondate)
-  out
+  settings <- read_directory_settings(main = main)
+  as.data.frame(read_csv_arrow(file = file.path(main, settings$subdirectories$data, settings$files$newmoons)))
 
 }
 
@@ -190,7 +188,7 @@ read_newmoons <- function(main = "."){
 read_covariates <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
-  read.csv(file.path(main, settings$subdirectories$data, settings$files$covariates))
+  as.data.frame(read_csv_arrow(file = file.path(main, settings$subdirectories$data, settings$files$covariates)))
 
 }
 
@@ -205,7 +203,7 @@ read_climate_forecasts <- function (main = ".") {
 
   datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
   ndatas <- length(datas)
-  dat_list <- mapply(FUN = read.csv, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
+  dat_list <- mapply(FUN = read_csv_arrow, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
 
   dat_tab <- dat_list[[1]]
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]

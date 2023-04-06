@@ -29,6 +29,7 @@ Depends:
   tscount
 License: MIT + file LICENSE
 Imports:
+  arrow,
   coda,
   english,
   htmltools,

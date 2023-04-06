@@ -6,7 +6,7 @@
 #'
 #' @details Four model-specific output components are saved and returned. 
 #'    * `"cast_metadata"`: saved out with [`write_yaml`][yaml::write_yaml].
-#'    * `"cast_tab"`: saved using [`write.csv`].
+#'    * `"cast_tab"`: saved using [`write_csv_arrow`].
 #'    * `"model_fit"`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
 #'    * `"model_cast"`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
 #'
@@ -108,15 +108,15 @@ process_model_output <- function (main      = ".",
     cast_tab_filename <- paste0("cast_id_", cast_metadata$cast_id, "_cast_tab.csv") 
     cast_tab_path     <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
 
-    write.csv(x         = cast_tab,
-              file      = cast_tab_path, 
-              row.names = FALSE)
+    write_csv_arrow(x         = cast_tab,
+                    file      = cast_tab_path, 
+                    row.names = FALSE)
 
     casts_metadata_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
 
-    write.csv(x         = casts_metadata, 
-              file      = casts_metadata_path, 
-              row.names = FALSE)
+    write_csv_arrow(x         = casts_metadata, 
+                    file      = casts_metadata_path, 
+                    row.names = FALSE)
 
     model_fit_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_fit.json") 
     model_fit_path     <- file.path(main, settings$subdirectories$fits, model_fit_filename)
@@ -185,7 +185,7 @@ read_cast_tab <- function (main    = ".",
 
   }
 
-  out <- read.csv(cpath) 
+  out <- as.data.frame(read_csv_arrow(file = cpath))
 
   na_conformer(out)
 
@@ -473,12 +473,12 @@ read_casts_metadata <- function (main = "."){
                       QAQC                         = NA,
                       notes                        = NA)
   
-    write.csv(out, meta_path, row.names = FALSE)
+    write_csv_arrow(x = out, file = meta_path, row.names = FALSE)
 
   }
 
 
-  out <- read.csv(meta_path)
+  out <- as.data.frame(read_csv_arrow(file = meta_path))
 
   if ("species" %in% colnames(out)) {
     out <- na_conformer(out)

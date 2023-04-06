@@ -351,7 +351,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
   }
 
   lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lpath) 
+  sptab <- as.data.frame(read_csv_arrow(file = lpath))
   sptab <- na_conformer(sptab, "speciescode")
 
   oldpar <- par(no.readonly = TRUE)
@@ -600,7 +600,7 @@ plot_cast_point <- function (main                       = ".",
 
   mtext("Abundance", side = 1, cex = 1.75, line = 2.5)
   lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lpath) 
+  sptab <- data.frame(read_csv_arrow(file = lpath))
   sptab <- na_conformer(sptab, "speciescode")
 
   for (i in 1:nspecies) {
@@ -805,7 +805,7 @@ plot_cast_ts <- function (main                         = ".",
 
   lab   <- list(text = "", font = 1)
   lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- read.csv(lp)
+  sptab <- data.frame(read_csv_arrow(file = lp))
   sptab <- na_conformer(sptab, "speciescode")
 
   if (species == "total") {

@@ -309,7 +309,7 @@ read_casts_evaluations <- function (main = "."){
 
   } else {
 
-    out <- read.csv(eval_path)
+    out <- read_csv_arrow(file = eval_path)
 
     if ("species" %in% colnames(out)) {
       out <- na_conformer(out)
