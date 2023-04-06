@@ -267,12 +267,10 @@ evaluation_tab <- function (global = global_list( )) {
     tabPanel(title = "Evaluation", 
            br( ), 
            evaluation_tab_input_selection_row(global = global), 
-           h2("Recent Observations vs. Forecasts"),
        #   evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
            plotOutput("evaluation_tab_sp_plot"),
            br( ),
-           h2("Model Coverage & RMSE"),
-           plotOutput("evaluation_tab_RMSE_plot"),
+           plotOutput("evaluation_tab_RMSE_plot", height = "300px"),
            br( ))
 
   }

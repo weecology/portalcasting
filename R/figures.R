@@ -350,43 +350,32 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
   }
 
+  lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
+  sptab <- read.csv(lpath) 
+  sptab <- na_conformer(sptab, "speciescode")
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  par(fig = c(0, 1, 0, 1), mar = c(0.5, 0, 0, 0.5))
+  par(fig = c(0, 1, 0, 1), mar = c(0, 0, 0, 0))
   plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
        bty = "n")
-
-  x1 <- 0
-  x2 <- 0.48
-  y1 <- 0.0
-  y2 <- 0.05
-  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
-  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
-       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
-
-  x1 <- 0.49
-  x2 <- 0.97
-  y1 <- 0.0
-  y2 <- 0.05
-  par(mar = c(0, 2.5, 0, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
-  plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", 
-       bty = "n", xlim = c(0.5, nmodels + 0.5), ylim = c(0, 1))
 
   for (i in 1:nspecies){
 
     x1 <- 0
-    x2 <- 0.48
-    y1 <- 0.05 + (i - 1) * 0.95 * (1/nspecies)
-    y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    x2 <- 0.5
+    y1 <- 0 + (i - 1) * 1 * (1/nspecies)
+    y2 <- y1 + 1 * (1/nspecies)
+    par(mar = c(2, 3.5, 0.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", 
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0,1), bty = "L")
-    axis(2, at = seq(0, 1, 0.2), cex.axis = 0.6, las = 1, line = -0.5, 
+    axis(2, at = seq(0, 1, 0.2), cex.axis = 1.125, las = 1, line = -0.5, 
          lwd = 0)
     axis(2, at = seq(0, 1, 0.2), labels = FALSE, tck = -0.025)
-    mtext(side = 2, "Coverage", line = 1.5, cex = 0.75)
-    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    mtext(side = 2, "Coverage", line = 2.25, cex = 1.5)
+    if (nmodels > 1) {
+      axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    }
     for(j in 1:nmodels){
       in_ij <- which(cast_species == species[i] & 
                      cast_model == models[j])
@@ -395,34 +384,36 @@ plot_casts_cov_RMSE <- function (main                        = ".",
       ys2 <- runif(length(ys), ys - 0.005, ys + 0.005)
       xs <- runif(length(ys), j - 0.05, j + 0.05)
       quants <- quantile(ys, seq(0, 1, 0.25))
-      points(rep(j, 2), quants[c(1, 5)], type = "l")
-      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l")
-      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l")
-      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
-      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
-      points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+      points(rep(j, 2), quants[c(1, 5)], type = "l", lwd = 2)
+      points(c(j - 0.02, j + 0.02), rep(quants[1], 2), type = "l", lwd = 2)
+      points(c(j - 0.02, j + 0.02), rep(quants[5], 2), type = "l", lwd = 2)
+      rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white", lwd = 2)
+      points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 3)
+      points(xs, ys2, col = grey(0.2, 0.4), pch = 1, cex = 1)
 
-  #    text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
-   #        xpd = TRUE, srt = 45, adj = 1)
-    #  text(x = 1:nmodels, y = rep(0.9, nmodels), labels = models, cex = 0.7, 
-     #      xpd = TRUE, srt = 45, adj = 1)
+      if (nmodels > 1) {
+        axis(1, at = 1:nmodels, labels = models, cex.axis = 1.125, xpd = TRUE)
+      }
     }
     
     abline(h = 0.95, lwd = 2, lty = 3)
 
     in_i <- which(cast_species == species[i])
     ymax <- max(cast_RMSE[in_i], na.rm = TRUE)
-    x1 <- 0.49
-    x2 <- 0.97
-    y1 <- 0.05 + (i - 1) * 0.95 * (1/nspecies)
-    y2 <- y1 + 0.94 * (1/nspecies)
-    par(mar = c(0, 2.5, 1.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+    x1 <- 0.5
+    x2 <- 1
+    y1 <- 0 + (i - 1) * 1 * (1/nspecies)
+    y2 <- y1 + 1 * (1/nspecies)
+    par(mar = c(2, 3.5, 0.5, 0.5), fig = c(x1, x2, y1, y2), new = TRUE)
+
     plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", bty = "L",
          xlab = "", xlim = c(0.5, nmodels + 0.5), ylim = c(0, ymax))
-    axis(2, cex.axis = 0.6, las = 1, line = -0.5, lwd = 0)
+    axis(2, cex.axis = 1.125, las = 1, line = -0.5, lwd = 0)
     axis(2, labels = FALSE, tck = -0.025)
-    mtext(side = 2, "RMSE", line = 1.625, cex = 0.75)
-    axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    mtext(side = 2, "RMSE", line = 2.25, cex = 1.5)
+    if (nmodels > 1) {
+      axis(1, at = 1:nmodels, labels = FALSE, tck = -0.025)
+    }
     for(j in 1:nmodels){
       in_ij <- which(cast_species == species[i] & 
                      cast_model == models[j])
@@ -437,18 +428,33 @@ plot_casts_cov_RMSE <- function (main                        = ".",
       rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
       points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
       points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
+
+      if (nmodels > 1) {
+        axis(1, at = 1:nmodels, labels = models, cex.axis = 1.125, xpd = TRUE)
+      }
+
     }
-    par(mar = c(0, 0, 0, 0), fig = c(0.97, 1, y1, y2), new = TRUE)   
-    plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
-         bty = "n") 
-    if (species[i] == "total"){
-      spt <- "Total Rodents"
-      spf <- 2
-    } else{
-      spt <- species[j]
-      spf <- 4
-    }  
-    text(0.9, 1, spt, font = spf, cex = 0.8, xpd = TRUE, srt = 270)
+    if (nspecies > 1) {
+      par(mar = c(0, 0, 0, 0), fig = c(0.95, 1, y1, y2), new = TRUE)   
+      plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
+           bty = "n") 
+
+      if (species == "total") {
+
+        spt <- "Total Abundance"
+        spf <- 1
+
+      } else {
+
+        sppmatch <- which(sptab[ , "speciescode"] == species)
+        spt <- sptab[sppmatch , "scientificname"]
+        spt <- paste0(substr(spt, 1, 1), ". ", strsplit(spt, " ")[[1]][2])
+
+        spf <- 3
+
+      }
+      text(0.9, 1, spt, font = spf, cex = 1.5, xpd = TRUE, srt = 270)
+    }
   }
 
 
