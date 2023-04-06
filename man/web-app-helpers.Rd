@@ -49,8 +49,6 @@ selected_model(global = global_list(), event_name, rv = NULL)
 Options include \code{"initial_forecast_tab"}, \code{"initial_evaluation_tab"}, \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, \code{"evaluation_tab_historic_end_newmoonnumber"}, and \code{"evaluation_tab_newmoonnumber"})}
 
 \item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
-
-\item{main}{\code{character} value of the name of the main component of the directory tree.}
 }
 \value{
 \code{character} or \code{integer}, depending upon the function.

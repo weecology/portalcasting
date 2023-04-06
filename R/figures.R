@@ -578,12 +578,11 @@ plot_cast_point <- function (main                       = ".",
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  par(mar = c(3.5, 9.5, 2, 1))
-  plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", 
+  par(mar = c(3.5, 8, 0, 1))
+  plot(1, 1, type = "n", bty = "L", xlab = "", ylab = "", yaxt= "n", xaxt = "n", 
        las = 1, xlim = rangex, ylim = rangey)
 
-  mtext("Abundance", side = 1, cex = 1.5, line = 2.5)
-  mtext("Species", side = 2, cex = 1.5, line = 8.25)
+  mtext("Abundance", side = 1, cex = 1.75, line = 2.5)
   lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
   sptab <- read.csv(lpath) 
   sptab <- na_conformer(sptab, "speciescode")
@@ -599,17 +598,19 @@ plot_cast_point <- function (main                       = ".",
 
       sppmatch <- which(sptab[ , "speciescode"] == casts_tab$species[i])
       lab_text <- sptab[sppmatch , "scientificname"]
+      lab_text <- paste0(substr(lab_text, 1, 1), ". ", strsplit(lab_text, " ")[[1]][2])
       lab_font <- 3
 
     }
 
     axis(2, at = i, labels = lab_text, font = lab_font, las = 1, 
-         cex.axis = 0.65, tck = 0, line = -0.5, lwd = 0)
+         cex.axis = 1.25, tck = 0, line = -0.5, lwd = 0)
     axis(2, at = i, labels = FALSE, las = 1, 
          cex.axis = 0.65, tck = -0.01)
 
   }
-
+  axis(1, cex.axis = 1.25)
+  axis(1, labels = FALSE, at = seq(-1 * rangex[2], rangex[2] * 2, 1), tck = 0)
   for (i in 1:nspecies) {
 
     low   <- max(c(casts_tab$lower_pi[i], 0))
@@ -716,7 +717,7 @@ plot_cast_ts <- function (main                         = ".",
 
   dataset <- casts_meta$dataset
   species <- casts_meta$species
-  model   <- casts_meta$moon
+  model   <- casts_meta$model
   cast_id <- casts_meta$cast_id
 
   historic_start_newmoonnumber <- casts_meta$historic_start_newmoonnumber
@@ -746,23 +747,23 @@ plot_cast_ts <- function (main                         = ".",
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  par(mar = c(3, 4.5, 2, 1))
+  par(mar = c(2.5, 5.25, 2, 1))
   plot(x    = 1, 
        y    = 1, 
        type = "n", 
        bty  = "L", 
        xlab = "", 
        ylab = "", 
-       xaxt = "n", 
-       las  = 1, 
+       xaxt = "n",
+       yaxt = "n", 
        xlim = rangex, 
        ylim = rangey)
 
   moons <- read_newmoons(main     = main)
   minx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
-  minx_yr  <- as.numeric(format(as.Date(minx), "%Y"))
-  maxx_yr  <- as.numeric(format(as.Date(maxx), "%Y"))
+  minx_yr  <- as.numeric(format(as.Date(minx), "%Y")) - 10 
+  maxx_yr  <- as.numeric(format(as.Date(maxx), "%Y")) + 10
   minx_yr2 <- ceiling(minx_yr/ 5) * 5
   maxx_yr2 <- floor(maxx_yr/ 5) * 5
   yrs      <- seq(minx_yr2, maxx_yr2, 5)
@@ -774,7 +775,8 @@ plot_cast_ts <- function (main                         = ".",
   loc      <- predict(dmod, newdata = list(dx = as.Date(nyd)))
   axis(side   = 1, 
        at     = loc, 
-       labels = txt)
+       labels = txt, 
+       cex.axis    = 1.5)
   yrs      <- seq(minx_yr, maxx_yr, 1)
   nyd      <- paste0(yrs, "-01-01")
   loc      <- predict(dmod, newdata = list(dx = as.Date(nyd)))
@@ -782,6 +784,8 @@ plot_cast_ts <- function (main                         = ".",
        at     = loc, 
        labels = FALSE, 
        tck    = -0.005)  
+  axis(side   = 2, 
+       cex.axis    = 1.5, las = 1)
 
   lab   <- list(text = "", font = 1)
   lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
@@ -801,7 +805,7 @@ plot_cast_ts <- function (main                         = ".",
 
   }
 
-  mtext(lab$text, side = 2, font = lab$font, cex = 1.5, line = 3)
+  mtext(lab$text, side = 2, font = lab$font, cex = 2, line = 3.5)
 
   o_x   <- obs_nm
   o_y   <- obs_sp

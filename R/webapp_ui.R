@@ -151,7 +151,7 @@ forecast_tab <- function (global = global_list( )) {
              br( ), 
              forecast_tab_input_selection_row(global = global), 
         #    forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
-             plotOutput("forecast_tab_ts_plot"), 
+             plotOutput("forecast_tab_ts_plot", height = "300px"), 
              br( ),
              plotOutput("forecast_tab_ss_plot"),
              br( ))

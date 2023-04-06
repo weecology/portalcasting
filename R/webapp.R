@@ -30,8 +30,6 @@ run_web_app <- function(main = ".") {
 #' 
 #' @description Construct vectors of available choices and make selections.
 #'
-#' @param main `character` value of the name of the main component of the directory tree.
-#'
 #' @param event_name `character` value of the server event. \cr
 #'   Options include `"initial_forecast_tab"`, `"initial_evaluation_tab"`, `"forecast_tab_species"`, `"forecast_tab_dataset"`, `"forecast_tab_model"`, `"forecast_tab_historic_end_newmoonnumber"`, `"evaluation_tab_species"`, `"evaluation_tab_dataset"`, `"evaluation_tab_model"`, `"evaluation_tab_historic_end_newmoonnumber"`, and `"evaluation_tab_newmoonnumber"`)
 #'
