@@ -76,7 +76,7 @@ update_forecasts_folder <- function (main = ".") {
 
         lpath <- paste0("cast_id_", cast_id_j, "_cast_tab.csv")
         cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
-        row_names(cast_tab_j) <- NULL
+        row.names(cast_tab_j) <- NULL
         write_csv_arrow(x = cast_tab_j, file = cpath)
 
         lpath <- paste0("cast_id_", cast_id_j, "_metadata.yaml")

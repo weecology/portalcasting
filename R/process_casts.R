@@ -108,13 +108,13 @@ process_model_output <- function (main      = ".",
     cast_tab_filename <- paste0("cast_id_", cast_metadata$cast_id, "_cast_tab.csv") 
     cast_tab_path     <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
 
-    row_names(cast_tab) <- NULL
+    row.names(cast_tab) <- NULL
     write_csv_arrow(x         = cast_tab,
                     file      = cast_tab_path)
 
     casts_metadata_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
 
-    row_names(casts_metadata) <- NULL
+    row.names(casts_metadata) <- NULL
     write_csv_arrow(x         = casts_metadata, 
                     file      = casts_metadata_path, 
                     row.names = FALSE)
@@ -420,7 +420,7 @@ select_casts <- function (main                        = ".",
 #'
 #' @export
 #'
-read_casts_metadata <- function (main = "."){
+read_casts_metadata <- function (main = ".") {
   
   settings  <- read_directory_settings(main = main)
 
@@ -447,7 +447,7 @@ read_casts_metadata <- function (main = "."){
                       QAQC                         = NA,
                       notes                        = NA)
   
-    row_names(x) <- NULL
+    row.names(out) <- NULL
     write_csv_arrow(x         = out, 
                     file      = meta_path)
 

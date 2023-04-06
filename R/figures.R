@@ -53,6 +53,8 @@ plot_casts_err_lead <- function (main                        = ".",
   nmodels <- length(models) 
   nspecies <- length(species)
 
+  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
+
   if (nmodels == 1 & nspecies == 1) {
 
     yy <- round(evals_in$error, 3)
@@ -239,19 +241,10 @@ plot_casts_err_lead <- function (main                        = ".",
                xlab = "",
                bty  = "n")   
 
-          if (species[j] == "total") {
+          lab   <- list(text = species_names_table$g_species[species_names_table$code == species[j]], 
+                        font = ifelse(species == "total", 2, 4))
 
-            spt <- "Total Abundance"
-            spf <- 2
-
-          } else {
-
-            spt <- species[j]
-            spf <- 4
-
-          }  
-
-          text(0.75, 1, spt, font = spf, cex = 0.55, xpd = TRUE, srt = 270)
+          text(0.75, 1, lab$text, font = lab$font, cex = 0.55, xpd = TRUE, srt = 270)
 
         }
 
@@ -350,9 +343,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
   }
 
-  lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- as.data.frame(read_csv_arrow(file = lpath))
-  sptab <- na_conformer(sptab, "speciescode")
+  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
 
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
@@ -441,21 +432,10 @@ plot_casts_cov_RMSE <- function (main                        = ".",
       plot(1, 1, type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "",
            bty = "n") 
 
-      if (species == "total") {
+      lab   <- list(text = species_names_table$g_species[species_names_table$code == species[j]], 
+                    font = ifelse(species == "total", 1, 2))
 
-        spt <- "Total Abundance"
-        spf <- 1
-
-      } else {
-
-        sppmatch <- which(sptab[ , "speciescode"] == species)
-        spt <- sptab[sppmatch , "scientificname"]
-        spt <- paste0(substr(spt, 1, 1), ". ", strsplit(spt, " ")[[1]][2])
-
-        spf <- 3
-
-      }
-      text(0.9, 1, spt, font = spf, cex = 1.5, xpd = TRUE, srt = 270)
+      text(0.9, 1, lab$text, font = lab$font, cex = 1.5, xpd = TRUE, srt = 270)
     }
   }
 
@@ -601,27 +581,15 @@ plot_cast_point <- function (main                       = ".",
        las = 1, xlim = rangex, ylim = rangey)
 
   mtext("Abundance", side = 1, cex = 1.75, line = 2.5)
-  lpath <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- data.frame(read_csv_arrow(file = lpath))
-  sptab <- na_conformer(sptab, "speciescode")
+  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
+
 
   for (i in 1:nspecies) {
 
-    if (casts_tab$species[i] == "total") {
+    lab   <- list(text = species_names_table$g_species[species_names_table$code == casts_tab$species[i]], 
+                  font = ifelse(species == "total", 1, 3))
 
-      lab_text <- "Total"
-      lab_font <- 1
-
-    } else {
-
-      sppmatch <- which(sptab[ , "speciescode"] == casts_tab$species[i])
-      lab_text <- sptab[sppmatch , "scientificname"]
-      lab_text <- paste0(substr(lab_text, 1, 1), ". ", strsplit(lab_text, " ")[[1]][2])
-      lab_font <- 3
-
-    }
-
-    axis(2, at = i, labels = lab_text, font = lab_font, las = 1, 
+    axis(2, at = i, labels = lab$text, font = lab$font, las = 1, 
          cex.axis = 1.125, tck = 0, line = -0.5, lwd = 0)
     axis(2, at = i, labels = FALSE, las = 1, 
          cex.axis = 0.65, tck = -0.01)
@@ -777,7 +745,7 @@ plot_cast_ts <- function (main                         = ".",
        xlim = rangex, 
        ylim = rangey)
 
-  moons <- read_newmoons(main     = main)
+  moons    <- read_newmoons(main     = main)
   minx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
   maxx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
   minx_yr  <- as.numeric(format(as.Date(minx), "%Y")) - 10 
@@ -805,25 +773,11 @@ plot_cast_ts <- function (main                         = ".",
   axis(side   = 2, 
        cex.axis    = 1.5, las = 1)
 
-  lab   <- list(text = "", font = 1)
-  lp    <- file.path(main, settings$subdirectories$resources, "PortalData/Rodents/Portal_rodent_species.csv")
-  sptab <- data.frame(read_csv_arrow(file = lp))
-  sptab <- na_conformer(sptab, "speciescode")
 
-  if (species == "total") {
+  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
 
-    lab$text <- "Total Abundance"
-    lab$font <- 1
-
-  } else {
-
-    sppmatch <- which(sptab[ , "speciescode"] == species)
-    lab$text <- sptab[sppmatch , "scientificname"]
-    lab$text <- paste0(substr(lab$text, 1, 1), ". ", strsplit(lab$text, " ")[[1]][2])
-
-    lab$font <- 3
-
-  }
+  lab   <- list(text = species_names_table$g_species[species_names_table$code == species], 
+                font = ifelse(species == "total", 1, 3))
 
   mtext(lab$text, side = 2, font = lab$font, cex = 2, line = 3.5)
 

@@ -423,11 +423,9 @@ global_list <- function (main = ".") {
 
   messageq("Locating species and model names ... ", quiet = settings$quiet)
 
-  species_print_names  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "Latin", total = TRUE)
-  species_print_names[species_print_names == "total"] <- "Total abundance"
-  species_code_names   <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "code", total = TRUE)
-  species_names        <- species_code_names
-  names(species_names) <- species_print_names
+  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
+  species_names        <- species_names_table$code
+  names(species_names) <- species_names_table$Latin
 
   model_print_names    <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
   model_code_names     <- unlist(mapply(getElement, model_controls(main = main), "metadata")["name", ])
@@ -438,8 +436,8 @@ global_list <- function (main = ".") {
   
   messageq("Determining initial available values ...", quiet = settings$quiet)
 
-  initial_forecast_tab_available_species                       <- species_names[species_names %in% unique(casts_metadata$species[casts_metadata$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])]
-  initial_evaluation_tab_available_species                     <- species_names[species_names %in% unique(casts_evaluations$species[casts_evaluations$species %in% rodent_species(set = "forecasting", type = "code", total = TRUE)])]
+  initial_forecast_tab_available_species                       <- species_names[species_names %in% unique(casts_metadata$species[casts_metadata$species %in% species_names_table$code])]
+  initial_evaluation_tab_available_species                     <- species_names[species_names %in% unique(casts_evaluations$species[casts_evaluations$species %in% species_names_table$code])]
 
   initial_forecast_tab_available_models                        <- model_names[model_names %in% unique(casts_metadata$model[casts_metadata$model %in% prefab_models( ) & casts_metadata$species %in% initial_forecast_tab_available_species])]
   initial_evaluation_tab_available_models                      <- model_names[model_names %in% unique(casts_evaluations$model[casts_evaluations$model %in% prefab_models( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species])]
@@ -504,6 +502,7 @@ global_list <- function (main = ".") {
        initial_evaluation_tab_selected_newmoonnumber                    = initial_evaluation_tab_selected_newmoonnumber,
 
        species_names                                                    = species_names,
+       species_names_table                                              = species_names_table,
        model_names                                                      = model_names)
 
 }
