@@ -33,9 +33,55 @@ update_forecasts_folder <- function (main = ".") {
     ncasts   <- nrow(casts_metadata)
     for (i in 1:ncasts) {
 
-      cast_tab  <- read_cast_tab(main = main, cast_id = casts_metadata$cast_id[i])
-      cast_meta <- read_cast_metadata(main = main, cast_id = casts_metadata$cast_id[i])
-      cast_cast <- read_model_cast(main = main, cast_id = casts_metadata$cast_id[i])
+      lpath <- paste0("cast_id_", casts_metadata$cast_id[i], "_cast_tab.csv")
+      cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
+
+      if (!file.exists(cpath)) {
+
+        stop("cast_id does not have a cast_table")
+
+      }
+
+      cast_tab <- as.data.frame(read_csv_arrow(file = cpath))
+      cast_tab <- na_conformer(out)
+
+      lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
+      cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
+
+      if (!file.exists(cpath)) {
+
+        stop("cast_id does not have a cast_metadata file")
+
+      }
+
+      cast_meta <- read_yaml(cpath, eval.expr = TRUE) 
+
+
+
+      cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_casts.json"))
+      cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_casts.RData"))
+
+      if (file.exists(cpath_json)) {
+
+        read_in_json <- fromJSON(readLines(cpath_json))
+        cast_cast <- unserializeJSON(read_in_json)
+
+      } else if (file.exists(cpath_RData)) {
+
+          model_casts <- NULL
+          load(cpath_RData)
+          cast_cast <- model_casts
+
+      } else {
+
+         stop("cast_id does not have a model_cast file")
+
+      } 
+
+
+
+      
+
 
       nspecies <- length(unique(cast_tab$species))
 

@@ -6,6 +6,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
 *In Progress*
 
+### Bringing the app code into the package
+* Improves robustness of building the app (includes code and dependencies in the docker image, allows for unit testing app components, etc.)
+* Also allows users to spin-up a local version with `run_web_app()` pointed to `main`
+
 ### Using `arrow` to speed up reading and writing files
 
 ### Evaluation figures now read from evaluations file
