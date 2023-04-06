@@ -313,15 +313,15 @@ read_model_cast <- function (main    = ".",
   cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_cast.json"))
   cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_cast.RData"))
 
-  if (file.exists(cpath)) {
+  if (file.exists(cpath_json)) {
 
-    read_in_json <- fromJSON(readLines(cpath))
+    read_in_json <- fromJSON(readLines(cpath_json))
     unserializeJSON(read_in_json)
 
-  } else if (file.exists(cpath)) {
+  } else if (file.exists(cpath_RData)) {
 
       model_casts <- NULL
-      load(cpath)
+      load(cpath_RData)
       model_casts
 
   } else {
