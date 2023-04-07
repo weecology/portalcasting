@@ -24,6 +24,12 @@
 \alias{evaluation_tab_input_selection_row_model}
 \alias{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
 \alias{evaluation_tab_input_selection_row_newmoonnumber}
+\alias{covariates_tab}
+\alias{data_sources_section}
+\alias{portal_project_href}
+\alias{portal_data_href}
+\alias{portal_weather_href}
+\alias{portal_ndvi_href}
 \alias{write_rodent_profiles_tab_html}
 \alias{write_models_tab_html}
 \title{Generate the User Interface for the Web App}
@@ -76,12 +82,26 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber(
 
 evaluation_tab_input_selection_row_newmoonnumber(global = global_list())
 
+covariates_tab(global = global_list())
+
+data_sources_section()
+
+portal_project_href(text = "The Portal Project")
+
+portal_data_href(text = "The Portal Data Repository")
+
+portal_weather_href(text = "weather data")
+
+portal_ndvi_href(text = "NDVI data")
+
 write_rodent_profiles_tab_html(main = ".")
 
 write_models_tab_html(main = ".")
 }
 \arguments{
 \item{global}{A \code{list} of global values for the app.}
+
+\item{text}{\code{character} value of the text used in \code{\link[htmltools:builder]{htmltools::a}}.}
 
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 }
@@ -91,55 +111,60 @@ A UI definition or component shiny tags.
 \description{
 \code{portal_forecast_ui} constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running \code{\link[shiny:fluidPage]{fluidPage}} on the UI components. \cr \cr
 \code{write_rodent_profiles_tab_html} and \code{write_model_tab_html} build and write-out static html files for the rodent profiles and models tabs during \code{\link{fill_app}}. \cr \cr
+The \verb{<_>_href} functions provide simplified calls to hyperlinked texts that are repeatedly used. \cr \cr
 See \code{Details} for hierarchy of functions.
 }
 \details{
 The UI is hierarchical built as:
 \itemize{
-\item portal_forecast_ui
+\item \code{portal_forecast_ui}
 \itemize{
-\item page_title_panel
-\item page_subtitle_panel
-\item page_main_panel
+\item \code{page_title_panel}
+\item \code{page_subtitle_panel}
+\item \code{page_main_panel}
 \itemize{
-\item forecast_tab
+\item \code{forecast_tab}
 \itemize{
-\item forecast_tab_input_selection_row
+\item \code{forecast_tab_input_selection_row}
 \itemize{
-\item forecast_tab_input_selection_row_species
-\item forecast_tab_input_selection_row_dataset
-\item forecast_tab_input_selection_row_model
-\item forecast_tab_input_selection_row_historic_end_newmoonnumber
+\item \code{forecast_tab_input_selection_row_species}
+\item \code{forecast_tab_input_selection_row_dataset}
+\item \code{forecast_tab_input_selection_row_model}
+\item \code{forecast_tab_input_selection_row_historic_end_newmoonnumber}
 }
-\item forecast_tab_input_selection_checks_row  # commented out, but available for checking reactive inputs in dev
-\item plot_cast_ts
-\item plot_cast_point
+\item \code{forecast_tab_input_selection_checks_row}  # commented out, but available for checking reactive inputs in dev
+\item \code{plot_cast_ts}
+\item \code{plot_cast_point}
 }
-\item evaluation_tab
+\item \code{evaluation_tab}
 \itemize{
-\item evaluation_tab_input_selection_row
+\item \code{evaluation_tab_input_selection_row}
 \itemize{
-\item evaluation_tab_input_selection_row_species
-\item evaluation_tab_input_selection_row_dataset
-\item evaluation_tab_input_selection_row_model
-\item evaluation_tab_input_selection_row_historic_end_newmoonnumber
-\item evaluation_tab_input_selection_row_newmoonnumber
+\item \code{evaluation_tab_input_selection_row_species}
+\item \code{evaluation_tab_input_selection_row_dataset}
+\item \code{evaluation_tab_input_selection_row_model}
+\item \code{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
+\item \code{evaluation_tab_input_selection_row_newmoonnumber}
 }
-\item evaluation_tab_input_selection_checks_row  # commented out, but available for checking reactive inputs in dev
-\item plot_cast_point
-\item plot_casts_cov_RMSE
+\item \code{evaluation_tab_input_selection_checks_row}  # commented out, but available for checking reactive inputs in dev
+\item \code{plot_cast_point}
+\item \code{plot_casts_cov_RMSE}
 }
-\item about_tab
+\item \code{about_tab}
 \itemize{
-\item htmltools::includeMarkdown
+\item \code{htmltools::includeMarkdown}
 }
-\item models_tab
+\item \code{models_tab}
 \itemize{
-\item htmltools::includeHTML
+\item \code{htmltools::includeHTML}
 }
-\item profiles_tab
+\item \code{profiles_tab}
 \itemize{
-\item htmltools::includeHTML
+\item \code{htmltools::includeHTML}
+}
+\item \code{covariates_tab}
+\itemize{
+\item \code{data_sources_section}
 }
 }
 }

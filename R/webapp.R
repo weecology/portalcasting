@@ -405,7 +405,7 @@ global_list <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  messageq("Reading in casts metadata and evaluation files ...", quiet = settings$quiet)
+  messageq("Reading in casts metadata and evaluation files ...", quiet = !settings$verbose)
 
   casts_metadata    <- read_casts_metadata(main = main)
   casts_evaluations <- read_casts_evaluations(main = main)
@@ -413,15 +413,22 @@ global_list <- function (main = ".") {
 
   if (nrow(casts_metadata) == 0) {
 
-    messageq("  No casts metadata available.", quiet = FALSE)
+    messageq("  No casts metadata available.", quiet = settings$quiet)
     casts_metadata <- NULL
 
   }
 
-  messageq(" ... done.", quiet = settings$quiet)
+  messageq(" ... done.", quiet = !settings$verbose)
+
+  messageq("Reading in covariates ...", quiet = !settings$verbose)
+
+  covariates <- tryCatch(read_covariates(main = main),
+                         error = function (x) {NULL})
+
+  messageq(" ... done.", quiet = !settings$verbose)
 
 
-  messageq("Locating species and model names ... ", quiet = settings$quiet)
+  messageq("Locating species and model names ... ", quiet = !settings$verbose)
 
   species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
   species_names        <- species_names_table$code
@@ -432,9 +439,9 @@ global_list <- function (main = ".") {
   model_names          <- model_code_names
   names(model_names)   <- model_print_names
 
-  messageq(" ... done.", quiet = settings$quiet)
+  messageq(" ... done.", quiet = !settings$verbose)
   
-  messageq("Determining initial available values ...", quiet = settings$quiet)
+  messageq("Determining initial available values ...", quiet = !settings$verbose)
 
   initial_forecast_tab_available_species                       <- species_names[species_names %in% unique(casts_metadata$species[casts_metadata$species %in% species_names_table$code])]
   initial_evaluation_tab_available_species                     <- species_names[species_names %in% unique(casts_evaluations$species[casts_evaluations$species %in% species_names_table$code])]
@@ -450,9 +457,9 @@ global_list <- function (main = ".") {
 
   initial_evaluation_tab_available_newmoonnumbers              <- unique(casts_evaluations$newmoonnumber[casts_evaluations$dataset %in% initial_evaluation_tab_available_datasets & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models & casts_evaluations$historic_end_newmoonnumber %in% initial_evaluation_tab_available_historic_end_newmoonnumbers])
 
-  messageq(" ... done.", quiet = settings$quiet)
+  messageq(" ... done.", quiet = !settings$verbose)
 
-  messageq("Selecting intial values ...", quiet = settings$quiet)
+  messageq("Selecting intial values ...", quiet = !settings$verbose)
 
   initial_forecast_tab_selected_model                         <- model_names[model_names == "AutoArima"]
   initial_evaluation_tab_selected_model                       <- model_names[model_names == "AutoArima"]
@@ -468,7 +475,7 @@ global_list <- function (main = ".") {
 
   initial_evaluation_tab_selected_newmoonnumber               <- max(c(0, initial_evaluation_tab_available_newmoonnumbers))
 
-  messageq(" ... done.", quiet = settings$quiet)
+  messageq(" ... done.", quiet = !settings$verbose)
 
 
   list(casts_metadata                                                   = casts_metadata,
@@ -500,6 +507,8 @@ global_list <- function (main = ".") {
        initial_evaluation_tab_selected_historic_end_newmoonnumber       = initial_evaluation_tab_selected_historic_end_newmoonnumber,
 
        initial_evaluation_tab_selected_newmoonnumber                    = initial_evaluation_tab_selected_newmoonnumber,
+
+       covariates                                                       = covariates,
 
        species_names                                                    = species_names,
        species_names_table                                              = species_names_table,

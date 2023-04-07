@@ -3,40 +3,45 @@
 #' 
 #' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`fluidPage`][shiny::fluidPage] on the UI components. \cr \cr
 #'              `write_rodent_profiles_tab_html` and `write_model_tab_html` build and write-out static html files for the rodent profiles and models tabs during [`fill_app`]. \cr \cr
+#'              The `<_>_href` functions provide simplified calls to hyperlinked texts that are repeatedly used. \cr \cr
 #'              See `Details` for hierarchy of functions. 
 #'
 #' @details The UI is hierarchical built as:
-#'   * portal_forecast_ui 
-#'     * page_title_panel
-#'     * page_subtitle_panel
-#'     * page_main_panel
-#'       * forecast_tab
-#'         * forecast_tab_input_selection_row
-#'           * forecast_tab_input_selection_row_species
-#'           * forecast_tab_input_selection_row_dataset
-#'           * forecast_tab_input_selection_row_model
-#'           * forecast_tab_input_selection_row_historic_end_newmoonnumber
-#'         * forecast_tab_input_selection_checks_row  # commented out, but available for checking reactive inputs in dev 
-#'         * plot_cast_ts
-#'         * plot_cast_point
-#'       * evaluation_tab
-#'         * evaluation_tab_input_selection_row
-#'           * evaluation_tab_input_selection_row_species
-#'           * evaluation_tab_input_selection_row_dataset
-#'           * evaluation_tab_input_selection_row_model
-#'           * evaluation_tab_input_selection_row_historic_end_newmoonnumber
-#'           * evaluation_tab_input_selection_row_newmoonnumber
-#'         * evaluation_tab_input_selection_checks_row  # commented out, but available for checking reactive inputs in dev 
-#'         * plot_cast_point
-#'         * plot_casts_cov_RMSE  
-#'       * about_tab
-#'         * htmltools::includeMarkdown
-#'       * models_tab
-#'         * htmltools::includeHTML
-#'       * profiles_tab
-#'         * htmltools::includeHTML
+#'   * `portal_forecast_ui` 
+#'     * `page_title_panel`
+#'     * `page_subtitle_panel`
+#'     * `page_main_panel`
+#'       * `forecast_tab`
+#'         * `forecast_tab_input_selection_row`
+#'           * `forecast_tab_input_selection_row_species`
+#'           * `forecast_tab_input_selection_row_dataset`
+#'           * `forecast_tab_input_selection_row_model`
+#'           * `forecast_tab_input_selection_row_historic_end_newmoonnumber`
+#'         * `forecast_tab_input_selection_checks_row`  # commented out, but available for checking reactive inputs in dev 
+#'         * `plot_cast_ts`
+#'         * `plot_cast_point`
+#'       * `evaluation_tab`
+#'         * `evaluation_tab_input_selection_row`
+#'           * `evaluation_tab_input_selection_row_species`
+#'           * `evaluation_tab_input_selection_row_dataset`
+#'           * `evaluation_tab_input_selection_row_model`
+#'           * `evaluation_tab_input_selection_row_historic_end_newmoonnumber`
+#'           * `evaluation_tab_input_selection_row_newmoonnumber`
+#'         * `evaluation_tab_input_selection_checks_row`  # commented out, but available for checking reactive inputs in dev 
+#'         * `plot_cast_point`
+#'         * `plot_casts_cov_RMSE`
+#'       * `about_tab`
+#'         * `htmltools::includeMarkdown`
+#'       * `models_tab`
+#'         * `htmltools::includeHTML`
+#'       * `profiles_tab`
+#'         * `htmltools::includeHTML`
+#'       * `covariates_tab`
+#'         * `data_sources_section`
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
+#'
+#' @param text `character` value of the text used in [`htmltools::a`].
 #'
 #' @param global A `list` of global values for the app.
 #'
@@ -72,7 +77,8 @@ page_main_panel <- function (global = global_list( )) {
                         evaluation_tab(global = global),
                         about_tab( ),
                         models_tab( ),
-                        profiles_tab( )))
+                        profiles_tab( ),
+                        covariates_tab(global = global)))
 
 
 }
@@ -94,11 +100,7 @@ page_title_panel <- function ( ) {
 #'
 page_subtitle_panel <- function ( ) {
 
-  href <- a(href   = "http://portal.weecology.org", 
-                     "The Portal Project", 
-            target = "_blank")
-
-  p(HTML(text = paste0("Forecasts for the population and community dynamics of ", href, ".")))
+  p(HTML(text = paste0("Forecasts for the population and community dynamics of ", portal_project_href( ), ".")))
 
 }
 
@@ -134,7 +136,6 @@ profiles_tab <- function ( ) {
            includeHTML("profile.html")) 
 
 }
-
 
 #' @rdname web-app-ui
 #'
@@ -385,6 +386,100 @@ evaluation_tab_input_selection_row_newmoonnumber <- function (global = global_li
 
 }
 
+#' @rdname web-app-ui
+#'
+#' @export
+#'
+covariates_tab <- function (global = global_list( )) {
+
+  if (is.null(global$covariates)) {
+
+    tabPanel(title = "Covariates", 
+             br( ), 
+             HTML("There are not sufficient covariate data to generate plots."), 
+             br( ), 
+             br( ), 
+             data_sources_section( ),
+             br( ))
+  } else {  
+
+    tabPanel(title = "Covariates", 
+           br( ), 
+           data_sources_section( ),
+           br( ))
+
+  }
+
+}
+
+
+#' @rdname web-app-ui
+#'
+#' @export
+#'
+data_sources_section <- function ( ) {
+
+  div(h3("Data Sources"),
+      br( ),
+      h4("Local Weather"),
+      p(HTML(text = paste0(portal_project_href( ), " collates on-site ", portal_weather_href( ), " dating back to 1980 in the ", portal_data_href( ), "."))),
+      br( ),
+      h4(a("Normalized Difference Vegetation Index (NDVI)", href = "https://earthobservatory.nasa.gov/features/MeasuringVegetation/measuring_vegetation_2.php")),
+      p(HTML(text = paste0(portal_project_href( ), " also produces site-specific ", portal_ndvi_href( ), " housed in the ", portal_data_href( ), "."))),
+      br( ),
+      h4("Forecast Weather"),
+      p(HTML(text = paste0("We use ",
+                           a("downscaled climate forecasts", href = "https://climate.northwestknowledge.net/RangelandForecast/download.php"), " from the ", 
+                           a("University of Idaho's Northwest Knowledge Network's", href = "https://www.iids.uidaho.edu/nkn.php"), " API to the ",
+                           a("North American Multi-Model Ensemble (NMME)", href = "https://www.cpc.ncep.noaa.gov/products/NMME/"), "."))))
+
+
+}
+
+#' @rdname web-app-ui
+#'
+#' @export
+#'
+portal_project_href <- function (text ="The Portal Project") {
+
+  a(href   = "http://portal.weecology.org", 
+    text, 
+    target = "_blank")
+
+}
+
+#' @rdname web-app-ui
+#'
+#' @export
+#'
+portal_data_href <- function (text = "The Portal Data Repository") {
+
+  a(href = "https://github.com/weecology/PortalData", 
+    text)
+
+}
+
+#' @rdname web-app-ui
+#'
+#' @export
+#'
+portal_weather_href <- function (text = "weather data") {
+
+  a(href = "https://github.com/weecology/PortalData/tree/main/Weather", 
+    text)
+
+}
+
+#' @rdname web-app-ui
+#'
+#' @export
+#'
+portal_ndvi_href <- function (text = "NDVI data") {
+
+  a(href = "https://github.com/weecology/PortalData/tree/main/NDVI", 
+    text)
+
+}
 
 #' @rdname web-app-ui
 #'
@@ -429,6 +524,8 @@ write_rodent_profiles_tab_html <- function (main = ".") {
      </style>
      </head>
      <body>
+     <br>
+     <br>
      <table>
       <thead>
        <tr>
@@ -468,32 +565,27 @@ write_models_tab_html <- function (main = ".") {
 
   model_names_print <- paste(c(model_names[1:(nmodels - 1)], paste0("and ", model_names[nmodels])), collapse = ", ")
 
+  mybib       <- ReadBib(file.path(main, settings$subdirectories$app, "refs.bibtex"))
+
   model_html  <- NULL
-  models_html <- NULL
   model_text  <- named_null_list(element_names = model_names)
 
   for (i in 1:nmodels) {
-    model_text[[i]] <- mark(text = all_model_controls[[i]]$metadata$text)
 
+    model_text[[i]] <- mark(text = all_model_controls[[i]]$metadata$text, format = "html")
 
+    # working here --- need to convert the rmarkdown reference tag format to html
 
-
-
-model_text[[i]]
-
-    parted <- strsplit(unlist(strsplit(model_text[[i]], "\\[@")), "\\]")
-    nparts <- length(parted)
-    
-    for (j in 1:nparts) {
-
-
-    }
-  
-
+    model_html[i]   <- paste0('<div>
+                               <h2>', 
+                               model_names[i],
+                               '</h2>',
+                               model_text[[i]],
+                               '</div>')
   }
 
+  models_html <- paste(model_html, collapse = "")
 
-  mybib       <- ReadBib(file.path(main, settings$subdirectories$app, "refs.bibtex"))
   bib_entries <- NULL#
 
   references_html <- paste0('<div>
