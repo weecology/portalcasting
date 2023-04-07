@@ -131,10 +131,9 @@ fill_app <- function (main = ".") {
             overwrite = TRUE)
 
   models_rmd <- file.path(main, settings$subdirectories$app, "models.Rmd")
-  profiles_r <- file.path(main, settings$subdirectories$app, "profile_html.R")
 
   render(models_rmd, quiet = !settings$verbose)
-  source(profiles_r, local = TRUE)
+  write_rodent_profiles_tab_html(main = main)
 
   messageq(" ... complete.\n", quiet = settings$quiet)
   invisible( )

@@ -38,6 +38,7 @@ Imports:
   knitr,
   markdown,
   portalr,
+  RefManageR,
   rmarkdown,
   runjags,
   scoringRules,

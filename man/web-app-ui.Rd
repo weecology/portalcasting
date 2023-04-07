@@ -24,6 +24,7 @@
 \alias{evaluation_tab_input_selection_row_model}
 \alias{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
 \alias{evaluation_tab_input_selection_row_newmoonnumber}
+\alias{write_rodent_profiles_tab_html}
 \title{Generate the User Interface for the Web App}
 \usage{
 portal_forecast_ui(global = global_list())
@@ -73,6 +74,8 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber(
 )
 
 evaluation_tab_input_selection_row_newmoonnumber(global = global_list())
+
+write_rodent_profiles_tab_html(main = ".")
 }
 \arguments{
 \item{global}{A \code{list} of global values for the app.}
@@ -82,6 +85,7 @@ A UI definition or component shiny tags.
 }
 \description{
 \code{portal_forecast_ui} constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running \code{\link[shiny:fluidPage]{fluidPage}} on the UI components. \cr \cr
+\code{write_rodent_profiles_tab_html} builds and writes-out a static html file for the rodent profiles tab during \code{\link{fill_app}}. \cr \cr
 See \code{Details} for hierarchy of functions.
 }
 \details{

@@ -2,6 +2,7 @@
 #' @title Generate the User Interface for the Web App
 #' 
 #' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`fluidPage`][shiny::fluidPage] on the UI components. \cr \cr
+#'              `write_rodent_profiles_tab_html` builds and writes-out a static html file for the rodent profiles tab during [`fill_app`]. \cr \cr
 #'              See `Details` for hierarchy of functions. 
 #'
 #' @details The UI is hierarchical built as:
@@ -383,3 +384,69 @@ evaluation_tab_input_selection_row_newmoonnumber <- function (global = global_li
 }
 
 
+#' @rdname web-app-ui
+#'
+#' @export
+#
+write_rodent_profiles_tab_html <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+
+  profiles_csv <- file.path(main, settings$subdirectories$app, "www", "rodents.csv")
+
+  table_in <- read.csv(profiles_csv)
+  nspecies <- nrow(table_in)
+  table_rows <- NULL
+
+  for (i in 1:nspecies) {
+
+    table_row <- c('  <tr>', 
+                   paste0('   <td style="text-align:left;"> <img src="', table_in$image[i], '" width ="200" alt="', table_in$image_alt_text[i], '"></td>'),
+                   paste0('   <td style="text-align:left;"><i>', table_in$scientific_name[i], '</i></td>'),
+                   paste0('   <td style="text-align:left;"> ', table_in$common_name[i], ' </td>'),
+                   paste0('   <td style="text-align:left;"> ', table_in$species_description[i], ' </td>'),
+                   '  </tr>')
+    table_rows <- c(table_rows, table_row)
+
+  }
+
+  table_rows <- paste0(table_rows, collapse = "\n")
+
+  html_out <- paste0(
+
+    '<html>
+     <head>
+     <style>
+     table, th, td {
+       border: 1px solid lightgray;
+       border-collapse: collapse;
+     }
+     th, td {
+       padding: 15px;
+     }
+     </style>
+     </head>
+     <body>
+     <table>
+      <thead>
+       <tr>
+        <th style="text-align:left;"> Rodents </th>
+        <th style="text-align:left;"> Species </th>
+        <th style="text-align:left;"> Common Name </th>
+        <th style="text-align:left;"> Description </th>
+       </tr>
+      </thead>
+     <tbody>\n',
+     table_rows,
+     '\n</tbody>
+     </table>
+     </body>
+     ', collapse = '\n')
+
+  profiles_html <- file.path(main, settings$subdirectories$app, "profile.html")
+  write(x    = html_out, 
+        file = profiles_html)
+
+  html_out
+
+}
