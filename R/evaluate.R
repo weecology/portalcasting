@@ -276,8 +276,6 @@ add_obs_to_cast_tab <- function (main     = ".",
   obs <- read_rodents_table(main     = main, 
                             dataset  = dataset)
 
-  colnames(obs) <- gsub("NA.", "NA", colnames(obs))
-
   cast_tab$obs <- obs[match(cast_tab$newmoonnumber, obs$newmoonnumber), species]
 
   cast_tab 

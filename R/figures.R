@@ -556,7 +556,6 @@ plot_cast_point <- function (main                       = ".",
 
     obs           <- read_rodents_table(main     = main, 
                                         dataset  = gsub("dm_", "", gsub("_interp", "", dataset)))
-    colnames(obs) <- gsub("\\.", "", colnames(obs))
 
     newmoonnumber <- ifnull(newmoonnumber, unique(obs$newmoonnumber))
     obs           <- obs[obs$newmoonnumber %in% newmoonnumber, species, drop = FALSE]

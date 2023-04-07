@@ -43,7 +43,7 @@ update_forecasts_folder <- function (main = ".") {
       }
 
       cast_tab <- as.data.frame(read_csv_arrow(file = cpath))
-      cast_tab <- na_conformer(out)
+      cast_tab <- na_conformer(cast_tab)
 
       lpath <- paste0("cast_id_", casts_metadata$cast_id[i], "_metadata.yaml")
       cpath <- file.path(main, settings$subdirectories$forecasts, lpath)

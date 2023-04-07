@@ -61,9 +61,9 @@ process_model_output <- function (main      = ".",
                          model                              = model, 
                          dataset                            = dataset, 
                          species                            = species, 
-                         estimate                           = model_cast$mean, 
-                         lower_pi                           = model_cast$lower[ , 1],
-                         upper_pi                           = model_cast$upper[ , 1], 
+                         estimate                           = as.numeric(model_cast$mean), 
+                         lower_pi                           = as.numeric(model_cast$lower[ , 1]),
+                         upper_pi                           = as.numeric(model_cast$upper[ , 1]), 
                          historic_start_newmoonnumber       = metadata$time$historic_start_newmoonnumber,
                          historic_end_newmoonnumber         = metadata$time$historic_end_newmoonnumber,
                          forecast_start_newmoonnumber       = metadata$time$forecast_start_newmoonnumber,
@@ -116,8 +116,7 @@ process_model_output <- function (main      = ".",
 
     row.names(casts_metadata) <- NULL
     write_csv_arrow(x         = casts_metadata, 
-                    file      = casts_metadata_path, 
-                    row.names = FALSE)
+                    file      = casts_metadata_path)
 
     model_fit_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_fit.json") 
     model_fit_path     <- file.path(main, settings$subdirectories$fits, model_fit_filename)

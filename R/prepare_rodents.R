@@ -27,8 +27,6 @@ prepare_abundance <- function (main    = ".",
 
   settings <- read_directory_settings(main = main)
 
-  # species can only be length 1 here
-
   model_controls <- model_controls(main   = main, 
                                    models = model)[[model]]
   metadata       <- read_metadata(main         = main)
@@ -36,7 +34,7 @@ prepare_abundance <- function (main    = ".",
                                        dataset = dataset)
 
   moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoonnumbers
-  species_in    <- colnames(rodents_table) == gsub("NA", "NA.", species)
+  species_in    <- colnames(rodents_table) == species
   out           <- rodents_table[moon_in, species_in]
 
 
