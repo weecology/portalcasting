@@ -8,7 +8,7 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
 
   skip_on_cran() 
 
-  expect_message(gl <- global_list(main = main3))
+  expect_silent(gl <- global_list(main = main3))
   expect_is(gl, "list")
 
 

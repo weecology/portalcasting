@@ -8,7 +8,7 @@ test_that(desc = "server functions work off of global list", {
 
   skip_on_cran() 
 
-  expect_message(gl <- global_list(main = main3))
+  expect_silent(gl <- global_list(main = main3))
   expect_is(gl, "list")
 
   expect_silent(irv <- initial_reactive_values(global = gl))

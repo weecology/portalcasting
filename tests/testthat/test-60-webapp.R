@@ -8,7 +8,7 @@ test_that(desc = "global_list makes a list of globals and component functions op
 
   skip_on_cran() 
 
-  expect_message(gl <- global_list(main = main3))
+  expect_silent(gl <- global_list(main = main3))
   expect_is(gl, "list")
 
   rv <- list(forecast_tab_species                       = gl$initial_forecast_tab_selected_species,
