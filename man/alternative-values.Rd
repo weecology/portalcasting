@@ -19,8 +19,8 @@ ifnull(x = NULL, alt = NULL)
 Replaces the focal input with the alternative value if it is \code{NULL}.
 }
 \examples{
- ifnull(NULL, 123)
- ifnull(TRUE, 123)
- ifnull(FALSE, 123)
+   ifnull(NULL, 123)
+   ifnull(TRUE, 123)
+   ifnull(FALSE, 123)
 
 }

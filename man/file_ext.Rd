@@ -19,8 +19,8 @@ Generally, this will be \verb{."}, but for some API URLs, the extension is actua
 Based on the separating character, determine the file extension.
 }
 \examples{
- file_ext("home/folders.with.dots/stuff/ok.csv")
- file_ext(NMME_urls()[[1]])
- file_ext(NMME_urls()[[1]], "=")
+   file_ext("home/folders.with.dots/stuff/ok.csv")
+   file_ext(NMME_urls()[[1]])
+   file_ext(NMME_urls()[[1]], "=")
 
 }

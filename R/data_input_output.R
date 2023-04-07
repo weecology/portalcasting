@@ -202,7 +202,7 @@ read_climate_forecasts <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  datas <- c(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation = "pr")
+  datas <- settings$resources$climate_forecasts$data
   ndatas <- length(datas)
   dat_list <- mapply(FUN = read_csv_arrow, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
 
@@ -248,8 +248,6 @@ read_climate_forecasts <- function (main = ".") {
   dat_tab
 
 }
-
-
 
 
 #' @rdname read_data

@@ -21,6 +21,8 @@ test_that(desc = "server functions work off of global list", {
 
 testServer(portal_forecast_server, {
 
+  expect_silent(global <- global_list(main = main3))
+
   session$setInputs(forecast_tab_species                      = global$initial_forecast_tab_selected_species, 
                     forecast_tab_dataset                      = global$initial_forecast_tab_selected_dataset,
                     forecast_tab_model                        = global$initial_forecast_tab_selected_model,

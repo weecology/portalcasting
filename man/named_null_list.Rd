@@ -16,6 +16,6 @@ named_null_list(element_names = NULL)
 Produces a list with \code{NULL} for each element named according to \code{element_names}.
 }
 \examples{
- named_null_list(c("a", "b", "c"))
+   named_null_list(c("a", "b", "c"))
 
 }

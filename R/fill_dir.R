@@ -84,7 +84,6 @@ fill_data <- function (main                 = ".",
 
   settings <- read_directory_settings(main = main)
 
-
   messageq(" Preparing data files ... ", quiet = settings$quiet)
   messageq("  ... removing existing data files ... ", quiet = settings$quiet)
 
@@ -222,14 +221,11 @@ fill_forecasts <- function (main = ".") {
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
-
-  invisible( )
-
-
   ### --- patch to deal with refactor backwards compat --- ###
     update_forecasts_folder(main = main)
   ### --- end patch --- ###
 
+  invisible( )
 
 }
 

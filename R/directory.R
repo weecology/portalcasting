@@ -22,6 +22,20 @@
 #'
 #' @name directory creation
 #'
+#' @examples
+#'    \donttest{
+#'      main1 <- file.path(tempdir(), "standard")
+#'      main2 <- file.path(tempdir(), "sandbox")
+#'      main3 <- file.path(tempdir(), "production")
+#'
+#'      setup_dir(main = main1)
+#'      setup_sandbox(main = main2)
+#'      setup_production(main = main3)
+#'
+#'      update_dir(main = main1)
+#'
+#'    }
+#'
 NULL
 
 #' @rdname directory-creation
@@ -84,7 +98,6 @@ update_dir <- function (main                 = ".",
                                 settings = settings, 
                                 quiet    = quiet)
 
-
   fill_dir(main                 = main,
            models               = models, 
            datasets             = datasets,
@@ -117,7 +130,6 @@ setup_dir <- function (main                 = ".",
   messageq(break_lines( ), "This is ", core_package[["package"]], " v", core_package[["version"]], "\n", 
            break_line( ), "Establishing directory at\n  ", normalizePath(file.path(main = main), mustWork = FALSE), "\n  ",
            format(Sys.time(), "%x %T %Z"), "\n", break_lines( ), quiet = quiet)
-
 
   create_dir(main     = main, 
              settings = settings,

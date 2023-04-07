@@ -9,6 +9,9 @@
 #'
 #' @export
 #'
+#' @examples
+#'    packages_version_finder( )
+#'
 package_version_finder <- function (what) {
 
   if (missing(what)) {
@@ -56,8 +59,8 @@ package_version_finder <- function (what) {
 #' @return `numeric` series.
 #' 
 #' @examples
-#'   round_na.interp(x = c(1, 2, 3, NA, NA, 170))
-#'   round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
+#'    round_na.interp(x = c(1, 2, 3, NA, NA, 170))
+#'    round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
 #'
 #' @export
 #'
@@ -93,9 +96,9 @@ round_na.interp <- function (x,
 #' @return `character` value of the extension (`file_ext`).
 #' 
 #' @examples
-#'  file_ext("home/folders.with.dots/stuff/ok.csv")
-#'  file_ext(NMME_urls()[[1]])
-#'  file_ext(NMME_urls()[[1]], "=")
+#'    file_ext("home/folders.with.dots/stuff/ok.csv")
+#'    file_ext(NMME_urls()[[1]])
+#'    file_ext(NMME_urls()[[1]], "=")
 #'
 #' @export
 #'
@@ -118,7 +121,7 @@ file_ext <- function (path, sep_char = ".") {
 #' @return `list` with names `element_names` and values `NULL`.
 #'
 #' @examples
-#'  named_null_list(c("a", "b", "c"))
+#'    named_null_list(c("a", "b", "c"))
 #'
 #' @export
 #'
@@ -145,10 +148,10 @@ named_null_list <- function (element_names = NULL) {
 #' @return Updated `list`.
 #'
 #' @examples
-#'  orig_list <- list(a = 1, b = 3, c = 4)
-#'  update_list(orig_list)
-#'  update_list(orig_list, a = "a")
-#'  update_list(orig_list, a = 10, b = NULL)
+#'    orig_list <- list(a = 1, b = 3, c = 4)
+#'    update_list(orig_list)
+#'    update_list(orig_list, a = "a")
+#'    update_list(orig_list, a = 10, b = NULL)
 #'
 #' @export
 #'
@@ -212,7 +215,7 @@ update_list <- function (list = list(),
 #' @return `numeric` value(s) of the fraction of the year.
 #'
 #' @examples
-#'  foy(Sys.Date())
+#'   Sys.Date( ); foy(Sys.Date())
 #'
 #' @export
 #'
@@ -243,9 +246,9 @@ foy <- function (dates = NULL) {
 #' @return `x` if not `NULL`, `alt` otherwise. 
 #' 
 #' @examples
-#'  ifnull(NULL, 123)
-#'  ifnull(TRUE, 123)
-#'  ifnull(FALSE, 123)
+#'    ifnull(NULL, 123)
+#'    ifnull(TRUE, 123)
+#'    ifnull(FALSE, 123)
 #'
 #' @name alternative values
 #'

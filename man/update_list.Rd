@@ -18,9 +18,9 @@ Updated \code{list}.
 Update a list with new values for elements
 }
 \examples{
- orig_list <- list(a = 1, b = 3, c = 4)
- update_list(orig_list)
- update_list(orig_list, a = "a")
- update_list(orig_list, a = 10, b = NULL)
+   orig_list <- list(a = 1, b = 3, c = 4)
+   update_list(orig_list)
+   update_list(orig_list, a = "a")
+   update_list(orig_list, a = 10, b = NULL)
 
 }

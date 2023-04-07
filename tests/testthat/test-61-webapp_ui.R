@@ -62,7 +62,7 @@ test_that(desc = "ui functions can build a functioning ui off the global list of
 
   skip_on_cran() 
 
-  expect_messages(gl <- global_list(main = main2))
+  expect_message(gl <- global_list(main = main2))
   expect_is(gl, "list")
 
   expect_silent(ft <- forecast_tab(global = gl)) 

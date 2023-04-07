@@ -30,7 +30,7 @@ round_na.interp(
 Wraps \code{\link{round}} around \code{\link[forecast:na.interp]{forecast::na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.
 }
 \examples{
-  round_na.interp(x = c(1, 2, 3, NA, NA, 170))
-  round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
+   round_na.interp(x = c(1, 2, 3, NA, NA, 170))
+   round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
 
 }

@@ -44,3 +44,11 @@ Create messages for use in the portalcasting pipeline.
 \code{break_lines}: Creates a set of horizontal line of characters ending with a newline call for messages. \cr \cr
 \code{castle}: Creates a text drawing of a sandcastle of characters for messages.
 }
+\examples{
+   messageq("hi ", "how are you?")
+   messageq("hi ", "how are you?", quiet = TRUE)
+   break_line( )
+   break_lines( )
+   castle( )
+
+}

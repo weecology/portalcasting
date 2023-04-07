@@ -35,7 +35,6 @@ evaluate_casts <- function (main      = ".",
   rodents_table             <- read_rodents_table(main = main, dataset = "all")                          
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
-
   if (!is.null(existing_evaluations)) {
 
     if (is.null(existing_evaluations$cast_evaluation_complete)) {
@@ -53,7 +52,6 @@ evaluate_casts <- function (main      = ".",
 
   }
 
-
   selected_cast_ids <- cast_ids[cast_ids %in% casts_left_to_evaluate]
 
   if (length(selected_cast_ids) == 0) {
@@ -63,7 +61,6 @@ evaluate_casts <- function (main      = ".",
   }
 
   nselected_cast_ids <- length(selected_cast_ids)
-
 
   out <- named_null_list(element_names = selected_cast_ids)
 
@@ -153,7 +150,6 @@ evaluate_cast <- function (main     = ".",
                            "jags_logistic_covariates"             = "sample",
                            "jags_logistic_competition_covariates" = "sample")
 
-
   can_score <- !is.na(cast_tab$obs)
 
   if (!any(can_score)) {
@@ -233,6 +229,7 @@ evaluate_cast <- function (main     = ".",
                                             dat = cast_sample)
 
   }
+
   species                           <- ifelse(cast_tab$species[1] == "NA", "NA.", cast_tab$species[1])
   rodents_table                     <- read_rodents_table(main = main, dataset = cast_tab$dataset[1])                          
   last_census_newmoonnumber         <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , species])]])

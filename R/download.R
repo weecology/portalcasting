@@ -169,9 +169,6 @@ NMME_urls <- function (start = Sys.Date(),
 
 }
 
-
-
-
 #' @title Download the Portal Predictions Repository Archive
 #'
 #' @description Downloads a specific `version` of the Portal Predictions repository from either GitHub or Zenodo (based on `source`) into the `<main>/raw` sub.
@@ -211,7 +208,6 @@ download_archive <- function(main          = ".",
                              force         = FALSE,
                              pause         = 30,
                              timeout       = getOption("timeout")) {
-
 
   return_if_null(x = version)
 
@@ -278,8 +274,7 @@ download_archive <- function(main          = ".",
 
     stop("`source` must be either 'zenodo' or 'github'")
 
-  }
-  
+  }  
 
   temp         <- file.path(tempdir(), "portalPredictions.zip")
   final        <- file.path(main, resources_sub, "portalPredictions")
@@ -316,7 +311,6 @@ download_archive <- function(main          = ".",
     return(invisible( ))
 
   }
-
 
   if (file.exists(final)) {
 
