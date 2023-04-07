@@ -463,8 +463,8 @@ write_models_tab_html <- function (main = ".") {
 
   all_model_controls <- read_model_controls(main = main)
 
-  nmodels     <- length(all_model_controls)
   model_names <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
+  nmodels     <- length(model_names)
 
   model_names_print <- paste(c(model_names[1:(nmodels - 1)], paste0("and ", model_names[nmodels])), collapse = ", ")
 
@@ -473,21 +473,25 @@ write_models_tab_html <- function (main = ".") {
   model_text  <- named_null_list(element_names = model_names)
 
   for (i in 1:nmodels) {
+    model_text[[i]] <- mark(text = all_model_controls[[i]]$metadata$text)
 
-    model_text[[i]] <- mark(all_model_controls[[i]]$metadata$text)
 
-    model_html <- paste0('<div>
-                         <h3>', 
-                         model_names[i], 
-                         '</h3> 
-                         <p>', 
-                         model_text[[i]],
-                         '</p>
-                         </div>')
 
-    models_html <- paste0(models_html, model_html)
+
+
+model_text[[i]]
+
+    parted <- strsplit(unlist(strsplit(model_text[[i]], "\\[@")), "\\]")
+    nparts <- length(parted)
+    
+    for (j in 1:nparts) {
+
+
+    }
+  
 
   }
+
 
   mybib       <- ReadBib(file.path(main, settings$subdirectories$app, "refs.bibtex"))
   bib_entries <- NULL#
