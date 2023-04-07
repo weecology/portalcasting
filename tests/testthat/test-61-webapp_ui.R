@@ -12,10 +12,10 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   expect_is(gl, "list")
 
 
-  expect_silent(ptp <- page_title_panel( ))
+  expect_silent(ptp <- title_panel( ))
   expect_is(ptp, "shiny.tag.list")
 
-  expect_silent(psp <- page_subtitle_panel( ))
+  expect_silent(psp <- subtitle_panel( ))
   expect_is(psp, "shiny.tag")
 
   expect_silent(ft <- forecast_tab(global = gl)) 
@@ -62,7 +62,7 @@ test_that(desc = "ui functions can build a functioning ui off the global list of
 
   skip_on_cran() 
 
-  expect_message(gl <- global_list(main = main2))
+  expect_silent(gl <- global_list(main = main2))
   expect_is(gl, "list")
 
   expect_silent(ft <- forecast_tab(global = gl)) 
@@ -73,7 +73,7 @@ test_that(desc = "ui functions can build a functioning ui off the global list of
   expect_is(ct, "shiny.tag")
 
 
-  expect_message(gl <- global_list(main = main3))
+  expect_silent(gl <- global_list(main = main3))
   expect_is(gl, "list")
 
   expect_silent(ft <- forecast_tab(global = gl)) 
