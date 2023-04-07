@@ -18,3 +18,29 @@ test_that(desc = "server functions work off of global list", {
   expect_is(io, "list")
 
 })
+
+testServer(portal_forecast_server, {
+
+  session$setInputs(forecast_tab_species                      = global$initial_forecast_tab_selected_species, 
+                    forecast_tab_dataset                      = global$initial_forecast_tab_selected_dataset,
+                    forecast_tab_model                        = global$initial_forecast_tab_selected_model,
+                    forecast_tab_historic_end_newmoonnumber   = global$initial_forecast_tab_selected_historic_end_newmoonnumber,
+                    evaluation_tab_species                    = global$initial_evaluation_tab_selected_species,
+                    evaluation_tab_dataset                    = global$initial_evaluation_tab_selected_dataset,
+                    evaluation_tab_model                      = global$initial_evaluation_tab_selected_model,
+                    evaluation_tab_historic_end_newmoonnumber = global$initial_evaluation_tab_selected_historic_end_newmoonnumber,
+                    evaluation_tab_newmoonnumber              = global$initial_evaluation_tab_selected_newmoonnumber)
+
+  expect_equal(output$forecast_tab_species, as.vector(global$initial_forecast_tab_selected_species))
+  expect_equal(output$forecast_tab_dataset, as.vector(global$initial_forecast_tab_selected_dataset))
+  expect_equal(output$forecast_tab_model, as.vector(global$initial_forecast_tab_selected_model))
+  expect_equal(output$forecast_tab_historic_end_newmoonnumber, as.character(global$initial_forecast_tab_selected_historic_end_newmoonnumber))
+
+  expect_equal(output$evaluation_tab_species, as.vector(global$initial_evaluation_tab_selected_species))
+  expect_equal(output$evaluation_tab_dataset, as.vector(global$initial_evaluation_tab_selected_dataset))
+  expect_equal(output$evaluation_tab_model, as.vector(global$initial_evaluation_tab_selected_model))
+  expect_equal(output$evaluation_tab_historic_end_newmoonnumber, as.character(global$initial_evaluation_tab_selected_historic_end_newmoonnumber))
+  expect_equal(output$evaluation_tab_newmoonnumber, as.character(global$initial_evaluation_tab_selected_newmoonnumber))
+
+
+})
