@@ -2,7 +2,7 @@
 #' @title Generate the User Interface for the Web App
 #' 
 #' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`fluidPage`][shiny::fluidPage] on the UI components. \cr \cr
-#'              `write_rodent_profiles_tab_html` builds and writes-out a static html file for the rodent profiles tab during [`fill_app`]. \cr \cr
+#'              `write_rodent_profiles_tab_html` and `write_model_tab_html` build and write-out static html files for the rodent profiles and models tabs during [`fill_app`]. \cr \cr
 #'              See `Details` for hierarchy of functions. 
 #'
 #' @details The UI is hierarchical built as:
@@ -35,6 +35,8 @@
 #'         * htmltools::includeHTML
 #'       * profiles_tab
 #'         * htmltools::includeHTML
+#'
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @param global A `list` of global values for the app.
 #'
@@ -446,6 +448,82 @@ write_rodent_profiles_tab_html <- function (main = ".") {
   profiles_html <- file.path(main, settings$subdirectories$app, "profile.html")
   write(x    = html_out, 
         file = profiles_html)
+
+  html_out
+
+}
+
+#' @rdname web-app-ui
+#'
+#' @export
+#
+write_models_tab_html <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+
+  all_model_controls <- read_model_controls(main = main)
+
+  nmodels     <- length(all_model_controls)
+  model_names <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
+
+  model_names_print <- paste(c(model_names[1:(nmodels - 1)], paste0("and ", model_names[nmodels])), collapse = ", ")
+
+  model_html  <- NULL
+  models_html <- NULL
+  model_text  <- named_null_list(element_names = model_names)
+
+  for (i in 1:nmodels) {
+
+    model_text[[i]] <- mark(all_model_controls[[i]]$metadata$text)
+
+    model_html <- paste0('<div>
+                         <h3>', 
+                         model_names[i], 
+                         '</h3> 
+                         <p>', 
+                         model_text[[i]],
+                         '</p>
+                         </div>')
+
+    models_html <- paste0(models_html, model_html)
+
+  }
+
+  mybib       <- ReadBib(file.path(main, settings$subdirectories$app, "refs.bibtex"))
+  bib_entries <- NULL#
+
+  references_html <- paste0('<div>
+                             <h2>
+                             References
+                             </h2>',
+                             bib_entries,
+                             '</div>')
+
+  html_out <- paste0(
+
+    '<html>
+     <head>
+     <style>
+
+     </style>
+     </head>
+     <body>
+
+     <br>
+     <br>
+     <p>
+     We currently analyze and forecast rodent data at Portal using ', english(nmodels), ' models: ', model_names_print, '
+     <span class="citation">(WeecologyLab 2019)</span>.
+     </p>
+     <br>', 
+     models_html, 
+     references_html, 
+     '</body>
+     ', collapse = '\n')
+
+  file_path <- file.path(main, settings$subdirectories$app, "models.html")
+  write(x    = html_out, 
+        file = file_path)
 
   html_out
 

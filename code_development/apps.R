@@ -1,6 +1,7 @@
 rm(list=ls())
-main <- "~/production_testing"
+main <- "~/sandbox"
 devtools::document()
+setup_sandbox(main)
 run_web_app(main)
 
 

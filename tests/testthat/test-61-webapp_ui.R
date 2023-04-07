@@ -48,6 +48,10 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   expect_silent(tt <- evaluation_tab_input_selection_row_newmoonnumber(global = gl))
   expect_is(tt, "shiny.tag")
 
+  expect_silent(tt <- write_models_tab_html(main = main2))
+  expect_is(tt, "character")
+  expect_silent(tt <- write_rodent_profiles_tab_html(main = main2))
+  expect_is(tt, "character")
 
 
 })
