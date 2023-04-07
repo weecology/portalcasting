@@ -30,6 +30,7 @@ Depends:
 License: MIT + file LICENSE
 Imports:
   arrow,
+  bslib,
   coda,
   english,
   htmltools,
