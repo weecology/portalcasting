@@ -69,6 +69,19 @@ test_that(desc = "ui functions can build a functioning ui off the global list of
   expect_is(ft, "shiny.tag")
   expect_silent(et <- evaluation_tab(global = gl)) 
   expect_is(et, "shiny.tag")
+  expect_silent(ct <- covariates_tab(global = gl)) 
+  expect_is(ct, "shiny.tag")
+
+
+  expect_message(gl <- global_list(main = main3))
+  expect_is(gl, "list")
+
+  expect_silent(ft <- forecast_tab(global = gl)) 
+  expect_is(ft, "shiny.tag")
+  expect_silent(et <- evaluation_tab(global = gl)) 
+  expect_is(et, "shiny.tag")
+  expect_silent(ct <- covariates_tab(global = gl)) 
+  expect_is(ct, "shiny.tag")
 
 })
 

@@ -8,9 +8,9 @@
 #'
 #' @details The UI is hierarchical built as:
 #'   * `portal_forecast_ui` 
-#'     * `page_title_panel`
-#'     * `page_subtitle_panel`
-#'     * `page_main_panel`
+#'     * `title_panel`
+#'     * `subtitle_panel`
+#'     * `main_panel`
 #'       * `forecast_tab`
 #'         * `forecast_tab_input_selection_row`
 #'           * `forecast_tab_input_selection_row_species`
@@ -45,33 +45,44 @@
 #'
 #' @param global A `list` of global values for the app.
 #'
-#' @return A UI definition or component shiny tags.
+#' @return A UI definition, component shiny tags, or bootswatch theme.
 #'
-#' @name web app ui
+#' @name portalcasting app ui
 #'
 NULL
 
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
 portal_forecast_ui <- function (global = global_list( )) {
 
-  fluidPage(page_title_panel( ),
-            page_subtitle_panel( ), 
-            page_main_panel(global = global))
+  fluidPage(title_panel( ),
+            subtitle_panel( ), 
+            main_panel(global = global),
+            theme = app_theme( ))
 
 
 }
 
+#' @rdname portalcasting-app-ui
+#'
+#' @export
+#'
+app_theme <- function ( ) {
 
-#' @rdname web-app-ui
+  bs_theme(bootswatch = "materia",
+           font_scale = 1.1)
+
+}
+
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
-page_main_panel <- function (global = global_list( )) {
+main_panel <- function (global = global_list( )) {
 
   mainPanel(tabsetPanel(forecast_tab(global = global),
                         evaluation_tab(global = global),
@@ -83,28 +94,28 @@ page_main_panel <- function (global = global_list( )) {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
-page_title_panel <- function ( ) {
+title_panel <- function ( ) {
 
   app_title <- "Portal Project Forecasting"
   titlePanel(title = app_title)
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
-page_subtitle_panel <- function ( ) {
+subtitle_panel <- function ( ) {
 
   p(HTML(text = paste0("Forecasts for the population and community dynamics of ", portal_project_href( ), ".")))
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -115,7 +126,7 @@ about_tab <- function ( ) {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -126,7 +137,7 @@ models_tab <- function ( ) {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -137,7 +148,7 @@ profiles_tab <- function ( ) {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -164,7 +175,7 @@ forecast_tab <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -178,7 +189,7 @@ forecast_tab_input_selection_checks_row <- function ( ) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -192,7 +203,7 @@ forecast_tab_input_selection_row <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -207,7 +218,7 @@ forecast_tab_input_selection_row_species <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -222,7 +233,7 @@ forecast_tab_input_selection_row_dataset <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -237,7 +248,7 @@ forecast_tab_input_selection_row_model <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -254,7 +265,7 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (global 
 
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -282,7 +293,7 @@ evaluation_tab <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -297,7 +308,7 @@ evaluation_tab_input_selection_checks_row <- function ( ) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -313,7 +324,7 @@ evaluation_tab_input_selection_row <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -328,7 +339,7 @@ evaluation_tab_input_selection_row_species <- function (global = global_list( ))
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -343,7 +354,7 @@ evaluation_tab_input_selection_row_dataset <- function (global = global_list( ))
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -358,7 +369,7 @@ evaluation_tab_input_selection_row_model <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -372,7 +383,7 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber <- function (globa
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -386,7 +397,7 @@ evaluation_tab_input_selection_row_newmoonnumber <- function (global = global_li
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -404,29 +415,34 @@ covariates_tab <- function (global = global_list( )) {
   } else {  
 
     tabPanel(title = "Covariates", 
-           br( ), 
-           data_sources_section( ),
-           br( ))
+             br( ), 
+             p("These are the covariates (without lags imposed) used in forecasting models. Solid lines are historic data, dashed lines are forecasts."),
+             br( ), 
+             plotOutput("covariates_tab_ndvi_plot", height = "200px"),
+             br( ), 
+             plotOutput("covariates_tab_precip_plot", height = "400px"),
+             br( ), 
+             plotOutput("covariates_tab_temp_plot", height = "600px"),
+             br( ), 
+             data_sources_section( ),
+             br( ))
 
   }
 
 }
 
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
 data_sources_section <- function ( ) {
 
   div(h3("Data Sources"),
-      br( ),
       h4("Local Weather"),
       p(HTML(text = paste0(portal_project_href( ), " collates on-site ", portal_weather_href( ), " dating back to 1980 in the ", portal_data_href( ), "."))),
-      br( ),
       h4(a("Normalized Difference Vegetation Index (NDVI)", href = "https://earthobservatory.nasa.gov/features/MeasuringVegetation/measuring_vegetation_2.php")),
       p(HTML(text = paste0(portal_project_href( ), " also produces site-specific ", portal_ndvi_href( ), " housed in the ", portal_data_href( ), "."))),
-      br( ),
       h4("Forecast Weather"),
       p(HTML(text = paste0("We use ",
                            a("downscaled climate forecasts", href = "https://climate.northwestknowledge.net/RangelandForecast/download.php"), " from the ", 
@@ -436,7 +452,7 @@ data_sources_section <- function ( ) {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -448,7 +464,7 @@ portal_project_href <- function (text ="The Portal Project") {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -459,7 +475,7 @@ portal_data_href <- function (text = "The Portal Data Repository") {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -470,7 +486,7 @@ portal_weather_href <- function (text = "weather data") {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #'
@@ -481,7 +497,7 @@ portal_ndvi_href <- function (text = "NDVI data") {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -497,12 +513,13 @@ write_rodent_profiles_tab_html <- function (main = ".") {
 
   for (i in 1:nspecies) {
 
-    table_row <- c('  <tr>', 
-                   paste0('   <td style="text-align:left;"> <img src="', table_in$image[i], '" width ="200" alt="', table_in$image_alt_text[i], '"></td>'),
-                   paste0('   <td style="text-align:left;"><i>', table_in$scientific_name[i], '</i></td>'),
-                   paste0('   <td style="text-align:left;"> ', table_in$common_name[i], ' </td>'),
-                   paste0('   <td style="text-align:left;"> ', table_in$species_description[i], ' </td>'),
-                   '  </tr>')
+    table_row <- paste0('<tr>
+                        <td style="text-align:left;"> <img src="', table_in$image[i], '" width=100px alt="', table_in$image_alt_text[i], '"></td>
+                        <td style="text-align:left;"><i>', table_in$scientific_name[i], '</i></td>
+                        <td style="text-align:left;"> ', table_in$common_name[i], ' </td>
+                        <td style="text-align:left;"> ', table_in$species_description[i], ' </td> 
+                        </tr>')
+
     table_rows <- c(table_rows, table_row)
 
   }
@@ -550,7 +567,7 @@ write_rodent_profiles_tab_html <- function (main = ".") {
 
 }
 
-#' @rdname web-app-ui
+#' @rdname portalcasting-app-ui
 #'
 #' @export
 #
@@ -558,69 +575,13 @@ write_models_tab_html <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  all_model_controls <- read_model_controls(main = main)
+  file_path <- file.path(main, settings$subdirectories$app, "models.Rmd")
 
-  model_names <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
-  nmodels     <- length(model_names)
+  file_out <- render(input         = file_path,
+                     output_format = output_format(knitr  = knitr_options( ), 
+                                                   pandoc = pandoc_options(to = "html")),
+                     quiet         = !settings$verbose)
 
-  model_names_print <- paste(c(model_names[1:(nmodels - 1)], paste0("and ", model_names[nmodels])), collapse = ", ")
-
-  mybib       <- ReadBib(file.path(main, settings$subdirectories$app, "refs.bibtex"))
-
-  model_html  <- NULL
-  model_text  <- named_null_list(element_names = model_names)
-
-  for (i in 1:nmodels) {
-
-    model_text[[i]] <- mark(text = all_model_controls[[i]]$metadata$text, format = "html")
-
-    # working here --- need to convert the rmarkdown reference tag format to html
-
-    model_html[i]   <- paste0('<div>
-                               <h2>', 
-                               model_names[i],
-                               '</h2>',
-                               model_text[[i]],
-                               '</div>')
-  }
-
-  models_html <- paste(model_html, collapse = "")
-
-  bib_entries <- NULL#
-
-  references_html <- paste0('<div>
-                             <h2>
-                             References
-                             </h2>',
-                             bib_entries,
-                             '</div>')
-
-  html_out <- paste0(
-
-    '<html>
-     <head>
-     <style>
-
-     </style>
-     </head>
-     <body>
-
-     <br>
-     <br>
-     <p>
-     We currently analyze and forecast rodent data at Portal using ', english(nmodels), ' models: ', model_names_print, '
-     <span class="citation">(WeecologyLab 2019)</span>.
-     </p>
-     <br>', 
-     models_html, 
-     references_html, 
-     '</body>
-     ', collapse = '\n')
-
-  file_path <- file.path(main, settings$subdirectories$app, "models.html")
-  write(x    = html_out, 
-        file = file_path)
-
-  html_out
+  scan(file_out, what = "character", quiet = TRUE)
 
 }

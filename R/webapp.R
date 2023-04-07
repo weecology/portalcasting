@@ -1,32 +1,31 @@
 #' @title Build and Launch the Portal Forecast Web Application
 #' 
-#' @description `run_web_app` constructs and launches a local version of the web application by running [`shiny::runApp`] pointed to the `app` subdirectory in the local `portalcasting` package folder. \cr \cr
+#' @description `run_app` constructs and launches a local version of the web application by running [`shiny::runApp`] pointed to the `app` subdirectory in the local `portalcasting` package folder. \cr \cr
 #'              `global_list` creates a list of values that are globally available in an app run.
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @return `global_list`: a `list` of values that will be globally available in the app.
 #'
-#' @name web app
+#' @name portalcasting app
 #'
 NULL
 
-#' @rdname web-app
+#' @rdname portalcasting-app
 #'
 #' @export
 #'
-run_web_app <- function(main = ".") {
+run_app <- function(main = ".") {
 
   settings <- read_directory_settings(main = main)
 
   runApp(appDir         = file.path(main, settings$subdirectories$app),
          launch.browser = TRUE)
 
-
 }
 
 
-#' @title Helper Functions for the Web App
+#' @title Helper Functions for the Portalcasting App
 #' 
 #' @description Construct vectors of available choices and make selections.
 #'
@@ -39,12 +38,12 @@ run_web_app <- function(main = ".") {
 #'
 #' @return `character` or `integer`, depending upon the function.
 #'
-#' @name web app helpers
+#' @name portalcasting app helpers
 #'
 NULL
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -73,7 +72,7 @@ available_newmoonnumbers <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -103,7 +102,7 @@ selected_newmoonnumber <- function (global     = global_list( ),
 
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -144,7 +143,7 @@ available_historic_end_newmoonnumbers <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -177,7 +176,7 @@ selected_historic_end_newmoonnumber <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -218,7 +217,7 @@ available_species <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -251,7 +250,7 @@ selected_species <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -290,7 +289,7 @@ available_datasets <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -323,7 +322,7 @@ selected_dataset <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -363,7 +362,7 @@ available_models <- function (global     = global_list( ),
 }
 
 
-#' @rdname web-app-helpers
+#' @rdname portalcasting-app-helpers
 #'
 #' @export
 #'
@@ -397,7 +396,7 @@ selected_model <- function (global     = global_list( ),
 
 
 
-#' @rdname web-app
+#' @rdname portalcasting-app
 #'
 #' @export
 #

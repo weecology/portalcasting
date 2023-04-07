@@ -60,3 +60,18 @@ test_that(desc = "plot_casts_cov_RMSE", {
 
 })
 
+
+
+test_that(desc = "plot_covariates", {
+
+
+  skip_on_cran() 
+
+  expect_silent(plot_covariates(main = main3, to_plot = c("ndvi", "warm_precip")))
+  expect_silent(plot_covariates(main = main3, to_plot = c("precipitation", "warm_precip")))
+  expect_silent(plot_covariates(main = main3, to_plot = c("mintemp", "meantemp", "maxtemp")))
+
+  expect_error(plot_casts_cov_RMSE(main = main3, to_plot = "xyz"))
+
+})
+

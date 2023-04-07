@@ -25,13 +25,13 @@
 #'   `update_output`: an `output` `list`. \cr \cr
 #'   `update_input`: updates the `input` `list`, but does not return it. \cr \cr
 #'
-#' @name web app server
+#' @name portalcasting app server
 #'
 NULL
 
 
 
-#' @rdname web-app-server
+#' @rdname portalcasting-app-server
 #'
 #' @export
 #'
@@ -122,7 +122,7 @@ portal_forecast_server <- function (input,
 }
 
 
-#' @rdname web-app-server
+#' @rdname portalcasting-app-server
 #'
 #' @export
 #'
@@ -141,7 +141,7 @@ initial_reactive_values <- function (global = global_list( )) {
 }
 
 
-#' @rdname web-app-server
+#' @rdname portalcasting-app-server
 #'
 #' @export
 #'
@@ -183,11 +183,18 @@ initial_output <- function (main = ".",
                                                                                      models                      = rv$evaluation_tab_model,
                                                                                      historic_end_newmoonnumbers = rv$evaluation_tab_historic_end_newmoonnumber))
 
+  output$covariates_tab_ndvi_plot                  <- renderPlot(plot_covariates(main    = main,
+                                                                                 to_plot = "ndvi"))
+  output$covariates_tab_precip_plot                <- renderPlot(plot_covariates(main    = main,
+                                                                                 to_plot = c("precipitation", "warm_precip")))
+  output$covariates_tab_temp_plot                  <- renderPlot(plot_covariates(main    = main,
+                                                                                 to_plot = c("mintemp", "meantemp", "maxtemp")))
+
   output 
 
 }
 
-#' @rdname web-app-server
+#' @rdname portalcasting-app-server
 #'
 #' @export
 #'
@@ -217,7 +224,7 @@ event_reaction <- function (main,
 
 }
 
-#' @rdname web-app-server
+#' @rdname portalcasting-app-server
 #'
 #' @export
 #'
@@ -249,7 +256,7 @@ update_reactive_values <- function (event_name,
 }
 
 
-#' @rdname web-app-server
+#' @rdname portalcasting-app-server
 #'
 #' @export
 #'
@@ -307,7 +314,7 @@ update_output <- function (main,
 }
 
 
-#' @rdname web-app-server
+#' @rdname portalcasting-app-server
 #'
 #' @export
 #'

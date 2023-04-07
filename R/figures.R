@@ -825,3 +825,128 @@ plot_cast_ts <- function (main                         = ".",
   points(o_x[actual_obs], o_y[actual_obs], pch = 1, col = 1, lwd = 2)
 
 }
+
+
+
+
+#' @title Visualize a Time Series of Covariates
+#'
+#' @description Plot an observed timeseries and cast timeseries of the covariates used.
+#'
+#' @param main `character` value of the name of the main component of the directory tree.
+#'
+#' @param to_plot `character` of the covariate to plot, restricted to column names in the covariates table (see [`read_covariates`]).
+#'
+#' @return `NULL`. Plot is generated.
+#'
+#' @export
+#'
+plot_covariates <- function (main    = ".",
+                             to_plot = "ndvi") {
+
+  settings <- read_directory_settings(main = main)
+
+  covariates <- read_covariates(main = main)
+  moons      <- read_newmoons(main = main)
+
+  print_names <- c(ndvi          = "NDVI", 
+                   mintemp       = "Min. Temperature",  
+                   meantemp      = "Mean Temperature",  
+                   maxtemp       = "Max. Temperature",  
+                   precipitation = "Precipitation",  
+                   warm_precip   = "Warm Precip.",
+                   ordii         = "D. ordii",
+                   cos2pifoy     = "cos Fourier",
+                   sin2pifoy     = "sin Fourier")
+
+  if (any((!to_plot %in% names(print_names)))) {
+
+    not_in <- to_plot[!to_plot %in% names(print_names)]
+
+    stop("requested covariates ", paste(paste0("`", not_in, "`"), collapse = ", "), " not in covariates table")
+
+  }
+
+  rangex   <- range(covariates$newmoonnumber)
+
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  par(mar = c(2.5, 5, 0.5, 1))
+
+  nto_plot <- length(to_plot)
+
+  in_historic <- covariates$newmoonnumber %in% moons$newmoonnumber[moons$newmoondate < settings$time$forecast_start]
+  in_forecast <- covariates$newmoonnumber %in% moons$newmoonnumber[moons$newmoondate >= settings$time$forecast_start]
+
+  for (i in 1:nto_plot) {
+
+    yvals    <- covariates[ , to_plot[i]]
+    miny     <- min(0, min(yvals))
+    maxy     <- 1.1 * max(yvals)
+
+    ploty1   <- (i - 1) / nto_plot
+    ploty2   <- i / nto_plot
+
+    par(fig = c(0, 1, ploty1, ploty2), new = ifelse(i == 1, FALSE, TRUE))
+
+    plot(x    = 1, 
+         y    = 1, 
+         type = "n", 
+         bty  = "L", 
+         xlab = "", 
+         ylab = "", 
+         xaxt = "n",
+         yaxt = "n", 
+         xlim = rangex, 
+         ylim = c(miny, maxy))
+
+    axis(side     = 2, 
+         cex.axis = 1.25, 
+         las      = 1)
+
+    mtext(text = print_names[names(print_names) == to_plot[i]], side = 2, line = 3.5, cex = 1.5)
+
+    minx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[1]])
+    maxx     <- as.character(moons$newmoondate[moons$newmoonnumber == rangex[2]])
+    minx_yr  <- as.numeric(format(as.Date(minx), "%Y")) - 10 
+    maxx_yr  <- as.numeric(format(as.Date(maxx), "%Y")) + 10
+    minx_yr2 <- ceiling(minx_yr/ 5) * 5
+    maxx_yr2 <- floor(maxx_yr/ 5) * 5
+    yrs      <- seq(minx_yr2, maxx_yr2, 5)
+    txt      <- FALSE
+    if (i == 1) {
+      txt    <- yrs
+    }
+    nyd      <- paste0(yrs, "-01-01")
+    dx       <- as.Date(as.character(moons$newmoondate))
+    dy       <- moons$newmoonnumber 
+    dmod     <- lm(dy ~ dx)
+    loc      <- predict(dmod, newdata = list(dx = as.Date(nyd)))
+    axis(side   = 1, 
+         at     = loc, 
+         labels = txt, 
+         cex.axis    = 1.5)
+    yrs      <- seq(minx_yr, maxx_yr, 1)
+    nyd      <- paste0(yrs, "-01-01")
+    loc      <- predict(dmod, newdata = list(dx = as.Date(nyd)))
+    axis(side   = 1, 
+         at     = loc, 
+         labels = FALSE, 
+         tck    = -0.005)  
+
+    points(x    = covariates$newmoonnumber[in_historic],
+           y    = covariates[in_historic, to_plot[i]],
+           type = "l",
+           lwd  = 2)
+
+    points(x    = covariates$newmoonnumber[in_forecast],
+           y    = covariates[in_forecast, to_plot[i]],
+           type = "l",
+           lwd  = 2,
+           lty  = 3)
+
+  }
+
+
+
+}

@@ -1,5 +1,0 @@
-# hello markdown
-```{r hello-random, echo=TRUE}
-rnorm(5)
-```
-123 *4* **5** [@Box1970]
