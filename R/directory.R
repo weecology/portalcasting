@@ -10,9 +10,9 @@
 #'
 #' @param datasets `character` vector of name(s) of rodent dataset(s) to be created. 
 #'
-#' @param new_datasets_controls Optional `list` of controls for new datasets. See [`dataset_controls`]. This argument is not available in `setup_production`.
+#' @param new_datasets_controls Optional `list` of controls for new datasets. See [`datasets_controls`]. This argument is not available in `setup_production`.
 #'
-#' @param new_models_controls Optional `list` of controls for new models. See [`model_controls`]. This argument is not available in `setup_production`.
+#' @param new_models_controls Optional `list` of controls for new models. See [`models_controls`]. This argument is not available in `setup_production`.
 #'
 #' @param settings `list` of controls for the directory, with defaults set in [`directory_settings`].
 #'
@@ -373,9 +373,9 @@ update_directory_configuration <- function (main = ".") {
 #'     * `models_path`  
 #'     * `resources_path`
 #'
-#' @param quiet `logical` indicator if progress messages should be quieted.
-#'
 #' @param main `character` value of the name of the main component of the directory tree. 
+#'
+#' @param dataset `character` value of name of rodent dataset.
 #'
 #' @return `list` of directory paths or specific `character` paths.
 #'

@@ -44,7 +44,7 @@ fill_models(main = ".", models = prefab_models(), new_models_controls = NULL)
 
 \item{new_datasets_controls}{Optional named \code{list} of controls for new datasets. See \code{\link{datasets_controls}}.}
 
-\item{new_models_controls}{Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.}
+\item{new_models_controls}{Optional named \code{list} of controls for new models. See \code{\link{models_controls}}.}
 }
 \value{
 \code{NULL}, \code{\link[base:invisible]{invisible}}-ly.

@@ -29,7 +29,7 @@
 #'
 #' @param new_datasets_controls Optional named `list` of controls for new datasets. See [`datasets_controls`].
 #'
-#' @param new_models_controls Optional named `list` of controls for new models. See [`model_controls`].
+#' @param new_models_controls Optional named `list` of controls for new models. See [`models_controls`].
 #'
 #' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'

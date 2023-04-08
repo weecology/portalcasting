@@ -12,6 +12,7 @@ devtools::test(filter = "24")
 devtools::test(filter = "25")
 devtools::test(filter = "26")
 devtools::test(filter = "27")
+devtools::test(filter = "28")
 
 devtools::test(filter = "30")
 devtools::test(filter = "31")

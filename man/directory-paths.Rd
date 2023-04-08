@@ -70,7 +70,7 @@ resources_path(main = ".")
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
+\item{dataset}{\code{character} value of name of rodent dataset.}
 }
 \value{
 \code{list} of directory paths or specific \code{character} paths.

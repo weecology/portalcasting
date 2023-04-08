@@ -46,7 +46,7 @@ runjags_controls(
 )
 }
 \arguments{
-\item{inits}{\code{list} of model parameter initializer functions. See \code{\link{prefab_model_controls}}.}
+\item{inits}{\code{list} of model parameter initializer functions. See \code{\link{prefab_models_controls}}.}
 
 \item{model}{\code{character} value of the model file name. See \code{\link{prefab_model_controls}}.}
 

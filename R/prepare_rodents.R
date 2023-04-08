@@ -117,7 +117,7 @@ write_datasets_controls <- function (main                  = ".",
 #'
 #' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
 #'
-#' @param new_datasets_controls Optional `list` of controls for new datasets. See [`dataset_controls`].
+#' @param new_datasets_controls Optional `list` of controls for new datasets. See [`datasets_controls`].
 #'
 #' @return `list` of prepared `datasets`.
 #'  

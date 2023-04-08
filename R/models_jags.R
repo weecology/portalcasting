@@ -15,7 +15,7 @@
 #'
 #' @param control_runjags `list` of controls for running runjags models. See [`runjags_controls`]. Optional. If not provided here, will be taken from the model controls list.
 #'
-#' @param inits `list` of model parameter initializer functions. See [`prefab_model_controls`].
+#' @param inits `list` of model parameter initializer functions. See [`prefab_models_controls`].
 #'
 #' @param model `character` value of the model file name. See [`prefab_model_controls`].
 #'

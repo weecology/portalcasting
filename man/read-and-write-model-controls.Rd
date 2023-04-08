@@ -25,9 +25,9 @@ write_models_scripts(main = ".", controls = prefab_models_controls())
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{controls}{\code{list} of controls for the models.}
+\item{new_models_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
 
-\item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
+\item{controls}{\code{list} of controls for the models.}
 }
 \value{
 \code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr \cr

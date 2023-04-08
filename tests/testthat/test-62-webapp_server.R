@@ -19,8 +19,9 @@ test_that(desc = "server functions work off of global list", {
 
 })
 
-#testServer(portal_forecast_server, {
-
+stop(app_path(main = main3))
+testServer(1, {
+expect_equal(1,1)
 #  expect_silent(global <- global_list(main = main3))
 
 #  session$setInputs(forecast_tab_species                      = global$initial_forecast_tab_selected_species, 
@@ -45,4 +46,4 @@ test_that(desc = "server functions work off of global list", {
 #  expect_equal(output$evaluation_tab_newmoonnumber, as.character(global$initial_evaluation_tab_selected_newmoonnumber))
 
 
-#})
+})

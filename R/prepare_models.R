@@ -6,7 +6,7 @@
 #'
 #' @param models `character` vector of name(s) of model(s) to include.
 #'
-#' @param new_model_controls `list` of controls for any new models (not in the prefab models) listed in `models` that are to be added to the control list and file.
+#' @param new_models_controls `list` of controls for any new models (not in the prefab models) listed in `models` that are to be added to the control list and file.
 #'
 #' @param controls `list` of controls for the models. 
 #'

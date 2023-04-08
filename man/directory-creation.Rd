@@ -71,9 +71,9 @@ setup_sandbox(
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
 
-\item{new_datasets_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}. This argument is not available in \code{setup_production}.}
+\item{new_datasets_controls}{Optional \code{list} of controls for new datasets. See \code{\link{datasets_controls}}. This argument is not available in \code{setup_production}.}
 
-\item{new_models_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.}
+\item{new_models_controls}{Optional \code{list} of controls for new models. See \code{\link{models_controls}}. This argument is not available in \code{setup_production}.}
 }
 \value{
 The \code{list} of directory settings \code{\link[base:invisible]{invisible}}-ly.
