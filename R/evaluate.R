@@ -101,7 +101,7 @@ evaluate_casts <- function (main      = ".",
              subdirectory = settings$subdirectories$forecasts,
              save         = settings$save,
              overwrite    = settings$overwrite, 
-             filename     = settings$files$forecast_evaluations,
+             filename     = settings$files$forecasts_evaluations,
              quiet        = settings$quiet)
 
 }

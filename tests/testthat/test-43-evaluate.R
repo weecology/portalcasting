@@ -11,8 +11,8 @@ test_that(desc = "evaluate_casts evaluates casts", {
   nids <- length(cast_ids)
   nsample_ids <- 1000
   cast_ids <- cast_ids[round(seq(1, nids, length.out = nsample_ids))]
-  expect_is(evaluate_casts(main = main3, cast_ids = cast_ids), "data.frame")
-  expect_message(evaluate_casts(main = main3, cast_ids = cast_ids))
+  expect_message(ec <- evaluate_casts(main = main3, cast_ids = cast_ids))
+  expect_is(ec, "data.frame")
   expect_error(evaluate_casts(main = main3, cast_ids = c(1e100, 2e100)))
 
 })

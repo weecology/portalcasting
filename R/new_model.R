@@ -50,7 +50,7 @@ add_new_model <- function (main               = "." ,
 
   messageq("Updating model controls ...", quiet = settings$quiet)
 
-  model_controls <- read_model_controls(main = main)
+  model_controls <- read_models_controls(main = main)
 
   if (!is.null(new_model_controls$fit$model_file)) {
 
@@ -71,7 +71,7 @@ add_new_model <- function (main               = "." ,
   names(model_controls)[nmodels] <- new_model_controls$metadata$name            
 
   write_yaml(x    = model_controls,
-             file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
+             file = file.path(main, settings$subdirectories$models, settings$files$models_controls))
 
 
   messageq(" ... complete.\n", quiet = settings$quiet)

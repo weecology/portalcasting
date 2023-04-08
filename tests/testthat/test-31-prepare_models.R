@@ -5,31 +5,31 @@ main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
 
-test_that(desc = "read_model_controls does", {
+test_that(desc = "read_models_controls does", {
 
   skip_on_cran() 
 
-  mc <- read_model_controls(main = main2)
+  mc <- read_models_controls(main = main2)
   expect_is(mc, "list")
 
 })
 
 
 
-test_that(desc = "model_controls reads in a list", {
+test_that(desc = "models_controls reads in a list", {
 
   skip_on_cran() 
 
-  mc <- model_controls(main = main2)
+  mc <- models_controls(main = main2)
   expect_is(mc, "list")
 
 })
 
 
 
-test_that(desc = "write_model_controls returns a list", {
+test_that(desc = "write_models_controls returns a list", {
 
-  mc <- write_model_controls(main = main2)
+  mc <- write_models_controls(main = main2)
   expect_is(mc, "list")
 
 })
