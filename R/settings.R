@@ -50,11 +50,11 @@
 #'
 #' @param climate_forecasts `list` of `source`, `version`, and `data` elements of `character` values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.
 #'
-#' @param save `logic` indicator controlling if the output should be saved out.
+#' @param save `logical` indicator controlling if the output should be saved out.
 #'
-#' @param overwrite `logic` indicator of whether or not file writing should occur even if a local copy already exists.
+#' @param overwrite `logical` indicator of whether or not file writing should occur even if a local copy already exists.
 #'
-#' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
+#' @param force `logical` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
 #' @param unzip_pause Positive `integer` or integer `numeric` seconds for pausing during steps around unzipping that require time delay. 
 #'
@@ -73,7 +73,7 @@
 #'   Default is `365` for the logistic covariate models.
 #'
 #' @param lag_buffer `integer` (or integer `numeric`) additional number of calendar days back in time to add to the maximum lag. \cr
-#'   Default value of `60 corresponds to two additional lunar months. 
+#'   Default value of `60` corresponds to two additional lunar months. 
 #'
 #' @param lead_time_buffer `integer` (or integer `numeric`) additional number of calendar days forward in time to forecast. \cr
 #'   Default value of `30` corresponds to one additional lunar month. 

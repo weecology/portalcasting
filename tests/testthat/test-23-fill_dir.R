@@ -52,10 +52,10 @@ test_that(desc = "fill_casts fills the casts folder",
 
 })
 
-test_that(desc = "write_model_controls writes out the controls file",
+test_that(desc = "write_models_controls writes out the controls file",
           code = {
 
-  expect_is(write_model_controls(main = main2), "list")
+  expect_is(write_models_controls(main = main2), "list")
 
 }) 
 
@@ -64,12 +64,12 @@ test_that(desc = "fill_models adds the models control list and any model scripts
           code = {
 
   expect_message(fill_models(main = main2))
-  model_controls_list <- model_controls(main2)
+  model_controls_list <- models_controls(main2)
 
 
   files      <- list.files(file.path(main2, "models"))
   model_txts <- unlist(mapply(getElement, mapply(getElement, model_controls_list, "fit"), "model_file"))
-  checks     <- c("model_controls.yaml", model_txts)
+  checks     <- c("models_controls.yaml", model_txts)
   names(checks) <- NULL
   expect_equal(sort(files), 
                sort(checks))

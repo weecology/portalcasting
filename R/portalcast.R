@@ -14,7 +14,7 @@
 #' @param species `character` vector of species to be forecast. In `cast`, `species` can only be length-one. See [`rodent_species`][portalr::rodent_species].
 #'
 #' @return 
-#'   `portalcast`: `data.frame` of model combinations with a `logic` column added for fit success, [`invisible`][base::invisible]-ly. \cr  \cr
+#'   `portalcast`: `data.frame` of model combinations with a `logical` column added for fit success, [`invisible`][base::invisible]-ly. \cr  \cr
 #'   `cast`: `list` of model outputs from [`process_model_output`]. \cr \cr
 #'   `make_model_combinations`: `data.frame` of the model combinations.
 #'

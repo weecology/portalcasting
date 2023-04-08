@@ -20,7 +20,7 @@
 #'
 #' @param lag `integer`-conformable value of the number of timesteps used in a bulk lagging for all covariates in all submodels.
 #'
-#' @param quiet `logic` indicator controlling if messages are printed.
+#' @param quiet `logical` indicator controlling if messages are printed.
 #' 
 #' @param object A `tsglm`-class object.
 #'

@@ -17,7 +17,7 @@ round_na.interp(
 
 \item{lambda}{Box-Cox transformation parameter passed directly to \code{\link[forecast:na.interp]{forecast::na.interp}}.}
 
-\item{linear}{\code{logic} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast:na.interp]{forecast::na.interp}}.}
+\item{linear}{\code{logical} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast:na.interp]{forecast::na.interp}}.}
 
 \item{digits}{\code{integer} or \code{numeric} integer of how many digits to round to. Passed directly to \code{\link{round}}.}
 

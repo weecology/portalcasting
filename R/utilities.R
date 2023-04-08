@@ -50,7 +50,7 @@ package_version_finder <- function (what) {
 #'
 #' @param lambda Box-Cox transformation parameter passed directly to [`forecast::na.interp`].
 #'
-#' @param linear `logic` indicator of if linear interpolation should be used. Passed directly to [`forecast::na.interp`].
+#' @param linear `logical` indicator of if linear interpolation should be used. Passed directly to [`forecast::na.interp`].
 #'
 #' @param digits `integer` or `numeric` integer of how many digits to round to. Passed directly to [`round`].
 #'

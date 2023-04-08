@@ -166,9 +166,9 @@ prepare_rodents <- function (main                  = ".",
 #'
 #' @param species `character`-valued vector of species names to include. 
 #'
-#' @param total `logic` value indicating if a total (sum across species should be added or not. Only available if more than one species is included. 
+#' @param total `logical` value indicating if a total (sum across species should be added or not. Only available if more than one species is included. 
 #'
-#' @param clean `logic` indicator of if only the rodent data that passed QA/QC (`clean = TRUE`) or if all data (`clean = FALSE`) should be loaded.
+#' @param clean `logical` indicator of if only the rodent data that passed QA/QC (`clean = TRUE`) or if all data (`clean = FALSE`) should be loaded.
 #'
 #' @param type `character` value of the rodent data set type, according to pre-existing definitions. An alternative toggle to `species`. \cr \cr
 #'             Either all species (`type = "Rodents"`) or only granivoes (`type = "Granivores"`). 
@@ -185,22 +185,22 @@ prepare_rodents <- function (main                  = ".",
 #'
 #' @param output `character` indicating the type of data: `"abundance"`, `"biomass"`, or `"energy"`. 
 #'
-#' @param fillweight `logic` specifier of whether to fill in unknown weights with other records from that individual or species, where possible.
+#' @param fillweight `logical` specifier of whether to fill in unknown weights with other records from that individual or species, where possible.
 #'
 #' @param shape `character` value indicating a "crosstab" or "flat" output. 
 #'
-#' @param unknowns `logic` indicator to either remove all individuals not identified to species (`unknowns = FALSE`) or sum them in an additional column (`unknowns = TRUE`.
+#' @param unknowns `logical` indicator to either remove all individuals not identified to species (`unknowns = FALSE`) or sum them in an additional column (`unknowns = TRUE`.
 #'
 #' @param time `character` value specifying the format of the time index in the output. Options are `"period"` (sequential Portal surveys), `"newmoon"` (lunar cycle numbering), and `"date"` (calendar date). \cr \cr
 #'             The default `time = "newmoon"` produces an equispaced observation timestep, a common format format for discrete-time modeling. 
 #'
-#' @param na_drop `logic` indicator of if `NA` values (representing insufficient sampling) should be dropped. 
+#' @param na_drop `logical` indicator of if `NA` values (representing insufficient sampling) should be dropped. 
 #'
-#' @param zero_drop `logic` indicator of if `0` values (representing sufficient sampling but no detection) should be dropped.
+#' @param zero_drop `logical` indicator of if `0` values (representing sufficient sampling but no detection) should be dropped.
 #'
-#' @param effort `logic` indicator of if the effort columns should be included in the output.
+#' @param effort `logical` indicator of if the effort columns should be included in the output.
 #'
-#' @param save `logic` indicator controlling if the output should be saved out.
+#' @param save `logical` indicator controlling if the output should be saved out.
 #'
 #' @param filename `character` value of the file for saving the output.
 #'

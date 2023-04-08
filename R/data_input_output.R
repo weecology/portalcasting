@@ -10,13 +10,13 @@
 #'
 #' @param subdirectory `character` value defining the data subdirectory of the portalcasting directory tree. 
 #'
-#' @param save `logic` indicator controlling if `x` should be saved out.
+#' @param save `logical` indicator controlling if `x` should be saved out.
 #'
 #' @param filename `character` name of the file for saving `x`.
 #'
-#' @param overwrite `logic` indicator of whether or not file writing should occur even if a local copy already exists.
+#' @param overwrite `logical` indicator of whether or not file writing should occur even if a local copy already exists.
 #'
-#' @param quiet `logic` indicator if messages should be quieted.
+#' @param quiet `logical` indicator if messages should be quieted.
 #'
 #' @param data_name `character` representation of the data needed. Current options include `"rodents"`, `"rodents_table"`, `"covariates"`, `"climate_forecasts"`, `"newmoons"`, and `"metadata"`.
 #'

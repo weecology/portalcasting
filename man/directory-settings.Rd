@@ -83,11 +83,11 @@ sandbox_settings()
 
 \item{nsamples}{\code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates.}
 
-\item{save}{\code{logic} indicator controlling if the output should be saved out.}
+\item{save}{\code{logical} indicator controlling if the output should be saved out.}
 
-\item{overwrite}{\code{logic} indicator of whether or not file writing should occur even if a local copy already exists.}
+\item{overwrite}{\code{logical} indicator of whether or not file writing should occur even if a local copy already exists.}
 
-\item{force}{\code{logic} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
+\item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{unzip_pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 
@@ -106,7 +106,7 @@ As of version 0.51.0, default is now \code{365}, which when divided by 29.5 (dur
 Default is \code{365} for the logistic covariate models.}
 
 \item{lag_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days back in time to add to the maximum lag. \cr
-Default value of `60 corresponds to two additional lunar months.}
+Default value of \code{60} corresponds to two additional lunar months.}
 
 \item{lead_time_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days forward in time to forecast. \cr
 Default value of \code{30} corresponds to one additional lunar month.}

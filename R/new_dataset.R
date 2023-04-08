@@ -50,7 +50,7 @@ add_new_dataset <- function (main                 = "." ,
 
   messageq("Updating dataset controls ...", quiet = settings$quiet)
 
-  dataset_controls <- read_dataset_controls(main = main)
+  dataset_controls <- read_datasets_controls(main = main)
 
 
   nexisting_datasets <- length(dataset_controls)
@@ -60,7 +60,7 @@ add_new_dataset <- function (main                 = "." ,
   names(dataset_controls)[ndatasets] <- new_dataset_controls$metadata$name            
 
   write_yaml(x    = dataset_controls,
-             file = file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
+             file = file.path(main, settings$subdirectories$data, settings$files$datasets_controls))
 
 
   messageq(" ... complete.\n", quiet = settings$quiet)

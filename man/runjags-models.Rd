@@ -90,7 +90,7 @@ runjags_controls(
 
 \item{mutate}{A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags:run.jags]{run.jags}}.}
 
-\item{silent_jags}{\code{logic} value for quieting the output from the runjags function, including the underlying JAGS output.}
+\item{silent_jags}{\code{logical} value for quieting the output from the runjags function, including the underlying JAGS output.}
 }
 \value{
 \code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags:run.jags]{run.jags}}. \cr \cr

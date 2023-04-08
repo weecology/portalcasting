@@ -32,7 +32,7 @@ make_model_combinations(
 \item{species}{\code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr:rodent_species]{rodent_species}}.}
 }
 \value{
-\code{portalcast}: \code{data.frame} of model combinations with a \code{logic} column added for fit success, \code{\link[base:invisible]{invisible}}-ly. \cr  \cr
+\code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base:invisible]{invisible}}-ly. \cr  \cr
 \code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr \cr
 \code{make_model_combinations}: \code{data.frame} of the model combinations.
 }

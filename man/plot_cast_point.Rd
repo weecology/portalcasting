@@ -36,7 +36,7 @@ plot_cast_point(
 
 \item{newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the plot.}
 
-\item{with_census}{\code{logic} toggle if the plot should include the observed data collected during the predicted census.}
+\item{with_census}{\code{logical} toggle if the plot should include the observed data collected during the predicted census.}
 }
 \value{
 \code{NULL}. Plot is generated.

@@ -43,7 +43,7 @@
 #'
 #' @param mutate A `function` or `list` (with the first element being a `function`) used to add variables to the posterior chain (rather than throughout sampling). See [`run.jags`][runjags::run.jags]. 
 #'
-#' @param silent_jags `logic` value for quieting the output from the runjags function, including the underlying JAGS output. 
+#' @param silent_jags `logical` value for quieting the output from the runjags function, including the underlying JAGS output. 
 #'
 #' @param object A `runjags`-class object with columns of `"X"` values (state variables) in the the `mcmc` element.
 #'

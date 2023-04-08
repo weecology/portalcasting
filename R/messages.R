@@ -8,11 +8,11 @@
 #'
 #' @param ... zero or more objects that can be coerced to `character` and are concatenated with no separator added, or a single condition object. See [`message`][base::message].
 #'
-#' @param quiet `logic` indicator if the message should be generated. 
+#' @param quiet `logical` indicator if the message should be generated. 
 #'
 #' @param domain The domain for the translation. If `NA`, messages will not be translated. See [`message`][base::message] and [`base::gettext`].
 #'
-#' @param appendLF `logic` indicator if messages given as a `character` string should have a newline appended. See [`message`][base::message].
+#' @param appendLF `logical` indicator if messages given as a `character` string should have a newline appended. See [`message`][base::message].
 #'
 #' @param char `character` value to repeated ``reps` times to form the break line. 
 #'

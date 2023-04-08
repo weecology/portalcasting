@@ -48,13 +48,13 @@ read_climate_forecasts(main = ".")
 
 \item{subdirectory}{\code{character} value defining the data subdirectory of the portalcasting directory tree.}
 
-\item{save}{\code{logic} indicator controlling if \code{x} should be saved out.}
+\item{save}{\code{logical} indicator controlling if \code{x} should be saved out.}
 
-\item{overwrite}{\code{logic} indicator of whether or not file writing should occur even if a local copy already exists.}
+\item{overwrite}{\code{logical} indicator of whether or not file writing should occur even if a local copy already exists.}
 
 \item{filename}{\code{character} name of the file for saving \code{x}.}
 
-\item{quiet}{\code{logic} indicator if messages should be quieted.}
+\item{quiet}{\code{logical} indicator if messages should be quieted.}
 
 \item{data_name}{\code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"climate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.}
 

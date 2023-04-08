@@ -472,7 +472,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #'
 #' @param cast_groups `integer` (or integer `numeric`) value of the cast group to include.
 #'
-#' @param with_census `logic` toggle if the plot should include the observed data collected during the predicted census.
+#' @param with_census `logical` toggle if the plot should include the observed data collected during the predicted census.
 #'
 #' @return `NULL`. Plot is generated.
 #'

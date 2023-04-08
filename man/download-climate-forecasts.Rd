@@ -28,11 +28,11 @@ download_climate_forecasts(
 
 \item{data}{\code{character} vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (\code{c("tasmin", "tasmean", "tasmax", "pr")}).}
 
-\item{quiet}{\code{logic} indicator if progress messages should be quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logic} indicator if detailed messages should be generated.}
+\item{verbose}{\code{logical} indicator if detailed messages should be generated.}
 
-\item{force}{\code{logic} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
+\item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{options}}.}
 }

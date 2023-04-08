@@ -15,11 +15,11 @@
 #'
 #' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`options`][base::options].
 #'
-#' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
+#' @param force `logical` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
-#' @param quiet `logic` indicator if progress messages should be quieted.
+#' @param quiet `logical` indicator if progress messages should be quieted.
 #'
-#' @param verbose `logic` indicator if detailed messages should be generated.
+#' @param verbose `logical` indicator if detailed messages should be generated.
 #'
 #' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
@@ -196,11 +196,11 @@ NMME_urls <- function (start = Sys.Date(),
 #'
 #' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`options`][base::options].
 #'
-#' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
+#' @param force `logical` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
-#' @param quiet `logic` indicator if progress messages should be quieted.
+#' @param quiet `logical` indicator if progress messages should be quieted.
 #'
-#' @param verbose `logic` indicator if detailed messages should be generated.
+#' @param verbose `logical` indicator if detailed messages should be generated.
 #'
 #' @note There are two calls to [`base::Sys.sleep`] for `pause` seconds each to allow for the file unzipping, copying, and such to catch up.
 #'

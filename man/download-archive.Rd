@@ -26,11 +26,11 @@ download_archive(
 
 \item{source}{\code{character} indicator of the source for the download. Either \code{"github"} (default) or \code{"zenodo"}.}
 
-\item{quiet}{\code{logic} indicator if progress messages should be quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logic} indicator if detailed messages should be generated.}
+\item{verbose}{\code{logical} indicator if detailed messages should be generated.}
 
-\item{force}{\code{logic} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
+\item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{pause}{Positive \code{integer} or integer \code{numeric} seconds for pausing during steps around unzipping that require time delay.}
 

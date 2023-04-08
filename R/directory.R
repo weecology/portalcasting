@@ -373,7 +373,7 @@ update_directory_configuration <- function (main = ".") {
 #'     * `models_path`  
 #'     * `resources_path`
 #'
-#' @param quiet `logic` indicator if progress messages should be quieted.
+#' @param quiet `logical` indicator if progress messages should be quieted.
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'

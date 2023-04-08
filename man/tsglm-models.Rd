@@ -37,7 +37,7 @@ meta_tsglm(
 
 \item{metadata}{\code{list} of model control elements. See \code{\link{prepare_metadata}}.}
 
-\item{quiet}{\code{logic} indicator controlling if messages are printed.}
+\item{quiet}{\code{logical} indicator controlling if messages are printed.}
 
 \item{object}{A \code{tsglm}-class object.}
 

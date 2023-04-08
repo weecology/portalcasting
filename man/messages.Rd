@@ -19,11 +19,11 @@ castle()
 \arguments{
 \item{...}{zero or more objects that can be coerced to \code{character} and are concatenated with no separator added, or a single condition object. See \code{\link[base:message]{message}}.}
 
-\item{quiet}{\code{logic} indicator if the message should be generated.}
+\item{quiet}{\code{logical} indicator if the message should be generated.}
 
 \item{domain}{The domain for the translation. If \code{NA}, messages will not be translated. See \code{\link[base:message]{message}} and \code{\link[base:gettext]{base::gettext}}.}
 
-\item{appendLF}{\code{logic} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base:message]{message}}.}
+\item{appendLF}{\code{logical} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base:message]{message}}.}
 
 \item{char}{\code{character} value to repeated ``reps` times to form the break line.}
 
