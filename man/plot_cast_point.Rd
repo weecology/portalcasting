@@ -7,7 +7,6 @@
 plot_cast_point(
   main = ".",
   cast_id = NULL,
-  cast_groups = NULL,
   dataset = NULL,
   model = NULL,
   historic_end_newmoonnumber = NULL,
@@ -21,8 +20,6 @@ plot_cast_point(
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
 \item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
-
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to include.}
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
@@ -47,4 +44,17 @@ Plot the point value with confidence interval for a time point across multiple s
 \details{
 The resulting plot shows predictions as points (open white circles) with error, where the point represents the \code{estimate} and the bounds of the error are \code{lower_pi} and \code{upper_pi} in the \code{cast_table} saved output from a model. \cr
 As of \verb{portalcasting v0.9.0}, this represents the mean and the 95\\% prediction interval. If \code{with_census = TRUE}, the observations from the associated moon are plotted as blue filled squares.
+}
+\examples{
+\donttest{ 
+\dontrun{
+   main1 <- file.path(tempdir(), "production")
+   setup_sandbox(main = main1)
+
+   portalcast(main = main1, models = "AutoArima")
+   plot_cast_point(main = main1)
+
+   unlink(main1, recursive = TRUE)
+}}
+
 }

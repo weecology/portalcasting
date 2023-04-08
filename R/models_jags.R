@@ -17,7 +17,7 @@
 #'
 #' @param inits `list` of model parameter initializer functions. See [`prefab_models_controls`].
 #'
-#' @param model `character` value of the model file name. See [`prefab_model_controls`].
+#' @param model `character` value of the model file name. See [`prefab_models_controls`].
 #'
 #' @param data_names `character` vector of data values to include in the data `list`. See [`prefab_model_controls`].
 #'

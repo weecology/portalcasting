@@ -23,7 +23,8 @@
 #' @name directory creation
 #'
 #' @examples
-#'  \donttest{
+#' \donttest{ 
+#' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    main2 <- file.path(tempdir(), "sandbox")
 #'    main3 <- file.path(tempdir(), "production")
@@ -34,10 +35,10 @@
 #'
 #'    update_dir(main = main1)
 #'
-#'    unlink(main1, force = TRUE, recursive = TRUE)
-#'    unlink(main2, force = TRUE, recursive = TRUE)
-#'    unlink(main3, force = TRUE, recursive = TRUE)
-#'  }
+#'    unlink(main1, recursive = TRUE)
+#'    unlink(main2, recursive = TRUE)
+#'    unlink(main3, recursive = TRUE)
+#' }}
 #'
 NULL
 
@@ -224,15 +225,16 @@ setup_sandbox <- function (main                  = ".",
 #' @name directory configuration file
 #'
 #' @examples
-#'  \donttest{
+#' \donttest{ 
+#' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    setup_dir(main = main1)
 #'
 #'    settings1 <- read_directory_settings(main = main1)
 #'    config1   <- read_directory_configuration(main = main1)
 #'
-#'    unlink(main1, force = TRUE, recursive = TRUE)
-#'  }
+#'    unlink(main1, recursive = TRUE)
+#' }}
 #'
 NULL
 
@@ -382,7 +384,8 @@ update_directory_configuration <- function (main = ".") {
 #' @name directory paths
 #'
 #' @examples
-#'  \donttest{
+#' \donttest{ 
+#' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    create_dir(main = main1)
 #'    paths(main = main1)
@@ -408,7 +411,7 @@ update_directory_configuration <- function (main = ".") {
 #'    fits_path(main = main1)
 #'    models_path(main = main1)
 #'    resources_path(main = main1)
-#'  }
+#' }}
 #'
 NULL
 

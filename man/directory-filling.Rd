@@ -83,3 +83,25 @@ Additionally, new models and datasets can be added to the directory at filling u
 }
 }
 }
+\examples{
+\donttest{ 
+\dontrun{
+   main1 <- file.path(tempdir(), "standard")
+   main2 <- file.path(tempdir(), "production")
+
+   create_dir(main = main1)
+   fill_dir(main = main1)
+
+   create_dir(main = main2, settings = production_settings())
+   fill_resources(main = main2)
+   fill_forecasts(main = main2)
+   fill_fits(main = main2)
+   fill_models(main = main2)
+   fill_data(main = main2)
+   fill_app(main = main2)
+
+   unlink(main1, recursive = TRUE)
+   unlink(main2, recursive = TRUE)
+}}
+
+}

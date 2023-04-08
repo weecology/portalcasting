@@ -470,17 +470,26 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #' 
 #' @param highlight_sp `character` vector of the species codes (or `"total"` for the total across species) to be highlighted or `NULL` (default) to not highlight anything.
 #'
-#' @param cast_groups `integer` (or integer `numeric`) value of the cast group to include.
-#'
 #' @param with_census `logical` toggle if the plot should include the observed data collected during the predicted census.
 #'
 #' @return `NULL`. Plot is generated.
+#'
+#' @examples
+#' \donttest{ 
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "production")
+#'    setup_sandbox(main = main1)
+#'
+#'    portalcast(main = main1, models = "AutoArima")
+#'    plot_cast_point(main = main1)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }}
 #'
 #' @export
 #'
 plot_cast_point <- function (main                       = ".", 
                              cast_id                    = NULL, 
-                             cast_groups                = NULL,
                              dataset                    = NULL, 
                              model                      = NULL, 
                              historic_end_newmoonnumber = NULL, 
@@ -667,6 +676,18 @@ plot_cast_point <- function (main                       = ".",
 #'
 #' @return `NULL`. Plot is generated.
 #'
+#' @examples
+#' \donttest{ 
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "production")
+#'    setup_sandbox(main = main1)
+#'
+#'    portalcast(main = main1, models = "AutoArima")
+#'    plot_cast_ts(main = main1)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }}
+#'
 #' @export
 #'
 plot_cast_ts <- function (main                         = ".", 
@@ -838,6 +859,17 @@ plot_cast_ts <- function (main                         = ".",
 #' @param to_plot `character` of the covariate to plot, restricted to column names in the covariates table (see [`read_covariates`]).
 #'
 #' @return `NULL`. Plot is generated.
+#'
+#' @examples
+#' \donttest{ 
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "standard")
+#'    setup_dir(main = main1)
+#'
+#'    plot_covariates(main = main1)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }}
 #'
 #' @export
 #'

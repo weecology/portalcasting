@@ -9,6 +9,17 @@
 #'
 #' @name portalcasting app
 #'
+#' @examples
+#' \donttest{ 
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "standard")
+#'    setup_dir(main = main1)
+#'
+#'    run_app(main = main1)
+#'
+#'    unlink(main1, recursive = TRUE)
+#'  }}
+#'
 NULL
 
 #' @rdname portalcasting-app
@@ -474,9 +485,9 @@ global_list <- function (main = ".") {
 
   messageq(" ... done.", quiet = !settings$verbose)
 
-  about_md_path                                               <- file.path(main, settings$subdirectories$app, settings$files$about_md)
-  models_html_path                                            <- models_html_path
-  rodents_profiles_html_path                                  <- rodents_profiles_html_path(main)
+  about_md_path                                               <- about_md_path(main = main)
+  models_html_path                                            <- models_html_path(main = main)
+  rodents_profiles_html_path                                  <- rodents_profiles_html_path(main = main)
 
   list(casts_metadata                                                   = casts_metadata,
        casts_evaluations                                                = casts_evaluations,

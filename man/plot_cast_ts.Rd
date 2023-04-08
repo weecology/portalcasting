@@ -46,3 +46,16 @@ The resulting plot shows observations as a solid black line and predictions as a
 As of \verb{portalcasting v0.9.0}, this represents the mean and the 95\\% prediction interval. \cr
 Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
 }
+\examples{
+\donttest{ 
+\dontrun{
+   main1 <- file.path(tempdir(), "production")
+   setup_sandbox(main = main1)
+
+   portalcast(main = main1, models = "AutoArima")
+   plot_cast_ts(main = main1)
+
+   unlink(main1, recursive = TRUE)
+}}
+
+}

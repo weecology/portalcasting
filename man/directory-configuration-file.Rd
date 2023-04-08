@@ -40,14 +40,15 @@ The directory configuration file is a special file within the directory setup an
 \code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
 }
 \examples{
- \donttest{
+\donttest{ 
+\dontrun{
    main1 <- file.path(tempdir(), "standard")
    setup_dir(main = main1)
 
    settings1 <- read_directory_settings(main = main1)
    config1   <- read_directory_configuration(main = main1)
 
-   unlink(main1, force = TRUE, recursive = TRUE)
- }
+   unlink(main1, recursive = TRUE)
+}}
 
 }
