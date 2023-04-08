@@ -62,7 +62,6 @@
 #'   `runjags_controls`: A `list` of controls. \cr \cr
 #'   `forecast.runjags`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"level"`. 
 #' 
-#'
 #' @references 
 #'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. [URL](https://www.jstatsoft.org/article/view/v071i09). 
 #'  

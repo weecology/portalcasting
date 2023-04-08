@@ -111,7 +111,7 @@ write_data <- function (x            = NULL,
 #'      read_rodents(main = main1)
 #'      read_rodents_table(main = main1)
 #'      read_covariates(main = main1)
-#'      read_climate_forecast(main = main1)
+#'      read_climate_forecasts(main = main1)
 #'      read_newmoons(main = main1)
 #'      read_metadata(main = main1)
 #'      unlink(main1, force = TRUE, recursive = TRUE)
@@ -227,6 +227,7 @@ read_climate_forecasts <- function (main = ".") {
   datas <- settings$resources$climate_forecast$data
   ndatas <- length(datas)
   dat_list <- mapply(FUN = read_csv_arrow, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
+  dat_list <- lapply(dat_list, FUN = as.data.frame)
 
   dat_tab <- dat_list[[1]]
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
@@ -239,7 +240,7 @@ read_climate_forecasts <- function (main = ".") {
       dat_tab_i <- dat_list[[i]]
       x         <- dat_tab_i[ , ncol(dat_tab_i)]
       dat_tab   <- data.frame(dat_tab, x)
-      colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[i]
+      colnames(dat_tab)[ncol(dat_tab)] <- datas[i]
 
     }
 

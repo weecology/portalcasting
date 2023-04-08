@@ -324,7 +324,7 @@ update_directory_configuration <- function (main = ".") {
 
   settings$resources$PortalData_version       <- settings$resources$PortalData$version
   settings$resources$archive_version          <- ifnull(settings$resources$portalPredictions$version, "")
-  settings$resources$climate_forecast_version <- settings$resources$climate_forecast$version
+  settings$resources$climate_forecast_version <- settings$resources$climate_forecasts$version
 
   if (settings$resources$PortalData_version == "latest") {
 

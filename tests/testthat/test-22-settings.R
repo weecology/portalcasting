@@ -24,7 +24,7 @@ test_that(desc = "directory_resources produces a list", {
 
   expect_silent(dr <- directory_resources())
   expect_is(dr, "list")
-  expect_equal(names(dr), c("PortalData", "portalPredictions", "climate_forecast"))
+  expect_equal(names(dr), c("PortalData", "portalPredictions", "climate_forecasts"))
 
 })
 

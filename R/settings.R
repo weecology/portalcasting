@@ -42,7 +42,7 @@
 #'
 #' @param portalPredictions `list` of `source` and `version` elements of `character` values for the archive download. Default values point to github, but `verison = NULL` indicates no download.
 #'
-#' @param climate_forecast `list` of `source`, `version`, and `data` elements of `character` values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.
+#' @param climate_forecasts `list` of `source`, `version`, and `data` elements of `character` values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.
 #'
 #' @param save `logic` indicator controlling if the output should be saved out.
 #'
@@ -194,17 +194,17 @@ directory_subdirectories <- function (forecasts = "forecasts",
 #'
 #' @export
 #'
-directory_resources <- function (PortalData        = list(source  = "github", 
-                                                          version = "latest"),
-                                 portalPredictions = list(source  = "github", 
-                                                          version = NULL),
-                                 climate_forecast  = list(source  = "NMME", 
-                                                          version = as.character(Sys.Date()), 
-                                                          data    = c("tasmin", "tasmean", "tasmax", "pr"))) {
+directory_resources <- function (PortalData         = list(source  = "github", 
+                                                           version = "latest"),
+                                 portalPredictions  = list(source  = "github", 
+                                                           version = NULL),
+                                 climate_forecasts  = list(source  = "NMME", 
+                                                           version = as.character(Sys.Date()), 
+                                                           data    = c("tasmin", "tasmean", "tasmax", "pr"))) {
 
-  list(PortalData        = PortalData,
-       portalPredictions = portalPredictions,
-       climate_forecast  = climate_forecast)
+  list(PortalData         = PortalData,
+       portalPredictions  = portalPredictions,
+       climate_forecasts  = climate_forecasts)
 
 }
 

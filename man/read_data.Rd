@@ -50,7 +50,7 @@ Read in a specified data file.
      read_rodents(main = main1)
      read_rodents_table(main = main1)
      read_covariates(main = main1)
-     read_climate_forecast(main = main1)
+     read_climate_forecasts(main = main1)
      read_newmoons(main = main1)
      read_metadata(main = main1)
      unlink(main1, force = TRUE, recursive = TRUE)
