@@ -116,7 +116,6 @@ Wrapper functions for specific subdirectories and files include:
 }
 }
 \examples{
-\donttest{ 
 \dontrun{
    main1 <- file.path(tempdir(), "standard")
    create_dir(main = main1)
@@ -143,6 +142,6 @@ Wrapper functions for specific subdirectories and files include:
    fits_path(main = main1)
    models_path(main = main1)
    resources_path(main = main1)
-}}
+}
 
 }

@@ -46,7 +46,6 @@ The resulting plot shows predictions as points (open white circles) with error, 
 As of \verb{portalcasting v0.9.0}, this represents the mean and the 95\\% prediction interval. If \code{with_census = TRUE}, the observations from the associated moon are plotted as blue filled squares.
 }
 \examples{
-\donttest{ 
 \dontrun{
    main1 <- file.path(tempdir(), "production")
    setup_sandbox(main = main1)
@@ -55,6 +54,6 @@ As of \verb{portalcasting v0.9.0}, this represents the mean and the 95\\% predic
    plot_cast_point(main = main1)
 
    unlink(main1, recursive = TRUE)
-}}
+}
 
 }

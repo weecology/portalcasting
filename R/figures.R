@@ -475,7 +475,6 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #' @return `NULL`. Plot is generated.
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "production")
 #'    setup_sandbox(main = main1)
@@ -484,7 +483,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #'    plot_cast_point(main = main1)
 #'
 #'    unlink(main1, recursive = TRUE)
-#' }}
+#' }
 #'
 #' @export
 #'
@@ -677,7 +676,6 @@ plot_cast_point <- function (main                       = ".",
 #' @return `NULL`. Plot is generated.
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "production")
 #'    setup_sandbox(main = main1)
@@ -686,7 +684,7 @@ plot_cast_point <- function (main                       = ".",
 #'    plot_cast_ts(main = main1)
 #'
 #'    unlink(main1, recursive = TRUE)
-#' }}
+#' }
 #'
 #' @export
 #'
@@ -861,7 +859,6 @@ plot_cast_ts <- function (main                         = ".",
 #' @return `NULL`. Plot is generated.
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    setup_dir(main = main1)
@@ -869,7 +866,7 @@ plot_cast_ts <- function (main                         = ".",
 #'    plot_covariates(main = main1)
 #'
 #'    unlink(main1, recursive = TRUE)
-#' }}
+#' }
 #'
 #' @export
 #'

@@ -43,12 +43,11 @@ download_climate_forecasts(
 Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \verb{<main>/<resources>} sub.
 }
 \examples{
-\donttest{ 
 \dontrun{
    main1 <- file.path(tempdir(), "standard")
    create_dir(main = main1)
    download_climate_forecasts(main = main)
    unlink(main1, recursive = TRUE)
-}}
+}
 
 }

@@ -27,7 +27,7 @@
 #' @name read write data
 #'
 #' @examples  
-#'  \donttest{
+#'  \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    setup_dir(main = main1)
 #'    write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")

@@ -10,7 +10,6 @@
 #' @name portalcasting app
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    setup_dir(main = main1)
@@ -18,7 +17,7 @@
 #'    run_app(main = main1)
 #'
 #'    unlink(main1, recursive = TRUE)
-#'  }}
+#'  }
 #'
 NULL
 

@@ -47,7 +47,6 @@ As of \verb{portalcasting v0.9.0}, this represents the mean and the 95\\% predic
 Observations that occurred after the cast are shown connected directly to the pre-cast observation data (as the black solid line).
 }
 \examples{
-\donttest{ 
 \dontrun{
    main1 <- file.path(tempdir(), "production")
    setup_sandbox(main = main1)
@@ -56,6 +55,6 @@ Observations that occurred after the cast are shown connected directly to the pr
    plot_cast_ts(main = main1)
 
    unlink(main1, recursive = TRUE)
-}}
+}
 
 }

@@ -28,13 +28,12 @@
 #' @export
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    create_dir(main = main1)
 #'    download_climate_forecasts(main = main)
 #'    unlink(main1, recursive = TRUE)
-#' }}
+#' }
 #'
 download_climate_forecasts <- function (main          = ".",
                                         resources_sub = "resources",
@@ -212,13 +211,12 @@ NMME_urls <- function (start = Sys.Date(),
 #' @export
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    create_dir(main = main1)
 #'    download_archive(main = main)
 #'    unlink(main1, recursive = TRUE)
-#'  }}
+#'  }
 #'
 download_archive <- function(main          = ".",
                              resources_sub = "resources",

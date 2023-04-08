@@ -84,7 +84,6 @@ Additionally, new models and datasets can be added to the directory at filling u
 }
 }
 \examples{
-\donttest{ 
 \dontrun{
    main1 <- file.path(tempdir(), "standard")
    main2 <- file.path(tempdir(), "production")
@@ -102,6 +101,6 @@ Additionally, new models and datasets can be added to the directory at filling u
 
    unlink(main1, recursive = TRUE)
    unlink(main2, recursive = TRUE)
-}}
+}
 
 }

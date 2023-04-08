@@ -36,7 +36,6 @@
 #' @name directory filling
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    main2 <- file.path(tempdir(), "production")
@@ -54,7 +53,7 @@
 #'
 #'    unlink(main1, recursive = TRUE)
 #'    unlink(main2, recursive = TRUE)
-#' }}
+#' }
 #'
 NULL
 

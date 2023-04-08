@@ -82,7 +82,6 @@ The \code{list} of directory settings \code{\link[base:invisible]{invisible}}-ly
 Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content.
 }
 \examples{
-\donttest{ 
 \dontrun{
    main1 <- file.path(tempdir(), "standard")
    main2 <- file.path(tempdir(), "sandbox")
@@ -97,6 +96,6 @@ Instantiates the necessary folder structure for a directory, writes the setup co
    unlink(main1, recursive = TRUE)
    unlink(main2, recursive = TRUE)
    unlink(main3, recursive = TRUE)
-}}
+}
 
 }

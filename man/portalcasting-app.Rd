@@ -20,3 +20,14 @@ global_list(main = ".")
 \code{run_app} constructs and launches a local version of the web application by running \code{\link[shiny:runApp]{shiny::runApp}} pointed to the \code{app} subdirectory in the local \code{portalcasting} package folder. \cr \cr
 \code{global_list} creates a list of values that are globally available in an app run.
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "standard")
+   setup_dir(main = main1)
+
+   run_app(main = main1)
+
+   unlink(main1, recursive = TRUE)
+ }
+
+}
