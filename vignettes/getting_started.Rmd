@@ -22,10 +22,10 @@ vignette: >
   vers <- packageVersion("portalcasting")
   today <- Sys.Date()
 
-  model_controls <- prefab_model_controls( )
-  model_names    <- unlist(mapply(getElement, prefab_model_controls(), "metadata")["print_name", ])
+  models_controls <- prefab_models_controls( )
+  models_names    <- unlist(mapply(getElement, prefab_models_controls(), "metadata")["print_name", ])
 
-  nmodels        <- length(model_names)
+  nmodels        <- length(models_names)
   nmodels_text   <- as.character(english::english(nmodels))
 
 
@@ -47,7 +47,7 @@ library(portalcasting)
 ## Create a Portal Predictions directory
 
 The `setup_dir()` function creates and populates a standard Portal Predictions directory that includes `resources`, `data`, `models`, `fits`, and `forecasts` subdirectories. 
-By default, `setup_dir()` downloads the most up-to-date version of the [Portal Data](https://doi.org/10.5281/zenodo.1215988) archive from GitHub and the NMME downscaled weather forecasts into the `resources` subdirectory; unpacks relevant components; prepares the newmoons, rodents, covariates, covariate forecast, and metadata data files (and places them in the `data` subdirectory); and populates the `models` subdirectory with scripts for the `r nmodels_text` existing models (`r model_names`).
+By default, `setup_dir()` downloads the most up-to-date version of the [Portal Data](https://doi.org/10.5281/zenodo.1215988) archive from GitHub and the NMME downscaled weather forecasts into the `resources` subdirectory; unpacks relevant components; prepares the newmoons, rodents, covariates, covariate forecast, and metadata data files (and places them in the `data` subdirectory); and populates the `models` subdirectory with scripts for the `r nmodels_text` existing models (`r models_names`).
 
 Specialized versions of `setup_dir` are tailored for local model exploration, development, and  testing ("`setup_sandbox`") and for use in the real-deal pipeline ("`setup_production`"). The settings are fairly similar, although `setup_sandbox` has extra rigid argument checking turned off and extra verbose messaging turned on. In addition, it does not download the repository archive resource (only the Portal Data and NMME resources). `setup_production` provides a robust starting point for a user interested in seeing the range of what the package can do, with specific error checking and verbose messaging. `setup_production` does download the entire [Portal Predictions](https://doi.org/10.5281/zenodo.833438) archive from GitHub. Note that downloading the full directory does take a few minutes.
 
@@ -65,7 +65,7 @@ Many additional arguments for altering directory set up are available indirectly
 
 The `portalcast()` function controls the running of potentially multiple models across various species in different data sets for a given time setup (defined in `directory_settings` and `time_settings` specifically). This can involve what we have classically called "forecasts" (from the present time step) and "hindcasts" (from a time step before the current one), although the data must be set accordingly (using `time_settings`) for each time point prior to invoking `portalcast()`.
 
-Presently, the preloaded model set includes `r nmodels_text` models: `r model_names`. The jags and GARCH models all take a bit longer to run, so for the purposes of illustration, we will only run ESS, AutoArima, and NaiveArima models, which we indicate through input to the `models` argument: 
+Presently, the preloaded model set includes `r nmodels_text` models: `r models_names`. The jags and GARCH models all take a bit longer to run, so for the purposes of illustration, we will only run ESS, AutoArima, and NaiveArima models, which we indicate through input to the `models` argument: 
 
 ```{r, eval=FALSE}
 portalcast(main = main, models = c("ESSS", "AutoArima", "NaiveArima"))

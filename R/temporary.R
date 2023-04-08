@@ -6,6 +6,10 @@ update_forecasts_folder <- function (main = ".") {
 
   casts_metadata <- read_casts_metadata(main = main)
 
+  if (file.exists(file.path(main, "forecasts", "casts_metadata.csv"))) {
+    casts_metadata <- read.csv(file.path(main, "forecasts", "casts_metadata.csv"))
+  }
+
   old_colnames <- c("cast_id", "cast_group", "cast_date", "start_moon", "end_moon", "lead_time", "model", "dataset", "portalcasting_version", "QAQC", "notes")
 
   if (all(colnames(casts_metadata) %in% old_colnames)) {
@@ -77,11 +81,6 @@ update_forecasts_folder <- function (main = ".") {
          stop("cast_id does not have a model_cast file")
 
       } 
-
-
-
-      
-
 
       nspecies <- length(unique(cast_tab$species))
 
@@ -187,7 +186,7 @@ update_forecasts_folder <- function (main = ".") {
 
     }
 
-    meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
+    meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecasts_metadata)
     row.names(out) <- NULL    
     write_csv_arrow(x = out, file = meta_path)
 
