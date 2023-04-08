@@ -4,6 +4,8 @@
 \alias{directory paths}
 \alias{paths}
 \alias{models_rmd_path}
+\alias{models_html_path}
+\alias{about_md_path}
 \alias{rodents_profiles_html_path}
 \alias{rodents_profiles_csv_path}
 \alias{rodents_datasets_paths}
@@ -28,6 +30,10 @@
 paths(main = ".")
 
 models_rmd_path(main = ".")
+
+models_html_path(main = ".")
+
+about_md_path(main = ".")
 
 rodents_profiles_html_path(main = ".")
 
@@ -126,6 +132,8 @@ Wrapper functions for specific subdirectories and files include:
    metadata_path(main = main1)
    models_controls_path(main = main1)
    models_rmd_path(main = main1)
+   models_html_path(main = main1)
+   about_md_path(main = main1)
    rodents_profiles_html_path(main = main1)
    rodents_profiles_csv_path(main = main1)
    app_path(main = main1)

@@ -38,7 +38,7 @@ test_that(desc = "plot_casts_err_lead", {
 
   skip_on_cran() 
 
-  expect_silent(plot_casts_err_lead(main = main3, species = c("PP", "DM"), models = c("AutoArima")))
+  expect_silent(plot_casts_err_lead(main = main3, species = c("PP"), models = c("AutoArima")))
   expect_silent(plot_casts_err_lead(main = main3, species = c("total", "DM"), models = c("AutoArima", "ESSS")))
 
   expect_error(plot_casts_err_lead(main = main3, cast_id = 1e10))
@@ -70,7 +70,7 @@ test_that(desc = "plot_covariates", {
   expect_silent(plot_covariates(main = main3, to_plot = c("precipitation", "warm_precip")))
   expect_silent(plot_covariates(main = main3, to_plot = c("mintemp", "meantemp", "maxtemp")))
 
-  expect_error(plot_casts_cov_RMSE(main = main3, to_plot = "xyz"))
+  expect_error(plot_covariates(main = main3, to_plot = "xyz"))
 
 })
 

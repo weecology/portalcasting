@@ -86,9 +86,9 @@ main_panel <- function (global = global_list( )) {
 
   mainPanel(tabsetPanel(forecast_tab(global = global),
                         evaluation_tab(global = global),
-                        about_tab( ),
-                        models_tab( ),
-                        profiles_tab( ),
+                        about_tab(global = global),
+                        models_tab(global = global),
+                        profiles_tab(global = global),
                         covariates_tab(global = global)))
 
 
@@ -119,10 +119,10 @@ subtitle_panel <- function ( ) {
 #'
 #' @export
 #'
-about_tab <- function ( ) {
+about_tab <- function (global = global) {
 
   tabPanel(title = "About",
-           includeMarkdown("about.md")) 
+           includeMarkdown(global$about_md_path)) 
 
 }
 
@@ -130,10 +130,10 @@ about_tab <- function ( ) {
 #'
 #' @export
 #'
-models_tab <- function ( ) {
+models_tab <- function (global = global) {
 
   tabPanel(title = "Models",
-           includeHTML("models.html")) 
+           includeHTML(global$models_html_path)) 
 
 }
 
@@ -141,10 +141,10 @@ models_tab <- function ( ) {
 #'
 #' @export
 #'
-profiles_tab <- function ( ) {
+profiles_tab <- function (global = global) {
 
   tabPanel(title = "Rodent Profiles",
-           includeHTML("rodents_profiles.html")) 
+           includeHTML(global$rodents_profiles_html_path)) 
 
 }
 

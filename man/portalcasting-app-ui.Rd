@@ -45,11 +45,11 @@ title_panel()
 
 subtitle_panel()
 
-about_tab()
+about_tab(global = global)
 
-models_tab()
+models_tab(global = global)
 
-profiles_tab()
+profiles_tab(global = global)
 
 forecast_tab(global = global_list())
 

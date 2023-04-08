@@ -474,6 +474,9 @@ global_list <- function (main = ".") {
 
   messageq(" ... done.", quiet = !settings$verbose)
 
+  about_md_path                                               <- file.path(main, settings$subdirectories$app, settings$files$about_md)
+  models_html_path                                            <- models_html_path
+  rodents_profiles_html_path                                  <- rodents_profiles_html_path(main)
 
   list(casts_metadata                                                   = casts_metadata,
        casts_evaluations                                                = casts_evaluations,
@@ -509,7 +512,11 @@ global_list <- function (main = ".") {
 
        species_names                                                    = species_names,
        species_names_table                                              = species_names_table,
-       models_names                                                     = models_names)
+       models_names                                                     = models_names,
+
+       about_md_path                                                    = about_md_path,
+       models_html_path                                                 = models_html_path,
+       rodents_profiles_html_path                                       = rodents_profiles_html_path)
 
 }
 

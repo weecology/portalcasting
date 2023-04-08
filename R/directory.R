@@ -398,6 +398,8 @@ update_directory_configuration <- function (main = ".") {
 #'    metadata_path(main = main1)
 #'    models_controls_path(main = main1)
 #'    models_rmd_path(main = main1)
+#'    models_html_path(main = main1)
+#'    about_md_path(main = main1)
 #'    rodents_profiles_html_path(main = main1)
 #'    rodents_profiles_csv_path(main = main1)
 #'    app_path(main = main1)
@@ -447,6 +449,8 @@ paths <- function (main = ".") {
                 directory_configuration   = file.path(main, "directory_configuration.yaml"), 
 
                 models_rmd                = file.path(main, settings$subdirectories$app, settings$files$models_rmd), 
+                about_md                  = file.path(main, settings$subdirectories$app, settings$files$about_md), 
+                models_html               = file.path(main, settings$subdirectories$app, settings$files$models_html), 
                 rodents_profiles_html     = file.path(main, settings$subdirectories$app, settings$files$rodents_profiles_html), 
                 rodents_profiles_csv      = file.path(main, settings$subdirectories$app, "www", settings$files$rodents_profiles_csv))
 
@@ -463,6 +467,26 @@ paths <- function (main = ".") {
 models_rmd_path <- function (main = ".") {
 
   paths(main = main)$files$models_rmd
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+models_html_path <- function (main = ".") {
+
+  paths(main = main)$files$models_html
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+about_md_path <- function (main = ".") {
+
+  paths(main = main)$files$about_md
 
 }
 

@@ -22,6 +22,10 @@
 #'
 #' @param models_rmd `character` name for the Rmd file for the models page of the app.
 #'
+#' @param models_html `character` name for the html file where the models page will be saved for the app.
+#'
+#' @param about_md `character` name for the md file for the about page of the app.
+#'
 #' @param rodents_profiles_html `character` name for the html file where the rodents profiles page will be saved for the app.
 #'
 #' @param rodents_profiles_csv `character` name for the csv file containing content for the rodents profiles table for the app.
@@ -163,6 +167,8 @@ directory_files <- function (newmoons              = "newmoons.csv",
                              forecasts_results     = "forecasts_results.csv",
                              forecasts_metadata    = "forecasts_metadata.csv",
                              metadata              = "metadata.yaml",
+                             about_md              = "about.md",
+                             models_html           = "models.html",
                              models_rmd            = "models.Rmd",
                              rodents_profiles_html = "rodents_profiles.html",
                              rodents_profiles_csv  = "rodents_profiles.csv") {

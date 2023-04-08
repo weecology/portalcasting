@@ -44,6 +44,8 @@ directory_files(
   forecasts_results = "forecasts_results.csv",
   forecasts_metadata = "forecasts_metadata.csv",
   metadata = "metadata.yaml",
+  about_md = "about.md",
+  models_html = "models.html",
   models_rmd = "models.Rmd",
   rodents_profiles_html = "rodents_profiles.html",
   rodents_profiles_csv = "rodents_profiles.csv"
@@ -126,6 +128,10 @@ Default value of \code{30} corresponds to one additional lunar month.}
 \item{forecasts_metadata}{\code{character} name for the forecast metadata csv.}
 
 \item{metadata}{\code{character} name for the Forecast metadata YAML.}
+
+\item{about_md}{\code{character} name for the md file for the about page of the app.}
+
+\item{models_html}{\code{character} name for the html file where the models page will be saved for the app.}
 
 \item{models_rmd}{\code{character} name for the Rmd file for the models page of the app.}
 
