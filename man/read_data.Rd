@@ -42,3 +42,18 @@ Data requested.
 \description{
 Read in a specified data file.
 }
+\examples{
+   \donttest{
+     main1 <- file.path(tempdir(), "standard")
+     setup_dir(main = main1)
+     read_data(main = main1)
+     read_rodents(main = main1)
+     read_rodents_table(main = main1)
+     read_covariates(main = main1)
+     read_climate_forecast(main = main1)
+     read_newmoons(main = main1)
+     read_metadata(main = main1)
+     unlink(main1, force = TRUE, recursive = TRUE)
+   }
+
+}

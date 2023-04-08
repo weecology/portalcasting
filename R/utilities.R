@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-#'    packages_version_finder( )
+#'    package_version_finder( )
 #'
 package_version_finder <- function (what) {
 

@@ -35,3 +35,12 @@ write_data(
 \description{
 Save inputted data out to a data file if requested and return it to the console, \code{\link[base:invisible]{invisible}}-ly. Currently available for yaml, csv, and json file extensions.
 }
+\examples{
+   \donttest{
+     main1 <- file.path(tempdir(), "standard")
+     create_dir(main = main1)
+     write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")
+     unlink(main1, force = TRUE, recursive = TRUE)
+   }
+
+}

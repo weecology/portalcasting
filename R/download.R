@@ -1,7 +1,7 @@
 
 #' @title Download Climate Forecasts
 #'
-#' @description Downloads climate forecasts, presently only from NMME (see [`NMME_urls`]) into the `<main>/raw` sub.
+#' @description Downloads climate forecasts, presently only from NMME (see [`NMME_urls`]) into the `<main>/<resources>` sub.
 #'
 #' @param main `character` value defining the main component of the portalcasting directory tree. 
 #'
@@ -26,6 +26,14 @@
 #' @name download climate forecasts
 #'
 #' @export
+#'
+#' @examples
+#'    \donttest{
+#'      main1 <- file.path(tempdir(), "standard")
+#'      create_dir(main = main1)
+#'      download_climate_forecasts(main = main)
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+#'    }
 #'
 download_climate_forecasts <- function (main          = ".",
                                         resources_sub = "resources",
@@ -110,6 +118,9 @@ download_climate_forecasts <- function (main          = ".",
 #' @name NMME urls
 #'
 #' @export
+#'
+#' @examples
+#'    NMME_urls( )
 #'
 NMME_urls <- function (start = Sys.Date(), 
                        end   = as.Date("2050-01-01"),
@@ -198,6 +209,14 @@ NMME_urls <- function (start = Sys.Date(),
 #' @name download archive
 #'
 #' @export
+#'
+#' @examples
+#'    \donttest{
+#'      main1 <- file.path(tempdir(), "standard")
+#'      create_dir(main = main1)
+#'      download_archive(main = main)
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+#'    }
 #'
 download_archive <- function(main          = ".",
                              resources_sub = "resources",

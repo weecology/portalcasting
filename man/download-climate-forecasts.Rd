@@ -40,5 +40,14 @@ download_climate_forecasts(
 \code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
-Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \verb{<main>/raw} sub.
+Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \verb{<main>/<resources>} sub.
+}
+\examples{
+   \donttest{
+     main1 <- file.path(tempdir(), "standard")
+     create_dir(main = main1)
+     download_climate_forecasts(main = main)
+     unlink(main1, force = TRUE, recursive = TRUE)
+   }
+
 }

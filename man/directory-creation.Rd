@@ -81,3 +81,21 @@ The \code{list} of directory settings \code{\link[base:invisible]{invisible}}-ly
 \description{
 Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content.
 }
+\examples{
+   \donttest{
+     main1 <- file.path(tempdir(), "standard")
+     main2 <- file.path(tempdir(), "sandbox")
+     main3 <- file.path(tempdir(), "production")
+
+     setup_dir(main = main1)
+     setup_sandbox(main = main2)
+     setup_production(main = main3)
+
+     update_dir(main = main1)
+
+     unlink(main1, force = TRUE, recursive = TRUE)
+     unlink(main2, force = TRUE, recursive = TRUE)
+     unlink(main3, force = TRUE, recursive = TRUE)
+   }
+
+}

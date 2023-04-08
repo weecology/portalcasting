@@ -45,3 +45,12 @@ Downloads a specific \code{version} of the Portal Predictions repository from ei
 \note{
 There are two calls to \code{\link[base:Sys.sleep]{base::Sys.sleep}} for \code{pause} seconds each to allow for the file unzipping, copying, and such to catch up.
 }
+\examples{
+   \donttest{
+     main1 <- file.path(tempdir(), "standard")
+     create_dir(main = main1)
+     download_archive(main = main)
+     unlink(main1, force = TRUE, recursive = TRUE)
+   }
+
+}

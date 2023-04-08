@@ -20,6 +20,14 @@
 #'
 #' @export
 #'
+#' @examples
+#'    \donttest{
+#'      main1 <- file.path(tempdir(), "standard")
+#'      create_dir(main = main1)
+#'      write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+#'    }
+#'
 write_data <- function (x            = NULL, 
                         main         = ".", 
                         subdirectory = "data",
@@ -94,6 +102,20 @@ write_data <- function (x            = NULL,
 #' @return Data requested.
 #' 
 #' @export
+#'
+#' @examples
+#'    \donttest{
+#'      main1 <- file.path(tempdir(), "standard")
+#'      setup_dir(main = main1)
+#'      read_data(main = main1)
+#'      read_rodents(main = main1)
+#'      read_rodents_table(main = main1)
+#'      read_covariates(main = main1)
+#'      read_climate_forecast(main = main1)
+#'      read_newmoons(main = main1)
+#'      read_metadata(main = main1)
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+#'    }
 #'
 read_data <- function (main      = ".", 
                        data_name = NULL, 
@@ -202,13 +224,13 @@ read_climate_forecasts <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  datas <- settings$resources$climate_forecasts$data
+  datas <- settings$resources$climate_forecast$data
   ndatas <- length(datas)
   dat_list <- mapply(FUN = read_csv_arrow, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
 
   dat_tab <- dat_list[[1]]
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
-  colnames(dat_tab)[ncol(dat_tab)] <- names(datas)[1]
+  colnames(dat_tab)[ncol(dat_tab)] <- datas[1]
   
   if (ndatas > 1) {
 

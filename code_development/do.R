@@ -1,9 +1,21 @@
 #' @examples
 #'    
 #'      main1 <- file.path(tempdir(), "standard")
-#'      settings1 <- read_directory_settings(main = main1)
-#'      config1   <- read_directory_configuration(main = main1)
-
 
 
 #'    \donttest{
+
+
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+
+#' @examples
+#'    \donttest{
+#'      main1 <- file.path(tempdir(), "standard")
+#'      create_dir(main = main1)
+#'      download_climate_forecasts(main = main)
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+#'    }
+#'
+
+
+

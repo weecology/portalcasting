@@ -34,6 +34,9 @@
 #'
 #'      update_dir(main = main1)
 #'
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+#'      unlink(main2, force = TRUE, recursive = TRUE)
+#'      unlink(main3, force = TRUE, recursive = TRUE)
 #'    }
 #'
 NULL
@@ -219,6 +222,17 @@ setup_sandbox <- function (main                 = ".",
 #' @return `list` of directory configurations, [`invisible`][base::invisible]-ly.
 #'
 #' @name directory configuration file
+#'
+#' @examples
+#'    \donttest{
+#'      main1 <- file.path(tempdir(), "standard")
+#'      setup_dir(main = main1)
+#'
+#'      settings1 <- read_directory_settings(main = main1)
+#'      config1   <- read_directory_configuration(main = main1)
+#'
+#'      unlink(main1, force = TRUE, recursive = TRUE)
+#'    }
 #'
 NULL
 
