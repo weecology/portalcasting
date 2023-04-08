@@ -224,11 +224,10 @@ read_climate_forecasts <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  datas <- settings$resources$climate_forecast$data
+  datas <- settings$resources$climate_forecasts$data
   ndatas <- length(datas)
   dat_list <- mapply(FUN = read_csv_arrow, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
   dat_list <- lapply(dat_list, FUN = as.data.frame)
-
   dat_tab <- dat_list[[1]]
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
   colnames(dat_tab)[ncol(dat_tab)] <- datas[1]
