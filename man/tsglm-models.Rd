@@ -27,11 +27,11 @@ meta_tsglm(
 
 \item{distr}{\code{character} of the response distribution. See \code{\link[tscount:tsglm]{tsglm}}.}
 
-\item{link}{\code{character} of the link funciton. See \code{\link[tscount:tsglm]{tsglm}}.}
+\item{link}{\code{character} of the link function. See \code{\link[tscount:tsglm]{tsglm}}.}
 
 \item{lag}{\code{integer}-conformable value of the number of timesteps used in a bulk lagging for all covariates in all submodels.}
 
-\item{submodels}{\code{list} of \code{character} vectors definind the covariates to include in each of the submodels.}
+\item{submodels}{\code{list} of \code{character} vectors defining the covariates to include in each of the submodels.}
 
 \item{covariates}{\code{data.frame} of covariates used in modeling. See \code{\link{prepare_covariates}}.}
 

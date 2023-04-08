@@ -14,7 +14,7 @@
 #'
 #' @param filename `character` name of the file for saving `x`.
 #'
-#' @param overwrite `logic` indicator of whether or not file writing sould occur even if a local copy already exists.
+#' @param overwrite `logic` indicator of whether or not file writing should occur even if a local copy already exists.
 #'
 #' @param quiet `logic` indicator if messages should be quieted.
 #'

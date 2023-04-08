@@ -28,9 +28,9 @@ update_input(global, event_name, rv, input, session)
 \arguments{
 \item{input}{\code{input} \code{list} for the UI.}
 
-\item{output}{\code{output} \code{list} for the GenEst GUI.}
+\item{output}{\code{output} \code{list} for the UI.}
 
-\item{session}{Environment for the GenEst GUI.}
+\item{session}{Environment for the UI.}
 
 \item{global}{A \code{list} of global values for the app.}
 

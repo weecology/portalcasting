@@ -12,11 +12,11 @@
 #'
 #' @param distr `character` of the response distribution. See [`tsglm`][tscount::tsglm].
 #'
-#' @param link `character` of the link funciton. See [`tsglm`][tscount::tsglm].
+#' @param link `character` of the link function. See [`tsglm`][tscount::tsglm].
 #'
 #' @param model A named `list` of model linear predictors. See [`tsglm`][tscount::tsglm].
 #'
-#' @param submodels `list` of `character` vectors definind the covariates to include in each of the submodels.
+#' @param submodels `list` of `character` vectors defining the covariates to include in each of the submodels.
 #'
 #' @param lag `integer`-conformable value of the number of timesteps used in a bulk lagging for all covariates in all submodels.
 #'

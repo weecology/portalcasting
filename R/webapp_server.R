@@ -7,12 +7,12 @@
 #'
 #' @param input `input` `list` for the UI.
 #'
-#' @param output `output` `list` for the GenEst GUI.
+#' @param output `output` `list` for the UI.
 #'
 #' @param event_name `character` value of the server event. \cr
 #'   Options include `"forecast_tab_species"`, `"forecast_tab_dataset"`, `"forecast_tab_model"`, `"forecast_tab_historic_end_newmoonnumber"`, `"evaluation_tab_species"`, `"evaluation_tab_dataset"`, `"evaluation_tab_model"`, and `"evaluation_tab_historic_end_newmoonnumber"`)
 #'
-#' @param session Environment for the GenEst GUI.
+#' @param session Environment for the UI.
 #'
 #' @param global A `list` of global values for the app.
 #'

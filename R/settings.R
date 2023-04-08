@@ -52,7 +52,7 @@
 #'
 #' @param save `logic` indicator controlling if the output should be saved out.
 #'
-#' @param overwrite `logic` indicator of whether or not file writing sould occur even if a local copy already exists.
+#' @param overwrite `logic` indicator of whether or not file writing should occur even if a local copy already exists.
 #'
 #' @param force `logic` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'

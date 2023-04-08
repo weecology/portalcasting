@@ -65,7 +65,7 @@ Many additional arguments for altering directory set up are available indirectly
 
 The `portalcast()` function controls the running of potentially multiple models across various species in different data sets for a given time setup (defined in `directory_settings` and `time_settings` specifically). This can involve what we have classically called "forecasts" (from the present time step) and "hindcasts" (from a time step before the current one), although the data must be set accordingly (using `time_settings`) for each time point prior to invoking `portalcast()`.
 
-Presently, the preloaded model set includes `r nmodels_text` models: `r models_names`. The jags and GARCH models all take a bit longer to run, so for the purposes of illustration, we will only run ESS, AutoArima, and NaiveArima models, which we indicate through input to the `models` argument: 
+Presently, the preloaded model set includes `r nmodels_text` models: `r models_names`. The jags and GARCH models all take a bit longer to run, so for the purposes of illustration, we will only run ESSS, AutoArima, and NaiveArima models, which we indicate through input to the `models` argument: 
 
 ```{r, eval=FALSE}
 portalcast(main = main, models = c("ESSS", "AutoArima", "NaiveArima"))

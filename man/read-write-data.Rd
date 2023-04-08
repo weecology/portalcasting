@@ -50,7 +50,7 @@ read_climate_forecasts(main = ".")
 
 \item{save}{\code{logic} indicator controlling if \code{x} should be saved out.}
 
-\item{overwrite}{\code{logic} indicator of whether or not file writing sould occur even if a local copy already exists.}
+\item{overwrite}{\code{logic} indicator of whether or not file writing should occur even if a local copy already exists.}
 
 \item{filename}{\code{character} name of the file for saving \code{x}.}
 

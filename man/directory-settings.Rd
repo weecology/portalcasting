@@ -85,7 +85,7 @@ sandbox_settings()
 
 \item{save}{\code{logic} indicator controlling if the output should be saved out.}
 
-\item{overwrite}{\code{logic} indicator of whether or not file writing sould occur even if a local copy already exists.}
+\item{overwrite}{\code{logic} indicator of whether or not file writing should occur even if a local copy already exists.}
 
 \item{force}{\code{logic} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
