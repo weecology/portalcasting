@@ -2,38 +2,38 @@
 % Please edit documentation in R/prepare_models.R
 \name{read and write model controls}
 \alias{read and write model controls}
-\alias{read_model_controls}
-\alias{model_controls}
-\alias{write_model_controls}
-\alias{write_model_scripts}
+\alias{read_models_controls}
+\alias{models_controls}
+\alias{write_models_controls}
+\alias{write_models_scripts}
 \title{Read and Write Model Control Lists}
 \usage{
-read_model_controls(main = ".")
+read_models_controls(main = ".")
 
-model_controls(main = ".", models = prefab_models())
+models_controls(main = ".", models = prefab_models())
 
-write_model_controls(
+write_models_controls(
   main = ".",
-  new_model_controls = NULL,
+  new_models_controls = NULL,
   models = prefab_models()
 )
 
-write_model_scripts(main = ".", controls = prefab_model_controls())
+write_models_scripts(main = ".", controls = prefab_models_controls())
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
-\item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
-
 \item{controls}{\code{list} of controls for the models.}
+
+\item{new_model_controls}{\code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.}
 }
 \value{
 \code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
-\code{read_model_controls}: \code{list} of all \code{models}' control \code{list}s, from the file defined in \code{\link{directory_settings}}, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
-\code{write_model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
-\code{write_model_scripts}: \code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
+\code{read_models_controls}: \code{list} of all \code{models}' control \code{list}s, from the file defined in \code{\link{directory_settings}}, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
+\code{write_models_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
+\code{write_models_scripts}: \code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
 Input/output functions for model control lists, according to the \code{\link{directory_settings}}.

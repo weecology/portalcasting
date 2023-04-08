@@ -116,7 +116,7 @@ Models are run using a function pipeline similar to the creation and filling fun
 
 ## Data IO
 
-**portalcasting** has a generalized `read_data` function that allows for toggling among `read_rodents`, `read_rodents_table`, `read_covariates`, `read_newmoons`, and `read_metadata`, which each have specific loading procedures in place. Similar to the `read_data` functions, `read_casts` provides a simple user interface for reading the cast files into the R session.
+**portalcasting** has a generalized `read_data` function that allows for toggling among `read_rodents`, `read_rodents_dataset`, `read_covariates`, `read_newmoons`, and `read_metadata`, which each have specific loading procedures in place. Similar to the `read_data` functions, `read_casts` provides a simple user interface for reading the cast files into the R session.
 
 For saving out, `write_data` provides a simple means for interfacing with potentially pre-existing data files, with logical inputs for saving generally and overwriting a pre-existing file specifically, and flexible file naming. The type of data saved out is currently restricted to `.csv` `.json`, and `.yaml`, which is extracted from the filename given. 
 

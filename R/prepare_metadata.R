@@ -6,7 +6,7 @@
 #'
 #' @param datasets `character` vector of name(s) of dataset(s) to include.
 #'
-#' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
+#' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
 #' @return `list` of casting metadata, which is also saved out as a YAML file (`.yaml`) if desired.
 #' 
@@ -14,7 +14,7 @@
 #'
 prepare_metadata <- function (main                 = ".",
                               datasets             = prefab_datasets( ),
-                              new_dataset_controls = NULL) {
+                              new_datasets_controls = NULL) {
 
   settings <- read_directory_settings(main = main)
 
@@ -23,8 +23,8 @@ prepare_metadata <- function (main                 = ".",
   config <- read_directory_configuration(main = main)
   
   newmoons <- read_newmoons(main = main)
-  dataset_controls_list <- dataset_controls(main     = main, 
-                                            datasets = datasets)
+  datasets_controls_list <- datasets_controls(main     = main, 
+                                              datasets = datasets)
 
   historic_start_newmoonnumber <- min(newmoons$newmoonnumber[newmoons$newmoondate >= settings$time$timeseries_start])
   historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[newmoons$newmoondate < settings$time$origin])
@@ -60,16 +60,16 @@ prepare_metadata <- function (main                 = ".",
                                              forecast_months              = forecast_months,
                                              lead_time_newmoons           = lead_time_newmoons),
               cast_group              = cast_group,
-              dataset_controls        = dataset_controls_list,
+              datasets_controls       = datasets_controls_list,
               confidence_level        = settings$confidence_level,
               nsamples                = settings$nsamples,
               directory_configuration = config)
 
-  write_data(x        = out, 
-             main     = main, 
-             save     = settings$save, 
-             filename = settings$files$metadata, 
+  write_data(x         = out, 
+             main      = main, 
+             save      = settings$save, 
+             filename  = settings$files$metadata, 
              overwrite = settings$overwrite, 
-             quiet    = !settings$verbose)
+             quiet     = !settings$verbose)
 
 }

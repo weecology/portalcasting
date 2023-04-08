@@ -32,7 +32,7 @@ evaluate_casts <- function (main      = ".",
   }
 
   existing_evaluations      <- read_casts_evaluations(main = main)
-  rodents_table             <- read_rodents_table(main = main, dataset = "all")                          
+  rodents_table             <- read_rodents_dataset(main = main, dataset = "all")                          
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
   if (!is.null(existing_evaluations)) {
@@ -231,7 +231,7 @@ evaluate_cast <- function (main     = ".",
   }
 
   species                           <- ifelse(cast_tab$species[1] == "NA", "NA.", cast_tab$species[1])
-  rodents_table                     <- read_rodents_table(main = main, dataset = cast_tab$dataset[1])                          
+  rodents_table                     <- read_rodents_dataset(main = main, dataset = cast_tab$dataset[1])                          
   last_census_newmoonnumber         <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , species])]])
   cast_tab$cast_evaluation_complete <- cast_tab$forecast_end_newmoonnumber <= last_census_newmoonnumber
   cast_tab 
@@ -270,7 +270,7 @@ add_obs_to_cast_tab <- function (main     = ".",
 
   cast_tab$obs   <- NA
 
-  obs <- read_rodents_table(main     = main, 
+  obs <- read_rodents_dataset(main     = main, 
                             dataset  = dataset)
 
   cast_tab$obs <- obs[match(cast_tab$newmoonnumber, obs$newmoonnumber), species]
@@ -293,8 +293,7 @@ add_obs_to_cast_tab <- function (main     = ".",
 read_casts_evaluations <- function (main = "."){
   
   settings  <- read_directory_settings(main = main)
-
-  eval_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_evaluations)
+  eval_path <- forecasts_evaluations_path(main = main)
 
   if (!file.exists(eval_path)) {
 

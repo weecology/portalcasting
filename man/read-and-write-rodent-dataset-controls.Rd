@@ -2,18 +2,18 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{read and write rodent dataset controls}
 \alias{read and write rodent dataset controls}
-\alias{read_dataset_controls}
-\alias{dataset_controls}
-\alias{write_dataset_controls}
-\title{Read and Write Rodent Dataset Control Lists}
+\alias{read_datasets_controls}
+\alias{datasets_controls}
+\alias{write_datasets_controls}
+\title{Read and Write Rodent Datasets Control Lists}
 \usage{
-read_dataset_controls(main = ".")
+read_datasets_controls(main = ".")
 
-dataset_controls(main = ".", datasets = prefab_datasets())
+datasets_controls(main = ".", datasets = prefab_datasets())
 
-write_dataset_controls(
+write_datasets_controls(
   main = ".",
-  new_dataset_controls = NULL,
+  new_datasets_controls = NULL,
   datasets = prefab_datasets()
 )
 }
@@ -22,10 +22,10 @@ write_dataset_controls(
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 
-\item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
+\item{new_datasets_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
 }
 \value{
-\code{list} of \code{datasets}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly for \code{write_dataset_controls}.
+\code{list} of \code{datasets}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly for \code{write_datasets_controls}.
 }
 \description{
 Input/Output functions for dataset control lists.

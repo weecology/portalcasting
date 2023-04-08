@@ -11,17 +11,17 @@ output:
                         comment  = "#>")
 
 
-  model_controls <- prefab_model_controls( )
-  model_names    <- unlist(lapply(lapply(model_controls, getElement, "metadata"), getElement, "print_name"))
-  nmodels        <- length(model_names)
-  nmodels_text   <- as.character(english(nmodels))
+  models_controls <- prefab_models_controls( )
+  models_names    <- unlist(lapply(lapply(models_controls, getElement, "metadata"), getElement, "print_name"))
+  nmodels         <- length(models_names)
+  nmodels_text    <- as.character(english(nmodels))
 
 
 ```
 
 <br>
 
-We currently analyze and forecast rodent data at Portal using `r nmodels_text` models: `r model_names` [@PortalPredictions]. 
+We currently analyze and forecast rodent data at Portal using `r nmodels_text` models: `r models_names` [@PortalPredictions]. 
 
 
 ```{r echo = FALSE, results = "asis"}
@@ -29,7 +29,7 @@ We currently analyze and forecast rodent data at Portal using `r nmodels_text` m
   template <- "## %s \n \n %s \n \n   \n"
 
   for (i in 1:nmodels) {
-    model_i_controls <- model_controls[[i]]
+    model_i_controls <- models_controls[[i]]
     cat(sprintf(template, model_i_controls$metadata$print_name, model_i_controls$metadata$text))
   }
 ```

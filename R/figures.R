@@ -502,7 +502,7 @@ plot_cast_point <- function (main                       = ".",
   if (with_census) {
 
     moons          <- read_newmoons(main = main)
-    rodents_all    <- read_rodents_table(main = main, dataset = "all")
+    rodents_all    <- read_rodents_dataset(main = main, dataset = "all")
 
     newmoons_census  <- rodents_all$newmoonnumber[!is.na(rodents_all$total)]
 
@@ -554,7 +554,7 @@ plot_cast_point <- function (main                       = ".",
   max_obs <- NA
   if (with_census) {
 
-    obs           <- read_rodents_table(main     = main, 
+    obs           <- read_rodents_dataset(main     = main, 
                                         dataset  = gsub("dm_", "", gsub("_interp", "", dataset)))
 
     newmoonnumber <- ifnull(newmoonnumber, unique(obs$newmoonnumber))
@@ -708,7 +708,7 @@ plot_cast_ts <- function (main                         = ".",
   historic_start_newmoonnumber <- casts_meta$historic_start_newmoonnumber
   historic_end_newmoonnumber   <- casts_meta$historic_end_newmoonnumber
 
-  obs     <- read_rodents_table(main     = main, 
+  obs     <- read_rodents_dataset(main     = main, 
                                 dataset  = dataset)
 
 

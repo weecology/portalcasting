@@ -3,7 +3,7 @@
 #' @description Create a `character` vector of the names of the pre-fabricated (prefab) models or a `list` of their controls.
 #'
 #' @return `prefab_models`: `character` vector of model names. \cr \cr
-#'         `prefab_model_controls`: `list` of model controls.
+#'         `prefab_models_controls`: `list` of model controls.
 #'
 #' @name prefabricated models
 #'
@@ -13,10 +13,10 @@ NULL
 #'
 #' @export
 #'
-prefab_model_controls <- function( ) {
+prefab_models_controls <- function( ) {
 
   prefab_controls_file <- system.file(...     = "extdata", 
-                                      ...     = "prefab_model_controls.yaml", 
+                                      ...     = "prefab_models_controls.yaml", 
                                       package = "portalcasting")
 
   read_yaml(file = prefab_controls_file)
@@ -29,6 +29,6 @@ prefab_model_controls <- function( ) {
 #'
 prefab_models <- function( ) {
 
-  names(x = prefab_model_controls( ))
+  names(x = prefab_models_controls( ))
 
 }

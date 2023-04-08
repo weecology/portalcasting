@@ -12,18 +12,18 @@
 #'
 #' @return 
 #'   `model_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
-#'   `read_model_controls`: `list` of all `models`' control `list`s, from the file defined in [`directory_settings`], [`invisible`][base::invisible]-ly. \cr \cr
-#'   `write_model_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
-#'   `write_model_scripts`: `NULL`, [`invisible`][base::invisible]-ly.
+#'   `read_models_controls`: `list` of all `models`' control `list`s, from the file defined in [`directory_settings`], [`invisible`][base::invisible]-ly. \cr \cr
+#'   `write_models_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
+#'   `write_models_scripts`: `NULL`, [`invisible`][base::invisible]-ly.
 #' 
 #' @name read and write model controls
 #'
 #' @export
 #'
-read_model_controls <- function (main = ".") {
+read_models_controls <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
-  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
+  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$models_controls))
 
 }
 
@@ -32,10 +32,10 @@ read_model_controls <- function (main = ".") {
 #'
 #' @export
 #'
-model_controls <- function (main     = ".",
-                            models   = prefab_models( )) {
+models_controls <- function (main     = ".",
+                             models   = prefab_models( )) {
 
-  read_model_controls(main = main)[models]
+  read_models_controls(main = main)[models]
 
 }
 
@@ -43,37 +43,37 @@ model_controls <- function (main     = ".",
 #'
 #' @export
 #'
-write_model_controls <- function (main               = ".",
-                                  new_model_controls = NULL,
-                                  models             = prefab_models( )) {
+write_models_controls <- function (main                = ".",
+                                   new_models_controls = NULL,
+                                   models              = prefab_models( )) {
 
   settings <- read_directory_settings(main = main)
 
-  messageq("Writing model controls ...", quiet = settings$quiet)
+  messageq("Writing models controls ...", quiet = settings$quiet)
 
-  model_controls <- c(prefab_model_controls( ), new_model_controls)[models]
-  nmodels        <- length(model_controls)
+  models_controls <- c(prefab_models_controls( ), new_models_controls)[models]
+  nmodels         <- length(models_controls)
 
   for (i in 1:nmodels) {
 
-    if(!is.null(model_controls[[i]]$fit$model_file)) {
+    if(!is.null(models_controls[[i]]$fit$model_file)) {
 
-      model_controls[[i]]$fit$full_model_file <- paste0("'", file.path(main, settings$subdirectories$models, model_controls[[i]]$fit$model_file), "'")
+      models_controls[[i]]$fit$full_model_file <- paste0("'", file.path(main, settings$subdirectories$models, models_controls[[i]]$fit$model_file), "'")
 
     } else {
 
-      model_controls[[i]]$fit$full_model_file <- NULL
+      models_controls[[i]]$fit$full_model_file <- NULL
 
     }
 
   }
 
-  write_yaml(x    = model_controls,
-             file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
+  write_yaml(x    = models_controls,
+             file = models_controls_path(main = main))
 
   messageq(" ... complete.\n", quiet = settings$quiet)
 
-  invisible(model_controls)
+  invisible(models_controls)
 
 }
 
@@ -83,8 +83,8 @@ write_model_controls <- function (main               = ".",
 #'
 #' @export
 #'
-write_model_scripts <- function (main     = ".",
-                                 controls = prefab_model_controls( )) {
+write_models_scripts <- function (main     = ".",
+                                  controls = prefab_models_controls( )) {
 
   settings <- read_directory_settings(main = main)
 
@@ -93,7 +93,7 @@ write_model_scripts <- function (main     = ".",
   nfiles <- length(files)
   if (nfiles > 0) {
 
-    messageq("Writing model script files ...", quiet = settings$quiet)
+    messageq("Writing models script files ...", quiet = settings$quiet)
 
     for (i in 1:nfiles) {
 

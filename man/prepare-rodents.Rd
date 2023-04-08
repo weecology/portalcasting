@@ -11,7 +11,7 @@ prepare_abundance(main = ".", dataset = NULL, species = NULL, model = NULL)
 prepare_rodents(
   main = ".",
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL
+  new_datasets_controls = NULL
 )
 }
 \arguments{
@@ -25,7 +25,7 @@ prepare_rodents(
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
 
-\item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
+\item{new_datasets_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
 }
 \value{
 \code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.

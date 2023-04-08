@@ -20,8 +20,8 @@ update_dir(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL,
-  new_model_controls = NULL,
+  new_datasets_controls = NULL,
+  new_models_controls = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -31,8 +31,8 @@ setup_dir(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL,
-  new_model_controls = NULL,
+  new_datasets_controls = NULL,
+  new_models_controls = NULL,
   settings = directory_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -51,8 +51,8 @@ setup_sandbox(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL,
-  new_model_controls = NULL,
+  new_datasets_controls = NULL,
+  new_models_controls = NULL,
   settings = sandbox_settings(),
   quiet = FALSE,
   verbose = FALSE
@@ -63,17 +63,17 @@ setup_sandbox(
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
-\item{quiet}{\code{logic} indicator if progress messages should be quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logic} indicator of whether or not to produce all of the messages.}
+\item{verbose}{\code{logical} indicator of whether or not to produce all of the messages.}
 
 \item{models}{\code{character} vector of name(s) of model(s) to include.}
 
 \item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
 
-\item{new_dataset_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}. This argument is not available in \code{setup_production}.}
+\item{new_datasets_controls}{Optional \code{list} of controls for new datasets. See \code{\link{dataset_controls}}. This argument is not available in \code{setup_production}.}
 
-\item{new_model_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.}
+\item{new_models_controls}{Optional \code{list} of controls for new models. See \code{\link{model_controls}}. This argument is not available in \code{setup_production}.}
 }
 \value{
 The \code{list} of directory settings \code{\link[base:invisible]{invisible}}-ly.
@@ -82,20 +82,20 @@ The \code{list} of directory settings \code{\link[base:invisible]{invisible}}-ly
 Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content.
 }
 \examples{
-   \donttest{
-     main1 <- file.path(tempdir(), "standard")
-     main2 <- file.path(tempdir(), "sandbox")
-     main3 <- file.path(tempdir(), "production")
+ \donttest{
+   main1 <- file.path(tempdir(), "standard")
+   main2 <- file.path(tempdir(), "sandbox")
+   main3 <- file.path(tempdir(), "production")
 
-     setup_dir(main = main1)
-     setup_sandbox(main = main2)
-     setup_production(main = main3)
+   setup_dir(main = main1)
+   setup_sandbox(main = main2)
+   setup_production(main = main3)
 
-     update_dir(main = main1)
+   update_dir(main = main1)
 
-     unlink(main1, force = TRUE, recursive = TRUE)
-     unlink(main2, force = TRUE, recursive = TRUE)
-     unlink(main3, force = TRUE, recursive = TRUE)
-   }
+   unlink(main1, force = TRUE, recursive = TRUE)
+   unlink(main2, force = TRUE, recursive = TRUE)
+   unlink(main3, force = TRUE, recursive = TRUE)
+ }
 
 }

@@ -14,17 +14,23 @@
 #'
 #' @param covariates `character` name for the combined historical and forecast covariates csv.
 #'
-#' @param forecast_metadata `character` name for the forecast metadata csv.
+#' @param forecasts_metadata `character` name for the forecast metadata csv.
 #'
 #' @param metadata `character` name for the Forecast metadata YAML.
 #'
-#' @param dataset_controls `character` name for the YAML of dataset control list(s).
+#' @param datasets_controls `character` name for the YAML of datasets control list(s).
 #'
-#' @param model_controls `character` name for the YAML of model controls list(s).
+#' @param models_rmd `character` name for the Rmd file for the models page of the app.
 #'
-#' @param forecast_evaluations `character` name for the forecast evaluations csv.
+#' @param rodents_profiles_html `character` name for the html file where the rodents profiles page will be saved for the app.
 #'
-#' @param forecast_results `character` name for the forecast combination results csv.
+#' @param rodents_profiles_csv `character` name for the csv file containing content for the rodents profiles table for the app.
+#'
+#' @param models_controls `character` name for the YAML of models controls list(s).
+#'
+#' @param forecasts_evaluations `character` name for the forecast evaluations csv.
+#'
+#' @param forecasts_results `character` name for the forecast combination results csv.
 #'
 #' @param resources `character` name for the resources subdirectory.
 #'
@@ -149,22 +155,28 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
 #'
 #' @export
 #'
-directory_files <- function (newmoons              = "newmoon_dates.csv",
+directory_files <- function (newmoons              = "newmoons.csv",
                              covariates            = "covariates.csv",
-                             dataset_controls      = "dataset_controls.yaml", 
-                             model_controls        = "model_controls.yaml",
-                             forecast_evaluations  = "casts_evaluations.csv",
-                             forecast_results      = "casts_results.csv",
-                             forecast_metadata     = "casts_metadata.csv",
-                             metadata              = "metadata.yaml") {
+                             datasets_controls     = "datasets_controls.yaml", 
+                             models_controls       = "models_controls.yaml",
+                             forecasts_evaluations = "forecasts_evaluations.csv",
+                             forecasts_results     = "forecasts_results.csv",
+                             forecasts_metadata    = "forecasts_metadata.csv",
+                             metadata              = "metadata.yaml",
+                             models_rmd            = "models.Rmd",
+                             rodents_profiles_html = "rodents_profiles.html",
+                             rodents_profiles_csv  = "rodents_profiles.csv") {
 
   list(newmoons                = newmoons,
        covariates              = covariates,
-       dataset_controls        = dataset_controls, 
-       model_controls          = model_controls,
-       forecast_evaluations    = forecast_evaluations,
-       forecast_results        = forecast_results,
-       forecast_metadata       = forecast_metadata,
+       datasets_controls       = datasets_controls, 
+       models_controls         = models_controls,
+       forecasts_evaluations   = forecasts_evaluations,
+       forecasts_results       = forecasts_results,
+       forecasts_metadata      = forecasts_metadata,
+       models_rmd              = models_rmd,
+       rodents_profiles_html   = rodents_profiles_html,
+       rodents_profiles_csv    = rodents_profiles_csv,
        metadata                = metadata)
 
 }
@@ -200,7 +212,10 @@ directory_resources <- function (PortalData         = list(source  = "github",
                                                            version = NULL),
                                  climate_forecasts  = list(source  = "NMME", 
                                                            version = as.character(Sys.Date()), 
-                                                           data    = c("tasmin", "tasmean", "tasmax", "pr"))) {
+                                                           data    = list(mintemp       = "tasmin",
+                                                                          meantemp      = "tasmean", 
+                                                                          maxtemp       = "tasmax", 
+                                                                          precipitation = "pr"))) {
 
   list(PortalData         = PortalData,
        portalPredictions  = portalPredictions,

@@ -15,14 +15,14 @@ fill_dir(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL,
-  new_model_controls = NULL
+  new_datasets_controls = NULL,
+  new_models_controls = NULL
 )
 
 fill_data(
   main = ".",
   datasets = prefab_datasets(),
-  new_dataset_controls = NULL
+  new_datasets_controls = NULL
 )
 
 fill_app(main = ".")
@@ -33,18 +33,18 @@ fill_forecasts(main = ".")
 
 fill_fits(main = ".")
 
-fill_models(main = ".", models = prefab_models(), new_model_controls = NULL)
+fill_models(main = ".", models = prefab_models(), new_models_controls = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to include. Defaults to \code{\link{prefab_models}}. If controls are provided in \code{new_model_controls}, the model still needs to be named here to be included.}
+\item{models}{\code{character} vector of name(s) of model(s) to include. Defaults to \code{\link{prefab_models}}. If controls are provided in \code{new_models_controls}, the model still needs to be named here to be included.}
 
-\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created. Defaults to \code{\link{prefab_datasets}}. If controls are provided in \code{new_dataset_controls}, the dataset still needs to be named here to be included.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created. Defaults to \code{\link{prefab_datasets}}. If controls are provided in \code{new_datasets_controls}, the dataset still needs to be named here to be included.}
 
-\item{new_dataset_controls}{Optional named \code{list} of controls for new datasets. See \code{\link{dataset_controls}}.}
+\item{new_datasets_controls}{Optional named \code{list} of controls for new datasets. See \code{\link{datasets_controls}}.}
 
-\item{new_model_controls}{Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.}
+\item{new_models_controls}{Optional named \code{list} of controls for new models. See \code{\link{model_controls}}.}
 }
 \value{
 \code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
@@ -72,14 +72,14 @@ Fill the directory with components including:
 }
 \item Models (\code{\link{fill_models}})
 \itemize{
-\item model controls (\code{\link{write_model_controls}})
-\item model scripts (if needed) (\code{\link{write_model_scripts}})
+\item models controls (\code{\link{write_models_controls}})
+\item models scripts (if needed) (\code{\link{write_models_scripts}})
 }
 \item Web Application (\code{\link{fill_app}})
 \itemize{
 \item transfers app files from package to main
 \item renders (\code{\link[rmarkdown:render]{render}}) and sources (\code{\link[base:source]{source}}) files into HTML. \cr \cr
-Additionally, new models and datasets can be added to the directory at filling using the optional arguments \code{new_model_controls} and \code{new_dataset_controls}, but the model or dataset must still be listed in its respective main argument, as well.
+Additionally, new models and datasets can be added to the directory at filling using the optional arguments \code{new_models_controls} and \code{new_datasets_controls}, but the model or dataset must still be listed in its respective main argument, as well.
 }
 }
 }

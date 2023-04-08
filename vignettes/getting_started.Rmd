@@ -106,7 +106,7 @@ read_data(main = main, data_name = "newmoons")
 read_data(main = main, data_name = "metadata")
 
 read_rodents(main = main)
-read_rodents_table(main = main)
+read_rodents_dataset(main = main)
 read_covariates(main = main)
 read_climate_forecasts(main = main)
 read_newmoons(main = main)

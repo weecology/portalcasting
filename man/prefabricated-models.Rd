@@ -2,17 +2,17 @@
 % Please edit documentation in R/prefab_models.R
 \name{prefabricated models}
 \alias{prefabricated models}
-\alias{prefab_model_controls}
+\alias{prefab_models_controls}
 \alias{prefab_models}
 \title{Provide the Names or Controls for the Prefab Models}
 \usage{
-prefab_model_controls()
+prefab_models_controls()
 
 prefab_models()
 }
 \value{
 \code{prefab_models}: \code{character} vector of model names. \cr \cr
-\code{prefab_model_controls}: \code{list} of model controls.
+\code{prefab_models_controls}: \code{list} of model controls.
 }
 \description{
 Create a \code{character} vector of the names of the pre-fabricated (prefab) models or a \code{list} of their controls.

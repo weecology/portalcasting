@@ -39,7 +39,7 @@ process_model_output <- function (main      = ".",
   ids     <- as.numeric(ids)
   next_id <- ceiling(max(c(0, ids), na.rm = TRUE)) + 1
 
-  model_controls <- read_model_controls(main = main)
+  model_controls <- read_models_controls(main = main)[[model]]
 
   cast_metadata <- update_list(metadata, 
                                cast_id          = next_id,
@@ -47,7 +47,7 @@ process_model_output <- function (main      = ".",
                                dataset          = dataset,
                                species          = species,
                                model_controls   = model_controls[[model]],
-                               dataset_controls = metadata$dataset_controls[[dataset]])
+                               dataset_controls = metadata$datasets_controls[[dataset]])
 
   cast_tab <- data.frame(lead_time_newmoons                 = 1:metadata$time$lead_time_newmoons,
                          max_lag                            = metadata$time$max_lag,
@@ -57,7 +57,7 @@ process_model_output <- function (main      = ".",
                          cast_month                         = metadata$time$forecast_months,
                          cast_year                          = metadata$time$forecast_years, 
                          newmoonnumber                      = metadata$time$forecast_newmoonnumbers,
-                         currency                           = metadata$dataset_controls[[dataset]]$args$output,
+                         currency                           = metadata$datasets_controls[[dataset]]$args$output,
                          model                              = model, 
                          dataset                            = dataset, 
                          species                            = species, 
@@ -112,11 +112,9 @@ process_model_output <- function (main      = ".",
     write_csv_arrow(x         = cast_tab,
                     file      = cast_tab_path)
 
-    casts_metadata_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
-
     row.names(casts_metadata) <- NULL
     write_csv_arrow(x         = casts_metadata, 
-                    file      = casts_metadata_path)
+                    file      = forecasts_metadata_path(main = main))
 
     model_fit_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_fit.json") 
     model_fit_path     <- file.path(main, settings$subdirectories$fits, model_fit_filename)
@@ -423,7 +421,7 @@ read_casts_metadata <- function (main = ".") {
   
   settings  <- read_directory_settings(main = main)
 
-  meta_path <- file.path(main, settings$subdirectories$forecasts, settings$files$forecast_metadata)
+  meta_path <- forecasts_metadata_path(main = main)
 
   if (!file.exists(meta_path)) {
 

@@ -17,9 +17,7 @@ NULL
 #'
 run_app <- function(main = ".") {
 
-  settings <- read_directory_settings(main = main)
-
-  runApp(appDir         = file.path(main, settings$subdirectories$app),
+  runApp(appDir         = app_path(main = main),
          launch.browser = TRUE)
 
 }
@@ -412,7 +410,7 @@ global_list <- function (main = ".") {
 
   if (nrow(casts_metadata) == 0) {
 
-    messageq("  No casts metadata available.", quiet = settings$quiet)
+    messageq("  No casts metadata available.", quiet = !settings$verbose)
     casts_metadata <- NULL
 
   }
@@ -433,10 +431,10 @@ global_list <- function (main = ".") {
   species_names        <- species_names_table$code
   names(species_names) <- species_names_table$Latin
 
-  model_print_names    <- unlist(mapply(getElement, model_controls(main = main), "metadata")["print_name", ])
-  model_code_names     <- unlist(mapply(getElement, model_controls(main = main), "metadata")["name", ])
-  model_names          <- model_code_names
-  names(model_names)   <- model_print_names
+  models_print_names    <- unlist(mapply(getElement, models_controls(main = main), "metadata")["print_name", ])
+  models_code_names     <- unlist(mapply(getElement, models_controls(main = main), "metadata")["name", ])
+  models_names          <- models_code_names
+  names(models_names)   <- models_print_names
 
   messageq(" ... done.", quiet = !settings$verbose)
   
@@ -445,8 +443,8 @@ global_list <- function (main = ".") {
   initial_forecast_tab_available_species                       <- species_names[species_names %in% unique(casts_metadata$species[casts_metadata$species %in% species_names_table$code])]
   initial_evaluation_tab_available_species                     <- species_names[species_names %in% unique(casts_evaluations$species[casts_evaluations$species %in% species_names_table$code])]
 
-  initial_forecast_tab_available_models                        <- model_names[model_names %in% unique(casts_metadata$model[casts_metadata$model %in% prefab_models( ) & casts_metadata$species %in% initial_forecast_tab_available_species])]
-  initial_evaluation_tab_available_models                      <- model_names[model_names %in% unique(casts_evaluations$model[casts_evaluations$model %in% prefab_models( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species])]
+  initial_forecast_tab_available_models                        <- models_names[models_names %in% unique(casts_metadata$model[casts_metadata$model %in% prefab_models( ) & casts_metadata$species %in% initial_forecast_tab_available_species])]
+  initial_evaluation_tab_available_models                      <- models_names[models_names %in% unique(casts_evaluations$model[casts_evaluations$model %in% prefab_models( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species])]
 
   initial_forecast_tab_available_datasets                      <- unique(casts_metadata$dataset[casts_metadata$dataset %in% prefab_datasets( ) & casts_metadata$species %in% initial_forecast_tab_available_species & casts_metadata$model %in% initial_forecast_tab_available_models])
   initial_evaluation_tab_available_datasets                    <- unique(casts_evaluations$dataset[casts_evaluations$dataset %in% prefab_datasets( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models])
@@ -460,8 +458,8 @@ global_list <- function (main = ".") {
 
   messageq("Selecting intial values ...", quiet = !settings$verbose)
 
-  initial_forecast_tab_selected_model                         <- model_names[model_names == "AutoArima"]
-  initial_evaluation_tab_selected_model                       <- model_names[model_names == "AutoArima"]
+  initial_forecast_tab_selected_model                         <- models_names[models_names == "AutoArima"]
+  initial_evaluation_tab_selected_model                       <- models_names[models_names == "AutoArima"]
 
   initial_forecast_tab_selected_species                       <- species_names[species_names == "DM"]
   initial_evaluation_tab_selected_species                     <- species_names[species_names == "DM"]
@@ -511,7 +509,7 @@ global_list <- function (main = ".") {
 
        species_names                                                    = species_names,
        species_names_table                                              = species_names_table,
-       model_names                                                      = model_names)
+       models_names                                                     = models_names)
 
 }
 

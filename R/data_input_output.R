@@ -1,8 +1,10 @@
-#' @title Save Data Out to a File and Return It	(Invisibly)
+#' @title Read from and Write to a Data File 
 #'
-#' @description Save inputted data out to a data file if requested and return it to the console, [`invisible`][base::invisible]-ly. Currently available for yaml, csv, and json file extensions.
+#' @description Generalized data input-output functionality with specifics for common files. \cr \cr 
+#'              `write_data` saves inputted data out to a data file if requested and returns it to the console, [`invisible`][base::invisible]-ly. Currently available for `yaml`, `csv`, and `json` file extensions. \cr \cr
+#'              `read_data` reads in a specified data file. Specific functions available include `read_rodents`, `read_rodents_dataset`, `read_covariates`, `read_climate_forecasts`, `read_newmoons`, and `read_metadata`. 
 #'
-#' @param x `data.frame` or `list` to be written out.
+#' @param x Data, such as a `data.frame` or `list`, to be written out.
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
@@ -16,17 +18,28 @@
 #'
 #' @param quiet `logic` indicator if messages should be quieted.
 #'
-#' @return `x` as input, [`invisible`][base::invisible]-ly.
+#' @param data_name `character` representation of the data needed. Current options include `"rodents"`, `"rodents_table"`, `"covariates"`, `"climate_forecasts"`, `"newmoons"`, and `"metadata"`.
 #'
-#' @export
+#' @param dataset,datasets `character` representation of the grouping name(s) used to define the rodents. Standard options are `"all"`, `"controls"`, and `"exclosures"`. `dataset` can only be length 1, `datasets` is not restricted in length.
 #'
-#' @examples
-#'    \donttest{
-#'      main1 <- file.path(tempdir(), "standard")
-#'      create_dir(main = main1)
-#'      write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")
-#'      unlink(main1, force = TRUE, recursive = TRUE)
-#'    }
+#' @return `write_data` `x` as input, [`invisible`][base::invisible]-ly.
+#'
+#' @name read write data
+#'
+#' @examples  
+#'  \donttest{
+#'    main1 <- file.path(tempdir(), "standard")
+#'    setup_dir(main = main1)
+#'    write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")
+#'    read_data(main = main1)
+#'    read_rodents(main = main1)
+#'    read_rodents_dataset(main = main1)
+#'    read_covariates(main = main1)
+#'    read_climate_forecasts(main = main1)
+#'    read_newmoons(main = main1)
+#'    read_metadata(main = main1)
+#'    unlink(main1, force = TRUE, recursive = TRUE)
+#'  }
 #'
 write_data <- function (x            = NULL, 
                         main         = ".", 
@@ -38,7 +51,6 @@ write_data <- function (x            = NULL,
   
   return_if_null(x = x)
   return_if_null(x = filename)
-
 
   if (save) {
 
@@ -89,33 +101,9 @@ write_data <- function (x            = NULL,
 
 }
 
-#' @title Read in and Format a Portalcasting Data File 
+#' @rdname read-write-data
 #'
-#' @description Read in a specified data file.
-#'
-#' @param main `character` value of the name of the main component of the directory tree.
-#'  
-#' @param data_name `character` representation of the data needed. Current options include `"rodents"`, `"rodents_table"`, `"covariates"`, `"climate_forecasts"`, `"newmoons"`, and `"metadata"`.
-#'
-#' @param dataset,datasets `character` representation of the grouping name(s) used to define the rodents. Standard options are `"all"`, `"controls"`, and `"exclosures"`. `dataset` can only be length 1, `datasets` is not restricted in length.
-#'
-#' @return Data requested.
-#' 
 #' @export
-#'
-#' @examples
-#'    \donttest{
-#'      main1 <- file.path(tempdir(), "standard")
-#'      setup_dir(main = main1)
-#'      read_data(main = main1)
-#'      read_rodents(main = main1)
-#'      read_rodents_table(main = main1)
-#'      read_covariates(main = main1)
-#'      read_climate_forecasts(main = main1)
-#'      read_newmoons(main = main1)
-#'      read_metadata(main = main1)
-#'      unlink(main1, force = TRUE, recursive = TRUE)
-#'    }
 #'
 read_data <- function (main      = ".", 
                        data_name = NULL, 
@@ -133,10 +121,10 @@ read_data <- function (main      = ".",
 
   }
 
-  if (data_name == "rodents_table") { 
+  if (data_name == "rodents_dataset") { 
 
-    out <- read_rodents_table(main    = main, 
-                              dataset = dataset)
+    out <- read_rodents_dataset(main    = main, 
+                                dataset = dataset)
 
   }
 
@@ -167,20 +155,21 @@ read_data <- function (main      = ".",
   out
 }
 
-#' @rdname read_data
+#' @rdname read-write-data
 #'
 #' @export
 #'
-read_rodents_table <- function (main    = ".", 
-                                dataset = "all") {
+read_rodents_dataset <- function (main    = ".", 
+                                  dataset = "all") {
 
   return_if_null(x = dataset)
-  settings <- read_directory_settings(main = main)
-  as.data.frame(read_csv_arrow(file = file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(dataset), ".csv"))) )
+
+  as.data.frame(read_csv_arrow(file = rodents_dataset_path(main    = main, 
+                                                           dataset = dataset)))
 
 }
 
-#' @rdname read_data
+#' @rdname read-write-data
 #'
 #' @export
 #'
@@ -188,35 +177,45 @@ read_rodents <- function (main     = ".",
                           datasets = prefab_datasets( )) {
   
   return_if_null(x = datasets)
-  settings <- read_directory_settings(main = main)
-  mapply(FUN = read_rodents_table, dataset = datasets, main = main, SIMPLIFY = FALSE)
+
+  mapply(FUN      = read_rodents_dataset, 
+         dataset  = datasets, 
+         main     = main, 
+         SIMPLIFY = FALSE)
 
 }
 
-#' @rdname read_data
+#' @rdname read-write-data
 #'
 #' @export
 #'
 read_newmoons <- function(main = "."){
   
-  settings <- read_directory_settings(main = main)
-  as.data.frame(read_csv_arrow(file = file.path(main, settings$subdirectories$data, settings$files$newmoons)))
+  as.data.frame(read_csv_arrow(file = newmoons_path(main = main)))
 
 }
 
-#' @rdname read_data
+#' @rdname read-write-data
 #'
 #' @export
 #'
 read_covariates <- function (main = ".") {
 
-  settings <- read_directory_settings(main = main)
-  as.data.frame(read_csv_arrow(file = file.path(main, settings$subdirectories$data, settings$files$covariates)))
+  as.data.frame(read_csv_arrow(file = covariates_path(main = main)))
 
 }
 
+#' @rdname read-write-data
+#'
+#' @export
+#'
+read_metadata <- function(main = "."){
+  
+  read_yaml(file = metadata_path(main = main), eval.expr = TRUE)
 
-#' @rdname read_data
+}
+
+#' @rdname read-write-data
 #'
 #' @export
 #'
@@ -224,13 +223,12 @@ read_climate_forecasts <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  datas <- settings$resources$climate_forecasts$data
-  ndatas <- length(datas)
-  dat_list <- mapply(FUN = read_csv_arrow, file.path(main, settings$subdirectories$resources, files = paste0("/NMME/",  datas, ".csv")), SIMPLIFY = FALSE)
+  dat_list <- mapply(FUN = read_csv_arrow, climate_forecasts_paths(main = main), SIMPLIFY = FALSE)
+  ndatas <- length(dat_list)
   dat_list <- lapply(dat_list, FUN = as.data.frame)
   dat_tab <- dat_list[[1]]
   dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
-  colnames(dat_tab)[ncol(dat_tab)] <- datas[1]
+  colnames(dat_tab)[ncol(dat_tab)] <- names(dat_list)[1]
   
   if (ndatas > 1) {
 
@@ -239,7 +237,7 @@ read_climate_forecasts <- function (main = ".") {
       dat_tab_i <- dat_list[[i]]
       x         <- dat_tab_i[ , ncol(dat_tab_i)]
       dat_tab   <- data.frame(dat_tab, x)
-      colnames(dat_tab)[ncol(dat_tab)] <- datas[i]
+      colnames(dat_tab)[ncol(dat_tab)] <- names(dat_list)[i]
 
     }
 
@@ -272,14 +270,4 @@ read_climate_forecasts <- function (main = ".") {
 }
 
 
-#' @rdname read_data
-#'
-#' @export
-#'
-read_metadata <- function(main = "."){
-  
-  settings <- read_directory_settings(main = main)
-  read_yaml(file.path(main, settings$subdirectories$data, settings$files$metadata), eval.expr = TRUE)
-
-}
 

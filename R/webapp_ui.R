@@ -144,7 +144,7 @@ models_tab <- function ( ) {
 profiles_tab <- function ( ) {
 
   tabPanel(title = "Rodent Profiles",
-           includeHTML("profile.html")) 
+           includeHTML("rodents_profiles.html")) 
 
 }
 
@@ -505,9 +505,7 @@ write_rodent_profiles_tab_html <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  profiles_csv <- file.path(main, settings$subdirectories$app, "www", "rodents.csv")
-
-  table_in <- read.csv(profiles_csv)
+  table_in <- read.csv(rodents_profiles_csv_path(main = main))
   nspecies <- nrow(table_in)
   table_rows <- NULL
 
@@ -559,9 +557,8 @@ write_rodent_profiles_tab_html <- function (main = ".") {
      </body>
      ', collapse = '\n')
 
-  profiles_html <- file.path(main, settings$subdirectories$app, "profile.html")
   write(x    = html_out, 
-        file = profiles_html)
+        file = rodents_profiles_html_path(main = main))
 
   html_out
 
@@ -573,11 +570,8 @@ write_rodent_profiles_tab_html <- function (main = ".") {
 #
 write_models_tab_html <- function (main = ".") {
 
-  settings <- read_directory_settings(main = main)
 
-  file_path <- file.path(main, settings$subdirectories$app, "models.Rmd")
-
-  file_out <- render(input         = file_path,
+  file_out <- render(input         = models_rmd_path(main = main),
                      output_format = output_format(knitr  = knitr_options( ), 
                                                    pandoc = pandoc_options(to = "html")),
                      quiet         = !settings$verbose)

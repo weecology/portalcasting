@@ -36,14 +36,17 @@ time_settings(
 )
 
 directory_files(
-  newmoons = "newmoon_dates.csv",
+  newmoons = "newmoons.csv",
   covariates = "covariates.csv",
-  dataset_controls = "dataset_controls.yaml",
-  model_controls = "model_controls.yaml",
-  forecast_evaluations = "casts_evaluations.csv",
-  forecast_results = "casts_results.csv",
-  forecast_metadata = "casts_metadata.csv",
-  metadata = "metadata.yaml"
+  datasets_controls = "datasets_controls.yaml",
+  models_controls = "models_controls.yaml",
+  forecasts_evaluations = "forecasts_evaluations.csv",
+  forecasts_results = "forecasts_results.csv",
+  forecasts_metadata = "forecasts_metadata.csv",
+  metadata = "metadata.yaml",
+  models_rmd = "models.Rmd",
+  rodents_profiles_html = "rodents_profiles.html",
+  rodents_profiles_csv = "rodents_profiles.csv"
 )
 
 directory_subdirectories(
@@ -59,7 +62,8 @@ directory_resources(
   PortalData = list(source = "github", version = "latest"),
   portalPredictions = list(source = "github", version = NULL),
   climate_forecasts = list(source = "NMME", version = as.character(Sys.Date()), data =
-    c("tasmin", "tasmean", "tasmax", "pr"))
+    list(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation =
+    "pr"))
 )
 
 production_settings(download_timeout = max(getOption("timeout"), 600))
@@ -111,17 +115,23 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{covariates}{\code{character} name for the combined historical and forecast covariates csv.}
 
-\item{dataset_controls}{\code{character} name for the YAML of dataset control list(s).}
+\item{datasets_controls}{\code{character} name for the YAML of datasets control list(s).}
 
-\item{model_controls}{\code{character} name for the YAML of model controls list(s).}
+\item{models_controls}{\code{character} name for the YAML of models controls list(s).}
 
-\item{forecast_evaluations}{\code{character} name for the forecast evaluations csv.}
+\item{forecasts_evaluations}{\code{character} name for the forecast evaluations csv.}
 
-\item{forecast_results}{\code{character} name for the forecast combination results csv.}
+\item{forecasts_results}{\code{character} name for the forecast combination results csv.}
 
-\item{forecast_metadata}{\code{character} name for the forecast metadata csv.}
+\item{forecasts_metadata}{\code{character} name for the forecast metadata csv.}
 
 \item{metadata}{\code{character} name for the Forecast metadata YAML.}
+
+\item{models_rmd}{\code{character} name for the Rmd file for the models page of the app.}
+
+\item{rodents_profiles_html}{\code{character} name for the html file where the rodents profiles page will be saved for the app.}
+
+\item{rodents_profiles_csv}{\code{character} name for the csv file containing content for the rodents profiles table for the app.}
 
 \item{forecasts}{\code{character} name for the forecasts subdirectory.}
 

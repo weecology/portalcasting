@@ -19,13 +19,13 @@ prepare_covariates <- function (main = ".") {
   weather_data <- weather(level   = "daily", 
                           fill    = TRUE,
                           horizon = 1, 
-                          path    = file.path(main, settings$subdirectories$resources))
+                          path    = resources_path(main = main))
   ndvi_data    <- ndvi(level      = "daily", 
-                       path       = file.path(main, settings$subdirectories$resources))
+                       path       = resources_path(main = main))
 
   climate_forecasts <- read_climate_forecasts(main = main)
   newmoons          <- read_newmoons(main          = main)
-  control_rodents   <- read_rodents_table(main     = main,
+  control_rodents   <- read_rodents_dataset(main     = main,
                                           dataset  = "controls")
 
   # truncate to historic values to facilitate hindcasting --- not yet quite properly integrated because we don't use the old nmme

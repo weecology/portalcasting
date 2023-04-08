@@ -14,22 +14,22 @@
 #'     * covariates ([`prepare_covariates`])
 #'     * metadata ([`prepare_metadata`])
 #'   * Models ([`fill_models`]) 
-#'     * model controls ([`write_model_controls`])
-#'     * model scripts (if needed) ([`write_model_scripts`])
+#'     * models controls ([`write_models_controls`])
+#'     * models scripts (if needed) ([`write_models_scripts`])
 #'   * Web Application ([`fill_app`]) 
 #'     * transfers app files from package to main
 #'     * renders ([`render`][rmarkdown::render]) and sources ([`source`][base::source]) files into HTML. \cr \cr
-#'   Additionally, new models and datasets can be added to the directory at filling using the optional arguments `new_model_controls` and `new_dataset_controls`, but the model or dataset must still be listed in its respective main argument, as well.
+#'   Additionally, new models and datasets can be added to the directory at filling using the optional arguments `new_models_controls` and `new_datasets_controls`, but the model or dataset must still be listed in its respective main argument, as well.
 #'             
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param models `character` vector of name(s) of model(s) to include. Defaults to [`prefab_models`]. If controls are provided in `new_model_controls`, the model still needs to be named here to be included.
+#' @param models `character` vector of name(s) of model(s) to include. Defaults to [`prefab_models`]. If controls are provided in `new_models_controls`, the model still needs to be named here to be included.
 #'
-#' @param datasets `character` vector of name(s) of rodent dataset(s) to be created. Defaults to [`prefab_datasets`]. If controls are provided in `new_dataset_controls`, the dataset still needs to be named here to be included.
+#' @param datasets `character` vector of name(s) of rodent dataset(s) to be created. Defaults to [`prefab_datasets`]. If controls are provided in `new_datasets_controls`, the dataset still needs to be named here to be included.
 #'
-#' @param new_dataset_controls Optional named `list` of controls for new datasets. See [`dataset_controls`].
+#' @param new_datasets_controls Optional named `list` of controls for new datasets. See [`datasets_controls`].
 #'
-#' @param new_model_controls Optional named `list` of controls for new models. See [`model_controls`].
+#' @param new_models_controls Optional named `list` of controls for new models. See [`model_controls`].
 #'
 #' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
@@ -41,31 +41,31 @@ NULL
 #'
 #' @export
 #'
-fill_dir <- function (main                 = ".",
-                      models               = prefab_models( ), 
-                      datasets             = prefab_datasets( ),
-                      new_dataset_controls = NULL,
-                      new_model_controls   = NULL) {
+fill_dir <- function (main                  = ".",
+                      models                = prefab_models( ), 
+                      datasets              = prefab_datasets( ),
+                      new_datasets_controls = NULL,
+                      new_models_controls   = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   messageq("Filling directory with content: \n", quiet = settings$quiet)
 
-  fill_resources(main            = main)
+  fill_resources(main             = main)
 
-  fill_forecasts(main            = main)
+  fill_forecasts(main             = main)
 
-  fill_fits(main                 = main)
+  fill_fits(main                  = main)
 
-  fill_models(main               = main, 
-              models             = models,
-              new_model_controls = new_model_controls)
+  fill_models(main                = main, 
+              models              = models,
+              new_models_controls = new_models_controls)
 
-  fill_data(main                 = main, 
-            datasets             = datasets,
-            new_dataset_controls = new_dataset_controls)
+  fill_data(main                  = main, 
+            datasets              = datasets,
+            new_datasets_controls = new_datasets_controls)
 
-  fill_app(main                  = main)
+  fill_app(main                   = main)
 
   messageq("\nDirectory filling complete.", quiet = settings$quiet)
 
@@ -78,16 +78,16 @@ fill_dir <- function (main                 = ".",
 #'
 #' @export
 #'
-fill_data <- function (main                 = ".",
-                       datasets             = prefab_datasets( ),
-                       new_dataset_controls = NULL) {
+fill_data <- function (main                  = ".",
+                       datasets              = prefab_datasets( ),
+                       new_datasets_controls = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   messageq(" Preparing data files ... ", quiet = settings$quiet)
   messageq("  ... removing existing data files ... ", quiet = settings$quiet)
 
-  unlink(x = list.files(path       = file.path(main, settings$subdirectories$data),
+  unlink(x = list.files(path       = data_path(main = main),
                         full.names = TRUE),
          force = TRUE)
 
@@ -95,15 +95,15 @@ fill_data <- function (main                 = ".",
 
   prepare_newmoons(main                = main)
 
-  prepare_rodents(main                 = main,  
-                  datasets             = datasets,
-                  new_dataset_controls = new_dataset_controls) 
+  prepare_rodents(main                  = main,  
+                  datasets              = datasets,
+                  new_datasets_controls = new_datasets_controls) 
 
   prepare_covariates(main              = main)
 
-  prepare_metadata(main                 = main, 
-                   datasets             = datasets,
-                   new_dataset_controls = new_dataset_controls)
+  prepare_metadata(main                  = main, 
+                   datasets              = datasets,
+                   new_datasets_controls = new_datasets_controls)
 
   messageq(" ... complete.\n", quiet = settings$quiet)
   invisible( )
@@ -125,7 +125,7 @@ fill_app <- function (main = ".") {
                                package = "portalcasting")
 
   file.copy(from      = list.files(app_directory, full.names = TRUE),
-            to        = file.path(main, settings$subdirectories$app),
+            to        = app_path(main = main),
             recursive = TRUE,
             overwrite = TRUE)
 
@@ -148,7 +148,7 @@ fill_resources <- function (main = ".") {
 
   messageq("Downloading resources ... ", quiet = settings$quiet)
 
-  download_observations(path      = file.path(main, settings$subdirectories$resources), 
+  download_observations(path      = resources_path(main = main),
                         version   = settings$resources$PortalData$version,
                         source    = settings$resources$PortalData$source,
                         pause     = settings$unzip_pause,
@@ -198,7 +198,7 @@ fill_forecasts <- function (main = ".") {
 
   if (!settings$force) {
 
-    existing_files <- list.files(path = file.path(main, settings$subdirectories$forecasts))
+    existing_files <- list.files(path = forecasts_path(main = main))
     files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts))
     short_meta     <- files_short == settings$files$forecast_metadata
     files          <- unique(c(files[!(files_short %in% existing_files)],
@@ -216,7 +216,7 @@ fill_forecasts <- function (main = ".") {
   messageq("  ... moving ... ", quiet = settings$quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subdirectories$forecasts), 
+                      to        = forecasts_path(main = main), 
                       recursive = TRUE)
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
@@ -243,7 +243,7 @@ fill_fits <- function (main = ".") {
 
   if (!settings$force) {
 
-    existing_files <- list.files(path = file.path(main, settings$subdirectories$fits))
+    existing_files <- list.files(path = fits_path(main = main))
     files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits))
     files          <- unique(c(files[!(files_short %in% existing_files)]))   
 
@@ -259,7 +259,7 @@ fill_fits <- function (main = ".") {
   messageq("  ... moving ... ", quiet = settings$quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subdirectories$fits), 
+                      to        = fits_path(main = main),
                       recursive = TRUE)
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
@@ -276,14 +276,14 @@ fill_fits <- function (main = ".") {
 #'
 fill_models <- function (main               = ".", 
                          models             = prefab_models( ), 
-                         new_model_controls = NULL) {
+                         new_models_controls = NULL) {
 
-  controls <- write_model_controls(main               = main, 
-                                   models             = models,
-                                   new_model_controls = new_model_controls) 
+  controls <- write_models_controls(main                = main, 
+                                    models              = models,
+                                    new_models_controls = new_models_controls) 
 
-  write_model_scripts(main     = main, 
-                      controls = controls)
+  write_models_scripts(main     = main, 
+                       controls = controls)
 
   invisible( )
 

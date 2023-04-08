@@ -3,7 +3,7 @@
 #' @description Create a `character` vector of the names of the pre-fabricated (prefab) rodent datasets or a `list` of their controls
 #'
 #' @return `prefab_datasets`: `character` vector of dataset names. \cr \cr
-#'         `prefab_dataset_controls`: `list` vector of dataset controls. 
+#'         `prefab_datasets_controls`: `list` vector of dataset controls. 
 #'
 #' @name prefabricated_datasets
 #'
@@ -15,7 +15,7 @@ NULL
 #'
 prefab_datasets <- function( ){
 
-  names(prefab_dataset_controls( ))
+  names(prefab_datasets_controls( ))
 
 }
 
@@ -24,10 +24,10 @@ prefab_datasets <- function( ){
 #'
 #' @export
 #'
-prefab_dataset_controls <- function ( ) {
+prefab_datasets_controls <- function ( ) {
 
   prefab_controls_file <- system.file(...     = "extdata", 
-                                      ...     = "prefab_dataset_controls.yaml", 
+                                      ...     = "prefab_datasets_controls.yaml", 
                                       package = "portalcasting")
 
   read_yaml(prefab_controls_file)

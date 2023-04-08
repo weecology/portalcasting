@@ -2,7 +2,7 @@
 #'
 #' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. 
 #'
-#' @param quiet `logic` indicator if progress messages should be quieted.
+#' @param quiet `logical` indicator if progress messages should be quieted.
 #'
 #' @param main `character` value of the name of the main component of the directory tree. Default value (`"."`) roots the directory in the present location. 
 #'
@@ -10,34 +10,34 @@
 #'
 #' @param datasets `character` vector of name(s) of rodent dataset(s) to be created. 
 #'
-#' @param new_dataset_controls Optional `list` of controls for new datasets. See [`dataset_controls`]. This argument is not available in `setup_production`.
+#' @param new_datasets_controls Optional `list` of controls for new datasets. See [`dataset_controls`]. This argument is not available in `setup_production`.
 #'
-#' @param new_model_controls Optional `list` of controls for new models. See [`model_controls`]. This argument is not available in `setup_production`.
+#' @param new_models_controls Optional `list` of controls for new models. See [`model_controls`]. This argument is not available in `setup_production`.
 #'
 #' @param settings `list` of controls for the directory, with defaults set in [`directory_settings`].
 #'
-#' @param verbose `logic` indicator of whether or not to produce all of the messages.
+#' @param verbose `logical` indicator of whether or not to produce all of the messages.
 #'
 #' @return The `list` of directory settings [`invisible`][base::invisible]-ly.
 #'
 #' @name directory creation
 #'
 #' @examples
-#'    \donttest{
-#'      main1 <- file.path(tempdir(), "standard")
-#'      main2 <- file.path(tempdir(), "sandbox")
-#'      main3 <- file.path(tempdir(), "production")
+#'  \donttest{
+#'    main1 <- file.path(tempdir(), "standard")
+#'    main2 <- file.path(tempdir(), "sandbox")
+#'    main3 <- file.path(tempdir(), "production")
 #'
-#'      setup_dir(main = main1)
-#'      setup_sandbox(main = main2)
-#'      setup_production(main = main3)
+#'    setup_dir(main = main1)
+#'    setup_sandbox(main = main2)
+#'    setup_production(main = main3)
 #'
-#'      update_dir(main = main1)
+#'    update_dir(main = main1)
 #'
-#'      unlink(main1, force = TRUE, recursive = TRUE)
-#'      unlink(main2, force = TRUE, recursive = TRUE)
-#'      unlink(main3, force = TRUE, recursive = TRUE)
-#'    }
+#'    unlink(main1, force = TRUE, recursive = TRUE)
+#'    unlink(main2, force = TRUE, recursive = TRUE)
+#'    unlink(main3, force = TRUE, recursive = TRUE)
+#'  }
 #'
 NULL
 
@@ -71,14 +71,14 @@ create_dir <- function(main     = ".",
 #'
 #' @export
 #'
-update_dir <- function (main                 = ".",
-                        models               = prefab_models( ), 
-                        datasets             = prefab_datasets( ),
-                        new_dataset_controls = NULL,
-                        new_model_controls   = NULL,
-                        settings             = directory_settings( ), 
-                        quiet                = FALSE, 
-                        verbose              = FALSE) {
+update_dir <- function (main                  = ".",
+                        models                = prefab_models( ), 
+                        datasets              = prefab_datasets( ),
+                        new_datasets_controls = NULL,
+                        new_models_controls   = NULL,
+                        settings              = directory_settings( ), 
+                        quiet                 = FALSE, 
+                        verbose               = FALSE) {
 
   core_package <- package_version_finder("setup_dir")
 
@@ -87,7 +87,7 @@ update_dir <- function (main                 = ".",
            format(Sys.time(), "%x %T %Z"), "\n", break_lines( ), quiet = quiet)
 
   out <- mapply(FUN          = dir.create, 
-               path         = file.path(main, settings$subdirectories),
+                path         = file.path(main, settings$subdirectories),
                 recursive    = TRUE,
                 showWarnings = FALSE)
 
@@ -101,11 +101,11 @@ update_dir <- function (main                 = ".",
                                 settings = settings, 
                                 quiet    = quiet)
 
-  fill_dir(main                 = main,
-           models               = models, 
-           datasets             = datasets,
-           new_dataset_controls = new_dataset_controls,
-           new_model_controls   = new_model_controls)
+  fill_dir(main                  = main,
+           models                = models, 
+           datasets              = datasets,
+           new_datasets_controls = new_datasets_controls,
+           new_models_controls   = new_models_controls)
 
   messageq(break_lines( ), "Directory successfully updated.\n", break_lines( ), quiet = quiet)
 
@@ -119,14 +119,14 @@ update_dir <- function (main                 = ".",
 #'
 #' @export
 #'
-setup_dir <- function (main                 = ".",
-                       models               = prefab_models( ), 
-                       datasets             = prefab_datasets( ),
-                       new_dataset_controls = NULL,
-                       new_model_controls   = NULL,
-                       settings             = directory_settings( ), 
-                       quiet                = FALSE, 
-                       verbose              = FALSE) {
+setup_dir <- function (main                  = ".",
+                       models                = prefab_models( ), 
+                       datasets              = prefab_datasets( ),
+                       new_datasets_controls = NULL,
+                       new_models_controls   = NULL,
+                       settings              = directory_settings( ), 
+                       quiet                 = FALSE, 
+                       verbose               = FALSE) {
 
   core_package <- package_version_finder("setup_dir")
 
@@ -139,11 +139,11 @@ setup_dir <- function (main                 = ".",
              quiet    = quiet,
              verbose  = verbose)
 
-  fill_dir(main                 = main,
-           models               = models, 
-           datasets             = datasets,
-           new_dataset_controls = new_dataset_controls,
-           new_model_controls   = new_model_controls)
+  fill_dir(main                  = main,
+           models                = models, 
+           datasets              = datasets,
+           new_datasets_controls = new_datasets_controls,
+           new_models_controls   = new_models_controls)
 
   messageq(break_lines( ), "Directory successfully instantiated.\n", break_lines( ), quiet = quiet)
 
@@ -178,23 +178,23 @@ setup_production <- function (main     = ".",
 #'
 #' @export
 #'
-setup_sandbox <- function (main                 = ".",
-                           models               = prefab_models( ), 
-                           datasets             = prefab_datasets( ),
-                           new_dataset_controls = NULL,
-                           new_model_controls   = NULL,
-                           settings             = sandbox_settings( ), 
-                           quiet                = FALSE, 
-                           verbose              = FALSE) {
+setup_sandbox <- function (main                  = ".",
+                           models                = prefab_models( ), 
+                           datasets              = prefab_datasets( ),
+                           new_datasets_controls = NULL,
+                           new_models_controls   = NULL,
+                           settings              = sandbox_settings( ), 
+                           quiet                 = FALSE, 
+                           verbose               = FALSE) {
 
-  setup_dir(main                 = main,
-            models               = models, 
-            datasets             = datasets,
-            new_dataset_controls = new_dataset_controls,
-            new_model_controls   = new_model_controls,
-            settings             = settings,
-            quiet                = quiet,
-            verbose              = verbose)
+  setup_dir(main                  = main,
+            models                = models, 
+            datasets              = datasets,
+            new_datasets_controls = new_datasets_controls,
+            new_models_controls   = new_models_controls,
+            settings              = settings,
+            quiet                 = quiet,
+            verbose               = verbose)
 
   messageq(castle(), "Sandbox directory successfully set up at \n\n  ", normalizePath(file.path(main = main)), "\n\nHappy model building!", quiet = quiet)
 
@@ -211,11 +211,11 @@ setup_sandbox <- function (main                 = ".",
 #'              `read_directory_configuration` reads the YAML config file into the R session. \cr \cr
 #'              `read_directory_configuration` reads the YAML config file into the R session and pulls just the directory settings list in.
 #'
-#' @param quiet `logic` indicator if progress messages should be quieted.
+#' @param quiet `logical` indicator if progress messages should be quieted.
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param verbose `logic` indicator of whether or not to print out all of the messages.
+#' @param verbose `logical` indicator of whether or not to print out all of the messages.
 #'
 #' @param settings `list` of controls for the directory, with defaults set in [`directory_settings`].
 #'
@@ -224,15 +224,15 @@ setup_sandbox <- function (main                 = ".",
 #' @name directory configuration file
 #'
 #' @examples
-#'    \donttest{
-#'      main1 <- file.path(tempdir(), "standard")
-#'      setup_dir(main = main1)
+#'  \donttest{
+#'    main1 <- file.path(tempdir(), "standard")
+#'    setup_dir(main = main1)
 #'
-#'      settings1 <- read_directory_settings(main = main1)
-#'      config1   <- read_directory_configuration(main = main1)
+#'    settings1 <- read_directory_settings(main = main1)
+#'    config1   <- read_directory_configuration(main = main1)
 #'
-#'      unlink(main1, force = TRUE, recursive = TRUE)
-#'    }
+#'    unlink(main1, force = TRUE, recursive = TRUE)
+#'  }
 #'
 NULL
 
@@ -341,5 +341,322 @@ update_directory_configuration <- function (main = ".") {
 
   invisible(config)
 
+}
+
+
+#' @title Create a List of Full Directory Paths
+#' 
+#' @description 
+#'   Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on [`directory_settings`]. \cr \cr
+#'   `paths` produces the full path `list`, whose contents can then also be accessed with specialized functions, see `Details`.
+#'
+#' @details Wrapper functions for specific subdirectories and files include:   
+#'   * Files
+#'     * `rodents_datasets_paths`  
+#'     * `rodents_dataset_path`  
+#'     * `climate_forecasts_paths`  
+#'     * `forecasts_metadata_path`  
+#'     * `forecasts_evaluations_path`  
+#'     * `forecasts_results_path`  
+#'     * `newmoons_path`  
+#'     * `covariates_path`  
+#'     * `metadata_path` 
+#'     * `models_controls_path`  
+#'     * `models_rmd_path` 
+#'     * `rodents_profiles_html_path` 
+#'     * `rodents_profiles_csv_path` 
+#'   * Subdirectories
+#'     * `app_path`  
+#'     * `data_path`  
+#'     * `forecasts_path`  
+#'     * `fits_path`  
+#'     * `models_path`  
+#'     * `resources_path`
+#'
+#' @param quiet `logic` indicator if progress messages should be quieted.
+#'
+#' @param main `character` value of the name of the main component of the directory tree. 
+#'
+#' @return `list` of directory paths or specific `character` paths.
+#'
+#' @name directory paths
+#'
+#' @examples
+#'  \donttest{
+#'    main1 <- file.path(tempdir(), "standard")
+#'    create_dir(main = main1)
+#'    paths(main = main1)
+#'    rodents_datasets_paths(main = main1)
+#'    rodents_dataset_path(main = main1)
+#'    rodents_datasets_controls(main = main1)
+#'    climate_forecasts_paths(main = main1)
+#'    forecasts_metadata_path(main = main1)
+#'    forecasts_evaluations_path(main = main1)
+#'    forecasts_results_path(main = main1)
+#'    newmoons_path(main = main1)
+#'    covariates_path(main = main1)
+#'    metadata_path(main = main1)
+#'    models_controls_path(main = main1)
+#'    models_rmd_path(main = main1)
+#'    rodents_profiles_html_path(main = main1)
+#'    rodents_profiles_csv_path(main = main1)
+#'    app_path(main = main1)
+#'    data_path(main = main1)
+#'    forecasts_path(main = main1)
+#'    fits_path(main = main1)
+#'    models_path(main = main1)
+#'    resources_path(main = main1)
+#'  }
+#'
+NULL
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+paths <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+
+  subdirectories           <- as.list(file.path(main, settings$subdirectories))
+  names(subdirectories)    <- settings$subdirectories
+
+  climate_forecasts        <- file.path(main, settings$subdirectories$resources, "NMME",  paste0(settings$resources$climate_forecasts$data, ".csv"))
+  names(climate_forecasts) <- names(settings$resources$climate_forecasts$data)
+
+  rodent_datasets_controls <- prefab_datasets_controls( ) # NEED TO MAKE FLEXIBLE read_dataset_controls(main = main)
+
+  rodents_datasets         <- file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(names(rodent_datasets_controls)), ".csv")) 
+  names(rodents_datasets)  <- names(rodent_datasets_controls)
+
+
+  files <- list(newmoons                  = file.path(main, settings$subdirectories$data, settings$files$newmoons),
+                covariates                = file.path(main, settings$subdirectories$data, settings$files$covariates),
+                metadata                  = file.path(main, settings$subdirectories$data, settings$files$metadata),
+                rodents_datasets          = rodents_datasets,
+                rodents_datasets_controls = file.path(main, settings$subdirectories$data, settings$files$datasets_controls),
+
+                climate_forecasts         = climate_forecasts,
+
+                forecasts_metadata        = file.path(main, settings$subdirectories$forecasts, settings$files$forecasts_metadata),
+                forecasts_evaluations     = file.path(main, settings$subdirectories$forecasts, settings$files$forecasts_evaluations),
+                forecasts_results         = file.path(main, settings$subdirectories$forecasts, settings$files$forecasts_results),
+
+                models_controls           = file.path(main, settings$subdirectories$models, settings$files$models_controls), 
+
+                directory_configuration   = file.path(main, "directory_configuration.yaml"), 
+
+                models_rmd                = file.path(main, settings$subdirectories$app, settings$files$models_rmd), 
+                rodents_profiles_html     = file.path(main, settings$subdirectories$app, settings$files$rodents_profiles_html), 
+                rodents_profiles_csv      = file.path(main, settings$subdirectories$app, "www", settings$files$rodents_profiles_csv))
+
+  list(main           = main,
+       subdirectories = subdirectories,
+       files          = files)
+ 
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+models_rmd_path <- function (main = ".") {
+
+  paths(main = main)$files$models_rmd
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+rodents_profiles_html_path <- function (main = ".") {
+
+  paths(main = main)$files$rodents_profiles_html
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+rodents_profiles_csv_path <- function (main = ".") {
+
+  paths(main = main)$files$rodents_profiles_csv
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+rodents_datasets_paths <- function (main = ".") {
+
+  paths(main = main)$files$rodents_datasets
+
+}
+
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+rodents_datasets_controls_path <- function (main = ".") {
+
+  paths(main = main)$files$rodents_datasets_controls
+
+}
+
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+models_controls_path <- function (main = ".") {
+
+  paths(main = main)$files$models_controls
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+rodents_dataset_path <- function (main    = ".",
+                                  dataset = "all") {
+
+  paths(main = main)$files$rodents_datasets[dataset]
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+climate_forecasts_paths <- function (main = ".") {
+
+  paths(main = main)$files$climate_forecasts
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+forecasts_metadata_path <- function (main = ".") {
+
+  paths(main = main)$files$forecasts_metadata
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+forecasts_evaluations_path <- function (main = ".") {
+
+  paths(main = main)$files$forecasts_evaluations
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+forecasts_results_path <- function (main = ".") {
+
+  paths(main = main)$files$forecasts_results
+
+}
+
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+newmoons_path <- function (main = ".") {
+
+  paths(main = main)$files$newmoons
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+covariates_path <- function (main = ".") {
+
+  paths(main = main)$files$covariates
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+metadata_path <- function (main = ".") {
+
+  paths(main = main)$files$metadata
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+app_path <- function (main = ".") {
+
+  paths(main = main)$subdirectories$app
+  
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+data_path <- function (main = ".") {
+
+  paths(main = main)$subdirectories$data
+  
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+forecasts_path <- function (main = ".") {
+
+  paths(main = main)$subdirectories$forecasts
+  
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+fits_path <- function (main = ".") {
+
+  paths(main = main)$subdirectories$fits
+  
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+models_path <- function (main = ".") {
+
+  paths(main = main)$subdirectories$models
+  
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+resources_path <- function (main = ".") {
+
+  paths(main = main)$subdirectories$resources
+  
 }
 

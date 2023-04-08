@@ -26,9 +26,9 @@ update_directory_configuration(main = ".")
 
 \item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
 
-\item{quiet}{\code{logic} indicator if progress messages should be quieted.}
+\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
-\item{verbose}{\code{logic} indicator of whether or not to print out all of the messages.}
+\item{verbose}{\code{logical} indicator of whether or not to print out all of the messages.}
 }
 \value{
 \code{list} of directory configurations, \code{\link[base:invisible]{invisible}}-ly.
@@ -40,14 +40,14 @@ The directory configuration file is a special file within the directory setup an
 \code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
 }
 \examples{
-   \donttest{
-     main1 <- file.path(tempdir(), "standard")
-     setup_dir(main = main1)
+ \donttest{
+   main1 <- file.path(tempdir(), "standard")
+   setup_dir(main = main1)
 
-     settings1 <- read_directory_settings(main = main1)
-     config1   <- read_directory_configuration(main = main1)
+   settings1 <- read_directory_settings(main = main1)
+   config1   <- read_directory_configuration(main = main1)
 
-     unlink(main1, force = TRUE, recursive = TRUE)
-   }
+   unlink(main1, force = TRUE, recursive = TRUE)
+ }
 
 }

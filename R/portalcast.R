@@ -27,7 +27,7 @@ portalcast <- function (main     = ".",
 
   settings <- read_directory_settings(main = main)
 
-  species <- ifnull(species, forecasting_species(path = file.path(main, settings$subdirectories$resources), total = TRUE))
+  species <- ifnull(species, forecasting_species(path = resources_path(main = main), total = TRUE))
 
   messageq(break_line( ), "Forecasting models...\n", 
            break_line( ), "This is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
@@ -66,7 +66,7 @@ portalcast <- function (main     = ".",
   }
   row.names(model_combinations) <- NULL
   write_csv_arrow(x         = model_combinations, 
-                  file      = file.path(main, settings$subdirectories$forecasts, settings$files$forecast_results))
+                  file      = forecasts_results_path(main = main))
 
   messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = settings$quiet)
   invisible(model_combinations) 
@@ -94,8 +94,8 @@ cast <- function (main     = ".",
                                       dataset = dataset,
                                       species = species,
                                       model   = model)
-  model_controls <- model_controls(main       = main,
-                                   models     = model)[[model]]
+  model_controls <- models_controls(main       = main,
+                                    models     = model)[[model]]
   metadata       <- read_metadata(main        = main)
   newmoons       <- read_newmoons(main        = main)                                        
   covariates     <- read_covariates(main      = main)
@@ -135,7 +135,7 @@ make_model_combinations <- function (main     = ".",
                                      datasets = prefab_datasets( ),
                                      species  = forecasting_species(total = TRUE)) {
 
-  available_controls  <- read_model_controls(main = main)
+  available_controls  <- read_models_controls(main = main)
   available_models    <- names(available_controls)
   navailable_models   <- length(available_models)
 

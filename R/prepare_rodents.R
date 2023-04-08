@@ -27,11 +27,11 @@ prepare_abundance <- function (main    = ".",
 
   settings <- read_directory_settings(main = main)
 
-  model_controls <- model_controls(main   = main, 
-                                   models = model)[[model]]
-  metadata       <- read_metadata(main         = main)
-  rodents_table  <- read_rodents_table(main    = main, 
-                                       dataset = dataset)
+  model_controls <- models_controls(main   = main, 
+                                    models = model)[[model]]
+  metadata        <- read_metadata(main         = main)
+  rodents_table   <- read_rodents_dataset(main    = main, 
+                                          dataset = dataset)
 
   moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoonnumbers
   species_in    <- colnames(rodents_table) == species
@@ -51,7 +51,7 @@ prepare_abundance <- function (main    = ".",
 
 
 
-#' @title Read and Write Rodent Dataset Control Lists
+#' @title Read and Write Rodent Datasets Control Lists
 #'
 #' @description Input/Output functions for dataset control lists.
 #'
@@ -59,18 +59,18 @@ prepare_abundance <- function (main    = ".",
 #'
 #' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
 #'
-#' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
+#' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @return `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_dataset_controls`.
+#' @return `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_datasets_controls`.
 #'  
 #' @name read and write rodent dataset controls
 #'
 #' @export
 #'
-read_dataset_controls <- function (main = ".") {
+read_datasets_controls <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
-  read_yaml(file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
+  read_yaml(file.path(main, settings$subdirectories$data, settings$files$datasets_controls))
 
 }
 
@@ -78,10 +78,10 @@ read_dataset_controls <- function (main = ".") {
 #'
 #' @export
 #'
-dataset_controls <- function (main     = ".",
-                              datasets = prefab_datasets( )) {
+datasets_controls <- function (main     = ".",
+                               datasets = prefab_datasets( )) {
 
-  read_dataset_controls(main = main)[datasets]
+  read_datasets_controls(main = main)[datasets]
 
 }
 
@@ -89,23 +89,22 @@ dataset_controls <- function (main     = ".",
 #'
 #' @export
 #'
-write_dataset_controls <- function (main                 = ".",
-                                    new_dataset_controls = NULL,
-                                    datasets             = prefab_datasets( )) {
+write_datasets_controls <- function (main                  = ".",
+                                     new_datasets_controls = NULL,
+                                     datasets              = prefab_datasets( )) {
 
   settings <- read_directory_settings(main = main)
 
   messageq("Writing dataset controls ...", quiet = settings$quiet)
 
-  dataset_controls <- c(prefab_dataset_controls( ), new_dataset_controls)[datasets]
+  datasets_controls <- c(prefab_datasets_controls( ), new_datasets_controls)[datasets]
 
-
-  write_yaml(x    = dataset_controls,
-             file = file.path(main, settings$subdirectories$data, settings$files$dataset_controls))
+  write_yaml(x    = datasets_controls,
+             file = rodents_datasets_controls_path(main = main))
 
   messageq(" ... complete.\n", quiet = settings$quiet)
 
-  invisible(dataset_controls)
+  invisible(datasets_controls)
 
 }
 
@@ -118,7 +117,7 @@ write_dataset_controls <- function (main                 = ".",
 #'
 #' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
 #'
-#' @param new_dataset_controls Optional `list` of controls for new datasets. See [`dataset_controls`].
+#' @param new_datasets_controls Optional `list` of controls for new datasets. See [`dataset_controls`].
 #'
 #' @return `list` of prepared `datasets`.
 #'  
@@ -126,25 +125,25 @@ write_dataset_controls <- function (main                 = ".",
 #'
 #' @export
 #'
-prepare_rodents <- function (main                 = ".",
-                             datasets             = prefab_datasets( ),
-                             new_dataset_controls = NULL) {
+prepare_rodents <- function (main                  = ".",
+                             datasets              = prefab_datasets( ),
+                             new_datasets_controls = NULL) {
 
   return_if_null(x = datasets)
   settings <- read_directory_settings(main = main)
 
-  dataset_controls_list <- write_dataset_controls(main                 = main, 
-                                                  datasets             = datasets, 
-                                                  new_dataset_controls = new_dataset_controls)
+  datasets_controls_list <- write_datasets_controls(main                  = main, 
+                                                    datasets              = datasets, 
+                                                    new_datasets_controls = new_datasets_controls)
 
   messageq("  - rodents", quiet = settings$quiet)
 
   out <- named_null_list(element_names = datasets)
 
-  for (i in 1:length(dataset_controls_list)) {
+  for (i in 1:length(datasets_controls_list)) {
 
-    out[[i]] <- do.call(what = dataset_controls_list[[i]]$fun, 
-                        args = update_list(list = dataset_controls_list[[i]]$args, 
+    out[[i]] <- do.call(what = datasets_controls_list[[i]]$fun, 
+                        args = update_list(list = datasets_controls_list[[i]]$args, 
                                            main = main))
   
   }
@@ -239,7 +238,7 @@ prepare_dataset <- function(name       = "all",
 
   messageq("    - ", name, quiet = settings$quiet)
 
-  rodents_table <- summarize_rodent_data(path       = file.path(main, settings$subdirectories$resources), 
+  rodents_table <- summarize_rodent_data(path       = resources_path(main = main), 
                                          clean      = clean, 
                                          level      = level, 
                                          type       = type, 
@@ -257,7 +256,7 @@ prepare_dataset <- function(name       = "all",
                                          quiet      = !settings$verbose) 
 
 
-  sp_col           <- colnames(rodents_table) %in% rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "code", total = FALSE)
+  sp_col           <- colnames(rodents_table) %in% rodent_species(path = resources_path(main = main), set = "forecasting", type = "code", total = FALSE)
   which_sp_col     <- which(sp_col)
   which_not_sp_col <- which(!sp_col)
   sp_col_in        <- colnames(rodents_table)[sp_col] %in% species
