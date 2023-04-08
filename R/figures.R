@@ -53,7 +53,7 @@ plot_casts_err_lead <- function (main                        = ".",
   nmodels <- length(models) 
   nspecies <- length(species)
 
-  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
+  species_names_table  <- rodent_species(path = resources_path(main = main), set = "forecasting", type = "table", total = TRUE)
 
   if (nmodels == 1 & nspecies == 1) {
 

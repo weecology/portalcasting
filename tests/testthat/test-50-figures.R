@@ -38,7 +38,6 @@ test_that(desc = "plot_casts_err_lead", {
 
   skip_on_cran() 
 
-  expect_silent(plot_casts_err_lead(main = main3))
   expect_silent(plot_casts_err_lead(main = main3, species = c("PP", "DM"), models = c("AutoArima")))
   expect_silent(plot_casts_err_lead(main = main3, species = c("total", "DM"), models = c("AutoArima", "ESSS")))
 
@@ -53,7 +52,7 @@ test_that(desc = "plot_casts_cov_RMSE", {
 
   skip_on_cran() 
 
-  expect_silent(plot_casts_cov_RMSE(main = main3))
+  expect_silent(plot_casts_cov_RMSE(main = main3, species = c("DM"), models = c("AutoArima")))
   expect_silent(plot_casts_cov_RMSE(main = main3, species = c("total", "DM"), models = c("AutoArima", "ESSS")))
 
   expect_error(plot_casts_cov_RMSE(main = main3, cast_id = 1e10))

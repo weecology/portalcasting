@@ -58,9 +58,9 @@ test_that(desc = "read_data works when the data are present", {
 
   skip_on_cran() 
 
-  expect_silent(all <- read_data(main = main2, "rodents_table", "all"))
+  expect_silent(all <- read_data(main = main2, "rodents_dataset", "all"))
   expect_is(all, "data.frame")
-  expect_silent(controls <- read_data(main = main2, "rodents_table", 
+  expect_silent(controls <- read_data(main = main2, "rodents_dataset", 
                                       "controls"))
   expect_is(controls, "data.frame")
   expect_silent(controls <- read_data(main = main2, "rodents", "controls"))
