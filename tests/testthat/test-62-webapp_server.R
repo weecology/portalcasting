@@ -8,15 +8,15 @@ test_that(desc = "server functions work off of global list", {
 
   skip_on_cran() 
 
-#  expect_silent(gl <- global_list(main = main3))
-#  expect_is(gl, "list")
+  expect_silent(gl <- global_list(main = main3))
+  expect_is(gl, "list")
 
-#  expect_silent(irv <- initial_reactive_values(global = gl))
-#  expect_is(irv, "reactivevalues")
+  expect_silent(irv <- initial_reactive_values(global = gl))
+  expect_is(irv, "reactivevalues")
 
-#  expect_silent(io <- initial_output(main = main3, rv = irv, output = list()))
-#  expect_is(io, "list")
-expect_equal(1,1)
+  expect_silent(io <- initial_output(main = main3, rv = irv, output = list()))
+  expect_is(io, "list")
+
 })
 
 #testServer(portal_forecast_server, {
