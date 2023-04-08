@@ -30,7 +30,7 @@ Here, we assume the user has already run through a basic installation, set up, a
 
 Unlike previous versions of **portalcasting**, starting with v0.9.0, there are very few formal requirements for the output of a model. The requirements have been further relaxed starting with v0.51.0, where we now leverage the model controls lists to track and document most functionality.
 
-The forecasting pipeline will work with basically any univariate model fitting function that will run in R, and produce an object that is then capable of being processed by the forecasting function to forecast the model's predictions, so long as they can be processed via `process_model_output`, which only requires `mean`, `lower`, and `upper` elements. The vast majority of the information saved about the forecasts is located in the metadata files and controls lists, resulting in the model itself not needing to produce much specific output to be vlid.
+The forecasting pipeline will work with basically any univariate model fitting function that will run in R, and produce an object that is then capable of being processed by the forecasting function to forecast the model's predictions, so long as they can be processed via `process_model_output()`, which only requires `mean`, `lower`, and `upper` elements. The vast majority of the information saved about the forecasts is located in the metadata files and controls lists, resulting in the model itself not needing to produce much specific output to be vlid.
 
 Models can be based on either pre-existing functions (e.g., the `AutoArima` model uses `auto.arima` from the **forecasting** package) or specialized functions (such as those designed for the `runjags` models in **portalcasting**, which are collated into `fit_runjags`). Each model-dataset-species combinaiton is run in `cast()` wrapped in a `tryCatch()` call, which softens any errors in implementation. The `cast()` call runs a `do.call` implementation of the fit and cast functions from the model controls list and then passes the output of the two functions to `process_model_output`.
 
@@ -59,7 +59,7 @@ model_controls_template()
 
 ### Metadata
 
-One can create custom controls using a suite of `new_model_<>` functions, each of which wraps a call to a specific component of the `model_controls_template` inside an `update_list` call:
+One can create custom controls using a suite of `new_model_<>` functions, each of which wraps a call to a specific component of the `model_controls_template` inside an `update_list()` call:
 
 ```{r}
 new_model_controls()
@@ -100,7 +100,7 @@ new_model_datasets()
 
 
 
-If the specific model needs to use interpolated data, the `new_model_interpolate()` function should be given an argument `needed = TRUE`, and then a function input, which allows for invoking specialized functions. A simple example that is used for the prefab models is `round_na.interp`, which would be implemented as:
+If the specific model needs to use interpolated data, the `new_model_interpolate()` function should be given an argument `needed = TRUE`, and then a function input, which allows for invoking specialized functions. A simple example that is used for the prefab models is `round_na.interp()`, which would be implemented as:
 
 
 ```{r}
@@ -144,9 +144,7 @@ new_controls <- new_model_controls(metadata = new_model_metadata(name = "newmod"
 
 ```
 
-Given that the directory is already established, one can use the `add_new_model` function to add the model to the directory at main, via the controls list:
-
-
+Given that the directory is already established, one can use the `add_new_model()` function to add the model to the directory at main, via the controls list:
 
 
 ```{r eval=FALSE}
@@ -211,7 +209,7 @@ dataset_controls_template()
 
 ### Metadata
 
-One can create custom controls using a suite of `new_data_<>` functions, each of which wraps a call to a specific component of the `data_controls_template` inside an `update_list` call:
+One can create custom controls using a suite of `new_data_<>` functions, each of which wraps a call to a specific component of the `data_controls_template` inside an `update_list()` call:
 
 ```{r}
 new_dataset_controls()
@@ -233,7 +231,7 @@ new_dataset_fun()
 
 although that can be changed to whatever generating function a user may want to implement. 
 
-The arguments to the function can be updated via the `new_dataset_args`:
+The arguments to the function can be updated via the `new_dataset_args()` function:
 
 ```{r}
 new_dataset_args(name = "newdata")
@@ -241,7 +239,7 @@ new_dataset_args(name = "newdata")
 
 ### Adding the Dataset
 
-These can all be wrapped up together in a call to `new_dataset_controls` to create the controls list that is then passed into `add_new_dataset`:
+These can all be wrapped up together in a call to `new_dataset_controls()` to create the controls list that is then passed into `add_new_dataset()`:
 
 
 ```{r}
@@ -250,7 +248,7 @@ new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "new
 
 ```
 
-Given that the directory is already established, one can use the `add_new_dataset` function to add the dataset controls to the directory at main, via the controls list:
+Given that the directory is already established, one can use the `add_new_dataset()` function to add the dataset controls to the directory at main, via the controls list:
 
 ```{r eval=FALSE}
 

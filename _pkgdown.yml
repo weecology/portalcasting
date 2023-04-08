@@ -14,7 +14,7 @@ navbar:
          href: articles/current_models.html
        - text: "Getting Started"
          href: articles/getting_started.html
-       - text: "Adding a Model and Data
+       - text: "Adding a Model and Data"
          href: articles/adding_model_and_data.html
        - text: "Codebase"
          href: articles/codebase.html
@@ -30,4 +30,3 @@ navbar:
     github:
       icon: fa-github
       href: https://github.com/weecology
-  

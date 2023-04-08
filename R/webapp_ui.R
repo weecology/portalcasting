@@ -570,6 +570,7 @@ write_rodent_profiles_tab_html <- function (main = ".") {
 #
 write_models_tab_html <- function (main = ".") {
 
+  settings <- read_directory_settings(main = main)
 
   file_out <- render(input         = models_rmd_path(main = main),
                      output_format = output_format(knitr  = knitr_options( ), 
