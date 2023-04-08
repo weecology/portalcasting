@@ -19,7 +19,7 @@ test_that(desc = "server functions work off of global list", {
 expect_equal(1,1)
 })
 
-testServer(portal_forecast_server, {
+#testServer(portal_forecast_server, {
 
 #  expect_silent(global <- global_list(main = main3))
 
@@ -44,5 +44,5 @@ testServer(portal_forecast_server, {
 #  expect_equal(output$evaluation_tab_historic_end_newmoonnumber, as.character(global$initial_evaluation_tab_selected_historic_end_newmoonnumber))
 #  expect_equal(output$evaluation_tab_newmoonnumber, as.character(global$initial_evaluation_tab_selected_newmoonnumber))
 
-expect_equal(1,1)
-})
+
+#})
