@@ -25,8 +25,6 @@
 #'
 #' @name download climate forecasts
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
@@ -34,6 +32,12 @@
 #'    download_climate_forecasts(main = main)
 #'    unlink(main1, recursive = TRUE)
 #' }
+#'
+NULL
+
+#' @rdname download-climate-forecasts
+#'
+#' @export
 #'
 download_climate_forecasts <- function (main          = ".",
                                         resources_sub = "resources",
@@ -117,10 +121,14 @@ download_climate_forecasts <- function (main          = ".",
 #'
 #' @name NMME urls
 #'
-#' @export
-#'
 #' @examples
 #'    NMME_urls( )
+#'
+NULL
+
+#' @rdname NMME-urls
+#'
+#' @export
 #'
 NMME_urls <- function (start = Sys.Date(), 
                        end   = as.Date("2050-01-01"),
@@ -208,8 +216,6 @@ NMME_urls <- function (start = Sys.Date(),
 #'
 #' @name download archive
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
@@ -217,6 +223,12 @@ NMME_urls <- function (start = Sys.Date(),
 #'    download_archive(main = main)
 #'    unlink(main1, recursive = TRUE)
 #'  }
+#'
+NULL
+
+#' @rdname download-archive
+#'
+#' @export
 #'
 download_archive <- function(main          = ".",
                              resources_sub = "resources",

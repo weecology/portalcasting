@@ -41,6 +41,13 @@
 #'    unlink(main1, force = TRUE, recursive = TRUE)
 #'  }
 #'
+NULL
+
+
+#' @rdname read-write-data
+#'
+#' @export
+#'
 write_data <- function (x            = NULL, 
                         main         = ".", 
                         subdirectory = "data",
