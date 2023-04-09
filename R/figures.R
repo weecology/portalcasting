@@ -27,7 +27,7 @@ plot_casts_err_lead <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  evals    <- read_foreforecasts_evaluations(main)
+  evals    <- read_forecasts_evaluations(main)
 
   models                        <- ifnull(models, "AutoArima")
   datasets                      <- ifnull(datasets, "controls")
@@ -292,7 +292,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  evals    <- read_foreforecasts_evaluations(main = main)
+  evals    <- read_forecasts_evaluations(main = main)
 
   casts_meta <- select_forecasts(main                        = main, 
                                  forecast_ids                = forecast_ids,

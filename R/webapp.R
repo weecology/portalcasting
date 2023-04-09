@@ -414,8 +414,8 @@ global_list <- function (main = ".") {
 
   messageq("Reading in casts metadata and evaluation files ...", quiet = !settings$verbose)
 
-  forecasts_metadata    <- read_foreforecasts_metadata(main = main)
-  forecasts_evaluations <- read_foreforecasts_evaluations(main = main)
+  forecasts_metadata    <- read_forecasts_metadata(main = main)
+  forecasts_evaluations <- read_forecasts_evaluations(main = main)
   forecasts_evaluations <- forecasts_evaluations[!is.na(forecasts_evaluations$obs), ]
 
   if (nrow(forecasts_metadata) == 0) {

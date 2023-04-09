@@ -94,7 +94,7 @@ plot_cast_point(main = main, data_set = "controls")
 
 ## Reading in data to the R console from the directory
 
-A series of `read_<name>` functions are available for simple loading of the data sets into R from the directory. A generalized `read_data` function includes an  argument for which data set to load ("rodents" [and then which specific data set], "covariates", "climate_forecasts", "newmoons", or "metadata"), and each of those data sets also has a specific function, such as `read_moons`. `read_foreforecasts_metadata` has a function itself, but is not called via `read_data` currently.
+A series of `read_<name>` functions are available for simple loading of the data sets into R from the directory. A generalized `read_data` function includes an  argument for which data set to load ("rodents" [and then which specific data set], "covariates", "climate_forecasts", "newmoons", or "metadata"), and each of those data sets also has a specific function, such as `read_moons`. `read_forecasts_metadata` has a function itself, but is not called via `read_data` currently.
 
 ```{r, eval=FALSE}
 read_data(main = main, data_name = "rodents")
@@ -111,7 +111,7 @@ read_covariates(main = main)
 read_climate_forecasts(main = main)
 read_newmoons(main = main)
 read_metadata(main = main)
-read_foreforecasts_metadata(main = main)
+read_forecasts_metadata(main = main)
 ```
 
 ## Reading in cast output to the R console from the directory
@@ -124,7 +124,7 @@ Presently, four functions are available for interfacing with saved cast output.
 select_forecasts(main = main, models = "AutoArima")
 ```
 
-And `read_cast_tab`, `read_model_cast`, and `read_foreforecasts_metadata` each read in the associated output from a given cast, as indicated by its forecast_id, which is displayed in the output from `select_forecasts`:
+And `read_cast_tab`, `read_model_cast`, and `read_forecasts_metadata` each read in the associated output from a given cast, as indicated by its forecast_id, which is displayed in the output from `select_forecasts`:
 
 ```{r, eval=FALSE}
 read_cast_tab(main = main, forecast_id = "1.1")

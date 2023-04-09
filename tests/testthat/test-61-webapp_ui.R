@@ -68,7 +68,7 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
 
 
   gll <- global_list(main = main3)
-  gll$foreforecasts_metadata <- NULL
+  gll$forecasts_metadata <- NULL
 
 
 

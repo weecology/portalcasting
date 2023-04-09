@@ -14,7 +14,7 @@
 #'
 #' @param covariates `character` name for the combined historical and forecast covariates csv.
 #'
-#' @param foreforecasts_metadata `character` name for the forecast metadata csv.
+#' @param forecasts_metadata `character` name for the forecast metadata csv.
 #'
 #' @param metadata `character` name for the Forecast metadata YAML.
 #'
@@ -32,7 +32,7 @@
 #'
 #' @param models_controls `character` name for the YAML of models controls list(s).
 #'
-#' @param foreforecasts_evaluations `character` name for the forecast evaluations csv.
+#' @param forecasts_evaluations `character` name for the forecast evaluations csv.
 #'
 #' @param forecasts_results `character` name for the forecast combination results csv.
 #'
@@ -163,9 +163,9 @@ directory_files <- function (newmoons              = "newmoons.csv",
                              covariates            = "covariates.csv",
                              datasets_controls     = "datasets_controls.yaml", 
                              models_controls       = "models_controls.yaml",
-                             foreforecasts_evaluations = "foreforecasts_evaluations.csv",
+                             forecasts_evaluations = "forecasts_evaluations.csv",
                              forecasts_results     = "forecasts_results.csv",
-                             foreforecasts_metadata    = "foreforecasts_metadata.csv",
+                             forecasts_metadata    = "forecasts_metadata.csv",
                              metadata              = "metadata.yaml",
                              about_md              = "about.md",
                              models_html           = "models.html",
@@ -177,9 +177,9 @@ directory_files <- function (newmoons              = "newmoons.csv",
        covariates              = covariates,
        datasets_controls       = datasets_controls, 
        models_controls         = models_controls,
-       foreforecasts_evaluations   = foreforecasts_evaluations,
+       forecasts_evaluations   = forecasts_evaluations,
        forecasts_results       = forecasts_results,
-       foreforecasts_metadata      = foreforecasts_metadata,
+       forecasts_metadata      = forecasts_metadata,
        about_md                = about_md,
        models_rmd              = models_rmd,
        models_html             = models_html,

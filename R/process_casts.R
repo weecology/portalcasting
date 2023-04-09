@@ -31,7 +31,7 @@ process_model_output <- function (main      = ".",
 
   settings <- read_directory_settings(main = main)
 
-  forecasts_metadata <- read_foreforecasts_metadata(main = main) 
+  forecasts_metadata <- read_forecasts_metadata(main = main) 
 
   metadata <- read_metadata(main = main)
 
@@ -114,7 +114,7 @@ process_model_output <- function (main      = ".",
 
     row.names(forecasts_metadata) <- NULL
     write_csv_arrow(x         = forecasts_metadata, 
-                    file      = foreforecasts_metadata_path(main = main))
+                    file      = forecasts_metadata_path(main = main))
 
     model_fit_filename <- paste0("forecast_id_", cast_metadata$forecast_id, "_model_fit.json") 
     model_fit_path     <- file.path(main, settings$subdirectories$fits, model_fit_filename)
@@ -333,7 +333,7 @@ read_model_cast <- function (main    = ".",
 #' @title Find Casts that Fit Specifications
 #'
 #' @description Determines the casts that match user specifications. \cr
-#'  Functionally, a wrapper on [`read_foreforecasts_metadata`] with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
+#'  Functionally, a wrapper on [`read_forecasts_metadata`] with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
@@ -363,7 +363,7 @@ select_forecasts <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  forecasts_metadata <- read_foreforecasts_metadata(main = main)
+  forecasts_metadata <- read_forecasts_metadata(main = main)
 
   uforecast_ids      <- unique(forecasts_metadata$forecast_id[forecasts_metadata$QAQC])
   forecast_ids       <- ifnull(forecast_ids, uforecast_ids)
@@ -417,20 +417,20 @@ select_forecasts <- function (main                        = ".",
 #'
 #' @export
 #'
-read_foreforecasts_metadata <- function (main = ".") {
+read_forecasts_metadata <- function (main = ".") {
   
   settings  <- read_directory_settings(main = main)
 
-  meta_path <- foreforecasts_metadata_path(main = main)
+  meta_path <- forecasts_metadata_path(main = main)
 
   if (!file.exists(meta_path)) {
 
     messageq("  **creating forecast metadata file**", quiet = settings$quiet)
 
-    out <- data.frame(forecast_id                      = NA,
-                      old_forecast_id                  = NA,
-                      forecast_group                   = 0,
-                      cast_date                    = NA,
+    out <- data.frame(forecast_id                  = NA,
+                      old_forecast_id              = NA,
+                      forecast_group               = 0,
+                      forecast_date                = NA,
                       origin                       = NA,
                       historic_start_newmoonnumber = NA,
                       historic_end_newmoonnumber   = NA,

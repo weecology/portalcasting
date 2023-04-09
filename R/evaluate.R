@@ -5,7 +5,7 @@
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the casts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the casts metadata file (`forecasts_metadata.csv`) for summary information. \cr
+#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the casts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. \cr
 #'  `forecast_id` can only be a single value, whereas `forecast_ids` can be multiple.
 #'
 #' @return A `data.frame` of all cast evaluations at the observation (newmoon) level, [`invisible`][base::invisible]-ly..
@@ -15,23 +15,23 @@
 #' @export
 #'
 evaluate_forecasts <- function (main        = ".", 
-                               forecast_ids = NULL) {
+                                forecast_ids = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   casts_to_evaluate <- select_forecasts(main     = main, 
-                                    forecast_ids = forecast_ids)
+                                        forecast_ids = forecast_ids)
 
   forecast_ids  <- casts_to_evaluate$forecast_id
   nforecast_ids <- length(forecast_ids)
 
   if (NROW(casts_to_evaluate) == 0) {
 
-    stop("no casts available for request")
+    stop("no forecasts available for request")
 
   }
 
-  existing_evaluations      <- read_foreforecasts_evaluations(main = main)
+  existing_evaluations      <- read_forecasts_evaluations(main = main)
   rodents_table             <- read_rodents_dataset(main = main, dataset = "all")                          
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
@@ -56,7 +56,7 @@ evaluate_forecasts <- function (main        = ".",
 
   if (length(selected_forecast_ids) == 0) {
 
-    message(" No casts need evaluation.", quiet = FALSE)
+    message(" No forecasts need evaluation.", quiet = FALSE)
     return(existing_evaluations)
   }
 
@@ -64,7 +64,7 @@ evaluate_forecasts <- function (main        = ".",
 
   out <- named_null_list(element_names = selected_forecast_ids)
 
-  messageq("Evaluating casts ...\n", quiet = settings$quiet)
+  messageq("Evaluating forecasts ...\n", quiet = settings$quiet)
 
   for (i in 1:nselected_forecast_ids) {
 
@@ -101,7 +101,7 @@ evaluate_forecasts <- function (main        = ".",
              subdirectory = settings$subdirectories$forecasts,
              save         = settings$save,
              overwrite    = settings$overwrite, 
-             filename     = settings$files$foreforecasts_evaluations,
+             filename     = settings$files$forecasts_evaluations,
              quiet        = settings$quiet)
 
 }
@@ -280,9 +280,9 @@ add_obs_to_cast_tab <- function (main     = ".",
 }
 
   
-#' @title Read in the Casts Evaluations File
+#' @title Read in the Forecasts Evaluations File
 #'
-#' @description Read in the casts evaluations file. 
+#' @description Read in the forecasts evaluations file. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
@@ -290,14 +290,14 @@ add_obs_to_cast_tab <- function (main     = ".",
 #'
 #' @export
 #'
-read_foreforecasts_evaluations <- function (main = "."){
+read_forecasts_evaluations <- function (main = "."){
   
   settings  <- read_directory_settings(main = main)
-  eval_path <- foreforecasts_evaluations_path(main = main)
+  eval_path <- forecasts_evaluations_path(main = main)
 
   if (!file.exists(eval_path)) {
 
-    messageq("  Cast evaluations not available.", quiet = settings$quiet)
+    messageq("  Forecast evaluations not available.", quiet = settings$quiet)
 
     out <- NULL
 

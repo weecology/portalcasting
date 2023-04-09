@@ -355,8 +355,8 @@ update_directory_configuration <- function (main = ".") {
 #'     * `rodents_datasets_paths`  
 #'     * `rodents_dataset_path`  
 #'     * `climate_forecasts_paths`  
-#'     * `foreforecasts_metadata_path`  
-#'     * `foreforecasts_evaluations_path`  
+#'     * `forecasts_metadata_path`  
+#'     * `forecasts_evaluations_path`  
 #'     * `forecasts_results_path`  
 #'     * `newmoons_path`  
 #'     * `covariates_path`  
@@ -390,8 +390,8 @@ update_directory_configuration <- function (main = ".") {
 #'    rodents_dataset_path(main = main1)
 #'    rodents_datasets_controls(main = main1)
 #'    climate_forecasts_paths(main = main1)
-#'    foreforecasts_metadata_path(main = main1)
-#'    foreforecasts_evaluations_path(main = main1)
+#'    forecasts_metadata_path(main = main1)
+#'    forecasts_evaluations_path(main = main1)
 #'    forecasts_results_path(main = main1)
 #'    newmoons_path(main = main1)
 #'    covariates_path(main = main1)
@@ -440,8 +440,8 @@ paths <- function (main = ".") {
 
                 climate_forecasts         = climate_forecasts,
 
-                foreforecasts_metadata        = file.path(main, settings$subdirectories$forecasts, settings$files$foreforecasts_metadata),
-                foreforecasts_evaluations     = file.path(main, settings$subdirectories$forecasts, settings$files$foreforecasts_evaluations),
+                forecasts_metadata        = file.path(main, settings$subdirectories$forecasts, settings$files$forecasts_metadata),
+                forecasts_evaluations     = file.path(main, settings$subdirectories$forecasts, settings$files$forecasts_evaluations),
                 forecasts_results         = file.path(main, settings$subdirectories$forecasts, settings$files$forecasts_results),
 
                 models_controls           = file.path(main, settings$subdirectories$models, settings$files$models_controls), 
@@ -567,9 +567,9 @@ climate_forecasts_paths <- function (main = ".") {
 #'
 #' @export
 #'
-foreforecasts_metadata_path <- function (main = ".") {
+forecasts_metadata_path <- function (main = ".") {
 
-  paths(main = main)$files$foreforecasts_metadata
+  paths(main = main)$files$forecasts_metadata
 
 }
 
@@ -577,9 +577,9 @@ foreforecasts_metadata_path <- function (main = ".") {
 #'
 #' @export
 #'
-foreforecasts_evaluations_path <- function (main = ".") {
+forecasts_evaluations_path <- function (main = ".") {
 
-  paths(main = main)$files$foreforecasts_evaluations
+  paths(main = main)$files$forecasts_evaluations
 
 }
 

@@ -40,9 +40,9 @@ directory_files(
   covariates = "covariates.csv",
   datasets_controls = "datasets_controls.yaml",
   models_controls = "models_controls.yaml",
-  foreforecasts_evaluations = "foreforecasts_evaluations.csv",
+  forecasts_evaluations = "forecasts_evaluations.csv",
   forecasts_results = "forecasts_results.csv",
-  foreforecasts_metadata = "foreforecasts_metadata.csv",
+  forecasts_metadata = "forecasts_metadata.csv",
   metadata = "metadata.yaml",
   about_md = "about.md",
   models_html = "models.html",
@@ -121,11 +121,11 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{models_controls}{\code{character} name for the YAML of models controls list(s).}
 
-\item{foreforecasts_evaluations}{\code{character} name for the forecast evaluations csv.}
+\item{forecasts_evaluations}{\code{character} name for the forecast evaluations csv.}
 
 \item{forecasts_results}{\code{character} name for the forecast combination results csv.}
 
-\item{foreforecasts_metadata}{\code{character} name for the forecast metadata csv.}
+\item{forecasts_metadata}{\code{character} name for the forecast metadata csv.}
 
 \item{metadata}{\code{character} name for the Forecast metadata YAML.}
 

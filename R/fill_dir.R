@@ -149,7 +149,7 @@ fill_app <- function (main = ".") {
             recursive = TRUE,
             overwrite = TRUE)
 
-  write_rodent_profiles_tab_html(main = main)
+  write_rodents_profiles_tab_html(main = main)
   write_models_tab_html(main = main)
 
   messageq(" ... complete.\n", quiet = settings$quiet)

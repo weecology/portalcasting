@@ -37,7 +37,7 @@ prepare_metadata <- function (main                 = ".",
   forecast_years               <- format(forecast_dates, "%Y")
   lead_time_newmoons           <- length(forecast_newmoonnumbers)
 
-  cast_meta  <- read_foreforecasts_metadata(main = main)
+  cast_meta  <- read_forecasts_metadata(main = main)
   forecast_group <- max(c(0, cast_meta$forecast_group), na.rm = TRUE) + 1
 
 
