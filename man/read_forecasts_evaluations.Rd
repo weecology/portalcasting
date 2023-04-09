@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluate.R
 \name{read_forecasts_evaluations}
 \alias{read_forecasts_evaluations}
-\title{Read in the Casts Evaluations File}
+\title{Read in the Forecasts Evaluations File}
 \usage{
 read_forecasts_evaluations(main = ".")
 }
@@ -13,5 +13,5 @@ read_forecasts_evaluations(main = ".")
 Evaluations requested.
 }
 \description{
-Read in the casts evaluations file.
+Read in the forecasts evaluations file.
 }

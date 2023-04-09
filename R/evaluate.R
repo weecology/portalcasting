@@ -1,6 +1,6 @@
 #' @title Evaluate Forecasts
 #'
-#' @description Evaluate forecasts in the directory, based on id(s). \cr
+#' @description Evaluate forecasts in the directory, based on id(s). \cr \cr
 #'   Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
@@ -44,7 +44,7 @@ evaluate_forecasts <- function (main        = ".",
     }
 
     casts_left_to_evaluate  <- unique(existing_evaluations$forecast_id[!existing_evaluations$cast_evaluation_complete & 
-                                                                   existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
+                                                                       existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
   
   } else {
 
@@ -150,9 +150,18 @@ evaluate_cast <- function (main     = ".",
                            "jags_logistic_covariates"             = "sample",
                            "jags_logistic_competition_covariates" = "sample")
 
+  rodents_table             <- read_rodents_dataset(main = main, dataset = "all")                          
+  last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
+
   can_score <- !is.na(cast_tab$obs)
 
   if (!any(can_score)) {
+
+    if (all(cast_tab$newmoonnumber <= last_census_newmoonnumber)) {
+
+      cast_tab$cast_evaluation_complete <- TRUE
+
+    }
 
     return(cast_tab)
 

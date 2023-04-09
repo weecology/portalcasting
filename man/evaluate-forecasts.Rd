@@ -13,13 +13,13 @@ evaluate_cast(main = ".", forecast_id = NULL)
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{forecast_id, forecast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information. \cr
+\item{forecast_id, forecast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. \cr
 \code{forecast_id} can only be a single value, whereas \code{forecast_ids} can be multiple.}
 }
 \value{
 A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base:invisible]{invisible}}-ly..
 }
 \description{
-Evaluate forecasts in the directory, based on id(s). \cr
+Evaluate forecasts in the directory, based on id(s). \cr \cr
 Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
 }
