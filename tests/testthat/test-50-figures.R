@@ -13,7 +13,7 @@ test_that(desc = "plot_cast_ts", {
                              model = "AutoArima"))
   expect_silent(plot_cast_ts(main = main3, species = "DM"))
   expect_silent(plot_cast_ts(main = main3, species = "total"))
-  expect_error(plot_cast_ts(main = main3, species = "DM", cast_id = 1e10))
+  expect_error(plot_cast_ts(main = main3, species = "DM", forecast_id = 1e10))
 
 })
 
@@ -27,7 +27,7 @@ test_that(desc = "plot_cast_point", {
   expect_silent(plot_cast_point(main = main3, model = "AutoArima"))
   expect_silent(plot_cast_point(main = main3, model = "AutoArima", with_census = TRUE))
   
-  expect_error(plot_cast_point(main = main3, cast_id = 1e10))
+  expect_error(plot_cast_point(main = main3, forecast_id = 1e10))
 
 
 })
@@ -41,7 +41,7 @@ test_that(desc = "plot_casts_err_lead", {
   expect_silent(plot_casts_err_lead(main = main3, species = c("PP"), models = c("AutoArima")))
   expect_silent(plot_casts_err_lead(main = main3, species = c("total", "DM"), models = c("AutoArima", "ESSS")))
 
-  expect_error(plot_casts_err_lead(main = main3, cast_id = 1e10))
+  expect_error(plot_casts_err_lead(main = main3, forecast_id = 1e10))
 
 })
 
@@ -55,7 +55,7 @@ test_that(desc = "plot_casts_cov_RMSE", {
   expect_silent(plot_casts_cov_RMSE(main = main3, species = c("DM"), models = c("AutoArima")))
   expect_silent(plot_casts_cov_RMSE(main = main3, species = c("total", "DM"), models = c("AutoArima", "ESSS")))
 
-  expect_error(plot_casts_cov_RMSE(main = main3, cast_id = 1e10))
+  expect_error(plot_casts_cov_RMSE(main = main3, forecast_id = 1e10))
 
 })
 

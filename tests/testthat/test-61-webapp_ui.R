@@ -50,8 +50,26 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
 
   expect_silent(tt <- write_models_tab_html(main = main2))
   expect_is(tt, "character")
-  expect_silent(tt <- write_rodent_profiles_tab_html(main = main2))
+  expect_silent(tt <- write_rodents_profiles_tab_html(main = main2))
   expect_is(tt, "character")
+
+
+  expect_silent(bs <- app_theme())
+  expect_is(bs, "bs_theme")
+
+  expect_silent(at <- about_tab(global = global_list(main = main3)))
+  expect_is(at, "shiny.tag")
+
+  expect_silent(mt <- models_tab(global = global_list(main = main3)))
+  expect_is(mt, "shiny.tag")
+
+  expect_silent(pt <- rodents_profiles_tab(global = global_list(main = main3)))
+  expect_is(pt, "shiny.tag")
+
+
+  gll <- global_list(main = main3)
+  gll$foreforecasts_metadata <- NULL
+
 
 
 })

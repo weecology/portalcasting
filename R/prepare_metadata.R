@@ -37,8 +37,8 @@ prepare_metadata <- function (main                 = ".",
   forecast_years               <- format(forecast_dates, "%Y")
   lead_time_newmoons           <- length(forecast_newmoonnumbers)
 
-  cast_meta  <- read_casts_metadata(main = main)
-  cast_group <- max(c(0, cast_meta$cast_group), na.rm = TRUE) + 1
+  cast_meta  <- read_foreforecasts_metadata(main = main)
+  forecast_group <- max(c(0, cast_meta$forecast_group), na.rm = TRUE) + 1
 
 
   out <- list(time                    = list(timeseries_start             = as.character(settings$time$timeseries_start),
@@ -59,7 +59,7 @@ prepare_metadata <- function (main                 = ".",
                                              forecast_years               = forecast_years,
                                              forecast_months              = forecast_months,
                                              lead_time_newmoons           = lead_time_newmoons),
-              cast_group              = cast_group,
+              forecast_group              = forecast_group,
               datasets_controls       = datasets_controls_list,
               confidence_level        = settings$confidence_level,
               nsamples                = settings$nsamples,

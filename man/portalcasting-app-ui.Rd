@@ -9,7 +9,7 @@
 \alias{subtitle_panel}
 \alias{about_tab}
 \alias{models_tab}
-\alias{profiles_tab}
+\alias{rodents_profiles_tab}
 \alias{forecast_tab}
 \alias{forecast_tab_input_selection_checks_row}
 \alias{forecast_tab_input_selection_row}
@@ -31,7 +31,7 @@
 \alias{portal_data_href}
 \alias{portal_weather_href}
 \alias{portal_ndvi_href}
-\alias{write_rodent_profiles_tab_html}
+\alias{write_rodents_profiles_tab_html}
 \alias{write_models_tab_html}
 \title{Generate the User Interface for the Web App}
 \usage{
@@ -45,11 +45,11 @@ title_panel()
 
 subtitle_panel()
 
-about_tab(global = global)
+about_tab(global = global_list())
 
-models_tab(global = global)
+models_tab(global = global_list())
 
-profiles_tab(global = global)
+rodents_profiles_tab(global = global_list())
 
 forecast_tab(global = global_list())
 
@@ -97,7 +97,7 @@ portal_weather_href(text = "weather data")
 
 portal_ndvi_href(text = "NDVI data")
 
-write_rodent_profiles_tab_html(main = ".")
+write_rodents_profiles_tab_html(main = ".")
 
 write_models_tab_html(main = ".")
 }
@@ -161,7 +161,7 @@ The UI is hierarchical built as:
 \itemize{
 \item \code{htmltools::includeHTML}
 }
-\item \code{profiles_tab}
+\item \code{rodents_profiles_tab}
 \itemize{
 \item \code{htmltools::includeHTML}
 }

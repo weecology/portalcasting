@@ -13,8 +13,8 @@
 \alias{models_controls_path}
 \alias{rodents_dataset_path}
 \alias{climate_forecasts_paths}
-\alias{forecasts_metadata_path}
-\alias{forecasts_evaluations_path}
+\alias{foreforecasts_metadata_path}
+\alias{foreforecasts_evaluations_path}
 \alias{forecasts_results_path}
 \alias{newmoons_path}
 \alias{covariates_path}
@@ -49,9 +49,9 @@ rodents_dataset_path(main = ".", dataset = "all")
 
 climate_forecasts_paths(main = ".")
 
-forecasts_metadata_path(main = ".")
+foreforecasts_metadata_path(main = ".")
 
-forecasts_evaluations_path(main = ".")
+foreforecasts_evaluations_path(main = ".")
 
 forecasts_results_path(main = ".")
 
@@ -93,8 +93,8 @@ Wrapper functions for specific subdirectories and files include:
 \item \code{rodents_datasets_paths}
 \item \code{rodents_dataset_path}
 \item \code{climate_forecasts_paths}
-\item \code{forecasts_metadata_path}
-\item \code{forecasts_evaluations_path}
+\item \code{foreforecasts_metadata_path}
+\item \code{foreforecasts_evaluations_path}
 \item \code{forecasts_results_path}
 \item \code{newmoons_path}
 \item \code{covariates_path}
@@ -124,8 +124,8 @@ Wrapper functions for specific subdirectories and files include:
    rodents_dataset_path(main = main1)
    rodents_datasets_controls(main = main1)
    climate_forecasts_paths(main = main1)
-   forecasts_metadata_path(main = main1)
-   forecasts_evaluations_path(main = main1)
+   foreforecasts_metadata_path(main = main1)
+   foreforecasts_evaluations_path(main = main1)
    forecasts_results_path(main = main1)
    newmoons_path(main = main1)
    covariates_path(main = main1)

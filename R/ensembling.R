@@ -3,15 +3,15 @@
 #' @description Combine multiple casts' output into a single ensemble. Presently, only a general average ensemble is available.
 #'
 #' @details A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'  The casts can be trimmed specifically using the `cast_ids` input, otherwise, all relevant casts from the stated `cast_groups` will be included. 
+#'  The casts can be trimmed specifically using the `forecast_ids` input, otherwise, all relevant casts from the stated `forecast_groups` will be included. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @param method `character` value of the name of the ensemble method to use. Presently, only `"unwtavg"` (unweighted average) is allowed.
 #'
-#' @param cast_groups `integer` (or integer `numeric`) value of the cast group to combine with an ensemble. If `NULL` (default), the most recent cast group is ensembled. 
+#' @param forecast_groups `integer` (or integer `numeric`) value of the cast group to combine with an ensemble. If `NULL` (default), the most recent cast group is ensembled. 
 #'
-#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
+#' @param forecast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param historic_end_newmoonnumber `integer` (or integer `numeric`) newmoon number of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
@@ -29,8 +29,8 @@
 #'
 ensemble_casts <- function (main                       = ".", 
                             method                     = "unwtavg", 
-                            cast_groups                = NULL, 
-                            cast_ids                   = NULL, 
+                            forecast_groups                = NULL, 
+                            forecast_ids                   = NULL, 
                             cast_tab                   = NULL, 
                             historic_end_newmoonnumber = NULL, 
                             models                     = NULL, 
@@ -41,9 +41,9 @@ ensemble_casts <- function (main                       = ".",
 
   if (is.null(cast_tab)) {
 
-    cast_choices <- select_casts(main                        = main, 
-                                 cast_ids                    = cast_ids, 
-                                 cast_groups                 = cast_groups, 
+    cast_choices <- select_forecasts(main                        = main, 
+                                 forecast_ids                    = forecast_ids, 
+                                 forecast_groups                 = forecast_groups, 
                                  models                      = models, 
                                  species                     = species, 
                                  historic_end_newmoonnumbers = historic_end_newmoonnumber, 
@@ -56,7 +56,7 @@ ensemble_casts <- function (main                       = ".",
     } else {
 
       cast_tab <- read_cast_tabs(main     = main, 
-                                 cast_ids = cast_choices$cast_id)
+                                 forecast_ids = cast_choices$forecast_id)
       cast_tab <- add_obs_to_cast_tab(main     = main,  
                                       cast_tab = cast_tab)
       cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
@@ -66,17 +66,17 @@ ensemble_casts <- function (main                       = ".",
 
   }
 
-  cast_ids                      <- ifnull(cast_ids, unique(cast_tab$cast_id))
+  forecast_ids                      <- ifnull(forecast_ids, unique(cast_tab$forecast_id))
   models                        <- ifnull(models, unique(cast_tab$model)[1])
   dataset                       <- ifnull(dataset, unique(cast_tab$dataset)[1])
   species                       <- ifnull(species, unique(cast_tab$species)[1]) 
   historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(cast_tab$historic_end_newmoonnumber)[1]) 
-  cast_id_in                    <- cast_tab$cast_id %in% cast_ids
+  forecast_id_in                    <- cast_tab$forecast_id %in% forecast_ids
   model_in                      <- cast_tab$model %in% models
   dataset_in                    <- cast_tab$dataset == dataset
   species_in                    <- cast_tab$species %in% species
   historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumber
-  all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
+  all_in                        <- forecast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
@@ -99,7 +99,7 @@ ensemble_casts <- function (main                       = ".",
   obs         <- rep(NA, nspecies * nmoons)
   error       <- rep(NA, nspecies * nmoons)
   end_moon_id <- rep(NA, nspecies * nmoons)
-  ecast_id    <- rep(NA, nspecies * nmoons)
+  eforecast_id    <- rep(NA, nspecies * nmoons)
   species_id  <- rep(NA, nspecies * nmoons)
   moon_id     <- rep(NA, nspecies * nmoons)
   covered     <- rep(NA, nspecies * nmoons)
@@ -142,7 +142,7 @@ ensemble_casts <- function (main                       = ".",
         
         end_moon_id[counter] <- unique(pcast_tab$historic_end_newmoonnumber)
 
-        ecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(pcast_tab$cast_id))))
+        eforecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(pcast_tab$forecast_id))))
         moon_id[counter]     <- moons[j]
         species_id[counter]  <- species[i]
         covered[counter]     <- estimate[counter] >= l_pi[counter] &
@@ -172,7 +172,7 @@ ensemble_casts <- function (main                       = ".",
              historic_end_newmoonnumber = end_moon_id, 
              lead_time_newmoons         = moon_id - end_moon_id, 
              dataset                    = dataset,
-             cast_id                    = ecast_id,
+             forecast_id                    = eforecast_id,
              covered                    = covered)
 
  

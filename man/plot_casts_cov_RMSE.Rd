@@ -6,7 +6,7 @@
 \usage{
 plot_casts_cov_RMSE(
   main = ".",
-  cast_ids = NULL,
+  forecast_ids = NULL,
   historic_end_newmoonnumbers = NULL,
   models = NULL,
   datasets = NULL,
@@ -16,7 +16,7 @@ plot_casts_cov_RMSE(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
+\item{forecast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information.}
 
 \item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection.}
 
@@ -34,5 +34,5 @@ Plot the coverage (fraction of predictions within the CI) and RMSE (root mean sq
 }
 \details{
 A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr
-The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts will be plotted.
+The casts can be trimmed specifically using the \code{forecast_ids} input, otherwise, all relevant casts will be plotted.
 }

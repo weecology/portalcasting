@@ -9,25 +9,25 @@
 \alias{read_model_cast}
 \title{Read in Cast Output From a Given Cast}
 \usage{
-read_cast_tab(main = ".", cast_id = NULL)
+read_cast_tab(main = ".", forecast_id = NULL)
 
-read_cast_tabs(main = ".", cast_ids = NULL)
+read_cast_tabs(main = ".", forecast_ids = NULL)
 
-read_cast_metadata(main = ".", cast_id = NULL)
+read_cast_metadata(main = ".", forecast_id = NULL)
 
-read_model_fit(main = ".", cast_id = NULL)
+read_model_fit(main = ".", forecast_id = NULL)
 
-read_model_cast(main = ".", cast_id = NULL)
+read_model_cast(main = ".", forecast_id = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_ids, cast_id}{\code{integer} (or integer \code{numeric}) value(s) representing the cast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated cast's output is read in. \cr
-\code{cast_ids} can be NULL, one value, or more than one values, \code{cast_id} can only be NULL or one value.}
+\item{forecast_ids, forecast_id}{\code{integer} (or integer \code{numeric}) value(s) representing the cast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated cast's output is read in. \cr
+\code{forecast_ids} can be NULL, one value, or more than one values, \code{forecast_id} can only be NULL or one value.}
 }
 \value{
 \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
-\code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
+\code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{forecast_id} column added to distinguish among casts. \cr \cr
 \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
 \code{read_model_fit}: a model fit \code{list}. \cr \cr
 \code{read_model_cast}: a model cast \code{list}.

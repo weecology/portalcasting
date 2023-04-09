@@ -4,7 +4,7 @@
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
+#' @param forecast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon number(s) of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
@@ -19,7 +19,7 @@
 #' @export
 #'
 plot_casts_err_lead <- function (main                        = ".", 
-                                 cast_ids                    = NULL, 
+                                 forecast_ids                = NULL, 
                                  historic_end_newmoonnumbers = NULL, 
                                  models                      = NULL, 
                                  datasets                    = NULL, 
@@ -27,20 +27,20 @@ plot_casts_err_lead <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  evals    <- read_casts_evaluations(main)
+  evals    <- read_foreforecasts_evaluations(main)
 
   models                        <- ifnull(models, "AutoArima")
   datasets                      <- ifnull(datasets, "controls")
   species                       <- ifnull(species, "DM") 
-  cast_ids                      <- ifnull(cast_ids, unique(evals$cast_id))
+  forecast_ids                  <- ifnull(forecast_ids, unique(evals$forecast_id))
   historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(evals$historic_end_newmoonnumber)) 
 
-  cast_id_in                    <- evals$cast_id %in% cast_ids
+  forecast_id_in                <- evals$forecast_id %in% forecast_ids
   model_in                      <- evals$model %in% models
   dataset_in                    <- evals$dataset == datasets
   species_in                    <- evals$species %in% species
   historic_end_newmoonnumber_in <- evals$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
-  all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
+  all_in                        <- forecast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
@@ -68,11 +68,11 @@ plot_casts_err_lead <- function (main                        = ".",
     plot(1, 1, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n",
          ylim = yrange, xlim = xrange)
     abline(h = 0, lty = 3, lwd = 2, col = grey(0.6))
-    ucast_ids <- unique(evals_in$cast_id)
-    ncast_ids <- length(ucast_ids)
-    cols <- viridis(ncast_ids, 0.8, 0, 0.75)
-    for(k in 1:ncast_ids){
-      matches <- which(evals_in$cast_id == ucast_ids[k])
+    uforecast_ids <- unique(evals_in$forecast_id)
+    nforecast_ids <- length(uforecast_ids)
+    cols <- viridis(nforecast_ids, 0.8, 0, 0.75)
+    for(k in 1:nforecast_ids){
+      matches <- which(evals_in$forecast_id == uforecast_ids[k])
       x <- evals_in$lead_time_newmoons[matches]
       y <- evals_in$error[matches]
       x <- x[!is.na(y)]
@@ -123,7 +123,7 @@ plot_casts_err_lead <- function (main                        = ".",
 
       for(i in 1:nmodels){
 
-        cast_id_in <- evals_in$cast_id %in% cast_ids
+        forecast_id_in <- evals_in$forecast_id %in% forecast_ids
 
 
         dataset_in                     <- evals_in$dataset %in% datasets
@@ -131,7 +131,7 @@ plot_casts_err_lead <- function (main                        = ".",
         species_in                     <- evals_in$species %in% species[j]
         historic_end_newmoonnumbers_in <- evals_in$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
 
-        all_in <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumbers_in
+        all_in <- forecast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumbers_in
 
         pevals_in <- evals_in[all_in, ]
 
@@ -157,17 +157,17 @@ plot_casts_err_lead <- function (main                        = ".",
                lwd = 2, 
                col = grey(0.6))
 
-        ucast_ids <- unique(pevals_in$cast_id)
-        ncast_ids <- length(ucast_ids)
+        uforecast_ids <- unique(pevals_in$forecast_id)
+        nforecast_ids <- length(uforecast_ids)
 
-        cols <- viridis(n     = ncast_ids, 
+        cols <- viridis(n     = nforecast_ids, 
                         alpha = 0.8, 
                         begin = 0, 
                         end   = 0.75)
 
-        for (k in 1:ncast_ids) {
+        for (k in 1:nforecast_ids) {
 
-          matches <- which(pevals_in$cast_id == ucast_ids[k])
+          matches <- which(pevals_in$forecast_id == uforecast_ids[k])
 
           x <- pevals_in$lead[matches]
           y <- pevals_in$error[matches]
@@ -265,11 +265,11 @@ plot_casts_err_lead <- function (main                        = ".",
 #' @description Plot the coverage (fraction of predictions within the CI) and RMSE (root mean squared error) of each model among multiple species.
 #'
 #' @details A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'  The casts can be trimmed specifically using the `cast_ids` input, otherwise, all relevant casts will be plotted. 
+#'  The casts can be trimmed specifically using the `forecast_ids` input, otherwise, all relevant casts will be plotted. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
+#' @param forecast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon number(s) of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
@@ -284,7 +284,7 @@ plot_casts_err_lead <- function (main                        = ".",
 #' @export
 #'
 plot_casts_cov_RMSE <- function (main                        = ".", 
-                                 cast_ids                    = NULL, 
+                                 forecast_ids                = NULL, 
                                  historic_end_newmoonnumbers = NULL, 
                                  models                      = NULL, 
                                  datasets                    = NULL, 
@@ -292,28 +292,28 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  evals    <- read_casts_evaluations(main = main)
+  evals    <- read_foreforecasts_evaluations(main = main)
 
-  casts_meta <- select_casts(main                        = main, 
-                             cast_ids                    = cast_ids,
-                             historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
-                             models                      = models, 
-                             datasets                    = datasets, 
-                             species                     = species)
+  casts_meta <- select_forecasts(main                        = main, 
+                                 forecast_ids                = forecast_ids,
+                                 historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
+                                 models                      = models, 
+                                 datasets                    = datasets, 
+                                 species                     = species)
 
 
   datasets                      <- unique(casts_meta$dataset)[unique(casts_meta$dataset) %in% unique(evals$dataset)]
   species                       <- unique(casts_meta$species)[unique(casts_meta$species) %in% unique(evals$species)]
   models                        <- unique(casts_meta$model)[unique(casts_meta$model) %in% unique(evals$model)]
-  cast_ids                      <- unique(casts_meta$cast_id)[unique(casts_meta$cast_id) %in% unique(evals$cast_id)]
+  forecast_ids                  <- unique(casts_meta$forecast_id)[unique(casts_meta$forecast_id) %in% unique(evals$forecast_id)]
   historic_end_newmoonnumbers   <- unique(casts_meta$historic_end_newmoonnumber)[unique(casts_meta$historic_end_newmoonnumber) %in% unique(evals$historic_end_newmoonnumber)]
 
-  cast_id_in                    <- evals$cast_id %in% cast_ids
+  forecast_id_in                <- evals$forecast_id %in% forecast_ids
   model_in                      <- evals$model %in% models
   dataset_in                    <- evals$dataset %in% datasets
   species_in                    <- evals$species %in% species
   historic_end_newmoonnumber_in <- evals$historic_end_newmoonnumber %in% historic_end_newmoonnumbers
-  all_in                        <- cast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
+  all_in                        <- forecast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
@@ -326,7 +326,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
   nmodels <- length(models) 
   nspecies <- length(species)
 
-  ucasts <- unique(evals_in$cast_id)
+  ucasts <- unique(evals_in$forecast_id)
   ncasts <- length(ucasts)
 
   cast_RMSE     <- numeric(ncasts)
@@ -336,10 +336,10 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
   for (i in 1:ncasts) {
 
-    cast_RMSE[i]     <- sqrt(mean(evals_in$error[evals_in$cast_id == ucasts[i]] ^ 2, na.rm = TRUE))
-    cast_coverage[i] <- mean(evals_in$covered[evals_in$cast_id == ucasts[i]], na.rm = TRUE)
-    cast_model[i]    <- evals_in$model[evals_in$cast_id == ucasts[i]][1]
-    cast_species[i]  <- evals_in$species[evals_in$cast_id == ucasts[i]][1]
+    cast_RMSE[i]     <- sqrt(mean(evals_in$error[evals_in$forecast_id == ucasts[i]] ^ 2, na.rm = TRUE))
+    cast_coverage[i] <- mean(evals_in$covered[evals_in$forecast_id == ucasts[i]], na.rm = TRUE)
+    cast_model[i]    <- evals_in$model[evals_in$forecast_id == ucasts[i]][1]
+    cast_species[i]  <- evals_in$species[evals_in$forecast_id == ucasts[i]][1]
 
   }
 
@@ -449,7 +449,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 
 #' @title Plot Predictions for a Given Point in Time Across Multiple Species
 #'
-#' @description Plot the point value with confidence interval for a time point across multiple species. Casts can be selected either by supplying a `cast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `cast_id` input.
+#' @description Plot the point value with confidence interval for a time point across multiple species. Casts can be selected either by supplying a `forecast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `forecast_id` input.
 #'
 #' @details The resulting plot shows predictions as points (open white circles) with error, where the point represents the `estimate` and the bounds of the error are `lower_pi` and `upper_pi` in the `cast_table` saved output from a model. \cr
 #'  As of `portalcasting v0.9.0`, this represents the mean and the 95\% prediction interval. If `with_census = TRUE`, the observations from the associated moon are plotted as blue filled squares. 
@@ -464,7 +464,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #'
 #' @param newmoonnumber `integer` (or integer `numeric`) newmoon number for the plot. 
 #'
-#' @param cast_id `integer` (or integer `numeric`) value representing the cast of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
+#' @param forecast_id `integer` (or integer `numeric`) value representing the cast of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param species `character` vector of the species codes (or `"total"` for the total across species) to be plotted or `NULL` (default) to plot all species in `dataset`. 
 #' 
@@ -488,7 +488,7 @@ plot_casts_cov_RMSE <- function (main                        = ".",
 #' @export
 #'
 plot_cast_point <- function (main                       = ".", 
-                             cast_id                    = NULL, 
+                             forecast_id                = NULL, 
                              dataset                    = NULL, 
                              model                      = NULL, 
                              historic_end_newmoonnumber = NULL, 
@@ -499,12 +499,12 @@ plot_cast_point <- function (main                       = ".",
 
   settings <- read_directory_settings(main = main)
 
-  casts_meta <- select_casts(main                        = main, 
-                             cast_ids                    = cast_id,
-                             historic_end_newmoonnumbers = historic_end_newmoonnumber, 
-                             models                      = model, 
-                             datasets                    = dataset, 
-                             species                     = species)
+  casts_meta <- select_forecasts(main                        = main, 
+                                 forecast_ids                = forecast_id,
+                                 historic_end_newmoonnumbers = historic_end_newmoonnumber, 
+                                 models                      = model, 
+                                 datasets                    = dataset, 
+                                 species                     = species)
 
 
   if (with_census) {
@@ -530,10 +530,10 @@ plot_cast_point <- function (main                       = ".",
 
   if (NROW(casts_meta) > 1) {
 
-    which_max  <- which.max(casts_meta$cast_id)
+    which_max  <- which.max(casts_meta$forecast_id)
     match_max  <- casts_meta$model      == casts_meta$model[which_max] &
                   casts_meta$dataset    == casts_meta$dataset[which_max] &
-                  casts_meta$cast_group == casts_meta$cast_group[which_max]
+                  casts_meta$forecast_group == casts_meta$forecast_group[which_max]
     casts_meta <- casts_meta[match_max, ]
 
   }
@@ -547,7 +547,7 @@ plot_cast_point <- function (main                       = ".",
 
   for (i in 1:nspecies) {
     cast_tab_i <- read_cast_tab(main     = main,
-                                cast_id  = casts_meta$cast_id[i])
+                                forecast_id  = casts_meta$forecast_id[i])
     cast_tab_i <- cast_tab_i[cast_tab_i$newmoonnumber == newmoonnumber, ]
     if (i == 1) {
       casts_tab <- cast_tab_i
@@ -649,8 +649,8 @@ plot_cast_point <- function (main                       = ".",
 #' @title Visualize a Time Series Cast of a Species
 #'
 #' @description Plot an observed timeseries and cast timeseries with a prediction interval. \cr
-#'  Casts can be selected either by supplying a `cast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `cast_id` input.
-#'  Casts can be selected either by supplying a `cast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `cast_id` input.
+#'  Casts can be selected either by supplying a `forecast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `forecast_id` input.
+#'  Casts can be selected either by supplying a `forecast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the `forecast_id` input.
 #'
 #' @details The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by `lower_pi` and `upper_pi` and the bisecting blue line representing the `estimate` in the `cast_table` saved output from a model. \cr
 #'  As of `portalcasting v0.9.0`, this represents the mean and the 95\% prediction interval. \cr
@@ -664,14 +664,14 @@ plot_cast_point <- function (main                       = ".",
 #'
 #' @param dataset `character` value of the rodent data set to include. Default value is `NULL`, which equates to no selection with respect to `dataset`.
 #'
-#' @param cast_id `integer` (or integer `numeric`) value representing the cast of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
+#' @param forecast_id `integer` (or integer `numeric`) value representing the cast of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param species `character` value of the species codes (or `"total"` for the total across species) to be plotted. `NULL` (default) also gives the total.
 #'
 #' @param historic_start_newmoonnumber `integer` (or integer `numeric`) newmoon number for the beginning of the x-axis of the plot. \cr
 #'  Does not influence the fit of the models, just the presentation. 
 #'
-#' @param cast_group `integer` (or integer `numeric`) value of the cast group to include. Default value is `NULL`, which equates to no selection with respect to `cast_group`.
+#' @param forecast_group `integer` (or integer `numeric`) value of the cast group to include. Default value is `NULL`, which equates to no selection with respect to `forecast_group`.
 #'
 #' @return `NULL`. Plot is generated.
 #'
@@ -689,8 +689,8 @@ plot_cast_point <- function (main                       = ".",
 #' @export
 #'
 plot_cast_ts <- function (main                         = ".", 
-                          cast_id                      = NULL, 
-                          cast_group                   = NULL,
+                          forecast_id                  = NULL, 
+                          forecast_group               = NULL,
                           dataset                      = NULL, 
                           model                        = NULL, 
                           historic_start_newmoonnumber = NULL, 
@@ -699,16 +699,16 @@ plot_cast_ts <- function (main                         = ".",
 
   settings <- read_directory_settings(main = main)
 
-  casts_meta <- select_casts(main                        = main, 
-                             cast_ids                    = cast_id,
-                             historic_end_newmoonnumbers = historic_end_newmoonnumber, 
-                             models                      = model, 
-                             datasets                    = dataset, 
-                             species                     = species)
+  casts_meta <- select_forecasts(main                        = main, 
+                                 forecast_ids                = forecast_id,
+                                 historic_end_newmoonnumbers = historic_end_newmoonnumber, 
+                                 models                      = model, 
+                                 datasets                    = dataset, 
+                                 species                     = species)
 
   if (NROW(casts_meta) > 1) {
 
-    which_max  <- which.max(casts_meta$cast_id)
+    which_max  <- which.max(casts_meta$forecast_id)
     casts_meta <- casts_meta[which_max, ]
 
   }
@@ -722,7 +722,7 @@ plot_cast_ts <- function (main                         = ".",
   dataset <- casts_meta$dataset
   species <- casts_meta$species
   model   <- casts_meta$model
-  cast_id <- casts_meta$cast_id
+  forecast_id <- casts_meta$forecast_id
 
   historic_start_newmoonnumber <- casts_meta$historic_start_newmoonnumber
   historic_end_newmoonnumber   <- casts_meta$historic_end_newmoonnumber
@@ -732,7 +732,7 @@ plot_cast_ts <- function (main                         = ".",
 
 
   preds <- read_cast_tab(main     = main, 
-                         cast_id  = cast_id)
+                         forecast_id  = forecast_id)
 
 
 

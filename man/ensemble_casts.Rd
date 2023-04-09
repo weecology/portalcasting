@@ -7,8 +7,8 @@
 ensemble_casts(
   main = ".",
   method = "unwtavg",
-  cast_groups = NULL,
-  cast_ids = NULL,
+  forecast_groups = NULL,
+  forecast_ids = NULL,
   cast_tab = NULL,
   historic_end_newmoonnumber = NULL,
   models = NULL,
@@ -21,9 +21,9 @@ ensemble_casts(
 
 \item{method}{\code{character} value of the name of the ensemble method to use. Presently, only \code{"unwtavg"} (unweighted average) is allowed.}
 
-\item{cast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
+\item{forecast_groups}{\code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled.}
 
-\item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
+\item{forecast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information.}
 
 \item{cast_tab}{Optional \code{data.frame} of cast table outputs. If not input, will be loaded.}
 
@@ -43,5 +43,5 @@ Combine multiple casts' output into a single ensemble. Presently, only a general
 }
 \details{
 A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr
-The casts can be trimmed specifically using the \code{cast_ids} input, otherwise, all relevant casts from the stated \code{cast_groups} will be included.
+The casts can be trimmed specifically using the \code{forecast_ids} input, otherwise, all relevant casts from the stated \code{forecast_groups} will be included.
 }

@@ -16,8 +16,8 @@
 #'    main1 <- file.path(tempdir(), "production")
 #'    setup_sandbox(main = main1)
 #'
-#'    portalcast(main = main1, models = "AutoArima")
-#'    plot_cast_ts(main = main1)
+#'    global <- global_list(main = main1)
+#'    available_newmoonnumbers(global, event_name = "initial_evaluation_tab")
 #'
 #'    unlink(main1, recursive = TRUE)
 #'  }}

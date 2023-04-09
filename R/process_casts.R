@@ -31,18 +31,18 @@ process_model_output <- function (main      = ".",
 
   settings <- read_directory_settings(main = main)
 
-  casts_metadata <- read_casts_metadata(main = main) 
+  forecasts_metadata <- read_foreforecasts_metadata(main = main) 
 
   metadata <- read_metadata(main = main)
 
-  ids     <- casts_metadata$cast_id
+  ids     <- forecasts_metadata$forecast_id
   ids     <- as.numeric(ids)
   next_id <- ceiling(max(c(0, ids), na.rm = TRUE)) + 1
 
   model_controls <- read_models_controls(main = main)[[model]]
 
   cast_metadata <- update_list(metadata, 
-                               cast_id          = next_id,
+                               forecast_id          = next_id,
                                model            = model,
                                dataset          = dataset,
                                species          = species,
@@ -69,15 +69,15 @@ process_model_output <- function (main      = ".",
                          forecast_start_newmoonnumber       = metadata$time$forecast_start_newmoonnumber,
                          forecast_end_newmoonnumber         = metadata$time$forecast_end_newmoonnumber,
                          confidence_level                   = metadata$confidence_level,
-                         cast_group                         = metadata$cast_group,
-                         old_cast_id                        = NA,
-                         cast_id                            = cast_metadata$cast_id)
+                         forecast_group                         = metadata$forecast_group,
+                         old_forecast_id                        = NA,
+                         forecast_id                            = cast_metadata$forecast_id)
 
   pkg_version   <- metadata$directory_configuration$setup$core_package_version
 
-  new_cast_metadata <- data.frame(cast_id                      = cast_metadata$cast_id,
-                                  old_cast_id                  = NA,
-                                  cast_group                   = cast_metadata$cast_group,
+  new_cast_metadata <- data.frame(forecast_id                      = cast_metadata$forecast_id,
+                                  old_forecast_id                  = NA,
+                                  forecast_group                   = cast_metadata$forecast_group,
                                   cast_date                    = cast_metadata$time$cast_date,
                                   origin                       = cast_metadata$time$origin,
                                   historic_start_newmoonnumber = cast_metadata$time$historic_start_newmoonnumber,
@@ -92,38 +92,38 @@ process_model_output <- function (main      = ".",
                                   QAQC                         = TRUE,
                                   notes                        = NA)
 
-  casts_metadata <- rbind(casts_metadata, new_cast_metadata)
+  forecasts_metadata <- rbind(forecasts_metadata, new_cast_metadata)
 
   if (settings$save) {
  
   # update these to be write_data calls
 
-    cast_metadata_filename <- paste0("cast_id_", cast_metadata$cast_id, "_metadata.yaml")
+    cast_metadata_filename <- paste0("forecast_id_", cast_metadata$forecast_id, "_metadata.yaml")
     cast_metadata_path     <- file.path(main, settings$subdirectories$forecasts, cast_metadata_filename)
 
     write_yaml(x    = cast_metadata,
                file = cast_metadata_path)
 
 
-    cast_tab_filename <- paste0("cast_id_", cast_metadata$cast_id, "_cast_tab.csv") 
+    cast_tab_filename <- paste0("forecast_id_", cast_metadata$forecast_id, "_cast_tab.csv") 
     cast_tab_path     <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
 
     row.names(cast_tab) <- NULL
     write_csv_arrow(x         = cast_tab,
                     file      = cast_tab_path)
 
-    row.names(casts_metadata) <- NULL
-    write_csv_arrow(x         = casts_metadata, 
-                    file      = forecasts_metadata_path(main = main))
+    row.names(forecasts_metadata) <- NULL
+    write_csv_arrow(x         = forecasts_metadata, 
+                    file      = foreforecasts_metadata_path(main = main))
 
-    model_fit_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_fit.json") 
+    model_fit_filename <- paste0("forecast_id_", cast_metadata$forecast_id, "_model_fit.json") 
     model_fit_path     <- file.path(main, settings$subdirectories$fits, model_fit_filename)
     model_fit_json     <- serializeJSON(x = model_fit)
 
     write_json(x       = model_fit_json, 
                path    = model_fit_path)
 
-    model_cast_filename <- paste0("cast_id_", cast_metadata$cast_id, "_model_cast.json") 
+    model_cast_filename <- paste0("forecast_id_", cast_metadata$forecast_id, "_model_cast.json") 
     model_cast_path     <- file.path(main, settings$subdirectories$forecasts, model_cast_filename)
     model_cast_json     <- serializeJSON(x = model_cast)
 
@@ -148,12 +148,12 @@ process_model_output <- function (main      = ".",
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids,cast_id `integer` (or integer `numeric`) value(s) representing the cast(s) of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated cast's output is read in. \cr 
-#'  `cast_ids` can be NULL, one value, or more than one values, `cast_id` can only be NULL or one value.
+#' @param forecast_ids,forecast_id `integer` (or integer `numeric`) value(s) representing the cast(s) of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated cast's output is read in. \cr 
+#'  `forecast_ids` can be NULL, one value, or more than one values, `forecast_id` can only be NULL or one value.
 #'
 #' @return 
 #'  `read_cast_tab`: `data.frame` of the `cast_tab`. \cr \cr
-#'  `read_cast_tabs`: `data.frame` of the `cast_tab`s with a `cast_id` column added to distinguish among casts. \cr \cr
+#'  `read_cast_tabs`: `data.frame` of the `cast_tab`s with a `forecast_id` column added to distinguish among casts. \cr \cr
 #'  `read_cast_metadata`: `list` of `cast_metadata`. \cr \cr
 #'  `read_model_fit`: a model fit `list`. \cr \cr
 #'  `read_model_cast`: a model cast `list`.
@@ -163,23 +163,23 @@ process_model_output <- function (main      = ".",
 #' @export
 #'
 read_cast_tab <- function (main    = ".", 
-                           cast_id = NULL) {
+                           forecast_id = NULL) {
 
   settings <- read_directory_settings(main = main)
 
-  if (is.null(cast_id) ){
+  if (is.null(forecast_id) ){
 
-    casts_meta <- select_casts(main = main)
-    cast_id    <- max(casts_meta$cast_id)
+    casts_meta <- select_forecasts(main = main)
+    forecast_id    <- max(casts_meta$forecast_id)
 
   }
 
-  lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
+  lpath <- paste0("forecast_id_", forecast_id, "_cast_tab.csv")
   cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
 
-    stop("cast_id does not have a cast_table")
+    stop("forecast_id does not have a cast_table")
 
   }
 
@@ -196,20 +196,20 @@ read_cast_tab <- function (main    = ".",
 #' @export
 #'
 read_cast_tabs <- function (main     = ".", 
-                            cast_ids = NULL) {
+                            forecast_ids = NULL) {
   
   settings <- read_directory_settings(main = main)
 
-  if (is.null(cast_ids)) {
+  if (is.null(forecast_ids)) {
 
-    casts_meta <- select_casts(main = main)
-    cast_ids   <- max(casts_meta$cast_id)
+    casts_meta <- select_forecasts(main = main)
+    forecast_ids   <- max(casts_meta$forecast_id)
 
   }
 
   cast_tab <- read_cast_tab(main    = main,
-                            cast_id = cast_ids[1])
-  ncasts   <- length(cast_ids)
+                            forecast_id = forecast_ids[1])
+  ncasts   <- length(forecast_ids)
 
 
   if (ncasts > 1) {
@@ -217,7 +217,7 @@ read_cast_tabs <- function (main     = ".",
     for (i in 2:ncasts) {
 
       cast_tab_i <- read_cast_tab(main    = main,
-                                  cast_id = cast_ids[i])
+                                  forecast_id = forecast_ids[i])
 
       cast_tab   <- rbind(cast_tab, cast_tab_i)
 
@@ -234,23 +234,23 @@ read_cast_tabs <- function (main     = ".",
 #' @export
 #'
 read_cast_metadata <- function (main    = ".", 
-                                cast_id = NULL) {
+                                forecast_id = NULL) {
   
   settings <- read_directory_settings(main = main)
 
-  if (is.null(cast_id)) {
+  if (is.null(forecast_id)) {
 
-    casts_meta <- select_casts(main = main)
-    cast_id    <- max(casts_meta$cast_id)
+    casts_meta <- select_forecasts(main = main)
+    forecast_id    <- max(casts_meta$forecast_id)
 
   }
 
-  lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
+  lpath <- paste0("forecast_id_", forecast_id, "_metadata.yaml")
   cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
 
-    stop("cast_id does not have a cast_metadata file")
+    stop("forecast_id does not have a cast_metadata file")
 
   }
 
@@ -264,18 +264,18 @@ read_cast_metadata <- function (main    = ".",
 #' @export
 #'
 read_model_fit <- function (main    = ".", 
-                            cast_id = NULL) {
+                            forecast_id = NULL) {
   
   settings <- read_directory_settings(main = main)
 
-  if (is.null(cast_id)) {
+  if (is.null(forecast_id)) {
 
-    casts_meta <- select_casts(main = main)
-    cast_id <- max(casts_meta$cast_id)
+    casts_meta <- select_forecasts(main = main)
+    forecast_id <- max(casts_meta$forecast_id)
 
   }
 
-  cpath <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_fit.json"))
+  cpath <- file.path(main, settings$subdirectories$forecasts, paste0("forecast_id_", forecast_id, "_model_fit.json"))
 
   if (file.exists(cpath)) {
 
@@ -284,7 +284,7 @@ read_model_fit <- function (main    = ".",
 
   } else {
 
-    stop("cast_id does not have a model_fit file")
+    stop("forecast_id does not have a model_fit file")
 
   } 
 
@@ -295,20 +295,20 @@ read_model_fit <- function (main    = ".",
 #' @export
 #'
 read_model_cast <- function (main    = ".", 
-                             cast_id = NULL) {
+                             forecast_id = NULL) {
   
   settings <- read_directory_settings(main = main)
 
-  if (is.null(cast_id)) {
+  if (is.null(forecast_id)) {
 
-    casts_meta <- select_casts(main = main)
+    casts_meta <- select_forecasts(main = main)
 
-    cast_id <- max(as.numeric(gsub("-", ".", casts_meta$cast_id)))
+    forecast_id <- max(as.numeric(gsub("-", ".", casts_meta$forecast_id)))
 
   }
 
-  cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_cast.json"))
-  cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("cast_id_", cast_id, "_model_cast.RData"))
+  cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("forecast_id_", forecast_id, "_model_cast.json"))
+  cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("forecast_id_", forecast_id, "_model_cast.RData"))
 
   if (file.exists(cpath_json)) {
 
@@ -323,7 +323,7 @@ read_model_cast <- function (main    = ".",
 
   } else {
 
-     stop("cast_id does not have a model_cast file")
+     stop("forecast_id does not have a model_cast file")
 
   } 
 
@@ -333,15 +333,15 @@ read_model_cast <- function (main    = ".",
 #' @title Find Casts that Fit Specifications
 #'
 #' @description Determines the casts that match user specifications. \cr
-#'  Functionally, a wrapper on [`read_casts_metadata`] with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
+#'  Functionally, a wrapper on [`read_foreforecasts_metadata`] with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_ids `integer` (or integer `numeric`) values representing the casts of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`casts_metadata.csv`) for summary information.
+#' @param forecast_ids `integer` (or integer `numeric`) values representing the casts of interest, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon numbers of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param cast_groups `integer` (or integer `numeric`) value of the cast groups to include. Default value is `NULL`, which equates to no selection with respect to `cast_group`.
+#' @param forecast_groups `integer` (or integer `numeric`) value of the cast groups to include. Default value is `NULL`, which equates to no selection with respect to `forecast_group`.
 #'
 #' @param models `character` values of the names of the models to include. Default value is `NULL`, which equates to no selection with respect to `model`.
 #'
@@ -353,9 +353,9 @@ read_model_cast <- function (main    = ".",
 #'
 #' @export
 #'
-select_casts <- function (main                        = ".", 
-                          cast_ids                    = NULL,
-                          cast_groups                 = NULL,
+select_forecasts <- function (main                        = ".", 
+                          forecast_ids                    = NULL,
+                          forecast_groups                 = NULL,
                           models                      = NULL, 
                           datasets                    = NULL,
                           species                     = NULL,
@@ -363,34 +363,34 @@ select_casts <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  casts_metadata <- read_casts_metadata(main = main)
+  forecasts_metadata <- read_foreforecasts_metadata(main = main)
 
-  ucast_ids      <- unique(casts_metadata$cast_id[casts_metadata$QAQC])
-  cast_ids       <- ifnull(cast_ids, ucast_ids)
-  match_id       <- casts_metadata$cast_id %in% cast_ids
+  uforecast_ids      <- unique(forecasts_metadata$forecast_id[forecasts_metadata$QAQC])
+  forecast_ids       <- ifnull(forecast_ids, uforecast_ids)
+  match_id       <- forecasts_metadata$forecast_id %in% forecast_ids
 
-  ucast_groups   <- unique(casts_metadata$cast_group[casts_metadata$QAQC])
-  cast_groups    <- ifnull(cast_groups, ucast_groups)
-  match_group    <- casts_metadata$cast_group %in% cast_groups
+  uforecast_groups   <- unique(forecasts_metadata$forecast_group[forecasts_metadata$QAQC])
+  forecast_groups    <- ifnull(forecast_groups, uforecast_groups)
+  match_group    <- forecasts_metadata$forecast_group %in% forecast_groups
 
-  uend_moons     <- unique(casts_metadata$historic_end_newmoonnumber[casts_metadata$QAQC])
+  uend_moons     <- unique(forecasts_metadata$historic_end_newmoonnumber[forecasts_metadata$QAQC])
   end_moons      <- ifnull(historic_end_newmoonnumbers, uend_moons)
 
-  match_end_moon <- casts_metadata$historic_end_newmoonnumber %in% end_moons
+  match_end_moon <- forecasts_metadata$historic_end_newmoonnumber %in% end_moons
 
-  umodels        <- unique(casts_metadata$model[casts_metadata$QAQC])
+  umodels        <- unique(forecasts_metadata$model[forecasts_metadata$QAQC])
   models         <- ifnull(models, umodels)
-  match_model    <- casts_metadata$model %in% models
+  match_model    <- forecasts_metadata$model %in% models
   
-  udatasets      <- unique(casts_metadata$dataset[casts_metadata$QAQC])
+  udatasets      <- unique(forecasts_metadata$dataset[forecasts_metadata$QAQC])
   datasets       <- ifnull(datasets, udatasets)
-  match_dataset  <- casts_metadata$dataset %in% datasets
+  match_dataset  <- forecasts_metadata$dataset %in% datasets
 
-  if ("species" %in% colnames(casts_metadata)) {
+  if ("species" %in% colnames(forecasts_metadata)) {
 
-    uspecies       <- unique(casts_metadata$species[casts_metadata$QAQC])
+    uspecies       <- unique(forecasts_metadata$species[forecasts_metadata$QAQC])
     species        <- ifnull(species, uspecies)
-    match_species  <- casts_metadata$species %in% species
+    match_species  <- forecasts_metadata$species %in% species
 
   } else {
   
@@ -398,9 +398,9 @@ select_casts <- function (main                        = ".",
 
   }
 
-  QAQC <- casts_metadata$QAQC
+  QAQC <- forecasts_metadata$QAQC
 
-  casts_metadata[match_id & match_end_moon & match_model & match_dataset & match_species & QAQC, ]
+  forecasts_metadata[match_id & match_end_moon & match_model & match_dataset & match_species & QAQC, ]
 
 }
 
@@ -417,19 +417,19 @@ select_casts <- function (main                        = ".",
 #'
 #' @export
 #'
-read_casts_metadata <- function (main = ".") {
+read_foreforecasts_metadata <- function (main = ".") {
   
   settings  <- read_directory_settings(main = main)
 
-  meta_path <- forecasts_metadata_path(main = main)
+  meta_path <- foreforecasts_metadata_path(main = main)
 
   if (!file.exists(meta_path)) {
 
     messageq("  **creating forecast metadata file**", quiet = settings$quiet)
 
-    out <- data.frame(cast_id                      = NA,
-                      old_cast_id                  = NA,
-                      cast_group                   = 0,
+    out <- data.frame(forecast_id                      = NA,
+                      old_forecast_id                  = NA,
+                      forecast_group                   = 0,
                       cast_date                    = NA,
                       origin                       = NA,
                       historic_start_newmoonnumber = NA,
@@ -456,7 +456,7 @@ read_casts_metadata <- function (main = ".") {
   if ("species" %in% colnames(out)) {
     out <- na_conformer(out)
   }
-  out[out$cast_group != 0, ]
+  out[out$forecast_group != 0, ]
 
 }
 

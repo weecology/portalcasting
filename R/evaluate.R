@@ -5,8 +5,8 @@
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param cast_id,cast_ids `integer` (or integer `numeric`) value(s) representing the casts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the casts metadata file (`casts_metadata.csv`) for summary information. \cr
-#'  `cast_id` can only be a single value, whereas `cast_ids` can be multiple.
+#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the casts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the casts metadata file (`forecasts_metadata.csv`) for summary information. \cr
+#'  `forecast_id` can only be a single value, whereas `forecast_ids` can be multiple.
 #'
 #' @return A `data.frame` of all cast evaluations at the observation (newmoon) level, [`invisible`][base::invisible]-ly..
 #'
@@ -14,16 +14,16 @@
 #'
 #' @export
 #'
-evaluate_casts <- function (main      = ".", 
-                            cast_ids  = NULL) {
+evaluate_forecasts <- function (main        = ".", 
+                               forecast_ids = NULL) {
 
   settings <- read_directory_settings(main = main)
 
-  casts_to_evaluate <- select_casts(main     = main, 
-                                    cast_ids = cast_ids)
+  casts_to_evaluate <- select_forecasts(main     = main, 
+                                    forecast_ids = forecast_ids)
 
-  cast_ids  <- casts_to_evaluate$cast_id
-  ncast_ids <- length(cast_ids)
+  forecast_ids  <- casts_to_evaluate$forecast_id
+  nforecast_ids <- length(forecast_ids)
 
   if (NROW(casts_to_evaluate) == 0) {
 
@@ -31,7 +31,7 @@ evaluate_casts <- function (main      = ".",
 
   }
 
-  existing_evaluations      <- read_casts_evaluations(main = main)
+  existing_evaluations      <- read_foreforecasts_evaluations(main = main)
   rodents_table             <- read_rodents_dataset(main = main, dataset = "all")                          
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
@@ -43,42 +43,42 @@ evaluate_casts <- function (main      = ".",
 
     }
 
-    casts_left_to_evaluate  <- unique(existing_evaluations$cast_id[!existing_evaluations$cast_evaluation_complete & 
+    casts_left_to_evaluate  <- unique(existing_evaluations$forecast_id[!existing_evaluations$cast_evaluation_complete & 
                                                                    existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
   
   } else {
 
-    casts_left_to_evaluate  <- cast_ids
+    casts_left_to_evaluate  <- forecast_ids
 
   }
 
-  selected_cast_ids <- cast_ids[cast_ids %in% casts_left_to_evaluate]
+  selected_forecast_ids <- forecast_ids[forecast_ids %in% casts_left_to_evaluate]
 
-  if (length(selected_cast_ids) == 0) {
+  if (length(selected_forecast_ids) == 0) {
 
     message(" No casts need evaluation.", quiet = FALSE)
     return(existing_evaluations)
   }
 
-  nselected_cast_ids <- length(selected_cast_ids)
+  nselected_forecast_ids <- length(selected_forecast_ids)
 
-  out <- named_null_list(element_names = selected_cast_ids)
+  out <- named_null_list(element_names = selected_forecast_ids)
 
   messageq("Evaluating casts ...\n", quiet = settings$quiet)
 
-  for (i in 1:nselected_cast_ids) {
+  for (i in 1:nselected_forecast_ids) {
 
     out[[i]] <- tryCatch(evaluate_cast(main    = main,
-                                       cast_id = selected_cast_ids[i]),
+                                       forecast_id = selected_forecast_ids[i]),
                          error = function(x) {NA})
 
   }
 
   out_flat <- data.frame(out[[1]])
 
-  if (nselected_cast_ids > 1) {
+  if (nselected_forecast_ids > 1) {
 
-    for (i in 2:nselected_cast_ids) { 
+    for (i in 2:nselected_forecast_ids) { 
 
      if (all(is.na(out[[i]]))) {
        next
@@ -91,7 +91,7 @@ evaluate_casts <- function (main      = ".",
 
   }
 
-  out_flat <- rbind(existing_evaluations[!(existing_evaluations$cast_id %in% selected_cast_ids), ],
+  out_flat <- rbind(existing_evaluations[!(existing_evaluations$forecast_id %in% selected_forecast_ids), ],
                     out_flat)
 
   messageq("... done.\n", quiet = settings$quiet)
@@ -101,7 +101,7 @@ evaluate_casts <- function (main      = ".",
              subdirectory = settings$subdirectories$forecasts,
              save         = settings$save,
              overwrite    = settings$overwrite, 
-             filename     = settings$files$forecasts_evaluations,
+             filename     = settings$files$foreforecasts_evaluations,
              quiet        = settings$quiet)
 
 }
@@ -112,20 +112,20 @@ evaluate_casts <- function (main      = ".",
 #' @export
 #'
 evaluate_cast <- function (main     = ".", 
-                           cast_id  = NULL) {
+                           forecast_id  = NULL) {
 
   settings <- read_directory_settings(main = main)
 
-  return_if_null(x = cast_id)
+  return_if_null(x = forecast_id)
 
   cast_tab <- read_cast_tab(main           = main, 
-                            cast_id        = cast_id)
+                            forecast_id        = forecast_id)
   cast_meta <- read_cast_metadata(main     = main, 
-                                  cast_id  = cast_id)
+                                  forecast_id  = forecast_id)
   cast_tab <- add_obs_to_cast_tab(main     = main,  
                                   cast_tab = cast_tab)
   model_cast  <- read_model_cast(main         = main, 
-                                 cast_id      = cast_id)
+                                 forecast_id      = forecast_id)
 
   cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
   cast_tab$error   <- cast_tab$estimate - cast_tab$obs
@@ -290,10 +290,10 @@ add_obs_to_cast_tab <- function (main     = ".",
 #'
 #' @export
 #'
-read_casts_evaluations <- function (main = "."){
+read_foreforecasts_evaluations <- function (main = "."){
   
   settings  <- read_directory_settings(main = main)
-  eval_path <- forecasts_evaluations_path(main = main)
+  eval_path <- foreforecasts_evaluations_path(main = main)
 
   if (!file.exists(eval_path)) {
 

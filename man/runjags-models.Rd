@@ -54,7 +54,7 @@ runjags_controls(
 
 \item{metadata}{\code{list} of model control elements. See \code{\link{prepare_metadata}}.}
 
-\item{data_names}{\code{character} vector of data values to include in the data \code{list}. See \code{\link{prefab_model_controls}}.}
+\item{data_names}{\code{character} vector of data values to include in the data \code{list}. See \code{\link{prefab_models_controls}}.}
 
 \item{abundance}{Non-negative \code{integer}-conformable vector of rodent abundances to use in forecasting. See \code{\link{prepare_abundance}}.}
 

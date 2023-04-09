@@ -34,7 +34,7 @@
 #'         * `htmltools::includeMarkdown`
 #'       * `models_tab`
 #'         * `htmltools::includeHTML`
-#'       * `profiles_tab`
+#'       * `rodents_profiles_tab`
 #'         * `htmltools::includeHTML`
 #'       * `covariates_tab`
 #'         * `data_sources_section`
@@ -88,7 +88,7 @@ main_panel <- function (global = global_list( )) {
                         evaluation_tab(global = global),
                         about_tab(global = global),
                         models_tab(global = global),
-                        profiles_tab(global = global),
+                        rodents_profiles_tab(global = global),
                         covariates_tab(global = global)))
 
 
@@ -119,7 +119,7 @@ subtitle_panel <- function ( ) {
 #'
 #' @export
 #'
-about_tab <- function (global = global) {
+about_tab <- function (global = global_list( )) {
 
   tabPanel(title = "About",
            includeMarkdown(global$about_md_path)) 
@@ -130,7 +130,7 @@ about_tab <- function (global = global) {
 #'
 #' @export
 #'
-models_tab <- function (global = global) {
+models_tab <- function (global = global_list( )) {
 
   tabPanel(title = "Models",
            includeHTML(global$models_html_path)) 
@@ -141,7 +141,7 @@ models_tab <- function (global = global) {
 #'
 #' @export
 #'
-profiles_tab <- function (global = global) {
+rodents_profiles_tab <- function (global = global_list( )) {
 
   tabPanel(title = "Rodent Profiles",
            includeHTML(global$rodents_profiles_html_path)) 
@@ -154,7 +154,7 @@ profiles_tab <- function (global = global) {
 #
 forecast_tab <- function (global = global_list( )) {
 
-  if (is.null(global$casts_metadata)) {
+  if (is.null(global$forecasts_metadata)) {
 
     tabPanel(title = "Forecast", 
              br( ), 
@@ -271,7 +271,7 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (global 
 #
 evaluation_tab <- function (global = global_list( )) {
 
-  if (is.null(global$casts_evaluations)) {
+  if (is.null(global$forecasts_evaluations)) {
 
     tabPanel(title = "Evaluation", 
              br( ), 
@@ -501,7 +501,7 @@ portal_ndvi_href <- function (text = "NDVI data") {
 #'
 #' @export
 #
-write_rodent_profiles_tab_html <- function (main = ".") {
+write_rodents_profiles_tab_html <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 

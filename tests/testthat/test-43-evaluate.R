@@ -5,25 +5,25 @@ main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
 
-test_that(desc = "evaluate_casts evaluates casts", {
+test_that(desc = "evaluate_forecasts evaluates casts", {
 
-  cast_ids <- select_casts(main = main3, species = c("DM", "PP", "total"), models = c("AutoArima", "ESSS", "pevGARCH", "nbGARCH"), datasets = c("all", "controls"))$cast_id
-  nids <- length(cast_ids)
+  forecast_ids <- select_forecasts(main = main3, species = c("DM", "PP", "total"), models = c("AutoArima", "ESSS", "pevGARCH", "nbGARCH"), datasets = c("all", "controls"))$forecast_id
+  nids <- length(forecast_ids)
   nsample_ids <- 1000
-  cast_ids <- cast_ids[round(seq(1, nids, length.out = nsample_ids))]
-  expect_message(ec <- evaluate_casts(main = main3, cast_ids = cast_ids))
+  forecast_ids <- forecast_ids[round(seq(1, nids, length.out = nsample_ids))]
+  expect_message(ec <- evaluate_forecasts(main = main3, forecast_ids = forecast_ids))
   expect_is(ec, "data.frame")
-  expect_error(evaluate_casts(main = main3, cast_ids = c(1e100, 2e100)))
+  expect_error(evaluate_forecasts(main = main3, forecast_ids = c(1e100, 2e100)))
 
 })
 
 
 test_that(desc = "evaluate_cast evaluates cast", {
 
-  cast_ids <- select_casts(main = main3)$cast_id
-  cast_id <- cast_ids[length(cast_ids)]
+  forecast_ids <- select_forecasts(main = main3)$forecast_id
+  forecast_id <- forecast_ids[length(forecast_ids)]
 
-  expect_is(evaluate_cast(main = main3, cast_id = cast_id), "data.frame")
-  expect_error(evaluate_cast(main = main3, cast_id = 1e100))
+  expect_is(evaluate_cast(main = main3, forecast_id = forecast_id), "data.frame")
+  expect_error(evaluate_cast(main = main3, forecast_id = 1e100))
 
 })

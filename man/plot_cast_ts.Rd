@@ -6,8 +6,8 @@
 \usage{
 plot_cast_ts(
   main = ".",
-  cast_id = NULL,
-  cast_group = NULL,
+  forecast_id = NULL,
+  forecast_group = NULL,
   dataset = NULL,
   model = NULL,
   historic_start_newmoonnumber = NULL,
@@ -18,9 +18,9 @@ plot_cast_ts(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
+\item{forecast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information.}
 
-\item{cast_group}{\code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{cast_group}.}
+\item{forecast_group}{\code{integer} (or integer \code{numeric}) value of the cast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{forecast_group}.}
 
 \item{dataset}{\code{character} value of the rodent data set to include. Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
@@ -38,8 +38,8 @@ Does not influence the fit of the models, just the presentation.}
 }
 \description{
 Plot an observed timeseries and cast timeseries with a prediction interval. \cr
-Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
-Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
+Casts can be selected either by supplying a \code{forecast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{forecast_id} input.
+Casts can be selected either by supplying a \code{forecast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{forecast_id} input.
 }
 \details{
 The resulting plot shows observations as a solid black line and predictions as a blue polygon with the bounds represent the error given by \code{lower_pi} and \code{upper_pi} and the bisecting blue line representing the \code{estimate} in the \code{cast_table} saved output from a model. \cr

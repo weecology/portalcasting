@@ -2,19 +2,19 @@
 % Please edit documentation in R/evaluate.R
 \name{evaluate forecasts}
 \alias{evaluate forecasts}
-\alias{evaluate_casts}
+\alias{evaluate_forecasts}
 \alias{evaluate_cast}
 \title{Evaluate Forecasts}
 \usage{
-evaluate_casts(main = ".", cast_ids = NULL)
+evaluate_forecasts(main = ".", forecast_ids = NULL)
 
-evaluate_cast(main = ".", cast_id = NULL)
+evaluate_cast(main = ".", forecast_id = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_id, cast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
-\code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}
+\item{forecast_id, forecast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information. \cr
+\code{forecast_id} can only be a single value, whereas \code{forecast_ids} can be multiple.}
 }
 \value{
 A \code{data.frame} of all cast evaluations at the observation (newmoon) level, \code{\link[base:invisible]{invisible}}-ly..

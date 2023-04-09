@@ -66,10 +66,10 @@ available_newmoonnumbers <- function (global     = global_list( ),
   } else if (grepl("evaluation_tab_", event_name)) {
 
 
-    possible <- unique(global$casts_evaluations$newmoonnumber[global$casts_evaluations$species                    == rv$evaluation_tab_species &
-                                                              global$casts_evaluations$model                      == rv$evaluation_tab_model &
-                                                              global$casts_evaluations$dataset                    == rv$evaluation_tab_dataset &
-                                                              global$casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber])
+    possible <- unique(global$forecasts_evaluations$newmoonnumber[global$forecasts_evaluations$species                    == rv$evaluation_tab_species &
+                                                              global$forecasts_evaluations$model                      == rv$evaluation_tab_model &
+                                                              global$forecasts_evaluations$dataset                    == rv$evaluation_tab_dataset &
+                                                              global$forecasts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber])
 
     avail_newmoonnumbers <- global$initial_evaluation_tab_available_newmoonnumbers[global$initial_evaluation_tab_available_newmoonnumbers %in% possible]
 
@@ -128,18 +128,18 @@ available_historic_end_newmoonnumbers <- function (global     = global_list( ),
 
   } else if (grepl("forecast_tab_", event_name)) {
 
-    possible <- unique(global$casts_metadata$historic_end_newmoonnumber[global$casts_metadata$species == rv$forecast_tab_species &
-                                                                        global$casts_metadata$model   == rv$forecast_tab_model &
-                                                                        global$casts_metadata$dataset == rv$forecast_tab_dataset])
+    possible <- unique(global$forecasts_metadata$historic_end_newmoonnumber[global$forecasts_metadata$species == rv$forecast_tab_species &
+                                                                        global$forecasts_metadata$model   == rv$forecast_tab_model &
+                                                                        global$forecasts_metadata$dataset == rv$forecast_tab_dataset])
 
     avail_historic_end_newmoonnumbers <- global$initial_forecast_tab_available_historic_end_newmoonnumbers[global$initial_forecast_tab_available_historic_end_newmoonnumbers %in% possible]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
-    possible <- unique(global$casts_evaluations$historic_end_newmoonnumber[global$casts_evaluations$species       == rv$evaluation_tab_species &
-                                                                           global$casts_evaluations$model         == rv$evaluation_tab_model &
-                                                                           global$casts_evaluations$dataset       == rv$evaluation_tab_dataset & 
-                                                                           global$casts_evaluations$newmoonnumber == rv$evaluation_tab_newmoonnumber])
+    possible <- unique(global$forecasts_evaluations$historic_end_newmoonnumber[global$forecasts_evaluations$species       == rv$evaluation_tab_species &
+                                                                           global$forecasts_evaluations$model         == rv$evaluation_tab_model &
+                                                                           global$forecasts_evaluations$dataset       == rv$evaluation_tab_dataset & 
+                                                                           global$forecasts_evaluations$newmoonnumber == rv$evaluation_tab_newmoonnumber])
 
     avail_historic_end_newmoonnumbers <- global$initial_evaluation_tab_available_historic_end_newmoonnumbers[global$initial_evaluation_tab_available_historic_end_newmoonnumbers %in% possible]
 
@@ -202,18 +202,18 @@ available_species <- function (global     = global_list( ),
 
   } else if (grepl("forecast_tab_", event_name)) {
 
-    possible <- unique(global$casts_metadata$species[global$casts_metadata$dataset                    == rv$forecast_tab_dataset &
-                                                     global$casts_metadata$model                      == rv$forecast_tab_model &
-                                                     global$casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
+    possible <- unique(global$forecasts_metadata$species[global$forecasts_metadata$dataset                    == rv$forecast_tab_dataset &
+                                                     global$forecasts_metadata$model                      == rv$forecast_tab_model &
+                                                     global$forecasts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
     avail_species <- global$initial_forecast_tab_available_species[global$initial_forecast_tab_available_species %in% possible]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
-    possible <- unique(global$casts_evaluations$species[global$casts_evaluations$dataset                    == rv$evaluation_tab_dataset &
-                                                        global$casts_evaluations$model                      == rv$evaluation_tab_model &
-                                                        global$casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
-                                                        global$casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber])
+    possible <- unique(global$forecasts_evaluations$species[global$forecasts_evaluations$dataset                    == rv$evaluation_tab_dataset &
+                                                        global$forecasts_evaluations$model                      == rv$evaluation_tab_model &
+                                                        global$forecasts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
+                                                        global$forecasts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber])
 
     avail_species <- global$initial_evaluation_tab_available_species[global$initial_evaluation_tab_available_species %in% possible]
 
@@ -276,18 +276,18 @@ available_datasets <- function (global     = global_list( ),
 
   } else if (grepl("forecast_tab_", event_name)) {
 
-    possible <- unique(global$casts_metadata$dataset[global$casts_metadata$species                    == rv$forecast_tab_species &
-                                                     global$casts_metadata$model                      == rv$forecast_tab_model &
-                                                     global$casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
+    possible <- unique(global$forecasts_metadata$dataset[global$forecasts_metadata$species                    == rv$forecast_tab_species &
+                                                     global$forecasts_metadata$model                      == rv$forecast_tab_model &
+                                                     global$forecasts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
     avail_datasets <- global$initial_forecast_tab_available_datasets[global$initial_forecast_tab_available_datasets %in% possible]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
-    possible <- unique(global$casts_evaluations$dataset[global$casts_evaluations$species                    == rv$evaluation_tab_species &
-                                                        global$casts_evaluations$model                      == rv$evaluation_tab_model &
-                                                        global$casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
-                                                        global$casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber])
+    possible <- unique(global$forecasts_evaluations$dataset[global$forecasts_evaluations$species                    == rv$evaluation_tab_species &
+                                                        global$forecasts_evaluations$model                      == rv$evaluation_tab_model &
+                                                        global$forecasts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
+                                                        global$forecasts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber])
 
     avail_datasets <- global$initial_evaluation_tab_available_datasets[global$initial_evaluation_tab_available_datasets %in% possible]
   }
@@ -348,18 +348,18 @@ available_models <- function (global     = global_list( ),
 
   } else if (grepl("forecast_tab_", event_name)) {
 
-    possible <- unique(global$casts_metadata$model[global$casts_metadata$species                    == rv$forecast_tab_species &
-                                                   global$casts_metadata$dataset                    == rv$forecast_tab_dataset &
-                                                   global$casts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
+    possible <- unique(global$forecasts_metadata$model[global$forecasts_metadata$species                    == rv$forecast_tab_species &
+                                                   global$forecasts_metadata$dataset                    == rv$forecast_tab_dataset &
+                                                   global$forecasts_metadata$historic_end_newmoonnumber == rv$forecast_tab_historic_end_newmoonnumber])
 
     avail_models <- global$initial_forecast_tab_available_models[global$initial_forecast_tab_available_models %in% possible]
 
   } else if (grepl("evaluation_tab_", event_name)) {
 
-    possible <- unique(global$casts_evaluations$model[global$casts_evaluations$species                    == rv$evaluation_tab_species &
-                                                      global$casts_evaluations$dataset                    == rv$evaluation_tab_dataset &
-                                                      global$casts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
-                                                      global$casts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber ])
+    possible <- unique(global$forecasts_evaluations$model[global$forecasts_evaluations$species                    == rv$evaluation_tab_species &
+                                                      global$forecasts_evaluations$dataset                    == rv$evaluation_tab_dataset &
+                                                      global$forecasts_evaluations$historic_end_newmoonnumber == rv$evaluation_tab_historic_end_newmoonnumber & 
+                                                      global$forecasts_evaluations$newmoonnumber              == rv$evaluation_tab_newmoonnumber ])
 
     avail_models <- global$initial_evaluation_tab_available_models[global$initial_evaluation_tab_available_models %in% possible]
 
@@ -414,14 +414,14 @@ global_list <- function (main = ".") {
 
   messageq("Reading in casts metadata and evaluation files ...", quiet = !settings$verbose)
 
-  casts_metadata    <- read_casts_metadata(main = main)
-  casts_evaluations <- read_casts_evaluations(main = main)
-  casts_evaluations <- casts_evaluations[!is.na(casts_evaluations$obs), ]
+  forecasts_metadata    <- read_foreforecasts_metadata(main = main)
+  forecasts_evaluations <- read_foreforecasts_evaluations(main = main)
+  forecasts_evaluations <- forecasts_evaluations[!is.na(forecasts_evaluations$obs), ]
 
-  if (nrow(casts_metadata) == 0) {
+  if (nrow(forecasts_metadata) == 0) {
 
     messageq("  No casts metadata available.", quiet = !settings$verbose)
-    casts_metadata <- NULL
+    forecasts_metadata <- NULL
 
   }
 
@@ -450,19 +450,19 @@ global_list <- function (main = ".") {
   
   messageq("Determining initial available values ...", quiet = !settings$verbose)
 
-  initial_forecast_tab_available_species                       <- species_names[species_names %in% unique(casts_metadata$species[casts_metadata$species %in% species_names_table$code])]
-  initial_evaluation_tab_available_species                     <- species_names[species_names %in% unique(casts_evaluations$species[casts_evaluations$species %in% species_names_table$code])]
+  initial_forecast_tab_available_species                       <- species_names[species_names %in% unique(forecasts_metadata$species[forecasts_metadata$species %in% species_names_table$code])]
+  initial_evaluation_tab_available_species                     <- species_names[species_names %in% unique(forecasts_evaluations$species[forecasts_evaluations$species %in% species_names_table$code])]
 
-  initial_forecast_tab_available_models                        <- models_names[models_names %in% unique(casts_metadata$model[casts_metadata$model %in% prefab_models( ) & casts_metadata$species %in% initial_forecast_tab_available_species])]
-  initial_evaluation_tab_available_models                      <- models_names[models_names %in% unique(casts_evaluations$model[casts_evaluations$model %in% prefab_models( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species])]
+  initial_forecast_tab_available_models                        <- models_names[models_names %in% unique(forecasts_metadata$model[forecasts_metadata$model %in% prefab_models( ) & forecasts_metadata$species %in% initial_forecast_tab_available_species])]
+  initial_evaluation_tab_available_models                      <- models_names[models_names %in% unique(forecasts_evaluations$model[forecasts_evaluations$model %in% prefab_models( ) & forecasts_evaluations$species %in% initial_evaluation_tab_available_species])]
 
-  initial_forecast_tab_available_datasets                      <- unique(casts_metadata$dataset[casts_metadata$dataset %in% prefab_datasets( ) & casts_metadata$species %in% initial_forecast_tab_available_species & casts_metadata$model %in% initial_forecast_tab_available_models])
-  initial_evaluation_tab_available_datasets                    <- unique(casts_evaluations$dataset[casts_evaluations$dataset %in% prefab_datasets( ) & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models])
+  initial_forecast_tab_available_datasets                      <- unique(forecasts_metadata$dataset[forecasts_metadata$dataset %in% prefab_datasets( ) & forecasts_metadata$species %in% initial_forecast_tab_available_species & forecasts_metadata$model %in% initial_forecast_tab_available_models])
+  initial_evaluation_tab_available_datasets                    <- unique(forecasts_evaluations$dataset[forecasts_evaluations$dataset %in% prefab_datasets( ) & forecasts_evaluations$species %in% initial_evaluation_tab_available_species & forecasts_evaluations$model %in% initial_evaluation_tab_available_models])
 
-  initial_forecast_tab_available_historic_end_newmoonnumbers   <- unique(casts_metadata$historic_end_newmoonnumber[casts_metadata$species %in% initial_forecast_tab_available_species & casts_metadata$model %in% initial_forecast_tab_available_models & casts_metadata$dataset %in% initial_forecast_tab_available_datasets])
-  initial_evaluation_tab_available_historic_end_newmoonnumbers <- unique(casts_evaluations$historic_end_newmoonnumber[casts_evaluations$dataset %in% initial_evaluation_tab_available_datasets & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models])
+  initial_forecast_tab_available_historic_end_newmoonnumbers   <- unique(forecasts_metadata$historic_end_newmoonnumber[forecasts_metadata$species %in% initial_forecast_tab_available_species & forecasts_metadata$model %in% initial_forecast_tab_available_models & forecasts_metadata$dataset %in% initial_forecast_tab_available_datasets])
+  initial_evaluation_tab_available_historic_end_newmoonnumbers <- unique(forecasts_evaluations$historic_end_newmoonnumber[forecasts_evaluations$dataset %in% initial_evaluation_tab_available_datasets & forecasts_evaluations$species %in% initial_evaluation_tab_available_species & forecasts_evaluations$model %in% initial_evaluation_tab_available_models])
 
-  initial_evaluation_tab_available_newmoonnumbers              <- unique(casts_evaluations$newmoonnumber[casts_evaluations$dataset %in% initial_evaluation_tab_available_datasets & casts_evaluations$species %in% initial_evaluation_tab_available_species & casts_evaluations$model %in% initial_evaluation_tab_available_models & casts_evaluations$historic_end_newmoonnumber %in% initial_evaluation_tab_available_historic_end_newmoonnumbers])
+  initial_evaluation_tab_available_newmoonnumbers              <- unique(forecasts_evaluations$newmoonnumber[forecasts_evaluations$dataset %in% initial_evaluation_tab_available_datasets & forecasts_evaluations$species %in% initial_evaluation_tab_available_species & forecasts_evaluations$model %in% initial_evaluation_tab_available_models & forecasts_evaluations$historic_end_newmoonnumber %in% initial_evaluation_tab_available_historic_end_newmoonnumbers])
 
   messageq(" ... done.", quiet = !settings$verbose)
 
@@ -488,8 +488,8 @@ global_list <- function (main = ".") {
   models_html_path                                            <- models_html_path(main = main)
   rodents_profiles_html_path                                  <- rodents_profiles_html_path(main = main)
 
-  list(casts_metadata                                                   = casts_metadata,
-       casts_evaluations                                                = casts_evaluations,
+  list(forecasts_metadata                                               = forecasts_metadata,
+       forecasts_evaluations                                            = forecasts_evaluations,
 
        initial_forecast_tab_available_species                           = initial_forecast_tab_available_species,
        initial_evaluation_tab_available_species                         = initial_evaluation_tab_available_species,

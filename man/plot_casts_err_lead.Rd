@@ -6,7 +6,7 @@
 \usage{
 plot_casts_err_lead(
   main = ".",
-  cast_ids = NULL,
+  forecast_ids = NULL,
   historic_end_newmoonnumbers = NULL,
   models = NULL,
   datasets = NULL,
@@ -16,7 +16,7 @@ plot_casts_err_lead(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
+\item{forecast_ids}{\code{integer} (or integer \code{numeric}) values representing the casts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information.}
 
 \item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the forecast origin. Default value is \code{NULL}, which equates to no selection.}
 

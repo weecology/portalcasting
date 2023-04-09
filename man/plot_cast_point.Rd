@@ -6,7 +6,7 @@
 \usage{
 plot_cast_point(
   main = ".",
-  cast_id = NULL,
+  forecast_id = NULL,
   dataset = NULL,
   model = NULL,
   historic_end_newmoonnumber = NULL,
@@ -19,7 +19,7 @@ plot_cast_point(
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{cast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.}
+\item{forecast_id}{\code{integer} (or integer \code{numeric}) value representing the cast of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{forecasts_metadata.csv}) for summary information.}
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.}
 
@@ -39,7 +39,7 @@ plot_cast_point(
 \code{NULL}. Plot is generated.
 }
 \description{
-Plot the point value with confidence interval for a time point across multiple species. Casts can be selected either by supplying a \code{cast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{cast_id} input.
+Plot the point value with confidence interval for a time point across multiple species. Casts can be selected either by supplying a \code{forecast_id} number or any combination of \code{dataset}, \code{model}, and \code{historic_end_newmoonnumber}, which filter the available casts in unison. This plot type can only handle output from a single cast, so if multiple casts still remain, the one with the highest number is selected. To be more certain about cast selection, use the \code{forecast_id} input.
 }
 \details{
 The resulting plot shows predictions as points (open white circles) with error, where the point represents the \code{estimate} and the bounds of the error are \code{lower_pi} and \code{upper_pi} in the \code{cast_table} saved output from a model. \cr
