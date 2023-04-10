@@ -71,7 +71,7 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   expect_is(pt, "shiny.tag")
 
   expect_silent(pf <- portal_forecast_ui(global = gl))
-  expect_is(pt, "shiny.tag.list")
+  expect_is(pt, "shiny.tag")
 
 
   gll <- global_list(main = main3)

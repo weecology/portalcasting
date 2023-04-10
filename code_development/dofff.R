@@ -23,4 +23,6 @@
 #'  }}
 #'
 
+devtools::document()
+
 

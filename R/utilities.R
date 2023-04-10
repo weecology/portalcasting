@@ -9,8 +9,16 @@
 #'
 #' @export
 #'
+#' @name package_version_finder
+#'
 #' @examples
 #'    package_version_finder( )
+#'
+NULL
+
+#' @rdname package_version_finder
+#'
+#' @export
 #'
 package_version_finder <- function (what) {
 
@@ -57,10 +65,16 @@ package_version_finder <- function (what) {
 #' @param min_val `integer` or `numeric` integer of minimum value allowable in the series.
 #'
 #' @return `numeric` series.
+#'
+#' @name round_na.interp
 #' 
 #' @examples
 #'    round_na.interp(x = c(1, 2, 3, NA, NA, 170))
 #'    round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
+#'
+NULL
+
+#' @rdname round_na.interp
 #'
 #' @export
 #'
@@ -94,11 +108,19 @@ round_na.interp <- function (x,
 #'        Generally, this will be `."`, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be `"="`.
 #'
 #' @return `character` value of the extension (`file_ext`).
+#'
+#' @name file_ext
+#'
+#' @export
 #' 
 #' @examples
 #'    file_ext("home/folders.with.dots/stuff/ok.csv")
 #'    file_ext(NMME_urls()[[1]])
 #'    file_ext(NMME_urls()[[1]], "=")
+#'
+NULL
+
+#' @rdname file_ext
 #'
 #' @export
 #'
@@ -120,8 +142,14 @@ file_ext <- function (path, sep_char = ".") {
 #'
 #' @return `list` with names `element_names` and values `NULL`.
 #'
+#' @name named_null_list 
+#'
 #' @examples
 #'    named_null_list(c("a", "b", "c"))
+#'
+NULL
+
+#' @rdname named_null_list 
 #'
 #' @export
 #'
@@ -147,11 +175,17 @@ named_null_list <- function (element_names = NULL) {
 #'
 #' @return Updated `list`.
 #'
+#' @name update_list
+#'
 #' @examples
 #'    orig_list <- list(a = 1, b = 3, c = 4)
 #'    update_list(orig_list)
 #'    update_list(orig_list, a = "a")
 #'    update_list(orig_list, a = 10, b = NULL)
+#'
+NULL
+
+#' @rdname update_list
 #'
 #' @export
 #'
@@ -217,6 +251,12 @@ update_list <- function (list = list(),
 #' @examples
 #'   Sys.Date( ); foy(Sys.Date())
 #'
+#' @name foy
+#'
+NULL
+
+#' @rdname foy
+#'
 #' @export
 #'
 foy <- function (dates = NULL) {
@@ -245,14 +285,18 @@ foy <- function (dates = NULL) {
 #'
 #' @return `x` if not `NULL`, `alt` otherwise. 
 #' 
+#' @name ifnull
+#'
 #' @examples
 #'    ifnull(NULL, 123)
 #'    ifnull(TRUE, 123)
 #'    ifnull(FALSE, 123)
 #'
-#' @name alternative values
+NULL
+
+#' @rdname ifnull
 #'
-#' @export 
+#' @export
 #'
 ifnull <- function (x = NULL, alt = NULL) {
 

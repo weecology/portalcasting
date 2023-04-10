@@ -30,6 +30,10 @@ for (i in 1:nR_scripts) {
 
   nsets <- length(first_line)
 
+  if (nsets == 0) {
+    next
+  }
+
   sets <- list()
 
   for(j in 1:nsets) {
